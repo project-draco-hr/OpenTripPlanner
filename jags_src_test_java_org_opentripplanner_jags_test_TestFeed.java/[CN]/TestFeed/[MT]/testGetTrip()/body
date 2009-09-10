@@ -1,0 +1,5 @@
+{
+  Feed feed=new Feed("caltrain_gtfs.zip");
+  feed.loadTrips();
+  assertEquals(feed.trips.get("21520090831").trip_id,"21520090831");
+}

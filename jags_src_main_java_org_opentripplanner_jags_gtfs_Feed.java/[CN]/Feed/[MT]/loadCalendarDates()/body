@@ -1,0 +1,8 @@
+{
+  loadCalendar();
+  Table table=this.getTable("calendar_dates");
+  while (table.hasMoreElements()) {
+    ServiceCalendarDate cd=new ServiceCalendarDate(table,table.nextElement());
+    getServiceCalendar(cd.service_id).addServiceCalendarDate(cd);
+  }
+}

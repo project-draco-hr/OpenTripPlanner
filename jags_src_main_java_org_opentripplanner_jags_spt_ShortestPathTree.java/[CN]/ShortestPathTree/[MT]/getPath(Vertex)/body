@@ -1,0 +1,15 @@
+{
+  SPTVertex end=this.getVertex(dest);
+  if (end == null) {
+    return null;
+  }
+  GraphPath ret=new GraphPath();
+  while (true) {
+    ret.vertices.add(0,end);
+    if (end.incoming == null) {
+      break;
+    }
+    end=end.incoming.fromv;
+  }
+  return ret;
+}

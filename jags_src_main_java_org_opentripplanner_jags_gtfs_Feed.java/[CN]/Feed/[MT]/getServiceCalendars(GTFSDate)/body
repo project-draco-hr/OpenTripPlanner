@@ -1,0 +1,13 @@
+{
+  ArrayList<ServiceCalendar> ret=new ArrayList<ServiceCalendar>();
+  for (  ServiceCalendar sc : this.serviceCalendars.values()) {
+    try {
+      if (sc.runsOn(date)) {
+        ret.add(sc);
+      }
+    }
+ catch (    IndexOutOfBoundsException e) {
+    }
+  }
+  return ret;
+}

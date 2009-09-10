@@ -1,0 +1,29 @@
+{
+  Feed feed=new Feed("caltrain_gtfs.zip");
+  feed.loadCalendarDates();
+  ServiceCalendar sc=feed.getServiceCalendar("WD20090831");
+  try {
+    sc.runsOn(new GTFSDate(2009,8,30));
+    assertTrue(false);
+  }
+ catch (  Exception ex) {
+    assertEquals(ex.getMessage(),"2009.8.30 is before period start 2009.8.31");
+  }
+  try {
+    sc.runsOn(new GTFSDate(2019,9,1));
+    assertTrue(false);
+  }
+ catch (  Exception ex) {
+    assertEquals(ex.getMessage(),"2019.9.1 is after period end 2019.8.31");
+  }
+  assertTrue(sc.runsOn(new GTFSDate(2009,9,14)));
+  assertTrue(sc.runsOn(new GTFSDate(2009,9,15)));
+  assertTrue(sc.runsOn(new GTFSDate(2009,9,16)));
+  assertTrue(sc.runsOn(new GTFSDate(2009,9,17)));
+  assertTrue(sc.runsOn(new GTFSDate(2009,9,18)));
+  assertFalse(sc.runsOn(new GTFSDate(2009,9,19)));
+  assertFalse(sc.runsOn(new GTFSDate(2009,9,20)));
+  assertFalse(sc.runsOn(new GTFSDate(2009,9,7)));
+  assertFalse(sc.runsOn(new GTFSDate(2009,12,25)));
+  assertFalse(sc.runsOn(new GTFSDate(2009,11,26)));
+}

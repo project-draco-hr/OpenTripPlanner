@@ -1,0 +1,8 @@
+{
+  loadTrips();
+  Table stoptimes_table=this.getTable("stop_times");
+  while (stoptimes_table.hasMoreElements()) {
+    StopTime stoptime=new StopTime(stoptimes_table,stoptimes_table.nextElement());
+    trips.get(stoptime.trip_id).addStopTime(stoptime);
+  }
+}

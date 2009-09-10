@@ -1,0 +1,13 @@
+{
+  File ff=new File("google_transit.zip");
+  try {
+    ZipFile zf=new ZipFile(ff);
+    InputStream stops=zf.getInputStream(zf.getEntry("stops.txt"));
+    CSVReader reader=new CSVReader(new InputStreamReader(stops));
+    String[] header=reader.readNext();
+    System.out.println(header.length);
+  }
+ catch (  Exception ex) {
+    System.out.println(ex.toString());
+  }
+}

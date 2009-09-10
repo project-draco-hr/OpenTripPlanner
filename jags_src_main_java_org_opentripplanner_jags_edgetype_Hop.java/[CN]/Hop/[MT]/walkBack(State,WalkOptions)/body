@@ -1,0 +1,17 @@
+{
+  GregorianCalendar serviceDay=(GregorianCalendar)state0.time.clone();
+  int secondsSinceMidnight=state0.time.get(GregorianCalendar.HOUR) * SECS_IN_HOUR + state0.time.get(GregorianCalendar.MINUTE) * SECS_IN_MINUTE + state0.time.get(GregorianCalendar.SECOND);
+  int overageDays=end.arrival_time.getSecondsSinceMidnight() / SECS_IN_DAY;
+  serviceDay.add(GregorianCalendar.DATE,-overageDays);
+  secondsSinceMidnight+=SECS_IN_DAY * overageDays;
+  if (!calendar.runsOn(serviceDay)) {
+    return null;
+  }
+  int wait=secondsSinceMidnight - end.arrival_time.getSecondsSinceMidnight();
+  if (wait < 0) {
+    return null;
+  }
+  State state1=state0.clone();
+  state1.time.add(GregorianCalendar.SECOND,-(wait + elapsed));
+  return new WalkResult(wait + elapsed,state1);
+}

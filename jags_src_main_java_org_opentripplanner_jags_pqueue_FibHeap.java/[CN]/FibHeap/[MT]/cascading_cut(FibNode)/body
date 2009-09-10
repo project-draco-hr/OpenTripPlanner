@@ -1,0 +1,12 @@
+{
+  FibNode z=y.parent;
+  if (z != null) {
+    if (y.mark == false) {
+      y.mark=true;
+    }
+ else {
+      this.cut(y,z);
+      this.cascading_cut(z);
+    }
+  }
+}

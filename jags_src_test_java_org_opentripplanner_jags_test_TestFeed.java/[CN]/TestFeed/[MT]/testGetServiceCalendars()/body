@@ -1,0 +1,5 @@
+{
+  Feed feed=new Feed("caltrain_gtfs.zip");
+  feed.loadCalendarDates();
+  assertTrue(feed.getServiceCalendars(new GTFSDate(2009,12,5)).size() == 2);
+}

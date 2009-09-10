@@ -1,0 +1,8 @@
+{
+  stops=new HashMap<String,Stop>();
+  Table stops_table=this.getTable("stops");
+  while (stops_table.hasMoreElements()) {
+    Stop stop=new Stop(stops_table,stops_table.nextElement());
+    stops.put(stop.stop_id,stop);
+  }
+}

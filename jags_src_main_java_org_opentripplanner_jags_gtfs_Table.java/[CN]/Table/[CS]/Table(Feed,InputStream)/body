@@ -1,0 +1,9 @@
+{
+  this.feed=feed;
+  reader=new CSVReader(new InputStreamReader(in));
+  String[] rawheader=reader.readNext();
+  header=new HashMap<String,Integer>();
+  for (int i=0; i < rawheader.length; i++) {
+    header.put(rawheader[i],new Integer(i));
+  }
+}

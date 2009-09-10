@@ -1,0 +1,9 @@
+{
+  FibNode x=new FibNode(payload,key);
+  this.directory.put(payload,x);
+  this.root_list.add(x);
+  if (this.min == null || x.key < this.min.key) {
+    this.min=x;
+  }
+  this.n=this.n + 1;
+}

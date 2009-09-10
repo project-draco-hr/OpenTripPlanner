@@ -1,0 +1,13 @@
+{
+  Feed feed=new Feed("caltrain_gtfs.zip");
+  feed.loadTrips();
+  Trip tr=feed.getTrip("36520090302");
+  try {
+    System.out.println(tr.getServiceCalendar());
+  }
+ catch (  Exception e) {
+    assertEquals(e.getMessage(),"ServiceCalendars have not been loaded");
+  }
+  feed.loadCalendarDates();
+  assertEquals(tr.getServiceCalendar().service_id,"WD20090302");
+}

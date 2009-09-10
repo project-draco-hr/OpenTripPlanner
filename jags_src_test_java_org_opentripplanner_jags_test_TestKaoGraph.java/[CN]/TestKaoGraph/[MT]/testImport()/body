@@ -1,0 +1,11 @@
+{
+  Feed feed=new Feed("caltrain_gtfs.zip");
+  KaoGraph kg=new KaoGraph();
+  GTFSHopLoader hl=new GTFSHopLoader(kg,feed);
+  hl.load();
+  Vertex mlb=kg.getVertex("Millbrae Caltrain");
+  assertTrue(mlb.getDegreeOut() == 236);
+  assertTrue(mlb.getDegreeIn() == 236);
+  Vertex gilroy=kg.getVertex("Gilroy Caltrain");
+  assertNotNull(gilroy);
+}
