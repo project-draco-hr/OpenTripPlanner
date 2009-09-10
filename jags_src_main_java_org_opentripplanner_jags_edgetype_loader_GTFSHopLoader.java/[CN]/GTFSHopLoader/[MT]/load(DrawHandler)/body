@@ -1,0 +1,13 @@
+{
+  feed.loadStops();
+  for (  Stop stop : feed.getAllStops()) {
+    graph.addVertex(stop.stop_id);
+  }
+  GTFSHopFactory hf=new GTFSHopFactory(feed);
+  for (  Hop hop : hf.run()) {
+    if (drawHandler != null) {
+      drawHandler.handle(hop);
+    }
+    graph.addEdge(hop.start.stop_id,hop.end.stop_id,hop);
+  }
+}

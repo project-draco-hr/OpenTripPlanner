@@ -1,0 +1,9 @@
+{
+  for (  ArrayList<Point> geom : geoms) {
+    for (int i=0; i < geom.size() - 1; i++) {
+      Point p1=geom.get(i);
+      Point p2=geom.get(i + 1);
+      line(p1.x,p1.z,p2.x,p2.z);
+    }
+  }
+}

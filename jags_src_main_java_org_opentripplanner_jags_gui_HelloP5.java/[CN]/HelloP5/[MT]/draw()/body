@@ -1,0 +1,10 @@
+{
+  frame(left,start,right,end);
+  background(255);
+  strokeWeight(0.001f);
+  drawGeoms();
+  strokeWeight(1);
+  float x1=0 * xscale + xtrans;
+  float y1=ytrans - mouseY / yscale;
+  line(x1,y1,width * xscale + xtrans,mouseY * yscale + ytrans);
+}

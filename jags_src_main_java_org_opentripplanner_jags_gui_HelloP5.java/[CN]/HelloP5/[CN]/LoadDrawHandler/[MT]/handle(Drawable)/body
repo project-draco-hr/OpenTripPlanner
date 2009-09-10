@@ -1,0 +1,12 @@
+{
+  ArrayList<Point> geom=todraw.getGeometry();
+  for (  Point pp : geom) {
+    left=min(pp.x,left);
+    bottom=min(pp.y,bottom);
+    right=max(pp.x,right);
+    top=max(pp.y,top);
+    start=min(pp.z,start);
+    end=max(pp.z,end);
+  }
+  geoms.add(geom);
+}

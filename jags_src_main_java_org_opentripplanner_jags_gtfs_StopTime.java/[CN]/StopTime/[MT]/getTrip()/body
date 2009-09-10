@@ -1,3 +1,6 @@
 {
-  return table.feed.trips.get(trip_id);
+  if (trip == null) {
+    trip=table.feed.trips.get(trip_id);
+  }
+  return trip;
 }

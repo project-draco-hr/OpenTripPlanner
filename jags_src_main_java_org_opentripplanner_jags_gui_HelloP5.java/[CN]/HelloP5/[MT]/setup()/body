@@ -1,0 +1,20 @@
+{
+  size(700,700,JAVA2D);
+  stroke(155,0,0);
+  smooth();
+  background(255);
+  try {
+    Feed feed=new Feed("/Users/badhill/Code/graphserver/jags/caltrain_gtfs.zip");
+    gg=new Graph();
+    GTFSHopLoader hl=new GTFSHopLoader(gg,feed);
+    hl.load(new LoadDrawHandler());
+    frame(left,start,right,end);
+    System.out.println(left);
+    System.out.println(start);
+    System.out.println(right);
+    System.out.println(end);
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+  }
+}
