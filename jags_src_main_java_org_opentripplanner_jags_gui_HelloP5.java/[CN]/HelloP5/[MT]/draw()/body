@@ -1,5 +1,10 @@
 {
-  frame(left,start,right,end);
+  if (timeMode) {
+    frame(left,start,right,end);
+  }
+ else {
+    frame(left,bottom,right,top);
+  }
   background(255);
   strokeWeight(0.001f);
   drawGeoms();
