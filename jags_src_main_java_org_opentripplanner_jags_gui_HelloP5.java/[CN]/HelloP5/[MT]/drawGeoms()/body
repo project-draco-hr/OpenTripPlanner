@@ -4,10 +4,10 @@
       Point p1=geom.get(i);
       Point p2=geom.get(i + 1);
       if (timeMode) {
-        line(p1.x,p1.z,p2.x,p2.z);
+        line((p1.x + xtrans) * xscale,(p1.z + ytrans) * yscale,(p2.x + xtrans) * xscale,(p2.z + ytrans) * yscale);
       }
  else {
-        line(p1.x,p1.y,p2.x,p2.y);
+        line((p1.x + xtrans) * xscale,(p1.y + ytrans) * yscale,(p2.x + xtrans) * xscale,(p2.y + ytrans) * yscale);
       }
     }
   }

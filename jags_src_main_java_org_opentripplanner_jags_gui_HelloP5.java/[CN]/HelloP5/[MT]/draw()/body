@@ -1,15 +1,12 @@
 {
   if (timeMode) {
-    frame(left,start,right,end);
+    setTransformation(left,start,right,end);
   }
  else {
-    frame(left,bottom,right,top);
+    setTransformation(left,bottom,right,top);
   }
   background(255);
-  strokeWeight(0.001f);
+  strokeWeight(0.1f);
   drawGeoms();
-  strokeWeight(1);
-  float x1=0 * xscale + xtrans;
-  float y1=ytrans - mouseY / yscale;
-  line(x1,y1,width * xscale + xtrans,mouseY * yscale + ytrans);
+  strokeWeight(0.1f);
 }

@@ -1,10 +1,10 @@
 {
-  size(700,700);
+  size(700,700,JAVA2D);
   stroke(155,0,0);
   smooth();
   background(255);
   try {
-    Feed feed=new Feed("../../bart-archiver_20090826_0242.zip");
+    Feed feed=new Feed("../../caltrain_gtfs.zip");
     gg=new Graph();
     GTFSHopLoader hl=new GTFSHopLoader(gg,feed);
     System.out.println("Loading feed to graph");
