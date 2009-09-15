@@ -1,13 +1,3 @@
 {
-  ArrayList<Hop> ret=new ArrayList<Hop>();
-  for (  Trip trip : feed.getAllTrips()) {
-    ArrayList<StopTime> stoptimes=trip.getStopTimes();
-    for (int i=0; i < stoptimes.size() - 1; i++) {
-      StopTime st0=stoptimes.get(i);
-      StopTime st1=stoptimes.get(i + 1);
-      Hop hop=new Hop(st0,st1);
-      ret.add(hop);
-    }
-  }
-  return ret;
+  return run(false);
 }

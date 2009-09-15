@@ -1,0 +1,25 @@
+{
+  if (verbose) {
+    System.out.println("Loading stops");
+  }
+  feed.loadStops();
+  for (  Stop stop : feed.getAllStops()) {
+    graph.addVertex(stop.stop_id);
+  }
+  if (verbose) {
+    System.out.println("Loading hops");
+  }
+  GTFSHopFactory hf=new GTFSHopFactory(feed);
+  int i=0;
+  ArrayList<Hop> hops=hf.run(verbose);
+  for (  Hop hop : hops) {
+    i++;
+    if (verbose && i % 1000 == 0) {
+      System.out.println(String.valueOf(i));
+    }
+    if (drawHandler != null) {
+      drawHandler.handle(hop);
+    }
+    graph.addEdge(hop.start.stop_id,hop.end.stop_id,hop);
+  }
+}
