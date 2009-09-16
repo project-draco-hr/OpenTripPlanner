@@ -1,6 +1,10 @@
 {
+  if (geometryCache != null) {
+    return geometryCache;
+  }
   ArrayList<Point> ret=new ArrayList<Point>();
   ret.add(new Point(this.start.getStop().stop_lon.floatValue(),this.start.getStop().stop_lat.floatValue(),this.start.departure_time.getSecondsSinceMidnight()));
   ret.add(new Point(this.end.getStop().stop_lon.floatValue(),this.end.getStop().stop_lat.floatValue(),this.end.arrival_time.getSecondsSinceMidnight()));
+  geometryCache=ret;
   return ret;
 }

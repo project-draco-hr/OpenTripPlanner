@@ -1,6 +1,6 @@
 {
   GregorianCalendar serviceDay=(GregorianCalendar)state0.time.clone();
-  int secondsSinceMidnight=state0.time.get(GregorianCalendar.HOUR) * SECS_IN_HOUR + state0.time.get(GregorianCalendar.MINUTE) * SECS_IN_MINUTE + state0.time.get(GregorianCalendar.SECOND);
+  int secondsSinceMidnight=state0.time.get(GregorianCalendar.HOUR_OF_DAY) * SECS_IN_HOUR + state0.time.get(GregorianCalendar.MINUTE) * SECS_IN_MINUTE + state0.time.get(GregorianCalendar.SECOND);
   int overageDays=end.arrival_time.getSecondsSinceMidnight() / SECS_IN_DAY;
   serviceDay.add(GregorianCalendar.DATE,-overageDays);
   secondsSinceMidnight+=SECS_IN_DAY * overageDays;
