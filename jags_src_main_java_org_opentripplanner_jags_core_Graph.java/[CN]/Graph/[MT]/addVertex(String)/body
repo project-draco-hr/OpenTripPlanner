@@ -1,7 +1,7 @@
 {
-  AbstractVertex exists=(AbstractVertex)this.vertices.get(label);
+  Vertex exists=this.vertices.get(label);
   if (exists != null) {
-    return (Vertex)exists;
+    return exists;
   }
   Vertex ret=new Vertex(label);
   this.vertices.put(label,ret);

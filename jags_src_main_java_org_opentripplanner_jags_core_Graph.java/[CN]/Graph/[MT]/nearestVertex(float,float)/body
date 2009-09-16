@@ -1,0 +1,14 @@
+{
+  double minDist=Float.MAX_VALUE;
+  Vertex ret=null;
+  for (  Vertex vv : this.vertices.values()) {
+    if (vv instanceof Locatable) {
+      double dist=((Locatable)vv).distance(lon,lat);
+      if (dist < minDist) {
+        ret=vv;
+        minDist=dist;
+      }
+    }
+  }
+  return ret;
+}
