@@ -2,4 +2,10 @@
   if (this.keyCode == 84) {
     this.timeMode=!this.timeMode;
   }
+  if (timeMode) {
+    setTransformation(left,start,right,end);
+  }
+ else {
+    setTransformation(left,bottom,right,top);
+  }
 }

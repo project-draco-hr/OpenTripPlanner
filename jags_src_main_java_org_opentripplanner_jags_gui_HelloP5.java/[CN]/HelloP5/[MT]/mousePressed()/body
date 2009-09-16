@@ -1,3 +1,21 @@
 {
-  System.out.println("(" + mouseX + ","+ mouseY+ ")");
+  if (timeMode) {
+    time=mouseY / yscale - ytrans;
+    System.out.println("time:" + time);
+  }
+ else {
+    float lat=mouseY / yscale - ytrans;
+    float lon=mouseX / xscale - xtrans;
+    startVertex=gg.nearestVertex(lat,lon);
+  }
+  if (startVertex != null) {
+    System.out.println("find SPT from " + startVertex + " at "+ time);
+    GregorianCalendar now=new GregorianCalendar();
+    now.set(GregorianCalendar.HOUR_OF_DAY,0);
+    now.set(GregorianCalendar.MINUTE,0);
+    now.set(GregorianCalendar.SECOND,0);
+    now.add(GregorianCalendar.SECOND,(int)time);
+    State s0=new State(now);
+    spt=Dijkstra.getShortestPathTree(gg,startVertex.label,null,s0,new WalkOptions());
+  }
 }
