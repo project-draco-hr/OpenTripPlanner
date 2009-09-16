@@ -1,0 +1,13 @@
+{
+  loadTrips();
+  Table stoptimes_table=this.getTable("stop_times");
+  int i=0;
+  while (stoptimes_table.hasMoreElements()) {
+    i++;
+    if (verbose && i % 1000 == 0) {
+      System.out.println("stoptime " + i);
+    }
+    StopTime stoptime=new StopTime(stoptimes_table,stoptimes_table.nextElement());
+    trips.get(stoptime.trip_id).addStopTime(stoptime);
+  }
+}
