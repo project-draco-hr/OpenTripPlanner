@@ -1,5 +1,6 @@
 {
-  PackagedFeed feed=new PackagedFeed("caltrain_gtfs.zip");
+  PackagedFeed pfeed=new PackagedFeed("caltrain_gtfs.zip");
+  Feed feed=new Feed(pfeed);
   feed.loadCalendarDates();
   ServiceCalendar sc=feed.getServiceCalendar("WD20090831");
   try {

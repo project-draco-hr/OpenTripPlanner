@@ -1,0 +1,8 @@
+{
+  serviceCalendars=new HashMap<String,ServiceCalendar>();
+  Table table=packagedFeed.getTable("calendar");
+  for (  String[] record : table) {
+    ServiceCalendar cal=new ServiceCalendar(this,table.getHeader(),record);
+    serviceCalendars.put(cal.service_id,cal);
+  }
+}

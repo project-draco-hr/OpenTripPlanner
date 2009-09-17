@@ -1,5 +1,6 @@
 {
-  PackagedFeed feed=new PackagedFeed("caltrain_gtfs.zip");
+  PackagedFeed pfeed=new PackagedFeed("caltrain_gtfs.zip");
+  Feed feed=new Feed(pfeed);
   feed.loadTrips();
   Trip tr=feed.getTrip("36520090302");
   try {

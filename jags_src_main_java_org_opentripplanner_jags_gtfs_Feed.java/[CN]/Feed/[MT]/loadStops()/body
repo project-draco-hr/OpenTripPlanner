@@ -1,0 +1,8 @@
+{
+  stops=new HashMap<String,Stop>();
+  Table table=packagedFeed.getTable("stops");
+  for (  String[] record : table) {
+    Stop stop=new Stop(this,table.getHeader(),record);
+    stops.put(stop.stop_id,stop);
+  }
+}

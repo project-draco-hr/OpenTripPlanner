@@ -1,8 +1,0 @@
-{
-  stops=new HashMap<String,Stop>();
-  Table table=this.getTable("stops");
-  for (  String[] record : table) {
-    Stop stop=new Stop(this,table.getHeader(),record);
-    stops.put(stop.stop_id,stop);
-  }
-}

@@ -1,5 +1,6 @@
 {
-  PackagedFeed feed=new PackagedFeed("caltrain_gtfs.zip");
+  PackagedFeed pfeed=new PackagedFeed("caltrain_gtfs.zip");
+  Feed feed=new Feed(pfeed);
   feed.loadStopTimes();
   assertEquals(feed.trips.get("21520090831").getStopTimes().get(0).stop_sequence,new Integer(1));
   assertEquals(feed.trips.get("21520090831").getStopTimes().get(0).getTrip().trip_id,"21520090831");
