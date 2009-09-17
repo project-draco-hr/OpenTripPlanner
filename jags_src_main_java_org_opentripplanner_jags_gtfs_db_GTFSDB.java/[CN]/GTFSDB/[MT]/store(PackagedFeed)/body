@@ -1,8 +1,7 @@
 {
-  feed.loadStops();
   Session session=sessionFactory.getCurrentSession();
   session.beginTransaction();
-  for (  Stop stop : feed.getAllStops()) {
+  for (  Stop stop : feed.stopTable) {
     System.out.println(stop);
     session.save(stop);
   }

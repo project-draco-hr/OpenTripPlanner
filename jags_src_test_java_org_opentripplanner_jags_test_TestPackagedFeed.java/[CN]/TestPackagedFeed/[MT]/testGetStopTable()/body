@@ -1,6 +1,7 @@
 {
   PackagedFeed feed=new PackagedFeed("caltrain_gtfs.zip");
   for (  Stop stop : feed.stopTable) {
-    System.out.println(stop);
+    assertEquals(stop.stop_name,"San Francisco Caltrain");
+    break;
   }
 }

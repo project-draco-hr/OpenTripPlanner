@@ -1,0 +1,7 @@
+{
+  PackagedFeed feed=new PackagedFeed("caltrain_gtfs.zip");
+  for (  StopTime st : feed.stopTimeTable) {
+    assertEquals(st.stop_id,"22nd Street Caltrain");
+    break;
+  }
+}

@@ -1,6 +1,7 @@
 {
   PackagedFeed pfeed=new PackagedFeed("caltrain_gtfs.zip");
-  Feed feed=new Feed(pfeed);
   GTFSDB gtfsdb=new GTFSDB();
-  gtfsdb.store(feed);
+  gtfsdb.store(pfeed);
+  List<Stop> stops=gtfsdb.get();
+  System.out.println(stops);
 }
