@@ -7,7 +7,7 @@
     if (verbose && i % 1000 == 0) {
       System.out.println("stoptime " + i);
     }
-    StopTime stoptime=new StopTime(stoptimes_table,stoptimes_table.nextElement());
+    StopTime stoptime=new StopTime(this,stoptimes_table.getHeader(),stoptimes_table.nextElement());
     trips.get(stoptime.trip_id).addStopTime(stoptime);
   }
 }

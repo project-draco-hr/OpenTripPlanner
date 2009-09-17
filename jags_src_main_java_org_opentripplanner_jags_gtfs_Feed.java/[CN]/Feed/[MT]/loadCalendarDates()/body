@@ -2,7 +2,7 @@
   loadCalendar();
   Table table=this.getTable("calendar_dates");
   while (table.hasMoreElements()) {
-    ServiceCalendarDate scd=new ServiceCalendarDate(table,table.nextElement());
+    ServiceCalendarDate scd=new ServiceCalendarDate(this,table.getHeader(),table.nextElement());
     ServiceCalendar sc=getServiceCalendar(scd.service_id);
     if (sc == null) {
       sc=new ServiceCalendar(scd);
