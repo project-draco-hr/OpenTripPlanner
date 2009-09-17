@@ -2,8 +2,8 @@
   PackagedFeed feed=new PackagedFeed("google_transit.zip");
   Table table=feed.getTable("stop_times");
   assertEquals(table.getHeader().index("trip_id"),0);
-  while (table.hasMoreElements()) {
-    String fromElement=table.nextElement()[0];
+  for (  String[] record : table) {
+    String fromElement=record[0];
     assertEquals(fromElement,"10W1010");
     break;
   }

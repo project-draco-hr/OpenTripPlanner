@@ -1,8 +1,8 @@
 {
   loadCalendar();
   Table table=this.getTable("calendar_dates");
-  while (table.hasMoreElements()) {
-    ServiceCalendarDate scd=new ServiceCalendarDate(this,table.getHeader(),table.nextElement());
+  for (  String[] record : table) {
+    ServiceCalendarDate scd=new ServiceCalendarDate(this,table.getHeader(),record);
     ServiceCalendar sc=getServiceCalendar(scd.service_id);
     if (sc == null) {
       sc=new ServiceCalendar(scd);

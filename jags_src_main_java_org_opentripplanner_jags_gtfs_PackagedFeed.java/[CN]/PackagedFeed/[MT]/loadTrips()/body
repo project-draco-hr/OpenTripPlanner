@@ -1,8 +1,8 @@
 {
   trips=new HashMap<String,Trip>();
-  Table trips_table=this.getTable("trips");
-  while (trips_table.hasMoreElements()) {
-    Trip trip=new Trip(this,trips_table.getHeader(),trips_table.nextElement());
+  Table table=this.getTable("trips");
+  for (  String[] record : table) {
+    Trip trip=new Trip(this,table.getHeader(),record);
     trips.put(trip.trip_id,trip);
   }
 }

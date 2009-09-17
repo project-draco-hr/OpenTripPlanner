@@ -1,8 +1,8 @@
 {
   serviceCalendars=new HashMap<String,ServiceCalendar>();
   Table table=this.getTable("calendar");
-  while (table.hasMoreElements()) {
-    ServiceCalendar cal=new ServiceCalendar(this,table.getHeader(),table.nextElement());
+  for (  String[] record : table) {
+    ServiceCalendar cal=new ServiceCalendar(this,table.getHeader(),record);
     serviceCalendars.put(cal.service_id,cal);
   }
 }
