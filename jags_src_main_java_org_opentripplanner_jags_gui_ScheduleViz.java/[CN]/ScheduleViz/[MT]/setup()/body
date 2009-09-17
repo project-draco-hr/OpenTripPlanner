@@ -4,7 +4,7 @@
   smooth();
   background(255);
   try {
-    Feed feed=new Feed("../../caltrain_gtfs.zip");
+    PackagedFeed feed=new PackagedFeed("../../caltrain_gtfs.zip");
     gg=new Graph();
     GTFSHopLoader hl=new GTFSHopLoader(gg,feed);
     System.out.println("Loading feed to graph");

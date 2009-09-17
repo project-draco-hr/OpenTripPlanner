@@ -1,5 +1,5 @@
 {
-  Feed feed=new Feed("caltrain_gtfs.zip");
+  PackagedFeed feed=new PackagedFeed("caltrain_gtfs.zip");
   feed.loadCalendarDates();
   assertEquals(feed.getServiceCalendar("WD20090831").getServiceCalendarDates().get(0).service_id,"WD20090831");
   ServiceCalendar sc=feed.getServiceCalendar("WD20090831");

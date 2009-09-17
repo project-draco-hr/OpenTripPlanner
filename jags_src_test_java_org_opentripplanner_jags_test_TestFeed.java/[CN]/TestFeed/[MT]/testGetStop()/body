@@ -1,5 +1,5 @@
 {
-  Feed feed=new Feed("caltrain_gtfs.zip");
+  PackagedFeed feed=new PackagedFeed("caltrain_gtfs.zip");
   feed.loadStops();
   assertEquals(feed.stops.get("San Carlos Caltrain").stop_name,"San Carlos Caltrain");
 }

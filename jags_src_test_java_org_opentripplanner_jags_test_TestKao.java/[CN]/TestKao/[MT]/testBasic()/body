@@ -1,5 +1,5 @@
 {
-  Feed feed=new Feed("caltrain_gtfs.zip");
+  PackagedFeed feed=new PackagedFeed("caltrain_gtfs.zip");
   KaoGraph kg=new KaoGraph();
   GTFSHopLoader hl=new GTFSHopLoader(kg,feed);
   hl.load();
