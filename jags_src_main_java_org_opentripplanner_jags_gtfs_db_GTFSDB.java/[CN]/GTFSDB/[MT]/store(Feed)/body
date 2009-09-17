@@ -1,0 +1,10 @@
+{
+  feed.loadStops();
+  Session session=sessionFactory.getCurrentSession();
+  session.beginTransaction();
+  for (  Stop stop : feed.getAllStops()) {
+    System.out.println(stop);
+    session.save(stop);
+  }
+  session.getTransaction().commit();
+}
