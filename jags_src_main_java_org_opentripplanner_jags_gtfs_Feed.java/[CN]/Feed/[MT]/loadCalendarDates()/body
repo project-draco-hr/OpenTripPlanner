@@ -2,7 +2,7 @@
   loadCalendar();
   Table table=packagedFeed.getTable("calendar_dates");
   for (  String[] record : table) {
-    ServiceCalendarDate scd=new ServiceCalendarDate(this,table.getHeader(),record);
+    ServiceCalendarDate scd=new ServiceCalendarDate(table.getHeader(),record);
     ServiceCalendar sc=getServiceCalendar(scd.service_id);
     if (sc == null) {
       sc=new ServiceCalendar(scd);

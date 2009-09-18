@@ -1,3 +1,6 @@
 {
-  return feed.getServiceCalendar(service_id);
+  if (serviceCalendar == null) {
+    this.serviceCalendar=feed.getServiceCalendar(this.service_id);
+  }
+  return serviceCalendar;
 }
