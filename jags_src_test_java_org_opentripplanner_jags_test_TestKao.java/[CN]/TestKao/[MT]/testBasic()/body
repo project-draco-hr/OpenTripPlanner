@@ -10,8 +10,9 @@
   Tree tree=Kao.find(kg,t_0,mlb,delta);
   ArrayList<Edge> path=tree.path(mtv);
   assertTrue(((Hop)path.get(path.size() - 1).payload).end.arrival_time.getSecondsSinceMidnight() == 48540);
+  Feed feed2=new Feed(new PackagedFeed("caltrain_gtfs.zip"));
   Graph gg=new Graph();
-  GTFSHopLoader h2=new GTFSHopLoader(gg,feed);
+  GTFSHopLoader h2=new GTFSHopLoader(gg,feed2);
   h2.load();
   ShortestPathTree spt=org.opentripplanner.jags.algorithm.Dijkstra.getShortestPathTree(gg,"Millbrae Caltrain","Mountain View Caltrain",new State(t_0),new WalkOptions());
   assertTrue(((Hop)spt.getPath(gg.getVertex("Mountain View Caltrain")).vertices.lastElement().incoming.payload).end.arrival_time.getSecondsSinceMidnight() == 48540);
