@@ -1,0 +1,31 @@
+{
+  FeatureCollection<SimpleFeatureType,SimpleFeature> features=featureSource.getFeatures();
+  Iterator<SimpleFeature> i=features.iterator();
+  try {
+    while (i.hasNext()) {
+      SimpleFeature feature=i.next();
+      Geometry geom=(Geometry)feature.getDefaultGeometry();
+      String name="" + feature.getAttribute("StreetCode");
+      Street street=new Street(name,geom.getLength());
+      Coordinate[] coordinates=geom.getCoordinates();
+      String trafDir=(String)feature.getAttribute("TrafDir");
+      Vertex startcorner=graph.addVertex(coordinates[0].toString());
+      Vertex endcorner=graph.addVertex(coordinates[coordinates.length - 1].toString());
+      if (trafDir.equals("W")) {
+        graph.addEdge(startcorner,endcorner,street);
+      }
+ else       if (trafDir.equals("A")) {
+        graph.addEdge(endcorner,startcorner,street);
+      }
+ else       if (trafDir.equals("T")) {
+        graph.addEdge(startcorner,endcorner,street);
+        graph.addEdge(endcorner,startcorner,street);
+      }
+ else {
+      }
+    }
+  }
+  finally {
+    features.close(i);
+  }
+}
