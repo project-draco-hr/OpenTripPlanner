@@ -1,0 +1,10 @@
+{
+  if (geometryCache != null) {
+    return geometryCache;
+  }
+  ArrayList<DrawablePoint> ret=new ArrayList<DrawablePoint>();
+  ret.add(new DrawablePoint(this.start.getStop().stop_lon.floatValue(),this.start.getStop().stop_lat.floatValue(),this.start.departure_time.getSecondsSinceMidnight()));
+  ret.add(new DrawablePoint(this.end.getStop().stop_lon.floatValue(),this.end.getStop().stop_lat.floatValue(),this.end.arrival_time.getSecondsSinceMidnight()));
+  geometryCache=ret;
+  return ret;
+}

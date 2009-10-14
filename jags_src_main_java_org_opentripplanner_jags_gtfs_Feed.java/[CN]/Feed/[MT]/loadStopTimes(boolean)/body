@@ -3,6 +3,7 @@
   for (  StopTime stoptime : packagedFeed.stopTimeTable) {
     Trip trip=trips.get(stoptime.trip_id);
     stoptime.setTrip(trip);
+    stoptime.setStop(stops.get(stoptime.stop_id));
     trip.addStopTime(stoptime);
   }
 }

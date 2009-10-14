@@ -5,21 +5,25 @@
     while (i.hasNext()) {
       SimpleFeature feature=i.next();
       Geometry geom=(Geometry)feature.getDefaultGeometry();
-      String name="" + feature.getAttribute("StreetCode");
-      Street street=new Street(name,geom.getLength());
+      String id="" + feature.getAttribute("StreetCode");
+      String name="" + feature.getAttribute("Street");
+      Street street=new Street(id,name,geom.getLength());
+      street.setGeometry(geom);
       Coordinate[] coordinates=geom.getCoordinates();
       String trafDir=(String)feature.getAttribute("TrafDir");
-      Vertex startcorner=graph.addVertex(coordinates[0].toString());
-      Vertex endcorner=graph.addVertex(coordinates[coordinates.length - 1].toString());
+      Vertex startCorner=new SpatialVertex(coordinates[0].toString(),coordinates[0].x,coordinates[0].y);
+      graph.addVertex(startCorner);
+      Vertex endCorner=new SpatialVertex(coordinates[coordinates.length - 1].toString(),coordinates[coordinates.length - 1].x,coordinates[coordinates.length - 1].y);
+      graph.addVertex(endCorner);
       if (trafDir.equals("W")) {
-        graph.addEdge(startcorner,endcorner,street);
+        graph.addEdge(startCorner,endCorner,street);
       }
  else       if (trafDir.equals("A")) {
-        graph.addEdge(endcorner,startcorner,street);
+        graph.addEdge(endCorner,startCorner,street);
       }
  else       if (trafDir.equals("T")) {
-        graph.addEdge(startcorner,endcorner,street);
-        graph.addEdge(endcorner,startcorner,street);
+        graph.addEdge(startCorner,endCorner,street);
+        graph.addEdge(endCorner,startCorner,street);
       }
  else {
       }

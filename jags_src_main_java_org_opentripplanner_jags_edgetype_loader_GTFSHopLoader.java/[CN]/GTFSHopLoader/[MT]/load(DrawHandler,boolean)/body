@@ -6,6 +6,7 @@
   for (  Stop stop : feed.getAllStops()) {
     graph.addVertex(new SpatialVertex(stop.stop_id,stop.stop_lon,stop.stop_lat));
   }
+  feed.loadRoutes();
   if (verbose) {
     System.out.println("Loading hops");
   }
