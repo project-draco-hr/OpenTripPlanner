@@ -16,6 +16,10 @@
     if (drawHandler != null) {
       drawHandler.handle(hop);
     }
-    graph.addEdge(hop.start.stop_id,hop.end.stop_id,hop);
+    Vertex start=graph.addVertex(hop.start.stop_id);
+    start.isTransitStop=true;
+    Vertex end=graph.addVertex(hop.end.stop_id);
+    end.isTransitStop=true;
+    graph.addEdge(start,end,hop);
   }
 }
