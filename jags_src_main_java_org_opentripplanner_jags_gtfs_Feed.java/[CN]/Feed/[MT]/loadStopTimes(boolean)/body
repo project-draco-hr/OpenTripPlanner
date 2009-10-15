@@ -1,5 +1,8 @@
 {
   loadTrips();
+  if (stops == null) {
+    loadStops();
+  }
   for (  StopTime stoptime : packagedFeed.stopTimeTable) {
     Trip trip=trips.get(stoptime.trip_id);
     stoptime.setTrip(trip);
