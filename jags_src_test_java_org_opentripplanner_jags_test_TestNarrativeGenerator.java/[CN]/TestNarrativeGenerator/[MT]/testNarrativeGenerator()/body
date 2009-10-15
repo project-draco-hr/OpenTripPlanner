@@ -1,0 +1,9 @@
+{
+  Vertex airport=graph.getVertex("10579");
+  ShortestPathTree spt=Dijkstra.getShortestPathTree(graph,"6876",airport.label,new State(new GregorianCalendar(2009,10,15,12,36,0)),new WalkOptions());
+  Narrative narrative=new Narrative(path);
+  Vector<NarrativeSection> sections=narrative.getSections();
+  assertEquals(3,sections.size());
+  assertEquals(TransportationMode.BUS,sections.elementAt(0).getMode());
+  assertEquals(TransportationMode.TRAM,sections.elementAt(1).getMode());
+}

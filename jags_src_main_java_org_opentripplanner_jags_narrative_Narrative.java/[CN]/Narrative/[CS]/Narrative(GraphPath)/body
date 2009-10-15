@@ -7,10 +7,11 @@
   String lastName=path.edges.elementAt(0).payload.getName();
   Vector<SPTEdge> currentSection=new Vector<SPTEdge>();
   for (  SPTEdge edge : path.edges) {
-    if (!edge.payload.getName().equals(lastName)) {
+    String edgeName=edge.payload.getName();
+    if (!edgeName.equals(lastName)) {
       sections.add(new NarrativeSection(currentSection));
       currentSection.clear();
-      lastName=edge.payload.getName();
+      lastName=edgeName;
     }
     currentSection.add(edge);
   }

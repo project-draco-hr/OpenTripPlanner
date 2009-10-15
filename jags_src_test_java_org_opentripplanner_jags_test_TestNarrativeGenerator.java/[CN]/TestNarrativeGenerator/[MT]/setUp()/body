@@ -1,0 +1,13 @@
+{
+  try {
+    Feed feed=new Feed(new PackagedFeed("google_transit.zip"));
+    graph=new Graph();
+    GTFSHopLoader hl=new GTFSHopLoader(graph,feed);
+    hl.load();
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+  }
+  NetworkLinker nl=new NetworkLinker(graph);
+  nl.createLinkage();
+}
