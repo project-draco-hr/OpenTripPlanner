@@ -1,5 +1,5 @@
 {
-  PackagedFeed feed=new PackagedFeed("google_transit.zip");
+  PackagedFeed feed=new PackagedFeed(TestConstants.DEFAULT_GTFS);
   Table table=feed.getTable("stop_times");
   assertEquals(table.getHeader().index("trip_id"),0);
   for (  String[] record : table) {

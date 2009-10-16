@@ -1,5 +1,5 @@
 {
-  PackagedFeed feed=new PackagedFeed("caltrain_gtfs.zip");
+  PackagedFeed feed=new PackagedFeed(TestConstants.CALTRAIN_GTFS);
   for (  Stop stop : feed.stopTable) {
     assertEquals(stop.stop_name,"San Francisco Caltrain");
     break;

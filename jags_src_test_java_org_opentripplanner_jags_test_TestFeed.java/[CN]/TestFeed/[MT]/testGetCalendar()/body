@@ -1,5 +1,5 @@
 {
-  PackagedFeed pfeed=new PackagedFeed("caltrain_gtfs.zip");
+  PackagedFeed pfeed=new PackagedFeed(TestConstants.CALTRAIN_GTFS);
   Feed feed=new Feed(pfeed);
   feed.loadCalendar();
   assertEquals(feed.getAllServiceCalendars().get(0).service_id,"WD20090831");

@@ -1,6 +1,6 @@
 {
   try {
-    Feed feed=new Feed(new PackagedFeed("google_transit.zip"));
+    Feed feed=new Feed(new PackagedFeed(TestConstants.DEFAULT_GTFS));
     graph=new Graph();
     GTFSHopLoader hl=new GTFSHopLoader(graph,feed);
     hl.load();
