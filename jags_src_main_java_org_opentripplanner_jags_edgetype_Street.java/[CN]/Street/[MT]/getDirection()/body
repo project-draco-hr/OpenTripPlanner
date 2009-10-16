@@ -1,3 +1,8 @@
 {
-  return null;
+  Coordinate[] coordinates=geometry.getCoordinates();
+  double run=coordinates[1].x - coordinates[0].x;
+  double rise=coordinates[1].y - coordinates[0].y;
+  double direction=Math.atan2(run,-rise);
+  int octant=(int)(8 + Math.round(direction * 8 / (Math.PI * 2))) % 8;
+  return DIRECTIONS[octant];
 }
