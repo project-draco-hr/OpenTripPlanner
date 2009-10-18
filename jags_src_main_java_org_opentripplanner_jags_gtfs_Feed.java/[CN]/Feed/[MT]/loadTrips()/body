@@ -1,8 +1,0 @@
-{
-  trips=new HashMap<String,Trip>();
-  Table table=packagedFeed.getTable("trips");
-  for (  String[] record : table) {
-    Trip trip=new Trip(this,table.getHeader(),record);
-    trips.put(trip.trip_id,trip);
-  }
-}

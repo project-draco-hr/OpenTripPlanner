@@ -1,9 +1,12 @@
 {
-  Feed feed=new Feed(new PackagedFeed(TestConstants.CALTRAIN_GTFS));
-  GTFSHopFactory hf=new GTFSHopFactory(feed);
+  GtfsContext context=GtfsLibrary.readGtfs(new File(TestConstants.CALTRAIN_GTFS));
+  WalkOptions options=new WalkOptions();
+  options.setGtfsContext(context);
+  GTFSHopFactory hf=new GTFSHopFactory(context);
   ArrayList<Hop> hops=hf.run();
   Collections.sort(hops,new Hop.HopArrivalTimeComparator());
   Hop last=hops.get(hops.size() - 1);
   GregorianCalendar aSundayAtMidnight=new GregorianCalendar(2009,7,30,0,0,0);
-  assertTrue(last.walk(new State(aSundayAtMidnight),new WalkOptions()).weight == 5820.0);
+  WalkResult walkResult=last.walk(new State(aSundayAtMidnight),options);
+  assertEquals(5820.0,walkResult.weight);
 }

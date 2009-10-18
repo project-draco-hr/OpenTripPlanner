@@ -1,6 +1,6 @@
 {
-  Vertex airport=graph.getVertex("10579");
-  ShortestPathTree spt=Dijkstra.getShortestPathTree(graph,"6876",airport.label,new State(new GregorianCalendar(2009,10,15,12,36,0)),new WalkOptions());
+  Vertex airport=graph.getVertex("Caltrain_10579");
+  ShortestPathTree spt=Dijkstra.getShortestPathTree(graph,"Caltrain_6876",airport.label,new State(new GregorianCalendar(2009,10,15,12,36,0)),new WalkOptions());
   GraphPath path=spt.getPath(airport);
   Narrative narrative=new Narrative(path);
   Vector<NarrativeSection> sections=narrative.getSections();

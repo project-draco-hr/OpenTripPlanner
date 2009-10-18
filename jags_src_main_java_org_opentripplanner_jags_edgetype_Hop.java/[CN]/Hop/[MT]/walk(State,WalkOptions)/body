@@ -1,18 +1,11 @@
 {
-  GregorianCalendar serviceDay=(GregorianCalendar)state0.time.clone();
-  int secondsSinceMidnight=state0.time.get(GregorianCalendar.HOUR_OF_DAY) * SECS_IN_HOUR + state0.time.get(GregorianCalendar.MINUTE) * SECS_IN_MINUTE + state0.time.get(GregorianCalendar.SECOND);
-  int overageDays=start.departure_time.getSecondsSinceMidnight() / SECS_IN_DAY;
-  serviceDay.add(GregorianCalendar.DATE,-overageDays);
-  secondsSinceMidnight+=SECS_IN_DAY * overageDays;
-  try {
-    if (!calendar.runsOn(serviceDay)) {
-      return null;
-    }
-  }
- catch (  DateOutOfBoundsException ex) {
-    return null;
-  }
-  int wait=start.departure_time.getSecondsSinceMidnight() - secondsSinceMidnight;
+  Date currentTime=state0.time.getTime();
+  Date serviceDate=getServiceDate(currentTime,false);
+  int secondsSinceMidnight=(int)((currentTime.getTime() - serviceDate.getTime()) / 1000);
+  CalendarService service=wo.getGtfsContext().getCalendarService();
+  Set<Date> serviceDates=service.getServiceDatesForServiceId(_serviceId);
+  if (!serviceDates.contains(serviceDate))   return null;
+  int wait=start.getDepartureTime() - secondsSinceMidnight;
   if (wait < 0) {
     return null;
   }

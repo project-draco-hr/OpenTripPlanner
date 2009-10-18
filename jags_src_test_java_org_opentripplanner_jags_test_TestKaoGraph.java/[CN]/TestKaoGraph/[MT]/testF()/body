@@ -1,9 +1,10 @@
 {
-  Feed feed=new Feed(new PackagedFeed(TestConstants.CALTRAIN_GTFS));
+  GtfsContext context=GtfsLibrary.readGtfs(new File(TestConstants.CALTRAIN_GTFS));
   KaoGraph kg=new KaoGraph();
-  GTFSHopLoader hl=new GTFSHopLoader(kg,feed);
+  kg.setGtfsContext(context);
+  GTFSHopLoader hl=new GTFSHopLoader(kg,context);
   hl.load();
   ArrayList<EdgeOption> hol=kg.sortedEdges(new GregorianCalendar(2009,8,7,12,0,0),1000000000);
-  assertTrue(((Hop)hol.get(0).edge.payload).start.departure_time.getSecondsSinceMidnight() == 43200);
-  assertTrue(((Hop)hol.get(hol.size() - 1).edge.payload).end.arrival_time.getSecondsSinceMidnight() == 82260);
+  assertEquals(43200,((Hop)hol.get(0).edge.payload).getStartStopTime().getArrivalTime());
+  assertEquals(82260,((Hop)hol.get(hol.size() - 1).edge.payload).getEndStopTime().getArrivalTime());
 }

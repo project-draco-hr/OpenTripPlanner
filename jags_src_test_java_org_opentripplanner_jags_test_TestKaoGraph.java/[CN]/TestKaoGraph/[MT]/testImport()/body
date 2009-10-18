@@ -1,11 +1,11 @@
 {
-  Feed feed=new Feed(new PackagedFeed(TestConstants.CALTRAIN_GTFS));
+  GtfsContext context=GtfsLibrary.readGtfs(new File(TestConstants.CALTRAIN_GTFS));
   KaoGraph kg=new KaoGraph();
-  GTFSHopLoader hl=new GTFSHopLoader(kg,feed);
+  GTFSHopLoader hl=new GTFSHopLoader(kg,context);
   hl.load();
-  Vertex mlb=kg.getVertex("Millbrae Caltrain");
+  Vertex mlb=kg.getVertex("Caltrain_Millbrae Caltrain");
   assertTrue(mlb.getDegreeOut() == 236);
   assertTrue(mlb.getDegreeIn() == 236);
-  Vertex gilroy=kg.getVertex("Gilroy Caltrain");
+  Vertex gilroy=kg.getVertex("Caltrain_Gilroy Caltrain");
   assertNotNull(gilroy);
 }

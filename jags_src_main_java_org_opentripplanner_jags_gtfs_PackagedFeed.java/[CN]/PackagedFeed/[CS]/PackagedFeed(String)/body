@@ -1,7 +1,0 @@
-{
-  File ff=new File(feed_name);
-  zippedFeed=new ZipFile(ff);
-  stopTable=new StopTable(zippedFeed.getInputStream(zippedFeed.getEntry("stops.txt")));
-  stopTimeTable=new StopTimeTable(zippedFeed.getInputStream(zippedFeed.getEntry("stop_times.txt")));
-  routeTable=new RouteTable(zippedFeed.getInputStream(zippedFeed.getEntry("routes.txt")));
-}

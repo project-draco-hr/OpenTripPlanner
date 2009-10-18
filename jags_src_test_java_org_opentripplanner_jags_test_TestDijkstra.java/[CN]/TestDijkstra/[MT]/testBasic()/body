@@ -1,8 +1,10 @@
 {
-  Feed feed=new Feed(new PackagedFeed(TestConstants.CALTRAIN_GTFS));
+  GtfsContext context=GtfsLibrary.readGtfs(new File(TestConstants.CALTRAIN_GTFS));
+  WalkOptions options=new WalkOptions();
+  options.setGtfsContext(context);
   Graph gg=new Graph();
-  GTFSHopLoader hl=new GTFSHopLoader(gg,feed);
+  GTFSHopLoader hl=new GTFSHopLoader(gg,context);
   hl.load();
-  ShortestPathTree spt=Dijkstra.getShortestPathTree(gg,"Millbrae Caltrain","Mountain View Caltrain",new State(new GregorianCalendar(2009,8,7,12,0,0)),new WalkOptions());
-  assertTrue(((Hop)spt.getPath(gg.getVertex("Mountain View Caltrain")).vertices.lastElement().incoming.payload).end.arrival_time.getSecondsSinceMidnight() == 48540);
+  ShortestPathTree spt=Dijkstra.getShortestPathTree(gg,"Caltrain_Millbrae Caltrain","Caltrain_Mountain View Caltrain",new State(new GregorianCalendar(2009,8,7,12,0,0)),options);
+  assertTrue(((Hop)spt.getPath(gg.getVertex("Caltrain_Mountain View Caltrain")).vertices.lastElement().incoming.payload).getEndStopTime().getArrivalTime() == 48540);
 }

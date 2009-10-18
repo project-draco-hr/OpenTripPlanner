@@ -4,7 +4,7 @@
   ArrayList<EdgeOption> edgeoptions=graph.sortedEdges(startTime,window);
   for (  EdgeOption eo : edgeoptions) {
     Edge segment=eo.edge;
-    GTFSTime segmentStartTime=((Hop)segment.payload).start.departure_time;
+    int segmentStartTime=((Hop)segment.payload).getStartStopTime().getDepartureTime();
     Vertex segmentOrig=segment.fromv;
     Vertex segmentDest=segment.tov;
     if (tree.containsVertex(segmentOrig) && !tree.containsVertex(segmentDest)) {
@@ -13,8 +13,8 @@
         tree.setParent(segmentDest,segment);
         continue;
       }
-      GTFSTime parentSegmentEndTime=((Hop)parentSegment.payload).end.arrival_time;
-      if (segmentStartTime.getSecondsSinceMidnight() >= parentSegmentEndTime.getSecondsSinceMidnight()) {
+      int parentSegmentEndTime=((Hop)parentSegment.payload).getEndStopTime().getArrivalTime();
+      if (segmentStartTime >= parentSegmentEndTime) {
         tree.setParent(segmentDest,segment);
       }
     }

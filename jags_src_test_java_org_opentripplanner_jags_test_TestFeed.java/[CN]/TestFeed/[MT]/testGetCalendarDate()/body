@@ -1,9 +1,0 @@
-{
-  PackagedFeed pfeed=new PackagedFeed(TestConstants.CALTRAIN_GTFS);
-  Feed feed=new Feed(pfeed);
-  feed.loadCalendarDates();
-  assertEquals(feed.getServiceCalendar("WD20090831").getServiceCalendarDates().get(0).service_id,"WD20090831");
-  ServiceCalendar sc=feed.getServiceCalendar("WD20090831");
-  assertEquals(sc.getServiceCalendarDate(new GTFSDate(2009,12,25)).exception_type,Integer.valueOf(2));
-  assertEquals(sc.getServiceCalendarDate(new GTFSDate(2009,12,26)),null);
-}

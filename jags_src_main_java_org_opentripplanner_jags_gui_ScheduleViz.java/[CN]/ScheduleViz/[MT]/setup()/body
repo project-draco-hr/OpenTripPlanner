@@ -4,9 +4,9 @@
   smooth();
   background(255);
   try {
-    Feed feed=new Feed(new PackagedFeed("../../caltrain_gtfs.zip"));
+    GtfsContext context=GtfsLibrary.readGtfs(new File("../../caltrain_gtfs.zip"));
     gg=new Graph();
-    GTFSHopLoader hl=new GTFSHopLoader(gg,feed);
+    GTFSHopLoader hl=new GTFSHopLoader(gg,context);
     System.out.println("Loading feed to graph");
     hl.load(new LoadDrawHandler(),true);
     System.out.println("Done");

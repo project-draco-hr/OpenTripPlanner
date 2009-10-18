@@ -1,5 +1,5 @@
 {
-  Integer v1=new Integer(arg0.end.arrival_time.getSecondsSinceMidnight());
-  Integer v2=new Integer(arg1.end.arrival_time.getSecondsSinceMidnight());
-  return v1.compareTo(v2);
+  int v1=arg0.end.getArrivalTime();
+  int v2=arg1.end.getArrivalTime();
+  return v1 - v2;
 }

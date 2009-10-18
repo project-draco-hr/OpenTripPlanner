@@ -1,25 +1,20 @@
 {
-  if (verbose) {
-    System.out.println("Loading stops");
+  for (  Stop stop : _dao.getAllStops()) {
+    _graph.addVertex(new SpatialVertex(id(stop.getId()),stop.getLat(),stop.getLon()));
   }
-  feed.loadStops();
-  for (  Stop stop : feed.getAllStops()) {
-    graph.addVertex(new SpatialVertex(stop.stop_id,stop.stop_lon,stop.stop_lat));
-  }
-  feed.loadRoutes();
   if (verbose) {
     System.out.println("Loading hops");
   }
-  GTFSHopFactory hf=new GTFSHopFactory(feed);
+  GTFSHopFactory hf=new GTFSHopFactory(_context);
   ArrayList<Hop> hops=hf.run(verbose);
   for (  Hop hop : hops) {
     if (drawHandler != null) {
       drawHandler.handle(hop);
     }
-    Vertex start=graph.addVertex(hop.start.stop_id);
+    Vertex start=_graph.addVertex(id(hop.getStartStopTime().getStop().getId()));
     start.isTransitStop=true;
-    Vertex end=graph.addVertex(hop.end.stop_id);
+    Vertex end=_graph.addVertex(id(hop.getEndStopTime().getStop().getId()));
     end.isTransitStop=true;
-    graph.addEdge(start,end,hop);
+    _graph.addEdge(start,end,hop);
   }
 }

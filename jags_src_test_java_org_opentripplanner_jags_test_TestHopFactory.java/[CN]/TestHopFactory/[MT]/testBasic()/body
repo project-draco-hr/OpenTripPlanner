@@ -1,8 +1,8 @@
 {
-  Feed feed=new Feed(new PackagedFeed(TestConstants.CALTRAIN_GTFS));
-  GTFSHopFactory hf=new GTFSHopFactory(feed);
+  GtfsContext context=GtfsLibrary.readGtfs(new File(TestConstants.CALTRAIN_GTFS));
+  GTFSHopFactory hf=new GTFSHopFactory(context);
   ArrayList<Hop> hops=hf.run();
   Collections.sort(hops,new Hop.HopArrivalTimeComparator());
   Hop last=hops.get(hops.size() - 1);
-  assertTrue(last.start.departure_time.getSecondsSinceMidnight() == 91740);
+  assertEquals(91740,last.getStartStopTime().getDepartureTime());
 }

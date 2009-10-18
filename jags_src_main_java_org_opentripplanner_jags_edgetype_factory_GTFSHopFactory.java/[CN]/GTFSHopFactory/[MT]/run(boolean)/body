@@ -1,14 +1,6 @@
 {
-  if (verbose) {
-    System.out.println("\tLoading stoptimes");
-  }
-  this.feed.loadStopTimes(verbose);
-  if (verbose) {
-    System.out.println("\tLoading calendar dates");
-  }
-  this.feed.loadCalendarDates();
   ArrayList<Hop> ret=new ArrayList<Hop>();
-  Collection<Trip> trips=feed.getAllTrips();
+  Collection<Trip> trips=_dao.getAllTrips();
   int j=0;
   int n=trips.size();
   for (  Trip trip : trips) {
@@ -16,10 +8,10 @@
     if (verbose && j % (n / 100) == 0) {
       System.out.println("Trip " + j + "/"+ n);
     }
-    ArrayList<StopTime> stoptimes=trip.getStopTimes();
-    for (int i=0; i < stoptimes.size() - 1; i++) {
-      StopTime st0=stoptimes.get(i);
-      StopTime st1=stoptimes.get(i + 1);
+    List<StopTime> stopTimes=_dao.getStopTimesForTrip(trip);
+    for (int i=0; i < stopTimes.size() - 1; i++) {
+      StopTime st0=stopTimes.get(i);
+      StopTime st1=stopTimes.get(i + 1);
       Hop hop=new Hop(st0,st1);
       ret.add(hop);
     }
