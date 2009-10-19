@@ -1,6 +1,6 @@
 {
   items=new Vector<NarrativeItem>();
-  Walkable walkable=edges.elementAt(0).payload;
+  Walkable walkable=edges.firstElement().payload;
   mode=walkable.getMode();
   if (walkable instanceof Hop) {
     name=walkable.getName();
@@ -25,7 +25,9 @@
   }
  else   if (walkable instanceof Street) {
     name="walk";
-    direction="FIXME: compute from start/end geometry";
+    Street street1=(Street)edges.firstElement().payload;
+    Street street2=(Street)edges.lastElement().payload;
+    direction=Street.computeDirection(street1.getGeometry().getStartPoint(),street2.getGeometry().getEndPoint());
     double totalDistance=0;
     String lastStreet=null;
     BasicNarrativeItem item=null;
