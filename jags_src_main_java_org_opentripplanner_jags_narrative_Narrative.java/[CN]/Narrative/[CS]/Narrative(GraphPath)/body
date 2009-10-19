@@ -5,14 +5,17 @@
   }
   this.sections=new Vector<NarrativeSection>();
   String lastName=path.edges.elementAt(0).payload.getName();
+  TransportationMode lastMode=null;
   Vector<SPTEdge> currentSection=new Vector<SPTEdge>();
   for (  SPTEdge edge : path.edges) {
-    String edgeName=edge.payload.getName();
-    if (!edgeName.equals(lastName)) {
+    Walkable walkable=edge.payload;
+    String edgeName=walkable.getName();
+    if (!edgeName.equals(lastName) && !(walkable.getMode() == TransportationMode.WALK && lastMode == TransportationMode.WALK)) {
       sections.add(new NarrativeSection(currentSection));
       currentSection.clear();
       lastName=edgeName;
     }
+    lastMode=walkable.getMode();
     currentSection.add(edge);
   }
   sections.add(new NarrativeSection(currentSection));
