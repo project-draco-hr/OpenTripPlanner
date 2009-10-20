@@ -1,4 +1,8 @@
 {
+  SPTVertex first=vertices.get(0);
+  startTime=first.state.time;
+  SPTVertex last=vertices.get(vertices.size() - 1);
+  endTime=last.state.time;
   items=new Vector<NarrativeItem>();
   Walkable walkable=edges.firstElement().payload;
   mode=walkable.getMode();

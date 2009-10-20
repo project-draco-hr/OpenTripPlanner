@@ -7,16 +7,21 @@
   String lastName=path.edges.elementAt(0).payload.getName();
   TransportationMode lastMode=null;
   Vector<SPTEdge> currentSection=new Vector<SPTEdge>();
+  int startVertex=0;
+  int i=0;
   for (  SPTEdge edge : path.edges) {
     Walkable walkable=edge.payload;
     String edgeName=walkable.getName();
     if (!edgeName.equals(lastName) && !(walkable.getMode() == TransportationMode.WALK && lastMode == TransportationMode.WALK)) {
-      sections.add(new NarrativeSection(currentSection));
+      List<SPTVertex> currentVertices=path.vertices.subList(startVertex,i + 1);
+      sections.add(new NarrativeSection(currentVertices,currentSection));
       currentSection.clear();
       lastName=edgeName;
+      startVertex=i;
     }
+    i+=1;
     lastMode=walkable.getMode();
     currentSection.add(edge);
   }
-  sections.add(new NarrativeSection(currentSection));
+  sections.add(new NarrativeSection(path.vertices.subList(startVertex,i + 1),currentSection));
 }
