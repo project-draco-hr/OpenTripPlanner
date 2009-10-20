@@ -36,5 +36,10 @@
   GraphPath path=spt.getPath(eastVertex);
   Narrative narrative=new Narrative(path);
   assertEquals(1,narrative.getSections().size());
-  assertEquals(2,narrative.getSections().firstElement().getItems().size());
+  NarrativeSection walkSection=narrative.getSections().firstElement();
+  assertEquals(2,walkSection.getItems().size());
+  Geometry g=walkSection.getGeometry();
+  Coordinate[] coords=g.getCoordinates();
+  assertEquals(coords[0],northVertex.getCoordinate());
+  assertEquals(coords[coords.length - 1],eastVertex.getCoordinate());
 }
