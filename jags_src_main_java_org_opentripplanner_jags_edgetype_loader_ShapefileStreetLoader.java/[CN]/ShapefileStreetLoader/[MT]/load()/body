@@ -1,4 +1,11 @@
 {
+  UnitConverter metersConverter=null;
+  try {
+    CoordinateSystem coordinateSystem=featureSource.getInfo().getCRS().getCoordinateSystem();
+    metersConverter=coordinateSystem.getAxis(0).getUnit().getConverterTo(SI.METER);
+  }
+ catch (  ConversionException e) {
+  }
   FeatureCollection<SimpleFeatureType,SimpleFeature> features=featureSource.getFeatures();
   Iterator<SimpleFeature> i=features.iterator();
   try {
@@ -13,21 +20,25 @@
       startCorner=graph.addVertex(startCorner);
       Vertex endCorner=new SpatialVertex(coordinates[coordinates.length - 1].toString(),coordinates[coordinates.length - 1].x,coordinates[coordinates.length - 1].y);
       endCorner=graph.addVertex(endCorner);
+      double length=geom.getLength();
+      if (metersConverter != null) {
+        length=metersConverter.convert(length);
+      }
       if (trafDir.equals("W")) {
-        Street street=new Street(id,name,geom.getLength());
+        Street street=new Street(id,name,length);
         street.setGeometry(geom);
         graph.addEdge(startCorner,endCorner,street);
       }
  else       if (trafDir.equals("A")) {
-        Street street=new Street(id,name,geom.getLength());
+        Street street=new Street(id,name,length);
         street.setGeometry(geom.reverse());
         graph.addEdge(endCorner,startCorner,street);
       }
  else       if (trafDir.equals("T")) {
-        Street street=new Street(id,name,geom.getLength());
+        Street street=new Street(id,name,length);
         street.setGeometry(geom);
         graph.addEdge(startCorner,endCorner,street);
-        Street backStreet=new Street(id,name,geom.getLength());
+        Street backStreet=new Street(id,name,length);
         backStreet.setGeometry(geom.reverse());
         graph.addEdge(endCorner,startCorner,backStreet);
       }
