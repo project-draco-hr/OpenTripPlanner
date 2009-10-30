@@ -3,15 +3,15 @@
   WalkOptions wo=new WalkOptions();
   wo.setGtfsContext(context);
   GregorianCalendar startTime=new GregorianCalendar(2009,10,15,12,36,0);
-  ShortestPathTree spt=Dijkstra.getShortestPathTree(graph,"TriMet_6876",airport.label,new State(startTime),wo);
+  ShortestPathTree spt=Dijkstra.getShortestPathTree(graph,"TriMet_6876",airport.label,new State(startTime.getTimeInMillis()),wo);
   GraphPath path=spt.getPath(airport);
   assertNotNull(path);
   Narrative narrative=new Narrative(path);
   Vector<NarrativeSection> sections=narrative.getSections();
   NarrativeSection busSection=sections.elementAt(0);
   NarrativeSection redLineSection=sections.elementAt(2);
-  assertTrue(busSection.getEndTime().before(redLineSection.getStartTime()));
-  assertEquals(startTime,busSection.getStartTime());
+  assertTrue(busSection.getEndTime() < redLineSection.getStartTime());
+  assertEquals(startTime.getTimeInMillis(),busSection.getStartTime());
   assertEquals(TransportationMode.BUS,busSection.getMode());
   assertEquals(TransportationMode.TRAM,redLineSection.getMode());
   assertEquals(3,sections.size());

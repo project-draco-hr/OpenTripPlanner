@@ -10,15 +10,15 @@
   GregorianCalendar endTime=(GregorianCalendar)startTime.clone();
   int expectedSecElapsed=(int)(streetLength / wo.speed);
   endTime.add(GregorianCalendar.SECOND,expectedSecElapsed);
-  State s0=new State(startTime);
+  State s0=new State(startTime.getTimeInMillis());
   WalkResult wr=ee.walk(s0,wo);
   assertNotNull(wr);
   assertEquals(wr.weight,streetLength / wo.speed);
-  assertEquals(wr.state.time,endTime);
+  assertEquals(wr.state.getTime(),endTime.getTimeInMillis());
   wr=null;
-  s0=new State(endTime);
+  s0=new State(endTime.getTimeInMillis());
   wr=ee.walkBack(s0,wo);
   assertNotNull(wr);
   assertEquals(wr.weight,streetLength / wo.speed);
-  assertEquals(wr.state.time,startTime);
+  assertEquals(wr.state.getTime(),startTime.getTimeInMillis());
 }

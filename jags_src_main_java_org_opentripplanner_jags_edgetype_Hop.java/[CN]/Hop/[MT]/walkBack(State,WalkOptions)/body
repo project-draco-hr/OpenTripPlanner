@@ -1,7 +1,7 @@
 {
-  Date currentTime=state0.time.getTime();
+  long currentTime=state0.getTime();
   Date serviceDate=getServiceDate(currentTime,true);
-  int secondsSinceMidnight=(int)((currentTime.getTime() - serviceDate.getTime()) / 1000);
+  int secondsSinceMidnight=(int)((currentTime - serviceDate.getTime()) / 1000);
   CalendarService service=wo.getGtfsContext().getCalendarService();
   if (!service.getServiceDatesForServiceId(_serviceId).contains(serviceDate))   return null;
   int wait=secondsSinceMidnight - end.getArrivalTime();
@@ -9,6 +9,6 @@
     return null;
   }
   State state1=state0.clone();
-  state1.time.add(GregorianCalendar.SECOND,-(wait + elapsed));
+  state1.incrementTimeInSeconds(-(wait + elapsed));
   return new WalkResult(wait + elapsed,state1);
 }

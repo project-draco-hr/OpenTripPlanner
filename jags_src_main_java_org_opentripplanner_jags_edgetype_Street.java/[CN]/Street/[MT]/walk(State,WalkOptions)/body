@@ -1,6 +1,6 @@
 {
   State s1=s0.clone();
   double weight=this.length / wo.speed;
-  s1.time.add(GregorianCalendar.SECOND,(int)weight);
+  s1.incrementTimeInSeconds((int)weight);
   return new WalkResult(weight,s1);
 }
