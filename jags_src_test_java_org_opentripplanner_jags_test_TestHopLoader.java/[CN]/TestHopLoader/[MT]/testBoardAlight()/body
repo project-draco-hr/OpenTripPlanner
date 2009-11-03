@@ -1,0 +1,19 @@
+{
+  Vertex stop_a=graph.getVertex("agency_A");
+  Vertex stop_b=graph.getVertex("agency_B");
+  assertEquals(2,stop_a.getDegreeOut());
+  assertEquals(6,stop_b.getDegreeOut());
+  for (  Edge e : stop_a.outgoing) {
+    assertEquals(Board.class,e.payload.getClass());
+  }
+  Vertex journey_a_1=stop_a.outgoing.get(0).tov;
+  assertEquals(1,journey_a_1.getDegreeIn());
+  for (  Edge e : journey_a_1.outgoing) {
+    if (e.tov.type == TransitStop.class) {
+      assertEquals(Alight.class,e.payload.getClass());
+    }
+ else {
+      assertEquals(Hop.class,e.payload.getClass());
+    }
+  }
+}

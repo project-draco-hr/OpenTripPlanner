@@ -2,7 +2,7 @@
   Vertex airport=graph.getVertex("TriMet_10579");
   WalkOptions wo=new WalkOptions();
   wo.setGtfsContext(context);
-  GregorianCalendar startTime=new GregorianCalendar(2009,10,15,12,36,0);
+  GregorianCalendar startTime=new GregorianCalendar(2009,11,1,12,34,25);
   ShortestPathTree spt=Dijkstra.getShortestPathTree(graph,"TriMet_6876",airport.label,new State(startTime.getTimeInMillis()),wo);
   GraphPath path=spt.getPath(airport);
   assertNotNull(path);

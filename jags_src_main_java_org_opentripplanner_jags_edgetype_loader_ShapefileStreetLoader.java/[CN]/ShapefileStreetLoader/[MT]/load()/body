@@ -1,14 +1,31 @@
 {
-  UnitConverter metersConverter=null;
-  try {
-    CoordinateSystem coordinateSystem=featureSource.getInfo().getCRS().getCoordinateSystem();
-    metersConverter=coordinateSystem.getAxis(0).getUnit().getConverterTo(SI.METER);
-  }
- catch (  ConversionException e) {
-  }
-  FeatureCollection<SimpleFeatureType,SimpleFeature> features=featureSource.getFeatures();
+  Hints hints=new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER,Boolean.TRUE);
+  CRSAuthorityFactory factory=ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG",hints);
+  CoordinateReferenceSystem worldCRS=factory.createCoordinateReferenceSystem("EPSG:4326");
+  DefaultQuery query=new DefaultQuery();
+  query.setCoordinateSystem(sourceCRS);
+  query.setCoordinateSystemReproject(worldCRS);
+  FeatureCollection<SimpleFeatureType,SimpleFeature> features=featureSource.getFeatures(query);
   Iterator<SimpleFeature> i=features.iterator();
   try {
+    HashMap<Coordinate,TreeSet<String>> coordinateToStreets=new HashMap<Coordinate,TreeSet<String>>();
+    while (i.hasNext()) {
+      SimpleFeature feature=i.next();
+      LineString geom=toLineString((Geometry)feature.getDefaultGeometry());
+      for (      Coordinate coord : geom.getCoordinates()) {
+        Coordinate rounded=new Coordinate(Math.round(coord.x * 1048576) / 1048576.0,Math.round(coord.y * 1048576) / 1048576.0);
+        TreeSet<String> streets=coordinateToStreets.get(rounded);
+        if (streets == null) {
+          streets=new TreeSet<String>();
+          coordinateToStreets.put(rounded,streets);
+        }
+        streets.add((String)feature.getAttribute("Street"));
+      }
+    }
+    features.close(i);
+    features=featureSource.getFeatures(query);
+    HashMap<String,HashMap<Coordinate,Integer>> intersectionNameToId=new HashMap<String,HashMap<Coordinate,Integer>>();
+    i=features.iterator();
     while (i.hasNext()) {
       SimpleFeature feature=i.next();
       LineString geom=toLineString((Geometry)feature.getDefaultGeometry());
@@ -16,14 +33,20 @@
       String name="" + feature.getAttribute("Street");
       Coordinate[] coordinates=geom.getCoordinates();
       String trafDir=(String)feature.getAttribute("TrafDir");
-      Vertex startCorner=new SpatialVertex(coordinates[0].toString(),coordinates[0].x,coordinates[0].y);
-      startCorner=graph.addVertex(startCorner);
-      Vertex endCorner=new SpatialVertex(coordinates[coordinates.length - 1].toString(),coordinates[coordinates.length - 1].x,coordinates[coordinates.length - 1].y);
-      endCorner=graph.addVertex(endCorner);
-      double length=geom.getLength();
-      if (metersConverter != null) {
-        length=metersConverter.convert(length);
+      Coordinate startCoordinate=new Coordinate(Math.round(coordinates[0].x * 1048576) / 1048576.0,Math.round(coordinates[0].y * 1048576) / 1048576.0);
+      Coordinate endCoordinate=new Coordinate(Math.round(coordinates[coordinates.length - 1].x * 1048576) / 1048576.0,Math.round(coordinates[coordinates.length - 1].y * 1048576) / 1048576.0);
+      String startIntersectionName=getIntersectionName(coordinateToStreets,intersectionNameToId,startCoordinate);
+      if (startIntersectionName == "null") {
+        System.out.println(name);
       }
+      String endIntersectionName=getIntersectionName(coordinateToStreets,intersectionNameToId,endCoordinate);
+      Vertex startCorner=new SpatialVertex(startIntersectionName,startCoordinate.x,startCoordinate.y);
+      startCorner=graph.addVertex(startCorner);
+      startCorner.type=Intersection.class;
+      Vertex endCorner=new SpatialVertex(endIntersectionName,endCoordinate.x,endCoordinate.y);
+      endCorner=graph.addVertex(endCorner);
+      endCorner.type=Intersection.class;
+      double length=JTS.orthodromicDistance(coordinates[0],coordinates[coordinates.length - 1],worldCRS);
       if (trafDir.equals("W")) {
         Street street=new Street(id,name,length);
         street.setGeometry(geom);

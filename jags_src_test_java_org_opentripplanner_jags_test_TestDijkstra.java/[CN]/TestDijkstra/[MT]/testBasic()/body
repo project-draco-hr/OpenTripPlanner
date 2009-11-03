@@ -6,5 +6,6 @@
   GTFSHopLoader hl=new GTFSHopLoader(gg,context);
   hl.load();
   ShortestPathTree spt=Dijkstra.getShortestPathTree(gg,"Caltrain_Millbrae Caltrain","Caltrain_Mountain View Caltrain",new State(new GregorianCalendar(2009,8,7,12,0,0).getTimeInMillis()),options);
-  assertTrue(((Hop)spt.getPath(gg.getVertex("Caltrain_Mountain View Caltrain")).vertices.lastElement().incoming.payload).getEndStopTime().getArrivalTime() == 48540);
+  GraphPath path=spt.getPath(gg.getVertex("Caltrain_Mountain View Caltrain"));
+  assertTrue(((Hop)path.vertices.elementAt(path.vertices.size() - 2).incoming.payload).getEndStopTime().getArrivalTime() == 48540);
 }

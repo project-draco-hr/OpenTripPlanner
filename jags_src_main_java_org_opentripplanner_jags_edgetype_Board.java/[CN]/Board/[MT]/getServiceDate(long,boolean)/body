@@ -1,5 +1,5 @@
 {
-  int scheduleTime=useArrival ? end.getArrivalTime() : start.getDepartureTime();
+  int scheduleTime=useArrival ? hop.getEndStopTime().getArrivalTime() : hop.getStartStopTime().getDepartureTime();
   Calendar c=Calendar.getInstance();
   c.setTimeInMillis(currentTime);
   c.set(Calendar.HOUR_OF_DAY,0);

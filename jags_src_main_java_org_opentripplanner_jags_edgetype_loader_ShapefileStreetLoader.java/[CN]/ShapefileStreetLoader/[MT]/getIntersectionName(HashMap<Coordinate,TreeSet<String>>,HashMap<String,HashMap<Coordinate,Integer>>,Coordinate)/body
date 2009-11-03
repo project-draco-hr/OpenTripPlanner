@@ -1,0 +1,27 @@
+{
+  TreeSet<String> streets=coordinateToStreets.get(coordinate);
+  if (streets == null) {
+    return "null";
+  }
+  String intersection=streets.first() + " at " + streets.last();
+  HashMap<Coordinate,Integer> possibleIntersections=intersectionNameToId.get(intersection);
+  if (possibleIntersections == null) {
+    possibleIntersections=new HashMap<Coordinate,Integer>();
+    possibleIntersections.put(coordinate,1);
+    intersectionNameToId.put(intersection,possibleIntersections);
+    return intersection;
+  }
+  Integer index=possibleIntersections.get(coordinate);
+  if (index == null) {
+    int max=0;
+    for (    Integer value : possibleIntersections.values()) {
+      if (value > max)       max=value;
+    }
+    possibleIntersections.put(coordinate,max + 1);
+    index=max + 1;
+  }
+  if (index > 1) {
+    intersection+=" #" + possibleIntersections.get(coordinate);
+  }
+  return intersection;
+}

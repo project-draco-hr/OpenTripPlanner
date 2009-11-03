@@ -1,0 +1,13 @@
+{
+  this.graph=graph;
+  this.featureSource=featureSource;
+  try {
+    sourceCRS=CRS.decode("EPSG:" + sourceSRID);
+  }
+ catch (  NoSuchAuthorityCodeException e) {
+    throw new RuntimeException(e);
+  }
+catch (  FactoryException e) {
+    throw new RuntimeException(e);
+  }
+}

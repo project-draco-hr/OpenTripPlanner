@@ -23,6 +23,7 @@
       }
     }
   }
+  assertNotNull(northVertex);
   SpatialVertex eastVertex=null;
   for (  Vertex v : gg.getVertices()) {
     if (v instanceof SpatialVertex) {
@@ -32,14 +33,16 @@
       }
     }
   }
+  assertNotNull(eastVertex);
   ShortestPathTree spt=Dijkstra.getShortestPathTree(gg,northVertex.label,eastVertex.label,new State(new GregorianCalendar(2009,8,7,12,0,0).getTimeInMillis()),new WalkOptions());
   GraphPath path=spt.getPath(eastVertex);
+  assertNotNull(path);
   Narrative narrative=new Narrative(path);
   assertEquals(1,narrative.getSections().size());
   NarrativeSection walkSection=narrative.getSections().firstElement();
   assertEquals(2,walkSection.getItems().size());
   Geometry g=walkSection.getGeometry();
   Coordinate[] coords=g.getCoordinates();
-  assertEquals(coords[0],northVertex.getCoordinate());
-  assertEquals(coords[coords.length - 1],eastVertex.getCoordinate());
+  assertTrue(coords[0].distance(northVertex.getCoordinate()) < 0.0000001);
+  assertTrue(coords[coords.length - 1].distance(eastVertex.getCoordinate()) < 0.0000001);
 }
