@@ -1,0 +1,22 @@
+{
+  long currentTime=state0.getTime();
+  Date serviceDate=getServiceDate(currentTime);
+  Date serviceDateYesterday=getServiceDate(currentTime - MILLI_IN_DAY);
+  int secondsSinceMidnight=(int)((currentTime - serviceDate.getTime()) / 1000);
+  CalendarService service=wo.getGtfsContext().getCalendarService();
+  Set<Date> serviceDates=service.getServiceDatesForServiceId(pattern.exemplar.getServiceId());
+  int wait=-1;
+  if (serviceDates.contains(serviceDate)) {
+    wait=pattern.getNextDepartureTime(stop,secondsSinceMidnight) - secondsSinceMidnight;
+  }
+  if (serviceDates.contains(serviceDateYesterday)) {
+    int waitYesterday=pattern.getNextDepartureTime(stop,secondsSinceMidnight - SEC_IN_DAY) - (secondsSinceMidnight - SEC_IN_DAY);
+    if (waitYesterday != -1 && (wait < 0 || waitYesterday < wait)) {
+      wait=waitYesterday;
+    }
+  }
+  if (wait < 0) {
+    return -1;
+  }
+  return wait;
+}

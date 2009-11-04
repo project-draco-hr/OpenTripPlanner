@@ -1,0 +1,17 @@
+{
+  Vector<Stop> stops=new Vector<Stop>();
+  Vector<Long> times=new Vector<Long>();
+  int start=-1;
+  for (  StopTime stoptime : dao.getStopTimesForTrip(trip)) {
+    stops.add(stoptime.getStop());
+    if (start == -1) {
+      start=stoptime.getArrivalTime();
+    }
+    long crossingTime=stoptime.getArrivalTime() - start;
+    times.add(crossingTime);
+    long dwellTime=stoptime.getDepartureTime() - stoptime.getArrivalTime();
+    times.add(dwellTime);
+  }
+  StopPattern pattern=new StopPattern(stops,times,trip.getServiceId());
+  return pattern;
+}

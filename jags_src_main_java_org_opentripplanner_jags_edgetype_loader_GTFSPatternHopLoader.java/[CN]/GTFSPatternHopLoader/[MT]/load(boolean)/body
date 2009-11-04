@@ -1,0 +1,11 @@
+{
+  for (  Stop stop : _dao.getAllStops()) {
+    Vertex vertex=_graph.addVertex(new SpatialVertex(id(stop.getId()),stop.getLon(),stop.getLat()));
+    vertex.type=TransitStop.class;
+  }
+  if (verbose) {
+    System.out.println("Loading hops");
+  }
+  GTFSPatternHopFactory hf=new GTFSPatternHopFactory(_context);
+  hf.run(_graph);
+}

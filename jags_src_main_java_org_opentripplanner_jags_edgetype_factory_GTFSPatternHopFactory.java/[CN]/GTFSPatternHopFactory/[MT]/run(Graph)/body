@@ -1,0 +1,35 @@
+{
+  ArrayList<Walkable> ret=new ArrayList<Walkable>();
+  Collection<Trip> trips=_dao.getAllTrips();
+  HashMap<StopPattern,TripPattern> patterns=new HashMap<StopPattern,TripPattern>();
+  for (  Trip trip : trips) {
+    List<StopTime> stopTimes=_dao.getStopTimesForTrip(trip);
+    StopPattern stopPattern=stopPatternfromTrip(trip,_dao);
+    TripPattern tripPattern=patterns.get(stopPattern);
+    if (tripPattern == null) {
+      tripPattern=new TripPattern(trip,stopTimes);
+      int lastStop=stopTimes.size() - 1;
+      for (int i=0; i < lastStop; i++) {
+        StopTime st0=stopTimes.get(i);
+        Stop s0=st0.getStop();
+        StopTime st1=stopTimes.get(i + 1);
+        Stop s1=st1.getStop();
+        int runningTime=st1.getArrivalTime() - st0.getDepartureTime();
+        PatternHop hop=new PatternHop(s0,s1,runningTime,tripPattern);
+        ret.add(hop);
+        Vertex startStation=graph.getVertex(id(s0.getId()));
+        Vertex endStation=graph.getVertex(id(s1.getId()));
+        Vertex startJourney=graph.addVertex(id(s0.getId()) + "_" + id(trip.getId()));
+        Vertex endJourney=graph.addVertex(id(s1.getId()) + "_" + id(trip.getId()));
+        PatternBoard boarding=new PatternBoard(tripPattern,s0);
+        graph.addEdge(startStation,startJourney,boarding);
+        graph.addEdge(endJourney,endStation,new Alight());
+        graph.addEdge(startJourney,endJourney,hop);
+      }
+      patterns.put(stopPattern,tripPattern);
+    }
+    int firstDepartureTime=stopTimes.get(0).getDepartureTime();
+    tripPattern.addStartTime(firstDepartureTime);
+  }
+  return ret;
+}

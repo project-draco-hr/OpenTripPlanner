@@ -1,0 +1,9 @@
+{
+  if (other instanceof StopPattern) {
+    StopPattern pattern=(StopPattern)other;
+    return pattern.stops.equals(stops) && pattern.times.equals(times) && pattern.calendarId.equals(calendarId);
+  }
+ else {
+    return false;
+  }
+}

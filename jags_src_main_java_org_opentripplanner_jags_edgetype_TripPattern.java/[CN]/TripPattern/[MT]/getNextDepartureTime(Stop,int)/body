@@ -1,0 +1,11 @@
+{
+  int departureTimeOffset=stops.get(stop).departureTimeOffset;
+  for (int i=0; i < startTimes.size(); ++i) {
+    int startTime=startTimes.get(i);
+    int departureTime=startTime + departureTimeOffset;
+    if (departureTime >= afterTime) {
+      return departureTime;
+    }
+  }
+  return -1;
+}
