@@ -2,7 +2,7 @@
   try {
     portlandContext=GtfsLibrary.readGtfs(new File(ConstantsForTests.PORTLAND_GTFS));
     portlandGraph=new Graph();
-    GTFSHopLoader hl=new GTFSHopLoader(portlandGraph,portlandContext);
+    GTFSPatternHopLoader hl=new GTFSPatternHopLoader(portlandGraph,portlandContext);
     hl.load();
   }
  catch (  Exception e) {
