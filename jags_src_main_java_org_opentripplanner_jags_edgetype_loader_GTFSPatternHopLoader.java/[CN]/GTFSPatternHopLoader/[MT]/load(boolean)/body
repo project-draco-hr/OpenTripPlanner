@@ -1,6 +1,6 @@
 {
   for (  Stop stop : _dao.getAllStops()) {
-    Vertex vertex=_graph.addVertex(new SpatialVertex(id(stop.getId()),stop.getLon(),stop.getLat()));
+    Vertex vertex=_graph.addVertex(new Vertex(id(stop.getId()),stop.getLon(),stop.getLat()));
     vertex.type=TransitStop.class;
   }
   if (verbose) {

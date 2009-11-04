@@ -10,8 +10,12 @@
       String tov=splitline[2];
       String name=splitline[0];
       double length=Double.parseDouble(splitline[3]);
-      gg.addVertex(fromv);
-      gg.addVertex(tov);
+      double fromx=Double.parseDouble(fromv.substring(0,4));
+      double fromy=Double.parseDouble(fromv.substring(4));
+      double tox=Double.parseDouble(tov.substring(0,4));
+      double toy=Double.parseDouble(tov.substring(4));
+      gg.addVertex(fromv,fromx,fromy);
+      gg.addVertex(tov,tox,toy);
       gg.addEdge(fromv,tov,new Street(name,name,length));
       gg.addEdge(tov,fromv,new Street(name,name,length));
     }
