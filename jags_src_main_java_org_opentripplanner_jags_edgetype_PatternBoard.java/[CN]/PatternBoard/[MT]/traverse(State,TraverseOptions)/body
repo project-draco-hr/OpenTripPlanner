@@ -1,0 +1,9 @@
+{
+  int wait=computeWait(state0,wo);
+  if (wait < 0) {
+    return null;
+  }
+  State state1=state0.clone();
+  state1.incrementTimeInSeconds(wait);
+  return new TraverseResult(wait,state1);
+}

@@ -10,9 +10,9 @@
   Vector<SPTEdge> currentSection=new Vector<SPTEdge>();
   int startVertex=0;
   for (  SPTEdge edge : path.edges) {
-    Walkable walkable=edge.payload;
-    String edgeName=walkable.getName();
-    if (!edgeName.equals(lastName) && !(walkable.getMode() == TransportationMode.WALK && lastMode == TransportationMode.WALK)) {
+    Traversable traversable=edge.payload;
+    String edgeName=traversable.getName();
+    if (!edgeName.equals(lastName) && !(traversable.getMode() == TransportationMode.WALK && lastMode == TransportationMode.WALK)) {
       List<SPTVertex> currentVertices=path.vertices.subList(startVertex,i + 1);
       if (lastMode != TransportationMode.ALIGHTING && lastMode != TransportationMode.BOARDING)       sections.add(new NarrativeSection(currentVertices,currentSection));
       currentSection.clear();
@@ -20,7 +20,7 @@
       startVertex=i;
     }
     i+=1;
-    lastMode=walkable.getMode();
+    lastMode=traversable.getMode();
     currentSection.add(edge);
   }
   if (lastMode != TransportationMode.ALIGHTING) {

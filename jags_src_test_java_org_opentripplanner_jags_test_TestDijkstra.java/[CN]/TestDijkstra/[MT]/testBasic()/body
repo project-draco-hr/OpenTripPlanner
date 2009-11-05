@@ -1,6 +1,6 @@
 {
   GtfsContext context=GtfsLibrary.readGtfs(new File(ConstantsForTests.CALTRAIN_GTFS));
-  WalkOptions options=new WalkOptions();
+  TraverseOptions options=new TraverseOptions();
   options.setGtfsContext(context);
   Graph gg=new Graph();
   GTFSPatternHopLoader hl=new GTFSPatternHopLoader(gg,context);

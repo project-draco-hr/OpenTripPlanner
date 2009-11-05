@@ -11,7 +11,7 @@
   Tree tree=Kao.find(kg,t_0.getTime(),mlb,delta);
   ArrayList<Edge> path=tree.path(mtv);
   assertTrue(((Hop)path.get(path.size() - 1).payload).getEndStopTime().getArrivalTime() == 48540);
-  WalkOptions options=new WalkOptions();
+  TraverseOptions options=new TraverseOptions();
   options.setGtfsContext(context);
   Graph gg=new Graph();
   GTFSHopLoader h2=new GTFSHopLoader(gg,context);
