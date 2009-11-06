@@ -1,5 +1,7 @@
 {
-  FibNode[] rootnode_with_degree=new FibNode[(int)(Math.ceil(Math.log(this.n) / LOG2))];
+  for (int i=0; i < maxRootNodes; ++i) {
+    rootnode_with_degree[i]=null;
+  }
   Object[] root_list_array=this.root_list.toArray();
   for (int i=0; i < root_list_array.length; i++) {
     FibNode w=(FibNode)root_list_array[i];
