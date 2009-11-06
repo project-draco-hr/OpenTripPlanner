@@ -1,10 +1,10 @@
 {
   this.exemplar=exemplar;
   startTimes=new Vector<Integer>();
-  stops=new HashMap<Stop,PatternStop>();
+  patternStops=new ArrayList<PatternStop>();
   int startTime=stopTimes.get(0).getDepartureTime();
   for (  StopTime stopTime : stopTimes) {
     PatternStop patternStop=new PatternStop(stopTime.getDepartureTime() - startTime,stopTime.getArrivalTime() - startTime);
-    stops.put(stopTime.getStop(),patternStop);
+    patternStops.add(patternStop);
   }
 }

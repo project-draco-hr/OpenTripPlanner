@@ -6,10 +6,10 @@
   int wait=-1;
   AgencyAndId service=pattern.exemplar.getServiceId();
   if (wo.serviceOn(service,serviceDate)) {
-    wait=pattern.getNextDepartureTime(stop,secondsSinceMidnight) - secondsSinceMidnight;
+    wait=pattern.getNextDepartureTime(stopIndex,secondsSinceMidnight) - secondsSinceMidnight;
   }
   if (wo.serviceOn(service,serviceDateYesterday)) {
-    int waitYesterday=pattern.getNextDepartureTime(stop,secondsSinceMidnight - SEC_IN_DAY) - (secondsSinceMidnight - SEC_IN_DAY);
+    int waitYesterday=pattern.getNextDepartureTime(stopIndex,secondsSinceMidnight - SEC_IN_DAY) - (secondsSinceMidnight - SEC_IN_DAY);
     if (waitYesterday != -1 && (wait < 0 || waitYesterday < wait)) {
       wait=waitYesterday;
     }
