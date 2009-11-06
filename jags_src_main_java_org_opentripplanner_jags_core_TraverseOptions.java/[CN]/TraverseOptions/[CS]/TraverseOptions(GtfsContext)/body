@@ -1,4 +1,6 @@
 {
   this();
-  this._context=context;
+  _context=context;
+  calendarService=context.getCalendarService();
+  serviceDatesByServiceId=new HashMap<AgencyAndId,Set<Date>>();
 }
