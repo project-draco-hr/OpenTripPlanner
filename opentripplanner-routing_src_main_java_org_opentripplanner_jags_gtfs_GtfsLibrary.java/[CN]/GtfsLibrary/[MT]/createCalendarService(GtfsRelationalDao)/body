@@ -1,8 +1,0 @@
-{
-  CalendarServiceDataFactoryImpl factory=new CalendarServiceDataFactoryImpl();
-  factory.setGtfsDao(dao);
-  CalendarServiceData data=factory.createServiceCalendarData();
-  CalendarServiceImpl service=new CalendarServiceImpl();
-  service.setServiceCalendarData(data);
-  return service;
-}

@@ -1,9 +1,0 @@
-{
-  for (  SPTVertex vv : this.getVertices()) {
-    for (    SPTEdge ee : vv.outgoing) {
-      if (ee.payload instanceof Drawable) {
-        drawer.handle((Drawable)ee.payload);
-      }
-    }
-  }
-}
