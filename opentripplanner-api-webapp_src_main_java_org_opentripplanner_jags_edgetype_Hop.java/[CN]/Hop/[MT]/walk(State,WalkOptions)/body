@@ -1,0 +1,15 @@
+{
+  long currentTime=state0.getTime();
+  Date serviceDate=getServiceDate(currentTime,false);
+  int secondsSinceMidnight=(int)((currentTime - serviceDate.getTime()) / 1000);
+  CalendarService service=wo.getGtfsContext().getCalendarService();
+  Set<Date> serviceDates=service.getServiceDatesForServiceId(_serviceId);
+  if (!serviceDates.contains(serviceDate))   return null;
+  int wait=start.getDepartureTime() - secondsSinceMidnight;
+  if (wait < 0) {
+    return null;
+  }
+  State state1=state0.clone();
+  state1.incrementTimeInSeconds(wait + elapsed);
+  return new WalkResult(wait + elapsed,state1);
+}

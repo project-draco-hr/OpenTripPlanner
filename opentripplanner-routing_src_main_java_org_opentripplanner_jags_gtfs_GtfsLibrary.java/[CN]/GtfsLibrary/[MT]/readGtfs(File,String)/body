@@ -1,0 +1,10 @@
+{
+  GtfsRelationalDaoImpl dao=new GtfsRelationalDaoImpl();
+  GtfsReader reader=new GtfsReader();
+  reader.setInputLocation(path);
+  reader.setEntityStore(dao);
+  if (defaultAgencyId != null)   reader.setDefaultAgencyId(defaultAgencyId);
+  reader.run();
+  CalendarService calendarService=createCalendarService(dao);
+  return new GtfsContextImpl(dao,calendarService);
+}

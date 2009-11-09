@@ -1,0 +1,22 @@
+{
+switch (route.getType()) {
+case 0:
+    return TransportationMode.TRAM;
+case 1:
+  return TransportationMode.SUBWAY;
+case 2:
+return TransportationMode.RAIL;
+case 3:
+return TransportationMode.BUS;
+case 4:
+return TransportationMode.FERRY;
+case 5:
+return TransportationMode.CABLE_CAR;
+case 6:
+return TransportationMode.GONDOLA;
+case 7:
+return TransportationMode.FUNICULAR;
+default :
+throw new IllegalArgumentException("unknown gtfs route type " + route.getType());
+}
+}

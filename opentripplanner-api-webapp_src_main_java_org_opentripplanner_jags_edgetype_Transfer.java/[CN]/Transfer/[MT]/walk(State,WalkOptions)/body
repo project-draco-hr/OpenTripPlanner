@@ -1,0 +1,8 @@
+{
+  if (s0.justTransfered) {
+    return null;
+  }
+  State s1=s0.clone();
+  s1.justTransfered=true;
+  return new WalkResult(distance / wo.speed + wo.transferPenalty,s1);
+}

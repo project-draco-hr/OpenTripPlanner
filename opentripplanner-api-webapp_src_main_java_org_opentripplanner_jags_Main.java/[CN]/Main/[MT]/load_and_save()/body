@@ -1,0 +1,12 @@
+{
+  Graph gg=load_graph("map.csv");
+  try {
+    FileOutputStream fos=new FileOutputStream("t.tmp");
+    ObjectOutputStream oos=new ObjectOutputStream(fos);
+    oos.writeObject(gg);
+    oos.close();
+  }
+ catch (  Exception ex) {
+    System.out.println(ex.toString());
+  }
+}

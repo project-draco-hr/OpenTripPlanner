@@ -1,0 +1,9 @@
+{
+  FibNode exists=(FibNode)this.directory.get(payload);
+  if (exists != null) {
+    this.decrease_node_key(exists,key);
+  }
+ else {
+    this.insert(payload,key);
+  }
+}

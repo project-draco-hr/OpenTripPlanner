@@ -1,0 +1,12 @@
+{
+  m_request.setFrom(from);
+  m_request.setTo(to);
+  m_request.setDateTime(date,time);
+  if (max != null)   m_request.setNumItineraries(max);
+  if (walk != null)   m_request.setWalk(walk);
+  if (arriveBy != null && arriveBy)   m_request.setArriveBy();
+ else   if (departAfter != null && departAfter)   m_request.setDepartAfter();
+  if (optList != null && optList.size() > 0)   m_request.addOptimize(optList);
+  if (modeList != null && modeList.size() > 0)   m_request.addMode(modeList);
+  m_request.setOutputFormat(MediaType.valueOf(of));
+}

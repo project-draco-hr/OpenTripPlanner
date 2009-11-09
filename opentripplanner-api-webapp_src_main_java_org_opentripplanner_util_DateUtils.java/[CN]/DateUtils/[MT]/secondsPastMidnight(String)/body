@@ -1,0 +1,35 @@
+{
+  Integer retVal=null;
+  boolean amPm=false;
+  int addHours=0;
+  int hour=0, min=0, sec=0;
+  try {
+    String[] hms=time.toUpperCase().split(":");
+    if (hms.length < 2)     return getIntegerFromString(time);
+    if (hms[1].endsWith("PM") || hms[1].endsWith("AM")) {
+      amPm=true;
+      if (hms[1].contains("PM"))       addHours=12;
+      int suffex=hms[1].lastIndexOf(' ');
+      if (suffex < 1) {
+        suffex=hms[1].lastIndexOf("AM");
+        if (suffex < 1) {
+          suffex=hms[1].lastIndexOf("PM");
+        }
+      }
+      hms[1]=hms[1].substring(0,suffex);
+    }
+    int h=Integer.parseInt(trim(hms[0]));
+    if (amPm && h == 12)     h=0;
+    hour=h + addHours;
+    min=Integer.parseInt(trim(hms[1]));
+    if (hms.length > 2) {
+      sec=Integer.parseInt(trim(hms[2]));
+    }
+    retVal=(hour * 60 * 60) + (min * 60) + sec;
+  }
+ catch (  Exception e) {
+    LOGGER.log(Level.INFO,time + " didn't parse",e);
+    retVal=null;
+  }
+  return retVal;
+}

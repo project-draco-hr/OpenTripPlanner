@@ -1,0 +1,13 @@
+{
+  FibNode z=this.min;
+  ListIterator<FibNode> e=z.children.listIterator();
+  while (e.hasNext()) {
+    FibNode x=e.next();
+    this.root_list.add(x);
+    x.parent=null;
+  }
+  this.root_list.remove(z);
+  this.consolidate();
+  this.n=this.n - 1;
+  return z.payload;
+}

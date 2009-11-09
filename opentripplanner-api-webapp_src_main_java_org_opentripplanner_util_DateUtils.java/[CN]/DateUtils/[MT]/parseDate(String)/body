@@ -1,0 +1,20 @@
+{
+  Date retVal=null;
+  try {
+    String newString=input.replace('_','.').replace('-','.').replace(':','.').replace('/','.');
+    if (newString != null) {
+      String[] dl=DF_LIST;
+      if (newString.length() <= 8 && !newString.matches(".*20\\d\\d.*")) {
+        dl=SMALL_DF_LIST;
+      }
+      for (      String df : dl) {
+        retVal=DateUtils.parseDate(new SimpleDateFormat(df),newString);
+        if (retVal != null)         break;
+      }
+    }
+  }
+ catch (  Exception _) {
+    throw new RuntimeException("Could not parse " + input);
+  }
+  return retVal;
+}

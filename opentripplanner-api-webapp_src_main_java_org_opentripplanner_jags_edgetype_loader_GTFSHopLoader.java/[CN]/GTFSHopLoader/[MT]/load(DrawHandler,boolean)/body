@@ -1,0 +1,20 @@
+{
+  for (  Stop stop : _dao.getAllStops()) {
+    _graph.addVertex(new SpatialVertex(id(stop.getId()),stop.getLat(),stop.getLon()));
+  }
+  if (verbose) {
+    System.out.println("Loading hops");
+  }
+  GTFSHopFactory hf=new GTFSHopFactory(_context);
+  ArrayList<Hop> hops=hf.run(verbose);
+  for (  Hop hop : hops) {
+    if (drawHandler != null) {
+      drawHandler.handle(hop);
+    }
+    Vertex start=_graph.addVertex(id(hop.getStartStopTime().getStop().getId()));
+    start.isTransitStop=true;
+    Vertex end=_graph.addVertex(id(hop.getEndStopTime().getStop().getId()));
+    end.isTransitStop=true;
+    _graph.addEdge(start,end,hop);
+  }
+}

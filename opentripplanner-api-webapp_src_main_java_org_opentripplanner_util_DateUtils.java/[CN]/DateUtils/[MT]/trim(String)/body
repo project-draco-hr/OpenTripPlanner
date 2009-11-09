@@ -1,0 +1,11 @@
+{
+  String retVal=str;
+  try {
+    retVal=str.trim();
+    retVal=retVal.replaceAll("%20;","");
+    retVal=retVal.replaceAll("%20","");
+  }
+ catch (  Exception _) {
+  }
+  return retVal;
+}

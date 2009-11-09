@@ -1,0 +1,12 @@
+{
+  FibHeap fh=new FibHeap();
+  Random rr=new Random();
+  for (int i=0; i < 1000; i++) {
+    int randkey=rr.nextInt(10000);
+    System.out.println("inserting " + randkey);
+    fh.insert(Integer.toString(i),randkey);
+  }
+  for (int i=0; i < 1000; i++) {
+    System.out.println(fh.extract_min());
+  }
+}

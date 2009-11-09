@@ -1,0 +1,16 @@
+{
+  Vector<String[]> retbuffer=new Vector<String[]>();
+  try {
+    FileReader fr=new FileReader(new File(filename));
+    BufferedReader br=new BufferedReader(fr);
+    String line;
+    while ((line=br.readLine()) != null) {
+      String[] splitline=line.split(",");
+      retbuffer.add(splitline);
+    }
+  }
+ catch (  IOException x) {
+    System.out.println(x.toString());
+  }
+  return retbuffer;
+}

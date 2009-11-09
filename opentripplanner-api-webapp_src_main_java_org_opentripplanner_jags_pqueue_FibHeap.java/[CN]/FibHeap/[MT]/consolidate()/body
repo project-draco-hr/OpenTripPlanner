@@ -1,0 +1,32 @@
+{
+  FibNode[] rootnode_with_degree=new FibNode[this.n];
+  for (int i=0; i < this.n; i++) {
+    rootnode_with_degree[i]=null;
+  }
+  Object[] root_list_array=this.root_list.toArray();
+  for (int i=0; i < root_list_array.length; i++) {
+    FibNode w=(FibNode)root_list_array[i];
+    FibNode x=w;
+    int d=x.degree;
+    while (rootnode_with_degree[d] != null) {
+      FibNode y=rootnode_with_degree[d];
+      if (x.key > y.key) {
+        FibNode z=y;
+        y=x;
+        x=z;
+      }
+      this.link(y,x);
+      rootnode_with_degree[d]=null;
+      d=d + 1;
+    }
+    rootnode_with_degree[d]=x;
+  }
+  this.min=null;
+  ListIterator<FibNode> e=this.root_list.listIterator();
+  while (e.hasNext()) {
+    FibNode w=e.next();
+    if (this.min == null || w.key < this.min.key) {
+      this.min=w;
+    }
+  }
+}
