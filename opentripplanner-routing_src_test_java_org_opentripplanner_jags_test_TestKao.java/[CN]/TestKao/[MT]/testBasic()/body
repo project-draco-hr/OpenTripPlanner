@@ -16,7 +16,7 @@
   Graph gg=new Graph();
   GTFSHopLoader h2=new GTFSHopLoader(gg,context);
   h2.load();
-  ShortestPathTree spt=org.opentripplanner.jags.algorithm.Dijkstra.getShortestPathTree(gg,"Caltrain_Millbrae Caltrain","Caltrain_Mountain View Caltrain",new State(t_0.getTimeInMillis()),options);
+  ShortestPathTree spt=org.opentripplanner.routing.algorithm.Dijkstra.getShortestPathTree(gg,"Caltrain_Millbrae Caltrain","Caltrain_Mountain View Caltrain",new State(t_0.getTimeInMillis()),options);
   Vertex vertex=gg.getVertex("Caltrain_Mountain View Caltrain");
   Hop hop=(Hop)spt.getPath(vertex).vertices.lastElement().incoming.payload;
   assertTrue(hop.getEndStopTime().getArrivalTime() == 48540);
