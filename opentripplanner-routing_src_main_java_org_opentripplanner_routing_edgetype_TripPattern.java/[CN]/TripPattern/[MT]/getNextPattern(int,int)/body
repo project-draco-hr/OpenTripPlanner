@@ -1,0 +1,11 @@
+{
+  Vector<Integer> stopDepartureTimes=departureTimes[stopIndex];
+  int index=Collections.binarySearch(stopDepartureTimes,afterTime);
+  if (index == -stopDepartureTimes.size() - 1)   return -1;
+  if (index >= 0) {
+    return index;
+  }
+ else {
+    return -index - 1;
+  }
+}

@@ -1,0 +1,12 @@
+{
+  Vector<Integer> stopRunningTimes=runningTimes[stopindex];
+  Vector<Integer> stopDepartureTimes=departureTimes[stopindex];
+  int i;
+  for (i=0; i < stopDepartureTimes.size(); ++i) {
+    if (stopDepartureTimes.elementAt(i) > departureTime) {
+      break;
+    }
+  }
+  stopDepartureTimes.insertElementAt(departureTime,i);
+  stopRunningTimes.insertElementAt(runningTime,i);
+}

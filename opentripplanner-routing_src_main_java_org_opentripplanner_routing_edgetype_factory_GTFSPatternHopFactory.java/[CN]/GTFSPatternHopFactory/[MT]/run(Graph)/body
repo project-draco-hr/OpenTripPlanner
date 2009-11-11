@@ -1,21 +1,22 @@
 {
   ArrayList<Traversable> ret=new ArrayList<Traversable>();
   Collection<Trip> trips=_dao.getAllTrips();
-  HashMap<StopPattern,TripPattern> patterns=new HashMap<StopPattern,TripPattern>();
+  HashMap<StopPattern2,TripPattern> patterns=new HashMap<StopPattern2,TripPattern>();
   for (  Trip trip : trips) {
     List<StopTime> stopTimes=_dao.getStopTimesForTrip(trip);
-    StopPattern stopPattern=stopPatternfromTrip(trip,_dao);
+    StopPattern2 stopPattern=stopPatternfromTrip(trip,_dao);
     TripPattern tripPattern=patterns.get(stopPattern);
+    int lastStop=stopTimes.size() - 1;
     if (tripPattern == null) {
       tripPattern=new TripPattern(trip,stopTimes);
-      int lastStop=stopTimes.size() - 1;
       for (int i=0; i < lastStop; i++) {
         StopTime st0=stopTimes.get(i);
         Stop s0=st0.getStop();
         StopTime st1=stopTimes.get(i + 1);
         Stop s1=st1.getStop();
         int runningTime=st1.getArrivalTime() - st0.getDepartureTime();
-        PatternHop hop=new PatternHop(s0,s1,runningTime,tripPattern);
+        PatternHop hop=new PatternHop(s0,s1,i,tripPattern);
+        tripPattern.addHop(i,st0.getDepartureTime(),runningTime);
         ret.add(hop);
         Vertex startStation=graph.getVertex(id(s0.getId()));
         Vertex endStation=graph.getVertex(id(s1.getId()));
@@ -28,8 +29,14 @@
       }
       patterns.put(stopPattern,tripPattern);
     }
-    int firstDepartureTime=stopTimes.get(0).getDepartureTime();
-    tripPattern.addStartTime(firstDepartureTime);
+ else {
+      for (int i=0; i < lastStop; i++) {
+        StopTime st0=stopTimes.get(i);
+        StopTime st1=stopTimes.get(i + 1);
+        int runningTime=st1.getArrivalTime() - st0.getDepartureTime();
+        tripPattern.addHop(i,st0.getDepartureTime(),runningTime);
+      }
+    }
   }
   return ret;
 }

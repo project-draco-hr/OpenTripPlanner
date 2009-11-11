@@ -1,10 +1,9 @@
 {
   this.exemplar=exemplar;
-  startTimes=new Vector<Integer>();
-  patternStops=new ArrayList<PatternStop>();
-  int startTime=stopTimes.get(0).getDepartureTime();
-  for (  StopTime stopTime : stopTimes) {
-    PatternStop patternStop=new PatternStop(stopTime.getDepartureTime() - startTime,stopTime.getArrivalTime() - startTime);
-    patternStops.add(patternStop);
+  departureTimes=(Vector<Integer>[])Array.newInstance(Vector.class,stopTimes.size());
+  runningTimes=(Vector<Integer>[])Array.newInstance(Vector.class,stopTimes.size());
+  for (int i=0; i < stopTimes.size(); ++i) {
+    departureTimes[i]=new Vector<Integer>();
+    runningTimes[i]=new Vector<Integer>();
   }
 }
