@@ -1,0 +1,18 @@
+{
+  String tripId=id(trip.getId());
+  for (int i=0; i < stopTimes.size() - 1; i++) {
+    StopTime st0=stopTimes.get(i);
+    Stop s0=st0.getStop();
+    StopTime st1=stopTimes.get(i + 1);
+    Stop s1=st1.getStop();
+    Vertex startStation=graph.getVertex(id(s0.getId()));
+    Vertex endStation=graph.getVertex(id(s1.getId()));
+    Vertex startJourney=graph.addVertex(id(s0.getId()) + "_" + tripId,s0.getLon(),s0.getLat());
+    Vertex endJourney=graph.addVertex(id(s1.getId()) + "_" + tripId,s1.getLon(),s1.getLat());
+    Hop hop=new Hop(st0,st1);
+    Board boarding=new Board(hop);
+    graph.addEdge(startStation,startJourney,boarding);
+    graph.addEdge(endJourney,endStation,new Alight());
+    graph.addEdge(startJourney,endJourney,hop);
+  }
+}

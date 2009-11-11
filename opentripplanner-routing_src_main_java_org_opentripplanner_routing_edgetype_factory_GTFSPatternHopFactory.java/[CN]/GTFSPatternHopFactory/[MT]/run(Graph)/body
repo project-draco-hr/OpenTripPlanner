@@ -16,7 +16,7 @@
         Stop s1=st1.getStop();
         int runningTime=st1.getArrivalTime() - st0.getDepartureTime();
         PatternHop hop=new PatternHop(s0,s1,i,tripPattern);
-        tripPattern.addHop(i,st0.getDepartureTime(),runningTime);
+        tripPattern.addHop(i,0,st0.getDepartureTime(),runningTime);
         ret.add(hop);
         Vertex startStation=graph.getVertex(id(s0.getId()));
         Vertex endStation=graph.getVertex(id(s1.getId()));
@@ -30,11 +30,28 @@
       patterns.put(stopPattern,tripPattern);
     }
  else {
-      for (int i=0; i < lastStop; i++) {
-        StopTime st0=stopTimes.get(i);
-        StopTime st1=stopTimes.get(i + 1);
-        int runningTime=st1.getArrivalTime() - st0.getDepartureTime();
-        tripPattern.addHop(i,st0.getDepartureTime(),runningTime);
+      int insertionPoint=tripPattern.getInsertionPoint(stopTimes.get(0).getDepartureTime());
+      if (insertionPoint < 0) {
+        _log.warn("duplicate first departure time for trip " + trip.getId() + ".  This will be handled correctly but inefficiently.");
+        createSimpleHops(graph,trip,stopTimes);
+      }
+ else {
+        for (int i=0; i < lastStop; i++) {
+          StopTime st0=stopTimes.get(i);
+          StopTime st1=stopTimes.get(i + 1);
+          int runningTime=st1.getArrivalTime() - st0.getDepartureTime();
+          try {
+            tripPattern.addHop(i,insertionPoint,st0.getDepartureTime(),runningTime);
+          }
+ catch (          TripOvertakingException e) {
+            _log.warn("trip " + trip.getId() + "overtakes another trip with the same stops.  This will be handled correctly but inefficiently.");
+            for (; i >= 0; --i) {
+              tripPattern.removeHop(i,insertionPoint);
+            }
+            createSimpleHops(graph,trip,stopTimes);
+            break;
+          }
+        }
       }
     }
   }
