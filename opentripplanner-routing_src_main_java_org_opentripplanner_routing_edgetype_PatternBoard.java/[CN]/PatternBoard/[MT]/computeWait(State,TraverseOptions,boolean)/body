@@ -8,13 +8,13 @@
   AgencyAndId service=pattern.exemplar.getServiceId();
   if (wo.serviceOn(service,serviceDate)) {
     patternIndex=pattern.getNextPattern(stopIndex,secondsSinceMidnight);
-    if (patternIndex > 0) {
+    if (patternIndex >= 0) {
       wait=pattern.getDepartureTime(stopIndex,patternIndex) - secondsSinceMidnight;
     }
   }
   if (wo.serviceOn(service,serviceDateYesterday)) {
     int yesterdayPatternIndex=pattern.getNextPattern(stopIndex,secondsSinceMidnight - SEC_IN_DAY);
-    if (yesterdayPatternIndex > 0) {
+    if (yesterdayPatternIndex >= 0) {
       int waitYesterday=pattern.getDepartureTime(stopIndex,yesterdayPatternIndex) - (secondsSinceMidnight - SEC_IN_DAY);
       if (wait < 0 || waitYesterday < wait) {
         wait=waitYesterday;
