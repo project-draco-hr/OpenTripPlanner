@@ -1,0 +1,8 @@
+{
+  Map<Vertex,Edge> extraEdges=new HashMap<Vertex,Edge>();
+  Edge toEdge=target.getToEdge();
+  extraEdges.put(target.street.tov,toEdge);
+  Edge fromEdge=target.getFromEdge();
+  extraEdges.put(target.street.fromv,fromEdge);
+  return getShortestPathTree(gg,origin.vertex,target.vertex,init,options,extraEdges);
+}
