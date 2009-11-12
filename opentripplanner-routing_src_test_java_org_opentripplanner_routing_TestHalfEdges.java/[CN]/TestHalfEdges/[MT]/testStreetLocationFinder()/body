@@ -1,0 +1,21 @@
+{
+  StreetLocationFinder finder=new StreetLocationFinder(graph);
+  StreetLocation start=finder.findLocation(new Coordinate(-74.0,40.4),false);
+  StreetLocation end=finder.findLocation(new Coordinate(-73.0,40.8),true);
+  if (start.street == leftUp) {
+    assertTrue(start.location - 0.4 < 0.00001);
+  }
+ else {
+    assertTrue(start.location - 0.6 < 0.00001);
+    assertEquals(leftDown,start.street);
+  }
+  assertTrue(start.vertex.getDegreeOut() == 2);
+  if (end.street == rightUp) {
+    assertTrue(end.location - 0.2 < 0.00001);
+  }
+ else {
+    assertTrue(end.location - 0.8 < 0.00001);
+    assertEquals(rightDown,end.street);
+  }
+  assertTrue(end.vertex.getDegreeIn() == 2);
+}
