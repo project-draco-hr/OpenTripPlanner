@@ -1,0 +1,26 @@
+{
+  stroke(155,0,0);
+  background(255);
+  strokeWeight(0.1f);
+  try {
+    gg.draw(new Drawer());
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+  }
+  stroke(0,0,155);
+  strokeWeight(2);
+  try {
+    if (spt != null) {
+      spt.draw(new Drawer());
+    }
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+  }
+  stroke(155,155,155);
+  strokeWeight(1);
+  if (timeMode) {
+    line(0,mouseY,width,mouseY);
+  }
+}
