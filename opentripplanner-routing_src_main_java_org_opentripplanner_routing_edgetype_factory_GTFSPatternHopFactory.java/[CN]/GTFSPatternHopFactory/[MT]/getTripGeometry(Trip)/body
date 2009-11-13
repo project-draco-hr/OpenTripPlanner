@@ -1,0 +1,18 @@
+{
+  AgencyAndId shapeId=trip.getShapeId();
+  if (shapeId == null || shapeId.getId() == null) {
+    return null;
+  }
+  List<ShapePoint> points=_dao.getShapePointsForShapeId(shapeId);
+  if (points.size() == 0) {
+    return null;
+  }
+  GeometryFactory factory=new GeometryFactory();
+  Coordinate[] coordinates=new Coordinate[points.size()];
+  int i=0;
+  for (  ShapePoint point : points) {
+    coordinates[i++]=new Coordinate(point.getLon(),point.getLat());
+  }
+  LineString hopString=(LineString)factory.createLineString(coordinates);
+  return hopString;
+}

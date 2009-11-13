@@ -1,0 +1,15 @@
+{
+  if (lil == null) {
+    return null;
+  }
+  double startDt=st0.getShapeDistTraveled();
+  if (startDt == -1) {
+    LinearLocation startCoord=lol.indexOf(startJourney.getCoordinate());
+    LinearLocation endCoord=lol.indexOf(endJourney.getCoordinate());
+    return lol.extractLine(startCoord,endCoord);
+  }
+ else {
+    double endDt=st1.getShapeDistTraveled();
+    return lil.extractLine(startDt,endDt);
+  }
+}

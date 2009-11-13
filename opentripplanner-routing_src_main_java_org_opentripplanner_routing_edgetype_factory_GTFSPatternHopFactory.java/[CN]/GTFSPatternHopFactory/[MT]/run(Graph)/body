@@ -8,6 +8,13 @@
     int lastStop=stopTimes.size() - 1;
     if (tripPattern == null) {
       tripPattern=new TripPattern(trip,stopTimes);
+      Geometry g=getTripGeometry(trip);
+      LengthIndexedLine lil=null;
+      LocationIndexedLine lol=null;
+      if (g != null) {
+        lil=new LengthIndexedLine(g);
+        lol=new LocationIndexedLine(g);
+      }
       for (int i=0; i < lastStop; i++) {
         StopTime st0=stopTimes.get(i);
         Stop s0=st0.getStop();
@@ -17,6 +24,9 @@
         Vertex startJourney=graph.addVertex(id(s0.getId()) + "_" + id(trip.getId()),s0.getLon(),s0.getLat());
         Vertex endJourney=graph.addVertex(id(s1.getId()) + "_" + id(trip.getId()),s1.getLon(),s1.getLat());
         PatternHop hop=new PatternHop(startJourney,endJourney,s0,s1,i,tripPattern);
+        if (g != null) {
+          hop.setGeometry(getHopGeometry(lil,lol,st0,st1,startJourney,endJourney));
+        }
         tripPattern.addHop(i,0,st0.getDepartureTime(),runningTime);
         graph.addEdge(hop);
         Vertex startStation=graph.getVertex(id(s0.getId()));
