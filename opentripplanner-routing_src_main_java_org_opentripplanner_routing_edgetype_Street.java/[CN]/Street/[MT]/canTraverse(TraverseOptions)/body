@@ -1,0 +1,33 @@
+{
+switch (permission) {
+case BICYCLE_ONLY:
+switch (wo.mode) {
+case CAR:
+case CAR_AND_TRANSIT:
+case WALK:
+case WALK_AND_TRANSIT:
+      return false;
+  }
+break;
+case PEDESTRIAN_AND_BICYCLE_ONLY:
+switch (wo.mode) {
+case CAR:
+case CAR_AND_TRANSIT:
+return false;
+}
+break;
+case PEDESTRIAN_ONLY:
+switch (wo.mode) {
+case CAR:
+case CAR_AND_TRANSIT:
+case BICYCLE:
+case BICYCLE_AND_TRANSIT:
+return false;
+}
+break;
+case ALL:
+case CROSSHATCHED:
+break;
+}
+return true;
+}

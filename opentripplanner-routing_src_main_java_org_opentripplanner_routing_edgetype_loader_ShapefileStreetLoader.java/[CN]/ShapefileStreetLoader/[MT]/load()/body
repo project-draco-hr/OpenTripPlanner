@@ -47,25 +47,27 @@
       endCorner=graph.addVertex(endCorner);
       endCorner.type=Intersection.class;
       double length=JTS.orthodromicDistance(coordinates[0],coordinates[coordinates.length - 1],worldCRS);
+      Street street=new Street(startCorner,endCorner,id,name,length);
+      street.setGeometry(geom);
+      graph.addEdge(street);
+      Street backStreet=new Street(endCorner,startCorner,id,name,length);
+      backStreet.setGeometry(geom.reverse());
+      graph.addEdge(backStreet);
       if (trafDir.equals("W")) {
-        Street street=new Street(startCorner,endCorner,id,name,length);
-        street.setGeometry(geom);
-        graph.addEdge(street);
+        street.setTraversalPermission(StreetTraversalPermission.ALL);
+        backStreet.setTraversalPermission(StreetTraversalPermission.PEDESTRIAN_ONLY);
       }
  else       if (trafDir.equals("A")) {
-        Street street=new Street(endCorner,startCorner,id,name,length);
-        street.setGeometry(geom.reverse());
-        graph.addEdge(street);
+        backStreet.setTraversalPermission(StreetTraversalPermission.ALL);
+        street.setTraversalPermission(StreetTraversalPermission.PEDESTRIAN_ONLY);
       }
  else       if (trafDir.equals("T")) {
-        Street street=new Street(startCorner,endCorner,id,name,length);
-        street.setGeometry(geom);
-        graph.addEdge(street);
-        Street backStreet=new Street(endCorner,startCorner,id,name,length);
-        backStreet.setGeometry(geom.reverse());
-        graph.addEdge(backStreet);
+        backStreet.setTraversalPermission(StreetTraversalPermission.ALL);
+        street.setTraversalPermission(StreetTraversalPermission.ALL);
       }
  else {
+        backStreet.setTraversalPermission(StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE_ONLY);
+        street.setTraversalPermission(StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE_ONLY);
       }
     }
   }
