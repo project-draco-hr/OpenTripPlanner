@@ -3,7 +3,7 @@
   TraverseOptions wo=new TraverseOptions();
   wo.setGtfsContext(context);
   GregorianCalendar startTime=new GregorianCalendar(2009,11,1,12,34,25);
-  ShortestPathTree spt=Dijkstra.getShortestPathTree(graph,"TriMet_6876",airport.label,new State(startTime.getTimeInMillis()),wo);
+  ShortestPathTree spt=Dijkstra.getShortestPathTree(graph,"TriMet_6876",airport.getLabel(),new State(startTime.getTimeInMillis()),wo);
   GraphPath path=spt.getPath(airport);
   assertNotNull(path);
   Narrative narrative=new Narrative(path);

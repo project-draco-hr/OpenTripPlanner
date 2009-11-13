@@ -4,7 +4,7 @@
     index.insert(new Envelope(v.getCoordinate()),v);
   }
   for (  Vertex v : graph.getVertices()) {
-    if (v.type == TransitStop.class) {
+    if (v.getType() == TransitStop.class) {
       Envelope env=new Envelope(v.getCoordinate());
       env.expandBy(0.0018);
       List<Vertex> nearby=(List<Vertex>)index.query(env);
@@ -21,11 +21,11 @@
         double lat2=coord.y;
         double lon2=coord.x;
         double distance=GtfsLibrary.distance(lat1,lon1,lat2,lon2) * 2;
-        if (nv.type == TransitStop.class) {
+        if (nv.getType() == TransitStop.class) {
           graph.addEdge(new Transfer(v,nv,distance));
           graph.addEdge(new Transfer(nv,v,distance));
         }
- else         if (nv.type == Intersection.class) {
+ else         if (nv.getType() == Intersection.class) {
           if (distance < minDistance) {
             minDistance=distance;
             nearestIntersection=nv;

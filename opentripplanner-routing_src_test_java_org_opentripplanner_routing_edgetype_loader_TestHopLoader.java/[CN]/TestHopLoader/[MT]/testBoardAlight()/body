@@ -3,13 +3,13 @@
   Vertex stop_b=graph.getVertex("agency_B");
   assertEquals(2,stop_a.getDegreeOut());
   assertEquals(6,stop_b.getDegreeOut());
-  for (  Edge e : stop_a.outgoing) {
+  for (  Edge e : stop_a.getOutgoing()) {
     assertEquals(Board.class,e.getClass());
   }
-  Vertex journey_a_1=stop_a.outgoing.get(0).getToVertex();
+  Vertex journey_a_1=stop_a.getOutgoing().get(0).getToVertex();
   assertEquals(1,journey_a_1.getDegreeIn());
-  for (  Edge e : journey_a_1.outgoing) {
-    if (e.getToVertex().type == TransitStop.class) {
+  for (  Edge e : journey_a_1.getOutgoing()) {
+    if (e.getToVertex().getType() == TransitStop.class) {
       assertEquals(Alight.class,e.getClass());
     }
  else {

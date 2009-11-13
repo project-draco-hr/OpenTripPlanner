@@ -1,8 +1,8 @@
 {
-  Vertex exists=this.vertices.get(vv.label);
+  Vertex exists=this.vertices.get(vv.getLabel());
   if (exists != null) {
     return exists;
   }
-  this.vertices.put(vv.label,vv);
+  this.vertices.put(vv.getLabel(),vv);
   return vv;
 }

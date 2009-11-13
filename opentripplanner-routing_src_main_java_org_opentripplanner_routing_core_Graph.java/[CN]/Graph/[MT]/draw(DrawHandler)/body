@@ -1,6 +1,6 @@
 {
   for (  Vertex vv : this.getVertices()) {
-    for (    Edge ee : vv.outgoing) {
+    for (    Edge ee : vv.getOutgoing()) {
       if (ee instanceof Drawable) {
         drawer.handle((Drawable)ee);
       }

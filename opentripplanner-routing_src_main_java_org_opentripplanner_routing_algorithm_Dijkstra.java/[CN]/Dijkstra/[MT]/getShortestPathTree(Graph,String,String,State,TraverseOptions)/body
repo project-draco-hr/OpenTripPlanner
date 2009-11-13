@@ -14,7 +14,7 @@
   while (!pq.empty()) {
     spt_u=(SPTVertex)pq.extract_min();
     if (spt_u.mirror == target)     break;
-    for (    Edge edge : spt_u.mirror.outgoing) {
+    for (    Edge edge : spt_u.mirror.getOutgoing()) {
       TraverseResult wr=edge.traverse(spt_u.state,options);
       if (wr == null) {
         continue;
