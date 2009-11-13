@@ -1,9 +1,13 @@
 {
   graph=new Graph();
   Vertex tl=graph.addVertex("tl",-74,41);
+  tl.setType(Intersection.class);
   Vertex tr=graph.addVertex("tr",-73,41);
+  tr.setType(Intersection.class);
   Vertex bl=graph.addVertex("bl",-74,40);
+  bl.setType(Intersection.class);
   Vertex br=graph.addVertex("br",-73,40);
+  br.setType(Intersection.class);
   double td=GtfsLibrary.distance(tl.getCoordinate().y,tl.getCoordinate().x,tr.getCoordinate().y,tr.getCoordinate().x);
   top=new Street(tl,tr,td);
   top.setGeometry(createGeometry(tl,tr));
