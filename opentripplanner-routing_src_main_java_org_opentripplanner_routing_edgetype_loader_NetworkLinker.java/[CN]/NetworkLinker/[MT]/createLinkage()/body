@@ -17,6 +17,9 @@
         if (nv == v) {
           continue;
         }
+        if (nv.distance(v) > 200) {
+          continue;
+        }
         coord=nv.getCoordinate();
         double lat2=coord.y;
         double lon2=coord.x;
