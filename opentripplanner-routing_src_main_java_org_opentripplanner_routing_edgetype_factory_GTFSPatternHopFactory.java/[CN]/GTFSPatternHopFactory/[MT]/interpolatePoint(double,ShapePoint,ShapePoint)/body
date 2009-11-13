@@ -1,0 +1,12 @@
+{
+  if (before == null) {
+    return new Coordinate(point.getLon(),point.getLat());
+  }
+  double segmentLength=point.getDistTraveled() - before.getDistTraveled();
+  double startLocation=startDt - before.getDistTraveled();
+  double interpolation=startLocation / segmentLength;
+  double x=before.getLon() * interpolation + point.getLon() * (1 - interpolation);
+  double y=before.getLat() * interpolation + point.getLat() * (1 - interpolation);
+  Coordinate c=new Coordinate(x,y);
+  return c;
+}
