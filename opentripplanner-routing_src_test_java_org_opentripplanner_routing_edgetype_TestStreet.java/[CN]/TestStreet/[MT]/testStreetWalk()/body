@@ -5,7 +5,8 @@
   TraverseOptions wo=new TraverseOptions();
   wo.speed=ConstantsForTests.WALKING_SPEED;
   double streetLength=100;
-  Edge ee=gg.addEdge(start,end,new Street(streetLength));
+  Edge ee=new Street(start,end,streetLength);
+  gg.addEdge(ee);
   GregorianCalendar startTime=new GregorianCalendar(2009,9,21,13,0,0);
   GregorianCalendar endTime=(GregorianCalendar)startTime.clone();
   int expectedSecElapsed=(int)(streetLength / wo.speed);

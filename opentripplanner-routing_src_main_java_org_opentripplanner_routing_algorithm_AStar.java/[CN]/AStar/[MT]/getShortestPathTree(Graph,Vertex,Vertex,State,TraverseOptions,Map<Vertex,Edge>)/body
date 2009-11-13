@@ -17,20 +17,21 @@
       outgoing.add(extraEdges.get(spt_u.mirror));
     }
     for (    Edge edge : outgoing) {
-      TraverseResult wr=edge.payload.traverse(spt_u.state,options);
+      TraverseResult wr=edge.traverse(spt_u.state,options);
       if (wr == null) {
         continue;
       }
       if (wr.weight < 0) {
         throw new NegativeWeightException(String.valueOf(wr.weight));
       }
-      distance=edge.tov.distance(target) / MAX_SPEED;
+      Vertex tov=edge.getToVertex();
+      distance=tov.distance(target) / MAX_SPEED;
       double new_w=spt_u.weightSum + wr.weight;
       double old_w;
-      spt_v=spt.getVertex(edge.tov);
+      spt_v=spt.getVertex(tov);
       if (spt_v == null) {
         old_w=Integer.MAX_VALUE;
-        spt_v=spt.addVertex(edge.tov,wr.state,new_w);
+        spt_v=spt.addVertex(tov,wr.state,new_w);
       }
  else {
         old_w=spt_v.weightSum + distance;
@@ -44,7 +45,7 @@
  else {
           pq.insert_or_dec_key(spt_v,new_w + distance);
         }
-        spt_v.setParent(spt_u,edge.payload);
+        spt_v.setParent(spt_u,edge);
       }
     }
   }

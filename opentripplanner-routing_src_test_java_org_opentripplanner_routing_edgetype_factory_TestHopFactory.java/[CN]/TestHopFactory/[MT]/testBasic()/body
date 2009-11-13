@@ -1,7 +1,17 @@
 {
   GtfsContext context=GtfsLibrary.readGtfs(new File(ConstantsForTests.CALTRAIN_GTFS));
-  GTFSHopFactory hf=new GTFSHopFactory(context);
-  ArrayList<Hop> hops=hf.run();
+  Graph graph=new Graph();
+  GTFSHopLoader loader=new GTFSHopLoader(graph,context);
+  loader.load(null);
+  Set<Hop> hopSet=new HashSet<Hop>();
+  for (  Vertex v : graph.getVertices()) {
+    for (    Edge e : v.outgoing) {
+      if (e instanceof Hop) {
+        hopSet.add((Hop)e);
+      }
+    }
+  }
+  ArrayList<Hop> hops=new ArrayList(hopSet);
   Collections.sort(hops,new Hop.HopArrivalTimeComparator());
   Hop last=hops.get(hops.size() - 1);
   assertEquals(91740,last.getStartStopTime().getDepartureTime());

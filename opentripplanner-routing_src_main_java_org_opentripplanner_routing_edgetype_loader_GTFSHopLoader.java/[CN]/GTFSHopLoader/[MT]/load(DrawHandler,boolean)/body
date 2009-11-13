@@ -20,9 +20,10 @@
     Vertex endStation=_graph.getVertex(id(endStop.getId()));
     Vertex startJourney=_graph.addVertex(id(startStop.getId()) + "_" + id(startStopTime.getTrip().getId()),startStop.getLon(),startStop.getLat());
     Vertex endJourney=_graph.addVertex(id(endStop.getId()) + "_" + id(endStopTime.getTrip().getId()),endStop.getLon(),endStop.getLat());
-    Board boarding=new Board(hop);
-    _graph.addEdge(startStation,startJourney,boarding);
-    _graph.addEdge(endJourney,endStation,new Alight());
-    _graph.addEdge(startJourney,endJourney,hop);
+    hop=new Hop(startJourney,endJourney,startStopTime,endStopTime);
+    Board boarding=new Board(startStation,startJourney,hop);
+    _graph.addEdge(boarding);
+    _graph.addEdge(new Alight(endJourney,endStation));
+    _graph.addEdge(hop);
   }
 }

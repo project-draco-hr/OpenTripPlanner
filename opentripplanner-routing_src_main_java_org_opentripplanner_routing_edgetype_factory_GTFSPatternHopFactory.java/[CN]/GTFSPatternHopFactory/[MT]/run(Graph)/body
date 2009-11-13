@@ -1,5 +1,4 @@
 {
-  ArrayList<Traversable> ret=new ArrayList<Traversable>();
   Collection<Trip> trips=_dao.getAllTrips();
   HashMap<StopPattern2,TripPattern> patterns=new HashMap<StopPattern2,TripPattern>();
   for (  Trip trip : trips) {
@@ -15,17 +14,16 @@
         StopTime st1=stopTimes.get(i + 1);
         Stop s1=st1.getStop();
         int runningTime=st1.getArrivalTime() - st0.getDepartureTime();
-        PatternHop hop=new PatternHop(s0,s1,i,tripPattern);
-        tripPattern.addHop(i,0,st0.getDepartureTime(),runningTime);
-        ret.add(hop);
-        Vertex startStation=graph.getVertex(id(s0.getId()));
-        Vertex endStation=graph.getVertex(id(s1.getId()));
         Vertex startJourney=graph.addVertex(id(s0.getId()) + "_" + id(trip.getId()),s0.getLon(),s0.getLat());
         Vertex endJourney=graph.addVertex(id(s1.getId()) + "_" + id(trip.getId()),s1.getLon(),s1.getLat());
-        PatternBoard boarding=new PatternBoard(tripPattern,i);
-        graph.addEdge(startStation,startJourney,boarding);
-        graph.addEdge(endJourney,endStation,new Alight());
-        graph.addEdge(startJourney,endJourney,hop);
+        PatternHop hop=new PatternHop(startJourney,endJourney,s0,s1,i,tripPattern);
+        tripPattern.addHop(i,0,st0.getDepartureTime(),runningTime);
+        graph.addEdge(hop);
+        Vertex startStation=graph.getVertex(id(s0.getId()));
+        Vertex endStation=graph.getVertex(id(s1.getId()));
+        PatternBoard boarding=new PatternBoard(startStation,startJourney,tripPattern,i);
+        graph.addEdge(boarding);
+        graph.addEdge(new Alight(endJourney,endStation));
       }
       patterns.put(stopPattern,tripPattern);
     }
@@ -55,5 +53,4 @@
       }
     }
   }
-  return ret;
 }
