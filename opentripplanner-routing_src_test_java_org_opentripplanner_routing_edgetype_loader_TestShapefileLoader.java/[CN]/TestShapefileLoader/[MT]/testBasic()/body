@@ -1,6 +1,10 @@
 {
   Graph gg=new Graph();
   File file=new File("src/test/resources/nyc_streets/streets.shp");
+  if (!file.exists()) {
+    System.out.println("No New York City basemap; skipping; see comment here for details");
+    return;
+  }
   ShapefileDataStore dataStore=new ShapefileDataStore(file.toURI().toURL());
   String typeNames[]=dataStore.getTypeNames();
   String typeName=typeNames[0];
@@ -22,10 +26,4 @@
   ShortestPathTree spt=Dijkstra.getShortestPathTree(gg,start.getLabel(),end.getLabel(),new State(new GregorianCalendar(2009,8,7,12,2,0).getTimeInMillis()),new TraverseOptions(context));
   GraphPath path=spt.getPath(end);
   assertNotNull(path);
-  SPTEdge street=null;
-  for (int i=0; i < path.edges.size(); ++i) {
-    street=path.edges.get(i);
-    System.out.println(street.payload.getName() + ": " + street.payload.getDistance()+ " from "+ street.fromv+ " to "+ street.tov);
-  }
-  System.out.println("arrive at: " + street.getToSPTVertex().state.getTime());
 }
