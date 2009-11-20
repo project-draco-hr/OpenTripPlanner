@@ -28,5 +28,5 @@
   State state1=state0.clone();
   state1.setPattern(patternIndex);
   state1.incrementTimeInSeconds(back ? -wait : wait);
-  return new TraverseResult(wait,state1);
+  return new TraverseResult(wait + BOARD_COST,state1);
 }
