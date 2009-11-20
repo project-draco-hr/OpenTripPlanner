@@ -1,0 +1,17 @@
+{
+  Collection<Transfer> transfers=_dao.getAllTransfers();
+  for (  Transfer t : transfers) {
+    Stop fromStop=t.getFromStop();
+    Stop toStop=t.getToStop();
+    Vertex fromStation=graph.getVertex(id(fromStop.getId()));
+    Vertex toStation=graph.getVertex(id(toStop.getId()));
+    int transferTime=0;
+    if (t.getTransferType() < 3) {
+      if (t.getTransferType() == 2) {
+        transferTime=t.getMinTransferTime();
+      }
+      org.opentripplanner.routing.edgetype.Transfer edge=new org.opentripplanner.routing.edgetype.Transfer(fromStation,toStation,transferTime);
+      graph.addEdge(edge);
+    }
+  }
+}
