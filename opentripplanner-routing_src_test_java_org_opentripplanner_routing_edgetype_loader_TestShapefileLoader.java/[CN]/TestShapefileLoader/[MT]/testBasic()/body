@@ -14,7 +14,7 @@
   loader.load();
   System.out.println("vertices: " + gg.getVertices().size());
   GtfsContext context=GtfsLibrary.readGtfs(new File(ConstantsForTests.NY_GTFS));
-  GTFSHopLoader hl=new GTFSHopLoader(gg,context);
+  GTFSPatternHopLoader hl=new GTFSPatternHopLoader(gg,context);
   hl.load();
   NetworkLinker nl=new NetworkLinker(gg);
   nl.createLinkage();
