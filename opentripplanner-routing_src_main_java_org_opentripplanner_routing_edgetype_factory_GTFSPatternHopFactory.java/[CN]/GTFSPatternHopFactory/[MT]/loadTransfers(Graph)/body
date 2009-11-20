@@ -1,5 +1,6 @@
 {
   Collection<Transfer> transfers=_dao.getAllTransfers();
+  Set<org.opentripplanner.routing.edgetype.Transfer> createdTransfers=new HashSet<org.opentripplanner.routing.edgetype.Transfer>();
   for (  Transfer t : transfers) {
     Stop fromStop=t.getFromStop();
     Stop toStop=t.getToStop();
@@ -11,6 +12,10 @@
         transferTime=t.getMinTransferTime();
       }
       org.opentripplanner.routing.edgetype.Transfer edge=new org.opentripplanner.routing.edgetype.Transfer(fromStation,toStation,transferTime);
+      if (createdTransfers.contains(edge)) {
+        continue;
+      }
+      createdTransfers.add(edge);
       graph.addEdge(edge);
     }
   }
