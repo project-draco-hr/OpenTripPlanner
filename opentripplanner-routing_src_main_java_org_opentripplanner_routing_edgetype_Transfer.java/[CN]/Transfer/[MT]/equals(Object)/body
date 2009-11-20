@@ -1,0 +1,7 @@
+{
+  if (!(o instanceof Transfer)) {
+    return false;
+  }
+  Transfer t=(Transfer)o;
+  return t.getToVertex().equals(getToVertex()) && t.getFromVertex().equals(getFromVertex());
+}
