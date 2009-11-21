@@ -1,0 +1,11 @@
+{
+  List<Envelope> regions=new ArrayList<Envelope>();
+  for (  Vertex vertex : _graph.getVertices()) {
+    if (vertex.getType() == TransitStop.class) {
+      Envelope env=new Envelope(vertex.getCoordinate());
+      env.expandBy(0.02);
+      regions.add(env);
+    }
+  }
+  return regions;
+}

@@ -1,0 +1,6 @@
+{
+  if (!graphPath.getParentFile().exists())   graphPath.getParentFile().mkdirs();
+  ObjectOutputStream out=new ObjectOutputStream(new FileOutputStream(graphPath));
+  out.writeObject(graph);
+  out.close();
+}

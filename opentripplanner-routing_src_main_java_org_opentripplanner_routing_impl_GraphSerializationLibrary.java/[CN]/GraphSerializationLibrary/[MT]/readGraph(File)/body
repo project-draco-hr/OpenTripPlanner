@@ -1,0 +1,9 @@
+{
+  ObjectInputStream in=new ObjectInputStream(new FileInputStream(graphPath));
+  Graph graph=(Graph)in.readObject();
+  for (  Vertex vertex : graph.getVertices()) {
+    for (    Edge edge : vertex.getIncoming())     visitEdge(edge,graph);
+    for (    Edge edge : vertex.getOutgoing())     visitEdge(edge,graph);
+  }
+  return graph;
+}

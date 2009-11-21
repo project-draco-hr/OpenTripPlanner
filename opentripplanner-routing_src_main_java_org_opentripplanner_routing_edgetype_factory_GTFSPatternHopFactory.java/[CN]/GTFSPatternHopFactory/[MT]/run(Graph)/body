@@ -1,8 +1,12 @@
 {
   Collection<Trip> trips=_dao.getAllTrips();
   HashMap<StopPattern2,TripPattern> patterns=new HashMap<StopPattern2,TripPattern>();
+  int index=0;
   for (  Trip trip : trips) {
+    if (index % 1000 == 0)     _log.debug("trips=" + index + "/"+ trips.size());
+    index++;
     List<StopTime> stopTimes=_dao.getStopTimesForTrip(trip);
+    if (stopTimes.isEmpty())     continue;
     StopPattern2 stopPattern=stopPatternfromTrip(trip,_dao);
     TripPattern tripPattern=patterns.get(stopPattern);
     int lastStop=stopTimes.size() - 1;

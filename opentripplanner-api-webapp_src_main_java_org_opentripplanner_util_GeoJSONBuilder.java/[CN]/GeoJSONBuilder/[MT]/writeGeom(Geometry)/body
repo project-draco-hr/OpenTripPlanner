@@ -1,0 +1,39 @@
+{
+  this.object();
+  this.key("type");
+  this.value(getGeometryName(geometry));
+  int geometryType=getGeometryType(geometry);
+  if (geometryType != MULTIGEOMETRY) {
+    this.key("coordinates");
+switch (geometryType) {
+case POINT:
+      writeCoordinate(geometry.getCoordinate());
+    break;
+case LINESTRING:
+case MULTIPOINT:
+  writeCoordinates(geometry.getCoordinates());
+break;
+case POLYGON:
+writePolygon((Polygon)geometry);
+break;
+case MULTILINESTRING:
+this.array();
+for (int i=0, n=geometry.getNumGeometries(); i < n; i++) {
+writeCoordinates(geometry.getGeometryN(i).getCoordinates());
+}
+this.endArray();
+break;
+case MULTIPOLYGON:
+this.array();
+for (int i=0, n=geometry.getNumGeometries(); i < n; i++) {
+writePolygon((Polygon)geometry.getGeometryN(i));
+}
+this.endArray();
+break;
+}
+}
+ else {
+writeGeomCollection((GeometryCollection)geometry);
+}
+return this.endObject();
+}

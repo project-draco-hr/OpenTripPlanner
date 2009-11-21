@@ -1,0 +1,6 @@
+{
+  _index=new STRtree();
+  for (  Vertex v : _graph.getVertices()) {
+    if (v.getType() == Intersection.class)     _index.insert(new Envelope(v.getCoordinate()),v);
+  }
+}

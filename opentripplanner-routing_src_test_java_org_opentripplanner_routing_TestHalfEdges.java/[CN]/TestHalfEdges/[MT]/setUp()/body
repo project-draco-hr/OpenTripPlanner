@@ -8,15 +8,15 @@
   bl.setType(Intersection.class);
   Vertex br=graph.addVertex("br",-73,40);
   br.setType(Intersection.class);
-  double td=GtfsLibrary.distance(tl.getCoordinate().y,tl.getCoordinate().x,tr.getCoordinate().y,tr.getCoordinate().x);
+  double td=DistanceLibrary.distance(tl.getCoordinate().y,tl.getCoordinate().x,tr.getCoordinate().y,tr.getCoordinate().x);
   top=new Street(tl,tr,td);
   top.setGeometry(createGeometry(tl,tr));
   graph.addEdge(top);
-  double bd=GtfsLibrary.distance(bl.getCoordinate().y,bl.getCoordinate().x,br.getCoordinate().y,br.getCoordinate().x);
+  double bd=DistanceLibrary.distance(bl.getCoordinate().y,bl.getCoordinate().x,br.getCoordinate().y,br.getCoordinate().x);
   bottom=new Street(bl,br,bd);
   bottom.setGeometry(createGeometry(bl,br));
   graph.addEdge(bottom);
-  double d=GtfsLibrary.distance(bl.getCoordinate().y,bl.getCoordinate().x,tl.getCoordinate().y,tl.getCoordinate().x);
+  double d=DistanceLibrary.distance(bl.getCoordinate().y,bl.getCoordinate().x,tl.getCoordinate().y,tl.getCoordinate().x);
   leftDown=new Street(tl,bl,d);
   leftDown.setGeometry(createGeometry(tl,bl));
   graph.addEdge(leftDown);

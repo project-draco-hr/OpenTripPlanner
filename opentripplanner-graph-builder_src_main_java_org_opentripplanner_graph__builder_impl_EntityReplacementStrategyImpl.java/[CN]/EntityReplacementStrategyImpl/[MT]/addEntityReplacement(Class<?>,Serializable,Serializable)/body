@@ -1,0 +1,8 @@
+{
+  Map<Serializable,Serializable> idMappings=_entityReplacement.get(entityType);
+  if (idMappings == null) {
+    idMappings=new HashMap<Serializable,Serializable>();
+    _entityReplacement.put(entityType,idMappings);
+  }
+  idMappings.put(entityId,replacementEntityId);
+}

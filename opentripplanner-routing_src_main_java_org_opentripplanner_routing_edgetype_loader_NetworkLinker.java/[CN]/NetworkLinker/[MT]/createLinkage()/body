@@ -23,7 +23,7 @@
         coord=nv.getCoordinate();
         double lat2=coord.y;
         double lon2=coord.x;
-        double distance=GtfsLibrary.distance(lat1,lon1,lat2,lon2) * 2;
+        double distance=DistanceLibrary.distance(lat1,lon1,lat2,lon2) * 2;
         if (nv.getType() == Intersection.class) {
           if (distance < minDistance) {
             minDistance=distance;

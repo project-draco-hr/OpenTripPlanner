@@ -1,0 +1,5 @@
+{
+  Handler handler=new Handler();
+  for (  OpenStreetMapProvider provider : _providers)   provider.readOSM(handler);
+  handler.buildGraph(graph);
+}

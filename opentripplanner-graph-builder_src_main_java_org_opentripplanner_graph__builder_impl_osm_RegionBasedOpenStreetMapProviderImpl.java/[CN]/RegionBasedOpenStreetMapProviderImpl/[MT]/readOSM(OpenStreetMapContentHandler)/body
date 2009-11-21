@@ -1,0 +1,11 @@
+{
+  OSMDownloader downloader=new OSMDownloader();
+  if (_cacheDirectory != null)   downloader.setCacheDirectory(_cacheDirectory);
+  DownloadHandler downloadHandler=new DownloadHandler(handler);
+  try {
+    for (    Envelope region : _regionsSource.getRegions())     downloader.visitRegion(region,downloadHandler);
+  }
+ catch (  IOException ex) {
+    throw new IllegalStateException("error downloading osm",ex);
+  }
+}

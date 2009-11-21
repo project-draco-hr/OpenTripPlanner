@@ -1,0 +1,5 @@
+{
+  Map<Serializable,Serializable> idMappings=_entityReplacement.get(entityType);
+  if (idMappings == null)   return false;
+  return idMappings.containsKey(entityId);
+}

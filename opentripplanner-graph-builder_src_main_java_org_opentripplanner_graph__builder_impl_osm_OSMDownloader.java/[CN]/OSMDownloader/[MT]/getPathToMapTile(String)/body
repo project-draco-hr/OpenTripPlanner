@@ -1,0 +1,9 @@
+{
+  if (_cacheDirectory == null) {
+    _cacheDirectory=File.createTempFile("OpenStreetMapDownloader-","-tmp");
+    _cacheDirectory.delete();
+  }
+  _cacheDirectory.mkdirs();
+  File path=new File(_cacheDirectory,"map-" + key + ".osm");
+  return path;
+}

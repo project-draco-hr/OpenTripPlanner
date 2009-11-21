@@ -1,0 +1,6 @@
+{
+  StringWriter writer=new StringWriter();
+  GeoJSONBuilder builder=new GeoJSONBuilder(writer);
+  builder.writeGeom(geometry);
+  return writer.getBuffer().toString();
+}

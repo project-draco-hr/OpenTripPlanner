@@ -6,7 +6,7 @@
   for (  Edge e : stop_a.getOutgoing()) {
     assertEquals(Board.class,e.getClass());
   }
-  Vertex journey_a_1=stop_a.getOutgoing().get(0).getToVertex();
+  Vertex journey_a_1=stop_a.getOutgoing().iterator().next().getToVertex();
   assertEquals(1,journey_a_1.getDegreeIn());
   for (  Edge e : journey_a_1.getOutgoing()) {
     if (e.getToVertex().getType() == TransitStop.class) {

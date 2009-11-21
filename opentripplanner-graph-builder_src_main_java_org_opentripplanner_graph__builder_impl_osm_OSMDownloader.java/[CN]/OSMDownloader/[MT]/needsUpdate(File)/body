@@ -1,0 +1,7 @@
+{
+  if (!path.exists())   return true;
+  if (_updateIfOlderThanDuration > 0) {
+    if (System.currentTimeMillis() - path.lastModified() > _updateIfOlderThanDuration)     return true;
+  }
+  return false;
+}

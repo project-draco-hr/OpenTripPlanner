@@ -1,0 +1,9 @@
+{
+  try {
+    OpenStreetMapParser parser=new OpenStreetMapParser();
+    parser.parseMap(_path,handler);
+  }
+ catch (  Exception ex) {
+    throw new IllegalStateException("error loading OSM from path " + _path,ex);
+  }
+}

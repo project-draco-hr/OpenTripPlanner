@@ -1,0 +1,6 @@
+{
+  Map<String,String> tags=way.getTags();
+  String value=tags.get("highway");
+  if (value == null || value.equals("motorway") || value.equals("motorway_link"))   return StreetTraversalPermission.CAR_ONLY;
+  return StreetTraversalPermission.ALL;
+}

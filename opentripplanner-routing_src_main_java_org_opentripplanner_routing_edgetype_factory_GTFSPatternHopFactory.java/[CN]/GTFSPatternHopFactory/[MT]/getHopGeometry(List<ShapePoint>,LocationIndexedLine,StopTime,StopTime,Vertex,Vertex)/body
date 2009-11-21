@@ -28,7 +28,7 @@
             coords.add(c);
           }
           prev=point;
-          point=it.next();
+          if (it.hasNext())           point=it.next();
         }
  while (it.hasNext());
         break;
@@ -37,7 +37,9 @@
     }
     GeometryFactory factory=new GeometryFactory();
     if (coords.size() < 2) {
-      throw new RuntimeException("Not enough points when interpolating geometry by shape_dist_traveled");
+      Coordinate p0=new Coordinate(st0.getStop().getLon(),st0.getStop().getLat());
+      Coordinate p1=new Coordinate(st1.getStop().getLon(),st1.getStop().getLat());
+      return factory.createLineString(new Coordinate[]{p0,p1});
     }
     return factory.createLineString(coords.toArray(new Coordinate[0]));
   }

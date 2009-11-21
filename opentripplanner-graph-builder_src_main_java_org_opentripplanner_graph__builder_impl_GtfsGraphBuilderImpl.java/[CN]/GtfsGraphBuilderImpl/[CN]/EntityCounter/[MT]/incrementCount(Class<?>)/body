@@ -1,0 +1,7 @@
+{
+  Integer value=_count.get(entityType);
+  if (value == null)   value=0;
+  value++;
+  _count.put(entityType,value);
+  return value;
+}

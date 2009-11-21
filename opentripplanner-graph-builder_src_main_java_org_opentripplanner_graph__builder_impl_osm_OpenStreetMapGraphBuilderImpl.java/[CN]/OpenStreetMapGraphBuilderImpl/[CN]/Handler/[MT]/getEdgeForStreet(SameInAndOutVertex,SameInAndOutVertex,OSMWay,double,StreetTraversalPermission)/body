@@ -1,0 +1,7 @@
+{
+  String id="way " + way.getId();
+  Street street=new Street(from,to,id,id,d,permissions);
+  LineString lineString=_geometryFactory.createLineString(new Coordinate[]{from.getCoordinate(),to.getCoordinate()});
+  street.setGeometry(lineString);
+  return street;
+}

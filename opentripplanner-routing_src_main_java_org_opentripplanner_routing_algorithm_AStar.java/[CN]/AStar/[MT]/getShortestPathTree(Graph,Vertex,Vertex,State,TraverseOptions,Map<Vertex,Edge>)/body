@@ -11,10 +11,12 @@
   while (!pq.empty()) {
     spt_u=(SPTVertex)pq.extract_min();
     if (spt_u.mirror == target)     break;
-    Collection<Edge> outgoing=spt_u.mirror.getOutgoing();
+    Iterable<Edge> outgoing=spt_u.mirror.getOutgoing();
     if (extraEdges.containsKey(spt_u.mirror)) {
-      outgoing=new Vector<Edge>(outgoing);
-      outgoing.add(extraEdges.get(spt_u.mirror));
+      List<Edge> newOutgoing=new ArrayList<Edge>();
+      for (      Edge edge : spt_u.mirror.getOutgoing())       newOutgoing.add(edge);
+      newOutgoing.add(extraEdges.get(spt_u.mirror));
+      outgoing=newOutgoing;
     }
     for (    Edge edge : outgoing) {
       TraverseResult wr=edge.traverse(spt_u.state,options);

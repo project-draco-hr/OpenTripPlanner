@@ -1,0 +1,8 @@
+{
+  try {
+    if (_visitedMapTiles.add(key))     _parser.parseMap(pathToMapTile,_contentHandler);
+  }
+ catch (  Exception ex) {
+    throw new IllegalStateException("error parsing osm file " + pathToMapTile,ex);
+  }
+}

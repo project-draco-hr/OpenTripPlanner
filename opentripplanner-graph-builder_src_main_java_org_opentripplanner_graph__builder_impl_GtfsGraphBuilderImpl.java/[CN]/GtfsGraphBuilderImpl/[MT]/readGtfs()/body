@@ -1,0 +1,32 @@
+{
+  StoreImpl store=new StoreImpl();
+  List<GtfsReader> readers=new ArrayList<GtfsReader>();
+  EntityHandler counter=new EntityCounter();
+  for (  GtfsBundle gtfsBundle : _gtfsBundles.getBundles()) {
+    _log.info("gtfs=" + gtfsBundle.getPath());
+    GtfsReader reader=new GtfsReader();
+    reader.setInputLocation(gtfsBundle.getPath());
+    reader.setEntityStore(store);
+    if (gtfsBundle.getDefaultAgencyId() != null)     reader.setDefaultAgencyId(gtfsBundle.getDefaultAgencyId());
+    for (    Map.Entry<String,String> entry : gtfsBundle.getAgencyIdMappings().entrySet())     reader.addAgencyIdMapping(entry.getKey(),entry.getValue());
+    if (_log.isDebugEnabled())     reader.addEntityHandler(counter);
+    readers.add(reader);
+  }
+  if (readers.isEmpty()) {
+    _log.info("no feeds specified");
+    return;
+  }
+  store.open();
+  List<Agency> agencies=new ArrayList<Agency>();
+  List<Class<?>> entityClasses=readers.get(0).getEntityClasses();
+  for (  Class<?> entityClass : entityClasses) {
+    _log.info("reading entities: " + entityClass.getName());
+    for (    GtfsReader reader : readers) {
+      if (entityClass.equals(Agency.class))       reader.setAgencies(agencies);
+      reader.readEntities(entityClass);
+      if (entityClass.equals(Agency.class))       agencies.addAll(reader.getAgencies());
+      store.flush();
+    }
+  }
+  store.close();
+}

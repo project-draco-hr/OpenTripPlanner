@@ -1,0 +1,13 @@
+{
+  double minY=floor(rectangle.getMinY(),_latYStep);
+  double maxY=ceil(rectangle.getMaxY(),_latYStep);
+  double minX=floor(rectangle.getMinX(),_lonXStep);
+  double maxX=ceil(rectangle.getMaxX(),_lonXStep);
+  for (double y=minY; y < maxY; y+=_latYStep) {
+    for (double x=minX; x < maxX; x+=_lonXStep) {
+      String key=getKey(x,y);
+      File path=getPathToUpToDateMapTile(y,x,key);
+      listener.handleMapTile(key,y,x,path);
+    }
+  }
+}

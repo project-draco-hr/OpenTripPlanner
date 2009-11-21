@@ -1,0 +1,8 @@
+{
+  this.array();
+  writeCoordinates(geometry.getExteriorRing().getCoordinates());
+  for (int i=0, ii=geometry.getNumInteriorRing(); i < ii; i++) {
+    writeCoordinates(geometry.getInteriorRingN(i).getCoordinates());
+  }
+  this.endArray();
+}

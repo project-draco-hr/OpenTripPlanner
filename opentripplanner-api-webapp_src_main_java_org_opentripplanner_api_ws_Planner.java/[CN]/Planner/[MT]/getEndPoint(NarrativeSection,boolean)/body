@@ -1,0 +1,13 @@
+{
+  Geometry geometry=getGeometry(section,first);
+  if (geometry instanceof Point) {
+    return (Point)geometry;
+  }
+ else   if (geometry instanceof LineString) {
+    LineString lineString=(LineString)geometry;
+    return first ? lineString.getStartPoint() : lineString.getEndPoint();
+  }
+ else {
+    return geometry.getCentroid();
+  }
+}

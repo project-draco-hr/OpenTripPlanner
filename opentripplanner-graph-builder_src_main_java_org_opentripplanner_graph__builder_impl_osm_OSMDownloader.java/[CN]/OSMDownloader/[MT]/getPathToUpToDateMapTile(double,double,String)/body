@@ -1,0 +1,14 @@
+{
+  File path=getPathToMapTile(key);
+  if (needsUpdate(path)) {
+    Envelope r=new Envelope(lon - _overlap,lon + _lonXStep + _overlap,lat - _overlap,lat + _latYStep + _overlap);
+    System.out.println("downloading osm tile: " + key);
+    URL url=constructUrl(r);
+    System.out.println(url);
+    String value=getUrlAsString(url);
+    PrintWriter writer=new PrintWriter(new FileWriter(path));
+    writer.println(value);
+    writer.close();
+  }
+  return path;
+}

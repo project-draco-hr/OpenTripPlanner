@@ -1,0 +1,9 @@
+{
+  _graph=graph;
+  if (_graph.hasService(CalendarServiceData.class)) {
+    CalendarServiceData data=_graph.getService(CalendarServiceData.class);
+    CalendarServiceImpl calendarService=new CalendarServiceImpl();
+    calendarService.setServiceCalendarData(data);
+    _calendarService=calendarService;
+  }
+}

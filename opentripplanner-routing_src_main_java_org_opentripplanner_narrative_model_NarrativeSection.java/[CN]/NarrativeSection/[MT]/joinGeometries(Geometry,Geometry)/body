@@ -1,0 +1,19 @@
+{
+  if ((g1 instanceof LineString) && (g2 instanceof LineString)) {
+    LineString ls1=(LineString)g1;
+    LineString ls2=(LineString)g2;
+    Coordinate[] from=ls1.getCoordinates();
+    Coordinate[] to=ls2.getCoordinates();
+    if (from.length == 0)     return g2;
+    if (to.length == 0)     return g1;
+    Coordinate prevPoint=from[from.length - 1];
+    Coordinate nextPoint=to[0];
+    if (prevPoint.x == nextPoint.x && prevPoint.y == nextPoint.y) {
+      Coordinate[] joint=new Coordinate[from.length + to.length - 1];
+      System.arraycopy(from,0,joint,0,from.length);
+      System.arraycopy(to,0,joint,from.length - 1,to.length);
+      return _geometryFactory.createLineString(joint);
+    }
+  }
+  return g1.union(g2);
+}

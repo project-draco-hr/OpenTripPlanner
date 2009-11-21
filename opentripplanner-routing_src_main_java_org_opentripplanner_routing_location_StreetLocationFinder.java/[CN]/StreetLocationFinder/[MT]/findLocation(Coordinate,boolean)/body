@@ -20,21 +20,7 @@
         if (a == b) {
           continue;
         }
-        Edge street=null;
-        for (int j=0; j < a.getOutgoing().size(); ++j) {
-          street=a.getOutgoing().get(j);
-          if (street.getToVertex() == b) {
-            break;
-          }
-        }
-        if (street == null) {
-          for (int j=0; j < a.getIncoming().size(); ++j) {
-            street=a.getIncoming().get(j);
-            if (street.getToVertex() == b) {
-              break;
-            }
-          }
-        }
+        Edge street=getEdgeWithToVertex(a,b);
         if (street != null) {
           LineString g=(LineString)street.getGeometry();
           GeometryFactory factory=new GeometryFactory();

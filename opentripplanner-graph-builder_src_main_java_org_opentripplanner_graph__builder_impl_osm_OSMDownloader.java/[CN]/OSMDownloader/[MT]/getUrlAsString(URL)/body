@@ -1,0 +1,12 @@
+{
+  InputStream in=url.openStream();
+  BufferedReader reader=new BufferedReader(new InputStreamReader(in));
+  String line=null;
+  StringBuilder b=new StringBuilder();
+  while ((line=reader.readLine()) != null) {
+    b.append(line);
+    b.append("\n");
+  }
+  reader.close();
+  return b.toString();
+}

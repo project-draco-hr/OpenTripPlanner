@@ -1,0 +1,9 @@
+{
+  d.addObjectCreate("osm/relation",OSMRelation.class);
+  d.addSetProperties("osm/relation");
+  d.addSetNext("osm/relation","addRelation");
+  d.addObjectCreate("osm/relation/member",OSMRelationMember.class);
+  d.addSetProperties("osm/relation/member");
+  d.addSetNext("osm/relation/member","addMember");
+  addTagRules(d,"osm/relation");
+}
