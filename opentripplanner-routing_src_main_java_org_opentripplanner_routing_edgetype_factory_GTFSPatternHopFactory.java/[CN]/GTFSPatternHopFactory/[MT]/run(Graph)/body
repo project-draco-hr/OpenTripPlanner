@@ -24,25 +24,32 @@
         Stop s0=st0.getStop();
         StopTime st1=stopTimes.get(i + 1);
         Stop s1=st1.getStop();
+        int dwellTime=st0.getDepartureTime() - st0.getArrivalTime();
         int runningTime=st1.getArrivalTime() - st0.getDepartureTime();
-        Vertex startJourney=graph.addVertex(id(s0.getId()) + "_" + id(trip.getId()),s0.getLon(),s0.getLat());
-        Vertex endJourney=graph.addVertex(id(s1.getId()) + "_" + id(trip.getId()),s1.getLon(),s1.getLat());
-        PatternHop hop=new PatternHop(startJourney,endJourney,s0,s1,i,tripPattern);
-        if (geometry != null) {
-          hop.setGeometry(getHopGeometry(shapePoints,lol,st0,st1,startJourney,endJourney));
+        Vertex startJourneyDepart=graph.addVertex(id(s0.getId()) + "_" + id(trip.getId())+ "_D",s0.getLon(),s0.getLat());
+        Vertex endJourneyArrive=graph.addVertex(id(s1.getId()) + "_" + id(trip.getId())+ "_A",s1.getLon(),s1.getLat());
+        Vertex startJourneyArrive;
+        if (i != 0) {
+          startJourneyArrive=graph.addVertex(id(s0.getId()) + "_" + id(trip.getId())+ "_A",s0.getLon(),s0.getLat());
+          PatternDwell dwell=new PatternDwell(startJourneyArrive,startJourneyDepart,i,tripPattern);
+          graph.addEdge(dwell);
         }
-        tripPattern.addHop(i,0,st0.getDepartureTime(),runningTime);
+        PatternHop hop=new PatternHop(startJourneyDepart,endJourneyArrive,s0,s1,i,tripPattern);
+        if (geometry != null) {
+          hop.setGeometry(getHopGeometry(shapePoints,lol,st0,st1,startJourneyDepart,endJourneyArrive));
+        }
+        tripPattern.addHop(i,0,st0.getDepartureTime(),runningTime,st0.getArrivalTime(),dwellTime);
         graph.addEdge(hop);
         Vertex startStation=graph.getVertex(id(s0.getId()));
         Vertex endStation=graph.getVertex(id(s1.getId()));
-        PatternBoard boarding=new PatternBoard(startStation,startJourney,tripPattern,i);
+        PatternBoard boarding=new PatternBoard(startStation,startJourneyDepart,tripPattern,i);
         graph.addEdge(boarding);
-        graph.addEdge(new Alight(endJourney,endStation));
+        graph.addEdge(new Alight(endJourneyArrive,endStation));
       }
       patterns.put(stopPattern,tripPattern);
     }
  else {
-      int insertionPoint=tripPattern.getInsertionPoint(stopTimes.get(0).getDepartureTime());
+      int insertionPoint=tripPattern.getDepartureTimeInsertionPoint(stopTimes.get(0).getDepartureTime());
       if (insertionPoint < 0) {
         _log.warn("duplicate first departure time for trip " + trip.getId() + ".  This will be handled correctly but inefficiently.");
         createSimpleHops(graph,trip,stopTimes);
@@ -51,9 +58,10 @@
         for (int i=0; i < lastStop; i++) {
           StopTime st0=stopTimes.get(i);
           StopTime st1=stopTimes.get(i + 1);
+          int dwellTime=st0.getDepartureTime() - st0.getArrivalTime();
           int runningTime=st1.getArrivalTime() - st0.getDepartureTime();
           try {
-            tripPattern.addHop(i,insertionPoint,st0.getDepartureTime(),runningTime);
+            tripPattern.addHop(i,insertionPoint,st0.getDepartureTime(),runningTime,st0.getArrivalTime(),dwellTime);
           }
  catch (          TripOvertakingException e) {
             _log.warn("trip " + trip.getId() + "overtakes another trip with the same stops.  This will be handled correctly but inefficiently.");
