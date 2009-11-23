@@ -1,10 +1,10 @@
 {
   Vertex stop_a=graph.getVertex("agency_A");
   Vertex stop_b=graph.getVertex("agency_B");
-  assertEquals(1,stop_a.getDegreeOut());
-  assertEquals(3,stop_b.getDegreeOut());
+  assertEquals(2,stop_a.getDegreeOut());
+  assertEquals(6,stop_b.getDegreeOut());
   for (  Edge e : stop_a.getOutgoing()) {
-    assertEquals(PatternBoard.class,e.getClass());
+    assertEquals(Board.class,e.getClass());
   }
   Vertex journey_a_1=stop_a.getOutgoing().iterator().next().getToVertex();
   assertEquals(1,journey_a_1.getDegreeIn());
@@ -13,7 +13,7 @@
       assertEquals(Alight.class,e.getClass());
     }
  else {
-      assertEquals(PatternHop.class,e.getClass());
+      assertEquals(Hop.class,e.getClass());
     }
   }
 }

@@ -1,6 +1,6 @@
 {
   context=GtfsLibrary.readGtfs(new File(ConstantsForTests.FAKE_GTFS));
   graph=new Graph();
-  GTFSPatternHopLoader hl=new GTFSPatternHopLoader(graph,context);
+  GTFSHopLoader hl=new GTFSHopLoader(graph,context);
   hl.load();
 }
