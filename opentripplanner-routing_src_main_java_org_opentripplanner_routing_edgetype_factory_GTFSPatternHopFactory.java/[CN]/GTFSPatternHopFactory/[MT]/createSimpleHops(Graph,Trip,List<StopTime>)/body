@@ -15,14 +15,17 @@
     Stop s1=st1.getStop();
     Vertex startStation=graph.getVertex(id(s0.getId()));
     Vertex endStation=graph.getVertex(id(s1.getId()));
-    Vertex startJourney=graph.addVertex(id(s0.getId()) + "_" + tripId,s0.getLon(),s0.getLat());
+    Vertex startJourneyArrive=graph.addVertex(id(s0.getId()) + "_" + tripId,s0.getLon(),s0.getLat());
+    Vertex startJourneyDepart=graph.addVertex(id(s0.getId()) + "_" + tripId,s0.getLon(),s0.getLat());
     Vertex endJourney=graph.addVertex(id(s1.getId()) + "_" + tripId,s1.getLon(),s1.getLat());
-    Hop hop=new Hop(startJourney,endJourney,st0,st1);
+    Dwell dwell=new Dwell(startJourneyArrive,startJourneyDepart,st0);
+    graph.addEdge(dwell);
+    Hop hop=new Hop(startJourneyDepart,endJourney,st0,st1);
     if (geometry != null) {
-      hop.setGeometry(getHopGeometry(shapePoints,lol,st0,st1,startJourney,endJourney));
+      hop.setGeometry(getHopGeometry(shapePoints,lol,st0,st1,startJourneyDepart,endJourney));
     }
     hops.add(hop);
-    Board boarding=new Board(startStation,startJourney,hop);
+    Board boarding=new Board(startStation,startJourneyDepart,hop);
     graph.addEdge(boarding);
     graph.addEdge(new Alight(endJourney,endStation));
   }
