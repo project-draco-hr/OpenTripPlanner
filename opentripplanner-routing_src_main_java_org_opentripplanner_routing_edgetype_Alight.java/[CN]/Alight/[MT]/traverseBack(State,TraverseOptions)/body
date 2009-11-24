@@ -1,4 +1,14 @@
 {
-  State s1=s0.clone();
-  return new TraverseResult(1,s1);
+  long currentTime=s0.getTime();
+  Date serviceDate=getServiceDate(currentTime,true);
+  int secondsSinceMidnight=(int)((currentTime - serviceDate.getTime()) / 1000);
+  CalendarService service=wo.getCalendarService();
+  if (!service.getServiceDatesForServiceId(hop.getServiceId()).contains(serviceDate))   return null;
+  int wait=secondsSinceMidnight - hop.getEndStopTime().getArrivalTime();
+  if (wait < 0) {
+    return null;
+  }
+  State state1=s0.clone();
+  state1.incrementTimeInSeconds(-wait);
+  return new TraverseResult(wait,state1);
 }
