@@ -1,6 +1,7 @@
 {
   Vector<Integer> stopRunningTimes=runningTimes[stopIndex];
   Vector<Integer> stopDepartureTimes=departureTimes[stopIndex];
+  Vector<Integer> stopArrivalTimes=arrivalTimes[stopIndex];
   Vector<Integer> stopDwellTimes=dwellTimes[stopIndex];
   if (insertionPoint > 0) {
     if (stopDepartureTimes.elementAt(insertionPoint - 1) > departureTime) {
@@ -14,5 +15,6 @@
   }
   stopDepartureTimes.insertElementAt(departureTime,insertionPoint);
   stopRunningTimes.insertElementAt(runningTime,insertionPoint);
+  stopArrivalTimes.insertElementAt(arrivalTime,insertionPoint);
   stopDwellTimes.insertElementAt(dwellTime,insertionPoint);
 }

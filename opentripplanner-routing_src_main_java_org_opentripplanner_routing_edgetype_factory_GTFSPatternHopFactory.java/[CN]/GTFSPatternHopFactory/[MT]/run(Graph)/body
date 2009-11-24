@@ -44,7 +44,7 @@
         Vertex endStation=graph.getVertex(id(s1.getId()));
         PatternBoard boarding=new PatternBoard(startStation,startJourneyDepart,tripPattern,i);
         graph.addEdge(boarding);
-        graph.addEdge(new Alight(endJourneyArrive,endStation));
+        graph.addEdge(new PatternAlight(endJourneyArrive,endStation,tripPattern,i + 1));
       }
       patterns.put(stopPattern,tripPattern);
     }

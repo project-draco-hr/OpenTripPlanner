@@ -1,0 +1,11 @@
+{
+  StreetLocation start=new StreetLocation(leftUp,0.4,false);
+  StreetLocation end=new StreetLocation(rightUp,0.8,true);
+  GregorianCalendar startTime=new GregorianCalendar(2009,11,1,12,34,25);
+  ShortestPathTree spt=AStar.getShortestPathTreeBack(graph,start,end,new State(startTime.getTimeInMillis()),new TraverseOptions());
+  GraphPath path=spt.getPath(start.vertex);
+  assertNotNull(path);
+  for (  SPTVertex v : path.vertices) {
+    assertNotSame(v.mirror,graph.getVertex("bl"));
+  }
+}
