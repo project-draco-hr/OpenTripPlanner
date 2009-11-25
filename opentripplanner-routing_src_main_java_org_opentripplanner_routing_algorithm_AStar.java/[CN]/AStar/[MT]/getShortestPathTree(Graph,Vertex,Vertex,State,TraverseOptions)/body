@@ -2,6 +2,17 @@
   if (origin == null) {
     return null;
   }
+  Map<Vertex,Edge> extraEdges;
+  if (origin instanceof StreetLocation) {
+    extraEdges=new HashMap<Vertex,Edge>();
+    Iterable<Edge> incoming=target.getIncoming();
+    for (    Edge edge : incoming) {
+      extraEdges.put(edge.getFromVertex(),edge);
+    }
+  }
+ else {
+    extraEdges=new NullExtraEdges();
+  }
   ShortestPathTree spt=new ShortestPathTree();
   double distance=origin.distance(target) / MAX_SPEED;
   SPTVertex spt_origin=spt.addVertex(origin,init,0);

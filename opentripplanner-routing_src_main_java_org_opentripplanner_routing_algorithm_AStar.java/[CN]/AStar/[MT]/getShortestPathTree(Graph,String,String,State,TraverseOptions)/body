@@ -3,6 +3,5 @@
   String target_label=to_label;
   Vertex origin=gg.getVertex(origin_label);
   Vertex target=gg.getVertex(target_label);
-  Map<Vertex,Edge> extraEdges=new NullExtraEdges();
-  return getShortestPathTree(gg,origin,target,init,options,extraEdges);
+  return getShortestPathTree(gg,origin,target,init,options);
 }

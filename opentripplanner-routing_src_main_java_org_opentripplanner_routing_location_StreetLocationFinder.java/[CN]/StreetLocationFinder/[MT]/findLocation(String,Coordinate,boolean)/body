@@ -27,7 +27,7 @@
           if (g.distance(factory.createPoint(c)) < 0.00000001) {
             LengthIndexedLine l=new LengthIndexedLine(g);
             double location=l.indexOf(c);
-            return new StreetLocation(street,location,incoming);
+            return StreetLocation.createStreetLocation(name,street,location,incoming);
           }
         }
       }

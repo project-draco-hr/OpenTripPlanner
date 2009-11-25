@@ -5,6 +5,17 @@
   Vertex tmp=origin;
   origin=target;
   target=tmp;
+  Map<Vertex,Edge> extraEdges;
+  if (target instanceof StreetLocation) {
+    extraEdges=new HashMap<Vertex,Edge>();
+    Iterable<Edge> outgoing=target.getOutgoing();
+    for (    Edge edge : outgoing) {
+      extraEdges.put(edge.getToVertex(),edge);
+    }
+  }
+ else {
+    extraEdges=new NullExtraEdges();
+  }
   ShortestPathTree spt=new ShortestPathTree();
   double distance=origin.distance(target) / MAX_SPEED;
   SPTVertex spt_origin=spt.addVertex(origin,init,0);
