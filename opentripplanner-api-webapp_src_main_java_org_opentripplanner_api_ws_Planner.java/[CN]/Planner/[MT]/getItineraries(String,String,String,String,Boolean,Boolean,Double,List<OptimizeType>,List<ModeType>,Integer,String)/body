@@ -10,7 +10,7 @@
   if (optList != null && optList.size() > 0)   request.addOptimize(optList);
   if (modeList != null && modeList.size() > 0)   request.addMode(modeList);
   request.setOutputFormat(MediaType.valueOf(of));
-  List<Narrative> narratives=_narrativeService.plan(request.getFrom(),request.getTo(),request.getDateTime());
+  List<Narrative> narratives=_narrativeService.plan(request.getFrom(),request.getTo(),request.getDateTime(),request.isArriveBy());
   TripPlan plan=new TripPlan();
   for (  Narrative narrative : narratives) {
     Itinerary itinerary=new Itinerary();

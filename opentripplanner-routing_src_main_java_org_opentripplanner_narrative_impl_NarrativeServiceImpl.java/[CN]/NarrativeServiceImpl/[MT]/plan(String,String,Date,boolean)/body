@@ -4,6 +4,7 @@
   State state=new State(targetTime.getTime());
   TraverseOptions options=new TraverseOptions();
   if (_calendarService != null)   options.setCalendarService(_calendarService);
+  options.back=arriveBy;
   GraphPath path=_routingService.route(fromVertex,toVertex,state,options);
   Narrative narrative=getGraphPathAsNarrative(path);
   return Arrays.asList(narrative);
