@@ -1,0 +1,10 @@
+{
+  Coordinate[] coords=getCachedCoords();
+  if (coords != null)   return coords;
+  coords=new Coordinate[size()];
+  for (int i=0; i < coords.length; i++) {
+    coords[i]=getCoordinateInternal(i);
+  }
+  coordRef=new SoftReference<Coordinate[]>(coords);
+  return coords;
+}

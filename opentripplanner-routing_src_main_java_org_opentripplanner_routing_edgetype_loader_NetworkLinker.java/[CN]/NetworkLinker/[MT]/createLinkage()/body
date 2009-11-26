@@ -1,9 +1,15 @@
 {
   STRtree index=new STRtree();
-  for (  Vertex v : graph.getVertices()) {
+  Collection<Vertex> vertices=graph.getVertices();
+  _log.debug("constructing index...");
+  for (  Vertex v : vertices) {
     index.insert(new Envelope(v.getCoordinate()),v);
   }
-  for (  Vertex v : graph.getVertices()) {
+  _log.debug("creating linkages...");
+  int i=0;
+  for (  Vertex v : vertices) {
+    if (i % 100 == 0)     _log.debug("vertices=" + i + "/"+ vertices.size());
+    i++;
     if (v.getType() == TransitStop.class) {
       Envelope env=new Envelope(v.getCoordinate());
       env.expandBy(0.0018);

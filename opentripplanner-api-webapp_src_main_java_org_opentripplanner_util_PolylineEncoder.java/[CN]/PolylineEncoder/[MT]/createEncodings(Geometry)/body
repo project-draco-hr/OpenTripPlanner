@@ -1,0 +1,14 @@
+{
+  if (geometry instanceof LineString) {
+    LineString string=(LineString)geometry;
+    Coordinate[] coordinates=string.getCoordinates();
+    return createEncodings(new CoordinateList(coordinates));
+  }
+ else   if (geometry instanceof MultiLineString) {
+    MultiLineString mls=(MultiLineString)geometry;
+    return createEncodings(new CoordinateList(mls.getCoordinates()));
+  }
+ else {
+    throw new IllegalArgumentException(geometry.toString());
+  }
+}

@@ -1,6 +1,8 @@
 {
   if (!graphPath.getParentFile().exists())   graphPath.getParentFile().mkdirs();
-  ObjectOutputStream out=new ObjectOutputStream(new FileOutputStream(graphPath));
+  _log.info("Writing graph...");
+  ObjectOutputStream out=new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(graphPath)));
   out.writeObject(graph);
   out.close();
+  _log.info("Graph written");
 }

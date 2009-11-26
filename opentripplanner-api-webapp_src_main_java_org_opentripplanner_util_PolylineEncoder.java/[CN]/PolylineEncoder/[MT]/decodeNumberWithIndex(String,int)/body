@@ -1,0 +1,13 @@
+{
+  if (value.length() == 0)   throw new IllegalArgumentException("string is empty");
+  int num=0;
+  int v=0;
+  int shift=0;
+  do {
+    v=value.charAt(index++) - 63;
+    num|=(v & 0x1f) << shift;
+    shift+=5;
+  }
+ while (v >= 0x20);
+  return new int[]{num,index};
+}

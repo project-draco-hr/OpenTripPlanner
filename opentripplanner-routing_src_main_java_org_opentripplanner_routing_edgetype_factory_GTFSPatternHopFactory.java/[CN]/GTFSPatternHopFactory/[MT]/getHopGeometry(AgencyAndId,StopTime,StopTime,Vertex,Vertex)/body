@@ -1,0 +1,26 @@
+{
+  if (shapeId == null || shapeId.getId() == null)   return null;
+  double startDistance=st0.getShapeDistTraveled();
+  double endDistance=st1.getShapeDistTraveled();
+  boolean hasShapeDist=startDistance != -1 && endDistance != -1;
+  if (hasShapeDist) {
+    ShapeSegmentKey key=new ShapeSegmentKey(shapeId,startDistance,endDistance);
+    LineString geometry=_geometriesByShapeSegmentKey.get(key);
+    if (geometry != null)     return geometry;
+    double[] distances=getDistanceForShapeId(shapeId);
+    if (distances != null) {
+      LinearLocation startIndex=getSegmentFraction(distances,startDistance);
+      LinearLocation endIndex=getSegmentFraction(distances,endDistance);
+      LineString line=getLineStringForShapeId(shapeId);
+      LocationIndexedLine lol=new LocationIndexedLine(line);
+      return getSegmentGeometry(shapeId,lol,startIndex,endIndex,startDistance,endDistance);
+    }
+  }
+  LineString line=getLineStringForShapeId(shapeId);
+  LocationIndexedLine lol=new LocationIndexedLine(line);
+  LinearLocation startCoord=lol.indexOf(startJourney.getCoordinate());
+  LinearLocation endCoord=lol.indexOf(endJourney.getCoordinate());
+  double distanceFrom=startCoord.getSegmentLength(line);
+  double distanceTo=startCoord.getSegmentLength(line);
+  return getSegmentGeometry(shapeId,lol,startCoord,endCoord,distanceFrom,distanceTo);
+}

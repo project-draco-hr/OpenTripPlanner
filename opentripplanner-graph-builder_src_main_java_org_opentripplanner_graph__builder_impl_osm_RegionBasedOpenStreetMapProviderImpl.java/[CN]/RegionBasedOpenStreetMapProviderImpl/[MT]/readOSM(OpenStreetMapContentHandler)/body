@@ -3,7 +3,12 @@
   if (_cacheDirectory != null)   downloader.setCacheDirectory(_cacheDirectory);
   DownloadHandler downloadHandler=new DownloadHandler(handler);
   try {
-    for (    Envelope region : _regionsSource.getRegions())     downloader.visitRegion(region,downloadHandler);
+    int regionIndex=0;
+    for (    Envelope region : _regionsSource.getRegions()) {
+      downloader.visitRegion(region,downloadHandler);
+      _log.debug("regions=" + regionIndex);
+      regionIndex++;
+    }
   }
  catch (  IOException ex) {
     throw new IllegalStateException("error downloading osm",ex);

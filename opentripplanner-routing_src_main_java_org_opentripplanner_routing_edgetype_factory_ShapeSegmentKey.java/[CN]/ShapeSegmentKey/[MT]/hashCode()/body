@@ -1,0 +1,11 @@
+{
+  final int prime=31;
+  int result=1;
+  long temp;
+  temp=Double.doubleToLongBits(shapeDistanceFrom);
+  result=prime * result + (int)(temp ^ (temp >>> 32));
+  temp=Double.doubleToLongBits(shapeDistanceTo);
+  result=prime * result + (int)(temp ^ (temp >>> 32));
+  result=prime * result + ((shapeId == null) ? 0 : shapeId.hashCode());
+  return result;
+}

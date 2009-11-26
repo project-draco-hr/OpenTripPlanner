@@ -1,9 +1,10 @@
 {
+  clearCachedData();
   Collection<Trip> trips=_dao.getAllTrips();
   HashMap<StopPattern2,TripPattern> patterns=new HashMap<StopPattern2,TripPattern>();
   int index=0;
   for (  Trip trip : trips) {
-    if (index % 1000 == 0)     _log.debug("trips=" + index + "/"+ trips.size());
+    if (index % 100 == 0)     _log.debug("trips=" + index + "/"+ trips.size());
     index++;
     List<StopTime> stopTimes=_dao.getStopTimesForTrip(trip);
     if (stopTimes.isEmpty())     continue;
@@ -12,13 +13,6 @@
     int lastStop=stopTimes.size() - 1;
     if (tripPattern == null) {
       tripPattern=new TripPattern(trip,stopTimes);
-      Geometry geometry=getTripGeometry(trip);
-      LocationIndexedLine lol=null;
-      List<ShapePoint> shapePoints=null;
-      if (geometry != null) {
-        shapePoints=_dao.getShapePointsForShapeId(trip.getShapeId());
-        lol=new LocationIndexedLine(geometry);
-      }
       for (int i=0; i < lastStop; i++) {
         StopTime st0=stopTimes.get(i);
         Stop s0=st0.getStop();
@@ -35,9 +29,7 @@
           graph.addEdge(dwell);
         }
         PatternHop hop=new PatternHop(startJourneyDepart,endJourneyArrive,s0,s1,i,tripPattern);
-        if (geometry != null) {
-          hop.setGeometry(getHopGeometry(shapePoints,lol,st0,st1,startJourneyDepart,endJourneyArrive));
-        }
+        hop.setGeometry(getHopGeometry(trip.getShapeId(),st0,st1,startJourneyDepart,endJourneyArrive));
         tripPattern.addHop(i,0,st0.getDepartureTime(),runningTime,st0.getArrivalTime(),dwellTime);
         graph.addEdge(hop);
         Vertex startStation=graph.getVertex(id(s0.getId()));
@@ -76,4 +68,5 @@
     }
   }
   loadTransfers(graph);
+  clearCachedData();
 }

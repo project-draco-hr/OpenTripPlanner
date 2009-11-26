@@ -1,9 +1,12 @@
 {
-  ObjectInputStream in=new ObjectInputStream(new FileInputStream(graphPath));
+  ObjectInputStream in=new ObjectInputStream(new BufferedInputStream(new FileInputStream(graphPath)));
+  _log.info("Reading graph...");
   Graph graph=(Graph)in.readObject();
+  _log.info("Initializing graph...");
   for (  Vertex vertex : graph.getVertices()) {
     for (    Edge edge : vertex.getIncoming())     visitEdge(edge,graph);
     for (    Edge edge : vertex.getOutgoing())     visitEdge(edge,graph);
   }
+  _log.info("Graph read");
   return graph;
 }

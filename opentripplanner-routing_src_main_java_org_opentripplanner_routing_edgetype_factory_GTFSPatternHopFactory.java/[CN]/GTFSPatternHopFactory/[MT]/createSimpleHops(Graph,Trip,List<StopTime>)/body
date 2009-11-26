@@ -1,13 +1,6 @@
 {
   String tripId=id(trip.getId());
   ArrayList<Hop> hops=new ArrayList<Hop>();
-  LineString geometry=getTripGeometry(trip);
-  LocationIndexedLine lol=null;
-  List<ShapePoint> shapePoints=null;
-  if (geometry != null) {
-    shapePoints=_dao.getShapePointsForShapeId(trip.getShapeId());
-    lol=new LocationIndexedLine(geometry);
-  }
   for (int i=0; i < stopTimes.size() - 1; i++) {
     StopTime st0=stopTimes.get(i);
     Stop s0=st0.getStop();
@@ -21,9 +14,7 @@
     Dwell dwell=new Dwell(startJourneyArrive,startJourneyDepart,st0);
     graph.addEdge(dwell);
     Hop hop=new Hop(startJourneyDepart,endJourney,st0,st1);
-    if (geometry != null) {
-      hop.setGeometry(getHopGeometry(shapePoints,lol,st0,st1,startJourneyDepart,endJourney));
-    }
+    hop.setGeometry(getHopGeometry(trip.getShapeId(),st0,st1,startJourneyDepart,endJourney));
     hops.add(hop);
     Board boarding=new Board(startStation,startJourneyDepart,hop);
     graph.addEdge(boarding);

@@ -1,0 +1,10 @@
+{
+  if (coordinates == null)   coordinates=new Coordinate[0];
+  this.dimension=dimension;
+  coords=new float[coordinates.length * this.dimension];
+  for (int i=0; i < coordinates.length; i++) {
+    coords[i * this.dimension]=(float)coordinates[i].x;
+    if (this.dimension >= 2)     coords[i * this.dimension + 1]=(float)coordinates[i].y;
+    if (this.dimension >= 3)     coords[i * this.dimension + 2]=(float)coordinates[i].z;
+  }
+}

@@ -1,8 +1,4 @@
 {
-  Digester d=new Digester();
-  d.push(map);
-  addNodeRules(d);
-  addWayRules(d);
-  addRelationRules(d);
-  d.parse(path);
+  BufferedInputStream in=new BufferedInputStream(new FileInputStream(path));
+  parseMap(in,map);
 }

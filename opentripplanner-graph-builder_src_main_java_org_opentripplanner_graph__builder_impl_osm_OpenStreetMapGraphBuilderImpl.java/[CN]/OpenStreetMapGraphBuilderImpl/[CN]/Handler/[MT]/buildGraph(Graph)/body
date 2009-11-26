@@ -5,7 +5,10 @@
     if (nodes.size() > 1)     nodesWithNeighbors.addAll(nodes);
   }
   _nodes.keySet().retainAll(nodesWithNeighbors);
+  int nodeIndex=0;
   for (  OSMNode node : _nodes.values()) {
+    if (nodeIndex % 1000 == 0)     _log.debug("nodes=" + nodeIndex + "/"+ _nodes.size());
+    nodeIndex++;
     int nodeId=node.getId();
     String id=getVertexIdForNodeId(nodeId);
     Vertex vertex=graph.getVertex(id);
@@ -13,7 +16,10 @@
     vertex=new SameInAndOutVertex(id,Intersection.class,node.getLon(),node.getLat());
     graph.addVertex(vertex);
   }
+  int wayIndex=0;
   for (  OSMWay way : _ways.values()) {
+    if (wayIndex % 1000 == 0)     _log.debug("ways=" + wayIndex + "/"+ _ways.size());
+    wayIndex++;
     StreetTraversalPermission permissions=getPermissionsForWay(way);
     List<Integer> nodes=way.getNodeRefs();
     for (int i=0; i < nodes.size() - 1; i++) {

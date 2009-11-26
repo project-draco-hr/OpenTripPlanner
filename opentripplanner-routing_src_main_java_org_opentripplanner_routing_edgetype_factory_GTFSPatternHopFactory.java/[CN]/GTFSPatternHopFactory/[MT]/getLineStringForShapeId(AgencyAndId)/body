@@ -1,0 +1,23 @@
+{
+  LineString geometry=_geometriesByShapeId.get(shapeId);
+  if (geometry != null)   return geometry;
+  List<ShapePoint> points=_dao.getShapePointsForShapeId(shapeId);
+  Coordinate[] coordinates=new Coordinate[points.size()];
+  double[] distances=new double[points.size()];
+  boolean hasAllDistances=true;
+  int i=0;
+  for (  ShapePoint point : points) {
+    coordinates[i]=new Coordinate(point.getLon(),point.getLat());
+    distances[i]=point.getDistTraveled();
+    if (point.getDistTraveled() == -1)     hasAllDistances=false;
+    i++;
+  }
+  if (!hasAllDistances) {
+    distances=null;
+  }
+  CoordinateSequence sequence=new PackedCoordinateSequence.Float(coordinates,2);
+  geometry=_factory.createLineString(sequence);
+  _geometriesByShapeId.put(shapeId,geometry);
+  _distancesByShapeId.put(shapeId,distances);
+  return geometry;
+}

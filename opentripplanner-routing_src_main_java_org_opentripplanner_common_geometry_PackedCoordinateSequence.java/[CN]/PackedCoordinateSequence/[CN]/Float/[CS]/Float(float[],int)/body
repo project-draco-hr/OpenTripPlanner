@@ -1,0 +1,10 @@
+{
+  if (dimensions < 2) {
+    throw new IllegalArgumentException("Must have at least 2 dimensions");
+  }
+  if (coords.length % dimensions != 0) {
+    throw new IllegalArgumentException("Packed array does not contain " + "an integral number of coordinates");
+  }
+  this.dimension=dimensions;
+  this.coords=coords;
+}

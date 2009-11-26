@@ -1,0 +1,15 @@
+{
+  if (coordRef != null) {
+    Coordinate[] coords=(Coordinate[])coordRef.get();
+    if (coords != null) {
+      return coords;
+    }
+ else {
+      coordRef=null;
+      return null;
+    }
+  }
+ else {
+    return null;
+  }
+}
