@@ -13,7 +13,8 @@
     String id=getVertexIdForNodeId(nodeId);
     Vertex vertex=graph.getVertex(id);
     if (vertex != null)     throw new IllegalStateException("osm node already loaded: id=" + id);
-    vertex=new SameInAndOutVertex(id,Intersection.class,node.getLon(),node.getLat());
+    vertex=new GenericVertex(id,node.getLon(),node.getLat());
+    vertex.setType(Intersection.class);
     graph.addVertex(vertex);
   }
   int wayIndex=0;
@@ -25,12 +26,12 @@
     for (int i=0; i < nodes.size() - 1; i++) {
       String vFromId=getVertexIdForNodeId(nodes.get(i));
       String vToId=getVertexIdForNodeId(nodes.get(i + 1));
-      SameInAndOutVertex from=(SameInAndOutVertex)graph.getVertex(vFromId);
-      SameInAndOutVertex to=(SameInAndOutVertex)graph.getVertex(vToId);
+      Vertex from=graph.getVertex(vFromId);
+      Vertex to=graph.getVertex(vToId);
       if (from == null || to == null)       continue;
       double d=from.distance(to);
-      from.addEdge(getEdgeForStreet(from,to,way,d,permissions));
-      to.addEdge(getEdgeForStreet(to,from,way,d,permissions));
+      graph.addEdge(getEdgeForStreet(from,to,way,d,permissions));
+      graph.addEdge(getEdgeForStreet(to,from,way,d,permissions));
     }
   }
 }
