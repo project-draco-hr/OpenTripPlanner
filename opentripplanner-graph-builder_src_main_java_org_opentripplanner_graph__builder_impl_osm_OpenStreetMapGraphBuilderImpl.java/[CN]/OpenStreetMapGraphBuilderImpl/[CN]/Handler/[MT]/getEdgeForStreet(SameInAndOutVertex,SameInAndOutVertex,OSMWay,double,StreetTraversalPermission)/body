@@ -1,7 +1,10 @@
 {
   String id="way " + way.getId();
+  id=unique(id);
   Street street=new Street(from,to,id,id,d,permissions);
-  LineString lineString=_geometryFactory.createLineString(new Coordinate[]{from.getCoordinate(),to.getCoordinate()});
+  Coordinate[] coordinates={from.getCoordinate(),to.getCoordinate()};
+  Float sequence=new PackedCoordinateSequence.Float(coordinates,2);
+  LineString lineString=_geometryFactory.createLineString(sequence);
   street.setGeometry(lineString);
   return street;
 }

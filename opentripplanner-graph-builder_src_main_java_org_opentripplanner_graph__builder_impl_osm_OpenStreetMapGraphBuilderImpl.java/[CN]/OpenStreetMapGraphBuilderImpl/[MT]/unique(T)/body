@@ -1,0 +1,8 @@
+{
+  Object v=_uniques.get(value);
+  if (v == null) {
+    _uniques.put(value,value);
+    v=value;
+  }
+  return (T)v;
+}
