@@ -15,7 +15,7 @@
   }
   ShortestPathTree spt=new ShortestPathTree();
   double distance=origin.distance(target) / MAX_SPEED;
-  SPTVertex spt_origin=spt.addVertex(origin,init,0);
+  SPTVertex spt_origin=spt.addVertex(origin,init,0,options);
   FibHeap pq=new FibHeap(gg.getVertices().size() + extraEdges.size());
   pq.insert(spt_origin,spt_origin.weightSum + distance);
   SPTVertex spt_u, spt_v;
@@ -44,7 +44,7 @@
       spt_v=spt.getVertex(tov);
       if (spt_v == null) {
         old_w=Integer.MAX_VALUE;
-        spt_v=spt.addVertex(tov,wr.state,new_w);
+        spt_v=spt.addVertex(tov,wr.state,new_w,options);
       }
  else {
         old_w=spt_v.weightSum + distance;

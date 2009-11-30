@@ -30,13 +30,13 @@
         }
         PatternHop hop=new PatternHop(startJourneyDepart,endJourneyArrive,s0,s1,i,tripPattern);
         hop.setGeometry(getHopGeometry(trip.getShapeId(),st0,st1,startJourneyDepart,endJourneyArrive));
-        tripPattern.addHop(i,0,st0.getDepartureTime(),runningTime,st0.getArrivalTime(),dwellTime);
+        tripPattern.addHop(i,0,st0.getDepartureTime(),runningTime,st1.getArrivalTime(),dwellTime);
         graph.addEdge(hop);
         Vertex startStation=graph.getVertex(id(s0.getId()));
         Vertex endStation=graph.getVertex(id(s1.getId()));
         PatternBoard boarding=new PatternBoard(startStation,startJourneyDepart,tripPattern,i);
         graph.addEdge(boarding);
-        graph.addEdge(new PatternAlight(endJourneyArrive,endStation,tripPattern,i + 1));
+        graph.addEdge(new PatternAlight(endJourneyArrive,endStation,tripPattern,i));
       }
       patterns.put(stopPattern,tripPattern);
     }
@@ -53,7 +53,7 @@
           int dwellTime=st0.getDepartureTime() - st0.getArrivalTime();
           int runningTime=st1.getArrivalTime() - st0.getDepartureTime();
           try {
-            tripPattern.addHop(i,insertionPoint,st0.getDepartureTime(),runningTime,st0.getArrivalTime(),dwellTime);
+            tripPattern.addHop(i,insertionPoint,st0.getDepartureTime(),runningTime,st1.getArrivalTime(),dwellTime);
           }
  catch (          TripOvertakingException e) {
             _log.warn("trip " + trip.getId() + "overtakes another trip with the same stops.  This will be handled correctly but inefficiently.");
