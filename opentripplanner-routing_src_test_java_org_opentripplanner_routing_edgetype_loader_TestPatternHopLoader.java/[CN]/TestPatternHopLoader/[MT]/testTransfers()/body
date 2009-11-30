@@ -1,8 +1,6 @@
 {
   Vertex stop_k=graph.getVertex("agency_K");
   Vertex stop_l=graph.getVertex("agency_L");
-  Vertex stop_m=graph.getVertex("agency_M");
-  Edge hop=null;
   int transfers=0;
   for (  Edge e : stop_k.getOutgoing()) {
     if (e instanceof Transfer) {
