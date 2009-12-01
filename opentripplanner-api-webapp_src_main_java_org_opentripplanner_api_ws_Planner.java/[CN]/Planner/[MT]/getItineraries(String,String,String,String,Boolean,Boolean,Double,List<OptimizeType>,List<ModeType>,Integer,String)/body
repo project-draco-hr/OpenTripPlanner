@@ -25,7 +25,6 @@
     timeDistance.start=calendar.getTime();
     calendar.setTimeInMillis(endTime);
     timeDistance.end=calendar.getTime();
-    timeDistance.legs=sections.size();
     itinerary.timeDistance=timeDistance;
     plan.addItinerary(itinerary);
     for (    NarrativeSection section : sections) {
@@ -38,9 +37,10 @@ switch (mode) {
 case TRANSFER:
         timeDistance.transfers+=1;
       timeDistance.waiting+=sectionTime;
-    break;
+    continue;
 case WALK:
   timeDistance.walk+=sectionTime;
+break;
 }
 Leg leg=new Leg();
 leg.mode=getTransportationModeForSection(section);
@@ -49,6 +49,7 @@ leg.from=getPlaceForSection(section,true);
 leg.to=getPlaceForSection(section,false);
 itinerary.addLeg(leg);
 }
+timeDistance.legs=itinerary.leg.size();
 }
 Response response=new Response(request);
 response.plan=plan;
