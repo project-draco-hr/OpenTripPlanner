@@ -12,19 +12,45 @@
   request.setOutputFormat(MediaType.valueOf(of));
   List<Narrative> narratives=_narrativeService.plan(request.getFrom(),request.getTo(),request.getDateTime(),request.isArriveBy());
   TripPlan plan=new TripPlan();
+  Calendar calendar=Calendar.getInstance();
   for (  Narrative narrative : narratives) {
     Itinerary itinerary=new Itinerary();
     plan.addItinerary(itinerary);
-    for (    NarrativeSection section : narrative.getSections()) {
-      Leg leg=new Leg();
-      leg.mode=getTransportationModeForSection(section);
-      leg.legGeometry=PolylineEncoder.createEncodings(section.getGeometry());
-      leg.from=getPlaceForSection(section,true);
-      leg.to=getPlaceForSection(section,false);
-      itinerary.addLeg(leg);
-    }
-  }
-  Response response=new Response(request);
-  response.plan=plan;
-  return response;
+    Vector<NarrativeSection> sections=narrative.getSections();
+    TimeDistance timeDistance=new TimeDistance();
+    long startTime=sections.firstElement().getStartTime();
+    long endTime=sections.lastElement().getEndTime();
+    timeDistance.duration=(endTime - startTime) / 1000.0;
+    calendar.setTimeInMillis(startTime);
+    timeDistance.start=calendar.getTime();
+    calendar.setTimeInMillis(endTime);
+    timeDistance.end=calendar.getTime();
+    timeDistance.legs=sections.size();
+    itinerary.timeDistance=timeDistance;
+    plan.addItinerary(itinerary);
+    for (    NarrativeSection section : sections) {
+      TransportationMode mode=section.getMode();
+      long sectionTime=(section.getEndTime() - section.getStartTime()) / 1000;
+      if (mode.isTransitMode()) {
+        timeDistance.transit+=sectionTime;
+      }
+switch (mode) {
+case TRANSFER:
+        timeDistance.transfers+=1;
+      timeDistance.waiting+=sectionTime;
+    break;
+case WALK:
+  timeDistance.walk+=sectionTime;
+}
+Leg leg=new Leg();
+leg.mode=getTransportationModeForSection(section);
+leg.legGeometry=PolylineEncoder.createEncodings(section.getGeometry());
+leg.from=getPlaceForSection(section,true);
+leg.to=getPlaceForSection(section,false);
+itinerary.addLeg(leg);
+}
+}
+Response response=new Response(request);
+response.plan=plan;
+return response;
 }
