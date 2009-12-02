@@ -3,6 +3,7 @@
   Collection<Trip> trips=_dao.getAllTrips();
   HashMap<StopPattern2,TripPattern> patterns=new HashMap<StopPattern2,TripPattern>();
   int index=0;
+  HashMap<String,ArrayList<EncodedTrip>> tripsByBlock=new HashMap<String,ArrayList<EncodedTrip>>();
   for (  Trip trip : trips) {
     if (index % 100 == 0)     _log.debug("trips=" + index + "/"+ trips.size());
     index++;
@@ -13,6 +14,7 @@
     int lastStop=stopTimes.size() - 1;
     if (tripPattern == null) {
       tripPattern=new TripPattern(trip,stopTimes);
+      int patternIndex=-1;
       for (int i=0; i < lastStop; i++) {
         StopTime st0=stopTimes.get(i);
         Stop s0=st0.getStop();
@@ -30,7 +32,7 @@
         }
         PatternHop hop=new PatternHop(startJourneyDepart,endJourneyArrive,s0,s1,i,tripPattern);
         hop.setGeometry(getHopGeometry(trip.getShapeId(),st0,st1,startJourneyDepart,endJourneyArrive));
-        tripPattern.addHop(i,0,st0.getDepartureTime(),runningTime,st1.getArrivalTime(),dwellTime);
+        patternIndex=tripPattern.addHop(i,0,st0.getDepartureTime(),runningTime,st1.getArrivalTime(),dwellTime);
         graph.addEdge(hop);
         Vertex startStation=graph.getVertex(id(s0.getId()));
         Vertex endStation=graph.getVertex(id(s1.getId()));
@@ -39,6 +41,15 @@
         graph.addEdge(new PatternAlight(endJourneyArrive,endStation,tripPattern,i));
       }
       patterns.put(stopPattern,tripPattern);
+      String blockId=trip.getBlockId();
+      if (blockId != null && !blockId.equals("")) {
+        ArrayList<EncodedTrip> blockTrips=tripsByBlock.get(blockId);
+        if (blockTrips == null) {
+          blockTrips=new ArrayList<EncodedTrip>();
+          tripsByBlock.put(blockId,blockTrips);
+        }
+        blockTrips.add(new EncodedTrip(trip,patternIndex,tripPattern));
+      }
     }
  else {
       int insertionPoint=tripPattern.getDepartureTimeInsertionPoint(stopTimes.get(0).getDepartureTime());
@@ -47,6 +58,7 @@
         createSimpleHops(graph,trip,stopTimes);
       }
  else {
+        boolean simple=false;
         for (int i=0; i < lastStop; i++) {
           StopTime st0=stopTimes.get(i);
           StopTime st1=stopTimes.get(i + 1);
@@ -61,9 +73,47 @@
               tripPattern.removeHop(i,insertionPoint);
             }
             createSimpleHops(graph,trip,stopTimes);
+            simple=true;
             break;
           }
         }
+        if (!simple) {
+          String blockId=trip.getBlockId();
+          if (blockId != null && !blockId.equals("")) {
+            ArrayList<EncodedTrip> blockTrips=tripsByBlock.get(blockId);
+            if (blockTrips == null) {
+              blockTrips=new ArrayList<EncodedTrip>();
+              tripsByBlock.put(blockId,blockTrips);
+            }
+            blockTrips.add(new EncodedTrip(trip,0,tripPattern));
+          }
+        }
+      }
+    }
+  }
+  for (  ArrayList<EncodedTrip> blockTrips : tripsByBlock.values()) {
+    HashMap<Stop,EncodedTrip> starts=new HashMap<Stop,EncodedTrip>();
+    for (    EncodedTrip encoded : blockTrips) {
+      Trip trip=encoded.trip;
+      List<StopTime> stopTimes=_dao.getStopTimesForTrip(trip);
+      Stop start=stopTimes.get(0).getStop();
+      starts.put(start,encoded);
+    }
+    for (    EncodedTrip encoded : blockTrips) {
+      Trip trip=encoded.trip;
+      List<StopTime> stopTimes=_dao.getStopTimesForTrip(trip);
+      StopTime endTime=stopTimes.get(stopTimes.size() - 1);
+      Stop end=endTime.getStop();
+      if (starts.containsKey(end)) {
+        EncodedTrip nextTrip=starts.get(end);
+        Vertex arrive=graph.addVertex(id(end.getId()) + "_" + id(trip.getId())+ "_A",end.getLon(),end.getLat());
+        Vertex depart=graph.addVertex(id(end.getId()) + "_" + id(nextTrip.trip.getId())+ "_D",end.getLon(),end.getLat());
+        PatternDwell dwell=new PatternDwell(arrive,depart,nextTrip.patternIndex,encoded.pattern);
+        graph.addEdge(dwell);
+        List<StopTime> nextStopTimes=_dao.getStopTimesForTrip(nextTrip.trip);
+        StopTime startTime=nextStopTimes.get(0);
+        int dwellTime=startTime.getDepartureTime() - endTime.getArrivalTime();
+        encoded.pattern.setDwellTime(stopTimes.size() - 2,encoded.patternIndex,dwellTime);
       }
     }
   }
