@@ -1,0 +1,6 @@
+{
+  String key=feature.getAttribute(_attributeName).toString();
+  StreetTraversalPermission permission=_permissions.get(key);
+  if (permission == null)   permission=_defaultPermission;
+  return permission;
+}

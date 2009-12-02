@@ -1,0 +1,56 @@
+{
+  try {
+    FeatureSource<SimpleFeatureType,SimpleFeature> featureSource=_featureSourceFactory.getFeatureSource();
+    CoordinateReferenceSystem sourceCRS=featureSource.getInfo().getCRS();
+    Hints hints=new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER,Boolean.TRUE);
+    CRSAuthorityFactory factory=ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG",hints);
+    CoordinateReferenceSystem worldCRS=factory.createCoordinateReferenceSystem("EPSG:4326");
+    DefaultQuery query=new DefaultQuery();
+    query.setCoordinateSystem(sourceCRS);
+    query.setCoordinateSystemReproject(worldCRS);
+    FeatureCollection<SimpleFeatureType,SimpleFeature> features=featureSource.getFeatures(query);
+    HashMap<Coordinate,TreeSet<String>> coordinateToStreetNames=getCoordinatesToStreetNames(features);
+    features=featureSource.getFeatures(query);
+    HashMap<String,HashMap<Coordinate,Integer>> intersectionNameToId=new HashMap<String,HashMap<Coordinate,Integer>>();
+    SimpleFeatureConverter<String> streetIdConverter=_schema.getIdConverter();
+    SimpleFeatureConverter<String> streetNameConverter=_schema.getNameConverter();
+    SimpleFeatureConverter<StreetTraversalPermission> forwardPermissionConverter=_schema.getForwardPermissionConverter();
+    SimpleFeatureConverter<StreetTraversalPermission> reversePermissionConverter=_schema.getForwardPermissionConverter();
+    Iterator<SimpleFeature> it2=features.iterator();
+    while (it2.hasNext()) {
+      SimpleFeature feature=it2.next();
+      LineString geom=toLineString((Geometry)feature.getDefaultGeometry());
+      String id=streetIdConverter.convert(feature);
+      String name=streetNameConverter.convert(feature);
+      Coordinate[] coordinates=geom.getCoordinates();
+      Coordinate startCoordinate=new Coordinate(Math.round(coordinates[0].x * 1048576) / 1048576.0,Math.round(coordinates[0].y * 1048576) / 1048576.0);
+      Coordinate endCoordinate=new Coordinate(Math.round(coordinates[coordinates.length - 1].x * 1048576) / 1048576.0,Math.round(coordinates[coordinates.length - 1].y * 1048576) / 1048576.0);
+      String startIntersectionName=getIntersectionName(coordinateToStreetNames,intersectionNameToId,startCoordinate);
+      if (startIntersectionName == "null") {
+        System.out.println(name);
+      }
+      String endIntersectionName=getIntersectionName(coordinateToStreetNames,intersectionNameToId,endCoordinate);
+      Vertex startCorner=new GenericVertex(startIntersectionName,startCoordinate.x,startCoordinate.y);
+      startCorner=graph.addVertex(startCorner);
+      startCorner.setType(Intersection.class);
+      Vertex endCorner=new GenericVertex(endIntersectionName,endCoordinate.x,endCoordinate.y);
+      endCorner=graph.addVertex(endCorner);
+      endCorner.setType(Intersection.class);
+      double length=JTS.orthodromicDistance(coordinates[0],coordinates[coordinates.length - 1],worldCRS);
+      Street street=new Street(startCorner,endCorner,id,name,length);
+      street.setGeometry(geom);
+      graph.addEdge(street);
+      Street backStreet=new Street(endCorner,startCorner,id,name,length);
+      backStreet.setGeometry(geom.reverse());
+      graph.addEdge(backStreet);
+      StreetTraversalPermission forwardPermission=forwardPermissionConverter.convert(feature);
+      StreetTraversalPermission reversePermission=reversePermissionConverter.convert(feature);
+      street.setTraversalPermission(forwardPermission);
+      backStreet.setTraversalPermission(reversePermission);
+    }
+    features.close(it2);
+  }
+ catch (  Exception ex) {
+    throw new IllegalStateException("error loading shapefile street data",ex);
+  }
+}
