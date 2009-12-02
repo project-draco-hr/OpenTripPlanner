@@ -1,0 +1,15 @@
+{
+  if (this == obj)   return true;
+  if (obj == null)   return false;
+  if (getClass() != obj.getClass())   return false;
+  T2<?,?> other=(T2<?,?>)obj;
+  if (_first == null) {
+    if (other._first != null)     return false;
+  }
+ else   if (!_first.equals(other._first))   return false;
+  if (_second == null) {
+    if (other._second != null)     return false;
+  }
+ else   if (!_second.equals(other._second))   return false;
+  return true;
+}

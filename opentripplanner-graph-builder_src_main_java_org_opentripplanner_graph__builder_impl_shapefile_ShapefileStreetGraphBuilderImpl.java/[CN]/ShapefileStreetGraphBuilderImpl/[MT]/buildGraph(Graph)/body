@@ -14,8 +14,7 @@
     HashMap<String,HashMap<Coordinate,Integer>> intersectionNameToId=new HashMap<String,HashMap<Coordinate,Integer>>();
     SimpleFeatureConverter<String> streetIdConverter=_schema.getIdConverter();
     SimpleFeatureConverter<String> streetNameConverter=_schema.getNameConverter();
-    SimpleFeatureConverter<StreetTraversalPermission> forwardPermissionConverter=_schema.getForwardPermissionConverter();
-    SimpleFeatureConverter<StreetTraversalPermission> reversePermissionConverter=_schema.getForwardPermissionConverter();
+    SimpleFeatureConverter<P2<StreetTraversalPermission>> permissionConverter=_schema.getPermissionConverter();
     Iterator<SimpleFeature> it2=features.iterator();
     while (it2.hasNext()) {
       SimpleFeature feature=it2.next();
@@ -43,10 +42,9 @@
       Street backStreet=new Street(endCorner,startCorner,id,name,length);
       backStreet.setGeometry(geom.reverse());
       graph.addEdge(backStreet);
-      StreetTraversalPermission forwardPermission=forwardPermissionConverter.convert(feature);
-      StreetTraversalPermission reversePermission=reversePermissionConverter.convert(feature);
-      street.setTraversalPermission(forwardPermission);
-      backStreet.setTraversalPermission(reversePermission);
+      P2<StreetTraversalPermission> pair=permissionConverter.convert(feature);
+      street.setTraversalPermission(pair.getFirst());
+      backStreet.setTraversalPermission(pair.getSecond());
     }
     features.close(it2);
   }

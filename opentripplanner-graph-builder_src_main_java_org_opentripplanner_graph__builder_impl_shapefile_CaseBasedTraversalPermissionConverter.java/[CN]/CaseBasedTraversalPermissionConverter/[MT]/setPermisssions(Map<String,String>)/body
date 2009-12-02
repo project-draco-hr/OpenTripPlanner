@@ -1,7 +1,11 @@
 {
   for (  Map.Entry<String,String> entry : permissions.entrySet()) {
     String attributeValue=entry.getKey();
-    StreetTraversalPermission permission=StreetTraversalPermission.valueOf(entry.getValue());
-    addPermission(attributeValue,permission);
+    String perms=entry.getValue();
+    String[] tokens=perms.split(",");
+    if (tokens.length != 2)     throw new IllegalArgumentException("invalid street traversal permissions: " + perms);
+    StreetTraversalPermission forward=StreetTraversalPermission.valueOf(tokens[0]);
+    StreetTraversalPermission reverse=StreetTraversalPermission.valueOf(tokens[1]);
+    addPermission(attributeValue,forward,reverse);
   }
 }
