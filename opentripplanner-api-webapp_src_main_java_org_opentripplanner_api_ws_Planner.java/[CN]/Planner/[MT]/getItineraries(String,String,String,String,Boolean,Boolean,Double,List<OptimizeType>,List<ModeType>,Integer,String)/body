@@ -10,48 +10,99 @@
   if (optList != null && optList.size() > 0)   request.addOptimize(optList);
   if (modeList != null && modeList.size() > 0)   request.addMode(modeList);
   request.setOutputFormat(MediaType.valueOf(of));
-  List<Narrative> narratives=_narrativeService.plan(request.getFrom(),request.getTo(),request.getDateTime(),request.isArriveBy());
-  TripPlan plan=new TripPlan();
-  Calendar calendar=Calendar.getInstance();
-  for (  Narrative narrative : narratives) {
+  List<GraphPath> paths=pathservice.plan(request.getFrom(),request.getTo(),request.getDateTime(),request.isArriveBy());
+  Vector<SPTVertex> vertices=paths.get(0).vertices;
+  SPTVertex tripStartVertex=vertices.firstElement();
+  SPTVertex tripEndVertex=vertices.lastElement();
+  Place from=new Place(tripStartVertex.getX(),tripStartVertex.getY(),request.getFrom());
+  Place to=new Place(tripEndVertex.getX(),tripEndVertex.getY(),request.getTo());
+  TripPlan plan=new TripPlan(from,to,request.getDateTime());
+  for (  GraphPath path : paths) {
     Itinerary itinerary=new Itinerary();
     plan.addItinerary(itinerary);
-    Vector<NarrativeSection> sections=narrative.getSections();
-    TimeDistance timeDistance=new TimeDistance();
-    long startTime=sections.firstElement().getStartTime();
-    long endTime=sections.lastElement().getEndTime();
-    timeDistance.duration=(endTime - startTime) / 1000.0;
-    calendar.setTimeInMillis(startTime);
-    timeDistance.start=calendar.getTime();
-    calendar.setTimeInMillis(endTime);
-    timeDistance.end=calendar.getTime();
-    itinerary.timeDistance=timeDistance;
-    plan.addItinerary(itinerary);
-    for (    NarrativeSection section : sections) {
-      TransportationMode mode=section.getMode();
-      long sectionTime=(section.getEndTime() - section.getStartTime()) / 1000;
-      if (mode.isTransitMode()) {
-        timeDistance.transit+=sectionTime;
+    SPTVertex startVertex=path.vertices.firstElement();
+    State startState=startVertex.state;
+    SPTVertex endVertex=path.vertices.lastElement();
+    State endState=endVertex.state;
+    itinerary.startTime=new Date(startState.getTime());
+    itinerary.endTime=new Date(endState.getTime());
+    itinerary.duration=endState.getTime() - startState.getTime();
+    itinerary.fare=new Fare();
+    itinerary.fare.addFare(Fare.FareType.regular,Currency.getInstance("USD"),225);
+    Leg leg=null;
+    TransportationMode mode=null;
+    Geometry geometry=null;
+    String name=null;
+    for (    SPTEdge edge : path.edges) {
+      Edge graphEdge=edge.payload;
+      TransportationMode edgeMode=graphEdge.getMode();
+      double edgeTime=edge.tov.state.getTime() - edge.fromv.state.getTime();
+      if (!edgeMode.isTransitMode() && edgeMode != TransportationMode.ALIGHTING) {
+        if (edgeMode != mode || (mode != TransportationMode.WALK && graphEdge.getName() != name)) {
+          name=graphEdge.getName();
+          if (leg != null) {
+            Vertex fromv=graphEdge.getFromVertex();
+            Coordinate endCoord=fromv.getCoordinate();
+            leg.to=new Place(endCoord.x,endCoord.y,fromv.getName());
+            leg.end=new Date(edge.tov.state.getTime());
+            leg.legGeometry=PolylineEncoder.createEncodings(geometry);
+            leg.duration=edge.tov.state.getTime() - leg.start.getTime();
+            leg=null;
+          }
+          leg=new Leg();
+          itinerary.addLeg(leg);
+          leg.start=new Date(edge.fromv.state.getTime());
+          leg.route=graphEdge.getName();
+          mode=graphEdge.getMode();
+          leg.mode=mode.toString();
+          leg.distance=edge.getDistance();
+          Vertex fromv=graphEdge.getFromVertex();
+          Coordinate endCoord=fromv.getCoordinate();
+          leg.from=new Place(endCoord.x,endCoord.y,fromv.getName());
+        }
       }
-switch (mode) {
-case TRANSFER:
-        timeDistance.transfers+=1;
-      timeDistance.waiting+=sectionTime;
-    continue;
-case WALK:
-  timeDistance.walk+=sectionTime;
-break;
-}
-Leg leg=new Leg();
-leg.mode=getTransportationModeForSection(section);
-leg.legGeometry=PolylineEncoder.createEncodings(section.getGeometry());
-leg.from=getPlaceForSection(section,true);
-leg.to=getPlaceForSection(section,false);
-itinerary.addLeg(leg);
-}
-timeDistance.legs=itinerary.leg.size();
-}
-Response response=new Response(request);
-response.plan=plan;
-return response;
+      Geometry edgeGeometry=graphEdge.getGeometry();
+      if (geometry == null) {
+        geometry=edgeGeometry;
+      }
+ else {
+        if (edgeGeometry != null) {
+          geometry=geometry.union(edgeGeometry);
+        }
+      }
+      if (edgeMode == TransportationMode.TRANSFER) {
+        itinerary.transfers++;
+        itinerary.walkTime+=edgeTime;
+        itinerary.walkDistance+=graphEdge.getDistance();
+        continue;
+      }
+      if (edgeMode == TransportationMode.BOARDING) {
+        itinerary.waitingTime+=edgeTime;
+        continue;
+      }
+      if (edgeMode == TransportationMode.WALK) {
+        itinerary.walkTime+=edgeTime;
+        itinerary.walkDistance+=graphEdge.getDistance();
+      }
+      if (edgeMode.isTransitMode()) {
+        itinerary.transitTime+=edgeTime;
+        mode=graphEdge.getMode();
+        leg.mode=mode.toString();
+        leg.route=graphEdge.getName();
+      }
+    }
+    SPTEdge edge=path.edges.lastElement();
+    Edge graphEdge=edge.payload;
+    if (leg != null) {
+      Vertex tov=graphEdge.getToVertex();
+      Coordinate endCoord=tov.getCoordinate();
+      leg.to=new Place(endCoord.x,endCoord.y,tov.getName());
+      leg.end=new Date(edge.tov.state.getTime());
+      leg.legGeometry=PolylineEncoder.createEncodings(geometry);
+      leg.duration=edge.tov.state.getTime() - leg.start.getTime();
+      leg=null;
+    }
+  }
+  Response response=new Response(request,plan);
+  return response;
 }

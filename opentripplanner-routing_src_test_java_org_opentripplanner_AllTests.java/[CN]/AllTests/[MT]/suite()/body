@@ -1,10 +1,11 @@
 {
   TestSuite suite=new TestSuite("Test for core");
+  suite.addTestSuite(TestAStar.class);
   suite.addTestSuite(TestDijkstra.class);
   suite.addTestSuite(TestGraph.class);
+  suite.addTestSuite(TestGraphPath.class);
   suite.addTestSuite(TestPatternHopLoader.class);
   suite.addTestSuite(TestHalfEdges.class);
-  suite.addTestSuite(TestNarrativeGenerator.class);
   suite.addTestSuite(TestStreet.class);
   return suite;
 }
