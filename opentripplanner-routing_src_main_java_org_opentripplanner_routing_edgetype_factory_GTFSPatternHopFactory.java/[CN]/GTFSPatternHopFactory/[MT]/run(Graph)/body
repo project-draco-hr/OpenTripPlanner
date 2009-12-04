@@ -68,8 +68,8 @@
             tripPattern.addHop(i,insertionPoint,st0.getDepartureTime(),runningTime,st1.getArrivalTime(),dwellTime);
           }
  catch (          TripOvertakingException e) {
-            _log.warn("trip " + trip.getId() + "overtakes another trip with the same stops.  This will be handled correctly but inefficiently.");
-            for (; i >= 0; --i) {
+            _log.warn("trip " + trip.getId() + " overtakes another trip with the same stops.  This will be handled correctly but inefficiently.");
+            for (i=i - 1; i >= 0; --i) {
               tripPattern.removeHop(i,insertionPoint);
             }
             createSimpleHops(graph,trip,stopTimes);
