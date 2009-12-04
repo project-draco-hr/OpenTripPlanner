@@ -5,8 +5,7 @@
   request.setDateTime(date,time);
   if (max != null)   request.setNumItineraries(max);
   if (walk != null)   request.setWalk(walk);
-  if (arriveBy != null && arriveBy)   request.setArriveBy();
- else   if (departAfter != null && departAfter)   request.setDepartAfter();
+  if (arriveBy != null && arriveBy)   request.setArriveBy(true);
   if (optList != null && optList.size() > 0)   request.addOptimize(optList);
   if (modeList != null && modeList.size() > 0)   request.addMode(modeList);
   request.setOutputFormat(MediaType.valueOf(of));
