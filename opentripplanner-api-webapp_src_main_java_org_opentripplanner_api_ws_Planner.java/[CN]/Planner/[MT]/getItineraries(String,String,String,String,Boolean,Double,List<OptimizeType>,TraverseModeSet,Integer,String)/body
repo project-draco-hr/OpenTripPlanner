@@ -1,0 +1,15 @@
+{
+  Request request=new Request();
+  request.setFrom(fromPlace);
+  request.setTo(toPlace);
+  request.setDateTime(date,time);
+  if (max != null)   request.setNumItineraries(max);
+  if (walk != null)   request.setWalk(walk);
+  if (arriveBy != null && arriveBy)   request.setArriveBy(true);
+  if (optList != null && optList.size() > 0)   request.addOptimize(optList);
+  request.setModes(modes);
+  request.setOutputFormat(MediaType.valueOf(of));
+  TripPlan plan=generatePlan(request);
+  Response response=new Response(request,plan);
+  return response;
+}

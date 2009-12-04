@@ -1,8 +1,8 @@
 {
   if (m_optimizeEmpty) {
     m_optimizeEmpty=false;
-    m_optimize=new ArrayList<OptimizeType>();
+    m_optimize=new HashSet<OptimizeType>();
   }
-  paramPush(OPTIMIZE,opt);
   m_optimize.add(opt);
+  paramPush(OPTIMIZE,m_optimize);
 }

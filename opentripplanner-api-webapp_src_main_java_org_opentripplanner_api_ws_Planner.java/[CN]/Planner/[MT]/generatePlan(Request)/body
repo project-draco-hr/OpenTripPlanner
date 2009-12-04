@@ -1,15 +1,9 @@
 {
-  Request request=new Request();
-  request.setFrom(fromPlace);
-  request.setTo(toPlace);
-  request.setDateTime(date,time);
-  if (max != null)   request.setNumItineraries(max);
-  if (walk != null)   request.setWalk(walk);
-  if (arriveBy != null && arriveBy)   request.setArriveBy(true);
-  if (optList != null && optList.size() > 0)   request.addOptimize(optList);
-  if (modeList != null && modeList.size() > 0)   request.addMode(modeList);
-  request.setOutputFormat(MediaType.valueOf(of));
-  List<GraphPath> paths=pathservice.plan(request.getFrom(),request.getTo(),request.getDateTime(),request.isArriveBy());
+  TraverseModeSet modeSet=request.getModeSet();
+  assert(modeSet.isValid());
+  TraverseOptions options=new TraverseOptions(modeSet);
+  options.back=request.isArriveBy();
+  List<GraphPath> paths=pathservice.plan(request.getFrom(),request.getTo(),request.getDateTime(),options);
   Vector<SPTVertex> vertices=paths.get(0).vertices;
   SPTVertex tripStartVertex=vertices.firstElement();
   SPTVertex tripEndVertex=vertices.lastElement();
@@ -102,6 +96,5 @@
       leg=null;
     }
   }
-  Response response=new Response(request,plan);
-  return response;
+  return plan;
 }

@@ -1,6 +1,5 @@
 {
-  m_modes=new ArrayList<ModeType>();
-  Collections.addAll(m_modes,ModeType.bus,ModeType.train,ModeType.Walk);
-  m_optimize=new ArrayList<OptimizeType>();
+  m_modes=new TraverseModeSet("BUS,TRAIN,WALK");
+  m_optimize=new HashSet<OptimizeType>();
   Collections.addAll(m_optimize,OptimizeType.quick);
 }
