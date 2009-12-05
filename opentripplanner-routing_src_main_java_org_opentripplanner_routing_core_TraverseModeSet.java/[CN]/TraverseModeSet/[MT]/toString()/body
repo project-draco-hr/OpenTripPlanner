@@ -1,0 +1,12 @@
+{
+  String out="";
+  for (  TraverseMode mode : TraverseMode.values()) {
+    if ((modes & getMaskForMode(mode)) != 0) {
+      if (out != "") {
+        out+=", ";
+      }
+      out+=mode;
+    }
+  }
+  return "TraverseMode (" + out + ")";
+}

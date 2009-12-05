@@ -12,6 +12,7 @@
     StopPattern2 stopPattern=stopPatternfromTrip(trip,_dao);
     TripPattern tripPattern=patterns.get(stopPattern);
     int lastStop=stopTimes.size() - 1;
+    TraverseMode mode=GtfsLibrary.getTraverseMode(trip.getRoute());
     if (tripPattern == null) {
       tripPattern=new TripPattern(trip,stopTimes);
       int patternIndex=-1;
@@ -36,9 +37,9 @@
         graph.addEdge(hop);
         Vertex startStation=graph.getVertex(id(s0.getId()));
         Vertex endStation=graph.getVertex(id(s1.getId()));
-        PatternBoard boarding=new PatternBoard(startStation,startJourneyDepart,tripPattern,i);
+        PatternBoard boarding=new PatternBoard(startStation,startJourneyDepart,tripPattern,i,mode);
         graph.addEdge(boarding);
-        graph.addEdge(new PatternAlight(endJourneyArrive,endStation,tripPattern,i));
+        graph.addEdge(new PatternAlight(endJourneyArrive,endStation,tripPattern,i,mode));
       }
       patterns.put(stopPattern,tripPattern);
       String blockId=trip.getBlockId();

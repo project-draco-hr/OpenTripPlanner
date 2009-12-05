@@ -1,0 +1,9 @@
+{
+  ArrayList<TraverseMode> modeList=new ArrayList<TraverseMode>();
+  for (  TraverseMode mode : TraverseMode.values()) {
+    if ((modes & getMaskForMode(mode)) != 0) {
+      modeList.add(mode);
+    }
+  }
+  return modeList;
+}
