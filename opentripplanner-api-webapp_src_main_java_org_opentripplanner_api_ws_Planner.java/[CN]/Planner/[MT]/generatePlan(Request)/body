@@ -26,7 +26,10 @@
     TraverseMode mode=null;
     Geometry geometry=null;
     String name=null;
+    int startWalk=-1;
+    int i=-1;
     for (    SPTEdge edge : path.edges) {
+      i++;
       Edge graphEdge=edge.payload;
       TraverseMode edgeMode=graphEdge.getMode();
       double edgeTime=edge.tov.state.getTime() - edge.fromv.state.getTime();
@@ -34,6 +37,9 @@
         if (edgeMode != mode || (!mode.isOnStreetNonTransit() && graphEdge.getName() != name)) {
           name=graphEdge.getName();
           if (leg != null) {
+            if (startWalk != -1) {
+              leg.walkSteps=getWalkSteps(path.edges.subList(startWalk,i));
+            }
             Vertex fromv=graphEdge.getFromVertex();
             Coordinate endCoord=fromv.getCoordinate();
             leg.to=new Place(endCoord.x,endCoord.y,fromv.getName());
@@ -48,6 +54,12 @@
           leg.route=graphEdge.getName();
           mode=graphEdge.getMode();
           leg.mode=mode.toString();
+          if (mode == TraverseMode.WALK) {
+            startWalk=i;
+          }
+ else {
+            startWalk=-1;
+          }
           leg.distance=edge.getDistance();
           Vertex fromv=graphEdge.getFromVertex();
           Coordinate endCoord=fromv.getCoordinate();
@@ -93,6 +105,9 @@
       leg.end=new Date(edge.tov.state.getTime());
       leg.legGeometry=PolylineEncoder.createEncodings(geometry);
       leg.duration=edge.tov.state.getTime() - leg.start.getTime();
+      if (startWalk != -1) {
+        leg.walkSteps=getWalkSteps(path.edges.subList(startWalk,i + 1));
+      }
       leg=null;
     }
   }

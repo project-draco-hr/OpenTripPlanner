@@ -1,0 +1,11 @@
+{
+  RequestInf request=new Request();
+  request.addMode(TraverseMode.CAR);
+  assertTrue(request.getModes().getCar());
+  request.removeMode(TraverseMode.CAR);
+  assertFalse(request.getModes().getCar());
+  request.setModes(new TraverseModeSet("BICYCLE,WALK"));
+  assertFalse(request.getModes().getCar());
+  assertTrue(request.getModes().getBicycle());
+  assertTrue(request.getModes().getWalk());
+}
