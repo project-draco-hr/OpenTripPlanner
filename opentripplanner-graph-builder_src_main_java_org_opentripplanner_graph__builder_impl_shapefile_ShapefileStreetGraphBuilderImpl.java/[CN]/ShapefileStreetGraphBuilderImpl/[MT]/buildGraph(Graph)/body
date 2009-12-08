@@ -19,7 +19,8 @@
     while (it2.hasNext()) {
       SimpleFeature feature=it2.next();
       LineString geom=toLineString((Geometry)feature.getDefaultGeometry());
-      String id=streetIdConverter.convert(feature);
+      Object o=streetIdConverter.convert(feature);
+      String id="" + o;
       String name=streetNameConverter.convert(feature);
       Coordinate[] coordinates=geom.getCoordinates();
       Coordinate startCoordinate=new Coordinate(Math.round(coordinates[0].x * 1048576) / 1048576.0,Math.round(coordinates[0].y * 1048576) / 1048576.0);
