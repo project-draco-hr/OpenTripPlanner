@@ -13,9 +13,9 @@
     String id=getVertexIdForNodeId(nodeId);
     Vertex vertex=graph.getVertex(id);
     if (vertex != null)     throw new IllegalStateException("osm node already loaded: id=" + id);
-    vertex=new GenericVertex(id,node.getLon(),node.getLat());
-    vertex.setType(Intersection.class);
-    graph.addVertex(vertex);
+    GenericVertex newVertex=new GenericVertex(id,node.getLon(),node.getLat());
+    newVertex.setType(Intersection.class);
+    graph.addVertex(newVertex);
   }
   int wayIndex=0;
   for (  OSMWay way : _ways.values()) {
