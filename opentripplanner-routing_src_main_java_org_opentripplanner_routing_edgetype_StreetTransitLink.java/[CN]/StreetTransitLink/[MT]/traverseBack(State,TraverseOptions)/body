@@ -1,12 +1,4 @@
 {
   State s1=s0.clone();
-  if (!isBoarding) {
-    s1.setJustBoarded(true);
-  }
- else {
-    if (s0.getJustBoarded()) {
-      return null;
-    }
-  }
   return new TraverseResult(0,s1);
 }

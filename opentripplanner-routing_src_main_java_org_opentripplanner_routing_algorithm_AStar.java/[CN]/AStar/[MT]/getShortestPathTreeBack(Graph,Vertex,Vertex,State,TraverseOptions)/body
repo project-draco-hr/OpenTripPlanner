@@ -5,6 +5,7 @@
   Vertex tmp=origin;
   origin=target;
   target=tmp;
+  init.setTransferAllowed(true);
   Map<Vertex,Edge> extraEdges;
   if (target instanceof StreetLocation) {
     extraEdges=new HashMap<Vertex,Edge>();
