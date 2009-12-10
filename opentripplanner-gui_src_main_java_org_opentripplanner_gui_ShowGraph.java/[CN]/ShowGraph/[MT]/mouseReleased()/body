@@ -1,0 +1,21 @@
+{
+  if (startDragX == -1 || startDragY == -1 || Math.abs(mouseX - startDragX) < 5 || Math.abs(mouseY - startDragY) < 5) {
+    startDragX=startDragY=-1;
+    return;
+  }
+  double x1=toModelX(startDragX);
+  double x2=toModelX(mouseX);
+  if (x1 > x2) {
+    double tmp=x1;
+    x1=x2;
+    x2=tmp;
+  }
+  double y1=toModelY(startDragY);
+  double y2=toModelY(mouseY);
+  if (y1 > y2) {
+    double tmp=y1;
+    y1=y2;
+    y2=tmp;
+  }
+  modelBounds=new Envelope(x1,x2,y1,y2);
+}

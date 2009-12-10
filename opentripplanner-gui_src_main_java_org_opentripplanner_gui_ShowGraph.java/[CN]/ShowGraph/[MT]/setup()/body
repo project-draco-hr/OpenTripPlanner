@@ -1,0 +1,32 @@
+{
+  screenBounds=new Envelope(0,700,0,700);
+  background(0);
+  size(700,700,P2D);
+  try {
+    graph=GraphSerializationLibrary.readGraph(new File("/home/novalis/otp/opentripplanner/graph-bundle/Graph.obj"));
+  }
+ catch (  IOException e) {
+    e.printStackTrace();
+    throw new RuntimeException(e);
+  }
+catch (  ClassNotFoundException e) {
+    e.printStackTrace();
+    throw new RuntimeException(e);
+  }
+  vertexIndex=new STRtree();
+  for (  Vertex v : graph.getVertices()) {
+    Envelope env=new Envelope(v.getCoordinate());
+    if (v.getType() == TransitStop.class) {
+      modelBounds.expandToInclude(env);
+      vertexIndex.insert(env,v);
+    }
+ else     if (v.getType() == Intersection.class) {
+      vertexIndex.insert(env,v);
+    }
+ else {
+    }
+  }
+  modelBounds.expandBy(0.02);
+  modelOuterBounds=new Envelope(modelBounds);
+  vertexIndex.build();
+}

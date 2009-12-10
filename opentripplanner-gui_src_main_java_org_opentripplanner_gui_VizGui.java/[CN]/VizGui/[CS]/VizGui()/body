@@ -1,0 +1,51 @@
+{
+  super();
+  BorderLayout layout=new BorderLayout();
+  setLayout(layout);
+  Container pane=getContentPane();
+  showGraph=new ShowGraph(this);
+  pane.add(showGraph,BorderLayout.CENTER);
+  leftPanel=new JPanel();
+  leftPanel.setLayout(new BorderLayout());
+  pane.add(leftPanel,BorderLayout.LINE_START);
+  JPanel vertexDataPanel=new JPanel();
+  vertexDataPanel.setLayout(new BoxLayout(vertexDataPanel,BoxLayout.PAGE_AXIS));
+  leftPanel.add(vertexDataPanel,BorderLayout.CENTER);
+  JLabel nvLabel=new JLabel("Vertices");
+  vertexDataPanel.add(nvLabel);
+  nearbyVertices=new JList();
+  vertexDataPanel.add(nearbyVertices);
+  JLabel ogeLabel=new JLabel("Outgoing edges");
+  vertexDataPanel.add(ogeLabel);
+  outgoingEdges=new JList();
+  vertexDataPanel.add(outgoingEdges);
+  JLabel iceLabel=new JLabel("Incoming edges");
+  vertexDataPanel.add(iceLabel);
+  incomingEdges=new JList();
+  vertexDataPanel.add(incomingEdges);
+  nearbyVertices.addListSelectionListener(new ListSelectionListener(){
+    public void valueChanged(    ListSelectionEvent e){
+      outgoingEdges.removeAll();
+      incomingEdges.removeAll();
+      Vertex nowSelected=((DisplayVertex)nearbyVertices.getSelectedValue()).vertex;
+      outgoingEdges.setModel(new EdgeListModel(nowSelected.getOutgoing()));
+      incomingEdges.setModel(new EdgeListModel(nowSelected.getIncoming()));
+    }
+  }
+);
+  JPanel buttonPanel=new JPanel();
+  leftPanel.add(buttonPanel,BorderLayout.PAGE_END);
+  JButton zoomDefaultButton=new JButton("Zoom to default");
+  zoomDefaultButton.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+      showGraph.zoomToDefault();
+    }
+  }
+);
+  buttonPanel.add(zoomDefaultButton);
+  rightPanel=new JPanel();
+  pane.add(rightPanel,BorderLayout.LINE_END);
+  showGraph.init();
+  addWindowListener(new ExitListener());
+  pack();
+}

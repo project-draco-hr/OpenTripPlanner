@@ -1,0 +1,13 @@
+{
+  ListModel data=new AbstractListModel(){
+    public int getSize(){
+      return selected.size();
+    }
+    public Object getElementAt(    int index){
+      return new DisplayVertex(selected.get(index));
+    }
+  }
+;
+  nearbyVertices.setModel(data);
+  System.out.println(selected);
+}
