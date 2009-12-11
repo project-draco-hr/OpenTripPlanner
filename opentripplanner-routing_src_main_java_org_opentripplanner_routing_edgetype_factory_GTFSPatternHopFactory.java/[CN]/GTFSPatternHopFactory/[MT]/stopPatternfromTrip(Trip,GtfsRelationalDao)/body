@@ -3,6 +3,6 @@
   for (  StopTime stoptime : dao.getStopTimesForTrip(trip)) {
     stops.add(stoptime.getStop());
   }
-  StopPattern2 pattern=new StopPattern2(stops,trip.getServiceId());
+  StopPattern pattern=new StopPattern(stops,trip.getServiceId());
   return pattern;
 }

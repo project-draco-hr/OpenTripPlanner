@@ -1,7 +1,7 @@
 {
   clearCachedData();
   Collection<Trip> trips=_dao.getAllTrips();
-  HashMap<StopPattern2,TripPattern> patterns=new HashMap<StopPattern2,TripPattern>();
+  HashMap<StopPattern,TripPattern> patterns=new HashMap<StopPattern,TripPattern>();
   int index=0;
   HashMap<String,ArrayList<EncodedTrip>> tripsByBlock=new HashMap<String,ArrayList<EncodedTrip>>();
   for (  Trip trip : trips) {
@@ -9,7 +9,7 @@
     index++;
     List<StopTime> stopTimes=_dao.getStopTimesForTrip(trip);
     if (stopTimes.isEmpty())     continue;
-    StopPattern2 stopPattern=stopPatternfromTrip(trip,_dao);
+    StopPattern stopPattern=stopPatternfromTrip(trip,_dao);
     TripPattern tripPattern=patterns.get(stopPattern);
     int lastStop=stopTimes.size() - 1;
     TraverseMode mode=GtfsLibrary.getTraverseMode(trip.getRoute());
