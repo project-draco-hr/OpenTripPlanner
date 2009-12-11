@@ -1,0 +1,7 @@
+{
+  for (  int dt : pattern.getDepartureTimes(stopIndex)) {
+    Calendar c=new GregorianCalendar();
+    c.setTimeInMillis(dt * 1000);
+    departureTimes.add(String.format("%02d:%02d:%02d",c.get(Calendar.HOUR),c.get(Calendar.MINUTE),c.get(Calendar.SECOND)));
+  }
+}

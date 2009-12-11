@@ -29,6 +29,39 @@
   incomingEdges=new JList();
   JScrollPane iceScrollPane=new JScrollPane(incomingEdges);
   vertexDataPanel.add(iceScrollPane);
+  ListSelectionListener edgeChanged=new ListSelectionListener(){
+    public void valueChanged(    ListSelectionEvent e){
+      JList edgeList=(JList)e.getSource();
+      Edge selected=(Edge)edgeList.getSelectedValue();
+      if (selected == null) {
+        departurePattern.removeAll();
+        return;
+      }
+      TripPattern pattern=null;
+      int stopIndex=0;
+      if (selected instanceof PatternBoard) {
+        PatternBoard boardEdge=(PatternBoard)selected;
+        pattern=boardEdge.getPattern();
+        stopIndex=boardEdge.getStopIndex();
+      }
+ else       if (selected instanceof PatternAlight) {
+        PatternAlight alightEdge=(PatternAlight)selected;
+        pattern=alightEdge.getPattern();
+        stopIndex=alightEdge.getStopIndex();
+      }
+ else {
+        departurePattern.removeAll();
+        return;
+      }
+      Trip trip=pattern.exemplar;
+      serviceIdLabel.setText(trip.getServiceId().toString());
+      ListModel model=new TripPatternListModel(pattern,stopIndex);
+      departurePattern.setModel(model);
+    }
+  }
+;
+  outgoingEdges.addListSelectionListener(edgeChanged);
+  incomingEdges.addListSelectionListener(edgeChanged);
   nearbyVertices.addListSelectionListener(new ListSelectionListener(){
     public void valueChanged(    ListSelectionEvent e){
       outgoingEdges.removeAll();
@@ -53,7 +86,14 @@
 );
   buttonPanel.add(zoomDefaultButton);
   rightPanel=new JPanel();
+  rightPanel.setLayout(new BoxLayout(rightPanel,BoxLayout.PAGE_AXIS));
+  serviceIdLabel=new JLabel("trip pattern");
+  rightPanel.add(serviceIdLabel);
   pane.add(rightPanel,BorderLayout.LINE_END);
+  departurePattern=new JList();
+  departurePattern.setPrototypeCellValue("Bite the wax tadpole right on the nose");
+  JScrollPane dpScrollPane=new JScrollPane(departurePattern);
+  rightPanel.add(dpScrollPane);
   showGraph.init();
   addWindowListener(new ExitListener());
   pack();
