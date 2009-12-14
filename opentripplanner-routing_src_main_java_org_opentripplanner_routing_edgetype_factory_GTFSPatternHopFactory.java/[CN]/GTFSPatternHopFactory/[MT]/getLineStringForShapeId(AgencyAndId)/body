@@ -9,7 +9,7 @@
   for (  ShapePoint point : points) {
     coordinates[i]=new Coordinate(point.getLon(),point.getLat());
     distances[i]=point.getDistTraveled();
-    if (point.getDistTraveled() == -1)     hasAllDistances=false;
+    if (!point.isDistTraveledSet())     hasAllDistances=false;
     i++;
   }
   if (!hasAllDistances) {

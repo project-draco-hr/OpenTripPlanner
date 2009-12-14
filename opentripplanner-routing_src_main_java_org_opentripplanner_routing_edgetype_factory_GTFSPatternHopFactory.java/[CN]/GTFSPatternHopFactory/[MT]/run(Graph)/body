@@ -38,12 +38,12 @@
         prevDepartureTime=departureTime;
         departureTime=st0.getDepartureTime();
         int arrivalTime=st1.getArrivalTime();
-        if (arrivalTime == -1 || departureTime == -1) {
+        if (!(st0.isDepartureTimeSet() && st1.isArrivalTimeSet())) {
           if (numInterpStops == -1) {
             int j;
             for (j=i + 1; j < lastStop + 1; ++j) {
               StopTime st=stopTimes.get(j);
-              if (st.getDepartureTime() != -1) {
+              if (st.isDepartureTimeSet()) {
                 break;
               }
             }

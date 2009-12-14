@@ -2,7 +2,7 @@
   if (shapeId == null || shapeId.getId() == null || shapeId.getId().equals(""))   return null;
   double startDistance=st0.getShapeDistTraveled();
   double endDistance=st1.getShapeDistTraveled();
-  boolean hasShapeDist=startDistance != -1 && endDistance != -1;
+  boolean hasShapeDist=st0.isShapeDistTraveledSet() && st1.isShapeDistTraveledSet();
   if (hasShapeDist) {
     ShapeSegmentKey key=new ShapeSegmentKey(shapeId,startDistance,endDistance);
     LineString geometry=_geometriesByShapeSegmentKey.get(key);
