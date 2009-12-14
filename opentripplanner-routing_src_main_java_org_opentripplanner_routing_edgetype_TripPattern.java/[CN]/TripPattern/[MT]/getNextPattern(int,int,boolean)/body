@@ -1,0 +1,18 @@
+{
+  Vector<Integer> stopDepartureTimes=departureTimes[stopIndex];
+  int index=Collections.binarySearch(stopDepartureTimes,afterTime);
+  if (index == -stopDepartureTimes.size() - 1)   return -1;
+  if (index < 0) {
+    index=-index - 1;
+  }
+  if (wheelchairAccessible) {
+    Vector<Boolean> stopWheelchairAccessibles=wheelchairAccessibles[stopIndex];
+    while (!stopWheelchairAccessibles.get(index)) {
+      index++;
+      if (index == stopWheelchairAccessibles.size()) {
+        return -1;
+      }
+    }
+  }
+  return index;
+}

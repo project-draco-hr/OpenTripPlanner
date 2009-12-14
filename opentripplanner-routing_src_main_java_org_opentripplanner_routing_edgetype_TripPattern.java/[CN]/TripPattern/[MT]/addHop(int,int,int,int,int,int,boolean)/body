@@ -3,6 +3,7 @@
   Vector<Integer> stopDepartureTimes=departureTimes[stopIndex];
   Vector<Integer> stopArrivalTimes=arrivalTimes[stopIndex];
   Vector<Integer> stopDwellTimes=dwellTimes[stopIndex];
+  Vector<Boolean> stopWheelchairAccessibles=wheelchairAccessibles[stopIndex];
   if (insertionPoint > 0) {
     if (stopDepartureTimes.elementAt(insertionPoint - 1) > departureTime) {
       throw new TripOvertakingException();
@@ -17,5 +18,6 @@
   stopRunningTimes.insertElementAt(runningTime,insertionPoint);
   stopArrivalTimes.insertElementAt(arrivalTime,insertionPoint);
   stopDwellTimes.insertElementAt(dwellTime,insertionPoint);
+  stopWheelchairAccessibles.insertElementAt(wheelchairAccessible,insertionPoint);
   return insertionPoint;
 }

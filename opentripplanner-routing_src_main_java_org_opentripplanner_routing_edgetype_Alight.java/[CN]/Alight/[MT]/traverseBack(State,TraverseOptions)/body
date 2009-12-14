@@ -2,6 +2,9 @@
   if (!wo.modes.contains(hop.getMode())) {
     return null;
   }
+  if (wo.wheelchairAccessible && !wheelchairAccessible) {
+    return null;
+  }
   long currentTime=s0.getTime();
   Date serviceDate=getServiceDate(currentTime,true);
   int secondsSinceMidnight=(int)((currentTime - serviceDate.getTime()) / 1000);

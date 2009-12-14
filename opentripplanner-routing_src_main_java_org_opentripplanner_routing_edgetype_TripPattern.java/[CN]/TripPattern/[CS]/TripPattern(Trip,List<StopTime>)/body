@@ -5,10 +5,14 @@
   runningTimes=(Vector<Integer>[])Array.newInstance(Vector.class,hops);
   dwellTimes=(Vector<Integer>[])Array.newInstance(Vector.class,hops);
   arrivalTimes=(Vector<Integer>[])Array.newInstance(Vector.class,hops);
-  for (int i=0; i < hops; ++i) {
+  wheelchairAccessibles=(Vector<Boolean>[])Array.newInstance(Vector.class,hops + 1);
+  int i;
+  for (i=0; i < hops; ++i) {
     departureTimes[i]=new Vector<Integer>();
     runningTimes[i]=new Vector<Integer>();
     dwellTimes[i]=new Vector<Integer>();
     arrivalTimes[i]=new Vector<Integer>();
+    wheelchairAccessibles[i]=new Vector<Boolean>();
   }
+  wheelchairAccessibles[i]=new Vector<Boolean>();
 }

@@ -1,6 +1,7 @@
 {
   String tripId=id(trip.getId());
   ArrayList<Hop> hops=new ArrayList<Hop>();
+  boolean tripWheelchairAccessible=trip.getWheelchairAccessible() != 0;
   for (int i=0; i < stopTimes.size() - 1; i++) {
     StopTime st0=stopTimes.get(i);
     Stop s0=st0.getStop();
@@ -16,8 +17,8 @@
     Hop hop=new Hop(startJourneyDepart,endJourney,st0,st1);
     hop.setGeometry(getHopGeometry(trip.getShapeId(),st0,st1,startJourneyDepart,endJourney));
     hops.add(hop);
-    Board boarding=new Board(startStation,startJourneyDepart,hop);
+    Board boarding=new Board(startStation,startJourneyDepart,hop,tripWheelchairAccessible && s0.getWheelchairBoarding() != 0);
     graph.addEdge(boarding);
-    graph.addEdge(new Alight(endJourney,endStation,hop));
+    graph.addEdge(new Alight(endJourney,endStation,hop,tripWheelchairAccessible && s1.getWheelchairBoarding() != 0));
   }
 }

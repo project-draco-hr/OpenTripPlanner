@@ -1,22 +1,22 @@
 {
-  if (!wo.modes.get(modeMask)) {
+  if (!options.modes.get(modeMask)) {
     return null;
   }
   long currentTime=state0.getTime();
-  Date serviceDate=getServiceDate(currentTime,wo.calendar);
-  Date serviceDateYesterday=getServiceDate(currentTime - MILLI_IN_DAY,wo.calendar);
+  Date serviceDate=getServiceDate(currentTime,options.calendar);
+  Date serviceDateYesterday=getServiceDate(currentTime - MILLI_IN_DAY,options.calendar);
   int secondsSinceMidnight=(int)((currentTime - serviceDate.getTime()) / 1000);
   int wait=1;
   int patternIndex=-1;
   AgencyAndId service=pattern.exemplar.getServiceId();
-  if (wo.serviceOn(service,serviceDate)) {
-    patternIndex=pattern.getPreviousPattern(stopIndex,secondsSinceMidnight);
+  if (options.serviceOn(service,serviceDate)) {
+    patternIndex=pattern.getPreviousPattern(stopIndex,secondsSinceMidnight,options.wheelchairAccessible);
     if (patternIndex >= 0) {
       wait=pattern.getArrivalTime(stopIndex,patternIndex) - secondsSinceMidnight;
     }
   }
-  if (wo.serviceOn(service,serviceDateYesterday)) {
-    int yesterdayPatternIndex=pattern.getPreviousPattern(stopIndex,secondsSinceMidnight + SEC_IN_DAY);
+  if (options.serviceOn(service,serviceDateYesterday)) {
+    int yesterdayPatternIndex=pattern.getPreviousPattern(stopIndex,secondsSinceMidnight + SEC_IN_DAY,options.wheelchairAccessible);
     if (yesterdayPatternIndex >= 0) {
       int waitYesterday=pattern.getArrivalTime(stopIndex,yesterdayPatternIndex) - secondsSinceMidnight - SEC_IN_DAY;
       if (wait > 0 || waitYesterday > wait) {
