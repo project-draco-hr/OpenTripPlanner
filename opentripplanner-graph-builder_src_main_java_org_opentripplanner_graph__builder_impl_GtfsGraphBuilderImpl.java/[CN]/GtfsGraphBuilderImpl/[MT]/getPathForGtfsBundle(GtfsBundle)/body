@@ -1,0 +1,19 @@
+{
+  File path=gtfsBundle.getPath();
+  if (path != null)   return path;
+  URL url=gtfsBundle.getUrl();
+  if (url != null) {
+    File tmpDir=getTemporaryDirectory();
+    File gtfsFile=new File(tmpDir,"gtfs_file.zip");
+    if (gtfsFile.exists()) {
+      _log.info("using already downloaded gtfs file: path=" + gtfsFile);
+      return gtfsFile;
+    }
+    _log.info("downloading gtfs: url=" + url + " path="+ gtfsFile);
+    BufferedInputStream in=new BufferedInputStream(url.openStream());
+    BufferedOutputStream out=new BufferedOutputStream(new FileOutputStream(gtfsFile));
+    copyStreams(in,out);
+    return gtfsFile;
+  }
+  throw new IllegalStateException("GtfsBundle did not include a path or a url");
+}

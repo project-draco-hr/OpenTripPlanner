@@ -3,9 +3,10 @@
   List<GtfsReader> readers=new ArrayList<GtfsReader>();
   EntityHandler counter=new EntityCounter();
   for (  GtfsBundle gtfsBundle : _gtfsBundles.getBundles()) {
-    _log.info("gtfs=" + gtfsBundle.getPath());
+    File path=getPathForGtfsBundle(gtfsBundle);
+    _log.info("gtfs=" + path);
     GtfsReader reader=new GtfsReader();
-    reader.setInputLocation(gtfsBundle.getPath());
+    reader.setInputLocation(path);
     reader.setEntityStore(store);
     if (gtfsBundle.getDefaultAgencyId() != null)     reader.setDefaultAgencyId(gtfsBundle.getDefaultAgencyId());
     for (    Map.Entry<String,String> entry : gtfsBundle.getAgencyIdMappings().entrySet())     reader.addAgencyIdMapping(entry.getKey(),entry.getValue());
