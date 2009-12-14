@@ -157,7 +157,7 @@
         graph.addEdge(dwell);
         List<StopTime> nextStopTimes=_dao.getStopTimesForTrip(nextTrip.trip);
         StopTime startTime=nextStopTimes.get(0);
-        int dwellTime=startTime.getDepartureTime() - startTime.getArrivalTime();
+        int dwellTime=startTime.getArrivalTime() - endTime.getDepartureTime();
         encoded.pattern.setDwellTime(stopTimes.size() - 2,encoded.patternIndex,dwellTime);
       }
     }
