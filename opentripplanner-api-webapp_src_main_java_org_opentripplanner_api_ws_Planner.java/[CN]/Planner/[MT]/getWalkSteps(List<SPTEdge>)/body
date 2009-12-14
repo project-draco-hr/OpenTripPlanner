@@ -9,8 +9,8 @@
       step=new WalkStep();
       steps.add(step);
       step.streetName=streetName;
-      step.x=edge.getFromVertex().getX();
-      step.y=edge.getFromVertex().getY();
+      step.lon=edge.getFromVertex().getX();
+      step.lat=edge.getFromVertex().getY();
       double thisAngle=getFirstAngle(edge.getGeometry());
       step.setAbsoluteDirection(thisAngle);
     }
@@ -20,8 +20,8 @@
       step.streetName=streetName;
       double thisAngle=getFirstAngle(edge.getGeometry());
       step.setDirections(lastAngle,thisAngle);
-      step.x=edge.getFromVertex().getX();
-      step.y=edge.getFromVertex().getY();
+      step.lon=edge.getFromVertex().getX();
+      step.lat=edge.getFromVertex().getY();
       step.becomes=!multipleOptionsbefore(edge);
     }
  else {
@@ -35,8 +35,8 @@
           step.streetName=streetName;
           step.setDirections(lastAngle,thisAngle);
           step.stayOn=true;
-          step.x=edge.getFromVertex().getX();
-          step.y=edge.getFromVertex().getY();
+          step.lon=edge.getFromVertex().getX();
+          step.lat=edge.getFromVertex().getY();
         }
       }
     }
