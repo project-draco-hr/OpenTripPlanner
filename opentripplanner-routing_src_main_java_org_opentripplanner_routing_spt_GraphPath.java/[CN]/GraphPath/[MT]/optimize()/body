@@ -6,7 +6,6 @@
   }
   TraverseOptions options=vertices.lastElement().options;
   ListIterator<SPTEdge> iterator=edges.listIterator(vertices.size() - 1);
-  state.setTransferAllowed(true);
   while (iterator.hasPrevious()) {
     SPTEdge edge=iterator.previous();
     TraverseResult result=edge.payload.traverseBack(state,options);

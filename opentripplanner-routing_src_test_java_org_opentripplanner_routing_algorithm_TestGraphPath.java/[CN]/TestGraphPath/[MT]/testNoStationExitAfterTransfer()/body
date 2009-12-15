@@ -1,0 +1,27 @@
+{
+  Vertex v1=new GenericVertex("fake_intersection",-74,41.000001,"fake_intersection",Intersection.class);
+  Vertex v2=new GenericVertex("fake_intersection2",-73.000002,41.000001,"fake_intersection2",Intersection.class);
+  graph.addVertex(v1);
+  graph.addVertex(v2);
+  Street street=new Street(v1,v2,"fake_street","fake_street",10);
+  graph.addEdge(street);
+  NetworkLinker nl=new NetworkLinker(graph);
+  nl.createLinkage();
+  Vertex startVertex=graph.getVertex("agency_N");
+  Vertex destVertex=graph.getVertex("fake_intersection2");
+  TraverseOptions options=new TraverseOptions();
+  options.setGtfsContext(context);
+  ShortestPathTree spt;
+  GraphPath path;
+  State s0=new State(new GregorianCalendar(2009,8,7,15,0,0).getTimeInMillis());
+  spt=AStar.getShortestPathTree(graph,startVertex.getLabel(),destVertex.getLabel(),s0,options);
+  path=spt.getPath(destVertex);
+  assertNotNull(path);
+  Edge prevEdge=null;
+  for (  SPTEdge e : path.edges) {
+    if (prevEdge instanceof Transfer) {
+      assertFalse(e.payload instanceof StreetTransitLink);
+    }
+    prevEdge=e.payload;
+  }
+}
