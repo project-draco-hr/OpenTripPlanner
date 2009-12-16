@@ -6,7 +6,7 @@
   if (max != null)   request.setNumItineraries(max);
   if (max_walk_distance != null)   request.setWalk(max_walk_distance);
   if (arriveBy != null && arriveBy)   request.setArriveBy(true);
-  if (optList != null && optList.size() > 0)   request.addOptimize(optList);
+  request.setOptimize(optimize);
   request.setModes(modes);
   request.setOutputFormat(MediaType.valueOf(of));
   TripPlan plan=generatePlan(request);

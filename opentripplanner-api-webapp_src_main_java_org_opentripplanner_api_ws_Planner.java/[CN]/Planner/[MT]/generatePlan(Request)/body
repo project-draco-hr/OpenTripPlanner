@@ -2,6 +2,7 @@
   TraverseModeSet modeSet=request.getModeSet();
   assert(modeSet.isValid());
   TraverseOptions options=new TraverseOptions(modeSet);
+  options.optimizeFor=request.getOptimize();
   options.back=request.isArriveBy();
   List<GraphPath> paths=pathservice.plan(request.getFrom(),request.getTo(),request.getDateTime(),options);
   Vector<SPTVertex> vertices=paths.get(0).vertices;
