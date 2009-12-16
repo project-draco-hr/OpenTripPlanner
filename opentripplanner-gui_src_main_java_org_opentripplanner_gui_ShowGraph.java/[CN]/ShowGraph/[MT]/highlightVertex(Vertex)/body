@@ -1,0 +1,11 @@
+{
+  Coordinate c=v.getCoordinate();
+  double xd=0, yd=0;
+  while (!modelBounds.contains(c)) {
+    xd=modelBounds.getWidth() / 100;
+    yd=modelBounds.getHeight() / 100;
+    modelBounds.expandBy(xd,yd);
+  }
+  modelBounds.expandBy(xd,yd);
+  highlightedVertex=v;
+}

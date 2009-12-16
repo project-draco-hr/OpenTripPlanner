@@ -1,8 +1,7 @@
 {
-  double x=toModelX(mouseX);
-  double y=toModelY(mouseY);
-  Envelope env=new Envelope(new Coordinate(x,y));
-  env.expandBy(0.001);
+  Envelope screenEnv=new Envelope(new Coordinate(mouseX,mouseY));
+  screenEnv.expandBy(3,3);
+  Envelope env=new Envelope(toModelX(screenEnv.getMinX()),toModelX(screenEnv.getMaxX()),toModelY(screenEnv.getMinY()),toModelY(screenEnv.getMaxY()));
   List<Vertex> nearby=(List<Vertex>)vertexIndex.query(env);
   selector.verticesSelected(nearby);
 }

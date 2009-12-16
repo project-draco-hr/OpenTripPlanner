@@ -80,6 +80,7 @@ catch (  ClassNotFoundException e) {
       DisplayVertex selected=(DisplayVertex)nearbyVertices.getSelectedValue();
       if (selected != null) {
         Vertex nowSelected=selected.vertex;
+        showGraph.highlightVertex(nowSelected);
         outgoingEdges.setModel(new EdgeListModel(nowSelected.getOutgoing()));
         incomingEdges.setModel(new EdgeListModel(nowSelected.getIncoming()));
       }
@@ -96,9 +97,9 @@ catch (  ClassNotFoundException e) {
   }
 );
   buttonPanel.add(zoomDefaultButton);
-  zoomDefaultButton=new JButton("Route");
+  JButton routeButton=new JButton("Route");
   final JFrame frame=this;
-  zoomDefaultButton.addActionListener(new ActionListener(){
+  routeButton.addActionListener(new ActionListener(){
     public void actionPerformed(    ActionEvent e){
       String initialFrom="";
       Object selected=nearbyVertices.getSelectedValue();
@@ -112,7 +113,25 @@ catch (  ClassNotFoundException e) {
     }
   }
 );
-  buttonPanel.add(zoomDefaultButton);
+  buttonPanel.add(routeButton);
+  JButton findButton=new JButton("Find node");
+  findButton.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+      String nodeName=(String)JOptionPane.showInputDialog(frame,"Node id",JOptionPane.PLAIN_MESSAGE);
+      Vertex v=graph.getVertex(nodeName);
+      if (v == null) {
+        System.out.println("no such node " + nodeName);
+      }
+ else {
+        showGraph.highlightVertex(v);
+        ArrayList<Vertex> l=new ArrayList<Vertex>();
+        l.add(v);
+        verticesSelected(l);
+      }
+    }
+  }
+);
+  buttonPanel.add(findButton);
   rightPanel=new JPanel();
   rightPanel.setLayout(new BoxLayout(rightPanel,BoxLayout.PAGE_AXIS));
   serviceIdLabel=new JLabel("trip pattern");
