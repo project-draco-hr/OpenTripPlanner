@@ -1,0 +1,25 @@
+{
+  super(owner,true);
+  fromField=new JTextField(initialFrom,30);
+  toField=new JTextField(30);
+  goButton=new JButton("Go");
+  Container pane=getContentPane();
+  pane.setLayout(new BoxLayout(pane,BoxLayout.PAGE_AXIS));
+  pane.add(new JLabel("From"));
+  pane.add(fromField);
+  pane.add(new JLabel("To"));
+  pane.add(toField);
+  pane.add(goButton);
+  pack();
+  final RouteDialog outer=this;
+  goButton.addActionListener(new ActionListener(){
+    @Override public void actionPerformed(    ActionEvent e){
+      System.out.println("clicked");
+      from=fromField.getText();
+      to=toField.getText();
+      outer.setVisible(false);
+    }
+  }
+);
+  setVisible(true);
+}
