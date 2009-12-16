@@ -2,17 +2,6 @@
   screenBounds=new Envelope(0,700,0,700);
   background(0);
   size(700,700,P2D);
-  try {
-    graph=GraphSerializationLibrary.readGraph(new File(graphObj));
-  }
- catch (  IOException e) {
-    e.printStackTrace();
-    throw new RuntimeException(e);
-  }
-catch (  ClassNotFoundException e) {
-    e.printStackTrace();
-    throw new RuntimeException(e);
-  }
   vertexIndex=new STRtree();
   for (  Vertex v : graph.getVertices()) {
     Envelope env=new Envelope(v.getCoordinate());

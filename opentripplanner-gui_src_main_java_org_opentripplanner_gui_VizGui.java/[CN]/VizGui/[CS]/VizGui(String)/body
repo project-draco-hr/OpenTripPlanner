@@ -3,7 +3,18 @@
   BorderLayout layout=new BorderLayout();
   setLayout(layout);
   Container pane=getContentPane();
-  showGraph=new ShowGraph(this,graphObj);
+  try {
+    graph=GraphSerializationLibrary.readGraph(new File(graphName));
+  }
+ catch (  IOException e) {
+    e.printStackTrace();
+    throw new RuntimeException(e);
+  }
+catch (  ClassNotFoundException e) {
+    e.printStackTrace();
+    throw new RuntimeException(e);
+  }
+  showGraph=new ShowGraph(this,graph);
   pane.add(showGraph,BorderLayout.CENTER);
   leftPanel=new JPanel();
   leftPanel.setLayout(new BorderLayout());
@@ -85,6 +96,23 @@
   }
 );
   buttonPanel.add(zoomDefaultButton);
+  zoomDefaultButton=new JButton("Route");
+  final JFrame frame=this;
+  zoomDefaultButton.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+      String initialFrom="";
+      Object selected=nearbyVertices.getSelectedValue();
+      if (selected != null) {
+        initialFrom=selected.toString();
+      }
+      RouteDialog dlg=new RouteDialog(frame,initialFrom);
+      String from=dlg.from;
+      String to=dlg.to;
+      route(from,to);
+    }
+  }
+);
+  buttonPanel.add(zoomDefaultButton);
   rightPanel=new JPanel();
   rightPanel.setLayout(new BoxLayout(rightPanel,BoxLayout.PAGE_AXIS));
   serviceIdLabel=new JLabel("trip pattern");
@@ -94,6 +122,15 @@
   departurePattern.setPrototypeCellValue("Bite the wax tadpole right on the nose");
   JScrollPane dpScrollPane=new JScrollPane(departurePattern);
   rightPanel.add(dpScrollPane);
+  pathservice=new PathServiceImpl();
+  pathservice.setGraph(graph);
+  indexService=new StreetVertexIndexServiceImpl();
+  indexService.setGraph(graph);
+  indexService.setup();
+  pathservice.setIndexService(indexService);
+  routingService=new RoutingServiceImpl();
+  routingService.setGraph(graph);
+  pathservice.setRoutingService(routingService);
   showGraph.init();
   addWindowListener(new ExitListener());
   pack();

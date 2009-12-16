@@ -1,0 +1,13 @@
+{
+  TraverseOptions options=new TraverseOptions();
+  Date now=new Date();
+  List<GraphPath> paths=pathservice.plan(from,to,now,options);
+  if (paths.get(0) == null) {
+    System.out.println("no path");
+    return;
+  }
+  Vector<SPTVertex> vertices=paths.get(0).vertices;
+  for (  Vertex v : vertices) {
+    System.out.println(v);
+  }
+}
