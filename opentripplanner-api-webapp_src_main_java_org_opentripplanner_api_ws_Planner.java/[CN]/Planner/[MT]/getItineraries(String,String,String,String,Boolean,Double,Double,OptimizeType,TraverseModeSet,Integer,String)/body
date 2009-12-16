@@ -4,11 +4,11 @@
   request.setTo(toPlace);
   request.setDateTime(date,time);
   if (max != null)   request.setNumItineraries(max);
-  if (max_walk_distance != null)   request.setWalk(max_walk_distance);
+  if (maxWalkDistance != null)   request.setWalk(maxWalkDistance);
   if (arriveBy != null && arriveBy)   request.setArriveBy(true);
   request.setOptimize(optimize);
   request.setModes(modes);
-  request.setOutputFormat(MediaType.valueOf(of));
+  request.setOutputFormat(MediaType.valueOf(outputFormat));
   TripPlan plan=generatePlan(request);
   Response response=new Response(request,plan);
   return response;
