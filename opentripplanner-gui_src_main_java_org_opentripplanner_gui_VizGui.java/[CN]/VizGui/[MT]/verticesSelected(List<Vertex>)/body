@@ -1,13 +1,4 @@
 {
-  ListModel data=new AbstractListModel(){
-    private static final long serialVersionUID=1L;
-    public int getSize(){
-      return selected.size();
-    }
-    public Object getElementAt(    int index){
-      return new DisplayVertex(selected.get(index));
-    }
-  }
-;
+  ListModel data=new VertexList(selected);
   nearbyVertices.setModel(data);
 }

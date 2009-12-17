@@ -48,6 +48,20 @@ catch (  ClassNotFoundException e) {
         departurePattern.removeAll();
         return;
       }
+      VertexList nearbyModel=(VertexList)nearbyVertices.getModel();
+      List<Vertex> vertices=nearbyModel.selected;
+      Vertex v;
+      if (edgeList == outgoingEdges) {
+        v=selected.getToVertex();
+      }
+ else {
+        v=selected.getFromVertex();
+      }
+      if (!vertices.contains(v)) {
+        vertices.add(v);
+        nearbyModel=new VertexList(vertices);
+        nearbyVertices.setModel(nearbyModel);
+      }
       TripPattern pattern=null;
       int stopIndex=0;
       if (selected instanceof PatternBoard) {
@@ -64,10 +78,10 @@ catch (  ClassNotFoundException e) {
         departurePattern.removeAll();
         return;
       }
-      Trip trip=pattern.exemplar;
-      serviceIdLabel.setText(trip.getServiceId().toString());
       ListModel model=new TripPatternListModel(pattern,stopIndex);
       departurePattern.setModel(model);
+      Trip trip=pattern.exemplar;
+      serviceIdLabel.setText(trip.getServiceId().toString());
     }
   }
 ;
