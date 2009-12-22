@@ -1,0 +1,14 @@
+{
+  HashMap<Stop,TreeSet<EncodedTrip>> blockStops=tripsByBlockAndStart.get(blockId);
+  if (blockStops == null) {
+    blockStops=new HashMap<Stop,TreeSet<EncodedTrip>>();
+    tripsByBlockAndStart.put(blockId,blockStops);
+  }
+  Stop firstStop=stopTimes.get(0).getStop();
+  TreeSet<EncodedTrip> stopTrips=blockStops.get(firstStop);
+  if (stopTrips == null) {
+    stopTrips=new TreeSet<EncodedTrip>();
+    blockStops.put(firstStop,stopTrips);
+  }
+  stopTrips.add(new EncodedTrip(trip,0,tripPattern));
+}

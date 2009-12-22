@@ -6,6 +6,7 @@
   dwellTimes=(Vector<Integer>[])Array.newInstance(Vector.class,hops);
   arrivalTimes=(Vector<Integer>[])Array.newInstance(Vector.class,hops);
   wheelchairAccessibles=(Vector<Boolean>[])Array.newInstance(Vector.class,hops + 1);
+  tripIds=new Vector<AgencyAndId>();
   int i;
   for (i=0; i < hops; ++i) {
     departureTimes[i]=new Vector<Integer>();

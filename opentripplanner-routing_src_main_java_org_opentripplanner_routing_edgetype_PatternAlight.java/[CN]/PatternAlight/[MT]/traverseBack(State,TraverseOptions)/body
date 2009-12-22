@@ -31,5 +31,6 @@
   State state1=state0.clone();
   state1.setPattern(patternIndex);
   state1.incrementTimeInSeconds(wait);
+  state1.tripId=pattern.getTripId(patternIndex);
   return new TraverseResult(-wait + BOARD_COST,state1);
 }

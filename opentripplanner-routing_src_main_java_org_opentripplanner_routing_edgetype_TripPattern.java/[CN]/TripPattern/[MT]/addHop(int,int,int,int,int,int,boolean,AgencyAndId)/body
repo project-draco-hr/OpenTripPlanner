@@ -14,6 +14,9 @@
       throw new TripOvertakingException();
     }
   }
+  if (stopIndex == 0) {
+    tripIds.insertElementAt(tripId,insertionPoint);
+  }
   stopDepartureTimes.insertElementAt(departureTime,insertionPoint);
   stopRunningTimes.insertElementAt(runningTime,insertionPoint);
   stopArrivalTimes.insertElementAt(arrivalTime,insertionPoint);

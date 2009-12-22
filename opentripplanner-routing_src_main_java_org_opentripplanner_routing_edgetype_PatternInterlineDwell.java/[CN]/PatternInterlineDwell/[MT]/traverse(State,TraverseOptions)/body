@@ -1,0 +1,11 @@
+{
+  State state1=state0.clone();
+  AgencyAndId tripId=state0.tripId;
+  Integer dwellTime=tripIdToDwellTime.get(tripId);
+  if (dwellTime == null) {
+    return null;
+  }
+  state1.incrementTimeInSeconds(dwellTime);
+  state1.tripId=targetTrip.getId();
+  return new TraverseResult(dwellTime,state1);
+}

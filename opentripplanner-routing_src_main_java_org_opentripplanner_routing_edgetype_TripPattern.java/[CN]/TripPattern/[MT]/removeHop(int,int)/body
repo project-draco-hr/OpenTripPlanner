@@ -1,7 +1,10 @@
 {
-  runningTimes[stopindex].removeElementAt(hop);
-  departureTimes[stopindex].removeElementAt(hop);
-  dwellTimes[stopindex].removeElementAt(hop);
-  arrivalTimes[stopindex].removeElementAt(hop);
-  wheelchairAccessibles[stopindex].removeElementAt(hop);
+  runningTimes[stopIndex].removeElementAt(hop);
+  departureTimes[stopIndex].removeElementAt(hop);
+  dwellTimes[stopIndex].removeElementAt(hop);
+  arrivalTimes[stopIndex].removeElementAt(hop);
+  wheelchairAccessibles[stopIndex].removeElementAt(hop);
+  if (stopIndex == 0) {
+    tripIds.removeElementAt(hop);
+  }
 }
