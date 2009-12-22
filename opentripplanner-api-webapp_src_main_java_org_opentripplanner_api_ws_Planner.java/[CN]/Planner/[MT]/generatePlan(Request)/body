@@ -4,6 +4,7 @@
   TraverseOptions options=new TraverseOptions(modeSet);
   options.optimizeFor=request.getOptimize();
   options.back=request.isArriveBy();
+  options.wheelchairAccessible=request.getWheelchair();
   List<GraphPath> paths=pathservice.plan(request.getFrom(),request.getTo(),request.getDateTime(),options);
   Vector<SPTVertex> vertices=paths.get(0).vertices;
   SPTVertex tripStartVertex=vertices.firstElement();
