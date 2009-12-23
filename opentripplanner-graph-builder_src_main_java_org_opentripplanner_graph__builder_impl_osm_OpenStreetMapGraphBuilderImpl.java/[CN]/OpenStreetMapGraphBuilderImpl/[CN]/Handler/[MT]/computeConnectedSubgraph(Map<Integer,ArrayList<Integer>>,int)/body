@@ -1,0 +1,15 @@
+{
+  HashSet<Integer> subgraph=new HashSet<Integer>();
+  Queue<Integer> q=new LinkedList<Integer>();
+  q.add(startNode);
+  while (!q.isEmpty()) {
+    int node=q.poll();
+    for (    int neighbor : neighborsForNode.get(node)) {
+      if (!subgraph.contains(neighbor)) {
+        subgraph.add(neighbor);
+        q.add(neighbor);
+      }
+    }
+  }
+  return subgraph;
+}

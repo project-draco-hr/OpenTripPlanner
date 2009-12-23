@@ -1,0 +1,31 @@
+{
+  Map<Integer,HashSet<Integer>> subgraphs=new HashMap<Integer,HashSet<Integer>>();
+  Map<Integer,ArrayList<Integer>> neighborsForNode=new HashMap<Integer,ArrayList<Integer>>();
+  for (  OSMWay way : _ways.values()) {
+    List<Integer> nodes=way.getNodeRefs();
+    for (    int node : nodes) {
+      ArrayList<Integer> nodelist=neighborsForNode.get(node);
+      if (nodelist == null) {
+        nodelist=new ArrayList<Integer>();
+        neighborsForNode.put(node,nodelist);
+      }
+      nodelist.addAll(nodes);
+    }
+  }
+  for (  int node : _nodes.keySet()) {
+    if (subgraphs.containsKey(node)) {
+      continue;
+    }
+    HashSet<Integer> subgraph=computeConnectedSubgraph(neighborsForNode,node);
+    for (    int subnode : subgraph) {
+      subgraphs.put(subnode,subgraph);
+    }
+  }
+  HashSet<Integer> largestSubgraph=null;
+  for (  HashSet<Integer> subgraph : subgraphs.values()) {
+    if (largestSubgraph == null || largestSubgraph.size() < subgraph.size()) {
+      largestSubgraph=subgraph;
+    }
+  }
+  _nodes.keySet().retainAll(largestSubgraph);
+}

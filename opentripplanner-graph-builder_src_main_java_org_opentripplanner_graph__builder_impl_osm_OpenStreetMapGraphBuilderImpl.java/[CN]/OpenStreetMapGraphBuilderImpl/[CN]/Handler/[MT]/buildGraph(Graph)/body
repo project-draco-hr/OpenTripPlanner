@@ -5,6 +5,7 @@
     if (nodes.size() > 1)     nodesWithNeighbors.addAll(nodes);
   }
   _nodes.keySet().retainAll(nodesWithNeighbors);
+  pruneFloatingIslands();
   int nodeIndex=0;
   for (  OSMNode node : _nodes.values()) {
     if (nodeIndex % 1000 == 0)     _log.debug("nodes=" + nodeIndex + "/"+ _nodes.size());
