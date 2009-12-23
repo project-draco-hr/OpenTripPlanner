@@ -102,6 +102,7 @@ catch (  ClassNotFoundException e) {
   }
 );
   JPanel buttonPanel=new JPanel();
+  buttonPanel.setLayout(new GridLayout(0,3));
   leftPanel.add(buttonPanel,BorderLayout.PAGE_END);
   JButton zoomDefaultButton=new JButton("Zoom to default");
   zoomDefaultButton.addActionListener(new ActionListener(){
@@ -146,6 +147,22 @@ catch (  ClassNotFoundException e) {
   }
 );
   buttonPanel.add(findButton);
+  JButton checkButton=new JButton("Check graph");
+  checkButton.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+      checkGraph();
+    }
+  }
+);
+  buttonPanel.add(checkButton);
+  JButton traceButton=new JButton("Trace");
+  traceButton.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+      trace();
+    }
+  }
+);
+  buttonPanel.add(traceButton);
   rightPanel=new JPanel();
   rightPanel.setLayout(new BoxLayout(rightPanel,BoxLayout.PAGE_AXIS));
   serviceIdLabel=new JLabel("trip pattern");
