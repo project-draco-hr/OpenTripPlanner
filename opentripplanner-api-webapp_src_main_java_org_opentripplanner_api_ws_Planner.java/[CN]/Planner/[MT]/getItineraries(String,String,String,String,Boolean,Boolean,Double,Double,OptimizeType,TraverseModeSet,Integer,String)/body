@@ -10,7 +10,5 @@
   request.setOptimize(optimize);
   request.setModes(modes);
   request.setOutputFormat(MediaType.valueOf(outputFormat));
-  TripPlan plan=generatePlan(request);
-  Response response=new Response(request,plan);
-  return response;
+  return generatePlan(request);
 }

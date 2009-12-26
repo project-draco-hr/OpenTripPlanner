@@ -1,6 +1,9 @@
 {
   Vertex fromVertex=getVertexForPlace(fromPlace);
   Vertex toVertex=getVertexForPlace(toPlace);
+  if (fromVertex == null || toVertex == null) {
+    throw new VertexNotFoundException(fromVertex == null,toVertex == null);
+  }
   State state=new State(targetTime.getTime());
   if (_calendarService != null)   options.setCalendarService(_calendarService);
   GraphPath path=_routingService.route(fromVertex,toVertex,state,options);

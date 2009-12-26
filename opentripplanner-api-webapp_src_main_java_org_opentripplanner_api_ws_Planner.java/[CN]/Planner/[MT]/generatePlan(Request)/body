@@ -5,7 +5,32 @@
   options.optimizeFor=request.getOptimize();
   options.back=request.isArriveBy();
   options.wheelchairAccessible=request.getWheelchair();
-  List<GraphPath> paths=pathservice.plan(request.getFrom(),request.getTo(),request.getDateTime(),options);
+  List<GraphPath> paths=null;
+  try {
+    paths=pathservice.plan(request.getFrom(),request.getTo(),request.getDateTime(),options);
+  }
+ catch (  VertexNotFoundException e) {
+    Response response=new Response(request,null);
+    PlannerError.ErrorCode code;
+    if (e.fromMissing) {
+      if (e.toMissing) {
+        code=PlannerError.ErrorCode.START_AND_END_NOT_FOUND;
+      }
+ else {
+        code=PlannerError.ErrorCode.START_NOT_FOUND;
+      }
+    }
+ else {
+      code=PlannerError.ErrorCode.END_NOT_FOUND;
+    }
+    response.error=new PlannerError(code);
+    return response;
+  }
+  if (paths.size() == 0) {
+    Response response=new Response(request,null);
+    response.error=new PlannerError(PlannerError.ErrorCode.NO_PATH);
+    return response;
+  }
   Vector<SPTVertex> vertices=paths.get(0).vertices;
   SPTVertex tripStartVertex=vertices.firstElement();
   SPTVertex tripEndVertex=vertices.lastElement();
@@ -113,5 +138,6 @@
       leg=null;
     }
   }
-  return plan;
+  Response response=new Response(request,plan);
+  return response;
 }
