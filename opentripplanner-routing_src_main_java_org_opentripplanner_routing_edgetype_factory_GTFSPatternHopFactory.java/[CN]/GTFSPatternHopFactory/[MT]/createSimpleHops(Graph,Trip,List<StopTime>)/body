@@ -9,9 +9,9 @@
     Stop s1=st1.getStop();
     Vertex startStation=graph.getVertex(id(s0.getId()));
     Vertex endStation=graph.getVertex(id(s1.getId()));
-    Vertex startJourneyArrive=graph.addVertex(id(s0.getId()) + "_" + tripId,s0.getLon(),s0.getLat());
-    Vertex startJourneyDepart=graph.addVertex(id(s0.getId()) + "_" + tripId,s0.getLon(),s0.getLat());
-    Vertex endJourney=graph.addVertex(id(s1.getId()) + "_" + tripId,s1.getLon(),s1.getLat());
+    Vertex startJourneyArrive=graph.addVertex(id(s0.getId()) + "_" + tripId,s0.getName(),s0.getId().getId(),s0.getLon(),s0.getLat());
+    Vertex startJourneyDepart=graph.addVertex(id(s0.getId()) + "_" + tripId,s0.getName(),s0.getId().getId(),s0.getLon(),s0.getLat());
+    Vertex endJourney=graph.addVertex(id(s1.getId()) + "_" + tripId,s1.getName(),s1.getId().getId(),s1.getLon(),s1.getLat());
     Dwell dwell=new Dwell(startJourneyArrive,startJourneyDepart,st0);
     graph.addEdge(dwell);
     Hop hop=new Hop(startJourneyDepart,endJourney,st0,st1);
