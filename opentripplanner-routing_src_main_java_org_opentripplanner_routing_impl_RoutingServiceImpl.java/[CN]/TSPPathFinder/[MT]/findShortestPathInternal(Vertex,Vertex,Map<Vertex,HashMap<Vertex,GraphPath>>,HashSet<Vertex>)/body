@@ -1,0 +1,20 @@
+{
+  if (vertices.size() == 0) {
+    TSPPath path=new TSPPath(toVertex,getCost(paths.get(fromVertex).get(toVertex)));
+    return path;
+  }
+  List<Vertex> vertexCopy=new ArrayList<Vertex>();
+  vertexCopy.addAll(vertices);
+  TSPPath shortest=null;
+  for (  Vertex vertex : vertexCopy) {
+    vertices.remove(vertex);
+    TSPPath path=findShortestPathInternal(toVertex,vertex,paths,vertices);
+    path.cost+=getCost(paths.get(fromVertex).get(vertex));
+    if (shortest == null || shortest.cost > path.cost) {
+      shortest=path;
+      path.vertices.add(0,vertex);
+    }
+    vertices.add(vertex);
+  }
+  return shortest;
+}

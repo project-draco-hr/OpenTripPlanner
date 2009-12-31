@@ -8,11 +8,23 @@
   if (toVertex == null) {
     notFound.add("to");
   }
+  ArrayList<Vertex> intermediateVertices=new ArrayList<Vertex>();
+  int i=0;
+  for (  String intermediate : intermediates) {
+    Vertex vertex=getVertexForPlace(intermediate);
+    if (vertex == null) {
+      notFound.add("intermediate." + i);
+    }
+ else {
+      intermediateVertices.add(vertex);
+    }
+    i+=1;
+  }
   if (notFound.size() > 0) {
     throw new VertexNotFoundException(notFound);
   }
   State state=new State(targetTime.getTime());
   if (_calendarService != null)   options.setCalendarService(_calendarService);
-  GraphPath path=_routingService.route(fromVertex,toVertex,state,options);
+  GraphPath path=_routingService.route(fromVertex,toVertex,intermediateVertices,state,options);
   return Arrays.asList(path);
 }

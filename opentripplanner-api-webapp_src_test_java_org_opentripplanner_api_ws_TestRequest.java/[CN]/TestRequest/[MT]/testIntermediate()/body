@@ -1,0 +1,26 @@
+{
+  Vertex v1=graph.getVertex("NW 10TH AVE at W BURNSIDE ST");
+  Vertex v2=graph.getVertex("NE 21ST AVE at NE MASON ST");
+  Vertex v3=graph.getVertex("SE 82ND AVE at SE ASH ST");
+  Vertex v4=graph.getVertex("SE 92ND AVE at SE FLAVEL ST");
+  Vertex[] vertices={v1,v2,v3,v4};
+  assertNotNull(v1);
+  assertNotNull(v2);
+  assertNotNull(v3);
+  assertNotNull(v4);
+  ArrayList<String> intermediates=new ArrayList<String>();
+  intermediates.add(v3.getLabel());
+  intermediates.add(v2.getLabel());
+  Date dateTime=DateUtils.toDate("2009-01-01","10:00:00");
+  TraverseOptions options=new TraverseOptions();
+  List<GraphPath> paths=pathService.plan(v1.getLabel(),v4.getLabel(),intermediates,dateTime,options);
+  assertTrue(paths.size() > 0);
+  GraphPath path=paths.get(0);
+  int curVertex=0;
+  for (  SPTVertex v : path.vertices) {
+    if (v.mirror.equals(vertices[curVertex])) {
+      curVertex+=1;
+    }
+  }
+  assertEquals(4,curVertex);
+}
