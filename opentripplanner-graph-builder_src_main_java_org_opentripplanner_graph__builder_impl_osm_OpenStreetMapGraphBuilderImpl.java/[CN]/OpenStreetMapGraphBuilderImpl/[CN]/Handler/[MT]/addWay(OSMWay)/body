@@ -1,6 +1,6 @@
 {
   if (_ways.containsKey(way.getId()))   return;
-  if (!way.getTags().containsKey("highway")) {
+  if (!(way.getTags().containsKey("highway") || "platform".equals(way.getTags().get("railway")))) {
     return;
   }
   _ways.put(way.getId(),way);
