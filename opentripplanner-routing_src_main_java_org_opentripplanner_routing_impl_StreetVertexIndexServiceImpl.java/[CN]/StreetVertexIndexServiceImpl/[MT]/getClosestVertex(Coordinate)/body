@@ -1,24 +1,45 @@
 {
-  Envelope env=new Envelope(location);
-  for (int i=0; i < 10; ++i) {
-    env.expandBy(0.0036);
-    List<Vertex> nearby=(List<Vertex>)_index.query(env);
-    Vertex minVertex=null;
-    double minDistance=Double.POSITIVE_INFINITY;
-    double lat1=location.y;
-    double lon1=location.x;
-    for (    Vertex nv : nearby) {
-      Coordinate coord=nv.getCoordinate();
-      double lat2=coord.y;
-      double lon2=coord.x;
-      double distance=DistanceLibrary.distance(lat1,lon1,lat2,lon2);
-      if (distance < minDistance) {
-        minVertex=nv;
-        minDistance=distance;
+  Envelope envelope=new Envelope(c);
+  List<Vertex> nearby=new LinkedList<Vertex>();
+  int i=0;
+  double envelopeGrowthRate=0.0018;
+  GeometryFactory factory=new GeometryFactory();
+  Point p=factory.createPoint(c);
+  while (nearby.size() < 2 && i < 8) {
+    ++i;
+    envelope.expandBy(envelopeGrowthRate);
+    envelopeGrowthRate*=2;
+    nearby=intersections.query(envelope);
+    Collections.sort(nearby,new Comparator<Vertex>(){
+      public int compare(      Vertex a,      Vertex b){
+        double distance=(a.distance(c) - b.distance(c));
+        return (int)(Math.abs(distance) / distance);
       }
     }
-    if (minVertex != null) {
-      return minVertex;
+);
+    Edge bestStreet=null;
+    double bestDistance=Double.MAX_VALUE;
+    for (    Vertex a : nearby) {
+      for (      Vertex b : nearby) {
+        if (a == b) {
+          continue;
+        }
+        Edge street=getEdgeWithToVertex(a,b);
+        if (street != null) {
+          LineString g=(LineString)street.getGeometry();
+          double distance=g.distance(p);
+          if (distance < bestDistance) {
+            bestDistance=distance;
+            bestStreet=street;
+          }
+        }
+      }
+    }
+    if (bestDistance <= MAX_DISTANCE_FROM_STREET) {
+      LineString g=(LineString)bestStreet.getGeometry();
+      LengthIndexedLine l=new LengthIndexedLine(g);
+      double location=l.indexOf(c);
+      return StreetLocation.createStreetLocation(c.toString(),bestStreet,location);
     }
   }
   return null;

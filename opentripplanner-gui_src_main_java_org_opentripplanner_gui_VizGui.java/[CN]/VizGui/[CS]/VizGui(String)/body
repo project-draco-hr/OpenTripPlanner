@@ -174,8 +174,7 @@ catch (  ClassNotFoundException e) {
   rightPanel.add(dpScrollPane);
   pathservice=new PathServiceImpl();
   pathservice.setGraph(graph);
-  indexService=new StreetVertexIndexServiceImpl();
-  indexService.setGraph(graph);
+  indexService=new StreetVertexIndexServiceImpl(graph);
   indexService.setup();
   pathservice.setIndexService(indexService);
   routingService=new RoutingServiceImpl();

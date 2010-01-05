@@ -1,7 +1,10 @@
 {
-  StreetLocationFinder finder=new StreetLocationFinder(graph);
-  StreetLocation start=finder.findLocation("start",new Coordinate(-74.0,40.4),false);
-  StreetLocation end=finder.findLocation("end",new Coordinate(-73.0,40.8),true);
+  StreetVertexIndexServiceImpl finder=new StreetVertexIndexServiceImpl(graph);
+  finder.setup();
+  StreetLocation start=finder.getClosestVertex(new Coordinate(-74.1,40.04));
+  assertNotNull(start);
+  StreetLocation end=finder.getClosestVertex(new Coordinate(-74.0,40.08));
+  assertNotNull(end);
   if (start.street == leftUp) {
     assertTrue(start.location - 0.4 < 0.00001);
   }
