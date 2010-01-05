@@ -5,5 +5,8 @@
   State s1=s0.clone();
   double weight=this.length / wo.speed;
   s1.incrementTimeInSeconds(-(int)weight);
+  if (s0.walkDistance > wo.maxWalkDistance) {
+    weight*=100;
+  }
   return new TraverseResult(weight,s1);
 }
