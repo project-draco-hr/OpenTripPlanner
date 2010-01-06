@@ -26,6 +26,20 @@
       ellipse(x,y,3.0,3.0);
     }
   }
+  List<Edge> edges=(List<Edge>)edgeIndex.query(modelBounds);
+  for (  Edge e : edges) {
+    double x1=toScreenX(e.getFromVertex().getX());
+    double y1=toScreenY(e.getFromVertex().getY());
+    double x2=toScreenX(e.getToVertex().getX());
+    double y2=toScreenY(e.getToVertex().getY());
+    if (e instanceof StreetTransitLink) {
+      stroke(75,150,255);
+    }
+ else {
+      stroke(30,255,255);
+    }
+    line((float)x1,(float)y1,(float)x2,(float)y2);
+  }
   fill(255,0,0);
   text(mouseModelX + ", " + mouseModelY,0,10);
 }

@@ -3,6 +3,7 @@
   background(0);
   size(700,700,P2D);
   vertexIndex=new STRtree();
+  edgeIndex=new STRtree();
   for (  Vertex v : graph.getVertices()) {
     Envelope env=new Envelope(v.getCoordinate());
     if (v.getType() == TransitStop.class) {
@@ -14,10 +15,18 @@
     }
  else {
     }
+    for (    Edge e : v.getOutgoing()) {
+      if (e instanceof Street || e instanceof StreetTransitLink) {
+        env=new Envelope(e.getFromVertex().getCoordinate());
+        env.expandToInclude(e.getToVertex().getCoordinate());
+        edgeIndex.insert(env,e);
+      }
+    }
   }
   modelBounds.expandBy(0.02);
   modelOuterBounds=new Envelope(modelBounds);
   vertexIndex.build();
+  edgeIndex.build();
   addMouseMotionListener(new MouseMotionAdapter(){
     @Override public void mouseMoved(    MouseEvent e){
       super.mouseMoved(e);
