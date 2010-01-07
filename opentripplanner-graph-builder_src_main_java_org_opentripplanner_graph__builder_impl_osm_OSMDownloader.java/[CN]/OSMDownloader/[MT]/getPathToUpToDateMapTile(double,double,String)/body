@@ -5,10 +5,18 @@
     System.out.println("downloading osm tile: " + key);
     URL url=constructUrl(r);
     System.out.println(url);
-    String value=getUrlAsString(url);
-    PrintWriter writer=new PrintWriter(new FileWriter(path));
-    writer.println(value);
-    writer.close();
+    FileOutputStream out=new FileOutputStream(path);
+    InputStream in=url.openStream();
+    byte[] data=new byte[4096];
+    while (true) {
+      int numBytes=in.read(data);
+      if (numBytes == -1) {
+        break;
+      }
+      out.write(data,0,numBytes);
+    }
+    in.close();
+    out.close();
   }
   return path;
 }
