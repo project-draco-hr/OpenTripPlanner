@@ -15,6 +15,7 @@
     SimpleFeatureConverter<String> streetIdConverter=_schema.getIdConverter();
     SimpleFeatureConverter<String> streetNameConverter=_schema.getNameConverter();
     SimpleFeatureConverter<P2<StreetTraversalPermission>> permissionConverter=_schema.getPermissionConverter();
+    HashMap<Coordinate,ArrayList<Edge>> edgesByLocation=new HashMap<Coordinate,ArrayList<Edge>>();
     Iterator<SimpleFeature> it2=features.iterator();
     while (it2.hasNext()) {
       SimpleFeature feature=it2.next();
@@ -30,9 +31,10 @@
         System.out.println(name);
       }
       String endIntersectionName=getIntersectionName(coordinateToStreetNames,intersectionNameToId,endCoordinate);
-      Vertex startCorner=new GenericVertex(startIntersectionName,startCoordinate.x,startCoordinate.y,startIntersectionName,Intersection.class);
+      String uid="_" + Math.random();
+      Vertex startCorner=new GenericVertex(startIntersectionName + uid,startCoordinate.x,startCoordinate.y,startIntersectionName,Intersection.class);
       startCorner=graph.addVertex(startCorner);
-      Vertex endCorner=new GenericVertex(endIntersectionName,endCoordinate.x,endCoordinate.y,endIntersectionName,Intersection.class);
+      Vertex endCorner=new GenericVertex(endIntersectionName + uid,endCoordinate.x,endCoordinate.y,endIntersectionName,Intersection.class);
       endCorner=graph.addVertex(endCorner);
       double length=JTS.orthodromicDistance(coordinates[0],coordinates[coordinates.length - 1],worldCRS);
       Street street=new Street(startCorner,endCorner,id,name,length);
@@ -41,9 +43,37 @@
       Street backStreet=new Street(endCorner,startCorner,id,name,length);
       backStreet.setGeometry(geom.reverse());
       graph.addEdge(backStreet);
+      ArrayList<Edge> startEdges=edgesByLocation.get(startCoordinate);
+      if (startEdges == null) {
+        startEdges=new ArrayList<Edge>();
+        edgesByLocation.put(startCoordinate,startEdges);
+      }
+      startEdges.add(street);
+      startEdges.add(backStreet);
+      ArrayList<Edge> endEdges=edgesByLocation.get(endCoordinate);
+      if (endEdges == null) {
+        endEdges=new ArrayList<Edge>();
+        edgesByLocation.put(endCoordinate,endEdges);
+      }
+      endEdges.add(street);
+      endEdges.add(backStreet);
       P2<StreetTraversalPermission> pair=permissionConverter.convert(feature);
       street.setTraversalPermission(pair.getFirst());
       backStreet.setTraversalPermission(pair.getSecond());
+    }
+    for (    ArrayList<Edge> edges : edgesByLocation.values()) {
+      for (      Edge in : edges) {
+        Vertex tov=in.getToVertex();
+        Coordinate c=tov.getCoordinate();
+        ArrayList<Edge> outEdges=edgesByLocation.get(c);
+        if (outEdges != null) {
+          for (          Edge out : outEdges) {
+            if (tov != out.getFromVertex() && out instanceof Street && out.getFromVertex().getCoordinate().equals(c)) {
+              graph.addEdge(new Turn(in,out));
+            }
+          }
+        }
+      }
     }
     features.close(it2);
   }

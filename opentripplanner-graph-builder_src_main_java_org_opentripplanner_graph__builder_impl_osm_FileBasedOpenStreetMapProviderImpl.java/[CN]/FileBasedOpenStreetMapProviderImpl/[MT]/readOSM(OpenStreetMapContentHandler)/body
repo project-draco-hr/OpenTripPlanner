@@ -1,7 +1,13 @@
 {
   try {
     OpenStreetMapParser parser=new OpenStreetMapParser();
-    parser.parseMap(_path,handler);
+    if (_path.getName().endsWith(".gz")) {
+      InputStream in=new GZIPInputStream(new FileInputStream(_path));
+      parser.parseMap(in,handler);
+    }
+ else {
+      parser.parseMap(_path,handler);
+    }
   }
  catch (  Exception ex) {
     throw new IllegalStateException("error loading OSM from path " + _path,ex);

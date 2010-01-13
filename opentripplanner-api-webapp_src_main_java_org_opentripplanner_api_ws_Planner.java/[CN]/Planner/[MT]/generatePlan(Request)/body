@@ -10,6 +10,9 @@
     List<String> intermediates=request.getIntermediatePlaces();
     if (intermediates.size() == 0) {
       paths=pathservice.plan(request.getFrom(),request.getTo(),request.getDateTime(),options);
+      if (paths == null) {
+        paths=pathservice.plan(request.getFrom(),request.getTo(),request.getDateTime(),options);
+      }
     }
  else {
       paths=pathservice.plan(request.getFrom(),request.getTo(),intermediates,request.getDateTime(),options);
@@ -21,7 +24,7 @@
     response.error=new PlannerError(e.getMissing());
     return response;
   }
-  if (paths.size() == 0) {
+  if (paths == null || paths.size() == 0) {
     LOGGER.log(Level.INFO,"Path not found: " + request.getFrom() + " : "+ request.getTo());
     Response response=new Response(request,null);
     response.error=new PlannerError();
@@ -51,9 +54,14 @@
     String name=null;
     int startWalk=-1;
     int i=-1;
+    SPTEdge lastEdge=null;
     for (    SPTEdge edge : path.edges) {
       i++;
       Edge graphEdge=edge.payload;
+      if (graphEdge instanceof Turn) {
+        continue;
+      }
+      lastEdge=edge;
       TraverseMode edgeMode=graphEdge.getMode();
       double edgeTime=edge.tov.state.getTime() - edge.fromv.state.getTime();
       if (!edgeMode.isTransit() && edgeMode != TraverseMode.ALIGHTING) {
@@ -122,16 +130,15 @@
         leg.route=graphEdge.getName();
       }
     }
-    SPTEdge edge=path.edges.lastElement();
-    Edge graphEdge=edge.payload;
+    Edge graphEdge=lastEdge.payload;
     if (leg != null) {
       Vertex tov=graphEdge.getToVertex();
       Coordinate endCoord=tov.getCoordinate();
       leg.to=new Place(endCoord.x,endCoord.y,tov.getName());
       leg.to.stopId=tov.getStopId();
-      leg.endTime=new Date(edge.tov.state.getTime());
+      leg.endTime=new Date(lastEdge.tov.state.getTime());
       leg.legGeometry=PolylineEncoder.createEncodings(geometry);
-      leg.duration=edge.tov.state.getTime() - leg.startTime.getTime();
+      leg.duration=lastEdge.tov.state.getTime() - leg.startTime.getTime();
       if (startWalk != -1) {
         leg.walkSteps=getWalkSteps(path.edges.subList(startWalk,i + 1));
       }

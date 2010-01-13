@@ -4,6 +4,9 @@
   double lastAngle=0;
   for (  SPTEdge sptEdge : edges) {
     Edge edge=sptEdge.payload;
+    if (edge instanceof Turn) {
+      continue;
+    }
     String streetName=edge.getName();
     if (step == null) {
       step=new WalkStep();
@@ -11,24 +14,24 @@
       step.streetName=streetName;
       step.lon=edge.getFromVertex().getX();
       step.lat=edge.getFromVertex().getY();
-      double thisAngle=getFirstAngle(edge.getGeometry());
+      double thisAngle=DirectionUtils.getFirstAngle(edge.getGeometry());
       step.setAbsoluteDirection(thisAngle);
     }
  else     if (!step.streetName.equals(streetName)) {
       step=new WalkStep();
       steps.add(step);
       step.streetName=streetName;
-      double thisAngle=getFirstAngle(edge.getGeometry());
+      double thisAngle=DirectionUtils.getFirstAngle(edge.getGeometry());
       step.setDirections(lastAngle,thisAngle);
       step.lon=edge.getFromVertex().getX();
       step.lat=edge.getFromVertex().getY();
-      step.becomes=!multipleOptionsbefore(edge);
+      step.becomes=!multipleOptionsBefore(edge);
     }
  else {
-      double thisAngle=getFirstAngle(edge.getGeometry());
+      double thisAngle=DirectionUtils.getFirstAngle(edge.getGeometry());
       RelativeDirection direction=WalkStep.getRelativeDirection(lastAngle,thisAngle);
       if (direction != RelativeDirection.CONTINUE) {
-        boolean optionsBefore=multipleOptionsbefore(edge);
+        boolean optionsBefore=multipleOptionsBefore(edge);
         if (optionsBefore) {
           step=new WalkStep();
           steps.add(step);
@@ -41,7 +44,7 @@
       }
     }
     step.distance+=edge.getDistance();
-    lastAngle=getLastAngle(edge.getGeometry());
+    lastAngle=DirectionUtils.getLastAngle(edge.getGeometry());
   }
   return steps;
 }
