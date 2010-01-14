@@ -1,0 +1,6 @@
+{
+  String key=feature.getAttribute(attributeName).toString();
+  Double safetyfeature=safetyFeatures.get(key);
+  if (safetyfeature == null)   safetyfeature=1.0;
+  return safetyfeature;
+}

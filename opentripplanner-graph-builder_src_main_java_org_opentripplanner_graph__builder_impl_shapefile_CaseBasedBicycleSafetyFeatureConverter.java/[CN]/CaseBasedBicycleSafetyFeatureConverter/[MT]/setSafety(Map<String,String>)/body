@@ -1,0 +1,8 @@
+{
+  for (  Map.Entry<String,String> entry : safetyValues.entrySet()) {
+    String attributeValue=entry.getKey();
+    String featureName=entry.getValue();
+    Double safety=Double.valueOf(featureName);
+    addSafety(attributeValue,safety);
+  }
+}
