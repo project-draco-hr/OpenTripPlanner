@@ -33,9 +33,9 @@
       }
       String endIntersectionName=getIntersectionName(coordinateToStreetNames,intersectionNameToId,endCoordinate);
       String uid="_" + Math.random();
-      Vertex startCorner=new GenericVertex(startIntersectionName + uid,startCoordinate.x,startCoordinate.y,startIntersectionName,Intersection.class);
+      Vertex startCorner=new Intersection(startIntersectionName + uid,startCoordinate.x,startCoordinate.y);
       startCorner=graph.addVertex(startCorner);
-      Vertex endCorner=new GenericVertex(endIntersectionName + uid,endCoordinate.x,endCoordinate.y,endIntersectionName,Intersection.class);
+      Vertex endCorner=new Intersection(endIntersectionName + uid,endCoordinate.x,endCoordinate.y);
       endCorner=graph.addVertex(endCorner);
       double length=JTS.orthodromicDistance(coordinates[0],coordinates[coordinates.length - 1],worldCRS);
       Street street=new Street(startCorner,endCorner,id,name,length);
