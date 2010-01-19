@@ -1,38 +1,23 @@
 {
   Envelope envelope=new Envelope(c);
-  List<Vertex> nearby=new LinkedList<Vertex>();
+  List<Edge> nearby=new LinkedList<Edge>();
   int i=0;
   double envelopeGrowthRate=0.0018;
   GeometryFactory factory=new GeometryFactory();
   Point p=factory.createPoint(c);
-  while (nearby.size() < 2 && i < 8) {
+  while (nearby.size() < 1 && i < 4) {
     ++i;
     envelope.expandBy(envelopeGrowthRate);
     envelopeGrowthRate*=2;
-    nearby=intersections.query(envelope);
-    Collections.sort(nearby,new Comparator<Vertex>(){
-      public int compare(      Vertex a,      Vertex b){
-        double distance=(a.distance(c) - b.distance(c));
-        return (int)(Math.abs(distance) / distance);
-      }
-    }
-);
+    nearby=edgeTree.query(envelope);
     Edge bestStreet=null;
     double bestDistance=Double.MAX_VALUE;
-    for (    Vertex a : nearby) {
-      for (      Vertex b : nearby) {
-        if (a == b) {
-          continue;
-        }
-        Edge street=getEdgeWithToVertex(a,b);
-        if (street != null) {
-          LineString g=(LineString)street.getGeometry();
-          double distance=g.distance(p);
-          if (distance < bestDistance) {
-            bestDistance=distance;
-            bestStreet=street;
-          }
-        }
+    for (    Edge e : nearby) {
+      LineString g=(LineString)e.getGeometry();
+      double distance=g.distance(p);
+      if (distance < bestDistance) {
+        bestDistance=distance;
+        bestStreet=e;
       }
     }
     if (bestDistance <= MAX_DISTANCE_FROM_STREET) {
