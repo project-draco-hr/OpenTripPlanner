@@ -6,7 +6,7 @@
   }
   _nodes.keySet().retainAll(nodesWithNeighbors);
   pruneFloatingIslands();
-  HashMap<Integer,ArrayList<Edge>> edgesByLocation=new HashMap<Integer,ArrayList<Edge>>();
+  HashMap<Coordinate,ArrayList<Edge>> edgesByLocation=new HashMap<Coordinate,ArrayList<Edge>>();
   int wayIndex=0;
   for (  OSMWay way : _ways.values()) {
     if (wayIndex % 1000 == 0)     _log.debug("ways=" + wayIndex + "/"+ _ways.size());
@@ -28,17 +28,17 @@
       graph.addEdge(street);
       Street backStreet=getEdgeForStreet(to,from,way,d,permissions);
       graph.addEdge(backStreet);
-      ArrayList<Edge> startEdges=edgesByLocation.get(startNode);
+      ArrayList<Edge> startEdges=edgesByLocation.get(from.getCoordinate());
       if (startEdges == null) {
         startEdges=new ArrayList<Edge>();
-        edgesByLocation.put(startNode,startEdges);
+        edgesByLocation.put(from.getCoordinate(),startEdges);
       }
       startEdges.add(street);
       startEdges.add(backStreet);
-      ArrayList<Edge> endEdges=edgesByLocation.get(endNode);
+      ArrayList<Edge> endEdges=edgesByLocation.get(to.getCoordinate());
       if (endEdges == null) {
         endEdges=new ArrayList<Edge>();
-        edgesByLocation.put(endNode,endEdges);
+        edgesByLocation.put(to.getCoordinate(),endEdges);
       }
       endEdges.add(street);
       endEdges.add(backStreet);
