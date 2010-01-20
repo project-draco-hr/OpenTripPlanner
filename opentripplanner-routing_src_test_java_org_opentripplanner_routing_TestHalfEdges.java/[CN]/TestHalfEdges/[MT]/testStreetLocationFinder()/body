@@ -1,23 +1,23 @@
 {
   StreetVertexIndexServiceImpl finder=new StreetVertexIndexServiceImpl(graph);
   finder.setup();
-  StreetLocation start=finder.getClosestVertex(new Coordinate(-74.1,40.04));
+  StreetLocation start=(StreetLocation)finder.getClosestVertex(new Coordinate(-74.1,40.04));
   assertNotNull(start);
-  StreetLocation end=finder.getClosestVertex(new Coordinate(-74.0,40.08));
+  StreetLocation end=(StreetLocation)finder.getClosestVertex(new Coordinate(-74.0,40.08));
   assertNotNull(end);
   if (start.street == leftUp) {
-    assertTrue(start.location - 0.4 < 0.00001);
+    assertTrue(Math.abs(start.location.getSegmentFraction() - 0.4) < 0.00001);
   }
  else {
-    assertTrue(start.location - 0.6 < 0.00001);
+    assertTrue(Math.abs(start.location.getSegmentFraction() - 0.6) < 0.00001);
     assertEquals(leftDown,start.street);
   }
   assertTrue(start.getDegreeOut() == 2);
   if (end.street == rightUp) {
-    assertTrue(end.location - 0.2 < 0.00001);
+    assertTrue(Math.abs(end.location.getSegmentFraction()) - 0.2 < 0.00001);
   }
  else {
-    assertTrue(end.location - 0.8 < 0.00001);
+    assertTrue(Math.abs(end.location.getSegmentFraction()) - 0.8 < 0.00001);
     assertEquals(rightDown,end.street);
   }
   assertTrue(end.getDegreeIn() == 2);

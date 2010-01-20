@@ -1,0 +1,5 @@
+{
+  Geometry g=street.getGeometry();
+  Coordinate nearestPoint=location.getCoordinate(g);
+  return new StreetLocation(name,street,location,nearestPoint.x,nearestPoint.y);
+}

@@ -1,9 +1,9 @@
 {
   graph=new Graph();
   Vertex tl=graph.addVertex(new GenericVertex("tl",-74.1,40.1,"tl",Intersection.class));
-  Vertex tr=graph.addVertex(new GenericVertex("tr",-74,40.1,"tr",Intersection.class));
-  Vertex bl=graph.addVertex(new GenericVertex("bl",-74.1,40,"bl",Intersection.class));
-  Vertex br=graph.addVertex(new GenericVertex("br",-74,40,"br",Intersection.class));
+  Vertex tr=graph.addVertex(new GenericVertex("tr",-74.0,40.1,"tr",Intersection.class));
+  Vertex bl=graph.addVertex(new GenericVertex("bl",-74.1,40.0,"bl",Intersection.class));
+  Vertex br=graph.addVertex(new GenericVertex("br",-74.0,40.0,"br",Intersection.class));
   double td=DistanceLibrary.distance(tl.getCoordinate().y,tl.getCoordinate().x,tr.getCoordinate().y,tr.getCoordinate().x);
   top=new Street(tl,tr,td);
   top.setGeometry(createGeometry(tl,tr));
@@ -23,6 +23,6 @@
   rightDown.setGeometry(createGeometry(tr,br));
   graph.addEdge(rightDown);
   rightUp=new Street(br,tr,d);
-  rightUp.setGeometry(createGeometry(tr,br));
+  rightUp.setGeometry(createGeometry(br,tr));
   graph.addEdge(rightUp);
 }

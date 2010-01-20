@@ -3,7 +3,7 @@
     return null;
   }
   Map<Vertex,Edge> extraEdges;
-  if (origin instanceof StreetLocation) {
+  if (target instanceof StreetLocation) {
     extraEdges=new HashMap<Vertex,Edge>();
     Iterable<Edge> incoming=target.getIncoming();
     for (    Edge edge : incoming) {
@@ -43,7 +43,7 @@
       double old_w;
       spt_v=spt.getVertex(tov);
       if (spt_v == null) {
-        old_w=Integer.MAX_VALUE;
+        old_w=Double.MAX_VALUE;
         spt_v=spt.addVertex(tov,wr.state,new_w,options);
       }
  else {

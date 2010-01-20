@@ -13,7 +13,7 @@
     Edge bestStreet=null;
     double bestDistance=Double.MAX_VALUE;
     for (    Edge e : nearby) {
-      LineString g=(LineString)e.getGeometry();
+      Geometry g=e.getGeometry();
       double distance=g.distance(p);
       if (distance < bestDistance) {
         bestDistance=distance;
@@ -21,9 +21,18 @@
       }
     }
     if (bestDistance <= MAX_DISTANCE_FROM_STREET) {
-      LineString g=(LineString)bestStreet.getGeometry();
-      LengthIndexedLine l=new LengthIndexedLine(g);
-      double location=l.indexOf(c);
+      Geometry g=bestStreet.getGeometry();
+      LocationIndexedLine l=new LocationIndexedLine(g);
+      LinearLocation location=l.project(c);
+      Coordinate start=bestStreet.getFromVertex().getCoordinate();
+      Coordinate end=bestStreet.getToVertex().getCoordinate();
+      Coordinate nearestPoint=location.getCoordinate(g);
+      if (nearestPoint.distance(start) < MAX_SNAP_TO_INTERSECTION_DISTANCE) {
+        return bestStreet.getFromVertex();
+      }
+ else       if (nearestPoint.distance(end) < MAX_SNAP_TO_INTERSECTION_DISTANCE) {
+        return bestStreet.getToVertex();
+      }
       return StreetLocation.createStreetLocation(c.toString(),bestStreet,location);
     }
   }

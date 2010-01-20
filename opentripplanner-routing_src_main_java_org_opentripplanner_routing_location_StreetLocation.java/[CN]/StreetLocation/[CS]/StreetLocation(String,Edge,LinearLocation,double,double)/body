@@ -1,0 +1,24 @@
+{
+  super(name,x,y);
+  Vertex fromv=street.getFromVertex();
+  Vertex tov=street.getToVertex();
+  Coordinate startCoord=fromv.getCoordinate();
+  Coordinate endCoord=tov.getCoordinate();
+  this.street=street;
+  this.location=location;
+  String streetName=street.getName();
+  double weight1=DistanceLibrary.distance(y,x,startCoord.y,startCoord.x);
+  double weight2=DistanceLibrary.distance(y,x,endCoord.y,endCoord.x);
+  Street e1=new Street(fromv,this,streetName,streetName,weight1);
+  e1.setGeometry(toLineString(fromv.getCoordinate(),this.getCoordinate()));
+  addIncoming(e1);
+  Street e2=new Street(tov,this,streetName,streetName,weight2);
+  e2.setGeometry(toLineString(tov.getCoordinate(),this.getCoordinate()));
+  addIncoming(e2);
+  Street e3=new Street(this,fromv,streetName,streetName,weight1);
+  addOutgoing(e3);
+  e3.setGeometry(toLineString(this.getCoordinate(),fromv.getCoordinate()));
+  Street e4=new Street(this,tov,streetName,streetName,weight2);
+  addOutgoing(e4);
+  e4.setGeometry(toLineString(this.getCoordinate(),tov.getCoordinate()));
+}
