@@ -1,5 +1,10 @@
 {
-  Vector<Integer> stopArrivalTimes=arrivalTimes[stopIndex];
+  Vector<Integer>[] arrivals=arrivalTimes;
+  if (arrivals == null) {
+    arrivals=departureTimes;
+    stopIndex+=1;
+  }
+  Vector<Integer> stopArrivalTimes=arrivals[stopIndex];
   int index=Collections.binarySearch(stopArrivalTimes,beforeTime);
   if (index == -1)   return -1;
   if (index < 0) {

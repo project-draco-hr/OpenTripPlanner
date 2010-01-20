@@ -20,6 +20,9 @@
     if (i != 0) {
       startJourneyArrive=graph.addVertex(id(s0.getId()) + "_" + id(trip.getId())+ "_A",s0.getName(),s0.getId().getId(),s0.getLon(),s0.getLat());
       PatternDwell dwell=new PatternDwell(startJourneyArrive,startJourneyDepart,i,tripPattern);
+      if (dwellTime == 0) {
+        potentiallyUselessDwells.add(dwell);
+      }
       graph.addEdge(dwell);
     }
     PatternHop hop=new PatternHop(startJourneyDepart,endJourneyArrive,s0,s1,i,tripPattern);

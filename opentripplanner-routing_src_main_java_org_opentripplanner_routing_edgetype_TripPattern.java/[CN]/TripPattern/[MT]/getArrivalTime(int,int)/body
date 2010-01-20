@@ -1,4 +1,9 @@
 {
-  Vector<Integer> stopArrivalTimes=arrivalTimes[stopIndex];
+  Vector<Integer>[] arrivals=arrivalTimes;
+  if (arrivals == null) {
+    arrivals=departureTimes;
+    stopIndex+=1;
+  }
+  Vector<Integer> stopArrivalTimes=arrivals[stopIndex];
   return stopArrivalTimes.get(pattern);
 }
