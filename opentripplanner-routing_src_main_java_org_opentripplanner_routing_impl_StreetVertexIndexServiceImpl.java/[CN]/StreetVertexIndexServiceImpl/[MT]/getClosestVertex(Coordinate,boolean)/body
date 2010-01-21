@@ -1,0 +1,55 @@
+{
+  Envelope envelope=new Envelope(c);
+  List<Edge> nearby=new LinkedList<Edge>();
+  int i=0;
+  double envelopeGrowthRate=0.0018;
+  GeometryFactory factory=new GeometryFactory();
+  Point p=factory.createPoint(c);
+  while (nearby.size() < 1 && i < 4) {
+    ++i;
+    envelope.expandBy(envelopeGrowthRate);
+    envelopeGrowthRate*=2;
+    double bestDistance=Double.MAX_VALUE;
+    if (includeTransitStops) {
+      List<Vertex> nearbyTransitStops=transitStopTree.query(envelope);
+      Vertex bestStop=null;
+      for (      Vertex v : nearbyTransitStops) {
+        Coordinate sc=v.getCoordinate();
+        double distance=sc.distance(c);
+        if (distance < bestDistance) {
+          bestDistance=distance;
+          bestStop=v;
+        }
+      }
+      if (bestDistance <= MAX_DISTANCE_FROM_STREET) {
+        return bestStop;
+      }
+    }
+    nearby=edgeTree.query(envelope);
+    Edge bestStreet=null;
+    for (    Edge e : nearby) {
+      Geometry g=e.getGeometry();
+      double distance=g.distance(p);
+      if (distance < bestDistance) {
+        bestDistance=distance;
+        bestStreet=e;
+      }
+    }
+    if (bestDistance <= MAX_DISTANCE_FROM_STREET) {
+      Geometry g=bestStreet.getGeometry();
+      LocationIndexedLine l=new LocationIndexedLine(g);
+      LinearLocation location=l.project(c);
+      Coordinate start=bestStreet.getFromVertex().getCoordinate();
+      Coordinate end=bestStreet.getToVertex().getCoordinate();
+      Coordinate nearestPoint=location.getCoordinate(g);
+      if (nearestPoint.distance(start) < MAX_SNAP_TO_INTERSECTION_DISTANCE) {
+        return bestStreet.getFromVertex();
+      }
+ else       if (nearestPoint.distance(end) < MAX_SNAP_TO_INTERSECTION_DISTANCE) {
+        return bestStreet.getToVertex();
+      }
+      return StreetLocation.createStreetLocation(c.toString(),bestStreet,location);
+    }
+  }
+  return null;
+}
