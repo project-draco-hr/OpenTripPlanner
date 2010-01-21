@@ -9,9 +9,22 @@
     ++i;
     envelope.expandBy(envelopeGrowthRate);
     envelopeGrowthRate*=2;
+    List<Vertex> nearbyTransitStops=transitStopTree.query(envelope);
+    Vertex bestStop=null;
+    double bestDistance=Double.MAX_VALUE;
+    for (    Vertex v : nearbyTransitStops) {
+      Coordinate sc=v.getCoordinate();
+      double distance=sc.distance(c);
+      if (distance < bestDistance) {
+        bestDistance=distance;
+        bestStop=v;
+      }
+    }
+    if (bestDistance <= MAX_DISTANCE_FROM_STREET) {
+      return bestStop;
+    }
     nearby=edgeTree.query(envelope);
     Edge bestStreet=null;
-    double bestDistance=Double.MAX_VALUE;
     for (    Edge e : nearby) {
       Geometry g=e.getGeometry();
       double distance=g.distance(p);

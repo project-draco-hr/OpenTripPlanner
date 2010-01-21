@@ -1,5 +1,6 @@
 {
   edgeTree=new STRtree();
+  transitStopTree=new STRtree();
   HashSet<Edge> edges=new HashSet<Edge>();
   for (  Vertex v : graph.getVertices()) {
     if (v.getType() == Intersection.class) {
@@ -11,6 +12,11 @@
         }
       }
     }
+ else     if (v.getType() == TransitStop.class) {
+      Envelope env=new Envelope(v.getCoordinate());
+      transitStopTree.insert(env,v);
+    }
   }
   edgeTree.build();
+  transitStopTree.build();
 }

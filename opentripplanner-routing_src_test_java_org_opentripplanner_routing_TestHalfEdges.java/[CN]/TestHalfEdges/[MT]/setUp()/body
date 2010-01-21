@@ -4,6 +4,7 @@
   Vertex tr=graph.addVertex(new GenericVertex("tr",-74.0,40.1,"tr",Intersection.class));
   Vertex bl=graph.addVertex(new GenericVertex("bl",-74.1,40.0,"bl",Intersection.class));
   Vertex br=graph.addVertex(new GenericVertex("br",-74.0,40.0,"br",Intersection.class));
+  graph.addVertex(new GenericVertex("transitVertex",-74.05,40.1,"transitVertex",TransitStop.class));
   double td=DistanceLibrary.distance(tl.getCoordinate().y,tl.getCoordinate().x,tr.getCoordinate().y,tr.getCoordinate().x);
   top=new Street(tl,tr,td);
   top.setGeometry(createGeometry(tl,tr));
