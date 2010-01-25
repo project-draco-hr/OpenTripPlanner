@@ -30,7 +30,6 @@
         createSimpleHops(graph,trip,stopTimes);
       }
  else {
-        boolean tripWheelchairAccessible=trip.getWheelchairAccessible() != 0;
         StopTime st1=null;
         int i;
         for (i=0; i < stopTimes.size() - 1; i++) {
@@ -39,8 +38,7 @@
           int dwellTime=st0.getDepartureTime() - st0.getArrivalTime();
           int runningTime=st1.getArrivalTime() - st0.getDepartureTime();
           try {
-            boolean s0WheelchairBoarding=st0.getStop().getWheelchairBoarding() != 0;
-            tripPattern.addHop(i,insertionPoint,st0.getDepartureTime(),runningTime,st1.getArrivalTime(),dwellTime,s0WheelchairBoarding && tripWheelchairAccessible,trip.getId());
+            tripPattern.addHop(i,insertionPoint,st0.getDepartureTime(),runningTime,st1.getArrivalTime(),dwellTime,trip.getId());
           }
  catch (          TripOvertakingException e) {
             _log.warn("trip " + trip.getId() + " overtakes another trip with the same stops.  This will be handled correctly but inefficiently.");
@@ -52,16 +50,13 @@
             break;
           }
         }
-        if (!simple) {
-          boolean s1WheelchairBoarding=st1.getStop().getWheelchairBoarding() != 0;
-          tripPattern.setWheelchairAccessible(i,insertionPoint,s1WheelchairBoarding && tripWheelchairAccessible);
-        }
       }
       if (!simple) {
         if (blockId != null && !blockId.equals("")) {
           addTripToInterliningMap(tripsByBlockAndStart,trip,stopTimes,tripPattern,blockId);
         }
       }
+      tripPattern.setTripFlags(insertionPoint,(trip.getWheelchairAccessible() != 0) ? TripPattern.FLAG_WHEELCHAIR_ACCESSIBLE : 0);
     }
   }
   HashMap<TripPattern,HashMap<TripPattern,PatternInterlineDwell>> dwellEdges=new HashMap<TripPattern,HashMap<TripPattern,PatternInterlineDwell>>();

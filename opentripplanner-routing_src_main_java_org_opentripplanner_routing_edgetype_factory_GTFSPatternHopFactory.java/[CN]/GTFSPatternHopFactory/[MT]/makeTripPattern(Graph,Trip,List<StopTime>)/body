@@ -1,18 +1,17 @@
 {
   TripPattern tripPattern=new TripPattern(trip,stopTimes);
   TraverseMode mode=GtfsLibrary.getTraverseMode(trip.getRoute());
-  boolean tripWheelchairAccessible=trip.getWheelchairAccessible() != 0;
   int lastStop=stopTimes.size() - 1;
   int departureTime=-1, prevDepartureTime=-1;
   int numInterpStops=-1, firstInterpStop=-1;
   int interpStep=0;
   int i;
-  Stop s1=null;
+  StopTime st1=null;
   for (i=0; i < lastStop; i++) {
     StopTime st0=stopTimes.get(i);
     Stop s0=st0.getStop();
-    StopTime st1=stopTimes.get(i + 1);
-    s1=st1.getStop();
+    st1=stopTimes.get(i + 1);
+    Stop s1=st1.getStop();
     int dwellTime=st0.getDepartureTime() - st0.getArrivalTime();
     Vertex startJourneyDepart=graph.addVertex(id(s0.getId()) + "_" + id(trip.getId())+ "_D",s0.getName(),s0.getId().getId(),s0.getLon(),s0.getLat());
     Vertex endJourneyArrive=graph.addVertex(id(s1.getId()) + "_" + id(trip.getId())+ "_A",s1.getName(),s1.getId().getId(),s1.getLon(),s1.getLat());
@@ -58,8 +57,7 @@
       }
     }
     int runningTime=arrivalTime - departureTime;
-    boolean stopWheelchairBoarding=s0.getWheelchairBoarding() != 0;
-    tripPattern.addHop(i,0,departureTime,runningTime,arrivalTime,dwellTime,stopWheelchairBoarding && tripWheelchairAccessible,trip.getId());
+    tripPattern.addHop(i,0,departureTime,runningTime,arrivalTime,dwellTime,trip.getId());
     graph.addEdge(hop);
     Vertex startStation=graph.getVertex(id(s0.getId()));
     Vertex endStation=graph.getVertex(id(s1.getId()));
@@ -67,7 +65,6 @@
     graph.addEdge(boarding);
     graph.addEdge(new PatternAlight(endJourneyArrive,endStation,tripPattern,i,mode));
   }
-  boolean stopWheelchairBoarding=s1.getWheelchairBoarding() != 0;
-  tripPattern.setWheelchairAccessible(i,0,stopWheelchairBoarding && tripWheelchairAccessible);
+  tripPattern.setTripFlags(0,(trip.getWheelchairAccessible() != 0) ? TripPattern.FLAG_WHEELCHAIR_ACCESSIBLE : 0);
   return tripPattern;
 }

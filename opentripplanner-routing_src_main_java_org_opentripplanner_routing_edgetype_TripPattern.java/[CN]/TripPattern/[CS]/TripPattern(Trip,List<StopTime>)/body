@@ -1,19 +1,31 @@
 {
   this.exemplar=exemplar;
   int hops=stopTimes.size() - 1;
-  departureTimes=(Vector<Integer>[])Array.newInstance(Vector.class,hops);
-  runningTimes=(Vector<Integer>[])Array.newInstance(Vector.class,hops);
-  dwellTimes=(Vector<Integer>[])Array.newInstance(Vector.class,hops);
-  arrivalTimes=(Vector<Integer>[])Array.newInstance(Vector.class,hops);
-  wheelchairAccessibles=(Vector<Boolean>[])Array.newInstance(Vector.class,hops + 1);
-  tripIds=new Vector<AgencyAndId>();
+  departureTimes=(ArrayList<Integer>[])Array.newInstance(ArrayList.class,hops);
+  runningTimes=(ArrayList<Integer>[])Array.newInstance(ArrayList.class,hops);
+  dwellTimes=(ArrayList<Integer>[])Array.newInstance(ArrayList.class,hops);
+  arrivalTimes=(ArrayList<Integer>[])Array.newInstance(ArrayList.class,hops);
+  perTripFlags=new ArrayList<Integer>();
+  perStopFlags=new int[hops + 1];
+  tripIds=new ArrayList<AgencyAndId>();
   int i;
   for (i=0; i < hops; ++i) {
-    departureTimes[i]=new Vector<Integer>();
-    runningTimes[i]=new Vector<Integer>();
-    dwellTimes[i]=new Vector<Integer>();
-    arrivalTimes[i]=new Vector<Integer>();
-    wheelchairAccessibles[i]=new Vector<Boolean>();
+    departureTimes[i]=new ArrayList<Integer>();
+    runningTimes[i]=new ArrayList<Integer>();
+    dwellTimes[i]=new ArrayList<Integer>();
+    arrivalTimes[i]=new ArrayList<Integer>();
   }
-  wheelchairAccessibles[i]=new Vector<Boolean>();
+  i=0;
+  for (  StopTime stopTime : stopTimes) {
+    if (stopTime.getStop().getWheelchairBoarding() != 0) {
+      perStopFlags[i]|=FLAG_WHEELCHAIR_ACCESSIBLE;
+    }
+    if (stopTime.getPickupType() != 1) {
+      perStopFlags[i]|=FLAG_PICKUP;
+    }
+    if (stopTime.getDropOffType() != 1) {
+      perStopFlags[i]|=FLAG_DROPOFF;
+    }
+    ++i;
+  }
 }

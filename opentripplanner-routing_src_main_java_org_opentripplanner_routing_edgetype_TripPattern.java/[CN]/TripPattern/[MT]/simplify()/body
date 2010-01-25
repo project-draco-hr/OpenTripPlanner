@@ -1,6 +1,6 @@
 {
   for (int stopId=0; stopId < departureTimes.length; ++stopId) {
-    Vector<Integer> stopDwells=dwellTimes[stopId];
+    ArrayList<Integer> stopDwells=dwellTimes[stopId];
     for (int pattern=0; pattern < stopDwells.size(); ++pattern) {
       if (stopDwells.get(pattern) > 0) {
         return;

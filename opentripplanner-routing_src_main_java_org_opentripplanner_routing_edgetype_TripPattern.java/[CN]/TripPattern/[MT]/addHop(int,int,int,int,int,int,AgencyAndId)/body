@@ -1,0 +1,24 @@
+{
+  ArrayList<Integer> stopRunningTimes=runningTimes[stopIndex];
+  ArrayList<Integer> stopDepartureTimes=departureTimes[stopIndex];
+  ArrayList<Integer> stopArrivalTimes=arrivalTimes[stopIndex];
+  ArrayList<Integer> stopDwellTimes=dwellTimes[stopIndex];
+  if (insertionPoint > 0) {
+    if (stopDepartureTimes.get(insertionPoint - 1) > departureTime) {
+      throw new TripOvertakingException();
+    }
+  }
+  if (insertionPoint < stopDepartureTimes.size()) {
+    if (stopDepartureTimes.get(insertionPoint) < departureTime) {
+      throw new TripOvertakingException();
+    }
+  }
+  if (stopIndex == 0) {
+    tripIds.add(insertionPoint,tripId);
+    perTripFlags.add(insertionPoint,0);
+  }
+  stopDepartureTimes.add(insertionPoint,departureTime);
+  stopRunningTimes.add(insertionPoint,runningTime);
+  stopArrivalTimes.add(insertionPoint,arrivalTime);
+  stopDwellTimes.add(insertionPoint,dwellTime);
+}

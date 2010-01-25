@@ -4,6 +4,9 @@
       return null;
     }
   }
+  if (!pattern.canBoard(stopIndex)) {
+    return null;
+  }
   State s1=state0.clone();
   s1.tripId=null;
   return new TraverseResult(1,s1);

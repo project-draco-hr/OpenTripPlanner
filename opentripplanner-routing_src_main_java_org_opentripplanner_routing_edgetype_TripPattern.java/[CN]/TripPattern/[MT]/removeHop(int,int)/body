@@ -1,10 +1,10 @@
 {
-  runningTimes[stopIndex].removeElementAt(hop);
-  departureTimes[stopIndex].removeElementAt(hop);
-  dwellTimes[stopIndex].removeElementAt(hop);
-  arrivalTimes[stopIndex].removeElementAt(hop);
-  wheelchairAccessibles[stopIndex].removeElementAt(hop);
+  runningTimes[stopIndex].remove(hop);
+  departureTimes[stopIndex].remove(hop);
+  dwellTimes[stopIndex].remove(hop);
+  arrivalTimes[stopIndex].remove(hop);
   if (stopIndex == 0) {
-    tripIds.removeElementAt(hop);
+    perTripFlags.remove(hop);
+    tripIds.remove(hop);
   }
 }

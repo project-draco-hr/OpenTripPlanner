@@ -10,13 +10,13 @@
   int patternIndex=-1;
   AgencyAndId service=pattern.exemplar.getServiceId();
   if (options.serviceOn(service,serviceDate)) {
-    patternIndex=pattern.getPreviousPattern(stopIndex,secondsSinceMidnight,options.wheelchairAccessible);
+    patternIndex=pattern.getPreviousPattern(stopIndex,secondsSinceMidnight,options.wheelchairAccessible,false);
     if (patternIndex >= 0) {
       wait=pattern.getArrivalTime(stopIndex,patternIndex) - secondsSinceMidnight;
     }
   }
   if (options.serviceOn(service,serviceDateYesterday)) {
-    int yesterdayPatternIndex=pattern.getPreviousPattern(stopIndex,secondsSinceMidnight + SEC_IN_DAY,options.wheelchairAccessible);
+    int yesterdayPatternIndex=pattern.getPreviousPattern(stopIndex,secondsSinceMidnight + SEC_IN_DAY,options.wheelchairAccessible,false);
     if (yesterdayPatternIndex >= 0) {
       int waitYesterday=pattern.getArrivalTime(stopIndex,yesterdayPatternIndex) - secondsSinceMidnight - SEC_IN_DAY;
       if (wait > 0 || waitYesterday > wait) {
