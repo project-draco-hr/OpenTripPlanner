@@ -27,6 +27,7 @@
       int insertionPoint=tripPattern.getDepartureTimeInsertionPoint(stopTimes.get(0).getDepartureTime());
       if (insertionPoint < 0) {
         _log.warn("duplicate first departure time for trip " + trip.getId() + ".  This will be handled correctly but inefficiently.");
+        simple=true;
         createSimpleHops(graph,trip,stopTimes);
       }
  else {
@@ -55,8 +56,8 @@
         if (blockId != null && !blockId.equals("")) {
           addTripToInterliningMap(tripsByBlockAndStart,trip,stopTimes,tripPattern,blockId);
         }
+        tripPattern.setTripFlags(insertionPoint,(trip.getWheelchairAccessible() != 0) ? TripPattern.FLAG_WHEELCHAIR_ACCESSIBLE : 0);
       }
-      tripPattern.setTripFlags(insertionPoint,(trip.getWheelchairAccessible() != 0) ? TripPattern.FLAG_WHEELCHAIR_ACCESSIBLE : 0);
     }
   }
   HashMap<TripPattern,HashMap<TripPattern,PatternInterlineDwell>> dwellEdges=new HashMap<TripPattern,HashMap<TripPattern,PatternInterlineDwell>>();
