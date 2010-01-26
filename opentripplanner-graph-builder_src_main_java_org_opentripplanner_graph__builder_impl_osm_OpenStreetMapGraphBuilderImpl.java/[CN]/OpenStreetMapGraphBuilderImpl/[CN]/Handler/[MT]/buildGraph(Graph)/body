@@ -34,13 +34,11 @@
         edgesByLocation.put(from.getCoordinate(),startEdges);
       }
       startEdges.add(street);
-      startEdges.add(backStreet);
       ArrayList<Edge> endEdges=edgesByLocation.get(to.getCoordinate());
       if (endEdges == null) {
         endEdges=new ArrayList<Edge>();
         edgesByLocation.put(to.getCoordinate(),endEdges);
       }
-      endEdges.add(street);
       endEdges.add(backStreet);
     }
   }
