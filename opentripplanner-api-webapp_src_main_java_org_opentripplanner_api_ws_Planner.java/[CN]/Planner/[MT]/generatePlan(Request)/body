@@ -86,6 +86,10 @@
           itinerary.addLeg(leg);
           leg.startTime=new Date(edge.fromv.state.getTime());
           leg.route=graphEdge.getName();
+          Trip trip=edge.getTrip();
+          if (trip != null) {
+            leg.headsign=trip.getTripHeadsign();
+          }
           mode=graphEdge.getMode();
           leg.mode=mode.toString();
           if (mode == TraverseMode.WALK) {
