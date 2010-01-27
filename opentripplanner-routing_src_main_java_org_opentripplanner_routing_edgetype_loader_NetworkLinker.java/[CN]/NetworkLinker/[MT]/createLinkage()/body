@@ -8,14 +8,16 @@
   for (  Vertex v : vertices) {
     if (i % 500 == 0)     _log.debug("vertices=" + i + "/"+ vertices.size());
     i++;
-    if (v.getType() == TransitStop.class) {
+    if (v instanceof TransitStop) {
       Vertex nearestIntersection=index.getClosestVertex(v.getCoordinate(),false);
       if (nearestIntersection != null) {
         if (nearestIntersection instanceof StreetLocation) {
           nearestIntersection=((StreetLocation)nearestIntersection).reify(graph);
         }
-        graph.addEdge(new StreetTransitLink(nearestIntersection,v));
-        graph.addEdge(new StreetTransitLink(v,nearestIntersection));
+        TransitStop ts=(TransitStop)v;
+        boolean wheelchairAccessible=ts.hasWheelchairEntrance();
+        graph.addEdge(new StreetTransitLink(nearestIntersection,v,wheelchairAccessible));
+        graph.addEdge(new StreetTransitLink(v,nearestIntersection,wheelchairAccessible));
       }
     }
   }

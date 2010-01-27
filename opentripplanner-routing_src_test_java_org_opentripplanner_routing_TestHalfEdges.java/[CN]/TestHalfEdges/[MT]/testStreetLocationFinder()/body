@@ -21,5 +21,5 @@
     assertEquals(rightDown,end.street);
   }
   assertTrue(end.getDegreeIn() == 2);
-  assertEquals(TransitStop.class,finder.getClosestVertex(new Coordinate(-74.05000001,40.1)).getType());
+  assertTrue(finder.getClosestVertex(new Coordinate(-74.05000001,40.1)) instanceof TransitStop);
 }

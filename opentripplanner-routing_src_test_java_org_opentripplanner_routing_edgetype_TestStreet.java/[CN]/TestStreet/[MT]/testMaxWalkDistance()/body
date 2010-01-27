@@ -1,9 +1,9 @@
 {
   Graph graph=new Graph();
-  Vertex tl=graph.addVertex(new GenericVertex("tl",-74,41,"tl",Intersection.class));
-  Vertex tr=graph.addVertex(new GenericVertex("tr",-73,41,"tr",Intersection.class));
-  Vertex bl=graph.addVertex(new GenericVertex("bl",-74,40,"bl",Intersection.class));
-  Vertex br=graph.addVertex(new GenericVertex("br",-73,40,"br",Intersection.class));
+  Vertex tl=graph.addVertex(new Intersection("tl",-74,41));
+  Vertex tr=graph.addVertex(new Intersection("tr",-73,41));
+  Vertex bl=graph.addVertex(new Intersection("bl",-74,40));
+  Vertex br=graph.addVertex(new Intersection("br",-73,40));
   Street top=new Street(tl,tr,20000);
   top.setGeometry(createGeometry(tl,tr));
   graph.addEdge(top);
@@ -13,7 +13,7 @@
   Street left=new Street(bl,tl,20000);
   left.setGeometry(createGeometry(bl,tl));
   graph.addEdge(left);
-  Transfer transfer=new Transfer(br,tr,99999);
+  MockTransfer transfer=new MockTransfer(br,tr,99999);
   graph.addEdge(transfer);
   TraverseOptions options=new TraverseOptions();
   ShortestPathTree spt=AStar.getShortestPathTree(graph,bl,tr,new State(0),options);

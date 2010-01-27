@@ -1,6 +1,6 @@
 {
   for (  Stop stop : _dao.getAllStops()) {
-    _graph.addVertex(new GenericVertex(id(stop.getId()),stop.getLon(),stop.getLat(),stop.getName(),stop.getId().getId(),TransitStop.class));
+    _graph.addVertex(new TransitStop(id(stop.getId()),stop.getLon(),stop.getLat(),stop.getName(),stop.getId().getId(),stop));
   }
   if (verbose) {
     System.out.println("Loading hops");

@@ -7,10 +7,10 @@
   for (  Vertex v : graph.getVertices()) {
     Envelope env=new Envelope(v.getCoordinate());
     modelBounds.expandToInclude(env);
-    if (v.getType() == TransitStop.class) {
+    if (v instanceof TransitStop) {
       vertexIndex.insert(env,v);
     }
- else     if (v.getType() == Intersection.class) {
+ else     if (v instanceof Intersection) {
       vertexIndex.insert(env,v);
     }
  else {

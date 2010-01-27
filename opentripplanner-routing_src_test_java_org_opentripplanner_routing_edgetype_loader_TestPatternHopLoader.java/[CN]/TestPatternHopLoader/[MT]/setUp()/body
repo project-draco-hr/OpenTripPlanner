@@ -3,4 +3,23 @@
   graph=new Graph();
   GTFSPatternHopLoader hl=new GTFSPatternHopLoader(graph,context);
   hl.load();
+  Vertex stop_a=graph.getVertex("agency_A");
+  Vertex stop_b=graph.getVertex("agency_B");
+  Vertex stop_c=graph.getVertex("agency_C");
+  Vertex stop_d=graph.getVertex("agency_D");
+  Vertex near_a=graph.addVertex(new Intersection("near_a",stop_a.getX() + 0.00001,stop_a.getY() + 0.00001));
+  Vertex near_b=graph.addVertex(new Intersection("near_b",stop_b.getX() + 0.00001,stop_b.getY() + 0.00001));
+  Vertex near_c=graph.addVertex(new Intersection("near_c",stop_c.getX() + 0.00001,stop_c.getY() + 0.00001));
+  Vertex near_d=graph.addVertex(new Intersection("near_d",stop_d.getX() + 0.00001,stop_d.getY() + 0.00001));
+  Vertex[] nearPoints={near_a,near_b,near_c,near_d};
+  Vertex nowhere=graph.addVertex(new Intersection("nowhere",0,0));
+  GeometryFactory gf=new GeometryFactory();
+  for (int i=0; i < nearPoints.length; ++i) {
+    Vertex a=nearPoints[i];
+    Street street=new Street(a,nowhere,10000);
+    street.setGeometry(gf.createLineString(new Coordinate[]{a.getCoordinate(),nowhere.getCoordinate()}));
+    graph.addEdge(a,nowhere,street);
+  }
+  NetworkLinker nl=new NetworkLinker(graph);
+  nl.createLinkage();
 }

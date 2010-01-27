@@ -3,7 +3,7 @@
   transitStopTree=new STRtree();
   HashSet<Edge> edges=new HashSet<Edge>();
   for (  Vertex v : graph.getVertices()) {
-    if (v.getType() == Intersection.class) {
+    if (v instanceof Intersection) {
       for (      Edge e : v.getOutgoing()) {
         if (e instanceof Street) {
           edges.add(e);
@@ -12,7 +12,7 @@
         }
       }
     }
- else     if (v.getType() == TransitStop.class) {
+ else     if (v instanceof TransitStop) {
       Envelope env=new Envelope(v.getCoordinate());
       transitStopTree.insert(env,v);
     }

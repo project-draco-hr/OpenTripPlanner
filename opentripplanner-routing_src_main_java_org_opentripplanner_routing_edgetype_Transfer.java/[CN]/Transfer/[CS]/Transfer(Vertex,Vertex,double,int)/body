@@ -2,4 +2,5 @@
   super(fromv,tov);
   this.distance=distance;
   this.time=time;
+  wheelchairAccessible=((TransitStop)getFromVertex()).hasWheelchairEntrance() && ((TransitStop)getToVertex()).hasWheelchairEntrance();
 }
