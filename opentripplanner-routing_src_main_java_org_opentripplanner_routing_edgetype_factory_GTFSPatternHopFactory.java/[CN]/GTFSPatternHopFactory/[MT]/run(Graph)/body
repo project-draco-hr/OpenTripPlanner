@@ -39,7 +39,7 @@
           int dwellTime=st0.getDepartureTime() - st0.getArrivalTime();
           int runningTime=st1.getArrivalTime() - st0.getDepartureTime();
           try {
-            tripPattern.addHop(i,insertionPoint,st0.getDepartureTime(),runningTime,st1.getArrivalTime(),dwellTime,trip.getId());
+            tripPattern.addHop(i,insertionPoint,st0.getDepartureTime(),runningTime,st1.getArrivalTime(),dwellTime,trip);
           }
  catch (          TripOvertakingException e) {
             _log.warn("trip " + trip.getId() + " overtakes another trip with the same stops.  This will be handled correctly but inefficiently.");
