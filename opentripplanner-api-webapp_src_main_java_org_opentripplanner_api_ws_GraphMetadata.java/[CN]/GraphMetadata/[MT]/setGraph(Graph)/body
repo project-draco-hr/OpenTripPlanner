@@ -1,0 +1,10 @@
+{
+  Envelope env=new Envelope();
+  for (  Vertex v : graph.getVertices()) {
+    env.expandToInclude(v.getCoordinate());
+  }
+  setMinLongitude(env.getMinX());
+  setMaxLongitude(env.getMaxX());
+  setMinLatitude(env.getMinY());
+  setMaxLatitude(env.getMaxY());
+}
