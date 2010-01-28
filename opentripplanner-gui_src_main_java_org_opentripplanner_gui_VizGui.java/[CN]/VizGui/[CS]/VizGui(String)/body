@@ -62,6 +62,30 @@ catch (  ClassNotFoundException e) {
         nearbyModel=new VertexList(vertices);
         nearbyVertices.setModel(nearbyModel);
       }
+      metadataModel.clear();
+      Class<?> c=selected.getClass();
+      metadataModel.addElement("Class:" + c);
+      Field[] fields=c.getDeclaredFields();
+      for (int i=0; i < fields.length; i++) {
+        Field field=fields[i];
+        int modifiers=field.getModifiers();
+        if ((modifiers & Modifier.STATIC) != 0) {
+          continue;
+        }
+        field.setAccessible(true);
+        String name=field.getName();
+        String value="(unknown -- see console for stack trace)";
+        try {
+          value="" + field.get(selected);
+        }
+ catch (        IllegalArgumentException e1) {
+          e1.printStackTrace();
+        }
+catch (        IllegalAccessException e1) {
+          e1.printStackTrace();
+        }
+        metadataModel.addElement(name + ": " + value);
+      }
       TripPattern pattern=null;
       int stopIndex=0;
       if (selected instanceof PatternBoard) {
@@ -178,15 +202,18 @@ catch (  ClassNotFoundException e) {
   }
 );
   buttonPanel.add(traceButton);
-  rightPanel=new JPanel();
-  rightPanel.setLayout(new BoxLayout(rightPanel,BoxLayout.PAGE_AXIS));
-  serviceIdLabel=new JLabel("trip pattern");
-  rightPanel.add(serviceIdLabel);
+  JTabbedPane rightPanel=new JTabbedPane();
   pane.add(rightPanel,BorderLayout.LINE_END);
   departurePattern=new JList();
   departurePattern.setPrototypeCellValue("Bite the wax tadpole right on the nose");
   JScrollPane dpScrollPane=new JScrollPane(departurePattern);
-  rightPanel.add(dpScrollPane);
+  rightPanel.addTab("trip pattern",dpScrollPane);
+  JList metadataList=new JList();
+  metadataModel=new DefaultListModel();
+  metadataList.setModel(metadataModel);
+  metadataList.setPrototypeCellValue("bicycleSafetyEffectiveLength : 10.42468803");
+  JScrollPane mdScrollPane=new JScrollPane(metadataList);
+  rightPanel.addTab("metadata",mdScrollPane);
   pathservice=new PathServiceImpl();
   pathservice.setGraph(graph);
   indexService=new StreetVertexIndexServiceImpl(graph);

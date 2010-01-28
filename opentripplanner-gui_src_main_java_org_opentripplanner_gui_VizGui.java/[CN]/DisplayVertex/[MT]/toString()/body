@@ -1,3 +1,7 @@
 {
-  return vertex.getLabel() + " - " + vertex.getName();
+  String label=vertex.getLabel();
+  if (label.contains("osm node")) {
+    label=vertex.getName();
+  }
+  return label;
 }
