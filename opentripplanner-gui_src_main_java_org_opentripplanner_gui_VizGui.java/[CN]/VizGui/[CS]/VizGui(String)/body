@@ -48,6 +48,25 @@ catch (  ClassNotFoundException e) {
         departurePattern.removeAll();
         return;
       }
+      showGraph.highlightEdge(selected);
+      if (selected instanceof Turn) {
+        HashSet<Vertex> vertices=new HashSet<Vertex>();
+        Vertex tov=selected.getToVertex();
+        for (        Edge og : tov.getOutgoing()) {
+          if (og instanceof Street) {
+            vertices.add(og.getToVertex());
+            break;
+          }
+        }
+        Vertex fromv=selected.getFromVertex();
+        for (        Edge ic : fromv.getIncoming()) {
+          if (ic instanceof Street) {
+            vertices.add(ic.getFromVertex());
+            break;
+          }
+        }
+        showGraph.setHighlighed(vertices);
+      }
       VertexList nearbyModel=(VertexList)nearbyVertices.getModel();
       List<Vertex> vertices=nearbyModel.selected;
       Vertex v;
