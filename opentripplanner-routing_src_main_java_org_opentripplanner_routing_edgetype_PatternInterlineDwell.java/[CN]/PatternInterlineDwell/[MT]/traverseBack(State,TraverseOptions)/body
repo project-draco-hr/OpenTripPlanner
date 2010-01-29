@@ -1,11 +1,12 @@
 {
   State state1=state0.clone();
   AgencyAndId tripId=state0.tripId;
-  Integer dwellTime=reverseTripIdToDwellTime.get(tripId);
-  if (dwellTime == null) {
+  InterlineDwellData dwellData=reverseTripIdToInterlineDwellData.get(tripId);
+  if (dwellData == null) {
     return null;
   }
-  state1.incrementTimeInSeconds(-dwellTime);
+  state1.incrementTimeInSeconds(-dwellData.dwellTime);
   state1.tripId=targetTrip.getId();
-  return new TraverseResult(dwellTime,state1);
+  state1.setPattern(dwellData.patternIndex);
+  return new TraverseResult(dwellData.dwellTime,state1);
 }
