@@ -3,15 +3,18 @@
     return null;
   }
   State s1=s0.clone();
-  double time=this.length / wo.speed;
+  double time=length / wo.speed;
   double weight;
   if (wo.modes.contains(TraverseMode.BICYCLE) && wo.optimizeFor.equals(OptimizeType.SAFE)) {
-    weight=this.bicycleSafetyEffectiveLength / wo.speed;
+    if (bicycleSafetyEffectiveLength < length * 0.99) {
+      System.out.println("a shorter path on : " + getName() + ": "+ bicycleSafetyEffectiveLength+ " / "+ length);
+    }
+    weight=bicycleSafetyEffectiveLength / wo.speed;
   }
  else {
     weight=time;
   }
-  if (s0.walkDistance > wo.maxWalkDistance) {
+  if (s0.walkDistance > wo.maxWalkDistance && wo.modes.getTransit()) {
     weight*=100;
   }
   s1.walkDistance+=this.length;

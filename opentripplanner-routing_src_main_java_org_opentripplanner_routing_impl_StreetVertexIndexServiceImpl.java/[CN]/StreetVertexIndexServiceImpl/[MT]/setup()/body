@@ -1,12 +1,12 @@
 {
   edgeTree=new STRtree();
   transitStopTree=new STRtree();
-  HashSet<Edge> edges=new HashSet<Edge>();
+  HashSet<Street> edges=new HashSet<Street>();
   for (  Vertex v : graph.getVertices()) {
     if (v instanceof Intersection) {
       for (      Edge e : v.getOutgoing()) {
         if (e instanceof Street) {
-          edges.add(e);
+          edges.add((Street)e);
           Envelope env=new Envelope(v.getCoordinate(),e.getToVertex().getCoordinate());
           edgeTree.insert(env,e);
         }

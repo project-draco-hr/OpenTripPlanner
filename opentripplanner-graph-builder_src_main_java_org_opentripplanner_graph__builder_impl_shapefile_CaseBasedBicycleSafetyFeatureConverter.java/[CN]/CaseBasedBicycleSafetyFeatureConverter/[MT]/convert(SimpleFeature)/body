@@ -1,6 +1,8 @@
 {
-  String key=feature.getAttribute(attributeName).toString();
-  Double safetyfeature=safetyFeatures.get(key);
-  if (safetyfeature == null)   safetyfeature=1.0;
-  return safetyfeature;
+  String safetyKey=feature.getAttribute(safetyAttributeName).toString();
+  Double safetyFeature=safetyFeatures.get(safetyKey);
+  if (safetyFeature == null)   return oneone;
+  String directionKey=feature.getAttribute(directionAttributeName).toString();
+  int directionFeature=directions.get(directionKey);
+  return new P2<Double>((directionFeature & 0x1) == 0 ? 1.0 : safetyFeature,(directionFeature & 0x2) == 0 ? 1.0 : safetyFeature);
 }

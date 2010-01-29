@@ -1,0 +1,8 @@
+{
+  for (  Map.Entry<String,String> entry : directionValues.entrySet()) {
+    String attributeValue=entry.getKey();
+    String featureName=entry.getValue();
+    Integer direction=Integer.valueOf(featureName);
+    addDirection(attributeValue,direction);
+  }
+}

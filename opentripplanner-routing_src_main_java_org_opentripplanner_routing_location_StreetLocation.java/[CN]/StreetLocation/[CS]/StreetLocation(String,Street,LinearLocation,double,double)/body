@@ -8,17 +8,19 @@
   this.location=location;
   String streetName=street.getName();
   double weight1=DistanceLibrary.distance(y,x,startCoord.y,startCoord.x);
+  double bicycleWeight1=weight1 * street.bicycleSafetyEffectiveLength / street.length;
   double weight2=DistanceLibrary.distance(y,x,endCoord.y,endCoord.x);
-  Street e1=new Street(fromv,this,streetName,streetName,weight1);
+  double bicycleWeight2=weight2 * street.bicycleSafetyEffectiveLength / street.length;
+  Street e1=new Street(fromv,this,streetName,streetName,weight1,bicycleWeight1,StreetTraversalPermission.ALL);
   e1.setGeometry(toLineString(fromv.getCoordinate(),this.getCoordinate()));
   addIncoming(e1);
-  Street e2=new Street(tov,this,streetName,streetName,weight2);
+  Street e2=new Street(tov,this,streetName,streetName,weight2,bicycleWeight2,StreetTraversalPermission.ALL);
   e2.setGeometry(toLineString(tov.getCoordinate(),this.getCoordinate()));
   addIncoming(e2);
-  Street e3=new Street(this,fromv,streetName,streetName,weight1);
+  Street e3=new Street(this,fromv,streetName,streetName,weight1,bicycleWeight1,StreetTraversalPermission.ALL);
   addOutgoing(e3);
   e3.setGeometry(toLineString(this.getCoordinate(),fromv.getCoordinate()));
-  Street e4=new Street(this,tov,streetName,streetName,weight2);
+  Street e4=new Street(this,tov,streetName,streetName,weight2,bicycleWeight2,StreetTraversalPermission.ALL);
   addOutgoing(e4);
   e4.setGeometry(toLineString(this.getCoordinate(),tov.getCoordinate()));
 }
