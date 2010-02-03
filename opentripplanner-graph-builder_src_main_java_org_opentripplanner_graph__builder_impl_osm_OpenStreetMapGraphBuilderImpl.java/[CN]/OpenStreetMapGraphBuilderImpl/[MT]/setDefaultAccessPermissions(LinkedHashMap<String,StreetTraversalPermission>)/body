@@ -1,0 +1,12 @@
+{
+  for (  String tag : mappy.keySet()) {
+    int ch_eq=tag.indexOf("=");
+    if (ch_eq < 0) {
+      _tagPermissions.put(tag,new KeyValuePermission(null,null,mappy.get(tag)));
+    }
+ else {
+      String key=tag.substring(0,ch_eq), value=tag.substring(ch_eq + 1);
+      _tagPermissions.put(tag,new KeyValuePermission(key,value,mappy.get(tag)));
+    }
+  }
+}

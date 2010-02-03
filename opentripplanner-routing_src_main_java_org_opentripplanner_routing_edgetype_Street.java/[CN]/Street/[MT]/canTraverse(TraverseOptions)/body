@@ -1,14 +1,7 @@
 {
-switch (permission) {
-case BICYCLE_ONLY:
-    return wo.modes.getBicycle();
-case PEDESTRIAN_AND_BICYCLE_ONLY:
-  return wo.modes.getBicycle() || wo.modes.getWalk();
-case PEDESTRIAN_ONLY:
-return wo.modes.getWalk();
-case ALL:
-case CROSSHATCHED:
-break;
-}
-return true;
+  if (!wheelchairAccessible && wo.wheelchairAccessible)   return false;
+  if (wo.modes.getWalk() && permission.allows(StreetTraversalPermission.PEDESTRIAN))   return true;
+  if (wo.modes.getBicycle() && permission.allows(StreetTraversalPermission.BICYCLE))   return true;
+  if (wo.modes.getCar() && permission.allows(StreetTraversalPermission.CAR))   return true;
+  return false;
 }

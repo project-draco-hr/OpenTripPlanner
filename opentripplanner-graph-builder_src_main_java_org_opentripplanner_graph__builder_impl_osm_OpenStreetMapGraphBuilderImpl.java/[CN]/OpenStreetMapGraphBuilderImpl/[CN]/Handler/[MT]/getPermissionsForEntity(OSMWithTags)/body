@@ -1,0 +1,68 @@
+{
+  Map<String,String> tags=entity.getTags();
+  String all_tags="";
+  StreetTraversalPermission def=null;
+  StreetTraversalPermission access=null;
+  for (  String key : tags.keySet()) {
+    String tag=key + "=" + tags.get(key);
+    if (all_tags.equals("")) {
+      all_tags+=tag;
+    }
+ else {
+      all_tags+="; " + tag;
+    }
+  }
+  for (  KeyValuePermission kvp : _tagPermissions.values()) {
+    if (tags.containsKey(kvp.key) && kvp.value.equals(tags.get(kvp.key))) {
+      def=kvp.permission;
+      break;
+    }
+  }
+  if (def == null) {
+    if (_tagPermissions.containsKey("__default__")) {
+      def=_tagPermissions.get("__default__").permission;
+      _log.debug("Used default permissions: " + all_tags);
+    }
+ else {
+      _log.warn("No default permissions for osm tags...");
+      def=StreetTraversalPermission.ALL;
+    }
+  }
+  if (tags.containsKey("access")) {
+    if ("no".equals(tags.get("access"))) {
+      access=StreetTraversalPermission.NONE;
+    }
+ else {
+      access=StreetTraversalPermission.ALL;
+    }
+  }
+ else   if (tags.containsKey("motorcar") || tags.containsKey("bicycle") || tags.containsKey("foot")) {
+    access=def;
+  }
+  if (tags.containsKey("motorcar")) {
+    if ("no".equals(tags.get("motorcar")) || "private".equals(tags.get("motorcar"))) {
+      access=access.remove(StreetTraversalPermission.CAR);
+    }
+ else {
+      access=access.add(StreetTraversalPermission.CAR);
+    }
+  }
+  if (tags.containsKey("bicycle")) {
+    if ("no".equals(tags.get("bicycle")) || "private".equals(tags.get("bicycle"))) {
+      access=access.remove(StreetTraversalPermission.BICYCLE);
+    }
+ else {
+      access=access.add(StreetTraversalPermission.BICYCLE);
+    }
+  }
+  if (tags.containsKey("foot")) {
+    if ("no".equals(tags.get("foot")) || "private".equals(tags.get("foot"))) {
+      access=access.remove(StreetTraversalPermission.PEDESTRIAN);
+    }
+ else {
+      access=access.add(StreetTraversalPermission.PEDESTRIAN);
+    }
+  }
+  if (access == null)   return def;
+  return access;
+}

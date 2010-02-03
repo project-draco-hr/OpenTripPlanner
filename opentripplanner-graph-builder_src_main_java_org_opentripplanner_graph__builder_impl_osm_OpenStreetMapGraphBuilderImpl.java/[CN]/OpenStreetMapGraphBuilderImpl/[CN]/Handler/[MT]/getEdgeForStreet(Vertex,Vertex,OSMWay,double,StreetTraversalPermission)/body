@@ -6,6 +6,9 @@
     name=id;
   }
   Street street=new Street(from,to,id,name,d,permissions);
+  if ("no".equals(way.getTags().get("wheelchair")) || ("steps".equals(way.getTags().get("highway")) && !"yes".equals(way.getTags().get("wheelchair")))) {
+    street.setWheelchairAccessible(false);
+  }
   Coordinate[] coordinates={from.getCoordinate(),to.getCoordinate()};
   Float sequence=new PackedCoordinateSequence.Float(coordinates,2);
   LineString lineString=_geometryFactory.createLineString(sequence);
