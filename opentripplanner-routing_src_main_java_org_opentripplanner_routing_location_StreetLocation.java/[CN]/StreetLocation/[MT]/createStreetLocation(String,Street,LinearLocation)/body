@@ -1,5 +1,5 @@
 {
-  Geometry g=street.getGeometry();
-  Coordinate nearestPoint=location.getCoordinate(g);
-  return new StreetLocation(name,street,location,nearestPoint.x,nearestPoint.y);
+  List<Street> streets=new LinkedList<Street>();
+  streets.add(street);
+  return createStreetLocation(name,streets,location);
 }

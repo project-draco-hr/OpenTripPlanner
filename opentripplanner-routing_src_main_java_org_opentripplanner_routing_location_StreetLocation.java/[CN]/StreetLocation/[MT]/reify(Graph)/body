@@ -5,14 +5,14 @@
   for (  Edge e : getIncoming()) {
     Street s=(Street)e;
     Vertex fromv=e.getFromVertex();
-    Street street=new Street(fromv,reified,name,name,s.getLength());
+    Street street=new Street(fromv,reified,name,name,s.getLength(),s.getBicycleSafetyEffectiveLength(),s.getTraversalPermission(),s.getWheelchairAccessible());
     street.setGeometry(s.getGeometry());
     graph.addEdge(street);
   }
   for (  Edge e : getOutgoing()) {
     Street s=(Street)e;
     Vertex tov=e.getToVertex();
-    Street street=new Street(reified,tov,name,name,s.getLength());
+    Street street=new Street(reified,tov,name,name,s.getLength(),s.getBicycleSafetyEffectiveLength(),s.getTraversalPermission(),s.getWheelchairAccessible());
     street.setGeometry(s.getGeometry());
     graph.addEdge(street);
   }

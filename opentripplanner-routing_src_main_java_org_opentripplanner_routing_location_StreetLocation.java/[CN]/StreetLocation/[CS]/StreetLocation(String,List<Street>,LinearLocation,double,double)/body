@@ -1,0 +1,22 @@
+{
+  super(name,x,y);
+  this.streets=streets;
+  this.location=location;
+  for (  Street street : streets) {
+    Vertex fromv=street.getFromVertex();
+    Vertex tov=street.getToVertex();
+    Coordinate startCoord=fromv.getCoordinate();
+    Coordinate endCoord=tov.getCoordinate();
+    String streetName=street.getName();
+    double weight1=DistanceLibrary.distance(y,x,startCoord.y,startCoord.x);
+    double bicycleWeight1=weight1 * street.bicycleSafetyEffectiveLength / street.length;
+    double weight2=DistanceLibrary.distance(y,x,endCoord.y,endCoord.x);
+    double bicycleWeight2=weight2 * street.bicycleSafetyEffectiveLength / street.length;
+    Street e1=new Street(fromv,this,streetName,streetName,weight1,bicycleWeight1,street.getTraversalPermission(),street.getWheelchairAccessible());
+    e1.setGeometry(toLineString(fromv.getCoordinate(),this.getCoordinate()));
+    addIncoming(e1);
+    Street e2=new Street(this,tov,streetName,streetName,weight2,bicycleWeight2,street.getTraversalPermission(),street.getWheelchairAccessible());
+    e2.setGeometry(toLineString(this.getCoordinate(),tov.getCoordinate()));
+    addOutgoing(e2);
+  }
+}

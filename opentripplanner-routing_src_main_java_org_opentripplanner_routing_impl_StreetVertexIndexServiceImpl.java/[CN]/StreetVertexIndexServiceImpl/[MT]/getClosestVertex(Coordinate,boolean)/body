@@ -26,16 +26,23 @@
       }
     }
     nearby=edgeTree.query(envelope);
-    Street bestStreet=null;
     for (    Street e : nearby) {
       Geometry g=e.getGeometry();
       double distance=g.distance(p);
       if (distance < bestDistance) {
         bestDistance=distance;
-        bestStreet=e;
+      }
+    }
+    List<Street> parallel=new LinkedList<Street>();
+    for (    Street e : nearby) {
+      Geometry g=e.getGeometry();
+      double distance=g.distance(p);
+      if (distance == bestDistance) {
+        parallel.add(e);
       }
     }
     if (bestDistance <= MAX_DISTANCE_FROM_STREET) {
+      Street bestStreet=parallel.get(0);
       Geometry g=bestStreet.getGeometry();
       LocationIndexedLine l=new LocationIndexedLine(g);
       LinearLocation location=l.project(c);
@@ -48,7 +55,7 @@
  else       if (nearestPoint.distance(end) < MAX_SNAP_TO_INTERSECTION_DISTANCE) {
         return bestStreet.getToVertex();
       }
-      return StreetLocation.createStreetLocation(c.toString(),bestStreet,location);
+      return StreetLocation.createStreetLocation(c.toString(),parallel,location);
     }
   }
   return null;
