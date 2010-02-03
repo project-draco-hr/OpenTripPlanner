@@ -24,23 +24,17 @@
       if (osmStartNode == null || osmEndNode == null)       continue;
       Vertex from=addVertex(graph,vFromId,osmStartNode);
       Vertex to=addVertex(graph,vToId,osmEndNode);
-      double d=from.distance(to);
-      Street street=getEdgeForStreet(from,to,way,d,permissions);
-      graph.addEdge(street);
-      Street backStreet=getEdgeForStreet(to,from,way,d,permissions);
-      graph.addEdge(backStreet);
-      ArrayList<Edge> startEdges=edgesByLocation.get(from.getCoordinate());
-      if (startEdges == null) {
-        startEdges=new ArrayList<Edge>();
-        edgesByLocation.put(from.getCoordinate(),startEdges);
+      ArrayList<Street> streets=getEdgesForStreet(from,to,way,permissions);
+      for (      Street street : streets) {
+        graph.addEdge(street);
+        Vertex start=street.getFromVertex();
+        ArrayList<Edge> edges=edgesByLocation.get(start.getCoordinate());
+        if (edges == null) {
+          edges=new ArrayList<Edge>();
+          edgesByLocation.put(start.getCoordinate(),edges);
+        }
+        edges.add(street);
       }
-      startEdges.add(street);
-      ArrayList<Edge> endEdges=edgesByLocation.get(to.getCoordinate());
-      if (endEdges == null) {
-        endEdges=new ArrayList<Edge>();
-        edgesByLocation.put(to.getCoordinate(),endEdges);
-      }
-      endEdges.add(backStreet);
     }
   }
   for (  ArrayList<Edge> edges : edgesByLocation.values()) {
