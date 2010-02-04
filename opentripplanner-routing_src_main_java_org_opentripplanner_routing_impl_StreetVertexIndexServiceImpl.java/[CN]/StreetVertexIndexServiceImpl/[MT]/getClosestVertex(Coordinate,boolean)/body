@@ -21,7 +21,7 @@
           bestStop=v;
         }
       }
-      if (bestDistance <= MAX_DISTANCE_FROM_STREET) {
+      if (bestDistance <= MAX_SNAP_DISTANCE) {
         return bestStop;
       }
     }
@@ -49,10 +49,10 @@
       Coordinate start=bestStreet.getFromVertex().getCoordinate();
       Coordinate end=bestStreet.getToVertex().getCoordinate();
       Coordinate nearestPoint=location.getCoordinate(g);
-      if (nearestPoint.distance(start) < MAX_SNAP_TO_INTERSECTION_DISTANCE) {
+      if (nearestPoint.distance(start) < MAX_SNAP_DISTANCE) {
         return bestStreet.getFromVertex();
       }
- else       if (nearestPoint.distance(end) < MAX_SNAP_TO_INTERSECTION_DISTANCE) {
+ else       if (nearestPoint.distance(end) < MAX_SNAP_DISTANCE) {
         return bestStreet.getToVertex();
       }
       return StreetLocation.createStreetLocation(bestStreet.getName(),parallel,location);
