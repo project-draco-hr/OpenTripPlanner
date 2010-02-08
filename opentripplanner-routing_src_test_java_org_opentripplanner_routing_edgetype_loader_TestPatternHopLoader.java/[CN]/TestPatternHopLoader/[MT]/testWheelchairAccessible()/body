@@ -16,6 +16,7 @@
   GregorianCalendar time=new GregorianCalendar(2009,8,18,0,0,0);
   spt=AStar.getShortestPathTree(graph,near_a,near_d,new State(time.getTimeInMillis()),options);
   time.add(Calendar.HOUR,1);
+  time.add(Calendar.SECOND,1);
   path=spt.getPath(near_d);
   assertNotNull(path);
   assertEquals(time.getTimeInMillis(),path.vertices.lastElement().state.getTime());

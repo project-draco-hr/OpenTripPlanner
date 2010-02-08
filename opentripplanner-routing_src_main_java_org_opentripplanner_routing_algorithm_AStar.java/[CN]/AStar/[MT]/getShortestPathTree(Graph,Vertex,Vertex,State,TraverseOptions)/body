@@ -21,7 +21,8 @@
   SPTVertex spt_u, spt_v;
   while (!pq.empty()) {
     spt_u=(SPTVertex)pq.extract_min();
-    if (spt_u.mirror == target)     break;
+    Vertex fromv=spt_u.mirror;
+    if (fromv == target)     break;
     Iterable<Edge> outgoing=spt_u.mirror.getOutgoing();
     if (extraEdges.containsKey(spt_u.mirror)) {
       List<Edge> newOutgoing=new ArrayList<Edge>();
@@ -40,25 +41,10 @@
       Vertex tov=edge.getToVertex();
       distance=tov.distance(target) / MAX_SPEED;
       double new_w=spt_u.weightSum + wr.weight;
-      double old_w;
-      spt_v=spt.getVertex(tov);
-      if (spt_v == null) {
-        old_w=Double.MAX_VALUE;
-        spt_v=spt.addVertex(tov,wr.state,new_w,options);
-      }
- else {
-        old_w=spt_v.weightSum + distance;
-      }
-      if (new_w + distance < old_w) {
-        spt_v.state=wr.state;
-        spt_v.weightSum=new_w;
-        if (old_w == Integer.MAX_VALUE) {
-          pq.insert(spt_v,new_w + distance);
-        }
- else {
-          pq.insert_or_dec_key(spt_v,new_w + distance);
-        }
+      spt_v=spt.addVertex(tov,wr.state,new_w,options);
+      if (spt_v != null) {
         spt_v.setParent(spt_u,edge);
+        pq.insert_or_dec_key(spt_v,new_w + distance);
       }
     }
   }

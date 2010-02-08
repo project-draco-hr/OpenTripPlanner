@@ -1,0 +1,34 @@
+{
+  Graph graph;
+  GtfsContext context;
+  graph=ConstantsForTests.getInstance().getPortlandGraph();
+  context=ConstantsForTests.getInstance().getPortlandContext();
+  Vertex airport=graph.getVertex("TriMet_10579");
+  TraverseOptions wo=new TraverseOptions();
+  wo.setGtfsContext(context);
+  GregorianCalendar startTime=new GregorianCalendar(2009,11,1,12,34,25);
+  long startClock, endClock;
+  ShortestPathTree spt=null;
+  final int n_trials=100;
+  String random[]=new String[n_trials];
+  for (int i=0; i < n_trials; ++i) {
+    String label;
+    while (true) {
+      int rand_id=(int)(Math.random() * 10000);
+      label="TriMet_" + rand_id;
+      if (graph.getVertex(label) != null) {
+        break;
+      }
+    }
+    random[i]=label;
+  }
+  startClock=System.nanoTime();
+  for (int i=0; i < n_trials; ++i) {
+    spt=AStar.getShortestPathTree(graph,random[i],airport.getLabel(),new State(startTime.getTimeInMillis()),wo);
+  }
+  endClock=System.nanoTime();
+  long aStarTime=endClock - startClock;
+  GraphPath path=spt.getPath(airport);
+  assertNotNull(path);
+  assertTrue(aStarTime / n_trials / 1000000000.0 <= 0.1);
+}

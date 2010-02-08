@@ -8,7 +8,7 @@
     String[] pair=(String[])pairs.elementAt(i);
     System.out.print((i + 1) + "\t" + pair[0]+ "\t"+ pair[1]);
     long t0=System.currentTimeMillis();
-    ShortestPathTree spt=Dijkstra.getShortestPathTree(gg,pair[0],pair[1],new State(),new TraverseOptions());
+    ShortestPathTree spt=AStar.getShortestPathTree(gg,pair[0],pair[1],new State(),new TraverseOptions());
     @SuppressWarnings("unused") GraphPath gp=spt.getPath(gg.getVertex(pair[1]));
     long t1=System.currentTimeMillis();
     total+=(t1 - t0);

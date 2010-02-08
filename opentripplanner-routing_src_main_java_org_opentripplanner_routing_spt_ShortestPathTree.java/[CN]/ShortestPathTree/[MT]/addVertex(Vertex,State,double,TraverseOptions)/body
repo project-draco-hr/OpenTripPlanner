@@ -1,5 +1,66 @@
 {
-  SPTVertex ret=new SPTVertex(vv,ss,weightSum,options);
-  this.vertices.put(vv,ret);
+  Collection<SPTVertex> vertices=getVertices(vertex);
+  if (vertices == null) {
+    vertices=new ArrayList<SPTVertex>();
+    vertexSets.put(vertex,vertices);
+    SPTVertex ret=new SPTVertex(vertex,state,weightSum,options);
+    vertices.add(ret);
+    return ret;
+  }
+  long time=state.getTime();
+  double worstWeight=0;
+  Iterator<SPTVertex> it=vertices.iterator();
+  if (options.back) {
+    long worstTime=Long.MAX_VALUE;
+    while (it.hasNext()) {
+      SPTVertex v=it.next();
+      double old_w=v.weightSum;
+      long old_t=v.state.getTime();
+      if (old_w <= weightSum && old_t >= time) {
+        return null;
+      }
+      if (old_w > weightSum && old_t < time) {
+        it.remove();
+      }
+ else {
+        if (old_w > worstWeight) {
+          worstWeight=old_w;
+        }
+        if (old_t < worstTime) {
+          worstTime=old_t;
+        }
+      }
+    }
+    if (worstTime != Long.MAX_VALUE && time <= worstTime && weightSum >= worstWeight) {
+      return null;
+    }
+  }
+ else {
+    long worstTime=-1;
+    while (it.hasNext()) {
+      SPTVertex v=it.next();
+      double old_w=v.weightSum;
+      long old_t=v.state.getTime();
+      if (old_w <= weightSum && old_t <= time) {
+        return null;
+      }
+      if (old_w > weightSum && old_t > time) {
+        it.remove();
+      }
+ else {
+        if (old_w > worstWeight) {
+          worstWeight=old_w;
+        }
+        if (old_t > worstTime) {
+          worstTime=old_t;
+        }
+      }
+    }
+    if (worstTime != -1 && time >= worstTime && weightSum >= worstWeight) {
+      return null;
+    }
+  }
+  SPTVertex ret=new SPTVertex(vertex,state,weightSum,options);
+  vertices.add(ret);
   return ret;
 }

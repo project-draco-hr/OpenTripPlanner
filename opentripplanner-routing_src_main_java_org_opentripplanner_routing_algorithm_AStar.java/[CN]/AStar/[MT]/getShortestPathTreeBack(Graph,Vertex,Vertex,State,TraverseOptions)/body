@@ -1,4 +1,7 @@
 {
+  if (!options.back) {
+    throw new RuntimeException("Reverse paths must set options.back");
+  }
   if (origin == null || target == null) {
     return null;
   }
@@ -24,14 +27,15 @@
   SPTVertex spt_u, spt_v;
   while (!pq.empty()) {
     spt_u=(SPTVertex)pq.extract_min();
-    if (spt_u.mirror == target)     break;
-    Iterable<Edge> incoming=spt_u.mirror.getIncoming();
-    if (extraEdges.containsKey(spt_u.mirror)) {
+    Vertex tov=spt_u.mirror;
+    if (tov == target)     break;
+    Iterable<Edge> incoming=tov.getIncoming();
+    if (extraEdges.containsKey(tov)) {
       List<Edge> newIncoming=new ArrayList<Edge>();
-      for (      Edge edge : spt_u.mirror.getIncoming()) {
+      for (      Edge edge : tov.getIncoming()) {
         newIncoming.add(edge);
       }
-      newIncoming.add(extraEdges.get(spt_u.mirror));
+      newIncoming.add(extraEdges.get(tov));
       incoming=newIncoming;
     }
     for (    Edge edge : incoming) {
@@ -45,25 +49,10 @@
       Vertex fromv=edge.getFromVertex();
       distance=fromv.distance(target) / MAX_SPEED;
       double new_w=spt_u.weightSum + wr.weight;
-      double old_w;
-      spt_v=spt.getVertex(fromv);
-      if (spt_v == null) {
-        old_w=Integer.MAX_VALUE;
-        spt_v=spt.addVertex(fromv,wr.state,new_w,options);
-      }
- else {
-        old_w=spt_v.weightSum + distance;
-      }
-      if (new_w + distance < old_w) {
-        spt_v.state=wr.state;
-        spt_v.weightSum=new_w;
-        if (old_w == Integer.MAX_VALUE) {
-          pq.insert(spt_v,new_w + distance);
-        }
- else {
-          pq.insert_or_dec_key(spt_v,new_w + distance);
-        }
+      spt_v=spt.addVertex(fromv,wr.state,new_w,options);
+      if (spt_v != null) {
         spt_v.setParent(spt_u,edge);
+        pq.insert_or_dec_key(spt_v,new_w + distance);
       }
     }
   }

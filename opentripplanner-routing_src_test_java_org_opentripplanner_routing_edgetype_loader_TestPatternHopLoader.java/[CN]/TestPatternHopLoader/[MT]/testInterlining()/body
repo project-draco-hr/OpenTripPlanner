@@ -3,7 +3,7 @@
   Vertex stop_k=graph.getVertex("agency_K");
   long startTime=new GregorianCalendar(2009,8,19,12,0,0).getTimeInMillis();
   TraverseOptions options=new TraverseOptions(context);
-  ShortestPathTree spt=Dijkstra.getShortestPathTree(graph,stop_i.getLabel(),stop_k.getLabel(),new State(startTime),options);
+  ShortestPathTree spt=AStar.getShortestPathTree(graph,stop_i.getLabel(),stop_k.getLabel(),new State(startTime),options);
   GraphPath path=spt.getPath(stop_k);
   int num_alights=0;
   for (  SPTEdge e : path.edges) {

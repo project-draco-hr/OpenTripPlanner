@@ -1,7 +1,16 @@
 {
-  SPTVertex end=this.getVertex(dest);
-  if (end == null) {
+  SPTVertex end=null;
+  Collection<SPTVertex> set=getVertices(dest);
+  if (set == null) {
     return null;
+  }
+  for (  SPTVertex v : set) {
+    if (end == null || v.weightSum < end.weightSum) {
+      end=v;
+    }
+  }
+  if (set.size() == 0) {
+    System.out.println("empty set");
   }
   GraphPath ret=new GraphPath();
   while (true) {
