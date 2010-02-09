@@ -1,0 +1,5 @@
+{
+  int index=value.lastIndexOf(':');
+  if (index == value.length() - 3)   value=value.substring(0,index) + value.substring(index + 1);
+  return DateLibrary._format.parse(value);
+}

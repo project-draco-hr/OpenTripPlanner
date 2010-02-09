@@ -1,0 +1,23 @@
+{
+  GenericApplicationContext context=getApplicationContext();
+  PathService service=(PathService)context.getBean("pathServiceImpl");
+  List<Plan> plans=readPlans();
+  long tTotal=0;
+  for (int i=0; i < _repetitions; i++) {
+    for (    Plan plan : plans) {
+      String from=plan.latFrom + " " + plan.lonFrom;
+      String to=plan.latTo + " " + plan.lonTo;
+      try {
+        long t0=System.currentTimeMillis();
+        service.plan(from,to,plan.time,new TraverseOptions());
+        long t1=System.currentTimeMillis();
+        System.out.println("t=" + (t1 - t0));
+        tTotal+=t1 - t0;
+      }
+ catch (      VertexNotFoundException ex) {
+        System.out.println("no vertex: from=" + from + " to="+ to);
+      }
+    }
+  }
+  System.out.println("totalTime=" + tTotal);
+}

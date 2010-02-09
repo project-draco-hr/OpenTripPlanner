@@ -1,0 +1,10 @@
+{
+  int index=_random.nextInt(stops.size());
+  Stop stop=stops.get(index);
+  double lat=stop.getLat() + _random.nextGaussian() * _latNoise;
+  double lon=stop.getLon() + _random.nextGaussian() * _lonNoise;
+  JSONObject obj=new JSONObject();
+  obj.put("lat",lat);
+  obj.put("lon",lon);
+  return obj;
+}

@@ -1,0 +1,10 @@
+{
+  BufferedReader reader=new BufferedReader(new FileReader(_benchmarkPlan));
+  String line=null;
+  List<Plan> plans=new ArrayList<Plan>();
+  while ((line=reader.readLine()) != null) {
+    JSONObject obj=new JSONObject(line);
+    plans.add(getJsonObjectAsPlan(obj));
+  }
+  return plans;
+}

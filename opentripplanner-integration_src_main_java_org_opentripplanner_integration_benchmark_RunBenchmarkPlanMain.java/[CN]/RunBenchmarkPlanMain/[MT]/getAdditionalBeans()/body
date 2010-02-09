@@ -1,0 +1,10 @@
+{
+  Map<String,BeanDefinition> additionalBeans=new HashMap<String,BeanDefinition>();
+  BeanDefinitionBuilder bundlePath=BeanDefinitionBuilder.genericBeanDefinition(GraphBundle.class);
+  bundlePath.addPropertyValue("path",_graphPath);
+  additionalBeans.put("graphBundle",bundlePath.getBeanDefinition());
+  BeanDefinitionBuilder graph=BeanDefinitionBuilder.genericBeanDefinition(SerializedGraphFactoryBean.class);
+  graph.addPropertyReference("graphBundle","graphBundle");
+  additionalBeans.put("graph",graph.getBeanDefinition());
+  return additionalBeans;
+}

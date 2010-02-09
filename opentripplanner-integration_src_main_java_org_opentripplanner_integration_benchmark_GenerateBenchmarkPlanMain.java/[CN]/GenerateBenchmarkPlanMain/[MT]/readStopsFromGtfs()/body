@@ -1,0 +1,20 @@
+{
+  GtfsReader reader=new GtfsReader();
+  reader.setDefaultAgencyId("agency");
+  reader.setInputLocation(_inputPath);
+  List<Class<?>> classes=reader.getEntityClasses();
+  classes.clear();
+  classes.add(Stop.class);
+  reader.run();
+  GenericMutableDao dao=reader.getEntityStore();
+  Collection<Stop> stops=dao.getAllEntitiesForType(Stop.class);
+  List<Stop> stopsToInclude=new ArrayList<Stop>();
+  for (  Stop stop : stops) {
+    if (_envelope != null) {
+      Coordinate c=new Coordinate(stop.getLon(),stop.getLat());
+      if (!_envelope.contains(c))       continue;
+    }
+    stopsToInclude.add(stop);
+  }
+  return stopsToInclude;
+}
