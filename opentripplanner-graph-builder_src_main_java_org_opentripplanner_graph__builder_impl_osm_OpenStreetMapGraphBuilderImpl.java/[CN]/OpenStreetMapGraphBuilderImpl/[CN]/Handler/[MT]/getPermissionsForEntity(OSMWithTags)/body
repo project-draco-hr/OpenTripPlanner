@@ -1,17 +1,15 @@
 {
   Map<String,String> tags=entity.getTags();
-  String all_tags="";
   StreetTraversalPermission def=null;
-  StreetTraversalPermission access=null;
-  for (  String key : tags.keySet()) {
-    String tag=key + "=" + tags.get(key);
-    if (all_tags.equals("")) {
-      all_tags+=tag;
-    }
- else {
-      all_tags+="; " + tag;
-    }
-  }
+  StreetTraversalPermission permission=null;
+  String access=tags.get("access");
+  String motorcar=tags.get("motorcar");
+  String bicycle=tags.get("bicycle");
+  String foot=tags.get("foot");
+  String all_tags=access != null ? "access=" + access : "; ";
+  all_tags+=motorcar != null ? "motorcar=" + motorcar : "; ";
+  all_tags+=bicycle != null ? "bicycle=" + bicycle : "; ";
+  all_tags+=foot != null ? "foot=" + foot : "; ";
   for (  KeyValuePermission kvp : _tagPermissions.values()) {
     if (tags.containsKey(kvp.key) && kvp.value.equals(tags.get(kvp.key))) {
       def=kvp.permission;
@@ -24,45 +22,44 @@
       _log.debug("Used default permissions: " + all_tags);
     }
  else {
-      _log.warn("No default permissions for osm tags...");
       def=StreetTraversalPermission.ALL;
     }
   }
-  if (tags.containsKey("access")) {
-    if ("no".equals(tags.get("access"))) {
-      access=StreetTraversalPermission.NONE;
+  if (access != null) {
+    if ("no".equals(access)) {
+      permission=StreetTraversalPermission.NONE;
     }
  else {
-      access=StreetTraversalPermission.ALL;
+      permission=StreetTraversalPermission.ALL;
     }
   }
- else   if (tags.containsKey("motorcar") || tags.containsKey("bicycle") || tags.containsKey("foot")) {
-    access=def;
+ else   if (motorcar != null || bicycle != null || foot != null) {
+    permission=def;
   }
-  if (tags.containsKey("motorcar")) {
-    if ("no".equals(tags.get("motorcar")) || "private".equals(tags.get("motorcar"))) {
-      access=access.remove(StreetTraversalPermission.CAR);
+  if (motorcar != null) {
+    if ("no".equals(motorcar) || "private".equals(motorcar)) {
+      permission=permission.remove(StreetTraversalPermission.CAR);
     }
  else {
-      access=access.add(StreetTraversalPermission.CAR);
+      permission=permission.add(StreetTraversalPermission.CAR);
     }
   }
   if (tags.containsKey("bicycle")) {
-    if ("no".equals(tags.get("bicycle")) || "private".equals(tags.get("bicycle"))) {
-      access=access.remove(StreetTraversalPermission.BICYCLE);
+    if ("no".equals(bicycle) || "private".equals(bicycle)) {
+      permission=permission.remove(StreetTraversalPermission.BICYCLE);
     }
  else {
-      access=access.add(StreetTraversalPermission.BICYCLE);
+      permission=permission.add(StreetTraversalPermission.BICYCLE);
     }
   }
-  if (tags.containsKey("foot")) {
-    if ("no".equals(tags.get("foot")) || "private".equals(tags.get("foot"))) {
-      access=access.remove(StreetTraversalPermission.PEDESTRIAN);
+  if (foot != null) {
+    if ("no".equals(foot) || "private".equals(foot)) {
+      permission=permission.remove(StreetTraversalPermission.PEDESTRIAN);
     }
  else {
-      access=access.add(StreetTraversalPermission.PEDESTRIAN);
+      permission=permission.add(StreetTraversalPermission.PEDESTRIAN);
     }
   }
-  if (access == null)   return def;
-  return access;
+  if (permission == null)   return def;
+  return permission;
 }

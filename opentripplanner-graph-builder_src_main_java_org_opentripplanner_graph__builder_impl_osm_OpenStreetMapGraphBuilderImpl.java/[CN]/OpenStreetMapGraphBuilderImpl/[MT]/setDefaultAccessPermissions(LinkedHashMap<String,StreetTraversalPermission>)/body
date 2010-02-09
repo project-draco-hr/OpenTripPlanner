@@ -9,4 +9,7 @@
       _tagPermissions.put(tag,new KeyValuePermission(key,value,mappy.get(tag)));
     }
   }
+  if (!_tagPermissions.containsKey("__default__")) {
+    _log.warn("No default permissions for osm tags...");
+  }
 }
