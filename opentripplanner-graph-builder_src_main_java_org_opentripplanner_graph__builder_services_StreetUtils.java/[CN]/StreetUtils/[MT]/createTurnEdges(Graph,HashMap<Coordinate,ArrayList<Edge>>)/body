@@ -1,0 +1,43 @@
+{
+  for (  ArrayList<Edge> edges : edgesByLocation.values()) {
+    for (    Edge in : edges) {
+      Vertex tov=in.getToVertex();
+      Coordinate c=tov.getCoordinate();
+      ArrayList<Edge> outEdges=edgesByLocation.get(c);
+      if (outEdges != null) {
+        boolean unified=false;
+        if (outEdges.size() == 1) {
+          Edge out=outEdges.get(0);
+          Vertex fromVertex=out.getFromVertex();
+          if (tov != fromVertex && out.getName() == in.getName()) {
+            Intersection v=(Intersection)tov;
+            v.mergeFrom(graph,(Intersection)fromVertex);
+            graph.removeVertex(fromVertex);
+            unified=true;
+          }
+        }
+ else         if (outEdges.size() == 2) {
+          if (outEdges.get(0).getToVertex() == in.getFromVertex() || outEdges.get(1).getToVertex() == in.getFromVertex()) {
+            for (            Edge out : outEdges) {
+              Vertex fromVertex=out.getFromVertex();
+              if (tov != fromVertex && out.getName() == in.getName()) {
+                Intersection v=(Intersection)tov;
+                v.mergeFrom(graph,(Intersection)fromVertex);
+                graph.removeVertex(fromVertex);
+                unified=true;
+                break;
+              }
+            }
+          }
+        }
+        if (!unified) {
+          for (          Edge out : outEdges) {
+            if (tov != out.getFromVertex() && out instanceof Street && out.getFromVertex().getCoordinate().equals(c)) {
+              graph.addEdge(new Turn(in,out));
+            }
+          }
+        }
+      }
+    }
+  }
+}

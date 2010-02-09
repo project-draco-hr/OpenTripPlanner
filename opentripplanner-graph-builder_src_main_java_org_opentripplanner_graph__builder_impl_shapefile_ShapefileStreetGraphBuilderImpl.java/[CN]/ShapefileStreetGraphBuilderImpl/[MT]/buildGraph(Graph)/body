@@ -66,20 +66,7 @@
         backStreet.setBicycleSafetyEffectiveLength(effectiveLength.getSecond() * length);
       }
     }
-    for (    ArrayList<Edge> edges : edgesByLocation.values()) {
-      for (      Edge in : edges) {
-        Vertex tov=in.getToVertex();
-        Coordinate c=tov.getCoordinate();
-        ArrayList<Edge> outEdges=edgesByLocation.get(c);
-        if (outEdges != null) {
-          for (          Edge out : outEdges) {
-            if (tov != out.getFromVertex() && out instanceof Street && out.getFromVertex().getCoordinate().equals(c)) {
-              graph.addEdge(new Turn(in,out));
-            }
-          }
-        }
-      }
-    }
+    StreetUtils.createTurnEdges(graph,edgesByLocation);
     features.close(it2);
   }
  catch (  Exception ex) {
