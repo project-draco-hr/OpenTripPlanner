@@ -5,5 +5,5 @@
     Serializable id=bean.getId();
     if (_entityReplacementStrategy.hasReplacementEntity(entityType,id))     return;
   }
-  _store.saveEntity(entity);
+  _dao.saveEntity(entity);
 }
