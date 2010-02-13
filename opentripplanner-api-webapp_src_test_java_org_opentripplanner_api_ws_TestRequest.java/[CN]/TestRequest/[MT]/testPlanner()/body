@@ -1,6 +1,6 @@
 {
-  Vertex v1=getVertexByPrefix("NE 43RD AVE at NE FLANDERS ST");
-  Vertex v2=getVertexByPrefix("NE 43RD AVE at NE ROYAL CT");
+  Vertex v1=getVertexByCrossStreets("NE 43RD AVE","NE FLANDERS ST");
+  Vertex v2=getVertexByCrossStreets("NE 43RD AVE","NE ROYAL CT");
   assertNotNull(v1);
   assertNotNull(v2);
   Response response=planner.getItineraries(v1.getLabel(),v2.getLabel(),new ArrayList<String>(),"2009-01-01","11:11:11",false,false,840.0,1.33,OptimizeType.QUICK,new TraverseModeSet("WALK"),1);

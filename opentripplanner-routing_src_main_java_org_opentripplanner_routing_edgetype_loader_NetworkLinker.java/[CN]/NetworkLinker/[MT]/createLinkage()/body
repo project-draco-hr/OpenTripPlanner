@@ -12,7 +12,19 @@
       Vertex nearestIntersection=index.getClosestVertex(v.getCoordinate(),false);
       if (nearestIntersection != null) {
         if (nearestIntersection instanceof StreetLocation) {
-          nearestIntersection=((StreetLocation)nearestIntersection).reify(graph);
+          ((StreetLocation)nearestIntersection).reify(graph);
+        }
+ else         if (nearestIntersection instanceof OneStreetVertex) {
+          OneStreetVertex osvertex=((OneStreetVertex)nearestIntersection);
+          GenericVertex newV=new GenericVertex(nearestIntersection.getLabel() + " approach",nearestIntersection.getX(),nearestIntersection.getY());
+          Street approach=new Street(nearestIntersection,newV,0);
+          Street approachBack=new Street(newV,nearestIntersection,0);
+          osvertex.inStreet.setToVertex(newV);
+          osvertex.outStreet.setFromVertex(newV);
+          osvertex.inStreet=approach;
+          osvertex.outStreet=approachBack;
+          nearestIntersection=newV;
+          graph.addVertex(newV);
         }
         TransitStop ts=(TransitStop)v;
         boolean wheelchairAccessible=ts.hasWheelchairEntrance();

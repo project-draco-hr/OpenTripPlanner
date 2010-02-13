@@ -1,0 +1,26 @@
+{
+  double d=from.distance(to);
+  Map<String,String> tags=way.getTags();
+  if (permissions == StreetTraversalPermission.NONE)   return new P2<Street>(null,null);
+  ;
+  Street street=null, backStreet=null;
+  if ("yes".equals(tags.get("oneway")) && ("no".equals(tags.get("oneway:bicycle")) || "opposite_lane".equals(tags.get("cycleway")) || "opposite".equals(tags.get("cycleway")))) {
+    street=getEdgeForStreet(from,to,way,d,permissions);
+    if (permissions.remove(StreetTraversalPermission.CAR) != StreetTraversalPermission.NONE)     backStreet=getEdgeForStreet(to,from,way,d,permissions.remove(StreetTraversalPermission.CAR));
+  }
+ else   if ("yes".equals(tags.get("oneway")) || "roundabout".equals(tags.get("junction"))) {
+    street=getEdgeForStreet(from,to,way,d,permissions);
+    if (permissions.allows(StreetTraversalPermission.PEDESTRIAN))     backStreet=getEdgeForStreet(to,from,way,d,StreetTraversalPermission.PEDESTRIAN);
+  }
+ else {
+    street=getEdgeForStreet(from,to,way,d,permissions);
+    backStreet=getEdgeForStreet(to,from,way,d,permissions);
+  }
+  if (street != null) {
+    street.setGeometry(geometry);
+  }
+  if (backStreet != null) {
+    backStreet.setGeometry(geometry.reverse());
+  }
+  return new P2<Street>(street,backStreet);
+}

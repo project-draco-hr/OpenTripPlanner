@@ -1,0 +1,29 @@
+{
+  String firstIncidentStreet=null;
+  for (  Edge e : getOutgoing()) {
+    if (e instanceof Street) {
+      firstIncidentStreet=e.getName();
+      for (      Edge t : getOutgoing()) {
+        if (t instanceof Turn) {
+          if (((Turn)t).turnAngle != 0) {
+            for (            Edge e2 : t.getToVertex().getIncoming()) {
+              if (e2 instanceof Street) {
+                if (e2.getName() != firstIncidentStreet) {
+                  return firstIncidentStreet + " & " + e2.getName();
+                }
+              }
+            }
+            for (            Edge e2 : t.getToVertex().getOutgoing()) {
+              if (e2 instanceof Street) {
+                if (e2.getName() != firstIncidentStreet) {
+                  return firstIncidentStreet + " & " + e2.getName();
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return getLabel();
+}

@@ -1,8 +1,0 @@
-{
-  super(in.getToVertex(),out.getFromVertex());
-  double angleDiff=Math.abs(DirectionUtils.getInstance().getLastAngle(in.getGeometry()) - DirectionUtils.getInstance().getFirstAngle(out.getGeometry()));
-  turnAngle=(int)(180 * angleDiff / Math.PI);
-  if (turnAngle > 180) {
-    turnAngle=360 - turnAngle;
-  }
-}

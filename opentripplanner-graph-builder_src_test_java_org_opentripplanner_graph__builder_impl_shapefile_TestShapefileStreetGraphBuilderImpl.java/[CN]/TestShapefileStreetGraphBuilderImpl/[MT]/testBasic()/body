@@ -11,7 +11,7 @@
   }
   ShapefileFeatureSourceFactoryImpl factory=new ShapefileFeatureSourceFactoryImpl(file);
   ShapefileStreetSchema schema=new ShapefileStreetSchema();
-  schema.setIdAttribute("StreetCode");
+  schema.setIdAttribute("SegmentID");
   schema.setNameAttribute("Street");
   CaseBasedTraversalPermissionConverter perms=new CaseBasedTraversalPermissionConverter("TrafDir",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
   perms.addPermission("W",StreetTraversalPermission.ALL,StreetTraversalPermission.PEDESTRIAN);
@@ -22,7 +22,7 @@
   loader.setFeatureSourceFactory(factory);
   loader.setSchema(schema);
   loader.buildGraph(gg);
-  assertEquals(237064,gg.getVertices().size());
+  assertEquals(201520,gg.getVertices().size());
   Vertex start=null;
   Vertex end=null;
   for (  Vertex v : gg.getVertices()) {

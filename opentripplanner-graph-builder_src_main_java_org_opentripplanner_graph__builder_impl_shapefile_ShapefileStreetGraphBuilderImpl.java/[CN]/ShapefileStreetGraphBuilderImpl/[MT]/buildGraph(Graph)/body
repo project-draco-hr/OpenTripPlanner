@@ -15,14 +15,19 @@
     SimpleFeatureConverter<String> streetIdConverter=_schema.getIdConverter();
     SimpleFeatureConverter<String> streetNameConverter=_schema.getNameConverter();
     SimpleFeatureConverter<P2<StreetTraversalPermission>> permissionConverter=_schema.getPermissionConverter();
-    HashMap<Coordinate,ArrayList<Edge>> edgesByLocation=new HashMap<Coordinate,ArrayList<Edge>>();
+    HashMap<Coordinate,Intersection> intersectionsByLocation=new HashMap<Coordinate,Intersection>();
     SimpleFeatureConverter<P2<Double>> safetyConverter=_schema.getBicycleSafetyConverter();
+    HashSet<Object> seen=new HashSet<Object>();
     Iterator<SimpleFeature> it2=features.iterator();
     while (it2.hasNext()) {
       SimpleFeature feature=it2.next();
       LineString geom=toLineString((Geometry)feature.getDefaultGeometry());
       Object o=streetIdConverter.convert(feature);
       String id="" + o;
+      if (o != null && seen.contains(id)) {
+        continue;
+      }
+      seen.add(id);
       String name=streetNameConverter.convert(feature);
       Coordinate[] coordinates=geom.getCoordinates();
       Coordinate startCoordinate=new Coordinate(Math.round(coordinates[0].x * 1048576) / 1048576.0,Math.round(coordinates[0].y * 1048576) / 1048576.0);
@@ -32,30 +37,33 @@
         System.out.println(name);
       }
       String endIntersectionName=getIntersectionName(coordinateToStreetNames,intersectionNameToId,endCoordinate);
-      String uid="_" + Math.random();
-      Vertex startCorner=new Intersection(startIntersectionName + uid,startCoordinate.x,startCoordinate.y);
-      startCorner=graph.addVertex(startCorner);
-      Vertex endCorner=new Intersection(endIntersectionName + uid,endCoordinate.x,endCoordinate.y);
-      endCorner=graph.addVertex(endCorner);
+      Intersection startIntersection=intersectionsByLocation.get(startCoordinate);
+      if (startIntersection == null) {
+        startIntersection=new Intersection(startIntersectionName,startCoordinate.x,startCoordinate.y);
+        intersectionsByLocation.put(startCoordinate,startIntersection);
+      }
+      Intersection endIntersection=intersectionsByLocation.get(endCoordinate);
+      if (endIntersection == null) {
+        endIntersection=new Intersection(endIntersectionName,endCoordinate.x,endCoordinate.y);
+        intersectionsByLocation.put(endCoordinate,endIntersection);
+      }
+      IntersectionVertex startCorner=new IntersectionVertex(startIntersection,geom,false);
+      while (graph.addVertex(startCorner) != startCorner) {
+        startCorner.angle=(startCorner.angle + 1) % 360;
+      }
+      IntersectionVertex endCorner=new IntersectionVertex(endIntersection,geom,true);
+      while (graph.addVertex(endCorner) != endCorner) {
+        endCorner.angle=(endCorner.angle + 1) % 360;
+      }
       double length=JTS.orthodromicDistance(coordinates[0],coordinates[coordinates.length - 1],worldCRS);
       Street street=new Street(startCorner,endCorner,id,name,length);
       street.setGeometry(geom);
-      graph.addEdge(street);
+      startCorner.outStreet=street;
+      endCorner.inStreet=street;
       Street backStreet=new Street(endCorner,startCorner,id,name,length);
       backStreet.setGeometry(geom.reverse());
-      graph.addEdge(backStreet);
-      ArrayList<Edge> startEdges=edgesByLocation.get(startCoordinate);
-      if (startEdges == null) {
-        startEdges=new ArrayList<Edge>();
-        edgesByLocation.put(startCoordinate,startEdges);
-      }
-      startEdges.add(street);
-      ArrayList<Edge> endEdges=edgesByLocation.get(endCoordinate);
-      if (endEdges == null) {
-        endEdges=new ArrayList<Edge>();
-        edgesByLocation.put(endCoordinate,endEdges);
-      }
-      endEdges.add(backStreet);
+      startCorner.inStreet=backStreet;
+      endCorner.outStreet=backStreet;
       P2<StreetTraversalPermission> pair=permissionConverter.convert(feature);
       street.setTraversalPermission(pair.getFirst());
       backStreet.setTraversalPermission(pair.getSecond());
@@ -66,7 +74,7 @@
         backStreet.setBicycleSafetyEffectiveLength(effectiveLength.getSecond() * length);
       }
     }
-    StreetUtils.createTurnEdges(graph,edgesByLocation);
+    StreetUtils.unify(graph,intersectionsByLocation.values());
     features.close(it2);
   }
  catch (  Exception ex) {

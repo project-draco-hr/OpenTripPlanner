@@ -6,36 +6,86 @@
   }
   _nodes.keySet().retainAll(nodesWithNeighbors);
   pruneFloatingIslands();
-  HashMap<Coordinate,ArrayList<Edge>> edgesByLocation=new HashMap<Coordinate,ArrayList<Edge>>();
+  HashMap<Coordinate,Intersection> intersectionsByLocation=new HashMap<Coordinate,Intersection>();
   int wayIndex=0;
+  Set<Integer> possibleIntersectionNodes=new HashSet<Integer>();
+  Set<Integer> intersectionNodes=new HashSet<Integer>();
+  for (  OSMWay way : _ways.values()) {
+    List<Integer> nodes=way.getNodeRefs();
+    for (    int node : nodes) {
+      if (possibleIntersectionNodes.contains(node)) {
+        intersectionNodes.add(node);
+      }
+ else {
+        possibleIntersectionNodes.add(node);
+      }
+    }
+  }
   for (  OSMWay way : _ways.values()) {
     if (wayIndex % 1000 == 0)     _log.debug("ways=" + wayIndex + "/"+ _ways.size());
     wayIndex++;
     StreetTraversalPermission permissions=getPermissionsForEntity(way);
     if (permissions == StreetTraversalPermission.NONE)     continue;
     List<Integer> nodes=way.getNodeRefs();
+    Intersection startIntersection=null, endIntersection=null;
+    ArrayList<Coordinate> segmentCoordinates=new ArrayList<Coordinate>();
+    GeometryFactory geometryFactory=new GeometryFactory();
+    Integer startNode=null;
+    OSMNode osmStartNode=null;
     for (int i=0; i < nodes.size() - 1; i++) {
-      Integer startNode=nodes.get(i);
-      String vFromId=getVertexIdForNodeId(startNode) + "_" + i+ "_"+ way.getId();
       Integer endNode=nodes.get(i + 1);
-      String vToId=getVertexIdForNodeId(endNode) + "_" + i+ "_"+ way.getId();
-      OSMNode osmStartNode=_nodes.get(startNode);
+      if (osmStartNode == null) {
+        startNode=nodes.get(i);
+        osmStartNode=_nodes.get(startNode);
+      }
       OSMNode osmEndNode=_nodes.get(endNode);
       if (osmStartNode == null || osmEndNode == null)       continue;
-      Vertex from=addVertex(graph,vFromId,osmStartNode);
-      Vertex to=addVertex(graph,vToId,osmEndNode);
-      ArrayList<Street> streets=getEdgesForStreet(from,to,way,permissions);
-      for (      Street street : streets) {
-        graph.addEdge(street);
-        Vertex start=street.getFromVertex();
-        ArrayList<Edge> edges=edgesByLocation.get(start.getCoordinate());
-        if (edges == null) {
-          edges=new ArrayList<Edge>(4);
-          edgesByLocation.put(start.getCoordinate(),edges);
-        }
-        edges.add(street);
+      LineString geometry;
+      if (segmentCoordinates.size() == 0) {
+        segmentCoordinates.add(getCoordinate(osmStartNode));
       }
+      if (intersectionNodes.contains(endNode) || i == nodes.size() - 2) {
+        segmentCoordinates.add(getCoordinate(osmEndNode));
+        geometry=geometryFactory.createLineString(segmentCoordinates.toArray(new Coordinate[0]));
+        segmentCoordinates.clear();
+      }
+ else {
+        segmentCoordinates.add(getCoordinate(osmEndNode));
+        continue;
+      }
+      if (startIntersection == null) {
+        startIntersection=intersectionsByLocation.get(getCoordinate(osmStartNode));
+        if (startIntersection == null) {
+          startIntersection=new Intersection(getVertexIdForNodeId(startNode),osmStartNode.getLon(),osmStartNode.getLat());
+          intersectionsByLocation.put(startIntersection.getCoordinate(),startIntersection);
+        }
+      }
+ else {
+        startIntersection=endIntersection;
+      }
+      endIntersection=intersectionsByLocation.get(getCoordinate(osmEndNode));
+      if (endIntersection == null) {
+        endIntersection=new Intersection(getVertexIdForNodeId(endNode),osmEndNode.getLon(),osmEndNode.getLat());
+        intersectionsByLocation.put(endIntersection.getCoordinate(),endIntersection);
+      }
+      IntersectionVertex from=new IntersectionVertex(startIntersection,geometry,true);
+      graph.addVertex(from);
+      IntersectionVertex to=new IntersectionVertex(endIntersection,geometry,false);
+      graph.addVertex(to);
+      P2<Street> streets=getEdgesForStreet(from,to,way,permissions,geometry);
+      Street street=streets.getFirst();
+      if (street != null) {
+        to.inStreet=street;
+        from.outStreet=street;
+      }
+      Street backStreet=streets.getSecond();
+      if (backStreet != null) {
+        to.outStreet=backStreet;
+        from.inStreet=backStreet;
+      }
+      startNode=endNode;
+      osmStartNode=_nodes.get(startNode);
     }
   }
-  StreetUtils.createTurnEdges(graph,edgesByLocation);
+  StreetUtils.unify(graph,intersectionsByLocation.values());
 }
