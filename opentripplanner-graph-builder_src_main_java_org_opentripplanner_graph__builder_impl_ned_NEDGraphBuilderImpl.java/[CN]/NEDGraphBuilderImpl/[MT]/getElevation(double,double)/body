@@ -1,0 +1,10 @@
+{
+  double values[]=new double[1];
+  try {
+    coverage.evaluate(new Point2D.Double(x,y),values);
+  }
+ catch (  Exception ex) {
+    return 0;
+  }
+  return values[0];
+}

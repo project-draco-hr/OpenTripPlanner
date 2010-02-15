@@ -1,0 +1,14 @@
+{
+  GeoTiffFormat format=new GeoTiffFormat();
+  GeoTiffReader reader=null;
+  GridCoverage2D coverage=null;
+  try {
+    reader=(GeoTiffReader)format.getReader(path);
+    coverage=(GridCoverage2D)reader.read(null);
+  }
+ catch (  IOException ex) {
+    ex.printStackTrace();
+    return null;
+  }
+  return coverage;
+}

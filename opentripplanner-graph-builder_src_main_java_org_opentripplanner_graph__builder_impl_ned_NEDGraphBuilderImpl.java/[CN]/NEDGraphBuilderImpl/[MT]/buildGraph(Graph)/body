@@ -1,0 +1,26 @@
+{
+  CoordinateReferenceSystem sourceCRS;
+  try {
+    sourceCRS=CRS.decode(graphCRS);
+    CoordinateReferenceSystem destCRS=CRS.decode("EPSG:4269");
+    mt=CRS.findMathTransform(sourceCRS,destCRS);
+  }
+ catch (  Exception ex) {
+    throw new IllegalStateException("error creating MathTransform for NED graph builder",ex);
+  }
+  coverage=gridCoverageFactory.getGridCoverage();
+  double total=0, count=0;
+  for (  Vertex vv : graph.getVertices()) {
+    total+=vv.getY();
+    count++;
+  }
+  avgLat=total / count;
+  count=0;
+  for (  Vertex vv : graph.getVertices()) {
+    for (    Edge ee : vv.getOutgoing()) {
+      if (ee instanceof Street) {
+        processEdge((Street)ee);
+      }
+    }
+  }
+}
