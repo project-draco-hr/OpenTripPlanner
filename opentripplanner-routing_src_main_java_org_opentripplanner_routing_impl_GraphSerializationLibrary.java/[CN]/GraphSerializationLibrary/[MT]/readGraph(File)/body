@@ -4,6 +4,10 @@
   Graph graph=(Graph)in.readObject();
   _log.info("Initializing graph...");
   for (  Vertex vertex : graph.getVertices()) {
+    visitVertex(vertex,graph);
+  }
+  for (  Vertex vertex : graph.getVertices()) {
+    visitVertex(vertex,graph);
     for (    Edge edge : vertex.getIncoming())     visitEdge(edge,graph);
     for (    Edge edge : vertex.getOutgoing())     visitEdge(edge,graph);
   }

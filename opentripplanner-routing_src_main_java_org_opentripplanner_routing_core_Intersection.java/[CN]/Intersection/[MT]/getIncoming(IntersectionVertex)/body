@@ -3,7 +3,7 @@
   Vector<Edge> incoming=new Vector<Edge>();
   for (int i=0; i < vertices.size(); ++i) {
     if (i != toIndex && canTurn(i,toIndex)) {
-      incoming.add(new Turn(vertices.get(i),toVertex));
+      incoming.add(new Turn((IntersectionVertex)vertices.get(i),toVertex));
     }
   }
   return incoming;

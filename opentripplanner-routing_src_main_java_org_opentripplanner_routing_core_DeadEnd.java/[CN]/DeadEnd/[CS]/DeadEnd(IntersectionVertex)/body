@@ -3,6 +3,6 @@
   y=v.getY();
   inStreet=v.inStreet;
   outStreet=v.outStreet;
-  inStreet.setToVertex(this);
-  outStreet.setFromVertex(this);
+  if (inStreet != null)   inStreet.setToVertex(this);
+  if (outStreet != null)   outStreet.setFromVertex(this);
 }
