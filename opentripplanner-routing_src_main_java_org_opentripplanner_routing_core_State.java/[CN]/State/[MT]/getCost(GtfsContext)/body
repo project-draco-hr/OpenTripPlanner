@@ -1,0 +1,22 @@
+{
+  HashMap<AgencyAndId,FareContext> contexts=context.getFareContexts();
+  float bestFare=Float.MAX_VALUE;
+  Currency currency=null;
+  for (  AgencyAndId fareId : contexts.keySet()) {
+    FareContext fareContext=contexts.get(fareId);
+    if (fareContext.matches(zonesVisited,routesVisited)) {
+      FareAttribute attribute=context.getFareAttribute(fareId);
+      float newFare=attribute.getPrice();
+      if (newFare < bestFare) {
+        bestFare=newFare;
+        currency=Currency.getInstance(attribute.getCurrencyType());
+      }
+    }
+  }
+  if (bestFare == Float.MAX_VALUE) {
+    return null;
+  }
+  Fare fare=new Fare();
+  fare.addFare(FareType.regular,currency,(int)(bestFare * Math.pow(10,currency.getDefaultFractionDigits())));
+  return fare;
+}
