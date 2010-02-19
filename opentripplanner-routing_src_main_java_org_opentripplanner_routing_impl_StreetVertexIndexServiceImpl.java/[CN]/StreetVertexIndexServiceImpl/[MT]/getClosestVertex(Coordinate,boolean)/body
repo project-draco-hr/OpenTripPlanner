@@ -27,36 +27,44 @@
     }
     double bestDistance=Double.MAX_VALUE;
     nearby=edgeTree.query(envelope);
-    for (    Street e : nearby) {
-      Geometry g=e.getGeometry();
-      double distance=g.distance(p);
-      if (distance < bestDistance) {
-        bestDistance=distance;
+    if (nearby != null) {
+      for (      Street e : nearby) {
+        if (e == null)         continue;
+        Geometry g=e.getGeometry();
+        if (g != null) {
+          double distance=g.distance(p);
+          if (distance < bestDistance) {
+            bestDistance=distance;
+          }
+        }
       }
-    }
-    List<Street> parallel=new LinkedList<Street>();
-    for (    Street e : nearby) {
-      Geometry g=e.getGeometry();
-      double distance=g.distance(p);
-      if (distance == bestDistance) {
-        parallel.add(e);
+      List<Street> parallel=new LinkedList<Street>();
+      for (      Street e : nearby) {
+        if (e == null)         continue;
+        Geometry g=e.getGeometry();
+        if (g != null) {
+          double distance=g.distance(p);
+          if (distance == bestDistance) {
+            parallel.add(e);
+          }
+        }
       }
-    }
-    if (bestDistance <= MAX_DISTANCE_FROM_STREET) {
-      Street bestStreet=parallel.get(0);
-      Geometry g=bestStreet.getGeometry();
-      LocationIndexedLine l=new LocationIndexedLine(g);
-      LinearLocation location=l.project(c);
-      Coordinate start=bestStreet.getFromVertex().getCoordinate();
-      Coordinate end=bestStreet.getToVertex().getCoordinate();
-      Coordinate nearestPoint=location.getCoordinate(g);
-      if (nearestPoint.distance(start) < MAX_SNAP_DISTANCE) {
-        return bestStreet.getFromVertex();
+      if (bestDistance <= MAX_DISTANCE_FROM_STREET) {
+        Street bestStreet=parallel.get(0);
+        Geometry g=bestStreet.getGeometry();
+        LocationIndexedLine l=new LocationIndexedLine(g);
+        LinearLocation location=l.project(c);
+        Coordinate start=bestStreet.getFromVertex().getCoordinate();
+        Coordinate end=bestStreet.getToVertex().getCoordinate();
+        Coordinate nearestPoint=location.getCoordinate(g);
+        if (nearestPoint.distance(start) < MAX_SNAP_DISTANCE) {
+          return bestStreet.getFromVertex();
+        }
+ else         if (nearestPoint.distance(end) < MAX_SNAP_DISTANCE) {
+          return bestStreet.getToVertex();
+        }
+        return StreetLocation.createStreetLocation(bestStreet.getName() + "_" + c.toString(),bestStreet.getName(),parallel,location);
       }
- else       if (nearestPoint.distance(end) < MAX_SNAP_DISTANCE) {
-        return bestStreet.getToVertex();
-      }
-      return StreetLocation.createStreetLocation(bestStreet.getName() + "_" + c.toString(),bestStreet.getName(),parallel,location);
     }
   }
   return null;
