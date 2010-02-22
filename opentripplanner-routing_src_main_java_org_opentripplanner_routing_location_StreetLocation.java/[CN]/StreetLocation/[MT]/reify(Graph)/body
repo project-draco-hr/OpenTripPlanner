@@ -1,24 +1,25 @@
 {
+  if (streets == null)   return;
   Vertex v1=null, v2=null;
-  for (  Edge og : getOutgoing()) {
-    if (v1 == null) {
-      v1=og.getToVertex();
+  for (  Street e : streets) {
+    if (v1 == null && v2 != e.getToVertex()) {
+      v1=e.getToVertex();
     }
- else {
-      v2=og.getToVertex();
+ else     if (v1 == null && v2 != e.getFromVertex()) {
+      v1=e.getFromVertex();
     }
-  }
-  for (  Edge ic : getIncoming()) {
-    if (v1 == null) {
-      v1=ic.getFromVertex();
+    if (v2 == null && v1 != e.getToVertex()) {
+      v2=e.getToVertex();
     }
- else {
-      v2=ic.getFromVertex();
+ else     if (v2 == null && v1 != e.getFromVertex()) {
+      v2=e.getFromVertex();
     }
   }
   for (  Edge e : getIncoming()) {
+    if (!(e instanceof Street))     continue;
     Street s=(Street)e;
     Vertex intersection=s.getFromVertex();
+    if (intersection != v1 && intersection != v2)     continue;
     if (intersection instanceof IntersectionVertex) {
       ((IntersectionVertex)intersection).outStreet=s;
     }
@@ -34,7 +35,6 @@
         Edge e2=it.next();
         if (e2.getToVertex() == otherEnd) {
           it.remove();
-          break;
         }
       }
       outgoing.add(e);
@@ -42,8 +42,10 @@
     }
   }
   for (  Edge e : getOutgoing()) {
+    if (!(e instanceof Street))     continue;
     Street s=(Street)e;
-    Vertex intersection=s.getFromVertex();
+    Vertex intersection=s.getToVertex();
+    if (intersection != v1 && intersection != v2)     continue;
     if (intersection instanceof IntersectionVertex) {
       ((IntersectionVertex)intersection).inStreet=s;
     }
@@ -59,13 +61,12 @@
         Edge e2=it.next();
         if (e2.getFromVertex() == otherEnd) {
           it.remove();
-          break;
         }
       }
       incoming.add(e);
-      v.setIncoming(incoming);
+      v.setOutgoing(incoming);
     }
   }
   graph.addVertex(this);
-  this.location=null;
+  location=null;
 }

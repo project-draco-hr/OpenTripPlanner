@@ -1,25 +1,5 @@
 {
   edgeTree=new STRtree();
-  transitStopTree=new STRtree();
-  HashSet<Street> edges=new HashSet<Street>();
-  for (  Vertex v : graph.getVertices()) {
-    if (v instanceof StreetIntersectionVertex) {
-      for (      Edge e : v.getOutgoing()) {
-        if (e instanceof Street) {
-          edges.add((Street)e);
-          if (e.getGeometry() == null) {
-            continue;
-          }
-          Envelope env=new Envelope(v.getCoordinate(),e.getToVertex().getCoordinate());
-          edgeTree.insert(env,e);
-        }
-      }
-    }
- else     if (v instanceof TransitStop) {
-      Envelope env=new Envelope(v.getCoordinate());
-      transitStopTree.insert(env,v);
-    }
-  }
-  edgeTree.build();
-  transitStopTree.build();
+  postSetup();
+  ((STRtree)edgeTree).build();
 }

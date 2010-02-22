@@ -1,0 +1,12 @@
+{
+  if (vertex.streets == null)   return;
+  for (  Street e : vertex.streets) {
+    edgeTree.remove(e.getGeometry().getEnvelopeInternal(),e);
+  }
+  for (  Edge e : vertex.getIncoming()) {
+    if (e instanceof Street)     edgeTree.insert(e.getGeometry().getEnvelopeInternal(),e);
+  }
+  for (  Edge e : vertex.getOutgoing()) {
+    if (e instanceof Street)     edgeTree.insert(e.getGeometry().getEnvelopeInternal(),e);
+  }
+}

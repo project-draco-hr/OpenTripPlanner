@@ -1,7 +1,7 @@
 {
   _log.debug("constructing index...");
   StreetVertexIndexServiceImpl index=new StreetVertexIndexServiceImpl(graph);
-  index.setup();
+  index.setup_modifiable();
   _log.debug("creating linkages...");
   int i=0;
   ArrayList<Vertex> vertices=new ArrayList<Vertex>(graph.getVertices());
@@ -12,7 +12,10 @@
       Vertex nearestIntersection=index.getClosestVertex(v.getCoordinate(),false);
       if (nearestIntersection != null) {
         if (nearestIntersection instanceof StreetLocation) {
-          ((StreetLocation)nearestIntersection).reify(graph);
+          if (((StreetLocation)nearestIntersection).streets != null) {
+            ((StreetLocation)nearestIntersection).reify(graph);
+            index.reified((StreetLocation)nearestIntersection);
+          }
         }
  else         if (nearestIntersection instanceof OneStreetVertex) {
           OneStreetVertex osvertex=((OneStreetVertex)nearestIntersection);
@@ -21,8 +24,10 @@
           Street approachBack=new Street(newV,nearestIntersection,0);
           osvertex.inStreet.setToVertex(newV);
           osvertex.outStreet.setFromVertex(newV);
-          osvertex.inStreet=approach;
-          osvertex.outStreet=approachBack;
+          newV.addIncoming(osvertex.inStreet);
+          newV.addOutgoing(osvertex.outStreet);
+          osvertex.inStreet=approachBack;
+          osvertex.outStreet=approach;
           nearestIntersection=newV;
           graph.addVertex(newV);
         }

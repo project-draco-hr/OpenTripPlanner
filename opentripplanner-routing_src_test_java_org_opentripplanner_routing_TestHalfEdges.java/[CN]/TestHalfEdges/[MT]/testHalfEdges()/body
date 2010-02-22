@@ -1,6 +1,6 @@
 {
-  StreetLocation start=StreetLocation.createStreetLocation("start","start",leftUp,new LinearLocation(0,0.4));
-  StreetLocation end=StreetLocation.createStreetLocation("end","end",rightUp,new LinearLocation(0,0.8));
+  StreetLocation start=StreetLocation.createStreetLocation("start","start",leftUp,(new LinearLocation(0,0.4)).getCoordinate(leftUp.getGeometry()));
+  StreetLocation end=StreetLocation.createStreetLocation("end","end",rightUp,(new LinearLocation(0,0.8)).getCoordinate(leftUp.getGeometry()));
   GregorianCalendar startTime=new GregorianCalendar(2009,11,1,12,34,25);
   ShortestPathTree spt=AStar.getShortestPathTree(graph,start,end,new State(startTime.getTimeInMillis()),new TraverseOptions());
   GraphPath path=spt.getPath(end);
