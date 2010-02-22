@@ -4,5 +4,6 @@
   }
   State s1=s0.clone();
   s1.incrementTimeInSeconds(1);
-  return new TraverseResult(1,s1);
+  s1.justTransferred=true;
+  return new TraverseResult(STL_TRAVERSE_COST,s1);
 }

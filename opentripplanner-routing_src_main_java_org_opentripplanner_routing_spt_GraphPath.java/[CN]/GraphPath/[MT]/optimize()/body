@@ -1,5 +1,5 @@
 {
-  State state=vertices.lastElement().state;
+  State state=vertices.lastElement().state.clone();
   State state0=vertices.firstElement().state;
   if (state0.getTime() >= state.getTime()) {
     return;
