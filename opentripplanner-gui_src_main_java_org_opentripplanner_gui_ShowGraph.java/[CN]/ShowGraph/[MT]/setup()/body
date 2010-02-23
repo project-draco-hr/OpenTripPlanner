@@ -1,7 +1,6 @@
 {
-  screenBounds=new Envelope(0,700,0,700);
   background(0);
-  size(700,700,P2D);
+  size(getSize().width,getSize().height,P2D);
   vertexIndex=new STRtree();
   edgeIndex=new STRtree();
   for (  Vertex v : graph.getVertices()) {
@@ -10,14 +9,18 @@
     if (v instanceof TransitStop) {
       vertexIndex.insert(env,v);
     }
- else     if (v instanceof IntersectionVertex) {
+ else     if (v instanceof OneStreetVertex) {
+      vertexIndex.insert(env,v);
+    }
+ else     if (v instanceof StreetLocation) {
       vertexIndex.insert(env,v);
     }
  else {
     }
     for (    Edge e : v.getOutgoing()) {
       if (e instanceof Street || e instanceof StreetTransitLink) {
-        env=new Envelope(e.getFromVertex().getCoordinate());
+        if (e.getGeometry() == null)         continue;
+        env=e.getGeometry().getEnvelopeInternal();
         edgeIndex.insert(env,e);
       }
     }

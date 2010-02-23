@@ -1,46 +1,49 @@
 {
   fill(0);
-  rect(0,0,(int)screenBounds.getMaxX(),(int)screenBounds.getMaxY());
+  rect(0,0,getSize().width,getSize().height);
   List<Vertex> vertices=(List<Vertex>)vertexIndex.query(modelBounds);
-  for (  Vertex v : vertices) {
-    double x=v.getX();
-    double y=v.getY();
-    x=toScreenX(x);
-    y=toScreenY(y);
-    if (v instanceof TransitStop) {
-      stroke(255,30,255);
-      ellipse(x,y,5.0,5.0);
-    }
- else     if (highlightedVertices.contains(v)) {
-      stroke(0,255,0);
-      ellipse(x,y,3.0,3.0);
-    }
- else {
-      stroke(255);
-      ellipse(x,y,3.0,3.0);
-    }
-  }
   List<Edge> edges=(List<Edge>)edgeIndex.query(modelBounds);
   for (  Edge e : edges) {
-    double x1=toScreenX(e.getFromVertex().getX());
-    double y1=toScreenY(e.getFromVertex().getY());
-    double x2=toScreenX(e.getToVertex().getX());
-    double y2=toScreenY(e.getToVertex().getY());
+    if (e == highlightedEdge)     continue;
     if (e instanceof StreetTransitLink) {
       stroke(75,150,255);
     }
  else {
       stroke(30,255,255);
     }
-    line((float)x1,(float)y1,(float)x2,(float)y2);
+    Coordinate[] coords=e.getGeometry().getCoordinates();
+    for (int i=1; i < coords.length; i++) {
+      line((float)toScreenX(coords[i - 1].x),(float)toScreenY(coords[i - 1].y),(float)toScreenX(coords[i].x),(float)toScreenY(coords[i].y));
+    }
   }
-  if (highlightedEdge != null) {
-    double x1=toScreenX(highlightedEdge.getFromVertex().getX());
-    double y1=toScreenY(highlightedEdge.getFromVertex().getY());
-    double x2=toScreenX(highlightedEdge.getToVertex().getX());
-    double y2=toScreenY(highlightedEdge.getToVertex().getY());
+  if (highlightedEdge != null && highlightedEdge.getGeometry() != null) {
     stroke(255,70,70);
-    line((float)x1,(float)y1,(float)x2,(float)y2);
+    Coordinate[] coords=highlightedEdge.getGeometry().getCoordinates();
+    for (int i=1; i < coords.length; i++) {
+      line((float)toScreenX(coords[i - 1].x),(float)toScreenY(coords[i - 1].y),(float)toScreenX(coords[i].x),(float)toScreenY(coords[i].y));
+    }
+  }
+  for (  Vertex v : vertices) {
+    if (v == highlightedVertex)     continue;
+    double x=v.getX();
+    double y=v.getY();
+    x=toScreenX(x);
+    y=toScreenY(y);
+    if (v instanceof TransitStop) {
+      fill(0);
+      stroke(255,30,255);
+      ellipse(x,y,5.0,5.0);
+    }
+ else     if (highlightedVertices.contains(v)) {
+      stroke(0,255,0);
+      fill(0,255,0);
+      ellipse(x,y,3.0,3.0);
+    }
+ else {
+      stroke(255);
+      fill(255,0,0);
+      ellipse(x,y,3.0,3.0);
+    }
   }
   if (highlightedVertex != null) {
     stroke(255,255,30);
