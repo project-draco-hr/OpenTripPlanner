@@ -1,3 +1,13 @@
 {
   elevationProfile=elev;
+  Coordinate[] coordinates=elevationProfile.toCoordinateArray();
+  slopeSpeedEffectiveLength=0;
+  slopeCostEffectiveLength=0;
+  for (int i=0; i < coordinates.length; ++i) {
+    double run=coordinates[i + 1].x - coordinates[i].x;
+    double rise=coordinates[i + 1].y - coordinates[i].y;
+    double slope=rise / run;
+    slopeCostEffectiveLength+=run * (1 + slope * slope * 10);
+    slopeSpeedEffectiveLength+=run * slopeSpeedCoefficient(slope,coordinates[i].y);
+  }
 }
