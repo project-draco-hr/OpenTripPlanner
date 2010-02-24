@@ -20,25 +20,30 @@
     Street s=(Street)e;
     Vertex intersection=s.getFromVertex();
     if (intersection != v1 && intersection != v2)     continue;
-    if (intersection instanceof IntersectionVertex) {
-      ((IntersectionVertex)intersection).outStreet=s;
-    }
- else     if (intersection instanceof DeadEnd) {
-      ((DeadEnd)intersection).outStreet=s;
+    if (intersection instanceof OneStreetVertex) {
+      ((OneStreetVertex)intersection).outStreet=s;
     }
  else {
       GenericVertex v=(GenericVertex)intersection;
       Vector<Edge> outgoing=v.getOutgoing();
-      Iterator<Edge> it=outgoing.iterator();
-      Vertex otherEnd=intersection == v1 ? v2 : v1;
-      while (it.hasNext()) {
-        Edge e2=it.next();
-        if (e2.getToVertex() == otherEnd) {
-          it.remove();
+      Iterator<Edge> it_outgoing=outgoing.iterator();
+      while (it_outgoing.hasNext()) {
+        Edge e2=it_outgoing.next();
+        if (streets.contains(e2)) {
+          it_outgoing.remove();
         }
       }
-      outgoing.add(e);
-      v.setIncoming(outgoing);
+      Vector<Edge> incoming=v.getIncoming();
+      Iterator<Edge> it_incoming=incoming.iterator();
+      while (it_incoming.hasNext()) {
+        Edge e2=it_incoming.next();
+        if (streets.contains(e2)) {
+          it_incoming.remove();
+        }
+      }
+      if (!outgoing.contains(e))       outgoing.add(e);
+      v.setIncoming(incoming);
+      v.setOutgoing(outgoing);
     }
   }
   for (  Edge e : getOutgoing()) {
@@ -46,25 +51,30 @@
     Street s=(Street)e;
     Vertex intersection=s.getToVertex();
     if (intersection != v1 && intersection != v2)     continue;
-    if (intersection instanceof IntersectionVertex) {
-      ((IntersectionVertex)intersection).inStreet=s;
-    }
- else     if (intersection instanceof DeadEnd) {
-      ((DeadEnd)intersection).inStreet=s;
+    if (intersection instanceof OneStreetVertex) {
+      ((OneStreetVertex)intersection).inStreet=s;
     }
  else {
       GenericVertex v=(GenericVertex)intersection;
-      Vector<Edge> incoming=v.getIncoming();
-      Iterator<Edge> it=incoming.iterator();
-      Vertex otherEnd=intersection == v1 ? v2 : v1;
-      while (it.hasNext()) {
-        Edge e2=it.next();
-        if (e2.getFromVertex() == otherEnd) {
-          it.remove();
+      Vector<Edge> outgoing=v.getOutgoing();
+      Iterator<Edge> it_outgoing=outgoing.iterator();
+      while (it_outgoing.hasNext()) {
+        Edge e2=it_outgoing.next();
+        if (streets.contains(e2)) {
+          it_outgoing.remove();
         }
       }
-      incoming.add(e);
-      v.setOutgoing(incoming);
+      Vector<Edge> incoming=v.getIncoming();
+      Iterator<Edge> it_incoming=incoming.iterator();
+      while (it_incoming.hasNext()) {
+        Edge e2=it_incoming.next();
+        if (streets.contains(e2)) {
+          it_incoming.remove();
+        }
+      }
+      if (!incoming.contains(e))       incoming.add(e);
+      v.setIncoming(incoming);
+      v.setOutgoing(outgoing);
     }
   }
   graph.addVertex(this);

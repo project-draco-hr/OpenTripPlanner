@@ -28,31 +28,19 @@
     double bestDistance=Double.MAX_VALUE;
     nearby=edgeTree.query(envelope);
     if (nearby != null) {
-      for (      Street e : nearby) {
-        if (e == null)         continue;
-        Geometry g=e.getGeometry();
-        if (g != null) {
-          double distance=g.distance(p);
-          if (distance < bestDistance) {
-            bestDistance=distance;
-          }
-        }
-      }
-      List<Street> parallel=new LinkedList<Street>();
       Street bestStreet=null;
       for (      Street e : nearby) {
         if (e == null)         continue;
         Geometry g=e.getGeometry();
         if (g != null) {
           double distance=g.distance(p);
-          if (distance <= bestDistance + DISTANCE_ERROR && (bestStreet == null || ((bestStreet.getFromVertex() == e.getFromVertex() && bestStreet.getToVertex() == e.getToVertex()) || (bestStreet.getToVertex() == e.getFromVertex() && bestStreet.getFromVertex() == e.getToVertex())))) {
-            if (bestStreet == null)             bestStreet=e;
-            parallel.add(e);
+          if (distance < bestDistance) {
+            bestStreet=e;
+            bestDistance=distance;
           }
         }
       }
       if (bestDistance <= MAX_DISTANCE_FROM_STREET) {
-        bestStreet=parallel.get(0);
         Geometry g=bestStreet.getGeometry();
         LocationIndexedLine l=new LocationIndexedLine(g);
         LinearLocation location=l.project(c);
@@ -64,6 +52,17 @@
         }
  else         if (nearestPoint.distance(end) < MAX_SNAP_DISTANCE) {
           return bestStreet.getToVertex();
+        }
+        List<Street> parallel=new LinkedList<Street>();
+        for (        Street e : nearby) {
+          if (e == null)           continue;
+          Geometry eg=e.getGeometry();
+          if (eg != null) {
+            double distance=eg.distance(p);
+            if (distance <= bestDistance + DISTANCE_ERROR && ((bestStreet.getFromVertex() == e.getFromVertex() && bestStreet.getToVertex() == e.getToVertex()) || (bestStreet.getToVertex() == e.getFromVertex() && bestStreet.getFromVertex() == e.getToVertex()))) {
+              parallel.add(e);
+            }
+          }
         }
         return StreetLocation.createStreetLocation(bestStreet.getName() + "_" + c.toString(),bestStreet.getName(),parallel,nearestPoint);
       }
