@@ -1,0 +1,14 @@
+{
+  try {
+    return new Integer(input);
+  }
+ catch (  Exception e) {
+    try {
+      String in=input.replaceAll("\\D","");
+      return new Integer(in);
+    }
+ catch (    Exception ee) {
+      return null;
+    }
+  }
+}

@@ -9,5 +9,23 @@
   if (arriveBy != null && arriveBy)   request.setArriveBy(true);
   request.setOptimize(optimize);
   request.setModes(modes);
-  return generatePlan(request);
+  Response response=new Response(request);
+  try {
+    TripPlan plan=generatePlan(request);
+    response.setPlan(plan);
+  }
+ catch (  VertexNotFoundException e) {
+    PlannerError error=new PlannerError(Message.OUTSIDE_BOUNDS);
+    error.setMissing(e.getMissing());
+    response.setError(error);
+  }
+catch (  PathNotFoundException e) {
+    PlannerError error=new PlannerError(Message.PATH_NOT_FOUND);
+    response.setError(error);
+  }
+catch (  Exception e) {
+    PlannerError error=new PlannerError(Message.SYSTEM_ERROR);
+    response.setError(error);
+  }
+  return response;
 }

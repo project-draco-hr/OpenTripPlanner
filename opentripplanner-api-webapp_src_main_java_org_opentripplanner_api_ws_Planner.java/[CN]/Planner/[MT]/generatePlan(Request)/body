@@ -20,15 +20,11 @@
   }
  catch (  VertexNotFoundException e) {
     LOGGER.log(Level.INFO,"Vertex not found: " + request.getFrom() + " : "+ request.getTo(),e);
-    Response response=new Response(request,null);
-    response.error=new PlannerError(e.getMissing());
-    return response;
+    throw e;
   }
   if (paths == null || paths.size() == 0) {
     LOGGER.log(Level.INFO,"Path not found: " + request.getFrom() + " : "+ request.getTo());
-    Response response=new Response(request,null);
-    response.error=new PlannerError();
-    return response;
+    throw new PathNotFoundException();
   }
   Vector<SPTVertex> vertices=paths.get(0).vertices;
   SPTVertex tripStartVertex=vertices.firstElement();
@@ -163,6 +159,5 @@
       itinerary.transfers=0;
     }
   }
-  Response response=new Response(request,plan);
-  return response;
+  return plan;
 }

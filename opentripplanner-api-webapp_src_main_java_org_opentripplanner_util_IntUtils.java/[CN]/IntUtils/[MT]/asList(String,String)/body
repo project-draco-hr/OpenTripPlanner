@@ -1,0 +1,18 @@
+{
+  List<Integer> retVal=new ArrayList<Integer>();
+  try {
+    String[] s=str.split(sep);
+    for (int i=0; i < s.length; i++) {
+      Integer k=null;
+      try {
+        k=Integer.parseInt(s[i].trim());
+      }
+ catch (      Exception m) {
+      }
+      if (k != null)       retVal.add(k);
+    }
+  }
+ catch (  Exception e) {
+  }
+  return retVal;
+}

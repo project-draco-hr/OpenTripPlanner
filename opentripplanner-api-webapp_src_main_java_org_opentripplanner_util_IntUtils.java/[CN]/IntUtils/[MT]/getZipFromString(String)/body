@@ -1,0 +1,13 @@
+{
+  Integer retVal=null;
+  try {
+    retVal=getIntegerFromSubString(zipStr,"-");
+    if (retVal == null) {
+      retVal=getIntegerFromString(zipStr);
+    }
+  }
+ catch (  Exception e) {
+    retVal=null;
+  }
+  return retVal;
+}

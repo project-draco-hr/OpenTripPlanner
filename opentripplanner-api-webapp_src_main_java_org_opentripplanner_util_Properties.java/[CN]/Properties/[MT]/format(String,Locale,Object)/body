@@ -1,0 +1,10 @@
+{
+  try {
+    ResourceBundle rb=getBundle(_bundle,l);
+    return MessageFormat.format(rb.getString(name),args);
+  }
+ catch (  Exception e) {
+    LOGGER.log(Level.CONFIG,"couldn't find / format property " + name + "; returning null",e);
+  }
+  return null;
+}

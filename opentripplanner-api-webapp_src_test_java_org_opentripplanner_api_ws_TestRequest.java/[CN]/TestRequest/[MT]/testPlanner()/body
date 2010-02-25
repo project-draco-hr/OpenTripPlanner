@@ -4,7 +4,7 @@
   assertNotNull(v1);
   assertNotNull(v2);
   Response response=planner.getItineraries(v1.getLabel(),v2.getLabel(),new ArrayList<String>(),"2009-01-01","11:11:11",false,false,840.0,1.33,OptimizeType.QUICK,new TraverseModeSet("WALK"),1);
-  Itinerary itinerary=response.plan.itinerary.get(0);
+  Itinerary itinerary=response.getPlan().itinerary.get(0);
   Leg leg=itinerary.leg.get(0);
   List<WalkStep> steps=leg.walkSteps;
   assertEquals(3,steps.size());

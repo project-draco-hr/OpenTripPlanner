@@ -1,0 +1,23 @@
+{
+  if (target == null)   return null;
+  Integer retVal=null;
+  try {
+    String tmp=target;
+    if (prefix != null && target.contains(prefix)) {
+      int sz=prefix.length();
+      int in=target.indexOf(prefix);
+      tmp=target.substring(in + sz);
+    }
+    if (tmp != null && suffix != null && target.contains(suffix)) {
+      int suf=tmp.indexOf(suffix);
+      if (suf <= 0 && suffix.equals(" "))       suf=tmp.length();
+      tmp=tmp.substring(0,suf);
+      retVal=IntUtils.getIntegerFromString(tmp.trim());
+    }
+  }
+ catch (  Exception e) {
+    LOGGER.log(Level.INFO,"Not a big deal that we couldn't find an int from substring...going to return null",e);
+    retVal=null;
+  }
+  return retVal;
+}

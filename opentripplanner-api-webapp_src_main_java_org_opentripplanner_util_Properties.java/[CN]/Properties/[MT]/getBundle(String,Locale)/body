@@ -1,0 +1,9 @@
+{
+  try {
+    return ResourceBundle.getBundle(name,l);
+  }
+ catch (  Exception e) {
+    Properties.LOGGER.log(Level.ALL,"Uh oh...no .properties file could be found, so things are most definately not going to turn out well!!!",e);
+  }
+  return null;
+}
