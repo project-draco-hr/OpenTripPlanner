@@ -1,0 +1,26 @@
+{
+  try {
+    String url="http://extract.cr.usgs.gov/axis2/services/DownloadService/getDownloadStatus?downloadID=" + token;
+    OMElement doc=getXMLFromURL(new URL(url),true);
+    if (doc == null) {
+      return false;
+    }
+    AXIOMXPath xpathExpression=new AXIOMXPath(doc,"//ns:return");
+    xpathExpression.addNamespace("ns1","http://edc/usgs/gov");
+    OMElement tokenElement=(OMElement)xpathExpression.selectSingleNode(doc);
+    String status=tokenElement.getText();
+    int end=status.indexOf(",");
+    if (end == -1) {
+      _log.warn("bogus status " + status + " for token "+ token);
+      return false;
+    }
+    int statusCode=Integer.parseInt(status.substring(0,end));
+    if (statusCode >= 400) {
+      return true;
+    }
+    return false;
+  }
+ catch (  Exception e) {
+    throw new RuntimeException("Error getting data from USGS Download Server while downloading",e);
+  }
+}

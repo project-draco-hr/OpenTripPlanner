@@ -1,0 +1,33 @@
+{
+  try {
+    OMElement payload=getValidateOMElement();
+    Options options=new Options();
+    EndpointReference targetEPR=new EndpointReference("http://extract.cr.usgs.gov/requestValidationService/services/RequestValidationService");
+    options.setTo(targetEPR);
+    options.setAction("processAOI");
+    ServiceClient sender=new ServiceClient();
+    sender.setOptions(options);
+    _log.debug("Getting urls from request validation service");
+    OMElement result=sender.sendReceive(payload);
+    AXIOMXPath xpathExpression=new AXIOMXPath(result,"//ns1:processAOIReturn");
+    xpathExpression.addNamespace("ns1","http://edc.usgs.gov");
+    OMElement holder=(OMElement)xpathExpression.selectSingleNode(result);
+    String xml=holder.getText();
+    xml=xml.replace("&","&amp;");
+    XMLStreamReader xmlStreamReader=XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(xml));
+    StAXOMBuilder stAXOMBuilder=new StAXOMBuilder(xmlStreamReader);
+    xpathExpression=new AXIOMXPath(result,"//PIECE/DOWNLOAD_URL");
+    List<OMElement> nodes=xpathExpression.selectNodes(stAXOMBuilder.getDocumentElement());
+    List<URL> urls=new ArrayList<URL>();
+    for (    OMElement urlElement : nodes) {
+      String urlString=urlElement.getText().trim();
+      _log.debug("Adding NED URL:" + urlString);
+      URL url=new URL(urlString);
+      urls.add(url);
+    }
+    return urls;
+  }
+ catch (  Exception e) {
+    throw new RuntimeException("Error getting data from USGS Request Validation Server",e);
+  }
+}

@@ -1,0 +1,28 @@
+{
+  String key=getKey(url);
+  File path=getPathToNEDArchive(key);
+  try {
+    ZipFile zipFile=new ZipFile(path);
+    for (Enumeration<? extends ZipEntry> e=zipFile.entries(); e.hasMoreElements(); ) {
+      ZipEntry entry=e.nextElement();
+      if (entry.getName().endsWith(".tif")) {
+        InputStream istream=zipFile.getInputStream(entry);
+        File tile=getPathToNEDTile(key);
+        FileOutputStream ostream=new FileOutputStream(tile);
+        byte[] buffer=new byte[4096];
+        while (true) {
+          int bytesRead=istream.read(buffer);
+          if (bytesRead == -1) {
+            break;
+          }
+          ostream.write(buffer,0,bytesRead);
+        }
+        return tile;
+      }
+    }
+  }
+ catch (  Exception e) {
+    throw new RuntimeException("Error extracting geotiff from zip " + path,e);
+  }
+  throw new RuntimeException("Error extracting geotiff from zip: nothing ends in .tif " + path);
+}

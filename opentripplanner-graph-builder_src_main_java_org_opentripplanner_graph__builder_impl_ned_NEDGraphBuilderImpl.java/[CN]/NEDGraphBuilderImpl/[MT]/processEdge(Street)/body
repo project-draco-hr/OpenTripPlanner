@@ -3,7 +3,7 @@
   Coordinate[] coords=g.getCoordinates();
   double currentD=0, totalD=0;
   double eq=2 * 6378137 * Math.PI;
-  double oneDegLon=eq * Math.cos(Math.toRadians(avgLat)) / 360;
+  double oneDegLon=eq * Math.cos(Math.toRadians(averageLatitude)) / 360;
   double sampleFreqD=sampleFreqM / oneDegLon;
   DirectPosition2D srcDP=new DirectPosition2D(coords[0].x,coords[0].y), destDP=new DirectPosition2D();
   List<Coordinate> coordList=new LinkedList<Coordinate>();

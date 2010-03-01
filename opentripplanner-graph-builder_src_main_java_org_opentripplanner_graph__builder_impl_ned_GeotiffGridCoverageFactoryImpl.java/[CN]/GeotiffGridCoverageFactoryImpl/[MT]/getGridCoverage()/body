@@ -1,14 +1,15 @@
 {
   GeoTiffFormat format=new GeoTiffFormat();
   GeoTiffReader reader=null;
-  GridCoverage2D coverage=null;
   try {
+    if (path == null) {
+      throw new RuntimeException("Path not set");
+    }
     reader=(GeoTiffReader)format.getReader(path);
     coverage=(GridCoverage2D)reader.read(null);
   }
- catch (  IOException ex) {
-    ex.printStackTrace();
-    return null;
+ catch (  IOException e) {
+    throw new RuntimeException("Error getting coverage automatically. ",e);
   }
   return coverage;
 }

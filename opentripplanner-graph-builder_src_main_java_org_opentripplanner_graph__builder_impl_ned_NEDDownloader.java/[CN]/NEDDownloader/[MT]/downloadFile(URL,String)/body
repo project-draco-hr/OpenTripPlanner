@@ -1,0 +1,35 @@
+{
+  try {
+    String key=getKey(url);
+    _log.debug("Starting download " + key);
+    File path=getPathToNEDTile(key);
+    URL downloadUrl=new URL("http://extract.cr.usgs.gov/axis2/services/DownloadService/getData?downloadID=" + token);
+    URLConnection connection=downloadUrl.openConnection();
+    HttpURLConnection httpconnection=(HttpURLConnection)connection;
+    InputStream istream=connection.getInputStream();
+    FileOutputStream ostream=new FileOutputStream(path);
+    byte[] buffer=new byte[4096];
+    while (true) {
+      int read=istream.read(buffer);
+      if (read == -1) {
+        break;
+      }
+      ostream.write(buffer,0,read);
+    }
+    ostream.close();
+    istream.close();
+    httpconnection.disconnect();
+    _log.debug("Done download " + key);
+    NEDDownloader.sleep(10000);
+  }
+ catch (  Exception e) {
+    throw new RuntimeException("Error getting data from USGS Download Server while downloading",e);
+  }
+  try {
+    URL cleanupURL=new URL("http://extract.cr.usgs.gov/axis2/services/DownloadService/setDownloadComplete?downloadID=" + token);
+    cleanupURL.openStream().close();
+  }
+ catch (  Exception e) {
+    _log.debug("Error getting data from USGS Download Server while cleaning up",e);
+  }
+}

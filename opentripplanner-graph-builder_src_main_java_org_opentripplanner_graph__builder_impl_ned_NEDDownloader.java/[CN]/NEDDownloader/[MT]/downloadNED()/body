@@ -1,0 +1,30 @@
+{
+  _log.debug("Downloading NED");
+  List<URL> urls=getDownloadURLs();
+  List<File> files=new ArrayList<File>();
+  for (  URL url : urls) {
+    String key=getKey(url);
+    File tile=getPathToNEDTile(key);
+    if (tile.exists()) {
+      files.add(tile);
+      _log.debug(url + " already exists; not downloading");
+      continue;
+    }
+    sleep(10000);
+    String token=initiateDownload(url);
+    do {
+      _log.debug("Waiting to query");
+      sleep(30000);
+    }
+ while (!downloadReady(token));
+    sleep(10000);
+    try {
+      downloadFile(url,token);
+      files.add(unzipFile(url));
+    }
+ catch (    Exception e) {
+      throw new RuntimeException("Error getting data from USGS Download Server while downloading",e);
+    }
+  }
+  return files;
+}

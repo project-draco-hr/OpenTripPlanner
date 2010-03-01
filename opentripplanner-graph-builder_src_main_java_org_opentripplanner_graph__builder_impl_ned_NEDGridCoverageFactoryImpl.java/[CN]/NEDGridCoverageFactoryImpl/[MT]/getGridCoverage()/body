@@ -1,0 +1,20 @@
+{
+  if (coverage == null) {
+    NEDDownloader downloader=new NEDDownloader();
+    downloader.setGraph(graph);
+    downloader.setCacheDirectory(cacheDirectory);
+    List<File> paths=downloader.downloadNED();
+    for (    File path : paths) {
+      GeotiffGridCoverageFactoryImpl factory=new GeotiffGridCoverageFactoryImpl();
+      factory.setPath(path);
+      GridCoverage2D regionCoverage=factory.getGridCoverage();
+      if (coverage == null) {
+        coverage=new UnifiedGridCoverage("unified",regionCoverage);
+      }
+ else {
+        coverage.add(regionCoverage);
+      }
+    }
+  }
+  return coverage;
+}

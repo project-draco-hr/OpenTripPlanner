@@ -1,0 +1,33 @@
+{
+  String contents=null;
+  try {
+    URLConnection connection=url.openConnection();
+    InputStream stream=connection.getInputStream();
+    InputStreamReader reader=new InputStreamReader(new BufferedInputStream(stream));
+    char[] buffer=new char[4096];
+    StringBuffer sb=new StringBuffer();
+    while (true) {
+      int bytesRead=reader.read(buffer);
+      if (bytesRead == -1) {
+        break;
+      }
+      sb.append(buffer,0,bytesRead);
+    }
+    contents=sb.toString();
+    HttpURLConnection httpconnection=(HttpURLConnection)connection;
+    httpconnection.disconnect();
+    if (contents.startsWith("<HTML>")) {
+      if (htmlOK) {
+        return null;
+      }
+      throw new RuntimeException("Error getting data from USGS Download Server -- they sent us HTML when we wanted XML.  Here's the HTML they sent, for what it's worth: \n" + contents);
+    }
+    XMLStreamReader xmlStreamReader=XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(contents));
+    StAXOMBuilder stAXOMBuilder=new StAXOMBuilder(xmlStreamReader);
+    OMElement doc=stAXOMBuilder.getDocumentElement();
+    return doc;
+  }
+ catch (  Exception e) {
+    throw new RuntimeException("Error getting data from USGS Download Server while checking download status: contents = \n" + contents,e);
+  }
+}

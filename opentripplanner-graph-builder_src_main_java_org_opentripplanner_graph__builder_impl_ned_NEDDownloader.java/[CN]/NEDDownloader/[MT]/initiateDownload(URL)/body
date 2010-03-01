@@ -1,0 +1,15 @@
+{
+  try {
+    _log.debug("Trying to initiate download: " + url);
+    OMElement doc=getXMLFromURL(url);
+    AXIOMXPath xpathExpression=new AXIOMXPath(doc,"//ns:return");
+    xpathExpression.addNamespace("ns1","http://edc/usgs/gov");
+    OMElement tokenElement=(OMElement)xpathExpression.selectSingleNode(doc);
+    String token=tokenElement.getText();
+    _log.debug("Initiated download; got token: " + token);
+    return token;
+  }
+ catch (  Exception e) {
+    throw new RuntimeException("Error getting data from USGS Download Server while initiating downloads for url " + url,e);
+  }
+}

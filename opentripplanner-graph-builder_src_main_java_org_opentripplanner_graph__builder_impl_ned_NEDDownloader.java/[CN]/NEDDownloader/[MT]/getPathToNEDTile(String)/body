@@ -1,0 +1,10 @@
+{
+  try {
+    cacheDirectory.mkdirs();
+  }
+ catch (  Exception e) {
+    throw new RuntimeException("Error creating cache directory " + cacheDirectory,e);
+  }
+  File path=new File(cacheDirectory,"ned-" + key + ".tif");
+  return path;
+}

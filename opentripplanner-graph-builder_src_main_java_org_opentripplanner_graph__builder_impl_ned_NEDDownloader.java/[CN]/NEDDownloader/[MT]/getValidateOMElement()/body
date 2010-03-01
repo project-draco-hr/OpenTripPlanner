@@ -1,0 +1,12 @@
+{
+  String dataset="ND302XZ";
+  Envelope extent=graph.getExtent();
+  OMFactory fac=OMAbstractFactory.getOMFactory();
+  OMNamespace omNs=fac.createOMNamespace("http://edc/usgs/gov/","");
+  OMElement method=fac.createOMElement("processAOI",omNs);
+  OMElement value=fac.createOMElement("requestInfoXml",omNs);
+  String xmlRequestString="<REQUEST_SERVICE_INPUT>" + "<AOI_GEOMETRY>" + "<EXTENT>"+ "<TOP>" + extent.getMaxY() + "</TOP>"+ "<BOTTOM>"+ extent.getMinY()+ "</BOTTOM>"+ "<LEFT>"+ extent.getMinX()+ "</LEFT>"+ "<RIGHT>"+ extent.getMaxX()+ "</RIGHT>"+ "</EXTENT>"+ "<SPATIALREFERENCE_WKID/>"+ "</AOI_GEOMETRY>"+ "<LAYER_INFORMATION>"+ "     <LAYER_IDS>"+ dataset+ "</LAYER_IDS>"+ "</LAYER_INFORMATION>"+ "<CHUNK_SIZE>250"+ "</CHUNK_SIZE>"+ "<ORIGINATOR/>"+ "</REQUEST_SERVICE_INPUT>";
+  value.addChild(fac.createOMText(value,xmlRequestString));
+  method.addChild(value);
+  return method;
+}
