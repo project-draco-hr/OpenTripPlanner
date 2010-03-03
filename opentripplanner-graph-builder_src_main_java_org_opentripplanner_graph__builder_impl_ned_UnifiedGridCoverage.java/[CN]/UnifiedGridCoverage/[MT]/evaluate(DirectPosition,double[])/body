@@ -1,8 +1,13 @@
 {
   for (  Coverage region : regions) {
-    GeometryValuePair gv=region.find(point);
-    Record value=gv.getValue();
-    System.out.println(value);
+    double[] result;
+    try {
+      result=region.evaluate(point,values);
+    }
+ catch (    PointOutsideCoverageException e) {
+      continue;
+    }
+    return result;
   }
   return values;
 }

@@ -5,11 +5,10 @@
   double eq=2 * 6378137 * Math.PI;
   double oneDegLon=eq * Math.cos(Math.toRadians(averageLatitude)) / 360;
   double sampleFreqD=sampleFreqM / oneDegLon;
-  DirectPosition2D srcDP=new DirectPosition2D(coords[0].x,coords[0].y), destDP=new DirectPosition2D();
+  DirectPosition2D position=new DirectPosition2D(coords[0].x,coords[0].y);
   List<Coordinate> coordList=new LinkedList<Coordinate>();
   try {
-    mt.transform(srcDP,destDP);
-    coordList.add(new Coordinate(0,getElevation(destDP.x,destDP.y)));
+    coordList.add(new Coordinate(0,getElevation(position.x,position.y)));
     int freqCount=0;
     for (int i=0; i < coords.length - 1; i++) {
       double segLenD=Point2D.distance(coords[i].x,coords[i].y,coords[i + 1].x,coords[i + 1].y);
@@ -17,24 +16,22 @@
       currentD+=segLenD;
       totalD+=segLenD;
       int iterCount=0;
+      double distIntoSegD=sampleFreqD - lastD;
+      double dx=coords[i + 1].x - coords[i].x;
+      double dy=coords[i + 1].y - coords[i].y;
       while (currentD > sampleFreqD) {
         freqCount++;
         iterCount++;
-        double distIntoSegD=sampleFreqD - lastD;
-        double dx=coords[i + 1].x - coords[i].x;
-        double dy=coords[i + 1].y - coords[i].y;
         double t=(distIntoSegD + iterCount * sampleFreqD) / segLenD;
-        srcDP=new DirectPosition2D(coords[0].x + t * dx,coords[0].y + t * dy);
-        mt.transform(srcDP,destDP);
-        coordList.add(new Coordinate(sampleFreqM * freqCount,getElevation(destDP.x,destDP.y)));
+        position=new DirectPosition2D(coords[i].x + t * dx,coords[i].y + t * dy);
+        coordList.add(new Coordinate(sampleFreqM * freqCount,getElevation(position.x,position.y)));
         currentD-=sampleFreqD;
       }
     }
     if (totalD % sampleFreqD != 0) {
-      srcDP=new DirectPosition2D(coords[coords.length - 1].x,coords[coords.length - 1].y);
-      mt.transform(srcDP,destDP);
+      position=new DirectPosition2D(coords[coords.length - 1].x,coords[coords.length - 1].y);
       double totalM=totalD * oneDegLon;
-      coordList.add(new Coordinate(totalM,getElevation(destDP.x,destDP.y)));
+      coordList.add(new Coordinate(totalM,getElevation(position.x,position.y)));
     }
     Coordinate coordArr[]=new Coordinate[coordList.size()];
     PackedCoordinateSequence elevPCS=new PackedCoordinateSequence.Double(coordList.toArray(coordArr));

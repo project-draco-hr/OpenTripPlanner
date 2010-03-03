@@ -1,10 +1,5 @@
 {
   double values[]=new double[1];
-  try {
-    coverage.evaluate(new DirectPosition2D(x,y),values);
-  }
- catch (  Exception ex) {
-    return 0;
-  }
+  coverage.evaluate(new DirectPosition2D(x,y),values);
   return values[0];
 }
