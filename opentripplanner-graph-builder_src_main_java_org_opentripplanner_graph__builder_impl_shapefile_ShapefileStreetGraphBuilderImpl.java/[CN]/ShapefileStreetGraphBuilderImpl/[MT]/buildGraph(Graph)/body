@@ -18,9 +18,13 @@
     HashMap<Coordinate,Intersection> intersectionsByLocation=new HashMap<Coordinate,Intersection>();
     SimpleFeatureConverter<P2<Double>> safetyConverter=_schema.getBicycleSafetyConverter();
     HashSet<Object> seen=new HashSet<Object>();
+    List<SimpleFeature> featureList=new ArrayList<SimpleFeature>();
     Iterator<SimpleFeature> it2=features.iterator();
     while (it2.hasNext()) {
-      SimpleFeature feature=it2.next();
+      featureList.add(it2.next());
+    }
+    features.close(it2);
+    for (    SimpleFeature feature : featureList) {
       LineString geom=toLineString((Geometry)feature.getDefaultGeometry());
       Object o=streetIdConverter.convert(feature);
       String id="" + o;
@@ -70,8 +74,10 @@
       P2<Double> effectiveLength;
       if (safetyConverter != null) {
         effectiveLength=safetyConverter.convert(feature);
-        street.setBicycleSafetyEffectiveLength(effectiveLength.getFirst() * length);
-        backStreet.setBicycleSafetyEffectiveLength(effectiveLength.getSecond() * length);
+        if (effectiveLength != null) {
+          street.setBicycleSafetyEffectiveLength(effectiveLength.getFirst() * length);
+          backStreet.setBicycleSafetyEffectiveLength(effectiveLength.getSecond() * length);
+        }
       }
     }
     StreetUtils.unify(graph,intersectionsByLocation.values());

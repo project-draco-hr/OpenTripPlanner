@@ -1,0 +1,11 @@
+{
+  ensureCached();
+  String mainKeyValue=feature.getAttribute(this.mainKey).toString();
+  SimpleFeature joinedFeature=cache.get(mainKeyValue);
+  if (joinedFeature == null) {
+    return null;
+  }
+ else {
+    return converter.convert(joinedFeature);
+  }
+}
