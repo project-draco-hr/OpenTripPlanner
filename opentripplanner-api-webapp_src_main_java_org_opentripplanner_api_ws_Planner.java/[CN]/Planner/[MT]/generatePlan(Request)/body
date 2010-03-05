@@ -60,6 +60,7 @@
     int startWalk=-1;
     int i=-1;
     SPTEdge lastEdge=null;
+    double lastElevation=Double.MAX_VALUE;
     for (    SPTEdge edge : path.edges) {
       i++;
       Edge graphEdge=edge.payload;
@@ -133,6 +134,25 @@
       if (edgeMode == TraverseMode.WALK) {
         itinerary.walkTime+=edgeTime;
         itinerary.walkDistance+=graphEdge.getDistance();
+        if (graphEdge instanceof Street) {
+          PackedCoordinateSequence profile=((Street)graphEdge).getElevationProfile();
+          if (profile != null) {
+            for (            Coordinate coordinate : profile.toCoordinateArray()) {
+              if (lastElevation == Double.MAX_VALUE) {
+                lastElevation=coordinate.y;
+                continue;
+              }
+              double elevationChange=lastElevation - coordinate.y;
+              if (elevationChange > 0) {
+                itinerary.elevationGained+=elevationChange;
+              }
+ else {
+                itinerary.elevationLost-=elevationChange;
+              }
+              lastElevation=coordinate.y;
+            }
+          }
+        }
       }
       if (edgeMode.isTransit()) {
         itinerary.transitTime+=edgeTime;

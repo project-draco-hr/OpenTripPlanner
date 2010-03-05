@@ -24,6 +24,7 @@ catch (  PathNotFoundException e) {
     response.setError(error);
   }
 catch (  Exception e) {
+    LOGGER.log(Level.SEVERE,"exception planning trip: ",e);
     PlannerError error=new PlannerError(Message.SYSTEM_ERROR);
     response.setError(error);
   }
