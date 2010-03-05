@@ -1,0 +1,9 @@
+{
+  if (stopIdsToStopTimes.containsKey(stopId)) {
+    return stopIdsToStopTimes.get(stopId);
+  }
+ else {
+    System.out.println("No stop times found for stop id: " + stopId);
+    return new ArrayList<StopTime>();
+  }
+}

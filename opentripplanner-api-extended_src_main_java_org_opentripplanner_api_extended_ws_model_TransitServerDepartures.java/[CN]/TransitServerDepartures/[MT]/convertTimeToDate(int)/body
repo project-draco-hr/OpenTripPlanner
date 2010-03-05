@@ -1,0 +1,11 @@
+{
+  long currentTime=System.currentTimeMillis();
+  this.calendar.setTimeInMillis(currentTime);
+  this.calendar.set(Calendar.HOUR_OF_DAY,0);
+  this.calendar.set(Calendar.MINUTE,0);
+  this.calendar.set(Calendar.SECOND,0);
+  this.calendar.set(Calendar.MILLISECOND,0);
+  this.calendar.add(Calendar.SECOND,departureTime);
+  Date date=this.calendar.getTime();
+  return date;
+}

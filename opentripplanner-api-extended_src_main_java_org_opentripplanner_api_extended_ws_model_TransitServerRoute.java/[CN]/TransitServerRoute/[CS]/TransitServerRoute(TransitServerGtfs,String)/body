@@ -1,0 +1,8 @@
+{
+  Route route=transitServerGtfs.getRoute(routeId);
+  List<Stop> stops=transitServerGtfs.getStopsForRoute(routeId);
+  this.setId(routeId);
+  this.setShortName(route.getShortName());
+  this.setLongName(route.getLongName());
+  this.setStops(new TransitServerStops(stops));
+}

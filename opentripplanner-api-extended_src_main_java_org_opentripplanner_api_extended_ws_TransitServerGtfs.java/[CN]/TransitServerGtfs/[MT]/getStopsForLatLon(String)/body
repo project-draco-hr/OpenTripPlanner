@@ -1,0 +1,15 @@
+{
+  if (latLonToStopIds.containsKey(latlon)) {
+    HashSet<String> stopIds=latLonToStopIds.get(latlon);
+    List<Stop> stops=new ArrayList<Stop>();
+    for (    String stopId : stopIds) {
+      Stop stop=stopIdsToStops.get(stopId);
+      stops.add(stop);
+    }
+    return stops;
+  }
+ else {
+    System.out.println("No stops found for lat lon: " + latlon);
+    return new ArrayList<Stop>();
+  }
+}

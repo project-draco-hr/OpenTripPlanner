@@ -1,0 +1,29 @@
+{
+  this.calendar=Calendar.getInstance();
+  Date now=new Date();
+  Set<AgencyAndId> serviceIdsActive=transitServerGtfs.getServiceIdsOnDate(now);
+  List<TransitServerDeparture> allDepartures=new ArrayList<TransitServerDeparture>();
+  List<Stop> stopsForLatLon=transitServerGtfs.getStopsForLatLon(latlon);
+  for (  Stop stop : stopsForLatLon) {
+    List<StopTime> stopTimes=transitServerGtfs.getStopTimesForStopId(stop.getId().toString());
+    for (    StopTime stopTime : stopTimes) {
+      Trip trip=stopTime.getTrip();
+      AgencyAndId tripServiceId=trip.getServiceId();
+      if (!serviceIdsActive.contains(tripServiceId)) {
+        continue;
+      }
+      int departureTime=stopTime.getDepartureTime();
+      Date date=convertTimeToDate(departureTime);
+      if (date.compareTo(now) > 0) {
+        String headsign=trip.getTripHeadsign();
+        Route route=trip.getRoute();
+        TransitServerDeparture departure=new TransitServerDeparture(route,headsign,date);
+        allDepartures.add(departure);
+      }
+    }
+  }
+  Collections.sort(allDepartures);
+  for (int i=0; i < Math.min(nDepartures,allDepartures.size()); i++) {
+    this.departures.add(allDepartures.get(i));
+  }
+}
