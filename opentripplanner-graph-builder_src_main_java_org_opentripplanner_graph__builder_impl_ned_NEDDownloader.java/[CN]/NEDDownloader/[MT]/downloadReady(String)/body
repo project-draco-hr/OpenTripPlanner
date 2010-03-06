@@ -1,6 +1,6 @@
 {
   try {
-    String url="http://extract.cr.usgs.gov/axis2/services/DownloadService/getDownloadStatus?downloadID=" + token;
+    String url="http://igskmncnwb010.cr.usgs.gov/axis2/services/DownloadService/getDownloadStatus?downloadID=" + token;
     OMElement doc=getXMLFromURL(new URL(url),true);
     if (doc == null) {
       return false;

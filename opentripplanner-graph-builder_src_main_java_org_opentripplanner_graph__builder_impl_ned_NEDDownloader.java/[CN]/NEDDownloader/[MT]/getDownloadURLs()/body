@@ -2,7 +2,7 @@
   try {
     OMElement payload=getValidateOMElement();
     Options options=new Options();
-    EndpointReference targetEPR=new EndpointReference("http://extract.cr.usgs.gov/requestValidationService/services/RequestValidationService");
+    EndpointReference targetEPR=new EndpointReference("http://igskmncnwb010.cr.usgs.gov/requestValidationService/services/RequestValidationService");
     options.setTo(targetEPR);
     options.setAction("processAOI");
     ServiceClient sender=new ServiceClient();
@@ -22,6 +22,7 @@
     for (    OMElement urlElement : nodes) {
       String urlString=urlElement.getText().trim();
       _log.debug("Adding NED URL:" + urlString);
+      urlString=urlString.replaceFirst("http://extract.","http://igskmncnwb010.");
       URL url=new URL(urlString);
       urls.add(url);
     }
