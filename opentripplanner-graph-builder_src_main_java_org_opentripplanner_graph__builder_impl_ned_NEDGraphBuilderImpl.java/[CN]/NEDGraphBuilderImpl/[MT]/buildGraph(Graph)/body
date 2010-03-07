@@ -1,12 +1,6 @@
 {
-  coverage=gridCoverageFactory.getGridCoverage();
-  double total=0, count=0;
-  for (  Vertex vv : graph.getVertices()) {
-    total+=vv.getY();
-    count++;
-  }
-  averageLatitude=total / count;
-  count=0;
+  Coverage gridCov=gridCoverageFactory.getGridCoverage();
+  coverage=(gridCov instanceof GridCoverage2D) ? Interpolator2D.create((GridCoverage2D)gridCov,new InterpolationBilinear()) : gridCov;
   for (  Vertex vv : graph.getVertices()) {
     for (    Edge ee : vv.getOutgoing()) {
       if (ee instanceof Street) {
