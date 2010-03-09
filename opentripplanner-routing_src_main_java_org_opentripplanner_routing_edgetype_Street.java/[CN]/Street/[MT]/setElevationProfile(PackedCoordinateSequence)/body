@@ -12,8 +12,7 @@
     double slope=rise / run;
     if (slope > 0.35 || slope < -0.35) {
       slope=0;
-      bogus+=1;
-      log.warn("Warning: street " + this + " steeper than Baldwin Street.  This is an error in the algorithm or the data: "+ bogus);
+      log.warn("Warning: street " + this + " steeper than Baldwin Street.  This is an error in the algorithm or the data");
     }
     slopeCostEffectiveLength+=run * (1 + slope * slope * 10);
     slopeSpeedEffectiveLength+=run * slopeSpeedCoefficient(slope,coordinates[i].y);
