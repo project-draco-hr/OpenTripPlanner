@@ -17,6 +17,7 @@
     SimpleFeatureConverter<P2<StreetTraversalPermission>> permissionConverter=_schema.getPermissionConverter();
     HashMap<Coordinate,Intersection> intersectionsByLocation=new HashMap<Coordinate,Intersection>();
     SimpleFeatureConverter<P2<Double>> safetyConverter=_schema.getBicycleSafetyConverter();
+    SimpleFeatureConverter<Boolean> slopeOverrideCoverter=_schema.getSlopeOverrideConverter();
     HashSet<Object> seen=new HashSet<Object>();
     List<SimpleFeature> featureList=new ArrayList<SimpleFeature>();
     Iterator<SimpleFeature> it2=features.iterator();
@@ -68,6 +69,9 @@
       backStreet.setGeometry(geom.reverse());
       startCorner.inStreet=backStreet;
       endCorner.outStreet=backStreet;
+      boolean slopeOverride=slopeOverrideCoverter.convert(feature);
+      street.setSlopeOverride(slopeOverride);
+      backStreet.setSlopeOverride(slopeOverride);
       P2<StreetTraversalPermission> pair=permissionConverter.convert(feature);
       street.setTraversalPermission(pair.getFirst());
       backStreet.setTraversalPermission(pair.getSecond());
