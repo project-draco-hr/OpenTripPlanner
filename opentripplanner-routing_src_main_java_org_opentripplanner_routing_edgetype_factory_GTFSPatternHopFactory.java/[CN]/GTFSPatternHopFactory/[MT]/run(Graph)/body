@@ -17,6 +17,7 @@
     if (index % 100 == 0)     _log.debug("trips=" + index + "/"+ trips.size());
     index++;
     List<StopTime> originalStopTimes=_dao.getStopTimesForTrip(trip);
+    interpolateStopTimes(originalStopTimes);
     if (originalStopTimes.size() < 2) {
       _log.warn("Trip " + trip + " has fewer than two stops.  We will not use it for routing.  This is probably an error in your data");
       continue;

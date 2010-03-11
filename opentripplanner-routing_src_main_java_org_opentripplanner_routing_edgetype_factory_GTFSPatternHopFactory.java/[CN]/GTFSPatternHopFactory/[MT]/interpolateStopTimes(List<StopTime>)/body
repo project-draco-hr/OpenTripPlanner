@@ -1,0 +1,59 @@
+{
+  int lastStop=stopTimes.size() - 1;
+  int numInterpStops=-1;
+  int departureTime=-1, prevDepartureTime=-1;
+  int interpStep=0;
+  int i;
+  StopTime st1=null;
+  for (i=0; i < lastStop; i++) {
+    StopTime st0=stopTimes.get(i);
+    st1=stopTimes.get(i + 1);
+    prevDepartureTime=departureTime;
+    departureTime=st0.getDepartureTime();
+    if (!st0.isDepartureTimeSet() && st0.isArrivalTimeSet()) {
+      st0.setDepartureTime(st0.getArrivalTime());
+    }
+    if (!st1.isDepartureTimeSet() && st1.isArrivalTimeSet()) {
+      st1.setDepartureTime(st1.getArrivalTime());
+    }
+    if (!(st0.isDepartureTimeSet() && st0.isArrivalTimeSet())) {
+      int j;
+      StopTime st=null;
+      for (j=i + 1; j < lastStop + 1; ++j) {
+        st=stopTimes.get(j);
+        if (st.isDepartureTimeSet() || st.isArrivalTimeSet()) {
+          break;
+        }
+      }
+      if (j == lastStop + 1) {
+        throw new RuntimeException("Could not interpolate arrival/departure time on stop " + i + " (missing final stop time) on trip "+ st0.getTrip());
+      }
+      numInterpStops=j - i;
+      int arrivalTime;
+      if (st.isArrivalTimeSet()) {
+        arrivalTime=st.getArrivalTime();
+      }
+ else {
+        arrivalTime=st.getDepartureTime();
+      }
+      interpStep=(arrivalTime - prevDepartureTime) / (numInterpStops + 1);
+      if (interpStep < 0) {
+        throw new RuntimeException("trip goes backwards for some reason");
+      }
+      for (j=i; j < i + numInterpStops; ++j) {
+        departureTime=prevDepartureTime + interpStep * (j - i + 1);
+        st=stopTimes.get(j);
+        if (st.isArrivalTimeSet()) {
+          departureTime=st.getArrivalTime();
+        }
+ else {
+          st.setArrivalTime(departureTime);
+        }
+        if (!st.isDepartureTimeSet()) {
+          st.setDepartureTime(departureTime);
+        }
+      }
+      i=j - 1;
+    }
+  }
+}
