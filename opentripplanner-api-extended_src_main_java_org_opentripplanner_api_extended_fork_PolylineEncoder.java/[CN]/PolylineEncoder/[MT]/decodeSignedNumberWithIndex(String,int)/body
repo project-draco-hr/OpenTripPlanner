@@ -1,9 +1,0 @@
-{
-  int[] r=decodeNumberWithIndex(value,index);
-  int sgn_num=r[0];
-  if ((sgn_num & 0x01) > 0) {
-    sgn_num=~(sgn_num);
-  }
-  r[0]=sgn_num >> 1;
-  return r;
-}
