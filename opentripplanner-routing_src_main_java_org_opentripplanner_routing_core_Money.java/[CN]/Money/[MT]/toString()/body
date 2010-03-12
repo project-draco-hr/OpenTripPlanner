@@ -1,0 +1,6 @@
+{
+  NumberFormat nf=NumberFormat.getCurrencyInstance();
+  nf.setCurrency(currency);
+  String c=nf.format(cents / (Math.pow(10,currency.getDefaultFractionDigits())));
+  return "Money(" + c + ")";
+}
