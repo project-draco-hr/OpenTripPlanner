@@ -22,10 +22,14 @@
           GenericVertex newV=new GenericVertex(osvertex.getLabel() + " approach",osvertex.getX(),osvertex.getY());
           Street approach=new Street(osvertex,newV,0);
           Street approachBack=new Street(newV,osvertex,0);
-          osvertex.inStreet.setToVertex(newV);
-          osvertex.outStreet.setFromVertex(newV);
-          newV.addIncoming(osvertex.inStreet);
-          newV.addOutgoing(osvertex.outStreet);
+          if (osvertex.inStreet != null) {
+            osvertex.inStreet.setToVertex(newV);
+            newV.addIncoming(osvertex.inStreet);
+          }
+          if (osvertex.outStreet != null) {
+            osvertex.outStreet.setFromVertex(newV);
+            newV.addOutgoing(osvertex.outStreet);
+          }
           newV.addIncoming(approach);
           newV.addOutgoing(approachBack);
           osvertex.inStreet=approachBack;
