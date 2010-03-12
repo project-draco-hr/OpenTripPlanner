@@ -69,6 +69,9 @@
       }
       lastEdge=edge;
       TraverseMode edgeMode=graphEdge.getMode();
+      if (graphEdge instanceof Street && modeSet.contains(TraverseMode.BICYCLE)) {
+        edgeMode=TraverseMode.BICYCLE;
+      }
       double edgeTime=edge.tov.state.getTime() - edge.fromv.state.getTime();
       if (!edgeMode.isTransit() && edgeMode != TraverseMode.ALIGHTING) {
         if (edgeMode != mode || (!mode.isOnStreetNonTransit() && graphEdge.getName() != name)) {
@@ -131,7 +134,7 @@
         itinerary.waitingTime+=edgeTime;
         continue;
       }
-      if (edgeMode == TraverseMode.WALK) {
+      if (edgeMode == TraverseMode.WALK || edgeMode == TraverseMode.BICYCLE) {
         itinerary.walkTime+=edgeTime;
         itinerary.walkDistance+=graphEdge.getDistance();
         if (graphEdge instanceof Street) {
