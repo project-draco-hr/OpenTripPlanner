@@ -1,5 +1,6 @@
 {
   State state1=state0.clone();
   state1.incrementTimeInSeconds(-elapsed);
+  state1.addZone(getStartStop().getZoneId(),fareContext);
   return new TraverseResult(elapsed,state1);
 }

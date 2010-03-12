@@ -22,6 +22,7 @@
       graph.addEdge(dwell);
     }
     PatternHop hop=new PatternHop(startJourneyDepart,endJourneyArrive,s0,s1,i,tripPattern);
+    hop.setFareContext(fareContext);
     hop.setGeometry(getHopGeometry(trip.getShapeId(),st0,st1,startJourneyDepart,endJourneyArrive));
     int arrivalTime=st1.getArrivalTime();
     int departureTime=st0.getDepartureTime();

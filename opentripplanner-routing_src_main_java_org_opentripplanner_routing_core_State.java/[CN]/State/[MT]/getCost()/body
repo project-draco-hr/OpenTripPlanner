@@ -1,0 +1,26 @@
+{
+  if (fareContext == null) {
+    return null;
+  }
+  float bestFare=Float.MAX_VALUE;
+  Currency currency=null;
+  HashMap<AgencyAndId,FareRuleSet> fareRules=fareContext.getFareRules();
+  HashMap<AgencyAndId,FareAttribute> fareAttributes=fareContext.getFareAttributes();
+  for (  AgencyAndId fareId : fareRules.keySet()) {
+    FareRuleSet ruleSet=fareRules.get(fareId);
+    if (ruleSet.matches(zonesVisited,routesVisited)) {
+      FareAttribute attribute=fareAttributes.get(fareId);
+      float newFare=attribute.getPrice();
+      if (newFare < bestFare) {
+        bestFare=newFare;
+        currency=Currency.getInstance(attribute.getCurrencyType());
+      }
+    }
+  }
+  if (bestFare == Float.MAX_VALUE) {
+    return null;
+  }
+  Fare fare=new Fare();
+  fare.addFare(FareType.regular,new WrappedCurrency(currency),(int)(bestFare * Math.pow(10,currency.getDefaultFractionDigits())));
+  return fare;
+}

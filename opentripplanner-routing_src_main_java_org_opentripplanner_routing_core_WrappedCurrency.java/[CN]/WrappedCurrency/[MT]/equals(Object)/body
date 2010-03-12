@@ -1,0 +1,7 @@
+{
+  if (o instanceof Currency) {
+    return value.equals(o);
+  }
+  WrappedCurrency c=(WrappedCurrency)o;
+  return value.equals(c.value);
+}

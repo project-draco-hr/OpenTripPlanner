@@ -15,6 +15,7 @@
     Dwell dwell=new Dwell(startJourneyArrive,startJourneyDepart,st0);
     graph.addEdge(dwell);
     Hop hop=new Hop(startJourneyDepart,endJourney,st0,st1);
+    hop.setFareContext(fareContext);
     hop.setGeometry(getHopGeometry(trip.getShapeId(),st0,st1,startJourneyDepart,endJourney));
     hops.add(hop);
     if (st0.getPickupType() != 1) {
