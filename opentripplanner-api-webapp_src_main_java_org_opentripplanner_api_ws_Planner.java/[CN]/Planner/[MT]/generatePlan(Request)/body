@@ -98,9 +98,9 @@
             leg.headsign=trip.getTripHeadsign();
             leg.agencyId=trip.getId().getAgencyId();
           }
-          mode=graphEdge.getMode();
+          mode=edgeMode;
           leg.mode=mode.toString();
-          if (mode == TraverseMode.WALK) {
+          if (mode == TraverseMode.WALK || mode == TraverseMode.BICYCLE) {
             startWalk=i;
           }
  else {
