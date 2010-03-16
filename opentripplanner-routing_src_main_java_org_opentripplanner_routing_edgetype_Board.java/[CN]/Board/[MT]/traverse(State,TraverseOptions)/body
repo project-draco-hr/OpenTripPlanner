@@ -9,7 +9,7 @@
   Date serviceDate=getServiceDate(currentTime,false);
   int secondsSinceMidnight=(int)((currentTime - serviceDate.getTime()) / 1000);
   CalendarService service=wo.getCalendarService();
-  Set<Date> serviceDates=service.getServiceDatesForServiceId(hop.getServiceId());
+  Set<ServiceDate> serviceDates=service.getServiceDatesForServiceId(hop.getServiceId());
   if (!serviceDates.contains(serviceDate))   return null;
   int wait=hop.getStartStopTime().getDepartureTime() - secondsSinceMidnight;
   if (wait < 0) {

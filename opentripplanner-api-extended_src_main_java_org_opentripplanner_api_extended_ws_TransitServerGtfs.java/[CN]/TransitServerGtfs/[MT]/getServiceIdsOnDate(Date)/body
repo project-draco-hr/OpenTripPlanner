@@ -1,3 +1,4 @@
 {
-  return gtfsContext.getCalendarService().getServiceIdsOnDate(date);
+  ServiceDate serviceDate=new ServiceDate(date);
+  return gtfsContext.getCalendarService().getServiceIdsOnDate(serviceDate);
 }

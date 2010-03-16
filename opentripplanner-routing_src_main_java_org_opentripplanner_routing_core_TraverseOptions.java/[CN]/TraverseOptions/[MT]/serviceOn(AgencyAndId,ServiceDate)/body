@@ -1,5 +1,5 @@
 {
-  Set<Date> dates=serviceDatesByServiceId.get(serviceId);
+  Set<ServiceDate> dates=serviceDatesByServiceId.get(serviceId);
   if (dates == null) {
     dates=calendarService.getServiceDatesForServiceId(serviceId);
     serviceDatesByServiceId.put(serviceId,dates);

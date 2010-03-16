@@ -3,9 +3,9 @@
     readGtfs();
     CalendarServiceDataFactoryImpl factory=new CalendarServiceDataFactoryImpl();
     factory.setGtfsDao(_dao);
-    CalendarServiceData data=factory.createServiceCalendarData();
+    CalendarServiceData data=factory.createData();
     CalendarServiceImpl service=new CalendarServiceImpl();
-    service.setServiceCalendarData(data);
+    service.setData(data);
     GtfsContext context=GtfsLibrary.createContext(_dao,service);
     for (    Stop stop : _dao.getAllStops()) {
       String id=GtfsLibrary.convertIdToString(stop.getId());
