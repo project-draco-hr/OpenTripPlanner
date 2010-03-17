@@ -39,7 +39,7 @@
       Coordinate endCoordinate=new Coordinate(Math.round(coordinates[coordinates.length - 1].x * 1048576) / 1048576.0,Math.round(coordinates[coordinates.length - 1].y * 1048576) / 1048576.0);
       String startIntersectionName=getIntersectionName(coordinateToStreetNames,intersectionNameToId,startCoordinate);
       if (startIntersectionName == "null") {
-        System.out.println(name);
+        log.warn("No intersection name for " + name);
       }
       String endIntersectionName=getIntersectionName(coordinateToStreetNames,intersectionNameToId,endCoordinate);
       Intersection startIntersection=intersectionsByLocation.get(startCoordinate);
