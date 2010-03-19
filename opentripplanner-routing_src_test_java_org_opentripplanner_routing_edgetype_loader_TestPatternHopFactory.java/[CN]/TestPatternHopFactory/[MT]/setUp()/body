@@ -1,8 +1,8 @@
 {
   context=GtfsLibrary.readGtfs(new File(ConstantsForTests.FAKE_GTFS));
   graph=new Graph();
-  GTFSPatternHopLoader hl=new GTFSPatternHopLoader(graph,context);
-  hl.load();
+  GTFSPatternHopFactory factory=new GTFSPatternHopFactory(context);
+  factory.run(graph);
   Vertex stop_a=graph.getVertex("agency_A");
   Vertex stop_b=graph.getVertex("agency_B");
   Vertex stop_c=graph.getVertex("agency_C");

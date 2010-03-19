@@ -2,8 +2,8 @@
   try {
     portlandContext=GtfsLibrary.readGtfs(new File(ConstantsForTests.PORTLAND_GTFS));
     portlandGraph=new Graph();
-    GTFSPatternHopLoader hl=new GTFSPatternHopLoader(portlandGraph,portlandContext);
-    hl.load();
+    GTFSPatternHopFactory factory=new GTFSPatternHopFactory(portlandContext);
+    factory.run(portlandGraph);
   }
  catch (  Exception e) {
     e.printStackTrace();
