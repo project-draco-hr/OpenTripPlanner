@@ -1,7 +1,11 @@
 {
   for (  Integer dt : pattern.getDepartureTimes(stopIndex)) {
     Calendar c=new GregorianCalendar();
-    c.setTimeInMillis((dt + 5 * 3600) * 1000);
-    departureTimes.add(DateFormat.getTimeInstance().format(c.getTime()));
+    c.setTimeInMillis(dt * 1000);
+    Date date=c.getTime();
+    int tzAdjust=TimeZone.getDefault().getOffset(date.getTime());
+    c.setTimeInMillis(dt * 1000 - tzAdjust);
+    date=c.getTime();
+    departureTimes.add(DateFormat.getTimeInstance().format(date));
   }
 }
