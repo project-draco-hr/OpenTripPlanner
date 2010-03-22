@@ -14,6 +14,9 @@
       slope=0;
       log.warn("Warning: street " + this + " steeper than Baldwin Street.  This is an error in the algorithm or the data");
     }
+    if (maxSlope < Math.abs(slope)) {
+      maxSlope=Math.abs(slope);
+    }
     slopeCostEffectiveLength+=run * (1 + slope * slope * 10);
     slopeSpeedEffectiveLength+=run * slopeSpeedCoefficient(slope,coordinates[i].y);
   }

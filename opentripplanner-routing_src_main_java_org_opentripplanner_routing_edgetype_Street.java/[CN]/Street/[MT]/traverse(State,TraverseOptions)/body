@@ -4,27 +4,8 @@
   }
   State s1=s0.clone();
   double time=this.length / wo.speed;
-  double weight=0;
-  if (wo.modes.contains(TraverseMode.BICYCLE)) switch (wo.optimizeFor) {
-case SAFE:
-    weight=bicycleSafetyEffectiveLength / wo.speed;
-  break;
-case FLAT:
-weight=slopeCostEffectiveLength;
-break;
-case QUICK:
-weight=slopeSpeedEffectiveLength / wo.speed;
-break;
-default :
-weight=length / wo.speed;
-}
- else {
-weight=time;
-}
-if (s0.walkDistance > wo.maxWalkDistance && wo.modes.getTransit()) {
-weight*=100;
-}
-s1.walkDistance+=length;
-s1.incrementTimeInSeconds((int)time);
-return new TraverseResult(weight,s1);
+  double weight=computeWeight(s0,wo,time);
+  s1.walkDistance+=length;
+  s1.incrementTimeInSeconds((int)time);
+  return new TraverseResult(weight,s1);
 }
