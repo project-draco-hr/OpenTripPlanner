@@ -12,15 +12,20 @@
     }
   }
   if (contains.size() > 0) {
+    if (zonesVisited.size() != contains.size()) {
+      return false;
+    }
     for (    String contained : contains) {
       if (!zonesVisited.contains(contained)) {
         return false;
       }
     }
   }
-  for (  AgencyAndId route : routesVisited) {
-    if (!routes.contains(route)) {
-      return false;
+  if (routes.size() != 0) {
+    for (    AgencyAndId route : routesVisited) {
+      if (!routes.contains(route)) {
+        return false;
+      }
     }
   }
   return true;
