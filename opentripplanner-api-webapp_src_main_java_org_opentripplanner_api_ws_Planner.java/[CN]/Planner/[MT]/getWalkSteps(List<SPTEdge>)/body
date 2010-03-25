@@ -1,7 +1,7 @@
 {
   List<WalkStep> steps=new ArrayList<WalkStep>();
   WalkStep step=null;
-  double lastAngle=0;
+  double lastAngle=0, distance=0;
   for (  SPTEdge sptEdge : edges) {
     Edge edge=sptEdge.payload;
     if (edge instanceof Turn) {
@@ -20,6 +20,8 @@
       step.lat=edge.getFromVertex().getY();
       double thisAngle=DirectionUtils.getInstance().getFirstAngle(geom);
       step.setAbsoluteDirection(thisAngle);
+      step.elevation=encodeElevationProfile(edge,0);
+      distance=edge.getDistance();
     }
  else     if (step.streetName != streetName && (step.streetName != null && !step.streetName.equals(streetName))) {
       step=new WalkStep();
@@ -30,11 +32,20 @@
       step.lon=edge.getFromVertex().getX();
       step.lat=edge.getFromVertex().getY();
       step.becomes=!multipleOptionsBefore(edge);
+      step.elevation=encodeElevationProfile(edge,0);
+      distance=edge.getDistance();
     }
  else {
       double thisAngle=DirectionUtils.getInstance().getFirstAngle(geom);
       RelativeDirection direction=WalkStep.getRelativeDirection(lastAngle,thisAngle);
-      if (direction != RelativeDirection.CONTINUE) {
+      if (direction == RelativeDirection.CONTINUE) {
+        if (step.elevation != null) {
+          if (step.elevation.length() > 0)           step.elevation+=",";
+          step.elevation+=encodeElevationProfile(edge,distance);
+        }
+        distance+=edge.getDistance();
+      }
+ else {
         boolean optionsBefore=multipleOptionsBefore(edge);
         if (optionsBefore) {
           step=new WalkStep();
@@ -44,6 +55,8 @@
           step.stayOn=true;
           step.lon=edge.getFromVertex().getX();
           step.lat=edge.getFromVertex().getY();
+          step.elevation=encodeElevationProfile(edge,0);
+          distance=edge.getDistance();
         }
       }
     }
