@@ -1,5 +1,5 @@
 {
-  Collection<SPTVertex> vertices=getVertices(vertex);
+  Collection<SPTVertex> vertices=vertexSets.get(vertex);
   if (vertices == null) {
     vertices=new ArrayList<SPTVertex>();
     vertexSets.put(vertex,vertices);
@@ -8,10 +8,8 @@
     return ret;
   }
   long time=state.getTime();
-  double worstWeight=0;
   Iterator<SPTVertex> it=vertices.iterator();
   if (options.back) {
-    long worstTime=Long.MAX_VALUE;
     while (it.hasNext()) {
       SPTVertex v=it.next();
       double old_w=v.weightSum;
@@ -22,21 +20,9 @@
       if (old_w > weightSum && old_t < time) {
         it.remove();
       }
- else {
-        if (old_w > worstWeight) {
-          worstWeight=old_w;
-        }
-        if (old_t < worstTime) {
-          worstTime=old_t;
-        }
-      }
-    }
-    if (worstTime != Long.MAX_VALUE && time <= worstTime && weightSum >= worstWeight) {
-      return null;
     }
   }
  else {
-    long worstTime=-1;
     while (it.hasNext()) {
       SPTVertex v=it.next();
       double old_w=v.weightSum;
@@ -47,17 +33,6 @@
       if (old_w > weightSum && old_t > time) {
         it.remove();
       }
- else {
-        if (old_w > worstWeight) {
-          worstWeight=old_w;
-        }
-        if (old_t > worstTime) {
-          worstTime=old_t;
-        }
-      }
-    }
-    if (worstTime != -1 && time >= worstTime && weightSum >= worstWeight) {
-      return null;
     }
   }
   SPTVertex ret=new SPTVertex(vertex,state,weightSum,options);
