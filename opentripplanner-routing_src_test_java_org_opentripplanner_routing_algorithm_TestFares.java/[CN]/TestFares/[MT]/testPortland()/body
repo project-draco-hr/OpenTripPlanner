@@ -11,6 +11,16 @@
   spt=AStar.getShortestPathTree(gg,"TriMet_10579","TriMet_8346",new State(startTime),options);
   path=spt.getPath(gg.getVertex("TriMet_8346"));
   assertNotNull(path);
-  Fare cost=path.vertices.lastElement().state.getCost();
+  Fare cost=path.getCost();
   assertEquals(cost.getFare(FareType.regular),new Money(new WrappedCurrency("USD"),200));
+  startTime=new GregorianCalendar(2009,11,1,14,0,0).getTimeInMillis();
+  spt=AStar.getShortestPathTree(gg,"TriMet_10428","TriMet_4231",new State(startTime),options);
+  path=spt.getPath(gg.getVertex("TriMet_4231"));
+  assertNotNull(path);
+  for (  SPTVertex v : path.vertices) {
+    GregorianCalendar calendar=new GregorianCalendar();
+    calendar.setTimeInMillis(v.state.getTime());
+    System.out.println(v + " : " + calendar.getTime());
+  }
+  cost=path.getCost();
 }

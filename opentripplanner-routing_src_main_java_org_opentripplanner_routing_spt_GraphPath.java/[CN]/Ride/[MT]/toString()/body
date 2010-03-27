@@ -1,0 +1,22 @@
+{
+  StringBuilder builder=new StringBuilder();
+  builder.append("Ride(from ");
+  builder.append(startZone);
+  builder.append(" to ");
+  builder.append(endZone);
+  builder.append(" on ");
+  builder.append(route);
+  builder.append(" through ");
+  boolean first=true;
+  for (  String zone : zones) {
+    if (first) {
+      first=false;
+    }
+ else {
+      builder.append(",");
+    }
+    builder.append(zone);
+  }
+  builder.append(")");
+  return builder.toString();
+}
