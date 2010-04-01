@@ -1,0 +1,12 @@
+{
+  List<Stop> stopsForLatLon=transitServerGtfs.getStopsForLatLon(latlon);
+  if (stopsForLatLon.size() == 0) {
+    throw new IllegalStateException("no stops found for latlon: " + latlon);
+  }
+  Stop stop=stopsForLatLon.get(0);
+  String stopId=stop.getId().toString();
+  this.setName(stop.getName());
+  Set<String> routeIdsForStopId=transitServerGtfs.getRouteIdsForStopId(stopId);
+  this.routeIds=new TransitServerRouteIds(routeIdsForStopId);
+  this.setDepartures(new TransitServerDepartures(latlon,nDepartures,transitServerGtfs));
+}
