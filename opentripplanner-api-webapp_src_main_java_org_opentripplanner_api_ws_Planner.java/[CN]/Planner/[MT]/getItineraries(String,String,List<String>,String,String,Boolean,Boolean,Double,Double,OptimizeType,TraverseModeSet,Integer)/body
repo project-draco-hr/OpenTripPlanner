@@ -23,6 +23,10 @@ catch (  PathNotFoundException e) {
     PlannerError error=new PlannerError(Message.PATH_NOT_FOUND);
     response.setError(error);
   }
+catch (  LocationNotAccessible e) {
+    PlannerError error=new PlannerError(Message.LOCATION_NOT_ACCESSIBLE);
+    response.setError(error);
+  }
 catch (  Exception e) {
     LOGGER.log(Level.SEVERE,"exception planning trip: ",e);
     PlannerError error=new PlannerError(Message.SYSTEM_ERROR);

@@ -1,0 +1,32 @@
+{
+  Vertex vertex=getVertexForPlace(place);
+  if (vertex instanceof TransitStop) {
+    TransitStop ts=(TransitStop)vertex;
+    return ts.hasWheelchairEntrance();
+  }
+ else   if (vertex instanceof GenericStreetIntersectionVertex) {
+    for (    Edge e : vertex.getIncoming()) {
+      if (e instanceof Street) {
+        Street s=(Street)e;
+        if (s.getWheelchairAccessible(maxSlope)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+ else   if (vertex instanceof StreetLocation) {
+    StreetLocation sl=(StreetLocation)vertex;
+    for (    Street street : sl.streets) {
+      if (street.getWheelchairAccessible(maxSlope)) {
+        return true;
+      }
+    }
+    return false;
+  }
+ else   if (vertex instanceof OneStreetVertex) {
+    OneStreetVertex osv=(OneStreetVertex)vertex;
+    return osv.outStreet.getWheelchairAccessible(maxSlope);
+  }
+  return true;
+}

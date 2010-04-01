@@ -8,6 +8,11 @@
   if (request.getMaxSlope() > 0) {
     options.maxSlope=request.getMaxSlope();
   }
+  if (request.getWheelchair()) {
+    if (!pathservice.isAccessible(request.getFrom(),options.maxSlope) || !pathservice.isAccessible(request.getTo(),options.maxSlope)) {
+      throw new LocationNotAccessible();
+    }
+  }
   List<GraphPath> paths=null;
   boolean tooSloped=false;
   try {
