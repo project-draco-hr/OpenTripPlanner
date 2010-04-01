@@ -21,6 +21,7 @@
         rides.add(newRide);
         newRide.startZone=zone;
         newRide.route=route;
+        newRide.startTime=vertex.state.getTime();
       }
       newRide.zones.add(zone);
       newRide.endZone=zone;
@@ -31,9 +32,9 @@
   String startZone=null;
   int transfersUsed=-1;
   float totalFare=0, currentFare=-1;
+  long startTime=rides.get(0).startTime;
   for (int i=0; i < rides.size(); ++i) {
     Ride ride=rides.get(i);
-    System.out.println("considering ride : " + ride);
     if (startZone == null) {
       startZone=ride.startZone;
     }
@@ -41,11 +42,15 @@
     routes.add(ride.route);
     zones.addAll(ride.zones);
     transfersUsed+=1;
+    long tripTime=ride.startTime - startTime;
     for (    AgencyAndId fareId : fareRules.keySet()) {
       FareRuleSet ruleSet=fareRules.get(fareId);
       if (ruleSet.matches(startZone,ride.endZone,zones,routes)) {
         FareAttribute attribute=fareAttributes.get(fareId);
         if (attribute.isTransfersSet() && attribute.getTransfers() < transfersUsed) {
+          continue;
+        }
+        if (attribute.isTransferDurationSet() && tripTime > attribute.getTransferDuration() * 1000) {
           continue;
         }
         float newFare=attribute.getPrice();
@@ -60,12 +65,13 @@
         throw new RuntimeException("No fare for a perfectly good ride: " + ride);
       }
       totalFare+=currentFare;
-      currentFare=0;
+      currentFare=-1;
       transfersUsed=-1;
       --i;
       zones=new HashSet<String>();
       startZone=ride.startZone;
       routes=new HashSet<AgencyAndId>();
+      startTime=ride.startTime;
     }
  else {
       currentFare=bestFare;
@@ -73,6 +79,6 @@
   }
   totalFare+=currentFare;
   Fare fare=new Fare();
-  fare.addFare(FareType.regular,new WrappedCurrency(currency),(int)(totalFare * Math.pow(10,currency.getDefaultFractionDigits())));
+  fare.addFare(FareType.regular,new WrappedCurrency(currency),(int)Math.round(totalFare * Math.pow(10,currency.getDefaultFractionDigits())));
   return fare;
 }

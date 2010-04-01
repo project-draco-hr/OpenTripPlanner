@@ -1,22 +1,31 @@
 {
   StringBuilder builder=new StringBuilder();
-  builder.append("Ride(from ");
-  builder.append(startZone);
-  builder.append(" to ");
-  builder.append(endZone);
+  builder.append("Ride");
+  if (startZone != null) {
+    builder.append("(from ");
+    builder.append(startZone);
+  }
+  if (endZone != null) {
+    builder.append(" to ");
+    builder.append(endZone);
+  }
   builder.append(" on ");
   builder.append(route);
-  builder.append(" through ");
-  boolean first=true;
-  for (  String zone : zones) {
-    if (first) {
-      first=false;
-    }
+  if (zones.size() > 0) {
+    builder.append(" through ");
+    boolean first=true;
+    for (    String zone : zones) {
+      if (first) {
+        first=false;
+      }
  else {
-      builder.append(",");
+        builder.append(",");
+      }
+      builder.append(zone);
     }
-    builder.append(zone);
   }
+  builder.append(" at ");
+  builder.append(startTime);
   builder.append(")");
   return builder.toString();
 }
