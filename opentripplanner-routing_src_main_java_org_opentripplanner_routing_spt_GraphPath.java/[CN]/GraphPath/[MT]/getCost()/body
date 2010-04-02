@@ -27,6 +27,9 @@
       newRide.endZone=zone;
     }
   }
+  if (rides.size() == 0) {
+    return null;
+  }
   Set<String> zones=new HashSet<String>();
   Set<AgencyAndId> routes=new HashSet<AgencyAndId>();
   String startZone=null;
