@@ -1,6 +1,6 @@
 {
   ensureCached();
-  String mainKeyValue=feature.getAttribute(this.mainKey).toString();
+  String mainKeyValue=toHashableString(feature.getAttribute(this.mainKey));
   SimpleFeature joinedFeature=cache.get(mainKeyValue);
   if (joinedFeature == null) {
     return null;

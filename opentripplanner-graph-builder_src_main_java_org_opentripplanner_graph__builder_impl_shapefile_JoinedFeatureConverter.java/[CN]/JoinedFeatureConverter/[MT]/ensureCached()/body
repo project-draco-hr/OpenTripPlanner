@@ -8,7 +8,7 @@
     Iterator<SimpleFeature> it=features.iterator();
     while (it.hasNext()) {
       SimpleFeature feature=it.next();
-      String joinedKeyValue=feature.getAttribute(joinedKey).toString();
+      String joinedKeyValue=toHashableString(feature.getAttribute(joinedKey));
       cache.put(joinedKeyValue,feature);
     }
     features.close(it);
