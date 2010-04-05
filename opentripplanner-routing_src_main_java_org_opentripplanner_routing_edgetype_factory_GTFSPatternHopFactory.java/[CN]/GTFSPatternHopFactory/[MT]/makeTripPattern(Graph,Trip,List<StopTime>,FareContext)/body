@@ -1,5 +1,5 @@
 {
-  TripPattern tripPattern=new TripPattern(trip,stopTimes);
+  TripPattern tripPattern=new TripPattern(trip,stopTimes,fareContext);
   TraverseMode mode=GtfsLibrary.getTraverseMode(trip.getRoute());
   int lastStop=stopTimes.size() - 1;
   int i;
@@ -31,9 +31,9 @@
     graph.addEdge(hop);
     Vertex startStation=graph.getVertex(id(s0.getId()));
     Vertex endStation=graph.getVertex(id(s1.getId()));
-    PatternBoard boarding=new PatternBoard(startStation,startJourneyDepart,tripPattern,i,fareContext,mode);
+    PatternBoard boarding=new PatternBoard(startStation,startJourneyDepart,tripPattern,i,mode);
     graph.addEdge(boarding);
-    graph.addEdge(new PatternAlight(endJourneyArrive,endStation,fareContext,tripPattern,i,mode));
+    graph.addEdge(new PatternAlight(endJourneyArrive,endStation,tripPattern,i,mode));
   }
   tripPattern.setTripFlags(0,(trip.getWheelchairAccessible() != 0) ? TripPattern.FLAG_WHEELCHAIR_ACCESSIBLE : 0);
   return tripPattern;
