@@ -2,6 +2,9 @@
   if (gtfsFile == null) {
     throw new IllegalStateException("Gtfs file is not set");
   }
+  if (geoserverBaseUri == null) {
+    throw new IllegalStateException("Geoserver base uri not set");
+  }
   System.out.println("Reading gtfs file: " + gtfsFile.getPath());
   this.setGtfsContext(GtfsLibrary.readGtfs(gtfsFile));
   System.out.println("GTFS loaded");

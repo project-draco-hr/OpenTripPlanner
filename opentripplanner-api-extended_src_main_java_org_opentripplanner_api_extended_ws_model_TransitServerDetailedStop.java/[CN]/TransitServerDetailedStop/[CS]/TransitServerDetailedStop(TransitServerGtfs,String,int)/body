@@ -7,6 +7,11 @@
   String stopId=stop.getId().toString();
   this.setName(stop.getName());
   Set<String> routeIdsForStopId=transitServerGtfs.getRouteIdsForStopId(stopId);
-  this.routeIds=new TransitServerRouteIds(routeIdsForStopId);
   this.setDepartures(new TransitServerDepartures(latlon,nDepartures,transitServerGtfs));
+  List<Route> routes=new ArrayList<Route>();
+  for (  String routeId : routeIdsForStopId) {
+    Route route=transitServerGtfs.getRoute(routeId);
+    routes.add(route);
+  }
+  this.routes=new TransitServerDetailedRoutes(routes);
 }
