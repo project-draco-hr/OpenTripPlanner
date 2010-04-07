@@ -1,0 +1,24 @@
+{
+  int flag=pickup ? FLAG_PICKUP : FLAG_DROPOFF;
+  if ((perStopFlags[stopIndex] & flag) == 0) {
+    return -1;
+  }
+  if (wheelchairAccessible && (perStopFlags[stopIndex] & FLAG_WHEELCHAIR_ACCESSIBLE) == 0) {
+    return -1;
+  }
+  int[] stopDepartureTimes=departureTimes[stopIndex];
+  int index=Arrays.binarySearch(stopDepartureTimes,afterTime);
+  if (index == -stopDepartureTimes.length - 1)   return -1;
+  if (index < 0) {
+    index=-index - 1;
+  }
+  if (wheelchairAccessible) {
+    while ((perTripFlags[index] & FLAG_WHEELCHAIR_ACCESSIBLE) == 0) {
+      index++;
+      if (index == perTripFlags.length) {
+        return -1;
+      }
+    }
+  }
+  return index;
+}

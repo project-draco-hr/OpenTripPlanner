@@ -1,0 +1,14 @@
+{
+  for (int stopId=0; stopId < departureTimes.length; ++stopId) {
+    ArrayList<Integer> stopDwells=dwellTimes[stopId];
+    for (int trip=0; trip < stopDwells.size(); ++trip) {
+      if (stopDwells.get(trip) > 0) {
+        return;
+      }
+    }
+  }
+  dwellTimes=null;
+  departureTimes=Arrays.copyOf(departureTimes,departureTimes.length + 1);
+  departureTimes[departureTimes.length - 1]=arrivalTimes[arrivalTimes.length - 1];
+  arrivalTimes=null;
+}

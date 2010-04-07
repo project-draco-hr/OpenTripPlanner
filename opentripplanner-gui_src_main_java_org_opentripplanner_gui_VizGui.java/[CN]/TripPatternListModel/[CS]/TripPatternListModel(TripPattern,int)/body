@@ -1,5 +1,7 @@
 {
-  for (  Integer dt : pattern.getDepartureTimes(stopIndex)) {
+  Iterator<Integer> departureTimeIterator=pattern.getDepartureTimes(stopIndex);
+  while (departureTimeIterator.hasNext()) {
+    int dt=departureTimeIterator.next();
     Calendar c=new GregorianCalendar();
     c.setTimeInMillis(dt * 1000);
     Date date=c.getTime();

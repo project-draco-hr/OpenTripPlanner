@@ -1,6 +1,6 @@
 {
   State state1=state0.clone();
-  int dwellTime=pattern.getDwellTime(stopIndex,state0.getPattern());
+  int dwellTime=pattern.getDwellTime(stopIndex,state0.getTrip());
   state1.incrementTimeInSeconds(-dwellTime);
   return new TraverseResult(dwellTime,state1);
 }

@@ -123,7 +123,7 @@ catch (        IllegalAccessException e1) {
       }
       ListModel model=new TripPatternListModel(pattern,stopIndex);
       departurePattern.setModel(model);
-      Trip trip=pattern.exemplar;
+      Trip trip=pattern.getExemplar();
       serviceIdLabel.setText(trip.getServiceId().toString());
     }
   }

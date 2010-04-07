@@ -1,0 +1,9 @@
+{
+  ArrayList<Integer>[] arrivals=arrivalTimes;
+  if (arrivals == null) {
+    arrivals=departureTimes;
+    stopIndex+=1;
+  }
+  ArrayList<Integer> stopArrivalTimes=arrivals[stopIndex];
+  return stopArrivalTimes.get(trip);
+}
