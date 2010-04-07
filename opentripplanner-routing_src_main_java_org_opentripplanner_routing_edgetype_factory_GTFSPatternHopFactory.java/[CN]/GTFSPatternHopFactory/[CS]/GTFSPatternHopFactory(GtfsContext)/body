@@ -6,5 +6,7 @@
     FareAttribute attribute=context.getFareAttribute(fareId);
     fareAttributes.put(fareId,attribute);
   }
-  fareContext=new FareContext(fareRules,fareAttributes);
+  if (fareRules.size() > 0 && fareAttributes.size() > 0) {
+    fareContext=new FareContext(fareRules,fareAttributes);
+  }
 }
