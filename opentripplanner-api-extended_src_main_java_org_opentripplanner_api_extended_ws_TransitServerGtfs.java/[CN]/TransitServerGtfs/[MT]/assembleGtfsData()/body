@@ -16,7 +16,7 @@
     if (!latLonToStopIds.containsKey(latLon)) {
       latLonToStopIds.put(latLon,new HashSet<String>());
     }
-    HashSet<String> stopIdsForLatLon=latLonToStopIds.get(latLon);
+    Set<String> stopIdsForLatLon=latLonToStopIds.get(latLon);
     stopIdsForLatLon.add(stopId);
     if (!stopIdsToStopTimes.containsKey(stopId)) {
       stopIdsToStopTimes.put(stopId,new ArrayList<StopTime>());
