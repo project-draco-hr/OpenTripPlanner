@@ -4,8 +4,7 @@
   }
   State s1=s0.clone();
   double time=length / wo.speed;
-  double weight;
-  weight=computeWeight(s0,wo,time);
+  double weight=computeWeight(s0,wo,time);
   s1.walkDistance+=this.length;
   s1.incrementTimeInSeconds(-(int)time);
   return new TraverseResult(weight,s1);

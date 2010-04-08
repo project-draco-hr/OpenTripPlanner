@@ -22,5 +22,6 @@ weight=time;
 if (s0.walkDistance > wo.maxWalkDistance && wo.modes.getTransit()) {
 weight*=100;
 }
+weight*=wo.walkReluctance;
 return weight;
 }
