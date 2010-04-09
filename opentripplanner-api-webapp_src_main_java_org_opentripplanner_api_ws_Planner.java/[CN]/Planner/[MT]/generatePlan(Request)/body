@@ -173,6 +173,16 @@
         mode=graphEdge.getMode();
         leg.mode=mode.toString();
         leg.route=graphEdge.getName();
+        if (request.getShowIntermediateStops()) {
+          if (leg.stop == null) {
+            leg.stop=new ArrayList<Place>();
+          }
+ else {
+            Place stop=new Place(edge.fromv.getX(),edge.fromv.getY(),edge.fromv.getName());
+            stop.stopId=edge.fromv.getStopId();
+            leg.stop.add(stop);
+          }
+        }
       }
     }
     Edge graphEdge=lastEdge.payload;
