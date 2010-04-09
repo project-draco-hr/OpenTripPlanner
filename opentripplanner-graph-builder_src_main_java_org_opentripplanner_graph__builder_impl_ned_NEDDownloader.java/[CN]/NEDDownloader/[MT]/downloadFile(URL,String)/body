@@ -1,7 +1,7 @@
 {
   try {
     String key=getKey(url);
-    _log.debug("Starting download " + key);
+    log.debug("Starting download " + key);
     File path=getPathToNEDArchive(key);
     URL downloadUrl=new URL("http://igskmncnwb010.cr.usgs.gov/axis2/services/DownloadService/getData?downloadID=" + token);
     URLConnection connection=downloadUrl.openConnection();
@@ -19,7 +19,7 @@
     ostream.close();
     istream.close();
     httpconnection.disconnect();
-    _log.debug("Done download " + key);
+    log.debug("Done download " + key);
     NEDDownloader.sleep(10000);
   }
  catch (  Exception e) {
@@ -30,6 +30,6 @@
     cleanupURL.openStream().close();
   }
  catch (  Exception e) {
-    _log.debug("Error getting data from USGS Download Server while cleaning up",e);
+    log.debug("Error getting data from USGS Download Server while cleaning up",e);
   }
 }

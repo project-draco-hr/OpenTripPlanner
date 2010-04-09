@@ -2,6 +2,15 @@
   String key=getKey(url);
   File path=getPathToNEDArchive(key);
   try {
+    FileInputStream inputStream=new FileInputStream(path);
+    byte[] header=new byte[2];
+    inputStream.read(header,0,2);
+    inputStream.close();
+    if (header[0] != 'P' || header[1] != 'K') {
+      log.warn("not a zip file.");
+      path.delete();
+      throw new NotAZipFileException();
+    }
     ZipFile zipFile=new ZipFile(path);
     for (Enumeration<? extends ZipEntry> e=zipFile.entries(); e.hasMoreElements(); ) {
       ZipEntry entry=e.nextElement();
@@ -21,7 +30,10 @@
       }
     }
   }
- catch (  Exception e) {
+ catch (  NotAZipFileException e) {
+    throw e;
+  }
+catch (  Exception e) {
     throw new RuntimeException("Error extracting geotiff from zip " + path,e);
   }
   throw new RuntimeException("Error extracting geotiff from zip: nothing ends in .tif " + path);

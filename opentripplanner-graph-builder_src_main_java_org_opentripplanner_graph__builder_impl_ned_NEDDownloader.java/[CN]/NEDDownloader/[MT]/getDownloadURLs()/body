@@ -1,30 +1,36 @@
 {
+  List<URL> urls=new ArrayList<URL>();
+  List<String> payloads=getValidateElements();
+  log.debug("Getting urls from request validation service");
+  String RTendpointURL="http://igskmncnwb010.cr.usgs.gov/requestValidationService/services/RequestValidationService";
   try {
-    OMElement payload=getValidateOMElement();
-    Options options=new Options();
-    EndpointReference targetEPR=new EndpointReference("http://igskmncnwb010.cr.usgs.gov/requestValidationService/services/RequestValidationService");
-    options.setTo(targetEPR);
-    options.setAction("processAOI");
-    ServiceClient sender=new ServiceClient();
-    sender.setOptions(options);
-    _log.debug("Getting urls from request validation service");
-    OMElement result=sender.sendReceive(payload);
-    AXIOMXPath xpathExpression=new AXIOMXPath(result,"//ns1:processAOIReturn");
-    xpathExpression.addNamespace("ns1","http://edc.usgs.gov");
-    OMElement holder=(OMElement)xpathExpression.selectSingleNode(result);
-    String xml=holder.getText();
-    xml=xml.replace("&","&amp;");
-    XMLStreamReader xmlStreamReader=XMLInputFactory.newInstance().createXMLStreamReader(new StringReader(xml));
-    StAXOMBuilder stAXOMBuilder=new StAXOMBuilder(xmlStreamReader);
-    xpathExpression=new AXIOMXPath(result,"//PIECE/DOWNLOAD_URL");
-    List<OMElement> nodes=xpathExpression.selectNodes(stAXOMBuilder.getDocumentElement());
-    List<URL> urls=new ArrayList<URL>();
-    for (    OMElement urlElement : nodes) {
-      String urlString=urlElement.getText().trim();
-      _log.debug("Adding NED URL:" + urlString);
-      urlString=urlString.replaceFirst("http://extract.","http://igskmncnwb010.");
-      URL url=new URL(urlString);
-      urls.add(url);
+    for (    String payload : payloads) {
+      sleep(2000);
+      Service RTservice=new Service();
+      Call RTcall=(Call)RTservice.createCall();
+      RTcall.setTargetEndpointAddress(new java.net.URL(RTendpointURL));
+      RTcall.setOperationName(new QName("edc.usgs.gov","processAOI"));
+      String response=(String)RTcall.invoke(new Object[]{payload});
+      Document doc=stringToDoc(response);
+      XPathExpression expr=makeXPathExpression("//ns1:processAOIReturn/text()");
+      String xml=expr.evaluate(doc);
+      if (!xml.equals("")) {
+        doc=stringToDoc(xml);
+      }
+      expr=makeXPathExpression("//PIECE/DOWNLOAD_URL");
+      NodeList nodes=(NodeList)expr.evaluate(doc,XPathConstants.NODESET);
+      if (nodes.getLength() > 1) {
+        log.debug("One of our NED tiles requires more than one tile from the server.  This is slightly inefficient, and sort of yucky.");
+      }
+      for (int i=0; i < nodes.getLength(); ++i) {
+        Node node=nodes.item(i);
+        String urlString=node.getTextContent().trim();
+        log.debug("Adding NED URL:" + urlString);
+        urlString=urlString.replaceFirst("http://extract.","http://igskmncnwb010.");
+        urlString=urlString.replaceAll(" ","+");
+        URL url=new URL(urlString);
+        urls.add(url);
+      }
     }
     return urls;
   }

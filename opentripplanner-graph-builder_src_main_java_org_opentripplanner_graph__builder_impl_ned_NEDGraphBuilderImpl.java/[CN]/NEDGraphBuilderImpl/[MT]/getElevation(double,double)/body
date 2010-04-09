@@ -1,5 +1,9 @@
 {
   double values[]=new double[1];
-  coverage.evaluate(new DirectPosition2D(x,y),values);
+  try {
+    coverage.evaluate(new DirectPosition2D(x,y),values);
+  }
+ catch (  org.opengis.coverage.PointOutsideCoverageException e) {
+  }
   return values[0];
 }

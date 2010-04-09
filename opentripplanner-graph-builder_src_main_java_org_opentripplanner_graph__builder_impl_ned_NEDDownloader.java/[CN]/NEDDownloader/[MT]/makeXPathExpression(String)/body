@@ -1,0 +1,7 @@
+{
+  XPathFactory factory=XPathFactory.newInstance();
+  XPath xpath=factory.newXPath();
+  xpath.setNamespaceContext(new EDCNamespaceContext());
+  XPathExpression expr=xpath.compile(xpathStr);
+  return expr;
+}

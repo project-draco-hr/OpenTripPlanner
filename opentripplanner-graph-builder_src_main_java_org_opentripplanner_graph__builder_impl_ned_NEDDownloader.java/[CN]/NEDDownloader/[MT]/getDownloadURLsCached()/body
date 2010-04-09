@@ -1,0 +1,33 @@
+{
+  Envelope extent=graph.getExtent();
+  Formatter formatter=new Formatter();
+  String filename=formatter.format("%f,%f-%f,%f.urls",extent.getMinX(),extent.getMinY(),extent.getMaxX(),extent.getMaxY()).toString();
+  try {
+    File file=new File(cacheDirectory,filename);
+    List<URL> urls;
+    if (!file.exists()) {
+      urls=getDownloadURLs();
+      FileOutputStream os=new FileOutputStream(file);
+      BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(os));
+      for (      URL url : urls) {
+        writer.write(url.toString());
+        writer.write('\n');
+      }
+      return urls;
+    }
+    FileInputStream is=new FileInputStream(file);
+    BufferedReader reader=new BufferedReader(new InputStreamReader(is));
+    urls=new ArrayList<URL>();
+    while (true) {
+      String line=reader.readLine();
+      if (line == null || line.length() == 0) {
+        break;
+      }
+      urls.add(new URL(line));
+    }
+    return urls;
+  }
+ catch (  IOException e) {
+    throw new RuntimeException(e);
+  }
+}

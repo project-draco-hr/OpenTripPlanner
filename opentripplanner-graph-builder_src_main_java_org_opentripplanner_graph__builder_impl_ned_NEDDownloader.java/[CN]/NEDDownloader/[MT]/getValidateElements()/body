@@ -1,0 +1,16 @@
+{
+  Envelope extent=graph.getExtent();
+  List<String> elements=new ArrayList<String>();
+  double minY=OSMDownloader.floor(extent.getMinY(),_latYStep);
+  double maxY=OSMDownloader.ceil(extent.getMaxY(),_latYStep);
+  double minX=OSMDownloader.floor(extent.getMinX(),_lonXStep);
+  double maxX=OSMDownloader.ceil(extent.getMaxX(),_lonXStep);
+  for (double y=minY; y < maxY; y+=_latYStep) {
+    for (double x=minX; x < maxX; x+=_lonXStep) {
+      Envelope region=new Envelope(x,x + _lonXStep,y,y + _latYStep);
+      String xmlRequestString="<REQUEST_SERVICE_INPUT>" + "<AOI_GEOMETRY>" + "<EXTENT>"+ "<TOP>" + region.getMaxY() + "</TOP>"+ "<BOTTOM>"+ region.getMinY()+ "</BOTTOM>"+ "<LEFT>"+ region.getMinX()+ "</LEFT>"+ "<RIGHT>"+ region.getMaxX()+ "</RIGHT>"+ "</EXTENT>"+ "<SPATIALREFERENCE_WKID/>"+ "</AOI_GEOMETRY>"+ "<LAYER_INFORMATION>"+ "     <LAYER_IDS>"+ dataset+ "</LAYER_IDS>"+ "</LAYER_INFORMATION>"+ "<CHUNK_SIZE>250"+ "</CHUNK_SIZE>"+ "<ORIGINATOR/>"+ "</REQUEST_SERVICE_INPUT>";
+      elements.add(xmlRequestString);
+    }
+  }
+  return elements;
+}

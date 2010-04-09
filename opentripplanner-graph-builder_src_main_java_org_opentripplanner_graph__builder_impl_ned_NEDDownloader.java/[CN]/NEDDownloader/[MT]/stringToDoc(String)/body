@@ -1,0 +1,8 @@
+{
+  DocumentBuilderFactory documentFactory=DocumentBuilderFactory.newInstance();
+  documentFactory.setNamespaceAware(true);
+  DocumentBuilder builder=documentFactory.newDocumentBuilder();
+  str=str.replaceAll("&","&amp;");
+  Document doc=builder.parse(new ByteArrayInputStream(str.getBytes("UTF-8")));
+  return doc;
+}

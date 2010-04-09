@@ -1,12 +1,10 @@
 {
   try {
-    _log.debug("Trying to initiate download: " + url);
-    OMElement doc=getXMLFromURL(url);
-    AXIOMXPath xpathExpression=new AXIOMXPath(doc,"//ns:return");
-    xpathExpression.addNamespace("ns1","http://edc/usgs/gov");
-    OMElement tokenElement=(OMElement)xpathExpression.selectSingleNode(doc);
-    String token=tokenElement.getText();
-    _log.debug("Initiated download; got token: " + token);
+    log.debug("Trying to initiate download: " + url);
+    Document doc=getXMLFromURL(url);
+    XPathExpression xPathExpression=makeXPathExpression("//ns:return/text()");
+    String token=xPathExpression.evaluate(doc);
+    log.debug("Initiated download; got token: " + token);
     return token;
   }
  catch (  Exception e) {
