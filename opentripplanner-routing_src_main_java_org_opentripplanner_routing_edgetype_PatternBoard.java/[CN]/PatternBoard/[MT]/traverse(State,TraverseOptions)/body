@@ -35,7 +35,7 @@
   state1.setZoneAndRoute(getPattern().getZone(stopIndex),getPattern().getExemplar().getRoute().getId(),getPattern().getFareContext());
   long transfer_penalty=0;
   if (options.optimizeFor == OptimizeType.TRANSFERS && state0.getTrip() != -1) {
-    transfer_penalty=options.optimize_transfer_penalty;
+    transfer_penalty=options.optimizeTransferPenalty;
   }
   return new TraverseResult(wait + BOARD_COST + transfer_penalty,state1);
 }
