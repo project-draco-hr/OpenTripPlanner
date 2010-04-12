@@ -5,6 +5,13 @@
   if (origin == null || target == null) {
     return null;
   }
+  ShortestPathTree spt;
+  if (options.modes.getTransit()) {
+    spt=new MultiShortestPathTree();
+  }
+ else {
+    spt=new BasicShortestPathTree();
+  }
   Vertex tmp=origin;
   origin=target;
   target=tmp;
@@ -19,7 +26,6 @@
  else {
     extraEdges=new NullExtraEdges();
   }
-  ShortestPathTree spt=new ShortestPathTree();
   double distance=origin.distance(target) / MAX_SPEED;
   SPTVertex spt_origin=spt.addVertex(origin,init,0,options);
   FibHeap pq=new FibHeap(graph.getVertices().size() + extraEdges.size());
