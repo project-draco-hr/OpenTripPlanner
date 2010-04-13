@@ -1,0 +1,11 @@
+{
+  List<URL> urls=getDownloadURLs();
+  FileOutputStream os=new FileOutputStream(file);
+  BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(os));
+  for (  URL url : urls) {
+    writer.write(url.toString());
+    writer.write('\n');
+  }
+  os.close();
+  return urls;
+}

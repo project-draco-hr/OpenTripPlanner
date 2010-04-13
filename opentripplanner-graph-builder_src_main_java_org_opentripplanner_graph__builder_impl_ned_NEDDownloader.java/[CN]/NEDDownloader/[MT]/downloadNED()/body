@@ -21,13 +21,21 @@
     try {
       while (true) {
         sleep(10000);
-        String token=initiateDownload(url);
-        do {
-          log.debug("Waiting to query");
-          sleep(30000);
+        String token;
+        while (true) {
+          token=initiateDownload(url);
+          int i=0;
+          do {
+            log.debug("Waiting to query");
+            sleep(30000);
+          }
+ while (!downloadReady(token) && i++ < 20);
+          sleep(10000);
+          if (i != 20) {
+            break;
+          }
+          log.debug("Giving up on slow download and retrying");
         }
- while (!downloadReady(token));
-        sleep(10000);
         downloadFile(url,token);
         try {
           files.add(unzipFile(url));

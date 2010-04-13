@@ -6,14 +6,7 @@
     File file=new File(cacheDirectory,filename);
     List<URL> urls;
     if (!file.exists()) {
-      urls=getDownloadURLs();
-      FileOutputStream os=new FileOutputStream(file);
-      BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(os));
-      for (      URL url : urls) {
-        writer.write(url.toString());
-        writer.write('\n');
-      }
-      return urls;
+      return getAndCacheUrls(file);
     }
     FileInputStream is=new FileInputStream(file);
     BufferedReader reader=new BufferedReader(new InputStreamReader(is));
@@ -24,6 +17,9 @@
         break;
       }
       urls.add(new URL(line));
+    }
+    if (urls.size() == 0) {
+      return getAndCacheUrls(file);
     }
     return urls;
   }
