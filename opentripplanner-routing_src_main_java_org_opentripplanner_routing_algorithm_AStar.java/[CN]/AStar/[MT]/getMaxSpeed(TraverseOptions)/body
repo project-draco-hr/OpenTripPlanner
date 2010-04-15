@@ -3,6 +3,11 @@
     return 10;
   }
  else {
-    return options.speed;
+    if (options.optimizeFor == OptimizeType.QUICK) {
+      return options.speed;
+    }
+ else {
+      return options.speed * 10;
+    }
   }
 }

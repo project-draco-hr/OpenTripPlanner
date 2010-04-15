@@ -25,19 +25,28 @@
   assertEquals(201520,gg.getVertices().size());
   Vertex start=null;
   Vertex end=null;
+  Vertex carlton=null;
   for (  Vertex v : gg.getVertices()) {
     if (v.getLabel().startsWith("PARK PL at VANDERBILT AV")) {
       start=v;
     }
- else {
-      if (v.getLabel().startsWith("GRAND ST at LAFAYETTE ST")) {
-        end=v;
-      }
+ else     if (v.getLabel().startsWith("GRAND ST at LAFAYETTE ST")) {
+      end=v;
+    }
+ else     if (v.getLabel().startsWith("CARLTON AV at PARK PL")) {
+      carlton=v;
     }
   }
   assertNotNull(start);
   assertNotNull(end);
+  assertNotNull(carlton);
   TraverseOptions wo=new TraverseOptions();
   ShortestPathTree spt=AStar.getShortestPathTree(gg,start,end,new State(0),wo);
   assertNotNull(spt);
+  wo=new TraverseOptions(new TraverseModeSet(TraverseMode.BICYCLE));
+  wo.speed=2;
+  spt=AStar.getShortestPathTree(gg,start,carlton,new State(0),wo);
+  assertNotNull(spt);
+  GraphPath path=spt.getPath(carlton);
+  assertTrue(path.edges.size() <= 3);
 }

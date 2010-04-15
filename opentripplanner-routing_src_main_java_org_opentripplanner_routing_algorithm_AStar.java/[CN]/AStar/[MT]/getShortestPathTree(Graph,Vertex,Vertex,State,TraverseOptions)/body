@@ -38,7 +38,13 @@
       outgoing=newOutgoing;
     }
     for (    Edge edge : outgoing) {
-      TraverseResult wr=edge.traverse(spt_u.state,options);
+      State state=spt_u.state;
+      if (edge.getToVertex() == target) {
+        state=state.clone();
+        state.lastEdgeWasStreet=false;
+        state.justTransferred=spt_u.state.justTransferred;
+      }
+      TraverseResult wr=edge.traverse(state,options);
       if (wr == null) {
         continue;
       }
