@@ -27,7 +27,7 @@
     }
  catch (    IOException e) {
       log.warn("IO error, retrying: " + e);
-      sleep(5000);
+      sleep(3000);
     }
 catch (    Exception e) {
       throw new RuntimeException("Error getting data from USGS Download Server while checking download status: contents = \n" + contents,e);

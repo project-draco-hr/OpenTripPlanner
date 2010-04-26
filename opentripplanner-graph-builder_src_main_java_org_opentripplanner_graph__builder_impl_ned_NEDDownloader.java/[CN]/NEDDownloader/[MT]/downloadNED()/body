@@ -20,7 +20,7 @@
     }
     try {
       while (true) {
-        sleep(10000);
+        sleep(3000);
         String token;
         while (true) {
           token=initiateDownload(url);
@@ -30,7 +30,7 @@
             sleep(30000);
           }
  while (!downloadReady(token) && i++ < 20);
-          sleep(10000);
+          sleep(3000);
           if (i != 20) {
             break;
           }
