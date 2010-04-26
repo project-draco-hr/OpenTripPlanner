@@ -21,7 +21,7 @@
     extraEdges=new NullExtraEdges();
   }
   final double max_speed=getMaxSpeed(options);
-  double distance=origin.distance(target) / max_speed;
+  double distance=origin.fastDistance(target) / max_speed;
   SPTVertex spt_origin=spt.addVertex(origin,init,0,options);
   FibHeap pq=new FibHeap(graph.getVertices().size() + extraEdges.size());
   pq.insert(spt_origin,spt_origin.weightSum + distance);
@@ -56,7 +56,7 @@
       spt_v=spt.addVertex(tov,wr.state,new_w,options);
       if (spt_v != null) {
         spt_v.setParent(spt_u,edge);
-        distance=tov.distance(target) / max_speed;
+        distance=tov.fastDistance(target) / max_speed;
         pq.insert_or_dec_key(spt_v,new_w + distance);
       }
     }
