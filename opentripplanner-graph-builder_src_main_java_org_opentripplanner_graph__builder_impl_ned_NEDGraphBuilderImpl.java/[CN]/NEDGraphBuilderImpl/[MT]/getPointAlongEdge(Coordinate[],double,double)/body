@@ -5,7 +5,7 @@
     Coordinate innerPt=coords[i];
     x2=innerPt.x;
     y2=innerPt.y;
-    double pct=Point2D.distance(x1,y1,x2,y2) / length;
+    double pct=DistanceLibrary.distance(y1,x1,y2,x2) / length;
     if (pctThrough + pct > t) {
       double pctAlongSeg=(t - pctThrough) / pct;
       return new Coordinate(x1 + (pctAlongSeg * (x2 - x1)),y1 + (pctAlongSeg * (y2 - y1)));
@@ -16,7 +16,7 @@
   }
   x2=coords[coords.length - 1].x;
   y2=coords[coords.length - 1].y;
-  double pct=Point2D.distance(x1,y1,x2,y2) / length;
+  double pct=DistanceLibrary.distance(y1,x1,y2,x2) / length;
   double pctAlongSeg=(t - pctThrough) / pct;
   return new Coordinate(x1 + (pctAlongSeg * (x2 - x1)),y1 + (pctAlongSeg * (y2 - y1)));
 }
