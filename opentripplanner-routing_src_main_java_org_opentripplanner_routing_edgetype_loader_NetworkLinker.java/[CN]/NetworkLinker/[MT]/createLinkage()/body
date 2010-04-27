@@ -9,6 +9,19 @@
     if (i % 500 == 0)     _log.debug("vertices=" + i + "/"+ vertices.size());
     i++;
     if (v instanceof TransitStop) {
+      TransitStop ts=(TransitStop)v;
+      if (!ts.isEntrance()) {
+        boolean hasEntrance=false;
+        for (        Edge e : v.getOutgoing()) {
+          if (e instanceof PathwayEdge) {
+            hasEntrance=true;
+            break;
+          }
+        }
+        if (hasEntrance) {
+          continue;
+        }
+      }
       Vertex nearestIntersection=index.getClosestVertex(v.getCoordinate(),false);
       if (nearestIntersection != null) {
         if (nearestIntersection instanceof StreetLocation) {
@@ -37,7 +50,6 @@
           nearestIntersection=newV;
           graph.addVertex(newV);
         }
-        TransitStop ts=(TransitStop)v;
         boolean wheelchairAccessible=ts.hasWheelchairEntrance();
         graph.addEdge(new StreetTransitLink(nearestIntersection,v,wheelchairAccessible));
         graph.addEdge(new StreetTransitLink(v,nearestIntersection,wheelchairAccessible));

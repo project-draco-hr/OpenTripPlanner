@@ -1,0 +1,12 @@
+{
+  int time=traversalTime;
+  if (wo.wheelchairAccessible) {
+    if (wheelchairTraversalTime < 0) {
+      return null;
+    }
+    time=wheelchairTraversalTime;
+  }
+  State s1=s0.clone();
+  s1.incrementTimeInSeconds(-time);
+  return new TraverseResult(time,s1);
+}

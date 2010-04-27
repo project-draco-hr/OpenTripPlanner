@@ -1,0 +1,5 @@
+{
+  for (  Stop stop : _dao.getAllStops()) {
+    graph.addVertex(new TransitStop(id(stop.getId()),stop.getLon(),stop.getLat(),stop.getName(),stop.getId().getId(),stop));
+  }
+}
