@@ -1,5 +1,9 @@
 {
-  double d=from.distance(to.getCoordinate());
+  Coordinate[] coordinates=geometry.getCoordinates();
+  double d=0;
+  for (int i=1; i < coordinates.length; ++i) {
+    d+=DistanceLibrary.distance(coordinates[i - 1],coordinates[i]);
+  }
   Map<String,String> tags=way.getTags();
   if (permissions == StreetTraversalPermission.NONE)   return new P2<Street>(null,null);
   ;
