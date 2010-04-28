@@ -1,0 +1,16 @@
+{
+  this.type="routes";
+  List<String> stopIds=new ArrayList<String>();
+  List<WmsRoute> routes=new ArrayList<WmsRoute>();
+  for (  String routeId : routeIds) {
+    Route route=gtfs.getRoute(routeId);
+    routes.add(new WmsRoute(route));
+    List<Stop> stopsForRoute=gtfs.getStopsForRoute(routeId);
+    for (    Stop stop : stopsForRoute) {
+      String stopId=stop.getId().getId();
+      stopIds.add(stopId);
+    }
+  }
+  this.stopIds=stopIds;
+  this.routes=routes;
+}
