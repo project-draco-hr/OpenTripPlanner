@@ -12,12 +12,6 @@
     String routeId=route.getId().toString();
     String tripId=trip.getId().toString();
     String stopId=stop.getId().toString();
-    String latLon=stop.getLat() + "," + stop.getLon();
-    if (!latLonToStopIds.containsKey(latLon)) {
-      latLonToStopIds.put(latLon,new HashSet<String>());
-    }
-    Set<String> stopIdsForLatLon=latLonToStopIds.get(latLon);
-    stopIdsForLatLon.add(stopId);
     if (!stopIdsToStopTimes.containsKey(stopId)) {
       stopIdsToStopTimes.put(stopId,new ArrayList<StopTime>());
     }
@@ -29,7 +23,6 @@
     if (!representativeTripIds.contains(tripId)) {
       continue;
     }
-    routeIdsToShapePointIds.put(routeId,shapeId);
     if (!routeIdsToStops.containsKey(routeId)) {
       routeIdsToStops.put(routeId,new ArrayList<Stop>());
     }
@@ -42,13 +35,5 @@
       stopIdsToRouteIds.put(stopId,routeIdsForStopId);
     }
     routeIdsForStopId.add(routeId);
-  }
-  for (  ShapePoint sp : dao.getAllShapePoints()) {
-    String shapeId=sp.getShapeId().toString();
-    if (!shapeIdsToShapePoints.containsKey(shapeId)) {
-      shapeIdsToShapePoints.put(shapeId,new ArrayList<ShapePoint>());
-    }
-    List<ShapePoint> shapePoints=shapeIdsToShapePoints.get(shapeId);
-    shapePoints.add(sp);
   }
 }
