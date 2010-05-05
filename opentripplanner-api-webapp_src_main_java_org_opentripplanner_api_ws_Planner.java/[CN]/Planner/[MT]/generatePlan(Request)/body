@@ -100,8 +100,14 @@
             Geometry geometry=geometryFactory.createLineString(coordinates);
             leg.legGeometry=PolylineEncoder.createEncodings(geometry);
             leg.duration=edge.tov.state.getTime() - leg.startTime.getTime();
+            if (leg.isBogusWalkLeg()) {
+              itinerary.removeLeg(leg);
+            }
             leg=null;
             coordinates=new CoordinateArrayListSequence();
+          }
+          if (leg != null && leg.isBogusWalkLeg()) {
+            itinerary.removeLeg(leg);
           }
           leg=new Leg();
           itinerary.addLeg(leg);
@@ -194,6 +200,9 @@
       leg.duration=lastEdge.tov.state.getTime() - leg.startTime.getTime();
       if (startWalk != -1) {
         leg.walkSteps=getWalkSteps(path.edges.subList(startWalk,i + 1));
+      }
+      if (leg.isBogusWalkLeg()) {
+        itinerary.removeLeg(leg);
       }
       leg=null;
     }
