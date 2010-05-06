@@ -8,7 +8,6 @@
   System.out.println("Reading gtfs file: " + gtfsFile.getPath());
   this.setGtfsContext(GtfsLibrary.readGtfs(gtfsFile));
   System.out.println("GTFS loaded");
-  this.loadRepresentativeShapeIds();
   this.assembleGtfsData();
   System.out.println("GTFS data assembled");
 }

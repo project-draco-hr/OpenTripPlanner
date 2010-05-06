@@ -10,7 +10,6 @@
     }
     Route route=trip.getRoute();
     String routeId=route.getId().toString();
-    String tripId=trip.getId().toString();
     String stopId=stop.getId().toString();
     if (!stopIdsToStopTimes.containsKey(stopId)) {
       stopIdsToStopTimes.put(stopId,new ArrayList<StopTime>());
@@ -19,9 +18,6 @@
     stopTimesForStopId.add(stopTime);
     if (!stopIdsToStops.containsKey(stopId)) {
       stopIdsToStops.put(stopId,stop);
-    }
-    if (!representativeTripIds.contains(tripId)) {
-      continue;
     }
     if (!routeIdsToStops.containsKey(routeId)) {
       routeIdsToStops.put(routeId,new ArrayList<Stop>());
