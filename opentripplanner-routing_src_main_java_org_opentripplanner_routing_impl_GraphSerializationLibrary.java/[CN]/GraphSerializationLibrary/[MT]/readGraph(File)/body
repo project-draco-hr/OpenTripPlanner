@@ -1,6 +1,6 @@
 {
   ObjectInputStream in=new ObjectInputStream(new BufferedInputStream(new FileInputStream(graphPath)));
-  _log.info("Reading graph...");
+  _log.info("Reading graph " + graphPath.getAbsolutePath() + " ...");
   Graph graph=(Graph)in.readObject();
   _log.info("Initializing graph...");
   for (  Vertex vertex : graph.getVertices()) {
