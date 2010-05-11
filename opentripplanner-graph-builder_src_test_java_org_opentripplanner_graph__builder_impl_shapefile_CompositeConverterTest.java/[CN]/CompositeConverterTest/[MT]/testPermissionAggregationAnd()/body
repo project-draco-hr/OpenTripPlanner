@@ -1,0 +1,6 @@
+{
+  caseConverter1.addPermission("1",StreetTraversalPermission.ALL,StreetTraversalPermission.ALL);
+  caseConverter2.addPermission("nicestreet",StreetTraversalPermission.ALL,StreetTraversalPermission.NONE);
+  P2<StreetTraversalPermission> result=converter.convert(stubFeature);
+  assertEquals(new P2<StreetTraversalPermission>(StreetTraversalPermission.ALL,StreetTraversalPermission.NONE),result);
+}

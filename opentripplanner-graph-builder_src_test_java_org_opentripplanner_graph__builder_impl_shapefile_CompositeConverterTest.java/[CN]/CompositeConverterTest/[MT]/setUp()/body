@@ -1,0 +1,11 @@
+{
+  super.setUp();
+  converter=new CompositeConverter();
+  stubFeature=new StubSimpleFeature();
+  stubFeature.addAttribute("trafdir","1");
+  stubFeature.addAttribute("streettype","nicestreet");
+  caseConverter1=new CaseBasedTraversalPermissionConverter("trafdir");
+  caseConverter2=new CaseBasedTraversalPermissionConverter("streettype");
+  converter.add(caseConverter1);
+  converter.add(caseConverter2);
+}
