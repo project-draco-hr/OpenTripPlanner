@@ -4,10 +4,21 @@
   request.setTo(toPlace);
   request.setDateTime(date,time);
   request.setWheelchair(wheelchair);
-  if (max != null)   request.setNumItineraries(max);
-  if (maxWalkDistance != null)   request.setWalk(maxWalkDistance);
-  if (arriveBy != null && arriveBy)   request.setArriveBy(true);
-  if (showIntermediateStops != null && showIntermediateStops)   request.setShowIntermediateStops(true);
+  if (max != null) {
+    request.setNumItineraries(max);
+  }
+  if (maxWalkDistance != null) {
+    request.setWalk(maxWalkDistance);
+  }
+  if (arriveBy != null && arriveBy) {
+    request.setArriveBy(true);
+  }
+  if (showIntermediateStops != null && showIntermediateStops) {
+    request.setShowIntermediateStops(true);
+  }
+  if (intermediatePlaces != null && !intermediatePlaces.equals("")) {
+    request.setIntermediatePlaces(intermediatePlaces);
+  }
   request.setOptimize(optimize);
   request.setModes(modes);
   Response response=new Response(request);
