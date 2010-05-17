@@ -9,7 +9,9 @@
     while (it.hasNext()) {
       SimpleFeature feature=it.next();
       String joinedKeyValue=toHashableString(feature.getAttribute(joinedKey));
-      cache.put(joinedKeyValue,feature);
+      if (joinedKeyValue != null) {
+        cache.put(joinedKeyValue,feature);
+      }
     }
     features.close(it);
   }
