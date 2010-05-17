@@ -2,6 +2,7 @@
   ensureCached();
   String mainKeyValue=toHashableString(feature.getAttribute(this.mainKey));
   if (mainKeyValue == null) {
+    log.warn("Feature " + feature.getID() + " has null value for its mainKey ("+ mainKey+ ")");
     return null;
   }
   SimpleFeature joinedFeature=cache.get(mainKeyValue);

@@ -12,6 +12,9 @@
       if (joinedKeyValue != null) {
         cache.put(joinedKeyValue,feature);
       }
+ else {
+        log.warn("Feature " + feature.getID() + " has null value for its joinedKey ("+ joinedKey+ ")");
+      }
     }
     features.close(it);
   }
