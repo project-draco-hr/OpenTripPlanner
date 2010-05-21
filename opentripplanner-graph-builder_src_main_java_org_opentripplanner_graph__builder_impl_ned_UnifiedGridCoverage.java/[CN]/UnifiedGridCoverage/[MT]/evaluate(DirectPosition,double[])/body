@@ -1,7 +1,14 @@
 {
-  double[] result=evaluate_orig(point,values);
-  if (result == null) {
-    result=evaluate_orig(new DirectPosition2D(point.getCoordinate()[0] + OFFSET_HACK,point.getCoordinate()[1] + OFFSET_HACK),values);
+  for (  Coverage region : regions) {
+    double[] result;
+    try {
+      result=region.evaluate(point,values);
+    }
+ catch (    PointOutsideCoverageException e) {
+      continue;
+    }
+    return result;
   }
-  return result;
+  log.warn("Point not found: " + point);
+  return null;
 }
