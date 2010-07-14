@@ -40,8 +40,9 @@
       RelativeDirection direction=WalkStep.getRelativeDirection(lastAngle,thisAngle);
       if (direction == RelativeDirection.CONTINUE) {
         if (step.elevation != null) {
-          if (step.elevation.length() > 0)           step.elevation+=",";
-          step.elevation+=encodeElevationProfile(edge,distance);
+          String s=encodeElevationProfile(edge,distance);
+          if ((step.elevation.length() > 0) && !s.equals(""))           step.elevation+=",";
+          step.elevation+=s;
         }
         distance+=edge.getDistance();
       }
