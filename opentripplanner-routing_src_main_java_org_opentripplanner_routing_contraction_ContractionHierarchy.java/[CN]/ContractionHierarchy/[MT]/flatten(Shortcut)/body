@@ -1,0 +1,16 @@
+{
+  ArrayList<Edge> out=new ArrayList<Edge>();
+  if (shortcut.edge1 instanceof Shortcut) {
+    out.addAll(flatten((Shortcut)shortcut.edge1));
+  }
+ else {
+    out.add(shortcut.edge1);
+  }
+  if (shortcut.edge2 instanceof Shortcut) {
+    out.addAll(flatten((Shortcut)shortcut.edge2));
+  }
+ else {
+    out.add(shortcut.edge2);
+  }
+  return out;
+}

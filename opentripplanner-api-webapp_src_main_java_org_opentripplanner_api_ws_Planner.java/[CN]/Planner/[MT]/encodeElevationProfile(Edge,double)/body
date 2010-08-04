@@ -1,12 +1,13 @@
 {
-  if (!(edge instanceof Street)) {
+  if (!(edge instanceof EdgeWithElevation)) {
     return "";
   }
-  if (((Street)edge).getElevationProfile() == null) {
+  EdgeWithElevation elevEdge=(EdgeWithElevation)edge;
+  if (elevEdge.getElevationProfile() == null) {
     return "";
   }
   String str="";
-  Coordinate[] coordArr=((Street)edge).getElevationProfile().toCoordinateArray();
+  Coordinate[] coordArr=elevEdge.getElevationProfile().toCoordinateArray();
   for (int i=0; i < coordArr.length; i++) {
     str+=Math.round(coordArr[i].x + offset) + "," + Math.round(coordArr[i].y * 10.0) / 10.0 + (i < coordArr.length - 1 ? "," : "");
   }

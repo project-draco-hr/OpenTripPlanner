@@ -1,0 +1,19 @@
+{
+  State state=init;
+  double totalWeight=0;
+  SPTVertex prevVertex=path.edges.firstElement().getFromVertex();
+  for (  SPTEdge e : path.edges) {
+    e.fromv=prevVertex;
+    e.fromv.state=state;
+    e.fromv.weightSum=totalWeight;
+    path.vertices.add(e.fromv);
+    TraverseResult result=e.traverse(state,options);
+    state=result.state;
+    SPTVertex tov=e.getToVertex();
+    tov.state=state;
+    totalWeight+=result.weight;
+    tov.weightSum=totalWeight;
+    prevVertex=tov;
+  }
+  path.vertices.add(path.edges.lastElement().getToVertex());
+}

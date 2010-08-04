@@ -1,0 +1,23 @@
+{
+  if (weight != -1) {
+    State s1=s0.clone();
+    s1.incrementTimeInSeconds(-time);
+    return new TraverseResult(weight,s1);
+  }
+  State state=s0;
+  long startTime=state.getTime();
+  TraverseResult wr=edge2.traverseBack(state,wo);
+  if (wr == null) {
+    return null;
+  }
+  state=wr.state;
+  double bweight=wr.weight;
+  wr=edge1.traverseBack(state,wo);
+  if (wr == null) {
+    return null;
+  }
+  state=wr.state;
+  weight=bweight + wr.weight;
+  time=(int)((startTime - state.getTime()) / 1000);
+  return new TraverseResult(weight,state);
+}

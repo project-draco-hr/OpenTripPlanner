@@ -1,0 +1,54 @@
+{
+  boolean wheelchairAccessible=false;
+  HashMap<Vertex,ArrayList<Edge>> counts=new HashMap<Vertex,ArrayList<Edge>>();
+  for (  Edge street : turns) {
+    Vertex fromv=street.getFromVertex();
+    if (!(fromv instanceof StreetVertex)) {
+      continue;
+    }
+    if (!counts.containsKey(fromv)) {
+      counts.put(fromv,new ArrayList<Edge>());
+    }
+    counts.get(fromv).add(street);
+    wheelchairAccessible|=((StreetVertex)fromv).isWheelchairAccessible();
+  }
+  List<Edge> streetsUp=null;
+  List<Edge> streetsDown=null;
+  for (  ArrayList<Edge> streetset : counts.values()) {
+    if (streetsUp == null) {
+      streetsUp=streetset;
+    }
+ else     if (streetsDown == null) {
+      if (streetsUp.size() < streetset.size()) {
+        streetsDown=streetsUp;
+        streetsUp=streetset;
+      }
+ else {
+        streetsDown=streetset;
+      }
+    }
+ else     if (streetsUp.size() < streetset.size()) {
+      streetsDown=streetsUp;
+      streetsUp=streetset;
+    }
+ else     if (streetsDown.size() < streetset.size()) {
+      streetsDown=streetset;
+    }
+  }
+  StreetLocation location=new StreetLocation(label,nearestPoint,name);
+  location.nearestPoint=nearestPoint;
+  location.setWheelchairAccessible(wheelchairAccessible);
+  StreetVertex location1=createHalfLocation(graph,location,label + " up",name,nearestPoint,streetsUp);
+  Edge l1in=new FreeEdge(location,location1);
+  Edge l1out=new FreeEdge(location1,location);
+  location.extra.add(l1in);
+  location.extra.add(l1out);
+  if (streetsDown != null) {
+    StreetVertex location2=createHalfLocation(graph,location,label + " down",name,nearestPoint,streetsDown);
+    Edge l2in=new FreeEdge(location,location2);
+    Edge l2out=new FreeEdge(location2,location);
+    location.extra.add(l2in);
+    location.extra.add(l2out);
+  }
+  return location;
+}

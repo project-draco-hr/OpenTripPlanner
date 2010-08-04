@@ -22,6 +22,10 @@
     for (int i=1; i < coords.length; i++) {
       line((float)toScreenX(coords[i - 1].x),(float)toScreenY(coords[i - 1].y),(float)toScreenX(coords[i].x),(float)toScreenY(coords[i].y));
     }
+    stroke(0,255,0);
+    ellipse(toScreenX(coords[0].x),toScreenY(coords[0].y),5,5);
+    stroke(255,0,0);
+    ellipse(toScreenX(coords[coords.length - 1].x),toScreenY(coords[coords.length - 1].y),5,5);
   }
   for (  Vertex v : vertices) {
     if (v == highlightedVertex)     continue;

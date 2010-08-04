@@ -65,7 +65,8 @@
     }
     if (bestFare == Float.MAX_VALUE) {
       if (currentFare == -1) {
-        throw new RuntimeException("No fare for a perfectly good ride: " + ride);
+        _log.warn("No fare for a perfectly good ride: " + ride);
+        return null;
       }
       totalFare+=currentFare;
       currentFare=-1;

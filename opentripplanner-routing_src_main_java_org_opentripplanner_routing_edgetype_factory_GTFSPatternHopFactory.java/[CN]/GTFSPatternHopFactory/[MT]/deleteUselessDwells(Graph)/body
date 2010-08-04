@@ -1,5 +1,6 @@
 {
   HashSet<BasicTripPattern> possiblySimplePatterns=new HashSet<BasicTripPattern>();
+  HashSet<BasicTripPattern> notSimplePatterns=new HashSet<BasicTripPattern>();
   for (  PatternDwell dwell : potentiallyUselessDwells) {
     BasicTripPattern pattern=(BasicTripPattern)dwell.getPattern();
     boolean useless=true;
@@ -11,11 +12,14 @@
     }
     if (!useless) {
       possiblySimplePatterns.remove(pattern);
+      notSimplePatterns.add(pattern);
       continue;
     }
     GenericVertex v=(GenericVertex)dwell.getFromVertex();
     v.mergeFrom(graph,(GenericVertex)dwell.getToVertex());
-    possiblySimplePatterns.add(pattern);
+    if (!notSimplePatterns.contains(pattern)) {
+      possiblySimplePatterns.add(pattern);
+    }
   }
   for (  BasicTripPattern pattern : possiblySimplePatterns) {
     pattern.simplify();

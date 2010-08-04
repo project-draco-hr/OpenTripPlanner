@@ -1,0 +1,79 @@
+{
+  final int N=50;
+  Graph graph=new Graph();
+  STRtree tree=new STRtree();
+  Random random=new Random(1);
+  ArrayList<Vertex> vertices=new ArrayList<Vertex>(N);
+  for (int i=0; i < N; ++i) {
+    double x=random.nextDouble() * 1000;
+    double y=random.nextDouble() * 1000;
+    Vertex v=new EndpointVertex("(" + x + ", "+ y+ ")",x,y);
+    graph.addVertex(v);
+    Envelope env=new Envelope(v.getCoordinate());
+    tree.insert(env,v);
+    vertices.add(v);
+  }
+  int i=0;
+  int expansion=1;
+  for (  GraphVertex gv : graph.getVertices()) {
+    Vertex v=gv.vertex;
+    i++;
+    final Coordinate c=v.getCoordinate();
+    Envelope env=new Envelope(c);
+    env.expandBy(50 * expansion);
+    List<Vertex> nearby=tree.query(env);
+    while (nearby.size() < 6) {
+      env.expandBy(50);
+      expansion+=1;
+      nearby=tree.query(env);
+    }
+    Collections.sort(nearby,new Comparator<Vertex>(){
+      public int compare(      Vertex a,      Vertex b){
+        return (int)(a.distance(c) - b.distance(c));
+      }
+    }
+);
+    for (    Vertex n : nearby.subList(1,6)) {
+      graph.addEdge(new FreeEdge(v,n));
+      graph.addEdge(new FreeEdge(n,v));
+    }
+  }
+  DisjointSet<Vertex> components=new DisjointSet<Vertex>();
+  Vertex last=null;
+  for (  Vertex v : vertices) {
+    for (    Edge e : graph.getOutgoing(v)) {
+      components.union(v,e.getToVertex());
+    }
+    last=v;
+  }
+  int lastKey=components.find(last);
+  for (  Vertex v : vertices) {
+    int key=components.find(v);
+    if (key != lastKey) {
+      lastKey=components.union(v,last);
+      last=v;
+      Coordinate c=v.getCoordinate();
+      graph.addEdge(new NonFreeEdge(v,last,last.distance(c)));
+      graph.addEdge(new NonFreeEdge(last,v,last.distance(c)));
+    }
+  }
+  ContractionHierarchy hierarchy=new ContractionHierarchy(graph,OptimizeType.QUICK,TraverseMode.WALK,1.0);
+  State init=new State(0);
+  TraverseOptions options=new TraverseOptions();
+  options.optimizeFor=OptimizeType.QUICK;
+  options.walkReluctance=1;
+  options.speed=1;
+  GraphPath path=hierarchy.getShortestPath(vertices.get(0),vertices.get(1),init,options);
+  assertNotNull(path);
+  long now=System.currentTimeMillis();
+  for (  Vertex start : vertices) {
+    int j=(int)(Math.random() * vertices.size());
+    Vertex end=vertices.get(j);
+    if (start == end) {
+      continue;
+    }
+    GraphPath path2=hierarchy.getShortestPath(start,end,init,options);
+    assertNotNull(path2);
+  }
+  System.out.println("time per query: " + (System.currentTimeMillis() - now) / 1000.0 / N);
+}

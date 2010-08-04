@@ -4,7 +4,7 @@
   double lastAngle=0, distance=0;
   for (  SPTEdge sptEdge : edges) {
     Edge edge=sptEdge.payload;
-    if (edge instanceof Turn) {
+    if (edge instanceof FreeEdge) {
       continue;
     }
     Geometry geom=edge.getGeometry();
@@ -13,56 +13,44 @@
     }
     String streetName=edge.getName();
     if (step == null) {
-      step=new WalkStep();
+      step=createWalkStep(sptEdge);
       steps.add(step);
-      step.streetName=streetName;
-      step.lon=edge.getFromVertex().getX();
-      step.lat=edge.getFromVertex().getY();
-      double thisAngle=DirectionUtils.getInstance().getFirstAngle(geom);
+      double thisAngle=DirectionUtils.getFirstAngle(geom);
       step.setAbsoluteDirection(thisAngle);
-      step.elevation=encodeElevationProfile(edge,0);
       distance=edge.getDistance();
     }
  else     if (step.streetName != streetName && (step.streetName != null && !step.streetName.equals(streetName))) {
-      step=new WalkStep();
+      step=createWalkStep(sptEdge);
       steps.add(step);
-      step.streetName=streetName;
-      double thisAngle=DirectionUtils.getInstance().getFirstAngle(geom);
+      double thisAngle=DirectionUtils.getFirstAngle(geom);
       step.setDirections(lastAngle,thisAngle);
-      step.lon=edge.getFromVertex().getX();
-      step.lat=edge.getFromVertex().getY();
-      step.becomes=!multipleOptionsBefore(edge);
-      step.elevation=encodeElevationProfile(edge,0);
+      step.becomes=!pathservice.multipleOptionsBefore(edge);
       distance=edge.getDistance();
     }
  else {
-      double thisAngle=DirectionUtils.getInstance().getFirstAngle(geom);
+      double thisAngle=DirectionUtils.getFirstAngle(geom);
       RelativeDirection direction=WalkStep.getRelativeDirection(lastAngle,thisAngle);
       if (direction == RelativeDirection.CONTINUE) {
         if (step.elevation != null) {
           String s=encodeElevationProfile(edge,distance);
-          if ((step.elevation.length() > 0) && !s.equals(""))           step.elevation+=",";
+          if (step.elevation.length() > 0 && s != null)           step.elevation+=",";
           step.elevation+=s;
         }
         distance+=edge.getDistance();
       }
  else {
-        boolean optionsBefore=multipleOptionsBefore(edge);
+        boolean optionsBefore=pathservice.multipleOptionsBefore(edge);
         if (optionsBefore) {
-          step=new WalkStep();
+          step=createWalkStep(sptEdge);
           steps.add(step);
-          step.streetName=streetName;
           step.setDirections(lastAngle,thisAngle);
           step.stayOn=true;
-          step.lon=edge.getFromVertex().getX();
-          step.lat=edge.getFromVertex().getY();
-          step.elevation=encodeElevationProfile(edge,0);
           distance=edge.getDistance();
         }
       }
     }
     step.distance+=edge.getDistance();
-    lastAngle=DirectionUtils.getInstance().getLastAngle(geom);
+    lastAngle=DirectionUtils.getLastAngle(geom);
   }
   return steps;
 }

@@ -1,4 +1,4 @@
 {
-  List<StopTime> stops=dao.getStopTimesForTrip(trip);
+  List<StopTime> stops=dao.getStopTimesForTrip(pattern.getExemplar());
   return stops.get(stops.size() - 1);
 }

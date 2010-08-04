@@ -1,11 +1,9 @@
 {
-  Vertex v1=new GenericStreetIntersectionVertex("fake_intersection",-74,41.000001);
-  Vertex v2=new GenericStreetIntersectionVertex("fake_intersection2",-73.000002,41.000001);
+  StreetVertex v1=new StreetVertex("fake_intersection",GeometryUtils.makeLineString(-74,41.000001,-73.000002,41.000001),"fake intersection",10,false);
+  StreetVertex v2=new StreetVertex("fake_intersection2",GeometryUtils.makeLineString(-73.000002,41.000001,-73.000003,41.000001),"fake intersection2",10,false);
   graph.addVertex(v1);
   graph.addVertex(v2);
-  Street street=new Street(v1,v2,"fake_street",10);
-  GeometryFactory gf=new GeometryFactory();
-  street.setGeometry(gf.createLineString(new Coordinate[]{new Coordinate(-74,41.000001),new Coordinate(-73.000002,41.000001)}));
+  TurnEdge street=new TurnEdge(v1,v2);
   graph.addEdge(street);
   NetworkLinker nl=new NetworkLinker(graph);
   nl.createLinkage();

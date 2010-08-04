@@ -1,0 +1,108 @@
+{
+  createThreadPool();
+  up=new Graph();
+  down=new Graph();
+  long start=System.currentTimeMillis();
+  HashMap<Vertex,Integer> deletedNeighbors=new HashMap<Vertex,Integer>();
+  _log.debug("Preparing contraction hierarchy -- this may take quite a while");
+  _log.debug("init prio queue");
+  int hopLimit=1;
+  FibHeap<Vertex> pq=initPriorityQueue(graph,hopLimit);
+  _log.debug("contract");
+  int i=0;
+  int nVertices=pq.size();
+  int totalVertices=nVertices;
+  int nEdges=countEdges(graph);
+  boolean edgesRemoved=false;
+  while (!pq.empty()) {
+    if (i++ > Math.ceil(totalVertices * contractionFactor)) {
+      break;
+    }
+    Vertex vertex=pq.extract_min();
+    WitnessSearchResult shortcutsAndSearchSpace;
+    if (pq.empty()) {
+      shortcutsAndSearchSpace=getShortcuts(vertex,hopLimit,false);
+    }
+ else {
+      while (true) {
+        shortcutsAndSearchSpace=getShortcuts(vertex,hopLimit,true);
+        int deleted=0;
+        if (deletedNeighbors.containsKey(vertex)) {
+          deleted=deletedNeighbors.get(vertex);
+        }
+        double new_prio=getImportance(vertex,shortcutsAndSearchSpace,deleted);
+        Double new_min=pq.min_priority();
+        if (new_prio <= new_min) {
+          break;
+        }
+ else {
+          pq.insert(vertex,new_prio);
+          vertex=pq.extract_min();
+        }
+      }
+      shortcutsAndSearchSpace=getShortcuts(vertex,hopLimit,false);
+    }
+    if (i % 1000 == 0 || totalVertices - i < 1000) {
+      _log.debug("contracted: " + i + " / "+ totalVertices+ "  total time: "+ (System.currentTimeMillis() - start) / 1000.0 + " average degree " + nEdges / (nVertices + 0.00001));
+    }
+    GraphVertex downVertex=down.getGraphVertex(down.addVertex(vertex));
+    HashSet<Vertex> neighbors=new HashSet<Vertex>();
+    for (    Edge ee : graph.getIncoming(vertex)) {
+      nEdges--;
+      GraphVertex originalFromVertex=graph.getGraphVertex(ee.getFromVertex());
+      down.addVertex(originalFromVertex.vertex);
+      originalFromVertex.removeOutgoing(ee);
+      downVertex.addIncoming(ee);
+      neighbors.add(originalFromVertex.vertex);
+    }
+    GraphVertex upVertex=up.getGraphVertex(up.addVertex(vertex));
+    for (    Edge ee : graph.getOutgoing(vertex)) {
+      nEdges--;
+      GraphVertex originalToVertex=graph.getGraphVertex(ee.getToVertex());
+      up.addVertex(originalToVertex.vertex);
+      originalToVertex.removeIncoming(ee);
+      upVertex.addOutgoing(ee);
+      neighbors.add(originalToVertex.vertex);
+    }
+    graph.removeVertex(vertex);
+    for (    Vertex v : neighbors) {
+      int deleted=0;
+      if (deletedNeighbors.containsKey(v)) {
+        deleted=deletedNeighbors.get(v);
+      }
+      deleted+=1;
+      deletedNeighbors.put(v,deleted);
+    }
+    List<Shortcut> shortcuts=shortcutsAndSearchSpace.shortcuts;
+    for (    Shortcut shortcut : shortcuts) {
+      graph.addEdge(shortcut.getFromVertex(),shortcut.getToVertex(),shortcut);
+    }
+    nVertices--;
+    nEdges+=shortcuts.size();
+    if (nVertices == 0) {
+      continue;
+    }
+    float averageDegree=nEdges / nVertices;
+    int oldHopLimit=hopLimit;
+    if (averageDegree > 10) {
+      if (edgesRemoved) {
+        hopLimit=5;
+      }
+ else {
+        hopLimit=3;
+        int removed=removeNonoptimalEdges(5);
+        nEdges-=removed;
+        edgesRemoved=true;
+      }
+    }
+ else {
+      if (averageDegree > 3.3 && hopLimit == 1) {
+        hopLimit=2;
+      }
+    }
+    if (oldHopLimit != hopLimit) {
+      pq=rebuildPriorityQueue(options,hopLimit,deletedNeighbors);
+    }
+  }
+  threadPool=null;
+}

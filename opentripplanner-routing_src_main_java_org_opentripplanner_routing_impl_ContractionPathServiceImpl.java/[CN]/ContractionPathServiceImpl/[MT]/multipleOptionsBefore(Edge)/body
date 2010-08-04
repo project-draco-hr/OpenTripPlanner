@@ -1,0 +1,20 @@
+{
+  Graph graph=hierarchies.getGraph();
+  boolean foundAlternatePaths=false;
+  Vertex start=edge.getFromVertex();
+  GraphVertex gv=graph.getGraphVertex(start);
+  if (gv == null) {
+    return false;
+  }
+  for (  Edge out : gv.getOutgoing()) {
+    if (out == edge) {
+      continue;
+    }
+    if (!(out instanceof TurnEdge || out instanceof OutEdge)) {
+      continue;
+    }
+    foundAlternatePaths=true;
+    break;
+  }
+  return foundAlternatePaths;
+}

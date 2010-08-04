@@ -1,4 +1,6 @@
 {
-  a.addOutgoing(ee);
-  b.addIncoming(ee);
+  a=addVertex(a);
+  b=addVertex(b);
+  vertices.get(a.getLabel()).addOutgoing(ee);
+  vertices.get(b.getLabel()).addIncoming(ee);
 }

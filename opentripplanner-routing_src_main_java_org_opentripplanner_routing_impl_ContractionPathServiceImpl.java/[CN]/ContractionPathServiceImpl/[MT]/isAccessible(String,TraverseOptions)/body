@@ -1,0 +1,12 @@
+{
+  Vertex vertex=getVertexForPlace(place,options);
+  if (vertex instanceof TransitStop) {
+    TransitStop ts=(TransitStop)vertex;
+    return ts.hasWheelchairEntrance();
+  }
+ else   if (vertex instanceof StreetLocation) {
+    StreetLocation sl=(StreetLocation)vertex;
+    return sl.isWheelchairAccessible();
+  }
+  return true;
+}

@@ -1,0 +1,7 @@
+{
+  ObjectInputStream in=new ObjectInputStream(new BufferedInputStream(new FileInputStream(graphPath)));
+  _log.info("Reading graph " + graphPath.getAbsolutePath() + " ...");
+  ContractionHierarchySet hierarchy=(ContractionHierarchySet)in.readObject();
+  _log.info("Graph read");
+  return hierarchy;
+}

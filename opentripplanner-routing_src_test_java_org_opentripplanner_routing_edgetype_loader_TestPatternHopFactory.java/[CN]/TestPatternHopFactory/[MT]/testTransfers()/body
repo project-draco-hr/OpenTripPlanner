@@ -2,7 +2,7 @@
   Vertex stop_k=graph.getVertex("agency_K");
   Vertex stop_n=graph.getVertex("agency_N");
   int transfers=0;
-  for (  Edge e : stop_n.getOutgoing()) {
+  for (  Edge e : graph.getOutgoing(stop_n)) {
     if (e instanceof Transfer) {
       assertEquals(e.getToVertex(),stop_k);
       transfers+=1;

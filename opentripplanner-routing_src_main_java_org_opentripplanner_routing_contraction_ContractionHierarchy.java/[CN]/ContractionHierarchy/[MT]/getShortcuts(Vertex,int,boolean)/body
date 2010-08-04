@@ -1,0 +1,93 @@
+{
+  State state=new State(0);
+  int searchSpace=0;
+  ArrayList<VertexIngress> us=new ArrayList<VertexIngress>();
+  for (  Edge e : graph.getIncoming(vertex)) {
+    if (!isContractable(e)) {
+      continue;
+    }
+    TraverseResult result=e.traverse(state,options);
+    Vertex u=e.getFromVertex();
+    us.add(new VertexIngress(u,e,result.weight,result.state.getTime()));
+  }
+  HashMap<Vertex,List<VertexIngress>> neighbors=new HashMap<Vertex,List<VertexIngress>>();
+  double maxWWeight=0;
+  double minXWeight=Double.POSITIVE_INFINITY;
+  HashSet<Vertex> wSet=new HashSet<Vertex>();
+  ArrayList<VertexIngress> ws=new ArrayList<VertexIngress>();
+  for (  Edge e : graph.getOutgoing(vertex)) {
+    if (!isContractable(e)) {
+      continue;
+    }
+    TraverseResult result=e.traverse(state,options);
+    Vertex w=e.getToVertex();
+    wSet.add(w);
+    ws.add(new VertexIngress(w,e,result.weight,result.state.getTime()));
+    if (result.weight > maxWWeight) {
+      maxWWeight=result.weight;
+    }
+    for (    Edge incoming : graph.getIncoming(w)) {
+      if (!isContractable(e)) {
+        continue;
+      }
+      Vertex x=incoming.getFromVertex();
+      if (x == vertex) {
+        continue;
+      }
+      result=incoming.traverse(state,options);
+      List<VertexIngress> xneighbors=neighbors.get(x);
+      if (xneighbors == null) {
+        xneighbors=new ArrayList<VertexIngress>();
+        neighbors.put(x,xneighbors);
+      }
+      xneighbors.add(new VertexIngress(w,e,result.weight,result.state.getTime()));
+      if (result.weight < minXWeight) {
+        minXWeight=result.weight;
+      }
+    }
+  }
+  List<Shortcut> shortcuts=new ArrayList<Shortcut>();
+  ArrayList<Callable<WitnessSearchResult>> tasks=new ArrayList<Callable<WitnessSearchResult>>(us.size());
+  int nodeLimit=simulate ? 500 : Integer.MAX_VALUE;
+  for (  VertexIngress u : us) {
+    double weightLimit=u.weight + maxWWeight - minXWeight + 1;
+    WitnessSearch task=new WitnessSearch(vertex,hopLimit,nodeLimit,state,neighbors,weightLimit,wSet,ws,u);
+    tasks.add(task);
+  }
+  if (threadPool == null) {
+    createThreadPool();
+  }
+  try {
+    for (    Future<WitnessSearchResult> future : threadPool.invokeAll(tasks)) {
+      WitnessSearchResult wsresult=future.get();
+      BasicShortestPathTree spt=wsresult.spt;
+      if (!simulate && spt != null) {
+        ArrayList<Edge> toRemove=new ArrayList<Edge>();
+        for (        Edge e : graph.getOutgoing(wsresult.vertex)) {
+          SPTVertex s=spt.getVertex(e.getToVertex());
+          if (s == null) {
+            continue;
+          }
+          TraverseResult result=e.traverse(state,options);
+          if (s.weightSum < result.weight) {
+            toRemove.add(e);
+          }
+        }
+        GraphVertex ugv=graph.getGraphVertex(wsresult.vertex);
+        for (        Edge e : toRemove) {
+          ugv.removeOutgoing(e);
+          graph.getGraphVertex(e.getToVertex()).removeIncoming(e);
+        }
+      }
+      searchSpace+=wsresult.searchSpace;
+      shortcuts.addAll(wsresult.shortcuts);
+    }
+  }
+ catch (  InterruptedException e1) {
+    throw new RuntimeException(e1);
+  }
+catch (  ExecutionException e1) {
+    throw new RuntimeException(e1);
+  }
+  return new WitnessSearchResult(shortcuts,null,null,searchSpace);
+}

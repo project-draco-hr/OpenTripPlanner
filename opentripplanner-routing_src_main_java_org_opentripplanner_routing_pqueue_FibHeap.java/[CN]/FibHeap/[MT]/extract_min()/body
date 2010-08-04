@@ -1,8 +1,8 @@
 {
-  FibNode z=this.min;
-  ListIterator<FibNode> e=z.children.listIterator();
+  FibNode<T> z=this.min;
+  ListIterator<FibNode<T>> e=z.children.listIterator();
   while (e.hasNext()) {
-    FibNode x=e.next();
+    FibNode<T> x=e.next();
     this.root_list.add(x);
     x.parent=null;
   }

@@ -1,9 +1,13 @@
 {
   HashMap<Coordinate,TreeSet<String>> coordinateToStreets=new HashMap<Coordinate,TreeSet<String>>();
   SimpleFeatureConverter<String> streetNameConverter=_schema.getNameConverter();
+  SimpleFeatureConverter<Boolean> featureSelector=_schema.getFeatureSelector();
   Iterator<SimpleFeature> it=features.iterator();
   while (it.hasNext()) {
     SimpleFeature feature=it.next();
+    if (featureSelector != null && !featureSelector.convert(feature)) {
+      continue;
+    }
     LineString geom=toLineString((Geometry)feature.getDefaultGeometry());
     for (    Coordinate coord : geom.getCoordinates()) {
       Coordinate rounded=new Coordinate(Math.round(coord.x * 1048576) / 1048576.0,Math.round(coord.y * 1048576) / 1048576.0);

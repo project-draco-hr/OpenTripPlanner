@@ -1,9 +1,10 @@
 {
   n=0;
   min=null;
-  root_list=new LinkedList<FibNode>();
-  directory=new HashMap<Object,FibNode>();
+  root_list=new LinkedList<FibNode<T>>();
+  directory=new HashMap<T,FibNode<T>>();
   this.maxSize=maxSize;
   maxRootNodes=getMaxRootNodes(maxSize);
   rootnode_with_degree=new FibNode[maxRootNodes];
+  roots=new FibNode[maxRootNodes];
 }

@@ -1,6 +1,6 @@
 {
-  for (  Vertex v : graph.getVertices()) {
-    for (    Edge e : v.getOutgoing()) {
+  for (  GraphVertex gv : graph.getVertices()) {
+    for (    Edge e : gv.getOutgoing()) {
       if (e instanceof PatternEdge) {
         PatternEdge pe=(PatternEdge)e;
         TripPattern pattern=pe.getPattern();

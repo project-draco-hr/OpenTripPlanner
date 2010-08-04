@@ -13,6 +13,11 @@
   ShapefileStreetSchema schema=new ShapefileStreetSchema();
   schema.setIdAttribute("SegmentID");
   schema.setNameAttribute("Street");
+  CaseBasedBooleanConverter selector=new CaseBasedBooleanConverter("FeatureTyp",false);
+  HashMap<String,Boolean> streets=new HashMap<String,Boolean>();
+  streets.put("0",true);
+  selector.setValues(streets);
+  schema.setFeatureSelector(selector);
   CaseBasedTraversalPermissionConverter perms=new CaseBasedTraversalPermissionConverter("TrafDir",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
   perms.addPermission("W",StreetTraversalPermission.ALL,StreetTraversalPermission.PEDESTRIAN);
   perms.addPermission("A",StreetTraversalPermission.PEDESTRIAN,StreetTraversalPermission.ALL);
@@ -22,36 +27,46 @@
   loader.setFeatureSourceFactory(factory);
   loader.setSchema(schema);
   loader.buildGraph(gg);
-  assertEquals(201520,gg.getVertices().size());
-  Vertex start=null;
-  Vertex end=null;
-  Vertex carlton=null;
-  for (  Vertex v : gg.getVertices()) {
-    if (v.getLabel().startsWith("PARK PL at VANDERBILT AV")) {
-      start=v;
+  assertEquals(280772,gg.getVertices().size());
+  GraphVertex start=null;
+  GraphVertex end=null;
+  GraphVertex carlton=null;
+  for (  GraphVertex gv : gg.getVertices()) {
+    Vertex v=gv.vertex;
+    if (v.getLabel().startsWith("PARK PL at VANDERBILT AV out")) {
+      start=gv;
     }
- else     if (v.getLabel().startsWith("GRAND ST at LAFAYETTE ST")) {
-      end=v;
+ else     if (v.getLabel().startsWith("GRAND ST at LAFAYETTE ST in")) {
+      end=gv;
     }
- else     if (v.getLabel().startsWith("CARLTON AV at PARK PL")) {
-      carlton=v;
+ else     if (v.getLabel().startsWith("CARLTON AV at PARK PL in")) {
+      carlton=gv;
     }
   }
   assertNotNull(start);
   assertNotNull(end);
   assertNotNull(carlton);
+  assertEquals(4,start.getDegreeOut());
+  assertEquals(0,start.getDegreeIn());
+  GraphVertex sv=null;
+  for (  Edge e : start.getOutgoing()) {
+    sv=gg.getGraphVertex(e.getToVertex());
+    break;
+  }
+  assertEquals(4,sv.getDegreeOut());
+  assertEquals(4,sv.getDegreeIn());
   TraverseOptions wo=new TraverseOptions();
-  ShortestPathTree spt=AStar.getShortestPathTree(gg,start,end,new State(0),wo);
+  ShortestPathTree spt=AStar.getShortestPathTree(gg,start.vertex,end.vertex,new State(0),wo);
   assertNotNull(spt);
   wo=new TraverseOptions(new TraverseModeSet(TraverseMode.BICYCLE));
   wo.speed=2;
-  spt=AStar.getShortestPathTree(gg,start,carlton,new State(0),wo);
+  spt=AStar.getShortestPathTree(gg,start.vertex,carlton.vertex,new State(0),wo);
   assertNotNull(spt);
-  GraphPath path=spt.getPath(carlton);
+  GraphPath path=spt.getPath(carlton.vertex);
   assertTrue(path.edges.size() <= 3);
   wo.back=true;
-  spt=AStar.getShortestPathTreeBack(gg,start,carlton,new State(0),wo);
+  spt=AStar.getShortestPathTreeBack(gg,start.vertex,carlton.vertex,new State(0),wo);
   assertNotNull(spt);
-  path=spt.getPath(carlton);
+  path=spt.getPath(carlton.vertex);
   assertTrue(path.edges.size() <= 3);
 }

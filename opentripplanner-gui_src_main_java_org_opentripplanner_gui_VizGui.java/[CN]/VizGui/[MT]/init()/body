@@ -1,0 +1,272 @@
+{
+  BorderLayout layout=new BorderLayout();
+  setLayout(layout);
+  Container pane=getContentPane();
+  showGraph=new ShowGraph(this,getGraph());
+  pane.add(showGraph,BorderLayout.CENTER);
+  leftPanel=new JPanel();
+  leftPanel.setLayout(new BorderLayout());
+  pane.add(leftPanel,BorderLayout.LINE_START);
+  JPanel vertexDataPanel=new JPanel();
+  vertexDataPanel.setLayout(new BoxLayout(vertexDataPanel,BoxLayout.PAGE_AXIS));
+  leftPanel.add(vertexDataPanel,BorderLayout.CENTER);
+  JLabel nvLabel=new JLabel("Vertices");
+  vertexDataPanel.add(nvLabel);
+  nearbyVertices=new JList();
+  nearbyVertices.setPrototypeCellValue("Bite the wax tadpole right on the nose");
+  nearbyVertices.setVisibleRowCount(4);
+  JScrollPane nvScrollPane=new JScrollPane(nearbyVertices);
+  vertexDataPanel.add(nvScrollPane);
+  JLabel ogeLabel=new JLabel("Outgoing edges");
+  vertexDataPanel.add(ogeLabel);
+  outgoingEdges=new JList();
+  outgoingEdges.setVisibleRowCount(4);
+  JScrollPane ogeScrollPane=new JScrollPane(outgoingEdges);
+  vertexDataPanel.add(ogeScrollPane);
+  JLabel iceLabel=new JLabel("Incoming edges");
+  vertexDataPanel.add(iceLabel);
+  incomingEdges=new JList();
+  JScrollPane iceScrollPane=new JScrollPane(incomingEdges);
+  vertexDataPanel.add(iceScrollPane);
+  ListSelectionListener edgeChanged=new ListSelectionListener(){
+    public void valueChanged(    ListSelectionEvent e){
+      JList edgeList=(JList)e.getSource();
+      Edge selected=(Edge)edgeList.getSelectedValue();
+      if (selected == null) {
+        departurePattern.removeAll();
+        return;
+      }
+      showGraph.highlightEdge(selected);
+      if (selected instanceof TurnEdge) {
+        HashSet<Vertex> vertices=new HashSet<Vertex>();
+        Vertex tov=selected.getToVertex();
+        for (        Edge og : graph.getOutgoing(tov)) {
+          if (og instanceof TurnEdge) {
+            vertices.add(og.getToVertex());
+            break;
+          }
+        }
+        Vertex fromv=selected.getFromVertex();
+        for (        Edge ic : graph.getIncoming(fromv)) {
+          if (ic instanceof TurnEdge) {
+            vertices.add(ic.getFromVertex());
+            break;
+          }
+        }
+        showGraph.setHighlighed(vertices);
+      }
+      VertexList nearbyModel=(VertexList)nearbyVertices.getModel();
+      List<Vertex> vertices=nearbyModel.selected;
+      Vertex v;
+      if (edgeList == outgoingEdges) {
+        v=selected.getToVertex();
+      }
+ else {
+        v=selected.getFromVertex();
+      }
+      if (!vertices.contains(v)) {
+        vertices.add(v);
+        nearbyModel=new VertexList(vertices);
+        nearbyVertices.setModel(nearbyModel);
+      }
+      metadataModel.clear();
+      Class<?> c=selected.getClass();
+      metadataModel.addElement("Class:" + c);
+      Field[] fields=c.getDeclaredFields();
+      for (int i=0; i < fields.length; i++) {
+        Field field=fields[i];
+        int modifiers=field.getModifiers();
+        if ((modifiers & Modifier.STATIC) != 0) {
+          continue;
+        }
+        field.setAccessible(true);
+        String name=field.getName();
+        String value="(unknown -- see console for stack trace)";
+        try {
+          value="" + field.get(selected);
+        }
+ catch (        IllegalArgumentException e1) {
+          e1.printStackTrace();
+        }
+catch (        IllegalAccessException e1) {
+          e1.printStackTrace();
+        }
+        metadataModel.addElement(name + ": " + value);
+      }
+      TripPattern pattern=null;
+      int stopIndex=0;
+      if (selected instanceof PatternBoard) {
+        PatternBoard boardEdge=(PatternBoard)selected;
+        pattern=boardEdge.getPattern();
+        stopIndex=boardEdge.getStopIndex();
+      }
+ else       if (selected instanceof PatternAlight) {
+        PatternAlight alightEdge=(PatternAlight)selected;
+        pattern=alightEdge.getPattern();
+        stopIndex=alightEdge.getStopIndex();
+      }
+ else {
+        departurePattern.removeAll();
+        return;
+      }
+      ListModel model=new TripPatternListModel(pattern,stopIndex);
+      departurePattern.setModel(model);
+      Trip trip=pattern.getExemplar();
+      serviceIdLabel.setText(trip.getServiceId().toString());
+    }
+  }
+;
+  outgoingEdges.addListSelectionListener(edgeChanged);
+  incomingEdges.addListSelectionListener(edgeChanged);
+  nearbyVertices.addListSelectionListener(new ListSelectionListener(){
+    public void valueChanged(    ListSelectionEvent e){
+      outgoingEdges.removeAll();
+      incomingEdges.removeAll();
+      DisplayVertex selected=(DisplayVertex)nearbyVertices.getSelectedValue();
+      if (selected != null) {
+        Vertex nowSelected=selected.vertex;
+        showGraph.highlightVertex(nowSelected);
+        outgoingEdges.setModel(new EdgeListModel(graph.getOutgoing(nowSelected)));
+        incomingEdges.setModel(new EdgeListModel(graph.getIncoming(nowSelected)));
+      }
+    }
+  }
+);
+  JPanel buttonPanel=new JPanel();
+  buttonPanel.setLayout(new GridLayout(0,3));
+  leftPanel.add(buttonPanel,BorderLayout.PAGE_END);
+  JButton zoomDefaultButton=new JButton("Zoom to default");
+  zoomDefaultButton.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+      showGraph.zoomToDefault();
+    }
+  }
+);
+  buttonPanel.add(zoomDefaultButton);
+  final JFrame frame=this;
+  JButton zoomToNodeButton=new JButton("Zoom to node");
+  zoomToNodeButton.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+      String nodeName=(String)JOptionPane.showInputDialog(frame,"Node id",JOptionPane.PLAIN_MESSAGE);
+      Vertex v=getGraph().getVertex(nodeName);
+      if (v == null) {
+        System.out.println("no such node " + nodeName);
+      }
+ else {
+        showGraph.zoomToVertex(v);
+      }
+    }
+  }
+);
+  buttonPanel.add(zoomToNodeButton);
+  JButton zoomToLocationButton=new JButton("Zoom to location");
+  zoomToLocationButton.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+      String result=JOptionPane.showInputDialog("Enter the location (lat lon)");
+      if (result == null || result.length() == 0)       return;
+      String[] tokens=result.split("[\\s,]+");
+      double lat=Double.parseDouble(tokens[0]);
+      double lon=Double.parseDouble(tokens[1]);
+      Coordinate c=new Coordinate(lon,lat);
+      showGraph.zoomToLocation(c);
+    }
+  }
+);
+  buttonPanel.add(zoomToLocationButton);
+  JButton zoomOutButton=new JButton("Zoom out");
+  zoomOutButton.addActionListener(new ActionListener(){
+    @Override public void actionPerformed(    ActionEvent e){
+      showGraph.zoomOut();
+    }
+  }
+);
+  buttonPanel.add(zoomOutButton);
+  JButton routeButton=new JButton("Route");
+  routeButton.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+      String initialFrom="";
+      Object selected=nearbyVertices.getSelectedValue();
+      if (selected != null) {
+        initialFrom=selected.toString();
+      }
+      RouteDialog dlg=new RouteDialog(frame,initialFrom);
+      String from=dlg.from;
+      String to=dlg.to;
+      route(from,to);
+    }
+  }
+);
+  buttonPanel.add(routeButton);
+  JButton findButton=new JButton("Find node");
+  findButton.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+      String nodeName=(String)JOptionPane.showInputDialog(frame,"Node id",JOptionPane.PLAIN_MESSAGE);
+      Vertex v=getGraph().getVertex(nodeName);
+      if (v == null) {
+        System.out.println("no such node " + nodeName);
+      }
+ else {
+        showGraph.highlightVertex(v);
+        ArrayList<Vertex> l=new ArrayList<Vertex>();
+        l.add(v);
+        verticesSelected(l);
+      }
+    }
+  }
+);
+  buttonPanel.add(findButton);
+  JButton findEdgeButton=new JButton("Find edge");
+  findEdgeButton.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+      String edgeName=(String)JOptionPane.showInputDialog(frame,"Edge name like",JOptionPane.PLAIN_MESSAGE);
+      for (      GraphVertex gv : getGraph().getVertices()) {
+        for (        Edge edge : gv.getOutgoing()) {
+          if (edge.getName() != null && edge.getName().contains(edgeName)) {
+            showGraph.highlightVertex(gv.vertex);
+            ArrayList<Vertex> l=new ArrayList<Vertex>();
+            l.add(gv.vertex);
+            verticesSelected(l);
+          }
+        }
+      }
+    }
+  }
+);
+  buttonPanel.add(findEdgeButton);
+  JButton checkButton=new JButton("Check graph");
+  checkButton.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+      checkGraph();
+    }
+  }
+);
+  buttonPanel.add(checkButton);
+  JButton traceButton=new JButton("Trace");
+  traceButton.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+      trace();
+    }
+  }
+);
+  buttonPanel.add(traceButton);
+  JPanel rightPanel=new JPanel();
+  rightPanel.setLayout(new BorderLayout());
+  pane.add(rightPanel,BorderLayout.LINE_END);
+  JTabbedPane rightPanelTabs=new JTabbedPane();
+  rightPanel.add(rightPanelTabs,BorderLayout.CENTER);
+  serviceIdLabel=new JLabel("[service id]");
+  rightPanel.add(serviceIdLabel,BorderLayout.PAGE_END);
+  departurePattern=new JList();
+  departurePattern.setPrototypeCellValue("Bite the wax tadpole right on the nose");
+  JScrollPane dpScrollPane=new JScrollPane(departurePattern);
+  rightPanelTabs.addTab("trip pattern",dpScrollPane);
+  JList metadataList=new JList();
+  metadataModel=new DefaultListModel();
+  metadataList.setModel(metadataModel);
+  metadataList.setPrototypeCellValue("bicycleSafetyEffectiveLength : 10.42468803");
+  JScrollPane mdScrollPane=new JScrollPane(metadataList);
+  rightPanelTabs.addTab("metadata",mdScrollPane);
+  showGraph.init();
+  addWindowListener(new ExitListener());
+  pack();
+}

@@ -1,0 +1,29 @@
+{
+  vertexIndex=new STRtree();
+  edgeIndex=new STRtree();
+  for (  GraphVertex gv : graph.getVertices()) {
+    Vertex v=gv.vertex;
+    Envelope env=new Envelope(v.getCoordinate());
+    modelBounds.expandToInclude(env);
+    if (v instanceof TransitStop) {
+      vertexIndex.insert(env,v);
+    }
+ else     if (v instanceof StreetLocation) {
+      vertexIndex.insert(env,v);
+    }
+ else     if (v instanceof GenericVertex) {
+      vertexIndex.insert(env,v);
+    }
+ else {
+    }
+    for (    Edge e : gv.getOutgoing()) {
+      if (e.getGeometry() == null) {
+        continue;
+      }
+      env=e.getGeometry().getEnvelopeInternal();
+      edgeIndex.insert(env,e);
+    }
+  }
+  vertexIndex.build();
+  edgeIndex.build();
+}

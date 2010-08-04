@@ -1,3 +1,8 @@
 {
-  return payload.getName();
+  if (payload instanceof PatternBoard) {
+    return payload.getName(tov.state);
+  }
+ else {
+    return payload.getName(fromv.state);
+  }
 }

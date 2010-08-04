@@ -1,4 +1,7 @@
 {
+  GraphVertex gv=graph.getGraphVertex(this);
+  Collection<Edge> incoming=gv.incoming;
+  Collection<Edge> outgoing=gv.outgoing;
   Iterator<Edge> it=incoming.iterator();
   while (it.hasNext()) {
     Edge edge=it.next();
@@ -13,21 +16,19 @@
       it.remove();
     }
   }
-  for (  Edge edge : other.getIncoming()) {
-    AbstractEdge aedge=(AbstractEdge)edge;
-    if (aedge.getFromVertex() == this) {
+  for (  Edge edge : graph.getIncoming(other)) {
+    if (edge.getFromVertex() == this) {
       continue;
     }
-    aedge.setToVertex(this);
-    this.addIncoming(aedge);
+    edge.setToVertex(this);
+    gv.addIncoming(edge);
   }
-  for (  Edge edge : other.getOutgoing()) {
-    AbstractEdge aedge=(AbstractEdge)edge;
-    if (aedge.getToVertex() == this) {
+  for (  Edge edge : graph.getOutgoing(other)) {
+    if (edge.getToVertex() == this) {
       continue;
     }
-    aedge.setFromVertex(this);
-    this.addOutgoing(aedge);
+    edge.setFromVertex(this);
+    gv.addOutgoing(edge);
   }
-  graph.vertices.remove(other.label);
+  graph.removeVertex(other);
 }

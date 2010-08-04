@@ -1,0 +1,28 @@
+{
+  int removed=0;
+  State dummy=new State();
+  for (  GraphVertex gv : graph.getVertices()) {
+    Vertex v=gv.vertex;
+    Dijkstra dijkstra=new Dijkstra(graph,v,options,null,hopLimit);
+    BasicShortestPathTree spt=dijkstra.getShortestPathTree(Double.POSITIVE_INFINITY,Integer.MAX_VALUE);
+    ArrayList<Edge> toRemove=new ArrayList<Edge>();
+    for (    Edge e : graph.getOutgoing(v)) {
+      if (!isContractable(e)) {
+        continue;
+      }
+      SPTVertex curs=null;
+      Vertex toVertex=e.getToVertex();
+      curs=spt.getVertex(toVertex);
+      TraverseResult result=e.traverse(dummy,options);
+      if (curs != null && curs.getParent().getFromVertex().mirror != v && curs.weightSum <= result.weight + .01) {
+        toRemove.add(e);
+      }
+    }
+    for (    Edge e : toRemove) {
+      gv.removeOutgoing(e);
+      graph.getGraphVertex(e.getToVertex()).removeIncoming(e);
+    }
+    removed+=toRemove.size();
+  }
+  return removed;
+}

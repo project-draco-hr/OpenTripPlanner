@@ -1,0 +1,14 @@
+{
+  FibNode<T> x=directory.get(payload);
+  if (x == null) {
+    return;
+  }
+  if (x.key > k) {
+    decrease_node_key(x,k);
+  }
+ else   if (x.key < k) {
+    decrease_node_key(x,Double.NEGATIVE_INFINITY);
+    extract_min();
+    insert(payload,k);
+  }
+}

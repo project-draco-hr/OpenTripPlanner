@@ -1,0 +1,9 @@
+{
+  Integer i=setMapping.get(element);
+  if (i == null) {
+    setMapping.put(element,sets.size());
+    sets.add(-1);
+    return sets.size() - 1;
+  }
+  return compact(i);
+}

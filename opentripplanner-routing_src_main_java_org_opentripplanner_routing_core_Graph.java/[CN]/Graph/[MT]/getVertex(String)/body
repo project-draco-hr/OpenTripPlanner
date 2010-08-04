@@ -1,3 +1,7 @@
 {
-  return this.vertices.get(label);
+  GraphVertex gv=vertices.get(label);
+  if (gv == null) {
+    return null;
+  }
+  return gv.vertex;
 }

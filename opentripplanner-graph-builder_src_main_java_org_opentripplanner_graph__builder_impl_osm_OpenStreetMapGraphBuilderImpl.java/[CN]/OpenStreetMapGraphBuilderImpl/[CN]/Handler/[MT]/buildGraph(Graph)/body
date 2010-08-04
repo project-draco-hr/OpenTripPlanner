@@ -6,7 +6,6 @@
   }
   _nodes.keySet().retainAll(nodesWithNeighbors);
   pruneFloatingIslands();
-  HashMap<Coordinate,Intersection> intersectionsByLocation=new HashMap<Coordinate,Intersection>();
   int wayIndex=0;
   Set<Integer> possibleIntersectionNodes=new HashSet<Integer>();
   Set<Integer> intersectionNodes=new HashSet<Integer>();
@@ -21,13 +20,14 @@
       }
     }
   }
+  ArrayList<P2<EndpointVertex>> endpoints=new ArrayList<P2<EndpointVertex>>();
   for (  OSMWay way : _ways.values()) {
     if (wayIndex % 1000 == 0)     _log.debug("ways=" + wayIndex + "/"+ _ways.size());
     wayIndex++;
     StreetTraversalPermission permissions=getPermissionsForEntity(way);
     if (permissions == StreetTraversalPermission.NONE)     continue;
     List<Integer> nodes=way.getNodeRefs();
-    Intersection startIntersection=null, endIntersection=null;
+    P2<EndpointVertex> startEndpoints=null, endEndpoints=null;
     ArrayList<Coordinate> segmentCoordinates=new ArrayList<Coordinate>();
     GeometryFactory geometryFactory=new GeometryFactory();
     Integer startNode=null;
@@ -53,39 +53,66 @@
         segmentCoordinates.add(getCoordinate(osmEndNode));
         continue;
       }
-      if (startIntersection == null) {
-        startIntersection=intersectionsByLocation.get(getCoordinate(osmStartNode));
-        if (startIntersection == null) {
-          startIntersection=new Intersection(getVertexIdForNodeId(startNode),osmStartNode.getLon(),osmStartNode.getLat());
-          intersectionsByLocation.put(startIntersection.getCoordinate(),startIntersection);
+      if (startEndpoints == null) {
+        String label="osm node " + osmStartNode.getId();
+        startEndpoints=new P2<EndpointVertex>((EndpointVertex)graph.getVertex(label + " in"),(EndpointVertex)graph.getVertex(label + " out"));
+        if (startEndpoints.getFirst() == null) {
+          Coordinate coordinate=getCoordinate(osmStartNode);
+          EndpointVertex in=new EndpointVertex(label + " in",coordinate.x,coordinate.y,label);
+          in=(EndpointVertex)graph.addVertex(in);
+          EndpointVertex out=new EndpointVertex(label + " out",coordinate.x,coordinate.y,label);
+          out=(EndpointVertex)graph.addVertex(out);
+          startEndpoints=new P2<EndpointVertex>(in,out);
+          endpoints.add(startEndpoints);
         }
       }
  else {
-        startIntersection=endIntersection;
+        startEndpoints=endEndpoints;
       }
-      endIntersection=intersectionsByLocation.get(getCoordinate(osmEndNode));
-      if (endIntersection == null) {
-        endIntersection=new Intersection(getVertexIdForNodeId(endNode),osmEndNode.getLon(),osmEndNode.getLat());
-        intersectionsByLocation.put(endIntersection.getCoordinate(),endIntersection);
+      String label="osm node " + osmEndNode.getId();
+      endEndpoints=new P2<EndpointVertex>((EndpointVertex)graph.getVertex(label + " in"),(EndpointVertex)graph.getVertex(label + " out"));
+      if (endEndpoints.getFirst() == null) {
+        Coordinate coordinate=getCoordinate(osmEndNode);
+        EndpointVertex in=new EndpointVertex(label + " in",coordinate.x,coordinate.y,label);
+        in=(EndpointVertex)graph.addVertex(in);
+        EndpointVertex out=new EndpointVertex(label + " out",coordinate.x,coordinate.y,label);
+        out=(EndpointVertex)graph.addVertex(out);
+        endEndpoints=new P2<EndpointVertex>(in,out);
+        endpoints.add(endEndpoints);
       }
-      IntersectionVertex from=new IntersectionVertex(startIntersection,geometry,true);
-      graph.addVertex(from);
-      IntersectionVertex to=new IntersectionVertex(endIntersection,geometry,false);
-      graph.addVertex(to);
-      P2<Street> streets=getEdgesForStreet(from,to,way,permissions,geometry);
-      Street street=streets.getFirst();
+      P2<StreetVertex> streets=getStreetVerticesForStreet(way,i,permissions,geometry);
+      StreetVertex street=streets.getFirst();
       if (street != null) {
-        to.inStreet=street;
-        from.outStreet=street;
+        graph.addVertex(street);
+        FreeEdge in=new FreeEdge(startEndpoints.getSecond(),street);
+        OutEdge out=new OutEdge(street,endEndpoints.getFirst());
+        graph.addEdge(in);
+        graph.addEdge(out);
       }
-      Street backStreet=streets.getSecond();
+      StreetVertex backStreet=streets.getSecond();
       if (backStreet != null) {
-        to.outStreet=backStreet;
-        from.inStreet=backStreet;
+        graph.addVertex(backStreet);
+        FreeEdge in=new FreeEdge(endEndpoints.getSecond(),backStreet);
+        OutEdge out=new OutEdge(backStreet,startEndpoints.getFirst());
+        graph.addEdge(in);
+        graph.addEdge(out);
       }
       startNode=endNode;
       osmStartNode=_nodes.get(startNode);
     }
   }
-  StreetUtils.unify(graph,intersectionsByLocation.values());
+  for (  P2<EndpointVertex> vertices : endpoints) {
+    Vertex in=vertices.getFirst();
+    Vertex out=vertices.getSecond();
+    for (    Edge e : graph.getIncoming(in)) {
+      StreetVertex v1=(StreetVertex)e.getFromVertex();
+      for (      Edge e2 : graph.getOutgoing(out)) {
+        StreetVertex v2=(StreetVertex)e2.getToVertex();
+        if (v1 != v2 && v1.getEdgeId() != v2.getEdgeId()) {
+          graph.addEdge(new TurnEdge(v1,v2));
+        }
+      }
+    }
+  }
+  StreetUtils.unify(graph,endpoints);
 }

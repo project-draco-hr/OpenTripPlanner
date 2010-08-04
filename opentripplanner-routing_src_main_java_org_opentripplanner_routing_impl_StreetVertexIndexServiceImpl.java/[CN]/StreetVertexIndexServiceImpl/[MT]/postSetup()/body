@@ -1,8 +1,9 @@
 {
   transitStopTree=new STRtree();
-  for (  Vertex v : graph.getVertices()) {
-    for (    Edge e : v.getOutgoing()) {
-      if (e instanceof Street) {
+  for (  GraphVertex gv : graph.getVertices()) {
+    Vertex v=gv.vertex;
+    for (    Edge e : gv.getOutgoing()) {
+      if (e instanceof TurnEdge || e instanceof OutEdge) {
         if (e.getGeometry() == null) {
           continue;
         }
@@ -14,7 +15,7 @@
       TransitStop ts=(TransitStop)v;
       if (!ts.isEntrance()) {
         boolean hasEntrance=false;
-        for (        Edge e : v.getOutgoing()) {
+        for (        Edge e : gv.getOutgoing()) {
           if (e instanceof PathwayEdge) {
             hasEntrance=true;
             break;

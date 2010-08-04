@@ -9,32 +9,59 @@
  else {
     spt=new BasicShortestPathTree();
   }
-  Map<Vertex,Edge> extraEdges;
-  if (target instanceof StreetLocation) {
-    extraEdges=new HashMap<Vertex,Edge>();
-    Iterable<Edge> incoming=target.getIncoming();
-    for (    Edge edge : incoming) {
-      extraEdges.put(edge.getFromVertex(),edge);
+  Map<Vertex,ArrayList<Edge>> extraEdges;
+  if (origin instanceof StreetLocation) {
+    extraEdges=new HashMap<Vertex,ArrayList<Edge>>();
+    Iterable<Edge> extra=((StreetLocation)origin).getExtra();
+    for (    Edge edge : extra) {
+      Vertex fromv=edge.getFromVertex();
+      ArrayList<Edge> edges=extraEdges.get(fromv);
+      if (edges == null) {
+        edges=new ArrayList<Edge>();
+        extraEdges.put(fromv,edges);
+      }
+      edges.add(edge);
     }
   }
  else {
     extraEdges=new NullExtraEdges();
   }
+  if (target instanceof StreetLocation) {
+    if (extraEdges instanceof NullExtraEdges) {
+      extraEdges=new HashMap<Vertex,ArrayList<Edge>>();
+    }
+    Iterable<Edge> extra=((StreetLocation)target).getExtra();
+    for (    Edge edge : extra) {
+      Vertex fromv=edge.getFromVertex();
+      ArrayList<Edge> edges=extraEdges.get(fromv);
+      if (edges == null) {
+        edges=new ArrayList<Edge>();
+        extraEdges.put(fromv,edges);
+      }
+      edges.add(edge);
+    }
+  }
   final double max_speed=getMaxSpeed(options);
   double distance=origin.fastDistance(target) / max_speed;
   SPTVertex spt_origin=spt.addVertex(origin,init,0,options);
-  FibHeap pq=new FibHeap(graph.getVertices().size() + extraEdges.size());
+  FibHeap<SPTVertex> pq=new FibHeap<SPTVertex>(graph.getVertices().size() + extraEdges.size());
   pq.insert(spt_origin,spt_origin.weightSum + distance);
-  SPTVertex spt_u, spt_v;
   while (!pq.empty()) {
-    spt_u=(SPTVertex)pq.extract_min();
+    SPTVertex spt_u=pq.extract_min();
     Vertex fromv=spt_u.mirror;
     if (fromv == target)     break;
-    Iterable<Edge> outgoing=spt_u.mirror.getOutgoing();
+    GraphVertex gv=graph.getGraphVertex(spt_u.mirror);
+    Collection<Edge> outgoing;
+    if (gv == null) {
+      outgoing=new ArrayList<Edge>();
+    }
+ else {
+      outgoing=gv.getOutgoing();
+    }
     if (extraEdges.containsKey(spt_u.mirror)) {
       List<Edge> newOutgoing=new ArrayList<Edge>();
-      for (      Edge edge : spt_u.mirror.getOutgoing())       newOutgoing.add(edge);
-      newOutgoing.add(extraEdges.get(spt_u.mirror));
+      for (      Edge edge : outgoing)       newOutgoing.add(edge);
+      newOutgoing.addAll(extraEdges.get(spt_u.mirror));
       outgoing=newOutgoing;
     }
     for (    Edge edge : outgoing) {
@@ -53,7 +80,7 @@
       }
       Vertex tov=edge.getToVertex();
       double new_w=spt_u.weightSum + wr.weight;
-      spt_v=spt.addVertex(tov,wr.state,new_w,options);
+      SPTVertex spt_v=spt.addVertex(tov,wr.state,new_w,options);
       if (spt_v != null) {
         spt_v.setParent(spt_u,edge);
         distance=tov.fastDistance(target) / max_speed;

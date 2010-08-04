@@ -15,34 +15,60 @@
   Vertex tmp=origin;
   origin=target;
   target=tmp;
-  Map<Vertex,Edge> extraEdges;
-  if (target instanceof StreetLocation) {
-    extraEdges=new HashMap<Vertex,Edge>();
-    Iterable<Edge> outgoing=target.getOutgoing();
-    for (    Edge edge : outgoing) {
-      extraEdges.put(edge.getToVertex(),edge);
+  Map<Vertex,ArrayList<Edge>> extraEdges;
+  if (origin instanceof StreetLocation) {
+    extraEdges=new HashMap<Vertex,ArrayList<Edge>>();
+    Iterable<Edge> extra=((StreetLocation)origin).getExtra();
+    for (    Edge edge : extra) {
+      Vertex tov=edge.getToVertex();
+      ArrayList<Edge> edges=extraEdges.get(tov);
+      if (edges == null) {
+        edges=new ArrayList<Edge>();
+        extraEdges.put(tov,edges);
+      }
+      edges.add(edge);
     }
   }
  else {
     extraEdges=new NullExtraEdges();
   }
+  if (target instanceof StreetLocation) {
+    if (extraEdges instanceof NullExtraEdges) {
+      extraEdges=new HashMap<Vertex,ArrayList<Edge>>();
+    }
+    Iterable<Edge> extra=((StreetLocation)target).getExtra();
+    for (    Edge edge : extra) {
+      Vertex tov=edge.getToVertex();
+      ArrayList<Edge> edges=extraEdges.get(tov);
+      if (edges == null) {
+        edges=new ArrayList<Edge>();
+        extraEdges.put(tov,edges);
+      }
+      edges.add(edge);
+    }
+  }
   final double max_speed=getMaxSpeed(options);
   double distance=origin.fastDistance(target) / max_speed;
   SPTVertex spt_origin=spt.addVertex(origin,init,0,options);
-  FibHeap pq=new FibHeap(graph.getVertices().size() + extraEdges.size());
+  FibHeap<SPTVertex> pq=new FibHeap<SPTVertex>(graph.getVertices().size() + extraEdges.size());
   pq.insert(spt_origin,spt_origin.weightSum + distance);
   SPTVertex spt_u, spt_v;
   while (!pq.empty()) {
-    spt_u=(SPTVertex)pq.extract_min();
+    spt_u=pq.extract_min();
     Vertex tov=spt_u.mirror;
     if (tov == target)     break;
-    Iterable<Edge> incoming=tov.getIncoming();
+    GraphVertex gv=graph.getGraphVertex(tov);
+    Collection<Edge> incoming;
+    if (gv == null) {
+      incoming=new ArrayList<Edge>();
+    }
+ else {
+      incoming=gv.getIncoming();
+    }
     if (extraEdges.containsKey(tov)) {
       List<Edge> newIncoming=new ArrayList<Edge>();
-      for (      Edge edge : tov.getIncoming()) {
-        newIncoming.add(edge);
-      }
-      newIncoming.add(extraEdges.get(tov));
+      for (      Edge edge : incoming)       newIncoming.add(edge);
+      newIncoming.addAll(extraEdges.get(spt_u.mirror));
       incoming=newIncoming;
     }
     for (    Edge edge : incoming) {

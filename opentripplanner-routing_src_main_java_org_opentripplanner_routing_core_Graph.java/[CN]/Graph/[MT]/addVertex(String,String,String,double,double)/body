@@ -1,2 +1,9 @@
 {
+  GraphVertex gv=vertices.get(label);
+  if (gv == null) {
+    Vertex vv=new GenericVertex(label,x,y,name,stopId);
+    gv=new GraphVertex(vv);
+    vertices.put(label,gv);
+  }
+  return gv.vertex;
 }

@@ -21,11 +21,9 @@
       subgraphs.put(subnode,subgraph);
     }
   }
-  HashSet<Integer> largestSubgraph=null;
   for (  HashSet<Integer> subgraph : subgraphs.values()) {
-    if (largestSubgraph == null || largestSubgraph.size() < subgraph.size()) {
-      largestSubgraph=subgraph;
+    if (subgraph.size() < 20) {
+      _nodes.keySet().removeAll(subgraph);
     }
   }
-  _nodes.keySet().retainAll(largestSubgraph);
 }

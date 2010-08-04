@@ -1,0 +1,129 @@
+{
+  final int N=10;
+  Graph graph=new Graph();
+  Vertex[][] verticesIn=new Vertex[N][];
+  Vertex[][] verticesOut=new Vertex[N][];
+  for (int y=0; y < N; ++y) {
+    verticesIn[y]=new Vertex[N];
+    verticesOut[y]=new Vertex[N];
+    for (int x=0; x < N; ++x) {
+      Vertex in=new EndpointVertex("(" + x + ", "+ y+ ") in",x,y);
+      graph.addVertex(in);
+      verticesIn[y][x]=in;
+      Vertex out=new EndpointVertex("(" + x + ", "+ y+ ") out",x,y);
+      graph.addVertex(out);
+      verticesOut[y][x]=out;
+    }
+  }
+  for (int y=0; y < N; ++y) {
+    for (int x=0; x < N - 1; ++x) {
+      LineString geometry=GeometryUtils.makeLineString(x,y,x + 1,y);
+      StreetVertex left=new StreetVertex("a(" + x + ", "+ y+ ")",geometry,"",100,false);
+      StreetVertex right=new StreetVertex("a(" + x + ", "+ y+ ")",(LineString)geometry.reverse(),"",100,true);
+      graph.addVertex(left);
+      graph.addVertex(right);
+      geometry=GeometryUtils.makeLineString(y,x,y,x + 1);
+      StreetVertex down=new StreetVertex("d(" + y + ", "+ x+ ")",geometry,"",100,false);
+      StreetVertex up=new StreetVertex("d(" + y + ", "+ x+ ")",(LineString)geometry.reverse(),"",100,true);
+      graph.addVertex(down);
+      graph.addVertex(up);
+      graph.addEdge(new FreeEdge(verticesOut[y][x],left));
+      graph.addEdge(new FreeEdge(verticesOut[x][y],down));
+      graph.addEdge(new FreeEdge(verticesOut[y][x + 1],right));
+      graph.addEdge(new FreeEdge(verticesOut[x + 1][y],up));
+      graph.addEdge(new FreeEdge(right,verticesIn[y][x]));
+      graph.addEdge(new FreeEdge(up,verticesIn[x][y]));
+      graph.addEdge(new FreeEdge(left,verticesIn[y][x + 1]));
+      graph.addEdge(new FreeEdge(down,verticesIn[x + 1][y]));
+      assertEquals(left,graph.addVertex(left));
+      assertEquals(right,graph.addVertex(right));
+      assertEquals(down,graph.addVertex(down));
+      assertEquals(up,graph.addVertex(up));
+    }
+  }
+  for (int y=0; y < N; ++y) {
+    for (int x=0; x < N; ++x) {
+      Vertex vertexIn=verticesIn[y][x];
+      for (      Edge e1 : graph.getIncoming(vertexIn)) {
+        Vertex vertexOut=verticesOut[y][x];
+        StreetVertex fromv=(StreetVertex)e1.getFromVertex();
+        for (        Edge e2 : graph.getOutgoing(vertexOut)) {
+          StreetVertex tov=(StreetVertex)e2.getToVertex();
+          if (tov.getEdgeId().equals(fromv.getEdgeId())) {
+            continue;
+          }
+          graph.addEdge(new TurnEdge((StreetVertex)fromv,(StreetVertex)tov));
+        }
+        assertTrue(graph.getDegreeOut(fromv) <= 4);
+      }
+    }
+  }
+  final int graphSize=N * N * 2 + (N * (N - 1) * 4);
+  assertEquals(graphSize,graph.getVertices().size());
+  TraverseOptions options=new TraverseOptions();
+  options.optimizeFor=OptimizeType.QUICK;
+  options.walkReluctance=1;
+  options.speed=1;
+  Dijkstra dijkstra=new Dijkstra(graph,verticesOut[0][0],options,graph.getVertex("a(0, 0)"),3);
+  BasicShortestPathTree spt=dijkstra.getShortestPathTree(verticesIn[0][2],4);
+  SPTVertex v03=spt.getVertex(verticesIn[0][3]);
+  assertNull(v03);
+  dijkstra=new Dijkstra(graph,verticesOut[0][0],options,graph.getVertex("a(0, 0)"),6);
+  spt=dijkstra.getShortestPathTree(verticesIn[0][3],500);
+  v03=spt.getVertex(verticesIn[0][3]);
+  assertNotNull(v03);
+  dijkstra=new Dijkstra(graph,verticesOut[0][1],options,verticesIn[0][2]);
+  spt=dijkstra.getShortestPathTree(verticesIn[0][3],20);
+  v03=spt.getVertex(verticesIn[0][3]);
+  assertNull(v03);
+  spt=dijkstra.getShortestPathTree(verticesIn[0][3],130);
+  v03=spt.getVertex(verticesIn[0][3]);
+  assertNotNull(v03);
+  ContractionHierarchy testch=new ContractionHierarchy(graph,OptimizeType.QUICK,TraverseMode.WALK,0.0);
+  Vertex v=graph.getVertex("a(2, 2)");
+  List<Shortcut> shortcuts=testch.getShortcuts(v,5,true).shortcuts;
+  assertEquals(16,shortcuts.size());
+  v=graph.getVertex("(0, 0) in");
+  shortcuts=testch.getShortcuts(v,5,true).shortcuts;
+  assertEquals(0,shortcuts.size());
+  ContractionHierarchy hierarchy=new ContractionHierarchy(graph,OptimizeType.QUICK,TraverseMode.WALK,1.0);
+  assertTrue(hierarchy.down.getVertices().size() == graphSize);
+  assertTrue(hierarchy.up.getVertices().size() == graphSize);
+  assertTrue(hierarchy.graph.getVertices().size() == 0);
+  System.out.println("Contracted");
+  State init=new State(0);
+  GraphPath path=hierarchy.getShortestPath(verticesOut[0][0],verticesIn[N - 1][N - 1],init,options);
+  assertNotNull(path);
+  assertEquals((N - 1) * 2 + 1,path.edges.size());
+  assertEquals(path.edges.size() + 1,path.vertices.size());
+  SPTVertex lastVertex=path.vertices.get(0);
+  for (int i=0; i < path.edges.size(); ++i) {
+    SPTEdge e=path.edges.get(i);
+    assertSame(e.getFromVertex(),lastVertex);
+    assertSame(lastVertex,path.vertices.get(i));
+    lastVertex=e.getToVertex();
+  }
+  path=hierarchy.getShortestPath(verticesIn[1][1],verticesOut[2][2],init,options);
+  if (path == null || path.edges.size() != 4) {
+    path=hierarchy.getShortestPath(verticesIn[1][1],verticesOut[2][2],init,options);
+  }
+  for (int x1=0; x1 < N; ++x1) {
+    for (int y1=0; y1 < N; ++y1) {
+      for (int x2=0; x2 < N; ++x2) {
+        for (int y2=0; y2 < N; ++y2) {
+          if (x1 == x2 && y1 == y2) {
+            continue;
+          }
+          options.back=false;
+          path=hierarchy.getShortestPath(verticesOut[y1][x1],verticesIn[y2][x2],init,options);
+          assertNotNull(path);
+          assertEquals(Math.abs(x1 - x2) + Math.abs(y1 - y2) + 1,path.edges.size());
+          options.back=true;
+          path=hierarchy.getShortestPath(verticesOut[y1][x1],verticesIn[y2][x2],init,options);
+          assertNotNull(path);
+          assertEquals(Math.abs(x1 - x2) + Math.abs(y1 - y2) + 1,path.edges.size());
+        }
+      }
+    }
+  }
+}

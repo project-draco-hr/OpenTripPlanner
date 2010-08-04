@@ -1,0 +1,30 @@
+{
+  StreetVertex fromv=(StreetVertex)streets.get(0).getFromVertex();
+  P2<LineString> geometries=getGeometry(fromv,nearestPoint);
+  double totalGeomLength=fromv.getGeometry().getLength();
+  double lengthRatioIn=geometries.getFirst().getLength() / totalGeomLength;
+  double lengthIn=fromv.getLength() * lengthRatioIn;
+  double lengthOut=fromv.getLength() * (1 - lengthRatioIn);
+  StreetVertex newFrom=new StreetVertex(label + " from",geometries.getFirst(),name,lengthIn,false);
+  newFrom.setElevationProfile(fromv.getElevationProfile(0,lengthIn));
+  newFrom.setPermission(fromv.getPermission());
+  StreetVertex location=new StreetVertex(label,geometries.getSecond(),name,lengthOut,false);
+  location.setElevationProfile(fromv.getElevationProfile(lengthIn,totalGeomLength));
+  location.setPermission(fromv.getPermission());
+  FreeEdge free=new FreeEdge(fromv,newFrom);
+  TurnEdge incoming=new TurnEdge(newFrom,location);
+  base.extra.add(free);
+  base.extra.add(incoming);
+  for (  Edge street : streets) {
+    Vertex tov=street.getToVertex();
+    Edge e;
+    if (tov instanceof StreetVertex) {
+      e=new TurnEdge(location,(StreetVertex)tov);
+    }
+ else {
+      e=new OutEdge(location,(EndpointVertex)tov);
+    }
+    base.extra.add(e);
+  }
+  return location;
+}

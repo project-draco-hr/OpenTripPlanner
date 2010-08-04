@@ -1,0 +1,7 @@
+{
+  if (other instanceof GraphVertex) {
+    GraphVertex gvother=(GraphVertex)other;
+    return gvother.incoming.equals(incoming) && gvother.outgoing.equals(outgoing) && gvother.vertex.equals(vertex);
+  }
+  return false;
+}

@@ -4,15 +4,16 @@
   index.setup_modifiable();
   _log.debug("creating linkages...");
   int i=0;
-  ArrayList<Vertex> vertices=new ArrayList<Vertex>(graph.getVertices());
-  for (  Vertex v : vertices) {
+  ArrayList<GraphVertex> vertices=new ArrayList<GraphVertex>(graph.getVertices());
+  for (  GraphVertex gv : vertices) {
+    Vertex v=gv.vertex;
     if (i % 500 == 0)     _log.debug("vertices=" + i + "/"+ vertices.size());
     i++;
     if (v instanceof TransitStop) {
       TransitStop ts=(TransitStop)v;
       if (!ts.isEntrance()) {
         boolean hasEntrance=false;
-        for (        Edge e : v.getOutgoing()) {
+        for (        Edge e : gv.getOutgoing()) {
           if (e instanceof PathwayEdge) {
             hasEntrance=true;
             break;
@@ -22,33 +23,12 @@
           continue;
         }
       }
-      Vertex nearestIntersection=index.getClosestVertex(v.getCoordinate(),false);
+      Vertex nearestIntersection=index.getClosestVertex(graph,v.getCoordinate(),false,null);
       if (nearestIntersection != null) {
         if (nearestIntersection instanceof StreetLocation) {
-          if (((StreetLocation)nearestIntersection).streets != null) {
-            ((StreetLocation)nearestIntersection).reify(graph);
-            index.reified((StreetLocation)nearestIntersection);
-          }
-        }
- else         if (nearestIntersection instanceof OneStreetVertex) {
-          OneStreetVertex osvertex=((OneStreetVertex)nearestIntersection);
-          GenericVertex newV=new GenericVertex(osvertex.getLabel() + " approach",osvertex.getX(),osvertex.getY());
-          Street approach=new Street(osvertex,newV,0);
-          Street approachBack=new Street(newV,osvertex,0);
-          if (osvertex.inStreet != null) {
-            osvertex.inStreet.setToVertex(newV);
-            newV.addIncoming(osvertex.inStreet);
-          }
-          if (osvertex.outStreet != null) {
-            osvertex.outStreet.setFromVertex(newV);
-            newV.addOutgoing(osvertex.outStreet);
-          }
-          newV.addIncoming(approach);
-          newV.addOutgoing(approachBack);
-          osvertex.inStreet=approachBack;
-          osvertex.outStreet=approach;
-          nearestIntersection=newV;
-          graph.addVertex(newV);
+          StreetLocation streetLocation=(StreetLocation)nearestIntersection;
+          streetLocation.reify(graph);
+          index.reified(streetLocation);
         }
         boolean wheelchairAccessible=ts.hasWheelchairEntrance();
         graph.addEdge(new StreetTransitLink(nearestIntersection,v,wheelchairAccessible));

@@ -1,0 +1,18 @@
+{
+  SPTVertex ret=this.vertices.get(vv.getLabel());
+  if (ret == null) {
+    ret=new SPTVertex(vv,ss,weightSum,options);
+    this.vertices.put(vv.getLabel(),ret);
+  }
+ else {
+    if (weightSum < ret.weightSum) {
+      ret.weightSum=weightSum;
+      ret.state=ss;
+      ret.options=options;
+    }
+ else {
+      return null;
+    }
+  }
+  return ret;
+}

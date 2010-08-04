@@ -1,0 +1,9 @@
+{
+  WalkStep step;
+  step=new WalkStep();
+  step.streetName=edge.getName();
+  step.lon=edge.getFromVertex().getX();
+  step.lat=edge.getFromVertex().getY();
+  step.elevation=encodeElevationProfile(edge.payload,0);
+  return step;
+}

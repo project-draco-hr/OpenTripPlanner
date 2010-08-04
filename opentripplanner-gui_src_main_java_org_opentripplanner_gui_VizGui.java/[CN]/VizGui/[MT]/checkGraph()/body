@@ -1,14 +1,14 @@
 {
   HashSet<Vertex> seenVertices=new HashSet<Vertex>();
-  Collection<Vertex> allVertices=graph.getVertices();
-  Vertex v=allVertices.iterator().next();
+  Collection<GraphVertex> allVertices=getGraph().getVertices();
+  Vertex v=allVertices.iterator().next().vertex;
   System.out.println("initial vertex: " + v);
   Queue<Vertex> toExplore=new LinkedList<Vertex>();
   toExplore.add(v);
   seenVertices.add(v);
   while (!toExplore.isEmpty()) {
     Vertex src=toExplore.poll();
-    for (    Edge e : src.getOutgoing()) {
+    for (    Edge e : graph.getOutgoing(src)) {
       Vertex tov=e.getToVertex();
       if (!seenVertices.contains(tov)) {
         seenVertices.add(tov);
@@ -17,8 +17,8 @@
     }
   }
   System.out.println("After investigation, visited " + seenVertices.size() + " of "+ allVertices.size());
-  for (  Vertex u : allVertices) {
-    if (!seenVertices.contains(u)) {
+  for (  GraphVertex u : allVertices) {
+    if (!seenVertices.contains(u.vertex)) {
       System.out.println("unknown vertex" + u);
       break;
     }

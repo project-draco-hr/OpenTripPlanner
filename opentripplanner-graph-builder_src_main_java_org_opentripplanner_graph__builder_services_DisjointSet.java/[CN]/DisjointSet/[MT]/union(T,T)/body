@@ -1,0 +1,20 @@
+{
+  Integer p1=find(element1);
+  Integer p2=find(element2);
+  if (p1.equals(p2)) {
+    return p1;
+  }
+  int p1size=-sets.get(p1);
+  int p2size=-sets.get(p2);
+  int totalSize=p1size + p2size;
+  if (p1size > p2size) {
+    sets.set(p2,p1);
+    sets.set(p1,-totalSize);
+    return p2;
+  }
+ else {
+    sets.set(p1,p2);
+    sets.set(p2,-totalSize);
+    return p1;
+  }
+}

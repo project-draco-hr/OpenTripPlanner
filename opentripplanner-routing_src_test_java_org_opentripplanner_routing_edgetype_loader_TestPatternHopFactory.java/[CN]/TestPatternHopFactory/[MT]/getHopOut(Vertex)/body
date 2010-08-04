@@ -1,7 +1,7 @@
 {
-  for (  Edge e : v.getOutgoing()) {
+  for (  Edge e : graph.getOutgoing(v)) {
     if (e instanceof PatternBoard) {
-      for (      Edge f : e.getToVertex().getOutgoing()) {
+      for (      Edge f : graph.getOutgoing(e.getToVertex())) {
         if (f instanceof PatternHop) {
           return f;
         }

@@ -37,5 +37,5 @@
   if (options.optimizeFor == OptimizeType.TRANSFERS && state0.getTrip() != -1) {
     transfer_penalty=options.optimizeTransferPenalty;
   }
-  return new TraverseResult(wait + BOARD_COST + transfer_penalty,state1);
+  return new TraverseResult(wait + options.boardCost + transfer_penalty,state1);
 }

@@ -7,7 +7,7 @@
     return;
   }
   planner=new Planner();
-  pathService=new PathServiceImpl();
+  pathService=new ContractionPathServiceImpl();
   graph=new Graph();
   ShapefileStreetGraphBuilderImpl builder=new ShapefileStreetGraphBuilderImpl();
   FeatureSourceFactory factory=new ShapefileFeatureSourceFactoryImpl(new File("src/test/resources/portland/Streets_pdx.shp"));
@@ -22,9 +22,10 @@
   schema.setPermissionConverter(perms);
   builder.setSchema(schema);
   builder.buildGraph(graph);
-  pathService.setGraph(graph);
-  RoutingServiceImpl routingService=new RoutingServiceImpl();
-  routingService.setGraph(graph);
+  ContractionHierarchySet hierarchies=new ContractionHierarchySet(graph,null);
+  pathService.setHierarchies(hierarchies);
+  ContractionRoutingServiceImpl routingService=new ContractionRoutingServiceImpl();
+  routingService.setHierarchies(hierarchies);
   pathService.setRoutingService(routingService);
   planner.setPathService(pathService);
   holder.graph=graph;

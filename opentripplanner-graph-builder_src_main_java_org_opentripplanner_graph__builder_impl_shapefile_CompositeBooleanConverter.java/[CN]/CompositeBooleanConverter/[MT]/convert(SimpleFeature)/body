@@ -1,0 +1,18 @@
+{
+  Boolean result=null;
+  for (  SimpleFeatureConverter<Boolean> converter : converters) {
+    Boolean value=converter.convert(feature);
+    if (result == null) {
+      result=value;
+    }
+ else {
+      if (orPermissions) {
+        result=result || value;
+      }
+ else {
+        result=result && value;
+      }
+    }
+  }
+  return result;
+}

@@ -1,7 +1,7 @@
 {
   Envelope env=new Envelope();
-  for (  Vertex v : graph.getVertices()) {
-    env.expandToInclude(v.getCoordinate());
+  for (  GraphVertex gv : graph.getVertices()) {
+    env.expandToInclude(gv.vertex.getCoordinate());
   }
   setMinLongitude(env.getMinX());
   setMaxLongitude(env.getMaxX());

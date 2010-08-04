@@ -1,0 +1,13 @@
+{
+  if (!fromv.canTraverse(options)) {
+    return null;
+  }
+  double angleLength=fromv.getLength() + turnCost / 20;
+  State s1=s0.clone();
+  double time=angleLength / options.speed;
+  double weight=fromv.computeWeight(s0,options,time);
+  s1.walkDistance+=angleLength;
+  s1.incrementTimeInSeconds(-(int)time);
+  s1.lastEdgeWasStreet=true;
+  return new TraverseResult(weight,s1);
+}

@@ -1,0 +1,13 @@
+{
+  String direction=out ? "out" : "in";
+  for (  GraphVertex gv : graph.getVertices()) {
+    Vertex v=gv.vertex;
+    String label=v.getLabel();
+    if (label.startsWith(name)) {
+      if (label.endsWith(direction)) {
+        return v;
+      }
+    }
+  }
+  return null;
+}

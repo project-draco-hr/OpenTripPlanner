@@ -1,8 +1,0 @@
-{
-  for (int i=0; i < vertices.size(); i++) {
-    if (vertices.get(i) instanceof DummyReferenceVertex) {
-      vertices.set(i,(IntersectionVertex)graph.getVertex(vertices.get(i).getLabel()));
-      ((IntersectionVertex)vertices.get(i)).intersection=this;
-    }
-  }
-}

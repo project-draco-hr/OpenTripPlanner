@@ -1,0 +1,21 @@
+{
+  Vector<SPTVertex> vertices=paths.get(0).vertices;
+  SPTVertex tripStartVertex=vertices.firstElement();
+  SPTVertex tripEndVertex=vertices.lastElement();
+  String startName=tripStartVertex.getName();
+  String endName=tripEndVertex.getName();
+  if (startName == null) {
+    startName=tripStartVertex.getLabel();
+  }
+  if (endName == null) {
+    endName=tripEndVertex.getLabel();
+  }
+  Place from=new Place(tripStartVertex.getX(),tripStartVertex.getY(),startName);
+  Place to=new Place(tripEndVertex.getX(),tripEndVertex.getY(),endName);
+  TripPlan plan=new TripPlan(from,to,request.getDateTime());
+  for (  GraphPath path : paths) {
+    Itinerary itinerary=generateItinerary(path,request.getShowIntermediateStops(),options.modes.contains(TraverseMode.BICYCLE));
+    plan.addItinerary(itinerary);
+  }
+  return plan;
+}

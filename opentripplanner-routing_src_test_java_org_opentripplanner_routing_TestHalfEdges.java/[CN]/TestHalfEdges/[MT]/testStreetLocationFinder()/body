@@ -1,25 +1,20 @@
 {
   StreetVertexIndexServiceImpl finder=new StreetVertexIndexServiceImpl(graph);
   finder.setup();
-  StreetLocation start=(StreetLocation)finder.getClosestVertex(new Coordinate(-74.1,40.04));
+  assertTrue(finder.getClosestVertex(graph,new Coordinate(-74.05000001,40.1),null) instanceof TransitStop);
+  StreetLocation start=(StreetLocation)finder.getClosestVertex(graph,new Coordinate(-74.1,40.04),null);
   assertNotNull(start);
-  StreetLocation end=(StreetLocation)finder.getClosestVertex(new Coordinate(-74.0,40.08));
+  ArrayList<Edge> extra=new ArrayList<Edge>();
+  for (  Edge e : start.getExtra()) {
+    extra.add(e);
+  }
+  assertEquals(12,extra.size());
+  TraverseOptions biking=new TraverseOptions(new TraverseModeSet(TraverseMode.BICYCLE));
+  StreetLocation end=(StreetLocation)finder.getClosestVertex(graph,new Coordinate(-74.0,40.08),biking);
   assertNotNull(end);
-  if (start.streets.get(0) == leftUp) {
-    assertTrue(Math.abs(start.location.getSegmentFraction() - 0.4) < 0.00001);
+  extra.clear();
+  for (  Edge e : end.getExtra()) {
+    extra.add(e);
   }
- else {
-    assertTrue(Math.abs(start.location.getSegmentFraction() - 0.6) < 0.00001);
-    assertEquals(leftDown,start.streets.get(0));
-  }
-  assertTrue(start.getDegreeOut() == 2);
-  if (end.streets.get(0) == rightUp) {
-    assertTrue(Math.abs(end.location.getSegmentFraction()) - 0.2 < 0.00001);
-  }
- else {
-    assertTrue(Math.abs(end.location.getSegmentFraction()) - 0.8 < 0.00001);
-    assertEquals(rightDown,end.streets.get(0));
-  }
-  assertTrue(end.getDegreeIn() == 2);
-  assertTrue(finder.getClosestVertex(new Coordinate(-74.05000001,40.1)) instanceof TransitStop);
+  assertEquals(6,extra.size());
 }

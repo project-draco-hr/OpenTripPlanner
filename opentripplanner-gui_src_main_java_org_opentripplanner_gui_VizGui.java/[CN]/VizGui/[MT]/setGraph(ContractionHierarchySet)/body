@@ -1,0 +1,12 @@
+{
+  hierarchies=chs;
+  graph=chs.getGraph();
+  pathservice=new ContractionPathServiceImpl();
+  pathservice.setHierarchies(hierarchies);
+  indexService=new StreetVertexIndexServiceImpl(getGraph());
+  indexService.setup();
+  pathservice.setIndexService(indexService);
+  routingService=new ContractionRoutingServiceImpl();
+  routingService.setHierarchies(chs);
+  pathservice.setRoutingService(routingService);
+}

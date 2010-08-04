@@ -2,9 +2,9 @@
   File path=getPathToMapTile(key);
   if (needsUpdate(path)) {
     Envelope r=new Envelope(lon - _overlap,lon + _lonXStep + _overlap,lat - _overlap,lat + _latYStep + _overlap);
-    System.out.println("downloading osm tile: " + key);
+    _log.debug("downloading osm tile: " + key);
     URL url=constructUrl(r);
-    System.out.println(url);
+    _log.debug(url.toString());
     FileOutputStream out=new FileOutputStream(path);
     InputStream in=url.openStream();
     byte[] data=new byte[4096];

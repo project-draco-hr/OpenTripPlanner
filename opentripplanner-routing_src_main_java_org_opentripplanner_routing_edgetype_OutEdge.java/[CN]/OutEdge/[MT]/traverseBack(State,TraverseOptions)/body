@@ -1,0 +1,13 @@
+{
+  StreetVertex fromv=((StreetVertex)this.fromv);
+  if (!fromv.canTraverse(options)) {
+    return null;
+  }
+  State s1=s0.clone();
+  double time=fromv.getLength() / options.speed;
+  double weight=fromv.computeWeight(s0,options,time);
+  s1.walkDistance+=fromv.getLength();
+  s1.incrementTimeInSeconds(-(int)time);
+  s1.lastEdgeWasStreet=true;
+  return new TraverseResult(weight,s1);
+}

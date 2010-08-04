@@ -1,0 +1,9 @@
+{
+  safetyFeatures=new HashMap<P2<String>,P2<Double>>();
+  for (  Map.Entry<String,String> entry : features.entrySet()) {
+    String[] kv=entry.getKey().split(",");
+    String[] strings=entry.getValue().split(",");
+    P2<Double> values=new P2<Double>(Double.parseDouble(strings[0]),Double.parseDouble(strings[1]));
+    safetyFeatures.put(new P2<String>(kv),values);
+  }
+}

@@ -1,0 +1,5 @@
+{
+  double len=DistanceLibrary.distance(latFrom,lonFrom,latTo,lonTo);
+  StreetVertex street=new StreetVertex(name,GeometryUtils.makeLineString(lonFrom,latFrom,lonTo,latTo),name,len,false);
+  return street;
+}

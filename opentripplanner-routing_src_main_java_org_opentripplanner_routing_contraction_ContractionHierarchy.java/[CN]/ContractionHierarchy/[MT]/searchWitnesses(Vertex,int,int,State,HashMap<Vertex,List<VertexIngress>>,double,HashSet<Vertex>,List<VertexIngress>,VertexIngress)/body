@@ -1,0 +1,20 @@
+{
+  Dijkstra dijkstra=new Dijkstra(graph,u.vertex,options,vertex,hopLimit - 1);
+  dijkstra.setNeighbors(neighbors);
+  dijkstra.setTargets((HashSet<String>)wSet.clone());
+  BasicShortestPathTree spt=dijkstra.getShortestPathTree(baseWeightLimit,nodeLimit);
+  ArrayList<Shortcut> shortcuts=new ArrayList<Shortcut>();
+  for (  VertexIngress w : ws) {
+    if (u.vertex == w.vertex) {
+      continue;
+    }
+    double weightLimit=u.weight + w.weight;
+    SPTVertex curs=spt.getVertex(w.vertex);
+    if (curs == null || curs.weightSum > weightLimit + .01) {
+      int time=(int)((w.time + u.time) / 1000);
+      Shortcut duw=new Shortcut(u.edge,w.edge,time,weightLimit);
+      shortcuts.add(duw);
+    }
+  }
+  return new WitnessSearchResult(shortcuts,spt,u.vertex,spt.size());
+}

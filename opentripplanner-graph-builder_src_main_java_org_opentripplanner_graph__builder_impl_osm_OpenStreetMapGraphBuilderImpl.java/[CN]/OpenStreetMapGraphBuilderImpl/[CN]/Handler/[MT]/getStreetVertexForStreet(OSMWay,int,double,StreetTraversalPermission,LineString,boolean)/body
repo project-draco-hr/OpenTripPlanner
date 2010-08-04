@@ -1,0 +1,13 @@
+{
+  String id="way " + way.getId() + " from "+ startNode;
+  id=unique(id);
+  String name=way.getTags().get("name");
+  if (name == null) {
+    name=id;
+  }
+  StreetVertex street=new StreetVertex(id,geometry,name,length,back);
+  if ("no".equals(way.getTags().get("wheelchair")) || ("steps".equals(way.getTags().get("highway")) && !"yes".equals(way.getTags().get("wheelchair")))) {
+    street.setWheelchairAccessible(false);
+  }
+  return street;
+}

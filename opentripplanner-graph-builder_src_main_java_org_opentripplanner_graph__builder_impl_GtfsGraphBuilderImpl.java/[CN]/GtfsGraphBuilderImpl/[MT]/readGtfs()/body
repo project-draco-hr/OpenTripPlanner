@@ -26,12 +26,7 @@
       if (entityClass.equals(Agency.class))       reader.setAgencies(agencies);
       reader.readEntities(entityClass);
       if (entityClass.equals(Agency.class))       agencies.addAll(reader.getAgencies());
-      try {
-        store.flush();
-      }
- catch (      Exception e) {
-        System.out.println("Error flushing");
-      }
+      store.flush();
     }
   }
   store.close();

@@ -1,0 +1,11 @@
+{
+  graph=new Graph();
+  for (  GraphVertex gv : orig.getVertices()) {
+    graph.addGraphVertex(new GraphVertex(gv));
+  }
+  options=new TraverseOptions(new TraverseModeSet(mode));
+  options.optimizeFor=optimize;
+  this.contractionFactor=contractionFactor;
+  init();
+  useCoreVerticesFrom(orig);
+}

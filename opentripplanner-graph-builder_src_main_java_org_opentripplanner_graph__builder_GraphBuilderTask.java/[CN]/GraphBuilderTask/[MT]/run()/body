@@ -5,5 +5,7 @@
     return;
   }
   for (  GraphBuilder load : _graphBuilders)   load.buildGraph(_graph);
-  GraphSerializationLibrary.writeGraph(_graph,graphPath);
+  ContractionHierarchySet chs=new ContractionHierarchySet(_graph,_modeList,_contractionFactor);
+  chs.build();
+  ContractionHierarchySerializationLibrary.writeGraph(chs,graphPath);
 }

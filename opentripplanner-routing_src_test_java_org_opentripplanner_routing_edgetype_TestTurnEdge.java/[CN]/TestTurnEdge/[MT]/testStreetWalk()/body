@@ -1,0 +1,27 @@
+{
+  Graph gg=new Graph();
+  double streetLength=100;
+  StreetVertex start=new StreetVertex("start",GeometryUtils.makeLineString(-74.002,40.5,-74.004,40.5,-74.004,40.5,-74.006,41.0),"start",streetLength,false);
+  StreetVertex end=new StreetVertex("end",GeometryUtils.makeLineString(-74.004,40.5,-74.006,41.0),"end",streetLength,false);
+  gg.addVertex(start);
+  gg.addVertex(end);
+  TraverseOptions wo=new TraverseOptions();
+  wo.speed=ConstantsForTests.WALKING_SPEED;
+  Edge ee=new TurnEdge(start,end);
+  gg.addEdge(ee);
+  GregorianCalendar startTime=new GregorianCalendar(2009,9,21,13,0,0);
+  GregorianCalendar endTime=(GregorianCalendar)startTime.clone();
+  int expectedSecElapsed=(int)(streetLength / wo.speed);
+  endTime.add(GregorianCalendar.SECOND,expectedSecElapsed);
+  State s0=new State(startTime.getTimeInMillis());
+  TraverseResult wr=ee.traverse(s0,wo);
+  assertNotNull(wr);
+  assertTrue(Math.abs(wr.weight - wo.walkReluctance * streetLength / wo.speed) < 10);
+  assertTrue(Math.abs(wr.state.getTime() - endTime.getTimeInMillis()) < 10000);
+  wr=null;
+  s0=new State(endTime.getTimeInMillis());
+  wr=ee.traverseBack(s0,wo);
+  assertNotNull(wr);
+  assertTrue(Math.abs(wr.weight - wo.walkReluctance * streetLength / wo.speed) < 10);
+  assertTrue(Math.abs(wr.state.getTime() - startTime.getTimeInMillis()) < 10000);
+}

@@ -2,13 +2,16 @@
   if (payload instanceof Board || payload instanceof Hop || payload instanceof Alight) {
     return payload.getTrip();
   }
-  if (payload instanceof PatternEdge) {
-    int patternIndex=fromv.state.getTrip();
-    if (patternIndex == -1) {
-      patternIndex=tov.state.getTrip();
-    }
-    TripPattern pattern=((PatternEdge)payload).getPattern();
-    return pattern.getTrip(patternIndex);
+  int patternIndex=-1;
+  if (payload instanceof PatternAlight) {
+    patternIndex=fromv.state.getTrip();
   }
-  return null;
+ else   if (payload instanceof PatternEdge) {
+    patternIndex=tov.state.getTrip();
+  }
+ else {
+    return null;
+  }
+  TripPattern pattern=((PatternEdge)payload).getPattern();
+  return pattern.getTrip(patternIndex);
 }

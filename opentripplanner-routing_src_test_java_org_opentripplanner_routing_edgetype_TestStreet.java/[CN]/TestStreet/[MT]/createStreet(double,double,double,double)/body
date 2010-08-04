@@ -1,9 +1,0 @@
-{
-  Vertex from=new GenericVertex("from",lonFrom,latFrom);
-  Vertex to=new GenericVertex("to",lonTo,latTo);
-  double len=DistanceLibrary.distance(latFrom,lonFrom,latTo,lonTo);
-  Street street=new Street(from,to,len);
-  LineString line=_geomFactory.createLineString(new Coordinate[]{from.getCoordinate(),to.getCoordinate()});
-  street.setGeometry(line);
-  return street;
-}

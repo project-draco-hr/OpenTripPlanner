@@ -1,0 +1,12 @@
+{
+  Vertex v=getVertex(hierarchy.graph,name,out);
+  if (v == null) {
+    if (out) {
+      v=getVertex(hierarchy.up,name,out);
+    }
+ else {
+      v=getVertex(hierarchy.down,name,out);
+    }
+  }
+  return v;
+}

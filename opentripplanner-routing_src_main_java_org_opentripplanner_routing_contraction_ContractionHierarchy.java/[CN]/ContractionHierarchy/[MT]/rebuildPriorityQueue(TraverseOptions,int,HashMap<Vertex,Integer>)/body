@@ -1,0 +1,17 @@
+{
+  FibHeap<Vertex> newpq=new FibHeap<Vertex>(graph.getVertices().size());
+  for (  GraphVertex gv : graph.getVertices()) {
+    Vertex v=gv.vertex;
+    if (!isContractable(v)) {
+      continue;
+    }
+    WitnessSearchResult wsresult=getShortcuts(v,hopLimit,true);
+    Integer deleted=deletedNeighbors.get(v);
+    if (deleted == null) {
+      deleted=0;
+    }
+    int imp=getImportance(v,wsresult,deleted);
+    newpq.insert(v,imp);
+  }
+  return newpq;
+}

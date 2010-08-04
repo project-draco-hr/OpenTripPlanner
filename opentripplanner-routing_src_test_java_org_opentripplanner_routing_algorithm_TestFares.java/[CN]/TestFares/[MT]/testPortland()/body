@@ -13,7 +13,6 @@
   assertNotNull(path);
   Fare cost=path.getCost();
   assertEquals(cost.getFare(FareType.regular),new Money(new WrappedCurrency("USD"),200));
-  System.out.println("long trip");
   startTime=new GregorianCalendar(2009,11,1,14,0,0).getTimeInMillis();
   spt=AStar.getShortestPathTree(gg,"TriMet_8389","TriMet_1252",new State(startTime),options);
   path=spt.getPath(gg.getVertex("TriMet_1252"));

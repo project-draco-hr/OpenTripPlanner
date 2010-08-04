@@ -1,0 +1,8 @@
+{
+  if (!graphPath.getParentFile().exists())   graphPath.getParentFile().mkdirs();
+  _log.info("Writing graph " + graphPath.getAbsolutePath() + " ...");
+  ObjectOutputStream out=new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(graphPath)));
+  out.writeObject(hierarchy);
+  out.close();
+  _log.info("Graph written");
+}

@@ -1,0 +1,14 @@
+{
+  Leg leg=new Leg();
+  leg.startTime=new Date(edge.fromv.state.getTime());
+  leg.route=edge.getName();
+  Trip trip=edge.getTrip();
+  if (trip != null) {
+    leg.headsign=trip.getTripHeadsign();
+    leg.agencyId=trip.getId().getAgencyId();
+  }
+  leg.mode=mode.toString();
+  leg.distance=0.0;
+  leg.from=makePlace(edge.payload.getFromVertex());
+  return leg;
+}

@@ -1,0 +1,167 @@
+{
+  State init=new State(new GregorianCalendar(2010,4,4,12,0,0).getTimeInMillis());
+  GraphPath path;
+  Graph graph=new Graph();
+  ContractionHierarchy hierarchy;
+  URL resource=getClass().getResource("nyc_streets/streets.shp");
+  File file=null;
+  if (resource != null) {
+    file=new File(resource.getFile());
+  }
+  if (file == null || !file.exists()) {
+    System.out.println("No New York City basemap; skipping; see comment in TestShapefileStreetGraphBuilderImpl for details");
+    return;
+  }
+  ShapefileFeatureSourceFactoryImpl factory=new ShapefileFeatureSourceFactoryImpl(file);
+  ShapefileStreetSchema schema=new ShapefileStreetSchema();
+  schema.setIdAttribute("SegmentID");
+  schema.setNameAttribute("Street");
+  CaseBasedBooleanConverter selector1=new CaseBasedBooleanConverter("FeatureTyp",false);
+  HashMap<String,Boolean> streets=new HashMap<String,Boolean>();
+  streets.put("0",true);
+  selector1.setValues(streets);
+  NullBooleanConverter selector2=new NullBooleanConverter("SAFStPlace",true);
+  schema.setFeatureSelector(new CompositeBooleanConverter(selector1,selector2));
+  CaseBasedTraversalPermissionConverter perms=new CaseBasedTraversalPermissionConverter("TrafDir",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
+  perms.addPermission("W",StreetTraversalPermission.ALL,StreetTraversalPermission.PEDESTRIAN);
+  perms.addPermission("A",StreetTraversalPermission.PEDESTRIAN,StreetTraversalPermission.ALL);
+  perms.addPermission("T",StreetTraversalPermission.ALL,StreetTraversalPermission.ALL);
+  schema.setPermissionConverter(perms);
+  ShapefileStreetGraphBuilderImpl loader=new ShapefileStreetGraphBuilderImpl();
+  loader.setFeatureSourceFactory(factory);
+  loader.setSchema(schema);
+  loader.buildGraph(graph);
+  GtfsGraphBuilderImpl gtfsBuilder=new GtfsGraphBuilderImpl();
+  GtfsBundle bundle=new GtfsBundle();
+  bundle.setPath(new File("/home/novalis/Desktop/nyct_subway_100308.zip"));
+  ArrayList<GtfsBundle> bundleList=new ArrayList<GtfsBundle>();
+  bundleList.add(bundle);
+  GtfsBundles bundles=new GtfsBundles();
+  bundles.setBundles(bundleList);
+  gtfsBuilder.setGtfsBundles(bundles);
+  gtfsBuilder.buildGraph(graph);
+  NetworkLinker nl=new NetworkLinker(graph);
+  nl.createLinkage();
+  TraverseOptions options=new TraverseOptions();
+  options.modes=new TraverseModeSet(TraverseMode.WALK,TraverseMode.SUBWAY);
+  options.optimizeFor=OptimizeType.QUICK;
+  CalendarServiceData data=graph.getService(CalendarServiceData.class);
+  assertNotNull(data);
+  CalendarServiceImpl calendarService=new CalendarServiceImpl();
+  calendarService.setData(data);
+  options.setCalendarService(calendarService);
+  Vertex start1=getVertex(graph,"W 187 ST at WADSWORTH AV",true);
+  Vertex end1=getVertex(graph,"GRAND ST at LAFAYETTE ST",false);
+  assertNotNull(end1);
+  assertNotNull(start1);
+  ShortestPathTree shortestPathTree=AStar.getShortestPathTree(graph,start1,end1,init,options);
+  path=shortestPathTree.getPath(end1);
+  assertNotNull(path);
+  boolean subway1=false;
+  for (  SPTEdge edge : path.edges) {
+    if (TraverseMode.SUBWAY.equals(edge.getMode())) {
+      subway1=true;
+      break;
+    }
+  }
+  assertTrue("Path must take subway",subway1);
+  ContractionHierarchySet chs=new ContractionHierarchySet();
+  chs.addModeAndOptimize(new ModeAndOptimize(TraverseMode.WALK,OptimizeType.QUICK));
+  chs.setContractionFactor(0.95);
+  chs.setGraph(graph);
+  chs.build();
+  ContractionHierarchySerializationLibrary.writeGraph(chs,new File("/tmp/contracted"));
+  chs=ContractionHierarchySerializationLibrary.readGraph(new File("/tmp/contracted"));
+  hierarchy=chs.getHierarchy(options);
+  assertNotNull(hierarchy);
+  Vertex start=null;
+  Vertex end=null;
+  start=getVertex(hierarchy,"W 187 ST at WADSWORTH AV",true);
+  end=getVertex(hierarchy,"GRAND ST at LAFAYETTE ST",false);
+  assertNotNull(start);
+  assertNotNull(end);
+  init=new State(0);
+  path=hierarchy.getShortestPath(start,end,init,options);
+  assertNotNull(path);
+  init=new State(new GregorianCalendar(2010,4,4,12,0,0).getTimeInMillis());
+  GraphPath pathWithSubways=hierarchy.getShortestPath(start,end,init,options);
+  assertNotNull(pathWithSubways);
+  boolean subway=false;
+  for (  SPTEdge edge : pathWithSubways.edges) {
+    if (TraverseMode.SUBWAY.equals(edge.getMode())) {
+      subway=true;
+      break;
+    }
+  }
+  assertTrue("Path must take subway",subway);
+  options.back=true;
+  pathWithSubways=hierarchy.getShortestPath(start,end,init,options);
+  assertNotNull("Reverse path must be found",pathWithSubways);
+  subway=false;
+  for (  SPTEdge edge : pathWithSubways.edges) {
+    if (TraverseMode.SUBWAY.equals(edge.getMode())) {
+      subway=true;
+      break;
+    }
+  }
+  assertTrue("Reverse path must take subway",subway);
+  long now=System.currentTimeMillis();
+  int i=0;
+  int notNull=0;
+  ArrayList<GraphVertex> vertices=new ArrayList<GraphVertex>(hierarchy.up.getVertices());
+  DisjointSet<Vertex> components=new DisjointSet();
+  for (  GraphVertex gv : vertices) {
+    for (    Edge e : gv.getOutgoing()) {
+      components.union(gv.vertex,e.getToVertex());
+    }
+  }
+  ArrayList<GraphVertex> verticesOut=new ArrayList<GraphVertex>();
+  for (  GraphVertex gv : vertices) {
+    Vertex v=gv.vertex;
+    if (components.size(components.find(v)) > vertices.size() / 2) {
+      if (gv.getDegreeOut() != 0) {
+        verticesOut.add(gv);
+      }
+    }
+  }
+  assertTrue(vertices.size() > verticesOut.size());
+  vertices=verticesOut;
+  Random random=new Random(0);
+  for (  GraphVertex gv1 : vertices) {
+    Vertex v1=gv1.vertex;
+    if (++i == 1000) {
+      break;
+    }
+    if (v1.getLabel().endsWith(" in")) {
+      String label=v1.getLabel();
+      v1=hierarchy.up.getVertex(label.substring(0,label.length() - 3) + " out");
+      if (v1 == null) {
+        --i;
+        continue;
+      }
+    }
+    GraphVertex gv2=null;
+    Vertex v2=null;
+    while (v2 == null || gv2.getDegreeIn() == 0) {
+      int j=Math.abs(random.nextInt()) % vertices.size();
+      gv2=vertices.get(j);
+      v2=gv2.vertex;
+      if (v1 == v2) {
+        continue;
+      }
+      if (v2.getLabel().endsWith(" out")) {
+        String label=v2.getLabel();
+        gv2=hierarchy.down.getGraphVertex(label.substring(0,label.length() - 4) + " in");
+        v2=gv2.vertex;
+      }
+    }
+    options.back=i % 2 == 0;
+    GraphPath path2=hierarchy.getShortestPath(v1,v2,init,options);
+    if (path2 != null) {
+      notNull+=1;
+    }
+  }
+  System.out.println("not null: " + notNull + " of "+ i);
+  System.out.println("time for 1000 shortest paths: " + (System.currentTimeMillis() - now) / 1000.0);
+  assertTrue(notNull / (float)i > 0.95);
+}

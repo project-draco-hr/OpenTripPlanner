@@ -1,0 +1,5 @@
+{
+  TraverseMode mode=options.modes.contains(TraverseMode.BICYCLE) ? TraverseMode.BICYCLE : TraverseMode.WALK;
+  ModeAndOptimize mo=new ModeAndOptimize(mode,options.optimizeFor);
+  return hierarchiesByMode.get(mo);
+}

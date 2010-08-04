@@ -129,8 +129,13 @@
           dwell=edges.get(post.pattern);
         }
         if (dwell == null) {
-          Vertex arrive=graph.addVertex(id(lastStop.getId()) + "_" + id(trip.getId())+ "_A",lastStop.getLon(),lastStop.getLat());
-          Vertex depart=graph.addVertex(id(lastStop.getId()) + "_" + id(post.trip.getId())+ "_D",lastStop.getLon(),lastStop.getLat());
+          Trip extrip=eTrip.pattern.getExemplar();
+          List<StopTime> exStopTimes=_dao.getStopTimesForTrip(extrip);
+          StopTime exLastStopTime=exStopTimes.get(exStopTimes.size() - 1);
+          String arriveId=id(lastStop.getId()) + "_" + id(extrip.getId())+ "_"+ exLastStopTime.getStopSequence()+ "_A";
+          Vertex arrive=graph.getVertex(arriveId);
+          String departId=id(lastStop.getId()) + "_" + id(post.pattern.getExemplar().getId())+ "_"+ post.getFirstStop(_dao).getStopSequence()+ "_D";
+          Vertex depart=graph.getVertex(departId);
           dwell=new PatternInterlineDwell(arrive,depart,trip);
           graph.addEdge(dwell);
           if (edges == null) {

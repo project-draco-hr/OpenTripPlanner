@@ -1,18 +1,3 @@
 {
-  SPTVertex ret=this.vertices.get(vv);
-  if (ret == null) {
-    ret=new SPTVertex(vv,ss,weightSum,options);
-    this.vertices.put(vv,ret);
-  }
- else {
-    if (weightSum < ret.weightSum) {
-      ret.weightSum=weightSum;
-      ret.state=ss;
-      ret.options=options;
-    }
- else {
-      return null;
-    }
-  }
-  return ret;
+  return addVertex(vv,ss,weightSum,options,1);
 }

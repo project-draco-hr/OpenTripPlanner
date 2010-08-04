@@ -1,0 +1,8 @@
+{
+  StreetVertex startVertex=fromv;
+  LocationIndexedLine line=new LocationIndexedLine(startVertex.getGeometry());
+  LinearLocation l=line.indexOf(nearestPoint);
+  LineString beginning=(LineString)line.extractLine(line.getStartIndex(),l);
+  LineString ending=(LineString)line.extractLine(l,line.getEndIndex());
+  return new P2<LineString>(beginning,ending);
+}

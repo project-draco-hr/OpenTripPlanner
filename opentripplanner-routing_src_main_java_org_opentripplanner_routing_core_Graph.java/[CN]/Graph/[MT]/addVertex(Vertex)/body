@@ -1,8 +1,9 @@
 {
-  Vertex exists=this.vertices.get(vv.getLabel());
-  if (exists != null) {
-    return exists;
+  String label=vv.getLabel();
+  GraphVertex gv=vertices.get(label);
+  if (gv == null) {
+    gv=new GraphVertex(vv);
+    vertices.put(label,gv);
   }
-  this.vertices.put(vv.getLabel(),vv);
-  return vv;
+  return gv.vertex;
 }
