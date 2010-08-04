@@ -1,0 +1,17 @@
+{
+  Node node=element.getFirstChild();
+  while (node != null) {
+    if (!(node instanceof Element)) {
+      node=node.getNextSibling();
+      continue;
+    }
+    Element child=(Element)node;
+    if (child.getTagName().equals("tag")) {
+      OSMTag tag=new OSMTag();
+      tag.setK(child.getAttribute("k"));
+      tag.setV(child.getAttribute("v"));
+      osm.addTag(tag);
+    }
+    node=node.getNextSibling();
+  }
+}

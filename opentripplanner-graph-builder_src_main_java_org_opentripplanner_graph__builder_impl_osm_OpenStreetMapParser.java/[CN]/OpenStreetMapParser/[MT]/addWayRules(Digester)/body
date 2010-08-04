@@ -1,9 +1,0 @@
-{
-  d.addObjectCreate("osm/way",OSMWay.class);
-  d.addSetProperties("osm/way");
-  d.addSetNext("osm/way","addWay");
-  d.addObjectCreate("osm/way/nd",OSMNodeRef.class);
-  d.addSetProperties("osm/way/nd");
-  d.addSetNext("osm/way/nd","addNodeRef");
-  addTagRules(d,"osm/way");
-}
