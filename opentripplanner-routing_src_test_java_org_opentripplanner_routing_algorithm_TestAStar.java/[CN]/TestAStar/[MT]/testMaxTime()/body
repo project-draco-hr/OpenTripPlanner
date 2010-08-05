@@ -1,0 +1,19 @@
+{
+  Graph graph;
+  GtfsContext context;
+  graph=ConstantsForTests.getInstance().getPortlandGraph();
+  context=ConstantsForTests.getInstance().getPortlandContext();
+  Vertex start=graph.getVertex("TriMet_8371");
+  TraverseOptions options=new TraverseOptions();
+  options.setGtfsContext(context);
+  GregorianCalendar startTime=new GregorianCalendar(2009,11,1,12,34,25);
+  options.worstTime=startTime.getTimeInMillis() + 1000 * 60 * 60;
+  Vertex end=graph.getVertex("TriMet_8374");
+  ShortestPathTree spt=AStar.getShortestPathTree(graph,start,end,new State(startTime.getTimeInMillis()),options);
+  GraphPath path=spt.getPath(end);
+  assertNotNull(path);
+  options.worstTime=startTime.getTimeInMillis() + 1000 * 60;
+  spt=AStar.getShortestPathTree(graph,start,end,new State(startTime.getTimeInMillis()),options);
+  path=spt.getPath(end);
+  assertNull(path);
+}

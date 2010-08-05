@@ -40,7 +40,7 @@
         continue;
       }
       GraphVertex fromgv=graph.getGraphVertex(fromLabel);
-      if (options.back && fromgv != null) {
+      if (options.getArriveBy() && fromgv != null) {
         continue;
       }
       Collection<Edge> outgoing=null;
@@ -82,6 +82,12 @@
           throw new NegativeWeightException(String.valueOf(wr.weight) + " on edge " + edge);
         }
         double new_w=up_u.weightSum + wr.weight;
+        if (new_w > options.maxWeight) {
+          continue;
+        }
+        if (!options.getArriveBy() && wr.state.getTime() > options.worstTime) {
+          continue;
+        }
         SPTVertex up_v=upspt.addVertex(toVertex,wr.state,new_w,options);
         if (up_v != null) {
           up_v.setParent(up_u,edge);
@@ -110,7 +116,7 @@
       }
       downclosed.add(tov);
       GraphVertex maingv=graph.getGraphVertex(toLabel);
-      if (!options.back && maingv != null) {
+      if (!options.getArriveBy() && maingv != null) {
         continue;
       }
       GraphVertex downgv=down.getGraphVertex(tov);
@@ -152,6 +158,12 @@
           throw new NegativeWeightException(String.valueOf(wr.weight) + " on edge " + edge);
         }
         double new_w=down_u.weightSum + wr.weight;
+        if (new_w > options.maxWeight) {
+          continue;
+        }
+        if (options.getArriveBy() && wr.state.getTime() < options.worstTime) {
+          continue;
+        }
         SPTVertex down_v=downspt.addVertex(fromVertex,wr.state,new_w,options);
         if (down_v != null) {
           down_v.setParent(down_u,edge);
@@ -179,7 +191,7 @@
     return null;
   }
   path.edges=flatten(path.edges);
-  if (options.back) {
+  if (options.getArriveBy()) {
     cleanPathEdgesBack(init,path,options);
   }
  else {

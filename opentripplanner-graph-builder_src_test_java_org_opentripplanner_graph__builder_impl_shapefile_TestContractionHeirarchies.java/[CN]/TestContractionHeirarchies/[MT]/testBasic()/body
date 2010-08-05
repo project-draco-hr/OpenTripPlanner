@@ -91,7 +91,7 @@
   assertTrue(hierarchy.up.getVertices().size() == graphSize);
   assertTrue(hierarchy.graph.getVertices().size() == 0);
   System.out.println("Contracted");
-  State init=new State(0);
+  State init=new State(1000000000);
   GraphPath path=hierarchy.getShortestPath(verticesOut[0][0],verticesIn[N - 1][N - 1],init,options);
   assertNotNull(path);
   assertEquals((N - 1) * 2 + 1,path.edges.size());
@@ -114,11 +114,11 @@
           if (x1 == x2 && y1 == y2) {
             continue;
           }
-          options.back=false;
+          options.setArriveBy(false);
           path=hierarchy.getShortestPath(verticesOut[y1][x1],verticesIn[y2][x2],init,options);
           assertNotNull(path);
           assertEquals(Math.abs(x1 - x2) + Math.abs(y1 - y2) + 1,path.edges.size());
-          options.back=true;
+          options.setArriveBy(true);
           path=hierarchy.getShortestPath(verticesOut[y1][x1],verticesIn[y2][x2],init,options);
           assertNotNull(path);
           assertEquals(Math.abs(x1 - x2) + Math.abs(y1 - y2) + 1,path.edges.size());

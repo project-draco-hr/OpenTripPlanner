@@ -1,0 +1,34 @@
+{
+  Graph graph;
+  GtfsContext context;
+  graph=ConstantsForTests.getInstance().getPortlandGraph();
+  context=ConstantsForTests.getInstance().getPortlandContext();
+  Vertex start=graph.getVertex("TriMet_8371");
+  TraverseOptions options=new TraverseOptions();
+  options.setGtfsContext(context);
+  GregorianCalendar startTime=new GregorianCalendar(2009,11,1,12,34,25);
+  ShortestPathTree spt=null;
+  Vertex end=graph.getVertex("TriMet_8374");
+  String[] maxLines={"MAX Red Line","MAX Blue Line","MAX Green Line"};
+  for (int i=0; i < maxLines.length; ++i) {
+    String line=maxLines[i];
+    options.bannedRoutes.add(new RouteSpec("TriMet",line));
+    spt=AStar.getShortestPathTree(graph,start,end,new State(startTime.getTimeInMillis()),options);
+    GraphPath path=spt.getPath(end);
+    for (    SPTEdge e : path.edges) {
+      if (e.payload instanceof PatternBoard) {
+        assertFalse(e.getName().equals(line));
+        boolean foundMaxLine=false;
+        for (int j=0; j < maxLines.length; ++j) {
+          if (j != i) {
+            if (e.getName().equals(maxLines[j])) {
+              foundMaxLine=true;
+            }
+          }
+        }
+        assertTrue(foundMaxLine);
+      }
+    }
+    options.bannedRoutes.clear();
+  }
+}

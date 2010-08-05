@@ -80,6 +80,9 @@
       }
       Vertex tov=edge.getToVertex();
       double new_w=spt_u.weightSum + wr.weight;
+      if (new_w > options.maxWeight || wr.state.getTime() > options.worstTime) {
+        continue;
+      }
       SPTVertex spt_v=spt.addVertex(tov,wr.state,new_w,options);
       if (spt_v != null) {
         spt_v.setParent(spt_u,edge);

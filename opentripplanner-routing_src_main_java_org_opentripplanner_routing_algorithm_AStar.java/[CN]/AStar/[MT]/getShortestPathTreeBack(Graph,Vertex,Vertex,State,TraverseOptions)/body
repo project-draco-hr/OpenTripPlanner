@@ -1,6 +1,6 @@
 {
-  if (!options.back) {
-    throw new RuntimeException("Reverse paths must set options.back");
+  if (!options.getArriveBy()) {
+    throw new RuntimeException("Reverse paths must call options.getArriveBy(true)");
   }
   if (origin == null || target == null) {
     return null;
@@ -88,6 +88,9 @@
       Vertex fromv=edge.getFromVertex();
       distance=fromv.fastDistance(target) / max_speed;
       double new_w=spt_u.weightSum + wr.weight;
+      if (new_w > options.maxWeight || wr.state.getTime() < options.worstTime) {
+        continue;
+      }
       spt_v=spt.addVertex(fromv,wr.state,new_w,options);
       if (spt_v != null) {
         spt_v.setParent(spt_u,edge);

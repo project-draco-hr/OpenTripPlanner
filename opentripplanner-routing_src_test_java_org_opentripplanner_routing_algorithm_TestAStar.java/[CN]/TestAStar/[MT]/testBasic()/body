@@ -12,7 +12,7 @@
   path=spt.getPath(gg.getVertex("Caltrain_Mountain View Caltrain"));
   long endTime=new GregorianCalendar(2009,8,7,13,29).getTimeInMillis();
   assertEquals(path.vertices.lastElement().state.getTime(),endTime);
-  options.back=true;
+  options.setArriveBy(true);
   spt=AStar.getShortestPathTreeBack(gg,"Caltrain_Millbrae Caltrain","Caltrain_Mountain View Caltrain",new State(endTime),options);
   path=spt.getPath(gg.getVertex("Caltrain_Millbrae Caltrain"));
   long expectedStartTime=new GregorianCalendar(2009,8,7,12,39).getTimeInMillis();

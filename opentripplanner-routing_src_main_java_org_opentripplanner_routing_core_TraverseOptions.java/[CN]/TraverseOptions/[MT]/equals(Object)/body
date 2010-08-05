@@ -1,7 +1,7 @@
 {
   if (o instanceof TraverseOptions) {
     TraverseOptions to=(TraverseOptions)o;
-    return speed == to.speed && modes.equals(to.modes) && back == to.back && wheelchairAccessible == to.wheelchairAccessible && optimizeFor == to.optimizeFor && maxWalkDistance == to.maxWalkDistance && optimizeTransferPenalty == to.optimizeTransferPenalty && maxSlope == to.maxSlope && walkReluctance == to.walkReluctance && boardCost == to.boardCost && bannedRoutes.equals(to.bannedRoutes);
+    return speed == to.speed && maxWeight == to.maxWeight && worstTime == to.worstTime && modes.equals(to.modes) && getArriveBy() == to.getArriveBy() && wheelchairAccessible == to.wheelchairAccessible && optimizeFor == to.optimizeFor && maxWalkDistance == to.maxWalkDistance && optimizeTransferPenalty == to.optimizeTransferPenalty && maxSlope == to.maxSlope && walkReluctance == to.walkReluctance && boardCost == to.boardCost && bannedRoutes.equals(to.bannedRoutes);
   }
   return false;
 }
