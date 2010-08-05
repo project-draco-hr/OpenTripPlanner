@@ -6,10 +6,10 @@
   try {
     List<String> intermediates=request.getIntermediatePlaces();
     if (intermediates.size() == 0) {
-      paths=pathservice.plan(request.getFrom(),request.getTo(),request.getDateTime(),options);
+      paths=pathservice.plan(request.getFrom(),request.getTo(),request.getDateTime(),options,request.getNumItineraries());
       if (paths == null && request.getWheelchair()) {
         options.maxSlope=Double.MAX_VALUE;
-        paths=pathservice.plan(request.getFrom(),request.getTo(),request.getDateTime(),options);
+        paths=pathservice.plan(request.getFrom(),request.getTo(),request.getDateTime(),options,request.getNumItineraries());
         tooSloped=true;
       }
     }

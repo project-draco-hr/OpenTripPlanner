@@ -1,0 +1,52 @@
+{
+  ArrayList<String> notFound=new ArrayList<String>();
+  Vertex fromVertex=getVertexForPlace(fromPlace,options);
+  if (fromVertex == null) {
+    notFound.add("from");
+  }
+  Vertex toVertex=getVertexForPlace(toPlace,options);
+  if (toVertex == null) {
+    notFound.add("to");
+  }
+  if (notFound.size() > 0) {
+    throw new VertexNotFoundException(notFound);
+  }
+  State state=new State(targetTime.getTime());
+  if (_calendarService != null)   options.setCalendarService(_calendarService);
+  HashSet<GraphPath> paths=new HashSet<GraphPath>();
+  Queue<TraverseOptions> optionQueue=new LinkedList<TraverseOptions>();
+  optionQueue.add(options);
+  if (options.modes.getTrainish() && options.modes.contains(TraverseMode.BUS)) {
+    TraverseOptions busOnly=options.clone();
+    busOnly.modes=options.modes.clone();
+    busOnly.modes.setTrainish(false);
+  }
+  optionQueue.add(options);
+  while (paths.size() < nItineraries) {
+    options=optionQueue.poll();
+    if (options == null) {
+      break;
+    }
+    GraphPath path=_routingService.route(fromVertex,toVertex,state,options);
+    if (path == null) {
+      continue;
+    }
+    paths.add(path);
+    for (    SPTEdge spte : path.edges) {
+      Edge e=spte.payload;
+      if (e instanceof PatternBoard) {
+        Trip trip=spte.getTrip();
+        RouteSpec spec=new RouteSpec(trip.getId().getAgencyId(),GtfsLibrary.getRouteName(trip.getRoute()));
+        TraverseOptions newOptions=options.clone();
+        newOptions.bannedRoutes.add(spec);
+        if (!optionQueue.contains(newOptions)) {
+          optionQueue.add(newOptions);
+        }
+      }
+    }
+  }
+  if (paths.size() == 0) {
+    return null;
+  }
+  return new ArrayList<GraphPath>(paths);
+}
