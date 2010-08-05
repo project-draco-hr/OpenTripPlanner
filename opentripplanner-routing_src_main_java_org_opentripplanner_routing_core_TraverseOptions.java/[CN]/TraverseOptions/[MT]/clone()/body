@@ -1,0 +1,10 @@
+{
+  try {
+    TraverseOptions clone=(TraverseOptions)super.clone();
+    clone.bannedRoutes=(HashSet<RouteSpec>)bannedRoutes.clone();
+    return clone;
+  }
+ catch (  CloneNotSupportedException e) {
+    throw new RuntimeException(e);
+  }
+}

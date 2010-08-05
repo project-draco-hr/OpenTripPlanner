@@ -31,7 +31,15 @@
   State state1=state0.clone();
   state1.setPattern(patternIndex);
   state1.incrementTimeInSeconds(wait);
-  state1.tripId=getPattern().getTrip(patternIndex).getId();
+  Trip trip=getPattern().getTrip(patternIndex);
+  if (options.bannedRoutes != null) {
+    Route route=trip.getRoute();
+    RouteSpec spec=new RouteSpec(route.getId().getAgencyId(),GtfsLibrary.getRouteName(route));
+    if (options.bannedRoutes.contains(spec)) {
+      return null;
+    }
+  }
+  state1.tripId=trip.getId();
   state1.setZoneAndRoute(getPattern().getZone(stopIndex),getPattern().getExemplar().getRoute().getId(),getPattern().getFareContext());
   long transfer_penalty=0;
   if (options.optimizeFor == OptimizeType.TRANSFERS && state0.getTrip() != -1) {
