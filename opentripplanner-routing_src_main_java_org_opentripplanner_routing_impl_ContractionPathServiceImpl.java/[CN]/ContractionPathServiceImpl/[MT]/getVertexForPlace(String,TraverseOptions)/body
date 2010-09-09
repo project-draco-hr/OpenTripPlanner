@@ -4,7 +4,7 @@
     double lat=Double.parseDouble(matcher.group(1));
     double lon=Double.parseDouble(matcher.group(4));
     Coordinate location=new Coordinate(lon,lat);
-    return _indexService.getClosestVertex(hierarchies.getGraph(),location,options);
+    return _indexService.getClosestVertex(hierarchies.getGraph(),location,options,true);
   }
   return hierarchies.getVertex(place);
 }

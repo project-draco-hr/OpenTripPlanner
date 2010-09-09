@@ -33,6 +33,9 @@
     options.maxWeight=maxWeight;
     GraphPath path=_routingService.route(fromVertex,toVertex,state,options);
     if (maxWeight == Double.MAX_VALUE) {
+      if (path == null) {
+        return null;
+      }
       maxWeight=path.vertices.lastElement().weightSum * 2;
       long tripTime=path.vertices.lastElement().state.getTime() - path.vertices.firstElement().state.getTime();
       if (options.getArriveBy()) {
@@ -45,16 +48,19 @@
     if (path == null) {
       continue;
     }
-    paths.add(path);
-    for (    SPTEdge spte : path.edges) {
-      Edge e=spte.payload;
-      if (e instanceof PatternBoard) {
-        Trip trip=spte.getTrip();
-        RouteSpec spec=new RouteSpec(trip.getId().getAgencyId(),GtfsLibrary.getRouteName(trip.getRoute()));
-        TraverseOptions newOptions=options.clone();
-        newOptions.bannedRoutes.add(spec);
-        if (!optionQueue.contains(newOptions)) {
-          optionQueue.add(newOptions);
+    if (!paths.contains(path)) {
+      paths.add(path);
+      for (      SPTEdge spte : path.edges) {
+        Edge e=spte.payload;
+        if (e instanceof PatternBoard) {
+          Trip trip=spte.getTrip();
+          String routeName=GtfsLibrary.getRouteName(trip.getRoute());
+          RouteSpec spec=new RouteSpec(trip.getId().getAgencyId(),routeName);
+          TraverseOptions newOptions=options.clone();
+          newOptions.bannedRoutes.add(spec);
+          if (!optionQueue.contains(newOptions)) {
+            optionQueue.add(newOptions);
+          }
         }
       }
     }

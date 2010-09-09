@@ -49,11 +49,13 @@
         Coordinate start=fromv.getCoordinate();
         Coordinate end=tov.getCoordinate();
         Coordinate nearestPoint=location.getCoordinate(g);
-        if (nearestPoint.distance(start) < MAX_SNAP_DISTANCE) {
-          return fromv;
-        }
- else         if (nearestPoint.distance(end) < MAX_SNAP_DISTANCE) {
-          return tov;
+        if (allowSnappingToIntersections) {
+          if (nearestPoint.distance(start) < MAX_SNAP_DISTANCE) {
+            return fromv;
+          }
+ else           if (nearestPoint.distance(end) < MAX_SNAP_DISTANCE) {
+            return tov;
+          }
         }
         List<Edge> parallel=new LinkedList<Edge>();
         for (        Edge e : nearby) {

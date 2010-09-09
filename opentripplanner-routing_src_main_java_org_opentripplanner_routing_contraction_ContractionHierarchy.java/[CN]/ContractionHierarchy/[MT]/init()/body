@@ -9,6 +9,7 @@
   int hopLimit=1;
   FibHeap<Vertex> pq=initPriorityQueue(graph,hopLimit);
   _log.debug("contract");
+  long lastNotified=System.currentTimeMillis();
   int i=0;
   int nVertices=pq.size();
   int totalVertices=nVertices;
@@ -42,8 +43,10 @@
       }
       shortcutsAndSearchSpace=getShortcuts(vertex,hopLimit,false);
     }
-    if (i % 1000 == 0 || totalVertices - i < 1000) {
-      _log.debug("contracted: " + i + " / "+ totalVertices+ "  total time: "+ (System.currentTimeMillis() - start) / 1000.0 + " average degree " + nEdges / (nVertices + 0.00001));
+    long now=System.currentTimeMillis();
+    if (now - lastNotified > 5000) {
+      _log.debug("contracted: " + i + " / "+ totalVertices+ "  total time: "+ (now - start) / 1000.0 + " average degree " + nEdges / (nVertices + 0.00001));
+      lastNotified=now;
     }
     GraphVertex downVertex=down.getGraphVertex(down.addVertex(vertex));
     HashSet<Vertex> neighbors=new HashSet<Vertex>();
@@ -104,5 +107,6 @@
       pq=rebuildPriorityQueue(options,hopLimit,deletedNeighbors);
     }
   }
+  threadPool.shutdownNow();
   threadPool=null;
 }

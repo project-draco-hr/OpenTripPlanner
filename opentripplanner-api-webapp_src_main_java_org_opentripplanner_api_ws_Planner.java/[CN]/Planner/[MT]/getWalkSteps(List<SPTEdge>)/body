@@ -33,7 +33,7 @@
       if (direction == RelativeDirection.CONTINUE) {
         if (step.elevation != null) {
           String s=encodeElevationProfile(edge,distance);
-          if (step.elevation.length() > 0 && s != null)           step.elevation+=",";
+          if (step.elevation.length() > 0 && s != null && s.length() > 0)           step.elevation+=",";
           step.elevation+=s;
         }
         distance+=edge.getDistance();
