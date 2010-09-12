@@ -18,6 +18,7 @@
   path=spt.getPath(gg.getVertex("TriMet_1252"));
   assertNotNull(path);
   cost=path.getCost();
+  options.maxTransfers=5;
   startTime=new GregorianCalendar(2009,11,1,14,0,0).getTimeInMillis();
   spt=AStar.getShortestPathTree(gg,"TriMet_10428","TriMet_4231",new State(startTime),options);
   path=spt.getPath(gg.getVertex("TriMet_4231"));

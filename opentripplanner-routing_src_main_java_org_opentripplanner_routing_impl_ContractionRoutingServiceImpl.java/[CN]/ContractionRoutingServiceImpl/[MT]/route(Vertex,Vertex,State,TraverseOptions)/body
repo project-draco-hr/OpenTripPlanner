@@ -1,8 +1,9 @@
 {
-  ContractionHierarchy hierarchy=hierarchies.getHierarchy(options);
+  ContractionHierarchy hierarchy=null;
+  hierarchy=hierarchies.getHierarchy(options);
   if (hierarchy == null) {
     Graph _graph=hierarchies.getGraph();
-    if (options.getArriveBy()) {
+    if (options.isArriveBy()) {
       ShortestPathTree spt=AStar.getShortestPathTreeBack(_graph,fromVertex,toVertex,state,options);
       if (spt == null) {
         return null;

@@ -7,10 +7,7 @@
   StreetLocation end=StreetLocation.createStreetLocation(graph,"end","end",endTurns,new LinearLocation(0,0.8).getCoordinate(right.getGeometry()));
   assertTrue(start.getX() < end.getX());
   assertTrue(start.getY() < end.getY());
-  ArrayList<Edge> extra=new ArrayList<Edge>();
-  for (  Edge e : end.getExtra()) {
-    extra.add(e);
-  }
+  List<Edge> extra=end.getExtra();
   assertEquals(12,extra.size());
   GregorianCalendar startTime=new GregorianCalendar(2009,11,1,12,34,25);
   ShortestPathTree spt1=AStar.getShortestPathTree(graph,brOut,end,new State(startTime.getTimeInMillis()),new TraverseOptions());

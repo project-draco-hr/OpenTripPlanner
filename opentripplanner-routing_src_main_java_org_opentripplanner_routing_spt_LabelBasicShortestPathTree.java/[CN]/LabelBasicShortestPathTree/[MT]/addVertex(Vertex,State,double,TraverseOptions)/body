@@ -1,8 +1,8 @@
 {
-  SPTVertex ret=this.vertices.get(vv.getLabel());
+  SPTVertex ret=vertices.get(vv.getLabel());
   if (ret == null) {
     ret=new SPTVertex(vv,ss,weightSum,options);
-    this.vertices.put(vv.getLabel(),ret);
+    vertices.put(vv.getLabel(),ret);
   }
  else {
     if (weightSum < ret.weightSum) {

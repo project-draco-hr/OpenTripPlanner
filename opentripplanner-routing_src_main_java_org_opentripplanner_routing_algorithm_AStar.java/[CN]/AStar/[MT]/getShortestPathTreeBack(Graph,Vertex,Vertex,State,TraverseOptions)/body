@@ -1,5 +1,5 @@
 {
-  if (!options.getArriveBy()) {
+  if (!options.isArriveBy()) {
     throw new RuntimeException("Reverse paths must call options.getArriveBy(true)");
   }
   if (origin == null || target == null) {
@@ -52,11 +52,14 @@
   SPTVertex spt_origin=spt.addVertex(origin,init,0,options);
   FibHeap<SPTVertex> pq=new FibHeap<SPTVertex>(graph.getVertices().size() + extraEdges.size());
   pq.insert(spt_origin,spt_origin.weightSum + distance);
+  boolean useTransit=options.modes.getTransit();
+  HashSet<Vertex> closed=new HashSet<Vertex>(100000);
   SPTVertex spt_u, spt_v;
   while (!pq.empty()) {
     spt_u=pq.extract_min();
     Vertex tov=spt_u.mirror;
     if (tov == target)     break;
+    closed.add(tov);
     GraphVertex gv=graph.getGraphVertex(tov);
     Collection<Edge> incoming;
     if (gv == null) {
@@ -68,7 +71,7 @@
     if (extraEdges.containsKey(tov)) {
       List<Edge> newIncoming=new ArrayList<Edge>();
       for (      Edge edge : incoming)       newIncoming.add(edge);
-      newIncoming.addAll(extraEdges.get(spt_u.mirror));
+      newIncoming.addAll(extraEdges.get(tov));
       incoming=newIncoming;
     }
     for (    Edge edge : incoming) {
@@ -78,6 +81,12 @@
         state.lastEdgeWasStreet=false;
         state.justTransferred=spt_u.state.justTransferred;
       }
+ else       if (edge instanceof OutEdge) {
+        continue;
+      }
+      if (edge instanceof PatternAlight && state.numBoardings > options.maxTransfers) {
+        continue;
+      }
       TraverseResult wr=edge.traverseBack(state,options);
       if (wr == null) {
         continue;
@@ -86,15 +95,21 @@
         throw new NegativeWeightException(String.valueOf(wr.weight) + " on edge " + edge);
       }
       Vertex fromv=edge.getFromVertex();
-      distance=fromv.fastDistance(target) / max_speed;
       double new_w=spt_u.weightSum + wr.weight;
-      if (new_w > options.maxWeight || wr.state.getTime() < options.worstTime) {
+      distance=tov.fastDistance(target) / max_speed;
+      if (useTransit) {
+        distance=Math.min(distance + options.boardCost,options.walkReluctance * tov.fastDistance(target) / options.speed);
+      }
+      double heuristic_distance=new_w + distance;
+      if (heuristic_distance > options.maxWeight || wr.state.getTime() < options.worstTime) {
         continue;
       }
       spt_v=spt.addVertex(fromv,wr.state,new_w,options);
       if (spt_v != null) {
         spt_v.setParent(spt_u,edge);
-        pq.insert_or_dec_key(spt_v,new_w + distance);
+        if (!closed.contains(fromv)) {
+          pq.insert_or_dec_key(spt_v,heuristic_distance);
+        }
       }
     }
   }

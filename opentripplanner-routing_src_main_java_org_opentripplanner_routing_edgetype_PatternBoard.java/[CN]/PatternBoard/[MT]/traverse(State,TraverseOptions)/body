@@ -31,6 +31,7 @@
   State state1=state0.clone();
   state1.setPattern(patternIndex);
   state1.incrementTimeInSeconds(wait);
+  state1.numBoardings+=1;
   Trip trip=getPattern().getTrip(patternIndex);
   if (options.bannedRoutes != null) {
     Route route=trip.getRoute();

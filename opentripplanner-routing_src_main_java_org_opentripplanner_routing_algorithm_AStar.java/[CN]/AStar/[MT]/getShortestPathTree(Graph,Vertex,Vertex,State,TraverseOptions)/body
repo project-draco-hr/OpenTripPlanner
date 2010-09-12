@@ -46,48 +46,83 @@
   SPTVertex spt_origin=spt.addVertex(origin,init,0,options);
   FibHeap<SPTVertex> pq=new FibHeap<SPTVertex>(graph.getVertices().size() + extraEdges.size());
   pq.insert(spt_origin,spt_origin.weightSum + distance);
+  boolean useTransit=options.modes.getTransit();
+  HashSet<Vertex> closed=new HashSet<Vertex>(100000);
   while (!pq.empty()) {
     SPTVertex spt_u=pq.extract_min();
     Vertex fromv=spt_u.mirror;
-    if (fromv == target)     break;
-    GraphVertex gv=graph.getGraphVertex(spt_u.mirror);
+    if (fromv == target) {
+      break;
+    }
+    closed.add(fromv);
+    GraphVertex gv=graph.getGraphVertex(fromv);
     Collection<Edge> outgoing;
     if (gv == null) {
-      outgoing=new ArrayList<Edge>();
+      outgoing=new ArrayList<Edge>(1);
     }
  else {
       outgoing=gv.getOutgoing();
     }
-    if (extraEdges.containsKey(spt_u.mirror)) {
+    if (extraEdges.containsKey(fromv)) {
       List<Edge> newOutgoing=new ArrayList<Edge>();
       for (      Edge edge : outgoing)       newOutgoing.add(edge);
-      newOutgoing.addAll(extraEdges.get(spt_u.mirror));
+      newOutgoing.addAll(extraEdges.get(fromv));
       outgoing=newOutgoing;
+    }
+    if (fromv instanceof StreetLocation) {
+      StreetLocation sl=(StreetLocation)fromv;
+      List<Edge> extra=sl.getExtra();
+      if (extra.size() > 0) {
+        List<Edge> newOutgoing=new ArrayList<Edge>(outgoing.size() + extra.size());
+        for (        Edge edge : outgoing)         newOutgoing.add(edge);
+        newOutgoing.addAll(extra);
+        outgoing=newOutgoing;
+      }
     }
     for (    Edge edge : outgoing) {
       State state=spt_u.state;
-      if (edge.getToVertex() == target) {
+      Vertex tov=edge.getToVertex();
+      if (tov == target) {
         state=state.clone();
         state.lastEdgeWasStreet=false;
         state.justTransferred=spt_u.state.justTransferred;
       }
+ else       if (edge instanceof OutEdge) {
+        continue;
+      }
+      if (edge instanceof PatternBoard && state.numBoardings > options.maxTransfers) {
+        continue;
+      }
       TraverseResult wr=edge.traverse(state,options);
       if (wr == null) {
+        wr=edge.traverse(state,options);
         continue;
       }
       if (wr.weight < 0) {
         throw new NegativeWeightException(String.valueOf(wr.weight));
       }
-      Vertex tov=edge.getToVertex();
       double new_w=spt_u.weightSum + wr.weight;
-      if (new_w > options.maxWeight || wr.state.getTime() > options.worstTime) {
+      distance=tov.fastDistance(target) / max_speed;
+      if (useTransit) {
+        int boardCost;
+        if (edge instanceof PatternHop || edge instanceof PatternBoard || edge instanceof PatternDwell|| edge instanceof PatternInterlineDwell|| edge instanceof Board|| edge instanceof Hop) {
+          boardCost=0;
+        }
+ else {
+          boardCost=options.boardCost;
+        }
+        distance=Math.min(distance + boardCost,options.walkReluctance * tov.fastDistance(target) / options.speed);
+      }
+      double heuristic_distance=new_w + distance;
+      if (heuristic_distance > options.maxWeight || wr.state.getTime() > options.worstTime) {
         continue;
       }
       SPTVertex spt_v=spt.addVertex(tov,wr.state,new_w,options);
       if (spt_v != null) {
         spt_v.setParent(spt_u,edge);
-        distance=tov.fastDistance(target) / max_speed;
-        pq.insert_or_dec_key(spt_v,new_w + distance);
+        if (!closed.contains(tov)) {
+          pq.insert_or_dec_key(spt_v,heuristic_distance);
+        }
       }
     }
   }

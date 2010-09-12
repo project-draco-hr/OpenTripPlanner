@@ -11,8 +11,8 @@
   upqueue.insert(spt_origin,spt_origin.weightSum);
   SPTVertex spt_target=downspt.addVertex(target,init,0,options);
   downqueue.insert(spt_target,spt_target.weightSum);
-  HashSet<Vertex> upclosed=new HashSet<Vertex>();
-  HashSet<Vertex> downclosed=new HashSet<Vertex>();
+  HashSet<Vertex> upclosed=new HashSet<Vertex>(10000);
+  HashSet<Vertex> downclosed=new HashSet<Vertex>(10000);
   Vertex meeting=null;
   double bestMeetingCost=Double.POSITIVE_INFINITY;
   boolean done_up=false;
@@ -40,7 +40,7 @@
         continue;
       }
       GraphVertex fromgv=graph.getGraphVertex(fromLabel);
-      if (options.getArriveBy() && fromgv != null) {
+      if (options.isArriveBy() && fromgv != null) {
         continue;
       }
       Collection<Edge> outgoing=null;
@@ -74,6 +74,12 @@
         if (upclosed.contains(toVertex)) {
           continue;
         }
+        if (edge instanceof OutEdge) {
+          continue;
+        }
+        if (edge instanceof PatternBoard && state.numBoardings > 2) {
+          continue;
+        }
         TraverseResult wr=edge.traverse(state,options);
         if (wr == null) {
           continue;
@@ -85,7 +91,7 @@
         if (new_w > options.maxWeight) {
           continue;
         }
-        if (!options.getArriveBy() && wr.state.getTime() > options.worstTime) {
+        if (!options.isArriveBy() && wr.state.getTime() > options.worstTime) {
           continue;
         }
         SPTVertex up_v=upspt.addVertex(toVertex,wr.state,new_w,options);
@@ -116,7 +122,7 @@
       }
       downclosed.add(tov);
       GraphVertex maingv=graph.getGraphVertex(toLabel);
-      if (!options.getArriveBy() && maingv != null) {
+      if (!options.isArriveBy() && maingv != null) {
         continue;
       }
       GraphVertex downgv=down.getGraphVertex(tov);
@@ -150,6 +156,12 @@
         if (downclosed.contains(fromVertex)) {
           continue;
         }
+        if (edge instanceof OutEdge) {
+          continue;
+        }
+        if (edge instanceof PatternBoard && state.numBoardings > 2) {
+          continue;
+        }
         TraverseResult wr=edge.traverseBack(state,options);
         if (wr == null) {
           continue;
@@ -161,7 +173,7 @@
         if (new_w > options.maxWeight) {
           continue;
         }
-        if (options.getArriveBy() && wr.state.getTime() < options.worstTime) {
+        if (options.isArriveBy() && wr.state.getTime() < options.worstTime) {
           continue;
         }
         SPTVertex down_v=downspt.addVertex(fromVertex,wr.state,new_w,options);
@@ -191,7 +203,7 @@
     return null;
   }
   path.edges=flatten(path.edges);
-  if (options.getArriveBy()) {
+  if (options.isArriveBy()) {
     cleanPathEdgesBack(init,path,options);
   }
  else {
