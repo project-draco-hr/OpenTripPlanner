@@ -5,10 +5,10 @@
   StreetLocation start=(StreetLocation)finder.getClosestVertex(graph,new Coordinate(-74.1,40.04),null);
   assertNotNull(start);
   List<Edge> extra=start.getExtra();
-  assertEquals(12,extra.size());
+  assertEquals(5,extra.size());
   TraverseOptions biking=new TraverseOptions(new TraverseModeSet(TraverseMode.BICYCLE));
   StreetLocation end=(StreetLocation)finder.getClosestVertex(graph,new Coordinate(-74.0,40.08),biking);
   assertNotNull(end);
   extra=end.getExtra();
-  assertEquals(6,extra.size());
+  assertEquals(5,extra.size());
 }

@@ -57,20 +57,25 @@
             return tov;
           }
         }
-        List<Edge> parallel=new LinkedList<Edge>();
+        TreeMap<Double,Edge> parallel=new TreeMap<Double,Edge>();
         for (        Edge e : nearby) {
-          if (e == null || (options != null && e instanceof StreetEdge && !((StreetEdge)e).canTraverse(options))) {
+          if (e == null) {
             continue;
+          }
+          if (options != null && e instanceof StreetEdge) {
+            if (!((StreetEdge)e).canTraverse(options)) {
+              continue;
+            }
           }
           Geometry eg=e.getGeometry();
           if (eg != null) {
             double distance=eg.distance(p);
             if (distance <= bestDistance + DISTANCE_ERROR) {
-              parallel.add(e);
+              parallel.put(distance,e);
             }
           }
         }
-        return StreetLocation.createStreetLocation(graph,bestStreet.getName() + "_" + c.toString(),bestStreet.getName(),parallel,nearestPoint);
+        return StreetLocation.createStreetLocation(graph,bestStreet.getName() + "_" + c.toString(),bestStreet.getName(),parallel.values(),nearestPoint);
       }
     }
   }
