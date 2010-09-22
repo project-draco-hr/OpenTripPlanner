@@ -12,26 +12,25 @@
   leftPanel.add(vertexDataPanel,BorderLayout.CENTER);
   JLabel nvLabel=new JLabel("Vertices");
   vertexDataPanel.add(nvLabel);
-  nearbyVertices=new JList();
-  nearbyVertices.setPrototypeCellValue("Bite the wax tadpole right on the nose");
+  nearbyVertices=new JList<DisplayVertex>();
   nearbyVertices.setVisibleRowCount(4);
   JScrollPane nvScrollPane=new JScrollPane(nearbyVertices);
   vertexDataPanel.add(nvScrollPane);
   JLabel ogeLabel=new JLabel("Outgoing edges");
   vertexDataPanel.add(ogeLabel);
-  outgoingEdges=new JList();
+  outgoingEdges=new JList<Edge>();
   outgoingEdges.setVisibleRowCount(4);
   JScrollPane ogeScrollPane=new JScrollPane(outgoingEdges);
   vertexDataPanel.add(ogeScrollPane);
   JLabel iceLabel=new JLabel("Incoming edges");
   vertexDataPanel.add(iceLabel);
-  incomingEdges=new JList();
+  incomingEdges=new JList<Edge>();
   JScrollPane iceScrollPane=new JScrollPane(incomingEdges);
   vertexDataPanel.add(iceScrollPane);
   ListSelectionListener edgeChanged=new ListSelectionListener(){
     public void valueChanged(    ListSelectionEvent e){
-      JList edgeList=(JList)e.getSource();
-      Edge selected=(Edge)edgeList.getSelectedValue();
+      JList<Edge> edgeList=(JList<Edge>)e.getSource();
+      Edge selected=edgeList.getSelectedValue();
       if (selected == null) {
         departurePattern.removeAll();
         return;
@@ -53,7 +52,7 @@
             break;
           }
         }
-        showGraph.setHighlighed(vertices);
+        showGraph.setHighlighted(vertices);
       }
       VertexList nearbyModel=(VertexList)nearbyVertices.getModel();
       List<Vertex> vertices=nearbyModel.selected;
@@ -109,7 +108,7 @@ catch (        IllegalAccessException e1) {
         departurePattern.removeAll();
         return;
       }
-      ListModel model=new TripPatternListModel(pattern,stopIndex);
+      ListModel<String> model=new TripPatternListModel(pattern,stopIndex);
       departurePattern.setModel(model);
       Trip trip=pattern.getExemplar();
       serviceIdLabel.setText(trip.getServiceId().toString());
@@ -122,7 +121,7 @@ catch (        IllegalAccessException e1) {
     public void valueChanged(    ListSelectionEvent e){
       outgoingEdges.removeAll();
       incomingEdges.removeAll();
-      DisplayVertex selected=(DisplayVertex)nearbyVertices.getSelectedValue();
+      DisplayVertex selected=nearbyVertices.getSelectedValue();
       if (selected != null) {
         Vertex nowSelected=selected.vertex;
         showGraph.highlightVertex(nowSelected);
@@ -175,7 +174,7 @@ catch (        IllegalAccessException e1) {
   buttonPanel.add(zoomToLocationButton);
   JButton zoomOutButton=new JButton("Zoom out");
   zoomOutButton.addActionListener(new ActionListener(){
-    @Override public void actionPerformed(    ActionEvent e){
+    public void actionPerformed(    ActionEvent e){
       showGraph.zoomOut();
     }
   }
@@ -256,12 +255,12 @@ catch (        IllegalAccessException e1) {
   rightPanel.add(rightPanelTabs,BorderLayout.CENTER);
   serviceIdLabel=new JLabel("[service id]");
   rightPanel.add(serviceIdLabel,BorderLayout.PAGE_END);
-  departurePattern=new JList();
+  departurePattern=new JList<String>();
   departurePattern.setPrototypeCellValue("Bite the wax tadpole right on the nose");
   JScrollPane dpScrollPane=new JScrollPane(departurePattern);
   rightPanelTabs.addTab("trip pattern",dpScrollPane);
-  JList metadataList=new JList();
-  metadataModel=new DefaultListModel();
+  JList<String> metadataList=new JList<String>();
+  metadataModel=new DefaultListModel<String>();
   metadataList.setModel(metadataModel);
   metadataList.setPrototypeCellValue("bicycleSafetyEffectiveLength : 10.42468803");
   JScrollPane mdScrollPane=new JScrollPane(metadataList);

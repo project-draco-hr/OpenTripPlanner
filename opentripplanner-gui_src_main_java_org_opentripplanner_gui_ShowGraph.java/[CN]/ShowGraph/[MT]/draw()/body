@@ -5,11 +5,14 @@
   List<Edge> edges=(List<Edge>)edgeIndex.query(modelBounds);
   for (  Edge e : edges) {
     if (e == highlightedEdge)     continue;
-    if (e instanceof StreetTransitLink) {
+    if (e instanceof OutEdge || e instanceof TurnEdge) {
+      stroke(30,255,255);
+    }
+ else     if (e instanceof StreetTransitLink) {
       stroke(75,150,255);
     }
  else {
-      stroke(30,255,255);
+      stroke(255,255,30);
     }
     Coordinate[] coords=e.getGeometry().getCoordinates();
     for (int i=1; i < coords.length; i++) {
@@ -39,9 +42,9 @@
       ellipse(x,y,5.0,5.0);
     }
  else     if (highlightedVertices.contains(v)) {
-      stroke(0,255,0);
-      fill(0,255,0);
-      ellipse(x,y,3.0,3.0);
+      stroke(255,127,0);
+      fill(255,127,0);
+      ellipse(x,y,5.0,5.0);
     }
  else {
       stroke(255);

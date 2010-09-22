@@ -1,24 +1,28 @@
 {
-  HashSet<Vertex> seenVertices=new HashSet<Vertex>();
   DisplayVertex selected=(DisplayVertex)nearbyVertices.getSelectedValue();
   if (selected == null) {
-    System.out.println("no vertex selected");
     return;
   }
   Vertex v=selected.vertex;
-  System.out.println("initial vertex: " + v);
-  Queue<Vertex> toExplore=new LinkedList<Vertex>();
-  toExplore.add(v);
-  seenVertices.add(v);
-  while (!toExplore.isEmpty()) {
-    Vertex src=toExplore.poll();
-    for (    Edge e : graph.getOutgoing(src)) {
-      Vertex tov=e.getToVertex();
-      if (!seenVertices.contains(tov)) {
-        seenVertices.add(tov);
-        toExplore.add(tov);
+  if (tracingVertex != v) {
+    tracingVertex=v;
+    closed=new HashSet<Vertex>();
+    open=new HashSet<Vertex>();
+    open.add(v);
+    seen=new HashSet<Vertex>();
+  }
+  HashSet<Vertex> newOpen=new HashSet<Vertex>();
+  for (  Vertex v2 : open) {
+    closed.add(v2);
+    for (    Edge e : graph.getOutgoing(v2)) {
+      Vertex target=e.getToVertex();
+      if (closed.contains(target)) {
+        continue;
       }
+      newOpen.add(target);
     }
   }
-  showGraph.setHighlighed(seenVertices);
+  seen.addAll(newOpen);
+  open=newOpen;
+  showGraph.setHighlighted(seen);
 }
