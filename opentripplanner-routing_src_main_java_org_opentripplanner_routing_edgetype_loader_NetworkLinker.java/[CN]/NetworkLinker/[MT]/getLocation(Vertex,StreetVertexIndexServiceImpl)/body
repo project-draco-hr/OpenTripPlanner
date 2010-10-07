@@ -1,0 +1,17 @@
+{
+  Coordinate coordinate=v.getCoordinate();
+  List<Vertex> atIntersection=index.getIntersectionAt(coordinate);
+  if (atIntersection != null) {
+    Vertex linked=new GenericVertex("link for " + v.getStopId(),coordinate.x,coordinate.y);
+    graph.addVertex(linked);
+    for (    Vertex i : atIntersection) {
+      graph.addEdge(new FreeEdge(linked,i));
+    }
+    return linked;
+  }
+  Collection<Edge> edges=index.getClosestEdges(coordinate,null);
+  if (edges == null || edges.size() < 2) {
+    return null;
+  }
+  return createVertex("link for " + v.getStopId(),edges,coordinate);
+}

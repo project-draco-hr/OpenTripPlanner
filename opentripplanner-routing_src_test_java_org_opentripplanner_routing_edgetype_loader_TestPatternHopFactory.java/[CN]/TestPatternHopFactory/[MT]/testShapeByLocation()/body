@@ -1,9 +1,9 @@
 {
-  Vertex stop_g=graph.getVertex("agency_G");
+  Vertex stop_g=graph.getVertex("agency_G_depart");
   Edge hop=getHopOut(stop_g);
   Geometry geometry=hop.getGeometry();
   assertTrue(geometry.getLength() > 1.0);
-  Vertex stop_a=graph.getVertex("agency_A");
+  Vertex stop_a=graph.getVertex("agency_A_depart");
   hop=getHopOut(stop_a);
   geometry=hop.getGeometry();
   assertTrue(geometry.getLength() > 0.009999);

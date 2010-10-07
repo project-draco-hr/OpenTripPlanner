@@ -36,18 +36,18 @@
         return;
       }
       showGraph.highlightEdge(selected);
-      if (selected instanceof TurnEdge) {
+      if (selected instanceof TurnEdge || selected instanceof PlainStreetEdge) {
         HashSet<Vertex> vertices=new HashSet<Vertex>();
         Vertex tov=selected.getToVertex();
         for (        Edge og : graph.getOutgoing(tov)) {
-          if (og instanceof TurnEdge) {
+          if (og instanceof TurnEdge || og instanceof PlainStreetEdge) {
             vertices.add(og.getToVertex());
             break;
           }
         }
         Vertex fromv=selected.getFromVertex();
         for (        Edge ic : graph.getIncoming(fromv)) {
-          if (ic instanceof TurnEdge) {
+          if (ic instanceof TurnEdge || ic instanceof PlainStreetEdge) {
             vertices.add(ic.getFromVertex());
             break;
           }

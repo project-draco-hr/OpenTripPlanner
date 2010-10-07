@@ -1,0 +1,23 @@
+{
+  List<Vertex> vertices=getIntersectionAt(coordinate);
+  if (vertices != null && !vertices.isEmpty()) {
+    StreetLocation closest=new StreetLocation("corner " + Math.random(),coordinate,"");
+    for (    Vertex v : vertices) {
+      Edge e=new FreeEdge(closest,v);
+      closest.getExtra().add(e);
+      e=new FreeEdge(v,closest);
+      closest.getExtra().add(e);
+    }
+    return closest;
+  }
+  Collection<Edge> edges=getClosestEdges(coordinate,options);
+  if (edges != null) {
+    Edge bestStreet=edges.iterator().next();
+    Geometry g=bestStreet.getGeometry();
+    LocationIndexedLine l=new LocationIndexedLine(g);
+    LinearLocation location=l.project(coordinate);
+    Coordinate nearestPoint=location.getCoordinate(g);
+    return StreetLocation.createStreetLocation(graph,bestStreet.getName() + "_" + coordinate.toString(),bestStreet.getName(),edges,nearestPoint);
+  }
+  return null;
+}

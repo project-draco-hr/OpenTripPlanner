@@ -1,5 +1,12 @@
 {
   Envelope env=new Envelope(c);
-  env.expandBy(distance);
-  return transitStopTree.query(env);
+  env.expandBy(DistanceLibrary.metersToDegrees(distance));
+  List<Vertex> nearby=transitStopTree.query(env);
+  List<Vertex> results=new ArrayList<Vertex>();
+  for (  Vertex v : nearby) {
+    if (v.distance(c) <= distance) {
+      results.add(v);
+    }
+  }
+  return results;
 }

@@ -1,6 +1,6 @@
 {
   if (!options.isArriveBy()) {
-    throw new RuntimeException("Reverse paths must call options.getArriveBy(true)");
+    throw new RuntimeException("Reverse paths must call options.setArriveBy(true)");
   }
   if (origin == null || target == null) {
     return null;
@@ -79,10 +79,6 @@
       if (edge.getFromVertex() == target) {
         state=state.clone();
         state.lastEdgeWasStreet=false;
-        state.justTransferred=spt_u.state.justTransferred;
-      }
- else       if (edge instanceof OutEdge) {
-        continue;
       }
       if (edge instanceof PatternAlight && state.numBoardings > options.maxTransfers) {
         continue;

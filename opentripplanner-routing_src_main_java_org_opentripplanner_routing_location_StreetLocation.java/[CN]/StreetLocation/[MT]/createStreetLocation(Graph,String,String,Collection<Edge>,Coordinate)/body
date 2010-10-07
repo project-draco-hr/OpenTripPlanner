@@ -3,10 +3,15 @@
   StreetLocation location=new StreetLocation(label,nearestPoint,name);
   location.nearestPoint=nearestPoint;
   HashMap<Geometry,P2<StreetVertex>> cache=new HashMap<Geometry,P2<StreetVertex>>();
-  for (  Edge street : turns) {
-    StreetVertex fromv=(StreetVertex)street.getFromVertex();
-    wheelchairAccessible|=fromv.isWheelchairAccessible();
-    boolean seen=cache.containsKey(fromv.getGeometry());
+  for (  Edge street : edges) {
+    Vertex fromv=street.getFromVertex();
+    if (street instanceof PlainStreetEdge) {
+      wheelchairAccessible|=((PlainStreetEdge)street).isWheelchairAccessible();
+    }
+ else {
+      wheelchairAccessible|=((StreetVertex)fromv).isWheelchairAccessible();
+    }
+    boolean seen=cache.containsKey(street.getGeometry());
     StreetVertex edgeLocation=createHalfLocation(graph,location,label + " to " + street.getToVertex().getLabel(),name,nearestPoint,street,cache);
     if (!seen) {
       Edge l1in=new FreeEdge(location,edgeLocation);

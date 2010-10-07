@@ -1,0 +1,74 @@
+{
+  Envelope envelope=new Envelope(coordinate);
+  List<Edge> nearby=new LinkedList<Edge>();
+  int i=0;
+  double envelopeGrowthRate=0.0005;
+  GeometryFactory factory=new GeometryFactory();
+  Point p=factory.createPoint(coordinate);
+  while (nearby.size() < 1 && i < 10) {
+    ++i;
+    envelope.expandBy(envelopeGrowthRate);
+    envelopeGrowthRate*=2;
+    double bestDistance=Double.MAX_VALUE;
+    Edge bestEdge=null;
+    nearby=edgeTree.query(envelope);
+    if (nearby != null) {
+      for (      Edge e : nearby) {
+        if (e == null || e instanceof OutEdge)         continue;
+        Geometry g=e.getGeometry();
+        if (g != null) {
+          double distance=g.distance(p);
+          if (distance < bestDistance) {
+            bestDistance=distance;
+            bestEdge=e;
+          }
+        }
+      }
+      if (bestDistance <= MAX_DISTANCE_FROM_STREET) {
+        LocationIndexedLine lil=new LocationIndexedLine(bestEdge.getGeometry());
+        LinearLocation location=lil.project(coordinate);
+        Coordinate nearestPointOnEdge=lil.extractPoint(location);
+        double xd=nearestPointOnEdge.x - coordinate.x;
+        double yd=nearestPointOnEdge.y - coordinate.y;
+        double edgeDirection=Math.atan2(yd,xd);
+        TreeMap<Double,Edge> parallel=new TreeMap<Double,Edge>();
+        for (        Edge e : nearby) {
+          if (e == null || e instanceof OutEdge) {
+            continue;
+          }
+          if (options != null && e instanceof StreetEdge) {
+            if (!((StreetEdge)e).canTraverse(options)) {
+              continue;
+            }
+          }
+          Geometry eg=e.getGeometry();
+          if (eg != null) {
+            double distance=eg.distance(p);
+            if (distance <= bestDistance + DISTANCE_ERROR) {
+              lil=new LocationIndexedLine(eg);
+              location=lil.project(coordinate);
+              nearestPointOnEdge=lil.extractPoint(location);
+              if (distance > bestDistance) {
+                Coordinate[] coordinates=eg.getCoordinates();
+                if (nearestPointOnEdge.equals(coordinates[0]) || nearestPointOnEdge.equals(coordinates[coordinates.length - 1])) {
+                  continue;
+                }
+              }
+              xd=nearestPointOnEdge.x - coordinate.x;
+              yd=nearestPointOnEdge.y - coordinate.y;
+              double direction=Math.atan2(yd,xd);
+              if (Math.abs(direction - edgeDirection) < DIRECTION_ERROR) {
+                while (parallel.containsKey(distance)) {
+                  distance+=0.00000001;
+                }
+                parallel.put(distance,e);
+              }
+            }
+          }
+        }
+        return parallel.values();
+      }
+    }
+  }
+  return null;
+}

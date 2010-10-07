@@ -1,9 +1,10 @@
 {
   transitStopTree=new STRtree();
+  intersectionTree=new STRtree();
   for (  GraphVertex gv : graph.getVertices()) {
     Vertex v=gv.vertex;
     for (    Edge e : gv.getOutgoing()) {
-      if (e instanceof TurnEdge || e instanceof OutEdge) {
+      if (e instanceof TurnEdge || e instanceof OutEdge || e instanceof PlainStreetEdge) {
         if (e.getGeometry() == null) {
           continue;
         }
@@ -27,6 +28,10 @@
       }
       Envelope env=new Envelope(v.getCoordinate());
       transitStopTree.insert(env,v);
+    }
+    if (v instanceof StreetVertex || v instanceof EndpointVertex) {
+      Envelope env=new Envelope(v.getCoordinate());
+      intersectionTree.insert(env,v);
     }
   }
   transitStopTree.build();

@@ -1,0 +1,38 @@
+{
+  PlainStreetEdge e1=bestPair.getFirst();
+  PlainStreetEdge e2=bestPair.getSecond();
+  String name=e1.getName();
+  Vertex v1=e1.getFromVertex();
+  Vertex v2=e1.getToVertex();
+  LineString forwardGeometry=e1.getGeometry();
+  LineString backGeometry=e2.getGeometry();
+  P2<LineString> forwardGeometryPair=StreetLocation.splitGeometryAtPoint(forwardGeometry,coordinate);
+  P2<LineString> backGeometryPair=StreetLocation.splitGeometryAtPoint(backGeometry,coordinate);
+  LineString toMidpoint=forwardGeometryPair.getFirst();
+  Coordinate midCoord=toMidpoint.getEndPoint().getCoordinate();
+  double totalGeomLength=forwardGeometry.getLength();
+  double lengthRatioIn=toMidpoint.getLength() / totalGeomLength;
+  if (lengthRatioIn < 0.00001) {
+    return v1;
+  }
+ else   if (lengthRatioIn > 0.99999) {
+    return v2;
+  }
+  double lengthIn=e1.getLength() * lengthRatioIn;
+  double lengthOut=e1.getLength() * (1 - lengthRatioIn);
+  GenericVertex midpoint=new GenericVertex("split at " + label,midCoord,name);
+  PlainStreetEdge forward1=new PlainStreetEdge(v1,midpoint,toMidpoint,name,lengthIn,e1.getPermission(),false);
+  PlainStreetEdge backward1=new PlainStreetEdge(midpoint,v2,forwardGeometryPair.getSecond(),name,lengthOut,e1.getPermission(),true);
+  PlainStreetEdge forward2=new PlainStreetEdge(v2,midpoint,backGeometryPair.getFirst(),name,lengthOut,e2.getPermission(),false);
+  PlainStreetEdge backward2=new PlainStreetEdge(midpoint,v1,backGeometryPair.getSecond(),name,lengthIn,e2.getPermission(),true);
+  ListIterator<P2<PlainStreetEdge>> it=replacement.listIterator();
+  while (it.hasNext()) {
+    P2<PlainStreetEdge> pair=it.next();
+    if (pair == bestPair) {
+      it.set(new P2<PlainStreetEdge>(forward1,backward2));
+      it.add(new P2<PlainStreetEdge>(backward1,forward2));
+      break;
+    }
+  }
+  return midpoint;
+}

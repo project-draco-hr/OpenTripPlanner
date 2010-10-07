@@ -47,14 +47,12 @@
   FibHeap<SPTVertex> pq=new FibHeap<SPTVertex>(graph.getVertices().size() + extraEdges.size());
   pq.insert(spt_origin,spt_origin.weightSum + distance);
   boolean useTransit=options.modes.getTransit();
-  HashSet<Vertex> closed=new HashSet<Vertex>(100000);
   while (!pq.empty()) {
     SPTVertex spt_u=pq.extract_min();
     Vertex fromv=spt_u.mirror;
     if (fromv == target) {
       break;
     }
-    closed.add(fromv);
     GraphVertex gv=graph.getGraphVertex(fromv);
     Collection<Edge> outgoing;
     if (gv == null) {
@@ -85,17 +83,12 @@
       if (tov == target) {
         state=state.clone();
         state.lastEdgeWasStreet=false;
-        state.justTransferred=spt_u.state.justTransferred;
-      }
- else       if (edge instanceof OutEdge) {
-        continue;
       }
       if (edge instanceof PatternBoard && state.numBoardings > options.maxTransfers) {
         continue;
       }
       TraverseResult wr=edge.traverse(state,options);
       if (wr == null) {
-        wr=edge.traverse(state,options);
         continue;
       }
       if (wr.weight < 0) {
@@ -120,9 +113,7 @@
       SPTVertex spt_v=spt.addVertex(tov,wr.state,new_w,options);
       if (spt_v != null) {
         spt_v.setParent(spt_u,edge);
-        if (!closed.contains(tov)) {
-          pq.insert_or_dec_key(spt_v,heuristic_distance);
-        }
+        pq.insert_or_dec_key(spt_v,heuristic_distance);
       }
     }
   }

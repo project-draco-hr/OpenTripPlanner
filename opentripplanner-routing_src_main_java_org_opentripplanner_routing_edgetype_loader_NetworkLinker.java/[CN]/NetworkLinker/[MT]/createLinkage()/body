@@ -1,3 +1,45 @@
 {
-  createLinkage(false);
+  _log.debug("constructing index...");
+  index=new StreetVertexIndexServiceImpl(graph);
+  index.setup_modifiable();
+  _log.debug("creating linkages...");
+  int i=0;
+  ArrayList<GraphVertex> vertices=new ArrayList<GraphVertex>(graph.getVertices());
+  for (  GraphVertex gv : vertices) {
+    Vertex v=gv.vertex;
+    if (i % 500 == 0)     _log.debug("vertices=" + i + "/"+ vertices.size());
+    i++;
+    if (v instanceof TransitStop) {
+      TransitStop ts=(TransitStop)v;
+      if (!ts.isEntrance()) {
+        boolean hasEntrance=false;
+        for (        Edge e : gv.getOutgoing()) {
+          if (e instanceof PathwayEdge) {
+            hasEntrance=true;
+            break;
+          }
+        }
+        if (hasEntrance) {
+          continue;
+        }
+      }
+      Vertex location=getLocation(v,index);
+      if (location == null) {
+        _log.warn("Stop " + ts + " not near any streets; it will not be usable");
+      }
+ else {
+        boolean wheelchairAccessible=ts.hasWheelchairEntrance();
+        graph.addEdge(new StreetTransitLink(location,v,wheelchairAccessible));
+        graph.addEdge(new StreetTransitLink(v,location,wheelchairAccessible));
+      }
+    }
+  }
+  for (  Entry<HashSet<Edge>,LinkedList<P2<PlainStreetEdge>>> entry : replacements.entrySet()) {
+    LinkedList<P2<PlainStreetEdge>> edges=entry.getValue();
+    for (    P2<PlainStreetEdge> edge : edges) {
+      PlainStreetEdge e1=edge.getFirst();
+      graph.addEdge(e1);
+      graph.addEdge(edge.getSecond());
+    }
+  }
 }

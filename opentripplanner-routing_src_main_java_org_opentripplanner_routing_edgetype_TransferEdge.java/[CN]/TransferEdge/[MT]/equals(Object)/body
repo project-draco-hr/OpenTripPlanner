@@ -1,0 +1,7 @@
+{
+  if (!(o instanceof TransferEdge)) {
+    return false;
+  }
+  TransferEdge t=(TransferEdge)o;
+  return t.getToVertex().equals(getToVertex()) && t.getFromVertex().equals(getFromVertex());
+}

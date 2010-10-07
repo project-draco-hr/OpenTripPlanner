@@ -1,0 +1,17 @@
+{
+  boolean back=e.back;
+  String id=e.getId();
+  Vertex v=graph.getVertex(id + (back ? " back" : ""));
+  if (v != null) {
+    return (StreetVertex)v;
+  }
+  StreetVertex newv=new StreetVertex(id,e.getGeometry(),e.getName(),e.getLength(),back);
+  newv.setWheelchairAccessible(e.isWheelchairAccessible());
+  newv.setBicycleSafetyEffectiveLength(e.getBicycleSafetyEffectiveLength());
+  newv.setCrossable(e.isCrossable());
+  newv.setPermission(e.getPermission());
+  newv.setSlopeOverride(e.getSlopeOverride());
+  newv.setElevationProfile(e.getElevationProfile());
+  graph.addVertex(newv);
+  return newv;
+}

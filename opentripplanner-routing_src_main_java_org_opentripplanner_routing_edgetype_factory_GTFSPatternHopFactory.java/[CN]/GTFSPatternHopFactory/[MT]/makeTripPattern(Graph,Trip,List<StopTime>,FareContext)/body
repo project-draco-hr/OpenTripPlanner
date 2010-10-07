@@ -31,8 +31,8 @@
     int runningTime=arrivalTime - departureTime;
     tripPattern.addHop(i,0,departureTime,runningTime,arrivalTime,dwellTime,trip);
     graph.addEdge(hop);
-    Vertex startStation=graph.getVertex(id(s0.getId()));
-    Vertex endStation=graph.getVertex(id(s1.getId()));
+    Vertex startStation=graph.getVertex(departureVertexId(id(s0.getId())));
+    Vertex endStation=graph.getVertex(arrivalVertexId(id(s1.getId())));
     PatternBoard boarding=new PatternBoard(startStation,startJourneyDepart,tripPattern,i,mode);
     graph.addEdge(boarding);
     graph.addEdge(new PatternAlight(endJourneyArrive,endStation,tripPattern,i,mode));

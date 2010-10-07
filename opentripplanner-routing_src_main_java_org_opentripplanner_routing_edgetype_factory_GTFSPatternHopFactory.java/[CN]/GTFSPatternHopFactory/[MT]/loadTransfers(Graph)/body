@@ -1,22 +1,22 @@
 {
   Collection<Transfer> transfers=_dao.getAllTransfers();
-  Set<org.opentripplanner.routing.edgetype.Transfer> createdTransfers=new HashSet<org.opentripplanner.routing.edgetype.Transfer>();
+  Set<TransferEdge> createdTransfers=new HashSet<TransferEdge>();
   for (  Transfer t : transfers) {
     Stop fromStop=t.getFromStop();
     Stop toStop=t.getToStop();
     if (fromStop == toStop) {
       continue;
     }
-    TransitStop fromStation=(TransitStop)graph.getVertex(id(fromStop.getId()));
-    TransitStop toStation=(TransitStop)graph.getVertex(id(toStop.getId()));
+    Vertex fromStation=graph.getVertex(arrivalVertexId(id(fromStop.getId())));
+    Vertex toStation=graph.getVertex(departureVertexId(id(toStop.getId())));
     double distance=fromStation.distance(toStation.getCoordinate());
     if (t.getTransferType() < 3) {
-      org.opentripplanner.routing.edgetype.Transfer edge;
+      TransferEdge edge;
       if (t.getTransferType() == 2) {
-        edge=new org.opentripplanner.routing.edgetype.Transfer(fromStation,toStation,distance,t.getMinTransferTime());
+        edge=new TransferEdge(fromStation,toStation,distance,t.getMinTransferTime());
       }
  else {
-        edge=new org.opentripplanner.routing.edgetype.Transfer(fromStation,toStation,distance);
+        edge=new TransferEdge(fromStation,toStation,distance);
       }
       if (createdTransfers.contains(edge)) {
         continue;

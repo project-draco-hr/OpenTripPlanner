@@ -1,6 +1,6 @@
 {
-  super((id + (back ? " back" : "")).intern(),getCoord(geometry),name);
-  this.edgeId=id;
+  super(id.intern() + (back ? " back" : ""),getCoord(geometry),name);
+  this.edgeId=id.intern();
   this.geometry=geometry;
   this.length=length;
   this.bicycleSafetyEffectiveLength=length;

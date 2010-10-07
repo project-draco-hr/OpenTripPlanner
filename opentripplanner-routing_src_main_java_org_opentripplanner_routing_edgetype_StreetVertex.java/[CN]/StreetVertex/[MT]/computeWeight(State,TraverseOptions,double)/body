@@ -1,29 +1,27 @@
 {
   double weight;
-  if (wo.wheelchairAccessible) {
-    weight=slopeSpeedEffectiveLength / wo.speed;
+  if (options.wheelchairAccessible) {
+    weight=slopeSpeedEffectiveLength / options.speed;
   }
- else   if (wo.modes.contains(TraverseMode.BICYCLE)) {
-switch (wo.optimizeFor) {
+ else   if (options.modes.contains(TraverseMode.BICYCLE)) {
+switch (options.optimizeFor) {
 case SAFE:
-      weight=bicycleSafetyEffectiveLength / wo.speed;
+      weight=bicycleSafetyEffectiveLength / options.speed;
     break;
 case FLAT:
   weight=slopeCostEffectiveLength;
 break;
 case QUICK:
-weight=slopeSpeedEffectiveLength / wo.speed;
+weight=slopeSpeedEffectiveLength / options.speed;
 break;
 default :
-weight=length / wo.speed;
+weight=length / options.speed;
 }
 }
  else {
 weight=time;
 }
-if (s0.walkDistance > wo.maxWalkDistance && wo.modes.getTransit()) {
-weight*=100;
-}
-weight*=wo.walkReluctance;
+weight*=options.distanceWalkFactor(s0.walkDistance + length / 2);
+weight*=options.walkReluctance;
 return weight;
 }

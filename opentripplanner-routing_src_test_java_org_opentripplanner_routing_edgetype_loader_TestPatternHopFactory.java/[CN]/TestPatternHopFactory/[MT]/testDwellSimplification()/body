@@ -1,11 +1,11 @@
 {
-  Vertex stop_f=graph.getVertex("agency_F");
-  Vertex stop_h=graph.getVertex("agency_H");
+  Vertex stop_f=graph.getVertex("agency_F_depart");
+  Vertex stop_h=graph.getVertex("agency_H_arrive");
   TraverseOptions options=new TraverseOptions();
   options.setGtfsContext(context);
   ShortestPathTree spt;
   GraphPath path;
-  spt=AStar.getShortestPathTree(graph,stop_f.getLabel(),stop_h.getLabel(),new State(new GregorianCalendar(2009,8,18,5,0,0).getTimeInMillis()),options);
+  spt=AStar.getShortestPathTree(graph,stop_f,stop_h,new State(new GregorianCalendar(2009,8,18,5,0,0).getTimeInMillis()),options);
   path=spt.getPath(stop_h);
   assertNotNull(path);
   assertEquals(5,path.vertices.size());

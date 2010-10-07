@@ -8,7 +8,7 @@
   StreetVertex bottomBack=new StreetVertex("bottomBack",GeometryUtils.makeLineString(-74.0,40.0,-74.1,40.0),"bottomBack",1500,true);
   leftBack=new StreetVertex("leftBack",GeometryUtils.makeLineString(-74.1,40.1,-74.1,40.0),"leftBack",1500,true);
   rightBack=new StreetVertex("rightBack",GeometryUtils.makeLineString(-74.0,40.1,-74.0,40.0),"rightBack",1500,true);
-  right.setTraversalPermission(StreetTraversalPermission.PEDESTRIAN);
+  right.setPermission(StreetTraversalPermission.PEDESTRIAN);
   graph.addVertex(top);
   graph.addVertex(bottom);
   graph.addVertex(left);
@@ -49,5 +49,8 @@
   graph.addEdge(new TurnEdge(leftBack,bottom));
   graph.addEdge(new TurnEdge(bottom,right));
   graph.addEdge(new TurnEdge(right,topBack));
-  graph.addVertex(new TransitStop("transitVertex",-74.05,40.1,"transitVertex","fleem station",null));
+  station1=new TransitStop("transitVertex 1",-74.05,40.099999,"transitVertex 1","fleem station",null);
+  graph.addVertex(station1);
+  station2=new TransitStop("transitVertex 2",-74.02,40.099999,"transitVertex 2","morx station",null);
+  graph.addVertex(station2);
 }

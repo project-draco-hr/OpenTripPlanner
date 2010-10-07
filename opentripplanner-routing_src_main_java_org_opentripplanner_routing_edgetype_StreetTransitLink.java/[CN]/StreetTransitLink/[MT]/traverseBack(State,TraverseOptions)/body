@@ -1,12 +1,8 @@
 {
-  if (s0.justTransferred) {
-    return null;
-  }
   if (wo.wheelchairAccessible && !wheelchairAccessible) {
     return null;
   }
   State s1=s0.clone();
   s1.incrementTimeInSeconds(-1);
-  s1.justTransferred=true;
   return new TraverseResult(STL_TRAVERSE_COST,s1);
 }

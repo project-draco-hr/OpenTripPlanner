@@ -1,0 +1,14 @@
+{
+  String id="way " + way.getId() + " from "+ startNode;
+  id=unique(id);
+  String name=way.getTags().get("name");
+  if (name == null) {
+    name=id;
+  }
+  PlainStreetEdge street=new PlainStreetEdge(start,end,geometry,name,length,permissions,back);
+  street.setId(id);
+  if ("no".equals(way.getTags().get("wheelchair")) || ("steps".equals(way.getTags().get("highway")) && !"yes".equals(way.getTags().get("wheelchair")))) {
+    street.setWheelchairAccessible(false);
+  }
+  return street;
+}
