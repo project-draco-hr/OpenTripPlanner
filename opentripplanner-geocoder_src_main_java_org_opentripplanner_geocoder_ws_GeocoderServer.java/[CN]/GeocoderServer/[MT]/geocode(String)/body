@@ -1,0 +1,6 @@
+{
+  if (address == null) {
+    throw new WebApplicationException(Response.status(400).entity("no address").type("text/plain").build());
+  }
+  return geocoder.geocode(address);
+}

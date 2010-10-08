@@ -1,0 +1,18 @@
+{
+  final double lat=78.121;
+  final double lng=-43.237;
+  final String description="121 elm street";
+  geocoderServer.setGeocoder(new Geocoder(){
+    @Override public GeocoderResults geocode(    String address){
+      GeocoderResult result=new GeocoderResult(lat,lng,description);
+      return new GeocoderResults(Arrays.asList(result));
+    }
+  }
+);
+  GeocoderResults results=geocoderServer.geocode("121 elm street");
+  for (  GeocoderResult result : results.getResults()) {
+    assertEquals("description matches",description,result.getDescription());
+    assertEquals(lat,result.getLat(),0.001);
+    assertEquals(lng,result.getLng(),0.001);
+  }
+}

@@ -1,0 +1,6 @@
+{
+  UriBuilder builder=UriBuilder.fromUri(geocoderBaseUrl);
+  builder.queryParam("address",address);
+  URI uri=builder.build();
+  return new URL(uri.toString());
+}

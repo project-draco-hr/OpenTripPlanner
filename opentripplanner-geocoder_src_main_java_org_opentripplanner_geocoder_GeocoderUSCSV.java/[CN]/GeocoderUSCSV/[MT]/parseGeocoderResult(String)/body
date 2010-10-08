@@ -1,0 +1,7 @@
+{
+  String[] fields=line.split(",",3);
+  double lat=Double.parseDouble(fields[0]);
+  double lng=Double.parseDouble(fields[1]);
+  String description=fields[2];
+  return new GeocoderResult(lat,lng,description);
+}

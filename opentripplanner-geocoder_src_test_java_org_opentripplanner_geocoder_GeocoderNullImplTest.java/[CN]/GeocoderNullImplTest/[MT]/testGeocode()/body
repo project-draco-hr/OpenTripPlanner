@@ -1,0 +1,5 @@
+{
+  Geocoder nullGeocoder=new GeocoderNullImpl();
+  GeocoderResults result=nullGeocoder.geocode("121 elm street");
+  assertEquals("stub response",GeocoderNullImpl.ERROR_MSG,result.getError());
+}

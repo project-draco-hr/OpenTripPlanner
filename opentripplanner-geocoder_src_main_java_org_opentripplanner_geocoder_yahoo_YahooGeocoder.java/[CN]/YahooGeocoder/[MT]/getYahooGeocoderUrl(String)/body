@@ -1,0 +1,8 @@
+{
+  UriBuilder uriBuilder=UriBuilder.fromUri("http://where.yahooapis.com/geocode");
+  uriBuilder.queryParam("location",address);
+  uriBuilder.queryParam("flags","J");
+  uriBuilder.queryParam("appid",appId);
+  URI uri=uriBuilder.build();
+  return new URL(uri.toString());
+}
