@@ -26,6 +26,7 @@
       Vertex location=getLocation(v,index);
       if (location == null) {
         _log.warn("Stop " + ts + " not near any streets; it will not be usable");
+        getLocation(v,index);
       }
  else {
         boolean wheelchairAccessible=ts.hasWheelchairEntrance();

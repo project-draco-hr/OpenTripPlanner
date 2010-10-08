@@ -87,28 +87,5 @@
       osmStartNode=_nodes.get(startNode);
     }
   }
-  ArrayList<Edge> turns=new ArrayList<Edge>(endpoints.size());
-  for (  Vertex v : endpoints) {
-    for (    Edge e : graph.getIncoming(v)) {
-      boolean replaced=false;
-      StreetVertex v1=getStreetVertexForEdge(graph,(PlainStreetEdge)e);
-      for (      Edge e2 : graph.getOutgoing(v)) {
-        StreetVertex v2=getStreetVertexForEdge(graph,(PlainStreetEdge)e2);
-        if (v1 != v2 && !v1.getEdgeId().equals(v2.getEdgeId())) {
-          turns.add(new TurnEdge(v1,v2));
-          replaced=true;
-        }
-      }
-      if (!replaced) {
-        e.setFromVertex(v1);
-        turns.add(e);
-      }
-    }
-  }
-  for (  Vertex v : endpoints) {
-    graph.removeVertexAndEdges(v);
-  }
-  for (  Edge e : turns) {
-    graph.addEdge(e);
-  }
+  StreetUtils.makeEdgeBased(graph,endpoints);
 }

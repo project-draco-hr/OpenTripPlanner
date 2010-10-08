@@ -15,18 +15,14 @@
   graph.addEdge(new FreeEdge(startVertex,newStart));
   List<Vertex> startVertices=index.getIntersectionAt(startVertex.getCoordinate());
   for (  Vertex v : startVertices) {
-    if (v != startVertex) {
-      graph.addEdge(new FreeEdge(newStart,v));
-    }
+    graph.addEdge(new FreeEdge(newStart,v));
   }
   Vertex newEnd=new GenericVertex("replace " + endVertex.getLabel(),endVertex.getX(),endVertex.getY());
   newEnd=graph.addVertex(newEnd);
   graph.addEdge(new FreeEdge(endVertex,newEnd));
   List<Vertex> endVertices=index.getIntersectionAt(endVertex.getCoordinate());
   for (  Vertex v : endVertices) {
-    if (v != endVertex) {
-      graph.addEdge(new FreeEdge(newEnd,v));
-    }
+    graph.addEdge(new FreeEdge(newEnd,v));
   }
   PlainStreetEdge forward=new PlainStreetEdge(newStart,newEnd,startVertex.getGeometry(),startVertex.getName(),startVertex.getLength(),startVertex.getPermission(),false);
   PlainStreetEdge backward=new PlainStreetEdge(newEnd,newStart,endVertex.getGeometry(),endVertex.getName(),endVertex.getLength(),endVertex.getPermission(),true);
