@@ -22,7 +22,7 @@
     Envelope env=new Envelope(c);
     env.expandBy(50 * expansion);
     List<Vertex> nearby=tree.query(env);
-    while (nearby.size() < 6) {
+    while (nearby.size() < 7) {
       env.expandBy(50);
       expansion+=1;
       nearby=tree.query(env);
@@ -37,6 +37,8 @@
       graph.addEdge(new FreeEdge(v,n));
       graph.addEdge(new FreeEdge(n,v));
     }
+    Vertex badTarget=nearby.get(6);
+    graph.addEdge(new ForbiddenEdge(badTarget,v));
   }
   DisjointSet<Vertex> components=new DisjointSet<Vertex>();
   Vertex last=null;

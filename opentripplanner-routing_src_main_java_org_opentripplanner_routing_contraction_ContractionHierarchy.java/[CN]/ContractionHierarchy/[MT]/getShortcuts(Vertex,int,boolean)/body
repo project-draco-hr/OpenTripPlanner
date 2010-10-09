@@ -7,6 +7,9 @@
       continue;
     }
     TraverseResult result=e.traverse(state,options);
+    if (result == null) {
+      continue;
+    }
     Vertex u=e.getFromVertex();
     us.add(new VertexIngress(u,e,result.weight,result.state.getTime()));
   }
@@ -20,6 +23,9 @@
       continue;
     }
     TraverseResult result=e.traverse(state,options);
+    if (result == null) {
+      continue;
+    }
     Vertex w=e.getToVertex();
     wSet.add(w);
     ws.add(new VertexIngress(w,e,result.weight,result.state.getTime()));
@@ -35,6 +41,9 @@
         continue;
       }
       result=incoming.traverse(state,options);
+      if (result == null) {
+        continue;
+      }
       List<VertexIngress> xneighbors=neighbors.get(x);
       if (xneighbors == null) {
         xneighbors=new ArrayList<VertexIngress>();
@@ -69,6 +78,10 @@
             continue;
           }
           TraverseResult result=e.traverse(state,options);
+          if (result == null) {
+            toRemove.add(e);
+            continue;
+          }
           if (s.weightSum < result.weight) {
             toRemove.add(e);
           }

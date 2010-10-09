@@ -14,6 +14,10 @@
       Vertex toVertex=e.getToVertex();
       curs=spt.getVertex(toVertex);
       TraverseResult result=e.traverse(dummy,options);
+      if (result == null) {
+        toRemove.add(e);
+        continue;
+      }
       if (curs != null && curs.getParent().getFromVertex().mirror != v && curs.weightSum <= result.weight + .01) {
         toRemove.add(e);
       }
