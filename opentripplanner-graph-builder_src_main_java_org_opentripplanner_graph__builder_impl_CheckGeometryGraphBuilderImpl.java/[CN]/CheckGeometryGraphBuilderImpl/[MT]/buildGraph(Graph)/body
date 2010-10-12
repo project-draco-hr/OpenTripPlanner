@@ -1,0 +1,19 @@
+{
+  for (  GraphVertex gv : graph.getVertices()) {
+    Vertex v=gv.vertex;
+    if (Double.isNaN(v.getCoordinate().x) || Double.isNaN(v.getCoordinate().y)) {
+      _log.warn("Vertex " + v + " has NaN location; this will cause doom.");
+    }
+    for (    Edge e : gv.getOutgoing()) {
+      Geometry g=e.getGeometry();
+      if (g == null) {
+        continue;
+      }
+      for (      Coordinate c : g.getCoordinates()) {
+        if (Double.isNaN(c.x) || Double.isNaN(c.y)) {
+          _log.warn("Edge " + e + " has bogus geometry");
+        }
+      }
+    }
+  }
+}
