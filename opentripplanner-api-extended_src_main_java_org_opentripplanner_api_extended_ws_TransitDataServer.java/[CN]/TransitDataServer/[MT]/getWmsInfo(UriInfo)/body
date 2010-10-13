@@ -41,14 +41,15 @@
       }
     }
     reader.close();
+    String defaultAgencyId=transitServerGtfs.getDefaultAgencyId();
     if (stopIds.size() > 0) {
       String stopId=stopIds.get(0);
-      return new WmsInfo(transitServerGtfs,new AgencyAndId("MTA NYCT",stopId));
+      return new WmsInfo(transitServerGtfs,new AgencyAndId(defaultAgencyId,stopId));
     }
  else     if (routeIds.size() > 0) {
       List<String> routeIdsWithAgencyId=new ArrayList<String>();
       for (      String routeId : routeIds) {
-        routeIdsWithAgencyId.add("MTA NYCT " + routeId);
+        routeIdsWithAgencyId.add(defaultAgencyId + " " + routeId);
       }
       return new WmsInfo(transitServerGtfs,routeIdsWithAgencyId);
     }

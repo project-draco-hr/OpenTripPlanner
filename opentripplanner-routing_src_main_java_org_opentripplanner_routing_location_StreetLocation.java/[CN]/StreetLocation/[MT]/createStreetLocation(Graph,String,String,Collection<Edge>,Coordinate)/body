@@ -1,7 +1,6 @@
 {
   boolean wheelchairAccessible=false;
   StreetLocation location=new StreetLocation(label,nearestPoint,name);
-  location.nearestPoint=nearestPoint;
   HashMap<Geometry,P2<StreetVertex>> cache=new HashMap<Geometry,P2<StreetVertex>>();
   for (  Edge street : edges) {
     Vertex fromv=street.getFromVertex();

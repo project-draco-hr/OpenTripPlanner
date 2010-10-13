@@ -5,8 +5,11 @@
   if (geoserverBaseUri == null) {
     throw new IllegalStateException("Geoserver base uri not set");
   }
+  if (defaultAgencyId == null) {
+    throw new IllegalStateException("defaultAgencyId not set");
+  }
   System.out.println("Reading gtfs file: " + gtfsFile.getPath());
-  this.setGtfsContext(GtfsLibrary.readGtfs(gtfsFile));
+  this.setGtfsContext(GtfsLibrary.readGtfs(gtfsFile,defaultAgencyId));
   System.out.println("GTFS loaded");
   this.assembleGtfsData();
   System.out.println("GTFS data assembled");
