@@ -51,8 +51,8 @@
   CalendarServiceImpl calendarService=new CalendarServiceImpl();
   calendarService.setData(data);
   options.setCalendarService(calendarService);
-  Vertex start1=getVertex(graph,"W 187 ST at WADSWORTH AV",true);
-  Vertex end1=getVertex(graph,"GRAND ST at LAFAYETTE ST",false);
+  Vertex start1=graph.getVertex("0072480");
+  Vertex end1=graph.getVertex("0032341");
   assertNotNull(end1);
   assertNotNull(start1);
   ShortestPathTree shortestPathTree=AStar.getShortestPathTree(graph,start1,end1,init,options);
@@ -77,8 +77,8 @@
   assertNotNull(hierarchy);
   Vertex start=null;
   Vertex end=null;
-  start=getVertex(hierarchy,"W 187 ST at WADSWORTH AV",true);
-  end=getVertex(hierarchy,"GRAND ST at LAFAYETTE ST",false);
+  start=hierarchy.graph.getVertex("0072480");
+  end=hierarchy.graph.getVertex("0032341");
   assertNotNull(start);
   assertNotNull(end);
   init=new State(0);
