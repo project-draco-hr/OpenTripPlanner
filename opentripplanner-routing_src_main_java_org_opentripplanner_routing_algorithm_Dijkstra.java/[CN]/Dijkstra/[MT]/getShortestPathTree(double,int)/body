@@ -21,7 +21,7 @@
     Iterable<Edge> outgoing=graph.getOutgoing(fromv);
     State state=spt_u.state;
     for (    Edge edge : outgoing) {
-      if (!(edge instanceof TurnEdge || edge instanceof FreeEdge || edge instanceof Shortcut)) {
+      if (!(edge instanceof TurnEdge || edge instanceof FreeEdge || edge instanceof Shortcut|| edge instanceof PlainStreetEdge)) {
         continue;
       }
       Vertex toVertex=edge.getToVertex();
