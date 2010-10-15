@@ -1,12 +1,13 @@
 {
-  Vertex v1=getVertexByCrossStreets("NE 43RD AVE","NE FLANDERS ST",false);
-  Vertex v2=getVertexByCrossStreets("NE 43RD AVE","NE ROYAL CT",true);
+  Vertex v1=graph.getVertex("113410");
+  Vertex v2=graph.getVertex("137427");
   assertNotNull(v1);
   assertNotNull(v2);
   Response response=planner.getItineraries(v1.getLabel(),v2.getLabel(),null,"2009-01-01","11:11:11",false,false,840.0,1.33,OptimizeType.QUICK,new TraverseModeSet("WALK"),1,false);
   Itinerary itinerary=response.getPlan().itinerary.get(0);
   Leg leg=itinerary.legs.get(0);
   List<WalkStep> steps=leg.walkSteps;
+  System.out.println("Steps: " + steps);
   assertEquals(3,steps.size());
   WalkStep step0=steps.get(0);
   WalkStep step1=steps.get(1);
