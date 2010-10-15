@@ -5,8 +5,8 @@
     _log.debug("downloading osm tile: " + key);
     URL url=constructUrl(r);
     _log.debug(url.toString());
-    FileOutputStream out=new FileOutputStream(path);
     InputStream in=url.openStream();
+    FileOutputStream out=new FileOutputStream(path);
     byte[] data=new byte[4096];
     while (true) {
       int numBytes=in.read(data);

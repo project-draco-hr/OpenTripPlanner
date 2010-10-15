@@ -4,7 +4,7 @@
   double bottom=r.getMinY();
   double top=r.getMaxY();
   try {
-    return new URL("http://api.openstreetmap.org/api/0.6/map?bbox=" + left + ","+ bottom+ ","+ right+ ","+ top);
+    return new URL(getApiBaseUrl() + "map?bbox=" + left+ ","+ bottom+ ","+ right+ ","+ top);
   }
  catch (  MalformedURLException e) {
     throw new IllegalStateException(e);
