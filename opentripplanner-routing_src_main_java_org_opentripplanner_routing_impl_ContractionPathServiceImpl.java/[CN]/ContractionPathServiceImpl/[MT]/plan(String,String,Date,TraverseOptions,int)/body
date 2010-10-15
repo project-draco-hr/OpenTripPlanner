@@ -13,7 +13,7 @@
   }
   State state=new State(targetTime.getTime());
   if (_calendarService != null)   options.setCalendarService(_calendarService);
-  HashSet<GraphPath> paths=new HashSet<GraphPath>();
+  ArrayList<GraphPath> paths=new ArrayList<GraphPath>();
   Queue<TraverseOptions> optionQueue=new LinkedList<TraverseOptions>();
   optionQueue.add(options);
   if (options.modes.getTrainish() && options.modes.contains(TraverseMode.BUS)) {
@@ -68,5 +68,6 @@
   if (paths.size() == 0) {
     return null;
   }
-  return new ArrayList<GraphPath>(paths);
+  Collections.sort(paths,new PathComparator());
+  return paths;
 }
