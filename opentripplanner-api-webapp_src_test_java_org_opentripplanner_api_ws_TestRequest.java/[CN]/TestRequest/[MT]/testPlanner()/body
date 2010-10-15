@@ -7,7 +7,6 @@
   Itinerary itinerary=response.getPlan().itinerary.get(0);
   Leg leg=itinerary.legs.get(0);
   List<WalkStep> steps=leg.walkSteps;
-  System.out.println("Steps: " + steps);
   assertEquals(3,steps.size());
   WalkStep step0=steps.get(0);
   WalkStep step1=steps.get(1);
