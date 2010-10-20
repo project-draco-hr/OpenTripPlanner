@@ -1,0 +1,21 @@
+{
+  Coordinate[] coordinates=elev.toCoordinateArray();
+  double maxSlope=0;
+  double slopeSpeedEffectiveLength=0;
+  double slopeCostEffectiveLength=0;
+  for (int i=0; i < coordinates.length - 1; ++i) {
+    double run=coordinates[i + 1].x - coordinates[i].x;
+    double rise=coordinates[i + 1].y - coordinates[i].y;
+    double slope=rise / run;
+    if (slope > 0.35 || slope < -0.35) {
+      slope=0;
+      log.warn("Warning: street " + name + " steeper than Baldwin Street.  This is an error in the algorithm or the data");
+    }
+    if (maxSlope < Math.abs(slope)) {
+      maxSlope=Math.abs(slope);
+    }
+    slopeCostEffectiveLength+=run * (1 + slope * slope * 10);
+    slopeSpeedEffectiveLength+=run * slopeSpeedCoefficient(slope,coordinates[i].y);
+  }
+  return new P2<Double>(slopeSpeedEffectiveLength,maxSlope);
+}

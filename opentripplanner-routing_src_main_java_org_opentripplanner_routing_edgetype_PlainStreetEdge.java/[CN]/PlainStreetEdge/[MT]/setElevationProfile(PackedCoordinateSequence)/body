@@ -6,7 +6,7 @@
     elev=new PackedCoordinateSequence.Float(new Coordinate[]{new Coordinate(0f,0f)},2);
   }
   elevationProfile=elev;
-  P2<Double> result=computeSlopeCost(elev,getName());
+  P2<Double> result=StreetVertex.computeSlopeCost(elev,getName());
   slopeCostEffectiveLength=result.getFirst();
   maxSlope=result.getSecond();
 }
