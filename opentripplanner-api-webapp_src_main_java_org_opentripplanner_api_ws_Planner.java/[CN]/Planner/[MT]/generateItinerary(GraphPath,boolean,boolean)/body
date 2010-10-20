@@ -16,7 +16,6 @@
     if (edge instanceof FreeEdge && sptEdge != finalEdge) {
       continue;
     }
-    previousEdge=sptEdge;
     TraverseMode edgeMode=edge.getMode();
     if (isStreetEdge(edge) && biking) {
       edgeMode=TraverseMode.BICYCLE;
@@ -30,7 +29,7 @@
             leg.walkSteps=getWalkSteps(path.edges.subList(startWalk,i));
           }
           leg.to=makePlace(edge.getFromVertex());
-          leg.endTime=new Date(sptEdge.fromv.state.getTime());
+          leg.endTime=new Date(previousEdge.fromv.state.getTime());
           Geometry geometry=geometryFactory.createLineString(coordinates);
           leg.legGeometry=PolylineEncoder.createEncodings(geometry);
           leg=null;
@@ -47,6 +46,7 @@
         }
       }
     }
+    previousEdge=sptEdge;
     Geometry edgeGeometry=edge.getGeometry();
     if (edgeGeometry != null) {
       Coordinate[] edgeCoordinates=edgeGeometry.getCoordinates();
