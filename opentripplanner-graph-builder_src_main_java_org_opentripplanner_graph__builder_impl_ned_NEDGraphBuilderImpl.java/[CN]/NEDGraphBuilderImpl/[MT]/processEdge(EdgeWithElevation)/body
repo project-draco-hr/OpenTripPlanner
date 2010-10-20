@@ -1,4 +1,7 @@
 {
+  if (ee.getElevationProfile() != null) {
+    return;
+  }
   Geometry g=(Geometry)ee.getGeometry();
   Coordinate[] coords=g.getCoordinates();
   List<Coordinate> coordList=new LinkedList<Coordinate>();
@@ -17,5 +20,5 @@
   coordList.add(new Coordinate(edgeLenM,getElevation(coords[coords.length - 1])));
   Coordinate coordArr[]=new Coordinate[coordList.size()];
   PackedCoordinateSequence elevPCS=new PackedCoordinateSequence.Double(coordList.toArray(coordArr));
-  ((StreetVertex)ee.getFromVertex()).setElevationProfile(elevPCS);
+  ee.setElevationProfile(elevPCS);
 }
