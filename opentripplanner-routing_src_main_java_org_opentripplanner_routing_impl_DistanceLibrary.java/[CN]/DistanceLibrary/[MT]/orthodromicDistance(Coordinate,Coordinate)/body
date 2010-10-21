@@ -1,8 +1,0 @@
-{
-  try {
-    return JTS.orthodromicDistance(a,b,WORLD_CRS);
-  }
- catch (  TransformException ex) {
-    throw new IllegalStateException("error computing distance: a=" + a + " b="+ b,ex);
-  }
-}

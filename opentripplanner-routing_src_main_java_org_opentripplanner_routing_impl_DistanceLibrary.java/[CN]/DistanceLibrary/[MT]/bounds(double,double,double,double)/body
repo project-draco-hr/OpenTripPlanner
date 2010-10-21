@@ -1,0 +1,14 @@
+{
+  double radiusOfEarth=RADIUS_OF_EARTH_IN_KM * 1000;
+  double latRadians=toRadians(lat);
+  double lonRadians=toRadians(lon);
+  double latRadius=radiusOfEarth;
+  double lonRadius=Math.cos(latRadians) * radiusOfEarth;
+  double latOffset=latDistance / latRadius;
+  double lonOffset=lonDistance / lonRadius;
+  double latFrom=toDegrees(latRadians - latOffset);
+  double latTo=toDegrees(latRadians + latOffset);
+  double lonFrom=toDegrees(lonRadians - lonOffset);
+  double lonTo=toDegrees(lonRadians + lonOffset);
+  return new Envelope(new Coordinate(lonFrom,latFrom),new Coordinate(lonTo,latTo));
+}
