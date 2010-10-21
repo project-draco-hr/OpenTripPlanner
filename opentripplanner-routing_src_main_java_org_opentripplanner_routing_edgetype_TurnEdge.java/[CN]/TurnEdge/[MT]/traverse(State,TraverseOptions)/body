@@ -2,7 +2,7 @@
   if (!fromv.canTraverse(wo)) {
     return null;
   }
-  double angleLength=fromv.getLength() + turnCost / 20;
+  double angleLength=fromv.getLength();
   State s1=s0.clone();
   double time=angleLength / wo.speed;
   double weight=fromv.computeWeight(s0,wo,time);

@@ -1,0 +1,7 @@
+{
+  if (o instanceof FreeEdge) {
+    FreeEdge other=(FreeEdge)o;
+    return other.getFromVertex().equals(fromv) && other.getToVertex().equals(tov);
+  }
+  return false;
+}
