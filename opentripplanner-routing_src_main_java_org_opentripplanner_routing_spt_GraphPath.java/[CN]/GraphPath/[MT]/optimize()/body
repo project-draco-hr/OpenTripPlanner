@@ -1,6 +1,9 @@
 {
   State state=vertices.lastElement().state.clone();
   State state0=vertices.firstElement().state;
+  if (edges.isEmpty()) {
+    return;
+  }
   if (state0.getTime() >= state.getTime()) {
     TraverseOptions options=vertices.lastElement().options;
     ListIterator<SPTEdge> iterator=edges.listIterator(vertices.size() - 1);
