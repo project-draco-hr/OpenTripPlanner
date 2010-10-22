@@ -20,6 +20,7 @@
       }
     }
   }
+  GeometryFactory geometryFactory=new GeometryFactory();
   ArrayList<Vertex> endpoints=new ArrayList<Vertex>();
   for (  OSMWay way : _ways.values()) {
     if (wayIndex % 1000 == 0)     _log.debug("ways=" + wayIndex + "/"+ _ways.size());
@@ -29,7 +30,6 @@
     List<Integer> nodes=way.getNodeRefs();
     Vertex startEndpoint=null, endEndpoint=null;
     ArrayList<Coordinate> segmentCoordinates=new ArrayList<Coordinate>();
-    GeometryFactory geometryFactory=new GeometryFactory();
     Integer startNode=null;
     OSMNode osmStartNode=null;
     for (int i=0; i < nodes.size() - 1; i++) {
