@@ -1,0 +1,12 @@
+{
+  Vertex location=getLocation(v);
+  if (location == null) {
+    getLocation(v);
+    return false;
+  }
+ else {
+    graph.addEdge(new StreetTransitLink(location,v,wheelchairAccessible));
+    graph.addEdge(new StreetTransitLink(v,location,wheelchairAccessible));
+    return true;
+  }
+}

@@ -1,0 +1,10 @@
+{
+  for (  Entry<HashSet<Edge>,LinkedList<P2<PlainStreetEdge>>> entry : replacements.entrySet()) {
+    LinkedList<P2<PlainStreetEdge>> edges=entry.getValue();
+    for (    P2<PlainStreetEdge> edge : edges) {
+      PlainStreetEdge e1=edge.getFirst();
+      graph.addEdge(e1);
+      graph.addEdge(edge.getSecond());
+    }
+  }
+}
