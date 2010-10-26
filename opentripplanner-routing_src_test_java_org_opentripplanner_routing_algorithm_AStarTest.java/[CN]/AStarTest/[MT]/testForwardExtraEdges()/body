@@ -1,0 +1,21 @@
+{
+  TraverseOptions options=new TraverseOptions();
+  options.speed=1.0;
+  StreetLocation fromLocation=new StreetLocation("near_shilshole_22nd",new Coordinate(-122.385050,47.666620),"near_shilshole_22nd");
+  fromLocation.getExtra().add(new SimpleEdge(fromLocation,_graph.getVertex("shilshole_22nd")));
+  StreetLocation toLocation=new StreetLocation("near_56th_20th",new Coordinate(-122.382347,47.669518),"near_56th_20th");
+  toLocation.getExtra().add(new SimpleEdge(_graph.getVertex("56th_20th"),toLocation));
+  ShortestPathTree tree=AStar.getShortestPathTree(_graph,fromLocation,toLocation,new State(),options);
+  GraphPath path=tree.getPath(toLocation);
+  Vector<SPTVertex> vertices=path.vertices;
+  assertEquals(9,vertices.size());
+  assertEquals("near_shilshole_22nd",vertices.get(0).getLabel());
+  assertEquals("shilshole_22nd",vertices.get(1).getLabel());
+  assertEquals("ballard_22nd",vertices.get(2).getLabel());
+  assertEquals("market_22nd",vertices.get(3).getLabel());
+  assertEquals("market_leary",vertices.get(4).getLabel());
+  assertEquals("market_russell",vertices.get(5).getLabel());
+  assertEquals("market_20th",vertices.get(6).getLabel());
+  assertEquals("56th_20th",vertices.get(7).getLabel());
+  assertEquals("near_56th_20th",vertices.get(8).getLabel());
+}
