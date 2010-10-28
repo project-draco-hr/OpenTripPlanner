@@ -2,7 +2,7 @@
   SPTVertex spt_u, spt_v;
   closed.add(taboo);
   while (!queue.empty()) {
-    spt_u=(SPTVertex)queue.peek_min();
+    spt_u=queue.peek_min();
     if (spt_u.weightSum > weightLimit) {
       return spt;
     }

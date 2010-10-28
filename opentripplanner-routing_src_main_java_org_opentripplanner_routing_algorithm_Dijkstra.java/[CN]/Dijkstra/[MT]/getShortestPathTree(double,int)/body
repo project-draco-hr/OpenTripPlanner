@@ -5,7 +5,7 @@
   }
   closed.add(taboo);
   while (!queue.empty()) {
-    spt_u=(SPTVertex)queue.peek_min();
+    spt_u=queue.peek_min();
     Vertex fromv=spt_u.mirror;
     if (nodeLimit-- <= 0) {
       return spt;
