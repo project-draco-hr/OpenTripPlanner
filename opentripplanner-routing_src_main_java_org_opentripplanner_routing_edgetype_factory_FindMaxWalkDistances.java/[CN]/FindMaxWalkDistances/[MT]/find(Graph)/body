@@ -1,0 +1,8 @@
+{
+  _log.debug("finding max walk distances");
+  for (  GraphVertex gv : graph.getVertices()) {
+    if (gv.vertex instanceof TransitStop) {
+      assignStopDistances(graph,(TransitStop)gv.vertex);
+    }
+  }
+}

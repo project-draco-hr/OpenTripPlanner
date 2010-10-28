@@ -1,0 +1,23 @@
+{
+  TransitStop transitStop=getVertexForStop(stop);
+  HashMap<TripPattern,P2<Double>> neighborhood=neighborhoods.get(stop);
+  if (neighborhood == null) {
+    Set<TripPattern> nearbyPatterns=getNearbyPatterns(stop);
+    HashMap<TripPattern,Double> walkNeighborhood=getBestDistanceForPatterns(graph,transitStop,walkingOptions,nearbyPatterns);
+    HashMap<TripPattern,Double> bikeNeighborhood=getBestDistanceForPatterns(graph,transitStop,bikingOptions,nearbyPatterns);
+    neighborhood=new HashMap<TripPattern,P2<Double>>();
+    for (    TripPattern p : nearbyPatterns) {
+      Double walkDistance=walkNeighborhood.get(p);
+      if (walkDistance == null) {
+        continue;
+      }
+      Double bikeDistance=bikeNeighborhood.get(p);
+      if (bikeDistance == null) {
+        bikeDistance=Double.MAX_VALUE;
+      }
+      neighborhood.put(p,new P2<Double>(walkDistance,bikeDistance));
+    }
+    neighborhoods.put(stop,neighborhood);
+  }
+  return neighborhood;
+}

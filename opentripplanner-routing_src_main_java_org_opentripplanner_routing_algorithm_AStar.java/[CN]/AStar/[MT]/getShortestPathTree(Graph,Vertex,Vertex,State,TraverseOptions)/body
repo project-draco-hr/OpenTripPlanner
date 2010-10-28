@@ -47,6 +47,8 @@
   FibHeap<SPTVertex> pq=new FibHeap<SPTVertex>(graph.getVertices().size() + extraEdges.size());
   pq.insert(spt_origin,spt_origin.weightSum + distance);
   boolean useTransit=options.modes.getTransit();
+  options=options.clone();
+  options.maxWalkDistance+=origin.getDistanceToNearestTransitStop() + target.getDistanceToNearestTransitStop();
   while (!pq.empty()) {
     SPTVertex spt_u=pq.extract_min();
     Vertex fromv=spt_u.mirror;
@@ -95,16 +97,31 @@
         throw new NegativeWeightException(String.valueOf(wr.weight));
       }
       double new_w=spt_u.weightSum + wr.weight;
-      distance=tov.fastDistance(target) / max_speed;
+      double euclidianDistance=tov.fastDistance(target);
       if (useTransit) {
-        int boardCost;
-        if (edge instanceof PatternHop || edge instanceof PatternBoard || edge instanceof PatternDwell|| edge instanceof PatternInterlineDwell|| edge instanceof Board|| edge instanceof Hop) {
-          boardCost=0;
+        if (spt_u.state.alightedLocal) {
+          distance=options.walkReluctance * euclidianDistance / options.speed;
         }
  else {
-          boardCost=options.boardCost;
+          int boardCost;
+          if (edge instanceof OnBoardForwardEdge) {
+            boardCost=options.boardCost;
+          }
+ else {
+            boardCost=0;
+          }
+          if (euclidianDistance < target.getDistanceToNearestTransitStop()) {
+            distance=options.walkReluctance * euclidianDistance / options.speed;
+          }
+ else {
+            double mandatoryWalkDistance=target.getDistanceToNearestTransitStop() + tov.getDistanceToNearestTransitStop();
+            distance=(euclidianDistance - mandatoryWalkDistance) / max_speed + mandatoryWalkDistance * options.walkReluctance / options.speed + boardCost;
+            distance=Math.min(distance,options.walkReluctance * euclidianDistance / options.speed);
+          }
         }
-        distance=Math.min(distance + boardCost,options.walkReluctance * tov.fastDistance(target) / options.speed);
+      }
+ else {
+        distance=options.walkReluctance * euclidianDistance / max_speed;
       }
       double heuristic_distance=new_w + distance;
       if (heuristic_distance > options.maxWeight || wr.state.getTime() > options.worstTime) {

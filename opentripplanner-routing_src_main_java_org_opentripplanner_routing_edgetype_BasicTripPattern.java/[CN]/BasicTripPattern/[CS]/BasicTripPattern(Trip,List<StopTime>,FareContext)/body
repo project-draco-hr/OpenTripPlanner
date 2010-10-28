@@ -17,8 +17,10 @@
     dwellTimes[i]=new ArrayList<Integer>();
     arrivalTimes[i]=new ArrayList<Integer>();
   }
+  stops=new ArrayList<Stop>(stopTimes.size());
   i=0;
   for (  StopTime stopTime : stopTimes) {
+    stops.add(stopTime.getStop());
     zones[i]=stopTimes.get(i).getStop().getZoneId();
     if (stopTime.getStop().getWheelchairBoarding() != 0) {
       perStopFlags[i]|=FLAG_WHEELCHAIR_ACCESSIBLE;

@@ -3,5 +3,5 @@
     throw new RuntimeException("Negative dwell time");
   }
   tripIdToInterlineDwellData.put(trip,new InterlineDwellData(dwellTime,newPatternIndex));
-  reverseTripIdToInterlineDwellData.put(reverseTrip,new InterlineDwellData(dwellTime,newPatternIndex));
+  reverseTripIdToInterlineDwellData.put(reverseTrip,new InterlineDwellData(dwellTime,oldPatternIndex));
 }

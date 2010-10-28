@@ -104,7 +104,7 @@
       }
     }
     if (oldHopLimit != hopLimit) {
-      pq=rebuildPriorityQueue(options,hopLimit,deletedNeighbors);
+      pq=rebuildPriorityQueue(hopLimit,deletedNeighbors);
     }
   }
   threadPool.shutdownNow();

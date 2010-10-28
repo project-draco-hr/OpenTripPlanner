@@ -50,6 +50,9 @@
   graph.addEdge(new TurnEdge(right,topBack));
   graph.addEdge(new MockTransfer(bottom,trIn,99999));
   graph.addEdge(new MockTransfer(bottomBack,trIn,99999));
+  for (  GraphVertex gv : graph.getVertices()) {
+    gv.vertex.setDistanceToNearestTransitStop(0);
+  }
   TraverseOptions options=new TraverseOptions();
   ShortestPathTree spt=AStar.getShortestPathTree(graph,blOut,trIn,new State(0),options);
   GraphPath path=spt.getPath(trIn);

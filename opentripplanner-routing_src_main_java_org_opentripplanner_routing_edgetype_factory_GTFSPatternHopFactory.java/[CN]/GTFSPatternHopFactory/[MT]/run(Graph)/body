@@ -17,7 +17,7 @@
     freqs.add(freq);
   }
   for (  Trip trip : trips) {
-    if (index % 100 == 0)     _log.debug("trips=" + index + "/"+ trips.size());
+    if (index % 1000 == 0)     _log.debug("trips=" + index + "/"+ trips.size());
     index++;
     List<StopTime> originalStopTimes=_dao.getStopTimesForTrip(trip);
     interpolateStopTimes(originalStopTimes);
@@ -152,6 +152,5 @@
   }
   loadTransfers(graph);
   deleteUselessDwells(graph);
-  shrinkPatterns(graph);
   clearCachedData();
 }

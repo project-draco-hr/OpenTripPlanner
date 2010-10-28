@@ -4,8 +4,8 @@
     if (stop.getLocationType() != 2) {
       Vertex arrive=graph.addVertex(new GenericVertex(arrivalVertexId(id(stop.getId())),stop.getLon(),stop.getLat(),stop.getName(),stop.getId().getId()));
       Vertex depart=graph.addVertex(new GenericVertex(departureVertexId(id(stop.getId())),stop.getLon(),stop.getLat(),stop.getName(),stop.getId().getId()));
-      graph.addEdge(new FreeEdge(arrive,stopVertex));
-      graph.addEdge(new FreeEdge(stopVertex,depart));
+      graph.addEdge(new PreAlightEdge(arrive,stopVertex));
+      graph.addEdge(new PreBoardEdge(stopVertex,depart));
     }
   }
 }

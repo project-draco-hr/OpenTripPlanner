@@ -15,6 +15,8 @@
   Vertex tmp=origin;
   origin=target;
   target=tmp;
+  options=options.clone();
+  options.maxWalkDistance+=origin.getDistanceToNearestTransitStop() + target.getDistanceToNearestTransitStop();
   Map<Vertex,ArrayList<Edge>> extraEdges;
   if (origin instanceof StreetLocation) {
     extraEdges=new HashMap<Vertex,ArrayList<Edge>>();
@@ -92,9 +94,31 @@
       }
       Vertex fromv=edge.getFromVertex();
       double new_w=spt_u.weightSum + wr.weight;
-      distance=tov.fastDistance(target) / max_speed;
+      double euclidianDistance=fromv.fastDistance(target);
       if (useTransit) {
-        distance=Math.min(distance + options.boardCost,options.walkReluctance * tov.fastDistance(target) / options.speed);
+        if (spt_u.state.alightedLocal) {
+          distance=options.walkReluctance * euclidianDistance / options.speed;
+        }
+ else {
+          int boardCost;
+          if (edge instanceof OnBoardReverseEdge) {
+            boardCost=options.boardCost;
+          }
+ else {
+            boardCost=0;
+          }
+          if (euclidianDistance < target.getDistanceToNearestTransitStop()) {
+            distance=options.walkReluctance * euclidianDistance / options.speed;
+          }
+ else {
+            double mandatoryWalkDistance=target.getDistanceToNearestTransitStop() + fromv.getDistanceToNearestTransitStop();
+            distance=(euclidianDistance - mandatoryWalkDistance) / max_speed + mandatoryWalkDistance * options.walkReluctance / options.speed + boardCost;
+            distance=Math.min(distance,options.walkReluctance * euclidianDistance / options.speed);
+          }
+        }
+      }
+ else {
+        distance=options.walkReluctance * euclidianDistance / max_speed;
       }
       double heuristic_distance=new_w + distance;
       if (heuristic_distance > options.maxWeight || wr.state.getTime() < options.worstTime) {
