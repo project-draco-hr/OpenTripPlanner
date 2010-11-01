@@ -2,6 +2,13 @@
   if (ee.getElevationProfile() != null) {
     return;
   }
+  Vertex fromv=ee.getFromVertex();
+  if (fromv instanceof StreetVertex) {
+    StreetVertex sv=((StreetVertex)fromv);
+    if (!sv.getPermission().allows(StreetTraversalPermission.BICYCLE)) {
+      return;
+    }
+  }
   Geometry g=ee.getGeometry();
   Coordinate[] coords=g.getCoordinates();
   List<Coordinate> coordList=new LinkedList<Coordinate>();
