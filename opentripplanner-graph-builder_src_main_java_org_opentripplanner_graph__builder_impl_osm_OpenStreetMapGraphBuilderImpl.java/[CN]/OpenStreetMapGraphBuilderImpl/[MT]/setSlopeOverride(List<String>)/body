@@ -1,0 +1,9 @@
+{
+  for (  String tag : features) {
+    int ch_eq=tag.indexOf("=");
+    if (ch_eq >= 0) {
+      String key=tag.substring(0,ch_eq), value=tag.substring(ch_eq + 1);
+      _slopeOverrideTags.add(new P2<String>(key,value));
+    }
+  }
+}
