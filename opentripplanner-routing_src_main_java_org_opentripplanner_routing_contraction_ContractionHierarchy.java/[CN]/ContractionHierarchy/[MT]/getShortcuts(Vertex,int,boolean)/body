@@ -60,7 +60,7 @@
   int nodeLimit=simulate ? 500 : Integer.MAX_VALUE;
   for (  VertexIngress u : us) {
     double weightLimit=u.weight + maxWWeight - minXWeight + 1;
-    WitnessSearch task=new WitnessSearch(vertex,hopLimit,nodeLimit,state,neighbors,weightLimit,wSet,ws,u);
+    WitnessSearch task=new WitnessSearch(vertex,hopLimit,nodeLimit,neighbors,weightLimit,wSet,ws,u);
     tasks.add(task);
   }
   if (threadPool == null) {
