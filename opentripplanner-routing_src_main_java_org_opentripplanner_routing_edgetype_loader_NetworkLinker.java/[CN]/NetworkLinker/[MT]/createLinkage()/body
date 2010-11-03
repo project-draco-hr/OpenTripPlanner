@@ -4,7 +4,7 @@
   ArrayList<GraphVertex> vertices=new ArrayList<GraphVertex>(graph.getVertices());
   for (  GraphVertex gv : vertices) {
     Vertex v=gv.vertex;
-    if (i % 500 == 0)     _log.debug("vertices=" + i + "/"+ vertices.size());
+    if (i % 10000 == 0)     _log.debug("vertices=" + i + "/"+ vertices.size());
     i++;
     if (v instanceof TransitStop) {
       TransitStop ts=(TransitStop)v;
