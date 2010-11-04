@@ -4,4 +4,7 @@
   }
   tripIdToInterlineDwellData.put(trip,new InterlineDwellData(dwellTime,newPatternIndex));
   reverseTripIdToInterlineDwellData.put(reverseTrip,new InterlineDwellData(dwellTime,oldPatternIndex));
+  if (dwellTime < bestDwellTime) {
+    bestDwellTime=dwellTime;
+  }
 }
