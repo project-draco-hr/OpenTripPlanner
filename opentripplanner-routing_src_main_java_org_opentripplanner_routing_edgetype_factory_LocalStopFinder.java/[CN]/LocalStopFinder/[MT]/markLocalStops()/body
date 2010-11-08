@@ -34,6 +34,7 @@
       Stop nextStop=stops.get(i + 1);
       nextDistances=getNeighborhood(nextStop);
       if (previousDistances == null) {
+        nonLocal++;
         transitStop.setLocal(false);
         continue;
       }
@@ -66,13 +67,14 @@
           if (transitStop.isLocal()) {
             nonLocal++;
           }
-          transitStop.setLocal(local);
+          transitStop.setLocal(false);
         }
       }
     }
     Stop stop=stops.get(stops.size() - 1);
     TransitStop transitStop=getVertexForStop(stop);
     transitStop.setLocal(false);
+    nonLocal++;
   }
   _log.debug("Local stops: " + (total - nonLocal) + " / "+ total);
 }
