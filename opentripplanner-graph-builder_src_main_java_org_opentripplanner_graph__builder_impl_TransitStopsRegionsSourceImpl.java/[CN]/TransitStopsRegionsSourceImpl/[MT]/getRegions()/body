@@ -3,8 +3,10 @@
   for (  GraphVertex gv : _graph.getVertices()) {
     Vertex vertex=gv.vertex;
     if (vertex instanceof TransitStop) {
-      Envelope env=new Envelope(vertex.getCoordinate());
-      env.expandBy(0.02);
+      Coordinate c=vertex.getCoordinate();
+      Envelope env=new Envelope(c);
+      double meters_per_degree_lon_here=METERS_PER_DEGREE_LAT * Math.cos(Math.toRadians(c.y));
+      env.expandBy(distance / meters_per_degree_lon_here,distance / METERS_PER_DEGREE_LAT);
       regions.add(env);
     }
   }
