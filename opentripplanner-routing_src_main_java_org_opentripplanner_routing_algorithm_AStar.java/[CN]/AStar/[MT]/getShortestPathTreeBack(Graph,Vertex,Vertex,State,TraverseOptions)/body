@@ -50,7 +50,7 @@
     }
   }
   final double max_speed=getMaxSpeed(options);
-  double distance=origin.fastDistance(target) / max_speed;
+  double distance=origin.distance(target) / max_speed;
   SPTVertex spt_origin=spt.addVertex(origin,init,0,options);
   FibHeap<SPTVertex> pq=new FibHeap<SPTVertex>(graph.getVertices().size() + extraEdges.size());
   pq.insert(spt_origin,spt_origin.weightSum + distance);
@@ -94,7 +94,7 @@
       }
       Vertex fromv=edge.getFromVertex();
       double new_w=spt_u.weightSum + wr.weight;
-      double euclidianDistance=fromv.fastDistance(target);
+      double euclidianDistance=fromv.distance(target);
       if (useTransit) {
         if (spt_u.state.alightedLocal) {
           distance=options.walkReluctance * euclidianDistance / options.speed;

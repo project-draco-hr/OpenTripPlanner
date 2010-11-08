@@ -1,13 +1,13 @@
 {
   graph=new Graph();
-  top=new StreetVertex("top",GeometryUtils.makeLineString(-74.1,40.1,-74.0,40.1),"top",1500,false);
-  bottom=new StreetVertex("bottom",GeometryUtils.makeLineString(-74.1,40.0,-74.0,40.0),"bottom",1500,false);
-  left=new StreetVertex("left",GeometryUtils.makeLineString(-74.1,40.0,-74.1,40.1),"left",1500,false);
-  right=new StreetVertex("right",GeometryUtils.makeLineString(-74.0,40.0,-74.0,40.1),"right",1500,false);
-  StreetVertex topBack=new StreetVertex("topBack",GeometryUtils.makeLineString(-74.0,40.1,-74.1,40.1),"topBack",1500,true);
-  StreetVertex bottomBack=new StreetVertex("bottomBack",GeometryUtils.makeLineString(-74.0,40.0,-74.1,40.0),"bottomBack",1500,true);
-  leftBack=new StreetVertex("leftBack",GeometryUtils.makeLineString(-74.1,40.1,-74.1,40.0),"leftBack",1500,true);
-  rightBack=new StreetVertex("rightBack",GeometryUtils.makeLineString(-74.0,40.1,-74.0,40.0),"rightBack",1500,true);
+  top=new StreetVertex("top",GeometryUtils.makeLineString(-74.01,40.01,-74.0,40.01),"top",1500,false);
+  bottom=new StreetVertex("bottom",GeometryUtils.makeLineString(-74.01,40.0,-74.0,40.0),"bottom",1500,false);
+  left=new StreetVertex("left",GeometryUtils.makeLineString(-74.01,40.0,-74.01,40.01),"left",1500,false);
+  right=new StreetVertex("right",GeometryUtils.makeLineString(-74.0,40.0,-74.0,40.01),"right",1500,false);
+  StreetVertex topBack=new StreetVertex("topBack",GeometryUtils.makeLineString(-74.0,40.01,-74.01,40.01),"topBack",1500,true);
+  StreetVertex bottomBack=new StreetVertex("bottomBack",GeometryUtils.makeLineString(-74.0,40.0,-74.01,40.0),"bottomBack",1500,true);
+  leftBack=new StreetVertex("leftBack",GeometryUtils.makeLineString(-74.01,40.01,-74.01,40.0),"leftBack",1500,true);
+  rightBack=new StreetVertex("rightBack",GeometryUtils.makeLineString(-74.0,40.01,-74.0,40.0),"rightBack",1500,true);
   right.setPermission(StreetTraversalPermission.PEDESTRIAN);
   graph.addVertex(top);
   graph.addVertex(bottom);
@@ -17,14 +17,14 @@
   graph.addVertex(bottomBack);
   graph.addVertex(leftBack);
   graph.addVertex(rightBack);
-  EndpointVertex tlIn=(EndpointVertex)graph.addVertex(new EndpointVertex("tl in",-74.1,40.1));
-  EndpointVertex trIn=(EndpointVertex)graph.addVertex(new EndpointVertex("tr in",-74.0,40.1));
+  EndpointVertex tlIn=(EndpointVertex)graph.addVertex(new EndpointVertex("tl in",-74.01,40.01));
+  EndpointVertex trIn=(EndpointVertex)graph.addVertex(new EndpointVertex("tr in",-74.0,40.01));
   EndpointVertex blIn=(EndpointVertex)graph.addVertex(new EndpointVertex("bl in",-74.0,40.0));
-  EndpointVertex brIn=(EndpointVertex)graph.addVertex(new EndpointVertex("br in",-74.1,40.0));
-  Vertex tlOut=graph.addVertex(new EndpointVertex("tl out",-74.1,40.1));
-  trOut=graph.addVertex(new EndpointVertex("tr out",-74.0,40.1));
+  EndpointVertex brIn=(EndpointVertex)graph.addVertex(new EndpointVertex("br in",-74.01,40.0));
+  Vertex tlOut=graph.addVertex(new EndpointVertex("tl out",-74.01,40.01));
+  trOut=graph.addVertex(new EndpointVertex("tr out",-74.0,40.01));
   Vertex blOut=graph.addVertex(new EndpointVertex("bl out",-74.0,40.0));
-  brOut=graph.addVertex(new EndpointVertex("br out",-74.1,40.0));
+  brOut=graph.addVertex(new EndpointVertex("br out",-74.01,40.0));
   graph.addEdge(new FreeEdge(tlOut,top));
   graph.addEdge(new FreeEdge(tlOut,leftBack));
   graph.addEdge(new FreeEdge(trOut,topBack));
@@ -49,8 +49,8 @@
   graph.addEdge(new TurnEdge(leftBack,bottom));
   graph.addEdge(new TurnEdge(bottom,right));
   graph.addEdge(new TurnEdge(right,topBack));
-  station1=new TransitStop("transitVertex 1",-74.05,40.099999,"transitVertex 1","fleem station",null);
+  station1=new TransitStop("transitVertex 1",-74.005,40.0099999,"transitVertex 1","fleem station",null);
   graph.addVertex(station1);
-  station2=new TransitStop("transitVertex 2",-74.02,40.099999,"transitVertex 2","morx station",null);
+  station2=new TransitStop("transitVertex 2",-74.002,40.0099999,"transitVertex 2","morx station",null);
   graph.addVertex(station2);
 }
