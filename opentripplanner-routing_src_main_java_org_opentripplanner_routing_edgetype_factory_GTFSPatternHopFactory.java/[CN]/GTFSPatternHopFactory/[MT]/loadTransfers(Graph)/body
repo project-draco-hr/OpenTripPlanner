@@ -21,6 +21,9 @@
       if (createdTransfers.contains(edge)) {
         continue;
       }
+      TransitStop fromStopVertex=(TransitStop)graph.getVertex(id(fromStop.getId()));
+      TransitStop toStopVertex=(TransitStop)graph.getVertex(id(toStop.getId()));
+      edge.setWheelchairAccessible(fromStopVertex.hasWheelchairEntrance() && toStopVertex.hasWheelchairEntrance());
       LineString geometry=_factory.createLineString(new Coordinate[]{new Coordinate(fromStop.getLon(),fromStop.getLat()),new Coordinate(toStop.getLon(),toStop.getLat())});
       edge.setGeometry(geometry);
       createdTransfers.add(edge);
