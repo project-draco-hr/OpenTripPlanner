@@ -5,6 +5,7 @@
   }
   options=new TraverseOptions(new TraverseModeSet(mode));
   options.optimizeFor=optimize;
+  options.maxWalkDistance=Double.MAX_VALUE;
   this.contractionFactor=contractionFactor;
   init();
   useCoreVerticesFrom(orig);
