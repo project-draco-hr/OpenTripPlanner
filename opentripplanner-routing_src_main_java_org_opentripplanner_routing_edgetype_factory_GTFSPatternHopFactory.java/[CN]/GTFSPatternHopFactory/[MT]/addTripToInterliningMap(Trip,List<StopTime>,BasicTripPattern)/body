@@ -1,0 +1,10 @@
+{
+  String blockId=trip.getBlockId();
+  BlockIdAndServiceId key=new BlockIdAndServiceId(blockId,trip.getServiceId());
+  List<InterliningTrip> trips=tripsForBlock.get(key);
+  if (trips == null) {
+    trips=new ArrayList<InterliningTrip>();
+    tripsForBlock.put(key,trips);
+  }
+  trips.add(new InterliningTrip(trip,stopTimes,tripPattern));
+}
