@@ -43,7 +43,7 @@
   DisjointSet<Vertex> components=new DisjointSet<Vertex>();
   Vertex last=null;
   for (  Vertex v : vertices) {
-    for (    Edge e : graph.getOutgoing(v)) {
+    for (    DirectEdge e : filter(graph.getOutgoing(v),DirectEdge.class)) {
       components.union(v,e.getToVertex());
     }
     last=v;

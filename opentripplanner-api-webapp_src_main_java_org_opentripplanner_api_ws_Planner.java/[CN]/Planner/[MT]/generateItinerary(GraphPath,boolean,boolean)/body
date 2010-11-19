@@ -13,22 +13,23 @@
   for (  SPTEdge sptEdge : path.edges) {
     i++;
     Edge edge=sptEdge.payload;
+    EdgeNarrative edgeResult=sptEdge.narrative;
     if (edge instanceof FreeEdge && sptEdge != finalEdge) {
       continue;
     }
-    TraverseMode edgeMode=edge.getMode();
+    TraverseMode edgeMode=edgeResult.getMode();
     if (isStreetEdge(edge) && biking) {
       edgeMode=TraverseMode.BICYCLE;
     }
     double edgeTime=sptEdge.tov.state.getTime() - sptEdge.fromv.state.getTime();
     if (!edgeMode.isTransit() && edgeMode != TraverseMode.ALIGHTING) {
-      if (edgeMode != mode || (!mode.isOnStreetNonTransit() && edge.getName() != name)) {
-        name=edge.getName();
+      if (edgeMode != mode || (!mode.isOnStreetNonTransit() && edgeResult.getName() != name)) {
+        name=edgeResult.getName();
         if (leg != null) {
           if (startWalk != -1) {
             leg.walkSteps=getWalkSteps(path.edges.subList(startWalk,i));
           }
-          leg.to=makePlace(edge.getFromVertex());
+          leg.to=makePlace(edgeResult.getFromVertex());
           leg.endTime=new Date(previousEdge.fromv.state.getTime());
           Geometry geometry=geometryFactory.createLineString(coordinates);
           leg.legGeometry=PolylineEncoder.createEncodings(geometry);
@@ -47,7 +48,7 @@
       }
     }
     previousEdge=sptEdge;
-    Geometry edgeGeometry=edge.getGeometry();
+    Geometry edgeGeometry=edgeResult.getGeometry();
     if (edgeGeometry != null) {
       Coordinate[] edgeCoordinates=edgeGeometry.getCoordinates();
       if (coordinates.size() > 0 && coordinates.getCoordinate(coordinates.size() - 1).equals(edgeCoordinates[0])) {
@@ -60,7 +61,7 @@
     leg.distance+=sptEdge.getDistance();
     if (edgeMode == TraverseMode.TRANSFER) {
       itinerary.walkTime+=edgeTime;
-      itinerary.walkDistance+=edge.getDistance();
+      itinerary.walkDistance+=edgeResult.getDistance();
       continue;
     }
  else     if (edgeMode == TraverseMode.BOARDING) {
@@ -74,7 +75,7 @@
     }
  else     if (edgeMode == TraverseMode.WALK || edgeMode == TraverseMode.BICYCLE) {
       itinerary.walkTime+=edgeTime;
-      itinerary.walkDistance+=edge.getDistance();
+      itinerary.walkDistance+=edgeResult.getDistance();
       if (edge instanceof EdgeWithElevation) {
         PackedCoordinateSequence profile=((EdgeWithElevation)edge).getElevationProfile();
         lastElevation=applyElevation(profile,itinerary,lastElevation);
@@ -82,9 +83,9 @@
     }
  else     if (edgeMode.isTransit()) {
       itinerary.transitTime+=edgeTime;
-      mode=edge.getMode();
+      mode=edgeResult.getMode();
       leg.mode=mode.toString();
-      leg.route=edge.getName();
+      leg.route=edgeResult.getName();
       if (showIntermediateStops) {
         if (leg.stop == null) {
           leg.stop=new ArrayList<Place>();
@@ -96,9 +97,9 @@
       }
     }
   }
-  Edge graphEdge=previousEdge.payload;
+  EdgeNarrative graphEdgeResult=previousEdge.narrative;
   if (leg != null) {
-    leg.to=makePlace(graphEdge.getToVertex());
+    leg.to=makePlace(graphEdgeResult.getToVertex());
     leg.endTime=new Date(previousEdge.tov.state.getTime());
     Geometry geometry=geometryFactory.createLineString(coordinates);
     leg.legGeometry=PolylineEncoder.createEncodings(geometry);

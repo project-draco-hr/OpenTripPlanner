@@ -1,6 +1,6 @@
 {
   Envelope envelope=new Envelope(coordinate);
-  List<Edge> nearby=new LinkedList<Edge>();
+  List<StreetEdge> nearby=new LinkedList<StreetEdge>();
   int i=0;
   double envelopeGrowthRate=0.0002;
   GeometryFactory factory=new GeometryFactory();
@@ -11,10 +11,10 @@
     envelope.expandBy(envelopeGrowthRate);
     envelopeGrowthRate*=2;
     bestDistance=Double.MAX_VALUE;
-    Edge bestEdge=null;
+    StreetEdge bestEdge=null;
     nearby=edgeTree.query(envelope);
     if (nearby != null) {
-      for (      Edge e : nearby) {
+      for (      StreetEdge e : nearby) {
         if (e == null || e instanceof OutEdge)         continue;
         Geometry g=e.getGeometry();
         if (g != null) {
@@ -40,8 +40,8 @@
         double xd=nearestPointOnEdge.x - coordinate.x;
         double yd=nearestPointOnEdge.y - coordinate.y;
         double edgeDirection=Math.atan2(yd,xd);
-        TreeMap<Double,Edge> parallel=new TreeMap<Double,Edge>();
-        for (        Edge e : nearby) {
+        TreeMap<Double,StreetEdge> parallel=new TreeMap<Double,StreetEdge>();
+        for (        StreetEdge e : nearby) {
           if (e == null || e instanceof OutEdge) {
             continue;
           }

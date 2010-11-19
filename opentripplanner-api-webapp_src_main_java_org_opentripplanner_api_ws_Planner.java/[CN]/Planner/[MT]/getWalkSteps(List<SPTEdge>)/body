@@ -4,20 +4,21 @@
   double lastAngle=0, distance=0;
   for (  SPTEdge sptEdge : edges) {
     Edge edge=sptEdge.payload;
+    EdgeNarrative edgeResult=sptEdge.narrative;
     if (edge instanceof FreeEdge) {
       continue;
     }
-    Geometry geom=edge.getGeometry();
+    Geometry geom=edgeResult.getGeometry();
     if (geom == null) {
       continue;
     }
-    String streetName=edge.getName();
+    String streetName=edgeResult.getName();
     if (step == null) {
       step=createWalkStep(sptEdge);
       steps.add(step);
       double thisAngle=DirectionUtils.getFirstAngle(geom);
       step.setAbsoluteDirection(thisAngle);
-      distance=edge.getDistance();
+      distance=edgeResult.getDistance();
     }
  else     if (step.streetName != streetName && (step.streetName != null && !step.streetName.equals(streetName))) {
       step=createWalkStep(sptEdge);
@@ -25,7 +26,7 @@
       double thisAngle=DirectionUtils.getFirstAngle(geom);
       step.setDirections(lastAngle,thisAngle);
       step.becomes=!pathservice.multipleOptionsBefore(edge);
-      distance=edge.getDistance();
+      distance=edgeResult.getDistance();
     }
  else {
       double thisAngle=DirectionUtils.getFirstAngle(geom);
@@ -36,7 +37,7 @@
           if (step.elevation.length() > 0 && s != null && s.length() > 0)           step.elevation+=",";
           step.elevation+=s;
         }
-        distance+=edge.getDistance();
+        distance+=edgeResult.getDistance();
       }
  else {
         boolean optionsBefore=pathservice.multipleOptionsBefore(edge);
@@ -45,11 +46,11 @@
           steps.add(step);
           step.setDirections(lastAngle,thisAngle);
           step.stayOn=true;
-          distance=edge.getDistance();
+          distance=edgeResult.getDistance();
         }
       }
     }
-    step.distance+=edge.getDistance();
+    step.distance+=edgeResult.getDistance();
     lastAngle=DirectionUtils.getLastAngle(geom);
   }
   return steps;

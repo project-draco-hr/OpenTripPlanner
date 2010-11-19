@@ -16,7 +16,7 @@
     }
  else {
     }
-    for (    Edge e : gv.getOutgoing()) {
+    for (    DirectEdge e : IterableLibrary.filter(gv.getOutgoing(),DirectEdge.class)) {
       if (e.getGeometry() == null) {
         continue;
       }

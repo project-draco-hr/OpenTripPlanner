@@ -8,9 +8,9 @@
     if (edge.payload instanceof Shortcut) {
       SPTVertex last=edge.getFromVertex();
       Shortcut shortcut=(Shortcut)edge.payload;
-      for (      Edge e : flatten(shortcut)) {
+      for (      DirectEdge e : flatten(shortcut)) {
         SPTVertex next=new SPTVertex(e.getToVertex(),null,0,options);
-        out.add(new SPTEdge(last,next,e));
+        out.add(new SPTEdge(last,next,e,e));
         last=next;
       }
       out.lastElement().tov=edge.getToVertex();

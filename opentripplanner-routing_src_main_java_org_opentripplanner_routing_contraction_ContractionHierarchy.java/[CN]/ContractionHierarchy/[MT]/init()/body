@@ -59,7 +59,7 @@
       neighbors.add(originalFromVertex.vertex);
     }
     GraphVertex upVertex=up.getGraphVertex(up.addVertex(vertex));
-    for (    Edge ee : graph.getOutgoing(vertex)) {
+    for (    DirectEdge ee : filter(graph.getOutgoing(vertex),DirectEdge.class)) {
       nEdges--;
       GraphVertex originalToVertex=graph.getGraphVertex(ee.getToVertex());
       up.addVertex(originalToVertex.vertex);

@@ -70,10 +70,6 @@
       }
       State state=up_u.state;
       for (      Edge edge : outgoing) {
-        Vertex toVertex=edge.getToVertex();
-        if (upclosed.contains(toVertex)) {
-          continue;
-        }
         if (edge instanceof OutEdge) {
           continue;
         }
@@ -87,6 +83,11 @@
         if (wr.weight < 0) {
           throw new NegativeWeightException(String.valueOf(wr.weight) + " on edge " + edge);
         }
+        EdgeNarrative en=wr.getEdgeNarrative();
+        Vertex toVertex=en.getToVertex();
+        if (upclosed.contains(toVertex)) {
+          continue;
+        }
         double new_w=up_u.weightSum + wr.weight;
         if (new_w > options.maxWeight) {
           continue;
@@ -96,7 +97,7 @@
         }
         SPTVertex up_v=upspt.addVertex(toVertex,wr.state,new_w,options);
         if (up_v != null) {
-          up_v.setParent(up_u,edge);
+          up_v.setParent(up_u,edge,en);
           upqueue.insert_or_dec_key(up_v,new_w);
         }
       }
@@ -169,6 +170,7 @@
         if (wr.weight < 0) {
           throw new NegativeWeightException(String.valueOf(wr.weight) + " on edge " + edge);
         }
+        EdgeNarrative en=wr.getEdgeNarrative();
         double new_w=down_u.weightSum + wr.weight;
         if (new_w > options.maxWeight) {
           continue;
@@ -178,7 +180,7 @@
         }
         SPTVertex down_v=downspt.addVertex(fromVertex,wr.state,new_w,options);
         if (down_v != null) {
-          down_v.setParent(down_u,edge);
+          down_v.setParent(down_u,edge,en);
           downqueue.insert_or_dec_key(down_v,new_w);
         }
       }

@@ -3,7 +3,7 @@
   rect(0,0,getSize().width - 1,getSize().height - 1);
   List<Vertex> vertices=(List<Vertex>)vertexIndex.query(modelBounds);
   List<Edge> edges=(List<Edge>)edgeIndex.query(modelBounds);
-  for (  Edge e : edges) {
+  for (  DirectEdge e : IterableLibrary.filter(edges,DirectEdge.class)) {
     if (e == highlightedEdge)     continue;
     if (e instanceof OutEdge || e instanceof TurnEdge) {
       stroke(30,255,255);

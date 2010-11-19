@@ -10,15 +10,16 @@
     if (result == null) {
       continue;
     }
-    Vertex u=e.getFromVertex();
-    us.add(new VertexIngress(u,e,result.weight,result.state.getTime()));
+    DirectEdge directEdge=(DirectEdge)e;
+    Vertex u=directEdge.getFromVertex();
+    us.add(new VertexIngress(u,directEdge,result.weight,result.state.getTime()));
   }
   HashMap<Vertex,List<VertexIngress>> neighbors=new HashMap<Vertex,List<VertexIngress>>();
   double maxWWeight=0;
   double minXWeight=Double.POSITIVE_INFINITY;
   HashSet<Vertex> wSet=new HashSet<Vertex>();
   ArrayList<VertexIngress> ws=new ArrayList<VertexIngress>();
-  for (  Edge e : graph.getOutgoing(vertex)) {
+  for (  DirectEdge e : filter(graph.getOutgoing(vertex),DirectEdge.class)) {
     if (!isContractable(e)) {
       continue;
     }
@@ -26,13 +27,14 @@
     if (result == null) {
       continue;
     }
-    Vertex w=e.getToVertex();
+    EdgeNarrative er=result.getEdgeNarrative();
+    Vertex w=er.getToVertex();
     wSet.add(w);
     ws.add(new VertexIngress(w,e,result.weight,result.state.getTime()));
     if (result.weight > maxWWeight) {
       maxWWeight=result.weight;
     }
-    for (    Edge incoming : graph.getIncoming(w)) {
+    for (    DirectEdge incoming : filter(graph.getIncoming(w),DirectEdge.class)) {
       if (!isContractable(e)) {
         continue;
       }
@@ -71,8 +73,8 @@
       WitnessSearchResult wsresult=future.get();
       BasicShortestPathTree spt=wsresult.spt;
       if (!simulate && spt != null) {
-        ArrayList<Edge> toRemove=new ArrayList<Edge>();
-        for (        Edge e : graph.getOutgoing(wsresult.vertex)) {
+        ArrayList<DirectEdge> toRemove=new ArrayList<DirectEdge>();
+        for (        DirectEdge e : filter(graph.getOutgoing(wsresult.vertex),DirectEdge.class)) {
           SPTVertex s=spt.getVertex(e.getToVertex());
           if (s == null) {
             continue;
@@ -87,7 +89,7 @@
           }
         }
         GraphVertex ugv=graph.getGraphVertex(wsresult.vertex);
-        for (        Edge e : toRemove) {
+        for (        DirectEdge e : toRemove) {
           ugv.removeOutgoing(e);
           graph.getGraphVertex(e.getToVertex()).removeIncoming(e);
         }

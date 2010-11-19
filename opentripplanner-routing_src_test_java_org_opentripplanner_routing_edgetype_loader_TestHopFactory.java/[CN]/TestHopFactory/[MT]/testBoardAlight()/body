@@ -6,9 +6,10 @@
   for (  Edge e : stop_a.getOutgoing()) {
     assertEquals(PatternBoard.class,e.getClass());
   }
-  GraphVertex journey_a_1=graph.getGraphVertex(stop_a.getOutgoing().iterator().next().getToVertex());
+  PatternBoard pb=(PatternBoard)stop_a.getOutgoing().iterator().next();
+  GraphVertex journey_a_1=graph.getGraphVertex(pb.getToVertex());
   assertEquals(1,journey_a_1.getDegreeIn());
-  for (  Edge e : journey_a_1.getOutgoing()) {
+  for (  DirectEdge e : filter(journey_a_1.getOutgoing(),DirectEdge.class)) {
     if (e.getToVertex() instanceof TransitStop) {
       assertEquals(PatternAlight.class,e.getClass());
     }

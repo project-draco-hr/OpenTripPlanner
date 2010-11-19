@@ -14,7 +14,7 @@
   HashSet<Vertex> newOpen=new HashSet<Vertex>();
   for (  Vertex v2 : open) {
     closed.add(v2);
-    for (    Edge e : graph.getOutgoing(v2)) {
+    for (    DirectEdge e : filter(graph.getOutgoing(v2),DirectEdge.class)) {
       Vertex target=e.getToVertex();
       if (closed.contains(target)) {
         continue;

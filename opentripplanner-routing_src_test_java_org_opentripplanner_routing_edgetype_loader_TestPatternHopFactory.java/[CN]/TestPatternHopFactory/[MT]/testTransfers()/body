@@ -2,11 +2,9 @@
   Vertex stop_k=graph.getVertex("agency_K_depart");
   Vertex stop_n=graph.getVertex("agency_N_arrive");
   int transfers=0;
-  for (  Edge e : graph.getOutgoing(stop_n)) {
-    if (e instanceof TransferEdge) {
-      assertEquals(e.getToVertex(),stop_k);
-      transfers+=1;
-    }
+  for (  TransferEdge e : filter(graph.getOutgoing(stop_n),TransferEdge.class)) {
+    assertEquals(e.getToVertex(),stop_k);
+    transfers+=1;
   }
   assertTrue(transfers > 0);
 }

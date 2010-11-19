@@ -1,0 +1,28 @@
+{
+  boolean wheelchairAccessible=false;
+  StreetLocation location=new StreetLocation(label,nearestPoint,name);
+  HashMap<Geometry,P2<StreetVertex>> cache=new HashMap<Geometry,P2<StreetVertex>>();
+  for (  StreetEdge street : edges) {
+    Vertex fromv=street.getFromVertex();
+    if (street instanceof PlainStreetEdge) {
+      wheelchairAccessible|=((PlainStreetEdge)street).isWheelchairAccessible();
+    }
+ else {
+      wheelchairAccessible|=((StreetVertex)fromv).isWheelchairAccessible();
+    }
+    boolean seen=cache.containsKey(street.getGeometry());
+    StreetVertex edgeLocation=createHalfLocation(location,label + " to " + street.getToVertex().getLabel(),name,nearestPoint,street,cache);
+    if (!seen) {
+      FreeEdge l1in=new FreeEdge(location,edgeLocation);
+      FreeEdge l1out=new FreeEdge(edgeLocation,location);
+      location.extra.add(l1in);
+      location.extra.add(l1out);
+    }
+    double distance=fromv.getDistanceToNearestTransitStop();
+    if (distance < location.getDistanceToNearestTransitStop()) {
+      location.setDistanceToNearestTransitStop(distance);
+    }
+  }
+  location.setWheelchairAccessible(wheelchairAccessible);
+  return location;
+}

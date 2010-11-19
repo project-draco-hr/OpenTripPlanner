@@ -6,12 +6,12 @@
   assertEquals(4,numVerticesAfter - numVerticesBefore);
   Collection<Edge> outgoing=graph.getOutgoing(station1);
   assertTrue(outgoing.size() == 1);
-  Edge edge=outgoing.iterator().next();
+  DirectEdge edge=(DirectEdge)outgoing.iterator().next();
   Vertex midpoint=edge.getToVertex();
   assertTrue(Math.abs(midpoint.getCoordinate().y - 40.01) < 0.00000001);
   outgoing=graph.getOutgoing(station2);
   assertTrue(outgoing.size() == 1);
-  edge=outgoing.iterator().next();
+  edge=(DirectEdge)outgoing.iterator().next();
   Vertex station2point=edge.getToVertex();
   assertTrue(Math.abs(station2point.getCoordinate().x - -74.002) < 0.00000001);
 }

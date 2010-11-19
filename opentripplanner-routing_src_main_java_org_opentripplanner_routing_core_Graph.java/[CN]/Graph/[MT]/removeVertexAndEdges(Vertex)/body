@@ -5,13 +5,17 @@
   }
   vertices.remove(vertex.getLabel());
   for (  Edge e : gv.getOutgoing()) {
-    GraphVertex target=vertices.get(e.getToVertex().getLabel());
-    if (target != null) {
-      target.removeIncoming(e);
+    if (e instanceof DirectEdge) {
+      DirectEdge edge=(DirectEdge)e;
+      GraphVertex target=vertices.get(edge.getToVertex().getLabel());
+      if (target != null) {
+        target.removeIncoming(e);
+      }
     }
   }
   for (  Edge e : gv.getIncoming()) {
-    GraphVertex source=vertices.get(e.getFromVertex().getLabel());
+    DirectEdge edge=(DirectEdge)e;
+    GraphVertex source=vertices.get(edge.getFromVertex().getLabel());
     if (source != null) {
       source.removeIncoming(e);
     }

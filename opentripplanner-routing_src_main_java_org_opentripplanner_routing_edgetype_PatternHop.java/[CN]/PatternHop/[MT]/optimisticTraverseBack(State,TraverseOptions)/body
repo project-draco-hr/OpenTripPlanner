@@ -2,5 +2,5 @@
   State state1=state0.clone();
   int runningTime=pattern.getBestRunningTime(stopIndex);
   state1.incrementTimeInSeconds(-runningTime);
-  return new TraverseResult(runningTime,state1);
+  return new TraverseResult(runningTime,state1,this);
 }

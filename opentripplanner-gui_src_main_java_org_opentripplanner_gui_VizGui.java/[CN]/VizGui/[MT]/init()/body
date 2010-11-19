@@ -30,7 +30,7 @@
   ListSelectionListener edgeChanged=new ListSelectionListener(){
     public void valueChanged(    ListSelectionEvent e){
       JList edgeList=(JList)e.getSource();
-      Edge selected=(Edge)edgeList.getSelectedValue();
+      DirectEdge selected=(DirectEdge)edgeList.getSelectedValue();
       if (selected == null) {
         departurePattern.removeAll();
         return;
@@ -41,14 +41,16 @@
         Vertex tov=selected.getToVertex();
         for (        Edge og : graph.getOutgoing(tov)) {
           if (og instanceof TurnEdge || og instanceof PlainStreetEdge) {
-            vertices.add(og.getToVertex());
+            StreetEdge streetEdge=(StreetEdge)og;
+            vertices.add(streetEdge.getToVertex());
             break;
           }
         }
         Vertex fromv=selected.getFromVertex();
         for (        Edge ic : graph.getIncoming(fromv)) {
           if (ic instanceof TurnEdge || ic instanceof PlainStreetEdge) {
-            vertices.add(ic.getFromVertex());
+            StreetEdge streetEdge=(StreetEdge)ic;
+            vertices.add(streetEdge.getFromVertex());
             break;
           }
         }
@@ -250,7 +252,7 @@ catch (          IllegalAccessException e1) {
     public void actionPerformed(    ActionEvent e){
       String edgeName=(String)JOptionPane.showInputDialog(frame,"Edge name like",JOptionPane.PLAIN_MESSAGE);
       for (      GraphVertex gv : getGraph().getVertices()) {
-        for (        Edge edge : gv.getOutgoing()) {
+        for (        DirectEdge edge : filter(gv.getOutgoing(),DirectEdge.class)) {
           if (edge.getName() != null && edge.getName().contains(edgeName)) {
             showGraph.highlightVertex(gv.vertex);
             ArrayList<Vertex> l=new ArrayList<Vertex>();

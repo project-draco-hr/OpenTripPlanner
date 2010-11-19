@@ -4,10 +4,8 @@
   Vertex near_c=graph.getVertex("near_C");
   Vertex stop_d=graph.getVertex("agency_D");
   Vertex split_d=null;
-  for (  Edge e : graph.getOutgoing(stop_d)) {
-    if (e instanceof StreetTransitLink) {
-      split_d=e.getToVertex();
-    }
+  for (  StreetTransitLink e : filter(graph.getOutgoing(stop_d),StreetTransitLink.class)) {
+    split_d=e.getToVertex();
   }
   TraverseOptions options=new TraverseOptions(context);
   options.wheelchairAccessible=true;

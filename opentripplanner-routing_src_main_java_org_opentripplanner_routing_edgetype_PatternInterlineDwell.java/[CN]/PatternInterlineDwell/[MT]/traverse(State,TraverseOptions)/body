@@ -8,5 +8,5 @@
   state1.incrementTimeInSeconds(dwellData.dwellTime);
   state1.tripId=targetTrip.getId();
   state1.setPattern(dwellData.patternIndex);
-  return new TraverseResult(dwellData.dwellTime,state1);
+  return new TraverseResult(dwellData.dwellTime,state1,this);
 }

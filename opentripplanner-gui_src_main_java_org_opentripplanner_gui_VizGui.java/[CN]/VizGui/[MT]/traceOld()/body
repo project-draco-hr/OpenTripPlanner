@@ -12,7 +12,7 @@
   seenVertices.add(v);
   while (!toExplore.isEmpty()) {
     Vertex src=toExplore.poll();
-    for (    Edge e : graph.getOutgoing(src)) {
+    for (    DirectEdge e : filter(graph.getOutgoing(src),DirectEdge.class)) {
       Vertex tov=e.getToVertex();
       if (!seenVertices.contains(tov)) {
         seenVertices.add(tov);

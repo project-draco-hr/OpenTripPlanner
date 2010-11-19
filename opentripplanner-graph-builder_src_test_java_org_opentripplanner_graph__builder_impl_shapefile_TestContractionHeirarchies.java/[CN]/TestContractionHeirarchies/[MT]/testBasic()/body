@@ -50,10 +50,10 @@
   for (int y=0; y < N; ++y) {
     for (int x=0; x < N; ++x) {
       Vertex vertexIn=verticesIn[y][x];
-      for (      Edge e1 : graph.getIncoming(vertexIn)) {
+      for (      DirectEdge e1 : filter(graph.getIncoming(vertexIn),DirectEdge.class)) {
         Vertex vertexOut=verticesOut[y][x];
         StreetVertex fromv=(StreetVertex)e1.getFromVertex();
-        for (        Edge e2 : graph.getOutgoing(vertexOut)) {
+        for (        DirectEdge e2 : filter(graph.getOutgoing(vertexOut),DirectEdge.class)) {
           StreetVertex tov=(StreetVertex)e2.getToVertex();
           if (tov.getEdgeId().equals(fromv.getEdgeId())) {
             continue;

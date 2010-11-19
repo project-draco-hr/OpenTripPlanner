@@ -1,7 +1,9 @@
 {
   if (v instanceof StreetVertex || v instanceof EndpointVertex) {
     for (    Edge e : graph.getOutgoing(v)) {
-      Vertex tov=e.getToVertex();
+      if (!(e instanceof DirectEdge))       return false;
+      DirectEdge de=(DirectEdge)e;
+      Vertex tov=de.getToVertex();
       if (!(tov instanceof StreetVertex || tov instanceof EndpointVertex)) {
         return false;
       }

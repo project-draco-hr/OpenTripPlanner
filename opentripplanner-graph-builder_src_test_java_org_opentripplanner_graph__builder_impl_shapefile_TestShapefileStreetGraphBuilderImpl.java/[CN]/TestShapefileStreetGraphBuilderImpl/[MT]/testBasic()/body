@@ -38,7 +38,7 @@
     if (v.getCoordinate().distance(vanderbiltAtPark) < 0.00005) {
       int numParks=0;
       int numCarltons=0;
-      for (      Edge e : gv.getOutgoing()) {
+      for (      DirectEdge e : filter(gv.getOutgoing(),DirectEdge.class)) {
         if (e.getToVertex().getName().contains("PARK")) {
           numParks++;
         }
@@ -57,7 +57,7 @@
  else     if (v.getCoordinate().distance(carltonAtPark) < 0.00005) {
       int numFlatbushes=0;
       int numParks=0;
-      for (      Edge e : gv.getOutgoing()) {
+      for (      DirectEdge e : filter(gv.getOutgoing(),DirectEdge.class)) {
         if (e.getToVertex().getName().contains("FLATBUSH")) {
           numFlatbushes++;
         }

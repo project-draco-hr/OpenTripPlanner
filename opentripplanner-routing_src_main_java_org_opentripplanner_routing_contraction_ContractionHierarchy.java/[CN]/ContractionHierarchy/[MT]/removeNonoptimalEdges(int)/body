@@ -5,8 +5,8 @@
     Vertex v=gv.vertex;
     Dijkstra dijkstra=new Dijkstra(graph,v,options,null,hopLimit);
     BasicShortestPathTree spt=dijkstra.getShortestPathTree(Double.POSITIVE_INFINITY,Integer.MAX_VALUE);
-    ArrayList<Edge> toRemove=new ArrayList<Edge>();
-    for (    Edge e : graph.getOutgoing(v)) {
+    ArrayList<DirectEdge> toRemove=new ArrayList<DirectEdge>();
+    for (    DirectEdge e : filter(graph.getOutgoing(v),DirectEdge.class)) {
       if (!isContractable(e)) {
         continue;
       }
@@ -22,7 +22,7 @@
         toRemove.add(e);
       }
     }
-    for (    Edge e : toRemove) {
+    for (    DirectEdge e : toRemove) {
       gv.removeOutgoing(e);
       graph.getGraphVertex(e.getToVertex()).removeIncoming(e);
     }

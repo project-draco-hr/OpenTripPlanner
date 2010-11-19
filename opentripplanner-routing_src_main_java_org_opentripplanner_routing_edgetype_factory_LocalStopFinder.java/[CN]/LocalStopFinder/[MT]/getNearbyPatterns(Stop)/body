@@ -5,12 +5,12 @@
   for (  Vertex v : localTransitStops) {
     if (v instanceof TransitStop) {
       if (((TransitStop)v).isEntrance()) {
-        for (        Edge e : graph.getOutgoing(v)) {
+        for (        DirectEdge e : filter(graph.getOutgoing(v),DirectEdge.class)) {
           v=e.getToVertex();
           break;
         }
       }
-      for (      Edge e : graph.getOutgoing(v)) {
+      for (      DirectEdge e : filter(graph.getOutgoing(v),DirectEdge.class)) {
         for (        Edge e2 : graph.getOutgoing(e.getToVertex())) {
           if (e2 instanceof PatternBoard) {
             neighborhood.add(((PatternBoard)e2).getPattern());

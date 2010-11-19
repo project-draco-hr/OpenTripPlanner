@@ -7,5 +7,10 @@
   for (  GraphBuilder load : _graphBuilders)   load.buildGraph(_graph);
   ContractionHierarchySet chs=new ContractionHierarchySet(_graph,_modeList,_contractionFactor);
   chs.build();
-  ContractionHierarchySerializationLibrary.writeGraph(chs,graphPath);
+  try {
+    ContractionHierarchySerializationLibrary.writeGraph(chs,graphPath);
+  }
+ catch (  Exception ex) {
+    throw new IllegalStateException(ex);
+  }
 }

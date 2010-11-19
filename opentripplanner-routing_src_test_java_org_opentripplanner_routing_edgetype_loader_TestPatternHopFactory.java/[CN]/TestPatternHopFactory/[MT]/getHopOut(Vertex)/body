@@ -1,11 +1,7 @@
 {
-  for (  Edge e : graph.getOutgoing(v)) {
-    if (e instanceof PatternBoard) {
-      for (      Edge f : graph.getOutgoing(e.getToVertex())) {
-        if (f instanceof PatternHop) {
-          return f;
-        }
-      }
+  for (  PatternBoard e : filter(graph.getOutgoing(v),PatternBoard.class)) {
+    for (    PatternHop f : filter(graph.getOutgoing(e.getToVertex()),PatternHop.class)) {
+      return (PatternHop)f;
     }
   }
   return null;

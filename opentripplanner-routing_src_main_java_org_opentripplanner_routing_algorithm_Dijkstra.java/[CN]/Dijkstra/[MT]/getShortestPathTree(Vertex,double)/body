@@ -13,10 +13,6 @@
     Iterable<Edge> outgoing=graph.getOutgoing(spt_u.mirror);
     for (    Edge edge : outgoing) {
       State state=spt_u.state;
-      Vertex toVertex=edge.getToVertex();
-      if (closed.contains(toVertex)) {
-        continue;
-      }
       TraverseResult wr=edge.traverse(state,options);
       if (wr == null) {
         continue;
@@ -24,10 +20,15 @@
       if (wr.weight < 0) {
         throw new NegativeWeightException(String.valueOf(wr.weight));
       }
+      EdgeNarrative er=wr.getEdgeNarrative();
+      Vertex toVertex=er.getToVertex();
+      if (closed.contains(toVertex)) {
+        continue;
+      }
       double new_w=spt_u.weightSum + wr.weight;
       spt_v=spt.addVertex(toVertex,wr.state,new_w,options,spt_u.hops + 1);
       if (spt_v != null) {
-        spt_v.setParent(spt_u,edge);
+        spt_v.setParent(spt_u,edge,er);
         if (spt_u.hops < hopLimit) {
           queue.insert_or_dec_key(spt_v,new_w);
         }

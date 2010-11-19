@@ -20,8 +20,8 @@
   Map<Vertex,ArrayList<Edge>> extraEdges;
   if (origin instanceof StreetLocation) {
     extraEdges=new HashMap<Vertex,ArrayList<Edge>>();
-    Iterable<Edge> extra=((StreetLocation)origin).getExtra();
-    for (    Edge edge : extra) {
+    Iterable<DirectEdge> extra=((StreetLocation)origin).getExtra();
+    for (    DirectEdge edge : extra) {
       Vertex tov=edge.getToVertex();
       ArrayList<Edge> edges=extraEdges.get(tov);
       if (edges == null) {
@@ -38,8 +38,8 @@
     if (extraEdges instanceof NullExtraEdges) {
       extraEdges=new HashMap<Vertex,ArrayList<Edge>>();
     }
-    Iterable<Edge> extra=((StreetLocation)target).getExtra();
-    for (    Edge edge : extra) {
+    Iterable<DirectEdge> extra=((StreetLocation)target).getExtra();
+    for (    DirectEdge edge : extra) {
       Vertex tov=edge.getToVertex();
       ArrayList<Edge> edges=extraEdges.get(tov);
       if (edges == null) {
@@ -62,23 +62,19 @@
     Vertex tov=spt_u.mirror;
     if (tov == target)     break;
     closed.add(tov);
-    GraphVertex gv=graph.getGraphVertex(tov);
-    Collection<Edge> incoming;
-    if (gv == null) {
-      incoming=new ArrayList<Edge>();
+    Collection<Edge> incoming=null;
+    if (tov instanceof HasEdges) {
+      incoming=extendEdges(incoming,((HasEdges)tov).getOutgoing());
     }
  else {
-      incoming=gv.getIncoming();
+      GraphVertex gv=graph.getGraphVertex(tov);
+      if (gv != null)       incoming=extendEdges(incoming,gv.getIncoming());
     }
-    if (extraEdges.containsKey(tov)) {
-      List<Edge> newIncoming=new ArrayList<Edge>();
-      for (      Edge edge : incoming)       newIncoming.add(edge);
-      newIncoming.addAll(extraEdges.get(tov));
-      incoming=newIncoming;
-    }
+    if (extraEdges.containsKey(tov))     incoming=extendEdges(incoming,extraEdges.get(tov));
+    if (incoming == null)     incoming=Collections.emptyList();
     for (    Edge edge : incoming) {
       State state=spt_u.state;
-      if (edge.getFromVertex() == target) {
+      if (edge instanceof DirectEdge && ((DirectEdge)edge).getFromVertex() == target) {
         state=state.clone();
         state.lastEdgeWasStreet=false;
       }
@@ -86,50 +82,52 @@
         continue;
       }
       TraverseResult wr=edge.traverseBack(state,options);
-      if (wr == null) {
-        continue;
-      }
-      if (wr.weight < 0) {
-        throw new NegativeWeightException(String.valueOf(wr.weight) + " on edge " + edge);
-      }
-      Vertex fromv=edge.getFromVertex();
-      double new_w=spt_u.weightSum + wr.weight;
-      double euclidianDistance=fromv.distance(target);
-      if (useTransit) {
-        if (spt_u.state.alightedLocal) {
-          distance=options.walkReluctance * euclidianDistance / options.speed;
+      while (wr != null) {
+        if (wr.weight < 0) {
+          throw new NegativeWeightException(String.valueOf(wr.weight) + " on edge " + edge);
         }
- else {
-          int boardCost;
-          if (edge instanceof OnBoardReverseEdge) {
-            boardCost=options.boardCost;
-          }
- else {
-            boardCost=0;
-          }
-          if (euclidianDistance < target.getDistanceToNearestTransitStop()) {
+        EdgeNarrative er=wr.getEdgeNarrative();
+        Vertex fromv=er.getFromVertex();
+        double new_w=spt_u.weightSum + wr.weight;
+        double euclidianDistance=fromv.distance(target);
+        if (useTransit) {
+          if (spt_u.state.alightedLocal) {
             distance=options.walkReluctance * euclidianDistance / options.speed;
           }
  else {
-            double mandatoryWalkDistance=target.getDistanceToNearestTransitStop() + fromv.getDistanceToNearestTransitStop();
-            distance=(euclidianDistance - mandatoryWalkDistance) / max_speed + mandatoryWalkDistance * options.walkReluctance / options.speed + boardCost;
-            distance=Math.min(distance,options.walkReluctance * euclidianDistance / options.speed);
+            int boardCost;
+            if (edge instanceof OnBoardReverseEdge) {
+              boardCost=options.boardCost;
+            }
+ else {
+              boardCost=0;
+            }
+            if (euclidianDistance < target.getDistanceToNearestTransitStop()) {
+              distance=options.walkReluctance * euclidianDistance / options.speed;
+            }
+ else {
+              double mandatoryWalkDistance=target.getDistanceToNearestTransitStop() + fromv.getDistanceToNearestTransitStop();
+              distance=(euclidianDistance - mandatoryWalkDistance) / max_speed + mandatoryWalkDistance * options.walkReluctance / options.speed + boardCost;
+              distance=Math.min(distance,options.walkReluctance * euclidianDistance / options.speed);
+            }
           }
         }
-      }
  else {
-        distance=options.walkReluctance * euclidianDistance / max_speed;
-      }
-      double heuristic_distance=new_w + distance;
-      if (heuristic_distance > options.maxWeight || wr.state.getTime() < options.worstTime) {
-        continue;
-      }
-      spt_v=spt.addVertex(fromv,wr.state,new_w,options);
-      if (spt_v != null) {
-        spt_v.setParent(spt_u,edge);
-        if (!closed.contains(fromv)) {
-          pq.insert_or_dec_key(spt_v,heuristic_distance);
+          distance=options.walkReluctance * euclidianDistance / max_speed;
         }
+        double heuristic_distance=new_w + distance;
+        if (heuristic_distance > options.maxWeight || wr.state.getTime() < options.worstTime) {
+        }
+ else {
+          spt_v=spt.addVertex(fromv,wr.state,new_w,options);
+          if (spt_v != null) {
+            spt_v.setParent(spt_u,edge,er);
+            if (!closed.contains(fromv)) {
+              pq.insert_or_dec_key(spt_v,heuristic_distance);
+            }
+          }
+        }
+        wr=wr.getNextResult();
       }
     }
   }

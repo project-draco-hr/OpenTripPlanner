@@ -117,9 +117,9 @@
   int i=0;
   int notNull=0;
   ArrayList<GraphVertex> vertices=new ArrayList<GraphVertex>(hierarchy.up.getVertices());
-  DisjointSet<Vertex> components=new DisjointSet();
+  DisjointSet<Vertex> components=new DisjointSet<Vertex>();
   for (  GraphVertex gv : vertices) {
-    for (    Edge e : gv.getOutgoing()) {
+    for (    DirectEdge e : filter(gv.getOutgoing(),DirectEdge.class)) {
       components.union(gv.vertex,e.getToVertex());
     }
   }

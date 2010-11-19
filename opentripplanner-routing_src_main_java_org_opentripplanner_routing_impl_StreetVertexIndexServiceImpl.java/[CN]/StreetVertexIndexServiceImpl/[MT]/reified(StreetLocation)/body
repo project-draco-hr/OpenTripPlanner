@@ -1,8 +1,8 @@
 {
-  for (  Edge e : graph.getIncoming(vertex)) {
+  for (  StreetEdge e : filter(graph.getIncoming(vertex),StreetEdge.class)) {
     if ((e instanceof TurnEdge || e instanceof OutEdge) && e.getGeometry() != null)     edgeTree.insert(e.getGeometry().getEnvelopeInternal(),e);
   }
-  for (  Edge e : graph.getOutgoing(vertex)) {
+  for (  StreetEdge e : filter(graph.getOutgoing(vertex),StreetEdge.class)) {
     if ((e instanceof TurnEdge || e instanceof OutEdge) && e.getGeometry() != null)     edgeTree.insert(e.getGeometry().getEnvelopeInternal(),e);
   }
 }

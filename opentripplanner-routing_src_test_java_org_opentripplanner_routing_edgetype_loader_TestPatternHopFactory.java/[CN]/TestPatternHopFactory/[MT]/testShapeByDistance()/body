@@ -1,6 +1,6 @@
 {
   Vertex stop_i=graph.getVertex("agency_I_depart");
-  Edge hop=getHopOut(stop_i);
+  PatternHop hop=getHopOut(stop_i);
   Geometry geometry=hop.getGeometry();
   assertTrue(geometry.getLength() > 1.0);
   assertTrue(geometry.getLength() < 2.0);
