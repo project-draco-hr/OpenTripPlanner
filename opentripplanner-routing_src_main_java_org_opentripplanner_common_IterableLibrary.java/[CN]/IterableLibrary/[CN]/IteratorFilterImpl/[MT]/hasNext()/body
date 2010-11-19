@@ -1,0 +1,7 @@
+{
+  while (_next == null && _iterator.hasNext()) {
+    Object obj=_iterator.next();
+    if (obj != null && _type.isAssignableFrom(obj.getClass()))     _next=(T)obj;
+  }
+  return _next != null;
+}

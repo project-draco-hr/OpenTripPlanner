@@ -1,0 +1,6 @@
+{
+  if (!hasNext())   throw new NoSuchElementException();
+  T next=_next;
+  _next=null;
+  return next;
+}
