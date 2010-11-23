@@ -28,6 +28,8 @@
   PlainStreetEdge backward=new PlainStreetEdge(newEnd,newStart,endVertex.getGeometry(),endVertex.getName(),endVertex.getLength(),endVertex.getPermission(),true);
   forward.setWheelchairAccessible(startVertex.isWheelchairAccessible());
   backward.setWheelchairAccessible(startVertex.isWheelchairAccessible());
+  forward.setElevationProfile(startVertex.getElevationProfile());
+  backward.setElevationProfile(endVertex.getElevationProfile());
   P2<PlainStreetEdge> replacement=new P2<PlainStreetEdge>(forward,backward);
   return replacement;
 }
