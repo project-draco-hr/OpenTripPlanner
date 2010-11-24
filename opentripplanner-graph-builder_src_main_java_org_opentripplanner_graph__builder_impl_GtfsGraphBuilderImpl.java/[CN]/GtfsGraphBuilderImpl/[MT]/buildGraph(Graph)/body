@@ -18,4 +18,5 @@
   GTFSPatternHopFactory hf=new GTFSPatternHopFactory(context);
   hf.run(graph);
   graph.putService(CalendarServiceData.class,data);
+  if (_dao instanceof GtfsRelationalDaoImpl)   _dao=new GtfsRelationalDaoImpl();
 }
