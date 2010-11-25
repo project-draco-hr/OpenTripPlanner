@@ -1,5 +1,5 @@
 {
-  long startTime=new GregorianCalendar(2010,4,4,12,0,0).getTimeInMillis();
+  long startTime=new GregorianCalendar(2010,10,11,12,0,0).getTimeInMillis();
   State init=new State(startTime);
   GraphPath path;
   Graph graph=new Graph();
@@ -53,7 +53,7 @@
   NetworkLinker nl=new NetworkLinker(graph);
   nl.createLinkage();
   TraverseOptions options=new TraverseOptions();
-  options.modes=new TraverseModeSet(TraverseMode.WALK,TraverseMode.SUBWAY);
+  options.setModes(new TraverseModeSet(TraverseMode.WALK,TraverseMode.SUBWAY));
   options.optimizeFor=OptimizeType.QUICK;
   CalendarServiceData data=graph.getService(CalendarServiceData.class);
   assertNotNull(data);
@@ -77,7 +77,7 @@
   assertTrue("Path must take subway",subway1);
   ContractionHierarchySet chs=new ContractionHierarchySet();
   chs.addModeAndOptimize(new ModeAndOptimize(TraverseMode.WALK,OptimizeType.QUICK));
-  chs.setContractionFactor(0.90);
+  chs.setContractionFactor(0.50);
   chs.setGraph(graph);
   chs.build();
   ContractionHierarchySerializationLibrary.writeGraph(chs,new File("/tmp/contracted"));
@@ -86,8 +86,12 @@
   assertNotNull(hierarchy);
   Vertex start=null;
   Vertex end=null;
-  start=hierarchy.graph.getVertex("0072480");
-  end=hierarchy.graph.getVertex("0032341");
+  start=hierarchy.up.getVertex("0072480");
+  end=hierarchy.up.getVertex("0032341");
+  if (start == null)   start=hierarchy.down.getVertex("0072480");
+  if (start == null)   start=hierarchy.graph.getVertex("0072480");
+  if (end == null)   end=hierarchy.down.getVertex("0032341");
+  if (end == null)   end=hierarchy.graph.getVertex("0032341");
   assertNotNull(start);
   assertNotNull(end);
   init=new State(0);
@@ -125,7 +129,10 @@
   long now=System.currentTimeMillis();
   int i=0;
   int notNull=0;
-  ArrayList<GraphVertex> vertices=new ArrayList<GraphVertex>(hierarchy.up.getVertices());
+  Collection<GraphVertex> upVertices=hierarchy.up.getVertices();
+  ArrayList<GraphVertex> vertices=new ArrayList<GraphVertex>(upVertices);
+  vertices.addAll(hierarchy.down.getVertices());
+  vertices.addAll(hierarchy.graph.getVertices());
   DisjointSet<Vertex> components=new DisjointSet<Vertex>();
   for (  GraphVertex gv : vertices) {
     for (    DirectEdge e : filter(gv.getOutgoing(),DirectEdge.class)) {
@@ -135,12 +142,14 @@
   ArrayList<GraphVertex> verticesOut=new ArrayList<GraphVertex>();
   for (  GraphVertex gv : vertices) {
     Vertex v=gv.vertex;
-    if (components.size(components.find(v)) > vertices.size() / 2) {
+    int componentSize=components.size(components.find(v));
+    if (componentSize > upVertices.size() / 2) {
       if (gv.getDegreeOut() != 0) {
         verticesOut.add(gv);
       }
     }
   }
+  assertTrue(verticesOut.size() > 0);
   assertTrue(vertices.size() > verticesOut.size());
   vertices=verticesOut;
   Random random=new Random(0);
@@ -149,13 +158,9 @@
     if (++i == 100) {
       break;
     }
-    if (v1.getLabel().endsWith(" in")) {
-      String label=v1.getLabel();
-      v1=hierarchy.up.getVertex(label.substring(0,label.length() - 3) + " out");
-      if (v1 == null) {
-        --i;
-        continue;
-      }
+    if (hierarchy.up.getVertex(v1.getLabel()) == null) {
+      --i;
+      continue;
     }
     GraphVertex gv2=null;
     Vertex v2=null;
@@ -163,20 +168,17 @@
       int j=Math.abs(random.nextInt()) % vertices.size();
       gv2=vertices.get(j);
       v2=gv2.vertex;
-      if (v1 == v2) {
+      if (v1.getLabel() == v2.getLabel()) {
         continue;
       }
-      if (v2.getLabel().endsWith(" out")) {
-        String label=v2.getLabel();
-        gv2=hierarchy.down.getGraphVertex(label.substring(0,label.length() - 4) + " in");
-        if (gv2 == null) {
-          v2=null;
-          continue;
-        }
-        v2=gv2.vertex;
+      if (hierarchy.down.getVertex(v2.getLabel()) == null) {
+        v2=null;
+        continue;
       }
     }
     options.setArriveBy(i % 2 == 0);
+    assertNotNull(v1);
+    assertNotNull(v2);
     GraphPath path2=hierarchy.getShortestPath(v1,v2,init,options);
     if (path2 != null) {
       notNull+=1;
