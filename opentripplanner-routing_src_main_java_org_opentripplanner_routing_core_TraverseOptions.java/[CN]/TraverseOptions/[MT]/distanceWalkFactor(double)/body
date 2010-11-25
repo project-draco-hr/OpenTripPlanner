@@ -1,5 +1,5 @@
 {
-  if (walkDistance > maxWalkDistance && modes.getTransit()) {
+  if (walkDistance > maxWalkDistance && getModes().getTransit()) {
     double weightFactor=(walkDistance - maxWalkDistance) / 20;
     return weightFactor < 1 ? 1 : weightFactor;
   }

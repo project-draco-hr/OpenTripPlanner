@@ -3,7 +3,7 @@
   if (options.wheelchairAccessible) {
     weight=slopeSpeedEffectiveLength / options.speed;
   }
- else   if (options.modes.contains(TraverseMode.BICYCLE)) {
+ else   if (options.getModes().contains(TraverseMode.BICYCLE)) {
 switch (options.optimizeFor) {
 case SAFE:
       weight=bicycleSafetyEffectiveLength / options.speed;

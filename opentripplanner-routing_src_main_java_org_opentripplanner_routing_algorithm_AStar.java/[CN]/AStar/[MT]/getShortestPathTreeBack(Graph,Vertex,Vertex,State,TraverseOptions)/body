@@ -6,7 +6,7 @@
     return null;
   }
   ShortestPathTree spt;
-  if (options.modes.getTransit()) {
+  if (options.getModes().getTransit()) {
     spt=new MultiShortestPathTree();
   }
  else {
@@ -54,7 +54,7 @@
   SPTVertex spt_origin=spt.addVertex(origin,init,0,options);
   FibHeap<SPTVertex> pq=new FibHeap<SPTVertex>(graph.getVertices().size() + extraEdges.size());
   pq.insert(spt_origin,spt_origin.weightSum + distance);
-  boolean useTransit=options.modes.getTransit();
+  boolean useTransit=options.getModes().getTransit();
   HashSet<Vertex> closed=new HashSet<Vertex>(100000);
   SPTVertex spt_u, spt_v;
   while (!pq.empty()) {
@@ -74,10 +74,6 @@
     if (incoming == null)     incoming=Collections.emptyList();
     for (    Edge edge : incoming) {
       State state=spt_u.state;
-      if (edge instanceof DirectEdge && ((DirectEdge)edge).getFromVertex() == target) {
-        state=state.clone();
-        state.lastEdgeWasStreet=false;
-      }
       if (edge instanceof PatternAlight && state.numBoardings > options.maxTransfers) {
         continue;
       }

@@ -18,9 +18,6 @@
       continue;
     }
     TraverseMode edgeMode=edgeResult.getMode();
-    if (isStreetEdge(edge) && biking) {
-      edgeMode=TraverseMode.BICYCLE;
-    }
     double edgeTime=sptEdge.tov.state.getTime() - sptEdge.fromv.state.getTime();
     if (!edgeMode.isTransit() && edgeMode != TraverseMode.ALIGHTING) {
       if (edgeMode != mode || (!mode.isOnStreetNonTransit() && edgeResult.getName() != name)) {
@@ -39,7 +36,7 @@
         mode=edgeMode;
         leg=makeLeg(sptEdge,mode);
         itinerary.addLeg(leg);
-        if (mode == TraverseMode.WALK || mode == TraverseMode.BICYCLE) {
+        if (mode.isOnStreetNonTransit()) {
           startWalk=i;
         }
  else {
@@ -73,7 +70,7 @@
       itinerary.waitingTime+=edgeTime;
       continue;
     }
- else     if (edgeMode == TraverseMode.WALK || edgeMode == TraverseMode.BICYCLE) {
+ else     if (edgeMode.isOnStreetNonTransit()) {
       itinerary.walkTime+=edgeTime;
       itinerary.walkDistance+=edgeResult.getDistance();
       if (edge instanceof EdgeWithElevation) {

@@ -1,38 +1,3 @@
 {
-  if (!canTraverse(options)) {
-    return null;
-  }
-  State s1=s0.clone();
-  double time=length / options.speed;
-  double weight;
-  if (options.wheelchairAccessible) {
-    weight=getSlopeSpeedEffectiveLength() / options.speed;
-  }
- else   if (options.modes.contains(TraverseMode.BICYCLE)) {
-switch (options.optimizeFor) {
-case SAFE:
-      weight=getBicycleSafetyEffectiveLength() / options.speed;
-    break;
-case FLAT:
-  weight=slopeCostEffectiveLength;
-break;
-case QUICK:
-weight=getSlopeSpeedEffectiveLength() / options.speed;
-break;
-default :
-weight=length / options.speed;
-}
-}
- else {
-weight=time;
-}
-if (s0.walkDistance > options.maxWalkDistance && options.modes.getTransit()) {
-double weightFactor=(s0.walkDistance - options.maxWalkDistance) / 10;
-weight*=weightFactor > 1 ? 1 : weightFactor;
-}
-weight*=options.walkReluctance;
-s1.walkDistance+=length;
-s1.incrementTimeInSeconds(-(int)time);
-s1.lastEdgeWasStreet=true;
-return new TraverseResult(weight,s1,this);
+  return doTraverse(s0,options,true);
 }

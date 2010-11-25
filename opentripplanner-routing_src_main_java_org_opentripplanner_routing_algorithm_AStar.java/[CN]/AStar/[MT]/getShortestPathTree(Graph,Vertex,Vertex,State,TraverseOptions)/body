@@ -3,7 +3,7 @@
     return null;
   }
   ShortestPathTree spt;
-  if (options.modes.getTransit()) {
+  if (options.getModes().getTransit()) {
     spt=new MultiShortestPathTree();
   }
  else {
@@ -46,7 +46,7 @@
   SPTVertex spt_origin=spt.addVertex(origin,init,0,options);
   FibHeap<SPTVertex> pq=new FibHeap<SPTVertex>(graph.getVertices().size() + extraEdges.size());
   pq.insert(spt_origin,spt_origin.weightSum + distance);
-  boolean useTransit=options.modes.getTransit();
+  boolean useTransit=options.getModes().getTransit();
   options=options.clone();
   options.maxWalkDistance+=origin.getDistanceToNearestTransitStop() + target.getDistanceToNearestTransitStop();
   while (!pq.empty()) {

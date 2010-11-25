@@ -7,13 +7,13 @@
       return false;
     }
   }
-  if (wo.modes.getWalk() && permission.allows(StreetTraversalPermission.PEDESTRIAN)) {
+  if (wo.getModes().getWalk() && permission.allows(StreetTraversalPermission.PEDESTRIAN)) {
     return true;
   }
-  if (wo.modes.getBicycle() && permission.allows(StreetTraversalPermission.BICYCLE)) {
+  if (wo.getModes().getBicycle() && permission.allows(StreetTraversalPermission.BICYCLE)) {
     return true;
   }
-  if (wo.modes.getCar() && permission.allows(StreetTraversalPermission.CAR)) {
+  if (wo.getModes().getCar() && permission.allows(StreetTraversalPermission.CAR)) {
     return true;
   }
   return false;

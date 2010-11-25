@@ -4,7 +4,7 @@
   ShortestPathTree spt;
   GraphPath path;
   TraverseOptions options=new TraverseOptions(context);
-  options.modes=new TraverseModeSet("TRANSIT");
+  options.setModes(new TraverseModeSet("TRANSIT"));
   spt=AStar.getShortestPathTree(graph,stop_u,stop_v,new State(new GregorianCalendar(2009,8,7,0,0,0).getTimeInMillis()),options);
   path=spt.getPath(stop_v);
   assertNotNull(path);

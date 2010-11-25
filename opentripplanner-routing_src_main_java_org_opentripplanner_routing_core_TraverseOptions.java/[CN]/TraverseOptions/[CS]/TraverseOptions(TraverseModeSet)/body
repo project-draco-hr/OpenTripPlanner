@@ -1,8 +1,15 @@
 {
   this();
-  this.modes=modes;
+  this.setModes(modes);
   if (modes.getBicycle()) {
     speed=5;
     boardCost=240;
+    walkingOptions=new TraverseOptions();
+    walkingOptions.getModes().setTransit(false);
+  }
+ else   if (modes.getCar()) {
+    speed=15;
+    walkingOptions=new TraverseOptions();
+    walkingOptions.getModes().setTransit(false);
   }
 }

@@ -25,7 +25,7 @@
     LOGGER.log(Level.INFO,"Path not found: " + request.getFrom() + " : "+ request.getTo());
     throw new PathNotFoundException();
   }
-  TripPlan plan=generatePlan(paths,request,options);
+  TripPlan plan=generatePlan(paths,request);
   if (plan != null) {
     for (    Itinerary i : plan.itinerary) {
       i.tooSloped=tooSloped;
