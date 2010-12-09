@@ -1,0 +1,54 @@
+{
+  XMLInputFactory inputFactory=XMLInputFactory.newInstance();
+  XMLEventReader xmlEventReader=inputFactory.createXMLEventReader(in);
+  OSMNode osmNode=null;
+  OSMWay osmWay=null;
+  while (xmlEventReader.hasNext()) {
+    XMLEvent xmlEvent=xmlEventReader.nextEvent();
+    if (xmlEvent.isStartElement()) {
+      StartElement element=xmlEvent.asStartElement();
+      if (element.getName().equals(qNode)) {
+        osmNode=new OSMNode();
+        osmNode.setId(Integer.parseInt(element.getAttributeByName(qId).getValue()));
+        osmNode.setLat(Double.parseDouble(element.getAttributeByName(qLat).getValue()));
+        osmNode.setLon(Double.parseDouble(element.getAttributeByName(qLon).getValue()));
+      }
+ else       if (element.getName().equals(qWay)) {
+        osmWay=new OSMWay();
+      }
+ else       if (element.getName().equals(qNd)) {
+        OSMNodeRef nodeRef=new OSMNodeRef();
+        nodeRef.setRef(Integer.parseInt(element.getAttributeByName(qRef).getValue()));
+        osmWay.addNodeRef(nodeRef);
+      }
+ else       if (element.getName().equals(qTag)) {
+        OSMTag tag=new OSMTag();
+        String key=element.getAttributeByName(qKey).getValue();
+        tag.setK(key.intern());
+        String value=element.getAttributeByName(qVal).getValue();
+        if (key.equals("name") || key.equals("highway")) {
+          value=value.intern();
+        }
+        tag.setV(value);
+        if (osmNode != null) {
+          osmNode.addTag(tag);
+        }
+ else         if (osmWay != null) {
+          osmWay.addTag(tag);
+        }
+      }
+    }
+ else     if (xmlEvent.isEndElement()) {
+      EndElement element=xmlEvent.asEndElement();
+      if (element.getName().equals(qNode)) {
+        map.addNode(osmNode);
+        osmNode=null;
+      }
+ else       if (element.getName().equals(qWay)) {
+        map.addWay(osmWay);
+        osmWay=null;
+      }
+    }
+  }
+  xmlEventReader.close();
+}
