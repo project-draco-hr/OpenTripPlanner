@@ -1,0 +1,21 @@
+{
+  for (  String taglist : mappy.keySet()) {
+    List<OSMKeyValue> vals=new ArrayList<OSMKeyValue>();
+    for (    String tag : taglist.split(";")) {
+      int ch_eq=tag.indexOf("=");
+      if (ch_eq < 0) {
+        _log.warn("Missing equal sign: " + taglist + " >> "+ tag);
+      }
+ else {
+        String key=tag.substring(0,ch_eq), value=tag.substring(ch_eq + 1);
+        if (value.equals("")) {
+          vals.add(new OSMKeyValue(key,null,true));
+        }
+ else {
+          vals.add(new OSMKeyValue(key,value,false));
+        }
+      }
+    }
+    _creativeNaming.put(vals,mappy.get(taglist));
+  }
+}

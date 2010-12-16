@@ -1,7 +1,7 @@
 {
   String id="way " + way.getId() + " from "+ startNode;
   id=unique(id);
-  String name=way.getTags().get("name");
+  String name=way.getAssumedName();
   if (name == null) {
     name=id;
   }

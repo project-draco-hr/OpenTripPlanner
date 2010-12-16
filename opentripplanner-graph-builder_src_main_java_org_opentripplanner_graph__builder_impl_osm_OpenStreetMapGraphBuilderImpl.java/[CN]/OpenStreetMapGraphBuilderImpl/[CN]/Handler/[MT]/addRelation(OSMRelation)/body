@@ -1,2 +1,8 @@
 {
+  if (_relations.containsKey(relation.getId()))   return;
+  if (!("route".equals(relation.getTags().get("type")) && "road".equals(relation.getTags().get("route")))) {
+    return;
+  }
+  _relations.put(relation.getId(),relation);
+  if (_relations.size() % 100 == 0)   _log.debug("relations=" + _relations.size());
 }
