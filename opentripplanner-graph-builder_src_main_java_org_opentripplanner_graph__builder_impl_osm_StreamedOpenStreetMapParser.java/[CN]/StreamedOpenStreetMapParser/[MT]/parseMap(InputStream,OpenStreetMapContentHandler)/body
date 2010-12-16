@@ -1,6 +1,7 @@
 {
   XMLInputFactory inputFactory=XMLInputFactory.newInstance();
   XMLEventReader xmlEventReader=inputFactory.createXMLEventReader(in);
+  OSMRelation osmRelation=null;
   OSMNode osmNode=null;
   OSMWay osmWay=null;
   while (xmlEventReader.hasNext()) {
@@ -15,6 +16,18 @@
       }
  else       if (element.getName().equals(qWay)) {
         osmWay=new OSMWay();
+        osmWay.setId(Integer.parseInt(element.getAttributeByName(qId).getValue()));
+      }
+ else       if (element.getName().equals(qRelation)) {
+        osmRelation=new OSMRelation();
+        osmRelation.setId(Integer.parseInt(element.getAttributeByName(qId).getValue()));
+      }
+ else       if (element.getName().equals(qMember)) {
+        OSMRelationMember relMember=new OSMRelationMember();
+        relMember.setType(element.getAttributeByName(qType).getValue());
+        relMember.setRole(element.getAttributeByName(qRole).getValue());
+        relMember.setRef(Integer.parseInt(element.getAttributeByName(qRef).getValue()));
+        osmRelation.addMember(relMember);
       }
  else       if (element.getName().equals(qNd)) {
         OSMNodeRef nodeRef=new OSMNodeRef();
@@ -26,7 +39,7 @@
         String key=element.getAttributeByName(qKey).getValue();
         tag.setK(key.intern());
         String value=element.getAttributeByName(qVal).getValue();
-        if (key.equals("name") || key.equals("highway")) {
+        if (key.equals("name") || key.equals("ref") || key.equals("highway")) {
           value=value.intern();
         }
         tag.setV(value);
@@ -35,6 +48,9 @@
         }
  else         if (osmWay != null) {
           osmWay.addTag(tag);
+        }
+ else         if (osmRelation != null) {
+          osmRelation.addTag(tag);
         }
       }
     }
@@ -47,6 +63,10 @@
  else       if (element.getName().equals(qWay)) {
         map.addWay(osmWay);
         osmWay=null;
+      }
+ else       if (element.getName().equals(qRelation)) {
+        map.addRelation(osmRelation);
+        osmRelation=null;
       }
     }
   }
