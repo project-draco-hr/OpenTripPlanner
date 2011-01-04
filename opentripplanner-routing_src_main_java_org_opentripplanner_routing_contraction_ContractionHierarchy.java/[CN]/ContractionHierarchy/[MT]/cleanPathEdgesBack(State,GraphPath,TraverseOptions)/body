@@ -9,6 +9,7 @@
     e.tov.weightSum=totalWeight;
     path.vertices.add(e.tov);
     TraverseResult result=e.traverseBack(state,options);
+    e.narrative=result.getEdgeNarrative();
     state=result.state;
     SPTVertex fromv=e.getFromVertex();
     fromv.state=state;

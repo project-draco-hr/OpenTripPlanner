@@ -194,11 +194,18 @@
   GraphPath path=new GraphPath();
   path.edges.addAll(upPath.edges);
   ListIterator<SPTEdge> it=downPath.edges.listIterator(downPath.edges.size());
+  boolean firstDown=true;
   while (it.hasPrevious()) {
     SPTEdge e=it.previous();
     SPTVertex swap=e.tov;
     e.tov=e.fromv;
     e.fromv=swap;
+    e.tov.setParent(e.fromv,e.payload,e.narrative);
+    if (firstDown) {
+      firstDown=false;
+      SPTEdge lastUpEdge=upPath.edges.lastElement();
+      e.fromv.setParent(upPath.vertices.lastElement(),lastUpEdge.payload,lastUpEdge.narrative);
+    }
     path.edges.add(e);
   }
   if (path.edges == null) {
@@ -211,5 +218,6 @@
  else {
     cleanPathEdges(init,path,options);
   }
+  path.optimize();
   return path;
 }

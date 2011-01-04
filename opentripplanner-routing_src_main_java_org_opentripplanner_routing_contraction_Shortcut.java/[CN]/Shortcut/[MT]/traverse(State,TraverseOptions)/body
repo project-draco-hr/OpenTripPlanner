@@ -19,5 +19,6 @@
   state=wr.state;
   weight=aweight + wr.weight;
   time=(int)((state.getTime() - startTime) / 1000);
-  return new TraverseResult(weight,state,this);
+  mode=wr.getEdgeNarrative().getMode();
+  return new TraverseResult(weight,state,new FixedModeEdge(this,mode));
 }

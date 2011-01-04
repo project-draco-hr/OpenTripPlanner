@@ -6,6 +6,7 @@
   options=new TraverseOptions(new TraverseModeSet(mode));
   options.optimizeFor=optimize;
   options.maxWalkDistance=Double.MAX_VALUE;
+  options.freezeTraverseMode();
   this.contractionFactor=contractionFactor;
   init();
   useCoreVerticesFrom(orig);

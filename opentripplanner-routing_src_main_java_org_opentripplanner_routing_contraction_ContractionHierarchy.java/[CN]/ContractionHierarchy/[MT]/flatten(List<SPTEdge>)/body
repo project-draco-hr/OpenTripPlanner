@@ -10,10 +10,13 @@
       Shortcut shortcut=(Shortcut)edge.payload;
       for (      DirectEdge e : flatten(shortcut)) {
         SPTVertex next=new SPTVertex(e.getToVertex(),null,0,options);
+        next.setParent(last,e,e);
         out.add(new SPTEdge(last,next,e,e));
         last=next;
       }
-      out.lastElement().tov=edge.getToVertex();
+      SPTEdge lastEdge=out.lastElement();
+      lastEdge.tov=edge.getToVertex();
+      lastEdge.tov.setParent(edge.getFromVertex(),lastEdge.payload,lastEdge.narrative);
     }
  else {
       out.add(edge);

@@ -1,4 +1,4 @@
 {
   State s1=s0.clone();
-  return new TraverseResult(0.000001,s1,this);
+  return new TraverseResult(0.000001,s1,new FixedModeEdge(this,options.getModes().getNonTransitMode()));
 }
