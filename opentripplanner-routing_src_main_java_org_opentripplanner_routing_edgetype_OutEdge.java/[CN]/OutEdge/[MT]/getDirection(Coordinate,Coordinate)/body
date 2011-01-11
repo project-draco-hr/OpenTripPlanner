@@ -1,7 +1,0 @@
-{
-  double run=b.x - a.x;
-  double rise=b.y - a.y;
-  double direction=Math.atan2(run,rise);
-  int octant=(int)(8 + Math.round(direction * 8 / (Math.PI * 2))) % 8;
-  return TurnEdge.DIRECTIONS[octant];
-}
