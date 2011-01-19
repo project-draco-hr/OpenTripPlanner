@@ -1,0 +1,19 @@
+{
+  IWindow w=PluginServices.getMDIManager().getActiveWindow();
+  MapContext mc=((IView)w).getMapControl().getMapContext();
+  File defaultF=null;
+  JFileChooser fileChooser=new JFileChooser("GTFS_PATH",defaultF);
+  fileChooser.setDialogTitle("Select OTP Graph.obj file");
+  fileChooser.setAcceptAllFileFilterUsed(true);
+  int ok=fileChooser.showOpenDialog((Component)PluginServices.getMDIManager().getActiveWindow());
+  if (ok != JFileChooser.APPROVE_OPTION)   return;
+  PluginServices.getMDIManager().setWaitCursor();
+  createMemoryDrivers(fileChooser.getSelectedFile().getPath());
+  FLayer lyrNodes=LayerFactory.createLayer("NodesOTP",driverNodes,mc.getProjection());
+  FLayer lyrEdges=LayerFactory.createLayer("EdgesOTP",driverEdges,mc.getProjection());
+  mc.beginAtomicEvent();
+  mc.getLayers().addLayer(lyrEdges);
+  mc.getLayers().addLayer(lyrNodes);
+  mc.endAtomicEvent();
+  PluginServices.getMDIManager().restoreCursor();
+}

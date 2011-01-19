@@ -1,0 +1,65 @@
+{
+  try {
+    ContractionHierarchySet ggContraction=ContractionHierarchySerializationLibrary.readGraph(new File(graphObjPath));
+    Graph gg=ggContraction.getGraph();
+    driverNodes=new ConcreteMemoryDriver();
+    driverNodes.setShapeType(FShape.POINT);
+    driverNodes.getTableModel().addColumn("Label");
+    driverNodes.getTableModel().addColumn("Type");
+    Object[] row=new Object[2];
+    Collection<GraphVertex> vertices=gg.getVertices();
+    Iterator<GraphVertex> it=vertices.iterator();
+    FPoint2D editableFeatureP=null;
+    Hashtable<Edge,Edge> edges=new Hashtable<Edge,Edge>();
+    while (it.hasNext()) {
+      GraphVertex gv=it.next();
+      Vertex v=gv.vertex;
+      Iterator<Edge> out=gv.getOutgoing().iterator();
+      while (out.hasNext()) {
+        Edge e=out.next();
+        edges.put(e,e);
+      }
+      row=new Object[2];
+      row[0]=ValueFactory.createValue(v.getLabel());
+      row[1]=ValueFactory.createValue(v.getClass().getName());
+      editableFeatureP=new FPoint2D(v.getX(),v.getY());
+      driverNodes.addShape(editableFeatureP,row);
+    }
+    driverEdges=new ConcreteMemoryDriver();
+    driverEdges.setShapeType(FShape.LINE);
+    driverEdges.getTableModel().addColumn("Type");
+    driverEdges.getTableModel().addColumn("Name");
+    driverEdges.getTableModel().addColumn("Mode");
+    Iterator<Edge> edgeIterator=edges.values().iterator();
+    Object[] rowEdge=new Object[3];
+    while (edgeIterator.hasNext()) {
+      Edge e=edgeIterator.next();
+      if (e instanceof EdgeNarrative) {
+        EdgeNarrative en=(EdgeNarrative)e;
+        rowEdge=new Value[3];
+        rowEdge[0]=ValueFactory.createValue(e.getClass().getName());
+        rowEdge[1]=ValueFactory.createValue(en.getName());
+        if (en.getMode() != null)         rowEdge[2]=ValueFactory.createValue(en.getMode().toString());
+        IGeometry geom=null;
+        if (en.getGeometry() != null) {
+          Geometry geomJTS=en.getGeometry();
+          geom=FConverter.jts_to_igeometry(geomJTS);
+        }
+ else {
+          GeneralPathX gp=new GeneralPathX();
+          gp.moveTo(en.getFromVertex().getX(),en.getFromVertex().getY());
+          gp.lineTo(en.getToVertex().getX(),en.getToVertex().getY());
+          geom=ShapeFactory.createPolyline2D(gp);
+        }
+        if (rowEdge[1].toString() == null)         rowEdge[1]=ValueFactory.createValue(" ");
+        driverEdges.addGeometry(geom,rowEdge);
+      }
+    }
+  }
+ catch (  IOException e) {
+    e.printStackTrace();
+  }
+catch (  ClassNotFoundException e) {
+    e.printStackTrace();
+  }
+}
