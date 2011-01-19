@@ -1,0 +1,11 @@
+{
+  for (  String s : block.getRequiredFeaturesList()) {
+    if (s.equals("OsmSchema-V0.6")) {
+      continue;
+    }
+    if (s.equals("DenseNodes")) {
+      continue;
+    }
+    throw new IllegalStateException("File requires unknown feature: " + s);
+  }
+}

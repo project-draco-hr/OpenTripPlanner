@@ -1,0 +1,7 @@
+{
+  InputStream in=new GZIPInputStream(getClass().getResourceAsStream("map.osm.gz"));
+  OpenStreetMapParser parser=new OpenStreetMapParser();
+  OSMMap map=new OSMMap();
+  parser.parseMap(in,map);
+  testParser(map);
+}

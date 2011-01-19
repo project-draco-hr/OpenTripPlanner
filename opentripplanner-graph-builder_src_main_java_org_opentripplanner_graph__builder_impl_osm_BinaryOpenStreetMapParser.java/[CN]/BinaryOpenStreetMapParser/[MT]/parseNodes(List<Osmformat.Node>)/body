@@ -1,0 +1,20 @@
+{
+  if (_noNodes) {
+    return;
+  }
+  for (  Osmformat.Node i : nodes) {
+    OSMNode tmp=new OSMNode();
+    tmp.setId(i.getId());
+    tmp.setLat(parseLat(i.getLat()));
+    tmp.setLon(parseLon(i.getLon()));
+    for (int j=0; j < i.getKeysCount(); j++) {
+      OSMTag tag=new OSMTag();
+      String key=getStringById(i.getKeys(j)).intern();
+      String value=getStringById(i.getVals(j)).intern();
+      tag.setK(key);
+      tag.setV(value);
+      tmp.addTag(tag);
+    }
+    _handler.addNode(tmp);
+  }
+}

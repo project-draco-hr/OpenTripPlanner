@@ -1,0 +1,34 @@
+{
+  long lastId=0, lastLat=0, lastLon=0;
+  int j=0;
+  if (_noNodes) {
+    return;
+  }
+  for (int i=0; i < nodes.getIdCount(); i++) {
+    OSMNode tmp=new OSMNode();
+    long lat=nodes.getLat(i) + lastLat;
+    lastLat=lat;
+    long lon=nodes.getLon(i) + lastLon;
+    lastLon=lon;
+    long id=nodes.getId(i) + lastId;
+    lastId=id;
+    double latf=parseLat(lat), lonf=parseLon(lon);
+    tmp.setId(id);
+    tmp.setLat(latf);
+    tmp.setLon(lonf);
+    if (nodes.getKeysValsCount() > 0) {
+      while (nodes.getKeysVals(j) != 0) {
+        int keyid=nodes.getKeysVals(j++);
+        int valid=nodes.getKeysVals(j++);
+        OSMTag tag=new OSMTag();
+        String key=getStringById(keyid).intern();
+        String value=getStringById(valid).intern();
+        tag.setK(key);
+        tag.setV(value);
+        tmp.addTag(tag);
+      }
+      j++;
+    }
+    _handler.addNode(tmp);
+  }
+}
