@@ -1,0 +1,34 @@
+{
+  Map<String,StreetTraversalPermission> m=new LinkedHashMap<String,StreetTraversalPermission>();
+  m.put("highway=motorway",StreetTraversalPermission.CAR);
+  m.put("highway=motorway_link",StreetTraversalPermission.CAR);
+  m.put("highway=trunk",StreetTraversalPermission.CAR);
+  m.put("highway=trunk_link",StreetTraversalPermission.CAR);
+  m.put("highway=primary",StreetTraversalPermission.ALL);
+  m.put("highway=primary_link",StreetTraversalPermission.ALL);
+  m.put("highway=secondary",StreetTraversalPermission.ALL);
+  m.put("highway=secondary_link",StreetTraversalPermission.ALL);
+  m.put("highway=tertiary",StreetTraversalPermission.ALL);
+  m.put("highway=tertiary_link",StreetTraversalPermission.ALL);
+  m.put("highway=unclassified",StreetTraversalPermission.ALL);
+  m.put("highway=residential",StreetTraversalPermission.ALL);
+  m.put("highway=living_street",StreetTraversalPermission.ALL);
+  m.put("highway=road",StreetTraversalPermission.ALL);
+  m.put("highway=service",StreetTraversalPermission.ALL);
+  m.put("highway=byway",StreetTraversalPermission.ALL);
+  m.put("highway=track",StreetTraversalPermission.ALL);
+  m.put("highway=mini_roundabout",StreetTraversalPermission.ALL);
+  m.put("highway=cycleway",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
+  m.put("cycleway=track",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
+  m.put("highway=pedestrian",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
+  m.put("highway=path",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
+  m.put("highway=bridleway",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
+  m.put("highway=footway",StreetTraversalPermission.PEDESTRIAN);
+  m.put("highway=steps",StreetTraversalPermission.PEDESTRIAN);
+  m.put("railway=platform",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
+  m.put("highway=platform",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
+  m.put("highway=construction",StreetTraversalPermission.NONE);
+  m.put("highway=raceway",StreetTraversalPermission.NONE);
+  m.put("__default__",StreetTraversalPermission.ALL);
+  return m;
+}
