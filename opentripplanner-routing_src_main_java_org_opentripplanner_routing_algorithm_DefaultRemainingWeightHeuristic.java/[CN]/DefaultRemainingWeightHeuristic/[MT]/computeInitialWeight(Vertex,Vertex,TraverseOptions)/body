@@ -1,0 +1,6 @@
+{
+  this.options=traverseOptions;
+  this.useTransit=traverseOptions.getModes().getTransit();
+  this.maxSpeed=getMaxSpeed(options);
+  return origin.distance(target) / maxSpeed;
+}

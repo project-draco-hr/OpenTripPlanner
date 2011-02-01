@@ -1,0 +1,30 @@
+{
+  EdgeNarrative narrative=traverseResult.getEdgeNarrative();
+  Vertex fromv=narrative.getFromVertex();
+  double euclidianDistance=fromv.distance(target);
+  if (useTransit) {
+    if (from.state.alightedLocal) {
+      return options.walkReluctance * euclidianDistance / options.speed;
+    }
+ else {
+      int boardCost;
+      if (edge instanceof OnBoardReverseEdge) {
+        boardCost=options.boardCost;
+      }
+ else {
+        boardCost=0;
+      }
+      if (euclidianDistance < target.getDistanceToNearestTransitStop()) {
+        return options.walkReluctance * euclidianDistance / options.speed;
+      }
+ else {
+        double mandatoryWalkDistance=target.getDistanceToNearestTransitStop() + fromv.getDistanceToNearestTransitStop();
+        double distance=(euclidianDistance - mandatoryWalkDistance) / maxSpeed + mandatoryWalkDistance * options.walkReluctance / options.speed + boardCost;
+        return distance=Math.min(distance,options.walkReluctance * euclidianDistance / options.speed);
+      }
+    }
+  }
+ else {
+    return options.walkReluctance * euclidianDistance / maxSpeed;
+  }
+}
