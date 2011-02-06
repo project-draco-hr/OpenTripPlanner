@@ -44,6 +44,7 @@
         double xd=nearestPointOnEdge.x - coordinate.x;
         double yd=nearestPointOnEdge.y - coordinate.y;
         double edgeDirection=Math.atan2(yd,xd);
+        if (Double.isNaN(edgeDirection))         return Arrays.asList(bestEdge);
         TreeMap<Double,StreetEdge> parallel=new TreeMap<Double,StreetEdge>();
         for (        StreetEdge e : nearby) {
           if (e == null || e instanceof OutEdge) {
