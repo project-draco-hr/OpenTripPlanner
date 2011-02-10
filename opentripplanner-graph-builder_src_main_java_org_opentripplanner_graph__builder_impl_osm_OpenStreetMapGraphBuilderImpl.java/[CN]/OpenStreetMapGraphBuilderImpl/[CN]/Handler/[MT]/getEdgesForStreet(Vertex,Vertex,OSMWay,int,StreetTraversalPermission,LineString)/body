@@ -20,6 +20,10 @@
     street=getEdgeForStreet(start,end,way,startNode,d,permissions,geometry,false);
     backStreet=getEdgeForStreet(end,start,way,startNode,d,permissions,backGeometry,true);
   }
+  if ("roundabout".equals(tags.get("junction"))) {
+    street.setRoundabout(true);
+    if (backStreet != null)     backStreet.setRoundabout(true);
+  }
   for (  Map.Entry<P2<String>,P2<Double>> feature : safetyFeatures.entrySet()) {
     String key=feature.getKey().getFirst();
     String value=feature.getKey().getSecond();
