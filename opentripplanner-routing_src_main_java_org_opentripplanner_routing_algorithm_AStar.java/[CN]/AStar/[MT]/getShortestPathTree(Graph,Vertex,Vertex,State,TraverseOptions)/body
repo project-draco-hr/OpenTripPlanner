@@ -50,6 +50,7 @@
   options.maxWalkDistance+=origin.getDistanceToNearestTransitStop() + target.getDistanceToNearestTransitStop();
   while (!pq.empty()) {
     SPTVertex spt_u=pq.extract_min();
+    if (spt_u.state.walkDistance >= options.maxWalkDistance)     continue;
     Vertex fromv=spt_u.mirror;
     if (fromv == target) {
       break;

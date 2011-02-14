@@ -21,7 +21,6 @@ weight=length / options.speed;
  else {
 weight=time;
 }
-weight*=options.distanceWalkFactor(s0.walkDistance + length / 2);
 weight*=options.walkReluctance;
 return weight;
 }

@@ -58,6 +58,7 @@
   SPTVertex spt_u, spt_v;
   while (!pq.empty()) {
     spt_u=pq.extract_min();
+    if (spt_u.state.walkDistance >= options.maxWalkDistance)     continue;
     Vertex tov=spt_u.mirror;
     if (tov == target)     break;
     closed.add(tov);
