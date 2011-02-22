@@ -18,7 +18,10 @@
   options=options.clone();
   options.maxWalkDistance+=origin.getDistanceToNearestTransitStop() + target.getDistanceToNearestTransitStop();
   final ExtraEdgesStrategy extraEdgesStrategy=options.extraEdgesStrategy;
-  Map<Vertex,List<Edge>> extraEdges=extraEdgesStrategy.getIncomingExtraEdges(origin,target);
+  Map<Vertex,List<Edge>> extraEdges=new HashMap<Vertex,List<Edge>>();
+  extraEdgesStrategy.addIncomingEdgesForOrigin(extraEdges,origin);
+  extraEdgesStrategy.addIncomingEdgesForTarget(extraEdges,target);
+  if (extraEdges.isEmpty())   extraEdges=Collections.emptyMap();
   final RemainingWeightHeuristic heuristic=options.remainingWeightHeuristic;
   double initialWeight=heuristic.computeInitialWeight(origin,target,options);
   SPTVertex spt_origin=spt.addVertex(origin,init,0,options);

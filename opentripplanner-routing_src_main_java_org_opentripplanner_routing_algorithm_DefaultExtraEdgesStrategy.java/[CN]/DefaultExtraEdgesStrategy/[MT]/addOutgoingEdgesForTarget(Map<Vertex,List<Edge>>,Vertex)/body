@@ -1,0 +1,14 @@
+{
+  if (target instanceof StreetLocation) {
+    Iterable<DirectEdge> extra=((StreetLocation)target).getExtra();
+    for (    DirectEdge edge : extra) {
+      Vertex fromv=edge.getFromVertex();
+      List<Edge> edges=extraEdges.get(fromv);
+      if (edges == null) {
+        edges=new ArrayList<Edge>();
+        extraEdges.put(fromv,edges);
+      }
+      edges.add(edge);
+    }
+  }
+}
