@@ -1,0 +1,13 @@
+{
+  Collection<Edge> incoming=null;
+  if (tov instanceof HasEdges) {
+    incoming=extendEdges(incoming,((HasEdges)tov).getIncoming());
+  }
+ else {
+    GraphVertex gv=graph.getGraphVertex(tov);
+    if (gv != null)     incoming=extendEdges(incoming,gv.getIncoming());
+  }
+  if (extraEdges.containsKey(tov))   incoming=extendEdges(incoming,extraEdges.get(tov));
+  if (incoming == null)   incoming=Collections.emptyList();
+  return incoming;
+}
