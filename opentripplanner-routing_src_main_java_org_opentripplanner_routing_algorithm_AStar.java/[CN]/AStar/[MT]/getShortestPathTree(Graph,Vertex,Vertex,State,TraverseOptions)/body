@@ -9,38 +9,8 @@
  else {
     spt=new BasicShortestPathTree();
   }
-  Map<Vertex,List<Edge>> extraEdges;
-  if (origin instanceof StreetLocation) {
-    extraEdges=new HashMap<Vertex,List<Edge>>();
-    Iterable<DirectEdge> extra=((StreetLocation)origin).getExtra();
-    for (    DirectEdge edge : extra) {
-      Vertex fromv=edge.getFromVertex();
-      List<Edge> edges=extraEdges.get(fromv);
-      if (edges == null) {
-        edges=new ArrayList<Edge>();
-        extraEdges.put(fromv,edges);
-      }
-      edges.add(edge);
-    }
-  }
- else {
-    extraEdges=Collections.emptyMap();
-  }
-  if (target instanceof StreetLocation) {
-    if (extraEdges.isEmpty()) {
-      extraEdges=new HashMap<Vertex,List<Edge>>();
-    }
-    Iterable<DirectEdge> extra=((StreetLocation)target).getExtra();
-    for (    DirectEdge edge : extra) {
-      Vertex fromv=edge.getFromVertex();
-      List<Edge> edges=extraEdges.get(fromv);
-      if (edges == null) {
-        edges=new ArrayList<Edge>();
-        extraEdges.put(fromv,edges);
-      }
-      edges.add(edge);
-    }
-  }
+  final ExtraEdgesStrategy extraEdgesStrategy=options.extraEdgesStrategy;
+  Map<Vertex,List<Edge>> extraEdges=extraEdgesStrategy.getOutgoingExtraEdges(origin,target);
   final RemainingWeightHeuristic heuristic=options.remainingWeightHeuristic;
   double initialWeight=heuristic.computeInitialWeight(origin,target,options);
   SPTVertex spt_origin=spt.addVertex(origin,init,0,options);

@@ -17,38 +17,8 @@
   target=tmp;
   options=options.clone();
   options.maxWalkDistance+=origin.getDistanceToNearestTransitStop() + target.getDistanceToNearestTransitStop();
-  Map<Vertex,List<Edge>> extraEdges;
-  if (origin instanceof StreetLocation) {
-    extraEdges=new HashMap<Vertex,List<Edge>>();
-    Iterable<DirectEdge> extra=((StreetLocation)origin).getExtra();
-    for (    DirectEdge edge : extra) {
-      Vertex tov=edge.getToVertex();
-      List<Edge> edges=extraEdges.get(tov);
-      if (edges == null) {
-        edges=new ArrayList<Edge>();
-        extraEdges.put(tov,edges);
-      }
-      edges.add(edge);
-    }
-  }
- else {
-    extraEdges=Collections.emptyMap();
-  }
-  if (target instanceof StreetLocation) {
-    if (extraEdges.isEmpty()) {
-      extraEdges=new HashMap<Vertex,List<Edge>>();
-    }
-    Iterable<DirectEdge> extra=((StreetLocation)target).getExtra();
-    for (    DirectEdge edge : extra) {
-      Vertex tov=edge.getToVertex();
-      List<Edge> edges=extraEdges.get(tov);
-      if (edges == null) {
-        edges=new ArrayList<Edge>();
-        extraEdges.put(tov,edges);
-      }
-      edges.add(edge);
-    }
-  }
+  final ExtraEdgesStrategy extraEdgesStrategy=options.extraEdgesStrategy;
+  Map<Vertex,List<Edge>> extraEdges=extraEdgesStrategy.getIncomingExtraEdges(origin,target);
   final RemainingWeightHeuristic heuristic=options.remainingWeightHeuristic;
   double initialWeight=heuristic.computeInitialWeight(origin,target,options);
   SPTVertex spt_origin=spt.addVertex(origin,init,0,options);
