@@ -5,6 +5,7 @@
   if (origin == null || target == null) {
     return null;
   }
+  options.setTransferTable(graph.getTransferTable());
   ShortestPathTree spt;
   if (options.getModes().getTransit()) {
     spt=new MultiShortestPathTree();

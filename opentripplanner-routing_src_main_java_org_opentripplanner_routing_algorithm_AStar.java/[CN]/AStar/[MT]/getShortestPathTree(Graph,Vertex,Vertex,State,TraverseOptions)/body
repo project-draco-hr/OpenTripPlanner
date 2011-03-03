@@ -9,6 +9,7 @@
  else {
     spt=new BasicShortestPathTree();
   }
+  options.setTransferTable(graph.getTransferTable());
   final ExtraEdgesStrategy extraEdgesStrategy=options.extraEdgesStrategy;
   Map<Vertex,List<Edge>> extraEdges=new HashMap<Vertex,List<Edge>>();
   extraEdgesStrategy.addOutgoingEdgesForOrigin(extraEdges,origin);

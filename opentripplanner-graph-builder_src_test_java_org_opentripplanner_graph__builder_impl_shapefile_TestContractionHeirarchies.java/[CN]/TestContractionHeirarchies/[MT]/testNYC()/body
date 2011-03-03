@@ -60,6 +60,7 @@
   CalendarServiceImpl calendarService=new CalendarServiceImpl();
   calendarService.setData(data);
   options.setCalendarService(calendarService);
+  options.setTransferTable(graph.getTransferTable());
   Vertex start1=graph.getVertex("0072480");
   Vertex end1=graph.getVertex("0032341");
   assertNotNull(end1);

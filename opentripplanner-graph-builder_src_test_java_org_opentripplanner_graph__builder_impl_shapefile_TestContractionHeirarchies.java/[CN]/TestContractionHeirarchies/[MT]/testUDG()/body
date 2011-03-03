@@ -55,8 +55,8 @@
       lastKey=components.union(v,last);
       last=v;
       Coordinate c=v.getCoordinate();
-      graph.addEdge(new NonFreeEdge(v,last,last.distance(c)));
-      graph.addEdge(new NonFreeEdge(last,v,last.distance(c)));
+      graph.addEdge(new SimpleEdge(v,last,last.distance(c),0));
+      graph.addEdge(new SimpleEdge(last,v,last.distance(c),0));
     }
   }
   ContractionHierarchy hierarchy=new ContractionHierarchy(graph,OptimizeType.QUICK,TraverseMode.WALK,1.0);

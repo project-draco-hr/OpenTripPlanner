@@ -4,5 +4,7 @@
   }
   State s1=state0.clone();
   s1.tripId=null;
+  s1.lastAlightedTime=s1.time;
+  s1.previousStop=tov;
   return new TraverseResult(1,s1,this);
 }

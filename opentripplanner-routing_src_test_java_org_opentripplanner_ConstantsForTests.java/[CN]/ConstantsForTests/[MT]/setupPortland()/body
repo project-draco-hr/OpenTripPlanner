@@ -4,6 +4,8 @@
     portlandGraph=new Graph();
     GTFSPatternHopFactory factory=new GTFSPatternHopFactory(portlandContext);
     factory.run(portlandGraph);
+    TransferGraphLinker linker=new TransferGraphLinker(portlandGraph);
+    linker.run();
   }
  catch (  Exception e) {
     e.printStackTrace();
