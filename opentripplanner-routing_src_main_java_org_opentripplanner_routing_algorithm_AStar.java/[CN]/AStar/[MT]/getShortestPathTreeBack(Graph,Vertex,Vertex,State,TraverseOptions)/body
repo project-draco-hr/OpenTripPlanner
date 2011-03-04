@@ -32,17 +32,18 @@
   SPTVertex spt_u, spt_v;
   while (!pq.empty()) {
     spt_u=pq.extract_min();
-    if (spt_u.state.walkDistance >= options.maxWalkDistance)     continue;
+    State state_u=spt_u.state;
+    StateData data_u=state_u.getData();
+    if (data_u.getWalkDistance() >= options.maxWalkDistance)     continue;
     Vertex tov=spt_u.mirror;
     if (tov == target)     break;
     closed.add(tov);
     Collection<Edge> incoming=GraphLibrary.getIncomingEdges(graph,tov,extraEdges);
     for (    Edge edge : incoming) {
-      State state=spt_u.state;
-      if (edge instanceof PatternAlight && state.numBoardings > options.maxTransfers) {
+      if (edge instanceof PatternAlight && data_u.getNumBoardings() > options.maxTransfers) {
         continue;
       }
-      TraverseResult wr=edge.traverseBack(state,options);
+      TraverseResult wr=edge.traverseBack(state_u,options);
       while (wr != null) {
         if (wr.weight < 0) {
           throw new NegativeWeightException(String.valueOf(wr.weight) + " on edge " + edge);

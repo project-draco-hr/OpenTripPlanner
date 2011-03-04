@@ -3,10 +3,10 @@
   if (!fromv.canTraverse(options)) {
     return tryWalkBike(s0,options,back);
   }
-  State s1=s0.clone();
+  Editor editor=s0.edit();
   double time=fromv.getLength() / options.speed;
   double weight=fromv.computeWeight(s0,options,time);
-  s1.walkDistance+=fromv.getLength();
-  s1.incrementTimeInSeconds((int)(back ? -time : time));
-  return new TraverseResult(weight,s1,this);
+  editor.incrementWalkDistance(fromv.getLength());
+  editor.incrementTimeInSeconds((int)(back ? -time : time));
+  return new TraverseResult(weight,editor.createState(),this);
 }

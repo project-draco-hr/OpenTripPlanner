@@ -14,7 +14,6 @@
   if (wait < 0) {
     return null;
   }
-  State state1=s0.clone();
-  state1.incrementTimeInSeconds(-wait);
+  State state1=s0.incrementTimeInSeconds(-wait);
   return new TraverseResult(wait,state1,this);
 }

@@ -1,12 +1,12 @@
 {
-  State s1=s0.clone();
-  if (s0.alightedLocal) {
+  if (s0.getData().isAlightedLocal()) {
     return null;
   }
   TransitStop toVertex=(TransitStop)getToVertex();
-  if (toVertex.isLocal() && s0.everBoarded) {
+  if (toVertex.isLocal() && s0.getData().isEverBoarded()) {
     return null;
   }
-  s1.everBoarded=true;
-  return new TraverseResult(0,s0,this);
+  Editor editor=s0.edit();
+  editor.setEverBoarded(true);
+  return new TraverseResult(0,editor.createState(),this);
 }

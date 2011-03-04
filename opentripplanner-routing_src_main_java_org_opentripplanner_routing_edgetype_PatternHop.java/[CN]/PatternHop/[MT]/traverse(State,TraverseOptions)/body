@@ -1,7 +1,10 @@
 {
-  State state1=state0.clone();
-  int runningTime=pattern.getRunningTime(stopIndex,state0.getTrip());
-  state1.incrementTimeInSeconds(runningTime);
-  state1.setZoneAndRoute(getEndStop().getZoneId(),pattern.getExemplar().getRoute().getId(),context);
-  return new TraverseResult(runningTime,state1,new RouteNameNarrative(getPattern().getTrip(state0.getTrip()),this));
+  int trip=state0.getData().getTrip();
+  int runningTime=pattern.getRunningTime(stopIndex,trip);
+  Editor editor=state0.edit();
+  editor.incrementTimeInSeconds(runningTime);
+  editor.setZone(getEndStop().getZoneId());
+  editor.setRoute(pattern.getExemplar().getRoute().getId());
+  editor.setFareContext(context);
+  return new TraverseResult(runningTime,editor.createState(),new RouteNameNarrative(getPattern().getTrip(trip),this));
 }

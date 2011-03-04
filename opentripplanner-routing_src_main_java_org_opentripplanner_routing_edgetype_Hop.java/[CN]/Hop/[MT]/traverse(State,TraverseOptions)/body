@@ -1,6 +1,8 @@
 {
-  State state1=state0.clone();
-  state1.incrementTimeInSeconds(elapsed);
-  state1.setZoneAndRoute(getEndStop().getZoneId(),start.getTrip().getRoute().getId(),fareContext);
-  return new TraverseResult(elapsed,state1,this);
+  Editor editor=state0.edit();
+  editor.incrementTimeInSeconds(elapsed);
+  editor.setZone(getEndStop().getZoneId());
+  editor.setRoute(start.getTrip().getRoute().getId());
+  editor.setFareContext(fareContext);
+  return new TraverseResult(elapsed,editor.createState(),this);
 }

@@ -2,7 +2,6 @@
   if (!canTraverse(options)) {
     return tryWalkBike(s0,options,back);
   }
-  State s1=s0.clone();
   double time=length / options.speed;
   double weight;
   if (options.wheelchairAccessible) {
@@ -27,7 +26,8 @@ weight=length / options.speed;
 weight=time;
 }
 weight*=options.walkReluctance;
-s1.walkDistance+=length;
-s1.incrementTimeInSeconds((int)(back ? -time : time));
-return new TraverseResult(weight,s1,new FixedModeEdge(this,options.getModes().getNonTransitMode()));
+Editor editor=s0.edit();
+editor.incrementWalkDistance(length);
+editor.incrementTimeInSeconds((int)(back ? -time : time));
+return new TraverseResult(weight,editor.createState(),new FixedModeEdge(this,options.getModes().getNonTransitMode()));
 }

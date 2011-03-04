@@ -1,8 +1,10 @@
 {
-  State s1=s0.clone();
+  State s1=s0;
   TransitStop toVertex=(TransitStop)getToVertex();
   if (toVertex.isLocal()) {
-    s1.alightedLocal=true;
+    Editor editor=s0.edit();
+    editor.setAlightedLocal(true);
+    s1=editor.createState();
   }
   return new TraverseResult(0,s1,this);
 }

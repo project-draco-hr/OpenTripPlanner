@@ -1,8 +1,10 @@
 {
-  State state=vertices.lastElement().state.clone();
   State state0=vertices.firstElement().state;
-  state.alightedLocal=false;
-  state.everBoarded=false;
+  State state=vertices.lastElement().state;
+  StateData.Editor edit=state.edit();
+  edit.setAlightedLocal(false);
+  edit.setEverBoarded(false);
+  state=edit.createState();
   if (edges.isEmpty()) {
     return;
   }

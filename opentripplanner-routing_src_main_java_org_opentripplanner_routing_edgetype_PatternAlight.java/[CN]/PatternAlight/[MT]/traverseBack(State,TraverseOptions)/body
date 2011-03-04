@@ -4,17 +4,18 @@
   }
   long current_time=state0.getTime();
   long transfer_penalty=0;
-  if (state0.lastAlightedTime != 0) {
+  StateData data=state0.getData();
+  if (data.getLastAlightedTime() != 0) {
     TransferTable transferTable=options.getTransferTable();
     if (transferTable.hasPreferredTransfers()) {
       transfer_penalty=options.baseTransferPenalty;
     }
-    int transfer_time=transferTable.getTransferTime(getToVertex(),state0.previousStop);
+    int transfer_time=transferTable.getTransferTime(getToVertex(),data.getPreviousStop());
     if (transfer_time == TransferTable.UNKNOWN_TRANSFER) {
       transfer_time=options.minTransferTime;
     }
-    if (transfer_time > 0 && transfer_time > (current_time + state0.lastAlightedTime) * 1000) {
-      current_time+=state0.lastAlightedTime - transfer_time * 1000;
+    if (transfer_time > 0 && transfer_time > (current_time + data.getLastAlightedTime()) * 1000) {
+      current_time+=data.getLastAlightedTime() - transfer_time * 1000;
     }
  else     if (transfer_time == TransferTable.FORBIDDEN_TRANSFER) {
       return null;
@@ -48,10 +49,6 @@
   if (wait > 0) {
     return null;
   }
-  State state1=state0.clone();
-  state1.setPattern(patternIndex);
-  state1.incrementTimeInSeconds(wait);
-  state1.numBoardings+=1;
   Trip trip=getPattern().getTrip(patternIndex);
   if (options.bannedRoutes != null) {
     Route route=trip.getRoute();
@@ -60,17 +57,23 @@
       return null;
     }
   }
-  state1.tripId=trip.getId();
-  state1.setZoneAndRoute(pattern.getZone(stopIndex),pattern.getExemplar().getRoute().getId(),pattern.getFareContext());
-  if (options.optimizeFor == OptimizeType.TRANSFERS && state0.getTrip() != -1) {
+  Editor editor=state0.edit();
+  editor.setTrip(patternIndex);
+  editor.incrementTimeInSeconds(wait);
+  editor.incrementNumBoardings();
+  editor.setTripId(trip.getId());
+  editor.setZone(pattern.getZone(stopIndex));
+  editor.setRoute(pattern.getExemplar().getRoute().getId());
+  editor.setFareContext(pattern.getFareContext());
+  if (options.optimizeFor == OptimizeType.TRANSFERS && state0.getData().getTrip() != -1) {
     transfer_penalty+=options.optimizeTransferPenalty;
   }
   long wait_cost=-wait;
-  if (state0.numBoardings == 0) {
+  if (state0.getData().getNumBoardings() == 0) {
     wait_cost*=options.waitAtBeginningFactor;
   }
  else {
     wait_cost*=options.waitReluctance;
   }
-  return new TraverseResult(wait_cost + options.boardCost + transfer_penalty,state1,this);
+  return new TraverseResult(wait_cost + options.boardCost + transfer_penalty,editor.createState(),this);
 }

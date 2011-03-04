@@ -69,11 +69,12 @@
         outgoing=newOutgoing;
       }
       State state=up_u.state;
+      StateData stateData=state.getData();
       for (      Edge edge : outgoing) {
         if (edge instanceof OutEdge) {
           continue;
         }
-        if (edge instanceof PatternBoard && state.numBoardings > 2) {
+        if (edge instanceof PatternBoard && stateData.getNumBoardings() > 2) {
           continue;
         }
         TraverseResult wr=edge.traverse(state,options);
@@ -152,6 +153,7 @@
         incoming=newIncoming;
       }
       State state=down_u.state;
+      StateData stateData=state.getData();
       for (      Edge edge : incoming) {
         Vertex fromVertex=edge.getFromVertex();
         if (downclosed.contains(fromVertex)) {
@@ -160,7 +162,7 @@
         if (edge instanceof OutEdge) {
           continue;
         }
-        if (edge instanceof PatternBoard && state.numBoardings > 2) {
+        if (edge instanceof PatternBoard && stateData.getNumBoardings() > 2) {
           continue;
         }
         TraverseResult wr=edge.traverseBack(state,options);

@@ -1,9 +1,11 @@
 {
   EdgeNarrative narrative=traverseResult.getEdgeNarrative();
   Vertex fromv=narrative.getFromVertex();
+  State fromState=from.state;
+  StateData fromData=fromState.getData();
   double euclidianDistance=fromv.distance(target);
   if (useTransit) {
-    if (from.state.alightedLocal) {
+    if (fromData.isAlightedLocal()) {
       return options.walkReluctance * euclidianDistance / options.speed;
     }
  else {
