@@ -4,6 +4,14 @@
     angleDiff+=Math.PI * 2;
   }
   double ccwAngleDiff=Math.PI * 2 - angleDiff;
+  if (roundabout) {
+    if (angleDiff > ccwAngleDiff) {
+      return RelativeDirection.CIRCLE_CLOCKWISE;
+    }
+ else {
+      return RelativeDirection.CIRCLE_COUNTERCLOCKWISE;
+    }
+  }
   if (angleDiff < 0.3 || ccwAngleDiff < 0.3) {
     return RelativeDirection.CONTINUE;
   }
