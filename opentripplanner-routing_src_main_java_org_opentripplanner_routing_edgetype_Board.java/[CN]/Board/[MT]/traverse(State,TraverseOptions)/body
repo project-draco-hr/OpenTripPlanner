@@ -1,20 +1,47 @@
 {
-  if (!wo.getModes().contains(hop.getMode())) {
+  if (!options.getModes().contains(hop.getMode())) {
     return null;
   }
-  if (wo.wheelchairAccessible && !wheelchairAccessible) {
+  if (options.wheelchairAccessible && !wheelchairAccessible) {
     return null;
   }
-  long currentTime=state0.getTime();
-  Date serviceDate=getServiceDate(currentTime,false);
-  int secondsSinceMidnight=(int)((currentTime - serviceDate.getTime()) / 1000);
-  CalendarService service=wo.getCalendarService();
+  long current_time=state0.getTime();
+  long transfer_penalty=0;
+  StateData data=state0.getData();
+  if (data.getLastAlightedTime() != 0) {
+    TransferTable transferTable=options.getTransferTable();
+    if (transferTable.hasPreferredTransfers()) {
+      transfer_penalty=options.baseTransferPenalty;
+    }
+    int transfer_time=transferTable.getTransferTime(data.getPreviousStop(),getFromVertex());
+    if (transfer_time == TransferTable.UNKNOWN_TRANSFER) {
+      transfer_time=options.minTransferTime;
+    }
+    if (transfer_time > 0 && transfer_time > (current_time - data.getLastAlightedTime()) * 1000) {
+      current_time+=data.getLastAlightedTime() + transfer_time * 1000;
+    }
+ else     if (transfer_time == TransferTable.FORBIDDEN_TRANSFER) {
+      return null;
+    }
+ else     if (transfer_time == TransferTable.PREFERRED_TRANSFER) {
+      transfer_penalty=0;
+    }
+  }
+  Date serviceDate=getServiceDate(current_time,false);
+  int secondsSinceMidnight=(int)((current_time - serviceDate.getTime()) / 1000);
+  CalendarService service=options.getCalendarService();
   Set<ServiceDate> serviceDates=service.getServiceDatesForServiceId(hop.getServiceId());
   if (!serviceDates.contains(serviceDate))   return null;
   int wait=hop.getStartStopTime().getDepartureTime() - secondsSinceMidnight;
   if (wait < 0) {
     return null;
   }
-  State state1=state0.incrementTimeInSeconds(-wait);
-  return new TraverseResult(wait,state1,this);
+  Editor editor=state0.edit();
+  editor.incrementTimeInSeconds(wait);
+  editor.incrementNumBoardings();
+  editor.setTripId(trip.getId());
+  editor.setZone(zone);
+  editor.setRoute(trip.getRoute().getId());
+  editor.setFareContext(fareContext);
+  return new TraverseResult(wait + options.boardCost + transfer_penalty,editor.createState(),this);
 }
