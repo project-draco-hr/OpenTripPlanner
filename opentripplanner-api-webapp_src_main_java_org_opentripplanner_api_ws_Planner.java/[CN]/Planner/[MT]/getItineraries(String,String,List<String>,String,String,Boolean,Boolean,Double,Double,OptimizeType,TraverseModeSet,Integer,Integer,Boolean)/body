@@ -27,6 +27,7 @@
   }
   request.setOptimize(optimize);
   request.setModes(modes);
+  request.setMinTransferTime(minTransferTime);
   Response response=new Response(request);
   try {
     TripPlan plan=generatePlan(request);

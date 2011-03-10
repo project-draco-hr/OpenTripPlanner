@@ -11,5 +11,8 @@
   if (request.getMaxWalkDistance() > 0) {
     options.maxWalkDistance=request.getMaxWalkDistance();
   }
+  if (request.getMinTransferTime() != null) {
+    options.minTransferTime=request.getMinTransferTime();
+  }
   return options;
 }
