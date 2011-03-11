@@ -1,0 +1,17 @@
+{
+  try {
+    if (_path.getName().endsWith(".pbf")) {
+      BinaryFileBasedOpenStreetMapProviderImpl p=new BinaryFileBasedOpenStreetMapProviderImpl();
+      p.setPath(_path);
+      p.readOSM(handler);
+    }
+ else {
+      StreamedFileBasedOpenStreetMapProviderImpl p=new StreamedFileBasedOpenStreetMapProviderImpl();
+      p.setPath(_path);
+      p.readOSM(handler);
+    }
+  }
+ catch (  Exception ex) {
+    throw new IllegalStateException("error loading OSM from path " + _path,ex);
+  }
+}
