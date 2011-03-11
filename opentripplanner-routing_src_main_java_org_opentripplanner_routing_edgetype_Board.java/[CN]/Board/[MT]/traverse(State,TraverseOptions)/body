@@ -27,8 +27,8 @@
       transfer_penalty=0;
     }
   }
-  Date serviceDate=getServiceDate(current_time,false);
-  int secondsSinceMidnight=(int)((current_time - serviceDate.getTime()) / 1000);
+  ServiceDate serviceDate=getServiceDate(current_time);
+  int secondsSinceMidnight=(int)((current_time - serviceDate.getAsDate().getTime()) / 1000);
   CalendarService service=options.getCalendarService();
   Set<ServiceDate> serviceDates=service.getServiceDatesForServiceId(hop.getServiceId());
   if (!serviceDates.contains(serviceDate))   return null;
