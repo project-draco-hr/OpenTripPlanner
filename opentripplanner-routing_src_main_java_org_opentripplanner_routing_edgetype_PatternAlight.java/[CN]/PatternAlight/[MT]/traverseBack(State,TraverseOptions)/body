@@ -25,7 +25,7 @@
     }
   }
   ServiceDate service_date=getServiceDate(current_time,options.calendar);
-  ServiceDate service_date_testerday=getServiceDate(current_time - MILLI_IN_DAY,options.calendar);
+  ServiceDate service_date_yesterday=getServiceDate(current_time - MILLI_IN_DAY,options.calendar);
   int secondsSinceMidnight=(int)((current_time - service_date.getAsDate().getTime()) / 1000);
   int wait=1;
   int patternIndex=-1;
@@ -36,7 +36,7 @@
       wait=pattern.getArrivalTime(stopIndex,patternIndex) - secondsSinceMidnight;
     }
   }
-  if (options.serviceOn(service,service_date_testerday)) {
+  if (options.serviceOn(service,service_date_yesterday)) {
     int yesterday_pattern_index=pattern.getPreviousTrip(stopIndex,secondsSinceMidnight + SEC_IN_DAY,options.wheelchairAccessible,false);
     if (yesterday_pattern_index >= 0) {
       int wait_yesterday=pattern.getArrivalTime(stopIndex,yesterday_pattern_index) - secondsSinceMidnight - SEC_IN_DAY;
