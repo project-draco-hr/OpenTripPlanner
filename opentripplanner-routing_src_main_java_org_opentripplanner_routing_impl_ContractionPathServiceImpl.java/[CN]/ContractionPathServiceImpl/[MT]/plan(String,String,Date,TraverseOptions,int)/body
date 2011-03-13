@@ -14,6 +14,7 @@
   State state=new State(targetTime.getTime());
   if (_calendarService != null)   options.setCalendarService(_calendarService);
   options.setTransferTable(hierarchies.getGraph().getTransferTable());
+  options.setServiceDays(state.getTime());
   ArrayList<GraphPath> paths=new ArrayList<GraphPath>();
   Queue<TraverseOptions> optionQueue=new LinkedList<TraverseOptions>();
   optionQueue.add(options);
