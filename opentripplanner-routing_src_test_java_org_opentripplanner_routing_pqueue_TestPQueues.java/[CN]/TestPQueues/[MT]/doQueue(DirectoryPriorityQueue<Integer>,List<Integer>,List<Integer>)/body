@@ -1,0 +1,9 @@
+{
+  List<Integer> result=new ArrayList<Integer>(N);
+  long t0=System.currentTimeMillis();
+  for (  Integer i : input)   q.insert(i,i * 0.5);
+  while (!q.empty())   result.add(q.extract_min());
+  long t1=System.currentTimeMillis();
+  assertEquals(result,expected);
+  System.out.println(q.getClass() + " time " + (t1 - t0) / 1000.0 + " sec");
+}

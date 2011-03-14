@@ -1,0 +1,16 @@
+{
+  double bestPrio=Double.POSITIVE_INFINITY;
+  BinHeap<T> bestHeap=null;
+  for (int i=0; i < nSubheaps; i++) {
+    BinHeap<T> h=subheaps[i];
+    if (!h.empty()) {
+      double p=h.peek_min();
+      if (p < bestPrio) {
+        bestPrio=p;
+        bestHeap=h;
+      }
+    }
+  }
+  size-=1;
+  return bestHeap.extract_min();
+}

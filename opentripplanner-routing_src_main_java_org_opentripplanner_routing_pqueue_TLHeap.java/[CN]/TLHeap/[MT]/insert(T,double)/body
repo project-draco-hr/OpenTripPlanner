@@ -1,0 +1,8 @@
+{
+  while (subheaps[curHeap].size() >= subheapSize) {
+    curHeap+=1;
+    if (curHeap >= nSubheaps)     curHeap=0;
+  }
+  subheaps[curHeap].insert(e,p);
+  size+=1;
+}

@@ -1,0 +1,10 @@
+{
+  nSubheaps=(int)optimize(10,100);
+  if (capacity < nSubheaps)   capacity=nSubheaps;
+  maxSize=capacity;
+  size=0;
+  subheapSize=(maxSize / nSubheaps) + 1;
+  subheaps=(BinHeap<T>[])(new BinHeap[nSubheaps]);
+  for (int i=0; i < nSubheaps; i++)   subheaps[i]=new BinHeap<T>(subheapSize);
+  curHeap=0;
+}
