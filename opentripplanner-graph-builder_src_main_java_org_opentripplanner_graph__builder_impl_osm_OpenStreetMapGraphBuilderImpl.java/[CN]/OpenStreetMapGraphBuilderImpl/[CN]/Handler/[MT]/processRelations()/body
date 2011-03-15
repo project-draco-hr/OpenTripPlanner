@@ -4,20 +4,20 @@
     for (    OSMRelationMember member : relation.getMembers()) {
       if ("way".equals(member.getType()) && _ways.containsKey(member.getRef())) {
         OSMWay way=_ways.get(member.getRef());
-        if (relation.getTags().containsKey("name")) {
-          if (way.getTags().containsKey("otp:route_name")) {
-            way.addTag(new OSMTag("otp:route_name",way.getTags().get("otp:route_name") + ", " + relation.getTags().get("name")));
+        if (relation.hasTag("name")) {
+          if (way.hasTag("otp:route_name")) {
+            way.addTag(new OSMTag("otp:route_name",way.getTag("otp:route_name") + ", " + relation.getTag("name")));
           }
  else {
-            way.addTag(new OSMTag("otp:route_name",relation.getTags().get("name")));
+            way.addTag(new OSMTag("otp:route_name",relation.getTag("name")));
           }
         }
-        if (relation.getTags().containsKey("ref")) {
-          if (way.getTags().containsKey("otp:route_ref")) {
-            way.addTag(new OSMTag("otp:route_ref",way.getTags().get("otp:route_ref") + ", " + relation.getTags().get("ref")));
+        if (relation.hasTag("ref")) {
+          if (way.hasTag("otp:route_ref")) {
+            way.addTag(new OSMTag("otp:route_ref",way.getTag("otp:route_ref") + ", " + relation.getTag("ref")));
           }
  else {
-            way.addTag(new OSMTag("otp:route_ref",relation.getTags().get("ref")));
+            way.addTag(new OSMTag("otp:route_ref",relation.getTag("ref")));
           }
         }
       }

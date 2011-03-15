@@ -1,6 +1,6 @@
 {
   if (_relations.containsKey(relation.getId()))   return;
-  if (!("route".equals(relation.getTags().get("type")) && "road".equals(relation.getTags().get("route")))) {
+  if (!("route".equals(relation.getTag("type")) && "road".equals(relation.getTag("route")))) {
     return;
   }
   _relations.put(relation.getId(),relation);

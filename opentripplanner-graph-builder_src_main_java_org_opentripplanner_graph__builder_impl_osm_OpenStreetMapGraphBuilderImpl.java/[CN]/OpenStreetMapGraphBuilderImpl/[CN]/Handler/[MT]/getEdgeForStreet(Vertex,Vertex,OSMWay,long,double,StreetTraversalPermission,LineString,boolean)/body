@@ -7,16 +7,18 @@
   }
   PlainStreetEdge street=new PlainStreetEdge(start,end,geometry,name,length,permissions,back);
   street.setId(id);
-  if ("no".equals(way.getTags().get("wheelchair")) || ("steps".equals(way.getTags().get("highway")) && !"yes".equals(way.getTags().get("wheelchair")))) {
+  if (way.isTagFalse("wheelchair") || ("steps".equals(way.getTag("highway")) && !way.isTagTrue("wheelchair"))) {
     street.setWheelchairAccessible(false);
   }
   Map<String,String> tags=way.getTags();
-  for (  P2<String> kvp : _slopeOverrideTags) {
-    String key=kvp.getFirst();
-    String value=kvp.getSecond();
-    if (value.equals(tags.get(key))) {
-      street.setSlopeOverride(true);
-      break;
+  if (tags != null) {
+    for (    P2<String> kvp : _slopeOverrideTags) {
+      String key=kvp.getFirst();
+      String value=kvp.getSecond();
+      if (value.equals(tags.get(key))) {
+        street.setSlopeOverride(true);
+        break;
+      }
     }
   }
   return street;

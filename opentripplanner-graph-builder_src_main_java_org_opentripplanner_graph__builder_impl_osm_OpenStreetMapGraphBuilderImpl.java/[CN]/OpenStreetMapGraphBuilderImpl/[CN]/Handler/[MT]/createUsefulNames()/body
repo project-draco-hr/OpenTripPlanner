@@ -50,10 +50,16 @@
           if (key_map.containsKey(kv.key)) {
             hope.retainAll(key_map.get(kv.key));
           }
+ else {
+            hope.clear();
+          }
         }
  else {
           if (keyvalue_map.containsKey(kv)) {
             hope.retainAll(keyvalue_map.get(kv));
+          }
+ else {
+            hope.clear();
           }
         }
       }
@@ -67,9 +73,9 @@
       for (      String key : replace.keySet()) {
         Matcher nm=replace.get(key);
         nm.reset(gen_name);
-        gen_name=nm.replaceAll(way.getTags().get(key));
+        gen_name=nm.replaceAll(way.getTag(key));
       }
-      way.getTags().put("otp:gen_name",gen_name);
+      way.addTag(new OSMTag("otp:gen_name",gen_name));
       processed_ways.add(way);
       _log.debug("generated name: " + way + " >> "+ gen_name);
     }

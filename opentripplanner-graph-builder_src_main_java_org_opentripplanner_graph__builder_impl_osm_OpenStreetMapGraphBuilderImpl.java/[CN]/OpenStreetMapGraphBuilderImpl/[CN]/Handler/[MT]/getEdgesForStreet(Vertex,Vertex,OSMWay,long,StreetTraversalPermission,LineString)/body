@@ -8,11 +8,11 @@
   Map<String,String> tags=way.getTags();
   if (permissions == StreetTraversalPermission.NONE)   return new P2<PlainStreetEdge>(null,null);
   PlainStreetEdge street=null, backStreet=null;
-  if ("yes".equals(tags.get("oneway")) && ("no".equals(tags.get("oneway:bicycle")) || "opposite_lane".equals(tags.get("cycleway")) || "opposite".equals(tags.get("cycleway")))) {
+  if (way.isTagTrue("oneway") && way.isTagFalse(tags.get("oneway:bicycle")) || "opposite_lane".equals(tags.get("cycleway")) || "opposite".equals(tags.get("cycleway"))) {
     street=getEdgeForStreet(start,end,way,startNode,d,permissions,geometry,false);
     if (permissions.remove(StreetTraversalPermission.CAR) != StreetTraversalPermission.NONE)     backStreet=getEdgeForStreet(end,start,way,startNode,d,permissions.remove(StreetTraversalPermission.CAR),backGeometry,true);
   }
- else   if ("yes".equals(tags.get("oneway")) || "roundabout".equals(tags.get("junction"))) {
+ else   if (way.isTagTrue("oneway") || "roundabout".equals(tags.get("junction"))) {
     street=getEdgeForStreet(start,end,way,startNode,d,permissions,geometry,false);
     if (permissions.allows(StreetTraversalPermission.PEDESTRIAN))     backStreet=getEdgeForStreet(end,start,way,startNode,d,StreetTraversalPermission.PEDESTRIAN,backGeometry,true);
   }

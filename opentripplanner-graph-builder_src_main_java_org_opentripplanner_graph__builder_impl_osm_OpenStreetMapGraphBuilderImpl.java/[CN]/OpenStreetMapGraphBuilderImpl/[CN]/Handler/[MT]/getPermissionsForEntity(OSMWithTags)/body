@@ -2,10 +2,6 @@
   Map<String,String> tags=entity.getTags();
   StreetTraversalPermission def=null;
   StreetTraversalPermission permission=null;
-  String access=tags.get("access");
-  String motorcar=tags.get("motorcar");
-  String bicycle=tags.get("bicycle");
-  String foot=tags.get("foot");
   for (  KeyValuePermission kvp : _tagPermissions.values()) {
     if (tags.containsKey(kvp.key) && kvp.value.equals(tags.get(kvp.key))) {
       def=kvp.permission;
@@ -31,6 +27,10 @@
       def=StreetTraversalPermission.ALL;
     }
   }
+  String access=tags.get("access");
+  String motorcar=tags.get("motorcar");
+  String bicycle=tags.get("bicycle");
+  String foot=tags.get("foot");
   if (access != null) {
     if ("no".equals(access) || "private".equals(access)) {
       permission=StreetTraversalPermission.NONE;
