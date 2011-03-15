@@ -1,13 +1,7 @@
 {
-  Set<Long> nodesWithNeighbors=new HashSet<Long>();
-  for (  OSMWay way : _ways.values()) {
-    List<Long> nodes=way.getNodeRefs();
-    if (nodes.size() > 1)     nodesWithNeighbors.addAll(nodes);
-  }
-  _nodes.keySet().retainAll(nodesWithNeighbors);
+  _nodes.keySet().retainAll(_nodesWithNeighbors);
   pruneFloatingIslands();
   long wayIndex=0;
-  processRelations();
   createUsefulNames();
   Set<Long> possibleIntersectionNodes=new HashSet<Long>();
   Set<Long> intersectionNodes=new HashSet<Long>();

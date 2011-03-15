@@ -1,11 +1,5 @@
 {
   if (_ways.containsKey(way.getId()))   return;
-  if (!(way.hasTag("highway") || "platform".equals(way.getTag("railway")))) {
-    return;
-  }
-  if ("conveyor".equals(way.getTag("highway")) || "proposed".equals(way.getTag("highway"))) {
-    return;
-  }
   _ways.put(way.getId(),way);
   if (_ways.size() % 1000 == 0)   _log.debug("ways=" + _ways.size());
 }
