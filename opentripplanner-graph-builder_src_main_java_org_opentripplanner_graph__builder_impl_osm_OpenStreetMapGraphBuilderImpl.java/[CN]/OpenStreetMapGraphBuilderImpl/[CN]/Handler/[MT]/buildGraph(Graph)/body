@@ -1,19 +1,19 @@
 {
-  Set<Integer> nodesWithNeighbors=new HashSet<Integer>();
+  Set<Long> nodesWithNeighbors=new HashSet<Long>();
   for (  OSMWay way : _ways.values()) {
-    List<Integer> nodes=way.getNodeRefs();
+    List<Long> nodes=way.getNodeRefs();
     if (nodes.size() > 1)     nodesWithNeighbors.addAll(nodes);
   }
   _nodes.keySet().retainAll(nodesWithNeighbors);
   pruneFloatingIslands();
-  int wayIndex=0;
+  long wayIndex=0;
   processRelations();
   createUsefulNames();
-  Set<Integer> possibleIntersectionNodes=new HashSet<Integer>();
-  Set<Integer> intersectionNodes=new HashSet<Integer>();
+  Set<Long> possibleIntersectionNodes=new HashSet<Long>();
+  Set<Long> intersectionNodes=new HashSet<Long>();
   for (  OSMWay way : _ways.values()) {
-    List<Integer> nodes=way.getNodeRefs();
-    for (    int node : nodes) {
+    List<Long> nodes=way.getNodeRefs();
+    for (    long node : nodes) {
       if (possibleIntersectionNodes.contains(node)) {
         intersectionNodes.add(node);
       }
@@ -29,13 +29,13 @@
     wayIndex++;
     StreetTraversalPermission permissions=getPermissionsForEntity(way);
     if (permissions == StreetTraversalPermission.NONE)     continue;
-    List<Integer> nodes=way.getNodeRefs();
+    List<Long> nodes=way.getNodeRefs();
     Vertex startEndpoint=null, endEndpoint=null;
     ArrayList<Coordinate> segmentCoordinates=new ArrayList<Coordinate>();
-    Integer startNode=null;
+    Long startNode=null;
     OSMNode osmStartNode=null;
     for (int i=0; i < nodes.size() - 1; i++) {
-      Integer endNode=nodes.get(i + 1);
+      Long endNode=nodes.get(i + 1);
       if (osmStartNode == null) {
         startNode=nodes.get(i);
         osmStartNode=_nodes.get(startNode);

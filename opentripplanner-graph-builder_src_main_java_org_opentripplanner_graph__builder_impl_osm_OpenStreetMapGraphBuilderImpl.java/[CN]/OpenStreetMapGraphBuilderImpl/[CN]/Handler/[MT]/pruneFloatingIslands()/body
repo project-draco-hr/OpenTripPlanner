@@ -1,27 +1,27 @@
 {
-  Map<Integer,HashSet<Integer>> subgraphs=new HashMap<Integer,HashSet<Integer>>();
-  Map<Integer,ArrayList<Integer>> neighborsForNode=new HashMap<Integer,ArrayList<Integer>>();
+  Map<Long,HashSet<Long>> subgraphs=new HashMap<Long,HashSet<Long>>();
+  Map<Long,ArrayList<Long>> neighborsForNode=new HashMap<Long,ArrayList<Long>>();
   for (  OSMWay way : _ways.values()) {
-    List<Integer> nodes=way.getNodeRefs();
-    for (    int node : nodes) {
-      ArrayList<Integer> nodelist=neighborsForNode.get(node);
+    List<Long> nodes=way.getNodeRefs();
+    for (    long node : nodes) {
+      ArrayList<Long> nodelist=neighborsForNode.get(node);
       if (nodelist == null) {
-        nodelist=new ArrayList<Integer>();
+        nodelist=new ArrayList<Long>();
         neighborsForNode.put(node,nodelist);
       }
       nodelist.addAll(nodes);
     }
   }
-  for (  int node : _nodes.keySet()) {
+  for (  long node : _nodes.keySet()) {
     if (subgraphs.containsKey(node)) {
       continue;
     }
-    HashSet<Integer> subgraph=computeConnectedSubgraph(neighborsForNode,node);
-    for (    int subnode : subgraph) {
+    HashSet<Long> subgraph=computeConnectedSubgraph(neighborsForNode,node);
+    for (    long subnode : subgraph) {
       subgraphs.put(subnode,subgraph);
     }
   }
-  for (  HashSet<Integer> subgraph : subgraphs.values()) {
+  for (  HashSet<Long> subgraph : subgraphs.values()) {
     if (subgraph.size() < 20) {
       _nodes.keySet().removeAll(subgraph);
     }

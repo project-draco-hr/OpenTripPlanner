@@ -1,7 +1,7 @@
 {
-  Set<Integer> nodes=new HashSet<Integer>();
+  Set<Long> nodes=new HashSet<Long>();
   for (  OSMWay way : _ways.values()) {
-    for (    int id : way.getNodeRefs())     nodes.add(id);
+    for (    long id : way.getNodeRefs())     nodes.add(id);
   }
   _nodes.keySet().retainAll(nodes);
 }
