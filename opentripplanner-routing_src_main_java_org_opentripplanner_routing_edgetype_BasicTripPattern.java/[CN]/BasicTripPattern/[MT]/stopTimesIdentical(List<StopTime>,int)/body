@@ -1,0 +1,10 @@
+{
+  if (arrivalTimes.length != stopTimes.size() - 1) {
+    return false;
+  }
+  for (int i=0; i < arrivalTimes.length; i++) {
+    if (stopTimes.get(i).getDepartureTime() != departureTimes[i].get(insertionPoint))     return false;
+    if (stopTimes.get(i + 1).getArrivalTime() != arrivalTimes[i].get(insertionPoint))     return false;
+  }
+  return true;
+}

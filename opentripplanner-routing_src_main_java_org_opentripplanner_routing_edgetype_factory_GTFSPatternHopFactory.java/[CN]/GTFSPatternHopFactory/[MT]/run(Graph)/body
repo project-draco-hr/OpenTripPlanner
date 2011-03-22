@@ -59,9 +59,16 @@
  else {
         int insertionPoint=tripPattern.getDepartureTimeInsertionPoint(stopTimes.get(0).getDepartureTime());
         if (insertionPoint < 0) {
-          _log.warn("duplicate first departure time for trip " + trip.getId() + ".  This will be handled correctly but inefficiently.");
-          simple=true;
-          createSimpleHops(graph,trip,stopTimes);
+          insertionPoint=-(insertionPoint + 1);
+          if (!tripPattern.stopTimesIdentical(stopTimes,insertionPoint)) {
+            _log.warn("Possible GTFS feed error: Duplicate first departure time. New trip: " + trip.getId() + " Existing trip: "+ tripPattern.getTrip(insertionPoint)+ " This will be handled correctly but inefficiently.");
+            simple=true;
+            createSimpleHops(graph,trip,stopTimes);
+          }
+ else {
+            _log.warn("Possible GTFS feed error: Duplicate trip (skipping). New: " + trip.getId() + " Existing: "+ tripPattern.getTrip(insertionPoint));
+            break;
+          }
         }
  else {
           StopTime st1=null;
@@ -75,7 +82,7 @@
               tripPattern.addHop(i,insertionPoint,st0.getDepartureTime(),runningTime,st1.getArrivalTime(),dwellTime,trip);
             }
  catch (            TripOvertakingException e) {
-              _log.warn("trip " + trip.getId() + " overtakes another trip with the same stops.  This will be handled correctly but inefficiently.");
+              _log.warn(e.getMessage());
               for (i=i - 1; i >= 0; --i) {
                 tripPattern.removeHop(i,insertionPoint);
               }

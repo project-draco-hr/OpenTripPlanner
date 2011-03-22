@@ -5,12 +5,12 @@
   ArrayList<Integer> stopDwellTimes=dwellTimes[stopIndex];
   if (insertionPoint > 0) {
     if (stopDepartureTimes.get(insertionPoint - 1) > departureTime) {
-      throw new TripOvertakingException();
+      throw new TripOvertakingException(trip,trips.get(insertionPoint - 1),stopIndex);
     }
   }
   if (insertionPoint < stopDepartureTimes.size()) {
     if (stopDepartureTimes.get(insertionPoint) < departureTime) {
-      throw new TripOvertakingException();
+      throw new TripOvertakingException(trips.get(insertionPoint + 1),trip,stopIndex);
     }
   }
   if (stopIndex == 0) {
