@@ -41,7 +41,7 @@
       TraverseResult wr=edge.traverse(state,options);
       while (wr != null) {
         if (wr.weight < 0) {
-          throw new NegativeWeightException(String.valueOf(wr.weight));
+          throw new NegativeWeightException(String.valueOf(wr.weight) + " on edge " + edge);
         }
         EdgeNarrative er=wr.getEdgeNarrative();
         Vertex tov=er.getToVertex();
