@@ -13,7 +13,7 @@
   GtfsContext context=GtfsLibrary.createContext(_dao,service);
   for (  Stop stop : _dao.getAllStops()) {
     String id=GtfsLibrary.convertIdToString(stop.getId());
-    graph.addVertex(new TransitStop(id,stop.getLon(),stop.getLat(),stop.getName(),stop.getId().getId(),stop));
+    graph.addVertex(new TransitStop(id,stop.getLon(),stop.getLat(),stop.getName(),stop.getId(),stop));
   }
   GTFSPatternHopFactory hf=new GTFSPatternHopFactory(context);
   hf.run(graph);

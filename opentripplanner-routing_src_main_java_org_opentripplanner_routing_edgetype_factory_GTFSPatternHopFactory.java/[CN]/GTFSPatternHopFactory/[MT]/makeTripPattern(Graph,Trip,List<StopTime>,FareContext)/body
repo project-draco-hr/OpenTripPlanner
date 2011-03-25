@@ -12,11 +12,11 @@
     int dwellTime=st0.getDepartureTime() - st0.getArrivalTime();
     String departId=id(s0.getId()) + "_" + id(trip.getId())+ "_"+ st0.getStopSequence()+ "_D";
     String arriveId=id(s1.getId()) + "_" + id(trip.getId())+ "_"+ st1.getStopSequence()+ "_A";
-    Vertex startJourneyDepart=graph.addVertex(departId,s0.getName(),s0.getId().getId(),s0.getLon(),s0.getLat());
-    Vertex endJourneyArrive=graph.addVertex(arriveId,s1.getName(),s1.getId().getId(),s1.getLon(),s1.getLat());
+    Vertex startJourneyDepart=graph.addVertex(departId,s0.getName(),s0.getId(),s0.getLon(),s0.getLat());
+    Vertex endJourneyArrive=graph.addVertex(arriveId,s1.getName(),s1.getId(),s1.getLon(),s1.getLat());
     Vertex startJourneyArrive;
     if (i != 0) {
-      startJourneyArrive=graph.addVertex(id(s0.getId()) + "_" + id(trip.getId())+ "_"+ st0.getStopSequence()+ "_A",s0.getName(),s0.getId().getId(),s0.getLon(),s0.getLat());
+      startJourneyArrive=graph.addVertex(id(s0.getId()) + "_" + id(trip.getId())+ "_"+ st0.getStopSequence()+ "_A",s0.getName(),s0.getId(),s0.getLon(),s0.getLat());
       PatternDwell dwell=new PatternDwell(startJourneyArrive,startJourneyDepart,i,tripPattern);
       if (dwellTime == 0) {
         potentiallyUselessDwells.add(dwell);
