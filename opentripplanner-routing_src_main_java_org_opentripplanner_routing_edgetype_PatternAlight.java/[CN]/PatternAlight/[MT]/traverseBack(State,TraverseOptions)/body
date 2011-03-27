@@ -3,27 +3,6 @@
     return null;
   }
   long current_time=state0.getTime();
-  long transfer_penalty=0;
-  StateData data=state0.getData();
-  if (data.getLastAlightedTime() != 0) {
-    TransferTable transferTable=options.getTransferTable();
-    if (transferTable.hasPreferredTransfers()) {
-      transfer_penalty=options.baseTransferPenalty;
-    }
-    int transfer_time=transferTable.getTransferTime(getToVertex(),data.getPreviousStop());
-    if (transfer_time == TransferTable.UNKNOWN_TRANSFER) {
-      transfer_time=options.minTransferTime;
-    }
-    if (transfer_time > 0 && transfer_time > (current_time + data.getLastAlightedTime()) * 1000) {
-      current_time+=data.getLastAlightedTime() - transfer_time * 1000;
-    }
- else     if (transfer_time == TransferTable.FORBIDDEN_TRANSFER) {
-      return null;
-    }
- else     if (transfer_time == TransferTable.PREFERRED_TRANSFER) {
-      transfer_penalty=0;
-    }
-  }
   int bestWait=-1;
   int bestPatternIndex=-1;
   AgencyAndId serviceId=getPattern().getExemplar().getServiceId();
@@ -51,6 +30,27 @@
     RouteSpec spec=new RouteSpec(route.getId().getAgencyId(),GtfsLibrary.getRouteName(route));
     if (options.bannedRoutes.contains(spec)) {
       return null;
+    }
+  }
+  long transfer_penalty=0;
+  StateData data=state0.getData();
+  if (data.getLastAlightedTime() != 0) {
+    TransferTable transferTable=options.getTransferTable();
+    if (transferTable.hasPreferredTransfers()) {
+      transfer_penalty=options.baseTransferPenalty;
+    }
+    int transfer_time=transferTable.getTransferTime(getToVertex(),data.getPreviousStop());
+    if (transfer_time == TransferTable.UNKNOWN_TRANSFER) {
+      transfer_time=options.minTransferTime;
+    }
+    if (transfer_time > 0 && transfer_time > (current_time + data.getLastAlightedTime()) * 1000) {
+      current_time+=data.getLastAlightedTime() - transfer_time * 1000;
+    }
+ else     if (transfer_time == TransferTable.FORBIDDEN_TRANSFER) {
+      return null;
+    }
+ else     if (transfer_time == TransferTable.PREFERRED_TRANSFER) {
+      transfer_penalty=0;
     }
   }
   Editor editor=state0.edit();
