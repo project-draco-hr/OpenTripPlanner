@@ -8,6 +8,21 @@
   long current_time=state0.getTime();
   long transfer_penalty=0;
   StateData data=state0.getData();
+  AgencyAndId serviceId=hop.getServiceId();
+  int wait=-1;
+  for (  ServiceDay sd : options.serviceDays) {
+    int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
+    if (secondsSinceMidnight < 0)     continue;
+    if (sd.serviceIdRunning(serviceId)) {
+      int newWait=secondsSinceMidnight - hop.getEndStopTime().getArrivalTime();
+      if (wait < 0 || newWait < wait) {
+        wait=newWait;
+      }
+    }
+  }
+  if (wait < 0) {
+    return null;
+  }
   if (data.getLastAlightedTime() != 0) {
     TransferTable transferTable=options.getTransferTable();
     if (transferTable.hasPreferredTransfers()) {
@@ -27,24 +42,15 @@
       transfer_penalty=0;
     }
   }
-  ServiceDate serviceDate=getServiceDate(current_time);
-  int secondsSinceMidnight=(int)((current_time - serviceDate.getAsDate().getTime()) / 1000);
-  CalendarService service=options.getCalendarService();
-  if (!service.getServiceDatesForServiceId(hop.getServiceId()).contains(serviceDate))   return null;
-  int wait=secondsSinceMidnight - hop.getEndStopTime().getArrivalTime();
-  if (wait < 0) {
-    return null;
-  }
   if (options.optimizeFor == OptimizeType.TRANSFERS && state0.getData().getTrip() != -1) {
     transfer_penalty+=options.optimizeTransferPenalty;
   }
   Editor editor=state0.edit();
-  editor.incrementTimeInSeconds(wait);
+  editor.incrementTimeInSeconds(-wait);
   editor.incrementNumBoardings();
   editor.setTripId(trip.getId());
   editor.setZone(zone);
   editor.setRoute(trip.getRoute().getId());
   editor.setFareContext(fareContext);
-  State state1=state0.incrementTimeInSeconds(-wait);
-  return new TraverseResult(wait + options.boardCost + transfer_penalty,state1,this);
+  return new TraverseResult(wait + options.boardCost + transfer_penalty,editor.createState(),this);
 }
