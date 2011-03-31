@@ -1,66 +1,112 @@
 {
-  fill(0);
-  rect(0,0,getSize().width - 1,getSize().height - 1);
-  List<Vertex> vertices=(List<Vertex>)vertexIndex.query(modelBounds);
-  List<Edge> edges=(List<Edge>)edgeIndex.query(modelBounds);
-  for (  DirectEdge e : IterableLibrary.filter(edges,DirectEdge.class)) {
-    if (e == highlightedEdge)     continue;
-    if (e instanceof OutEdge || e instanceof TurnEdge) {
-      stroke(30,255,255);
-    }
- else     if (e instanceof StreetTransitLink) {
-      stroke(75,150,255);
-    }
- else     if (e instanceof TransferEdge) {
-      stroke(50,50,50);
-    }
- else {
-      stroke(255,255,30);
-    }
-    Coordinate[] coords=e.getGeometry().getCoordinates();
-    for (int i=1; i < coords.length; i++) {
-      line((float)toScreenX(coords[i - 1].x),(float)toScreenY(coords[i - 1].y),(float)toScreenX(coords[i].x),(float)toScreenY(coords[i].y));
-    }
-  }
-  if (highlightedEdge != null && highlightedEdge.getGeometry() != null) {
-    stroke(255,70,70);
-    Coordinate[] coords=highlightedEdge.getGeometry().getCoordinates();
-    for (int i=1; i < coords.length; i++) {
-      line((float)toScreenX(coords[i - 1].x),(float)toScreenY(coords[i - 1].y),(float)toScreenX(coords[i].x),(float)toScreenY(coords[i].y));
-    }
-    stroke(0,255,0);
-    ellipse(toScreenX(coords[0].x),toScreenY(coords[0].y),5,5);
-    stroke(255,0,0);
-    ellipse(toScreenX(coords[coords.length - 1].x),toScreenY(coords[coords.length - 1].y),5,5);
-  }
-  for (  Vertex v : vertices) {
-    if (v == highlightedVertex)     continue;
-    double x=v.getX();
-    double y=v.getY();
-    x=toScreenX(x);
-    y=toScreenY(y);
-    if (v instanceof TransitStop) {
-      fill(0);
-      stroke(255,30,255);
-      ellipse(x,y,5.0,5.0);
-    }
- else     if (highlightedVertices.contains(v)) {
-      stroke(255,127,0);
-      fill(255,127,0);
-      ellipse(x,y,5.0,5.0);
-    }
- else {
-      stroke(255);
-      fill(255,0,0);
-      ellipse(x,y,3.0,3.0);
+  final int BLOCK_SIZE=1000;
+  final long DECIMATE=100;
+  final int FRAME_TIME=800 / FRAME_RATE;
+  int startMillis=millis();
+  if (drawLevel == DRAW_PARTIAL) {
+    background(15);
+    stroke(30,128,30);
+    strokeWeight(1);
+    noFill();
+    int drawIndex=0;
+    int drawStart=0;
+    int drawCount=0;
+    while (drawStart < visibleStreetEdges.size()) {
+      if (drawFast)       drawEdgeFast(visibleStreetEdges.get(drawIndex));
+ else       drawEdge(visibleStreetEdges.get(drawIndex));
+      drawIndex+=DECIMATE;
+      drawCount+=1;
+      if (drawCount % BLOCK_SIZE == 0 && millis() - startMillis > FRAME_TIME) {
+        drawFast=drawCount < visibleStreetEdges.size() / 4;
+        break;
+      }
+      if (drawIndex >= visibleStreetEdges.size()) {
+        drawStart+=1;
+        drawIndex=drawStart;
+      }
     }
   }
-  if (highlightedVertex != null) {
-    stroke(255,255,30);
-    fill(255,255,30);
-    ellipse(toScreenX(highlightedVertex.getX()),toScreenY(highlightedVertex.getY()),7.0,7.0);
+ else   if (drawLevel == DRAW_ALL) {
+    if (drawOffset == 0) {
+      findVisibleElements();
+      background(15);
+    }
+    if (drawStreetEdges) {
+      stroke(30,128,30);
+      strokeWeight(1);
+      noFill();
+      while (drawOffset < visibleStreetEdges.size()) {
+        drawEdge(visibleStreetEdges.get(drawOffset));
+        drawOffset+=1;
+        if (drawOffset % BLOCK_SIZE == 0) {
+          if (millis() - startMillis > FRAME_TIME)           return;
+        }
+      }
+    }
+  }
+ else   if (drawLevel == DRAW_TRANSIT) {
+    if (drawTransitEdges) {
+      stroke(40,40,128,30);
+      strokeWeight(4);
+      noFill();
+      while (drawOffset < visibleTransitEdges.size()) {
+        DirectEdge e=visibleTransitEdges.get(drawOffset);
+        drawEdge(e);
+        drawOffset+=1;
+        if (drawOffset % BLOCK_SIZE == 0) {
+          if (millis() - startMillis > FRAME_TIME)           return;
+        }
+      }
+    }
+  }
+ else   if (drawLevel == DRAW_VERTICES) {
+    final double METERS_PER_DEGREE_LAT=111111.111111;
+    drawTransitStopVertices=(modelBounds.getHeight() * METERS_PER_DEGREE_LAT / this.width < 10);
+    fill(60,60,200);
+    for (    Vertex v : visibleVertices) {
+      if (drawTransitStopVertices && v instanceof TransitStop) {
+        drawVertex(v,5);
+      }
+    }
+    noFill();
+    stroke(200,200,000,128);
+    strokeWeight(8);
+    if (highlightedEdges != null) {
+      for (      DirectEdge e : highlightedEdges) {
+        drawEdge(e);
+      }
+    }
+    if (highlightedGraphPath != null) {
+      drawGraphPath(highlightedGraphPath);
+    }
+    if (highlightedEdge != null && highlightedEdge.getGeometry() != null) {
+      stroke(200,10,10,128);
+      strokeWeight(8);
+      drawEdge(highlightedEdge);
+    }
+    fill(255,127,0);
+    noStroke();
+    if (highlightedVertices != null) {
+      for (      Vertex v : highlightedVertices) {
+        drawVertex(v,8);
+      }
+    }
+    if (highlightedVertex != null) {
+      fill(255,255,30);
+      drawVertex(highlightedVertex,7);
+    }
     noFill();
   }
-  fill(255,0,0);
-  text(mouseModelX + ", " + mouseModelY,0,10);
+ else   if (drawLevel == DRAW_MINIMAL) {
+    fill(0,0,0);
+    stroke(30,128,30);
+    strokeWeight(1);
+    rect(3,3,303,textAscent() + textDescent() + 6);
+    fill(128,128,256);
+    String output=lonFormatter.format(mouseModelX) + " " + latFormatter.format(mouseModelY);
+    textAlign(LEFT,TOP);
+    text(output,6,6);
+  }
+  drawOffset=0;
+  if (drawLevel > DRAW_MINIMAL)   drawLevel-=1;
 }

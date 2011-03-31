@@ -1,0 +1,11 @@
+{
+  double ex=modelBounds.getWidth() * f;
+  double ey=modelBounds.getHeight() * f;
+  modelBounds.expandBy(ex / 2,ey / 2);
+  if (p != null) {
+    double tx=ex * -((p.getX() / this.width) - 0.5);
+    double ty=ey * +((p.getY() / this.height) - 0.5);
+    modelBounds.translate(tx,ty);
+  }
+  drawLevel=DRAW_PARTIAL;
+}

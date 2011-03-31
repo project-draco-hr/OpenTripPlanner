@@ -1,7 +1,8 @@
 {
   Envelope screenEnv=new Envelope(new Coordinate(mouseX,mouseY));
-  screenEnv.expandBy(3,3);
+  screenEnv.expandBy(4,4);
   Envelope env=new Envelope(toModelX(screenEnv.getMinX()),toModelX(screenEnv.getMaxX()),toModelY(screenEnv.getMinY()),toModelY(screenEnv.getMaxY()));
   List<Vertex> nearby=(List<Vertex>)vertexIndex.query(env);
   selector.verticesSelected(nearby);
+  drawLevel=DRAW_ALL;
 }

@@ -1,0 +1,21 @@
+{
+  Point c=e.getPoint();
+  if (startDrag == null) {
+    startDrag=c;
+    dragX=c.x;
+    dragY=c.y;
+  }
+  double dx=dragX - c.x;
+  double dy=c.y - dragY;
+  if (ctrlPressed || mouseButton == RIGHT) {
+    zoom(dy * 0.01,startDrag);
+  }
+ else {
+    double tx=modelBounds.getWidth() * dx / getWidth();
+    double ty=modelBounds.getHeight() * dy / getHeight();
+    modelBounds.translate(tx,ty);
+  }
+  dragX=c.x;
+  dragY=c.y;
+  drawLevel=DRAW_PARTIAL;
+}

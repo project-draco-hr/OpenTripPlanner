@@ -1,34 +1,12 @@
 {
-  background(0);
   size(getSize().width,getSize().height,P2D);
-  addMouseMotionListener(new MouseMotionAdapter(){
-    @Override public void mouseMoved(    MouseEvent e){
-      super.mouseMoved(e);
-      Point p=e.getPoint();
-      mouseModelX=toModelX(p.x);
-      mouseModelY=toModelY(p.y);
-    }
-  }
-);
-  indexVertices();
+  buildSpatialIndex();
+  modelBounds=(Envelope)(vertexIndex.getRoot().getBounds());
   modelBounds.expandBy(0.02);
-  double yCenter=(modelBounds.getMaxY() + modelBounds.getMinY()) / 2;
-  float xScale=cos((float)(yCenter * Math.PI / 180));
-  double xSize=modelBounds.getMaxX() - modelBounds.getMinX();
-  double ySize=modelBounds.getMaxY() - modelBounds.getMinY();
-  double actualXSize=xSize * xScale;
-  System.out.println("xs, ys, axs: " + xSize + ", "+ ySize+ ","+ actualXSize);
-  if (ySize > actualXSize) {
-    System.out.println("stretching x by " + (ySize / xScale - actualXSize));
-    modelBounds.expandBy((ySize / xScale - actualXSize) / 2,0);
-  }
- else {
-    System.out.println("stretching y by " + (actualXSize - ySize));
-    modelBounds.expandBy(0,(actualXSize - ySize) / 2);
-  }
+  matchAspect();
   modelOuterBounds=new Envelope(modelBounds);
   String[] fonts=PFont.list();
-  String[] preferredFonts={"Courier","Mono"};
+  String[] preferredFonts={"Mono","Courier"};
   PFont font=null;
   for (  String preferredFontName : preferredFonts) {
     for (    String fontName : fonts) {
@@ -42,4 +20,23 @@
     }
   }
   textFont(font);
+  textMode(SCREEN);
+  addMouseWheelListener(this);
+  addMouseMotionListener(new MouseMotionAdapter(){
+    @Override public void mouseMoved(    MouseEvent e){
+      super.mouseMoved(e);
+      Point p=e.getPoint();
+      mouseModelX=toModelX(p.x);
+      mouseModelY=toModelY(p.y);
+    }
+  }
+);
+  addComponentListener(new ComponentAdapter(){
+    public void componentResized(    ComponentEvent e){
+      matchAspect();
+      drawLevel=DRAW_PARTIAL;
+    }
+  }
+);
+  frameRate(FRAME_RATE);
 }

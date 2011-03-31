@@ -1,14 +1,33 @@
 {
-  TraverseOptions options=new TraverseOptions();
-  Date now=new Date(1260994200000L);
-  System.out.println("Path from " + from + " to "+ to+ " at "+ now);
-  List<GraphPath> paths=pathservice.plan(from,to,now,options,1);
-  if (paths.get(0) == null) {
+  Date when;
+  try {
+    when=dateFormat.parse(searchDate.getText());
+  }
+ catch (  ParseException e) {
+    searchDate.setText("Format: " + dateFormat.toPattern());
+    return;
+  }
+  System.out.println("--------");
+  System.out.println("Path from " + from + " to "+ to+ " at "+ when);
+  TraverseModeSet modeSet=new TraverseModeSet();
+  modeSet.setBicycle(bikeCheckBox.isSelected());
+  modeSet.setTrainish(trainCheckBox.isSelected());
+  modeSet.setBusish(busCheckBox.isSelected());
+  modeSet.setWalk(walkCheckBox.isSelected());
+  TraverseOptions options=new TraverseOptions(modeSet);
+  options.speed=1;
+  options.walkReluctance=1;
+  options.maxSlope=1;
+  options.boardCost=Integer.parseInt(boardingPenaltyField.getText()) * 60;
+  List<GraphPath> paths=pathservice.plan(from,to,when,options,1);
+  if (paths == null) {
     System.out.println("no path");
     return;
   }
-  Vector<SPTVertex> vertices=paths.get(0).vertices;
-  for (  SPTVertex v : vertices) {
-    System.out.println(v);
+  GraphPath gp=paths.get(0);
+  for (  SPTEdge e : gp.edges) {
+    System.out.print(e.tov.state.toString() + " <- ");
+    System.out.println(e.payload);
   }
+  showGraph.highlightGraphPath(gp);
 }

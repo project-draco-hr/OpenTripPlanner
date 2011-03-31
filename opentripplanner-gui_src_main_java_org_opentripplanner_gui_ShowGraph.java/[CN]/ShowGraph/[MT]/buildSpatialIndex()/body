@@ -1,0 +1,22 @@
+{
+  vertexIndex=new STRtree();
+  edgeIndex=new STRtree();
+  Envelope env;
+  for (  GraphVertex gv : graph.getVertices()) {
+    Vertex v=gv.vertex;
+    if ((v instanceof TransitStop) || (v instanceof StreetLocation) || (v instanceof GenericVertex)) {
+      Coordinate c=gv.vertex.getCoordinate();
+      env=new Envelope(c);
+      vertexIndex.insert(env,v);
+    }
+    for (    DirectEdge e : IterableLibrary.filter(gv.getOutgoing(),DirectEdge.class)) {
+      if (e.getGeometry() == null)       continue;
+      if (e instanceof PatternEdge || e instanceof StreetTransitLink || e instanceof StreetEdge) {
+        env=e.getGeometry().getEnvelopeInternal();
+        edgeIndex.insert(env,e);
+      }
+    }
+  }
+  vertexIndex.build();
+  edgeIndex.build();
+}

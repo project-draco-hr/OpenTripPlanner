@@ -1,0 +1,55 @@
+{
+  for (  SPTEdge se : gp.edges) {
+    Edge edge=se.payload;
+    if (!(edge instanceof DirectEdge))     continue;
+    DirectEdge e=(DirectEdge)edge;
+    TraverseMode mode=se.getMode();
+    if (mode.isTransit()) {
+      stroke(200,050,000);
+      strokeWeight(6);
+      drawEdge(e);
+    }
+    if (e instanceof StreetEdge) {
+      StreetTraversalPermission stp=((StreetEdge)e).getPermission();
+      if (stp == StreetTraversalPermission.PEDESTRIAN) {
+        stroke(000,200,000);
+        strokeWeight(6);
+        drawEdge(e);
+      }
+ else       if (stp == StreetTraversalPermission.BICYCLE) {
+        stroke(000,000,200);
+        strokeWeight(6);
+        drawEdge(e);
+      }
+ else       if (stp == StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE) {
+        stroke(000,200,200);
+        strokeWeight(6);
+        drawEdge(e);
+      }
+ else       if (stp == StreetTraversalPermission.ALL) {
+        stroke(200,200,200);
+        strokeWeight(6);
+        drawEdge(e);
+      }
+ else {
+        stroke(64,64,64);
+        strokeWeight(6);
+        drawEdge(e);
+      }
+    }
+  }
+  SPTVertex fv=gp.vertices.firstElement();
+  lastLabelY=-999;
+  labelVertex(fv,"begin");
+  for (  SPTEdge se : gp.edges) {
+    Edge e=se.payload;
+    if (e instanceof PatternBoard) {
+      labelVertex(se.tov,"board");
+    }
+ else     if (e instanceof PatternAlight) {
+      labelVertex(se.fromv,"alight");
+    }
+  }
+  SPTVertex lv=gp.vertices.lastElement();
+  labelVertex(lv,"end");
+}

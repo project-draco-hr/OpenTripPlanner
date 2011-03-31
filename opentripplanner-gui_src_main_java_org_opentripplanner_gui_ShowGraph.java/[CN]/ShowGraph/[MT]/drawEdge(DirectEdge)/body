@@ -1,0 +1,8 @@
+{
+  if (e.getGeometry() == null)   return 0;
+  Coordinate[] coords=e.getGeometry().getCoordinates();
+  beginShape();
+  for (int i=0; i < coords.length; i++)   vertex((float)toScreenX(coords[i].x),(float)toScreenY(coords[i].y));
+  endShape();
+  return coords.length;
+}

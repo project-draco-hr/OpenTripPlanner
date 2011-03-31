@@ -1,0 +1,6 @@
+{
+  Coordinate[] coords=e.getGeometry().getCoordinates();
+  Coordinate c0=coords[0];
+  Coordinate c1=coords[coords.length - 1];
+  line((float)toScreenX(c0.x),(float)toScreenY(c0.y),(float)toScreenX(c1.x),(float)toScreenY(c1.y));
+}

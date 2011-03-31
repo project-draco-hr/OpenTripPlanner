@@ -1,0 +1,6 @@
+{
+  double yCenter=modelBounds.centre().y;
+  float xScale=cos(radians((float)yCenter));
+  double newX=modelBounds.getHeight() * (1 / xScale) * ((float)this.getWidth() / this.getHeight());
+  modelBounds.expandBy((newX - modelBounds.getWidth()) / 2f,0);
+}
