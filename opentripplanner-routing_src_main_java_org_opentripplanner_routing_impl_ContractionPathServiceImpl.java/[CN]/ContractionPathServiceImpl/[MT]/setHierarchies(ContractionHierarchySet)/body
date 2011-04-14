@@ -1,9 +1,0 @@
-{
-  this.hierarchies=hierarchies;
-  if (hierarchies.hasService(CalendarServiceData.class)) {
-    CalendarServiceData data=hierarchies.getService(CalendarServiceData.class);
-    CalendarServiceImpl calendarService=new CalendarServiceImpl();
-    calendarService.setData(data);
-    _calendarService=calendarService;
-  }
-}

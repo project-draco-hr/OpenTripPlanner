@@ -6,5 +6,5 @@
     Coordinate location=new Coordinate(lon,lat);
     return _indexService.getClosestVertex(location,options);
   }
-  return hierarchies.getVertex(place);
+  return _graphService.getContractionHierarchySet().getVertex(place);
 }
