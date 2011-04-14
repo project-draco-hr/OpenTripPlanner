@@ -1,0 +1,11 @@
+{
+  graph=graphService.getGraph();
+  pathservice=new ContractionPathServiceImpl();
+  pathservice.setGraphService(graphService);
+  indexService=new StreetVertexIndexServiceImpl(getGraph());
+  indexService.setup();
+  pathservice.setIndexService(indexService);
+  routingService=new ContractionRoutingServiceImpl();
+  routingService.setGraphService(graphService);
+  pathservice.setRoutingService(routingService);
+}
