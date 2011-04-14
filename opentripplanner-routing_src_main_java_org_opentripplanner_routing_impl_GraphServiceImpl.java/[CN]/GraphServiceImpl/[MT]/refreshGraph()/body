@@ -1,19 +1,4 @@
 {
-  File path=null;
-  if (_bundle != null)   path=_bundle.getGraphPath();
-  if (_graphPath != null)   path=_graphPath;
-  if (path == null || !path.exists()) {
-    if (!_createEmptyGraphIfNotFound)     throw new IllegalStateException("graph path not found: " + path);
-    Graph graph=new Graph();
-    List<ModeAndOptimize> modeList=Collections.emptyList();
-    setContractionHierarchySet(new ContractionHierarchySet(graph,modeList));
-    return;
-  }
-  try {
-    ContractionHierarchySet chs=ContractionHierarchySerializationLibrary.readGraph(_bundle.getGraphPath());
-    setContractionHierarchySet(chs);
-  }
- catch (  Exception ex) {
-    throw new IllegalStateException("error loading graph from " + path,ex);
-  }
+  readGraph();
+  notifyListeners();
 }

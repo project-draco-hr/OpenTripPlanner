@@ -1,11 +1,12 @@
 {
+  Graph graph=_graphService.getGraph();
   File graphPath=_graphBundle.getGraphPath();
   if (graphPath.exists() && !_alwaysRebuild) {
     _log.info("graph already exists and alwaysRebuild=false => skipping graph build");
     return;
   }
-  for (  GraphBuilder load : _graphBuilders)   load.buildGraph(_graph);
-  ContractionHierarchySet chs=new ContractionHierarchySet(_graph,_modeList,_contractionFactor);
+  for (  GraphBuilder load : _graphBuilders)   load.buildGraph(graph);
+  ContractionHierarchySet chs=new ContractionHierarchySet(graph,_modeList,_contractionFactor);
   chs.build();
   try {
     ContractionHierarchySerializationLibrary.writeGraph(chs,graphPath);
@@ -13,4 +14,5 @@
  catch (  Exception ex) {
     throw new IllegalStateException(ex);
   }
+  _graphService.refreshGraph();
 }
