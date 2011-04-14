@@ -1,8 +1,15 @@
 {
   super();
-  GraphServiceImpl graphService=new GraphServiceImpl();
-  graphService.setGraphPath(new File(graphName));
-  graphService.refreshGraph();
-  setGraph(graphService);
+  try {
+    setGraph(ContractionHierarchySerializationLibrary.readGraph(new File(graphName)));
+  }
+ catch (  IOException e) {
+    e.printStackTrace();
+    throw new RuntimeException(e);
+  }
+catch (  ClassNotFoundException e) {
+    e.printStackTrace();
+    throw new RuntimeException(e);
+  }
   init();
 }

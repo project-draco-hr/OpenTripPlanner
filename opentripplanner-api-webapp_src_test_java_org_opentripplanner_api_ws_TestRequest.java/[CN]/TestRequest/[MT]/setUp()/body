@@ -23,11 +23,9 @@
   builder.setSchema(schema);
   builder.buildGraph(graph);
   ContractionHierarchySet hierarchies=new ContractionHierarchySet(graph,null);
-  GraphServiceImpl graphService=new GraphServiceImpl();
-  graphService.setContractionHierarchySet(hierarchies);
-  pathService.setGraphService(graphService);
+  pathService.setHierarchies(hierarchies);
   ContractionRoutingServiceImpl routingService=new ContractionRoutingServiceImpl();
-  routingService.setGraphService(graphService);
+  routingService.setHierarchies(hierarchies);
   pathService.setRoutingService(routingService);
   planner.setPathService(pathService);
   holder.graph=graph;
