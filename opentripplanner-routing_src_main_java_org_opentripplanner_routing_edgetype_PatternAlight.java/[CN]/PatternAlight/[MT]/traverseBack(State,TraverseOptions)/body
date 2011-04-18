@@ -10,7 +10,7 @@
     int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
     if (secondsSinceMidnight < 0)     continue;
     if (sd.serviceIdRunning(serviceId)) {
-      int patternIndex=pattern.getPreviousTrip(stopIndex,secondsSinceMidnight,options.wheelchairAccessible,false);
+      int patternIndex=pattern.getPreviousTrip(stopIndex,secondsSinceMidnight,options.wheelchairAccessible,options.getModes().getBicycle(),false);
       if (patternIndex >= 0) {
         int wait=(int)((current_time - sd.time(pattern.getArrivalTime(stopIndex,patternIndex))) / 1000);
         if (wait < 0)         _log.error("negative wait time on alight");

@@ -12,8 +12,9 @@
   if (index < 0) {
     index=-index - 1;
   }
-  if (wheelchairAccessible) {
-    while ((perTripFlags[index] & FLAG_WHEELCHAIR_ACCESSIBLE) == 0) {
+  if (wheelchairAccessible || bikesAllowed) {
+    int flags=(bikesAllowed ? FLAG_BIKES_ALLOWED : 0) | (wheelchairAccessible ? FLAG_WHEELCHAIR_ACCESSIBLE : 0);
+    while ((perTripFlags[index] & flags) == 0) {
       index++;
       if (index == perTripFlags.length) {
         return -1;

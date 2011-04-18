@@ -10,7 +10,7 @@
     int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
     if (secondsSinceMidnight < 0)     continue;
     if (sd.serviceIdRunning(serviceId)) {
-      int patternIndex=getPattern().getNextTrip(stopIndex,secondsSinceMidnight,options.wheelchairAccessible,true);
+      int patternIndex=getPattern().getNextTrip(stopIndex,secondsSinceMidnight,options.wheelchairAccessible,options.getModes().getBicycle(),true);
       if (patternIndex >= 0) {
         int wait=(int)((sd.time(getPattern().getDepartureTime(stopIndex,patternIndex)) - current_time) / 1000);
         if (wait < 0)         _log.error("negative wait time on board");

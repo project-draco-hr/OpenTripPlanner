@@ -1,0 +1,9 @@
+{
+  if (!(bean instanceof Trip)) {
+    return;
+  }
+  Trip trip=(Trip)bean;
+  if (_defaultBikesAllowed && trip.getTripBikesAllowed() == 0 && trip.getRoute().getBikesAllowed() == 0) {
+    trip.setTripBikesAllowed(2);
+  }
+}

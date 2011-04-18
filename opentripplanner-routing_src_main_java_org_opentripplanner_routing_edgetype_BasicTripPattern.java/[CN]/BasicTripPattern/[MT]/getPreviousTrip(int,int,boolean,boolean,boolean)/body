@@ -6,19 +6,20 @@
   if (wheelchairAccessible && (perStopFlags[stopIndex + 1] & FLAG_WHEELCHAIR_ACCESSIBLE) == 0) {
     return -1;
   }
-  int[][] arrivals=arrivalTimes;
+  ArrayList<Integer>[] arrivals=arrivalTimes;
   if (arrivals == null) {
     arrivals=departureTimes;
     stopIndex+=1;
   }
-  int[] stopArrivalTimes=arrivals[stopIndex];
-  int index=Arrays.binarySearch(stopArrivalTimes,beforeTime);
+  ArrayList<Integer> stopArrivalTimes=arrivals[stopIndex];
+  int index=Collections.binarySearch(stopArrivalTimes,beforeTime);
   if (index == -1)   return -1;
   if (index < 0) {
     index=-index - 2;
   }
-  if (wheelchairAccessible) {
-    while ((perTripFlags[index] & FLAG_WHEELCHAIR_ACCESSIBLE) == 0) {
+  if (wheelchairAccessible || bikesAllowed) {
+    int flags=(bikesAllowed ? FLAG_BIKES_ALLOWED : 0) | (wheelchairAccessible ? FLAG_WHEELCHAIR_ACCESSIBLE : 0);
+    while ((perTripFlags.get(index) & flags) == 0) {
       index--;
       if (index == -1) {
         return -1;

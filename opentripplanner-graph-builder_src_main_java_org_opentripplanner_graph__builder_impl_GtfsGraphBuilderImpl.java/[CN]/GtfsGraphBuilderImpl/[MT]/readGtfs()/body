@@ -15,6 +15,7 @@
     if (gtfsBundle.getDefaultAgencyId() != null)     reader.setDefaultAgencyId(gtfsBundle.getDefaultAgencyId());
     for (    Map.Entry<String,String> entry : gtfsBundle.getAgencyIdMappings().entrySet())     reader.addAgencyIdMapping(entry.getKey(),entry.getValue());
     if (_log.isDebugEnabled())     reader.addEntityHandler(counter);
+    if (gtfsBundle.getDefaultBikesAllowed())     reader.addEntityHandler(new EntityBikeability(true));
     readers.add(reader);
   }
   if (readers.isEmpty()) {
