@@ -1,7 +1,7 @@
 {
   if (coverage == null) {
     NEDDownloader downloader=new NEDDownloader();
-    downloader.setGraph(graph);
+    downloader.setGraph(graphService.getGraph());
     downloader.setCacheDirectory(cacheDirectory);
     List<File> paths=downloader.downloadNED();
     for (    File path : paths) {
