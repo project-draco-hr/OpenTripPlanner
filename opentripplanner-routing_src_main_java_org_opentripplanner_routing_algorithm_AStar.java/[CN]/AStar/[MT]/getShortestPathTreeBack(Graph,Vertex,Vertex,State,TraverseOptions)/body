@@ -19,6 +19,7 @@
   target=tmp;
   options=options.clone();
   options.maxWalkDistance+=origin.getDistanceToNearestTransitStop() + target.getDistanceToNearestTransitStop();
+  boolean limitWalkDistance=options.getModes().getTransit();
   final ExtraEdgesStrategy extraEdgesStrategy=options.extraEdgesStrategy;
   Map<Vertex,List<Edge>> extraEdges=new HashMap<Vertex,List<Edge>>();
   extraEdgesStrategy.addIncomingEdgesForOrigin(extraEdges,origin);
@@ -35,7 +36,7 @@
     spt_u=pq.extract_min();
     State state_u=spt_u.state;
     StateData data_u=state_u.getData();
-    if (data_u.getWalkDistance() >= options.maxWalkDistance)     continue;
+    if (limitWalkDistance && data_u.getWalkDistance() >= options.maxWalkDistance)     continue;
     Vertex tov=spt_u.mirror;
     if (tov == target)     break;
     closed.add(tov);
