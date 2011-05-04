@@ -1,0 +1,11 @@
+{
+  final long SEC_IN_DAY=24 * 60 * 60;
+  for (  AgencyAndId sid : data.getServiceIds()) {
+    for (    ServiceDate sd : data.getServiceDatesForServiceId(sid)) {
+      long t=sd.getAsDate().getTime();
+      long u=t + SEC_IN_DAY;
+      if (t < this.transitServiceStarts)       this.transitServiceStarts=t;
+      if (u > this.transitServiceEnds)       this.transitServiceEnds=u;
+    }
+  }
+}

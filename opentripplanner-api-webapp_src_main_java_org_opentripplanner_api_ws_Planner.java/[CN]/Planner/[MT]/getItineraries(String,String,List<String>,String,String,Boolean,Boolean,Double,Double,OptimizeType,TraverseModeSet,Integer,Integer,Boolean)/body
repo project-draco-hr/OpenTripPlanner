@@ -46,6 +46,10 @@ catch (  LocationNotAccessible e) {
     PlannerError error=new PlannerError(Message.LOCATION_NOT_ACCESSIBLE);
     response.setError(error);
   }
+catch (  TransitTimesException e) {
+    PlannerError error=new PlannerError(Message.NO_TRANSIT_TIMES);
+    response.setError(error);
+  }
 catch (  Exception e) {
     LOGGER.log(Level.SEVERE,"exception planning trip: ",e);
     PlannerError error=new PlannerError(Message.SYSTEM_ERROR);

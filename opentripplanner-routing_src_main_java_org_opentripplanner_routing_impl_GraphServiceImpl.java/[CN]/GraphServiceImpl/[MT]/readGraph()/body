@@ -3,7 +3,10 @@
   if (_bundle != null)   path=_bundle.getGraphPath();
   if (_graphPath != null)   path=_graphPath;
   if (path == null || !path.exists()) {
-    if (!_createEmptyGraphIfNotFound)     throw new IllegalStateException("graph path not found: " + path);
+    if (!_createEmptyGraphIfNotFound) {
+      _log.error("Graph not found. Verify path to stored graph: " + path);
+      throw new IllegalStateException("graph path not found: " + path);
+    }
     Graph graph=new Graph();
     List<ModeAndOptimize> modeList=Collections.emptyList();
     setContractionHierarchySet(new ContractionHierarchySet(graph,modeList));
