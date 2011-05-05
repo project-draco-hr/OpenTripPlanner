@@ -4,7 +4,7 @@
   for (int i=0; i < nSubheaps; i++) {
     BinHeap<T> h=subheaps[i];
     if (!h.empty()) {
-      double p=h.peek_min();
+      double p=h.peek_min_key();
       if (p < bestPrio) {
         bestPrio=p;
         bestHeap=h;
