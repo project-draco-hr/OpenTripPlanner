@@ -1,5 +1,4 @@
 {
-  State state0=vertices.firstElement().state;
   State state=vertices.lastElement().state;
   StateData.Editor edit=state.edit();
   edit.setAlightedLocal(false);
@@ -8,8 +7,8 @@
   if (edges.isEmpty()) {
     return;
   }
-  if (state0.getTime() >= state.getTime()) {
-    TraverseOptions options=vertices.lastElement().options;
+  TraverseOptions options=vertices.lastElement().options;
+  if (options.isArriveBy()) {
     ListIterator<SPTEdge> iterator=edges.listIterator(vertices.size() - 1);
     while (iterator.hasPrevious()) {
       SPTEdge edge=iterator.previous();
@@ -23,7 +22,6 @@
     }
   }
  else {
-    TraverseOptions options=vertices.lastElement().options;
     ListIterator<SPTEdge> iterator=edges.listIterator(vertices.size() - 1);
     while (iterator.hasPrevious()) {
       SPTEdge edge=iterator.previous();

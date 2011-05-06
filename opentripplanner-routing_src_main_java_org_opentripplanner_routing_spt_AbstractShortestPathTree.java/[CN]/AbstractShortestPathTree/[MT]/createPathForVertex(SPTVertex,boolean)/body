@@ -1,0 +1,22 @@
+{
+  GraphPath ret=new GraphPath();
+  SPTEdge prevEdge=null;
+  while (true) {
+    end=new SPTVertex(end);
+    if (prevEdge != null)     prevEdge.fromv=end;
+    ret.vertices.add(0,end);
+    if (end.incoming == null) {
+      break;
+    }
+    SPTEdge edge=new SPTEdge(end.incoming);
+    end.incoming=edge;
+    edge.tov=end;
+    ret.edges.add(0,edge);
+    end=edge.fromv;
+    prevEdge=edge;
+  }
+  if (optimize) {
+    ret.optimize();
+  }
+  return ret;
+}
