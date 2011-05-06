@@ -3,16 +3,21 @@
   HashMap<Vertex,GraphPath> firstLegPaths=new HashMap<Vertex,GraphPath>();
   paths.put(fromVertex,firstLegPaths);
   for (  Vertex v : intermediates) {
+    List<GraphPath> firstPaths=route(fromVertex,v,state,options);
+    if (!firstPaths.isEmpty()) {
+      firstLegPaths.put(v,firstPaths.get(0));
+    }
     HashMap<Vertex,GraphPath> outPaths=new HashMap<Vertex,GraphPath>();
     paths.put(v,outPaths);
-    GraphPath path=route(fromVertex,v,state,options);
-    firstLegPaths.put(v,path);
     for (    Vertex tv : intermediates) {
-      path=route(v,tv,state,options);
-      outPaths.put(tv,path);
+      if (v == tv)       continue;
+      List<GraphPath> morePaths=route(v,tv,state,options);
+      if (!morePaths.isEmpty()) {
+        outPaths.put(tv,morePaths.get(0));
+      }
     }
-    path=route(v,toVertex,state,options);
-    outPaths.put(toVertex,path);
+    List<GraphPath> lastPaths=route(v,toVertex,state,options);
+    if (!lastPaths.isEmpty())     outPaths.put(toVertex,lastPaths.get(0));
   }
   HashSet<Vertex> vertices=new HashSet<Vertex>();
   vertices.addAll(intermediates);
