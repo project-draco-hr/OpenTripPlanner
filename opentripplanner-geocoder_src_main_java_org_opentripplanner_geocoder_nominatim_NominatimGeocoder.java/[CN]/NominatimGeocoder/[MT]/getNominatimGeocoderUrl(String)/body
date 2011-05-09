@@ -1,0 +1,14 @@
+{
+  UriBuilder uriBuilder=UriBuilder.fromUri(nominatimUrl);
+  uriBuilder.queryParam("q",address);
+  uriBuilder.queryParam("format","json");
+  if (viewBox != null) {
+    uriBuilder.queryParam("viewbox",viewBox);
+    uriBuilder.queryParam("bounded",1);
+  }
+  if (resultLimit != null) {
+    uriBuilder.queryParam("limit",resultLimit);
+  }
+  URI uri=uriBuilder.build();
+  return new URL(uri.toString());
+}
