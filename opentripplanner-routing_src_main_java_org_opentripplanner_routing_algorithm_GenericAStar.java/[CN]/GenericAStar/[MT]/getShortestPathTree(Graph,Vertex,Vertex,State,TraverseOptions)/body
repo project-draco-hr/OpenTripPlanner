@@ -2,54 +2,72 @@
   if (origin == null || target == null) {
     return null;
   }
-  ShortestPathTree spt;
-  if (options.getModes().getTransit()) {
-    spt=new MultiShortestPathTree();
-    options.setServiceDays(init.getTime());
-  }
- else {
-    spt=new BasicShortestPathTree();
-  }
+  ShortestPathTree spt=createShortestPathTree(init,options);
   options.setTransferTable(graph.getTransferTable());
   final ExtraEdgesStrategy extraEdgesStrategy=options.extraEdgesStrategy;
   Map<Vertex,List<Edge>> extraEdges=new HashMap<Vertex,List<Edge>>();
-  extraEdgesStrategy.addOutgoingEdgesForOrigin(extraEdges,origin);
-  extraEdgesStrategy.addOutgoingEdgesForTarget(extraEdges,target);
+  if (options.isArriveBy()) {
+    extraEdgesStrategy.addIncomingEdgesForOrigin(extraEdges,origin);
+    extraEdgesStrategy.addIncomingEdgesForTarget(extraEdges,target);
+  }
+ else {
+    extraEdgesStrategy.addOutgoingEdgesForOrigin(extraEdges,origin);
+    extraEdgesStrategy.addOutgoingEdgesForTarget(extraEdges,target);
+  }
   if (extraEdges.isEmpty())   extraEdges=Collections.emptyMap();
   final RemainingWeightHeuristic heuristic=options.remainingWeightHeuristic;
   double initialWeight=heuristic.computeInitialWeight(origin,target,options);
   SPTVertex spt_origin=spt.addVertex(origin,init,0,options);
-  FibHeap<SPTVertex> pq=new FibHeap<SPTVertex>(graph.getVertices().size() + extraEdges.size());
+  OTPPriorityQueueFactory factory=PriorityQueueImpl.FACTORY;
+  OTPPriorityQueue<SPTVertex> pq=factory.create(graph.getVertices().size() + extraEdges.size());
   pq.insert(spt_origin,spt_origin.weightSum + initialWeight);
   options=options.clone();
   options.maxWalkDistance+=origin.getDistanceToNearestTransitStop() + target.getDistanceToNearestTransitStop();
-  boolean limitWalkDistance=options.getModes().getTransit();
+  long computationStartTime=System.currentTimeMillis();
+  long maxComputationTime=options.maxComputationTime;
+  boolean exit=false;
   while (!pq.empty()) {
+    if (exit)     break;
+    if (_verbose) {
+      double w=pq.peek_min_key();
+      System.out.println("min," + w);
+    }
+    if (maxComputationTime > 0) {
+      if ((System.currentTimeMillis() - computationStartTime) > maxComputationTime) {
+        break;
+      }
+    }
     SPTVertex spt_u=pq.extract_min();
     State state_u=spt_u.state;
     StateData data_u=state_u.getData();
-    if (limitWalkDistance && data_u.getWalkDistance() >= options.maxWalkDistance)     continue;
     Vertex fromv=spt_u.mirror;
-    if (fromv == target) {
+    if (_verbose)     System.out.println(fromv);
+    if (_searchTerminationStrategy != null) {
+      if (!_searchTerminationStrategy.shouldSearchContinue(origin,target,spt_u,spt,options))       break;
+    }
+ else     if (fromv == target) {
       break;
     }
-    Collection<Edge> outgoing=GraphLibrary.getOutgoingEdges(graph,fromv,extraEdges);
-    for (    Edge edge : outgoing) {
+    Collection<Edge> edges=getEdgesForVertex(graph,extraEdges,fromv,options);
+    for (    Edge edge : edges) {
       State state=spt_u.state;
       if (edge instanceof PatternBoard && data_u.getNumBoardings() > options.maxTransfers) {
         continue;
       }
-      TraverseResult wr=edge.traverse(state,options);
-      while (wr != null) {
+      for (TraverseResult wr=traversEdge(edge,state,options); wr != null; wr=wr.getNextResult()) {
         if (wr.weight < 0) {
           throw new NegativeWeightException(String.valueOf(wr.weight) + " on edge " + edge);
         }
+        if (_skipTraversalResultStrategy != null && _skipTraversalResultStrategy.shouldSkipTraversalResult(origin,target,spt_u,wr,spt,options))         continue;
         EdgeNarrative er=wr.getEdgeNarrative();
-        Vertex tov=er.getToVertex();
+        Vertex tov=options.isArriveBy() ? er.getFromVertex() : er.getToVertex();
         double new_w=spt_u.weightSum + wr.weight;
-        double remaining_w=heuristic.computeForwardWeight(spt_u,edge,wr,target);
+        double remaining_w=computeRemainingWeight(heuristic,spt_u,edge,wr,target,options);
         double heuristic_distance=new_w + remaining_w;
-        if (heuristic_distance > options.maxWeight || wr.state.getTime() > options.worstTime) {
+        if (_verbose) {
+          System.out.println("  w=" + spt_u.weightSum + "+"+ wr.weight+ "+"+ remaining_w+ "="+ heuristic_distance+ " "+ tov);
+        }
+        if (heuristic_distance > options.maxWeight || isWorstTimeExceeded(wr,options)) {
         }
  else {
           SPTVertex spt_v=spt.addVertex(tov,wr.state,new_w,options);
@@ -58,7 +76,6 @@
             pq.insert_or_dec_key(spt_v,heuristic_distance);
           }
         }
-        wr=wr.getNextResult();
       }
     }
   }

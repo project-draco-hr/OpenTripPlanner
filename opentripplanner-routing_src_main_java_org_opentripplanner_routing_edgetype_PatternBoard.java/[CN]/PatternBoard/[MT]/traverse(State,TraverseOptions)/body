@@ -2,6 +2,8 @@
   if (!options.getModes().get(modeMask)) {
     return null;
   }
+  StateData data=state0.getData();
+  if (data.getNumBoardings() > options.maxTransfers)   return null;
   long current_time=state0.getTime();
   int bestWait=-1;
   int bestPatternIndex=-1;
@@ -33,7 +35,6 @@
     }
   }
   long transfer_penalty=0;
-  StateData data=state0.getData();
   if (data.getLastAlightedTime() != 0) {
     TransferTable transferTable=options.getTransferTable();
     if (transferTable.hasPreferredTransfers()) {

@@ -1,8 +1,7 @@
 {
   State state=vertices.lastElement().state;
   StateData.Editor edit=state.edit();
-  edit.setAlightedLocal(false);
-  edit.setEverBoarded(false);
+  edit.resetForReverseOptimization();
   state=edit.createState();
   if (edges.isEmpty()) {
     return;
