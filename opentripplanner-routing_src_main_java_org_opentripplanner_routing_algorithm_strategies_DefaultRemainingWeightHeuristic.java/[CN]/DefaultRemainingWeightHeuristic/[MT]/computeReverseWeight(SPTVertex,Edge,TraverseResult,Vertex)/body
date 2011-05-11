@@ -11,10 +11,10 @@
  else {
       int boardCost;
       if (edge instanceof OnBoardReverseEdge) {
-        boardCost=options.boardCost;
+        boardCost=0;
       }
  else {
-        boardCost=0;
+        boardCost=options.boardCost;
       }
       if (euclidianDistance < target.getDistanceToNearestTransitStop()) {
         return options.walkReluctance * euclidianDistance / options.speed;
