@@ -1,0 +1,110 @@
+{
+  ArrayList<TransitStop> stopVertices;
+  LOG.debug("Number of vertices: " + g.getVertices().size());
+  stopVertices=new ArrayList<TransitStop>();
+  for (  GraphVertex gv : g.getVertices())   if (gv.vertex instanceof TransitStop)   stopVertices.add((TransitStop)gv.vertex);
+  int nStops=stopVertices.size();
+  stopIndices=new IdentityHashMap<GenericVertex,Integer>(nStops);
+  for (int i=0; i < nStops; i++)   stopIndices.put(stopVertices.get(i),i);
+  LOG.debug("Number of stops: " + nStops);
+  table=new float[nStops][nStops];
+  LOG.debug("Performing search at each transit stop.");
+  BinHeap<Vertex> heap=new BinHeap<Vertex>(g.getVertices().size());
+  TraverseOptions options=new TraverseOptions();
+  final double MAX_WEIGHT=60 * 60 * options.walkReluctance;
+  final double OPTIMISTIC_BOARD_COST=options.boardCost;
+  for (  float[] row : table)   Arrays.fill(row,Float.POSITIVE_INFINITY);
+  List<DirectEdge> transferEdges=new ArrayList<DirectEdge>();
+  int count=0;
+  for (  TransitStop origin : stopVertices) {
+    count+=1;
+    if (count % 100 == 0)     LOG.debug("TransitStop " + count + "/"+ nStops);
+    int oi=stopIndices.get(origin);
+    heap.reset();
+    HashSet<Vertex> closed=new HashSet<Vertex>();
+    heap.insert(origin,0);
+    while (!heap.empty()) {
+      double w=heap.peek_min_key();
+      Vertex u=heap.extract_min();
+      if (w > MAX_WEIGHT)       break;
+      if (closed.contains(u))       continue;
+      closed.add(u);
+      if (u instanceof TransitStop) {
+        int di=stopIndices.get(u);
+        table[oi][di]=(float)w;
+        SimpleEdge se=new SimpleEdge(origin,u,w,(int)(w / options.speed));
+        transferEdges.add(se);
+      }
+      GraphVertex gu=g.getGraphVertex(u.getLabel());
+      for (      Edge e : gu.getOutgoing()) {
+        if (e instanceof TurnEdge || e instanceof PlainStreetEdge || e instanceof StreetTransitLink|| e instanceof FreeEdge) {
+          State s0=new State();
+          TraverseResult tr=e.traverse(s0,options);
+          if (tr == null)           continue;
+          Vertex tov=tr.getEdgeNarrative().getToVertex();
+          if (!closed.contains(tov))           heap.insert(tov,w + tr.weight);
+        }
+      }
+    }
+    heap.reset();
+    Queue<Vertex> q=new ArrayDeque<Vertex>(100);
+    q.add(origin);
+    while (!q.isEmpty()) {
+      Vertex u=q.poll();
+      GraphVertex gu=g.getGraphVertex(u.getLabel());
+      for (      Edge e : gu.getOutgoing()) {
+        if (e instanceof PatternBoard) {
+          Vertex tov=((PatternBoard)e).getToVertex();
+          stopIndices.put((GenericVertex)tov,oi);
+          heap.insert(tov,OPTIMISTIC_BOARD_COST);
+        }
+ else         if (e instanceof FreeEdge) {
+          Vertex tov=((FreeEdge)e).getToVertex();
+          stopIndices.put((GenericVertex)tov,oi);
+          q.add(tov);
+        }
+      }
+    }
+    closed.clear();
+    while (!heap.empty()) {
+      double w=heap.peek_min_key();
+      Vertex u=heap.extract_min();
+      if (closed.contains(u))       continue;
+      closed.add(u);
+      if (u instanceof TransitStop) {
+        int di=stopIndices.get(u);
+        if (table[oi][di] > w) {
+          table[oi][di]=(float)w;
+        }
+        continue;
+      }
+      GraphVertex gu=g.getGraphVertex(u.getLabel());
+      for (      Edge e : gu.getOutgoing()) {
+        Vertex tov=null;
+        double tw=0;
+        if (e instanceof PatternHop) {
+          State s0=new State();
+          TraverseResult tr=((PatternHop)e).optimisticTraverse(s0,options);
+          if (tr != null) {
+            tov=tr.getEdgeNarrative().getToVertex();
+            tw=tr.weight;
+          }
+        }
+ else         if (e instanceof PatternDwell) {
+          tov=((PatternDwell)e).getToVertex();
+          tw=1;
+        }
+ else         if (e instanceof PatternInterlineDwell) {
+          tov=((PatternInterlineDwell)e).getToVertex();
+          tw=((PatternInterlineDwell)e).optimisticTraverse(options);
+        }
+ else         if (e instanceof PatternAlight || e instanceof FreeEdge) {
+          tov=((DirectEdge)e).getToVertex();
+          tw=1;
+        }
+        if (tov != null && !closed.contains(tov))         heap.insert(tov,w + tw);
+      }
+    }
+  }
+  floyd();
+}

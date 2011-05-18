@@ -1,0 +1,11 @@
+{
+  this.g=g;
+  if (g.hasService(WeightTable.class)) {
+    this.wt=g.getService(WeightTable.class);
+    this.defaultHeuristic=new DefaultRemainingWeightHeuristic();
+    LOG.debug("Created new table-driven heuristic object.");
+  }
+ else {
+    throw new IllegalStateException("Graph must have weight table to use weight table heuristic.");
+  }
+}
