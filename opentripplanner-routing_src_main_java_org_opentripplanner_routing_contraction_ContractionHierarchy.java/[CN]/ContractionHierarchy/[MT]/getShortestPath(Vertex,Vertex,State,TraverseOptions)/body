@@ -214,6 +214,8 @@
     return null;
   }
   path.edges=flatten(path.edges);
+  double savedMaxWalkDistance=options.maxWalkDistance;
+  options.maxWalkDistance=Double.MAX_VALUE;
   if (options.isArriveBy()) {
     cleanPathEdgesBack(init,path,options);
   }
@@ -221,5 +223,6 @@
     cleanPathEdges(init,path,options);
   }
   path.optimize();
+  options.maxWalkDistance=savedMaxWalkDistance;
   return path;
 }
