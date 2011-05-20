@@ -2,8 +2,6 @@
   if (!options.getModes().get(modeMask)) {
     return null;
   }
-  StateData data=state0.getData();
-  if (data.getNumBoardings() > options.maxTransfers)   return null;
   long current_time=state0.getTime();
   int bestWait=-1;
   int bestPatternIndex=-1;
@@ -34,26 +32,6 @@
       return null;
     }
   }
-  long transfer_penalty=0;
-  if (data.getLastAlightedTime() != 0) {
-    TransferTable transferTable=options.getTransferTable();
-    if (transferTable.hasPreferredTransfers()) {
-      transfer_penalty=options.baseTransferPenalty;
-    }
-    int transfer_time=transferTable.getTransferTime(data.getPreviousStop(),getFromVertex());
-    if (transfer_time == TransferTable.UNKNOWN_TRANSFER) {
-      transfer_time=options.minTransferTime;
-    }
-    if (transfer_time > 0 && transfer_time > (current_time - data.getLastAlightedTime()) * 1000) {
-      current_time+=data.getLastAlightedTime() + transfer_time * 1000;
-    }
- else     if (transfer_time == TransferTable.FORBIDDEN_TRANSFER) {
-      return null;
-    }
- else     if (transfer_time == TransferTable.PREFERRED_TRANSFER) {
-      transfer_penalty=0;
-    }
-  }
   Editor editor=state0.edit();
   editor.setTrip(bestPatternIndex);
   editor.incrementTimeInSeconds(bestWait);
@@ -62,9 +40,6 @@
   editor.setZone(getPattern().getZone(stopIndex));
   editor.setRoute(getPattern().getExemplar().getRoute().getId());
   editor.setFareContext(getPattern().getFareContext());
-  if (options.optimizeFor == OptimizeType.TRANSFERS && state0.getData().getTrip() != -1) {
-    transfer_penalty=options.optimizeTransferPenalty;
-  }
   long wait_cost=bestWait;
   if (state0.getData().getNumBoardings() == 0) {
     wait_cost*=options.waitAtBeginningFactor;
@@ -72,5 +47,5 @@
  else {
     wait_cost*=options.waitReluctance;
   }
-  return new TraverseResult(wait_cost + options.boardCost + transfer_penalty,editor.createState(),this);
+  return new TraverseResult(wait_cost,editor.createState(),this);
 }

@@ -1,9 +1,10 @@
 {
-  Vertex destination=graph.getVertex("agency_T_depart");
+  Vertex destination=graph.getVertex("agency_T");
   TraverseOptions wo=new TraverseOptions();
+  wo.minTransferTime=0;
   wo.setGtfsContext(context);
   GregorianCalendar startTime=new GregorianCalendar(2009,11,2,8,30,0);
-  ShortestPathTree spt=AStar.getShortestPathTree(graph,"agency_Q_arrive",destination.getLabel(),new State(startTime.getTimeInMillis()),wo);
+  ShortestPathTree spt=AStar.getShortestPathTree(graph,"agency_Q",destination.getLabel(),new State(startTime.getTimeInMillis()),wo);
   GraphPath path=spt.getPath(destination);
   long endTime=path.vertices.lastElement().state.getTime();
   Calendar c=new GregorianCalendar();
