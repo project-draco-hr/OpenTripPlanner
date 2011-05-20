@@ -2,7 +2,7 @@
   ContractionHierarchySet hierarchies=_graphService.getContractionHierarchySet();
   ContractionHierarchy hierarchy=null;
   hierarchy=hierarchies.getHierarchy(options);
-  if (hierarchy == null) {
+  if (hierarchy == null || (options.remainingWeightHeuristic instanceof TableRemainingWeightHeuristic && options.getModes().getTransit())) {
     Graph _graph=hierarchies.getGraph();
     if (options.isArriveBy()) {
       ShortestPathTree spt=AStar.getShortestPathTreeBack(_graph,fromVertex,toVertex,state,options);

@@ -5,6 +5,13 @@
   if (options.getModes().getTransit() && !_graphService.getGraph().transitFeedCovers(new Date(state.getTime()))) {
     throw new TransitTimesException();
   }
+  if (_graphService.getGraph().hasService(WeightTable.class) && options.getModes().getTransit()) {
+    options.remainingWeightHeuristic=new TableRemainingWeightHeuristic(_graphService.getGraph());
+    LOG.debug("Weight table present in graph and transit itinerary requested. Using table-driven A* heuristic.");
+  }
+ else {
+    LOG.debug("No weight table in graph or non-transit itinerary requested. Using default A* heuristic.");
+  }
   ArrayList<GraphPath> paths=new ArrayList<GraphPath>();
   Queue<TraverseOptions> optionQueue=new LinkedList<TraverseOptions>();
   optionQueue.add(options);
