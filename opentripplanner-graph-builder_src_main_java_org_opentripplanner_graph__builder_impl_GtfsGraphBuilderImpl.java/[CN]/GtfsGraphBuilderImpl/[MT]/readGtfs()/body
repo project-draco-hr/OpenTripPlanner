@@ -3,13 +3,8 @@
   List<GtfsReader> readers=new ArrayList<GtfsReader>();
   EntityHandler counter=new EntityCounter();
   for (  GtfsBundle gtfsBundle : _gtfsBundles.getBundles()) {
-    File path=getPathForGtfsBundle(gtfsBundle);
-    if (!path.isFile()) {
-      throw new IOException(path + " is not a normal file");
-    }
-    _log.info("gtfs=" + path);
     GtfsReader reader=new GtfsReader();
-    reader.setInputLocation(path);
+    reader.setInputSource(gtfsBundle.getCsvInputSource());
     reader.setEntityStore(store);
     reader.setInternStrings(true);
     if (gtfsBundle.getDefaultAgencyId() != null)     reader.setDefaultAgencyId(gtfsBundle.getDefaultAgencyId());

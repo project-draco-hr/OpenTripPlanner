@@ -1,10 +1,10 @@
 {
   _gtfsBundles=gtfsBundles;
-  HashSet<T2<File,URL>> bundles=new HashSet<T2<File,URL>>();
+  HashSet<String> bundles=new HashSet<String>();
   for (  GtfsBundle bundle : gtfsBundles.getBundles()) {
-    T2<File,URL> key=new T2<File,URL>(bundle.getPath(),bundle.getUrl());
+    String key=bundle.getDataKey();
     if (bundles.contains(key)) {
-      throw new RuntimeException("duplicate GTFS file " + key.getFirst() + " - "+ key.getSecond());
+      throw new RuntimeException("duplicate GTFS bundle " + key);
     }
     bundles.add(key);
   }
