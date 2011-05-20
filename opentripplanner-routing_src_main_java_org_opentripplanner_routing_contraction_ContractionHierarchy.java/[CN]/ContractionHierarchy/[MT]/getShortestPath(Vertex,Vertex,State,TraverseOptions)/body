@@ -74,9 +74,6 @@
         if (edge instanceof OutEdge) {
           continue;
         }
-        if (edge instanceof PatternBoard && stateData.getNumBoardings() > 2) {
-          continue;
-        }
         TraverseResult wr=edge.traverse(state,options);
         if (wr == null) {
           continue;
@@ -160,9 +157,6 @@
           continue;
         }
         if (edge instanceof OutEdge) {
-          continue;
-        }
-        if (edge instanceof PatternBoard && stateData.getNumBoardings() > 2) {
           continue;
         }
         TraverseResult wr=edge.traverseBack(state,options);
