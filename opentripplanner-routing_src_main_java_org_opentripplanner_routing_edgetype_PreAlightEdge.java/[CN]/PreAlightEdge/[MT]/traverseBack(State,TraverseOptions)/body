@@ -16,7 +16,7 @@
     if (transferTable.hasPreferredTransfers()) {
       transfer_penalty=options.baseTransferPenalty;
     }
-    int transfer_time=transferTable.getTransferTime(data.getPreviousStop(),getFromVertex());
+    int transfer_time=transferTable.getTransferTime(getFromVertex(),data.getPreviousStop());
     if (transfer_time == TransferTable.UNKNOWN_TRANSFER) {
     }
  else     if (transfer_time >= 0) {
@@ -34,7 +34,7 @@
     }
   }
  else {
-    alight_before=t0 - options.minTransferTime * 500;
+    alight_before=t0;
   }
   if (options.optimizeFor == OptimizeType.TRANSFERS && data.isEverBoarded()) {
     transfer_penalty+=options.optimizeTransferPenalty;
