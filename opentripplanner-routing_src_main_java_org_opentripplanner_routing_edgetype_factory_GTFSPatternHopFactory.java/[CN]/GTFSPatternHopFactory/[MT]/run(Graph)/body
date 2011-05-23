@@ -18,7 +18,7 @@
   for (  Trip trip : trips) {
     if (index % 1000 == 0)     _log.debug("trips=" + index + "/"+ trips.size());
     index++;
-    List<StopTime> originalStopTimes=_dao.getStopTimesForTrip(trip);
+    List<StopTime> originalStopTimes=getNonduplicateStopTimesForTrip(trip);
     interpolateStopTimes(originalStopTimes);
     if (originalStopTimes.size() < 2) {
       _log.warn("Trip " + trip + " has fewer than two stops.  We will not use it for routing.  This is probably an error in your data");
@@ -117,9 +117,9 @@
       Stop s1=st1.getStop();
       Trip fromExemplar=fromInterlineTrip.tripPattern.exemplar;
       Trip toExemplar=toInterlineTrip.tripPattern.exemplar;
-      List<StopTime> fromStopTimes=_dao.getStopTimesForTrip(fromExemplar);
+      List<StopTime> fromStopTimes=getNonduplicateStopTimesForTrip(fromExemplar);
       int exemplarStopSequence0=fromStopTimes.get(fromStopTimes.size() - 1).getStopSequence();
-      List<StopTime> toStopTimes=_dao.getStopTimesForTrip(toExemplar);
+      List<StopTime> toStopTimes=getNonduplicateStopTimesForTrip(toExemplar);
       int exemplarStopSequence1=toStopTimes.get(0).getStopSequence();
       PatternInterlineDwell dwell;
       InterlineSwitchoverKey dwellKey=new InterlineSwitchoverKey(s0,s1,fromInterlineTrip.tripPattern,toInterlineTrip.tripPattern);
