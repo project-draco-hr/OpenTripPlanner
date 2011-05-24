@@ -12,7 +12,6 @@
   }
   double closest_stop_distance=Double.POSITIVE_INFINITY;
   Vertex closest_stop=null;
-  GenericVertex gv=new GenericVertex("x",coordinate,"x");
   if (options != null && options.getModes().getTransit()) {
     for (    Vertex v : getLocalTransitStops(coordinate,400)) {
       double d=v.distance(coordinate);
@@ -24,6 +23,7 @@
     }
   }
   _log.debug("best stop: " + closest_stop + " distance "+ closest_stop_distance);
+  StreetLocation closest_street=null;
   Collection<StreetEdge> edges=getClosestEdges(coordinate,options);
   if (edges != null) {
     StreetEdge bestStreet=edges.iterator().next();
@@ -31,12 +31,18 @@
     LocationIndexedLine l=new LocationIndexedLine(g);
     LinearLocation location=l.project(coordinate);
     Coordinate nearestPoint=location.getCoordinate(g);
-    _log.debug("best street: " + bestStreet.toString() + gv.distance(nearestPoint));
-    if (gv.distance(nearestPoint) < closest_stop_distance) {
-      _log.debug("returning split street");
-      return StreetLocation.createStreetLocation(bestStreet.getName() + "_" + coordinate.toString(),bestStreet.getName(),edges,nearestPoint);
-    }
+    _log.debug("best street: " + bestStreet.toString() + DistanceLibrary.distance(coordinate,nearestPoint));
+    _log.debug("returning split street");
+    closest_street=StreetLocation.createStreetLocation(bestStreet.getName() + "_" + coordinate.toString(),bestStreet.getName(),edges,nearestPoint);
   }
   _log.debug("returning transit stop (closer than street)");
-  return closest_stop;
+  if (closest_street == null) {
+    return closest_stop;
+  }
+ else {
+    if (closest_stop != null) {
+      closest_street.addExtraEdgeTo(closest_stop);
+    }
+    return closest_street;
+  }
 }
