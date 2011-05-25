@@ -10,7 +10,14 @@
     _log.info("downloading gtfs: url=" + _url + " path="+ gtfsFile);
     BufferedInputStream in=new BufferedInputStream(_url.openStream());
     BufferedOutputStream out=new BufferedOutputStream(new FileOutputStream(gtfsFile));
-    copyStreams(in,out);
+    try {
+      copyStreams(in,out);
+    }
+ catch (    RuntimeException e) {
+      out.close();
+      gtfsFile.delete();
+      throw e;
+    }
     return gtfsFile;
   }
   throw new IllegalStateException("DownloadableGtfsInputSource did not include an url");
