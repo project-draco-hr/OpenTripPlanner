@@ -1,0 +1,4 @@
+{
+  if (_priorityQueueFactory != null)   return _priorityQueueFactory.create(graph.getVertices().size());
+  return new FibHeap<SPTVertex>(graph.getVertices().size());
+}
