@@ -1,0 +1,6 @@
+{
+  GenericAStar aStar=AStar.getDefaultInstance();
+  GenericAStarFactory factory=options.aStarSearchFactory;
+  if (factory != null)   aStar=factory.createAStarInstance();
+  return aStar;
+}

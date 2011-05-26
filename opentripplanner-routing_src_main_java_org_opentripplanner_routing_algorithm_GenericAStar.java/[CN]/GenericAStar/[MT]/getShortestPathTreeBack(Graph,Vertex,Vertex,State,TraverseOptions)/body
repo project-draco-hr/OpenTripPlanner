@@ -1,0 +1,6 @@
+{
+  if (!options.isArriveBy()) {
+    throw new RuntimeException("Reverse paths must call options.setArriveBy(true)");
+  }
+  return getShortestPathTree(graph,target,origin,init,options);
+}

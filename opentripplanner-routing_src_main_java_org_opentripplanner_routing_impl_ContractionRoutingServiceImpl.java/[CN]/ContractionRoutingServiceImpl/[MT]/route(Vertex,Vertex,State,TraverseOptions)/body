@@ -3,9 +3,10 @@
   ContractionHierarchy hierarchy=null;
   hierarchy=hierarchies.getHierarchy(options);
   if (hierarchy == null || (options.remainingWeightHeuristic instanceof TableRemainingWeightHeuristic && options.getModes().getTransit())) {
+    GenericAStar aStar=getAStarInstance(options);
     Graph _graph=hierarchies.getGraph();
     if (options.isArriveBy()) {
-      ShortestPathTree spt=AStar.getShortestPathTreeBack(_graph,fromVertex,toVertex,state,options);
+      ShortestPathTree spt=aStar.getShortestPathTreeBack(_graph,fromVertex,toVertex,state,options);
       if (spt == null) {
         return null;
       }
@@ -14,7 +15,7 @@
       return paths;
     }
  else {
-      ShortestPathTree spt=AStar.getShortestPathTree(_graph,fromVertex,toVertex,state,options);
+      ShortestPathTree spt=aStar.getShortestPathTree(_graph,fromVertex,toVertex,state,options);
       if (spt == null) {
         return null;
       }
