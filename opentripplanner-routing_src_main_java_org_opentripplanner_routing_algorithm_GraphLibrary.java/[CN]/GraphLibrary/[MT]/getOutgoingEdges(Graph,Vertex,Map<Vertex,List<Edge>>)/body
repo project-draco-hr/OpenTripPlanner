@@ -7,7 +7,7 @@
     GraphVertex gv=graph.getGraphVertex(fromv);
     if (gv != null)     outgoing=extendEdges(outgoing,gv.getOutgoing());
   }
-  if (extraEdges.containsKey(fromv))   outgoing=extendEdges(outgoing,extraEdges.get(fromv));
+  if (extraEdges != null && extraEdges.containsKey(fromv))   outgoing=extendEdges(outgoing,extraEdges.get(fromv));
   if (fromv instanceof StreetLocation) {
     StreetLocation sl=(StreetLocation)fromv;
     outgoing=extendEdges(outgoing,sl.getExtra());
