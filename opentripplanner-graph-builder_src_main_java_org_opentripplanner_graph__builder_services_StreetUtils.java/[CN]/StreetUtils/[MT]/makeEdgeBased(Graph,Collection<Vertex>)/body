@@ -2,7 +2,11 @@
   _log.debug("converting to edge-based graph");
   ArrayList<DirectEdge> turns=new ArrayList<DirectEdge>(endpoints.size());
   for (  Vertex v : endpoints) {
-    for (    Edge e : graph.getIncoming(v)) {
+    GraphVertex gv=graph.getGraphVertex(v.getLabel());
+    if (gv == null) {
+      continue;
+    }
+    for (    Edge e : gv.getIncoming()) {
       PlainStreetEdge pse=(PlainStreetEdge)e;
       boolean replaced=false;
       StreetVertex v1=getStreetVertexForEdge(graph,pse);

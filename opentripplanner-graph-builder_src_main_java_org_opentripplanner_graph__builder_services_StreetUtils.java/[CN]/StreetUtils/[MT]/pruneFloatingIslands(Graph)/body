@@ -1,0 +1,60 @@
+{
+  _log.debug("pruning");
+  Map<Vertex,HashSet<Vertex>> subgraphs=new HashMap<Vertex,HashSet<Vertex>>();
+  Map<Vertex,ArrayList<Vertex>> neighborsForVertex=new HashMap<Vertex,ArrayList<Vertex>>();
+  State state=new State();
+  TraverseOptions options=new TraverseOptions(new TraverseModeSet(TraverseMode.WALK));
+  for (  GraphVertex gv : graph.getVertices()) {
+    if (!(gv.vertex instanceof EndpointVertex)) {
+      continue;
+    }
+    for (    Edge e : gv.getOutgoing()) {
+      GenericVertex in=(GenericVertex)gv.vertex;
+      if (!(e instanceof StreetEdge)) {
+        continue;
+      }
+      TraverseResult tr=e.traverse(state,options);
+      if (tr == null) {
+        continue;
+      }
+      GenericVertex out=(GenericVertex)tr.getEdgeNarrative().getToVertex();
+      ArrayList<Vertex> vertexList=neighborsForVertex.get(in);
+      if (vertexList == null) {
+        vertexList=new ArrayList<Vertex>();
+        neighborsForVertex.put(in,vertexList);
+      }
+      vertexList.add(out);
+      vertexList=neighborsForVertex.get(out);
+      if (vertexList == null) {
+        vertexList=new ArrayList<Vertex>();
+        neighborsForVertex.put(out,vertexList);
+      }
+      vertexList.add(in);
+    }
+  }
+  ArrayList<HashSet<Vertex>> islands=new ArrayList<HashSet<Vertex>>();
+  for (  GraphVertex gv : graph.getVertices()) {
+    if (!(gv.vertex instanceof EndpointVertex)) {
+      continue;
+    }
+    Vertex vertex=gv.vertex;
+    if (subgraphs.containsKey(vertex)) {
+      continue;
+    }
+    if (!neighborsForVertex.containsKey(vertex)) {
+      continue;
+    }
+    HashSet<Vertex> subgraph=computeConnectedSubgraph(neighborsForVertex,vertex);
+    for (    Vertex subnode : subgraph) {
+      subgraphs.put(subnode,subgraph);
+    }
+    islands.add(subgraph);
+  }
+  for (  HashSet<Vertex> island : islands) {
+    if (island.size() < 20) {
+      for (      Vertex vertex : island) {
+        depedestrianizeOrRemove(graph,vertex);
+      }
+    }
+  }
+}
