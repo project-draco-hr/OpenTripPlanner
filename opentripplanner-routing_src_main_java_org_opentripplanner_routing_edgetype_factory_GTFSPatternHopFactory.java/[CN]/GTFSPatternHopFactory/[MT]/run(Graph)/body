@@ -4,7 +4,7 @@
   _log.debug("Loading hops");
   clearCachedData();
   Collection<Trip> trips=_dao.getAllTrips();
-  HashMap<StopPattern,BasicTripPattern> patterns=new HashMap<StopPattern,BasicTripPattern>();
+  HashMap<ScheduledStopPattern,BasicTripPattern> patterns=new HashMap<ScheduledStopPattern,BasicTripPattern>();
   int index=0;
   HashMap<Trip,List<Frequency>> tripFrequencies=new HashMap<Trip,List<Frequency>>();
   for (  Frequency freq : _dao.getAllFrequencies()) {
@@ -26,7 +26,7 @@
     }
     List<List<StopTime>> allStopTimes=new ArrayList<List<StopTime>>();
     List<Frequency> frequencies=tripFrequencies.get(trip);
-    StopPattern stopPattern=stopPatternfromTrip(trip,_dao);
+    ScheduledStopPattern stopPattern=stopPatternfromTrip(trip,_dao);
     BasicTripPattern tripPattern=patterns.get(stopPattern);
     String blockId=trip.getBlockId();
     if (frequencies == null) {

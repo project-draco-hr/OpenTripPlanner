@@ -1,12 +1,12 @@
 {
-  Vector<Stop> stops=new Vector<Stop>();
-  Vector<Boolean> pickups=new Vector<Boolean>();
-  Vector<Boolean> dropoffs=new Vector<Boolean>();
+  ArrayList<Stop> stops=new ArrayList<Stop>();
+  ArrayList<Boolean> pickups=new ArrayList<Boolean>();
+  ArrayList<Boolean> dropoffs=new ArrayList<Boolean>();
   for (  StopTime stoptime : dao.getStopTimesForTrip(trip)) {
     stops.add(stoptime.getStop());
     pickups.add(stoptime.getPickupType() != 1);
     dropoffs.add(stoptime.getDropOffType() != 1);
   }
-  StopPattern pattern=new StopPattern(stops,pickups,dropoffs,trip.getServiceId());
+  ScheduledStopPattern pattern=new ScheduledStopPattern(stops,pickups,dropoffs,trip.getServiceId());
   return pattern;
 }

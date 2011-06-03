@@ -1,0 +1,8 @@
+{
+  List<U> list=hashlist.get(key);
+  if (list == null) {
+    list=new ArrayList<U>();
+    hashlist.put(key,list);
+  }
+  list.add(value);
+}

@@ -1,0 +1,10 @@
+{
+  if (end < startTime || start >= endTime) {
+    return false;
+  }
+  start/=1000;
+  end/=1000;
+  long eventStart=start % 86400;
+  long eventEnd=end % 86400;
+  return eventEnd >= startTimeOfDay && eventStart < endTimeOfDay;
+}

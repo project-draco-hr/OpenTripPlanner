@@ -1,0 +1,10 @@
+{
+  RouteSegment segment=segmentsByVertex.get(vertex);
+  if (segment != null) {
+    return segment;
+  }
+  segment=new RouteSegment(vertex.getStopId());
+  segmentsByVertex.put(vertex,segment);
+  variant.addSegment(segment);
+  return segment;
+}

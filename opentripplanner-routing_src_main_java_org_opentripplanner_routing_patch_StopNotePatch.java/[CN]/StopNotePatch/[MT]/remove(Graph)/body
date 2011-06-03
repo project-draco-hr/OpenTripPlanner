@@ -1,0 +1,7 @@
+{
+  TransitIndexService index=graph.getService(TransitIndexService.class);
+  Edge edge=index.getPreboardEdge(stop);
+  edge.removePatch(this);
+  edge=index.getPrealightEdge(stop);
+  edge.removePatch(this);
+}

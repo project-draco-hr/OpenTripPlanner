@@ -1,13 +1,13 @@
 {
   Graph graph=new Graph();
-  StreetVertex top=new StreetVertex("top",GeometryUtils.makeLineString(-74.1,40.1,-74.0,40.1),"top",10000,false);
-  StreetVertex bottom=new StreetVertex("bottom",GeometryUtils.makeLineString(-74.1,40.0,-74.0,40.0),"bottom",10000,false);
-  StreetVertex left=new StreetVertex("left",GeometryUtils.makeLineString(-74.1,40.0,-74.1,40.1),"left",10000,false);
-  StreetVertex right=new StreetVertex("right",GeometryUtils.makeLineString(-74.0,40.0,-74.0,40.1),"right",10000,false);
-  StreetVertex topBack=new StreetVertex("topBack",GeometryUtils.makeLineString(-74.0,40.1,-74.1,40.1),"topBack",10000,true);
-  StreetVertex bottomBack=new StreetVertex("bottomBack",GeometryUtils.makeLineString(-74.0,40.0,-74.1,40.0),"bottomBack",10000,true);
-  StreetVertex leftBack=new StreetVertex("leftBack",GeometryUtils.makeLineString(-74.0,40.1,-74.1,40.0),"leftBack",10000,true);
-  StreetVertex rightBack=new StreetVertex("rightBack",GeometryUtils.makeLineString(-74.0,40.1,-74.0,40.0),"rightBack",10000,true);
+  StreetVertex top=new StreetVertex("top",GeometryUtils.makeLineString(-74.1,40.1,-74.0,40.1),"top",10000,false,null);
+  StreetVertex bottom=new StreetVertex("bottom",GeometryUtils.makeLineString(-74.1,40.0,-74.0,40.0),"bottom",10000,false,null);
+  StreetVertex left=new StreetVertex("left",GeometryUtils.makeLineString(-74.1,40.0,-74.1,40.1),"left",10000,false,null);
+  StreetVertex right=new StreetVertex("right",GeometryUtils.makeLineString(-74.0,40.0,-74.0,40.1),"right",10000,false,null);
+  StreetVertex topBack=new StreetVertex("topBack",GeometryUtils.makeLineString(-74.0,40.1,-74.1,40.1),"topBack",10000,true,null);
+  StreetVertex bottomBack=new StreetVertex("bottomBack",GeometryUtils.makeLineString(-74.0,40.0,-74.1,40.0),"bottomBack",10000,true,null);
+  StreetVertex leftBack=new StreetVertex("leftBack",GeometryUtils.makeLineString(-74.0,40.1,-74.1,40.0),"leftBack",10000,true,null);
+  StreetVertex rightBack=new StreetVertex("rightBack",GeometryUtils.makeLineString(-74.0,40.1,-74.0,40.0),"rightBack",10000,true,null);
   graph.addVertex(top);
   graph.addVertex(bottom);
   graph.addVertex(left);

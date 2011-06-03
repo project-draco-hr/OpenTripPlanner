@@ -1,6 +1,7 @@
 {
   Itinerary itinerary=makeEmptyItinerary(path);
   Leg leg=null;
+  List<String> notesForNewLeg=new ArrayList<String>();
   Edge edge=null;
   EdgeNarrative edgeNarrative=null;
   TraverseMode mode=null;
@@ -17,6 +18,15 @@
     i++;
     edge=sptEdge.payload;
     edgeNarrative=sptEdge.narrative;
+    String note=edgeNarrative.getNote();
+    if (note != null) {
+      if (leg == null) {
+        notesForNewLeg.add(note);
+      }
+ else {
+        leg.addNote(note);
+      }
+    }
     if (edge instanceof FreeEdge && sptEdge != finalSptEdge) {
       continue;
     }
@@ -50,6 +60,10 @@
           coordinates=new CoordinateArrayListSequence();
         }
         leg=makeLeg(sptEdge);
+        for (        String noteForNewLeg : notesForNewLeg) {
+          leg.addNote(noteForNewLeg);
+        }
+        notesForNewLeg.clear();
         leg.mode=mode.toString();
         if (mode.isOnStreetNonTransit()) {
           startWalk=i;

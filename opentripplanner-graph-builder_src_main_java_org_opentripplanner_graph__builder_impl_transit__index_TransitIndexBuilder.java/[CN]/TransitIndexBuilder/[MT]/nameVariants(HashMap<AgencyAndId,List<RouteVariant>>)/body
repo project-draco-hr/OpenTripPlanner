@@ -1,0 +1,84 @@
+{
+  for (  List<RouteVariant> variants : variantsByRoute.values()) {
+    Route route=variants.get(0).getRoute();
+    String routeName=GtfsLibrary.getRouteName(route);
+    if (variants.size() == 1) {
+      variants.get(0).setName(routeName);
+      continue;
+    }
+    HashMap<Stop,List<RouteVariant>> starts=new HashMap<Stop,List<RouteVariant>>();
+    HashMap<Stop,List<RouteVariant>> ends=new HashMap<Stop,List<RouteVariant>>();
+    HashMap<Stop,List<RouteVariant>> vias=new HashMap<Stop,List<RouteVariant>>();
+    for (    RouteVariant variant : variants) {
+      variant.cleanup();
+      List<Stop> stops=variant.getStops();
+      addToHashList(starts,stops.get(0),variant);
+      addToHashList(ends,stops.get(stops.size() - 1),variant);
+      for (      Stop stop : stops) {
+        addToHashList(vias,stop,variant);
+      }
+    }
+    for (    RouteVariant variant : variants) {
+      List<Stop> stops=variant.getStops();
+      if (starts.get(stops.get(0)).size() == 1) {
+        String name=routeName + " from " + stops.get(0).getName();
+        variant.setName(name);
+      }
+ else       if (ends.get(stops.get(stops.size() - 1)).size() == 1) {
+        String name=routeName + " to " + stops.get(stops.size() - 1).getName();
+        variant.setName(name);
+      }
+ else {
+        for (        Stop stop : stops) {
+          if (vias.get(stop).size() == 1) {
+            variant.setName(routeName + " via " + stop.getName());
+            break;
+          }
+        }
+      }
+    }
+    for (    RouteVariant variant : variants) {
+      List<Stop> stops=variant.getStops();
+      Stop firstStop=stops.get(0);
+      HashSet<RouteVariant> remainingVariants=new HashSet<RouteVariant>(starts.get(firstStop));
+      Stop lastStop=stops.get(stops.size() - 1);
+      remainingVariants.retainAll(ends.get(lastStop));
+      if (remainingVariants.size() == 1) {
+        String name=routeName + " from " + firstStop.getName()+ " to "+ lastStop.getName();
+        variant.setName(name);
+      }
+      for (      Stop stop : stops) {
+        if (stop == firstStop || stop == lastStop) {
+          continue;
+        }
+        List<RouteVariant> via=vias.get(stop);
+        boolean found=false;
+        boolean bad=false;
+        for (        RouteVariant viaVariant : via) {
+          if (remainingVariants.contains(viaVariant)) {
+            if (found) {
+              bad=true;
+              break;
+            }
+ else {
+              found=true;
+            }
+          }
+        }
+        if (found && !bad) {
+          String name=routeName + " from " + firstStop.getName()+ " to "+ lastStop.getName()+ " via "+ stop.getName();
+          variant.setName(name);
+          break;
+        }
+      }
+      if (variant.getName() == null) {
+        if (remainingVariants.size() == 2) {
+          variant.setName(routeName + " from " + firstStop.getName()+ " to "+ lastStop.getName()+ " express");
+        }
+ else {
+          variant.setName(routeName + " like " + variant.getTrips().get(0).getId());
+        }
+      }
+    }
+  }
+}

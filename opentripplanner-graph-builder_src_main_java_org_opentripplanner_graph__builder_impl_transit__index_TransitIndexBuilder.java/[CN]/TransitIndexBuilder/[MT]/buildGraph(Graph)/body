@@ -1,0 +1,96 @@
+{
+  _log.debug("Building transit index");
+  HashMap<AgencyAndId,RouteVariant> variantsByTrip=new HashMap<AgencyAndId,RouteVariant>();
+  HashMap<AgencyAndId,List<RouteVariant>> variantsByRoute=new HashMap<AgencyAndId,List<RouteVariant>>();
+  HashMap<AgencyAndId,Edge> preAlightEdges=new HashMap<AgencyAndId,Edge>();
+  HashMap<AgencyAndId,Edge> preBoardEdges=new HashMap<AgencyAndId,Edge>();
+  HashMap<Vertex,RouteSegment> segmentsByVertex=new HashMap<Vertex,RouteSegment>();
+  for (  GraphVertex gv : graph.getVertices()) {
+    RouteSegment segment=null;
+    RouteVariant variant=null;
+    if (gv.vertex instanceof StreetVertex || gv.vertex instanceof EndpointVertex) {
+      continue;
+    }
+    for (    Edge e : gv.getOutgoing()) {
+      if (!(e instanceof AbstractEdge)) {
+        continue;
+      }
+      if (e instanceof PreBoardEdge) {
+        TransitStop stop=(TransitStop)e.getFromVertex();
+        preBoardEdges.put(stop.getStopId(),e);
+      }
+      if (e instanceof PreAlightEdge) {
+        TransitStop stop=(TransitStop)((PreAlightEdge)e).getToVertex();
+        preAlightEdges.put(stop.getStopId(),e);
+      }
+      if (e instanceof Alight || e instanceof Hop || e instanceof Dwell) {
+        Trip trip=((AbstractEdge)e).getTrip();
+        variant=addTripToVariant(variantsByTrip,variantsByRoute,trip);
+      }
+ else       if (e instanceof PatternAlight || e instanceof PatternHop || e instanceof PatternDwell) {
+        TripPattern pattern=((PatternEdge)e).getPattern();
+        Trip exemplar=pattern.getExemplar();
+        variant=addTripToVariant(variantsByTrip,variantsByRoute,exemplar);
+        for (        Trip trip : pattern.getTrips()) {
+          variantsByTrip.put(trip.getId(),variant);
+        }
+      }
+ else {
+        continue;
+      }
+      if (segment == null) {
+        segment=getOrMakeSegment(variant,segmentsByVertex,gv.vertex);
+      }
+      if (e instanceof Alight || e instanceof PatternAlight) {
+        segment.alight=e;
+      }
+ else       if (e instanceof Hop || e instanceof PatternHop) {
+        segment.hopOut=e;
+      }
+ else       if (e instanceof Dwell || e instanceof PatternDwell) {
+        segment.dwell=e;
+      }
+    }
+    for (    Edge e : gv.getIncoming()) {
+      if (!(e instanceof AbstractEdge)) {
+        continue;
+      }
+      if (e instanceof Board || e instanceof Hop) {
+        Trip trip=((AbstractEdge)e).getTrip();
+        variant=addTripToVariant(variantsByTrip,variantsByRoute,trip);
+      }
+ else       if (e instanceof PatternBoard || e instanceof PatternHop) {
+        TripPattern pattern=((PatternEdge)e).getPattern();
+        Trip exemplar=pattern.getExemplar();
+        variant=addTripToVariant(variantsByTrip,variantsByRoute,exemplar);
+        for (        Trip trip : pattern.getTrips()) {
+          variantsByTrip.put(trip.getId(),variant);
+        }
+      }
+ else {
+        continue;
+      }
+      if (segment == null) {
+        segment=getOrMakeSegment(variant,segmentsByVertex,gv.vertex);
+      }
+      if (e instanceof Board || e instanceof PatternBoard) {
+        segment.board=e;
+      }
+ else       if (e instanceof Hop || e instanceof PatternHop) {
+        segment.hopIn=e;
+      }
+    }
+  }
+  nameVariants(variantsByRoute);
+  int totalVariants=0;
+  int totalTrips=0;
+  for (  List<RouteVariant> variants : variantsByRoute.values()) {
+    totalVariants+=variants.size();
+    for (    RouteVariant variant : variants) {
+      totalTrips+=variant.getTrips().size();
+    }
+  }
+  _log.debug("Built transit index: " + variantsByRoute.size() + " routes, "+ totalTrips+ " trips, "+ totalVariants+ " variants ");
+  TransitIndexService service=new TransitIndexServiceImpl(variantsByRoute,variantsByTrip,preBoardEdges,preAlightEdges);
+  graph.putService(TransitIndexService.class,service);
+}

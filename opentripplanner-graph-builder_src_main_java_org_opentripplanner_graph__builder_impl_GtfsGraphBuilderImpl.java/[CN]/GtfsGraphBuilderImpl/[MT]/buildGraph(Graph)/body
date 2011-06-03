@@ -19,5 +19,12 @@
   hf.run(graph);
   graph.putService(CalendarServiceData.class,data);
   graph.updateTransitFeedValidity(data);
+  if (gtfsGraphBuilders != null) {
+    for (    GraphBuilderWithGtfsDao builder : gtfsGraphBuilders) {
+      builder.setDao(_dao);
+      builder.buildGraph(graph);
+      builder.setDao(null);
+    }
+  }
   if (_dao instanceof GtfsRelationalDaoImpl)   _dao=new GtfsRelationalDaoImpl();
 }

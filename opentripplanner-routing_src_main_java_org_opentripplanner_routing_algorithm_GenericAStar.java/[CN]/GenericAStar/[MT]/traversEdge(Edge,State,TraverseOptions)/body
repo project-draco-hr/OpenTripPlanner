@@ -1,4 +1,51 @@
 {
-  if (options.isArriveBy())   return edge.traverseBack(state,options);
- else   return edge.traverse(state,options);
+  List<Patch> patches=edge.getPatches();
+  if (options.isArriveBy()) {
+    TraverseResult result=edge.traverseBack(state,options);
+    if (patches == null) {
+      return result;
+    }
+    for (    Patch patch : patches) {
+      if (!patch.activeDuring(state.getStartTime(),state.getTime())) {
+        continue;
+      }
+      if (result != null) {
+        result=patch.filterTraverseResults(result);
+      }
+      TraverseResult patchResult=patch.addTraverseResultBack(edge,state,options);
+      if (patchResult != null) {
+        if (result != null) {
+          patchResult.addToExistingResultChain(result);
+        }
+ else {
+          result=patchResult;
+        }
+      }
+    }
+    return result;
+  }
+ else {
+    TraverseResult result=edge.traverse(state,options);
+    if (patches == null) {
+      return result;
+    }
+    for (    Patch patch : patches) {
+      if (!patch.activeDuring(state.getStartTime(),state.getTime())) {
+        continue;
+      }
+      if (result != null) {
+        result=patch.filterTraverseResults(result);
+      }
+      TraverseResult patchResult=patch.addTraverseResult(edge,state,options);
+      if (patchResult != null) {
+        if (result != null) {
+          patchResult.addToExistingResultChain(result);
+        }
+ else {
+          result=patchResult;
+        }
+      }
+    }
+    return result;
+  }
 }

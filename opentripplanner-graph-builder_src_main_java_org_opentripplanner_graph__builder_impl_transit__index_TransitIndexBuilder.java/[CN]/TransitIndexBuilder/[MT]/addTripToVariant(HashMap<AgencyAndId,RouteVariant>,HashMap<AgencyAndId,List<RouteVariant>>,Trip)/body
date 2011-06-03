@@ -1,0 +1,31 @@
+{
+  RouteVariant variant=variantsByTrip.get(trip.getId());
+  if (variant != null) {
+    variant.addTrip(trip);
+    return variant;
+  }
+  List<StopTime> stopTimes=dao.getStopTimesForTrip(trip);
+  ArrayList<Stop> stops=new ArrayList<Stop>();
+  for (  StopTime stopTime : stopTimes) {
+    stops.add(stopTime.getStop());
+  }
+  Route route=trip.getRoute();
+  List<RouteVariant> variants=variantsByRoute.get(route.getId());
+  if (variants == null) {
+    variants=new ArrayList<RouteVariant>();
+    variantsByRoute.put(route.getId(),variants);
+  }
+  for (  RouteVariant existingVariant : variants) {
+    if (existingVariant.getStops().equals(stops)) {
+      variant=existingVariant;
+      break;
+    }
+  }
+  if (variant == null) {
+    variant=new RouteVariant(route,stops);
+    variants.add(variant);
+  }
+  variantsByTrip.put(trip.getId(),variant);
+  variant.addTrip(trip);
+  return variant;
+}

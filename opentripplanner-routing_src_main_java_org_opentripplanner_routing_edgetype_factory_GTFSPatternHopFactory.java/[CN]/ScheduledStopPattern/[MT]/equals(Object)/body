@@ -1,0 +1,9 @@
+{
+  if (other instanceof ScheduledStopPattern) {
+    ScheduledStopPattern pattern=(ScheduledStopPattern)other;
+    return pattern.stops.equals(stops) && pattern.calendarId.equals(calendarId) && pattern.pickups.equals(pickups)&& pattern.dropoffs.equals(dropoffs);
+  }
+ else {
+    return false;
+  }
+}
