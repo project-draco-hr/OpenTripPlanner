@@ -1,0 +1,7 @@
+{
+  Graph graph=graphService.getGraph();
+  if (!patches.contains(patch.getId())) {
+    patch.apply(graph);
+    patches.add(patch.getId());
+  }
+}
