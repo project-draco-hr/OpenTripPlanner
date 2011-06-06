@@ -25,6 +25,14 @@
   if (intermediatePlaces != null && intermediatePlaces.size() > 0 && !intermediatePlaces.get(0).equals("")) {
     request.setIntermediatePlaces(intermediatePlaces);
   }
+  if (preferredRoutes != null && !preferredRoutes.equals("")) {
+    String[] table=preferredRoutes.split(",");
+    request.setPreferredRoutes(table);
+  }
+  if (unpreferredRoutes != null && !unpreferredRoutes.equals("")) {
+    String[] table=unpreferredRoutes.split(",");
+    request.setUnpreferredRoutes(table);
+  }
   request.setOptimize(optimize);
   request.setModes(modes);
   request.setMinTransferTime(minTransferTime);

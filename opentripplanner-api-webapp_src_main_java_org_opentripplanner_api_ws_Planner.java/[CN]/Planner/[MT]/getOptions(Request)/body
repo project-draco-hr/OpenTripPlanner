@@ -14,5 +14,23 @@
   if (request.getMinTransferTime() != null) {
     options.minTransferTime=request.getMinTransferTime();
   }
+  if (request.getPreferredRoutes() != null) {
+    for (    String element : request.getPreferredRoutes()) {
+      String[] routeSpec=element.split("_",2);
+      if (routeSpec.length != 2) {
+        throw new IllegalArgumentException("AgencyId or routeId not set in preferredRoutes list");
+      }
+      options.preferredRoutes.add(new RouteSpec(routeSpec[0],routeSpec[1]));
+    }
+  }
+  if (request.getUnpreferredRoutes() != null) {
+    for (    String element : request.getUnpreferredRoutes()) {
+      String[] routeSpec=element.split("_",2);
+      if (routeSpec.length != 2) {
+        throw new IllegalArgumentException("AgencyId or routeId not set in unpreferredRoutes list");
+      }
+      options.unpreferredRoutes.add(new RouteSpec(routeSpec[0],routeSpec[1]));
+    }
+  }
   return options;
 }
