@@ -6,8 +6,8 @@
  else {
     GraphVertex gv=graph.getGraphVertex(tov);
     if (gv != null)     incoming=extendEdges(incoming,gv.getIncoming());
+    if (extraEdges != null && extraEdges.containsKey(tov))     incoming=extendEdges(incoming,extraEdges.get(tov));
   }
-  if (extraEdges != null && extraEdges.containsKey(tov))   incoming=extendEdges(incoming,extraEdges.get(tov));
   if (incoming == null)   incoming=Collections.emptyList();
   return incoming;
 }
