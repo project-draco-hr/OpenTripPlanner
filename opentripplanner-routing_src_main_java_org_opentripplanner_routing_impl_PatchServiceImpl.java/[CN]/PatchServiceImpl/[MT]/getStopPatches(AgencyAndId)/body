@@ -1,7 +1,7 @@
 {
   Graph graph=graphService.getGraph();
   TransitIndexService index=graph.getService(TransitIndexService.class);
-  List<Patch> patches=new ArrayList<Patch>();
+  HashSet<Patch> patches=new HashSet<Patch>();
   Edge edge=index.getPrealightEdge(stop);
   addAllPatchesFromEdge(patches,edge);
   edge=index.getPreboardEdge(stop);

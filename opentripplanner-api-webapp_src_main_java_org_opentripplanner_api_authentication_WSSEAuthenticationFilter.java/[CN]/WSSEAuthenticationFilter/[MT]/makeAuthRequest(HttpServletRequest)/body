@@ -1,0 +1,19 @@
+{
+  String wsseHeader=request.getHeader("X-WSSE");
+  if (wsseHeader == null) {
+    throw new BadCredentialsException("No wsse header");
+  }
+  String[] tokenParts=wsseHeader.split(", ");
+  if (tokenParts.length != 4) {
+    throw new BadCredentialsException("Wrong number of parts");
+  }
+  String[] method_username=tokenParts[0].split(" ");
+  if (method_username.length != 2 || !method_username[0].equals("UsernameToken")) {
+    throw new BadCredentialsException("Not UsernameToken");
+  }
+  HashMap<String,String> params=parse_params(method_username[1],tokenParts[1],tokenParts[2],tokenParts[3]);
+  if (params == null) {
+    throw new BadCredentialsException("Bogus params");
+  }
+  return new WSSEAuthentication(params.get("Username"),params.get("PasswordDigest"),params.get("Nonce"),params.get("Created"));
+}

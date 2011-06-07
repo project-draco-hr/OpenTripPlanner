@@ -1,0 +1,10 @@
+{
+  recentlyUsedNonceList=new LinkedList<T2<String,Long>>();
+  recentlyUsedNonceSet=new HashSet<String>();
+  try {
+    sha1=MessageDigest.getInstance("SHA1");
+  }
+ catch (  NoSuchAlgorithmException e) {
+    throw new RuntimeException(e);
+  }
+}

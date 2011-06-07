@@ -1,0 +1,36 @@
+{
+  StopNotePatch snp1=new StopNotePatch();
+  snp1.setStartTime(0);
+  snp1.setEndTime(1000L * 60 * 60* 24* 365* 40);
+  snp1.setStartTimeOfDay(0);
+  snp1.setEndTimeOfDay(600);
+  String note1="The first note";
+  snp1.setNotes(note1);
+  snp1.setId("id1");
+  snp1.setStop(new AgencyAndId("agency","A"));
+  snp1.apply(graph);
+  StopNotePatch snp2=new StopNotePatch();
+  snp2.setStartTime(0);
+  snp2.setEndTime(1000L * 60 * 60* 24* 365* 40);
+  snp2.setStartTimeOfDay(540);
+  snp2.setEndTimeOfDay(43200);
+  String note2="The second note";
+  snp2.setNotes(note2);
+  snp2.setId("id2");
+  snp2.setStop(new AgencyAndId("agency","A"));
+  snp2.apply(graph);
+  Vertex stop_a=graph.getVertex("agency_A");
+  Vertex stop_e=graph.getVertex("agency_E_arrive");
+  ShortestPathTree spt;
+  GraphPath path;
+  spt=AStar.getShortestPathTree(graph,stop_a.getLabel(),stop_e.getLabel(),new State(new GregorianCalendar(2009,8,7,0,0,0).getTimeInMillis()),options);
+  path=spt.getPath(stop_e,false);
+  assertNotNull(path);
+  HashSet<String> expectedNotes=new HashSet<String>();
+  expectedNotes.add(note1);
+  assertEquals(expectedNotes,path.edges.get(0).narrative.getNotes());
+  spt=AStar.getShortestPathTree(graph,stop_a.getLabel(),stop_e.getLabel(),new State(new GregorianCalendar(2009,8,7,0,9,0).getTimeInMillis()),options);
+  path=spt.getPath(stop_e,false);
+  expectedNotes.add(note2);
+  assertEquals(expectedNotes,path.edges.get(0).narrative.getNotes());
+}

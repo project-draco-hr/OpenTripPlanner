@@ -1,0 +1,26 @@
+{
+  HttpServletRequest request=(HttpServletRequest)req;
+  HttpServletResponse response=(HttpServletResponse)res;
+  Authentication authResult;
+  String authHeader=request.getHeader("Authorization");
+  if (authHeader != null && authHeader.equals("WSSE profile=\"UsernameToken\"")) {
+    try {
+      Authentication authRequest=makeAuthRequest(request);
+      authResult=authenticationManager.authenticate(authRequest);
+    }
+ catch (    AuthenticationException failed) {
+      SecurityContextHolder.getContext().setAuthentication(null);
+      onUnsuccessfulAuthentication(request,response,failed);
+      if (ignoreFailure) {
+        chain.doFilter(request,response);
+      }
+ else {
+        authenticationEntryPoint.commence(request,response,failed);
+      }
+      return;
+    }
+    SecurityContextHolder.getContext().setAuthentication(authResult);
+    onSuccessfulAuthentication(request,response,authResult);
+  }
+  chain.doFilter(request,response);
+}

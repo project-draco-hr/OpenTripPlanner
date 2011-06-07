@@ -1,0 +1,11 @@
+{
+  HashMap<String,String> param_map=new HashMap<String,String>();
+  for (  String kv : strings) {
+    String[] key_value=kv.split("=",2);
+    if (key_value.length != 2) {
+      return null;
+    }
+    param_map.put(key_value[0],key_value[1].replace("\"",""));
+  }
+  return param_map;
+}

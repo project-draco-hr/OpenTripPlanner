@@ -1,0 +1,41 @@
+{
+  String username=auth.getName();
+  UserDetails userDetails=userDetailsService.loadUserByUsername(username);
+  String password=userDetails.getPassword();
+  WSSEAuthentication.WSSEAuthDetails authDetails=(WSSEAuthDetails)auth.getDetails();
+  String nonce=authDetails.getNonce();
+  long now=System.currentTimeMillis();
+  while (!recentlyUsedNonceList.isEmpty()) {
+    T2<String,Long> oldNonce=recentlyUsedNonceList.peek();
+    if (now - oldNonce.getSecond() > NONCE_EXPIRATION_MILLIS) {
+      recentlyUsedNonceList.poll();
+      recentlyUsedNonceSet.remove(oldNonce.getFirst());
+    }
+ else {
+      break;
+    }
+  }
+  if (recentlyUsedNonceSet.contains(nonce)) {
+    throw new BadCredentialsException("reused nonce");
+  }
+  String created=authDetails.getCreated();
+  try {
+    Date requestDate=dateFormat.parse(created);
+    if (Math.abs(now - requestDate.getTime()) > NONCE_EXPIRATION_MILLIS) {
+      throw new BadCredentialsException("Date out of range");
+    }
+  }
+ catch (  ParseException e) {
+    throw new BadCredentialsException("Bad date format",e);
+  }
+  sha1.reset();
+  byte[] digest=sha1.digest((nonce + created + password).getBytes());
+  byte[] base64Digest=Base64.encode(digest);
+  if (!Arrays.equals(base64Digest,authDetails.getPasswordDigest().getBytes())) {
+    throw new BadCredentialsException("bad digest");
+  }
+  recentlyUsedNonceList.add(new T2<String,Long>(nonce,now));
+  recentlyUsedNonceSet.add(nonce);
+  auth.setAuthenticated(true);
+  return auth;
+}

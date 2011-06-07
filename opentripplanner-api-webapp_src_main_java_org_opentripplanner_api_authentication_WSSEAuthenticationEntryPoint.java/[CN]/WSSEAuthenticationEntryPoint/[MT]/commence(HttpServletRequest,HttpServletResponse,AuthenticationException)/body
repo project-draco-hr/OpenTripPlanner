@@ -1,0 +1,4 @@
+{
+  response.addHeader("WWW-Authenticate","WSSE realm=\"" + realmName + "\", profile=\"UsernameToken\"");
+  response.sendError(HttpServletResponse.SC_UNAUTHORIZED,authException.getMessage());
+}

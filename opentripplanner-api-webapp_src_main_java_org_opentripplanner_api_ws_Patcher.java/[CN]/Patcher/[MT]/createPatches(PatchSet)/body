@@ -1,0 +1,14 @@
+{
+  PatchCreationResponse response=new PatchCreationResponse();
+  for (  Patch patch : patches.patches) {
+    if (patch.getId() == null) {
+      response.status="Every patch must have an id";
+      return response;
+    }
+  }
+  for (  Patch patch : patches.patches) {
+    patchservice.apply(patch);
+  }
+  response.status="OK";
+  return response;
+}

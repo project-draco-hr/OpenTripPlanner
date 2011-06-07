@@ -1,6 +1,6 @@
 {
   PatchResponse response=new PatchResponse();
-  List<Patch> patches=patchservice.getStopPatches(new AgencyAndId(agency,id));
+  Collection<Patch> patches=patchservice.getStopPatches(new AgencyAndId(agency,id));
   for (  Patch patch : patches) {
     response.addPatch(patch);
   }

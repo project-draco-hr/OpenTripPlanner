@@ -18,13 +18,15 @@
     i++;
     edge=sptEdge.payload;
     edgeNarrative=sptEdge.narrative;
-    String note=edgeNarrative.getNote();
-    if (note != null) {
+    Set<String> notes=edgeNarrative.getNotes();
+    if (notes != null) {
       if (leg == null) {
-        notesForNewLeg.add(note);
+        notesForNewLeg.addAll(notes);
       }
  else {
-        leg.addNote(note);
+        for (        String note : notes) {
+          leg.addNote(note);
+        }
       }
     }
     if (edge instanceof FreeEdge && sptEdge != finalSptEdge) {
