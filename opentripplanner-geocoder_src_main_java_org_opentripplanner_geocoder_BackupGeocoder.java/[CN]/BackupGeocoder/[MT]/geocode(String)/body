@@ -1,0 +1,7 @@
+{
+  GeocoderResults retval=masterGeocoder.geocode(address);
+  if (retval.getCount() == 0 || retval.getError() != null) {
+    retval=backupGeocoder.geocode(address);
+  }
+  return retval;
+}
