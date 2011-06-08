@@ -9,6 +9,9 @@
   if (resultLimit != null) {
     uriBuilder.queryParam("limit",resultLimit);
   }
+  if (emailAddress != null) {
+    uriBuilder.queryParam("email",emailAddress);
+  }
   URI uri=uriBuilder.build();
   return new URL(uri.toString());
 }
