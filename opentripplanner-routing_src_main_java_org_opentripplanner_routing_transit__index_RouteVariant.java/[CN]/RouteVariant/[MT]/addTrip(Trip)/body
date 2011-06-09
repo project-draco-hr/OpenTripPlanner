@@ -1,3 +1,11 @@
 {
   trips.add(trip.getId());
+  if (direction == null) {
+    direction=trip.getDirectionId();
+  }
+ else {
+    if (!direction.equals(trip.getDirectionId())) {
+      direction=MULTIDIRECTION;
+    }
+  }
 }
