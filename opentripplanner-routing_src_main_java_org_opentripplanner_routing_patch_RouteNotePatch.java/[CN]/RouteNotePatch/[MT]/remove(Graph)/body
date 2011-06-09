@@ -1,0 +1,14 @@
+{
+  TransitIndexService index=graph.getService(TransitIndexService.class);
+  List<RouteVariant> variants=index.getVariantsForRoute(route);
+  for (  RouteVariant variant : variants) {
+    if (direction != null && !direction.equals(variant.getDirection())) {
+      continue;
+    }
+    for (    RouteSegment segment : variant.getSegments()) {
+      if (segment.board != null) {
+        segment.board.removePatch(this);
+      }
+    }
+  }
+}

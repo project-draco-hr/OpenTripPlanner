@@ -1,0 +1,23 @@
+{
+  RouteNotePatch rnp1=new RouteNotePatch();
+  rnp1.setStartTime(0);
+  rnp1.setEndTime(1000L * 60 * 60* 24* 365* 40);
+  rnp1.setStartTimeOfDay(21600);
+  rnp1.setEndTimeOfDay(43200);
+  String note1="The route note";
+  rnp1.setNotes(note1);
+  rnp1.setId("id1");
+  rnp1.setRoute(new AgencyAndId("agency","1"));
+  rnp1.apply(graph);
+  Vertex stop_a=graph.getVertex("agency_A");
+  Vertex stop_e=graph.getVertex("agency_E_arrive");
+  ShortestPathTree spt;
+  GraphPath path;
+  long startTime=new GregorianCalendar(2009,8,7,7,0,0).getTimeInMillis();
+  spt=AStar.getShortestPathTree(graph,stop_a,stop_e,new State(startTime),options);
+  path=spt.getPath(stop_e,false);
+  assertNotNull(path);
+  HashSet<String> expectedNotes=new HashSet<String>();
+  expectedNotes.add(note1);
+  assertEquals(expectedNotes,path.edges.get(1).narrative.getNotes());
+}

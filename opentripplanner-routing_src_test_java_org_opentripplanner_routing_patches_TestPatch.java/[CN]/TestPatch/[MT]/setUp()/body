@@ -15,8 +15,23 @@
     @Override public RouteVariant getVariantForTrip(    AgencyAndId trip){
       return null;
     }
-    @Override public List<RouteVariant> getVariantsForRoute(    AgencyAndId route){
-      return null;
+    @Override public List<RouteVariant> getVariantsForRoute(    AgencyAndId routeId){
+      Route route=new Route();
+      route.setId(routeId);
+      route.setShortName(routeId.getId());
+      PatternBoard somePatternBoard=(PatternBoard)graph.getOutgoing("agency_A_depart").iterator().next();
+      PatternHop somePatternHop=(PatternHop)graph.getOutgoing(somePatternBoard.getToVertex()).iterator().next();
+      Stop stopA=somePatternHop.getStartStop();
+      ArrayList<Stop> stops=new ArrayList<Stop>();
+      stops.add(stopA);
+      RouteVariant variant=new RouteVariant(route,stops);
+      RouteSegment segment=new RouteSegment(stopA.getId());
+      segment.board=somePatternBoard;
+      segment.hopOut=somePatternHop;
+      variant.addSegment(segment);
+      ArrayList<RouteVariant> variants=new ArrayList<RouteVariant>();
+      variants.add(variant);
+      return variants;
     }
   }
 ;
