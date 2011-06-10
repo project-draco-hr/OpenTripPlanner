@@ -1,9 +1,5 @@
 {
   _log.debug("Building transit index");
-  HashMap<AgencyAndId,RouteVariant> variantsByTrip=new HashMap<AgencyAndId,RouteVariant>();
-  HashMap<AgencyAndId,List<RouteVariant>> variantsByRoute=new HashMap<AgencyAndId,List<RouteVariant>>();
-  HashMap<AgencyAndId,Edge> preAlightEdges=new HashMap<AgencyAndId,Edge>();
-  HashMap<AgencyAndId,Edge> preBoardEdges=new HashMap<AgencyAndId,Edge>();
   HashMap<Vertex,RouteSegment> segmentsByVertex=new HashMap<Vertex,RouteSegment>();
   for (  GraphVertex gv : graph.getVertices()) {
     RouteSegment segment=null;
@@ -25,12 +21,12 @@
       }
       if (e instanceof Alight || e instanceof Hop || e instanceof Dwell) {
         Trip trip=((AbstractEdge)e).getTrip();
-        variant=addTripToVariant(variantsByTrip,variantsByRoute,trip);
+        variant=addTripToVariant(trip);
       }
  else       if (e instanceof PatternAlight || e instanceof PatternHop || e instanceof PatternDwell) {
         TripPattern pattern=((PatternEdge)e).getPattern();
         Trip exemplar=pattern.getExemplar();
-        variant=addTripToVariant(variantsByTrip,variantsByRoute,exemplar);
+        variant=addTripToVariant(exemplar);
         for (        Trip trip : pattern.getTrips()) {
           variantsByTrip.put(trip.getId(),variant);
         }
@@ -57,12 +53,12 @@
       }
       if (e instanceof Board || e instanceof Hop) {
         Trip trip=((AbstractEdge)e).getTrip();
-        variant=addTripToVariant(variantsByTrip,variantsByRoute,trip);
+        variant=addTripToVariant(trip);
       }
  else       if (e instanceof PatternBoard || e instanceof PatternHop) {
         TripPattern pattern=((PatternEdge)e).getPattern();
         Trip exemplar=pattern.getExemplar();
-        variant=addTripToVariant(variantsByTrip,variantsByRoute,exemplar);
+        variant=addTripToVariant(exemplar);
         for (        Trip trip : pattern.getTrips()) {
           variantsByTrip.put(trip.getId(),variant);
         }
@@ -91,6 +87,6 @@
     }
   }
   _log.debug("Built transit index: " + variantsByRoute.size() + " routes, "+ totalTrips+ " trips, "+ totalVariants+ " variants ");
-  TransitIndexService service=new TransitIndexServiceImpl(variantsByRoute,variantsByTrip,preBoardEdges,preAlightEdges);
+  TransitIndexService service=new TransitIndexServiceImpl(variantsByRoute,variantsByTrip,preBoardEdges,preAlightEdges,directionsByRoute);
   graph.putService(TransitIndexService.class,service);
 }

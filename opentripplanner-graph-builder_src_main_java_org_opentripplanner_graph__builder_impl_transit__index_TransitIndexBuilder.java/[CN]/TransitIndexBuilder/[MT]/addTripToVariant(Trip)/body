@@ -4,6 +4,9 @@
     variant.addTrip(trip);
     return variant;
   }
+  if (trip.getDirectionId() != null) {
+    addToHashList(directionsByRoute,trip.getRoute().getId(),trip.getDirectionId());
+  }
   List<StopTime> stopTimes=dao.getStopTimesForTrip(trip);
   ArrayList<Stop> stops=new ArrayList<Stop>();
   for (  StopTime stopTime : stopTimes) {
