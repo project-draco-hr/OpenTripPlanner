@@ -1,0 +1,9 @@
+{
+  TransitIndexService transitIndexService=graphService.getGraph().getService(TransitIndexService.class);
+  RouteData response=new RouteData();
+  AgencyAndId routeId=new AgencyAndId(agency,id);
+  List<RouteVariant> variants=transitIndexService.getVariantsForRoute(routeId);
+  response.variants=variants;
+  response.directions=transitIndexService.getDirectionsForRoute(routeId);
+  return response;
+}
