@@ -5,12 +5,20 @@
   ShortestPathTree tree=AStar.getShortestPathTree(_graph,"56th_24th","leary_20th",System.currentTimeMillis(),options);
   GraphPath path=tree.getPath(_graph.getVertex("56th_24th"),false);
   List<State> states=path.states;
-  assertEquals(7,states.size());
+  assertTrue(states.size() == 6 || states.size() == 7);
   assertEquals("56th_24th",states.get(0).getVertex().getLabel());
-  assertEquals("market_24th",states.get(1).getVertex().getLabel());
-  assertEquals("market_ballard",states.get(2).getVertex().getLabel());
-  assertEquals("market_22nd",states.get(3).getVertex().getLabel());
-  assertEquals("market_leary",states.get(4).getVertex().getLabel());
-  assertEquals("leary_vernon",states.get(5).getVertex().getLabel());
-  assertEquals("leary_20th",states.get(6).getVertex().getLabel());
+  int n;
+  if (states.size() == 7) {
+    assertEquals("market_24th",states.get(1).getVertex().getLabel());
+    assertEquals("market_ballard",states.get(2).getVertex().getLabel());
+    n=0;
+  }
+ else {
+    assertEquals("56th_22nd",states.get(1).getVertex().getLabel());
+    n=-1;
+  }
+  assertEquals("market_22nd",states.get(n + 3).getVertex().getLabel());
+  assertEquals("market_leary",states.get(n + 4).getVertex().getLabel());
+  assertEquals("leary_vernon",states.get(n + 5).getVertex().getLabel());
+  assertEquals("leary_20th",states.get(n + 6).getVertex().getLabel());
 }
