@@ -1,0 +1,69 @@
+{
+  TraverseOptions options=state0.getOptions();
+  if (!options.getModes().get(modeMask)) {
+    return null;
+  }
+  long current_time=state0.getTime();
+  int bestWait=-1;
+  int bestPatternIndex=-1;
+  AgencyAndId serviceId=getPattern().getExemplar().getServiceId();
+  for (  ServiceDay sd : options.serviceDays) {
+    int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
+    if (secondsSinceMidnight < 0)     continue;
+    if (sd.serviceIdRunning(serviceId)) {
+      int patternIndex=pattern.getPreviousTrip(stopIndex,secondsSinceMidnight,options.wheelchairAccessible,options.getModes().getBicycle(),false);
+      if (patternIndex >= 0) {
+        int wait=(int)((current_time - sd.time(pattern.getArrivalTime(stopIndex,patternIndex))) / 1000);
+        if (wait < 0)         _log.error("negative wait time on alight");
+        if (bestWait < 0 || wait < bestWait) {
+          bestWait=wait;
+          bestPatternIndex=patternIndex;
+        }
+      }
+    }
+  }
+  if (bestWait < 0) {
+    return null;
+  }
+  Trip trip=getPattern().getTrip(bestPatternIndex);
+  if (options.bannedRoutes != null) {
+    Route route=trip.getRoute();
+    RouteSpec spec=new RouteSpec(route.getId().getAgencyId(),GtfsLibrary.getRouteName(route));
+    if (options.bannedRoutes.contains(spec)) {
+      return null;
+    }
+  }
+  long preferences_penalty=0;
+  if (options.preferredRoutes != null && options.preferredRoutes.size() > 0) {
+    Route route=trip.getRoute();
+    RouteSpec spec=new RouteSpec(route.getId().getAgencyId(),GtfsLibrary.getRouteName(route));
+    if (!options.preferredRoutes.contains(spec)) {
+      preferences_penalty+=options.useAnotherThanPreferredRoutesPenalty;
+    }
+  }
+  if (options.unpreferredRoutes != null && options.unpreferredRoutes.size() > 0) {
+    Route route=trip.getRoute();
+    RouteSpec spec=new RouteSpec(route.getId().getAgencyId(),GtfsLibrary.getRouteName(route));
+    if (options.unpreferredRoutes.contains(spec)) {
+      preferences_penalty+=options.useUnpreferredRoutesPenalty;
+    }
+  }
+  StateEditor s1=state0.edit(this);
+  s1.setTrip(bestPatternIndex);
+  s1.incrementTimeInSeconds(-bestWait);
+  s1.incrementNumBoardings();
+  s1.setTripId(trip.getId());
+  s1.setZone(pattern.getZone(stopIndex));
+  s1.setRoute(pattern.getExemplar().getRoute().getId());
+  s1.setFareContext(pattern.getFareContext());
+  long wait_cost=bestWait;
+  if (state0.getNumBoardings() == 0) {
+    wait_cost*=options.waitAtBeginningFactor;
+  }
+ else {
+    wait_cost*=options.waitReluctance;
+  }
+  s1.incrementWeight(preferences_penalty);
+  s1.incrementWeight(wait_cost);
+  return s1.makeState();
+}

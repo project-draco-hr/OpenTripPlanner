@@ -29,9 +29,9 @@
     return;
   }
   GraphPath gp=paths.get(0);
-  for (  SPTEdge e : gp.edges) {
-    System.out.print(e.tov.state.toString() + " <- ");
-    System.out.println(e.payload);
+  for (  State s : gp.states) {
+    System.out.print(s.toString() + " <- ");
+    System.out.println(s.getBackEdgeNarrative());
   }
   showGraph.highlightGraphPath(gp);
 }

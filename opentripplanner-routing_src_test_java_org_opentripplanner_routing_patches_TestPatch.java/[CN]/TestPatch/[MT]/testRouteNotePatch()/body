@@ -14,10 +14,10 @@
   ShortestPathTree spt;
   GraphPath path;
   long startTime=new GregorianCalendar(2009,8,7,7,0,0).getTimeInMillis();
-  spt=AStar.getShortestPathTree(graph,stop_a,stop_e,new State(startTime),options);
+  spt=AStar.getShortestPathTree(graph,stop_a,stop_e,startTime,options);
   path=spt.getPath(stop_e,false);
   assertNotNull(path);
   HashSet<String> expectedNotes=new HashSet<String>();
   expectedNotes.add(note1);
-  assertEquals(expectedNotes,path.edges.get(1).narrative.getNotes());
+  assertEquals(expectedNotes,path.states.get(2).getBackEdgeNarrative().getNotes());
 }

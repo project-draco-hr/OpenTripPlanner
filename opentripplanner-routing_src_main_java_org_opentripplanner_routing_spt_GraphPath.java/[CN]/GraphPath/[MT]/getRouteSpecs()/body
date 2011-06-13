@@ -1,0 +1,13 @@
+{
+  List<RouteSpec> ret=new LinkedList<RouteSpec>();
+  for (  State s : states) {
+    Edge e=s.getBackEdge();
+    if (e instanceof PatternBoard) {
+      Trip trip=((PatternBoard)e).getPattern().getTrip(s.getTrip());
+      String routeName=GtfsLibrary.getRouteName(trip.getRoute());
+      RouteSpec spec=new RouteSpec(trip.getId().getAgencyId(),routeName);
+      ret.add(spec);
+    }
+  }
+  return ret;
+}

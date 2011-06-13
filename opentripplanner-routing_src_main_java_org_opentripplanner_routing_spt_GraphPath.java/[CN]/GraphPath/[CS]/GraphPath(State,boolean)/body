@@ -1,0 +1,17 @@
+{
+  this.options=s.getOptions();
+  this.back=options.isArriveBy();
+  State lastState;
+  if (back) {
+    lastState=optimize ? optimize(s) : reverse(s);
+  }
+ else {
+    lastState=optimize ? reverse(optimize(s)) : s;
+  }
+  this.states=new LinkedList<State>();
+  this.edges=new LinkedList<Edge>();
+  for (State cur=lastState; cur != null; cur=cur.getBackState()) {
+    states.addFirst(cur);
+    if (cur.getBackEdge() != null)     edges.addFirst(cur.getBackEdge());
+  }
+}

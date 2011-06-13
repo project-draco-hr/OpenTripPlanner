@@ -1,0 +1,11 @@
+{
+  Collection<State> states=stateSets.get(dest);
+  if (states == null)   return null;
+  State ret=null;
+  for (  State s : states) {
+    if (ret == null || s.betterThan(ret)) {
+      ret=s;
+    }
+  }
+  return ret;
+}

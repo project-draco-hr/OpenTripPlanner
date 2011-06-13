@@ -1,0 +1,13 @@
+{
+  State out=null;
+  for (State old=result; old != null; old=old.getNextResult()) {
+    State filtered=traverseResultFilter.filter(old);
+    if (out == null) {
+      out=filtered;
+    }
+ else {
+      filtered.addToExistingResultChain(out);
+    }
+  }
+  return out;
+}

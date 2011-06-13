@@ -1,7 +1,7 @@
 {
   int total=0;
   for (  GraphVertex gv : graph.getVertices()) {
-    total+=gv.getDegreeOut();
+    for (    Edge e : gv.getOutgoing())     if (isContractable(e))     total++;
   }
   return total;
 }

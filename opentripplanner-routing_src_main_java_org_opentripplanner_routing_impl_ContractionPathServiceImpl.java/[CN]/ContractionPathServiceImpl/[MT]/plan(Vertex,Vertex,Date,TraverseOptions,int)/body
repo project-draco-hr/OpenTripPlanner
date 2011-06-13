@@ -1,0 +1,65 @@
+{
+  if (_graphService.getCalendarService() != null)   options.setCalendarService(_graphService.getCalendarService());
+  options.setTransferTable(_graphService.getGraph().getTransferTable());
+  options.setServiceDays(targetTime.getTime());
+  if (options.getModes().getTransit() && !_graphService.getGraph().transitFeedCovers(targetTime)) {
+    throw new TransitTimesException();
+  }
+  if (_graphService.getGraph().hasService(WeightTable.class) && options.getModes().getTransit()) {
+    options.remainingWeightHeuristic=new TableRemainingWeightHeuristic(_graphService.getGraph());
+    LOG.debug("Weight table present in graph and transit itinerary requested. Using table-driven A* heuristic.");
+  }
+ else {
+    LOG.debug("No weight table in graph or non-transit itinerary requested. Keeping existing A* heuristic.");
+  }
+  ArrayList<GraphPath> paths=new ArrayList<GraphPath>();
+  Queue<TraverseOptions> optionQueue=new LinkedList<TraverseOptions>();
+  optionQueue.add(options);
+  if (options.getModes().getTrainish() && options.getModes().contains(TraverseMode.BUS)) {
+    TraverseOptions busOnly=options.clone();
+    busOnly.setModes(options.getModes().clone());
+    busOnly.getModes().setTrainish(false);
+  }
+  optionQueue.add(options);
+  double maxWeight=Double.MAX_VALUE;
+  long maxTime=options.isArriveBy() ? 0 : Long.MAX_VALUE;
+  while (paths.size() < nItineraries) {
+    LOG.debug(paths.size() + " itineraries / " + nItineraries+ " requested.");
+    options=optionQueue.poll();
+    if (options == null) {
+      break;
+    }
+    options.worstTime=maxTime;
+    options.maxWeight=maxWeight;
+    List<GraphPath> somePaths=_routingService.route(fromVertex,toVertex,targetTime.getTime(),options);
+    if (maxWeight == Double.MAX_VALUE) {
+      if (somePaths.isEmpty()) {
+        return null;
+      }
+      GraphPath path=somePaths.get(0);
+      long duration=path.getDuration();
+      maxTime=path.getEndTime() + 2 * (options.isArriveBy() ? -duration : duration);
+      maxWeight=path.getWeight() * 2;
+    }
+    if (somePaths.isEmpty()) {
+      continue;
+    }
+    for (    GraphPath path : somePaths) {
+      if (!paths.contains(path)) {
+        paths.add(path);
+        for (        RouteSpec spec : path.getRouteSpecs()) {
+          TraverseOptions newOptions=options.clone();
+          newOptions.bannedRoutes.add(spec);
+          if (!optionQueue.contains(newOptions)) {
+            optionQueue.add(newOptions);
+          }
+        }
+      }
+    }
+  }
+  if (paths.size() == 0) {
+    return null;
+  }
+  Collections.sort(paths,new PathComparator());
+  return paths;
+}

@@ -1,0 +1,14 @@
+{
+  boolean filtered=false;
+  List<Patch> patches=child.backEdge.getPatches();
+  if (patches != null) {
+    for (    Patch patch : patches) {
+      if (!patch.activeDuring(child.options,child.getStartTime(),child.getTime())) {
+        continue;
+      }
+      patch.filterTraverseResult(this);
+      filtered=true;
+    }
+  }
+  return filtered;
+}

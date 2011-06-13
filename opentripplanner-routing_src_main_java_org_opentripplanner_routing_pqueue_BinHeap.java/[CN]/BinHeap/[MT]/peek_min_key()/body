@@ -1,3 +1,4 @@
 {
-  return prio[1];
+  if (size > 0)   return prio[1];
+ else   throw new IllegalStateException("An empty queue does not have a minimum key.");
 }

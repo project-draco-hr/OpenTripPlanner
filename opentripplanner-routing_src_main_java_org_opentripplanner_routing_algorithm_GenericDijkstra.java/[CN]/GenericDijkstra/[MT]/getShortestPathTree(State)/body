@@ -1,0 +1,31 @@
+{
+  ShortestPathTree spt=createShortestPathTree();
+  OTPPriorityQueue<State> queue=createPriorityQueue();
+  spt.add(initialState);
+  queue.insert(initialState,initialState.getWeight());
+  Map<Vertex,List<Edge>> extraEdges=null;
+  if (_extraEdgesStrategy != null) {
+    extraEdges=new HashMap<Vertex,List<Edge>>();
+    _extraEdgesStrategy.addOutgoingEdgesForOrigin(extraEdges,initialState.getVertex());
+  }
+  while (!queue.empty()) {
+    State u=queue.extract_min();
+    Vertex fromv=u.getVertex();
+    if (_verbose) {
+      System.out.println("min," + u.getWeight());
+      System.out.println(fromv);
+    }
+    if (_searchTerminationStrategy != null && !_searchTerminationStrategy.shouldSearchContinue(initialState.getVertex(),null,u,spt,options))     break;
+    Collection<Edge> outgoing=GraphLibrary.getOutgoingEdges(graph,fromv,extraEdges);
+    for (    Edge edge : outgoing) {
+      if (_skipEdgeStrategy != null && _skipEdgeStrategy.shouldSkipEdge(initialState.getVertex(),null,u,edge,spt,options))       continue;
+      for (State v=edge.traverse(u); v != null; v=v.getNextResult()) {
+        if (_skipTraverseResultStrategy != null && _skipTraverseResultStrategy.shouldSkipTraversalResult(initialState.getVertex(),null,u,v,spt,options))         continue;
+        if (_verbose)         System.out.printf("  w = %d + %d = %d %s",u.getWeight(),v.getWeightDelta(),v.getWeight(),v.getVertex());
+        if (v.exceedsWeightLimit(options.maxWeight))         continue;
+        if (spt.add(v))         queue.insert(v,v.getWeight());
+      }
+    }
+  }
+  return spt;
+}

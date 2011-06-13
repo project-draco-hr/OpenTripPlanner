@@ -1,7 +1,7 @@
 {
-  Vector<SPTVertex> vertices=paths.get(0).vertices;
-  SPTVertex tripStartVertex=vertices.firstElement();
-  SPTVertex tripEndVertex=vertices.lastElement();
+  GraphPath exemplar=paths.get(0);
+  Vertex tripStartVertex=exemplar.getStartVertex();
+  Vertex tripEndVertex=exemplar.getEndVertex();
   String startName=tripStartVertex.getName();
   String endName=tripEndVertex.getName();
   if (startName == null) {

@@ -3,11 +3,13 @@
     return tryWalkBike(s0,options,back);
   }
   double angleLength=fromv.getLength() + turnCost / 20;
-  StateData.Editor s1=s0.edit();
+  EdgeNarrative en=new FixedModeEdge(this,options.getModes().getNonTransitMode());
+  StateEditor s1=s0.edit(this,en);
   double time=angleLength / options.speed;
   double weight=fromv.computeWeight(s0,options,time);
   s1.incrementWalkDistance(fromv.getLength());
   s1.incrementTimeInSeconds((int)(back ? -time : time));
-  if (EdgeLibrary.weHaveWalkedTooFar(s1,options))   return null;
-  return new TraverseResult(weight,s1.createState(),new FixedModeEdge(this,options.getModes().getNonTransitMode()));
+  s1.incrementWeight(weight);
+  if (s1.weHaveWalkedTooFar(options))   return null;
+  return s1.makeState();
 }

@@ -1,8 +1,0 @@
-{
-  Editor editor=state0.edit();
-  editor.incrementTimeInSeconds(-elapsed);
-  editor.setZone(getStartStop().getZoneId());
-  editor.setRoute(start.getTrip().getRoute().getId());
-  editor.setFareContext(fareContext);
-  return new TraverseResult(elapsed,editor.createState(),this);
-}

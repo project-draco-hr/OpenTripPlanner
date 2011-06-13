@@ -1,0 +1,31 @@
+{
+  TraverseOptions options=s0.getOptions();
+  if (!options.getModes().contains(hop.getMode()))   return null;
+  if (options.getModes().getBicycle() && !hop.getBikesAllowed())   return null;
+  if (options.wheelchairAccessible && !wheelchairAccessible)   return null;
+  long current_time=s0.getTime();
+  AgencyAndId serviceId=hop.getServiceId();
+  int wait=-1;
+  for (  ServiceDay sd : options.serviceDays) {
+    int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
+    if (secondsSinceMidnight < 0)     continue;
+    if (sd.serviceIdRunning(serviceId)) {
+      int newWait=secondsSinceMidnight - hop.getEndStopTime().getArrivalTime();
+      if (wait < 0 || newWait < wait) {
+        wait=newWait;
+      }
+    }
+  }
+  if (wait < 0) {
+    return null;
+  }
+  StateEditor s1=s0.edit(this);
+  s1.incrementTimeInSeconds(-wait);
+  s1.incrementWeight(wait * options.waitReluctance);
+  s1.incrementNumBoardings();
+  s1.setTripId(trip.getId());
+  s1.setZone(zone);
+  s1.setRoute(trip.getRoute().getId());
+  s1.setFareContext(fareContext);
+  return s1.makeState();
+}

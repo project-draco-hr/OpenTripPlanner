@@ -26,9 +26,11 @@ weight=length / options.speed;
 weight=time;
 }
 weight*=options.walkReluctance;
-Editor editor=s0.edit();
-editor.incrementWalkDistance(length);
-editor.incrementTimeInSeconds((int)(back ? -time : time));
-if (EdgeLibrary.weHaveWalkedTooFar(editor,options)) return null;
-return new TraverseResult(weight,editor.createState(),new FixedModeEdge(this,options.getModes().getNonTransitMode()));
+EdgeNarrative en=new FixedModeEdge(this,options.getModes().getNonTransitMode());
+StateEditor s1=s0.edit(this,en);
+s1.incrementWalkDistance(length);
+s1.incrementTimeInSeconds((int)(back ? -time : time));
+s1.incrementWeight(weight);
+if (s1.weHaveWalkedTooFar(options)) return null;
+return s1.makeState();
 }

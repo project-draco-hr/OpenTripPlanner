@@ -1,0 +1,21 @@
+{
+  final double BOARD_COST=options.boardCost;
+  Vertex v=s0.getVertex();
+  if (weightCache.containsKey(v))   return weightCache.get(v);
+  double w;
+  if (wt.includes(v)) {
+    double remainingWalk=options.maxWalkDistance - s0.getWalkDistance();
+    w=Double.POSITIVE_INFINITY;
+    for (    NearbyStop ns : targetStops) {
+      if (ns.distance > remainingWalk)       continue;
+      double nw=wt.getWeight(v,ns.vertex) + ns.weight;
+      if (nw < w)       w=nw;
+    }
+    if (!(v instanceof TransitStop))     w-=BOARD_COST;
+  }
+ else {
+    w=defaultHeuristic.computeForwardWeight(s0,target);
+  }
+  weightCache.put(v,w);
+  return w;
+}

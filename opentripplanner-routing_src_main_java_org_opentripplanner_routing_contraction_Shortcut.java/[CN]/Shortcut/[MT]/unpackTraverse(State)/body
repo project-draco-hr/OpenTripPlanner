@@ -1,0 +1,8 @@
+{
+  State s1;
+  if (edge1 instanceof Shortcut)   s1=((Shortcut)edge1).unpackTraverse(s0);
+ else   s1=edge1.traverse(s0);
+  if (edge2 instanceof Shortcut)   s1=((Shortcut)edge2).unpackTraverse(s1);
+ else   s1=edge2.traverse(s1);
+  return s1;
+}

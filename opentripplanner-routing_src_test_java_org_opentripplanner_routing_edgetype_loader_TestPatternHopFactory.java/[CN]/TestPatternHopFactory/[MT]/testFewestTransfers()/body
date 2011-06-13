@@ -3,15 +3,13 @@
   Vertex stop_d=graph.getVertex("agency_D");
   TraverseOptions options=new TraverseOptions(context);
   options.optimizeFor=OptimizeType.QUICK;
-  ShortestPathTree spt=AStar.getShortestPathTree(graph,stop_c.getLabel(),stop_d.getLabel(),new State(new GregorianCalendar(2009,8,1,16,0,0).getTimeInMillis()),options);
-  GraphPath path=spt.getPath(stop_d);
+  ShortestPathTree spt=AStar.getShortestPathTree(graph,stop_c.getLabel(),stop_d.getLabel(),new GregorianCalendar(2009,8,1,16,0,0).getTimeInMillis(),options);
+  GraphPath path=spt.getPath(stop_d,false);
   assertNotNull(path);
-  State endState=path.vertices.lastElement().state;
-  assertEquals(new GregorianCalendar(2009,8,1,16,20,0).getTimeInMillis(),endState.getTime());
+  assertEquals(new GregorianCalendar(2009,8,1,16,20,0).getTimeInMillis(),path.getEndTime());
   options.optimizeFor=OptimizeType.TRANSFERS;
-  spt=AStar.getShortestPathTree(graph,stop_c.getLabel(),stop_d.getLabel(),new State(new GregorianCalendar(2009,8,1,16,0,0).getTimeInMillis()),options);
-  path=spt.getPath(stop_d);
+  spt=AStar.getShortestPathTree(graph,stop_c.getLabel(),stop_d.getLabel(),new GregorianCalendar(2009,8,1,16,0,0).getTimeInMillis(),options);
+  path=spt.getPath(stop_d,false);
   assertNotNull(path);
-  endState=path.vertices.lastElement().state;
-  assertEquals(new GregorianCalendar(2009,8,1,16,50,0).getTimeInMillis(),endState.getTime());
+  assertEquals(new GregorianCalendar(2009,8,1,16,50,0).getTimeInMillis(),path.getEndTime());
 }

@@ -1,17 +1,16 @@
 {
-  SPTVertex spt_u, spt_v;
   HashSet<Vertex> closed=new HashSet<Vertex>();
-  FibHeap<SPTVertex> queue=new FibHeap<SPTVertex>(graph.getVertices().size());
+  BinHeap<State> queue=new BinHeap<State>(50);
   BasicShortestPathTree spt=new BasicShortestPathTree();
-  State init=new State();
-  SPTVertex spt_origin=spt.addVertex(origin,init,0,options);
-  queue.insert(spt_origin,spt_origin.weightSum);
+  State init=new State(origin,options);
+  spt.add(init);
+  queue.insert(init,init.getWeight());
   HashMap<TripPattern,Double> patternCosts=new HashMap<TripPattern,Double>();
   int patternsSeen=0;
   while (!queue.empty()) {
-    spt_u=queue.peek_min();
-    Vertex fromv=spt_u.mirror;
-    queue.extract_min();
+    State u=queue.extract_min();
+    if (!spt.visit(u))     continue;
+    Vertex fromv=u.getVertex();
     closed.add(fromv);
     if (fromv instanceof TransitStop) {
       Vertex departureVertex=null;
@@ -25,14 +24,14 @@
           if (nearbyPatterns.contains(pattern)) {
             Double cost=patternCosts.get(pattern);
             if (cost == null) {
-              patternCosts.put(pattern,spt_u.weightSum);
+              patternCosts.put(pattern,u.getWeight());
               patternsSeen++;
               if (patternsSeen == nearbyPatterns.size()) {
                 return patternCosts;
               }
             }
- else             if (cost > spt_u.weightSum) {
-              patternCosts.put(pattern,spt_u.weightSum);
+ else             if (cost > u.getWeight()) {
+              patternCosts.put(pattern,u.getWeight());
             }
           }
         }
@@ -42,26 +41,14 @@
       return patternCosts;
     }
     Iterable<Edge> outgoing=graph.getOutgoing(fromv);
-    State state=spt_u.state;
     for (    Edge edge : outgoing) {
-      TraverseResult wr=edge.traverse(state,options);
-      if (wr == null) {
-        continue;
-      }
-      if (wr.weight < 0) {
-        throw new NegativeWeightException(String.valueOf(wr.weight));
-      }
-      EdgeNarrative en=wr.getEdgeNarrative();
-      Vertex toVertex=en.getToVertex();
-      if (closed.contains(toVertex)) {
-        continue;
-      }
-      double new_w=spt_u.weightSum + wr.weight;
-      spt_v=spt.addVertex(toVertex,wr.state,new_w,options,spt_u.hops + 1);
-      if (spt_v != null) {
-        spt_v.setParent(spt_u,edge,en);
-        queue.insert_or_dec_key(spt_v,new_w);
-      }
+      State v=edge.traverse(u);
+      if (v == null)       continue;
+      double dw=v.getWeight() - u.getWeight();
+      if (dw < 0)       throw new NegativeWeightException(String.valueOf(dw));
+      Vertex toVertex=v.getVertex();
+      if (closed.contains(toVertex))       continue;
+      if (spt.add(v))       queue.insert(v,v.getWeight());
     }
   }
   return patternCosts;

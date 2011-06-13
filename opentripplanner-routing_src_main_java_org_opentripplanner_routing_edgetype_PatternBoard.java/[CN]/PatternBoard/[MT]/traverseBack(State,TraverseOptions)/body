@@ -1,8 +1,0 @@
-{
-  if (!getPattern().canBoard(stopIndex)) {
-    return null;
-  }
-  Editor s1=state0.edit();
-  s1.setTripId(null);
-  return new TraverseResult(1,s1.createState(),this);
-}

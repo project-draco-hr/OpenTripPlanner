@@ -72,46 +72,38 @@
   options.speed=1;
   Dijkstra dijkstra=new Dijkstra(graph,verticesOut[0][0],options,graph.getVertex("a(0, 0)"),3);
   BasicShortestPathTree spt=dijkstra.getShortestPathTree(verticesIn[0][2],4);
-  SPTVertex v03=spt.getVertex(verticesIn[0][3]);
+  State v03=spt.getState(verticesIn[0][3]);
   assertNull(v03);
   dijkstra=new Dijkstra(graph,verticesOut[0][0],options,graph.getVertex("a(0, 0)"),6);
   spt=dijkstra.getShortestPathTree(verticesIn[0][3],500);
-  v03=spt.getVertex(verticesIn[0][3]);
+  v03=spt.getState(verticesIn[0][3]);
   assertNotNull(v03);
   dijkstra=new Dijkstra(graph,verticesOut[0][1],options,verticesIn[0][2]);
   spt=dijkstra.getShortestPathTree(verticesIn[0][3],20);
-  v03=spt.getVertex(verticesIn[0][3]);
+  v03=spt.getState(verticesIn[0][3]);
   assertNull(v03);
+  dijkstra=new Dijkstra(graph,verticesOut[0][1],options,verticesIn[0][2]);
   spt=dijkstra.getShortestPathTree(verticesIn[0][3],130);
-  v03=spt.getVertex(verticesIn[0][3]);
+  v03=spt.getState(verticesIn[0][3]);
   assertNotNull(v03);
   ContractionHierarchy testch=new ContractionHierarchy(graph,OptimizeType.QUICK,TraverseMode.WALK,0.0);
   Vertex v=graph.getVertex("a(2, 2)");
-  List<Shortcut> shortcuts=testch.getShortcuts(v,5,true).shortcuts;
+  List<Shortcut> shortcuts=testch.getShortcuts(v,true).shortcuts;
   assertEquals(16,shortcuts.size());
   v=graph.getVertex("(0, 0) in");
-  shortcuts=testch.getShortcuts(v,5,true).shortcuts;
+  shortcuts=testch.getShortcuts(v,true).shortcuts;
   assertEquals(0,shortcuts.size());
   ContractionHierarchy hierarchy=new ContractionHierarchy(graph,OptimizeType.QUICK,TraverseMode.WALK,1.0);
   assertTrue(hierarchy.down.getVertices().size() == graphSize);
   assertTrue(hierarchy.up.getVertices().size() == graphSize);
   assertTrue(hierarchy.graph.getVertices().size() == 0);
   System.out.println("Contracted");
-  State init=new State(1000000000);
-  GraphPath path=hierarchy.getShortestPath(verticesOut[0][0],verticesIn[N - 1][N - 1],init,options);
+  GraphPath path=hierarchy.getShortestPath(verticesOut[0][0],verticesIn[N - 1][N - 1],1000000000,options);
   assertNotNull(path);
-  assertEquals((N - 1) * 2 + 1,path.edges.size());
-  assertEquals(path.edges.size() + 1,path.vertices.size());
-  SPTVertex lastVertex=path.vertices.get(0);
-  for (int i=0; i < path.edges.size(); ++i) {
-    SPTEdge e=path.edges.get(i);
-    assertSame(e.getFromVertex(),lastVertex);
-    assertSame(lastVertex,path.vertices.get(i));
-    lastVertex=e.getToVertex();
-  }
-  path=hierarchy.getShortestPath(verticesIn[1][1],verticesOut[2][2],init,options);
-  if (path == null || path.edges.size() != 4) {
-    path=hierarchy.getShortestPath(verticesIn[1][1],verticesOut[2][2],init,options);
+  assertEquals((N - 1) * 2 + 2,path.states.size());
+  path=hierarchy.getShortestPath(verticesIn[1][1],verticesOut[2][2],1000000000,options);
+  if (path == null || path.states.size() != 5) {
+    path=hierarchy.getShortestPath(verticesIn[1][1],verticesOut[2][2],1000000000,options);
   }
   options=new TraverseOptions();
   options.optimizeFor=OptimizeType.QUICK;
@@ -124,13 +116,13 @@
             continue;
           }
           options.setArriveBy(false);
-          path=hierarchy.getShortestPath(verticesOut[y1][x1],verticesIn[y2][x2],init,options);
+          path=hierarchy.getShortestPath(verticesOut[y1][x1],verticesIn[y2][x2],1000000000,options);
           assertNotNull(path);
-          assertEquals(Math.abs(x1 - x2) + Math.abs(y1 - y2) + 1,path.edges.size());
+          assertEquals(Math.abs(x1 - x2) + Math.abs(y1 - y2) + 1,path.states.size());
           options.setArriveBy(true);
-          path=hierarchy.getShortestPath(verticesOut[y1][x1],verticesIn[y2][x2],init,options);
+          path=hierarchy.getShortestPath(verticesOut[y1][x1],verticesIn[y2][x2],1000000000,options);
           assertNotNull(path);
-          assertEquals(Math.abs(x1 - x2) + Math.abs(y1 - y2) + 1,path.edges.size());
+          assertEquals(Math.abs(x1 - x2) + Math.abs(y1 - y2) + 1,path.states.size());
         }
       }
     }

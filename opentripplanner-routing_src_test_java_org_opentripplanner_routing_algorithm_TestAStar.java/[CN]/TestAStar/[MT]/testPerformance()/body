@@ -26,11 +26,11 @@
   startClock=System.nanoTime();
   ShortestPathTree spt=null;
   for (int i=0; i < n_trials; ++i) {
-    spt=AStar.getShortestPathTree(graph,random[i],airport.getLabel(),new State(startTime.getTimeInMillis()),options);
+    spt=AStar.getShortestPathTree(graph,random[i],airport.getLabel(),startTime.getTimeInMillis(),options);
   }
   endClock=System.nanoTime();
   long aStarTime=endClock - startClock;
-  GraphPath path=spt.getPath(airport);
+  GraphPath path=spt.getPath(airport,true);
   assertNotNull("A path could not be found to the airport from " + random[n_trials - 1],path);
   double time=aStarTime / n_trials / 1000000000.0;
   assertTrue("Actual time " + time + "s greater than 500 ms",time <= 0.5);

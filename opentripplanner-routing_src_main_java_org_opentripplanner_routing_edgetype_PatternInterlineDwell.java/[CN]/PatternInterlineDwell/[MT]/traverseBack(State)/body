@@ -1,0 +1,13 @@
+{
+  AgencyAndId tripId=state0.getTripId();
+  InterlineDwellData dwellData=reverseTripIdToInterlineDwellData.get(tripId);
+  if (dwellData == null) {
+    return null;
+  }
+  StateEditor s1=state0.edit(this);
+  s1.incrementTimeInSeconds(-dwellData.dwellTime);
+  s1.setTripId(targetTrip.getId());
+  s1.setTrip(dwellData.patternIndex);
+  s1.incrementWeight(dwellData.dwellTime);
+  return s1.makeState();
+}

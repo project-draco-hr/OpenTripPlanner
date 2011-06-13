@@ -1,0 +1,6 @@
+{
+  HashSet<Edge> eset=new HashSet<Edge>(1000);
+  for (  List<Edge> l : outgoing.values())   for (  Edge e : l)   eset.add(e);
+  for (  List<Edge> l : incoming.values())   for (  Edge e : l)   eset.add(e);
+  return eset.size();
+}

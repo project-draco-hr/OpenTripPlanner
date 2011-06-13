@@ -6,8 +6,7 @@
   HashMap<Vertex,Integer> deletedNeighbors=new HashMap<Vertex,Integer>();
   _log.debug("Preparing contraction hierarchy -- this may take quite a while");
   _log.debug("init prio queue");
-  int hopLimit=1;
-  FibHeap<Vertex> pq=initPriorityQueue(graph,hopLimit);
+  BinHeap<Vertex> pq=initPriorityQueue(graph);
   _log.debug("contract");
   long lastNotified=System.currentTimeMillis();
   int i=0;
@@ -22,11 +21,11 @@
     Vertex vertex=pq.extract_min();
     WitnessSearchResult shortcutsAndSearchSpace;
     if (pq.empty()) {
-      shortcutsAndSearchSpace=getShortcuts(vertex,hopLimit,false);
+      shortcutsAndSearchSpace=getShortcuts(vertex,false);
     }
  else {
       while (true) {
-        shortcutsAndSearchSpace=getShortcuts(vertex,hopLimit,true);
+        shortcutsAndSearchSpace=getShortcuts(vertex,true);
         int deleted=0;
         if (deletedNeighbors.containsKey(vertex)) {
           deleted=deletedNeighbors.get(vertex);
@@ -41,11 +40,11 @@
           vertex=pq.extract_min();
         }
       }
-      shortcutsAndSearchSpace=getShortcuts(vertex,hopLimit,false);
+      shortcutsAndSearchSpace=getShortcuts(vertex,false);
     }
     long now=System.currentTimeMillis();
     if (now - lastNotified > 5000) {
-      _log.debug("contracted: " + i + " / "+ totalVertices+ "  total time: "+ (now - start) / 1000.0 + " average degree " + nEdges / (nVertices + 0.00001));
+      _log.debug("contracted: " + i + " / "+ totalVertices+ " ("+ i / (double)totalVertices + ") total time " + (now - start) / 1000.0 + "sec, average degree " + nEdges / (nVertices + 0.00001));
       lastNotified=now;
     }
     GraphVertex downVertex=down.getGraphVertex(down.addVertex(vertex));
@@ -68,13 +67,16 @@
       neighbors.add(originalToVertex.vertex);
     }
     graph.removeVertex(vertex);
-    for (    Vertex v : neighbors) {
+    for (    Vertex n : neighbors) {
       int deleted=0;
-      if (deletedNeighbors.containsKey(v)) {
-        deleted=deletedNeighbors.get(v);
+      if (deletedNeighbors.containsKey(n)) {
+        deleted=deletedNeighbors.get(n);
       }
       deleted+=1;
-      deletedNeighbors.put(v,deleted);
+      deletedNeighbors.put(n,deleted);
+      WitnessSearchResult nwsr=getShortcuts(n,true);
+      double new_prio=getImportance(n,nwsr,deleted);
+      pq.rekey(n,new_prio);
     }
     List<Shortcut> shortcuts=shortcutsAndSearchSpace.shortcuts;
     for (    Shortcut shortcut : shortcuts) {
@@ -86,26 +88,6 @@
       continue;
     }
     float averageDegree=nEdges / nVertices;
-    int oldHopLimit=hopLimit;
-    if (averageDegree > 10) {
-      if (edgesRemoved) {
-        hopLimit=5;
-      }
- else {
-        hopLimit=3;
-        int removed=removeNonoptimalEdges(5);
-        nEdges-=removed;
-        edgesRemoved=true;
-      }
-    }
- else {
-      if (averageDegree > 3.3 && hopLimit == 1) {
-        hopLimit=2;
-      }
-    }
-    if (oldHopLimit != hopLimit) {
-      pq=rebuildPriorityQueue(hopLimit,deletedNeighbors);
-    }
   }
   threadPool.shutdownNow();
   threadPool=null;

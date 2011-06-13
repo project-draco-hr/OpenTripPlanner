@@ -1,29 +1,28 @@
 {
+  _log.debug("removing non-optimal edges, hopLimit is {}",hopLimit);
   int removed=0;
-  State dummy=new State();
-  for (  GraphVertex gv : graph.getVertices()) {
-    Vertex v=gv.vertex;
-    Dijkstra dijkstra=new Dijkstra(graph,v,options,null,hopLimit);
+  for (  GraphVertex gu : graph.getVertices()) {
+    Vertex u=gu.vertex;
+    State su=new State(u,options);
+    Dijkstra dijkstra=new Dijkstra(graph,u,options,null,hopLimit);
     BasicShortestPathTree spt=dijkstra.getShortestPathTree(Double.POSITIVE_INFINITY,Integer.MAX_VALUE);
     ArrayList<DirectEdge> toRemove=new ArrayList<DirectEdge>();
-    for (    DirectEdge e : filter(graph.getOutgoing(v),DirectEdge.class)) {
+    for (    DirectEdge e : filter(graph.getOutgoing(u),DirectEdge.class)) {
       if (!isContractable(e)) {
         continue;
       }
-      SPTVertex curs=null;
-      Vertex toVertex=e.getToVertex();
-      curs=spt.getVertex(toVertex);
-      TraverseResult result=e.traverse(dummy,options);
-      if (result == null) {
+      State svSpt=spt.getState(e.getToVertex());
+      State sv=e.traverse(su);
+      if (sv == null) {
         toRemove.add(e);
         continue;
       }
-      if (curs != null && curs.getParent().getFromVertex().mirror != v && curs.weightSum <= result.weight + .01) {
+      if (svSpt != null && sv.getBackState().getVertex() != u && svSpt.getWeight() <= sv.getWeight() + .01) {
         toRemove.add(e);
       }
     }
     for (    DirectEdge e : toRemove) {
-      gv.removeOutgoing(e);
+      gu.removeOutgoing(e);
       graph.getGraphVertex(e.getToVertex()).removeIncoming(e);
     }
     removed+=toRemove.size();

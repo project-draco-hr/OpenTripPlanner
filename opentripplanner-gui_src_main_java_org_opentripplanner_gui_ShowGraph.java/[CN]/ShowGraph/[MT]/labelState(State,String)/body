@@ -1,0 +1,18 @@
+{
+  fill(240,240,240);
+  Vertex v=s.getVertex();
+  drawVertex(v,8);
+  str+=" " + shortDateFormat.format(new Date(s.getTime()));
+  str+=" [" + (int)s.getWeight() + "]";
+  double x=toScreenX(v.getX()) + 10;
+  double y=toScreenY(v.getY());
+  double dy=y - lastLabelY;
+  if (dy == 0) {
+    y=lastLabelY + 20;
+  }
+ else   if (Math.abs(dy) < 20) {
+    y=lastLabelY + Math.signum(dy) * 20;
+  }
+  text(str,(float)x,(float)y);
+  lastLabelY=y;
+}

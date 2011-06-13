@@ -13,10 +13,11 @@
   for (int i=0; i < maxLines.length; ++i) {
     String line=maxLines[i];
     options.bannedRoutes.add(new RouteSpec("TriMet",line));
-    spt=AStar.getShortestPathTree(graph,start,end,new State(startTime.getTimeInMillis()),options);
-    GraphPath path=spt.getPath(end);
-    for (    SPTEdge e : path.edges) {
-      if (e.payload instanceof PatternHop) {
+    spt=AStar.getShortestPathTree(graph,start,end,startTime.getTimeInMillis(),options);
+    GraphPath path=spt.getPath(end,true);
+    for (    State s : path.states) {
+      if (s.getBackEdge() instanceof PatternHop) {
+        PatternHop e=(PatternHop)s.getBackEdge();
         assertFalse(e.getName().equals(line));
         boolean foundMaxLine=false;
         for (int j=0; j < maxLines.length; ++j) {

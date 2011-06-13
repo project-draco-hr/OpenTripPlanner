@@ -1,0 +1,8 @@
+{
+  StateEditor s1=s0.edit(this);
+  TransitStop fromVertex=(TransitStop)getFromVertex();
+  if (fromVertex.isLocal()) {
+    s1.setAlightedLocal(true);
+  }
+  return s1.makeState();
+}

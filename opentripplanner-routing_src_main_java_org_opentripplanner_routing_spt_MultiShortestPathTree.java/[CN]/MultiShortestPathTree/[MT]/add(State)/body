@@ -1,0 +1,18 @@
+{
+  Vertex vertex=newState.getVertex();
+  List<State> states=stateSets.get(vertex);
+  if (states == null) {
+    states=new ArrayList<State>();
+    stateSets.put(vertex,states);
+    states.add(newState);
+    return true;
+  }
+  Iterator<State> it=states.iterator();
+  while (it.hasNext()) {
+    State oldState=it.next();
+    if (oldState.dominates(newState))     return false;
+    if (newState.dominates(oldState))     it.remove();
+  }
+  states.add(newState);
+  return true;
+}

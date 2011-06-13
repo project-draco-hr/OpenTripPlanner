@@ -1,11 +1,14 @@
 {
-  FibHeap<Vertex> newpq=new FibHeap<Vertex>(graph.getVertices().size());
+  _log.debug("    rebuild priority queue, hoplimit is now {}",hopLimit);
+  BinHeap<Vertex> newpq=new BinHeap<Vertex>(graph.getVertices().size());
+  int i=0;
   for (  GraphVertex gv : graph.getVertices()) {
+    if (++i % 100000 == 0)     _log.debug("    vertex {}",i);
     Vertex v=gv.vertex;
     if (!isContractable(v)) {
       continue;
     }
-    WitnessSearchResult wsresult=getShortcuts(v,hopLimit,true);
+    WitnessSearchResult wsresult=getShortcuts(v,true);
     Integer deleted=deletedNeighbors.get(v);
     if (deleted == null) {
       deleted=0;

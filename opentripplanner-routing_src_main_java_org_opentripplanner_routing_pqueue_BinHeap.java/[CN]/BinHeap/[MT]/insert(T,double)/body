@@ -1,6 +1,7 @@
 {
   int i;
   size+=1;
+  if (size > capacity)   resize((int)(capacity * GROW_FACTOR));
   for (i=size; prio[i / 2] > p; i/=2) {
     elem[i]=elem[i / 2];
     prio[i]=prio[i / 2];

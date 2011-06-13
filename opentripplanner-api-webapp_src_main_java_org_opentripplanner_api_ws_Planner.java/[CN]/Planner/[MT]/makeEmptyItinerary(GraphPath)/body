@@ -1,9 +1,7 @@
 {
   Itinerary itinerary=new Itinerary();
-  SPTVertex startVertex=path.vertices.firstElement();
-  State startState=startVertex.state;
-  SPTVertex endVertex=path.vertices.lastElement();
-  State endState=endVertex.state;
+  State startState=path.states.getFirst();
+  State endState=path.states.getLast();
   itinerary.startTime=new Date(startState.getTime());
   itinerary.endTime=new Date(endState.getTime());
   itinerary.duration=endState.getTime() - startState.getTime();

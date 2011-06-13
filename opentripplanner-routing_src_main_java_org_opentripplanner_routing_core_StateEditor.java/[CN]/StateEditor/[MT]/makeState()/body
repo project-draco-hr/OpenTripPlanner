@@ -1,0 +1,15 @@
+{
+  if (spawned)   throw new IllegalStateException("A StateEditor can only be used once.");
+  if (defectiveTraversal) {
+    _log.warn("New state failed a sanity check. Traversal ignored.");
+    return null;
+  }
+  child.checkNegativeWeight();
+  if (traversingBackward ? (child.getTimeDeltaMsec() > 0) : (child.getTimeDeltaMsec() < 0)) {
+    _log.trace("Time was incremented the wrong direction during state editing. {}",child.backEdge);
+    return null;
+  }
+  applyPatches();
+  spawned=true;
+  return child;
+}

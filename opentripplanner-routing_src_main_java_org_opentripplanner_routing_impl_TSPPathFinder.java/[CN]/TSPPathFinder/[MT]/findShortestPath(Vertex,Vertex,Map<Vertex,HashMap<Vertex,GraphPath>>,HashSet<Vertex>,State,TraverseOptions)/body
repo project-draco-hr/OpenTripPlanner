@@ -1,24 +1,3 @@
 {
-  TSPPath shortestPath=findShortestPathInternal(toVertex,fromVertex,paths,vertices);
-  ShortestPathTree spt=new BasicShortestPathTree();
-  GraphPath newPath=new GraphPath();
-  Vertex lastVertex=fromVertex;
-  GraphPath subPath;
-  SPTVertex fromv=spt.addVertex(fromVertex,state,0,options);
-  for (  Vertex v : shortestPath.vertices) {
-    subPath=paths.get(lastVertex).get(v);
-    lastVertex=v;
-    for (int i=0; i < subPath.edges.size(); ++i) {
-      SPTEdge edge=subPath.edges.get(i);
-      TraverseResult result=edge.traverse(state,options);
-      state=result.state;
-      SPTVertex tov=spt.addVertex(edge.narrative.getToVertex(),state,result.weight,options);
-      SPTEdge newEdge=tov.setParent(fromv,edge.payload,edge.narrative);
-      newPath.vertices.add(fromv);
-      newPath.edges.add(newEdge);
-      fromv=tov;
-    }
-  }
-  newPath.vertices.add(fromv);
-  return newPath;
+  return null;
 }

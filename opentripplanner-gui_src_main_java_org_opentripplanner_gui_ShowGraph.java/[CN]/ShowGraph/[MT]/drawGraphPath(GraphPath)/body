@@ -1,9 +1,9 @@
 {
-  for (  SPTEdge se : gp.edges) {
-    Edge edge=se.payload;
-    if (!(edge instanceof DirectEdge))     continue;
-    DirectEdge e=(DirectEdge)edge;
-    TraverseMode mode=se.getMode();
+  for (  State s : gp.states) {
+    EdgeNarrative en=s.getBackEdgeNarrative();
+    if (!(en instanceof DirectEdge))     continue;
+    DirectEdge e=(DirectEdge)en;
+    TraverseMode mode=e.getMode();
     if (mode.isTransit()) {
       stroke(200,050,000);
       strokeWeight(6);
@@ -38,18 +38,16 @@
       }
     }
   }
-  SPTVertex fv=gp.vertices.firstElement();
   lastLabelY=-999;
-  labelVertex(fv,"begin");
-  for (  SPTEdge se : gp.edges) {
-    Edge e=se.payload;
+  labelState(gp.states.getFirst(),"begin");
+  for (  State s : gp.states) {
+    Edge e=s.getBackEdge();
     if (e instanceof PatternBoard) {
-      labelVertex(se.tov,"board");
+      labelState(s,"board");
     }
  else     if (e instanceof PatternAlight) {
-      labelVertex(se.fromv,"alight");
+      labelState(s,"alight");
     }
   }
-  SPTVertex lv=gp.vertices.lastElement();
-  labelVertex(lv,"end");
+  labelState(gp.states.getLast(),"end");
 }

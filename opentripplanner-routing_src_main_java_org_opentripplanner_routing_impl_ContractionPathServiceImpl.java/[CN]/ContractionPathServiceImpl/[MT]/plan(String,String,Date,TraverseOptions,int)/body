@@ -11,6 +11,5 @@
   if (notFound.size() > 0) {
     throw new VertexNotFoundException(notFound);
   }
-  State state=new State(targetTime.getTime());
-  return plan(fromVertex,toVertex,state,options,nItineraries);
+  return plan(fromVertex,toVertex,targetTime,options,nItineraries);
 }

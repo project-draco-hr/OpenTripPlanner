@@ -2,15 +2,15 @@
   TraverseOptions options=new TraverseOptions();
   options.speed=1.0;
   options.setArriveBy(true);
-  ShortestPathTree tree=AStar.getShortestPathTreeBack(_graph,"56th_24th","leary_20th",new State(),options);
-  GraphPath path=tree.getPath(_graph.getVertex("56th_24th"));
-  Vector<SPTVertex> vertices=path.vertices;
-  assertEquals(7,vertices.size());
-  assertEquals("leary_20th",vertices.get(0).getLabel());
-  assertEquals("leary_vernon",vertices.get(1).getLabel());
-  assertEquals("market_leary",vertices.get(2).getLabel());
-  assertEquals("market_22nd",vertices.get(3).getLabel());
-  assertEquals("market_ballard",vertices.get(4).getLabel());
-  assertEquals("market_24th",vertices.get(5).getLabel());
-  assertEquals("56th_24th",vertices.get(6).getLabel());
+  ShortestPathTree tree=AStar.getShortestPathTree(_graph,"56th_24th","leary_20th",System.currentTimeMillis(),options);
+  GraphPath path=tree.getPath(_graph.getVertex("56th_24th"),false);
+  List<State> states=path.states;
+  assertEquals(7,states.size());
+  assertEquals("56th_24th",states.get(0).getVertex().getLabel());
+  assertEquals("market_24th",states.get(1).getVertex().getLabel());
+  assertEquals("market_ballard",states.get(2).getVertex().getLabel());
+  assertEquals("market_22nd",states.get(3).getVertex().getLabel());
+  assertEquals("market_leary",states.get(4).getVertex().getLabel());
+  assertEquals("leary_vernon",states.get(5).getVertex().getLabel());
+  assertEquals("leary_20th",states.get(6).getVertex().getLabel());
 }

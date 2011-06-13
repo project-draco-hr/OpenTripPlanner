@@ -1,0 +1,33 @@
+{
+  int i=0;
+  for (  T t : elem) {
+    if (t == e)     break;
+    i++;
+  }
+  if (i > size) {
+    return;
+  }
+  if (p > prio[i]) {
+    while (i * 2 <= size) {
+      int child=i * 2;
+      if (child != size && prio[child + 1] < prio[child])       child++;
+      if (p > prio[child]) {
+        elem[i]=elem[child];
+        prio[i]=prio[child];
+        i=child;
+      }
+ else       break;
+    }
+    elem[i]=e;
+    prio[i]=p;
+  }
+ else {
+    while (prio[i / 2] > p) {
+      elem[i]=elem[i / 2];
+      prio[i]=prio[i / 2];
+      i/=2;
+    }
+    elem[i]=e;
+    prio[i]=p;
+  }
+}

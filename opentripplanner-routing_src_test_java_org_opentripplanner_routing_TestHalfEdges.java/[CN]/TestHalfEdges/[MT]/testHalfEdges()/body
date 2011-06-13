@@ -1,4 +1,5 @@
 {
+  TraverseOptions options=new TraverseOptions();
   HashSet<Edge> turns=new HashSet<Edge>(graph.getOutgoing(left));
   turns.addAll(graph.getOutgoing(leftBack));
   StreetLocation start=StreetLocation.createStreetLocation("start","start",cast(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()));
@@ -10,47 +11,46 @@
   List<DirectEdge> extra=end.getExtra();
   assertEquals(12,extra.size());
   GregorianCalendar startTime=new GregorianCalendar(2009,11,1,12,34,25);
-  ShortestPathTree spt1=AStar.getShortestPathTree(graph,brOut,end,new State(startTime.getTimeInMillis()),new TraverseOptions());
-  GraphPath pathBr=spt1.getPath(end);
+  ShortestPathTree spt1=AStar.getShortestPathTree(graph,brOut,end,startTime.getTimeInMillis(),options);
+  GraphPath pathBr=spt1.getPath(end,false);
   assertNotNull("There must be a path from br to end",pathBr);
-  ShortestPathTree spt2=AStar.getShortestPathTree(graph,trOut,end,new State(startTime.getTimeInMillis()),new TraverseOptions());
-  GraphPath pathTr=spt2.getPath(end);
+  ShortestPathTree spt2=AStar.getShortestPathTree(graph,trOut,end,startTime.getTimeInMillis(),options);
+  GraphPath pathTr=spt2.getPath(end,false);
   assertNotNull("There must be a path from tr to end",pathTr);
-  assertTrue("path from bottom to end must be longer than path from top to end",pathBr.vertices.lastElement().weightSum > pathTr.vertices.lastElement().weightSum);
-  ShortestPathTree spt=AStar.getShortestPathTree(graph,start,end,new State(startTime.getTimeInMillis()),new TraverseOptions());
-  GraphPath path=spt.getPath(end);
+  assertTrue("path from bottom to end must be longer than path from top to end",pathBr.getWeight() > pathTr.getWeight());
+  ShortestPathTree spt=AStar.getShortestPathTree(graph,start,end,startTime.getTimeInMillis(),options);
+  GraphPath path=spt.getPath(end,false);
   assertNotNull("There must be a path from start to end",path);
-  for (  SPTVertex v : path.vertices) {
-    assertNotSame(v.mirror,graph.getVertex("bottom"));
-    assertNotSame(v.mirror,graph.getVertex("bottomBack"));
+  for (  State s : path.states) {
+    assertNotSame(s.getVertex(),graph.getVertex("bottom"));
+    assertNotSame(s.getVertex(),graph.getVertex("bottomBack"));
   }
   startTime=new GregorianCalendar(2009,11,1,12,34,25);
-  TraverseOptions options=new TraverseOptions();
   options.setArriveBy(true);
-  spt=AStar.getShortestPathTreeBack(graph,start,end,new State(startTime.getTimeInMillis()),options);
-  path=spt.getPath(start);
+  spt=AStar.getShortestPathTree(graph,start,end,startTime.getTimeInMillis(),options);
+  path=spt.getPath(start,false);
   assertNotNull("There must be a path from start to end (looking back)",path);
-  for (  SPTVertex v : path.vertices) {
-    assertNotSame(v.mirror,graph.getVertex("bottom"));
-    assertNotSame(v.mirror,graph.getVertex("bottomBack"));
+  for (  State s : path.states) {
+    assertNotSame(s.getVertex(),graph.getVertex("bottom"));
+    assertNotSame(s.getVertex(),graph.getVertex("bottomBack"));
   }
   options=new TraverseOptions(new TraverseModeSet(TraverseMode.BICYCLE));
   start=StreetLocation.createStreetLocation("start1","start1",cast(turns,StreetEdge.class),new LinearLocation(0,0.95).getCoordinate(top.getGeometry()));
   end=StreetLocation.createStreetLocation("end1","end1",cast(turns,StreetEdge.class),new LinearLocation(0,0.95).getCoordinate(bottom.getGeometry()));
-  spt=AStar.getShortestPathTree(graph,start,end,new State(startTime.getTimeInMillis()),options);
-  path=spt.getPath(start);
+  spt=AStar.getShortestPathTree(graph,start,end,startTime.getTimeInMillis(),options);
+  path=spt.getPath(start,false);
   assertNotNull("There must be a path from top to bottom along the right",path);
-  for (  SPTVertex v : path.vertices) {
-    assertNotSame(v.mirror,graph.getVertex("left"));
-    assertNotSame(v.mirror,graph.getVertex("leftBack"));
+  for (  State s : path.states) {
+    assertNotSame(s.getVertex(),graph.getVertex("left"));
+    assertNotSame(s.getVertex(),graph.getVertex("leftBack"));
   }
   start=StreetLocation.createStreetLocation("start2","start2",cast(turns,StreetEdge.class),new LinearLocation(0,0.55).getCoordinate(top.getGeometry()));
   end=StreetLocation.createStreetLocation("end2","end2",cast(turns,StreetEdge.class),new LinearLocation(0,0.55).getCoordinate(bottom.getGeometry()));
-  spt=AStar.getShortestPathTree(graph,start,end,new State(startTime.getTimeInMillis()),options);
-  path=spt.getPath(start);
+  spt=AStar.getShortestPathTree(graph,start,end,startTime.getTimeInMillis(),options);
+  path=spt.getPath(start,false);
   assertNotNull("There must be a path from top to bottom",path);
-  for (  SPTVertex v : path.vertices) {
-    assertNotSame(v.mirror,graph.getVertex("right"));
-    assertNotSame(v.mirror,graph.getVertex("rightBack"));
+  for (  State s : path.states) {
+    assertNotSame(s.getVertex(),graph.getVertex("right"));
+    assertNotSame(s.getVertex(),graph.getVertex("rightBack"));
   }
 }

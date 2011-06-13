@@ -1,6 +1,5 @@
 {
-  long startTime=new GregorianCalendar(2010,10,11,12,0,0).getTimeInMillis();
-  State init=new State(startTime);
+  long startTime=new GregorianCalendar(2009,10,11,12,0,0).getTimeInMillis();
   GraphPath path;
   Graph graph=new Graph();
   ContractionHierarchy hierarchy;
@@ -60,17 +59,20 @@
   CalendarServiceImpl calendarService=new CalendarServiceImpl();
   calendarService.setData(data);
   options.setCalendarService(calendarService);
+  options.setServiceDays(startTime);
   options.setTransferTable(graph.getTransferTable());
   Vertex start1=graph.getVertex("0072480");
   Vertex end1=graph.getVertex("0032341");
   assertNotNull(end1);
   assertNotNull(start1);
-  ShortestPathTree shortestPathTree=AStar.getShortestPathTree(graph,start1,end1,init,options);
-  path=shortestPathTree.getPath(end1);
+  ShortestPathTree shortestPathTree=AStar.getShortestPathTree(graph,start1,end1,startTime,options);
+  path=shortestPathTree.getPath(end1,true);
   assertNotNull(path);
   boolean subway1=false;
-  for (  SPTEdge edge : path.edges) {
-    if (TraverseMode.SUBWAY.equals(edge.getMode())) {
+  for (  State state : path.states) {
+    if (state.getBackEdge() == null)     continue;
+    System.out.println(state.getBackEdgeNarrative().getMode());
+    if (TraverseMode.SUBWAY.equals(state.getBackEdgeNarrative().getMode())) {
       subway1=true;
       break;
     }
@@ -95,26 +97,25 @@
   if (end == null)   end=hierarchy.graph.getVertex("0032341");
   assertNotNull(start);
   assertNotNull(end);
-  init=new State(0);
-  path=hierarchy.getShortestPath(start,end,init,options);
+  path=hierarchy.getShortestPath(start,end,0,options);
   assertNotNull(path);
-  init=new State(startTime);
-  GraphPath pathWithSubways=hierarchy.getShortestPath(start,end,init,options);
+  GraphPath pathWithSubways=hierarchy.getShortestPath(start,end,startTime,options);
   assertNotNull(pathWithSubways);
   boolean subway=false;
-  for (  SPTEdge edge : pathWithSubways.edges) {
-    if (TraverseMode.SUBWAY.equals(edge.getMode())) {
+  for (  State state : pathWithSubways.states) {
+    if (state.getBackEdge() == null)     continue;
+    if (TraverseMode.SUBWAY.equals(state.getBackEdgeNarrative().getMode())) {
       subway=true;
       break;
     }
   }
   assertTrue("Path must take subway",subway);
   options.setArriveBy(true);
-  pathWithSubways=hierarchy.getShortestPath(start,end,init,options);
+  pathWithSubways=hierarchy.getShortestPath(start,end,startTime,options);
   assertNotNull("Reverse path must be found",pathWithSubways);
   subway=false;
-  for (  SPTEdge edge : pathWithSubways.edges) {
-    if (TraverseMode.SUBWAY.equals(edge.getMode())) {
+  for (  State state : pathWithSubways.states) {
+    if (TraverseMode.SUBWAY.equals(state.getBackEdgeNarrative().getMode())) {
       subway=true;
       break;
     }
@@ -122,10 +123,10 @@
   assertTrue("Reverse path must take subway",subway);
   options.setArriveBy(false);
   options.worstTime=startTime + 1000 * 60 * 90;
-  path=hierarchy.getShortestPath(start,end,new State(startTime),options);
+  path=hierarchy.getShortestPath(start,end,startTime,options);
   assertNotNull(path);
   options.worstTime=startTime + 1000 * 60;
-  path=hierarchy.getShortestPath(start,end,new State(startTime),options);
+  path=hierarchy.getShortestPath(start,end,startTime,options);
   assertNull(path);
   long now=System.currentTimeMillis();
   int i=0;
@@ -180,7 +181,7 @@
     options.setArriveBy(i % 2 == 0);
     assertNotNull(v1);
     assertNotNull(v2);
-    GraphPath path2=hierarchy.getShortestPath(v1,v2,init,options);
+    GraphPath path2=hierarchy.getShortestPath(v1,v2,startTime,options);
     if (path2 != null) {
       notNull+=1;
     }

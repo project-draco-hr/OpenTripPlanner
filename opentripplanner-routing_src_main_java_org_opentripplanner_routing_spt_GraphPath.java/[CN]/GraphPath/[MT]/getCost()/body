@@ -1,7 +1,6 @@
 {
-  State state=vertices.lastElement().state;
-  StateData data=state.getData();
-  FareContext fareContext=data.getFareContext();
+  State state=states.getLast();
+  FareContext fareContext=state.getFareContext();
   if (fareContext == null) {
     return null;
   }
@@ -10,11 +9,9 @@
   HashMap<AgencyAndId,FareAttribute> fareAttributes=fareContext.getFareAttributes();
   List<Ride> rides=new ArrayList<Ride>();
   Ride newRide=null;
-  for (  SPTVertex vertex : vertices) {
-    State vState=vertex.state;
-    StateData vData=vState.getData();
-    String zone=vData.getZone();
-    AgencyAndId route=vData.getRoute();
+  for (  State curr : states) {
+    String zone=curr.getZone();
+    AgencyAndId route=curr.getRoute();
     if (zone == null) {
       newRide=null;
     }
@@ -24,7 +21,7 @@
         rides.add(newRide);
         newRide.startZone=zone;
         newRide.route=route;
-        newRide.startTime=vState.getTime();
+        newRide.startTime=curr.getTime();
       }
       newRide.zones.add(zone);
       newRide.endZone=zone;

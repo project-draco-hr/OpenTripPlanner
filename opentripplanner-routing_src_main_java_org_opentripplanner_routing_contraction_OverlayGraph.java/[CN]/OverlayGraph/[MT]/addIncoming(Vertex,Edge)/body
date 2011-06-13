@@ -1,0 +1,8 @@
+{
+  List<Edge> toIncoming=incoming.get(tov);
+  if (toIncoming == null) {
+    toIncoming=new ArrayList<Edge>(INITIAL_EDGELIST_CAPACITY);
+    incoming.put(tov,toIncoming);
+  }
+  toIncoming.add(e);
+}

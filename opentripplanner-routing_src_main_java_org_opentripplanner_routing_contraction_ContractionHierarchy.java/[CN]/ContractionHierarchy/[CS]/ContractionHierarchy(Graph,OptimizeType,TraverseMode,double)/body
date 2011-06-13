@@ -3,6 +3,7 @@
   for (  GraphVertex gv : orig.getVertices()) {
     graph.addGraphVertex(new GraphVertex(gv));
   }
+  this.mode=mode;
   options=new TraverseOptions(new TraverseModeSet(mode));
   options.optimizeFor=optimize;
   options.maxWalkDistance=Double.MAX_VALUE;

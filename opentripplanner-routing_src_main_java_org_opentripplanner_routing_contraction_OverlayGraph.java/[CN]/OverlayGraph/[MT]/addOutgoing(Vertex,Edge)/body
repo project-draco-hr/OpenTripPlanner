@@ -1,0 +1,8 @@
+{
+  List<Edge> fromOutgoing=outgoing.get(fromv);
+  if (fromOutgoing == null) {
+    fromOutgoing=new ArrayList<Edge>(INITIAL_EDGELIST_CAPACITY);
+    outgoing.put(fromv,fromOutgoing);
+  }
+  fromOutgoing.add(e);
+}

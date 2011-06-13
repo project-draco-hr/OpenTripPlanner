@@ -1,0 +1,19 @@
+{
+  Collection<GraphVertex> vertices=graph.getVertices();
+  BinHeap<Vertex> pq=new BinHeap<Vertex>(vertices.size());
+  int i=0;
+  for (  GraphVertex gv : vertices) {
+    if (++i % 100000 == 0)     _log.debug("    vertex {}",i);
+    Vertex v=gv.vertex;
+    if (!isContractable(v)) {
+      continue;
+    }
+    if (gv.getDegreeIn() > 7 || gv.getDegreeOut() > 7) {
+      continue;
+    }
+    WitnessSearchResult shortcuts=getShortcuts(v,true);
+    int imp=getImportance(v,shortcuts,0);
+    pq.insert(v,imp);
+  }
+  return pq;
+}

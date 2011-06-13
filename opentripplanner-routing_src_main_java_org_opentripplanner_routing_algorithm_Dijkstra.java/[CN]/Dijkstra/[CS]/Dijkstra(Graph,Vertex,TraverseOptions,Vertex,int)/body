@@ -1,13 +1,10 @@
 {
   this.graph=graph;
-  this.origin=origin;
-  this.options=options;
   this.taboo=taboo;
   this.hopLimit=hopLimit;
-  spt=new BasicShortestPathTree();
-  queue=new FibHeap<SPTVertex>(graph.getVertices().size());
-  State init=new State();
-  SPTVertex spt_origin=spt.addVertex(origin,init,0,options);
-  queue.insert(spt_origin,spt_origin.weightSum);
-  closed=new HashSet<Vertex>();
+  spt=new BasicShortestPathTree(50);
+  queue=new BinHeap<State>(50);
+  State init=new State(origin,options);
+  spt.add(init);
+  queue.insert(init,init.getWeight());
 }

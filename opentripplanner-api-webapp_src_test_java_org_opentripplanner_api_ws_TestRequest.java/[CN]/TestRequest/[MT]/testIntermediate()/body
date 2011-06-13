@@ -17,8 +17,8 @@
   assertTrue(paths.size() > 0);
   GraphPath path=paths.get(0);
   int curVertex=0;
-  for (  SPTVertex v : path.vertices) {
-    if (v.mirror.equals(vertices[curVertex])) {
+  for (  State s : path.states) {
+    if (s.getVertex().equals(vertices[curVertex])) {
       curVertex+=1;
     }
   }

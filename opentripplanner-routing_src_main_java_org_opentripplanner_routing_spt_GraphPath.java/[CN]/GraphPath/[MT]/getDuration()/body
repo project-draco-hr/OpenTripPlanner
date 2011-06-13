@@ -1,5 +1,3 @@
 {
-  SPTVertex first=getFirstVertex();
-  SPTVertex last=getLastVertex();
-  return Math.abs(last.state.getTime() - first.state.getTime());
+  return states.getLast().getElapsedTime();
 }

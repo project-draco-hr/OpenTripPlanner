@@ -1,5 +1,9 @@
 {
-  GraphPath path=getPath(dest,optimize);
-  if (path == null)   return Collections.emptyList();
-  return Arrays.asList(path);
+  List<State> stateList=getStates(dest);
+  if (stateList == null)   return Collections.emptyList();
+  List<GraphPath> ret=new LinkedList<GraphPath>();
+  for (  State s : stateList) {
+    ret.add(new GraphPath(s,optimize));
+  }
+  return ret;
 }

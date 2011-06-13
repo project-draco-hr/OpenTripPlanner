@@ -1,0 +1,29 @@
+{
+  Vertex sv=s.getVertex();
+  double euclidianDistance=sv.distance(target);
+  if (useTransit) {
+    if (s.isAlightedLocal()) {
+      return options.walkReluctance * euclidianDistance / options.speed;
+    }
+ else {
+      int boardCost;
+      if (s.isOnboard()) {
+        boardCost=0;
+      }
+ else {
+        boardCost=options.boardCost;
+      }
+      if (euclidianDistance < target.getDistanceToNearestTransitStop()) {
+        return options.walkReluctance * euclidianDistance / options.speed;
+      }
+ else {
+        double mandatoryWalkDistance=target.getDistanceToNearestTransitStop() + sv.getDistanceToNearestTransitStop();
+        double distance=(euclidianDistance - mandatoryWalkDistance) / maxSpeed + mandatoryWalkDistance * options.walkReluctance / options.speed + boardCost;
+        return distance=Math.min(distance,options.walkReluctance * euclidianDistance / options.speed);
+      }
+    }
+  }
+ else {
+    return options.walkReluctance * euclidianDistance / maxSpeed;
+  }
+}

@@ -1,0 +1,7 @@
+{
+  int dwellTime=pattern.getDwellTime(stopIndex,state0.getTrip());
+  StateEditor s1=state0.edit(this);
+  s1.incrementTimeInSeconds(-dwellTime);
+  s1.incrementWeight(dwellTime);
+  return s1.makeState();
+}

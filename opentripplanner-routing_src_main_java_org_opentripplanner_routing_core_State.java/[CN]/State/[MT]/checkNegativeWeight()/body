@@ -1,0 +1,6 @@
+{
+  double dw=this.weight - backState.weight;
+  if (dw < 0) {
+    throw new NegativeWeightException(String.valueOf(dw) + " on edge " + backEdge);
+  }
+}

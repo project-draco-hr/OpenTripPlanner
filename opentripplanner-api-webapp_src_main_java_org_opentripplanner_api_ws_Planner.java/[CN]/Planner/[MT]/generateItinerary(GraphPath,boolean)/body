@@ -6,18 +6,18 @@
   EdgeNarrative edgeNarrative=null;
   TraverseMode mode=null;
   TraverseMode previousMode=null;
-  SPTEdge previousSptEdge=null;
   CoordinateArrayListSequence coordinates=new CoordinateArrayListSequence();
-  SPTEdge finalSptEdge=path.edges.lastElement();
+  State finalState=path.states.getLast();
   double previousElevation=Double.MAX_VALUE;
   double edgeElapsedTime;
   GeometryFactory geometryFactory=new GeometryFactory();
   int startWalk=-1;
   int i=-1;
-  for (  SPTEdge sptEdge : path.edges) {
+  for (  State currState : path.states) {
     i++;
-    edge=sptEdge.payload;
-    edgeNarrative=sptEdge.narrative;
+    edge=currState.getBackEdge();
+    edgeNarrative=currState.getBackEdgeNarrative();
+    if (edge == null)     continue;
     Set<String> notes=edgeNarrative.getNotes();
     if (notes != null) {
       if (leg == null) {
@@ -29,11 +29,11 @@
         }
       }
     }
-    if (edge instanceof FreeEdge && sptEdge != finalSptEdge) {
+    if (edge instanceof FreeEdge && currState != finalState) {
       continue;
     }
     mode=edgeNarrative.getMode();
-    edgeElapsedTime=sptEdge.tov.state.getTime() - sptEdge.fromv.state.getTime();
+    edgeElapsedTime=currState.getTime() - currState.getBackState().getTime();
     if (mode != previousMode) {
       previousMode=mode;
       if (mode == TraverseMode.TRANSFER) {
@@ -53,15 +53,15 @@
  else {
         if (leg != null) {
           if (startWalk != -1) {
-            leg.walkSteps=getWalkSteps(path.edges.subList(startWalk,i));
+            leg.walkSteps=getWalkSteps(path.states.subList(startWalk,i));
           }
           leg.to=makePlace(edgeNarrative.getFromVertex());
-          leg.endTime=new Date(previousSptEdge.tov.state.getTime());
+          leg.endTime=new Date(currState.getBackState().getTime());
           Geometry geometry=geometryFactory.createLineString(coordinates);
           leg.legGeometry=PolylineEncoder.createEncodings(geometry);
           coordinates=new CoordinateArrayListSequence();
         }
-        leg=makeLeg(sptEdge);
+        leg=makeLeg(currState);
         for (        String noteForNewLeg : notesForNewLeg) {
           leg.addNote(noteForNewLeg);
         }
@@ -77,7 +77,7 @@
         itinerary.addLeg(leg);
       }
     }
-    leg.distance+=sptEdge.getDistance();
+    leg.distance+=edgeNarrative.getDistance();
     Geometry edgeGeometry=edgeNarrative.getGeometry();
     if (edgeGeometry != null) {
       Coordinate[] edgeCoordinates=edgeGeometry.getCoordinates();
@@ -103,20 +103,19 @@
           leg.stop=new ArrayList<Place>();
         }
  else {
-          Place stop=makePlace(sptEdge.fromv.mirror);
+          Place stop=makePlace(currState.getBackState().getVertex());
           leg.stop.add(stop);
         }
       }
     }
-    previousSptEdge=sptEdge;
   }
   if (leg != null) {
     leg.to=makePlace(edgeNarrative.getToVertex());
-    leg.endTime=new Date(previousSptEdge.tov.state.getTime());
+    leg.endTime=new Date(finalState.getTime());
     Geometry geometry=geometryFactory.createLineString(coordinates);
     leg.legGeometry=PolylineEncoder.createEncodings(geometry);
     if (startWalk != -1) {
-      leg.walkSteps=getWalkSteps(path.edges.subList(startWalk,i + 1));
+      leg.walkSteps=getWalkSteps(path.states.subList(startWalk,i + 1));
     }
   }
   if (itinerary.transfers == -1) {

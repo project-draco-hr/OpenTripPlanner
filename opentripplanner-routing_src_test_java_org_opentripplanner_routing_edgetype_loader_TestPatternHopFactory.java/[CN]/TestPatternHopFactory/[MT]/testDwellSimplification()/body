@@ -5,8 +5,8 @@
   options.setGtfsContext(context);
   ShortestPathTree spt;
   GraphPath path;
-  spt=AStar.getShortestPathTree(graph,stop_f,stop_h,new State(new GregorianCalendar(2009,8,18,5,0,0).getTimeInMillis()),options);
-  path=spt.getPath(stop_h);
+  spt=AStar.getShortestPathTree(graph,stop_f,stop_h,new GregorianCalendar(2009,8,18,5,0,0).getTimeInMillis(),options);
+  path=spt.getPath(stop_h,false);
   assertNotNull(path);
-  assertEquals(5,path.vertices.size());
+  assertEquals(5,path.states.size());
 }

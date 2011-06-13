@@ -9,11 +9,11 @@
   GregorianCalendar startTime=new GregorianCalendar(2009,11,1,12,34,25);
   options.worstTime=startTime.getTimeInMillis() + 1000 * 60 * 60;
   Vertex end=graph.getVertex("TriMet_8374");
-  ShortestPathTree spt=AStar.getShortestPathTree(graph,start,end,new State(startTime.getTimeInMillis()),options);
-  GraphPath path=spt.getPath(end);
+  ShortestPathTree spt=AStar.getShortestPathTree(graph,start,end,startTime.getTimeInMillis(),options);
+  GraphPath path=spt.getPath(end,true);
   assertNotNull(path);
   options.worstTime=startTime.getTimeInMillis() + 1000 * 60;
-  spt=AStar.getShortestPathTree(graph,start,end,new State(startTime.getTimeInMillis()),options);
-  path=spt.getPath(end);
+  spt=AStar.getShortestPathTree(graph,start,end,startTime.getTimeInMillis(),options);
+  path=spt.getPath(end,true);
   assertNull(path);
 }
