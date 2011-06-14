@@ -115,6 +115,7 @@
   assertNotNull("Reverse path must be found",pathWithSubways);
   subway=false;
   for (  State state : pathWithSubways.states) {
+    if (state.getBackEdge() == null)     continue;
     if (TraverseMode.SUBWAY.equals(state.getBackEdgeNarrative().getMode())) {
       subway=true;
       break;
