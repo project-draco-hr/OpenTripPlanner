@@ -1,6 +1,12 @@
 {
   AgencyAndId tripId=state0.getTripId();
-  InterlineDwellData dwellData=tripIdToInterlineDwellData.get(tripId);
+  InterlineDwellData dwellData;
+  if (state0.getOptions().isArriveBy()) {
+    dwellData=reverseTripIdToInterlineDwellData.get(tripId);
+  }
+ else {
+    dwellData=tripIdToInterlineDwellData.get(tripId);
+  }
   if (dwellData == null) {
     return null;
   }

@@ -1,3 +1,4 @@
 {
   super(from,to);
+  if (!(from instanceof TransitStop))   throw new IllegalStateException("Preboard edges must lead out of a transit stop.");
 }

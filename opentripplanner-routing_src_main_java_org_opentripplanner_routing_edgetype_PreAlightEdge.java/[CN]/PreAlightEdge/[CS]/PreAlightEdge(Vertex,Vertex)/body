@@ -1,3 +1,4 @@
 {
   super(from,to);
+  if (!(to instanceof TransitStop))   throw new IllegalStateException("Pre-alight edges must lead to a transit stop.");
 }

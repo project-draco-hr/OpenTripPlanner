@@ -1,6 +1,9 @@
 {
+  TraverseOptions upOptions=opt.clone();
+  TraverseOptions downOptions=opt.clone();
+  upOptions.setArriveBy(false);
+  downOptions.setArriveBy(true);
   final boolean VERBOSE=false;
-  options.maxWalkDistance=Double.MAX_VALUE;
   final int INITIAL_SIZE=1000;
   if (origin == null || target == null) {
     return null;
@@ -13,12 +16,12 @@
   BinHeap<State> downqueue=new BinHeap<State>(INITIAL_SIZE);
   HashSet<Vertex> upclosed=new HashSet<Vertex>(INITIAL_SIZE);
   HashSet<Vertex> downclosed=new HashSet<Vertex>(INITIAL_SIZE);
-  State upInit=new State(time,origin,options);
-  RemainingWeightHeuristic h=options.remainingWeightHeuristic;
-  double estimate=h.computeInitialWeight(upInit,target,options);
+  State upInit=new State(time,origin,upOptions);
+  RemainingWeightHeuristic h=opt.remainingWeightHeuristic;
+  double estimate=h.computeInitialWeight(upInit,target);
   upspt.add(upInit);
   upqueue.insert(upInit,upInit.getWeight() + estimate);
-  State downInit=new State(time,target,options);
+  State downInit=new State(time,target,downOptions);
   downspt.add(downInit);
   downqueue.insert(downInit,downInit.getWeight());
   Vertex meeting=null;
@@ -52,7 +55,7 @@
       }
       GraphVertex gu=graph.getGraphVertex(u);
       if (VERBOSE)       _log.debug("    up main graph vertex {}",gu);
-      if (options.isArriveBy() && gu != null) {
+      if (opt.isArriveBy() && gu != null) {
         continue;
       }
       Collection<Edge> outgoing=null;
@@ -92,10 +95,10 @@
         if (upclosed.contains(v)) {
           continue;
         }
-        if (up_sv.exceedsWeightLimit(options.maxWeight)) {
+        if (up_sv.exceedsWeightLimit(opt.maxWeight)) {
           continue;
         }
-        if (!options.isArriveBy() && up_sv.getTime() > options.worstTime) {
+        if (!opt.isArriveBy() && up_sv.getTime() > opt.worstTime) {
           continue;
         }
         if (upspt.add(up_sv)) {
@@ -127,7 +130,7 @@
       }
       downclosed.add(down_u);
       GraphVertex maingu=graph.getGraphVertex(down_u);
-      if (!options.isArriveBy() && maingu != null) {
+      if (!opt.isArriveBy() && maingu != null) {
         continue;
       }
       GraphVertex downgu=down.getGraphVertex(down_u);
@@ -162,17 +165,23 @@
         if (edge instanceof OutEdge) {
           continue;
         }
-        State down_sv=edge.traverseBack(down_su);
+        State down_sv=edge.traverse(down_su);
+        if (VERBOSE)         _log.debug("        result down {}",down_sv);
         if (down_sv == null) {
           continue;
         }
-        if (down_sv.exceedsWeightLimit(options.maxWeight)) {
+        if (down_sv.exceedsWeightLimit(opt.maxWeight)) {
+          if (VERBOSE)           _log.debug("        down result too heavy {}",down_sv);
           continue;
         }
-        if (options.isArriveBy() && down_sv.getTime() < options.worstTime) {
+        if (opt.isArriveBy() && down_sv.getTime() < opt.worstTime) {
+          if (VERBOSE)           _log.debug("        down result exceeds worst time {} {}",opt.worstTime,down_sv);
           continue;
         }
-        if (downspt.add(down_sv))         downqueue.insert(down_sv,down_sv.getWeight());
+        if (downspt.add(down_sv)) {
+          if (VERBOSE)           _log.debug("        enqueueing result down {}",down_sv);
+          downqueue.insert(down_sv,down_sv.getWeight());
+        }
       }
     }
   }
@@ -180,24 +189,23 @@
     return null;
   }
  else {
-    _log.debug("meeting point is {}",meeting);
+    if (VERBOSE)     _log.debug("meeting point is {}",meeting);
   }
-  State r=downspt.getState(meeting);
-  State s=upspt.getState(meeting);
+  State upMeet=upspt.getState(meeting);
+  State downMeet=downspt.getState(meeting);
+  State r=opt.isArriveBy() ? downMeet : upMeet;
+  State s=opt.isArriveBy() ? upMeet : downMeet;
   while (s.getBackEdge() != null) {
-    Edge e=s.getBackEdge();
-    r=e.traverseBack(r);
+    r=s.getBackEdge().traverse(r);
     s=s.getBackState();
   }
-  TraverseOptions forwardOptions=r.getOptions();
-  forwardOptions.setArriveBy(false);
-  s=new State(r.getTime(),r.getVertex(),forwardOptions);
+  s=r.reversedClone();
   while (r.getBackEdge() != null) {
     Edge e=r.getBackEdge();
     if (e instanceof Shortcut)     s=((Shortcut)e).unpackTraverse(s);
  else     s=e.traverse(s);
     r=r.getBackState();
   }
-  GraphPath ret=new GraphPath(s,true);
+  GraphPath ret=new GraphPath(s,false);
   return ret;
 }

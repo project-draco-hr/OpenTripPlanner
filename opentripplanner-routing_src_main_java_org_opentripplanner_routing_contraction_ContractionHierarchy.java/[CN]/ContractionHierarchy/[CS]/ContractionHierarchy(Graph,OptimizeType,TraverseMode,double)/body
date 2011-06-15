@@ -8,6 +8,8 @@
   options.optimizeFor=optimize;
   options.maxWalkDistance=Double.MAX_VALUE;
   options.freezeTraverseMode();
+  backOptions=options.clone();
+  backOptions.setArriveBy(true);
   this.contractionFactor=contractionFactor;
   init();
   useCoreVerticesFrom(orig);

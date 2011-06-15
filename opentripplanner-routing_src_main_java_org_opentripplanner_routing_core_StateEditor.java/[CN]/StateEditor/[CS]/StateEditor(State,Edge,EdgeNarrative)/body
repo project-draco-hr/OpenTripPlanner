@@ -19,4 +19,8 @@
     _log.warn("   parent vertex: {}",parent.vertex);
     defectiveTraversal=true;
   }
+  if (traversingBackward != parent.getOptions().isArriveBy()) {
+    _log.error("Actual traversal direction does not match traversal direction in TraverseOptions.");
+    defectiveTraversal=true;
+  }
 }

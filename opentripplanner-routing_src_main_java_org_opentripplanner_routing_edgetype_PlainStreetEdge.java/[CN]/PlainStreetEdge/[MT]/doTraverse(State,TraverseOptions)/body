@@ -1,0 +1,39 @@
+{
+  if (!canTraverse(options)) {
+    if (options.getModes().contains(TraverseMode.BICYCLE)) {
+      return doTraverse(s0,options.getWalkingOptions());
+    }
+    return null;
+  }
+  double time=length / options.speed;
+  double weight;
+  if (options.wheelchairAccessible) {
+    weight=getSlopeSpeedEffectiveLength() / options.speed;
+  }
+ else   if (options.getModes().contains(TraverseMode.BICYCLE)) {
+switch (options.optimizeFor) {
+case SAFE:
+      weight=getBicycleSafetyEffectiveLength() / options.speed;
+    break;
+case FLAT:
+  weight=slopeCostEffectiveLength;
+break;
+case QUICK:
+weight=getSlopeSpeedEffectiveLength() / options.speed;
+break;
+default :
+weight=length / options.speed;
+}
+}
+ else {
+weight=time;
+}
+weight*=options.walkReluctance;
+EdgeNarrative en=new FixedModeEdge(this,options.getModes().getNonTransitMode());
+StateEditor s1=s0.edit(this,en);
+s1.incrementWalkDistance(length);
+s1.incrementTimeInSeconds((int)time);
+s1.incrementWeight(weight);
+if (s1.weHaveWalkedTooFar(options)) return null;
+return s1.makeState();
+}

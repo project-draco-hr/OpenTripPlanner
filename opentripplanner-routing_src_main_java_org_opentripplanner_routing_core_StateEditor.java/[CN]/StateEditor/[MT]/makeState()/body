@@ -1,7 +1,7 @@
 {
   if (spawned)   throw new IllegalStateException("A StateEditor can only be used once.");
   if (defectiveTraversal) {
-    _log.warn("New state failed a sanity check. Traversal ignored.");
+    _log.error("Defective traversal flagged on edge " + child.backEdge);
     return null;
   }
   child.checkNegativeWeight();

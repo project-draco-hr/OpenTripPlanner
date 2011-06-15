@@ -1,3 +1,8 @@
 {
-  child.time+=t;
+  if (msec < 0) {
+    _log.warn("A state's time is being incremented by a negative amount while traversing edge " + child.getBackEdge());
+    defectiveTraversal=true;
+    return;
+  }
+  child.time+=(traversingBackward ? -msec : msec);
 }

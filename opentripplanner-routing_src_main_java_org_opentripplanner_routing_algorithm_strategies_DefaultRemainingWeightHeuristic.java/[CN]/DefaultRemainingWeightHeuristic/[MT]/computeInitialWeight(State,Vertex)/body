@@ -1,0 +1,6 @@
+{
+  this.options=s.getOptions();
+  this.useTransit=options.getModes().getTransit();
+  this.maxSpeed=getMaxSpeed(options);
+  return s.getVertex().distance(target) / maxSpeed;
+}

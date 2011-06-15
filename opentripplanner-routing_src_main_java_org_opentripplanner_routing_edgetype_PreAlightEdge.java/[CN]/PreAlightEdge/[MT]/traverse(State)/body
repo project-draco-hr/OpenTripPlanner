@@ -1,8 +1,59 @@
 {
-  StateEditor s1=s0.edit(this);
-  TransitStop toVertex=(TransitStop)getToVertex();
-  if (toVertex.isLocal()) {
-    s1.setAlightedLocal(true);
+  TraverseOptions options=s0.getOptions();
+  if (options.isArriveBy()) {
+    if (!options.getModes().getTransit())     return null;
+    if (s0.isAlightedLocal()) {
+      return null;
+    }
+    TransitStop toVertex=(TransitStop)getToVertex();
+    if (toVertex.isLocal() && s0.isEverBoarded()) {
+      return null;
+    }
+    if (s0.getNumBoardings() > options.maxTransfers)     return null;
+    long t0=s0.getTime();
+    long alight_before=t0 - options.minTransferTime * 1000;
+    long transfer_penalty=0;
+    if (s0.getLastAlightedTime() != 0) {
+      TransferTable transferTable=options.getTransferTable();
+      if (transferTable.hasPreferredTransfers()) {
+        transfer_penalty=options.baseTransferPenalty;
+      }
+      int transfer_time=transferTable.getTransferTime(getFromVertex(),s0.getPreviousStop());
+      if (transfer_time == TransferTable.UNKNOWN_TRANSFER) {
+      }
+ else       if (transfer_time >= 0) {
+        alight_before=s0.getLastAlightedTime() - transfer_time * 1000;
+        if (alight_before > t0)         alight_before=t0;
+      }
+ else       if (transfer_time == TransferTable.FORBIDDEN_TRANSFER) {
+        return null;
+      }
+ else       if (transfer_time == TransferTable.PREFERRED_TRANSFER) {
+        transfer_penalty=0;
+      }
+ else {
+        throw new IllegalStateException("Undefined value in transfer table.");
+      }
+    }
+ else {
+      alight_before=t0;
+    }
+    if (options.optimizeFor == OptimizeType.TRANSFERS && s0.isEverBoarded()) {
+      transfer_penalty+=options.optimizeTransferPenalty;
+    }
+    StateEditor s1=s0.edit(this);
+    s1.setTime(alight_before);
+    s1.setEverBoarded(true);
+    long wait_cost=(t0 - alight_before) / 1000;
+    s1.incrementWeight(wait_cost + options.boardCost + transfer_penalty);
+    return s1.makeState();
   }
-  return s1.makeState();
+ else {
+    StateEditor s1=s0.edit(this);
+    TransitStop toVertex=(TransitStop)getToVertex();
+    if (toVertex.isLocal()) {
+      s1.setAlightedLocal(true);
+    }
+    return s1.makeState();
+  }
 }

@@ -1,3 +1,8 @@
 {
+  if (length < 0) {
+    _log.warn("A state's walk distance is being incremented by a negative amount.");
+    defectiveTraversal=true;
+    return;
+  }
   child.walkDistance+=length;
 }

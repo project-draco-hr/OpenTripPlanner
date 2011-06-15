@@ -1,9 +1,0 @@
-{
-  StateEditor s1=s0.edit(this);
-  s1.incrementTimeInSeconds(-elapsed);
-  s1.incrementWeight(elapsed);
-  s1.setZone(getEndStop().getZoneId());
-  s1.setRoute(start.getTrip().getRoute().getId());
-  s1.setFareContext(fareContext);
-  return s1.makeState();
-}

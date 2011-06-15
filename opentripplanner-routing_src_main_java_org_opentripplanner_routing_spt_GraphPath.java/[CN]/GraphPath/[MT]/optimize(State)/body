@@ -1,10 +1,9 @@
 {
-  State ret=new State(s.getTime(),s.getVertex(),s.getOptions());
-  back=!back;
+  State ret=s.reversedClone();
   for (State orig=s; orig != null; orig=orig.getBackState()) {
     Edge e=orig.getBackEdge();
     if (e == null)     continue;
-    ret=back ? e.traverseBack(ret) : e.traverse(ret);
+    ret=e.traverse(ret);
     copyExistingNarrativeToNewNarrativeAsAppropriate(orig.getBackEdgeNarrative(),ret.getBackEdgeNarrative());
   }
   return ret;

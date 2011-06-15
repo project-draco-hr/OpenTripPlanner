@@ -1,0 +1,19 @@
+{
+  StreetVertex fromv=((StreetVertex)this.fromv);
+  if (!fromv.canTraverse(options)) {
+    if (options.getModes().contains(TraverseMode.BICYCLE)) {
+      return doTraverse(s0,options.getWalkingOptions());
+    }
+ else {
+      return null;
+    }
+  }
+  StateEditor s1=s0.edit(this);
+  double time=fromv.getLength() / options.speed;
+  double weight=fromv.computeWeight(s0,options,time);
+  s1.incrementWalkDistance(fromv.getLength());
+  s1.incrementTimeInSeconds((int)time);
+  s1.incrementWeight(weight);
+  if (s1.weHaveWalkedTooFar(options))   return null;
+  return s1.makeState();
+}

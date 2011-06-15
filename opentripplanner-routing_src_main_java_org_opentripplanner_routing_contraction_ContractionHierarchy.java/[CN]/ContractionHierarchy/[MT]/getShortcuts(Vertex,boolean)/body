@@ -1,17 +1,18 @@
 {
-  State su=new State(u,options);
+  State su=new State(u,backOptions);
   int searchSpace=0;
   ArrayList<VertexIngress> vs=new ArrayList<VertexIngress>();
   for (  Edge e : graph.getIncoming(u)) {
     if (!isContractable(e)) {
       continue;
     }
-    State sv=e.traverseBack(su);
+    State sv=e.traverse(su);
     if (sv == null) {
       continue;
     }
     vs.add(new VertexIngress(sv.getVertex(),(DirectEdge)e,sv.getWeight(),sv.getAbsTimeDeltaMsec()));
   }
+  su=new State(u,options);
   double maxWWeight=0;
   HashSet<Vertex> wSet=new HashSet<Vertex>();
   ArrayList<VertexIngress> ws=new ArrayList<VertexIngress>();

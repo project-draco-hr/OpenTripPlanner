@@ -1,3 +1,8 @@
 {
+  if (weight < 0) {
+    _log.warn("A state's weight is being incremented by a negative amount while traversing edge " + child.backEdge);
+    defectiveTraversal=true;
+    return;
+  }
   child.weight+=weight;
 }

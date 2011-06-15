@@ -25,7 +25,7 @@
   }
   if (extraEdges.isEmpty())   extraEdges=Collections.emptyMap();
   final RemainingWeightHeuristic heuristic=options.remainingWeightHeuristic;
-  double initialWeight=heuristic.computeInitialWeight(s0,target,options);
+  double initialWeight=heuristic.computeInitialWeight(s0,target);
   spt.add(s0);
   OTPPriorityQueueFactory factory=BinHeap.FACTORY;
   OTPPriorityQueue<State> pq=factory.create(graph.getVertices().size() + extraEdges.size());
@@ -60,7 +60,7 @@
     Collection<Edge> edges=getEdgesForVertex(graph,extraEdges,u_vertex,options);
     for (    Edge edge : edges) {
       if (edge instanceof PatternBoard && u.getNumBoardings() > options.maxTransfers)       continue;
-      for (State v=traverseEdge(edge,u,options); v != null; v=v.getNextResult()) {
+      for (State v=edge.traverse(u); v != null; v=v.getNextResult()) {
         if (_skipTraversalResultStrategy != null && _skipTraversalResultStrategy.shouldSkipTraversalResult(origin,target,u,v,spt,options))         continue;
         double remaining_w=computeRemainingWeight(heuristic,v,target,options);
         double estimate=v.getWeight() + remaining_w;

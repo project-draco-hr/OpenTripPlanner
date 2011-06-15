@@ -1,8 +1,17 @@
 {
+  Edge first, second;
+  if (s0.getOptions().isArriveBy()) {
+    first=edge2;
+    second=edge1;
+  }
+ else {
+    first=edge1;
+    second=edge2;
+  }
   State s1;
-  if (edge1 instanceof Shortcut)   s1=((Shortcut)edge1).unpackTraverse(s0);
- else   s1=edge1.traverse(s0);
-  if (edge2 instanceof Shortcut)   s1=((Shortcut)edge2).unpackTraverse(s1);
- else   s1=edge2.traverse(s1);
+  if (first instanceof Shortcut)   s1=((Shortcut)first).unpackTraverse(s0);
+ else   s1=first.traverse(s0);
+  if (second instanceof Shortcut)   s1=((Shortcut)second).unpackTraverse(s1);
+ else   s1=second.traverse(s1);
   return s1;
 }
