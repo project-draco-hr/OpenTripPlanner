@@ -1,0 +1,19 @@
+{
+  if (intermediates.size() == 0) {
+    TSPPath path=new TSPPath(toVertex,(paths.get(fromVertex).get(toVertex)).getWeight());
+    return path;
+  }
+  List<Vertex> reducedIntermediates=new ArrayList<Vertex>();
+  reducedIntermediates.addAll(intermediates);
+  TSPPath shortest=null;
+  for (  Vertex vertex : intermediates) {
+    reducedIntermediates.remove(vertex);
+    TSPPath path=findShortestPathInternal(toVertex,vertex,paths,reducedIntermediates,costSoFar + paths.get(fromVertex).get(vertex).getWeight());
+    if (shortest == null || shortest.cost > path.cost) {
+      shortest=path;
+      path.vertices.add(0,vertex);
+    }
+    reducedIntermediates.add(vertex);
+  }
+  return shortest;
+}

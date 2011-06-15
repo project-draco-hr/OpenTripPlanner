@@ -1,0 +1,18 @@
+{
+  TSPPath shortestPath=findShortestPathInternal(toVertex,fromVertex,paths,vertices,0);
+  Vertex firstIntermediate=shortestPath.vertices.get(0);
+  HashMap<Vertex,GraphPath> pathsFromFV=paths.get(fromVertex);
+  GraphPath newPath=new GraphPath(pathsFromFV.get(firstIntermediate).states.getLast(),false);
+  Vertex lastVertex=firstIntermediate;
+  for (  Vertex v : shortestPath.vertices.subList(1,shortestPath.vertices.size())) {
+    State lastState=newPath.states.getLast();
+    GraphPath subPath=paths.get(lastVertex).get(v);
+    for (    Edge e : subPath.edges) {
+      lastState=e.traverse(lastState);
+      newPath.edges.add(e);
+      newPath.states.add(lastState);
+    }
+    lastVertex=v;
+  }
+  return newPath;
+}

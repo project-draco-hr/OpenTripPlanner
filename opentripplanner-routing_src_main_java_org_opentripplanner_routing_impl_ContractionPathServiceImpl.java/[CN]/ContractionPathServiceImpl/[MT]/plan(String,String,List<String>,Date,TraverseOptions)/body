@@ -1,4 +1,7 @@
 {
+  if (options.getModes().contains(TraverseMode.TRANSIT)) {
+    throw new UnsupportedOperationException("TSP is not supported for transit trips");
+  }
   ArrayList<String> notFound=new ArrayList<String>();
   Vertex fromVertex=getVertexForPlace(fromPlace,options);
   if (fromVertex == null) {
