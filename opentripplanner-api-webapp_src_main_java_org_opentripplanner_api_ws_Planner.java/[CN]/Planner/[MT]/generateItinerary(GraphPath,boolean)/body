@@ -66,6 +66,10 @@
           leg.addNote(noteForNewLeg);
         }
         notesForNewLeg.clear();
+        if (mode == null) {
+          mode=currState.getBackState().getBackEdgeNarrative().getMode();
+          previousMode=mode;
+        }
         leg.mode=mode.toString();
         if (mode.isOnStreetNonTransit()) {
           startWalk=i;
