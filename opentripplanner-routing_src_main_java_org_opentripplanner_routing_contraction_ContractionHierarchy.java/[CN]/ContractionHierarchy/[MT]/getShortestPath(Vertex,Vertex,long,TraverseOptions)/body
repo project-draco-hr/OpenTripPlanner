@@ -17,13 +17,14 @@
   HashSet<Vertex> upclosed=new HashSet<Vertex>(INITIAL_SIZE);
   HashSet<Vertex> downclosed=new HashSet<Vertex>(INITIAL_SIZE);
   State upInit=new State(time,origin,upOptions);
-  RemainingWeightHeuristic h=opt.remainingWeightHeuristic;
-  double estimate=h.computeInitialWeight(upInit,target);
   upspt.add(upInit);
-  upqueue.insert(upInit,upInit.getWeight() + estimate);
+  upqueue.insert(upInit,upInit.getWeight());
   State downInit=new State(time,target,downOptions);
   downspt.add(downInit);
   downqueue.insert(downInit,downInit.getWeight());
+  RemainingWeightHeuristic h=opt.remainingWeightHeuristic;
+  if (opt.isArriveBy())   h.computeInitialWeight(downInit,origin);
+ else   h.computeInitialWeight(upInit,target);
   Vertex meeting=null;
   double bestMeetingCost=Double.POSITIVE_INFINITY;
   boolean done_up=false;
@@ -102,8 +103,9 @@
           continue;
         }
         if (upspt.add(up_sv)) {
-          double totalWeightEstimate=up_sv.getWeight() + h.computeForwardWeight(up_sv,target);
-          if (totalWeightEstimate < bestMeetingCost)           upqueue.insert(up_sv,totalWeightEstimate);
+          double weightEstimate=up_sv.getWeight();
+          if (!opt.isArriveBy())           weightEstimate+=h.computeForwardWeight(up_sv,target);
+          if (weightEstimate < bestMeetingCost)           upqueue.insert(up_sv,weightEstimate);
         }
       }
     }
@@ -179,8 +181,9 @@
           continue;
         }
         if (downspt.add(down_sv)) {
-          if (VERBOSE)           _log.debug("        enqueueing result down {}",down_sv);
-          downqueue.insert(down_sv,down_sv.getWeight());
+          double weightEstimate=down_sv.getWeight();
+          if (opt.isArriveBy())           weightEstimate+=h.computeReverseWeight(down_sv,origin);
+          if (weightEstimate < bestMeetingCost)           downqueue.insert(down_sv,weightEstimate);
         }
       }
     }
@@ -197,6 +200,7 @@
   State s=opt.isArriveBy() ? upMeet : downMeet;
   while (s.getBackEdge() != null) {
     r=s.getBackEdge().traverse(r);
+    if (r == null)     return null;
     s=s.getBackState();
   }
   s=r.reversedClone();
@@ -204,6 +208,7 @@
     Edge e=r.getBackEdge();
     if (e instanceof Shortcut)     s=((Shortcut)e).unpackTraverse(s);
  else     s=e.traverse(s);
+    if (s == null)     return null;
     r=r.getBackState();
   }
   GraphPath ret=new GraphPath(s,false);
