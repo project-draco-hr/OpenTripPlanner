@@ -13,10 +13,16 @@
  else   if (options.getModes().contains(TraverseMode.BICYCLE)) {
 switch (options.optimizeFor) {
 case SAFE:
-      weight=getBicycleSafetyEffectiveLength() / options.speed;
+      weight=bicycleSafetyEffectiveLength / options.speed;
     break;
+case GREENWAYS:
+  weight=bicycleSafetyEffectiveLength / options.speed;
+if (bicycleSafetyEffectiveLength / length <= StreetVertex.GREENWAY_SAFETY_FACTOR) {
+  weight*=0.66;
+}
+break;
 case FLAT:
-  weight=slopeCostEffectiveLength;
+weight=slopeCostEffectiveLength;
 break;
 case QUICK:
 weight=getSlopeSpeedEffectiveLength() / options.speed;
