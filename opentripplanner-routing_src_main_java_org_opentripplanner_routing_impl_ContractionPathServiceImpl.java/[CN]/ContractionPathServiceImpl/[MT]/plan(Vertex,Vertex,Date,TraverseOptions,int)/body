@@ -23,17 +23,16 @@
     busOnly.setModes(options.getModes().clone());
     busOnly.getModes().setTrainish(false);
   }
-  optionQueue.add(options);
   double maxWeight=Double.MAX_VALUE;
   long maxTime=options.isArriveBy() ? 0 : Long.MAX_VALUE;
   while (paths.size() < nItineraries) {
-    LOG.debug("BEGIN SEARCH");
     options=optionQueue.poll();
     if (options == null) {
       break;
     }
     options.worstTime=maxTime;
     options.maxWeight=maxWeight;
+    LOG.debug("BEGIN SEARCH");
     List<GraphPath> somePaths=_routingService.route(fromVertex,toVertex,targetTime.getTime(),options);
     LOG.debug("END SEARCH");
     if (maxWeight == Double.MAX_VALUE) {
@@ -52,6 +51,7 @@
     for (    GraphPath path : somePaths) {
       if (!paths.contains(path)) {
         paths.add(path);
+        LOG.debug("New routespecs: {}",path.getRouteSpecs());
         for (        RouteSpec spec : path.getRouteSpecs()) {
           TraverseOptions newOptions=options.clone();
           newOptions.bannedRoutes.add(spec);
