@@ -1,0 +1,24 @@
+{
+  LOG.info("Initializing original SSSP");
+  BasicShortestPathTree spt=new BasicShortestPathTree();
+  BinHeap<State> q=new BinHeap<State>();
+  TraverseOptions opt=new TraverseOptions();
+  opt.maxWalkDistance=Double.MAX_VALUE;
+  State initialState=new State(o,opt);
+  q.insert(initialState,0);
+  spt.add(initialState);
+  LOG.info("Performing original SSSP");
+  long t0=System.currentTimeMillis();
+  while (!q.empty()) {
+    State su=q.extract_min();
+    if (!spt.visit(su))     continue;
+    for (    Edge e : originalGraph.getOutgoing(su.getVertex())) {
+      State sv=e.optimisticTraverse(su);
+      if (sv != null && spt.add(sv))       q.insert(sv,sv.getWeight());
+    }
+  }
+  LOG.info("End original SSSP");
+  long t1=System.currentTimeMillis();
+  LOG.info("search time was {} msec",(t1 - t0));
+  return spt;
+}

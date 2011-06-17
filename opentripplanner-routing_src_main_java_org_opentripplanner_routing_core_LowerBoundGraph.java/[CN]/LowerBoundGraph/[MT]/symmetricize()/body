@@ -1,0 +1,30 @@
+{
+  LOG.info("Making distance metric commutative");
+  for (int ui=0; ui < nVertices; ui++) {
+    int[] u_vs=vertex[ui];
+    double[] u_ws=weight[ui];
+    int u_ne=u_vs.length;
+    for (int u_ei=0; u_ei < u_ne; u_ei++) {
+      int vi=u_vs[u_ei];
+      double vw=u_ws[u_ei];
+      int[] v_vs=vertex[vi];
+      double[] v_ws=weight[vi];
+      int v_ne=v_vs.length;
+      boolean found=false;
+      for (int v_ei=0; v_ei < v_ne; ++v_ei) {
+        if (v_vs[v_ei] == ui) {
+          if (v_ws[v_ei] > vw)           v_ws[v_ei]=vw;
+ else           u_ws[u_ei]=v_ws[v_ei];
+          found=true;
+          break;
+        }
+      }
+      if (!found) {
+        vertex[vi]=Arrays.copyOf(v_vs,v_ne + 1);
+        weight[vi]=Arrays.copyOf(v_ws,v_ne + 1);
+        vertex[vi][v_ne]=ui;
+        weight[vi][v_ne]=vw;
+      }
+    }
+  }
+}

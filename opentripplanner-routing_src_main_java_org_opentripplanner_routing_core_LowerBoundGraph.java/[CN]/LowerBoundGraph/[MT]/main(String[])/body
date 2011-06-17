@@ -1,0 +1,40 @@
+{
+  File f=new File("/home/syncopate/otp_data/pdx/Graph.obj");
+  GraphServiceImpl graphService=new GraphServiceImpl();
+  graphService.setGraphPath(f);
+  graphService.refreshGraph();
+  Graph g=graphService.getGraph();
+  LowerBoundGraph lbg=new LowerBoundGraph(g);
+  for (int i=1000; i < 4000; i+=500) {
+    long t0=System.currentTimeMillis();
+    double[] result1=lbg.sssp(i);
+    long t1=System.currentTimeMillis();
+    LOG.info("search time was {} msec",(t1 - t0));
+    int nFound=0;
+    int nFails=0;
+    for (    double w : result1)     if (w == Double.POSITIVE_INFINITY)     nFails++;
+ else     nFound++;
+    LOG.info("number of unreached destinations {}/{}",nFails,result1.length);
+    ShortestPathTree result2=lbg.originalSSSP(lbg.vertexByIndex[i]);
+    int nMatch=0;
+    int nWrong=0;
+    for (int vi=0; vi < lbg.nVertices; vi++) {
+      double w1=result1[vi];
+      double w2=Double.POSITIVE_INFINITY;
+      State s2=result2.getState(lbg.vertexByIndex[vi]);
+      if (s2 != null)       w2=s2.getWeight();
+      if (w1 != w2) {
+        LOG.trace("Mismatch : {} vs {}",w1,w2);
+        nWrong++;
+      }
+ else {
+        nMatch++;
+      }
+    }
+    LOG.debug("Matches {} mismatches {}",nMatch,nWrong);
+  }
+  lbg.symmetricize();
+  for (int i=1000; i < 4000; i+=500) {
+    double[] result=lbg.astar(i,i + 10000);
+  }
+}

@@ -1,0 +1,30 @@
+{
+  originalGraph=original;
+  nVertices=GenericVertex.maxIndex;
+  vertex=new int[nVertices][];
+  weight=new double[nVertices][];
+  vertexByIndex=new Vertex[nVertices];
+  TraverseOptions opt=new TraverseOptions();
+  LOG.info("Loading origial graph into compact representation...");
+  ArrayList<State> svs=new ArrayList<State>();
+  for (  GraphVertex gv : original.getVertices()) {
+    GenericVertex u=(GenericVertex)(gv.vertex);
+    State su=new State(u,opt);
+    svs.clear();
+    for (    Edge e : original.getOutgoing(u)) {
+      State sv=e.optimisticTraverse(su);
+      if (sv != null)       svs.add(sv);
+    }
+    int ui=u.index;
+    int ne=svs.size();
+    vertex[ui]=new int[ne];
+    weight[ui]=new double[ne];
+    int ei=0;
+    for (    State sv : svs) {
+      vertex[ui][ei]=((GenericVertex)(sv.getVertex())).index;
+      weight[ui][ei]=sv.getWeight();
+      ei++;
+    }
+    vertexByIndex[ui]=u;
+  }
+}
