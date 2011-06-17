@@ -6,6 +6,7 @@
     if (fromVertex.isLocal()) {
       s1.setAlightedLocal(true);
     }
+    s1.incrementTimeInSeconds(options.minTransferTime);
     return s1.makeState();
   }
  else {
