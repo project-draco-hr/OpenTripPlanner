@@ -3,7 +3,7 @@
   double[] result=new double[nVertices];
   Arrays.fill(result,Double.POSITIVE_INFINITY);
   double[] heuristic=sssp(destIndex);
-  IntBinHeap q=new IntBinHeap();
+  BinHeap<Integer> q=new BinHeap<Integer>();
   q.insert(originIndex,0);
   long t0=System.currentTimeMillis();
   while (!q.empty()) {
