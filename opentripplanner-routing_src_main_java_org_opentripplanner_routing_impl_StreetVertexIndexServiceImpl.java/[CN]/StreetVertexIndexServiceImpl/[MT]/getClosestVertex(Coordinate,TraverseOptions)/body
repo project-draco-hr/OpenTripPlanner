@@ -1,4 +1,5 @@
 {
+  _log.debug("Looking for/making a vertex near {}",coordinate);
   List<Vertex> vertices=getIntersectionAt(coordinate);
   if (vertices != null && !vertices.isEmpty()) {
     StreetLocation closest=new StreetLocation("corner " + Math.random(),coordinate,"");
@@ -13,36 +14,45 @@
   double closest_stop_distance=Double.POSITIVE_INFINITY;
   Vertex closest_stop=null;
   if (options != null && options.getModes().getTransit()) {
-    for (    Vertex v : getLocalTransitStops(coordinate,400)) {
+    for (    Vertex v : getLocalTransitStops(coordinate,1000)) {
       double d=v.distance(coordinate);
-      _log.debug("stop " + v + " distance "+ d);
       if (d < closest_stop_distance) {
         closest_stop_distance=d;
         closest_stop=v;
       }
     }
   }
-  _log.debug("best stop: " + closest_stop + " distance "+ closest_stop_distance);
+  _log.debug(" best stop: {} distance: {}",closest_stop,closest_stop_distance);
   StreetLocation closest_street=null;
   Collection<StreetEdge> edges=getClosestEdges(coordinate,options);
+  double closest_street_distance=Double.POSITIVE_INFINITY;
   if (edges != null) {
     StreetEdge bestStreet=edges.iterator().next();
     Geometry g=bestStreet.getGeometry();
     LocationIndexedLine l=new LocationIndexedLine(g);
     LinearLocation location=l.project(coordinate);
     Coordinate nearestPoint=location.getCoordinate(g);
-    _log.debug("best street: " + bestStreet.toString() + DistanceLibrary.distance(coordinate,nearestPoint));
-    _log.debug("returning split street");
+    closest_street_distance=DistanceLibrary.distance(coordinate,nearestPoint);
+    _log.debug("best street: {} dist: {}",bestStreet.toString(),closest_street_distance);
     closest_street=StreetLocation.createStreetLocation(bestStreet.getName() + "_" + coordinate.toString(),bestStreet.getName(),edges,nearestPoint);
   }
-  _log.debug("returning transit stop (closer than street)");
   if (closest_street == null) {
+    _log.debug("returning only transit stop (no street found)");
     return closest_stop;
   }
  else {
     if (closest_stop != null) {
-      closest_street.addExtraEdgeTo(closest_stop);
+      double relativeStopDistance=closest_stop_distance / closest_street_distance;
+      if (relativeStopDistance < 0.5) {
+        _log.debug("returning only transit stop (stop much closer than street)");
+        return closest_stop;
+      }
+      if (relativeStopDistance < 1.5) {
+        _log.debug("linking transit stop to street (distances are comparable)");
+        closest_street.addExtraEdgeTo(closest_stop);
+      }
     }
+    _log.debug("returning split street");
     return closest_street;
   }
 }
