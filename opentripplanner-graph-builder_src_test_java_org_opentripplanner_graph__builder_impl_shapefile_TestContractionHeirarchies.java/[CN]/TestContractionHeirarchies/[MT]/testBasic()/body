@@ -1,5 +1,5 @@
 {
-  final double LAT0=10.0;
+  final double LAT0=01.0;
   final double LON0=65.0;
   final double STEP=0.001;
   final int N=10;
@@ -115,6 +115,7 @@
   options=new TraverseOptions();
   options.optimizeFor=OptimizeType.QUICK;
   options.speed=1;
+  options.remainingWeightHeuristic=new TrivialRemainingWeightHeuristic();
   for (int x1=0; x1 < N; ++x1) {
     for (int y1=0; y1 < N; ++y1) {
       for (int x2=0; x2 < N; ++x2) {
