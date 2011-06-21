@@ -11,7 +11,8 @@
     State pathAroundU=spt.getState(w.vertex);
     if (pathAroundU == null || pathAroundU.exceedsWeightLimit(weightThroughU + .01)) {
       int timeThroughU=(int)((w.time + v.time) / 1000);
-      Shortcut vuw=new Shortcut(v.edge,w.edge,timeThroughU,weightThroughU,mode);
+      double walkDistance=v.walkDistance + w.walkDistance;
+      Shortcut vuw=new Shortcut(v.edge,w.edge,timeThroughU,weightThroughU,walkDistance,mode);
       shortcuts.add(vuw);
     }
   }

@@ -16,9 +16,11 @@
     time=(int)(Math.abs(s0.getTime() - s2.getTime()) / 1000);
     weight=s2.getWeight() - s0.getWeight();
     mode=s2.getBackEdgeNarrative().getMode();
+    walkDistance=s2.getWalkDistance() - s0.getWalkDistance();
   }
   StateEditor ret=s0.edit(this);
   ret.incrementTimeInSeconds(time);
   ret.incrementWeight(weight);
+  ret.incrementWalkDistance(walkDistance);
   return ret.makeState();
 }

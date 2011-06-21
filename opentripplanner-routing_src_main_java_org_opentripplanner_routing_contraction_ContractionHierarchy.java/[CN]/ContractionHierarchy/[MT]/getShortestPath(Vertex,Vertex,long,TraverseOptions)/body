@@ -45,7 +45,7 @@
       Vertex u=up_su.getVertex();
       upclosed.add(u);
       if (VERBOSE)       _log.debug("    extract up {}",u);
-      if (downclosed.contains(u)) {
+      if (downclosed.contains(u) && downspt.getState(u).getWalkDistance() + up_su.getWalkDistance() <= up_su.getOptions().maxWalkDistance) {
         double thisMeetingCost=up_su.getWeight() + downspt.getState(u).getWeight();
         if (VERBOSE)         _log.debug("    meeting at {}",u);
         if (thisMeetingCost < bestMeetingCost) {
@@ -122,7 +122,7 @@
       }
       Vertex down_u=down_su.getVertex();
       if (VERBOSE)       _log.debug("    extract down {}",down_u);
-      if (upclosed.contains(down_u)) {
+      if (upclosed.contains(down_u) && upspt.getState(down_u).getWalkDistance() + down_su.getWalkDistance() <= down_su.getOptions().maxWalkDistance) {
         double thisMeetingCost=down_su.getWeight() + upspt.getState(down_u).getWeight();
         if (VERBOSE)         _log.debug("    meeting at {}",down_u);
         if (thisMeetingCost < bestMeetingCost) {

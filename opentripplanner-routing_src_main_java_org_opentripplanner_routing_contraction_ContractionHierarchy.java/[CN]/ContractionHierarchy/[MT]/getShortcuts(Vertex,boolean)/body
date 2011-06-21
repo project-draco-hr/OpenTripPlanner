@@ -10,7 +10,7 @@
     if (sv == null) {
       continue;
     }
-    vs.add(new VertexIngress(sv.getVertex(),(DirectEdge)e,sv.getWeight(),sv.getAbsTimeDeltaMsec()));
+    vs.add(new VertexIngress(sv.getVertex(),(DirectEdge)e,sv.getWeight(),sv.getAbsTimeDeltaMsec(),sv.getWalkDistance()));
   }
   su=new State(u,options);
   double maxWWeight=0;
@@ -26,7 +26,7 @@
     }
     Vertex w=sw.getVertex();
     wSet.add(w);
-    ws.add(new VertexIngress(w,e,sw.getWeight(),sw.getTimeDeltaMsec()));
+    ws.add(new VertexIngress(w,e,sw.getWeight(),sw.getTimeDeltaMsec(),sw.getWalkDistance()));
     if (sw.exceedsWeightLimit(maxWWeight)) {
       maxWWeight=sw.getWeight();
     }
