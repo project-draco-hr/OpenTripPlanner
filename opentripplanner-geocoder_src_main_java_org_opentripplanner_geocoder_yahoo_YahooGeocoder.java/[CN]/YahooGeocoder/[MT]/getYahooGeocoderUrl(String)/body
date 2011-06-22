@@ -3,6 +3,10 @@
   uriBuilder.queryParam("location",address);
   uriBuilder.queryParam("flags","J");
   uriBuilder.queryParam("appid",appId);
+  if (locale != null) {
+    uriBuilder.queryParam("locale",locale);
+    uriBuilder.queryParam("gflags","L");
+  }
   URI uri=uriBuilder.build();
   return new URL(uri.toString());
 }
