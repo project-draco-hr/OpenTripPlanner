@@ -1,0 +1,130 @@
+{
+  Itinerary itinerary=makeEmptyItinerary(path);
+  Leg leg=null;
+  List<String> notesForNewLeg=new ArrayList<String>();
+  Edge edge=null;
+  EdgeNarrative edgeNarrative=null;
+  TraverseMode mode=null;
+  TraverseMode previousMode=null;
+  CoordinateArrayListSequence coordinates=new CoordinateArrayListSequence();
+  State finalState=path.states.getLast();
+  double previousElevation=Double.MAX_VALUE;
+  double edgeElapsedTime;
+  GeometryFactory geometryFactory=new GeometryFactory();
+  int startWalk=-1;
+  int i=-1;
+  for (  State currState : path.states) {
+    i++;
+    edge=currState.getBackEdge();
+    edgeNarrative=currState.getBackEdgeNarrative();
+    if (edge == null)     continue;
+    Set<String> notes=edgeNarrative.getNotes();
+    if (notes != null) {
+      if (leg == null) {
+        notesForNewLeg.addAll(notes);
+      }
+ else {
+        for (        String note : notes) {
+          leg.addNote(note);
+        }
+      }
+    }
+    if (edge instanceof FreeEdge && currState != finalState) {
+      continue;
+    }
+    mode=edgeNarrative.getMode();
+    edgeElapsedTime=currState.getTime() - currState.getBackState().getTime();
+    if (mode != previousMode) {
+      previousMode=mode;
+      if (mode == TraverseMode.TRANSFER) {
+        itinerary.walkTime+=edgeElapsedTime;
+        itinerary.walkDistance+=edgeNarrative.getDistance();
+        continue;
+      }
+ else       if (mode == TraverseMode.BOARDING) {
+        itinerary.transfers++;
+        itinerary.waitingTime+=edgeElapsedTime;
+        continue;
+      }
+ else       if (mode == TraverseMode.ALIGHTING) {
+        itinerary.waitingTime+=edgeElapsedTime;
+        continue;
+      }
+ else {
+        if (leg != null) {
+          if (startWalk != -1) {
+            leg.walkSteps=getWalkSteps(pathService,path.states.subList(startWalk,i));
+          }
+          leg.to=makePlace(edgeNarrative.getFromVertex());
+          leg.endTime=new Date(currState.getBackState().getTime());
+          Geometry geometry=geometryFactory.createLineString(coordinates);
+          leg.legGeometry=PolylineEncoder.createEncodings(geometry);
+          coordinates=new CoordinateArrayListSequence();
+        }
+        leg=makeLeg(currState);
+        for (        String noteForNewLeg : notesForNewLeg) {
+          leg.addNote(noteForNewLeg);
+        }
+        notesForNewLeg.clear();
+        if (mode == null) {
+          mode=currState.getBackState().getBackEdgeNarrative().getMode();
+          previousMode=mode;
+        }
+        leg.mode=mode.toString();
+        if (mode.isOnStreetNonTransit()) {
+          startWalk=i;
+        }
+ else {
+          startWalk=-1;
+          leg.route=edgeNarrative.getName();
+        }
+        itinerary.addLeg(leg);
+      }
+    }
+    leg.distance+=edgeNarrative.getDistance();
+    Geometry edgeGeometry=edgeNarrative.getGeometry();
+    if (edgeGeometry != null) {
+      Coordinate[] edgeCoordinates=edgeGeometry.getCoordinates();
+      if (coordinates.size() > 0 && coordinates.getCoordinate(coordinates.size() - 1).equals(edgeCoordinates[0])) {
+        coordinates.extend(edgeCoordinates,1);
+      }
+ else {
+        coordinates.extend(edgeCoordinates);
+      }
+    }
+    if (mode.isOnStreetNonTransit()) {
+      itinerary.walkTime+=edgeElapsedTime;
+      itinerary.walkDistance+=edgeNarrative.getDistance();
+      if (edge instanceof EdgeWithElevation) {
+        PackedCoordinateSequence profile=((EdgeWithElevation)edge).getElevationProfile();
+        previousElevation=applyElevation(profile,itinerary,previousElevation);
+      }
+    }
+ else     if (mode.isTransit()) {
+      itinerary.transitTime+=edgeElapsedTime;
+      if (showIntermediateStops) {
+        if (leg.stop == null) {
+          leg.stop=new ArrayList<Place>();
+        }
+ else {
+          Place stop=makePlace(currState);
+          leg.stop.add(stop);
+        }
+      }
+    }
+  }
+  if (leg != null) {
+    leg.to=makePlace(edgeNarrative.getToVertex());
+    leg.endTime=new Date(finalState.getTime());
+    Geometry geometry=geometryFactory.createLineString(coordinates);
+    leg.legGeometry=PolylineEncoder.createEncodings(geometry);
+    if (startWalk != -1) {
+      leg.walkSteps=getWalkSteps(pathService,path.states.subList(startWalk,i + 1));
+    }
+  }
+  if (itinerary.transfers == -1) {
+    itinerary.transfers=0;
+  }
+  itinerary.removeBogusLegs();
+  return itinerary;
+}

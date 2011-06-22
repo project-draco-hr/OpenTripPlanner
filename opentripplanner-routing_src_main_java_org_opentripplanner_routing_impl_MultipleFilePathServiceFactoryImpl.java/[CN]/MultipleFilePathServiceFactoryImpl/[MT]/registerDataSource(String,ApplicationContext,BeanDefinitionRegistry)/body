@@ -1,0 +1,8 @@
+{
+  File graphPath=getPathFromRouterID(routerID);
+  BeanDefinition graphBundleBean=new RootBeanDefinition(GraphBundle.class);
+  registry.registerBeanDefinition("graphBundle",graphBundleBean);
+  GraphBundle graphBundle=(GraphBundle)context.getBean("graphBundle");
+  graphBundle.setPath(graphPath);
+  if (!graphBundle.getGraphPath().isFile() || !graphBundle.getGraphPath().canRead())   throw new IllegalStateException("Trying to load non existing graph file " + graphBundle.getGraphPath().getAbsolutePath());
+}

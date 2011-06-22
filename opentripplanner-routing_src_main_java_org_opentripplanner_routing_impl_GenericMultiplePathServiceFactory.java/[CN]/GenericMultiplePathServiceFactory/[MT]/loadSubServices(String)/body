@@ -1,0 +1,36 @@
+{
+  AbstractApplicationContext parentContext=new StaticApplicationContext();
+  BeanDefinitionRegistry registry=(BeanDefinitionRegistry)parentContext;
+  registerDataSource(routerID,parentContext,registry);
+  parentContext.refresh();
+  int retries=0;
+  SubServicesBundle retval=new SubServicesBundle();
+  while (true) {
+    try {
+      retval.context=new ClassPathXmlApplicationContext(subApplicationContextList,parentContext);
+      AutowireCapableBeanFactory factory=retval.context.getAutowireCapableBeanFactory();
+      retval.pathService=(PathService)factory.getBean("pathService",PathService.class);
+      retval.patchService=(PatchService)factory.getBean("patchService",PatchService.class);
+      break;
+    }
+ catch (    BeanCreationException e) {
+      boolean streamCorrupted=false;
+      Throwable t=e.getCause();
+      while (t != null) {
+        if (t instanceof StreamCorruptedException) {
+          streamCorrupted=true;
+          break;
+        }
+        t=t.getCause();
+      }
+      if (!streamCorrupted || retries++ > MAX_RETRIES)       throw e;
+      LOG.warn("Can't load " + routerID + " ("+ e+ "): retrying...");
+      try {
+        Thread.sleep(RETRY_INTERVAL);
+      }
+ catch (      InterruptedException e1) {
+      }
+    }
+  }
+  return retval;
+}

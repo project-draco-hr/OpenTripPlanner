@@ -29,7 +29,9 @@
   ContractionRoutingServiceImpl routingService=new ContractionRoutingServiceImpl();
   routingService.setGraphService(graphService);
   pathService.setRoutingService(routingService);
-  planner.setPathService(pathService);
+  SingletonPathServiceFactoryImpl pathServiceFactory=new SingletonPathServiceFactoryImpl();
+  pathServiceFactory.setPathService(pathService);
+  planner.setPathServiceFactory(pathServiceFactory);
   holder.graph=graph;
   holder.planner=planner;
   holder.pathService=pathService;

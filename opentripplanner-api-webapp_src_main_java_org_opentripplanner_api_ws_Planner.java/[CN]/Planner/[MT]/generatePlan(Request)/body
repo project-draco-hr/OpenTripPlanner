@@ -5,16 +5,17 @@
   boolean tooSloped=false;
   try {
     List<String> intermediates=request.getIntermediatePlaces();
+    PathService pathService=pathServiceFactory.getPathService(request.getRouterId());
     if (intermediates.size() == 0) {
-      paths=pathservice.plan(request.getFrom(),request.getTo(),request.getDateTime(),options,request.getNumItineraries());
+      paths=pathService.plan(request.getFrom(),request.getTo(),request.getDateTime(),options,request.getNumItineraries());
       if (paths == null && request.getWheelchair()) {
         options.maxSlope=Double.MAX_VALUE;
-        paths=pathservice.plan(request.getFrom(),request.getTo(),request.getDateTime(),options,request.getNumItineraries());
+        paths=pathService.plan(request.getFrom(),request.getTo(),request.getDateTime(),options,request.getNumItineraries());
         tooSloped=true;
       }
     }
  else {
-      paths=pathservice.plan(request.getFrom(),request.getTo(),intermediates,request.getDateTime(),options);
+      paths=pathService.plan(request.getFrom(),request.getTo(),intermediates,request.getDateTime(),options);
     }
   }
  catch (  VertexNotFoundException e) {

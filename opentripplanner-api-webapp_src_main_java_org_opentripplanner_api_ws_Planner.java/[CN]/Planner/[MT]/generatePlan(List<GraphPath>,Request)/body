@@ -4,6 +4,7 @@
   Vertex tripEndVertex=exemplar.getEndVertex();
   String startName=tripStartVertex.getName();
   String endName=tripEndVertex.getName();
+  PathService pathService=pathServiceFactory.getPathService(request.getRouterId());
   if (startName == null) {
     startName=tripStartVertex.getLabel();
   }
@@ -14,7 +15,7 @@
   Place to=new Place(tripEndVertex.getX(),tripEndVertex.getY(),endName);
   TripPlan plan=new TripPlan(from,to,request.getDateTime());
   for (  GraphPath path : paths) {
-    Itinerary itinerary=generateItinerary(path,request.getShowIntermediateStops());
+    Itinerary itinerary=generateItinerary(pathService,path,request.getShowIntermediateStops());
     plan.addItinerary(itinerary);
   }
   return plan;

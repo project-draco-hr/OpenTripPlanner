@@ -41,8 +41,8 @@
       }
       GraphPath path=somePaths.get(0);
       long duration=path.getDuration();
-      maxTime=path.getEndTime() + 2 * (options.isArriveBy() ? -duration : duration);
-      maxWeight=path.getWeight() * 2;
+      maxTime=path.getEndTime() + MAX_TIME_FACTOR * (options.isArriveBy() ? -duration : duration);
+      maxWeight=path.getWeight() * MAX_WEIGHT_FACTOR;
     }
     if (somePaths.isEmpty()) {
       LOG.debug("NO PATHS FOUND");

@@ -1,0 +1,57 @@
+{
+  SubServicesBundle ssb=null;
+synchronized (subServices) {
+    ssb=subServices.get(routerID);
+    if (ssb == null) {
+      ssb=new SubServicesBundle();
+      ssb.pathService=null;
+      ssb.timestampLoaded=System.currentTimeMillis();
+      ssb.reloadInProgress=false;
+      subServices.put(routerID,ssb);
+    }
+  }
+synchronized (ssb) {
+    if (ssb.pathService == null) {
+      SubServicesBundle newSsb=loadSubServices(routerID);
+      ssb.pathService=newSsb.pathService;
+      ssb.patchService=newSsb.patchService;
+      ssb.context=newSsb.context;
+      ssb.timestampLoaded=System.currentTimeMillis();
+      return ssb;
+    }
+  }
+  boolean reload=false;
+synchronized (ssb) {
+    if (checkReload(routerID,ssb.timestampLoaded) && !ssb.reloadInProgress) {
+      if (!asyncReload) {
+        LOG.info("Reloading modified graph '" + routerID + "'");
+        ssb.pathService=null;
+        ssb.patchService=null;
+        ssb.context.close();
+        ssb.context=null;
+        SubServicesBundle newSsb=loadSubServices(routerID);
+        ssb.pathService=newSsb.pathService;
+        ssb.patchService=newSsb.patchService;
+        ssb.context=newSsb.context;
+        ssb.timestampLoaded=System.currentTimeMillis();
+      }
+ else {
+        reload=true;
+        ssb.reloadInProgress=true;
+      }
+    }
+  }
+  if (reload) {
+    SubServicesBundle newSsb=loadSubServices(routerID);
+synchronized (ssb) {
+      LOG.info("Async reloading modified graph '" + routerID + "'");
+      ssb.pathService=newSsb.pathService;
+      ssb.patchService=newSsb.patchService;
+      ssb.context.close();
+      ssb.context=newSsb.context;
+      ssb.reloadInProgress=false;
+      ssb.timestampLoaded=System.currentTimeMillis();
+    }
+  }
+  return ssb;
+}

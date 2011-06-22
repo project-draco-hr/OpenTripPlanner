@@ -1,0 +1,7 @@
+{
+  File graphPath=getPathFromRouterID(routerID);
+  GraphBundle graphBundle=new GraphBundle();
+  graphBundle.setPath(graphPath);
+  File filePath=graphBundle.getGraphPath();
+  return (filePath.canRead() && filePath.lastModified() > timestampLoaded);
+}
