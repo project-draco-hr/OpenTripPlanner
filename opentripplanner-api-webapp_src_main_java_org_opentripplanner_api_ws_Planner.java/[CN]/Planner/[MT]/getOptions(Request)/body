@@ -32,5 +32,14 @@
       options.unpreferredRoutes.add(new RouteSpec(routeSpec[0],routeSpec[1]));
     }
   }
+  if (request.getBannedRoutes() != null) {
+    for (    String element : request.getBannedRoutes()) {
+      String[] routeSpec=element.split("_",2);
+      if (routeSpec.length != 2) {
+        throw new IllegalArgumentException("AgencyId or routeId not set in bannedRoutes list");
+      }
+      options.bannedRoutes.add(new RouteSpec(routeSpec[0],routeSpec[1]));
+    }
+  }
   return options;
 }
