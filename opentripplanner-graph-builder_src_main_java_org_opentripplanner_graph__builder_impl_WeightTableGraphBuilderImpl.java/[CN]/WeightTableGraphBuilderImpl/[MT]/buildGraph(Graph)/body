@@ -1,4 +1,8 @@
 {
   WeightTable wt=new WeightTable(graph);
+  if (maxWalkSpeed != null) {
+    wt.setMaxWalkSpeed(maxWalkSpeed);
+  }
+  wt.buildTable();
   graph.putService(WeightTable.class,wt);
 }

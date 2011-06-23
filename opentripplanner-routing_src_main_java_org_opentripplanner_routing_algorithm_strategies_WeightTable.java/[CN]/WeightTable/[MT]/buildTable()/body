@@ -12,6 +12,7 @@
   BinHeap<State> heap=new BinHeap<State>(g.getVertices().size());
   ShortestPathTree spt;
   TraverseOptions options=new TraverseOptions();
+  options.speed=maxWalkSpeed;
   final double MAX_WEIGHT=60 * 60 * options.walkReluctance;
   final double OPTIMISTIC_BOARD_COST=options.boardCost;
   for (  float[] row : table)   Arrays.fill(row,Float.POSITIVE_INFINITY);

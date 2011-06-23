@@ -2,6 +2,11 @@
   final double BOARD_COST=options.boardCost;
   Vertex v=s0.getVertex();
   if (weightCache.containsKey(v))   return weightCache.get(v);
+  if (s0.getOptions().speed > wt.getMaxWalkSpeed()) {
+    double w=defaultHeuristic.computeForwardWeight(s0,target);
+    weightCache.put(s0.getVertex(),w);
+    return w;
+  }
   double w;
   if (wt.includes(v)) {
     double remainingWalk=options.maxWalkDistance - s0.getWalkDistance();
