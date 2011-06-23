@@ -48,6 +48,8 @@
       }
  else       if (mode == TraverseMode.ALIGHTING) {
         itinerary.waitingTime+=edgeElapsedTime;
+        leg.to=makePlace(edgeNarrative.getToVertex());
+        leg.endTime=new Date(currState.getBackState().getTime());
         continue;
       }
  else {
@@ -55,8 +57,10 @@
           if (startWalk != -1) {
             leg.walkSteps=getWalkSteps(pathService,path.states.subList(startWalk,i));
           }
-          leg.to=makePlace(edgeNarrative.getFromVertex());
-          leg.endTime=new Date(currState.getBackState().getTime());
+          if (leg.to == null) {
+            leg.to=makePlace(edgeNarrative.getToVertex());
+            leg.endTime=new Date(currState.getBackState().getTime());
+          }
           Geometry geometry=geometryFactory.createLineString(coordinates);
           leg.legGeometry=PolylineEncoder.createEncodings(geometry);
           coordinates=new CoordinateArrayListSequence();
