@@ -1,6 +1,9 @@
 {
   TraverseOptions upOptions=opt.clone();
   TraverseOptions downOptions=opt.clone();
+  double minWalkDistance=origin.getDistanceToNearestTransitStop() + target.getDistanceToNearestTransitStop();
+  upOptions.maxWalkDistance=Math.max(upOptions.maxWalkDistance,minWalkDistance);
+  downOptions.maxWalkDistance=Math.max(downOptions.maxWalkDistance,minWalkDistance);
   upOptions.setArriveBy(false);
   downOptions.setArriveBy(true);
   final boolean VERBOSE=false;
