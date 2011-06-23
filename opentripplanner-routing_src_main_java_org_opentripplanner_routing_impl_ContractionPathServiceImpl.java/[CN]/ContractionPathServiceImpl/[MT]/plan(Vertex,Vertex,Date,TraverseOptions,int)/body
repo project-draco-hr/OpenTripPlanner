@@ -14,6 +14,7 @@
   }
   if (!options.getModes().getTransit()) {
     nItineraries=1;
+    options.maxWalkDistance=Double.MAX_VALUE;
   }
   ArrayList<GraphPath> paths=new ArrayList<GraphPath>();
   Queue<TraverseOptions> optionQueue=new LinkedList<TraverseOptions>();
