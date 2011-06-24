@@ -36,6 +36,7 @@
   long computationStartTime=System.currentTimeMillis();
   long maxComputationTime=options.maxComputationTime;
   boolean exit=false;
+  int nVisited=0;
   while (!pq.empty()) {
     if (exit)     break;
     if (_verbose) {
@@ -55,9 +56,11 @@
       if (!_searchTerminationStrategy.shouldSearchContinue(origin,target,u,spt,options))       break;
     }
  else     if (u_vertex == target) {
+      System.out.println(" total vertices visited " + nVisited);
       return spt;
     }
     Collection<Edge> edges=getEdgesForVertex(graph,extraEdges,u_vertex,options);
+    nVisited+=1;
     for (    Edge edge : edges) {
       if (edge instanceof PatternBoard && u.getNumBoardings() > options.maxTransfers)       continue;
       for (State v=edge.traverse(u); v != null; v=v.getNextResult()) {
