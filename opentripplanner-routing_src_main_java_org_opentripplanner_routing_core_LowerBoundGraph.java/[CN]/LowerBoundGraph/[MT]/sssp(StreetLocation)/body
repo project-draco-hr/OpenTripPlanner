@@ -1,0 +1,33 @@
+{
+  LOG.info("Initializing SSSP");
+  double[] result=new double[nVertices];
+  Arrays.fill(result,Double.POSITIVE_INFINITY);
+  BinHeap<Integer> q=new BinHeap<Integer>();
+  for (  DirectEdge de : origin.getExtra()) {
+    GenericVertex toVertex=(GenericVertex)(de.getToVertex());
+    int toIndex=toVertex.getIndex();
+    if (toVertex == origin)     continue;
+    if (toIndex >= nVertices)     continue;
+    result[toIndex]=0;
+    q.insert(toIndex,0);
+  }
+  LOG.info("Performing SSSP");
+  while (!q.empty()) {
+    double uw=q.peek_min_key();
+    int ui=q.extract_min();
+    int[] vs=vertex[ui];
+    double[] ws=weight[ui];
+    if (vs == null)     continue;
+    int ne=vs.length;
+    for (int ei=0; ei < ne; ei++) {
+      int vi=vs[ei];
+      double vw=ws[ei] + uw;
+      if (result[vi] > vw) {
+        result[vi]=vw;
+        q.insert(vi,vw);
+      }
+    }
+  }
+  LOG.info("End SSSP");
+  return result;
+}

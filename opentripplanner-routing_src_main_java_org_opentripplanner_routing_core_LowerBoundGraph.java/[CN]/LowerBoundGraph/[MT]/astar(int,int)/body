@@ -7,7 +7,10 @@
   q.insert(originIndex,0);
   long t0=System.currentTimeMillis();
   while (!q.empty()) {
-    if (q.peek_min() == destIndex)     break;
+    if (q.peek_min() == destIndex) {
+      LOG.debug("reached destination, w = {}",q.peek_min_key());
+      break;
+    }
     double uw=q.peek_min_key();
     int ui=q.extract_min();
     int[] vs=vertex[ui];

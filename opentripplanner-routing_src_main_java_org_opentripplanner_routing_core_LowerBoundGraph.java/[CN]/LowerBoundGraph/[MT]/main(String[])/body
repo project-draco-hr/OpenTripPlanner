@@ -5,7 +5,7 @@
   graphService.refreshGraph();
   Graph g=graphService.getGraph();
   LowerBoundGraph lbg=new LowerBoundGraph(g);
-  for (int i=1000; i < 4000; i+=500) {
+  for (int i=1000; i < 9000; i+=500) {
     long t0=System.currentTimeMillis();
     double[] result1=lbg.sssp(i);
     long t1=System.currentTimeMillis();
@@ -33,8 +33,9 @@
     }
     LOG.debug("Matches {} mismatches {}",nMatch,nWrong);
   }
-  lbg.symmetricize();
-  for (int i=1000; i < 4000; i+=500) {
-    double[] result=lbg.astar(i,i + 10000);
+  for (int i=1000; i < lbg.nVertices; i+=500) {
+    double[] result1=lbg.astar(i,lbg.nVertices - i);
+    double[] result2=lbg.astar(i,lbg.nVertices - i - 10000);
+    double[] result3=lbg.astar(i,lbg.nVertices - i - 20000);
   }
 }

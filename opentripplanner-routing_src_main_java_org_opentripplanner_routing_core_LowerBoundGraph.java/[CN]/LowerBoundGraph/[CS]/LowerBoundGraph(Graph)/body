@@ -1,6 +1,7 @@
 {
   originalGraph=original;
   nVertices=GenericVertex.maxIndex;
+  LOG.info("Table size is: {}",nVertices);
   vertex=new int[nVertices][];
   weight=new double[nVertices][];
   vertexByIndex=new Vertex[nVertices];
@@ -13,7 +14,9 @@
     svs.clear();
     for (    Edge e : original.getOutgoing(u)) {
       State sv=e.optimisticTraverse(su);
-      if (sv != null)       svs.add(sv);
+      if (sv != null) {
+        svs.add(sv);
+      }
     }
     int ui=u.index;
     int ne=svs.size();

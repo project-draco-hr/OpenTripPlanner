@@ -3,6 +3,7 @@
   for (int ui=0; ui < nVertices; ui++) {
     int[] u_vs=vertex[ui];
     double[] u_ws=weight[ui];
+    if (u_vs == null)     continue;
     int u_ne=u_vs.length;
     for (int u_ei=0; u_ei < u_ne; u_ei++) {
       int vi=u_vs[u_ei];
