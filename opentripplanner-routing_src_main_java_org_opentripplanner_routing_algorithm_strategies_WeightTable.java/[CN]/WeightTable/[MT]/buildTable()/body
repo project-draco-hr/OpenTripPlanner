@@ -8,84 +8,28 @@
   for (int i=0; i < nStops; i++)   stopIndices.put(stopVertices.get(i),i);
   LOG.debug("Number of stops: " + nStops);
   table=new float[nStops][nStops];
+  for (  float[] row : table)   Arrays.fill(row,Float.POSITIVE_INFINITY);
   LOG.debug("Performing search at each transit stop.");
-  BinHeap<State> heap=new BinHeap<State>(g.getVertices().size());
-  ShortestPathTree spt;
+  int nThreads=Runtime.getRuntime().availableProcessors();
+  LOG.debug("number of threads: " + nThreads);
+  ArrayBlockingQueue<Runnable> taskQueue=new ArrayBlockingQueue<Runnable>(nStops);
+  ThreadPoolExecutor threadPool=new ThreadPoolExecutor(nThreads,nThreads,10,TimeUnit.SECONDS,taskQueue);
+  GenericObjectPool heapPool=new GenericObjectPool(new PoolableBinHeapFactory<State>(g.getVertices().size()),nThreads);
   TraverseOptions options=new TraverseOptions();
   options.speed=maxWalkSpeed;
   final double MAX_WEIGHT=60 * 60 * options.walkReluctance;
   final double OPTIMISTIC_BOARD_COST=options.boardCost;
-  for (  float[] row : table)   Arrays.fill(row,Float.POSITIVE_INFINITY);
-  int count=0;
+  ArrayList<Callable<Void>> tasks=new ArrayList<Callable<Void>>();
   for (  TransitStop origin : stopVertices) {
-    count+=1;
-    if (count % 1000 == 0)     LOG.debug("TransitStop " + count + "/"+ nStops);
-    int oi=stopIndices.get(origin);
-    heap.reset();
-    spt=new BasicShortestPathTree(500000);
-    State s0=new State(origin,options);
-    spt.add(s0);
-    heap.insert(s0,s0.getWeight());
-    while (!heap.empty()) {
-      double w=heap.peek_min_key();
-      State u=heap.extract_min();
-      if (!spt.visit(u))       continue;
-      Vertex uVertex=u.getVertex();
-      if (w > MAX_WEIGHT)       break;
-      if (uVertex instanceof TransitStop) {
-        int di=stopIndices.get(uVertex);
-        table[oi][di]=(float)w;
-      }
-      GraphVertex gu=g.getGraphVertex(uVertex.getLabel());
-      for (      Edge e : gu.getOutgoing()) {
-        if (!(e instanceof PreBoardEdge)) {
-          State v=e.optimisticTraverse(u);
-          if (v != null && spt.add(v))           heap.insert(v,v.getWeight());
-        }
-      }
-    }
-    heap.reset();
-    spt=new BasicShortestPathTree(50000);
-    Queue<Vertex> q=new ArrayDeque<Vertex>(100);
-    q.add(origin);
-    while (!q.isEmpty()) {
-      Vertex u=q.poll();
-      GraphVertex gu=g.getGraphVertex(u.getLabel());
-      for (      Edge e : gu.getOutgoing()) {
-        if (e instanceof PatternBoard) {
-          Vertex v=((PatternBoard)e).getToVertex();
-          stopIndices.put((GenericVertex)v,oi);
-          StateEditor se=(new State(u,options)).edit(e);
-          se.incrementWeight(OPTIMISTIC_BOARD_COST);
-          s0=se.makeState();
-          spt.add(s0);
-          heap.insert(s0,s0.getWeight());
-        }
- else         if (e instanceof FreeEdge) {
-          Vertex v=((FreeEdge)e).getToVertex();
-          stopIndices.put((GenericVertex)v,oi);
-          q.add(v);
-        }
-      }
-    }
-    while (!heap.empty()) {
-      double w=heap.peek_min_key();
-      State u=heap.extract_min();
-      if (!spt.visit(u))       continue;
-      Vertex uVertex=u.getVertex();
-      if (uVertex instanceof TransitStop) {
-        int di=stopIndices.get(uVertex);
-        if (table[oi][di] > w) {
-          table[oi][di]=(float)w;
-        }
-        continue;
-      }
-      GraphVertex gu=g.getGraphVertex(uVertex.getLabel());
-      for (      Edge e : gu.getOutgoing()) {
-        State v=e.optimisticTraverse(u);
-        if (v != null && spt.add(v))         heap.insert(v,v.getWeight());
-      }
-    }
+    SPTComputer task=new SPTComputer(heapPool,options,MAX_WEIGHT,OPTIMISTIC_BOARD_COST,origin);
+    tasks.add(task);
+  }
+  try {
+    threadPool.invokeAll(tasks);
+    threadPool.shutdown();
+  }
+ catch (  InterruptedException e) {
+    throw new RuntimeException(e);
   }
   floyd();
 }
