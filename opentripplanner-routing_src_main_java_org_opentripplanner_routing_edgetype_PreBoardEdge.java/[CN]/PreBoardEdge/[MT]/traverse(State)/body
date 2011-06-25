@@ -6,7 +6,6 @@
     if (fromVertex.isLocal()) {
       s1.setAlightedLocal(true);
     }
-    s1.incrementTimeInSeconds(options.minTransferTime);
     return s1.makeState();
   }
  else {
@@ -20,7 +19,7 @@
     }
     if (s0.getNumBoardings() > options.maxTransfers)     return null;
     long t0=s0.getTime();
-    long board_after=t0 + options.minTransferTime * 1000;
+    long board_after;
     long transfer_penalty=0;
     if (s0.getLastAlightedTime() != 0) {
       TransferTable transferTable=options.getTransferTable();
@@ -29,6 +28,7 @@
       }
       int transfer_time=transferTable.getTransferTime(s0.getPreviousStop(),getToVertex());
       if (transfer_time == TransferTable.UNKNOWN_TRANSFER) {
+        board_after=t0 + options.minTransferTime * 1000;
       }
  else       if (transfer_time >= 0) {
         board_after=s0.getLastAlightedTime() + transfer_time * 1000;
@@ -39,13 +39,14 @@
       }
  else       if (transfer_time == TransferTable.PREFERRED_TRANSFER) {
         transfer_penalty=0;
+        board_after=t0 + options.minTransferTime * 1000;
       }
  else {
         throw new IllegalStateException("Undefined value in transfer table.");
       }
     }
  else {
-      board_after=t0;
+      board_after=t0 + options.minTransferTime * 500;
     }
     if (options.optimizeFor == OptimizeType.TRANSFERS && s0.isEverBoarded()) {
       transfer_penalty+=options.optimizeTransferPenalty;
@@ -54,7 +55,7 @@
     s1.setTime(board_after);
     s1.setEverBoarded(true);
     long wait_cost=(board_after - t0) / 1000;
-    s1.incrementWeight(wait_cost + options.boardCost + transfer_penalty);
+    s1.incrementWeight(wait_cost + transfer_penalty);
     return s1.makeState();
   }
 }

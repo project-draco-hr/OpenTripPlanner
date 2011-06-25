@@ -1,7 +1,4 @@
 {
-  TraverseOptions opt=s0.getOptions();
   StateEditor s1=s0.edit(this);
-  s1.incrementTimeInSeconds(opt.minTransferTime);
-  s1.incrementWeight(opt.minTransferTime + opt.boardCost / 2);
   return s1.makeState();
 }

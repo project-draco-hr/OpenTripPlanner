@@ -65,7 +65,7 @@
       wait_cost*=options.waitReluctance;
     }
     s1.incrementWeight(preferences_penalty);
-    s1.incrementWeight(wait_cost);
+    s1.incrementWeight(wait_cost + options.boardCost);
     return s1.makeState();
   }
  else {
@@ -76,7 +76,6 @@
     s1.setTripId(null);
     s1.setLastAlightedTime(state0.getTime());
     s1.setPreviousStop(tov);
-    s1.incrementWeight(1);
     return s1.makeState();
   }
 }

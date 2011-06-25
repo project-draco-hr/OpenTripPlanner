@@ -1,5 +1,5 @@
 {
   StateEditor s1=state0.edit(this);
-  s1.incrementWeight(1);
+  s1.incrementWeight(state0.getOptions().boardCost);
   return s1.makeState();
 }
