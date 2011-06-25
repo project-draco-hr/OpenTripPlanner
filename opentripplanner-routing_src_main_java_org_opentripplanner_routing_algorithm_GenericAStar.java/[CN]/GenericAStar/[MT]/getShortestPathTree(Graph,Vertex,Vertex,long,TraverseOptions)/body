@@ -56,7 +56,7 @@
       if (!_searchTerminationStrategy.shouldSearchContinue(origin,target,u,spt,options))       break;
     }
  else     if (u_vertex == target) {
-      System.out.println(" total vertices visited " + nVisited);
+      LOG.debug("total vertices visited {}",nVisited);
       return spt;
     }
     Collection<Edge> edges=getEdgesForVertex(graph,extraEdges,u_vertex,options);
