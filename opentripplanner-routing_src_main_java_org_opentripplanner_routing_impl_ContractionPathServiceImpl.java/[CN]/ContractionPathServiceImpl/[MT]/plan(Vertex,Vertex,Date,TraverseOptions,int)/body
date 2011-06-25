@@ -33,9 +33,10 @@
     }
     options.worstTime=maxTime;
     options.maxWeight=maxWeight;
+    long searchBeginTime=System.currentTimeMillis();
     LOG.debug("BEGIN SEARCH");
     List<GraphPath> somePaths=_routingService.route(fromVertex,toVertex,targetTime.getTime(),options);
-    LOG.debug("END SEARCH");
+    LOG.debug("END SEARCH {} msec",System.currentTimeMillis() - searchBeginTime);
     if (maxWeight == Double.MAX_VALUE) {
       if (somePaths.isEmpty()) {
         return null;
