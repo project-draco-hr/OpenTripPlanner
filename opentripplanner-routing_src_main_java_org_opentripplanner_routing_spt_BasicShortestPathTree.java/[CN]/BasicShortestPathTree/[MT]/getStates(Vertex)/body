@@ -1,4 +1,5 @@
 {
   State s=states.get(dest);
-  return Arrays.asList(s);
+  if (s == null)   return Collections.emptyList();
+ else   return Arrays.asList(s);
 }
