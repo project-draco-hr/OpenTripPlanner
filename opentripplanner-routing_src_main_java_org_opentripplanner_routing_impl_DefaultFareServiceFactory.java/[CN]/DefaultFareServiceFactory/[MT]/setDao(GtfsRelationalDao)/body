@@ -1,0 +1,8 @@
+{
+  fareRules=getFareRules(dao);
+  fareAttributes=new HashMap<AgencyAndId,FareAttribute>();
+  for (  AgencyAndId fareId : fareRules.keySet()) {
+    FareAttribute attribute=dao.getFareAttributeForId(fareId);
+    fareAttributes.put(fareId,attribute);
+  }
+}

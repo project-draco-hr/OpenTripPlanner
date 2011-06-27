@@ -43,7 +43,8 @@
   request.setMinTransferTime(minTransferTime);
   Response response=new Response(request);
   try {
-    TripPlan plan=generatePlan(request);
+    PlanGenerator generator=new PlanGenerator(request,pathServiceFactory);
+    TripPlan plan=generator.generate();
     response.setPlan(plan);
   }
  catch (  VertexNotFoundException e) {

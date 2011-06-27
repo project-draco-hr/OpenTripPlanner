@@ -1,4 +1,8 @@
 {
+  if (fareServiceFactory == null) {
+    fareServiceFactory=new DefaultFareServiceFactory();
+  }
+  fareServiceFactory.setDao(_dao);
   loadStops(graph);
   loadPathways(graph);
   _log.debug("Loading hops");
@@ -50,7 +54,7 @@
     for (    List<StopTime> stopTimes : allStopTimes) {
       boolean simple=false;
       if (tripPattern == null) {
-        tripPattern=makeTripPattern(graph,trip,stopTimes,fareContext);
+        tripPattern=makeTripPattern(graph,trip,stopTimes);
         patterns.put(stopPattern,tripPattern);
         if (blockId != null && !blockId.equals("")) {
           addTripToInterliningMap(trip,stopTimes,tripPattern);
@@ -140,4 +144,5 @@
   loadTransfers(graph);
   deleteUselessDwells(graph);
   clearCachedData();
+  graph.putService(FareService.class,fareServiceFactory.makeFareService());
 }

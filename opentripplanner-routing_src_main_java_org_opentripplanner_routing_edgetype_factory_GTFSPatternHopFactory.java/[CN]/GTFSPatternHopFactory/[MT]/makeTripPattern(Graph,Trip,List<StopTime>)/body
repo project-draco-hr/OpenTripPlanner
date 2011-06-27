@@ -1,0 +1,41 @@
+{
+  BasicTripPattern tripPattern=new BasicTripPattern(trip,stopTimes);
+  TraverseMode mode=GtfsLibrary.getTraverseMode(trip.getRoute());
+  int lastStop=stopTimes.size() - 1;
+  int i;
+  StopTime st1=null;
+  for (i=0; i < lastStop; i++) {
+    StopTime st0=stopTimes.get(i);
+    Stop s0=st0.getStop();
+    st1=stopTimes.get(i + 1);
+    Stop s1=st1.getStop();
+    int dwellTime=st0.getDepartureTime() - st0.getArrivalTime();
+    String departId=id(s0.getId()) + "_" + id(trip.getId())+ "_"+ st0.getStopSequence()+ "_D";
+    String arriveId=id(s1.getId()) + "_" + id(trip.getId())+ "_"+ st1.getStopSequence()+ "_A";
+    Vertex startJourneyDepart=graph.addVertex(departId,s0.getName(),s0.getId(),s0.getLon(),s0.getLat());
+    Vertex endJourneyArrive=graph.addVertex(arriveId,s1.getName(),s1.getId(),s1.getLon(),s1.getLat());
+    Vertex startJourneyArrive;
+    if (i != 0) {
+      startJourneyArrive=graph.addVertex(id(s0.getId()) + "_" + id(trip.getId())+ "_"+ st0.getStopSequence()+ "_A",s0.getName(),s0.getId(),s0.getLon(),s0.getLat());
+      PatternDwell dwell=new PatternDwell(startJourneyArrive,startJourneyDepart,i,tripPattern);
+      if (dwellTime == 0) {
+        potentiallyUselessDwells.add(dwell);
+      }
+      graph.addEdge(dwell);
+    }
+    PatternHop hop=new PatternHop(startJourneyDepart,endJourneyArrive,s0,s1,i,tripPattern);
+    hop.setGeometry(getHopGeometry(trip.getShapeId(),st0,st1,startJourneyDepart,endJourneyArrive));
+    int arrivalTime=st1.getArrivalTime();
+    int departureTime=st0.getDepartureTime();
+    int runningTime=arrivalTime - departureTime;
+    tripPattern.addHop(i,0,departureTime,runningTime,arrivalTime,dwellTime,trip);
+    graph.addEdge(hop);
+    Vertex startStation=graph.getVertex(departureVertexId(id(s0.getId())));
+    Vertex endStation=graph.getVertex(arrivalVertexId(id(s1.getId())));
+    PatternBoard boarding=new PatternBoard(startStation,startJourneyDepart,tripPattern,i,mode);
+    graph.addEdge(boarding);
+    graph.addEdge(new PatternAlight(endJourneyArrive,endStation,tripPattern,i,mode));
+  }
+  tripPattern.setTripFlags(0,((trip.getWheelchairAccessible() != 0) ? TripPattern.FLAG_WHEELCHAIR_ACCESSIBLE : 0) | (((trip.getRoute().getBikesAllowed() == 2 && trip.getTripBikesAllowed() != 1) || trip.getTripBikesAllowed() == 2) ? TripPattern.FLAG_BIKES_ALLOWED : 0));
+  return tripPattern;
+}

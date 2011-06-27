@@ -1,12 +1,3 @@
 {
   _dao=context.getDao();
-  HashMap<AgencyAndId,FareRuleSet> fareRules=context.getFareRules();
-  HashMap<AgencyAndId,FareAttribute> fareAttributes=new HashMap<AgencyAndId,FareAttribute>();
-  for (  AgencyAndId fareId : fareRules.keySet()) {
-    FareAttribute attribute=context.getFareAttribute(fareId);
-    fareAttributes.put(fareId,attribute);
-  }
-  if (fareRules.size() > 0 && fareAttributes.size() > 0) {
-    fareContext=new FareContext(fareRules,fareAttributes);
-  }
 }

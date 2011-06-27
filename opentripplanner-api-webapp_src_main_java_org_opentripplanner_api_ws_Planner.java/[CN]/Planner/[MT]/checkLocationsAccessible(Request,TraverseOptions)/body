@@ -1,8 +1,0 @@
-{
-  if (request.getWheelchair()) {
-    PathService pathService=pathServiceFactory.getPathService(request.getRouterId());
-    if (!pathService.isAccessible(request.getFrom(),options) || !pathService.isAccessible(request.getTo(),options)) {
-      throw new LocationNotAccessible();
-    }
-  }
-}

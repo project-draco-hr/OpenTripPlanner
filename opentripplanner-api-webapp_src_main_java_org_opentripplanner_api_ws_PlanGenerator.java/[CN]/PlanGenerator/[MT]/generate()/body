@@ -1,0 +1,35 @@
+{
+  TraverseOptions options=getOptions(request);
+  checkLocationsAccessible(request,options);
+  List<GraphPath> paths=null;
+  boolean tooSloped=false;
+  try {
+    List<String> intermediates=request.getIntermediatePlaces();
+    if (intermediates.size() == 0) {
+      paths=pathService.plan(request.getFrom(),request.getTo(),request.getDateTime(),options,request.getNumItineraries());
+      if (paths == null && request.getWheelchair()) {
+        options.maxSlope=Double.MAX_VALUE;
+        paths=pathService.plan(request.getFrom(),request.getTo(),request.getDateTime(),options,request.getNumItineraries());
+        tooSloped=true;
+      }
+    }
+ else {
+      paths=pathService.plan(request.getFrom(),request.getTo(),intermediates,request.getDateTime(),options);
+    }
+  }
+ catch (  VertexNotFoundException e) {
+    LOGGER.log(Level.INFO,"Vertex not found: " + request.getFrom() + " : "+ request.getTo(),e);
+    throw e;
+  }
+  if (paths == null || paths.size() == 0) {
+    LOGGER.log(Level.INFO,"Path not found: " + request.getFrom() + " : "+ request.getTo());
+    throw new PathNotFoundException();
+  }
+  TripPlan plan=generatePlan(paths,request);
+  if (plan != null) {
+    for (    Itinerary i : plan.itinerary) {
+      i.tooSloped=tooSloped;
+    }
+  }
+  return plan;
+}
