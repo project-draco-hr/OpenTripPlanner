@@ -1,0 +1,9 @@
+{
+  ArrayList<AgencyAndId> out=new ArrayList<AgencyAndId>();
+  for (  String stop : stops) {
+    out.add(new AgencyAndId("MTA NYCT",stop));
+    out.add(new AgencyAndId("MTA NYCT",stop + "N"));
+    out.add(new AgencyAndId("MTA NYCT",stop + "S"));
+  }
+  return out;
+}

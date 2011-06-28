@@ -26,6 +26,10 @@
   }
   builder.append(" at ");
   builder.append(startTime);
+  if (classifier != null) {
+    builder.append(", classified by ");
+    builder.append(classifier.toString());
+  }
   builder.append(")");
   return builder.toString();
 }
