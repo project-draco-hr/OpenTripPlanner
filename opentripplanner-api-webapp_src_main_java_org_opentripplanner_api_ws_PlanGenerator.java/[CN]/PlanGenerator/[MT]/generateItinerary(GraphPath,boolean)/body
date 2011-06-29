@@ -54,7 +54,7 @@
         continue;
       }
  else       if (changingToInterlinedTrip) {
-        leg.to=makePlace(edgeNarrative.getToVertex());
+        leg.to=makePlace(edgeNarrative.getFromVertex());
         leg.endTime=new Date(currState.getBackState().getTime());
         Geometry geometry=geometryFactory.createLineString(coordinates);
         leg.legGeometry=PolylineEncoder.createEncodings(geometry);
@@ -128,10 +128,8 @@
         if (leg.stop == null) {
           leg.stop=new ArrayList<Place>();
         }
- else {
-          Place stop=makePlace(currState);
-          leg.stop.add(stop);
-        }
+        Place stop=makePlace(currState);
+        leg.stop.add(stop);
       }
     }
   }

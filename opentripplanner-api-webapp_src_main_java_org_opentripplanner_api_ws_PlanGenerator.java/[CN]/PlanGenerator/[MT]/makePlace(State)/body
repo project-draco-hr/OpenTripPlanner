@@ -2,7 +2,7 @@
   Coordinate endCoord=state.getVertex().getCoordinate();
   String name=state.getVertex().getName();
   AgencyAndId stopId=state.getVertex().getStopId();
-  Date timeAtState=new Date(state.getBackState().getTime());
+  Date timeAtState=new Date(state.getTime());
   Place place=new Place(endCoord.x,endCoord.y,name,stopId,timeAtState);
   return place;
 }
