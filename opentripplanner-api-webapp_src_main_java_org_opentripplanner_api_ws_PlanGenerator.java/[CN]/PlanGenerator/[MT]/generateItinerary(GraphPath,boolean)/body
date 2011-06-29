@@ -34,7 +34,8 @@
     }
     mode=edgeNarrative.getMode();
     edgeElapsedTime=currState.getTime() - currState.getBackState().getTime();
-    if (mode != previousMode) {
+    boolean changingToInterlinedTrip=leg != null && leg.route != null && !leg.route.equals(edgeNarrative.getName()) && mode.isTransit();
+    if (mode != previousMode || changingToInterlinedTrip) {
       previousMode=mode;
       if (mode == TraverseMode.TRANSFER) {
         itinerary.walkTime+=edgeElapsedTime;
@@ -51,6 +52,23 @@
         leg.to=makePlace(edgeNarrative.getToVertex());
         leg.endTime=new Date(currState.getBackState().getTime());
         continue;
+      }
+ else       if (changingToInterlinedTrip) {
+        leg.to=makePlace(edgeNarrative.getToVertex());
+        leg.endTime=new Date(currState.getBackState().getTime());
+        Geometry geometry=geometryFactory.createLineString(coordinates);
+        leg.legGeometry=PolylineEncoder.createEncodings(geometry);
+        leg.interlineWithPreviousLeg=true;
+        coordinates=new CoordinateArrayListSequence();
+        leg=makeLeg(currState);
+        for (        String noteForNewLeg : notesForNewLeg) {
+          leg.addNote(noteForNewLeg);
+        }
+        notesForNewLeg.clear();
+        leg.mode=mode.toString();
+        startWalk=-1;
+        leg.route=edgeNarrative.getName();
+        itinerary.addLeg(leg);
       }
  else {
         if (leg != null) {
