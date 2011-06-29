@@ -76,7 +76,7 @@
             leg.walkSteps=getWalkSteps(pathService,path.states.subList(startWalk,i));
           }
           if (leg.to == null) {
-            leg.to=makePlace(edgeNarrative.getToVertex());
+            leg.to=makePlace(edgeNarrative.getFromVertex());
             leg.endTime=new Date(currState.getBackState().getTime());
           }
           Geometry geometry=geometryFactory.createLineString(coordinates);
