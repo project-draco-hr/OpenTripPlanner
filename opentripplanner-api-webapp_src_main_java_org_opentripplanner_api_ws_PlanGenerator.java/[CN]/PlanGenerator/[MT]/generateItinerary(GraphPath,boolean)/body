@@ -29,11 +29,14 @@
         }
       }
     }
+    edgeElapsedTime=currState.getTime() - currState.getBackState().getTime();
+    if (mode == TraverseMode.BOARDING || mode == TraverseMode.ALIGHTING) {
+      itinerary.waitingTime+=edgeElapsedTime;
+    }
     if (edge instanceof FreeEdge && currState != finalState) {
       continue;
     }
     mode=edgeNarrative.getMode();
-    edgeElapsedTime=currState.getTime() - currState.getBackState().getTime();
     boolean changingToInterlinedTrip=leg != null && leg.route != null && !leg.route.equals(edgeNarrative.getName()) && mode.isTransit() && previousMode != null && previousMode.isTransit();
     if (mode != previousMode || changingToInterlinedTrip) {
       previousMode=mode;
@@ -44,11 +47,9 @@
       }
  else       if (mode == TraverseMode.BOARDING) {
         itinerary.transfers++;
-        itinerary.waitingTime+=edgeElapsedTime;
         continue;
       }
  else       if (mode == TraverseMode.ALIGHTING) {
-        itinerary.waitingTime+=edgeElapsedTime;
         leg.to=makePlace(edgeNarrative.getToVertex());
         leg.endTime=new Date(currState.getBackState().getTime());
         continue;
