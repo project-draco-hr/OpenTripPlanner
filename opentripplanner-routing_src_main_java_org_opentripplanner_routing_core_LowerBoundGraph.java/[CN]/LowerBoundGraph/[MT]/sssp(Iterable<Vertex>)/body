@@ -1,17 +1,20 @@
 {
-  LOG.info("Initializing SSSP");
   double[] result=new double[nVertices];
   Arrays.fill(result,Double.POSITIVE_INFINITY);
-  result[originIndex]=0;
   BinHeap<Integer> q=new BinHeap<Integer>();
-  q.insert(originIndex,0);
-  LOG.info("Performing SSSP");
+  for (  Vertex origin : origins) {
+    int originIndex=((GenericVertex)origin).index;
+    result[originIndex]=0;
+    q.insert(originIndex,0);
+  }
+  long t0=System.currentTimeMillis();
   while (!q.empty()) {
     double uw=q.peek_min_key();
     int ui=q.extract_min();
     int[] vs=vertex[ui];
     double[] ws=weight[ui];
     int ne=vs.length;
+    if (ne > 0)     heaviest=ui;
     for (int ei=0; ei < ne; ei++) {
       int vi=vs[ei];
       double vw=ws[ei] + uw;
@@ -21,6 +24,6 @@
       }
     }
   }
-  LOG.info("End SSSP");
+  LOG.info("End SSSP ({} msec)",System.currentTimeMillis() - t0);
   return result;
 }

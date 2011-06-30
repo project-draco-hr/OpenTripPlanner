@@ -6,13 +6,17 @@
   weight=new double[nVertices][];
   vertexByIndex=new Vertex[nVertices];
   TraverseOptions opt=new TraverseOptions();
+  if (kind == INCOMING)   opt.setArriveBy(true);
   LOG.info("Loading origial graph into compact representation...");
   ArrayList<State> svs=new ArrayList<State>();
   for (  GraphVertex gv : original.getVertices()) {
     GenericVertex u=(GenericVertex)(gv.vertex);
     State su=new State(u,opt);
     svs.clear();
-    for (    Edge e : original.getOutgoing(u)) {
+    Iterable<Edge> edges;
+    if (kind == INCOMING)     edges=original.getIncoming(u);
+ else     edges=original.getOutgoing(u);
+    for (    Edge e : edges) {
       State sv=e.optimisticTraverse(su);
       if (sv != null) {
         svs.add(sv);
@@ -30,4 +34,5 @@
     }
     vertexByIndex[ui]=u;
   }
+  if (kind == UNDIRECTED)   this.symmetricize();
 }

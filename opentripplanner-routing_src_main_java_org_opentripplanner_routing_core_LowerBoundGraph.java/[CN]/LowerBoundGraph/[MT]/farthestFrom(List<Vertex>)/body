@@ -1,0 +1,12 @@
+{
+  if (origins.size() == 0) {
+    sssp(vertexByIndex[(int)(Math.random() * nVertices)]);
+    LOG.debug("random farthest vertex is {}",vertexByIndex[heaviest]);
+    sssp(vertexByIndex[heaviest]);
+  }
+ else {
+    sssp(origins);
+  }
+  LOG.debug("farthest vertex from {} is {}",origins,vertexByIndex[heaviest]);
+  return vertexByIndex[heaviest];
+}
