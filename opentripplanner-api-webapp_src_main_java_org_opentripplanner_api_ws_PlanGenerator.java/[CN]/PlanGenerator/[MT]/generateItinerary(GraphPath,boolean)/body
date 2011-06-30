@@ -59,9 +59,9 @@
         leg.endTime=new Date(currState.getBackState().getTime());
         Geometry geometry=geometryFactory.createLineString(coordinates);
         leg.legGeometry=PolylineEncoder.createEncodings(geometry);
-        leg.interlineWithPreviousLeg=true;
         coordinates=new CoordinateArrayListSequence();
         leg=makeLeg(currState);
+        leg.interlineWithPreviousLeg=true;
         for (        String noteForNewLeg : notesForNewLeg) {
           leg.addNote(noteForNewLeg);
         }
