@@ -14,7 +14,7 @@
     Vertex endJourneyArrive=graph.addVertex(id(s1.getId()) + "_" + tripId+ "_"+ st1.getStopSequence()+ "_A",s1.getName(),s1.getId(),s1.getLon(),s1.getLat());
     Dwell dwell=new Dwell(startJourneyArrive,startJourneyDepart,st0);
     graph.addEdge(dwell);
-    Hop hop=new Hop(startJourneyDepart,endJourneyArrive,st0,st1);
+    Hop hop=new Hop(startJourneyDepart,endJourneyArrive,st0,st1,trip);
     hop.setGeometry(getHopGeometry(trip.getShapeId(),st0,st1,startJourneyDepart,endJourneyArrive));
     hops.add(hop);
     if (st0.getPickupType() != 1) {

@@ -5,6 +5,7 @@
   runningTimes=(ArrayList<Integer>[])Array.newInstance(ArrayList.class,hops);
   dwellTimes=(ArrayList<Integer>[])Array.newInstance(ArrayList.class,hops);
   arrivalTimes=(ArrayList<Integer>[])Array.newInstance(ArrayList.class,hops);
+  headsigns=(ArrayList<String>[])Array.newInstance(ArrayList.class,hops);
   perTripFlags=new ArrayList<Integer>();
   perStopFlags=new int[hops + 1];
   zones=new String[hops + 1];
@@ -15,6 +16,7 @@
     runningTimes[i]=new ArrayList<Integer>();
     dwellTimes[i]=new ArrayList<Integer>();
     arrivalTimes[i]=new ArrayList<Integer>();
+    headsigns[i]=new ArrayList<String>();
   }
   stops=new ArrayList<Stop>(stopTimes.size());
   i=0;

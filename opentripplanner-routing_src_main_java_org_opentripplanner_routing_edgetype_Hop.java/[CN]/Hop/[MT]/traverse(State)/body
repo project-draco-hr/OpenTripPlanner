@@ -1,5 +1,6 @@
 {
-  StateEditor s1=s0.edit(this);
+  EdgeNarrative en=new TransitNarrative(trip,start.getStopHeadsign(),this);
+  StateEditor s1=s0.edit(this,en);
   s1.incrementTimeInSeconds(elapsed);
   s1.incrementWeight(elapsed);
   s1.setZone(getEndStop().getZoneId());

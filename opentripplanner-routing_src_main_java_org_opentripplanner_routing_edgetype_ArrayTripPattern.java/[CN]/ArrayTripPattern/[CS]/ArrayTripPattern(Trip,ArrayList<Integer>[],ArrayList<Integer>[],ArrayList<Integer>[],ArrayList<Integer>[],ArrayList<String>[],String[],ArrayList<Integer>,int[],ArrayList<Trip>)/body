@@ -2,6 +2,9 @@
   this.exemplar=exemplar;
   this.departureTimes=new int[departureTimes.length][departureTimes[0].size()];
   this.runningTimes=new int[runningTimes.length][runningTimes[0].size()];
+  if (headsigns != null) {
+    this.headsigns=new String[headsigns.length][headsigns[0].size()];
+  }
   if (arrivalTimes == null) {
     this.arrivalTimes=null;
     this.dwellTimes=null;
@@ -43,6 +46,26 @@
         this.dwellTimes[i][j]=dwellTimes[i].get(j);
         if (bestDwellTimes[i] > this.dwellTimes[i][j]) {
           bestDwellTimes[i]=this.dwellTimes[i][j];
+        }
+      }
+    }
+  }
+  if (headsigns != null) {
+    String[] nullRow=null;
+    for (int i=0; i < headsigns.length; ++i) {
+      boolean rowIsNull=true;
+      for (int j=0; j < headsigns[i].size(); ++j) {
+        this.headsigns[i][j]=headsigns[i].get(j);
+        if (this.headsigns[i][j] != null) {
+          rowIsNull=false;
+        }
+      }
+      if (rowIsNull) {
+        if (nullRow == null) {
+          nullRow=this.headsigns[i];
+        }
+ else {
+          this.headsigns[i]=nullRow;
         }
       }
     }

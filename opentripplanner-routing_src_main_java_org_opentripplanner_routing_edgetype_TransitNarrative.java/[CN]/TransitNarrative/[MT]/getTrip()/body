@@ -1,0 +1,21 @@
+{
+  if (headsign == null) {
+    return trip;
+  }
+ else {
+    Trip newtrip=new Trip();
+    newtrip.setTripHeadsign(headsign);
+    newtrip.setBlockId(trip.getBlockId());
+    newtrip.setDirectionId(trip.getDirectionId());
+    newtrip.setDirectionId(trip.getDirectionId());
+    newtrip.setId(trip.getId());
+    newtrip.setRoute(trip.getRoute());
+    newtrip.setRouteShortName(trip.getRouteShortName());
+    newtrip.setServiceId(trip.getServiceId());
+    newtrip.setShapeId(trip.getServiceId());
+    newtrip.setTripBikesAllowed(trip.getTripBikesAllowed());
+    newtrip.setTripShortName(trip.getTripShortName());
+    newtrip.setWheelchairAccessible(trip.getWheelchairAccessible());
+    return newtrip;
+  }
+}

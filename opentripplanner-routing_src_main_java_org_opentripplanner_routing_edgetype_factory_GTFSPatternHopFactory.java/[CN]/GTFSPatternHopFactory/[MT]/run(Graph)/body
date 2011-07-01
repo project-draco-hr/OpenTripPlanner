@@ -83,7 +83,7 @@
             int dwellTime=st0.getDepartureTime() - st0.getArrivalTime();
             int runningTime=st1.getArrivalTime() - st0.getDepartureTime();
             try {
-              tripPattern.addHop(i,insertionPoint,st0.getDepartureTime(),runningTime,st1.getArrivalTime(),dwellTime,trip);
+              tripPattern.addHop(i,insertionPoint,st0.getDepartureTime(),runningTime,st1.getArrivalTime(),dwellTime,st0.getStopHeadsign(),trip);
             }
  catch (            TripOvertakingException e) {
               _log.warn(e.getMessage());

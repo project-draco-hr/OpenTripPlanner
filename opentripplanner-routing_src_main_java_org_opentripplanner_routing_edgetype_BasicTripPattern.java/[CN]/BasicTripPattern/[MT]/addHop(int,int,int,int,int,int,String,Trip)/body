@@ -3,6 +3,7 @@
   ArrayList<Integer> stopDepartureTimes=departureTimes[stopIndex];
   ArrayList<Integer> stopArrivalTimes=arrivalTimes[stopIndex];
   ArrayList<Integer> stopDwellTimes=dwellTimes[stopIndex];
+  ArrayList<String> stopHeadsigns=headsigns[stopIndex];
   if (insertionPoint > 0) {
     if (stopDepartureTimes.get(insertionPoint - 1) > departureTime) {
       throw new TripOvertakingException(trip,trips.get(insertionPoint - 1),stopIndex);
@@ -21,4 +22,5 @@
   stopRunningTimes.add(insertionPoint,runningTime);
   stopArrivalTimes.add(insertionPoint,arrivalTime);
   stopDwellTimes.add(insertionPoint,dwellTime);
+  stopHeadsigns.add(insertionPoint,headsign);
 }

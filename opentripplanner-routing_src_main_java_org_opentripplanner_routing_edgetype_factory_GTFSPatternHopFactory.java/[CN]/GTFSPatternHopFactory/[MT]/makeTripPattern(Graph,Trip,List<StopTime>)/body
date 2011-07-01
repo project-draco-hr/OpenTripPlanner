@@ -28,7 +28,7 @@
     int arrivalTime=st1.getArrivalTime();
     int departureTime=st0.getDepartureTime();
     int runningTime=arrivalTime - departureTime;
-    tripPattern.addHop(i,0,departureTime,runningTime,arrivalTime,dwellTime,trip);
+    tripPattern.addHop(i,0,departureTime,runningTime,arrivalTime,dwellTime,st0.getStopHeadsign(),trip);
     graph.addEdge(hop);
     Vertex startStation=graph.getVertex(departureVertexId(id(s0.getId())));
     Vertex endStation=graph.getVertex(arrivalVertexId(id(s1.getId())));
