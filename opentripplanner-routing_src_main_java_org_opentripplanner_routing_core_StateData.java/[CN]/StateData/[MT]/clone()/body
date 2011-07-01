@@ -1,0 +1,8 @@
+{
+  try {
+    return (StateData)super.clone();
+  }
+ catch (  CloneNotSupportedException e1) {
+    throw new IllegalStateException("This is not happening");
+  }
+}
