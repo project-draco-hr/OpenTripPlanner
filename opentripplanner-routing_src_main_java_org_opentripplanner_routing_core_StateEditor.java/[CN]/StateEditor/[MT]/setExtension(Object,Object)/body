@@ -2,7 +2,7 @@
   cloneStateDataAsNeeded();
   if (!extensionsModified) {
     HashMap<Object,Object> newExtensions;
-    if (child.stateData.extensions == null)     newExtensions=new HashMap(4);
+    if (child.stateData.extensions == null)     newExtensions=new HashMap<Object,Object>(4);
  else     newExtensions=(HashMap<Object,Object>)child.stateData.extensions.clone();
     child.stateData.extensions=newExtensions;
     extensionsModified=true;
