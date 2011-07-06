@@ -2,36 +2,28 @@
   if (origin == null || target == null) {
     return null;
   }
-  State s0;
-  if (options.isArriveBy()) {
-    s0=new State(time,target,options);
-    target=origin;
-    origin=s0.getVertex();
-  }
- else {
-    s0=new State(time,origin,options);
-  }
-  ShortestPathTree spt=createShortestPathTree(s0,options);
+  TraverseOptions options=origin.getOptions();
+  ShortestPathTree spt=createShortestPathTree(origin,options);
   options.setTransferTable(graph.getTransferTable());
   final ExtraEdgesStrategy extraEdgesStrategy=options.extraEdgesStrategy;
   Map<Vertex,List<Edge>> extraEdges=new HashMap<Vertex,List<Edge>>();
   if (options.isArriveBy()) {
-    extraEdgesStrategy.addIncomingEdgesForOrigin(extraEdges,origin);
+    extraEdgesStrategy.addIncomingEdgesForOrigin(extraEdges,origin.getVertex());
     extraEdgesStrategy.addIncomingEdgesForTarget(extraEdges,target);
   }
  else {
-    extraEdgesStrategy.addOutgoingEdgesForOrigin(extraEdges,origin);
+    extraEdgesStrategy.addOutgoingEdgesForOrigin(extraEdges,origin.getVertex());
     extraEdgesStrategy.addOutgoingEdgesForTarget(extraEdges,target);
   }
   if (extraEdges.isEmpty())   extraEdges=Collections.emptyMap();
   final RemainingWeightHeuristic heuristic=options.remainingWeightHeuristic;
-  double initialWeight=heuristic.computeInitialWeight(s0,target);
-  spt.add(s0);
+  double initialWeight=heuristic.computeInitialWeight(origin,target);
+  spt.add(origin);
   OTPPriorityQueueFactory factory=BinHeap.FACTORY;
   OTPPriorityQueue<State> pq=factory.create(graph.getVertices().size() + extraEdges.size());
-  pq.insert(s0,s0.getWeight() + initialWeight);
+  pq.insert(origin,origin.getWeight() + initialWeight);
   options=options.clone();
-  double minWalkDistance=origin.getDistanceToNearestTransitStop() + target.getDistanceToNearestTransitStop();
+  double minWalkDistance=origin.getVertex().getDistanceToNearestTransitStop() + target.getDistanceToNearestTransitStop();
   options.maxWalkDistance=Math.max(options.maxWalkDistance,minWalkDistance);
   long computationStartTime=System.currentTimeMillis();
   long maxComputationTime=options.maxComputationTime;
@@ -53,7 +45,7 @@
     Vertex u_vertex=u.getVertex();
     if (_verbose)     System.out.println("   vertex " + u_vertex);
     if (_searchTerminationStrategy != null) {
-      if (!_searchTerminationStrategy.shouldSearchContinue(origin,target,u,spt,options))       break;
+      if (!_searchTerminationStrategy.shouldSearchContinue(origin.getVertex(),target,u,spt,options))       break;
     }
  else     if (u_vertex == target) {
       LOG.debug("total vertices visited {}",nVisited);
@@ -64,7 +56,7 @@
     for (    Edge edge : edges) {
       if (edge instanceof PatternBoard && u.getNumBoardings() > options.maxTransfers)       continue;
       for (State v=edge.traverse(u); v != null; v=v.getNextResult()) {
-        if (_skipTraversalResultStrategy != null && _skipTraversalResultStrategy.shouldSkipTraversalResult(origin,target,u,v,spt,options))         continue;
+        if (_skipTraversalResultStrategy != null && _skipTraversalResultStrategy.shouldSkipTraversalResult(origin.getVertex(),target,u,v,spt,options))         continue;
         double remaining_w=computeRemainingWeight(heuristic,v,target,options);
         double estimate=v.getWeight() + remaining_w;
         if (_verbose) {

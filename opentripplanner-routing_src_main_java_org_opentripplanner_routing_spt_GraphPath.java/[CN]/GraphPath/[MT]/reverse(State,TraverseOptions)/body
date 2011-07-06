@@ -1,0 +1,14 @@
+{
+  State root=state.createState(state.getTime(),state.getVertex(),options);
+  while (state.getBackState() != null) {
+    State next=state.getBackState();
+    Edge edge=state.getBackEdge();
+    EdgeNarrative narrative=state.getBackEdgeNarrative();
+    StateEditor editor=root.edit(edge,narrative);
+    editor.setTime(next.getTime());
+    editor.setFromState(state);
+    root=editor.makeState();
+    state=state.getBackState();
+  }
+  return root;
+}

@@ -1,4 +1,5 @@
 {
+  TraverseOptions options=origin.getOptions();
   ContractionHierarchySet hierarchies=_graphService.getContractionHierarchySet();
   ContractionHierarchy hierarchy=null;
   hierarchy=hierarchies.getHierarchy(options);
@@ -11,13 +12,11 @@
     if (hierarchy == null) {
       GenericAStar aStar=getAStarInstance(options);
       Graph _graph=hierarchies.getGraph();
-      ShortestPathTree spt=aStar.getShortestPathTree(_graph,fromVertex,toVertex,time,options);
+      ShortestPathTree spt=aStar.getShortestPathTree(_graph,origin,target);
       if (spt == null) {
         return Collections.emptyList();
       }
-      List<GraphPath> paths=null;
-      if (options.isArriveBy())       paths=spt.getPaths(fromVertex,true);
- else       paths=spt.getPaths(toVertex,true);
+      List<GraphPath> paths=spt.getPaths(target,true);
       if (paths == null || paths.isEmpty()) {
         options.maxWalkDistance*=2;
         continue;
@@ -26,7 +25,9 @@
         return paths;
       }
     }
-    GraphPath path=hierarchy.getShortestPath(fromVertex,toVertex,time,options);
+    Vertex fromVertex=options.isArriveBy() ? target : origin.getVertex();
+    Vertex toVertex=options.isArriveBy() ? origin.getVertex() : target;
+    GraphPath path=hierarchy.getShortestPath(fromVertex,toVertex,origin.getTime(),options);
     if (path == null) {
       options.maxWalkDistance*=2;
       continue;

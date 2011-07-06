@@ -4,7 +4,9 @@
     Edge e=orig.getBackEdge();
     if (e == null)     continue;
     ret=e.traverse(ret);
-    copyExistingNarrativeToNewNarrativeAsAppropriate(orig.getBackEdgeNarrative(),ret.getBackEdgeNarrative());
+    EdgeNarrative origNarrative=orig.getBackEdgeNarrative();
+    EdgeNarrative retNarrative=ret.getBackEdgeNarrative();
+    copyExistingNarrativeToNewNarrativeAsAppropriate(origNarrative,retNarrative);
   }
   return ret;
 }

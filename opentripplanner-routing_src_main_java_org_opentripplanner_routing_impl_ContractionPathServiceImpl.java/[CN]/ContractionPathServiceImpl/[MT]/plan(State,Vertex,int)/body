@@ -1,4 +1,6 @@
 {
+  Date targetTime=new Date(origin.getTime());
+  TraverseOptions options=origin.getOptions();
   if (_graphService.getCalendarService() != null)   options.setCalendarService(_graphService.getCalendarService());
   options.setTransferTable(_graphService.getGraph().getTransferTable());
   options.setServiceDays(targetTime.getTime());
@@ -35,7 +37,7 @@
     options.maxWeight=maxWeight;
     long searchBeginTime=System.currentTimeMillis();
     LOG.debug("BEGIN SEARCH");
-    List<GraphPath> somePaths=_routingService.route(fromVertex,toVertex,targetTime.getTime(),options);
+    List<GraphPath> somePaths=_routingService.route(origin,target);
     LOG.debug("END SEARCH {} msec",System.currentTimeMillis() - searchBeginTime);
     if (maxWeight == Double.MAX_VALUE) {
       if (somePaths.isEmpty()) {

@@ -11,5 +11,16 @@
   if (notFound.size() > 0) {
     throw new VertexNotFoundException(notFound);
   }
-  return plan(fromVertex,toVertex,targetTime,options,nItineraries);
+  Vertex origin=null;
+  Vertex target=null;
+  if (options.isArriveBy()) {
+    origin=toVertex;
+    target=fromVertex;
+  }
+ else {
+    origin=fromVertex;
+    target=toVertex;
+  }
+  State state=new State(targetTime.getTime(),origin,options);
+  return plan(state,target,nItineraries);
 }

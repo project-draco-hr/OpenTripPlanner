@@ -1,8 +1,4 @@
 {
   long timeAdjustment=0;
-  if (stateData.everBoarded) {
-    timeAdjustment=stateData.options.minTransferTime * 500 + 1;
-    if (stateData.options.isArriveBy())     timeAdjustment*=-1;
-  }
-  return new State(this.time + timeAdjustment,this.vertex,stateData.options.reversedClone());
+  return createState(this.time + timeAdjustment,this.vertex,stateData.options.reversedClone());
 }
