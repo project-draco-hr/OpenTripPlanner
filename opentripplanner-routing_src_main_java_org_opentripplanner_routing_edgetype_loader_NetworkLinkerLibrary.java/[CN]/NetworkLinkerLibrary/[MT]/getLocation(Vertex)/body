@@ -1,8 +1,11 @@
 {
+  String vertexLabel="link for " + v.getStopId();
+  Vertex existing=graph.getVertex(vertexLabel);
+  if (existing != null)   return existing;
   Coordinate coordinate=v.getCoordinate();
   List<Vertex> atIntersection=index.getIntersectionAt(coordinate);
   if (atIntersection != null) {
-    Vertex linked=new GenericVertex("link for " + v.getStopId(),coordinate.x,coordinate.y);
+    Vertex linked=new GenericVertex(vertexLabel,coordinate.x,coordinate.y);
     graph.addVertex(linked);
     for (    Vertex i : atIntersection) {
       graph.addEdge(new FreeEdge(linked,i));
@@ -14,5 +17,5 @@
   if (edges == null || edges.size() < 2) {
     return null;
   }
-  return createVertex("link for " + v.getStopId(),edges,coordinate);
+  return createVertex(vertexLabel,edges,coordinate);
 }
