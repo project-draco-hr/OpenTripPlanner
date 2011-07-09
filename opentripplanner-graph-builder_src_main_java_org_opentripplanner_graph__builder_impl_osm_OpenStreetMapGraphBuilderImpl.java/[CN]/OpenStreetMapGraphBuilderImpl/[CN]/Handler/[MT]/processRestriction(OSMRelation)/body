@@ -1,0 +1,47 @@
+{
+  long from=-1, to=-1, via=-1;
+  for (  OSMRelationMember member : relation.getMembers()) {
+    String role=member.getRole();
+    if (role.equals("from")) {
+      from=member.getRef();
+    }
+ else     if (role.equals("to")) {
+      to=member.getRef();
+    }
+ else     if (role.equals("via")) {
+      via=member.getRef();
+    }
+  }
+  if (from == -1 || to == -1 || via == -1) {
+    _log.debug("Bad restriction " + relation.getId());
+    return;
+  }
+  TurnRestrictionTag tag;
+  if (relation.isTag("restriction","no_right_turn")) {
+    tag=new TurnRestrictionTag(from,to,via,TurnRestrictionType.NO_TURN);
+  }
+ else   if (relation.isTag("restriction","no_left_turn")) {
+    tag=new TurnRestrictionTag(from,to,via,TurnRestrictionType.NO_TURN);
+  }
+ else   if (relation.isTag("restriction","no_straight_on")) {
+    tag=new TurnRestrictionTag(from,to,via,TurnRestrictionType.NO_TURN);
+  }
+ else   if (relation.isTag("restriction","only_straight_on")) {
+    tag=new TurnRestrictionTag(from,to,via,TurnRestrictionType.ONLY_TURN);
+  }
+ else   if (relation.isTag("restriction","only_right_turn")) {
+    tag=new TurnRestrictionTag(from,to,via,TurnRestrictionType.ONLY_TURN);
+  }
+ else   if (relation.isTag("restriction","only_left_turn")) {
+    tag=new TurnRestrictionTag(from,to,via,TurnRestrictionType.ONLY_TURN);
+  }
+ else {
+    _log.debug("unknown restriction type " + relation.getTag("restriction"));
+    return;
+  }
+  TurnRestriction restriction=new TurnRestriction();
+  restriction.type=tag.type;
+  turnRestrictionsByTag.put(tag,restriction);
+  GraphBuilderUtils.addToMapList(turnRestrictionsByFromWay,from,tag);
+  GraphBuilderUtils.addToMapList(turnRestrictionsByToWay,to,tag);
+}

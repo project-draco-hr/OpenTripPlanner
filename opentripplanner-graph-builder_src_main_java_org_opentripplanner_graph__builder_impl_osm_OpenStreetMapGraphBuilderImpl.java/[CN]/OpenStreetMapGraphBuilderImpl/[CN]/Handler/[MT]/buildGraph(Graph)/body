@@ -78,10 +78,40 @@
       if (backStreet != null) {
         graph.addEdge(backStreet);
       }
+      List<TurnRestrictionTag> restrictionTags=turnRestrictionsByFromWay.get(way.getId());
+      if (restrictionTags != null) {
+        for (        TurnRestrictionTag tag : restrictionTags) {
+          if (tag.via == startNode) {
+            TurnRestriction restriction=turnRestrictionsByTag.get(tag);
+            restriction.from=backStreet;
+          }
+ else           if (tag.via == endNode) {
+            TurnRestriction restriction=turnRestrictionsByTag.get(tag);
+            restriction.from=street;
+          }
+        }
+      }
+      restrictionTags=turnRestrictionsByToWay.get(way);
+      if (restrictionTags != null) {
+        for (        TurnRestrictionTag tag : restrictionTags) {
+          if (tag.via == startNode) {
+            TurnRestriction restriction=turnRestrictionsByTag.get(tag);
+            restriction.to=street;
+          }
+ else           if (tag.via == endNode) {
+            TurnRestriction restriction=turnRestrictionsByTag.get(tag);
+            restriction.to=backStreet;
+          }
+        }
+      }
       startNode=endNode;
       osmStartNode=_nodes.get(startNode);
     }
   }
+  Map<Edge,TurnRestriction> turnRestrictions=new HashMap<Edge,TurnRestriction>();
+  for (  TurnRestriction restriction : turnRestrictionsByTag.values()) {
+    turnRestrictions.put(restriction.from,restriction);
+  }
   StreetUtils.pruneFloatingIslands(graph);
-  StreetUtils.makeEdgeBased(graph,endpoints);
+  StreetUtils.makeEdgeBased(graph,endpoints,turnRestrictions);
 }

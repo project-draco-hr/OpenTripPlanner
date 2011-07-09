@@ -1,6 +1,6 @@
 {
   if (_relations.containsKey(relation.getId()))   return;
-  if (!(relation.isTag("type","route") && relation.isTag("route","road")) && !(relation.isTag("type","multipolygon") && relation.hasTag("highway"))) {
+  if (!(relation.isTag("type","restriction")) && !(relation.isTag("type","route") && relation.isTag("route","road")) && !(relation.isTag("type","multipolygon") && relation.hasTag("highway"))) {
     return;
   }
   _relations.put(relation.getId(),relation);

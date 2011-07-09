@@ -1,3 +1,6 @@
 {
+  if (restricted && !options.getModes().contains(TraverseMode.WALK)) {
+    return false;
+  }
   return fromv.canTraverse(options);
 }
