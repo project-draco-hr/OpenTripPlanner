@@ -21,6 +21,7 @@
       }
       if (e instanceof Alight || e instanceof Hop || e instanceof Dwell) {
         Trip trip=((AbstractEdge)e).getTrip();
+        addModeFromTrip(trip);
         variant=addTripToVariant(trip);
       }
  else       if (e instanceof PatternAlight || e instanceof PatternHop || e instanceof PatternDwell) {
@@ -29,6 +30,7 @@
         variant=addTripToVariant(exemplar);
         for (        Trip trip : pattern.getTrips()) {
           variantsByTrip.put(trip.getId(),variant);
+          addModeFromTrip(trip);
         }
       }
  else {
@@ -87,6 +89,6 @@
     }
   }
   _log.debug("Built transit index: " + variantsByRoute.size() + " routes, "+ totalTrips+ " trips, "+ totalVariants+ " variants ");
-  TransitIndexService service=new TransitIndexServiceImpl(variantsByRoute,variantsByTrip,preBoardEdges,preAlightEdges,directionsByRoute);
+  TransitIndexService service=new TransitIndexServiceImpl(variantsByRoute,variantsByTrip,preBoardEdges,preAlightEdges,directionsByRoute,modes);
   graph.putService(TransitIndexService.class,service);
 }
