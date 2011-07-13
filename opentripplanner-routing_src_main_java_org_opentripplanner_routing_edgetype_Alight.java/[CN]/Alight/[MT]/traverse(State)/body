@@ -31,6 +31,9 @@
   }
  else {
     StateEditor s1=s0.edit(this);
+    s1.setTripId(null);
+    s1.setLastAlightedTime(s0.getTime());
+    s1.setPreviousStop(tov);
     return s1.makeState();
   }
 }
