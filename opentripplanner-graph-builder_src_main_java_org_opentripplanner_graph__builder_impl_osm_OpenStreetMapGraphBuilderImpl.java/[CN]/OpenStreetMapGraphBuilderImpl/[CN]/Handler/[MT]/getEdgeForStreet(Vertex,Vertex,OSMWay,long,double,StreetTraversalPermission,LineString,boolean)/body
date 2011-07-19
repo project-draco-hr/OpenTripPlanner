@@ -7,6 +7,9 @@
   }
   PlainStreetEdge street=new PlainStreetEdge(start,end,geometry,name,length,permissions,back);
   street.setId(id);
+  if (!way.hasTag("name")) {
+    street.setBogusName(true);
+  }
   if (way.isTagFalse("wheelchair") || ("steps".equals(way.getTag("highway")) && !way.isTagTrue("wheelchair"))) {
     street.setWheelchairAccessible(false);
   }
