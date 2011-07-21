@@ -24,6 +24,7 @@
     if (creativeName != null) {
       way.addTag("otp:gen_name",creativeName);
     }
+    Set<String> note=wayPropertySet.getNoteForWay(way);
     StreetTraversalPermission permissions=getPermissionsForEntity(way,wayData.getPermission());
     if (permissions == StreetTraversalPermission.NONE)     continue;
     List<Long> nodes=way.getNodeRefs();
@@ -79,8 +80,8 @@
         graph.addEdge(street);
         Double safety=wayData.getSafetyFeatures().getFirst();
         street.setBicycleSafetyEffectiveLength(street.getLength() * safety);
-        if (way.hasTag("note")) {
-          street.setNote(new HashSet<String>(Arrays.asList(way.getTag("note"))));
+        if (note != null) {
+          street.setNote(note);
         }
       }
       PlainStreetEdge backStreet=streets.getSecond();
@@ -88,8 +89,8 @@
         graph.addEdge(backStreet);
         Double safety=wayData.getSafetyFeatures().getSecond();
         backStreet.setBicycleSafetyEffectiveLength(backStreet.getLength() * safety);
-        if (way.hasTag("note")) {
-          backStreet.setNote(new HashSet<String>(Arrays.asList(way.getTag("note"))));
+        if (note != null) {
+          backStreet.setNote(note);
         }
       }
       List<TurnRestrictionTag> restrictionTags=turnRestrictionsByFromWay.get(way.getId());

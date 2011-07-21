@@ -70,5 +70,15 @@
   setProperties(props,"CCGIS:bicycle=caution_area",StreetTraversalPermission.ALL,1.6,1.6,true);
   setProperties(props,"surface=tartan",StreetTraversalPermission.ALL,2.0,2.0,true);
   props.defaultProperties.setPermission(StreetTraversalPermission.ALL);
+  createNotes(props,"notes=*","{notes}");
+  createNotes(props,"rlis:bicycle=caution_area","Caution!");
+  createNotes(props,"CCGIS:bicycle=caution_area","Caution!");
+  createNotes(props,"surface=unpaved","Unpaved surface");
+  createNotes(props,"surface=compacted","Unpaved surface");
+  createNotes(props,"surface=ground","Unpaved surface");
+  createNotes(props,"surface=dirt","Unpaved surface");
+  createNotes(props,"surface=earth","Unpaved surface");
+  createNotes(props,"surface=grass","Unpaved surface");
+  createNotes(props,"surface=mud","Unpaved surface -- muddy!");
   return props;
 }
