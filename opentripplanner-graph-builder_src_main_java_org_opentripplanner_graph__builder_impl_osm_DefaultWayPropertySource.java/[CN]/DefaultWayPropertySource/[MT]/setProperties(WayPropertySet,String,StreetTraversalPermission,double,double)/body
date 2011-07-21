@@ -1,6 +1,3 @@
 {
-  WayProperties properties=new WayProperties();
-  properties.setPermission(permission);
-  properties.setSafetyFeatures(new P2<Double>(safety,safetyBack));
-  propset.addProperties(new OSMSpecifier(spec),properties);
+  setProperties(propset,spec,permission,safety,safetyBack,false);
 }

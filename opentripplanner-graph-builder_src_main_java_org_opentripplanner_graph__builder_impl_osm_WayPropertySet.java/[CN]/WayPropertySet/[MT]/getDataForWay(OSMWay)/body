@@ -1,16 +1,33 @@
 {
   WayProperties result=defaultProperties;
   int bestScore=0;
+  List<WayProperties> mixins=new ArrayList<WayProperties>();
   for (  WayPropertyPicker picker : getWayProperties()) {
     OSMSpecifier specifier=picker.getSpecifier();
     WayProperties wayProperties=picker.getProperties();
     int score=specifier.matchScore(way);
-    if (score > bestScore) {
+    if (picker.isSafetyMixin()) {
+      if (score > 0) {
+        mixins.add(wayProperties);
+      }
+    }
+ else     if (score > bestScore) {
       result=wayProperties;
       bestScore=score;
     }
   }
-  if (bestScore == 0) {
+  if (mixins.size() > 0) {
+    result=result.clone();
+    P2<Double> safetyFeatures=result.getSafetyFeatures();
+    double first=safetyFeatures.getFirst();
+    double second=safetyFeatures.getSecond();
+    for (    WayProperties properties : mixins) {
+      first*=properties.getSafetyFeatures().getFirst();
+      second*=properties.getSafetyFeatures().getSecond();
+    }
+    result.setSafetyFeatures(new P2<Double>(first,second));
+  }
+  if (bestScore == 0 && mixins.size() == 0) {
     String all_tags=null;
     Map<String,String> tags=way.getTags();
     for (    String key : tags.keySet()) {
