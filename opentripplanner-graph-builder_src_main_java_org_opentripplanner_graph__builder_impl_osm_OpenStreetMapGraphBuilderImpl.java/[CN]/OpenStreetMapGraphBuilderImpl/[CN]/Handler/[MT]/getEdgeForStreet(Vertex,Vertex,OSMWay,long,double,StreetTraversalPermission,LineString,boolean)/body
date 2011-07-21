@@ -13,16 +13,6 @@
   if (way.isTagFalse("wheelchair") || ("steps".equals(way.getTag("highway")) && !way.isTagTrue("wheelchair"))) {
     street.setWheelchairAccessible(false);
   }
-  Map<String,String> tags=way.getTags();
-  if (tags != null) {
-    for (    P2<String> kvp : _slopeOverrideTags) {
-      String key=kvp.getFirst();
-      String value=kvp.getSecond();
-      if (value.equals(tags.get(key))) {
-        street.setSlopeOverride(true);
-        break;
-      }
-    }
-  }
+  street.setSlopeOverride(wayPropertySet.getSlopeOverride(way));
   return street;
 }

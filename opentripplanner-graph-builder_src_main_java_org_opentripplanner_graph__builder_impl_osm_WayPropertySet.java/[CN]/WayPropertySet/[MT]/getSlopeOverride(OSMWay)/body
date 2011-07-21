@@ -1,0 +1,13 @@
+{
+  boolean result=false;
+  int bestScore=0;
+  for (  SlopeOverridePicker picker : slopeOverrides) {
+    OSMSpecifier specifier=picker.getSpecifier();
+    int score=specifier.matchScore(way);
+    if (score > bestScore) {
+      result=picker.getOverride();
+      bestScore=score;
+    }
+  }
+  return result;
+}

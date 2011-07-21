@@ -1,8 +1,0 @@
-{
-  if (this == obj)   return true;
-  if (obj == null || !(obj instanceof OSMKeyValue))   return false;
-  OSMKeyValue other=(OSMKeyValue)obj;
-  if (this.wildcard != other.wildcard)   return false;
-  if (this.wildcard == true && this.key.equals(other.key))   return true;
-  return this.key.equals(other.key) && this.value.equals(other.value);
-}

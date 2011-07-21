@@ -1,0 +1,11 @@
+{
+  StringBuilder builder=new StringBuilder();
+  for (  P2<String> pair : kvpairs) {
+    builder.append(pair.getFirst());
+    builder.append("=");
+    builder.append(pair.getSecond());
+    builder.append(";");
+  }
+  builder.deleteCharAt(builder.length() - 1);
+  return builder.toString();
+}

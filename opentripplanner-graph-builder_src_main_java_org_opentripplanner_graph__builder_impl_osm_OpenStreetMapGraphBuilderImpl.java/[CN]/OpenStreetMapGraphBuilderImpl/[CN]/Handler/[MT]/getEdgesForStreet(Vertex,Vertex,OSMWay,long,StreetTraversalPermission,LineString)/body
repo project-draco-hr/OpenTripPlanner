@@ -8,34 +8,47 @@
   Map<String,String> tags=way.getTags();
   if (permissions == StreetTraversalPermission.NONE)   return new P2<PlainStreetEdge>(null,null);
   PlainStreetEdge street=null, backStreet=null;
-  if (way.isTagTrue("oneway") && way.isTagFalse(tags.get("oneway:bicycle")) || "opposite_lane".equals(tags.get("cycleway")) || "opposite".equals(tags.get("cycleway"))) {
-    street=getEdgeForStreet(start,end,way,startNode,d,permissions,geometry,false);
-    if (permissions.remove(StreetTraversalPermission.CAR) != StreetTraversalPermission.NONE)     backStreet=getEdgeForStreet(end,start,way,startNode,d,permissions.remove(StreetTraversalPermission.CAR),backGeometry,true);
+  StreetTraversalPermission permissionsFront=permissions;
+  StreetTraversalPermission permissionsBack=permissions;
+  boolean oneWayBike=true;
+  if (way.isTagTrue("oneway") || "roundabout".equals(tags.get("junction"))) {
+    permissionsFront=permissionsFront.remove(StreetTraversalPermission.BICYCLE_AND_CAR);
   }
- else   if (way.isTagTrue("oneway") || "roundabout".equals(tags.get("junction"))) {
-    street=getEdgeForStreet(start,end,way,startNode,d,permissions,geometry,false);
-    if (permissions.allows(StreetTraversalPermission.PEDESTRIAN))     backStreet=getEdgeForStreet(end,start,way,startNode,d,StreetTraversalPermission.PEDESTRIAN,backGeometry,true);
+  if (way.isTag("oneway","-1")) {
+    permissionsBack=permissionsBack.remove(StreetTraversalPermission.BICYCLE_AND_CAR);
   }
+  if (way.isTagTrue("oneway:bicycle") || way.isTagFalse("bicycle:backwards")) {
+    permissionsBack=permissionsBack.remove(StreetTraversalPermission.BICYCLE);
+    oneWayBike=true;
+  }
+  if (way.isTag("oneway:bicycle","-1")) {
+    permissionsFront=permissionsFront.remove(StreetTraversalPermission.BICYCLE);
+  }
+  if (way.isTagFalse("oneway:bicycle") || way.isTagTrue("bicycle:backwards")) {
+    if (permissions.allows(StreetTraversalPermission.BICYCLE)) {
+      permissionsFront=permissionsFront.add(StreetTraversalPermission.BICYCLE);
+      permissionsBack=permissionsBack.add(StreetTraversalPermission.BICYCLE);
+    }
+  }
+  if (way.isTag("cycleway","opposite") || way.isTag("cycleway","opposite_lane") || way.isTag("cycleway","opposite_track")) {
+    if (oneWayBike) {
+      _log.warn("conflicting tags oneway:bicycle and cycleway:opposite* on way " + way.getId() + ", assuming one-way");
+    }
  else {
-    street=getEdgeForStreet(start,end,way,startNode,d,permissions,geometry,false);
-    backStreet=getEdgeForStreet(end,start,way,startNode,d,permissions,backGeometry,true);
+      if (permissions.allows(StreetTraversalPermission.BICYCLE)) {
+        permissionsBack=permissionsBack.add(StreetTraversalPermission.BICYCLE);
+      }
+    }
+  }
+  if (permissionsFront != StreetTraversalPermission.NONE) {
+    street=getEdgeForStreet(start,end,way,startNode,d,permissionsFront,geometry,false);
+  }
+  if (permissionsBack != StreetTraversalPermission.NONE) {
+    backStreet=getEdgeForStreet(end,start,way,startNode,d,permissionsBack,backGeometry,true);
   }
   if ("roundabout".equals(tags.get("junction"))) {
     street.setRoundabout(true);
     if (backStreet != null)     backStreet.setRoundabout(true);
-  }
-  for (  Map.Entry<P2<String>,P2<Double>> feature : safetyFeatures.entrySet()) {
-    String key=feature.getKey().getFirst();
-    String value=feature.getKey().getSecond();
-    if (value.equals(tags.get(key))) {
-      P2<Double> multipliers=feature.getValue();
-      if (street != null) {
-        street.setBicycleSafetyEffectiveLength(street.getBicycleSafetyEffectiveLength() * multipliers.getFirst());
-      }
-      if (backStreet != null) {
-        backStreet.setBicycleSafetyEffectiveLength(backStreet.getBicycleSafetyEffectiveLength() * multipliers.getSecond());
-      }
-    }
   }
   return new P2<PlainStreetEdge>(street,backStreet);
 }

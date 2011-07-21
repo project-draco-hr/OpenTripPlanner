@@ -1,0 +1,28 @@
+{
+  WayProperties result=defaultProperties;
+  int bestScore=0;
+  for (  WayPropertyPicker picker : getWayProperties()) {
+    OSMSpecifier specifier=picker.getSpecifier();
+    WayProperties wayProperties=picker.getProperties();
+    int score=specifier.matchScore(way);
+    if (score > bestScore) {
+      result=wayProperties;
+      bestScore=score;
+    }
+  }
+  if (bestScore == 0) {
+    String all_tags=null;
+    Map<String,String> tags=way.getTags();
+    for (    String key : tags.keySet()) {
+      String tag=key + "=" + tags.get(key);
+      if (all_tags == null) {
+        all_tags=tag;
+      }
+ else {
+        all_tags+="; " + tag;
+      }
+    }
+    _log.debug("Used default permissions: " + all_tags);
+  }
+  return result;
+}

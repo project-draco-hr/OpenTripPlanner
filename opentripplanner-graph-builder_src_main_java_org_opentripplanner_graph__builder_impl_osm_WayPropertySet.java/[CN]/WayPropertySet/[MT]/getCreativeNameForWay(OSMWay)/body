@@ -1,0 +1,15 @@
+{
+  CreativeNamer bestNamer=null;
+  int bestScore=0;
+  for (  CreativeNamerPicker picker : getCreativeNamers()) {
+    OSMSpecifier specifier=picker.getSpecifier();
+    CreativeNamer namer=picker.getNamer();
+    if (specifier.matchScore(way) > bestScore) {
+      bestNamer=namer;
+    }
+  }
+  if (bestNamer == null) {
+    return null;
+  }
+  return bestNamer.generateCreativeName(way);
+}

@@ -1,0 +1,19 @@
+{
+  if (getCreativeNamePattern() == null) {
+    return null;
+  }
+  StringBuffer gen_name=new StringBuffer();
+  matcher.reset(getCreativeNamePattern());
+  int lastEnd=0;
+  while (matcher.find()) {
+    gen_name.append(getCreativeNamePattern(),lastEnd,matcher.start());
+    lastEnd=matcher.end();
+    String key=matcher.group(1);
+    String tag=way.getTag(key);
+    if (tag != null) {
+      gen_name.append(tag);
+    }
+  }
+  gen_name.append(getCreativeNamePattern(),lastEnd,getCreativeNamePattern().length());
+  return gen_name.toString();
+}

@@ -1,0 +1,9 @@
+{
+  OSMWay way=new OSMWay();
+  way.addTag("highway","footway");
+  way.addTag("surface","gravel");
+  way.addTag("access","no");
+  CreativeNamer namer=new CreativeNamer();
+  namer.setCreativeNamePattern("Highway with surface {surface} and access {access} and morx {morx}");
+  assertEquals("Highway with surface gravel and access no and morx ",namer.generateCreativeName(way));
+}
