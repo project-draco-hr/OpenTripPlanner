@@ -15,7 +15,7 @@
   assertNotNull(end);
   extras=end.getExtra();
   assertEquals(10,extras.size());
-  StreetLocation location=(StreetLocation)finder.getClosestVertex(new Coordinate(-74.004999,40.01),new TraverseOptions());
+  StreetLocation location=(StreetLocation)finder.getClosestVertex(new Coordinate(-74.004999,40.00999),new TraverseOptions());
   assertTrue(location.isWheelchairAccessible());
   boolean found=false;
   for (  Edge extra : location.getExtra()) {
