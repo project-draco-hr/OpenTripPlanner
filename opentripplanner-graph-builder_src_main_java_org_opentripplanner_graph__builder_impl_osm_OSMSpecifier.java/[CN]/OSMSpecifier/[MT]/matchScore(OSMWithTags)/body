@@ -11,7 +11,15 @@
       score+=100;
     }
  else {
-      return 0;
+      if (value.contains(":")) {
+        value=value.split(":",2)[0];
+      }
+ else       if (value.equals(matchValue)) {
+        score+=75;
+      }
+ else {
+        return 0;
+      }
     }
   }
   return score;
