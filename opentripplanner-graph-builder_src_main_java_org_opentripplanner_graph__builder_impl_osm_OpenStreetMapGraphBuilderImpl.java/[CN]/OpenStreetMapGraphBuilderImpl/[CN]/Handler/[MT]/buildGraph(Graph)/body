@@ -79,12 +79,18 @@
         graph.addEdge(street);
         Double safety=wayData.getSafetyFeatures().getFirst();
         street.setBicycleSafetyEffectiveLength(street.getLength() * safety);
+        if (way.hasTag("note")) {
+          street.setNote(new HashSet<String>(Arrays.asList(way.getTag("note"))));
+        }
       }
       PlainStreetEdge backStreet=streets.getSecond();
       if (backStreet != null) {
         graph.addEdge(backStreet);
         Double safety=wayData.getSafetyFeatures().getSecond();
         backStreet.setBicycleSafetyEffectiveLength(backStreet.getLength() * safety);
+        if (way.hasTag("note")) {
+          backStreet.setNote(new HashSet<String>(Arrays.asList(way.getTag("note"))));
+        }
       }
       List<TurnRestrictionTag> restrictionTags=turnRestrictionsByFromWay.get(way.getId());
       if (restrictionTags != null) {
