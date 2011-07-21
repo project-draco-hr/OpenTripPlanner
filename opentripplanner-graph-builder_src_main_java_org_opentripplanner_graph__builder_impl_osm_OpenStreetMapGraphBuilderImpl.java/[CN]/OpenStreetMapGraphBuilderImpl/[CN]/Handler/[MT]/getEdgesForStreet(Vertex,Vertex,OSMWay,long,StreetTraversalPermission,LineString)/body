@@ -8,6 +8,9 @@
   Map<String,String> tags=way.getTags();
   if (permissions == StreetTraversalPermission.NONE)   return new P2<PlainStreetEdge>(null,null);
   PlainStreetEdge street=null, backStreet=null;
+  if (way.isTag("cycleway","dismount")) {
+    permissions=permissions.remove(StreetTraversalPermission.BICYCLE);
+  }
   StreetTraversalPermission permissionsFront=permissions;
   StreetTraversalPermission permissionsBack=permissions;
   boolean oneWayBike=true;
