@@ -26,6 +26,9 @@
  else   if (relation.isTag("restriction","no_straight_on")) {
     tag=new TurnRestrictionTag(from,to,via,TurnRestrictionType.NO_TURN);
   }
+ else   if (relation.isTag("restriction","no_u_turn")) {
+    tag=new TurnRestrictionTag(from,to,via,TurnRestrictionType.NO_TURN);
+  }
  else   if (relation.isTag("restriction","only_straight_on")) {
     tag=new TurnRestrictionTag(from,to,via,TurnRestrictionType.ONLY_TURN);
   }
