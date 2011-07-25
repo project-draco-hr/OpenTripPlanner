@@ -24,4 +24,7 @@
     _log.error("Actual traversal direction does not match traversal direction in TraverseOptions.");
     defectiveTraversal=true;
   }
+  if (parent.stateData.noThruTrafficState == NoThruTrafficState.INIT) {
+    setNoThruTrafficState(NoThruTrafficState.BETWEEN_ISLANDS);
+  }
 }
