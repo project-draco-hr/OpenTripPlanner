@@ -4,12 +4,14 @@
     _log.error("Defective traversal flagged on edge " + child.backEdge);
     return null;
   }
-  child.checkNegativeWeight();
-  if (traversingBackward ? (child.getTimeDeltaMsec() > 0) : (child.getTimeDeltaMsec() < 0)) {
-    _log.trace("Time was incremented the wrong direction during state editing. {}",child.backEdge);
-    return null;
+  if (child.backState != null) {
+    child.checkNegativeWeight();
+    if (traversingBackward ? (child.getTimeDeltaMsec() > 0) : (child.getTimeDeltaMsec() < 0)) {
+      _log.trace("Time was incremented the wrong direction during state editing. {}",child.backEdge);
+      return null;
+    }
+    applyPatches();
   }
-  applyPatches();
   spawned=true;
   return child;
 }
