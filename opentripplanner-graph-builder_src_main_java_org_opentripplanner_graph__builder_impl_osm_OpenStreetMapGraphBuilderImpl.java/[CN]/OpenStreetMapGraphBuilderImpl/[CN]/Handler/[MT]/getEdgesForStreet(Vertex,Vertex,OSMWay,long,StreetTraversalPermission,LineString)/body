@@ -53,7 +53,7 @@
     backStreet.setNoThruTraffic(noThruTraffic);
   }
   if ("roundabout".equals(tags.get("junction"))) {
-    street.setRoundabout(true);
+    if (street != null)     street.setRoundabout(true);
     if (backStreet != null)     backStreet.setRoundabout(true);
   }
   return new P2<PlainStreetEdge>(street,backStreet);
