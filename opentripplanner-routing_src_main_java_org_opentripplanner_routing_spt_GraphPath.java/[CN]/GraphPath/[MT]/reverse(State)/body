@@ -1,14 +1,13 @@
 {
-  State root=state.reversedClone();
-  while (state.getBackState() != null) {
-    State next=state.getBackState();
-    Edge edge=state.getBackEdge();
-    EdgeNarrative narrative=state.getBackEdgeNarrative();
-    StateEditor editor=root.edit(edge,narrative);
-    editor.incrementTimeMsec(state.getAbsTimeDeltaMsec());
-    editor.incrementWeight(state.getWeightDelta());
-    root=editor.makeState();
-    state=state.getBackState();
+  State ret=orig.reversedClone();
+  while (orig.getBackState() != null) {
+    Edge edge=orig.getBackEdge();
+    EdgeNarrative narrative=orig.getBackEdgeNarrative();
+    StateEditor editor=ret.edit(edge,narrative);
+    editor.incrementTimeMsec(orig.getAbsTimeDeltaMsec());
+    editor.incrementWeight(orig.getWeightDelta());
+    ret=editor.makeState();
+    orig=orig.getBackState();
   }
-  return root;
+  return ret;
 }
