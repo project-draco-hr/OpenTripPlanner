@@ -63,7 +63,11 @@
           System.out.println("      edge " + edge);
           System.out.println("      " + u.getWeight() + " -> "+ v.getWeight()+ "(w) + "+ remaining_w+ "(heur) = "+ estimate+ " vert = "+ v.getVertex());
         }
-        if (estimate > options.maxWeight || isWorstTimeExceeded(v,options)) {
+        if (estimate > options.maxWeight) {
+          if (_verbose)           System.out.println("         too expensive to reach, not enqueued. estimated weight = " + estimate);
+        }
+ else         if (isWorstTimeExceeded(v,options)) {
+          if (_verbose)           System.out.println("         too much time to reach, not enqueued. time = " + v.getTime());
         }
  else {
           if (spt.add(v)) {
