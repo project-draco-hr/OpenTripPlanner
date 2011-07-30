@@ -3,10 +3,10 @@
   this.back=options.isArriveBy();
   State lastState;
   if (back) {
-    lastState=optimize ? optimize(s) : reverse(s,s.getOptions().reversedClone());
+    lastState=optimize ? optimize(s) : reverse(s);
   }
  else {
-    lastState=optimize ? reverse(optimize(s),s.getOptions()) : s;
+    lastState=optimize ? reverse(optimize(s)) : s;
   }
   this.states=new LinkedList<State>();
   this.edges=new LinkedList<Edge>();
