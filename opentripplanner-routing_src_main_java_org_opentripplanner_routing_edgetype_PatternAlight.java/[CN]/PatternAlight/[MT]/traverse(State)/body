@@ -14,6 +14,19 @@
       if (sd.serviceIdRunning(serviceId)) {
         int patternIndex=pattern.getPreviousTrip(stopIndex,secondsSinceMidnight,options.wheelchairAccessible,options.getModes().getBicycle(),false);
         if (patternIndex >= 0) {
+          boolean nextDay=false;
+          Trip trip=pattern.getTrip(patternIndex);
+          while (options.bannedTrips.contains(trip.getId())) {
+            patternIndex-=1;
+            if (patternIndex < 0) {
+              nextDay=true;
+              break;
+            }
+            trip=pattern.getTrip(patternIndex);
+          }
+          if (nextDay) {
+            continue;
+          }
           int wait=(int)((current_time - sd.time(pattern.getArrivalTime(stopIndex,patternIndex))) / 1000);
           if (wait < 0)           _log.error("negative wait time on alight");
           if (bestWait < 0 || wait < bestWait) {

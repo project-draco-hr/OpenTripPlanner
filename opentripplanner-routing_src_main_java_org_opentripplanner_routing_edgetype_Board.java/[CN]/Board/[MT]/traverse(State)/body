@@ -11,6 +11,9 @@
     return s1.makeState();
   }
  else {
+    if (options.bannedTrips.contains(getTrip().getId())) {
+      return null;
+    }
     if (!options.getModes().contains(hop.getMode())) {
       return null;
     }

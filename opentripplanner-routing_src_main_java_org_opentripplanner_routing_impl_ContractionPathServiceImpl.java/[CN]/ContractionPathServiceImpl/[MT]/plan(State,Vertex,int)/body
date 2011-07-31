@@ -33,8 +33,6 @@
     if (options == null) {
       break;
     }
-    options.worstTime=maxTime;
-    options.maxWeight=maxWeight;
     StateEditor editor=new StateEditor(origin,null);
     editor.setTraverseOptions(options);
     origin=editor.makeState();
@@ -63,13 +61,13 @@
     for (    GraphPath path : somePaths) {
       if (!paths.contains(path)) {
         paths.add(path);
-        LOG.debug("New routespecs: {}",path.getRouteSpecs());
-        for (        RouteSpec spec : path.getRouteSpecs()) {
-          TraverseOptions newOptions=options.clone();
-          newOptions.bannedRoutes.add(spec);
-          if (!optionQueue.contains(newOptions)) {
-            optionQueue.add(newOptions);
-          }
+        LOG.debug("New trips: {}",path.getTrips());
+        TraverseOptions newOptions=options.clone();
+        for (        AgencyAndId trip : path.getTrips()) {
+          newOptions.bannedTrips.add(trip);
+        }
+        if (!optionQueue.contains(newOptions)) {
+          optionQueue.add(newOptions);
         }
       }
     }

@@ -2,6 +2,9 @@
   TraverseOptions options=s0.getOptions();
   if (options.wheelchairAccessible && !wheelchairAccessible)   return null;
   if (options.isArriveBy()) {
+    if (options.bannedTrips.contains(getTrip().getId())) {
+      return null;
+    }
     if (!options.getModes().contains(hop.getMode()))     return null;
     if (options.getModes().getBicycle() && !hop.getBikesAllowed())     return null;
     long current_time=s0.getTime();

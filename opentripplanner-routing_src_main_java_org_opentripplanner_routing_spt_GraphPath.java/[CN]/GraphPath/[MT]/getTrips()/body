@@ -1,5 +1,5 @@
 {
-  List<RouteSpec> ret=new LinkedList<RouteSpec>();
+  List<AgencyAndId> ret=new LinkedList<AgencyAndId>();
   for (  State s : states) {
     Edge e=s.getBackEdge();
     Trip trip=null;
@@ -9,11 +9,10 @@
  else     if (e instanceof Board) {
       trip=((Board)e).getTrip();
     }
-    if (trip != null) {
-      String routeName=GtfsLibrary.getRouteName(trip.getRoute());
-      RouteSpec spec=new RouteSpec(trip.getId().getAgencyId(),routeName);
-      ret.add(spec);
+ else {
+      continue;
     }
+    ret.add(trip.getId());
   }
   return ret;
 }
