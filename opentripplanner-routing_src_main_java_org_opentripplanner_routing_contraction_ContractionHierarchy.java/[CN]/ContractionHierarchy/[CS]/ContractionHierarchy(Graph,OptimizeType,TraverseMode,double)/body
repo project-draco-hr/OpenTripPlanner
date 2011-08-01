@@ -6,7 +6,7 @@
   this.mode=mode;
   options=new TraverseOptions(new TraverseModeSet(mode));
   options.optimizeFor=optimize;
-  options.maxWalkDistance=Double.MAX_VALUE;
+  options.setMaxWalkDistance(Double.MAX_VALUE);
   options.freezeTraverseMode();
   backOptions=options.clone();
   backOptions.setArriveBy(true);

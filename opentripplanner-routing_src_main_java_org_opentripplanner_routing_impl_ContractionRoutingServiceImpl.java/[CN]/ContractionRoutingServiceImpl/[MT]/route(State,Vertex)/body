@@ -18,7 +18,7 @@
       }
       List<GraphPath> paths=spt.getPaths(target,true);
       if (paths == null || paths.isEmpty()) {
-        options.maxWalkDistance*=2;
+        options.setMaxWalkDistance(options.getMaxWalkDistance() * 2);
         continue;
       }
  else {
@@ -29,7 +29,7 @@
     Vertex toVertex=options.isArriveBy() ? origin.getVertex() : target;
     GraphPath path=hierarchy.getShortestPath(fromVertex,toVertex,origin.getTime(),options);
     if (path == null) {
-      options.maxWalkDistance*=2;
+      options.setMaxWalkDistance(options.getMaxWalkDistance() * 2);
       continue;
     }
  else {

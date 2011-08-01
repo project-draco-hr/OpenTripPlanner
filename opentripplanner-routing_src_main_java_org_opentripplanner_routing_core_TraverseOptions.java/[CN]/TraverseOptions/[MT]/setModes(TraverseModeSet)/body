@@ -4,13 +4,13 @@
     speed=5;
     boardCost=240;
     walkingOptions=new TraverseOptions();
-    walkingOptions.getModes().setTransit(false);
     walkingOptions.setArriveBy(this.isArriveBy());
+    walkingOptions.maxWalkDistance=maxWalkDistance;
   }
  else   if (modes.getCar()) {
     speed=15;
     walkingOptions=new TraverseOptions();
-    walkingOptions.getModes().setTransit(false);
     walkingOptions.setArriveBy(this.isArriveBy());
+    walkingOptions.maxWalkDistance=maxWalkDistance;
   }
 }

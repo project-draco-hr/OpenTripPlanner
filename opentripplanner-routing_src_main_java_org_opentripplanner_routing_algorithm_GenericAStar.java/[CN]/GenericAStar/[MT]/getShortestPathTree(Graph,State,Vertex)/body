@@ -24,7 +24,7 @@
   pq.insert(origin,origin.getWeight() + initialWeight);
   options=options.clone();
   double minWalkDistance=origin.getVertex().getDistanceToNearestTransitStop() + target.getDistanceToNearestTransitStop();
-  options.maxWalkDistance=Math.max(options.maxWalkDistance,minWalkDistance);
+  options.setMaxWalkDistance(Math.max(options.getMaxWalkDistance(),minWalkDistance));
   long computationStartTime=System.currentTimeMillis();
   long maxComputationTime=options.maxComputationTime;
   boolean exit=false;
