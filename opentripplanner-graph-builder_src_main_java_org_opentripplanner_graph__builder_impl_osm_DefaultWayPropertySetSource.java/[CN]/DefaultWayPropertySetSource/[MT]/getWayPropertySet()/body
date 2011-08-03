@@ -184,5 +184,7 @@
   createNames(props,"highway=platform","platform");
   createNames(props,"railway=platform","platform");
   createNames(props,"highway=steps","steps");
+  props.setSlopeOverride(new OSMSpecifier("bridge=*"),true);
+  props.setSlopeOverride(new OSMSpecifier("tunnel=*"),true);
   return props;
 }
