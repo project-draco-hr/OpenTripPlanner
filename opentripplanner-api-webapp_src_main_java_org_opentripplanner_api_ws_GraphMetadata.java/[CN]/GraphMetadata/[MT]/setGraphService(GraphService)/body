@@ -1,11 +1,40 @@
 {
   Graph graph=graphService.getGraph();
-  Envelope env=new Envelope();
+  Envelope leftEnv=new Envelope();
+  Envelope rightEnv=new Envelope();
+  double aRightCoordinate=0;
   for (  GraphVertex gv : graph.getVertices()) {
-    env.expandToInclude(gv.vertex.getCoordinate());
+    Coordinate c=gv.vertex.getCoordinate();
+    if (c.x < 0) {
+      leftEnv.expandToInclude(c);
+    }
+ else {
+      rightEnv.expandToInclude(c);
+      aRightCoordinate=c.x;
+    }
   }
-  setMinLongitude(env.getMinX());
-  setMaxLongitude(env.getMaxX());
-  setMinLatitude(env.getMinY());
-  setMaxLatitude(env.getMaxY());
+  if (leftEnv.getArea() == 0) {
+    setLowerLeftLongitude(rightEnv.getMinX());
+    setUpperRightLongitude(rightEnv.getMaxX());
+    setLowerLeftLatitude(rightEnv.getMinY());
+    setUpperRightLatitude(rightEnv.getMaxY());
+  }
+ else   if (rightEnv.getArea() == 0) {
+    setLowerLeftLongitude(leftEnv.getMinX());
+    setUpperRightLongitude(leftEnv.getMaxX());
+    setLowerLeftLatitude(leftEnv.getMinY());
+    setUpperRightLatitude(leftEnv.getMaxY());
+  }
+ else {
+    if (aRightCoordinate < 90) {
+      setLowerLeftLongitude(leftEnv.getMinX());
+      setUpperRightLongitude(rightEnv.getMaxX());
+    }
+ else {
+      setLowerLeftLongitude(leftEnv.getMaxX());
+      setUpperRightLongitude(rightEnv.getMinX());
+    }
+    setUpperRightLatitude(Math.max(rightEnv.getMaxY(),leftEnv.getMaxY()));
+    setLowerLeftLatitude(Math.min(rightEnv.getMinY(),leftEnv.getMinY()));
+  }
 }
