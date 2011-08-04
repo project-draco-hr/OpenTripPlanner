@@ -1,3 +1,8 @@
 {
-  return (int)(o1.getDuration() - o2.getDuration());
+  if (compareStartTimes) {
+    return (int)(o2.getStartTime() - o1.getStartTime());
+  }
+ else {
+    return (int)(o1.getEndTime() - o2.getEndTime());
+  }
 }

@@ -76,6 +76,6 @@
   if (paths.size() == 0) {
     return null;
   }
-  Collections.sort(paths,new PathComparator());
+  Collections.sort(paths,new PathComparator(origin.getOptions().isArriveBy()));
   return paths;
 }
