@@ -7,7 +7,7 @@
   GraphPath path=spt.getPath(stop_d,false);
   assertNotNull(path);
   assertEquals(new GregorianCalendar(2009,8,1,16,20,0).getTimeInMillis(),path.getEndTime());
-  options.optimizeFor=OptimizeType.TRANSFERS;
+  options.transferPenalty=1800;
   spt=AStar.getShortestPathTree(graph,stop_c.getLabel(),stop_d.getLabel(),new GregorianCalendar(2009,8,1,16,0,0).getTimeInMillis(),options);
   path=spt.getPath(stop_d,false);
   assertNotNull(path);

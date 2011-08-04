@@ -38,6 +38,11 @@
     String[] table=bannedRoutes.split(",");
     request.setBannedRoutes(table);
   }
+  if (optimize == OptimizeType.TRANSFERS) {
+    optimize=OptimizeType.QUICK;
+    transferPenalty+=1800;
+  }
+  request.setTransferPenalty(transferPenalty);
   request.setOptimize(optimize);
   request.setModes(modes);
   request.setMinTransferTime(minTransferTime);

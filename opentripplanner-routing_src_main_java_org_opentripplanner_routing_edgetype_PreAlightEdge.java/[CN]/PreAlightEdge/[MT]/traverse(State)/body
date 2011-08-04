@@ -16,7 +16,7 @@
     if (s0.getLastAlightedTime() != 0) {
       TransferTable transferTable=options.getTransferTable();
       if (transferTable.hasPreferredTransfers()) {
-        transfer_penalty=options.baseTransferPenalty;
+        transfer_penalty=options.nonpreferredTransferPenalty;
       }
       int transfer_time=transferTable.getTransferTime(getFromVertex(),s0.getPreviousStop());
       if (transfer_time == TransferTable.UNKNOWN_TRANSFER) {
@@ -40,8 +40,8 @@
     }
  else {
     }
-    if (options.optimizeFor == OptimizeType.TRANSFERS && s0.isEverBoarded()) {
-      transfer_penalty+=options.optimizeTransferPenalty;
+    if (s0.isEverBoarded()) {
+      transfer_penalty+=options.transferPenalty;
     }
     StateEditor s1=s0.edit(this);
     s1.setTime(alight_before);
