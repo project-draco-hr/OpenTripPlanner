@@ -37,8 +37,6 @@
   setProperties(props,"highway=path;bicycle=designated",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,0.73,0.73);
   setProperties(props,"highway=bridleway",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,1.18,1.18);
   setProperties(props,"highway=track",StreetTraversalPermission.ALL,1.18,1.18);
-  setProperties(props,"highway=footway",StreetTraversalPermission.PEDESTRIAN);
-  setProperties(props,"highway=footway;bicycle=yes",StreetTraversalPermission.PEDESTRIAN,0.84,0.84);
   setProperties(props,"highway=pedestrian",StreetTraversalPermission.PEDESTRIAN);
   setProperties(props,"highway=pedestrian;bicycle=yes",StreetTraversalPermission.PEDESTRIAN,0.73,0.73);
   setProperties(props,"highway=steps",StreetTraversalPermission.PEDESTRIAN);
@@ -115,6 +113,12 @@
   setProperties(props,"highway=residential;cycleway:left=shared_lane",StreetTraversalPermission.ALL,1.0,0.77);
   setProperties(props,"highway=tertiary;cycleway:left=shared_lane",StreetTraversalPermission.ALL,1.0,0.83);
   setProperties(props,"highway=secondary;cycleway:left=shared_lane",StreetTraversalPermission.ALL,1.18,0.91);
+  setProperties(props,"footway = sidewalk;highway = footway",StreetTraversalPermission.PEDESTRIAN);
+  setProperties(props,"footway = sidewalk;highway = footway;bicycle=designated",StreetTraversalPermission.PEDESTRIAN,0.84,0.84);
+  setProperties(props,"highway = footway;bicycle=designated",StreetTraversalPermission.PEDESTRIAN,0.73,0.73);
+  setProperties(props,"footway = sidewalk;highway = footway;bicycle=yes",StreetTraversalPermission.PEDESTRIAN,1.1,1.1);
+  setProperties(props,"highway=footway",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,0.77,0.77);
+  setProperties(props,"highway=footway;bicycle=yes",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,0.77,0.77);
   setProperties(props,"surface=fine_gravel",StreetTraversalPermission.ALL,100.0,100.0,true);
   setProperties(props,"surface=sand",StreetTraversalPermission.ALL,100.0,100.0,true);
   setProperties(props,"surface=unpaved",StreetTraversalPermission.ALL,1.8,1.8,true);
