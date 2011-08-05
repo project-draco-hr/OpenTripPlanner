@@ -79,7 +79,7 @@
       if (street != null) {
         graph.addEdge(street);
         Double safety=wayData.getSafetyFeatures().getFirst();
-        street.setBicycleSafetyEffectiveLength(street.getLength() * safety);
+        street.setBicycleSafetyEffectiveLength(street.getLength() * safety * getBikeSafetyFactor());
         if (note != null) {
           street.setNote(note);
         }
@@ -88,7 +88,7 @@
       if (backStreet != null) {
         graph.addEdge(backStreet);
         Double safety=wayData.getSafetyFeatures().getSecond();
-        backStreet.setBicycleSafetyEffectiveLength(backStreet.getLength() * safety);
+        backStreet.setBicycleSafetyEffectiveLength(backStreet.getLength() * safety * getBikeSafetyFactor());
         if (note != null) {
           backStreet.setNote(note);
         }
