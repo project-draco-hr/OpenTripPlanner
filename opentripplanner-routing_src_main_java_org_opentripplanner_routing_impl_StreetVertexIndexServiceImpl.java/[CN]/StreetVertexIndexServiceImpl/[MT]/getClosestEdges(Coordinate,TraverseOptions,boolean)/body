@@ -31,6 +31,9 @@
           if (distance > envelope.getWidth() / 2) {
             continue;
           }
+          if (nearTransitBonus && edgesNearTransit.contains(e)) {
+            distance/=2;
+          }
           if (distance < bestDistance) {
             bestDistance=distance;
             bestEdge=e;

@@ -27,7 +27,7 @@
   }
   _log.debug(" best stop: {} distance: {}",closest_stop,closest_stop_distance);
   StreetLocation closest_street=null;
-  Collection<StreetEdge> edges=getClosestEdges(coordinate,options);
+  Collection<StreetEdge> edges=getClosestEdges(coordinate,options,false);
   double closest_street_distance=Double.POSITIVE_INFINITY;
   if (edges != null) {
     StreetEdge bestStreet=edges.iterator().next();
