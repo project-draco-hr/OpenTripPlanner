@@ -1,0 +1,17 @@
+{
+  StreetVertexIndexServiceImpl index=new StreetVertexIndexServiceImpl(graph);
+  index.setup();
+  TraverseOptions opt=new TraverseOptions();
+  System.out.printf("Linking population to main graph. \n");
+  for (  Individual i : elements) {
+    Vertex v=i.vertex;
+    Vertex close=index.getClosestVertex(new Coordinate(v.getX(),v.getY()),opt);
+    graph.addEdge(new FreeEdge(v,close));
+    graph.addEdge(new FreeEdge(close,v));
+    if (close instanceof StreetLocation) {
+      for (      DirectEdge de : ((StreetLocation)close).getExtra()) {
+        graph.addEdge(de);
+      }
+    }
+  }
+}

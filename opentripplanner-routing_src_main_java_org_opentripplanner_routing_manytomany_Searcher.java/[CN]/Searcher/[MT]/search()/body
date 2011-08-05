@@ -1,0 +1,14 @@
+{
+  LowerBoundGraph lbg=new LowerBoundGraph(graph,LowerBoundGraph.OUTGOING);
+  for (  Individual origin : origins.elements) {
+    System.out.println("Search from origin " + origin);
+    destinations.clearResults();
+    double[] results=lbg.sssp(origin.vertex);
+    for (    Individual destination : destinations.elements) {
+      int idx=((GenericVertex)destination.vertex).getIndex();
+      destination.result=results[idx];
+    }
+    origin.result=aggregator.computeAggregate(destinations);
+    System.out.println("    result was " + origin.result);
+  }
+}

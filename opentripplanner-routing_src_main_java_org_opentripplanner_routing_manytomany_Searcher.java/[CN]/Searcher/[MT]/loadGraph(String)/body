@@ -1,0 +1,7 @@
+{
+  GraphServiceImpl graphService=new GraphServiceImpl();
+  File graphFile=new File(path);
+  graphService.setGraphPath(graphFile);
+  graphService.refreshGraph();
+  return graphService.getGraph();
+}
