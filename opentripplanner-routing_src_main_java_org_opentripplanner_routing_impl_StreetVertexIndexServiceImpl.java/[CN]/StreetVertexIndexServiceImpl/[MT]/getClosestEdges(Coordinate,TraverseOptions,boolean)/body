@@ -61,6 +61,9 @@
           Geometry eg=e.getGeometry();
           if (eg != null) {
             double distance=eg.distance(p);
+            if (nearTransitBonus && edgesNearTransit.contains(e)) {
+              distance/=2;
+            }
             if (distance <= bestDistance + DISTANCE_ERROR) {
               lil=new LocationIndexedLine(eg);
               location=lil.project(coordinate);
