@@ -1,7 +1,6 @@
 {
-  GraphVertex gv=graph.getGraphVertex(this);
-  Iterable<DirectEdge> incoming=cast(gv.incoming);
-  Iterable<DirectEdge> outgoing=cast(gv.outgoing);
+  Iterable<DirectEdge> incoming=cast(this.incoming);
+  Iterable<DirectEdge> outgoing=cast(this.outgoing);
   Iterator<DirectEdge> it=incoming.iterator();
   while (it.hasNext()) {
     DirectEdge edge=it.next();
@@ -21,14 +20,14 @@
       continue;
     }
     edge.setToVertex(this);
-    gv.addIncoming(edge);
+    this.addIncoming(edge);
   }
   for (  AbstractEdge edge : cast(graph.getOutgoing(other),AbstractEdge.class)) {
     if (edge.getToVertex() == this) {
       continue;
     }
     edge.setFromVertex(this);
-    gv.addOutgoing(edge);
+    this.addOutgoing(edge);
   }
   graph.removeVertex(other);
 }
