@@ -3,8 +3,8 @@
   Envelope leftEnv=new Envelope();
   Envelope rightEnv=new Envelope();
   double aRightCoordinate=0;
-  for (  GraphVertex gv : graph.getVertices()) {
-    Coordinate c=gv.vertex.getCoordinate();
+  for (  Vertex gv : graph.getVertices()) {
+    Coordinate c=gv.getCoordinate();
     if (c.x < 0) {
       leftEnv.expandToInclude(c);
     }
