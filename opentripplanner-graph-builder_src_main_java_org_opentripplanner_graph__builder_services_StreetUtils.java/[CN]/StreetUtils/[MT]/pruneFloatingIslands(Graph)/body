@@ -3,13 +3,13 @@
   Map<Vertex,HashSet<Vertex>> subgraphs=new HashMap<Vertex,HashSet<Vertex>>();
   Map<Vertex,ArrayList<Vertex>> neighborsForVertex=new HashMap<Vertex,ArrayList<Vertex>>();
   TraverseOptions options=new TraverseOptions(new TraverseModeSet(TraverseMode.WALK));
-  for (  GraphVertex gv : graph.getVertices()) {
-    if (!(gv.vertex instanceof EndpointVertex)) {
+  for (  Vertex gv : graph.getVertices()) {
+    if (!(gv instanceof EndpointVertex)) {
       continue;
     }
-    State s0=new State(gv.vertex,options);
+    State s0=new State(gv,options);
     for (    Edge e : gv.getOutgoing()) {
-      GenericVertex in=(GenericVertex)gv.vertex;
+      GenericVertex in=(GenericVertex)gv;
       if (!(e instanceof StreetEdge)) {
         continue;
       }
@@ -33,11 +33,11 @@
     }
   }
   ArrayList<HashSet<Vertex>> islands=new ArrayList<HashSet<Vertex>>();
-  for (  GraphVertex gv : graph.getVertices()) {
-    if (!(gv.vertex instanceof EndpointVertex)) {
+  for (  Vertex gv : graph.getVertices()) {
+    if (!(gv instanceof EndpointVertex)) {
       continue;
     }
-    Vertex vertex=gv.vertex;
+    Vertex vertex=gv;
     if (subgraphs.containsKey(vertex)) {
       continue;
     }

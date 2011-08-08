@@ -1,9 +1,9 @@
 {
   _log.debug("Building transit index");
   HashMap<Vertex,RouteSegment> segmentsByVertex=new HashMap<Vertex,RouteSegment>();
-  for (  GraphVertex gv : graph.getVertices()) {
+  for (  Vertex gv : graph.getVertices()) {
     RouteSegment segment=null;
-    if (gv.vertex instanceof StreetVertex || gv.vertex instanceof EndpointVertex) {
+    if (gv instanceof StreetVertex || gv instanceof EndpointVertex) {
       continue;
     }
     for (    Edge e : gv.getOutgoing()) {
@@ -36,7 +36,7 @@
         continue;
       }
       if (segment == null) {
-        segment=getOrMakeSegment(variant,segmentsByVertex,gv.vertex);
+        segment=getOrMakeSegment(variant,segmentsByVertex,gv);
       }
       if (e instanceof Alight || e instanceof PatternAlight) {
         segment.alight=e;
@@ -69,7 +69,7 @@
         continue;
       }
       if (segment == null) {
-        segment=getOrMakeSegment(variant,segmentsByVertex,gv.vertex);
+        segment=getOrMakeSegment(variant,segmentsByVertex,gv);
       }
       if (e instanceof Board || e instanceof PatternBoard) {
         segment.board=e;
