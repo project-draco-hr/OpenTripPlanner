@@ -3,6 +3,7 @@
   Vertex tov=ee.getToVertex();
   fromv=addVertex(fromv);
   tov=addVertex(tov);
-  vertices.get(fromv.getLabel()).addOutgoing(ee);
-  vertices.get(tov.getLabel()).addIncoming(ee);
+  if (ee.getFromVertex() != fromv || ee.getToVertex() != tov)   throw new IllegalStateException("Saving an edge with the wrong vertex.");
+  fromv.addOutgoing(ee);
+  tov.addIncoming(ee);
 }

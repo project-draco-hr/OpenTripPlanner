@@ -1,7 +1,7 @@
 {
   Envelope env=new Envelope();
-  for (  GraphVertex v : this.getVertices()) {
-    env.expandToInclude(v.vertex.getCoordinate());
+  for (  Vertex v : this.getVertices()) {
+    env.expandToInclude(v.getCoordinate());
   }
   return env;
 }

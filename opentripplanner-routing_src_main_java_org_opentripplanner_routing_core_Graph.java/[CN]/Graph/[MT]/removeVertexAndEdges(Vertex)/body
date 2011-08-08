@@ -1,13 +1,16 @@
 {
-  GraphVertex gv=getGraphVertex(vertex);
+  Vertex gv=this.getVertex(vertex.getLabel());
   if (gv == null) {
     return;
+  }
+  if (gv != vertex) {
+    throw new IllegalStateException("Vertex has the same label as one in the graph, but is not the same object.");
   }
   vertices.remove(vertex.getLabel());
   for (  Edge e : gv.getOutgoing()) {
     if (e instanceof DirectEdge) {
       DirectEdge edge=(DirectEdge)e;
-      GraphVertex target=vertices.get(edge.getToVertex().getLabel());
+      Vertex target=edge.getToVertex();
       if (target != null) {
         target.removeIncoming(e);
       }
@@ -16,9 +19,9 @@
   for (  Edge e : gv.getIncoming()) {
     if (e instanceof DirectEdge) {
       DirectEdge edge=(DirectEdge)e;
-      GraphVertex source=vertices.get(edge.getFromVertex().getLabel());
+      Vertex source=edge.getFromVertex();
       if (source != null) {
-        source.removeIncoming(e);
+        source.removeOutgoing(e);
       }
     }
   }

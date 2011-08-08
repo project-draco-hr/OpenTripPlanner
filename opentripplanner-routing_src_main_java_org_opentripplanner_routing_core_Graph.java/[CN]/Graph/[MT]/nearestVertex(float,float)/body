@@ -2,10 +2,10 @@
   double minDist=Float.MAX_VALUE;
   Vertex ret=null;
   Coordinate c=new Coordinate(lon,lat);
-  for (  GraphVertex vv : vertices.values()) {
-    double dist=vv.vertex.distance(c);
+  for (  Vertex vv : vertices.values()) {
+    double dist=vv.distance(c);
     if (dist < minDist) {
-      ret=vv.vertex;
+      ret=vv;
       minDist=dist;
     }
   }

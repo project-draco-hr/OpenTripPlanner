@@ -1,9 +1,9 @@
 {
   String label=vv.getLabel();
-  GraphVertex gv=vertices.get(label);
+  Vertex gv=vertices.get(label);
   if (gv == null) {
-    gv=new GraphVertex(vv);
-    vertices.put(label,gv);
+    vertices.put(label,vv);
+    return vv;
   }
-  return gv.vertex;
+  return vv;
 }
