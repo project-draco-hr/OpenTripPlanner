@@ -14,7 +14,7 @@
     u=queue.extract_min();
     Vertex fromv=u.getVertex();
     closed.add(fromv);
-    Iterable<Edge> outgoing=graph.getOutgoing(fromv);
+    Iterable<Edge> outgoing=fromv.getOutgoing();
     for (    Edge edge : outgoing) {
       v=edge.traverse(u);
       if (v == null)       continue;

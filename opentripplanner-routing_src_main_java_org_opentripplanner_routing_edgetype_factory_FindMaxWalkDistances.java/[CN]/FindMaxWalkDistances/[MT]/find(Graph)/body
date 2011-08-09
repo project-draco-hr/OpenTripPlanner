@@ -1,16 +1,16 @@
 {
   _log.debug("finding max walk distances");
-  for (  GraphVertex gv : graph.getVertices()) {
-    gv.vertex.setDistanceToNearestTransitStop(Double.MAX_VALUE);
+  for (  Vertex gv : graph.getVertices()) {
+    gv.setDistanceToNearestTransitStop(Double.MAX_VALUE);
   }
-  for (  GraphVertex gv : graph.getVertices()) {
-    if (gv.vertex instanceof TransitStop) {
-      assignStopDistances(graph,(TransitStop)gv.vertex);
+  for (  Vertex gv : graph.getVertices()) {
+    if (gv instanceof TransitStop) {
+      assignStopDistances(graph,(TransitStop)gv);
     }
   }
-  for (  GraphVertex gv : graph.getVertices()) {
-    if (gv.vertex.getDistanceToNearestTransitStop() == Double.MAX_VALUE) {
-      gv.vertex.setDistanceToNearestTransitStop(0);
+  for (  Vertex gv : graph.getVertices()) {
+    if (gv.getDistanceToNearestTransitStop() == Double.MAX_VALUE) {
+      gv.setDistanceToNearestTransitStop(0);
     }
   }
 }
