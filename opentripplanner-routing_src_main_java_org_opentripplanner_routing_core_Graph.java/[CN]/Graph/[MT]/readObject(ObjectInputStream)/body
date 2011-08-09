@@ -1,0 +1,13 @@
+{
+  in.defaultReadObject();
+  for (  Vertex v : vertices.values()) {
+    for (    Edge e : v.getOutgoing()) {
+      if (e instanceof AbstractEdge)       ((AbstractEdge)e).fromv=v;
+ else       if (e instanceof TurnEdge)       ((TurnEdge)e).fromv=(StreetVertex)v;
+    }
+    for (    Edge e : v.getIncoming()) {
+      if (e instanceof AbstractEdge)       ((AbstractEdge)e).tov=v;
+      if (e instanceof TurnEdge)       ((TurnEdge)e).tov=(StreetVertex)v;
+    }
+  }
+}
