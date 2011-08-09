@@ -116,7 +116,7 @@
         List<Vertex> vertices=new ArrayList<Vertex>();
         List<DirectEdge> edges=new ArrayList<DirectEdge>();
         Vertex tov=selected.getToVertex();
-        for (        Edge og : graph.getOutgoing(tov)) {
+        for (        Edge og : tov.getOutgoing()) {
           if (og instanceof TurnEdge || og instanceof PlainStreetEdge) {
             edges.add((DirectEdge)og);
             vertices.add(((StreetEdge)og).getToVertex());
@@ -124,7 +124,7 @@
           }
         }
         Vertex fromv=selected.getFromVertex();
-        for (        Edge ic : graph.getIncoming(fromv)) {
+        for (        Edge ic : fromv.getIncoming()) {
           if (ic instanceof TurnEdge || ic instanceof PlainStreetEdge) {
             edges.add((DirectEdge)ic);
             vertices.add(ic.getFromVertex());
@@ -235,8 +235,8 @@ catch (          IllegalAccessException e1) {
       if (selected != null) {
         Vertex nowSelected=selected.vertex;
         showGraph.highlightVertex(nowSelected);
-        outgoingEdges.setModel(new EdgeListModel(graph.getOutgoing(nowSelected)));
-        incomingEdges.setModel(new EdgeListModel(graph.getIncoming(nowSelected)));
+        outgoingEdges.setModel(new EdgeListModel(nowSelected.getOutgoing()));
+        incomingEdges.setModel(new EdgeListModel(nowSelected.getIncoming()));
       }
     }
   }
@@ -322,12 +322,12 @@ catch (          IllegalAccessException e1) {
   findEdgeButton.addActionListener(new ActionListener(){
     public void actionPerformed(    ActionEvent e){
       String edgeName=(String)JOptionPane.showInputDialog(frame,"Edge name like",JOptionPane.PLAIN_MESSAGE);
-      for (      GraphVertex gv : getGraph().getVertices()) {
+      for (      Vertex gv : getGraph().getVertices()) {
         for (        DirectEdge edge : filter(gv.getOutgoing(),DirectEdge.class)) {
           if (edge.getName() != null && edge.getName().contains(edgeName)) {
-            showGraph.highlightVertex(gv.vertex);
+            showGraph.highlightVertex(gv);
             ArrayList<Vertex> l=new ArrayList<Vertex>();
-            l.add(gv.vertex);
+            l.add(gv);
             verticesSelected(l);
           }
         }

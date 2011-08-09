@@ -2,10 +2,10 @@
   vertexIndex=new STRtree();
   edgeIndex=new STRtree();
   Envelope env;
-  for (  GraphVertex gv : graph.getVertices()) {
-    Vertex v=gv.vertex;
+  for (  Vertex gv : graph.getVertices()) {
+    Vertex v=gv;
     if ((v instanceof TransitStop) || (v instanceof StreetLocation) || (v instanceof GenericVertex)) {
-      Coordinate c=gv.vertex.getCoordinate();
+      Coordinate c=gv.getCoordinate();
       env=new Envelope(c);
       vertexIndex.insert(env,v);
     }
