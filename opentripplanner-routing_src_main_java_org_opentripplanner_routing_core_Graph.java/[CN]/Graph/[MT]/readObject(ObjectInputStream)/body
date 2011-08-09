@@ -1,13 +1,22 @@
 {
+  LOG.debug("Reading graph...");
   in.defaultReadObject();
-  for (  Vertex v : vertices.values()) {
-    for (    Edge e : v.getOutgoing()) {
-      if (e instanceof AbstractEdge)       ((AbstractEdge)e).fromv=v;
- else       if (e instanceof TurnEdge)       ((TurnEdge)e).fromv=(StreetVertex)v;
-    }
-    for (    Edge e : v.getIncoming()) {
-      if (e instanceof AbstractEdge)       ((AbstractEdge)e).tov=v;
-      if (e instanceof TurnEdge)       ((TurnEdge)e).tov=(StreetVertex)v;
+  Set<Edge> edges=(HashSet<Edge>)in.readObject();
+  LOG.debug("Loading edges...");
+  this.vertices=new HashMap<String,Vertex>();
+  int count=0;
+  for (  Edge e : edges) {
+    if (++count % 1000 == 0)     LOG.debug("loading edge {} : {}",count,e);
+    Vertex fromv=e.getFromVertex();
+    Vertex tov=null;
+    if (e instanceof AbstractEdge)     tov=((AbstractEdge)e).getToVertex();
+ else     if (e instanceof TurnEdge)     tov=((TurnEdge)e).getToVertex();
+ else     LOG.warn("Edge with no to-vertex: " + e);
+    vertices.put(fromv.getLabel(),fromv);
+    fromv.addOutgoing(e);
+    if (tov != null) {
+      vertices.put(tov.getLabel(),tov);
+      tov.addIncoming(e);
     }
   }
 }
