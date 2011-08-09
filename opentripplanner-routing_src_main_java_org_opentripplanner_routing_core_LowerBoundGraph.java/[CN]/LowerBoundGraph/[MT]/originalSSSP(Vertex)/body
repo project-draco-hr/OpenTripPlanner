@@ -12,7 +12,7 @@
   while (!q.empty()) {
     State su=q.extract_min();
     if (!spt.visit(su))     continue;
-    for (    Edge e : originalGraph.getOutgoing(su.getVertex())) {
+    for (    Edge e : su.getVertex().getOutgoing()) {
       State sv=e.optimisticTraverse(su);
       if (sv != null && spt.add(sv))       q.insert(sv,sv.getWeight());
     }

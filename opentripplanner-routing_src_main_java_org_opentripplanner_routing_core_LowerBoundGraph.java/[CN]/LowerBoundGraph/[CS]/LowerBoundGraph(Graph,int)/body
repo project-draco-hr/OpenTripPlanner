@@ -9,13 +9,13 @@
   if (kind == INCOMING)   opt.setArriveBy(true);
   LOG.info("Loading origial graph into compact representation...");
   ArrayList<State> svs=new ArrayList<State>();
-  for (  GraphVertex gv : original.getVertices()) {
-    GenericVertex u=(GenericVertex)(gv.vertex);
+  for (  Vertex gv : original.getVertices()) {
+    GenericVertex u=(GenericVertex)(gv);
     State su=new State(u,opt);
     svs.clear();
     Iterable<Edge> edges;
-    if (kind == INCOMING)     edges=original.getIncoming(u);
- else     edges=original.getOutgoing(u);
+    if (kind == INCOMING)     edges=u.getIncoming();
+ else     edges=u.getOutgoing();
     for (    Edge e : edges) {
       State sv=e.optimisticTraverse(su);
       if (sv != null) {

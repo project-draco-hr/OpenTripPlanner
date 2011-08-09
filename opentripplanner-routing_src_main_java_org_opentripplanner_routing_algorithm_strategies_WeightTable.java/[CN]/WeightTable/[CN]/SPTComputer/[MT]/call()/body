@@ -21,8 +21,7 @@
       int di=stopIndices.get(uVertex);
       table[oi][di]=(float)w;
     }
-    GraphVertex gu=g.getGraphVertex(uVertex.getLabel());
-    for (    Edge e : gu.getOutgoing()) {
+    for (    Edge e : uVertex.getOutgoing()) {
       if (!(e instanceof PreBoardEdge)) {
         State v=e.optimisticTraverse(u);
         if (v != null && spt.add(v))         heap.insert(v,v.getWeight());
@@ -35,8 +34,7 @@
   q.add(origin);
   while (!q.isEmpty()) {
     Vertex u=q.poll();
-    GraphVertex gu=g.getGraphVertex(u.getLabel());
-    for (    Edge e : gu.getOutgoing()) {
+    for (    Edge e : u.getOutgoing()) {
       if (e instanceof PatternBoard) {
         Vertex v=((PatternBoard)e).getToVertex();
         stopIndices.put((GenericVertex)v,oi);
@@ -65,8 +63,7 @@
       }
       continue;
     }
-    GraphVertex gu=g.getGraphVertex(uVertex.getLabel());
-    for (    Edge e : gu.getOutgoing()) {
+    for (    Edge e : uVertex.getOutgoing()) {
       State v=e.optimisticTraverse(u);
       if (v != null && spt.add(v))       heap.insert(v,v.getWeight());
     }

@@ -2,7 +2,7 @@
   ArrayList<TransitStop> stopVertices;
   LOG.debug("Number of vertices: " + g.getVertices().size());
   stopVertices=new ArrayList<TransitStop>();
-  for (  GraphVertex gv : g.getVertices())   if (gv.vertex instanceof TransitStop)   stopVertices.add((TransitStop)gv.vertex);
+  for (  Vertex gv : g.getVertices())   if (gv instanceof TransitStop)   stopVertices.add((TransitStop)gv);
   int nStops=stopVertices.size();
   stopIndices=new IdentityHashMap<GenericVertex,Integer>(nStops);
   for (int i=0; i < nStops; i++)   stopIndices.put(stopVertices.get(i),i);

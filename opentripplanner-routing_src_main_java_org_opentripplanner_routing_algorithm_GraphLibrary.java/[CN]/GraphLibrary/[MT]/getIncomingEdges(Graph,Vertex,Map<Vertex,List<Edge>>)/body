@@ -1,13 +1,10 @@
 {
-  Collection<Edge> incoming=null;
-  if (tov instanceof HasEdges) {
-    incoming=extendEdges(incoming,((HasEdges)tov).getIncoming());
+  if (extraEdges.containsKey(tov)) {
+    Collection<Edge> ret=new ArrayList<Edge>(tov.getIncoming());
+    ret.addAll(extraEdges.get(tov));
+    return ret;
   }
  else {
-    GraphVertex gv=graph.getGraphVertex(tov);
-    if (gv != null)     incoming=extendEdges(incoming,gv.getIncoming());
-    if (extraEdges != null && extraEdges.containsKey(tov))     incoming=extendEdges(incoming,extraEdges.get(tov));
+    return tov.getIncoming();
   }
-  if (incoming == null)   incoming=Collections.emptyList();
-  return incoming;
 }
