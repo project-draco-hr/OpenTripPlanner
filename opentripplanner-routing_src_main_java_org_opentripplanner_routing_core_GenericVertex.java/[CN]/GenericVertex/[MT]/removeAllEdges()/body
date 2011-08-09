@@ -1,0 +1,22 @@
+{
+  for (  Edge e : outgoing) {
+    if (e instanceof DirectEdge) {
+      DirectEdge edge=(DirectEdge)e;
+      Vertex target=edge.getToVertex();
+      if (target != null) {
+        target.removeIncoming(e);
+      }
+    }
+  }
+  for (  Edge e : incoming) {
+    if (e instanceof DirectEdge) {
+      DirectEdge edge=(DirectEdge)e;
+      Vertex source=edge.getFromVertex();
+      if (source != null) {
+        source.removeOutgoing(e);
+      }
+    }
+  }
+  incoming=new ArrayList<Edge>();
+  outgoing=new ArrayList<Edge>();
+}
