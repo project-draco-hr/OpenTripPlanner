@@ -1,5 +1,5 @@
 {
-  Collection<Edge> outgoing=new ArrayList<Edge>(graph.getOutgoing(v));
+  Collection<Edge> outgoing=new ArrayList<Edge>(v.getOutgoing());
   for (  Edge e : outgoing) {
     if (e instanceof PlainStreetEdge) {
       PlainStreetEdge pse=(PlainStreetEdge)e;
@@ -13,7 +13,7 @@
       }
     }
   }
-  if (graph.getOutgoing(v).size() == 0) {
+  if (v.getOutgoing().size() == 0) {
     graph.removeVertexAndEdges(v);
   }
 }

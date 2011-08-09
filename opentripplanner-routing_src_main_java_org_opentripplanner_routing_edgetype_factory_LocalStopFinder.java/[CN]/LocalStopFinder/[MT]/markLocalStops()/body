@@ -2,9 +2,9 @@
   _log.debug("Finding local stops");
   patterns=new HashSet<TripPattern>();
   int total=0;
-  for (  GraphVertex gv : graph.getVertices()) {
-    if (gv.vertex instanceof TransitStop) {
-      ((TransitStop)gv.vertex).setLocal(true);
+  for (  Vertex gv : graph.getVertices()) {
+    if (gv instanceof TransitStop) {
+      ((TransitStop)gv).setLocal(true);
       total++;
     }
     for (    Edge e : gv.getOutgoing()) {

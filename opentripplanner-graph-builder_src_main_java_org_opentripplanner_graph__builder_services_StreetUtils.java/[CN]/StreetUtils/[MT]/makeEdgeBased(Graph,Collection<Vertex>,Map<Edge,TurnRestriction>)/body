@@ -17,7 +17,7 @@
       if (restrictions != null) {
         restriction=restrictions.get(pse);
       }
-      for (      Edge e2 : graph.getOutgoing(v)) {
+      for (      Edge e2 : v.getOutgoing()) {
         StreetVertex v2=getStreetVertexForEdge(graph,(PlainStreetEdge)e2);
         TurnEdge turn=new TurnEdge(v1,v2);
         if (restriction != null) {

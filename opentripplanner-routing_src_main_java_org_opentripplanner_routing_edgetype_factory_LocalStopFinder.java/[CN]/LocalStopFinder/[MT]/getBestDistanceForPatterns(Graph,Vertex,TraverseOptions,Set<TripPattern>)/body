@@ -14,11 +14,15 @@
     closed.add(fromv);
     if (fromv instanceof TransitStop) {
       Vertex departureVertex=null;
-      for (      DirectEdge e : filter(graph.getOutgoing(fromv),DirectEdge.class)) {
+      for (      DirectEdge e : filter(fromv.getOutgoing(),DirectEdge.class)) {
         departureVertex=e.getToVertex();
         break;
       }
-      for (      Edge e : graph.getOutgoing(departureVertex)) {
+      if (departureVertex == null) {
+        _log.debug("Stop without departure vertex.");
+        continue;
+      }
+      for (      Edge e : departureVertex.getOutgoing()) {
         if (e instanceof PatternBoard) {
           TripPattern pattern=((PatternBoard)e).getPattern();
           if (nearbyPatterns.contains(pattern)) {
@@ -40,7 +44,7 @@
     if (fromv.fastDistance(origin) > LOCAL_STOP_SEARCH_RADIUS) {
       return patternCosts;
     }
-    Iterable<Edge> outgoing=graph.getOutgoing(fromv);
+    Iterable<Edge> outgoing=fromv.getOutgoing();
     for (    Edge edge : outgoing) {
       State v=edge.traverse(u);
       if (v == null)       continue;
