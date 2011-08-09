@@ -79,7 +79,7 @@
   }
   assertTrue("Path must take subway",subway1);
   ContractionHierarchySet chs=new ContractionHierarchySet();
-  chs.addModeAndOptimize(new ModeAndOptimize(TraverseMode.WALK,OptimizeType.QUICK));
+  chs.addTraverseOptions(new TraverseOptions(TraverseMode.WALK,OptimizeType.QUICK));
   chs.setContractionFactor(0.50);
   chs.setGraph(graph);
   chs.build();

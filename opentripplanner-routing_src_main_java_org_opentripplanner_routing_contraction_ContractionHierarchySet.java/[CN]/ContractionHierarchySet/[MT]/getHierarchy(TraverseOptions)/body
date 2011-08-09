@@ -1,5 +1,13 @@
 {
-  TraverseMode mode=options.getModes().contains(TraverseMode.BICYCLE) ? TraverseMode.BICYCLE : TraverseMode.WALK;
-  ModeAndOptimize mo=new ModeAndOptimize(mode,options.optimizeFor);
-  return hierarchiesByMode.get(mo);
+  TraverseOptions bestOptions=null;
+  int bestSimilarity=TraverseOptions.MIN_SIMILARITY;
+  if (modeList == null)   return null;
+  for (  TraverseOptions optionsH : modeList) {
+    int similarity=optionsH.similarity(options);
+    if (similarity > bestSimilarity) {
+      bestSimilarity=similarity;
+      bestOptions=optionsH;
+    }
+  }
+  return bestOptions != null ? hierarchiesByMode.get(bestOptions) : null;
 }
