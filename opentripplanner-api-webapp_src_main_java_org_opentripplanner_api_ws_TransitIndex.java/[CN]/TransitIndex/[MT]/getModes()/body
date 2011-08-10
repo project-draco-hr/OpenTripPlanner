@@ -1,6 +1,9 @@
 {
   TransitIndexService transitIndexService=graphService.getGraph().getService(TransitIndexService.class);
   if (transitIndexService == null) {
+    return new TransitError("No transit index found.  Add TransitIndexBuilder to your graph builder configuration and rebuild your graph.");
+  }
+  if (transitIndexService == null) {
     return new ModeList();
   }
   ModeList modes=new ModeList();

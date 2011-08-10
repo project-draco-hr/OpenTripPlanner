@@ -1,5 +1,8 @@
 {
   TransitIndexService transitIndexService=graphService.getGraph().getService(TransitIndexService.class);
+  if (transitIndexService == null) {
+    return new TransitError("No transit index found.  Add TransitIndexBuilder to your graph builder configuration and rebuild your graph.");
+  }
   RouteData response=new RouteData();
   AgencyAndId routeId=new AgencyAndId(agency,id);
   response.id=routeId;
