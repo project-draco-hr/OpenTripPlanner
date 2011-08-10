@@ -4,16 +4,14 @@
     variant.addTrip(trip);
     return variant;
   }
-  if (trip.getDirectionId() != null) {
-    AgencyAndId routeId=trip.getRoute().getId();
-    String directionId=trip.getDirectionId();
-    HashSet<String> directions=directionsByRoute.get(routeId);
-    if (directions == null) {
-      directions=new HashSet<String>();
-      directionsByRoute.put(routeId,directions);
-    }
-    directions.add(directionId);
+  AgencyAndId routeId=trip.getRoute().getId();
+  String directionId=trip.getDirectionId();
+  HashSet<String> directions=directionsByRoute.get(routeId);
+  if (directions == null) {
+    directions=new HashSet<String>();
+    directionsByRoute.put(routeId,directions);
   }
+  directions.add(directionId);
   List<StopTime> stopTimes=dao.getStopTimesForTrip(trip);
   ArrayList<Stop> stops=new ArrayList<Stop>();
   for (  StopTime stopTime : stopTimes) {

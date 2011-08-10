@@ -3,11 +3,11 @@
   HashMap<Vertex,RouteSegment> segmentsByVertex=new HashMap<Vertex,RouteSegment>();
   for (  GraphVertex gv : graph.getVertices()) {
     RouteSegment segment=null;
-    RouteVariant variant=null;
     if (gv.vertex instanceof StreetVertex || gv.vertex instanceof EndpointVertex) {
       continue;
     }
     for (    Edge e : gv.getOutgoing()) {
+      RouteVariant variant=null;
       if (!(e instanceof AbstractEdge)) {
         continue;
       }
@@ -26,10 +26,9 @@
       }
  else       if (e instanceof PatternAlight || e instanceof PatternHop || e instanceof PatternDwell) {
         TripPattern pattern=((PatternEdge)e).getPattern();
-        Trip exemplar=pattern.getExemplar();
-        variant=addTripToVariant(exemplar);
         for (        Trip trip : pattern.getTrips()) {
           variantsByTrip.put(trip.getId(),variant);
+          variant=addTripToVariant(trip);
           addModeFromTrip(trip);
         }
       }
@@ -50,6 +49,7 @@
       }
     }
     for (    Edge e : gv.getIncoming()) {
+      RouteVariant variant=null;
       if (!(e instanceof AbstractEdge)) {
         continue;
       }

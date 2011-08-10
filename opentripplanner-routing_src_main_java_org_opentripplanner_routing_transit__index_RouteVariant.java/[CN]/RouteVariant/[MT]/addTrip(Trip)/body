@@ -1,11 +1,13 @@
 {
-  trips.add(trip.getId());
-  if (direction == null) {
-    direction=trip.getDirectionId();
-  }
+  if (!trips.contains(trip.getId())) {
+    trips.add(trip.getId());
+    if (direction == null) {
+      direction=trip.getDirectionId();
+    }
  else {
-    if (!direction.equals(trip.getDirectionId())) {
-      direction=MULTIDIRECTION;
+      if (!direction.equals(trip.getDirectionId())) {
+        direction=MULTIDIRECTION;
+      }
     }
   }
 }
