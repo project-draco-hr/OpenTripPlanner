@@ -2,45 +2,14 @@
   Graph graph=graphService.getGraph();
   transitStopTree=new STRtree();
   intersectionTree=new STRtree();
-  STRtree transitEdgeTree=new STRtree();
   for (  GraphVertex gv : graph.getVertices()) {
-    for (    HopEdge e : filter(gv.getOutgoing(),HopEdge.class)) {
+    Vertex v=gv.vertex;
+    for (    StreetEdge e : filter(gv.getOutgoing(),StreetEdge.class)) {
       if (e.getGeometry() == null) {
         continue;
       }
       Envelope env=e.getGeometry().getEnvelopeInternal();
-      transitEdgeTree.insert(env,e);
-    }
-  }
-  GeometryFactory geometryFactory=new GeometryFactory();
-  for (  GraphVertex gv : graph.getVertices()) {
-    Vertex v=gv.vertex;
-    for (    StreetEdge e : filter(gv.getOutgoing(),StreetEdge.class)) {
-      Geometry streetGeometry=e.getGeometry();
-      if (streetGeometry == null) {
-        continue;
-      }
-      Envelope env=streetGeometry.getEnvelopeInternal();
       edgeTree.insert(env,e);
-      env=streetGeometry.getEnvelopeInternal();
-      env.expandBy(DistanceLibrary.metersToDegrees(10));
-      List<HopEdge> results=transitEdgeTree.query(env);
-      Coordinate[] streetCoords=streetGeometry.getCoordinates();
-      Point streetStart=geometryFactory.createPoint(streetCoords[0]);
-      Point streetEnd=geometryFactory.createPoint(streetCoords[streetCoords.length - 1]);
-      for (      HopEdge hop : results) {
-        Geometry hopGeometry=hop.getGeometry();
-        Coordinate[] hopCoords=hopGeometry.getCoordinates();
-        Point hopStart=geometryFactory.createPoint(hopCoords[0]);
-        Point hopEnd=geometryFactory.createPoint(hopCoords[hopCoords.length - 1]);
-        double[] distances={streetGeometry.distance(hopStart),streetGeometry.distance(hopEnd),hopGeometry.distance(streetStart),hopGeometry.distance(streetEnd)};
-        Arrays.sort(distances);
-        double distance=distances[0] + distances[1];
-        if (distance < MAX_HOP_DISTANCE_FOR_NEAR_TRANSIT) {
-          edgesNearTransit.add(e);
-          break;
-        }
-      }
     }
     if (v instanceof TransitStop) {
       TransitStop ts=(TransitStop)v;

@@ -31,9 +31,6 @@
           if (distance > envelope.getWidth() / 2) {
             continue;
           }
-          if (nearTransitBonus && edgesNearTransit.contains(e)) {
-            distance/=2;
-          }
           if (distance < bestDistance) {
             bestDistance=distance;
             bestEdge=e;
@@ -48,7 +45,7 @@
         double yd=nearestPointOnEdge.y - coordinate.y;
         double edgeDirection=Math.atan2(yd,xd);
         if (Double.isNaN(edgeDirection))         return Arrays.asList(bestEdge);
-        TreeMap<Double,StreetEdge> parallel=new TreeMap<Double,StreetEdge>();
+        List<StreetEdge> parallel=new ArrayList<StreetEdge>();
         for (        StreetEdge e : nearby) {
           if (e == null || e instanceof OutEdge) {
             continue;
@@ -61,9 +58,6 @@
           Geometry eg=e.getGeometry();
           if (eg != null) {
             double distance=eg.distance(p);
-            if (nearTransitBonus && edgesNearTransit.contains(e)) {
-              distance/=2;
-            }
             if (distance <= bestDistance + DISTANCE_ERROR) {
               lil=new LocationIndexedLine(eg);
               location=lil.project(coordinate);
@@ -78,15 +72,12 @@
               yd=nearestPointOnEdge.y - coordinate.y;
               double direction=Math.atan2(yd,xd);
               if (Math.abs(direction - edgeDirection) < DIRECTION_ERROR) {
-                while (parallel.containsKey(distance)) {
-                  distance+=0.00000001;
-                }
-                parallel.put(distance,e);
+                parallel.add(e);
               }
             }
           }
         }
-        return parallel.values();
+        return parallel;
       }
     }
   }
