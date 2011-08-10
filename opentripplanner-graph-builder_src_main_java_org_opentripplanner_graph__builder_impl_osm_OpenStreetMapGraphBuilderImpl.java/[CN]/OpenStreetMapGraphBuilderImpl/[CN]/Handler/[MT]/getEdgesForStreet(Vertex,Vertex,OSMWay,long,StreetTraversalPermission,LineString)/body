@@ -43,12 +43,10 @@
   }
   if (way.isTag("cycleway","opposite") || way.isTag("cycleway","opposite_lane") || way.isTag("cycleway","opposite_track")) {
     if (oneWayBike) {
-      _log.warn("conflicting tags oneway:bicycle and cycleway:opposite* on way " + way.getId() + ", assuming one-way");
+      _log.warn("conflicting tags oneway:bicycle and cycleway:opposite* on way " + way.getId() + ", assuming opposite");
     }
- else {
-      if (permissions.allows(StreetTraversalPermission.BICYCLE)) {
-        permissionsBack=permissionsBack.add(StreetTraversalPermission.BICYCLE);
-      }
+    if (permissions.allows(StreetTraversalPermission.BICYCLE)) {
+      permissionsBack=permissionsBack.add(StreetTraversalPermission.BICYCLE);
     }
   }
   boolean noThruTraffic=way.isTag("access","destination");
