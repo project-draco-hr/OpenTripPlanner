@@ -25,7 +25,7 @@
     for (    GtfsReader reader : readers) {
       if (entityClass.equals(Agency.class))       reader.setAgencies(agencies);
       reader.readEntities(entityClass);
-      if (entityClass.equals(Agency.class))       agencies.addAll(reader.getAgencies());
+      if (entityClass.equals(Agency.class))       agencies=reader.getAgencies();
       store.flush();
     }
   }
