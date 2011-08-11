@@ -15,11 +15,18 @@ if (bicycleSafetyEffectiveLength / length <= GREENWAY_SAFETY_FACTOR) {
 }
 break;
 case FLAT:
-weight=slopeCostEffectiveLength;
+double speedOverhead=SPEED_OVERHEAD * WORK_NORMALIZATION_FACTOR * length* (options.speed - DEFAULT_BICYCLE_SPEED);
+weight=length / options.speed + slopeWorkCost + speedOverhead;
 break;
 case QUICK:
 weight=slopeSpeedEffectiveLength / options.speed;
 break;
+case TRIANGLE:
+double quick=slopeSpeedEffectiveLength / options.speed;
+double safety=bicycleSafetyEffectiveLength / options.speed;
+speedOverhead=SPEED_OVERHEAD * WORK_NORMALIZATION_FACTOR * length* (options.speed - DEFAULT_BICYCLE_SPEED);
+double slope=slopeWorkCost + speedOverhead;
+weight=quick * options.triangleTimeFactor + slope * options.triangleSlopeFactor + safety * options.triangleSafetyFactor;
 default :
 weight=length / options.speed;
 }
