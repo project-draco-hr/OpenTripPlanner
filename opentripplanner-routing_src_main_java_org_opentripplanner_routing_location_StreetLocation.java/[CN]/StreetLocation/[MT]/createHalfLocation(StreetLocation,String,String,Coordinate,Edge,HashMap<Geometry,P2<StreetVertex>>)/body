@@ -5,7 +5,6 @@
   Geometry geometry=street.getGeometry();
   if (cache.containsKey(geometry)) {
     P2<StreetVertex> cached=cache.get(geometry);
-    newFrom=cached.getFirst();
     location=cached.getSecond();
   }
  else {

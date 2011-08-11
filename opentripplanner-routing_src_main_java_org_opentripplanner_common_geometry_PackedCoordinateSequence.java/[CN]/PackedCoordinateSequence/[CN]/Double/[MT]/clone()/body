@@ -1,5 +1,5 @@
 {
-  double[] clone=new double[coords.length];
-  System.arraycopy(coords,0,clone,0,coords.length);
-  return new Double(clone,dimension);
+  Double clone=(Double)super.clone();
+  clone.coords=coords.clone();
+  return clone;
 }

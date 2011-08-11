@@ -21,7 +21,7 @@
       if (_skipEdgeStrategy != null && _skipEdgeStrategy.shouldSkipEdge(initialState.getVertex(),null,u,edge,spt,options))       continue;
       for (State v=edge.traverse(u); v != null; v=v.getNextResult()) {
         if (_skipTraverseResultStrategy != null && _skipTraverseResultStrategy.shouldSkipTraversalResult(initialState.getVertex(),null,u,v,spt,options))         continue;
-        if (_verbose)         System.out.printf("  w = %d + %d = %d %s",u.getWeight(),v.getWeightDelta(),v.getWeight(),v.getVertex());
+        if (_verbose)         System.out.printf("  w = %f + %f = %f %s",u.getWeight(),v.getWeightDelta(),v.getWeight(),v.getVertex());
         if (v.exceedsWeightLimit(options.maxWeight))         continue;
         if (spt.add(v))         queue.insert(v,v.getWeight());
       }

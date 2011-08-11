@@ -22,7 +22,7 @@
  else {
         double mandatoryWalkDistance=target.getDistanceToNearestTransitStop() + sv.getDistanceToNearestTransitStop();
         double distance=(euclidianDistance - mandatoryWalkDistance) / maxSpeed + mandatoryWalkDistance * options.walkReluctance / options.speed + boardCost;
-        return distance=Math.min(distance,options.walkReluctance * euclidianDistance / options.speed);
+        return Math.min(distance,options.walkReluctance * euclidianDistance / options.speed);
       }
     }
   }

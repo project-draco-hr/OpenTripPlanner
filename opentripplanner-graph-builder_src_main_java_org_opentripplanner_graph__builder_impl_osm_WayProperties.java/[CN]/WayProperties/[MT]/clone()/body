@@ -1,6 +1,11 @@
 {
-  WayProperties result=new WayProperties();
-  result.setPermission(permission);
-  result.setSafetyFeatures(new P2<Double>(safetyFeatures.getFirst(),safetyFeatures.getSecond()));
-  return result;
+  WayProperties result;
+  try {
+    result=(WayProperties)super.clone();
+    result.setSafetyFeatures(new P2<Double>(safetyFeatures.getFirst(),safetyFeatures.getSecond()));
+    return result;
+  }
+ catch (  CloneNotSupportedException e) {
+    throw new RuntimeException(e);
+  }
 }

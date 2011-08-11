@@ -18,6 +18,8 @@
       }
       urls.add(new URL(line));
     }
+    reader.close();
+    is.close();
     if (urls.size() == 0) {
       return getAndCacheUrls(file);
     }

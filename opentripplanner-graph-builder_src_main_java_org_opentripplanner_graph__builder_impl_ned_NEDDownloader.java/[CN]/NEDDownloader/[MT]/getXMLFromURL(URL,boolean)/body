@@ -14,6 +14,7 @@
         }
         sb.append(buffer,0,bytesRead);
       }
+      reader.close();
       contents=sb.toString();
       HttpURLConnection httpconnection=(HttpURLConnection)connection;
       httpconnection.disconnect();

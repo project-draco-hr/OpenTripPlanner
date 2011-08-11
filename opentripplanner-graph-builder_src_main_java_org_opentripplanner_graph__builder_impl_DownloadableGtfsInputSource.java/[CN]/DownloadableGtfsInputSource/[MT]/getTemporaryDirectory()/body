@@ -1,6 +1,10 @@
 {
   if (_cacheDirectory != null) {
-    if (!_cacheDirectory.exists())     _cacheDirectory.mkdirs();
+    if (!_cacheDirectory.exists()) {
+      if (!_cacheDirectory.mkdirs()) {
+        throw new RuntimeException("Failed to create cache directory " + _cacheDirectory);
+      }
+    }
     return _cacheDirectory;
   }
   return new File(System.getProperty("java.io.tmpdir"));

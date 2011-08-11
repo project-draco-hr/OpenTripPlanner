@@ -3,7 +3,7 @@
   try {
     String newString=input.replace('_','.').replace('-','.').replace(':','.').replace('/','.');
     if (newString != null) {
-      String[] dl=DF_LIST;
+      List<String> dl=DF_LIST;
       if (newString.length() <= 8 && !newString.matches(".*20\\d\\d.*")) {
         dl=SMALL_DF_LIST;
       }

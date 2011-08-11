@@ -4,11 +4,13 @@
   try {
     FileInputStream inputStream=new FileInputStream(path);
     byte[] header=new byte[2];
-    inputStream.read(header,0,2);
+    int bytesRead=inputStream.read(header,0,2);
     inputStream.close();
-    if (header[0] != 'P' || header[1] != 'K') {
+    if (bytesRead != 2 || header[0] != 'P' || header[1] != 'K') {
       log.warn("not a zip file.");
-      path.delete();
+      if (!path.delete()) {
+        log.error("Failed to delete incomplete file " + path);
+      }
       throw new NotAZipFileException();
     }
     ZipFile zipFile=new ZipFile(path);
@@ -20,12 +22,13 @@
         FileOutputStream ostream=new FileOutputStream(tile);
         byte[] buffer=new byte[4096];
         while (true) {
-          int bytesRead=istream.read(buffer);
+          bytesRead=istream.read(buffer);
           if (bytesRead == -1) {
             break;
           }
           ostream.write(buffer,0,bytesRead);
         }
+        ostream.close();
         return tile;
       }
     }

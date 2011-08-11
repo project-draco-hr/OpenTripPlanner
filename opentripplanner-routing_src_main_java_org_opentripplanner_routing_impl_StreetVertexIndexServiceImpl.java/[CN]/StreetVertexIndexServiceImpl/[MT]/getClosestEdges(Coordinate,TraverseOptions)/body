@@ -1,6 +1,5 @@
 {
   Envelope envelope=new Envelope(coordinate);
-  List<StreetEdge> nearby=new LinkedList<StreetEdge>();
   int i=0;
   double envelopeGrowthRate=0.0002;
   GeometryFactory factory=new GeometryFactory();
@@ -16,7 +15,7 @@
     envelopeGrowthRate*=2;
     bestDistance=Double.MAX_VALUE;
     StreetEdge bestEdge=null;
-    nearby=edgeTree.query(envelope);
+    List<StreetEdge> nearby=edgeTree.query(envelope);
     if (nearby != null) {
       for (      StreetEdge e : nearby) {
         if (e == null || e instanceof OutEdge)         continue;

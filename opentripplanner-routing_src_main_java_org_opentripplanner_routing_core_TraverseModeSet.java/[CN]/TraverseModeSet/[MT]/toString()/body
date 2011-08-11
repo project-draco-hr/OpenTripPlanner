@@ -1,11 +1,11 @@
 {
-  String out="";
+  StringBuilder out=new StringBuilder();
   for (  TraverseMode mode : TraverseMode.values()) {
     if ((modes & getMaskForMode(mode)) != 0) {
-      if (out != "") {
-        out+=", ";
+      if (out.length() != 0) {
+        out.append(", ");
       }
-      out+=mode;
+      out.append(mode);
     }
   }
   return "TraverseMode (" + out + ")";

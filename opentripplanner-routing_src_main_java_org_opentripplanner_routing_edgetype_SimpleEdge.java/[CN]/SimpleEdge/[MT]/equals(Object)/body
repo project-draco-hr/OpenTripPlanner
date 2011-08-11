@@ -1,0 +1,7 @@
+{
+  if (other instanceof SimpleEdge) {
+    SimpleEdge simple=(SimpleEdge)other;
+    return super.equals(simple) && simple.weight == weight && simple.seconds == seconds;
+  }
+  return false;
+}

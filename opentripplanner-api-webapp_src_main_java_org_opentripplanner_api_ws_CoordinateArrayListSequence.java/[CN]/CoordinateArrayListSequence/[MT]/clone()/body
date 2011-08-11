@@ -1,3 +1,11 @@
 {
-  return new CoordinateArrayListSequence(coordinates);
+  CoordinateArrayListSequence clone;
+  try {
+    clone=(CoordinateArrayListSequence)super.clone();
+  }
+ catch (  CloneNotSupportedException e) {
+    throw new RuntimeException(e);
+  }
+  clone.coordinates=(ArrayList<Coordinate>)coordinates.clone();
+  return clone;
 }

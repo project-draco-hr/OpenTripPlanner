@@ -1,5 +1,7 @@
 {
-  if (!graphPath.getParentFile().exists())   graphPath.getParentFile().mkdirs();
+  if (!graphPath.getParentFile().exists())   if (!graphPath.getParentFile().mkdirs()) {
+    _log.error("Failed to create directories for graph bundle at " + graphPath);
+  }
   _log.info("Writing graph " + graphPath.getAbsolutePath() + " ...");
   ObjectOutputStream out=new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(graphPath)));
   out.writeObject(hierarchy);

@@ -19,7 +19,9 @@
     }
  catch (    RuntimeException e) {
       out.close();
-      gtfsFile.delete();
+      if (!gtfsFile.delete()) {
+        _log.error("Failed to delete incomplete file " + gtfsFile);
+      }
       throw e;
     }
     return gtfsFile;
