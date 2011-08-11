@@ -1,4 +1,5 @@
 {
+  State unoptimized=orig;
   State ret=orig.reversedClone();
   Edge edge=null;
   try {
@@ -12,7 +13,8 @@
     }
   }
  catch (  NullPointerException e) {
-    throw new RuntimeException("Cannot reverse path at edge: " + edge);
+    LOGGER.warning("Cannot reverse path at edge: " + edge + " returning unoptimized path.  If edge is a PatternInterlineDwell,"+ " this is not totally unexpected; otherwise, you might want to"+ " look into it");
+    return reverse(unoptimized);
   }
   return ret;
 }
