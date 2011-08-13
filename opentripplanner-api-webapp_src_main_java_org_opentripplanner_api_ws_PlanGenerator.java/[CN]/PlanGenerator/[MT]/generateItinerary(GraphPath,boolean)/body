@@ -83,6 +83,12 @@
           Geometry geometry=geometryFactory.createLineString(coordinates);
           leg.legGeometry=PolylineEncoder.createEncodings(geometry);
           coordinates=new CoordinateArrayListSequence();
+          if (showIntermediateStops && leg.stop != null) {
+            leg.stop.remove(leg.stop.size() - 1);
+            if (leg.stop.isEmpty()) {
+              leg.stop=null;
+            }
+          }
         }
         leg=makeLeg(currState);
         for (        String noteForNewLeg : notesForNewLeg) {
@@ -129,8 +135,13 @@
         if (leg.stop == null) {
           leg.stop=new ArrayList<Place>();
         }
-        Place stop=makePlace(currState);
-        leg.stop.add(stop);
+        if (!(currState.getBackEdge() instanceof Dwell || currState.getBackEdge() instanceof PatternDwell || currState.getBackEdge() instanceof PatternInterlineDwell)) {
+          Place stop=makePlace(currState);
+          leg.stop.add(stop);
+        }
+ else {
+          leg.stop.get(leg.stop.size() - 1).departure=new Date(currState.getTime());
+        }
       }
     }
   }
@@ -141,6 +152,12 @@
     leg.legGeometry=PolylineEncoder.createEncodings(geometry);
     if (startWalk != -1) {
       leg.walkSteps=getWalkSteps(pathService,path.states.subList(startWalk,i + 1));
+    }
+    if (showIntermediateStops && leg.stop != null) {
+      leg.stop.remove(leg.stop.size() - 1);
+      if (leg.stop.isEmpty()) {
+        leg.stop=null;
+      }
     }
   }
   if (itinerary.transfers == -1) {
