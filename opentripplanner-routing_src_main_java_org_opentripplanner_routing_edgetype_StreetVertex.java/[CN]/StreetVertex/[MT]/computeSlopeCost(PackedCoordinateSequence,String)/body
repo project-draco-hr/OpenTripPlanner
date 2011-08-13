@@ -2,7 +2,7 @@
   Coordinate[] coordinates=elev.toCoordinateArray();
   double maxSlope=0;
   double slopeSpeedEffectiveLength=0;
-  double slopeCost=0;
+  double slopeWorkCost=0;
   for (int i=0; i < coordinates.length - 1; ++i) {
     double run=coordinates[i + 1].x - coordinates[i].x;
     double rise=coordinates[i + 1].y - coordinates[i].y;
@@ -14,10 +14,10 @@
     if (maxSlope < Math.abs(slope)) {
       maxSlope=Math.abs(slope);
     }
-    double watt_seconds=run * (JOULES_PER_METER_ON_FLAT + JOULES_SLOPE_FACTOR * slope);
-    watt_seconds=Math.max(watt_seconds,0) * WORK_NORMALIZATION_FACTOR;
-    slopeCost+=watt_seconds;
+    double slope_or_zero=Math.max(slope,0);
+    double joules=run * (JOULES_PER_METER_ON_FLAT + JOULES_SLOPE_FACTOR * slope_or_zero);
+    slopeWorkCost+=joules * WORK_NORMALIZATION_FACTOR;
     slopeSpeedEffectiveLength+=run * slopeSpeedCoefficient(slope,coordinates[i].y);
   }
-  return new SlopeCosts(slopeSpeedEffectiveLength,slopeCost,maxSlope);
+  return new SlopeCosts(slopeSpeedEffectiveLength,slopeWorkCost,maxSlope);
 }
