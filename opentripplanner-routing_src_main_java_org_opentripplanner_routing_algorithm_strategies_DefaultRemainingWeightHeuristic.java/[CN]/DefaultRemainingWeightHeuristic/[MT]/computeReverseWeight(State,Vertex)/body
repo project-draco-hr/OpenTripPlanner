@@ -1,6 +1,6 @@
 {
   Vertex sv=s.getVertex();
-  double euclidianDistance=sv.distance(target);
+  double euclidianDistance=sv.fastDistance(target);
   if (useTransit) {
     if (s.isAlightedLocal()) {
       return options.walkReluctance * euclidianDistance / options.speed;

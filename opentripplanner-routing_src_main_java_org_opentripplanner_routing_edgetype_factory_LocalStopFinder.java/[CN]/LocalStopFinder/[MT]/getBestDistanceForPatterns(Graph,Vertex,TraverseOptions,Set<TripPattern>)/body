@@ -37,7 +37,7 @@
         }
       }
     }
-    if (fromv.distance(origin) > LOCAL_STOP_SEARCH_RADIUS) {
+    if (fromv.fastDistance(origin) > LOCAL_STOP_SEARCH_RADIUS) {
       return patternCosts;
     }
     Iterable<Edge> outgoing=graph.getOutgoing(fromv);
