@@ -1,5 +1,5 @@
 {
-  GeocoderResults retval=decorated.geocode(address);
+  GeocoderResults retval=decorated.geocode(address,bbox);
   if (retval.getResults() != null) {
     List<GeocoderResult> results=new ArrayList<GeocoderResult>(retval.getCount());
     for (    GeocoderResult result : retval.getResults()) {

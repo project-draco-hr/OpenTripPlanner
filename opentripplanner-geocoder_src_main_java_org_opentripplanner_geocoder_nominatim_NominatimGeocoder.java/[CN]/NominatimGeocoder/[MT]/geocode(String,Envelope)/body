@@ -1,7 +1,7 @@
 {
   String content=null;
   try {
-    URL nominatimGeocoderUrl=getNominatimGeocoderUrl(address);
+    URL nominatimGeocoderUrl=getNominatimGeocoderUrl(address,bbox);
     URLConnection conn=nominatimGeocoderUrl.openConnection();
     BufferedReader reader=new BufferedReader(new InputStreamReader(conn.getInputStream()));
     StringBuilder sb=new StringBuilder(128);
