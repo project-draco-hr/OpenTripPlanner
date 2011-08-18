@@ -29,8 +29,7 @@
         throw new IllegalStateException("Shapefile must contain either points or polygons.");
       }
       double data=(Double)feature.getAttribute(attribute);
-      Vertex vertex=new GenericVertex("pop_shp_" + i,point.getX(),point.getY());
-      Individual individual=new Individual(vertex,data);
+      Individual individual=new Individual(point.getX(),point.getY(),data);
       population.elements.add(individual);
       i++;
     }
