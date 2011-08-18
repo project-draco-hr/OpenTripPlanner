@@ -47,7 +47,7 @@
         if (attribute.isTransfersSet() && attribute.getTransfers() < transfersUsed) {
           continue;
         }
-        if (attribute.isTransferDurationSet() && tripTime > attribute.getTransferDuration() * 1000) {
+        if (attribute.isTransferDurationSet() && tripTime > attribute.getTransferDuration()) {
           continue;
         }
         float newFare=attribute.getPrice();

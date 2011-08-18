@@ -3,13 +3,13 @@
   Vertex stop_d=graph.getVertex("agency_D");
   TraverseOptions options=new TraverseOptions(context);
   options.optimizeFor=OptimizeType.QUICK;
-  ShortestPathTree spt=AStar.getShortestPathTree(graph,stop_c.getLabel(),stop_d.getLabel(),new GregorianCalendar(2009,8,1,16,0,0).getTimeInMillis(),options);
+  ShortestPathTree spt=AStar.getShortestPathTree(graph,stop_c.getLabel(),stop_d.getLabel(),TestUtils.dateInSeconds(2009,8,1,16,0,0),options);
   GraphPath path=spt.getPath(stop_d,false);
   assertNotNull(path);
-  assertEquals(new GregorianCalendar(2009,8,1,16,20,0).getTimeInMillis(),path.getEndTime());
+  assertEquals(TestUtils.dateInSeconds(2009,8,1,16,20,0),path.getEndTime());
   options.transferPenalty=1800;
-  spt=AStar.getShortestPathTree(graph,stop_c.getLabel(),stop_d.getLabel(),new GregorianCalendar(2009,8,1,16,0,0).getTimeInMillis(),options);
+  spt=AStar.getShortestPathTree(graph,stop_c.getLabel(),stop_d.getLabel(),TestUtils.dateInSeconds(2009,8,1,16,0,0),options);
   path=spt.getPath(stop_d,false);
   assertNotNull(path);
-  assertEquals(new GregorianCalendar(2009,8,1,16,50,0).getTimeInMillis(),path.getEndTime());
+  assertEquals(TestUtils.dateInSeconds(2009,8,1,16,50,0),path.getEndTime());
 }

@@ -11,8 +11,8 @@
     }
     if (s0.getNumBoardings() > options.maxTransfers)     return null;
     long t0=s0.getTime();
-    long alight_before=t0 - options.minTransferTime * 500;
-    long transfer_penalty=0;
+    long alight_before=t0 - options.minTransferTime / 2;
+    int transfer_penalty=0;
     if (s0.getLastAlightedTime() != 0) {
       TransferTable transferTable=options.getTransferTable();
       if (transferTable.hasPreferredTransfers()) {
@@ -22,7 +22,7 @@
       if (transfer_time == TransferTable.UNKNOWN_TRANSFER) {
       }
  else       if (transfer_time >= 0) {
-        long table_alight_before=s0.getLastAlightedTime() - transfer_time * 1000;
+        long table_alight_before=s0.getLastAlightedTime() - transfer_time;
         if (table_alight_before < alight_before)         alight_before=table_alight_before;
       }
  else       if (transfer_time == TransferTable.FORBIDDEN_TRANSFER) {
@@ -46,7 +46,7 @@
     StateEditor s1=s0.edit(this);
     s1.setTime(alight_before);
     s1.setEverBoarded(true);
-    long wait_cost=(t0 - alight_before) / 1000;
+    long wait_cost=t0 - alight_before;
     s1.incrementWeight(wait_cost + transfer_penalty);
     return s1.makeState();
   }
@@ -56,7 +56,7 @@
     if (toVertex.isLocal()) {
       s1.setAlightedLocal(true);
     }
-    s1.incrementTimeMsec(options.minTransferTime * 500);
+    s1.incrementTimeInSeconds(options.minTransferTime / 2);
     return s1.makeState();
   }
 }

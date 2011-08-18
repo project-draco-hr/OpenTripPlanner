@@ -23,14 +23,14 @@
   Vertex stop_e=graph.getVertex("agency_E_arrive");
   ShortestPathTree spt;
   GraphPath path;
-  long startTime=new GregorianCalendar(2009,8,7,0,0,0).getTimeInMillis();
+  long startTime=TestUtils.dateInSeconds(2009,8,7,0,0,0);
   spt=AStar.getShortestPathTree(graph,stop_a,stop_e,startTime,options);
   path=spt.getPath(stop_e,false);
   assertNotNull(path);
   HashSet<String> expectedNotes=new HashSet<String>();
   expectedNotes.add(note1);
   assertEquals(expectedNotes,path.states.get(1).getBackEdgeNarrative().getNotes());
-  startTime=new GregorianCalendar(2009,8,7,0,9,0).getTimeInMillis();
+  startTime=TestUtils.dateInSeconds(2009,8,7,0,9,0);
   spt=AStar.getShortestPathTree(graph,stop_a,stop_e,startTime,options);
   path=spt.getPath(stop_e,false);
   expectedNotes.add(note2);

@@ -26,7 +26,7 @@
   startClock=System.nanoTime();
   ShortestPathTree spt=null;
   for (int i=0; i < n_trials; ++i) {
-    spt=AStar.getShortestPathTree(graph,random[i],airport.getLabel(),startTime.getTimeInMillis(),options);
+    spt=AStar.getShortestPathTree(graph,random[i],airport.getLabel(),TestUtils.toSeconds(startTime),options);
   }
   endClock=System.nanoTime();
   long aStarTime=endClock - startClock;

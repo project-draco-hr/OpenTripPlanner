@@ -6,7 +6,7 @@
   fromLocation.getExtra().add(new SimpleEdge(fromLocation,_graph.getVertex("shilshole_22nd")));
   StreetLocation toLocation=new StreetLocation("near_56th_20th",new Coordinate(-122.382347,47.669518),"near_56th_20th");
   toLocation.getExtra().add(new SimpleEdge(_graph.getVertex("56th_20th"),toLocation));
-  ShortestPathTree tree=AStar.getShortestPathTree(_graph,fromLocation,toLocation,System.currentTimeMillis(),options);
+  ShortestPathTree tree=AStar.getShortestPathTree(_graph,fromLocation,toLocation,1000,options);
   GraphPath path=tree.getPath(fromLocation,false);
   List<State> states=path.states;
   assertEquals(9,states.size());

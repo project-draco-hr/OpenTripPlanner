@@ -27,7 +27,7 @@
           if (nextDay) {
             continue;
           }
-          int wait=(int)((current_time - sd.time(pattern.getArrivalTime(stopIndex,patternIndex))) / 1000);
+          int wait=(int)(current_time - sd.time(pattern.getArrivalTime(stopIndex,patternIndex)));
           if (wait < 0)           _log.error("negative wait time on alight");
           if (bestWait < 0 || wait < bestWait) {
             bestWait=wait;

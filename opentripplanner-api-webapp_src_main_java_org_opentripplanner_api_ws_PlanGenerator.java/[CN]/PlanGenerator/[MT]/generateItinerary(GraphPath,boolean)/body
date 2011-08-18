@@ -29,7 +29,7 @@
         }
       }
     }
-    edgeElapsedTime=currState.getTime() - currState.getBackState().getTime();
+    edgeElapsedTime=currState.getTimeInMillis() - currState.getBackState().getTimeInMillis();
     if (mode == TraverseMode.BOARDING || mode == TraverseMode.ALIGHTING) {
       itinerary.waitingTime+=edgeElapsedTime;
     }
@@ -51,12 +51,12 @@
       }
  else       if (mode == TraverseMode.ALIGHTING) {
         leg.to=makePlace(edgeNarrative.getToVertex());
-        leg.endTime=new Date(currState.getBackState().getTime());
+        leg.endTime=new Date(currState.getBackState().getTimeInMillis());
         continue;
       }
  else       if (changingToInterlinedTrip) {
         leg.to=makePlace(edgeNarrative.getFromVertex());
-        leg.endTime=new Date(currState.getBackState().getTime());
+        leg.endTime=new Date(currState.getBackState().getTimeInMillis());
         Geometry geometry=geometryFactory.createLineString(coordinates);
         leg.legGeometry=PolylineEncoder.createEncodings(geometry);
         coordinates=new CoordinateArrayListSequence();
@@ -78,7 +78,7 @@
           }
           if (leg.to == null) {
             leg.to=makePlace(edgeNarrative.getFromVertex());
-            leg.endTime=new Date(currState.getBackState().getTime());
+            leg.endTime=new Date(currState.getBackState().getTimeInMillis());
           }
           Geometry geometry=geometryFactory.createLineString(coordinates);
           leg.legGeometry=PolylineEncoder.createEncodings(geometry);
@@ -136,7 +136,7 @@
   }
   if (leg != null) {
     leg.to=makePlace(edgeNarrative.getToVertex());
-    leg.endTime=new Date(finalState.getTime());
+    leg.endTime=new Date(finalState.getTimeInMillis());
     Geometry geometry=geometryFactory.createLineString(coordinates);
     leg.legGeometry=PolylineEncoder.createEncodings(geometry);
     if (startWalk != -1) {

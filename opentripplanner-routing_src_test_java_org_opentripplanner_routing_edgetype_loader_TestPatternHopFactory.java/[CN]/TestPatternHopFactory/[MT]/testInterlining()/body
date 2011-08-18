@@ -1,7 +1,7 @@
 {
   Vertex stop_i=graph.getVertex("agency_I_depart");
   Vertex stop_k=graph.getVertex("agency_K_arrive");
-  long startTime=new GregorianCalendar(2009,8,19,12,0,0).getTimeInMillis();
+  long startTime=TestUtils.dateInSeconds(2009,8,19,12,0,0);
   TraverseOptions options=new TraverseOptions(context);
   ShortestPathTree spt=AStar.getShortestPathTree(graph,stop_i,stop_k,startTime,options);
   GraphPath path=spt.getPath(stop_k,false);
@@ -11,7 +11,7 @@
       num_alights+=1;
     }
     if (s.getBackEdge() instanceof PatternDwell) {
-      assertEquals(10 * 60 * 1000,s.getTimeDeltaMsec());
+      assertEquals(10 * 60,s.getTimeDeltaSec());
     }
   }
   assertEquals(1,num_alights);
@@ -24,7 +24,7 @@
       num_alights+=1;
     }
     if (s.getBackEdge() instanceof PatternDwell) {
-      assertEquals(10 * 60 * 1000,s.getTimeDeltaMsec());
+      assertEquals(10 * 60,s.getTimeDeltaSec());
     }
   }
   assertEquals(1,num_alights);

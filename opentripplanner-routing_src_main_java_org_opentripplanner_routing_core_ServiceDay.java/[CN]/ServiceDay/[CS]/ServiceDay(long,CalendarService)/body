@@ -1,6 +1,6 @@
 {
-  ServiceDate sd=new ServiceDate(new Date(time));
+  ServiceDate sd=new ServiceDate(new Date(time * 1000));
   Date d=sd.getAsDate();
-  this.midnight=d.getTime();
+  this.midnight=d.getTime() / 1000;
   this.serviceIdsRunning=cs.getServiceIdsOnDate(sd);
 }
