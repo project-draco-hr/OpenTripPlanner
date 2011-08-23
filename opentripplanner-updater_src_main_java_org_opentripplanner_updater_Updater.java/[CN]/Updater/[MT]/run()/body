@@ -1,0 +1,17 @@
+{
+  try {
+    InputStream data=getData();
+    if (data == null) {
+      throw new RuntimeException("Failed to get data from url " + url);
+    }
+    FeedMessage feed=GtfsRealtime.FeedMessage.parseFrom(data);
+    UpdateHandler updateHandler=new UpdateHandler(feed);
+    updateHandler.setDefaultAgencyId(defaultAgencyId);
+    updateHandler.setGraphService(graphService);
+    updateHandler.setPatchService(getPatchService());
+    updateHandler.update();
+  }
+ catch (  IOException e) {
+    log.error("Eror reading gtfs-realtime feed from " + url,e);
+  }
+}

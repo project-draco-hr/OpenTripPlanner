@@ -1,0 +1,29 @@
+{
+  AlertPatch snp1=new AlertPatch();
+  long breakTime=TestUtils.dateInSeconds(2009,8,7,0,0,0);
+  snp1.addTimePeriod(0,breakTime);
+  long secondPeriodStartTime=TestUtils.dateInSeconds(2009,8,7,7,0,0);
+  long secondPeriodEndTime=TestUtils.dateInSeconds(2009,8,8,0,0,0);
+  snp1.addTimePeriod(secondPeriodStartTime,secondPeriodEndTime);
+  Alert note1=Alert.createSimpleAlerts("The first note");
+  snp1.setAlert(note1);
+  snp1.setId("id1");
+  snp1.setStop(new AgencyAndId("agency","A"));
+  snp1.apply(graph);
+  Vertex stop_a=graph.getVertex("agency_A");
+  Vertex stop_e=graph.getVertex("agency_E_arrive");
+  ShortestPathTree spt;
+  GraphPath path;
+  long startTime=TestUtils.dateInSeconds(2009,8,7,0,0,0);
+  spt=AStar.getShortestPathTree(graph,stop_a,stop_e,startTime,options);
+  path=spt.getPath(stop_e,true);
+  assertNotNull(path);
+  assertNull(path.states.get(1).getBackEdgeNarrative().getNotes());
+  startTime=TestUtils.dateInSeconds(2009,8,7,8,0,0);
+  spt=AStar.getShortestPathTree(graph,stop_a,stop_e,startTime,options);
+  path=spt.getPath(stop_e,false);
+  assertNotNull(path);
+  HashSet<Alert> expectedNotes=new HashSet<Alert>();
+  expectedNotes.add(note1);
+  assertEquals(expectedNotes,path.states.get(1).getBackEdgeNarrative().getNotes());
+}

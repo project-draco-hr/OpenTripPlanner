@@ -12,10 +12,10 @@
     for (    RouteVariant variant : variants) {
       variant.cleanup();
       List<Stop> stops=variant.getStops();
-      GraphBuilderUtils.addToMapList(starts,stops.get(0),variant);
-      GraphBuilderUtils.addToMapList(ends,stops.get(stops.size() - 1),variant);
+      MapUtils.addToMapList(starts,stops.get(0),variant);
+      MapUtils.addToMapList(ends,stops.get(stops.size() - 1),variant);
       for (      Stop stop : stops) {
-        GraphBuilderUtils.addToMapList(vias,stop,variant);
+        MapUtils.addToMapList(vias,stop,variant);
       }
     }
     for (    RouteVariant variant : variants) {

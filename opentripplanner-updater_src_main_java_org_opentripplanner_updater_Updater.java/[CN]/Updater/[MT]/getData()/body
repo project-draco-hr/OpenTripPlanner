@@ -1,0 +1,11 @@
+{
+  HttpGet httpget=new HttpGet(url);
+  HttpClient httpclient=new DefaultHttpClient();
+  HttpResponse response=httpclient.execute(httpget);
+  HttpEntity entity=response.getEntity();
+  if (entity == null) {
+    return null;
+  }
+  InputStream instream=entity.getContent();
+  return instream;
+}

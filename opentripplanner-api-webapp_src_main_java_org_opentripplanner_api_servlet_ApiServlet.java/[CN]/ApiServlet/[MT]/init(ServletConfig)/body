@@ -1,0 +1,7 @@
+{
+  super.init(config);
+  ServletContext servletContext=config.getServletContext();
+  WebApplicationContext webApplicationContext=WebApplicationContextUtils.getWebApplicationContext(servletContext);
+  AutowireCapableBeanFactory autowireCapableBeanFactory=webApplicationContext.getAutowireCapableBeanFactory();
+  autowireCapableBeanFactory.autowireBean(this);
+}

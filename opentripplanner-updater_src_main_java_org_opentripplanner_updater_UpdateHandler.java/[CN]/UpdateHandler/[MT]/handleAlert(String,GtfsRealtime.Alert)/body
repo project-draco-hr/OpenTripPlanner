@@ -1,0 +1,46 @@
+{
+  Alert alertText=new Alert();
+  alertText.alertDescriptionText=deBuffer(alert.getDescriptionText());
+  alertText.alertHeaderText=deBuffer(alert.getHeaderText());
+  alertText.alertUrl=deBuffer(alert.getUrl());
+  ArrayList<TimePeriod> periods=new ArrayList<TimePeriod>();
+  for (  TimeRange activePeriod : alert.getActivePeriodList()) {
+    final long start=activePeriod.hasStart() ? activePeriod.getStart() : 0;
+    final long end=activePeriod.hasEnd() ? activePeriod.getEnd() : Long.MAX_VALUE;
+    periods.add(new TimePeriod(start,end));
+  }
+  for (  EntitySelector informed : alert.getInformedEntityList()) {
+    String routeId=null;
+    if (informed.hasRouteId()) {
+      routeId=informed.getRouteId();
+    }
+    String stopId=null;
+    if (informed.hasStopId()) {
+      stopId=informed.getStopId();
+    }
+    String agencyId=informed.getAgencyId();
+    if (informed.hasAgencyId()) {
+      agencyId=informed.getAgencyId().intern();
+    }
+ else {
+      agencyId=defaultAgencyId;
+    }
+    if (agencyId == null) {
+      log.error("Empty agency id (and no default set) in feed; other ids are route " + routeId + " and stop "+ stopId);
+      continue;
+    }
+    agencyId=agencyId.intern();
+    AlertPatch patch=new AlertPatch();
+    if (routeId != null) {
+      patch.setRoute(new AgencyAndId(agencyId,routeId));
+    }
+    if (stopId != null) {
+      patch.setStop(new AgencyAndId(agencyId,stopId));
+    }
+    patch.setTimePeriods(periods);
+    patch.setId(id);
+    patch.setAlert(alertText);
+    patch.apply(graph);
+    patchIds.add(id);
+  }
+}

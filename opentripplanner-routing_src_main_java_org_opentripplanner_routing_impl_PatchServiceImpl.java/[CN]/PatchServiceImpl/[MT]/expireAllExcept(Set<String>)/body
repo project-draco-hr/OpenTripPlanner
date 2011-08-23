@@ -1,0 +1,24 @@
+{
+  ArrayList<String> toRemove=new ArrayList<String>();
+  Graph graph=graphService.getGraph();
+  for (  Entry<String,Patch> entry : patches.entrySet()) {
+    final String key=entry.getKey();
+    if (!retain.contains(key)) {
+      toRemove.add(key);
+      Patch patch=entry.getValue();
+      if (patch instanceof AlertPatch) {
+        AlertPatch alertPatch=(AlertPatch)patch;
+        AgencyAndId stop=alertPatch.getStop();
+        if (stop != null) {
+          MapUtils.removeFromMapList(patchesByStop,stop,patch);
+        }
+        AgencyAndId route=alertPatch.getRoute();
+        if (route != null) {
+          MapUtils.removeFromMapList(patchesByRoute,stop,patch);
+        }
+      }
+      patch.remove(graph);
+    }
+  }
+  patches.keySet().removeAll(toRemove);
+}

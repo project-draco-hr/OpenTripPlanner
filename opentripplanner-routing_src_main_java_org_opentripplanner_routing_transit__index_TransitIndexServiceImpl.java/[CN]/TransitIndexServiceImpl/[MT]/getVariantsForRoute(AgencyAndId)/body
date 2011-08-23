@@ -1,3 +1,7 @@
 {
-  return variantsByRoute.get(route);
+  List<RouteVariant> variants=variantsByRoute.get(route);
+  if (variants == null) {
+    return Collections.emptyList();
+  }
+  return variants;
 }

@@ -45,6 +45,6 @@
   TurnRestriction restriction=new TurnRestriction();
   restriction.type=tag.type;
   turnRestrictionsByTag.put(tag,restriction);
-  GraphBuilderUtils.addToMapList(turnRestrictionsByFromWay,from,tag);
-  GraphBuilderUtils.addToMapList(turnRestrictionsByToWay,to,tag);
+  MapUtils.addToMapList(turnRestrictionsByFromWay,from,tag);
+  MapUtils.addToMapList(turnRestrictionsByToWay,to,tag);
 }

@@ -1,15 +1,7 @@
 {
-  Graph graph=graphService.getGraph();
-  TransitIndexService index=graph.getService(TransitIndexService.class);
-  HashSet<Patch> patches=new HashSet<Patch>();
-  for (  RouteVariant variant : index.getVariantsForRoute(route)) {
-    for (    RouteSegment segment : variant.getSegments()) {
-      addAllPatchesFrom(patches,segment.board);
-      addAllPatchesFrom(patches,segment.alight);
-      addAllPatchesFrom(patches,segment.hopIn);
-      addAllPatchesFrom(patches,segment.dwell);
-      addAllPatchesFrom(patches,segment.hopOut);
-    }
+  List<Patch> result=patchesByRoute.get(route);
+  if (result == null) {
+    result=Collections.emptyList();
   }
-  return patches;
+  return result;
 }

@@ -1,0 +1,20 @@
+{
+  AlertPatch snp1=new AlertPatch();
+  snp1.addTimePeriod(0,1000L * 60 * 60* 24* 365* 40);
+  Alert note1=Alert.createSimpleAlerts("The first note");
+  snp1.setAlert(note1);
+  snp1.setId("id1");
+  snp1.setStop(new AgencyAndId("agency","A"));
+  snp1.apply(graph);
+  Vertex stop_a=graph.getVertex("agency_A");
+  Vertex stop_e=graph.getVertex("agency_E_arrive");
+  ShortestPathTree spt;
+  GraphPath path;
+  long startTime=TestUtils.dateInSeconds(2009,8,7,0,0,0);
+  spt=AStar.getShortestPathTree(graph,stop_a,stop_e,startTime,options);
+  path=spt.getPath(stop_e,true);
+  assertNotNull(path);
+  HashSet<Alert> expectedNotes=new HashSet<Alert>();
+  expectedNotes.add(note1);
+  assertEquals(expectedNotes,path.states.get(1).getBackEdgeNarrative().getNotes());
+}

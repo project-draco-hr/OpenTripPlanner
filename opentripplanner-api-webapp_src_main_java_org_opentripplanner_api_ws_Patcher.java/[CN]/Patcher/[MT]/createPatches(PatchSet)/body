@@ -5,9 +5,13 @@
       response.status="Every patch must have an id";
       return response;
     }
-    if (patch instanceof RouteNotePatch && ((RouteNotePatch)patch).getRoute().getId().equals("")) {
-      response.status="Every route note patch must have a route id";
-      return response;
+    if (patch instanceof AlertPatch) {
+      AlertPatch alertPatch=(AlertPatch)patch;
+      final AgencyAndId route=alertPatch.getRoute();
+      if (route != null && route.getId().equals("")) {
+        response.status="Every route patch must have a route id";
+        return response;
+      }
     }
   }
   for (  Patch patch : patches.patches) {

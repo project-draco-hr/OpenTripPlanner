@@ -1,11 +1,8 @@
 {
-  RouteNotePatch rnp1=new RouteNotePatch();
-  rnp1.setStartTime(0);
-  rnp1.setEndTime(60 * 60 * 24* 365* 40);
-  rnp1.setStartTimeOfDay(21600);
-  rnp1.setEndTimeOfDay(43200);
+  AlertPatch rnp1=new AlertPatch();
+  rnp1.addTimePeriod(0,1000L * 60 * 60* 24* 365* 40);
   Alert note1=Alert.createSimpleAlerts("The route note");
-  rnp1.setNotes(note1);
+  rnp1.setAlert(note1);
   rnp1.setId("id1");
   rnp1.setRoute(new AgencyAndId("agency","1"));
   rnp1.apply(graph);

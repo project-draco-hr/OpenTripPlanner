@@ -1,10 +1,7 @@
 {
-  Graph graph=graphService.getGraph();
-  TransitIndexService index=graph.getService(TransitIndexService.class);
-  HashSet<Patch> patches=new HashSet<Patch>();
-  Edge edge=index.getPrealightEdge(stop);
-  addAllPatchesFromEdge(patches,edge);
-  edge=index.getPreboardEdge(stop);
-  addAllPatchesFromEdge(patches,edge);
-  return patches;
+  List<Patch> result=patchesByStop.get(stop);
+  if (result == null) {
+    result=Collections.emptyList();
+  }
+  return result;
 }

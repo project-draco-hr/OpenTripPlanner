@@ -1,0 +1,25 @@
+{
+  if (route != null) {
+    TransitIndexService index=graph.getService(TransitIndexService.class);
+    List<RouteVariant> variants=index.getVariantsForRoute(route);
+    for (    RouteVariant variant : variants) {
+      if (direction != null && !direction.equals(variant.getDirection())) {
+        continue;
+      }
+      for (      RouteSegment segment : variant.getSegments()) {
+        if (stop == null || segment.stop.equals(stop)) {
+          if (segment.board != null) {
+            segment.board.removePatch(this);
+          }
+        }
+      }
+    }
+  }
+ else   if (stop != null) {
+    TransitIndexService index=graph.getService(TransitIndexService.class);
+    Edge edge=index.getPreboardEdge(stop);
+    edge.removePatch(this);
+    edge=index.getPrealightEdge(stop);
+    edge.removePatch(this);
+  }
+}

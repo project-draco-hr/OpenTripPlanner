@@ -1,0 +1,9 @@
+{
+  TranslatedString result=new TranslatedString();
+  for (  Translation translation : buffered.getTranslationList()) {
+    String language=translation.getLanguage();
+    String string=translation.getText();
+    result.addTranslation(language,string);
+  }
+  return result;
+}

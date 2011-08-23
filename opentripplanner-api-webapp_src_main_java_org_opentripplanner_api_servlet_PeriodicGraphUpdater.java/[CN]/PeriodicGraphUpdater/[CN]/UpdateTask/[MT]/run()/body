@@ -1,0 +1,24 @@
+{
+  long lastUpdate=0;
+  while (!finished) {
+    long now=System.currentTimeMillis();
+    while (now - lastUpdate < getUpdateFrequency()) {
+      try {
+        Thread.sleep(getUpdateFrequency() - (now - lastUpdate));
+      }
+ catch (      InterruptedException e) {
+        if (finished) {
+          return;
+        }
+      }
+      now=System.currentTimeMillis();
+    }
+    for (    Updater updater : getUpdaters()) {
+      System.out.println("running updater " + updater.getUrl());
+      updater.setGraphService(graphService);
+      updater.run();
+    }
+    lastUpdate=now;
+    Thread.yield();
+  }
+}

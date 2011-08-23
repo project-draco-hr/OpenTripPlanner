@@ -1,0 +1,12 @@
+{
+  graph=graphService.getGraph();
+  for (  FeedEntity entity : message.getEntityList()) {
+    if (!entity.hasAlert()) {
+      continue;
+    }
+    GtfsRealtime.Alert alert=entity.getAlert();
+    String id=entity.getId();
+    handleAlert(id,alert);
+  }
+  patchService.expireAllExcept(patchIds);
+}
