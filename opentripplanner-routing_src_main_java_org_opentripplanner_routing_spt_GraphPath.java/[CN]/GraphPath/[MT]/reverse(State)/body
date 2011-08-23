@@ -5,7 +5,7 @@
     EdgeNarrative narrative=orig.getBackEdgeNarrative();
     StateEditor editor=ret.edit(edge,narrative);
     editor.setFromState(orig);
-    editor.incrementTimeMsec(orig.getAbsTimeDeltaMsec());
+    editor.incrementTimeInSeconds(orig.getAbsTimeDeltaSec());
     editor.incrementWeight(orig.getWeightDelta());
     ret=editor.makeState();
     orig=orig.getBackState();

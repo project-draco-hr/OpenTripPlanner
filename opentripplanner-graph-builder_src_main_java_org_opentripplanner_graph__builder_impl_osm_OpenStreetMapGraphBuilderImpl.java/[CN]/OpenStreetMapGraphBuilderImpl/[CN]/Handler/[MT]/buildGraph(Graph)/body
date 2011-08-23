@@ -24,7 +24,7 @@
     if (creativeName != null) {
       way.addTag("otp:gen_name",creativeName);
     }
-    Set<String> note=wayPropertySet.getNoteForWay(way);
+    Set<Alert> note=wayPropertySet.getNoteForWay(way);
     StreetTraversalPermission permissions=getPermissionsForEntity(way,wayData.getPermission());
     if (permissions == StreetTraversalPermission.NONE)     continue;
     List<Long> nodes=way.getNodeRefs();
@@ -106,7 +106,7 @@
           }
         }
       }
-      restrictionTags=turnRestrictionsByToWay.get(way);
+      restrictionTags=turnRestrictionsByToWay.get(way.getId());
       if (restrictionTags != null) {
         for (        TurnRestrictionTag tag : restrictionTags) {
           if (tag.via == startNode) {

@@ -28,8 +28,7 @@
         if (val[0] <= 0)         continue;
         DirectPosition targetPos=tr.transform(sourcePos,null);
         csvWriter.printf("%.6f;%.6f;%f\n",targetPos.getOrdinate(0),targetPos.getOrdinate(1),val[0] / 100.0);
-        Vertex vertex=new GenericVertex("raster",targetPos.getOrdinate(0),targetPos.getOrdinate(1));
-        Individual individual=new Individual(vertex,val[0] / 100.0);
+        Individual individual=new Individual(targetPos.getOrdinate(0),targetPos.getOrdinate(1),val[0] / 100.0);
         elements.add(individual);
       }
     }

@@ -7,13 +7,13 @@
   TraverseOptions options=new TraverseOptions();
   options.setGtfsContext(context);
   GregorianCalendar startTime=new GregorianCalendar(2009,11,1,12,34,25);
-  options.worstTime=startTime.getTimeInMillis() + 1000 * 60 * 60;
+  options.worstTime=TestUtils.toSeconds(startTime) + 60 * 60;
   Vertex end=graph.getVertex("TriMet_8374");
-  ShortestPathTree spt=AStar.getShortestPathTree(graph,start,end,startTime.getTimeInMillis(),options);
+  ShortestPathTree spt=AStar.getShortestPathTree(graph,start,end,TestUtils.toSeconds(startTime),options);
   GraphPath path=spt.getPath(end,true);
   assertNotNull(path);
-  options.worstTime=startTime.getTimeInMillis() + 1000 * 60;
-  spt=AStar.getShortestPathTree(graph,start,end,startTime.getTimeInMillis(),options);
+  options.worstTime=TestUtils.toSeconds(startTime) + 60;
+  spt=AStar.getShortestPathTree(graph,start,end,TestUtils.toSeconds(startTime),options);
   path=spt.getPath(end,true);
   assertNull(path);
 }

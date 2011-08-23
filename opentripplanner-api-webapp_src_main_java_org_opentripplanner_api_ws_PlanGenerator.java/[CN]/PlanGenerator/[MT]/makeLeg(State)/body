@@ -1,6 +1,6 @@
 {
   Leg leg=new Leg();
-  leg.startTime=new Date(s.getBackState().getTime());
+  leg.startTime=new Date(s.getBackState().getTimeInMillis());
   EdgeNarrative en=s.getBackEdgeNarrative();
   leg.route=en.getName();
   Trip trip=en.getTrip();

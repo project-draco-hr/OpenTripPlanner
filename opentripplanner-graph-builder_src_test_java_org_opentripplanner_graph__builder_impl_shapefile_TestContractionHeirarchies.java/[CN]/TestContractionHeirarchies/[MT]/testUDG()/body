@@ -59,7 +59,7 @@
       graph.addEdge(new SimpleEdge(last,v,last.distance(c),0));
     }
   }
-  ContractionHierarchy hierarchy=new ContractionHierarchy(graph,OptimizeType.QUICK,TraverseMode.WALK,1.0);
+  ContractionHierarchy hierarchy=new ContractionHierarchy(graph,new TraverseOptions(TraverseMode.WALK,OptimizeType.QUICK),1.0);
   TraverseOptions options=new TraverseOptions();
   options.optimizeFor=OptimizeType.QUICK;
   options.walkReluctance=1;

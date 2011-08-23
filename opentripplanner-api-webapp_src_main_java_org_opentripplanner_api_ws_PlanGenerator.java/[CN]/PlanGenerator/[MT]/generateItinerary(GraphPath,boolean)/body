@@ -1,7 +1,7 @@
 {
   Itinerary itinerary=makeEmptyItinerary(path);
   Leg leg=null;
-  List<String> notesForNewLeg=new ArrayList<String>();
+  List<Alert> notesForNewLeg=new ArrayList<Alert>();
   Edge edge=null;
   EdgeNarrative edgeNarrative=null;
   TraverseMode mode=null;
@@ -18,18 +18,18 @@
     edge=currState.getBackEdge();
     edgeNarrative=currState.getBackEdgeNarrative();
     if (edge == null)     continue;
-    Set<String> notes=edgeNarrative.getNotes();
+    Set<Alert> notes=edgeNarrative.getNotes();
     if (notes != null) {
       if (leg == null) {
         notesForNewLeg.addAll(notes);
       }
  else {
-        for (        String note : notes) {
-          leg.addNote(note);
+        for (        Alert note : notes) {
+          leg.addAlert(note);
         }
       }
     }
-    edgeElapsedTime=currState.getTime() - currState.getBackState().getTime();
+    edgeElapsedTime=currState.getTimeInMillis() - currState.getBackState().getTimeInMillis();
     if (mode == TraverseMode.BOARDING || mode == TraverseMode.ALIGHTING) {
       itinerary.waitingTime+=edgeElapsedTime;
     }
@@ -51,19 +51,19 @@
       }
  else       if (mode == TraverseMode.ALIGHTING) {
         leg.to=makePlace(edgeNarrative.getToVertex());
-        leg.endTime=new Date(currState.getBackState().getTime());
+        leg.endTime=new Date(currState.getBackState().getTimeInMillis());
         continue;
       }
  else       if (changingToInterlinedTrip) {
         leg.to=makePlace(edgeNarrative.getFromVertex());
-        leg.endTime=new Date(currState.getBackState().getTime());
+        leg.endTime=new Date(currState.getBackState().getTimeInMillis());
         Geometry geometry=geometryFactory.createLineString(coordinates);
         leg.legGeometry=PolylineEncoder.createEncodings(geometry);
         coordinates=new CoordinateArrayListSequence();
         leg=makeLeg(currState);
         leg.interlineWithPreviousLeg=true;
-        for (        String noteForNewLeg : notesForNewLeg) {
-          leg.addNote(noteForNewLeg);
+        for (        Alert noteForNewLeg : notesForNewLeg) {
+          leg.addAlert(noteForNewLeg);
         }
         notesForNewLeg.clear();
         leg.mode=mode.toString();
@@ -78,15 +78,21 @@
           }
           if (leg.to == null) {
             leg.to=makePlace(edgeNarrative.getFromVertex());
-            leg.endTime=new Date(currState.getBackState().getTime());
+            leg.endTime=new Date(currState.getBackState().getTimeInMillis());
           }
           Geometry geometry=geometryFactory.createLineString(coordinates);
           leg.legGeometry=PolylineEncoder.createEncodings(geometry);
           coordinates=new CoordinateArrayListSequence();
+          if (showIntermediateStops && leg.stop != null) {
+            leg.stop.remove(leg.stop.size() - 1);
+            if (leg.stop.isEmpty()) {
+              leg.stop=null;
+            }
+          }
         }
         leg=makeLeg(currState);
-        for (        String noteForNewLeg : notesForNewLeg) {
-          leg.addNote(noteForNewLeg);
+        for (        Alert noteForNewLeg : notesForNewLeg) {
+          leg.addAlert(noteForNewLeg);
         }
         notesForNewLeg.clear();
         if (mode == null) {
@@ -129,18 +135,29 @@
         if (leg.stop == null) {
           leg.stop=new ArrayList<Place>();
         }
-        Place stop=makePlace(currState);
-        leg.stop.add(stop);
+        if (!(currState.getBackEdge() instanceof Dwell || currState.getBackEdge() instanceof PatternDwell || currState.getBackEdge() instanceof PatternInterlineDwell)) {
+          Place stop=makePlace(currState);
+          leg.stop.add(stop);
+        }
+ else {
+          leg.stop.get(leg.stop.size() - 1).departure=new Date(currState.getTime());
+        }
       }
     }
   }
   if (leg != null) {
     leg.to=makePlace(edgeNarrative.getToVertex());
-    leg.endTime=new Date(finalState.getTime());
+    leg.endTime=new Date(finalState.getTimeInMillis());
     Geometry geometry=geometryFactory.createLineString(coordinates);
     leg.legGeometry=PolylineEncoder.createEncodings(geometry);
     if (startWalk != -1) {
       leg.walkSteps=getWalkSteps(pathService,path.states.subList(startWalk,i + 1));
+    }
+    if (showIntermediateStops && leg.stop != null) {
+      leg.stop.remove(leg.stop.size() - 1);
+      if (leg.stop.isEmpty()) {
+        leg.stop=null;
+      }
     }
   }
   if (itinerary.transfers == -1) {

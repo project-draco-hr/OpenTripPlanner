@@ -11,17 +11,17 @@
   options.wheelchairAccessible=true;
   ShortestPathTree spt;
   GraphPath path;
-  spt=AStar.getShortestPathTree(graph,near_a,near_b,new GregorianCalendar(2009,8,18,0,0,0).getTimeInMillis(),options);
+  spt=AStar.getShortestPathTree(graph,near_a,near_b,TestUtils.dateInSeconds(2009,8,18,0,0,0),options);
   path=spt.getPath(near_b,false);
   assertNotNull(path);
-  spt=AStar.getShortestPathTree(graph,near_a,near_c,new GregorianCalendar(2009,8,18,0,0,0).getTimeInMillis(),options);
+  spt=AStar.getShortestPathTree(graph,near_a,near_c,TestUtils.dateInSeconds(2009,8,18,0,0,0),options);
   path=spt.getPath(near_c,false);
   assertNull(path);
   GregorianCalendar time=new GregorianCalendar(2009,8,18,0,0,0);
-  spt=AStar.getShortestPathTree(graph,near_a,split_d,time.getTimeInMillis(),options);
+  spt=AStar.getShortestPathTree(graph,near_a,split_d,TestUtils.toSeconds(time),options);
   time.add(Calendar.HOUR,1);
   time.add(Calendar.SECOND,1);
   path=spt.getPath(split_d,false);
   assertNotNull(path);
-  assertEquals(time.getTimeInMillis(),path.getEndTime());
+  assertEquals(TestUtils.toSeconds(time),path.getEndTime());
 }

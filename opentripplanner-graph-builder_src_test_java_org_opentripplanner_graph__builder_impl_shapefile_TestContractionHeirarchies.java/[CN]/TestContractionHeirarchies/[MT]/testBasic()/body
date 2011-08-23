@@ -91,14 +91,14 @@
   spt=dijkstra.getShortestPathTree(verticesIn[0][3],130);
   v03=spt.getState(verticesIn[0][3]);
   assertNotNull(v03);
-  ContractionHierarchy testch=new ContractionHierarchy(graph,OptimizeType.QUICK,TraverseMode.WALK,0.0);
+  ContractionHierarchy testch=new ContractionHierarchy(graph,new TraverseOptions(TraverseMode.WALK,OptimizeType.QUICK),0.0);
   Vertex v=graph.getVertex("a(2, 2)");
   List<Shortcut> shortcuts=testch.getShortcuts(v,true).shortcuts;
   assertEquals(16,shortcuts.size());
   v=graph.getVertex("(0, 0) in");
   shortcuts=testch.getShortcuts(v,true).shortcuts;
   assertEquals(0,shortcuts.size());
-  ContractionHierarchy hierarchy=new ContractionHierarchy(graph,OptimizeType.QUICK,TraverseMode.WALK,1.0);
+  ContractionHierarchy hierarchy=new ContractionHierarchy(graph,new TraverseOptions(TraverseMode.WALK,OptimizeType.QUICK),1.0);
   assertTrue(hierarchy.down.getVertices().size() == graphSize);
   assertTrue(hierarchy.up.getVertices().size() == graphSize);
   assertTrue(hierarchy.graph.getVertices().size() == 0);

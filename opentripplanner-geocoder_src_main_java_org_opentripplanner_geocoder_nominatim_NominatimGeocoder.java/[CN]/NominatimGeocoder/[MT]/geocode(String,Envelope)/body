@@ -1,0 +1,30 @@
+{
+  String content=null;
+  try {
+    URL nominatimGeocoderUrl=getNominatimGeocoderUrl(address,bbox);
+    URLConnection conn=nominatimGeocoderUrl.openConnection();
+    BufferedReader reader=new BufferedReader(new InputStreamReader(conn.getInputStream()));
+    StringBuilder sb=new StringBuilder(128);
+    String line=null;
+    while ((line=reader.readLine()) != null) {
+      sb.append(line);
+      sb.append("\n");
+    }
+    reader.close();
+    content=sb.toString();
+  }
+ catch (  IOException e) {
+    e.printStackTrace();
+    return noGeocoderResult("Error parsing geocoder response");
+  }
+  List<NominatimGeocoderResult> nominatimResults=nominatimJsonDeserializer.parseResults(content);
+  List<GeocoderResult> geocoderResults=new ArrayList<GeocoderResult>();
+  for (  NominatimGeocoderResult nominatimGeocoderResult : nominatimResults) {
+    Double lat=nominatimGeocoderResult.getLatDouble();
+    Double lng=nominatimGeocoderResult.getLngDouble();
+    String displayName=nominatimGeocoderResult.getDisplay_name();
+    GeocoderResult geocoderResult=new GeocoderResult(lat,lng,displayName);
+    geocoderResults.add(geocoderResult);
+  }
+  return new GeocoderResults(geocoderResults);
+}

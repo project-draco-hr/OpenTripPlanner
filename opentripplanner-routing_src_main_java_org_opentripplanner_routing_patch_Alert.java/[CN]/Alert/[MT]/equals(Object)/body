@@ -1,0 +1,32 @@
+{
+  if (!(o instanceof Alert)) {
+    return false;
+  }
+  Alert ao=(Alert)o;
+  if (alertDescriptionText == null) {
+    if (ao.alertDescriptionText != null) {
+      return false;
+    }
+  }
+ else {
+    if (!alertDescriptionText.equals(ao.alertDescriptionText)) {
+      return false;
+    }
+  }
+  if (alertHeaderText == null) {
+    if (ao.alertHeaderText != null) {
+      return false;
+    }
+  }
+ else {
+    if (!alertHeaderText.equals(ao.alertHeaderText)) {
+      return false;
+    }
+  }
+  if (alertUrl == null) {
+    return ao.alertUrl == null;
+  }
+ else {
+    return alertUrl.equals(ao.alertUrl);
+  }
+}

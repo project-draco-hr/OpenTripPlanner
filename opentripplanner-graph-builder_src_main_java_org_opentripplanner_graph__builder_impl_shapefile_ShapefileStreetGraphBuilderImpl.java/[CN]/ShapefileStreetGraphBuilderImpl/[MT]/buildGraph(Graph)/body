@@ -71,8 +71,7 @@
       if (noteConverter != null) {
         String note=noteConverter.convert(feature);
         if (note != null && note.length() > 0) {
-          HashSet<String> notes=new HashSet<String>();
-          notes.add(note);
+          HashSet<Alert> notes=Alert.newSimpleAlertSet(note);
           street.setNote(notes);
         }
       }

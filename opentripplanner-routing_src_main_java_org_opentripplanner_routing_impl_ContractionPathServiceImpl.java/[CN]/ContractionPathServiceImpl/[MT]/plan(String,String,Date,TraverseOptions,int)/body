@@ -21,6 +21,6 @@
     origin=fromVertex;
     target=toVertex;
   }
-  State state=new State(targetTime.getTime(),origin,options);
+  State state=new State((int)(targetTime.getTime() / 1000),origin,options);
   return plan(state,target,nItineraries);
 }

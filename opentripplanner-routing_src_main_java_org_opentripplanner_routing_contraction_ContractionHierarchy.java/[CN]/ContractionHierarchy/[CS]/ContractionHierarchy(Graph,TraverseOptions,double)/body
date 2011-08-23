@@ -1,0 +1,14 @@
+{
+  graph=new Graph();
+  for (  GraphVertex gv : orig.getVertices()) {
+    graph.addGraphVertex(new GraphVertex(gv));
+  }
+  this.options=options;
+  this.options.setMaxWalkDistance(Double.MAX_VALUE);
+  backOptions=this.options.clone();
+  backOptions.setArriveBy(true);
+  this.contractionFactor=contractionFactor;
+  this.mode=this.options.getModes().getNonTransitMode();
+  init();
+  useCoreVerticesFrom(orig);
+}

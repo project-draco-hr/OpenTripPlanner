@@ -1,7 +1,13 @@
 {
   if (args.length != 4)   throw new IllegalStateException("Must specify 4 arguments: path to graph, path to shapefile, name of the attribute, path to target geotiff");
+  Graph graph=loadGraph(args[0]);
   Population origins=Population.fromShapefile(args[1],args[2]);
   Population destinations=new RasterPopulation(args[3]);
-  Aggregator aggregator=new ThresholdSumAggregator(30 * 60);
+  Aggregator aggregator=new ThresholdCumulativeAggregator(90 * 60);
+  origins.link(graph);
+  destinations.link(graph);
+  Searcher searcher=new Searcher(graph,origins,destinations,aggregator);
+  searcher.search();
   origins.dump();
+  destinations.dump();
 }

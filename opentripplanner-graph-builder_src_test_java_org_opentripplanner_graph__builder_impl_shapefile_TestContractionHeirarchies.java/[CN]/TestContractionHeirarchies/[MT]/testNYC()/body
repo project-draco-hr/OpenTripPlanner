@@ -1,5 +1,5 @@
 {
-  long startTime=new GregorianCalendar(2009,10,11,12,0,0).getTimeInMillis();
+  long startTime=TestUtils.dateInSeconds(2009,10,11,12,0,0);
   GraphPath path;
   Graph graph=new Graph();
   ContractionHierarchy hierarchy;
@@ -79,7 +79,7 @@
   }
   assertTrue("Path must take subway",subway1);
   ContractionHierarchySet chs=new ContractionHierarchySet();
-  chs.addModeAndOptimize(new ModeAndOptimize(TraverseMode.WALK,OptimizeType.QUICK));
+  chs.addTraverseOptions(new TraverseOptions(TraverseMode.WALK,OptimizeType.QUICK));
   chs.setContractionFactor(0.50);
   chs.setGraph(graph);
   chs.build();
@@ -123,10 +123,10 @@
   }
   assertTrue("Reverse path must take subway",subway);
   options.setArriveBy(false);
-  options.worstTime=startTime + 1000 * 60 * 90;
+  options.worstTime=startTime + 60 * 90;
   path=hierarchy.getShortestPath(start,end,startTime,options);
   assertNotNull(path);
-  options.worstTime=startTime + 1000 * 60;
+  options.worstTime=startTime + 60;
   path=hierarchy.getShortestPath(start,end,startTime,options);
   assertNull(path);
   long now=System.currentTimeMillis();

@@ -1,17 +1,28 @@
 {
-  StreetVertexIndexServiceImpl index=new StreetVertexIndexServiceImpl(graph);
-  index.setup();
-  TraverseOptions opt=new TraverseOptions();
+  final double distance=200;
   System.out.printf("Linking population to main graph. \n");
+  STRtree intersectionTree=new STRtree();
+  for (  GraphVertex gv : graph.getVertices()) {
+    Vertex v=gv.vertex;
+    if (v instanceof StreetVertex || v instanceof EndpointVertex) {
+      Envelope env=new Envelope(v.getCoordinate());
+      intersectionTree.insert(env,v);
+    }
+  }
   for (  Individual i : elements) {
-    Vertex v=i.vertex;
-    Vertex close=index.getClosestVertex(new Coordinate(v.getX(),v.getY()),opt);
-    graph.addEdge(new FreeEdge(v,close));
-    graph.addEdge(new FreeEdge(close,v));
-    if (close instanceof StreetLocation) {
-      for (      DirectEdge de : ((StreetLocation)close).getExtra()) {
-        graph.addEdge(de);
+    Coordinate c=new Coordinate(i.x,i.y);
+    Envelope env=new Envelope(c);
+    env.expandBy(DistanceLibrary.metersToDegrees(distance));
+    List<Vertex> nearby=intersectionTree.query(env);
+    Vertex best=null;
+    double bestDist=Double.POSITIVE_INFINITY;
+    for (    Vertex nv : nearby) {
+      double thisDist=nv.distance(c);
+      if (thisDist < bestDist) {
+        bestDist=thisDist;
+        best=nv;
       }
     }
+    i.vertex=best;
   }
 }

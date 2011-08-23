@@ -4,7 +4,7 @@
   snp1.setEndTime(1000L * 60 * 60* 24* 365* 40);
   snp1.setStartTimeOfDay(0);
   snp1.setEndTimeOfDay(600);
-  String note1="The first note";
+  Alert note1=Alert.createSimpleAlerts("The first note");
   snp1.setNotes(note1);
   snp1.setId("id1");
   snp1.setStop(new AgencyAndId("agency","A"));
@@ -14,7 +14,7 @@
   snp2.setEndTime(1000L * 60 * 60* 24* 365* 40);
   snp2.setStartTimeOfDay(540);
   snp2.setEndTimeOfDay(21600);
-  String note2="The second note";
+  Alert note2=Alert.createSimpleAlerts("The second note");
   snp2.setNotes(note2);
   snp2.setId("id2");
   snp2.setStop(new AgencyAndId("agency","A"));
@@ -23,14 +23,14 @@
   Vertex stop_e=graph.getVertex("agency_E_arrive");
   ShortestPathTree spt;
   GraphPath path;
-  long startTime=new GregorianCalendar(2009,8,7,0,0,0).getTimeInMillis();
+  long startTime=TestUtils.dateInSeconds(2009,8,7,0,0,0);
   spt=AStar.getShortestPathTree(graph,stop_a,stop_e,startTime,options);
   path=spt.getPath(stop_e,false);
   assertNotNull(path);
-  HashSet<String> expectedNotes=new HashSet<String>();
+  HashSet<Alert> expectedNotes=new HashSet<Alert>();
   expectedNotes.add(note1);
   assertEquals(expectedNotes,path.states.get(1).getBackEdgeNarrative().getNotes());
-  startTime=new GregorianCalendar(2009,8,7,0,9,0).getTimeInMillis();
+  startTime=TestUtils.dateInSeconds(2009,8,7,0,9,0);
   spt=AStar.getShortestPathTree(graph,stop_a,stop_e,startTime,options);
   path=spt.getPath(stop_e,false);
   expectedNotes.add(note2);

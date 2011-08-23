@@ -1,0 +1,21 @@
+{
+  UriBuilder uriBuilder=UriBuilder.fromUri(nominatimUrl);
+  uriBuilder.queryParam("q",address);
+  uriBuilder.queryParam("format","json");
+  if (bbox != null) {
+    uriBuilder.queryParam("viewbox",bbox.getMinX() + "," + bbox.getMinY()+ ","+ bbox.getMaxX()+ ","+ bbox.getMaxY());
+    uriBuilder.queryParam("bounded",1);
+  }
+ else   if (viewBox != null) {
+    uriBuilder.queryParam("viewbox",viewBox);
+    uriBuilder.queryParam("bounded",1);
+  }
+  if (resultLimit != null) {
+    uriBuilder.queryParam("limit",resultLimit);
+  }
+  if (emailAddress != null) {
+    uriBuilder.queryParam("email",emailAddress);
+  }
+  URI uri=uriBuilder.build();
+  return new URL(uri.toString());
+}
