@@ -1,7 +1,7 @@
 {
   Itinerary itinerary=makeEmptyItinerary(path);
   Leg leg=null;
-  List<String> notesForNewLeg=new ArrayList<String>();
+  List<Alert> notesForNewLeg=new ArrayList<Alert>();
   Edge edge=null;
   EdgeNarrative edgeNarrative=null;
   TraverseMode mode=null;
@@ -18,14 +18,14 @@
     edge=currState.getBackEdge();
     edgeNarrative=currState.getBackEdgeNarrative();
     if (edge == null)     continue;
-    Set<String> notes=edgeNarrative.getNotes();
+    Set<Alert> notes=edgeNarrative.getNotes();
     if (notes != null) {
       if (leg == null) {
         notesForNewLeg.addAll(notes);
       }
  else {
-        for (        String note : notes) {
-          leg.addNote(note);
+        for (        Alert note : notes) {
+          leg.addAlert(note);
         }
       }
     }
@@ -62,8 +62,8 @@
         coordinates=new CoordinateArrayListSequence();
         leg=makeLeg(currState);
         leg.interlineWithPreviousLeg=true;
-        for (        String noteForNewLeg : notesForNewLeg) {
-          leg.addNote(noteForNewLeg);
+        for (        Alert noteForNewLeg : notesForNewLeg) {
+          leg.addAlert(noteForNewLeg);
         }
         notesForNewLeg.clear();
         leg.mode=mode.toString();
@@ -91,8 +91,8 @@
           }
         }
         leg=makeLeg(currState);
-        for (        String noteForNewLeg : notesForNewLeg) {
-          leg.addNote(noteForNewLeg);
+        for (        Alert noteForNewLeg : notesForNewLeg) {
+          leg.addAlert(noteForNewLeg);
         }
         notesForNewLeg.clear();
         if (mode == null) {

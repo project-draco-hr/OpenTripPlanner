@@ -4,7 +4,7 @@
   rnp1.setEndTime(60 * 60 * 24* 365* 40);
   rnp1.setStartTimeOfDay(21600);
   rnp1.setEndTimeOfDay(43200);
-  String note1="The route note";
+  Alert note1=Alert.createSimpleAlerts("The route note");
   rnp1.setNotes(note1);
   rnp1.setId("id1");
   rnp1.setRoute(new AgencyAndId("agency","1"));
@@ -17,7 +17,7 @@
   spt=AStar.getShortestPathTree(graph,stop_a,stop_e,startTime,options);
   path=spt.getPath(stop_e,false);
   assertNotNull(path);
-  HashSet<String> expectedNotes=new HashSet<String>();
+  HashSet<Alert> expectedNotes=new HashSet<Alert>();
   expectedNotes.add(note1);
   assertEquals(expectedNotes,path.states.get(2).getBackEdgeNarrative().getNotes());
 }
