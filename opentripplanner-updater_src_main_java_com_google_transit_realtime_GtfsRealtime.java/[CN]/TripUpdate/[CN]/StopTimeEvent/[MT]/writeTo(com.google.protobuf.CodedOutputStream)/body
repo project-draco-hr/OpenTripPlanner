@@ -1,0 +1,13 @@
+{
+  getSerializedSize();
+  if (((bitField0_ & 0x00000001) == 0x00000001)) {
+    output.writeInt32(1,delay_);
+  }
+  if (((bitField0_ & 0x00000002) == 0x00000002)) {
+    output.writeInt64(2,time_);
+  }
+  if (((bitField0_ & 0x00000004) == 0x00000004)) {
+    output.writeInt32(3,uncertainty_);
+  }
+  getUnknownFields().writeTo(output);
+}

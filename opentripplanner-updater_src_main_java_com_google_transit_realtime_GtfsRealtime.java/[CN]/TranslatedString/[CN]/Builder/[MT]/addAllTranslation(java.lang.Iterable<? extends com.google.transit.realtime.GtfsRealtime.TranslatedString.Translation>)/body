@@ -1,0 +1,11 @@
+{
+  if (translationBuilder_ == null) {
+    ensureTranslationIsMutable();
+    super.addAll(values,translation_);
+    onChanged();
+  }
+ else {
+    translationBuilder_.addAllMessages(values);
+  }
+  return this;
+}

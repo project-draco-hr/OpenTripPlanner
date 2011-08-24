@@ -1,0 +1,14 @@
+{
+  if (other == com.google.transit.realtime.GtfsRealtime.TripUpdate.StopTimeEvent.getDefaultInstance())   return this;
+  if (other.hasDelay()) {
+    setDelay(other.getDelay());
+  }
+  if (other.hasTime()) {
+    setTime(other.getTime());
+  }
+  if (other.hasUncertainty()) {
+    setUncertainty(other.getUncertainty());
+  }
+  this.mergeUnknownFields(other.getUnknownFields());
+  return this;
+}

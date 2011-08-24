@@ -1,0 +1,19 @@
+{
+  getSerializedSize();
+  if (((bitField0_ & 0x00000001) == 0x00000001)) {
+    output.writeBytes(1,getIdBytes());
+  }
+  if (((bitField0_ & 0x00000002) == 0x00000002)) {
+    output.writeBool(2,isDeleted_);
+  }
+  if (((bitField0_ & 0x00000004) == 0x00000004)) {
+    output.writeMessage(3,tripUpdate_);
+  }
+  if (((bitField0_ & 0x00000008) == 0x00000008)) {
+    output.writeMessage(4,vehicle_);
+  }
+  if (((bitField0_ & 0x00000010) == 0x00000010)) {
+    output.writeMessage(5,alert_);
+  }
+  getUnknownFields().writeTo(output);
+}

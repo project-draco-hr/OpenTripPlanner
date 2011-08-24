@@ -1,0 +1,11 @@
+{
+  if (headerTextBuilder_ == null) {
+    headerText_=builderForValue.build();
+    onChanged();
+  }
+ else {
+    headerTextBuilder_.setMessage(builderForValue.build());
+  }
+  bitField0_|=0x00000020;
+  return this;
+}

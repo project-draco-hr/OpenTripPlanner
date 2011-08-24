@@ -1,0 +1,11 @@
+{
+  if (translationBuilder_ == null) {
+    ensureTranslationIsMutable();
+    translation_.add(index,builderForValue.build());
+    onChanged();
+  }
+ else {
+    translationBuilder_.addMessage(index,builderForValue.build());
+  }
+  return this;
+}

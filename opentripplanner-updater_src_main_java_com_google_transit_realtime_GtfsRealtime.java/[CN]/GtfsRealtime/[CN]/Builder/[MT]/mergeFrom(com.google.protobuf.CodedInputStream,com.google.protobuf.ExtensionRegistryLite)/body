@@ -1,0 +1,46 @@
+{
+  com.google.protobuf.UnknownFieldSet.Builder unknownFields=com.google.protobuf.UnknownFieldSet.newBuilder(this.getUnknownFields());
+  while (true) {
+    int tag=input.readTag();
+switch (tag) {
+case 0:
+      this.setUnknownFields(unknownFields.build());
+    onChanged();
+  return this;
+default :
+{
+  if (!parseUnknownField(input,unknownFields,extensionRegistry,tag)) {
+    this.setUnknownFields(unknownFields.build());
+    onChanged();
+    return this;
+  }
+  break;
+}
+case 10:
+{
+bitField0_|=0x00000001;
+gtfsRealtimeVersion_=input.readBytes();
+break;
+}
+case 16:
+{
+int rawValue=input.readEnum();
+com.google.transit.realtime.GtfsRealtime.FeedHeader.Incrementality value=com.google.transit.realtime.GtfsRealtime.FeedHeader.Incrementality.valueOf(rawValue);
+if (value == null) {
+unknownFields.mergeVarintField(2,rawValue);
+}
+ else {
+bitField0_|=0x00000002;
+incrementality_=value;
+}
+break;
+}
+case 24:
+{
+bitField0_|=0x00000004;
+timestamp_=input.readUInt64();
+break;
+}
+}
+}
+}

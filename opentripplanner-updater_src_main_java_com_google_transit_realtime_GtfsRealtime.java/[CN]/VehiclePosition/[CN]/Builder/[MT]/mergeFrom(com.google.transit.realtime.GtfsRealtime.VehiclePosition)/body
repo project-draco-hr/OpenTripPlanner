@@ -1,0 +1,29 @@
+{
+  if (other == com.google.transit.realtime.GtfsRealtime.VehiclePosition.getDefaultInstance())   return this;
+  if (other.hasTrip()) {
+    mergeTrip(other.getTrip());
+  }
+  if (other.hasVehicle()) {
+    mergeVehicle(other.getVehicle());
+  }
+  if (other.hasPosition()) {
+    mergePosition(other.getPosition());
+  }
+  if (other.hasCurrentStopSequence()) {
+    setCurrentStopSequence(other.getCurrentStopSequence());
+  }
+  if (other.hasStopId()) {
+    setStopId(other.getStopId());
+  }
+  if (other.hasCurrentStatus()) {
+    setCurrentStatus(other.getCurrentStatus());
+  }
+  if (other.hasTimestamp()) {
+    setTimestamp(other.getTimestamp());
+  }
+  if (other.hasCongestionLevel()) {
+    setCongestionLevel(other.getCongestionLevel());
+  }
+  this.mergeUnknownFields(other.getUnknownFields());
+  return this;
+}

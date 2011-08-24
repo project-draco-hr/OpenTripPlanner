@@ -1,0 +1,14 @@
+{
+  if (urlBuilder_ == null) {
+    if (value == null) {
+      throw new NullPointerException();
+    }
+    url_=value;
+    onChanged();
+  }
+ else {
+    urlBuilder_.setMessage(value);
+  }
+  bitField0_|=0x00000010;
+  return this;
+}

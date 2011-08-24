@@ -1,0 +1,21 @@
+{
+  if (!hasId()) {
+    return false;
+  }
+  if (hasTripUpdate()) {
+    if (!getTripUpdate().isInitialized()) {
+      return false;
+    }
+  }
+  if (hasVehicle()) {
+    if (!getVehicle().isInitialized()) {
+      return false;
+    }
+  }
+  if (hasAlert()) {
+    if (!getAlert().isInitialized()) {
+      return false;
+    }
+  }
+  return true;
+}

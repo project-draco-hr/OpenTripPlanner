@@ -1,0 +1,95 @@
+{
+  com.google.protobuf.UnknownFieldSet.Builder unknownFields=com.google.protobuf.UnknownFieldSet.newBuilder(this.getUnknownFields());
+  while (true) {
+    int tag=input.readTag();
+switch (tag) {
+case 0:
+      this.setUnknownFields(unknownFields.build());
+    onChanged();
+  return this;
+default :
+{
+  if (!parseUnknownField(input,unknownFields,extensionRegistry,tag)) {
+    this.setUnknownFields(unknownFields.build());
+    onChanged();
+    return this;
+  }
+  break;
+}
+case 10:
+{
+com.google.transit.realtime.GtfsRealtime.TripDescriptor.Builder subBuilder=com.google.transit.realtime.GtfsRealtime.TripDescriptor.newBuilder();
+if (hasTrip()) {
+  subBuilder.mergeFrom(getTrip());
+}
+input.readMessage(subBuilder,extensionRegistry);
+setTrip(subBuilder.buildPartial());
+break;
+}
+case 18:
+{
+com.google.transit.realtime.GtfsRealtime.Position.Builder subBuilder=com.google.transit.realtime.GtfsRealtime.Position.newBuilder();
+if (hasPosition()) {
+subBuilder.mergeFrom(getPosition());
+}
+input.readMessage(subBuilder,extensionRegistry);
+setPosition(subBuilder.buildPartial());
+break;
+}
+case 24:
+{
+bitField0_|=0x00000008;
+currentStopSequence_=input.readUInt32();
+break;
+}
+case 32:
+{
+int rawValue=input.readEnum();
+com.google.transit.realtime.GtfsRealtime.VehiclePosition.VehicleStopStatus value=com.google.transit.realtime.GtfsRealtime.VehiclePosition.VehicleStopStatus.valueOf(rawValue);
+if (value == null) {
+unknownFields.mergeVarintField(4,rawValue);
+}
+ else {
+bitField0_|=0x00000020;
+currentStatus_=value;
+}
+break;
+}
+case 40:
+{
+bitField0_|=0x00000040;
+timestamp_=input.readUInt64();
+break;
+}
+case 48:
+{
+int rawValue=input.readEnum();
+com.google.transit.realtime.GtfsRealtime.VehiclePosition.CongestionLevel value=com.google.transit.realtime.GtfsRealtime.VehiclePosition.CongestionLevel.valueOf(rawValue);
+if (value == null) {
+unknownFields.mergeVarintField(6,rawValue);
+}
+ else {
+bitField0_|=0x00000080;
+congestionLevel_=value;
+}
+break;
+}
+case 58:
+{
+bitField0_|=0x00000010;
+stopId_=input.readBytes();
+break;
+}
+case 66:
+{
+com.google.transit.realtime.GtfsRealtime.VehicleDescriptor.Builder subBuilder=com.google.transit.realtime.GtfsRealtime.VehicleDescriptor.newBuilder();
+if (hasVehicle()) {
+subBuilder.mergeFrom(getVehicle());
+}
+input.readMessage(subBuilder,extensionRegistry);
+setVehicle(subBuilder.buildPartial());
+break;
+}
+}
+}
+}

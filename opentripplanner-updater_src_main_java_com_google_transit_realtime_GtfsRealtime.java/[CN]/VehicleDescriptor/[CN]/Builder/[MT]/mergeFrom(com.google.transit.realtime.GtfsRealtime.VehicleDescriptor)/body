@@ -1,0 +1,14 @@
+{
+  if (other == com.google.transit.realtime.GtfsRealtime.VehicleDescriptor.getDefaultInstance())   return this;
+  if (other.hasId()) {
+    setId(other.getId());
+  }
+  if (other.hasLabel()) {
+    setLabel(other.getLabel());
+  }
+  if (other.hasLicensePlate()) {
+    setLicensePlate(other.getLicensePlate());
+  }
+  this.mergeUnknownFields(other.getUnknownFields());
+  return this;
+}

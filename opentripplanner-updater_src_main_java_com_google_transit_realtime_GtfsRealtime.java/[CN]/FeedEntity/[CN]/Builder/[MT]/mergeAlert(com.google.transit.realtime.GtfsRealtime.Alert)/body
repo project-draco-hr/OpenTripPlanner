@@ -1,0 +1,16 @@
+{
+  if (alertBuilder_ == null) {
+    if (((bitField0_ & 0x00000010) == 0x00000010) && alert_ != com.google.transit.realtime.GtfsRealtime.Alert.getDefaultInstance()) {
+      alert_=com.google.transit.realtime.GtfsRealtime.Alert.newBuilder(alert_).mergeFrom(value).buildPartial();
+    }
+ else {
+      alert_=value;
+    }
+    onChanged();
+  }
+ else {
+    alertBuilder_.mergeFrom(value);
+  }
+  bitField0_|=0x00000010;
+  return this;
+}

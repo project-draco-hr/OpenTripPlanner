@@ -1,0 +1,25 @@
+{
+  getSerializedSize();
+  for (int i=0; i < activePeriod_.size(); i++) {
+    output.writeMessage(1,activePeriod_.get(i));
+  }
+  for (int i=0; i < informedEntity_.size(); i++) {
+    output.writeMessage(5,informedEntity_.get(i));
+  }
+  if (((bitField0_ & 0x00000001) == 0x00000001)) {
+    output.writeEnum(6,cause_.getNumber());
+  }
+  if (((bitField0_ & 0x00000002) == 0x00000002)) {
+    output.writeEnum(7,effect_.getNumber());
+  }
+  if (((bitField0_ & 0x00000004) == 0x00000004)) {
+    output.writeMessage(8,url_);
+  }
+  if (((bitField0_ & 0x00000008) == 0x00000008)) {
+    output.writeMessage(10,headerText_);
+  }
+  if (((bitField0_ & 0x00000010) == 0x00000010)) {
+    output.writeMessage(11,descriptionText_);
+  }
+  getUnknownFields().writeTo(output);
+}

@@ -1,0 +1,20 @@
+{
+  if (other == com.google.transit.realtime.GtfsRealtime.Position.getDefaultInstance())   return this;
+  if (other.hasLatitude()) {
+    setLatitude(other.getLatitude());
+  }
+  if (other.hasLongitude()) {
+    setLongitude(other.getLongitude());
+  }
+  if (other.hasBearing()) {
+    setBearing(other.getBearing());
+  }
+  if (other.hasOdometer()) {
+    setOdometer(other.getOdometer());
+  }
+  if (other.hasSpeed()) {
+    setSpeed(other.getSpeed());
+  }
+  this.mergeUnknownFields(other.getUnknownFields());
+  return this;
+}

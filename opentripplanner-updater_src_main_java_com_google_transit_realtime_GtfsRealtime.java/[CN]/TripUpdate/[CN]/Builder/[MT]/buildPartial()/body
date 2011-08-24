@@ -1,0 +1,36 @@
+{
+  com.google.transit.realtime.GtfsRealtime.TripUpdate result=new com.google.transit.realtime.GtfsRealtime.TripUpdate(this);
+  int from_bitField0_=bitField0_;
+  int to_bitField0_=0;
+  if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+    to_bitField0_|=0x00000001;
+  }
+  if (tripBuilder_ == null) {
+    result.trip_=trip_;
+  }
+ else {
+    result.trip_=tripBuilder_.build();
+  }
+  if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+    to_bitField0_|=0x00000002;
+  }
+  if (vehicleBuilder_ == null) {
+    result.vehicle_=vehicle_;
+  }
+ else {
+    result.vehicle_=vehicleBuilder_.build();
+  }
+  if (stopTimeUpdateBuilder_ == null) {
+    if (((bitField0_ & 0x00000004) == 0x00000004)) {
+      stopTimeUpdate_=java.util.Collections.unmodifiableList(stopTimeUpdate_);
+      bitField0_=(bitField0_ & ~0x00000004);
+    }
+    result.stopTimeUpdate_=stopTimeUpdate_;
+  }
+ else {
+    result.stopTimeUpdate_=stopTimeUpdateBuilder_.build();
+  }
+  result.bitField0_=to_bitField0_;
+  onBuilt();
+  return result;
+}

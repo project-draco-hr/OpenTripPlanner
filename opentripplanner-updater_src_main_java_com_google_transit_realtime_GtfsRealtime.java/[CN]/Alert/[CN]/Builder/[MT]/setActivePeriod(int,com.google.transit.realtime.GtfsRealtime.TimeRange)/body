@@ -1,0 +1,14 @@
+{
+  if (activePeriodBuilder_ == null) {
+    if (value == null) {
+      throw new NullPointerException();
+    }
+    ensureActivePeriodIsMutable();
+    activePeriod_.set(index,value);
+    onChanged();
+  }
+ else {
+    activePeriodBuilder_.setMessage(index,value);
+  }
+  return this;
+}

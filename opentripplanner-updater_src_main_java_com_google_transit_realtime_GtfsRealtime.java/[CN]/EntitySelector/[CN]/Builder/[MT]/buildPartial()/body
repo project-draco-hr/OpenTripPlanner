@@ -1,0 +1,33 @@
+{
+  com.google.transit.realtime.GtfsRealtime.EntitySelector result=new com.google.transit.realtime.GtfsRealtime.EntitySelector(this);
+  int from_bitField0_=bitField0_;
+  int to_bitField0_=0;
+  if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+    to_bitField0_|=0x00000001;
+  }
+  result.agencyId_=agencyId_;
+  if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+    to_bitField0_|=0x00000002;
+  }
+  result.routeId_=routeId_;
+  if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+    to_bitField0_|=0x00000004;
+  }
+  result.routeType_=routeType_;
+  if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+    to_bitField0_|=0x00000008;
+  }
+  if (tripBuilder_ == null) {
+    result.trip_=trip_;
+  }
+ else {
+    result.trip_=tripBuilder_.build();
+  }
+  if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+    to_bitField0_|=0x00000010;
+  }
+  result.stopId_=stopId_;
+  result.bitField0_=to_bitField0_;
+  onBuilt();
+  return result;
+}

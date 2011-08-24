@@ -1,0 +1,25 @@
+{
+  super.clear();
+  if (tripBuilder_ == null) {
+    trip_=com.google.transit.realtime.GtfsRealtime.TripDescriptor.getDefaultInstance();
+  }
+ else {
+    tripBuilder_.clear();
+  }
+  bitField0_=(bitField0_ & ~0x00000001);
+  if (vehicleBuilder_ == null) {
+    vehicle_=com.google.transit.realtime.GtfsRealtime.VehicleDescriptor.getDefaultInstance();
+  }
+ else {
+    vehicleBuilder_.clear();
+  }
+  bitField0_=(bitField0_ & ~0x00000002);
+  if (stopTimeUpdateBuilder_ == null) {
+    stopTimeUpdate_=java.util.Collections.emptyList();
+    bitField0_=(bitField0_ & ~0x00000004);
+  }
+ else {
+    stopTimeUpdateBuilder_.clear();
+  }
+  return this;
+}

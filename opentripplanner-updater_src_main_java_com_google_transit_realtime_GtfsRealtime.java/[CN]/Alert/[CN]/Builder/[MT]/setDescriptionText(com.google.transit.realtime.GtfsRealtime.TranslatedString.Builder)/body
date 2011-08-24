@@ -1,0 +1,11 @@
+{
+  if (descriptionTextBuilder_ == null) {
+    descriptionText_=builderForValue.build();
+    onChanged();
+  }
+ else {
+    descriptionTextBuilder_.setMessage(builderForValue.build());
+  }
+  bitField0_|=0x00000040;
+  return this;
+}

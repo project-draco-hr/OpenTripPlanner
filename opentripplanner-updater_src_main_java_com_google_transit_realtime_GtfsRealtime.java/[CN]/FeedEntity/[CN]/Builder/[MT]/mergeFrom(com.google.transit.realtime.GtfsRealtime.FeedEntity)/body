@@ -1,0 +1,20 @@
+{
+  if (other == com.google.transit.realtime.GtfsRealtime.FeedEntity.getDefaultInstance())   return this;
+  if (other.hasId()) {
+    setId(other.getId());
+  }
+  if (other.hasIsDeleted()) {
+    setIsDeleted(other.getIsDeleted());
+  }
+  if (other.hasTripUpdate()) {
+    mergeTripUpdate(other.getTripUpdate());
+  }
+  if (other.hasVehicle()) {
+    mergeVehicle(other.getVehicle());
+  }
+  if (other.hasAlert()) {
+    mergeAlert(other.getAlert());
+  }
+  this.mergeUnknownFields(other.getUnknownFields());
+  return this;
+}

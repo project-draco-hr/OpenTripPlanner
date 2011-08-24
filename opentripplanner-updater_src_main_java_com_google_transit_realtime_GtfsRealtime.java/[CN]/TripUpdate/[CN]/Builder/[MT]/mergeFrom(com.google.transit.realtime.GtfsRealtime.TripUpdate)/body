@@ -1,0 +1,38 @@
+{
+  if (other == com.google.transit.realtime.GtfsRealtime.TripUpdate.getDefaultInstance())   return this;
+  if (other.hasTrip()) {
+    mergeTrip(other.getTrip());
+  }
+  if (other.hasVehicle()) {
+    mergeVehicle(other.getVehicle());
+  }
+  if (stopTimeUpdateBuilder_ == null) {
+    if (!other.stopTimeUpdate_.isEmpty()) {
+      if (stopTimeUpdate_.isEmpty()) {
+        stopTimeUpdate_=other.stopTimeUpdate_;
+        bitField0_=(bitField0_ & ~0x00000004);
+      }
+ else {
+        ensureStopTimeUpdateIsMutable();
+        stopTimeUpdate_.addAll(other.stopTimeUpdate_);
+      }
+      onChanged();
+    }
+  }
+ else {
+    if (!other.stopTimeUpdate_.isEmpty()) {
+      if (stopTimeUpdateBuilder_.isEmpty()) {
+        stopTimeUpdateBuilder_.dispose();
+        stopTimeUpdateBuilder_=null;
+        stopTimeUpdate_=other.stopTimeUpdate_;
+        bitField0_=(bitField0_ & ~0x00000004);
+        stopTimeUpdateBuilder_=com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getStopTimeUpdateFieldBuilder() : null;
+      }
+ else {
+        stopTimeUpdateBuilder_.addAllMessages(other.stopTimeUpdate_);
+      }
+    }
+  }
+  this.mergeUnknownFields(other.getUnknownFields());
+  return this;
+}

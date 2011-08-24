@@ -1,0 +1,19 @@
+{
+  getSerializedSize();
+  if (((bitField0_ & 0x00000001) == 0x00000001)) {
+    output.writeBytes(1,getAgencyIdBytes());
+  }
+  if (((bitField0_ & 0x00000002) == 0x00000002)) {
+    output.writeBytes(2,getRouteIdBytes());
+  }
+  if (((bitField0_ & 0x00000004) == 0x00000004)) {
+    output.writeInt32(3,routeType_);
+  }
+  if (((bitField0_ & 0x00000008) == 0x00000008)) {
+    output.writeMessage(4,trip_);
+  }
+  if (((bitField0_ & 0x00000010) == 0x00000010)) {
+    output.writeBytes(5,getStopIdBytes());
+  }
+  getUnknownFields().writeTo(output);
+}

@@ -1,0 +1,20 @@
+{
+  if (other == com.google.transit.realtime.GtfsRealtime.TripDescriptor.getDefaultInstance())   return this;
+  if (other.hasTripId()) {
+    setTripId(other.getTripId());
+  }
+  if (other.hasRouteId()) {
+    setRouteId(other.getRouteId());
+  }
+  if (other.hasStartTime()) {
+    setStartTime(other.getStartTime());
+  }
+  if (other.hasStartDate()) {
+    setStartDate(other.getStartDate());
+  }
+  if (other.hasScheduleRelationship()) {
+    setScheduleRelationship(other.getScheduleRelationship());
+  }
+  this.mergeUnknownFields(other.getUnknownFields());
+  return this;
+}

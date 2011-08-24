@@ -1,0 +1,11 @@
+{
+  if (informedEntityBuilder_ == null) {
+    ensureInformedEntityIsMutable();
+    informedEntity_.remove(index);
+    onChanged();
+  }
+ else {
+    informedEntityBuilder_.remove(index);
+  }
+  return this;
+}

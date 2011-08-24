@@ -1,0 +1,16 @@
+{
+  if (tripUpdateBuilder_ == null) {
+    if (((bitField0_ & 0x00000004) == 0x00000004) && tripUpdate_ != com.google.transit.realtime.GtfsRealtime.TripUpdate.getDefaultInstance()) {
+      tripUpdate_=com.google.transit.realtime.GtfsRealtime.TripUpdate.newBuilder(tripUpdate_).mergeFrom(value).buildPartial();
+    }
+ else {
+      tripUpdate_=value;
+    }
+    onChanged();
+  }
+ else {
+    tripUpdateBuilder_.mergeFrom(value);
+  }
+  bitField0_|=0x00000004;
+  return this;
+}

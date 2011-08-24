@@ -1,0 +1,11 @@
+{
+  if (vehicleBuilder_ == null) {
+    vehicle_=com.google.transit.realtime.GtfsRealtime.VehicleDescriptor.getDefaultInstance();
+    onChanged();
+  }
+ else {
+    vehicleBuilder_.clear();
+  }
+  bitField0_=(bitField0_ & ~0x00000002);
+  return this;
+}

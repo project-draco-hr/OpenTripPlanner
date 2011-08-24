@@ -1,0 +1,18 @@
+{
+  if (hasUrl()) {
+    if (!getUrl().isInitialized()) {
+      return false;
+    }
+  }
+  if (hasHeaderText()) {
+    if (!getHeaderText().isInitialized()) {
+      return false;
+    }
+  }
+  if (hasDescriptionText()) {
+    if (!getDescriptionText().isInitialized()) {
+      return false;
+    }
+  }
+  return true;
+}

@@ -1,0 +1,11 @@
+{
+  if (activePeriodBuilder_ == null) {
+    ensureActivePeriodIsMutable();
+    super.addAll(values,activePeriod_);
+    onChanged();
+  }
+ else {
+    activePeriodBuilder_.addAllMessages(values);
+  }
+  return this;
+}

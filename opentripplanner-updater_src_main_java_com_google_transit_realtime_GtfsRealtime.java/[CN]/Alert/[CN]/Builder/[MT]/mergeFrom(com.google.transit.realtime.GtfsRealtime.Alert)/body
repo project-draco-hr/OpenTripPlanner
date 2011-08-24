@@ -1,0 +1,74 @@
+{
+  if (other == com.google.transit.realtime.GtfsRealtime.Alert.getDefaultInstance())   return this;
+  if (activePeriodBuilder_ == null) {
+    if (!other.activePeriod_.isEmpty()) {
+      if (activePeriod_.isEmpty()) {
+        activePeriod_=other.activePeriod_;
+        bitField0_=(bitField0_ & ~0x00000001);
+      }
+ else {
+        ensureActivePeriodIsMutable();
+        activePeriod_.addAll(other.activePeriod_);
+      }
+      onChanged();
+    }
+  }
+ else {
+    if (!other.activePeriod_.isEmpty()) {
+      if (activePeriodBuilder_.isEmpty()) {
+        activePeriodBuilder_.dispose();
+        activePeriodBuilder_=null;
+        activePeriod_=other.activePeriod_;
+        bitField0_=(bitField0_ & ~0x00000001);
+        activePeriodBuilder_=com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getActivePeriodFieldBuilder() : null;
+      }
+ else {
+        activePeriodBuilder_.addAllMessages(other.activePeriod_);
+      }
+    }
+  }
+  if (informedEntityBuilder_ == null) {
+    if (!other.informedEntity_.isEmpty()) {
+      if (informedEntity_.isEmpty()) {
+        informedEntity_=other.informedEntity_;
+        bitField0_=(bitField0_ & ~0x00000002);
+      }
+ else {
+        ensureInformedEntityIsMutable();
+        informedEntity_.addAll(other.informedEntity_);
+      }
+      onChanged();
+    }
+  }
+ else {
+    if (!other.informedEntity_.isEmpty()) {
+      if (informedEntityBuilder_.isEmpty()) {
+        informedEntityBuilder_.dispose();
+        informedEntityBuilder_=null;
+        informedEntity_=other.informedEntity_;
+        bitField0_=(bitField0_ & ~0x00000002);
+        informedEntityBuilder_=com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getInformedEntityFieldBuilder() : null;
+      }
+ else {
+        informedEntityBuilder_.addAllMessages(other.informedEntity_);
+      }
+    }
+  }
+  if (other.hasCause()) {
+    setCause(other.getCause());
+  }
+  if (other.hasEffect()) {
+    setEffect(other.getEffect());
+  }
+  if (other.hasUrl()) {
+    mergeUrl(other.getUrl());
+  }
+  if (other.hasHeaderText()) {
+    mergeHeaderText(other.getHeaderText());
+  }
+  if (other.hasDescriptionText()) {
+    mergeDescriptionText(other.getDescriptionText());
+  }
+  this.mergeUnknownFields(other.getUnknownFields());
+  return this;
+}

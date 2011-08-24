@@ -1,0 +1,16 @@
+{
+  if (urlBuilder_ == null) {
+    if (((bitField0_ & 0x00000010) == 0x00000010) && url_ != com.google.transit.realtime.GtfsRealtime.TranslatedString.getDefaultInstance()) {
+      url_=com.google.transit.realtime.GtfsRealtime.TranslatedString.newBuilder(url_).mergeFrom(value).buildPartial();
+    }
+ else {
+      url_=value;
+    }
+    onChanged();
+  }
+ else {
+    urlBuilder_.mergeFrom(value);
+  }
+  bitField0_|=0x00000010;
+  return this;
+}

@@ -1,0 +1,19 @@
+{
+  getSerializedSize();
+  if (((bitField0_ & 0x00000001) == 0x00000001)) {
+    output.writeFloat(1,latitude_);
+  }
+  if (((bitField0_ & 0x00000002) == 0x00000002)) {
+    output.writeFloat(2,longitude_);
+  }
+  if (((bitField0_ & 0x00000004) == 0x00000004)) {
+    output.writeFloat(3,bearing_);
+  }
+  if (((bitField0_ & 0x00000008) == 0x00000008)) {
+    output.writeDouble(4,odometer_);
+  }
+  if (((bitField0_ & 0x00000010) == 0x00000010)) {
+    output.writeFloat(5,speed_);
+  }
+  getUnknownFields().writeTo(output);
+}

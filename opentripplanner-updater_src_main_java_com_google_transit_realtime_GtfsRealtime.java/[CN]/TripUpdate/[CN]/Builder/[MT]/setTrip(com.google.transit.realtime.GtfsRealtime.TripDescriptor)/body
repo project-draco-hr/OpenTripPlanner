@@ -1,0 +1,14 @@
+{
+  if (tripBuilder_ == null) {
+    if (value == null) {
+      throw new NullPointerException();
+    }
+    trip_=value;
+    onChanged();
+  }
+ else {
+    tripBuilder_.setMessage(value);
+  }
+  bitField0_|=0x00000001;
+  return this;
+}

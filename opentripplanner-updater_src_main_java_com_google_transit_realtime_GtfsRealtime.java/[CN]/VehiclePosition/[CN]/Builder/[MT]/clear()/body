@@ -1,0 +1,35 @@
+{
+  super.clear();
+  if (tripBuilder_ == null) {
+    trip_=com.google.transit.realtime.GtfsRealtime.TripDescriptor.getDefaultInstance();
+  }
+ else {
+    tripBuilder_.clear();
+  }
+  bitField0_=(bitField0_ & ~0x00000001);
+  if (vehicleBuilder_ == null) {
+    vehicle_=com.google.transit.realtime.GtfsRealtime.VehicleDescriptor.getDefaultInstance();
+  }
+ else {
+    vehicleBuilder_.clear();
+  }
+  bitField0_=(bitField0_ & ~0x00000002);
+  if (positionBuilder_ == null) {
+    position_=com.google.transit.realtime.GtfsRealtime.Position.getDefaultInstance();
+  }
+ else {
+    positionBuilder_.clear();
+  }
+  bitField0_=(bitField0_ & ~0x00000004);
+  currentStopSequence_=0;
+  bitField0_=(bitField0_ & ~0x00000008);
+  stopId_="";
+  bitField0_=(bitField0_ & ~0x00000010);
+  currentStatus_=com.google.transit.realtime.GtfsRealtime.VehiclePosition.VehicleStopStatus.IN_TRANSIT_TO;
+  bitField0_=(bitField0_ & ~0x00000020);
+  timestamp_=0L;
+  bitField0_=(bitField0_ & ~0x00000040);
+  congestionLevel_=com.google.transit.realtime.GtfsRealtime.VehiclePosition.CongestionLevel.UNKNOWN_CONGESTION_LEVEL;
+  bitField0_=(bitField0_ & ~0x00000080);
+  return this;
+}

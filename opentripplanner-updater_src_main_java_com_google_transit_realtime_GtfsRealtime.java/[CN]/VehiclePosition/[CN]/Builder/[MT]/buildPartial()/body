@@ -1,0 +1,55 @@
+{
+  com.google.transit.realtime.GtfsRealtime.VehiclePosition result=new com.google.transit.realtime.GtfsRealtime.VehiclePosition(this);
+  int from_bitField0_=bitField0_;
+  int to_bitField0_=0;
+  if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+    to_bitField0_|=0x00000001;
+  }
+  if (tripBuilder_ == null) {
+    result.trip_=trip_;
+  }
+ else {
+    result.trip_=tripBuilder_.build();
+  }
+  if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+    to_bitField0_|=0x00000002;
+  }
+  if (vehicleBuilder_ == null) {
+    result.vehicle_=vehicle_;
+  }
+ else {
+    result.vehicle_=vehicleBuilder_.build();
+  }
+  if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+    to_bitField0_|=0x00000004;
+  }
+  if (positionBuilder_ == null) {
+    result.position_=position_;
+  }
+ else {
+    result.position_=positionBuilder_.build();
+  }
+  if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+    to_bitField0_|=0x00000008;
+  }
+  result.currentStopSequence_=currentStopSequence_;
+  if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+    to_bitField0_|=0x00000010;
+  }
+  result.stopId_=stopId_;
+  if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+    to_bitField0_|=0x00000020;
+  }
+  result.currentStatus_=currentStatus_;
+  if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+    to_bitField0_|=0x00000040;
+  }
+  result.timestamp_=timestamp_;
+  if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+    to_bitField0_|=0x00000080;
+  }
+  result.congestionLevel_=congestionLevel_;
+  result.bitField0_=to_bitField0_;
+  onBuilt();
+  return result;
+}

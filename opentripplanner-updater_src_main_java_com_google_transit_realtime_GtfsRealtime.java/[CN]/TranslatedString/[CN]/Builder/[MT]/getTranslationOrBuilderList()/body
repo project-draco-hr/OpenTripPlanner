@@ -1,0 +1,8 @@
+{
+  if (translationBuilder_ != null) {
+    return translationBuilder_.getMessageOrBuilderList();
+  }
+ else {
+    return java.util.Collections.unmodifiableList(translation_);
+  }
+}

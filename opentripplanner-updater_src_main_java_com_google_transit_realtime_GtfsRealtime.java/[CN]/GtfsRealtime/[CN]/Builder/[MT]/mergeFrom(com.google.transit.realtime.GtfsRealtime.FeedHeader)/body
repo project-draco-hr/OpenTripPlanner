@@ -1,0 +1,14 @@
+{
+  if (other == com.google.transit.realtime.GtfsRealtime.FeedHeader.getDefaultInstance())   return this;
+  if (other.hasGtfsRealtimeVersion()) {
+    setGtfsRealtimeVersion(other.getGtfsRealtimeVersion());
+  }
+  if (other.hasIncrementality()) {
+    setIncrementality(other.getIncrementality());
+  }
+  if (other.hasTimestamp()) {
+    setTimestamp(other.getTimestamp());
+  }
+  this.mergeUnknownFields(other.getUnknownFields());
+  return this;
+}

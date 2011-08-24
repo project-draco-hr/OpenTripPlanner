@@ -1,0 +1,11 @@
+{
+  if (stopTimeUpdateBuilder_ == null) {
+    ensureStopTimeUpdateIsMutable();
+    stopTimeUpdate_.remove(index);
+    onChanged();
+  }
+ else {
+    stopTimeUpdateBuilder_.remove(index);
+  }
+  return this;
+}

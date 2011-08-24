@@ -1,0 +1,14 @@
+{
+  if (translationBuilder_ == null) {
+    if (value == null) {
+      throw new NullPointerException();
+    }
+    ensureTranslationIsMutable();
+    translation_.add(index,value);
+    onChanged();
+  }
+ else {
+    translationBuilder_.addMessage(index,value);
+  }
+  return this;
+}

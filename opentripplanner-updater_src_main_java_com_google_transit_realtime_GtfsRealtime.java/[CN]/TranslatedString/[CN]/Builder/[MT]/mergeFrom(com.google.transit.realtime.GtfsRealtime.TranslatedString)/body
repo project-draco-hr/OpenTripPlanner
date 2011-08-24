@@ -1,0 +1,32 @@
+{
+  if (other == com.google.transit.realtime.GtfsRealtime.TranslatedString.getDefaultInstance())   return this;
+  if (translationBuilder_ == null) {
+    if (!other.translation_.isEmpty()) {
+      if (translation_.isEmpty()) {
+        translation_=other.translation_;
+        bitField0_=(bitField0_ & ~0x00000001);
+      }
+ else {
+        ensureTranslationIsMutable();
+        translation_.addAll(other.translation_);
+      }
+      onChanged();
+    }
+  }
+ else {
+    if (!other.translation_.isEmpty()) {
+      if (translationBuilder_.isEmpty()) {
+        translationBuilder_.dispose();
+        translationBuilder_=null;
+        translation_=other.translation_;
+        bitField0_=(bitField0_ & ~0x00000001);
+        translationBuilder_=com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getTranslationFieldBuilder() : null;
+      }
+ else {
+        translationBuilder_.addAllMessages(other.translation_);
+      }
+    }
+  }
+  this.mergeUnknownFields(other.getUnknownFields());
+  return this;
+}

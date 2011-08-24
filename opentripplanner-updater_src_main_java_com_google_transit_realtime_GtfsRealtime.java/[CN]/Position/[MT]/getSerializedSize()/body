@@ -1,0 +1,23 @@
+{
+  int size=memoizedSerializedSize;
+  if (size != -1)   return size;
+  size=0;
+  if (((bitField0_ & 0x00000001) == 0x00000001)) {
+    size+=com.google.protobuf.CodedOutputStream.computeFloatSize(1,latitude_);
+  }
+  if (((bitField0_ & 0x00000002) == 0x00000002)) {
+    size+=com.google.protobuf.CodedOutputStream.computeFloatSize(2,longitude_);
+  }
+  if (((bitField0_ & 0x00000004) == 0x00000004)) {
+    size+=com.google.protobuf.CodedOutputStream.computeFloatSize(3,bearing_);
+  }
+  if (((bitField0_ & 0x00000008) == 0x00000008)) {
+    size+=com.google.protobuf.CodedOutputStream.computeDoubleSize(4,odometer_);
+  }
+  if (((bitField0_ & 0x00000010) == 0x00000010)) {
+    size+=com.google.protobuf.CodedOutputStream.computeFloatSize(5,speed_);
+  }
+  size+=getUnknownFields().getSerializedSize();
+  memoizedSerializedSize=size;
+  return size;
+}
