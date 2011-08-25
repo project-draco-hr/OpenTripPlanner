@@ -25,8 +25,8 @@
   GenericVertex midpoint=new GenericVertex("split at " + label,midCoord,name);
   PlainStreetEdge forward1=new PlainStreetEdge(e1v1,midpoint,toMidpoint,name,lengthIn,e1.getPermission(),false);
   PlainStreetEdge backward1=new PlainStreetEdge(midpoint,e1v2,forwardGeometryPair.getSecond(),name,lengthOut,e1.getPermission(),true);
-  PlainStreetEdge forward2=new PlainStreetEdge(e2v2,midpoint,backGeometryPair.getFirst(),name,lengthOut,e2.getPermission(),false);
-  PlainStreetEdge backward2=new PlainStreetEdge(midpoint,e2v1,backGeometryPair.getSecond(),name,lengthIn,e2.getPermission(),true);
+  PlainStreetEdge forward2=new PlainStreetEdge(e2v1,midpoint,backGeometryPair.getFirst(),name,lengthOut,e2.getPermission(),false);
+  PlainStreetEdge backward2=new PlainStreetEdge(midpoint,e2v2,backGeometryPair.getSecond(),name,lengthIn,e2.getPermission(),true);
   forward1.setElevationProfile(e1.getElevationProfile(0,lengthIn));
   forward2.setElevationProfile(e2.getElevationProfile(0,lengthOut));
   backward1.setElevationProfile(e1.getElevationProfile(lengthOut,totalGeomLength));
