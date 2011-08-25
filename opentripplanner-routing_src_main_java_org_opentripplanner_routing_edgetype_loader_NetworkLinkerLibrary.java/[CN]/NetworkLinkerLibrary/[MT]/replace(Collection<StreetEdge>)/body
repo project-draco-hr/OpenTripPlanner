@@ -22,6 +22,7 @@
       TinyTurnEdge newTurn=new TinyTurnEdge(newStart,toVertex);
       newTurn.setRestricted(turnEdge.isRestricted());
       newTurn.setTurnCost(turnEdge.turnCost);
+      graph.addEdge(newTurn);
     }
  else {
       graph.addEdge(new FreeEdge(newStart,toVertex));
@@ -39,6 +40,7 @@
       TinyTurnEdge newTurn=new TinyTurnEdge(newEnd,toVertex);
       newTurn.setRestricted(turnEdge.isRestricted());
       newTurn.setTurnCost(turnEdge.turnCost);
+      graph.addEdge(newTurn);
     }
  else {
       graph.addEdge(new FreeEdge(newEnd,toVertex));
@@ -47,7 +49,7 @@
   PlainStreetEdge forward=new PlainStreetEdge(startVertex,newEnd,startVertex.getGeometry(),startVertex.getName(),startVertex.getLength(),startVertex.getPermission(),false);
   PlainStreetEdge backward=new PlainStreetEdge(endVertex,newStart,endVertex.getGeometry(),endVertex.getName(),endVertex.getLength(),endVertex.getPermission(),true);
   forward.setWheelchairAccessible(startVertex.isWheelchairAccessible());
-  backward.setWheelchairAccessible(startVertex.isWheelchairAccessible());
+  backward.setWheelchairAccessible(endVertex.isWheelchairAccessible());
   forward.setElevationProfile(startVertex.getElevationProfile());
   backward.setElevationProfile(endVertex.getElevationProfile());
   P2<PlainStreetEdge> replacement=new P2<PlainStreetEdge>(forward,backward);
