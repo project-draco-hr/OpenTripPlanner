@@ -1,0 +1,10 @@
+{
+  if (opt.getModes().getTransit()) {
+    LOG.debug("Transit itinerary requested.");
+    return new LBGRemainingWeightHeuristic(_graphService.getGraph());
+  }
+ else {
+    LOG.debug("Non-transit itinerary requested.");
+    return new DefaultRemainingWeightHeuristic();
+  }
+}

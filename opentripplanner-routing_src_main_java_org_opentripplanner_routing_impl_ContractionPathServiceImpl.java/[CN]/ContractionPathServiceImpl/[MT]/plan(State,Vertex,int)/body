@@ -7,13 +7,8 @@
   if (options.getModes().getTransit() && !_graphService.getGraph().transitFeedCovers(targetTime)) {
     throw new TransitTimesException();
   }
-  if (_graphService.getGraph().hasService(WeightTable.class) && options.getModes().getTransit()) {
-    options.remainingWeightHeuristic=new TableRemainingWeightHeuristic(_graphService.getGraph());
-    LOG.debug("Weight table present in graph and transit itinerary requested. Using table-driven A* heuristic.");
-  }
- else {
-    LOG.debug("No weight table in graph or non-transit itinerary requested. Keeping existing A* heuristic.");
-  }
+  options.remainingWeightHeuristic=_remainingWeightHeuristicFactory.getInstanceForSearch(options,target);
+  LOG.debug("Applied A* heuristic: {}",options.remainingWeightHeuristic);
   if (!options.getModes().getTransit()) {
     nItineraries=1;
     options.setMaxWalkDistance(Double.MAX_VALUE);
