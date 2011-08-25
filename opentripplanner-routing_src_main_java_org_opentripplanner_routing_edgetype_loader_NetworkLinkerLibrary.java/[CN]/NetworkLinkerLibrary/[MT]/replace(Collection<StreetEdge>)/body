@@ -12,20 +12,40 @@
   }
   Vertex newStart=new GenericVertex("replace " + startVertex.getLabel(),startVertex.getX(),startVertex.getY());
   newStart=graph.addVertex(newStart);
-  graph.addEdge(new FreeEdge(startVertex,newStart));
-  List<Vertex> startVertices=index.getIntersectionAt(startVertex.getCoordinate());
-  for (  Vertex v : startVertices) {
-    graph.addEdge(new FreeEdge(newStart,v));
+  for (  DirectEdge e : filter(graph.getOutgoing(endVertex),DirectEdge.class)) {
+    final Vertex toVertex=e.getToVertex();
+    if (!toVertex.getCoordinate().equals(startVertex.getCoordinate())) {
+      continue;
+    }
+    if (e instanceof TurnEdge) {
+      final TurnEdge turnEdge=(TurnEdge)e;
+      TinyTurnEdge newTurn=new TinyTurnEdge(newStart,toVertex);
+      newTurn.setRestricted(turnEdge.isRestricted());
+      newTurn.setTurnCost(turnEdge.turnCost);
+    }
+ else {
+      graph.addEdge(new FreeEdge(newStart,toVertex));
+    }
   }
   Vertex newEnd=new GenericVertex("replace " + endVertex.getLabel(),endVertex.getX(),endVertex.getY());
   newEnd=graph.addVertex(newEnd);
-  graph.addEdge(new FreeEdge(endVertex,newEnd));
-  List<Vertex> endVertices=index.getIntersectionAt(endVertex.getCoordinate());
-  for (  Vertex v : endVertices) {
-    graph.addEdge(new FreeEdge(newEnd,v));
+  for (  DirectEdge e : filter(graph.getOutgoing(startVertex),DirectEdge.class)) {
+    final Vertex toVertex=e.getToVertex();
+    if (!toVertex.getCoordinate().equals(endVertex.getCoordinate())) {
+      continue;
+    }
+    if (e instanceof TurnEdge) {
+      final TurnEdge turnEdge=(TurnEdge)e;
+      TinyTurnEdge newTurn=new TinyTurnEdge(newEnd,toVertex);
+      newTurn.setRestricted(turnEdge.isRestricted());
+      newTurn.setTurnCost(turnEdge.turnCost);
+    }
+ else {
+      graph.addEdge(new FreeEdge(newEnd,toVertex));
+    }
   }
-  PlainStreetEdge forward=new PlainStreetEdge(newStart,newEnd,startVertex.getGeometry(),startVertex.getName(),startVertex.getLength(),startVertex.getPermission(),false);
-  PlainStreetEdge backward=new PlainStreetEdge(newEnd,newStart,endVertex.getGeometry(),endVertex.getName(),endVertex.getLength(),endVertex.getPermission(),true);
+  PlainStreetEdge forward=new PlainStreetEdge(startVertex,newEnd,startVertex.getGeometry(),startVertex.getName(),startVertex.getLength(),startVertex.getPermission(),false);
+  PlainStreetEdge backward=new PlainStreetEdge(endVertex,newStart,endVertex.getGeometry(),endVertex.getName(),endVertex.getLength(),endVertex.getPermission(),true);
   forward.setWheelchairAccessible(startVertex.isWheelchairAccessible());
   backward.setWheelchairAccessible(startVertex.isWheelchairAccessible());
   forward.setElevationProfile(startVertex.getElevationProfile());
