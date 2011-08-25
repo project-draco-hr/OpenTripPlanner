@@ -2,6 +2,7 @@
   Map<String,String> tags=entity.getTags();
   StreetTraversalPermission permission=null;
   String highway=tags.get("highway");
+  String cycleway=tags.get("cycleway");
   String access=tags.get("access");
   String motorcar=tags.get("motorcar");
   String bicycle=tags.get("bicycle");
@@ -43,6 +44,11 @@
   }
   if (highway != null) {
     if ("construction".equals(highway)) {
+      permission=StreetTraversalPermission.NONE;
+    }
+  }
+ else {
+    if ("construction".equals(cycleway)) {
       permission=StreetTraversalPermission.NONE;
     }
   }
