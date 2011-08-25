@@ -9,6 +9,7 @@
   planner=new Planner();
   pathService=new ContractionPathServiceImpl();
   graph=new Graph();
+  pathService.setRemainingWeightHeuristicFactory(new DefaultRemainingWeightHeuristicFactoryImpl());
   ShapefileStreetGraphBuilderImpl builder=new ShapefileStreetGraphBuilderImpl();
   FeatureSourceFactory factory=new ShapefileFeatureSourceFactoryImpl(new File("src/test/resources/portland/Streets_pdx.shp"));
   builder.setFeatureSourceFactory(factory);
