@@ -42,6 +42,9 @@
     }
     State u=pq.extract_min();
     if (!spt.visit(u))     continue;
+    if (traverseVisitor != null) {
+      traverseVisitor.visitVertex(u);
+    }
     Vertex u_vertex=u.getVertex();
     if (_verbose)     System.out.println("   vertex " + u_vertex);
     if (_searchTerminationStrategy != null) {
@@ -55,6 +58,9 @@
     nVisited+=1;
     for (    Edge edge : edges) {
       for (State v=edge.traverse(u); v != null; v=v.getNextResult()) {
+        if (traverseVisitor != null) {
+          traverseVisitor.visitEdge(edge,v);
+        }
         if (_skipTraversalResultStrategy != null && _skipTraversalResultStrategy.shouldSkipTraversalResult(origin.getVertex(),target,u,v,spt,options))         continue;
         double remaining_w=computeRemainingWeight(heuristic,v,target,options);
         double estimate=v.getWeight() + remaining_w;

@@ -17,8 +17,11 @@
   TraverseOptions options=new TraverseOptions(modeSet);
   options.speed=1;
   options.walkReluctance=1;
+  VisualTraverseVisitor visitor=new VisualTraverseVisitor(showGraph);
+  options.aStarSearchFactory=visitor.getAStarSearchFactory();
   options.maxSlope=1;
   options.boardCost=Integer.parseInt(boardingPenaltyField.getText()) * 60;
+  options.optimizeFor=OptimizeType.SAFE;
   System.out.println("--------");
   System.out.println("Path from " + from + " to "+ to+ " at "+ when);
   System.out.println("\tModes: " + modeSet);

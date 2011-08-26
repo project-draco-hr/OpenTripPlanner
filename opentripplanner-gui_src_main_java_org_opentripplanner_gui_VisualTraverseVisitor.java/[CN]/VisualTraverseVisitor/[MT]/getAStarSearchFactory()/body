@@ -1,0 +1,10 @@
+{
+  return new GenericAStarFactory(){
+    @Override public GenericAStar createAStarInstance(){
+      GenericAStar astar=new GenericAStar();
+      astar.setTraverseVisitor(VisualTraverseVisitor.this);
+      return astar;
+    }
+  }
+;
+}
