@@ -52,6 +52,8 @@
   backward.setWheelchairAccessible(endVertex.isWheelchairAccessible());
   forward.setElevationProfile(startVertex.getElevationProfile());
   backward.setElevationProfile(endVertex.getElevationProfile());
+  forward.setBicycleSafetyEffectiveLength(startVertex.getBicycleSafetyEffectiveLength());
+  backward.setBicycleSafetyEffectiveLength(endVertex.getBicycleSafetyEffectiveLength());
   P2<PlainStreetEdge> replacement=new P2<PlainStreetEdge>(forward,backward);
   return replacement;
 }
