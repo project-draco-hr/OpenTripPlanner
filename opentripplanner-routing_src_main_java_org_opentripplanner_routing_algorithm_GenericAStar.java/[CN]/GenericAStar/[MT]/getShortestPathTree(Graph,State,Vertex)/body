@@ -54,7 +54,6 @@
     Collection<Edge> edges=getEdgesForVertex(graph,extraEdges,u_vertex,options);
     nVisited+=1;
     for (    Edge edge : edges) {
-      if (edge instanceof PatternBoard && u.getNumBoardings() > options.maxTransfers)       continue;
       for (State v=edge.traverse(u); v != null; v=v.getNextResult()) {
         if (_skipTraversalResultStrategy != null && _skipTraversalResultStrategy.shouldSkipTraversalResult(origin.getVertex(),target,u,v,spt,options))         continue;
         double remaining_w=computeRemainingWeight(heuristic,v,target,options);
