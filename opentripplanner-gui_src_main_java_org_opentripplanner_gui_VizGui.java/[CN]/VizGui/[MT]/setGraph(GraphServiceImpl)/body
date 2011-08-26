@@ -2,6 +2,7 @@
   graph=graphService.getGraph();
   pathservice=new ContractionPathServiceImpl();
   pathservice.setGraphService(graphService);
+  pathservice.setRemainingWeightHeuristicFactory(new DefaultRemainingWeightHeuristicFactoryImpl());
   indexService=new StreetVertexIndexServiceImpl();
   indexService.setGraphService(graphService);
   indexService.setup();
