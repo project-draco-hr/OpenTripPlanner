@@ -1,13 +1,17 @@
 {
+  TraverseOptions options=state0.getOptions();
   AgencyAndId tripId=state0.getTripId();
   InterlineDwellData dwellData;
-  if (state0.getOptions().isArriveBy()) {
+  if (options.isArriveBy()) {
     dwellData=reverseTripIdToInterlineDwellData.get(tripId);
   }
  else {
     dwellData=tripIdToInterlineDwellData.get(tripId);
   }
   if (dwellData == null) {
+    return null;
+  }
+  if (options.bannedTrips.contains(dwellData.trip)) {
     return null;
   }
   StateEditor s1=state0.edit(this);
