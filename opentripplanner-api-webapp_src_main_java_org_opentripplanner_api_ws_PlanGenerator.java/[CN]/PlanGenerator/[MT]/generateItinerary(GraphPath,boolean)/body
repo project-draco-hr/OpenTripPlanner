@@ -78,7 +78,6 @@
           }
           if (leg.to == null) {
             leg.to=makePlace(edgeNarrative.getFromVertex());
-            leg.endTime=new Date(currState.getBackState().getTimeInMillis());
           }
           Geometry geometry=geometryFactory.createLineString(coordinates);
           leg.legGeometry=PolylineEncoder.createEncodings(geometry);
@@ -128,8 +127,10 @@
         PackedCoordinateSequence profile=((EdgeWithElevation)edge).getElevationProfile();
         previousElevation=applyElevation(profile,itinerary,previousElevation);
       }
+      leg.endTime=new Date(currState.getTimeInMillis());
     }
  else     if (mode.isTransit()) {
+      leg.endTime=new Date(currState.getTimeInMillis());
       itinerary.transitTime+=edgeElapsedTime;
       if (showIntermediateStops) {
         if (leg.stop == null) {
