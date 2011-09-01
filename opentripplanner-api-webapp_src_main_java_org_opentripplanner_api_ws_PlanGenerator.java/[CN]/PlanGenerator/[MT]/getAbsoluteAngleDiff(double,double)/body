@@ -1,0 +1,11 @@
+{
+  double angleDiff=thisAngle - lastAngle;
+  if (angleDiff < 0) {
+    angleDiff+=Math.PI * 2;
+  }
+  double ccwAngleDiff=Math.PI * 2 - angleDiff;
+  if (ccwAngleDiff < angleDiff) {
+    angleDiff=ccwAngleDiff;
+  }
+  return angleDiff;
+}

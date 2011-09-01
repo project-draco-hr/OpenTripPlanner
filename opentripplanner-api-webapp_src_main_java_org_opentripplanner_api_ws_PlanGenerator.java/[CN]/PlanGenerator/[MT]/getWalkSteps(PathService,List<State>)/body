@@ -53,7 +53,47 @@
         distance+=edgeResult.getDistance();
       }
  else {
-        if (optionsBefore) {
+        boolean shouldGenerateContinue=false;
+        if (edge instanceof PlainStreetEdge) {
+          double angleDiff=getAbsoluteAngleDiff(thisAngle,lastAngle);
+          for (          DirectEdge alternative : pathService.getOutgoingEdges(currState.getBackState().getVertex())) {
+            if (alternative instanceof TinyTurnEdge) {
+              alternative=pathService.getOutgoingEdges(alternative.getToVertex()).get(0);
+            }
+            double altAngle=DirectionUtils.getFirstAngle(alternative.getGeometry());
+            double altAngleDiff=getAbsoluteAngleDiff(altAngle,lastAngle);
+            if (altAngleDiff - angleDiff < Math.PI / 16) {
+              shouldGenerateContinue=true;
+              break;
+            }
+          }
+        }
+ else         if (edge instanceof TinyTurnEdge) {
+        }
+ else {
+          double newAngle;
+          if (currState.getVertex() instanceof StreetVertex) {
+            newAngle=DirectionUtils.getFirstAngle(((StreetVertex)currState.getVertex()).getGeometry());
+          }
+ else {
+            Edge oge=pathService.getOutgoingEdges(currState.getVertex()).get(0);
+            newAngle=DirectionUtils.getFirstAngle(((DirectEdge)oge).getGeometry());
+          }
+          double angleDiff=getAbsoluteAngleDiff(newAngle,thisAngle);
+          for (          DirectEdge alternative : pathService.getOutgoingEdges(currState.getBackState().getVertex())) {
+            if (alternative == edge) {
+              continue;
+            }
+            alternative=pathService.getOutgoingEdges(alternative.getToVertex()).get(0);
+            double altAngle=DirectionUtils.getFirstAngle(alternative.getGeometry());
+            double altAngleDiff=getAbsoluteAngleDiff(altAngle,lastAngle);
+            if (altAngleDiff - angleDiff < Math.PI / 16) {
+              shouldGenerateContinue=true;
+              break;
+            }
+          }
+        }
+        if (shouldGenerateContinue) {
           step=createWalkStep(currState);
           steps.add(step);
           step.setDirections(lastAngle,thisAngle,false);
