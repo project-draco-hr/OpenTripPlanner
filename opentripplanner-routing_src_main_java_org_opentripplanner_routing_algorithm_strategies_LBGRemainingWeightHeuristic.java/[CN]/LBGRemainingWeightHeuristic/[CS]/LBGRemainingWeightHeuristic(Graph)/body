@@ -1,9 +1,0 @@
-{
-  this.lbg=lbgCache.get(g);
-  if (this.lbg == null) {
-    LOG.debug("BEGIN Making lower bound graph");
-    this.lbg=new LowerBoundGraph(g,LowerBoundGraph.OUTGOING);
-    LOG.debug("END   Making lower bound graph");
-    lbgCache.put(g,this.lbg);
-  }
-}

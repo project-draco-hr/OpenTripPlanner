@@ -1,0 +1,15 @@
+{
+  GraphAndDirection key=new GraphAndDirection(g,opt.isArriveBy());
+  this.lbg=lbgCache.get(key);
+  if (this.lbg == null) {
+    LOG.debug("no lower bound graph found for: {}",key);
+    LOG.debug("BEGIN Making lower bound graph");
+    if (opt.isArriveBy())     this.lbg=new LowerBoundGraph(g,LowerBoundGraph.OUTGOING);
+ else     this.lbg=new LowerBoundGraph(g,LowerBoundGraph.INCOMING);
+    LOG.debug("END   Making lower bound graph");
+    lbgCache.put(key,this.lbg);
+  }
+ else {
+    LOG.debug("reusing cached lower bound graph found for: {}",key);
+  }
+}
