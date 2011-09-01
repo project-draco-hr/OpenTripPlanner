@@ -10,7 +10,10 @@
     if (out == edge) {
       continue;
     }
-    if (!(out instanceof TurnEdge || out instanceof OutEdge)) {
+    if (!(out instanceof TurnEdge || out instanceof OutEdge || out instanceof PlainStreetEdge)) {
+      continue;
+    }
+    if (state != null && out.traverse(state) == null) {
       continue;
     }
     foundAlternatePaths=true;
