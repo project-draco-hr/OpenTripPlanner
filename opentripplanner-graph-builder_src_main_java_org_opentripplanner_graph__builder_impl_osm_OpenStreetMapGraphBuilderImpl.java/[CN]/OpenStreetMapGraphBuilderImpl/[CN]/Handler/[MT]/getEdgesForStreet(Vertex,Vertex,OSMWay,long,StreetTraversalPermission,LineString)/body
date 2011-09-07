@@ -8,6 +8,12 @@
   Map<String,String> tags=way.getTags();
   if (permissions == StreetTraversalPermission.NONE)   return new P2<PlainStreetEdge>(null,null);
   PlainStreetEdge street=null, backStreet=null;
+  if (way.isTag("foot","yes") || way.isTag("foot","designated")) {
+    permissions=permissions.add(StreetTraversalPermission.PEDESTRIAN);
+  }
+  if (way.isTagFalse("foot")) {
+    permissions=permissions.remove(StreetTraversalPermission.PEDESTRIAN);
+  }
   boolean forceBikes=false;
   if (way.isTag("bicycle","yes") || way.isTag("bicycle","designated")) {
     permissions=permissions.add(StreetTraversalPermission.BICYCLE);
