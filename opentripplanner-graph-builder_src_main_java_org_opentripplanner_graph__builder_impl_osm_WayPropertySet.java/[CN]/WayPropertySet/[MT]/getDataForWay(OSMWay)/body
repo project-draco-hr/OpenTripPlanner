@@ -1,33 +1,44 @@
 {
-  WayProperties result=defaultProperties;
-  int bestScore=0;
-  List<WayProperties> mixins=new ArrayList<WayProperties>();
+  WayProperties leftResult=defaultProperties;
+  WayProperties rightResult=defaultProperties;
+  int bestLeftScore=0;
+  int bestRightScore=0;
+  List<WayProperties> leftMixins=new ArrayList<WayProperties>();
+  List<WayProperties> rightMixins=new ArrayList<WayProperties>();
   for (  WayPropertyPicker picker : getWayProperties()) {
     OSMSpecifier specifier=picker.getSpecifier();
     WayProperties wayProperties=picker.getProperties();
-    int score=specifier.matchScore(way);
+    P2<Integer> score=specifier.matchScores(way);
+    int leftScore=score.getFirst();
+    int rightScore=score.getSecond();
     if (picker.isSafetyMixin()) {
-      if (score > 0) {
-        mixins.add(wayProperties);
+      if (leftScore > 0) {
+        leftMixins.add(wayProperties);
+      }
+      if (rightScore > 0) {
+        rightMixins.add(wayProperties);
       }
     }
- else     if (score > bestScore) {
-      result=wayProperties;
-      bestScore=score;
+ else {
+      if (leftScore > bestLeftScore) {
+        leftResult=wayProperties;
+        bestLeftScore=leftScore;
+      }
+      if (rightScore > bestRightScore) {
+        rightResult=wayProperties;
+        bestRightScore=rightScore;
+      }
     }
   }
-  if (mixins.size() > 0) {
-    result=result.clone();
-    P2<Double> safetyFeatures=result.getSafetyFeatures();
-    double first=safetyFeatures.getFirst();
-    double second=safetyFeatures.getSecond();
-    for (    WayProperties properties : mixins) {
-      first*=properties.getSafetyFeatures().getFirst();
-      second*=properties.getSafetyFeatures().getSecond();
-    }
-    result.setSafetyFeatures(new P2<Double>(first,second));
+  WayProperties result=rightResult.clone();
+  result.setSafetyFeatures(new P2<Double>(rightResult.getSafetyFeatures().getFirst(),leftResult.getSafetyFeatures().getSecond()));
+  if (leftMixins.size() > 0) {
+    applyMixins(result,leftMixins,false);
   }
-  if (bestScore == 0 && mixins.size() == 0) {
+  if (rightMixins.size() > 0) {
+    applyMixins(result,rightMixins,true);
+  }
+  if ((bestLeftScore == 0 || bestRightScore == 0) && (leftMixins.size() == 0 || rightMixins.size() == 0)) {
     String all_tags=null;
     Map<String,String> tags=way.getTags();
     for (    Entry<String,String> entry : tags.entrySet()) {

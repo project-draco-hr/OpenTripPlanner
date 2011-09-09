@@ -1,0 +1,7 @@
+{
+  if (o instanceof WayPropertySet) {
+    WayPropertySet other=(WayPropertySet)o;
+    return (defaultProperties.equals(other.defaultProperties) && wayProperties.equals(other.wayProperties) && creativeNamers.equals(other.creativeNamers)&& slopeOverrides.equals(other.slopeOverrides)&& notes.equals(other.notes));
+  }
+  return false;
+}

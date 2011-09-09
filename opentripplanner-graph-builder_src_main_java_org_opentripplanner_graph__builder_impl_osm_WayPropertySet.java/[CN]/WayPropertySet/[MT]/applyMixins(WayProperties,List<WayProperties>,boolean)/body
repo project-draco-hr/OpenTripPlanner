@@ -1,0 +1,14 @@
+{
+  P2<Double> safetyFeatures=result.getSafetyFeatures();
+  double first=safetyFeatures.getFirst();
+  double second=safetyFeatures.getSecond();
+  for (  WayProperties properties : mixins) {
+    if (right) {
+      second*=properties.getSafetyFeatures().getSecond();
+    }
+ else {
+      first*=properties.getSafetyFeatures().getFirst();
+    }
+  }
+  result.setSafetyFeatures(new P2<Double>(first,second));
+}

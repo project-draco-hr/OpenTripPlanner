@@ -1,0 +1,20 @@
+{
+  int leftScore=0, rightScore=0;
+  for (  P2<String> pair : kvpairs) {
+    String tag=pair.getFirst().toLowerCase();
+    String value=pair.getSecond().toLowerCase();
+    String leftMatchValue=match.getTag(tag + ":left");
+    String rightMatchValue=match.getTag(tag + ":right");
+    String matchValue=match.getTag(tag);
+    if (leftMatchValue == null) {
+      leftMatchValue=matchValue;
+    }
+    if (rightMatchValue == null) {
+      rightMatchValue=matchValue;
+    }
+    leftScore+=getTagScore(value,leftMatchValue);
+    rightScore+=getTagScore(value,rightMatchValue);
+  }
+  P2<Integer> score=new P2<Integer>(leftScore,rightScore);
+  return score;
+}
