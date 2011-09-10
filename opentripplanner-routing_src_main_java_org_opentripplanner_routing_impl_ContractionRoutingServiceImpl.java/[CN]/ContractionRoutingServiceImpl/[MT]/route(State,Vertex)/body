@@ -9,6 +9,7 @@
       options.remainingWeightHeuristic.reset();
     }
     tries+=1;
+    LOG.debug("try number {} ; max walk distance = {}",tries,options.getMaxWalkDistance());
     if (hierarchy == null) {
       GenericAStar aStar=getAStarInstance(options);
       Graph _graph=hierarchies.getGraph();

@@ -37,7 +37,8 @@
     }
     if (maxComputationTime > 0) {
       if ((System.currentTimeMillis() - computationStartTime) > maxComputationTime) {
-        break;
+        LOG.warn("Max computation time exceeded for origin {} target {}",origin,target);
+        return null;
       }
     }
     State u=pq.extract_min();
