@@ -1,9 +1,9 @@
 {
   for (  Stop stop : _dao.getAllStops()) {
-    Vertex stopVertex=graph.addVertex(new TransitStop(id(stop.getId()),stop.getLon(),stop.getLat(),stop.getName(),stop.getId(),stop));
+    Vertex stopVertex=graph.addVertex(new TransitStop(id(stop.getId()),stop.getLon(),stop.getLat(),stop.getName(),stop.getId(),stop.getCode(),stop));
     if (stop.getLocationType() != 2) {
-      Vertex arrive=graph.addVertex(new Vertex(arrivalVertexId(id(stop.getId())),stop.getLon(),stop.getLat(),stop.getName(),stop.getId()));
-      Vertex depart=graph.addVertex(new Vertex(departureVertexId(id(stop.getId())),stop.getLon(),stop.getLat(),stop.getName(),stop.getId()));
+      Vertex arrive=graph.addVertex(new Vertex(arrivalVertexId(id(stop.getId())),stop.getLon(),stop.getLat(),stop.getName(),stop.getId(),stop.getCode()));
+      Vertex depart=graph.addVertex(new Vertex(departureVertexId(id(stop.getId())),stop.getLon(),stop.getLat(),stop.getName(),stop.getId(),stop.getCode()));
       graph.addEdge(new PreAlightEdge(arrive,stopVertex));
       graph.addEdge(new PreBoardEdge(stopVertex,depart));
     }
