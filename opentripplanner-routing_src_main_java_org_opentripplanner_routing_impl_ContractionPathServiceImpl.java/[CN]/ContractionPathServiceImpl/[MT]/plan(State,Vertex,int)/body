@@ -32,13 +32,18 @@
     StateEditor editor=new StateEditor(origin,null);
     editor.setTraverseOptions(options);
     origin=editor.makeState();
-    long remainingComputationTime=computationEndTime - System.currentTimeMillis();
-    LOG.debug("remaining time for search: {} sec",remainingComputationTime / 1000.0);
-    if (remainingComputationTime <= 0) {
-      LOG.warn("Max computation time exceeded for origin {} target {}",origin,target);
-      break;
+    if (_maxComputationTime > 0) {
+      long remainingComputationTime=computationEndTime - System.currentTimeMillis();
+      LOG.debug("remaining time for search: {} sec",remainingComputationTime / 1000.0);
+      if (remainingComputationTime <= 0) {
+        LOG.warn("Max computation time exceeded for origin {} target {}",origin,target);
+        break;
+      }
+      options.maxComputationTime=remainingComputationTime;
     }
-    options.maxComputationTime=remainingComputationTime;
+ else {
+      options.maxComputationTime=0;
+    }
     long searchBeginTime=System.currentTimeMillis();
     LOG.debug("BEGIN SEARCH");
     List<GraphPath> somePaths=_routingService.route(origin,target);
