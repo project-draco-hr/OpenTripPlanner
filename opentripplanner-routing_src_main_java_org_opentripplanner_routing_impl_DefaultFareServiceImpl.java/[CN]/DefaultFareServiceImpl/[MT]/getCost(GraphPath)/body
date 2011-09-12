@@ -4,21 +4,27 @@
   List<Ride> rides=new ArrayList<Ride>();
   Ride newRide=null;
   for (  State curr : states) {
+    EdgeNarrative edgeNarrative=curr.getBackEdgeNarrative();
+    if (edgeNarrative == null)     continue;
     String zone=curr.getZone();
     AgencyAndId route=curr.getRoute();
+    TraverseMode mode=edgeNarrative.getMode();
     if (zone == null && route == null) {
       newRide=null;
     }
  else {
-      if (newRide == null || !route.equals(newRide.route)) {
-        newRide=new Ride();
-        rides.add(newRide);
-        newRide.startZone=zone;
-        newRide.route=route;
-        newRide.startTime=curr.getTime();
+      if (mode.isTransit() || mode == TraverseMode.BOARDING) {
+        if (newRide == null || !route.equals(newRide.route)) {
+          newRide=new Ride();
+          rides.add(newRide);
+          newRide.startZone=zone;
+          newRide.route=route;
+          newRide.startTime=curr.getTime();
+        }
+        newRide.zones.add(zone);
+        newRide.endZone=zone;
+        newRide.endTime=curr.getTime();
       }
-      newRide.zones.add(zone);
-      newRide.endZone=zone;
     }
   }
   if (rides.size() == 0) {
@@ -40,9 +46,9 @@
     zones.addAll(ride.zones);
     transfersUsed+=1;
     long tripTime=ride.startTime - startTime;
-    for (    AgencyAndId fareId : fareRules.keySet()) {
+    for (    AgencyAndId fareId : fareAttributes.keySet()) {
       FareRuleSet ruleSet=fareRules.get(fareId);
-      if (ruleSet.matches(startZone,ride.endZone,zones,routes)) {
+      if (ruleSet == null || ruleSet.matches(startZone,ride.endZone,zones,routes)) {
         FareAttribute attribute=fareAttributes.get(fareId);
         if (attribute.isTransfersSet() && attribute.getTransfers() < transfersUsed) {
           continue;
