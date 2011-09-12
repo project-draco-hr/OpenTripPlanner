@@ -46,6 +46,7 @@
     zones.addAll(ride.zones);
     transfersUsed+=1;
     long tripTime=ride.startTime - startTime;
+    long journeyTime=ride.endTime - startTime;
     for (    AgencyAndId fareId : fareAttributes.keySet()) {
       FareRuleSet ruleSet=fareRules.get(fareId);
       if (ruleSet == null || ruleSet.matches(startZone,ride.endZone,zones,routes)) {
@@ -54,6 +55,9 @@
           continue;
         }
         if (attribute.isTransferDurationSet() && tripTime > attribute.getTransferDuration()) {
+          continue;
+        }
+        if (attribute.isJourneyDurationSet() && journeyTime > attribute.getJourneyDuration()) {
           continue;
         }
         float newFare=attribute.getPrice();
