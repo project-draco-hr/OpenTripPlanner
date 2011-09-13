@@ -5,21 +5,21 @@
   int roundaboutExit=0;
   for (  State currState : states) {
     Edge edge=currState.getBackEdge();
-    EdgeNarrative edgeResult=currState.getBackEdgeNarrative();
+    EdgeNarrative edgeNarrative=currState.getBackEdgeNarrative();
     if (edge instanceof FreeEdge) {
       continue;
     }
-    Geometry geom=edgeResult.getGeometry();
+    Geometry geom=edgeNarrative.getGeometry();
     if (geom == null) {
       continue;
     }
-    String streetName=edgeResult.getName();
+    String streetName=edgeNarrative.getName();
     if (step == null) {
       step=createWalkStep(currState);
       steps.add(step);
       double thisAngle=DirectionUtils.getFirstAngle(geom);
       step.setAbsoluteDirection(thisAngle);
-      distance=edgeResult.getDistance();
+      distance=edgeNarrative.getDistance();
     }
  else     if (step.streetName != streetName && (step.streetName != null && !step.streetName.equals(streetName))) {
       if (roundaboutExit > 0) {
@@ -28,29 +28,29 @@
       }
       step=createWalkStep(currState);
       steps.add(step);
-      if (edgeResult.isRoundabout()) {
+      if (edgeNarrative.isRoundabout()) {
         roundaboutExit=1;
       }
       double thisAngle=DirectionUtils.getFirstAngle(geom);
-      step.setDirections(lastAngle,thisAngle,edgeResult.isRoundabout());
-      distance=edgeResult.getDistance();
+      step.setDirections(lastAngle,thisAngle,edgeNarrative.isRoundabout());
+      distance=edgeNarrative.getDistance();
     }
  else {
       double thisAngle=DirectionUtils.getFirstAngle(geom);
-      RelativeDirection direction=WalkStep.getRelativeDirection(lastAngle,thisAngle,edgeResult.isRoundabout());
+      RelativeDirection direction=WalkStep.getRelativeDirection(lastAngle,thisAngle,edgeNarrative.isRoundabout());
       boolean optionsBefore=pathService.multipleOptionsBefore(edge,currState.getBackState());
-      if (edgeResult.isRoundabout()) {
+      if (edgeNarrative.isRoundabout()) {
         if (optionsBefore) {
           roundaboutExit+=1;
         }
       }
-      if (edgeResult.isRoundabout() || direction == RelativeDirection.CONTINUE) {
+      if (edgeNarrative.isRoundabout() || direction == RelativeDirection.CONTINUE) {
         if (step.elevation != null) {
           String s=encodeElevationProfile(edge,distance);
           if (step.elevation.length() > 0 && s != null && s.length() > 0)           step.elevation+=",";
           step.elevation+=s;
         }
-        distance+=edgeResult.getDistance();
+        distance+=edgeNarrative.getDistance();
       }
  else {
         boolean shouldGenerateContinue=false;
@@ -98,11 +98,12 @@
           steps.add(step);
           step.setDirections(lastAngle,thisAngle,false);
           step.stayOn=true;
-          distance=edgeResult.getDistance();
+          distance=edgeNarrative.getDistance();
         }
       }
     }
-    step.distance+=edgeResult.getDistance();
+    step.distance+=edgeNarrative.getDistance();
+    step.addAlerts(edgeNarrative.getNotes());
     lastAngle=DirectionUtils.getLastAngle(geom);
   }
   return steps;

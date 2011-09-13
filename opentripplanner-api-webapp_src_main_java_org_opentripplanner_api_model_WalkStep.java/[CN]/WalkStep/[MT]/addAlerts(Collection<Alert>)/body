@@ -1,0 +1,14 @@
+{
+  if (newAlerts == null) {
+    return;
+  }
+  if (alerts == null) {
+    alerts=new ArrayList<Alert>(newAlerts);
+    return;
+  }
+  for (  Alert alert : newAlerts) {
+    if (!alerts.contains(alert)) {
+      alerts.add(alert);
+    }
+  }
+}

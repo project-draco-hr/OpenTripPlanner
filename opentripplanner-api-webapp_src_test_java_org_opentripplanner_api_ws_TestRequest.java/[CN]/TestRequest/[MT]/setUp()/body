@@ -21,6 +21,7 @@
   perms.addPermission("3",StreetTraversalPermission.PEDESTRIAN,StreetTraversalPermission.ALL);
   perms.addPermission("1",StreetTraversalPermission.ALL,StreetTraversalPermission.ALL);
   schema.setPermissionConverter(perms);
+  schema.setNoteConverter(new AttributeFeatureConverter<String>("PREFIX"));
   builder.setSchema(schema);
   builder.buildGraph(graph);
   ContractionHierarchySet hierarchies=new ContractionHierarchySet(graph,null);
