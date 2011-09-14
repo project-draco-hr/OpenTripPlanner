@@ -1,0 +1,13 @@
+{
+  Collection<Vertex> nearbyStreetVertices=getNearbyStreetVertices(v);
+  if (nearbyStreetVertices == null) {
+    return false;
+  }
+ else {
+    for (    Vertex sv : nearbyStreetVertices) {
+      graph.addEdge(new StreetTransitLink(sv,v,wheelchairAccessible));
+      graph.addEdge(new StreetTransitLink(v,sv,wheelchairAccessible));
+    }
+    return true;
+  }
+}

@@ -10,24 +10,6 @@
  else {
     return null;
   }
-  Vertex newStart=new GenericVertex("replace " + startVertex.getLabel(),startVertex.getX(),startVertex.getY());
-  newStart=graph.addVertex(newStart);
-  for (  DirectEdge e : filter(graph.getOutgoing(endVertex),DirectEdge.class)) {
-    final Vertex toVertex=e.getToVertex();
-    if (!toVertex.getCoordinate().equals(startVertex.getCoordinate())) {
-      continue;
-    }
-    if (e instanceof TurnEdge) {
-      final TurnEdge turnEdge=(TurnEdge)e;
-      TinyTurnEdge newTurn=new TinyTurnEdge(newStart,toVertex);
-      newTurn.setRestricted(turnEdge.isRestricted());
-      newTurn.setTurnCost(turnEdge.turnCost);
-      graph.addEdge(newTurn);
-    }
- else {
-      graph.addEdge(new FreeEdge(newStart,toVertex));
-    }
-  }
   Vertex newEnd=new GenericVertex("replace " + endVertex.getLabel(),endVertex.getX(),endVertex.getY());
   newEnd=graph.addVertex(newEnd);
   for (  DirectEdge e : filter(graph.getOutgoing(startVertex),DirectEdge.class)) {
@@ -44,6 +26,24 @@
     }
  else {
       graph.addEdge(new FreeEdge(newEnd,toVertex));
+    }
+  }
+  Vertex newStart=new GenericVertex("replace " + startVertex.getLabel(),startVertex.getX(),startVertex.getY());
+  newStart=graph.addVertex(newStart);
+  for (  DirectEdge e : filter(graph.getOutgoing(endVertex),DirectEdge.class)) {
+    final Vertex toVertex=e.getToVertex();
+    if (!toVertex.getCoordinate().equals(startVertex.getCoordinate())) {
+      continue;
+    }
+    if (e instanceof TurnEdge) {
+      final TurnEdge turnEdge=(TurnEdge)e;
+      TinyTurnEdge newTurn=new TinyTurnEdge(newStart,toVertex);
+      newTurn.setRestricted(turnEdge.isRestricted());
+      newTurn.setTurnCost(turnEdge.turnCost);
+      graph.addEdge(newTurn);
+    }
+ else {
+      graph.addEdge(new FreeEdge(newStart,toVertex));
     }
   }
   PlainStreetEdge forward=new PlainStreetEdge(startVertex,newEnd,startVertex.getGeometry(),startVertex.getName(),startVertex.getLength(),startVertex.getPermission(),false);
