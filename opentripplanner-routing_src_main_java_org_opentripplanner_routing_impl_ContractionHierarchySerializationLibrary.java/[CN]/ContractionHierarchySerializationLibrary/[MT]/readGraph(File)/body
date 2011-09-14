@@ -4,6 +4,8 @@
   try {
     ContractionHierarchySet hierarchy=(ContractionHierarchySet)in.readObject();
     _log.info("Graph read");
+    Graph g=hierarchy.getGraph();
+    _log.info("Main graph size: |V|={} |E|={}",g.countVertices(),g.countEdges());
     return hierarchy;
   }
  catch (  InvalidClassException ex) {
