@@ -1,17 +1,11 @@
 {
-  String vertexLabel="link for " + v.getStopId();
-  Vertex existing=graph.getVertex(vertexLabel);
+  Collection<Vertex> existing=splitVertices.get(v);
   if (existing != null)   return existing;
+  String vertexLabel="link for " + v.getStopId();
   Coordinate coordinate=v.getCoordinate();
   List<Vertex> atIntersection=index.getIntersectionAt(coordinate);
   if (atIntersection != null) {
-    Vertex linked=new GenericVertex(vertexLabel,coordinate.x,coordinate.y);
-    graph.addVertex(linked);
-    for (    Vertex i : atIntersection) {
-      graph.addEdge(new FreeEdge(linked,i));
-      graph.addEdge(new FreeEdge(i,linked));
-    }
-    return linked;
+    return atIntersection;
   }
   Collection<StreetEdge> edges=index.getClosestEdges(coordinate,options);
   if (edges == null || edges.size() < 2) {

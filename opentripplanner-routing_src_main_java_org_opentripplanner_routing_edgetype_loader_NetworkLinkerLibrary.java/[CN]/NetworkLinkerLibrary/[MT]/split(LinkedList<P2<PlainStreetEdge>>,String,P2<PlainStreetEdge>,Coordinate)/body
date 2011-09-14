@@ -15,18 +15,19 @@
   double totalGeomLength=forwardGeometry.getLength();
   double lengthRatioIn=toMidpoint.getLength() / totalGeomLength;
   if (lengthRatioIn < 0.00001) {
-    return e1v1;
+    return Arrays.asList(e1v1,e2v2);
   }
  else   if (lengthRatioIn > 0.99999) {
-    return e1v2;
+    return Arrays.asList(e1v2,e2v1);
   }
   double lengthIn=e1.getLength() * lengthRatioIn;
   double lengthOut=e1.getLength() * (1 - lengthRatioIn);
-  GenericVertex midpoint=new GenericVertex("split at " + label,midCoord,name);
-  PlainStreetEdge forward1=new PlainStreetEdge(e1v1,midpoint,toMidpoint,name,lengthIn,e1.getPermission(),false);
-  PlainStreetEdge forward2=new PlainStreetEdge(midpoint,e1v2,forwardGeometryPair.getSecond(),name,lengthOut,e1.getPermission(),true);
-  PlainStreetEdge backward1=new PlainStreetEdge(e2v1,midpoint,backGeometryPair.getFirst(),name,lengthOut,e2.getPermission(),false);
-  PlainStreetEdge backward2=new PlainStreetEdge(midpoint,e2v2,backGeometryPair.getSecond(),name,lengthIn,e2.getPermission(),true);
+  Vertex e1midpoint=new GenericVertex("split 1 at " + label,midCoord,name);
+  Vertex e2midpoint=new GenericVertex("split 2 at " + label,midCoord,name);
+  PlainStreetEdge forward1=new PlainStreetEdge(e1v1,e1midpoint,toMidpoint,name,lengthIn,e1.getPermission(),false);
+  PlainStreetEdge forward2=new PlainStreetEdge(e1midpoint,e1v2,forwardGeometryPair.getSecond(),name,lengthOut,e1.getPermission(),true);
+  PlainStreetEdge backward1=new PlainStreetEdge(e2v1,e2midpoint,backGeometryPair.getFirst(),name,lengthOut,e2.getPermission(),false);
+  PlainStreetEdge backward2=new PlainStreetEdge(e2midpoint,e2v2,backGeometryPair.getSecond(),name,lengthIn,e2.getPermission(),true);
   double forwardBseLengthIn=e1.getBicycleSafetyEffectiveLength() * lengthRatioIn;
   double forwardBseLengthOut=e1.getBicycleSafetyEffectiveLength() * (1 - lengthRatioIn);
   forward1.setBicycleSafetyEffectiveLength(forwardBseLengthIn);
@@ -48,5 +49,5 @@
       break;
     }
   }
-  return midpoint;
+  return Arrays.asList(e1midpoint,e2midpoint);
 }
