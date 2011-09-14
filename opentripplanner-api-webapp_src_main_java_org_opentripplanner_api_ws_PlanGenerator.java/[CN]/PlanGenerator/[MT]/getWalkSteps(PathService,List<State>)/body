@@ -9,6 +9,9 @@
     if (edge instanceof FreeEdge) {
       continue;
     }
+    if (!edgeNarrative.getMode().isOnStreetNonTransit()) {
+      continue;
+    }
     Geometry geom=edgeNarrative.getGeometry();
     if (geom == null) {
       continue;
@@ -76,7 +79,8 @@
             newAngle=DirectionUtils.getFirstAngle(((StreetVertex)currState.getVertex()).getGeometry());
           }
  else {
-            Edge oge=pathService.getOutgoingEdges(currState.getVertex()).get(0);
+            List<DirectEdge> outgoingEdges=pathService.getOutgoingEdges(currState.getVertex());
+            Edge oge=outgoingEdges.get(0);
             newAngle=DirectionUtils.getFirstAngle(((DirectEdge)oge).getGeometry());
           }
           double angleDiff=getAbsoluteAngleDiff(newAngle,thisAngle);
