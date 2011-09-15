@@ -14,7 +14,7 @@
       now=System.currentTimeMillis();
     }
     for (    Updater updater : getUpdaters()) {
-      log.info("running updater " + updater.getUrl());
+      System.out.println("running updater " + updater.getUrl());
       updater.run();
     }
     lastUpdate=now;
