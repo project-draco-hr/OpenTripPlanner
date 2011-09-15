@@ -14,8 +14,7 @@
       now=System.currentTimeMillis();
     }
     for (    Updater updater : getUpdaters()) {
-      System.out.println("running updater " + updater.getUrl());
-      updater.setGraphService(graphService);
+      log.info("running updater " + updater.getUrl());
       updater.run();
     }
     lastUpdate=now;

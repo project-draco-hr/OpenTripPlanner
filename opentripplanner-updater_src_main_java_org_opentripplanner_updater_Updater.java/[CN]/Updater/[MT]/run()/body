@@ -7,7 +7,6 @@
     FeedMessage feed=GtfsRealtime.FeedMessage.parseFrom(data);
     UpdateHandler updateHandler=new UpdateHandler(feed);
     updateHandler.setDefaultAgencyId(defaultAgencyId);
-    updateHandler.setGraphService(graphService);
     updateHandler.setPatchService(getPatchService());
     updateHandler.update();
   }
