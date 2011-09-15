@@ -37,6 +37,7 @@
     origin=editor.makeState();
     options.searchAbortTime=paths.isEmpty() ? abortFirst : abortMulti;
     options.maxComputationTime=0;
+    options.maxWeight=maxWeight;
     long subsearchBeginTime=System.currentTimeMillis();
     LOG.debug("BEGIN SUBSEARCH");
     List<GraphPath> somePaths=_routingService.route(origin,target);
