@@ -21,6 +21,7 @@
     TraverseMode mode=frontEdgeNarrative.getMode();
     if (backEdgeNarrative == null) {
       leg=makeLeg(nextState);
+      leg.mode=mode.toString();
       itinerary.addLeg(leg);
       if (mode.isOnStreetNonTransit()) {
         startWalk=i;
