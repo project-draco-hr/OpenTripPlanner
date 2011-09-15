@@ -8,12 +8,12 @@
     return;
   }
   TraverseModeSet modeSet=new TraverseModeSet();
-  modeSet.setTransit(transitCheckBox.isSelected());
-  modeSet.setTrainish(trainCheckBox.isSelected());
-  modeSet.setBusish(busCheckBox.isSelected());
   modeSet.setWalk(walkCheckBox.isSelected());
   modeSet.setBicycle(bikeCheckBox.isSelected());
   modeSet.setFerry(ferryCheckBox.isSelected());
+  modeSet.setTrainish(trainCheckBox.isSelected());
+  modeSet.setBusish(busCheckBox.isSelected());
+  if (transitCheckBox.isSelected())   modeSet.setTransit(true);
   TraverseOptions options=new TraverseOptions(modeSet);
   options.speed=1;
   options.walkReluctance=1;
@@ -21,7 +21,7 @@
   options.aStarSearchFactory=visitor.getAStarSearchFactory();
   options.maxSlope=1;
   options.boardCost=Integer.parseInt(boardingPenaltyField.getText()) * 60;
-  options.optimizeFor=OptimizeType.SAFE;
+  options.setMaxWalkDistance(3000);
   System.out.println("--------");
   System.out.println("Path from " + from + " to "+ to+ " at "+ when);
   System.out.println("\tModes: " + modeSet);
