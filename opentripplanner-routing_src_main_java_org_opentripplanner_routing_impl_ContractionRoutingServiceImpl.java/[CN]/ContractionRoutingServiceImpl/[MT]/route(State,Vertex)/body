@@ -15,7 +15,7 @@
       Graph _graph=hierarchies.getGraph();
       ShortestPathTree spt=aStar.getShortestPathTree(_graph,origin,target);
       if (spt == null) {
-        return Collections.emptyList();
+        return null;
       }
       List<GraphPath> paths=spt.getPaths(target,true);
       if (paths == null || paths.isEmpty()) {

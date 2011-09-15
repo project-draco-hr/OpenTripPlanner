@@ -14,7 +14,9 @@
     options.setMaxWalkDistance(Double.MAX_VALUE);
   }
   ArrayList<GraphPath> paths=new ArrayList<GraphPath>();
-  long computationEndTime=(long)(System.currentTimeMillis() + _maxComputationTime * 1000);
+  long searchBeginTime=System.currentTimeMillis();
+  long abortFirst=_firstPathTimeout <= 0 ? 0 : (long)(searchBeginTime + _firstPathTimeout * 1000);
+  long abortMulti=_multiPathTimeout <= 0 ? 0 : (long)(searchBeginTime + _multiPathTimeout * 1000);
   Queue<TraverseOptions> optionQueue=new LinkedList<TraverseOptions>();
   optionQueue.add(options);
   if (options.getModes().getTrainish() && options.getModes().contains(TraverseMode.BUS)) {
@@ -27,27 +29,22 @@
   while (paths.size() < nItineraries) {
     options=optionQueue.poll();
     if (options == null) {
+      LOG.debug("Ran out of options to try.");
       break;
     }
     StateEditor editor=new StateEditor(origin,null);
     editor.setTraverseOptions(options);
     origin=editor.makeState();
-    if (_maxComputationTime > 0) {
-      long remainingComputationTime=computationEndTime - System.currentTimeMillis();
-      LOG.debug("remaining time for search: {} sec",remainingComputationTime / 1000.0);
-      if (remainingComputationTime <= 0) {
-        LOG.warn("Max computation time exceeded for origin {} target {}",origin,target);
-        break;
-      }
-      options.maxComputationTime=remainingComputationTime;
-    }
- else {
-      options.maxComputationTime=0;
-    }
-    long searchBeginTime=System.currentTimeMillis();
-    LOG.debug("BEGIN SEARCH");
+    options.searchAbortTime=paths.isEmpty() ? abortFirst : abortMulti;
+    options.maxComputationTime=0;
+    long subsearchBeginTime=System.currentTimeMillis();
+    LOG.debug("BEGIN SUBSEARCH");
     List<GraphPath> somePaths=_routingService.route(origin,target);
-    LOG.debug("END SEARCH {} msec",System.currentTimeMillis() - searchBeginTime);
+    LOG.debug("END SUBSEARCH ({} msec of {} msec total)",System.currentTimeMillis() - subsearchBeginTime,System.currentTimeMillis() - searchBeginTime);
+    if (somePaths == null) {
+      LOG.warn("Aborting search. {} paths found, elapsed time {} sec",paths.size(),(System.currentTimeMillis() - searchBeginTime) / 1000.0);
+      break;
+    }
     if (maxWeight == Double.MAX_VALUE) {
       if (somePaths.isEmpty()) {
         return null;
@@ -63,7 +60,7 @@
       LOG.debug("Max weight set to:  {}",maxWeight);
     }
     if (somePaths.isEmpty()) {
-      LOG.debug("NO PATHS FOUND");
+      LOG.debug("No paths were found.");
       continue;
     }
     for (    GraphPath path : somePaths) {

@@ -25,8 +25,9 @@
   options=options.clone();
   double minWalkDistance=origin.getVertex().getDistanceToNearestTransitStop() + target.getDistanceToNearestTransitStop();
   options.setMaxWalkDistance(Math.max(options.getMaxWalkDistance(),minWalkDistance));
-  long computationStartTime=System.currentTimeMillis();
-  long maxComputationTime=options.maxComputationTime;
+  long abortTime=Long.MAX_VALUE;
+  if (options.searchAbortTime > 0)   abortTime=Math.min(abortTime,options.searchAbortTime);
+  if (options.maxComputationTime > 0)   abortTime=Math.min(abortTime,System.currentTimeMillis() + options.maxComputationTime);
   boolean exit=false;
   int nVisited=0;
   while (!pq.empty()) {
@@ -35,11 +36,9 @@
       double w=pq.peek_min_key();
       System.out.println("pq min key = " + w);
     }
-    if (maxComputationTime > 0) {
-      if ((System.currentTimeMillis() - computationStartTime) > maxComputationTime) {
-        LOG.warn("Max computation time exceeded for origin {} target {}",origin,target);
-        return null;
-      }
+    if (abortTime < Long.MAX_VALUE && System.currentTimeMillis() > abortTime) {
+      LOG.warn("Search timeout. origin={} target={}",origin,target);
+      return null;
     }
     State u=pq.extract_min();
     if (!spt.visit(u))     continue;
