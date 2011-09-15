@@ -1,0 +1,12 @@
+{
+  noFill();
+  stroke(200,200,000,16);
+  strokeWeight(8);
+  while (!newHighlightedEdges.isEmpty()) {
+    DirectEdge de=newHighlightedEdges.poll();
+    if (de != null) {
+      drawEdge(de);
+      highlightedEdges.add(de);
+    }
+  }
+}

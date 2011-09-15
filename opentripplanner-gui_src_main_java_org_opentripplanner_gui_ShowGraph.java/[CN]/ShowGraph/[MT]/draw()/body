@@ -69,7 +69,7 @@
       }
     }
     noFill();
-    stroke(200,200,000,128);
+    stroke(200,200,000,16);
     strokeWeight(8);
     if (highlightedEdges != null) {
       for (      DirectEdge e : highlightedEdges) {
@@ -98,6 +98,7 @@
     noFill();
   }
  else   if (drawLevel == DRAW_MINIMAL) {
+    handleNewHighlights();
     fill(0,0,0);
     stroke(30,128,30);
     strokeWeight(1);
