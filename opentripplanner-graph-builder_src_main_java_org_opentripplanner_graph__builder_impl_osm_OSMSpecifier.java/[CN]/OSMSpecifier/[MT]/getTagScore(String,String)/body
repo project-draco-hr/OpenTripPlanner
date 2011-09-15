@@ -1,14 +1,14 @@
 {
-  if (value.equals("*") && leftMatchValue != null) {
+  if (value.equals("*") && matchValue != null) {
     return 1;
   }
- else   if (value.equals(leftMatchValue)) {
+ else   if (value.equals(matchValue)) {
     return 100;
   }
  else {
     if (value.contains(":")) {
       value=value.split(":",2)[0];
-      if (value.equals(leftMatchValue)) {
+      if (value.equals(matchValue)) {
         return 75;
       }
  else {
