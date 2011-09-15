@@ -85,6 +85,7 @@
         leg.startTime=new Date(nextState.getTimeInMillis());
         leg.route=frontEdgeNarrative.getName();
         leg.mode=mode.toString();
+        startWalk=i;
       }
  else       if (mode == TraverseMode.TRANSFER) {
         itinerary.walkTime+=edgeElapsedTime;
