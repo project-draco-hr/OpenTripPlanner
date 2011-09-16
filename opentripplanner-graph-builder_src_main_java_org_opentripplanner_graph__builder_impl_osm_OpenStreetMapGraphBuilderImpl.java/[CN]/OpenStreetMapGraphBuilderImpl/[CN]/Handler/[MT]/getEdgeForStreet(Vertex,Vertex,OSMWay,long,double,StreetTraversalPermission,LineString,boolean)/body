@@ -2,6 +2,9 @@
   String id="way " + way.getId() + " from "+ startNode;
   id=unique(id);
   String name=way.getAssumedName();
+  if (customNamer != null) {
+    name=customNamer.name(way,name);
+  }
   if (name == null) {
     name=id;
   }

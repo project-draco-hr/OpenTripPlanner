@@ -1,0 +1,17 @@
+{
+  if (!way.hasTag("name")) {
+    return defaultName;
+  }
+  if (way.isTag("footway","sidewalk") || way.isTag("path","sidewalk")) {
+    if (isStreet(defaultName)) {
+      return sidewalk(defaultName);
+    }
+  }
+  String highway=way.getTag("highway");
+  if ("footway".equals(highway) || "path".equals(highway) || "cycleway".equals(highway)) {
+    if (!isObviouslyPath(defaultName)) {
+      return path(defaultName);
+    }
+  }
+  return defaultName;
+}
