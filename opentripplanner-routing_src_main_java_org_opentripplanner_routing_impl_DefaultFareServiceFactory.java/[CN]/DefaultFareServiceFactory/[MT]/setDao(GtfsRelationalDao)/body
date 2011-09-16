@@ -1,8 +1,8 @@
 {
   fareRules=getFareRules(dao);
+  Collection<FareAttribute> fA=dao.getAllFareAttributes();
   fareAttributes=new HashMap<AgencyAndId,FareAttribute>();
-  for (  AgencyAndId fareId : fareRules.keySet()) {
-    FareAttribute attribute=dao.getFareAttributeForId(fareId);
-    fareAttributes.put(fareId,attribute);
+  for (  FareAttribute fare : fA) {
+    fareAttributes.put(fare.getId(),fare);
   }
 }
