@@ -98,7 +98,7 @@
     noFill();
   }
  else   if (drawLevel == DRAW_MINIMAL) {
-    handleNewHighlights();
+    if (!newHighlightedEdges.isEmpty())     handleNewHighlights();
     fill(0,0,0);
     stroke(30,128,30);
     strokeWeight(1);
