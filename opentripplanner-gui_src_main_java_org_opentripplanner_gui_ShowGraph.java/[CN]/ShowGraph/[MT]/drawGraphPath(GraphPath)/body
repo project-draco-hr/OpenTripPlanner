@@ -54,4 +54,8 @@
     }
   }
   labelState(gp.states.getLast(),"end");
+  if (VIDEO) {
+    for (int i=0; i < 10; i++)     saveVideoFrame();
+    resetVideoFrameNumber();
+  }
 }

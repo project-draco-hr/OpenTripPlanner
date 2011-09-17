@@ -61,7 +61,7 @@
   }
  else   if (drawLevel == DRAW_VERTICES) {
     final double METERS_PER_DEGREE_LAT=111111.111111;
-    drawTransitStopVertices=(modelBounds.getHeight() * METERS_PER_DEGREE_LAT / this.width < 10);
+    drawTransitStopVertices=(modelBounds.getHeight() * METERS_PER_DEGREE_LAT / this.width < 4);
     fill(60,60,200);
     for (    Vertex v : visibleVertices) {
       if (drawTransitStopVertices && v instanceof TransitStop) {

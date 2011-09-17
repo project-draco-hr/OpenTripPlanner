@@ -1,8 +1,8 @@
 {
   desaturate();
   noFill();
-  stroke(256,8,0,8);
-  strokeWeight(8);
+  stroke(256,0,0,128);
+  strokeWeight(6);
   while (!newHighlightedEdges.isEmpty()) {
     DirectEdge de=newHighlightedEdges.poll();
     if (de != null) {
@@ -10,4 +10,5 @@
       highlightedEdges.add(de);
     }
   }
+  if (VIDEO)   saveVideoFrame();
 }
