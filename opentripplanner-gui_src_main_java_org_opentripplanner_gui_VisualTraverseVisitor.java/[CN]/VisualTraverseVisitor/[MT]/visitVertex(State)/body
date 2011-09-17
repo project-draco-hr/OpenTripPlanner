@@ -1,8 +1,12 @@
 {
-  try {
-    Thread.sleep(1);
-  }
- catch (  InterruptedException e) {
-    e.printStackTrace();
+  if (--sleepAfter <= 0) {
+    sleepAfter=(int)Math.ceil(Math.pow(nEnqueued,0.8));
+    nEnqueued=0;
+    try {
+      Thread.sleep(2);
+    }
+ catch (    InterruptedException e) {
+      e.printStackTrace();
+    }
   }
 }
