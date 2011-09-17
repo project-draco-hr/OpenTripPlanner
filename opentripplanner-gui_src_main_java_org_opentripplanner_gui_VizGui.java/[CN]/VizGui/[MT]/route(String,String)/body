@@ -21,7 +21,8 @@
   options.aStarSearchFactory=visitor.getAStarSearchFactory();
   options.maxSlope=1;
   options.boardCost=Integer.parseInt(boardingPenaltyField.getText()) * 60;
-  options.setMaxWalkDistance(3000);
+  options.setMaxWalkDistance(7607);
+  pathservice.setRemainingWeightHeuristicFactory(new DefaultRemainingWeightHeuristicFactoryImpl());
   System.out.println("--------");
   System.out.println("Path from " + from + " to "+ to+ " at "+ when);
   System.out.println("\tModes: " + modeSet);

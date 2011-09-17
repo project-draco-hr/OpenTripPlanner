@@ -10,5 +10,5 @@
   routingService=new ContractionRoutingServiceImpl();
   routingService.setGraphService(graphService);
   pathservice.setRoutingService(routingService);
-  pathservice.setRemainingWeightHeuristicFactory(new LBGRemainingWeightHeuristicFactoryImpl(graphService));
+  pathservice.setRemainingWeightHeuristicFactory(this);
 }
