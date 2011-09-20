@@ -15,11 +15,8 @@
   modeSet.setBusish(busCheckBox.isSelected());
   if (transitCheckBox.isSelected())   modeSet.setTransit(true);
   TraverseOptions options=new TraverseOptions(modeSet);
-  options.speed=1;
-  options.walkReluctance=1;
   VisualTraverseVisitor visitor=new VisualTraverseVisitor(showGraph);
   options.aStarSearchFactory=visitor.getAStarSearchFactory();
-  options.maxSlope=1;
   options.boardCost=Integer.parseInt(boardingPenaltyField.getText()) * 60;
   options.optimizeFor=OptimizeType.QUICK;
   options.setMaxWalkDistance(Double.MAX_VALUE);
