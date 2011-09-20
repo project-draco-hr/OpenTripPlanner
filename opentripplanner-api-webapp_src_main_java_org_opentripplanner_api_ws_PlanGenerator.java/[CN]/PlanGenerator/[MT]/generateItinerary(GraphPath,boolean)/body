@@ -34,6 +34,17 @@
     if (previousMode == null) {
       previousMode=prevState.getBackState().getBackEdgeNarrative().getMode();
     }
+    if (backEdgeNarrative instanceof LegSwitchingEdge) {
+      leg.walkSteps=getWalkSteps(pathService,path.states.subList(startWalk,i - 1));
+      leg=makeLeg(nextState);
+      leg.mode=mode.toString();
+      itinerary.addLeg(leg);
+      if (mode.isOnStreetNonTransit()) {
+        startWalk=i;
+      }
+      prevState=nextState;
+      continue;
+    }
     if (backEdge instanceof FreeEdge) {
       prevState=nextState;
       continue;
