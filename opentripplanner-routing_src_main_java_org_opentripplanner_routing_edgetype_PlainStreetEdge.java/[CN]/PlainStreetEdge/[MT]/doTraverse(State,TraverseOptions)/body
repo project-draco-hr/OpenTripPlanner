@@ -43,7 +43,6 @@ weight=time;
 weight*=options.walkReluctance;
 EdgeNarrative en=new FixedModeEdge(this,options.getModes().getNonTransitMode());
 StateEditor s1=s0.edit(this,en);
-if (options.getModes().getNonTransitMode().equals(TraverseMode.CAR)) {
 switch (s0.getNoThruTrafficState()) {
 case INIT:
 if (isNoThruTraffic()) {
@@ -68,7 +67,6 @@ if (!isNoThruTraffic()) {
 return null;
 }
 break;
-}
 }
 s1.incrementWalkDistance(length);
 s1.incrementTimeInSeconds((int)Math.ceil(time));
