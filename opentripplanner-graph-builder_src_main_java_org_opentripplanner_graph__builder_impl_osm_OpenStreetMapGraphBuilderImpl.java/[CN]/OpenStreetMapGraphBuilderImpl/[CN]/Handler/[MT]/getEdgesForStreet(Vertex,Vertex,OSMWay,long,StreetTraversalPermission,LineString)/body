@@ -55,7 +55,7 @@
       permissionsBack=permissionsBack.add(StreetTraversalPermission.BICYCLE);
     }
   }
-  boolean noThruTraffic=way.isTag("access","destination") || way.isTag("access","private");
+  boolean noThruTraffic=way.isTag("access","destination") || way.isTag("access","private") || way.isTag("access","customers")|| way.isTag("access","delivery")|| way.isTag("access","forestry")|| way.isTag("access","agricultural");
   if (permissionsFront != StreetTraversalPermission.NONE) {
     street=getEdgeForStreet(start,end,way,startNode,d,permissionsFront,geometry,false);
     street.setNoThruTraffic(noThruTraffic);

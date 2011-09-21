@@ -8,15 +8,15 @@
   String bicycle=tags.get("bicycle");
   String foot=tags.get("foot");
   if (access != null) {
-    if ("no".equals(access) || "delivery".equals(access) || "agricultural".equals(access)|| "license".equals(access)) {
+    if ("no".equals(access) || "license".equals(access)) {
       permission=StreetTraversalPermission.NONE;
-      if ("yes".equals(motorcar)) {
+      if (entity.doesTagAllowAccess("motorcar")) {
         permission=permission.add(StreetTraversalPermission.CAR);
       }
-      if ("yes".equals(bicycle)) {
+      if (entity.doesTagAllowAccess("bicycle")) {
         permission=permission.add(StreetTraversalPermission.BICYCLE);
       }
-      if ("yes".equals(foot)) {
+      if (entity.doesTagAllowAccess("foot")) {
         permission=permission.add(StreetTraversalPermission.PEDESTRIAN);
       }
     }
@@ -28,7 +28,7 @@
     permission=def;
   }
   if (motorcar != null) {
-    if ("no".equals(motorcar) || "private".equals(motorcar)) {
+    if ("no".equals(motorcar) || "license".equals(motorcar)) {
       permission=permission.remove(StreetTraversalPermission.CAR);
     }
  else {
@@ -36,7 +36,7 @@
     }
   }
   if (bicycle != null) {
-    if ("no".equals(bicycle) || "private".equals(bicycle)) {
+    if ("no".equals(bicycle) || "license".equals(bicycle)) {
       permission=permission.remove(StreetTraversalPermission.BICYCLE);
     }
  else {
@@ -44,7 +44,7 @@
     }
   }
   if (foot != null) {
-    if ("no".equals(foot) || "private".equals(foot)) {
+    if ("no".equals(foot) || "license".equals(foot)) {
       permission=permission.remove(StreetTraversalPermission.PEDESTRIAN);
     }
  else {
