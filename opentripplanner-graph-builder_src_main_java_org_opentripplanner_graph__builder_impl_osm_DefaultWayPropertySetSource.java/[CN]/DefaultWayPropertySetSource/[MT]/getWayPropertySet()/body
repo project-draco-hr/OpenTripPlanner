@@ -153,6 +153,13 @@
   createNames(props,"otp:route_ref=*","Route {otp:route_ref}");
   createNames(props,"highway=platform;ref=*","Platform {ref}");
   createNames(props,"railway=platform;ref=*","Platform {ref}");
+  createNames(props,"railway=platform;highway=footway;footway=sidewalk","platform");
+  createNames(props,"railway=platform;highway=path;path=sidewalk","platform");
+  createNames(props,"railway=platform;highway=pedestrian","platform");
+  createNames(props,"railway=platform;highway=path","platform");
+  createNames(props,"railway=platform;highway=footway","platform");
+  createNames(props,"highway=platform","platform");
+  createNames(props,"railway=platform","platform");
   createNames(props,"highway=pedestrian;bridge=*","footbridge");
   createNames(props,"highway=path;bridge=*","footbridge");
   createNames(props,"highway=footway;bridge=*","footbridge");
@@ -160,9 +167,9 @@
   createNames(props,"highway=path;tunnel=*","underpass");
   createNames(props,"highway=footway;tunnel=*","underpass");
   createNames(props,"highway=motorway","road");
-  createNames(props,"highway=motorway_link","onramp");
+  createNames(props,"highway=motorway_link","ramp");
   createNames(props,"highway=trunk","road");
-  createNames(props,"highway=trunk_link","onramp");
+  createNames(props,"highway=trunk_link","ramp");
   createNames(props,"highway=primary","road");
   createNames(props,"highway=primary_link","road");
   createNames(props,"highway=secondary","road");
@@ -179,8 +186,6 @@
   createNames(props,"highway=byway","byway");
   createNames(props,"highway=track","track");
   createNames(props,"highway=footway;footway=sidewalk","sidewalk");
-  createNames(props,"highway=platform","platform");
-  createNames(props,"railway=platform","platform");
   createNames(props,"highway=steps","steps");
   createNames(props,"highway=footway;footway=crossing","crosswalk");
   createNames(props,"highway=path;path=crossing","crosswalk");
