@@ -40,7 +40,12 @@ weight=length / options.speed;
  else {
 weight=time;
 }
+if (isStairs()) {
+weight*=options.stairsReluctance;
+}
+ else {
 weight*=options.walkReluctance;
+}
 EdgeNarrative en=new FixedModeEdge(this,options.getModes().getNonTransitMode());
 StateEditor s1=s0.edit(this,en);
 switch (s0.getNoThruTrafficState()) {

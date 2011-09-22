@@ -8,12 +8,17 @@
   if (name == null) {
     name=id;
   }
+  boolean steps="steps".equals(way.getTag("highway"));
+  if (steps) {
+    length*=2;
+  }
   PlainStreetEdge street=new PlainStreetEdge(start,end,geometry,name,length,permissions,back);
   street.setId(id);
   if (!way.hasTag("name")) {
     street.setBogusName(true);
   }
-  if (way.isTagFalse("wheelchair") || ("steps".equals(way.getTag("highway")) && !way.isTagTrue("wheelchair"))) {
+  street.setStairs(steps);
+  if (way.isTagFalse("wheelchair") || (steps && !way.isTagTrue("wheelchair"))) {
     street.setWheelchairAccessible(false);
   }
   street.setSlopeOverride(wayPropertySet.getSlopeOverride(way));

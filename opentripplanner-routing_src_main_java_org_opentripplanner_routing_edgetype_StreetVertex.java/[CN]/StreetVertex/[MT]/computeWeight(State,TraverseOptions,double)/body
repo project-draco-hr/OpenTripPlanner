@@ -33,6 +33,11 @@ weight=length / options.speed;
  else {
 weight=time;
 }
+if (stairs) {
+weight*=options.stairsReluctance;
+}
+ else {
 weight*=options.walkReluctance;
+}
 return weight;
 }
