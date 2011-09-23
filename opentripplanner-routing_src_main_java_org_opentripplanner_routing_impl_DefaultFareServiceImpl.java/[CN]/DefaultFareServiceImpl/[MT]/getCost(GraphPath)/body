@@ -1,6 +1,5 @@
 {
   LinkedList<State> states=path.states;
-  Currency currency=null;
   List<Ride> rides=new ArrayList<Ride>();
   Ride newRide=null;
   for (  State curr : states) {
@@ -30,63 +29,20 @@
   if (rides.size() == 0) {
     return null;
   }
-  Set<String> zones=new HashSet<String>();
-  Set<AgencyAndId> routes=new HashSet<AgencyAndId>();
-  String startZone=null;
-  int transfersUsed=-1;
-  float totalFare=0, currentFare=-1;
-  long startTime=rides.get(0).startTime;
-  for (int i=0; i < rides.size(); ++i) {
-    Ride ride=rides.get(i);
-    if (startZone == null) {
-      startZone=ride.startZone;
-    }
-    float bestFare=Float.MAX_VALUE;
-    routes.add(ride.route);
-    zones.addAll(ride.zones);
-    transfersUsed+=1;
-    long tripTime=ride.startTime - startTime;
-    long journeyTime=ride.endTime - startTime;
-    for (    AgencyAndId fareId : fareAttributes.keySet()) {
-      FareRuleSet ruleSet=fareRules.get(fareId);
-      if (ruleSet == null || ruleSet.matches(startZone,ride.endZone,zones,routes)) {
-        FareAttribute attribute=fareAttributes.get(fareId);
-        if (attribute.isTransfersSet() && attribute.getTransfers() < transfersUsed) {
-          continue;
-        }
-        if (attribute.isTransferDurationSet() && tripTime > attribute.getTransferDuration()) {
-          continue;
-        }
-        if (attribute.isJourneyDurationSet() && journeyTime > attribute.getJourneyDuration()) {
-          continue;
-        }
-        float newFare=attribute.getPrice();
-        if (newFare < bestFare) {
-          bestFare=newFare;
-          currency=Currency.getInstance(attribute.getCurrencyType());
-        }
+  int[][] resultTable=new int[rides.size()][rides.size()];
+  for (int i=0; i < rides.size(); i++) {
+    for (int j=0; j < rides.size() - i; j++) {
+      resultTable[j][j + i]=calculateCost(rides,j,j + i);
+      for (int k=0; k < i; k++) {
+        if (resultTable[j][j + i] > resultTable[j][j + k] + resultTable[j + k + 1][j + i])         resultTable[j][j + i]=resultTable[j][k + j] + resultTable[j + k + 1][j + i];
       }
-    }
-    if (bestFare == Float.MAX_VALUE) {
-      if (currentFare == -1) {
-        _log.warn("No fare for a perfectly good ride: " + ride);
-        return null;
-      }
-      totalFare+=currentFare;
-      currentFare=-1;
-      transfersUsed=-1;
-      --i;
-      zones=new HashSet<String>();
-      startZone=ride.startZone;
-      routes=new HashSet<AgencyAndId>();
-      startTime=ride.startTime;
-    }
- else {
-      currentFare=bestFare;
     }
   }
-  totalFare+=currentFare;
+  WrappedCurrency wrappedCurrency=null;
   Fare fare=new Fare();
-  fare.addFare(FareType.regular,new WrappedCurrency(currency),(int)Math.round(totalFare * Math.pow(10,currency.getDefaultFractionDigits())));
+  if (fareAttributes.size() > 0) {
+    wrappedCurrency=new WrappedCurrency(fareAttributes.values().iterator().next().getCurrencyType());
+  }
+  fare.addFare(FareType.regular,wrappedCurrency,resultTable[0][rides.size() - 1]);
   return fare;
 }

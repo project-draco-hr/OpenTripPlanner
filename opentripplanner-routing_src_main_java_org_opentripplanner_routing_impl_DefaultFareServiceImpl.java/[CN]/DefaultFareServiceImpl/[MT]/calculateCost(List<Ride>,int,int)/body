@@ -1,0 +1,49 @@
+{
+  Currency currency=null;
+  Set<String> zones=new HashSet<String>();
+  Set<AgencyAndId> routes=new HashSet<AgencyAndId>();
+  String startZone=null;
+  int transfersUsed=-1;
+  float currentFare=-1;
+  long startTime=rides.get(first).startTime;
+  Ride ride=rides.get(first);
+  for (int i=first; i <= last; ++i) {
+    ride=rides.get(i);
+    if (startZone == null) {
+      startZone=ride.startZone;
+    }
+    routes.add(ride.route);
+    zones.addAll(ride.zones);
+    transfersUsed+=1;
+  }
+  float bestFare=Float.MAX_VALUE;
+  long tripTime=ride.startTime - startTime;
+  long journeyTime=ride.endTime - startTime;
+  for (  AgencyAndId fareId : fareAttributes.keySet()) {
+    FareRuleSet ruleSet=fareRules.get(fareId);
+    if (ruleSet == null || ruleSet.matches(startZone,ride.endZone,zones,routes)) {
+      FareAttribute attribute=fareAttributes.get(fareId);
+      if (attribute.isTransfersSet() && attribute.getTransfers() < transfersUsed) {
+        continue;
+      }
+      if (attribute.isTransferDurationSet() && tripTime > attribute.getTransferDuration()) {
+        continue;
+      }
+      if (attribute.isJourneyDurationSet() && journeyTime > attribute.getJourneyDuration()) {
+        continue;
+      }
+      float newFare=attribute.getPrice();
+      if (newFare < bestFare) {
+        bestFare=newFare;
+        currency=Currency.getInstance(attribute.getCurrencyType());
+      }
+    }
+  }
+  if (bestFare == Float.MAX_VALUE) {
+    if (currentFare == -1) {
+      _log.warn("No fare for a ride: " + ride);
+      return Integer.MAX_VALUE;
+    }
+  }
+  return (int)Math.round(bestFare * Math.pow(10,currency.getDefaultFractionDigits()));
+}
