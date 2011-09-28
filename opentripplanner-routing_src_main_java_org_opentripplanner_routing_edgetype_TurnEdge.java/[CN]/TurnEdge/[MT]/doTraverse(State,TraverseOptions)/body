@@ -8,8 +8,8 @@
     }
     return null;
   }
-  double angleLength=fromv.getLength() + turnCost / 20.0;
-  EdgeNarrative en=new FixedModeEdge(this,options.getModes().getNonTransitMode());
+  TraverseMode traverseMode=options.getModes().getNonTransitMode();
+  EdgeNarrative en=new FixedModeEdge(this,traverseMode);
   StateEditor s1=s0.edit(this,en);
 switch (s0.getNoThruTrafficState()) {
 case INIT:
@@ -36,8 +36,8 @@ return null;
 }
 break;
 }
-double time=angleLength / options.speed;
-double weight=fromv.computeWeight(s0,options,time) + turnCost / 20;
+double time=(fromv.getEffectiveLength(traverseMode) + turnCost / 20.0) / options.speed;
+double weight=fromv.computeWeight(s0,options,time);
 s1.incrementWalkDistance(fromv.getLength());
 s1.incrementTimeInSeconds((int)Math.ceil(time));
 s1.incrementWeight(weight);

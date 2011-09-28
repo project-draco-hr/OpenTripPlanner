@@ -3,6 +3,7 @@
   double maxSlope=0;
   double slopeSpeedEffectiveLength=0;
   double slopeWorkCost=0;
+  double slopeSafetyCost=0;
   for (int i=0; i < coordinates.length - 1; ++i) {
     double run=coordinates[i + 1].x - coordinates[i].x;
     double rise=coordinates[i + 1].y - coordinates[i].y;
@@ -15,9 +16,14 @@
       maxSlope=Math.abs(slope);
     }
     double slope_or_zero=Math.max(slope,0);
-    double joules=run * (JOULES_PER_METER_ON_FLAT + JOULES_SLOPE_FACTOR * slope_or_zero);
-    slopeWorkCost+=joules * WORK_NORMALIZATION_FACTOR;
-    slopeSpeedEffectiveLength+=run * slopeSpeedCoefficient(slope,coordinates[i].y);
+    double hypotenuse=Math.sqrt(rise * rise + run * run);
+    double energy=hypotenuse * (ENERGY_PER_METER_ON_FLAT + ENERGY_SLOPE_FACTOR * slope_or_zero * slope_or_zero* slope_or_zero);
+    slopeWorkCost+=energy;
+    slopeSpeedEffectiveLength+=hypotenuse / slopeSpeedCoefficient(slope,coordinates[i].y);
+    double safetyCost=hypotenuse * (slopeSpeedCoefficient(slope,coordinates[i].y) - 1) * 0.25;
+    if (safetyCost > 0) {
+      slopeSafetyCost+=safetyCost;
+    }
   }
-  return new SlopeCosts(slopeSpeedEffectiveLength,slopeWorkCost,maxSlope);
+  return new SlopeCosts(slopeSpeedEffectiveLength,slopeWorkCost,slopeSafetyCost,maxSlope);
 }

@@ -18,7 +18,7 @@
   VisualTraverseVisitor visitor=new VisualTraverseVisitor(showGraph);
   options.aStarSearchFactory=visitor.getAStarSearchFactory();
   options.boardCost=Integer.parseInt(boardingPenaltyField.getText()) * 60;
-  options.optimizeFor=OptimizeType.QUICK;
+  options.setOptimize(OptimizeType.QUICK);
   options.setMaxWalkDistance(Double.MAX_VALUE);
   System.out.println("--------");
   System.out.println("Path from " + from + " to "+ to+ " at "+ when);

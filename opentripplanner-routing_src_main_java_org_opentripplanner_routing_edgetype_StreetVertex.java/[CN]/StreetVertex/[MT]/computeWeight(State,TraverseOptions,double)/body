@@ -21,10 +21,12 @@ case QUICK:
 weight=slopeSpeedEffectiveLength / options.speed;
 break;
 case TRIANGLE:
-double quick=slopeSpeedEffectiveLength / options.speed;
-double safety=bicycleSafetyEffectiveLength / options.speed;
+double quick=slopeSpeedEffectiveLength;
+double safety=bicycleSafetyEffectiveLength * 0.2 + quick * 0.8;
 double slope=slopeWorkCost;
-weight=quick * options.triangleTimeFactor + slope * options.triangleSlopeFactor + safety * options.triangleSafetyFactor;
+slope=ElevationUtils.getSlopeCosts(elevationProfile,name).slopeWorkCost;
+weight=quick * options.getTriangleTimeFactor() + slope * options.getTriangleSlopeFactor() + safety * options.getTriangleSafetyFactor();
+weight/=options.speed;
 break;
 default :
 weight=length / options.speed;
