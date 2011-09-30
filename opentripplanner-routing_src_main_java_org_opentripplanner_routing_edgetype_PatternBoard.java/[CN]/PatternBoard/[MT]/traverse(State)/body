@@ -1,6 +1,9 @@
 {
   TraverseOptions options=state0.getOptions();
   if (options.isArriveBy()) {
+    if (state0.getBackEdgeNarrative() instanceof PatternAlight) {
+      return null;
+    }
     if (!getPattern().canBoard(stopIndex)) {
       return null;
     }
