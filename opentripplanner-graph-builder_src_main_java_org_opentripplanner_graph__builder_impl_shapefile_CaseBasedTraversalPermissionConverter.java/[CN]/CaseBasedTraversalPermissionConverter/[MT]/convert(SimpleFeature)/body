@@ -5,6 +5,7 @@
   }
   P2<StreetTraversalPermission> permission=_permissions.get(key.toString());
   if (permission == null) {
+    log.info("unexpected permission " + key.toString());
     return _defaultPermission;
   }
   return permission;
