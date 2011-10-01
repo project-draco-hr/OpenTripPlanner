@@ -76,6 +76,9 @@
     return s1.makeState();
   }
  else {
+    if (state0.getBackEdgeNarrative() instanceof PatternBoard) {
+      return null;
+    }
     if (!pattern.canAlight(stopIndex + 1)) {
       return null;
     }

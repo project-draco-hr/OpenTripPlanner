@@ -25,6 +25,7 @@
     busOnly.getModes().setTrainish(false);
   }
   double maxWeight=Double.MAX_VALUE;
+  double maxWalk=options.getMaxWalkDistance();
   long maxTime=options.isArriveBy() ? 0 : Long.MAX_VALUE;
   while (paths.size() < nItineraries) {
     options=optionQueue.poll();
@@ -32,6 +33,7 @@
       LOG.debug("Ran out of options to try.");
       break;
     }
+    options.setMaxWalkDistance(maxWalk);
     StateEditor editor=new StateEditor(origin,null);
     editor.setTraverseOptions(options);
     origin=editor.makeState();
@@ -59,6 +61,9 @@
       LOG.debug("Max time set to:  {}",maxTime);
       maxWeight=path.getWeight() * MAX_WEIGHT_FACTOR;
       LOG.debug("Max weight set to:  {}",maxWeight);
+      if (path.getWalkDistance() > maxWalk) {
+        maxWalk=path.getWalkDistance() * 1.25;
+      }
     }
     if (somePaths.isEmpty()) {
       LOG.debug("No paths were found.");
@@ -66,6 +71,9 @@
     }
     for (    GraphPath path : somePaths) {
       if (!paths.contains(path)) {
+        if (path.getWalkDistance() > maxWalk) {
+          maxWalk=path.getWalkDistance() * 1.25;
+        }
         paths.add(path);
         LOG.debug("New trips: {}",path.getTrips());
         TraverseOptions newOptions=options.clone();

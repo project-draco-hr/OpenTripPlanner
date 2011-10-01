@@ -2,6 +2,7 @@
   this.options=s.getOptions();
   this.back=options.isArriveBy();
   State lastState;
+  walkDistance=s.getWalkDistance();
   if (back) {
     lastState=optimize ? optimize(s) : reverse(s);
   }
