@@ -24,6 +24,9 @@
       PackedCoordinateSequence profile=((EdgeWithElevation)backEdge).getElevationProfile();
       previousElevation=applyElevation(profile,itinerary,previousElevation);
     }
+    if (mode != null && mode.isOnStreetNonTransit()) {
+      itinerary.walkDistance+=backEdgeNarrative.getDistance();
+    }
 switch (pgstate) {
 case START:
       if (mode == TraverseMode.WALK) {
