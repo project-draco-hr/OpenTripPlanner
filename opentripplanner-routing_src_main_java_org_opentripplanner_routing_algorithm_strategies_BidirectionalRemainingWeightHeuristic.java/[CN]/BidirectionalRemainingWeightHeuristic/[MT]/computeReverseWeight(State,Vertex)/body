@@ -1,0 +1,8 @@
+{
+  int index=((GenericVertex)s.getVertex()).getIndex();
+  if (index < weights.length) {
+    double h=weights[index];
+    return h == Double.POSITIVE_INFINITY ? 0 : h;
+  }
+ else   return 0;
+}

@@ -1,0 +1,48 @@
+{
+  if (target != this.target) {
+    this.target=target;
+    nVertices=GenericVertex.getMaxIndex();
+    weights=new double[nVertices];
+    Arrays.fill(weights,Double.POSITIVE_INFINITY);
+    BinHeap<Vertex> q=new BinHeap<Vertex>();
+    long t0=System.currentTimeMillis();
+    if (target instanceof StreetLocation) {
+      for (      DirectEdge de : ((StreetLocation)target).getExtra()) {
+        GenericVertex toVertex=(GenericVertex)(de.getToVertex());
+        int toIndex=toVertex.getIndex();
+        if (toVertex == target)         continue;
+        if (toIndex >= nVertices)         continue;
+        weights[toIndex]=0;
+        q.insert(toVertex,0);
+      }
+    }
+ else {
+      int i=((GenericVertex)target).getIndex();
+      weights[i]=0;
+      q.insert(target,0);
+    }
+    while (!q.empty()) {
+      double uw=q.peek_min_key();
+      Vertex u=q.extract_min();
+      int ui=((GenericVertex)u).getIndex();
+      if (uw > weights[ui])       continue;
+      GraphVertex gv=g.getGraphVertex(u);
+      if (gv == null)       continue;
+      Iterable<Edge> edges;
+      if (options.isArriveBy())       edges=gv.getOutgoing();
+ else       edges=gv.getIncoming();
+      for (      Edge e : edges) {
+        if (e instanceof DirectEdge) {
+          GenericVertex v=(GenericVertex)((DirectEdge)e).getToVertex();
+          double vw=uw + e.weightLowerBound(options);
+          int vi=v.getIndex();
+          if (weights[vi] > vw) {
+            weights[vi]=vw;
+            q.insert(v,vw);
+          }
+        }
+      }
+    }
+    LOG.info("End SSSP ({} msec)",System.currentTimeMillis() - t0);
+  }
+}
