@@ -33,7 +33,9 @@
  else       edges=gv.getIncoming();
       for (      Edge e : edges) {
         if (e instanceof DirectEdge) {
-          GenericVertex v=(GenericVertex)((DirectEdge)e).getToVertex();
+          GenericVertex v;
+          if (options.isArriveBy())           v=(GenericVertex)((DirectEdge)e).getToVertex();
+ else           v=(GenericVertex)((DirectEdge)e).getFromVertex();
           double vw=uw + e.weightLowerBound(options);
           int vi=v.getIndex();
           if (weights[vi] > vw) {
