@@ -1,4 +1,9 @@
 {
   if (options.isArriveBy())   return options.boardCost;
- else   return 0;
+ else   if (!options.getModes().get(modeMask)) {
+    return Double.POSITIVE_INFINITY;
+  }
+  AgencyAndId serviceId=getPattern().getExemplar().getServiceId();
+  for (  ServiceDay sd : options.serviceDays)   if (sd.serviceIdRunning(serviceId))   return 0;
+  return Double.POSITIVE_INFINITY;
 }
