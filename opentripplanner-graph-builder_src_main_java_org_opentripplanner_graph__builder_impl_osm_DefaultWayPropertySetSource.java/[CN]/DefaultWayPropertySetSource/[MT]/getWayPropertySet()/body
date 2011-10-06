@@ -133,6 +133,7 @@
   setProperties(props,"CCGIS:bicycle:right=caution_area",StreetTraversalPermission.ALL,1.45,1.0,true);
   setProperties(props,"CCGIS:bicycle:left=caution_area",StreetTraversalPermission.ALL,1.0,1.45,true);
   props.defaultProperties.setPermission(StreetTraversalPermission.ALL);
+  createNotes(props,"note=*","{note}");
   createNotes(props,"notes=*","{notes}");
   createNotes(props,"RLIS:bicycle=caution_area","Caution!");
   createNotes(props,"CCGIS:bicycle=caution_area","Caution!");
@@ -188,8 +189,6 @@
   createNames(props,"highway=track","track");
   createNames(props,"highway=footway;footway=sidewalk","sidewalk");
   createNames(props,"highway=steps","steps");
-  createNames(props,"highway=footway;footway=crossing","street crossing");
-  createNames(props,"highway=path;path=crossing","street crossing");
   props.setSlopeOverride(new OSMSpecifier("bridge=*"),true);
   props.setSlopeOverride(new OSMSpecifier("tunnel=*"),true);
   return props;
