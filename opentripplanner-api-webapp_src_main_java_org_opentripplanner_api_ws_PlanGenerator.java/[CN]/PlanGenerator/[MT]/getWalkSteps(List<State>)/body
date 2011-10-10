@@ -54,15 +54,19 @@
       }
  else {
         boolean shouldGenerateContinue=false;
+        System.out.println("should we generate a continue instruction for " + edge);
         if (edge instanceof PlainStreetEdge) {
           double angleDiff=getAbsoluteAngleDiff(thisAngle,lastAngle);
           for (          DirectEdge alternative : pathService.getOutgoingEdges(currState.getBackState().getVertex())) {
             if (alternative instanceof TinyTurnEdge) {
               alternative=pathService.getOutgoingEdges(alternative.getToVertex()).get(0);
             }
+            if (alternative.getName().equals(streetName)) {
+              continue;
+            }
             double altAngle=DirectionUtils.getFirstAngle(alternative.getGeometry());
             double altAngleDiff=getAbsoluteAngleDiff(altAngle,lastAngle);
-            if (altAngleDiff - angleDiff < Math.PI / 16) {
+            if (angleDiff > Math.PI / 4 || altAngleDiff - angleDiff < Math.PI / 16) {
               shouldGenerateContinue=true;
               break;
             }
@@ -71,24 +75,23 @@
  else         if (edge instanceof TinyTurnEdge) {
         }
  else {
-          double newAngle;
-          if (currState.getVertex() instanceof StreetVertex) {
-            newAngle=DirectionUtils.getFirstAngle(((StreetVertex)currState.getVertex()).getGeometry());
-          }
- else {
-            List<DirectEdge> outgoingEdges=pathService.getOutgoingEdges(currState.getVertex());
-            Edge oge=outgoingEdges.get(0);
-            newAngle=DirectionUtils.getFirstAngle(((DirectEdge)oge).getGeometry());
-          }
-          double angleDiff=getAbsoluteAngleDiff(newAngle,thisAngle);
-          for (          DirectEdge alternative : pathService.getOutgoingEdges(currState.getBackState().getVertex())) {
-            if (alternative == edge) {
+          double angleDiff=getAbsoluteAngleDiff(lastAngle,thisAngle);
+          State backState=currState.getBackState();
+          State twoStatesBack=backState.getBackState();
+          Vertex backVertex=twoStatesBack.getVertex();
+          for (          DirectEdge alternative : pathService.getOutgoingEdges(backVertex)) {
+            System.out.println("te alternative is " + alternative);
+            alternative=pathService.getOutgoingEdges(alternative.getToVertex()).get(0);
+            System.out.println("te alternative becomes " + alternative);
+            if (alternative.getName().equals(streetName)) {
+              System.out.println("te alternative has same name as  " + streetName);
               continue;
             }
-            alternative=pathService.getOutgoingEdges(alternative.getToVertex()).get(0);
             double altAngle=DirectionUtils.getFirstAngle(alternative.getGeometry());
+            System.out.println("angles are " + lastAngle + " vs this "+ thisAngle+ " vs alt "+ altAngle);
             double altAngleDiff=getAbsoluteAngleDiff(altAngle,lastAngle);
-            if (altAngleDiff - angleDiff < Math.PI / 16) {
+            System.out.println("differences " + angleDiff + " vs "+ altAngleDiff);
+            if (angleDiff > Math.PI / 4 || altAngleDiff - angleDiff < Math.PI / 16) {
               shouldGenerateContinue=true;
               break;
             }
