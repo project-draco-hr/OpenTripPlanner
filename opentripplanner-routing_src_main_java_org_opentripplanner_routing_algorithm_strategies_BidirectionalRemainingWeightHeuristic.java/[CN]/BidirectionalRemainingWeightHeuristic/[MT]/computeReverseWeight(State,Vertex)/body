@@ -1,4 +1,6 @@
 {
+  if (s.getVertex() instanceof StreetLocation)   return 0;
+  if (s.getWeight() < 10 * 60)   return 0;
   int index=((GenericVertex)s.getVertex()).getIndex();
   if (index < weights.length) {
     double h=weights[index];

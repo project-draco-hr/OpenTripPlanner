@@ -1,19 +1,25 @@
 {
   if (target != this.target) {
     this.target=target;
-    nVertices=GenericVertex.getMaxIndex();
+    this.nVertices=GenericVertex.getMaxIndex();
     weights=new double[nVertices];
     Arrays.fill(weights,Double.POSITIVE_INFINITY);
     BinHeap<Vertex> q=new BinHeap<Vertex>();
     long t0=System.currentTimeMillis();
     if (target instanceof StreetLocation) {
       for (      DirectEdge de : ((StreetLocation)target).getExtra()) {
-        GenericVertex toVertex=(GenericVertex)(de.getToVertex());
-        int toIndex=toVertex.getIndex();
-        if (toVertex == target)         continue;
-        if (toIndex >= nVertices)         continue;
-        weights[toIndex]=0;
-        q.insert(toVertex,0);
+        GenericVertex gv;
+        if (options.isArriveBy()) {
+          gv=(GenericVertex)(de.getToVertex());
+        }
+ else {
+          gv=(GenericVertex)(de.getFromVertex());
+        }
+        int gvi=gv.getIndex();
+        if (gv == target)         continue;
+        if (gvi >= nVertices)         continue;
+        weights[gvi]=0;
+        q.insert(gv,0);
       }
     }
  else {
