@@ -6,6 +6,7 @@
   for (  State currState : states) {
     Edge edge=currState.getBackEdge();
     EdgeNarrative edgeNarrative=currState.getBackEdgeNarrative();
+    boolean createdNewStep=false;
     if (edge instanceof FreeEdge) {
       continue;
     }
@@ -19,6 +20,7 @@
     String streetName=edgeNarrative.getName();
     if (step == null) {
       step=createWalkStep(currState);
+      createdNewStep=true;
       steps.add(step);
       double thisAngle=DirectionUtils.getFirstAngle(geom);
       step.setAbsoluteDirection(thisAngle);
@@ -30,6 +32,7 @@
         roundaboutExit=0;
       }
       step=createWalkStep(currState);
+      createdNewStep=true;
       steps.add(step);
       if (edgeNarrative.isRoundabout()) {
         roundaboutExit=1;
@@ -48,12 +51,6 @@
         }
       }
       if (edgeNarrative.isRoundabout() || direction == RelativeDirection.CONTINUE) {
-        if (step.elevation != null) {
-          String s=encodeElevationProfile(edge,distance);
-          if (step.elevation.length() > 0 && s != null && s.length() > 0)           step.elevation+=",";
-          step.elevation+=s;
-        }
-        distance+=edgeNarrative.getDistance();
       }
  else {
         boolean shouldGenerateContinue=false;
@@ -99,12 +96,21 @@
         }
         if (shouldGenerateContinue) {
           step=createWalkStep(currState);
+          createdNewStep=true;
           steps.add(step);
           step.setDirections(lastAngle,thisAngle,false);
           step.stayOn=true;
           distance=edgeNarrative.getDistance();
         }
       }
+    }
+    if (!createdNewStep) {
+      if (step.elevation != null) {
+        String s=encodeElevationProfile(edge,distance);
+        if (step.elevation.length() > 0 && s != null && s.length() > 0)         step.elevation+=",";
+        step.elevation+=s;
+      }
+      distance+=edgeNarrative.getDistance();
     }
     step.distance+=edgeNarrative.getDistance();
     step.addAlerts(edgeNarrative.getNotes());
