@@ -28,7 +28,7 @@
         coordList.add(0,interpolatedStartCoordinate);
       }
     }
- else     if (coord.x > end && !finished && started) {
+ else     if (coord.x > end && !finished && started && lastCoord != null) {
       finished=true;
       double run=coord.x - lastCoord.x;
       if (run < 1) {
