@@ -30,7 +30,7 @@ weight=slopeSpeedEffectiveLength / options.speed;
 break;
 case TRIANGLE:
 double quick=slopeSpeedEffectiveLength;
-double safety=bicycleSafetyEffectiveLength * 0.2 + quick * 0.8;
+double safety=bicycleSafetyEffectiveLength;
 double slope=slopeWorkCost;
 weight=quick * options.getTriangleTimeFactor() + slope * options.getTriangleSlopeFactor() + safety * options.getTriangleSafetyFactor();
 weight/=options.speed;
