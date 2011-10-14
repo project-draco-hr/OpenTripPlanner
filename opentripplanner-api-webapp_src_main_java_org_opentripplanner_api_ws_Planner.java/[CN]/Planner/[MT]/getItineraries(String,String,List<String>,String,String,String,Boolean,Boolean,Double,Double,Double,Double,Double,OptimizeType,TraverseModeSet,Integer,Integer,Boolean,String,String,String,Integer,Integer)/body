@@ -69,6 +69,12 @@
   request.setOptimize(optimize);
   request.setModes(modes);
   request.setMinTransferTime(minTransferTime);
+  if (maxTransfers != null) {
+    if (maxTransfers > MAX_TRANSFERS) {
+      maxTransfers=MAX_TRANSFERS;
+    }
+    request.setMaxTransfers(maxTransfers);
+  }
   Response response=new Response(request);
   try {
     PlanGenerator generator=new PlanGenerator(request,pathServiceFactory);
