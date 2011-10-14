@@ -1,0 +1,15 @@
+{
+  Graph graph=_graphService.getGraph();
+  GraphVertex gv=graph.getGraphVertex(vertex);
+  if (gv == null) {
+    return Collections.emptyList();
+  }
+  List<DirectEdge> result=new ArrayList<DirectEdge>();
+  for (  Edge out : gv.getOutgoing()) {
+    if (!(out instanceof TurnEdge || out instanceof OutEdge || out instanceof PlainStreetEdge)) {
+      continue;
+    }
+    result.add((StreetEdge)out);
+  }
+  return result;
+}

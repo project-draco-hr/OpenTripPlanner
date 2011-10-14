@@ -1,0 +1,23 @@
+{
+  Graph graph=_graphService.getGraph();
+  boolean foundAlternatePaths=false;
+  Vertex start=edge.getFromVertex();
+  GraphVertex gv=graph.getGraphVertex(start);
+  if (gv == null) {
+    return false;
+  }
+  for (  Edge out : gv.getOutgoing()) {
+    if (out == edge) {
+      continue;
+    }
+    if (!(out instanceof TurnEdge || out instanceof OutEdge || out instanceof PlainStreetEdge)) {
+      continue;
+    }
+    if (state != null && out.traverse(state) == null) {
+      continue;
+    }
+    foundAlternatePaths=true;
+    break;
+  }
+  return foundAlternatePaths;
+}
