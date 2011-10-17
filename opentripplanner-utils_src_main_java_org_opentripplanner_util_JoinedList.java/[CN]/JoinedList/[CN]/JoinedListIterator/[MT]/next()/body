@@ -1,0 +1,16 @@
+{
+  if (!hasNext()) {
+    throw new NoSuchElementException();
+  }
+  if (iterator == null) {
+    iterator=lists[listIndex].listIterator();
+  }
+  while (!iterator.hasNext()) {
+    listIndex+=1;
+    if (listIndex == lists.length) {
+      throw new NoSuchElementException();
+    }
+    iterator=lists[listIndex].listIterator();
+  }
+  return iterator.next();
+}

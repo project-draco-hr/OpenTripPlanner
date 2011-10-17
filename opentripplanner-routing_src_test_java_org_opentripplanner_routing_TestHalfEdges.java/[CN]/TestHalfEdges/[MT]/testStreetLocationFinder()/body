@@ -24,4 +24,13 @@
     }
   }
   assertTrue(found);
+  TraverseOptions walking=new TraverseOptions(TraverseMode.WALK);
+  start=(StreetLocation)finder.getClosestVertex(new Coordinate(-74.0,40.004),walking);
+  end=(StreetLocation)finder.getClosestVertex(new Coordinate(-74.0,40.008),walking,start.getExtra());
+  assertNotNull(end);
+  ShortestPathTree spt=AStar.getShortestPathTree(graph,start,end,0,walking);
+  GraphPath path=spt.getPath(end,false);
+  for (  State s : path.states) {
+    assertFalse(s.getVertex() == top);
+  }
 }

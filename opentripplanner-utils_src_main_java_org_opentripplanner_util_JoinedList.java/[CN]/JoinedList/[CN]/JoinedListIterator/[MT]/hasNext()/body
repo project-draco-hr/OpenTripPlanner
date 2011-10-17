@@ -1,0 +1,13 @@
+{
+  if (iterator == null) {
+    iterator=lists[listIndex].listIterator();
+  }
+  while (!iterator.hasNext()) {
+    listIndex+=1;
+    if (listIndex == lists.length) {
+      return false;
+    }
+    iterator=lists[listIndex].listIterator();
+  }
+  return listIndex != lists.length;
+}

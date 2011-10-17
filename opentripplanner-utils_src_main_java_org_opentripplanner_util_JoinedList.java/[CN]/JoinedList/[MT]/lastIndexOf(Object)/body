@@ -1,0 +1,11 @@
+{
+  int i=totalSize;
+  for (  List<E> list : lists) {
+    i-=list.size();
+    int index=list.lastIndexOf(needle);
+    if (index >= 0) {
+      return i + index;
+    }
+  }
+  return -1;
+}

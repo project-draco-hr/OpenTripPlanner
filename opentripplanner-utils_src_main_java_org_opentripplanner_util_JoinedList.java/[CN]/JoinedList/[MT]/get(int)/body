@@ -1,0 +1,9 @@
+{
+  for (  List<E> list : lists) {
+    if (i < list.size()) {
+      return list.get(i);
+    }
+    i-=list.size();
+  }
+  throw new ArrayIndexOutOfBoundsException(i);
+}

@@ -1,0 +1,14 @@
+{
+  if (out.length < totalSize) {
+    out=(T[])Arrays.copyOf(out,totalSize,out.getClass());
+  }
+  Iterator<E> i=iterator();
+  int p=0;
+  while (i.hasNext()) {
+    out[p++]=(T)i.next();
+  }
+  if (out.length > totalSize) {
+    out[p]=null;
+  }
+  return out;
+}
