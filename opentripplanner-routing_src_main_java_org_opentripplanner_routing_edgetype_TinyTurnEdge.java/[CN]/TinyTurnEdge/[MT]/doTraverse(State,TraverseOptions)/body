@@ -1,5 +1,5 @@
 {
-  if (restricted && !options.getModes().contains(TraverseMode.WALK)) {
+  if (turnRestricted(options) && !options.getModes().contains(TraverseMode.WALK)) {
     return null;
   }
   double angleLength=turnCost / 20.0;
