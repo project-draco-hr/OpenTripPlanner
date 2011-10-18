@@ -1,4 +1,5 @@
 {
+  processRelations();
   _nodes.keySet().retainAll(_nodesWithNeighbors);
   long wayIndex=0;
   Set<Long> possibleIntersectionNodes=new HashSet<Long>();
@@ -17,7 +18,7 @@
   GeometryFactory geometryFactory=new GeometryFactory();
   ArrayList<Vertex> endpoints=new ArrayList<Vertex>();
   for (  OSMWay way : _ways.values()) {
-    if (wayIndex % 1000 == 0)     _log.debug("ways=" + wayIndex + "/"+ _ways.size());
+    if (wayIndex % 10000 == 0)     _log.debug("ways=" + wayIndex + "/"+ _ways.size());
     wayIndex++;
     WayProperties wayData=wayPropertySet.getDataForWay(way);
     if (!way.hasTag("name")) {

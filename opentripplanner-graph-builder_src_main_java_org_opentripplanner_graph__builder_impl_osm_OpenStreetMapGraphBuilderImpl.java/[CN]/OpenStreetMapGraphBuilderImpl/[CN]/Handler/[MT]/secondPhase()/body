@@ -1,6 +1,5 @@
 {
   int count=_ways.values().size();
-  processRelations();
   for (Iterator<OSMWay> it=_ways.values().iterator(); it.hasNext(); ) {
     OSMWay way=it.next();
     if (!(way.hasTag("highway") || way.isTag("railway","platform"))) {
@@ -16,5 +15,5 @@
       }
     }
   }
-  _log.debug("purged " + (count - _ways.values().size()) + " ways out of "+ count);
+  _log.trace("purged " + (count - _ways.values().size()) + " ways out of "+ count);
 }
