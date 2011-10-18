@@ -1,7 +1,13 @@
 {
   super();
   GraphServiceImpl graphService=new GraphServiceImpl();
-  graphService.setGraphPath(new File(graphName));
+  GraphBundle bundle=new GraphBundle();
+  File path=new File(graphName);
+  if (path.getName().equals("Graph.obj")) {
+    path=path.getParentFile();
+  }
+  bundle.setPath(path);
+  graphService.setBundle(bundle);
   graphService.refreshGraph();
   setGraph(graphService);
   setTitle("VizGui: " + graphName);
