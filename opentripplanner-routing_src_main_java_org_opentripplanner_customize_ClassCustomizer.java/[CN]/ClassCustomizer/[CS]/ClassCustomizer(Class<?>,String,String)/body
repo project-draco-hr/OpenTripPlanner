@@ -1,0 +1,13 @@
+{
+  try {
+    ClassPool pool=ClassPool.getDefault();
+    ctClass=pool.makeClass(newClassName);
+    classFile=ctClass.getClassFile();
+    classFile.setSuperclass(oldlassName);
+    classFile.setName(newClassName);
+    classFile.setInterfaces(new String[]{iface.getName()});
+  }
+ catch (  Exception e) {
+    throw new RuntimeException(e);
+  }
+}

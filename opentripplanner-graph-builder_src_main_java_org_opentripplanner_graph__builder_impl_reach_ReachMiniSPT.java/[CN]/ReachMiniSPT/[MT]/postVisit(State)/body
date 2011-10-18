@@ -1,0 +1,11 @@
+{
+  ReachState state=(ReachState)s;
+  settled.add(state);
+  State backState=s.getBackState();
+  if (backState != null && s.getWeight() - s.getWeightDelta() >= 2 * epsilon) {
+    done=true;
+  }
+  if (backState == null || backState.getWeight() < epsilon) {
+    innerCircle.add(state);
+  }
+}

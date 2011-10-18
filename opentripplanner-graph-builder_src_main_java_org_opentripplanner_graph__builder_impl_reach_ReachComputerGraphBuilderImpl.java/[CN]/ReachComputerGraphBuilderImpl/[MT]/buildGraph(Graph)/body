@@ -1,0 +1,14 @@
+{
+  TraverseOptions options=new TraverseOptions(TraverseMode.WALK);
+  options.walkReluctance=1;
+  options.speed=1;
+  addReachToGraph(graph);
+  graph=makeWalkingGraph(graph,options);
+  Set<Vertex> streetVertices=getWalkingVertices(graph,options);
+  options.setArriveBy(true);
+  removeEdgeTrees(graph,streetVertices,options);
+  options.setArriveBy(false);
+  removeEdgeTrees(graph,streetVertices,options);
+  partialTreesForStreets(graph,streetVertices,options);
+  inPenalty=outPenalty=null;
+}

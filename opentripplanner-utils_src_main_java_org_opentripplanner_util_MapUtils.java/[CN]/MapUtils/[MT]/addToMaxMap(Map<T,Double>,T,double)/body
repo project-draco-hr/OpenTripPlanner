@@ -1,0 +1,8 @@
+{
+  Double oldValue=map.get(key);
+  if (oldValue == null || value > oldValue) {
+    map.put(key,value);
+    return true;
+  }
+  return false;
+}

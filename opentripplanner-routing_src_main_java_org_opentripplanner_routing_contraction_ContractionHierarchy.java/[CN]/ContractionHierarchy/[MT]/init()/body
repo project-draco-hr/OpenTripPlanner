@@ -1,7 +1,7 @@
 {
   createThreadPool();
-  up=new Graph();
-  down=new Graph();
+  up=new Graph(graph);
+  down=new Graph(graph);
   long start=System.currentTimeMillis();
   HashMap<Vertex,Integer> deletedNeighbors=new HashMap<Vertex,Integer>();
   _log.debug("Preparing contraction hierarchy -- this may take quite a while");

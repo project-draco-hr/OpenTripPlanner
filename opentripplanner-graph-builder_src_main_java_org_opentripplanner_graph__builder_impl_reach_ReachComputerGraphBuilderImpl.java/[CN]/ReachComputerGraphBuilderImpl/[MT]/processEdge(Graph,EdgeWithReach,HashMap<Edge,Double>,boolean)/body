@@ -1,0 +1,19 @@
+{
+  Double reach=reachEstimateForEdge.get(edge);
+  if (reach == null) {
+    newGraph.addEdge(edge);
+    return 0;
+  }
+  if (reach >= epsilon) {
+    newGraph.addEdge(edge);
+    return 0;
+  }
+  if (edge.getReach() > reach) {
+    edge.setReach(reach);
+  }
+  Vertex fromv=edge.getFromVertex();
+  Vertex tov=edge.getToVertex();
+  MapUtils.addToMaxMap(outPenalty,tov,reach);
+  MapUtils.addToMaxMap(inPenalty,fromv,reach);
+  return 1;
+}

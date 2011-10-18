@@ -83,8 +83,8 @@
   chs.setContractionFactor(0.50);
   chs.setGraph(graph);
   chs.build();
-  ContractionHierarchySerializationLibrary.writeGraph(chs,new File("/tmp/contracted"));
-  chs=ContractionHierarchySerializationLibrary.readGraph(new File("/tmp/contracted"));
+  GraphSerializationLibrary.writeGraph(chs,new File("/tmp/contracted"));
+  chs=new GraphSerializationLibrary().readGraph(new File("/tmp/contracted"));
   hierarchy=chs.getHierarchy(options);
   assertNotNull(hierarchy);
   Vertex start=null;

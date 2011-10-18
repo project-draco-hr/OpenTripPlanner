@@ -1,0 +1,29 @@
+{
+  HashSet<Edge> added=new HashSet<Edge>();
+  Graph workingGraph=new Graph();
+  for (  Vertex v : streetVertices) {
+    for (    Edge e : graph.getOutgoing(v)) {
+      if (e instanceof EdgeWithReach) {
+        if (!added.contains(e)) {
+          added.add(e);
+          workingGraph.addEdge((DirectEdge)e);
+        }
+      }
+    }
+    for (    Edge e : graph.getIncoming(v)) {
+      if (e instanceof EdgeWithReach) {
+        if (!added.contains(e)) {
+          added.add(e);
+          workingGraph.addEdge((DirectEdge)e);
+        }
+      }
+    }
+  }
+  added.clear();
+  graph=workingGraph;
+  epsilon=initialStreetEpsilon;
+  while (epsilon <= maxStreetEpsilon) {
+    graph=partialTreesPhase(graph,streetVertices,options,false);
+    epsilon*=streetEpsilonMultiplier;
+  }
+}

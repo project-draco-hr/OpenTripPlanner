@@ -1,0 +1,12 @@
+{
+  ConstPool constPool=classFile.getConstPool();
+  MethodInfo setter=new MethodInfo(constPool,"set" + ucfirst(fieldName),"(D)V");
+  Bytecode code=new Bytecode(constPool,3,3);
+  code.addAload(0);
+  code.addDload(1);
+  code.addPutfield(ctClass,fieldName,"D");
+  code.addOpcode(Opcode.RETURN);
+  setter.setCodeAttribute(code.toCodeAttribute());
+  setter.setAccessFlags(AccessFlag.PUBLIC);
+  classFile.addMethod(setter);
+}

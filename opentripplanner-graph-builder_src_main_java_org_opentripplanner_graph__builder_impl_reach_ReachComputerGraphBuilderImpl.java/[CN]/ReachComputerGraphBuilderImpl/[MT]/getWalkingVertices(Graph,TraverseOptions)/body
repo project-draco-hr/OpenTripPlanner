@@ -1,0 +1,26 @@
+{
+  Set<Vertex> streetVertices=new HashSet<Vertex>();
+  for (  GraphVertex v : graph.getVertices()) {
+    if (v.vertex instanceof StreetVertex) {
+      GenericDijkstra dijkstra=new GenericDijkstra(graph,options);
+      ShortestPathTree spt=dijkstra.getShortestPathTree(new State(v.vertex,options));
+      for (      State s : spt.getAllStates()) {
+        Vertex v2=s.getVertex();
+        if (v2 instanceof StreetVertex || v2 instanceof EndpointVertex) {
+          streetVertices.add(s.getVertex());
+        }
+      }
+      options.setArriveBy(true);
+      spt=dijkstra.getShortestPathTree(new State(v.vertex,options));
+      for (      State s : spt.getAllStates()) {
+        Vertex v2=s.getVertex();
+        if (v2 instanceof StreetVertex || v2 instanceof EndpointVertex) {
+          streetVertices.add(s.getVertex());
+        }
+      }
+      options.setArriveBy(false);
+      break;
+    }
+  }
+  return streetVertices;
+}

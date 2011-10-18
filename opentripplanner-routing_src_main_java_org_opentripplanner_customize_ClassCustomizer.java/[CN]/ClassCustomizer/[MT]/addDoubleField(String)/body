@@ -1,0 +1,15 @@
+{
+  ClassFile classFile=ctClass.getClassFile();
+  ConstPool constPool=classFile.getConstPool();
+  try {
+    FieldInfo fieldInfo=new FieldInfo(constPool,fieldName,"D");
+    classFile.addField(fieldInfo);
+    CtConstructor ctor=CtNewConstructor.defaultConstructor(ctClass);
+    ctClass.addConstructor(ctor);
+    addDoubleSetter(classFile,fieldName);
+    addDoubleGetter(classFile,fieldName);
+  }
+ catch (  Exception e) {
+    throw new RuntimeException(e);
+  }
+}

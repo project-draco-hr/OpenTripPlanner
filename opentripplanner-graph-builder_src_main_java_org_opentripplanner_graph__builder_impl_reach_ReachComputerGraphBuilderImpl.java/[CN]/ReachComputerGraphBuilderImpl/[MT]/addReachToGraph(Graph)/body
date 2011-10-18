@@ -1,0 +1,28 @@
+{
+  HashMap<Class<? extends DirectEdge>,Class<? extends DirectEdge>> classMapping=new HashMap<Class<? extends DirectEdge>,Class<? extends DirectEdge>>();
+  ArrayList<DirectEdge> edgesToRemove=new ArrayList<DirectEdge>();
+  ArrayList<DirectEdge> edgesToAdd=new ArrayList<DirectEdge>();
+  for (  GraphVertex gv : graph.getVertices()) {
+    Vertex vertex=gv.vertex;
+    for (    Edge e : graph.getOutgoing(vertex)) {
+      if (e instanceof StreetEdge) {
+        StreetEdge se=((StreetEdge)e);
+        edgesToRemove.add(se);
+        edgesToAdd.add(reachifyEdge(graph,classMapping,se));
+      }
+    }
+    for (    Edge e : graph.getIncoming(vertex)) {
+      if (e instanceof StreetEdge) {
+        StreetEdge se=((StreetEdge)e);
+        edgesToRemove.add(se);
+        edgesToAdd.add(reachifyEdge(graph,classMapping,se));
+      }
+    }
+  }
+  for (  DirectEdge e : edgesToRemove) {
+    graph.removeEdge(e);
+  }
+  for (  DirectEdge e : edgesToAdd) {
+    graph.addEdge(e);
+  }
+}

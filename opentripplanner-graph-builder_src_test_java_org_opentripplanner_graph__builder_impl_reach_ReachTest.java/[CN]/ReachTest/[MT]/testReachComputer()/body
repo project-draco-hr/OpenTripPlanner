@@ -1,0 +1,18 @@
+{
+  graph=new Graph();
+  makeGraph(graph);
+  TraverseOptions options=new TraverseOptions(TraverseMode.WALK);
+  options.walkReluctance=1;
+  options.speed=1;
+  ReachComputerGraphBuilderImpl computer=new ReachComputerGraphBuilderImpl();
+  computer.epsilon=500;
+  Vertex vertex=graph.getVertex("56th_24th");
+  Collection<Vertex> streetVertices=Arrays.asList(vertex);
+  computer.partialTreesPhase(graph,streetVertices,options,false);
+  for (  EdgeWithReach e : IterableLibrary.filter(graph.getOutgoing(vertex),EdgeWithReach.class)) {
+    assertTrue(e.getReach() < 400);
+  }
+  List<TraverseOptions> optionlist=Arrays.asList(options);
+  ContractionHierarchySet hierarchy=new ContractionHierarchySet(graph,optionlist);
+  GraphSerializationLibrary.writeGraph(hierarchy,new File("/home/novalis/otp/thegraph/Graph.obj"));
+}

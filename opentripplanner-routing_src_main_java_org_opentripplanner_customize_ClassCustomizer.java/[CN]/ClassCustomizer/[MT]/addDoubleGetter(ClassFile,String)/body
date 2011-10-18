@@ -1,0 +1,11 @@
+{
+  ConstPool constPool=classFile.getConstPool();
+  MethodInfo getter=new MethodInfo(constPool,"get" + ucfirst(fieldName),"()D");
+  Bytecode code=new Bytecode(constPool,2,1);
+  code.addAload(0);
+  code.addGetfield(ctClass,fieldName,"D");
+  code.addOpcode(Opcode.DRETURN);
+  getter.setCodeAttribute(code.toCodeAttribute());
+  getter.setAccessFlags(AccessFlag.PUBLIC);
+  classFile.addMethod(getter);
+}

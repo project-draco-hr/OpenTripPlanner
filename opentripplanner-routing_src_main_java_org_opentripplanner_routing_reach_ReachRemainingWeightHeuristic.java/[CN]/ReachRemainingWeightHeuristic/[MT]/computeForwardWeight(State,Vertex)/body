@@ -1,0 +1,67 @@
+{
+  Vertex sv=s.getVertex();
+  double euclidianDistance=sv.fastDistance(target);
+  double remainingwalkDistance=options.getMaxWalkDistance() - s.getWalkDistance();
+  Edge backEdge=s.getBackEdge();
+  EdgeWithReach edgeWithReach=null;
+  if (useReach && backEdge instanceof EdgeWithReach) {
+    edgeWithReach=(EdgeWithReach)backEdge;
+  }
+  double depth=s.getWalkSinceLastTransit();
+  if (useTransit) {
+    if (s.isAlightedLocal() || s.getNumBoardings() >= options.maxTransfers + 1) {
+      if (euclidianDistance > remainingwalkDistance) {
+        return -1;
+      }
+      if (edgeWithReach != null) {
+        double reach=edgeWithReach.getReach();
+        if (depth > reach && euclidianDistance > reach) {
+          return -1;
+        }
+      }
+      return options.walkReluctance * euclidianDistance / options.speed;
+    }
+ else {
+      double distanceToNearestStop=sv.getDistanceToNearestTransitStop();
+      if (edgeWithReach != null) {
+        double reach=edgeWithReach.getReach();
+        if (depth > reach && euclidianDistance > reach && distanceToNearestStop > reach) {
+          return -1;
+        }
+      }
+      int boardCost;
+      if (s.isOnboard()) {
+        boardCost=0;
+      }
+ else {
+        boardCost=options.boardCost;
+      }
+      if (s.isEverBoarded()) {
+        boardCost+=options.transferPenalty;
+      }
+      if (euclidianDistance < distanceToNearestStop) {
+        if (euclidianDistance > remainingwalkDistance) {
+          return -1;
+        }
+        return options.walkReluctance * euclidianDistance / options.speed;
+      }
+ else {
+        double mandatoryWalkDistance=target.getDistanceToNearestTransitStop() + sv.getDistanceToNearestTransitStop();
+        if (mandatoryWalkDistance + s.getWalkDistance() > options.getMaxWalkDistance()) {
+          return -1;
+        }
+        double distance=(euclidianDistance - mandatoryWalkDistance) / maxSpeed + mandatoryWalkDistance * options.walkReluctance / options.speed + boardCost;
+        return Math.min(distance,options.walkReluctance * euclidianDistance / options.speed);
+      }
+    }
+  }
+ else {
+    if (edgeWithReach != null) {
+      double reach=edgeWithReach.getReach();
+      if (depth > reach && euclidianDistance > reach) {
+        return -1;
+      }
+    }
+    return options.walkReluctance * euclidianDistance / maxSpeed;
+  }
+}

@@ -1,19 +1,27 @@
 {
   File path=null;
-  if (_bundle != null)   path=_bundle.getGraphPath();
-  if (_graphPath != null)   path=_graphPath;
-  if (path == null || !path.exists()) {
-    if (!_createEmptyGraphIfNotFound) {
-      _log.error("Graph not found. Verify path to stored graph: " + path);
-      throw new IllegalStateException("graph path not found: " + path);
-    }
-    Graph graph=new Graph();
-    List<TraverseOptions> modeList=Collections.emptyList();
-    setContractionHierarchySet(new ContractionHierarchySet(graph,modeList));
-    return;
+  if (_bundle == null) {
+    throw new RuntimeException("setBundle() mustbe called before readGraph()");
   }
   try {
-    ContractionHierarchySet chs=ContractionHierarchySerializationLibrary.readGraph(path);
+    File extraClassPath=_bundle.getExtraClassPath();
+    URL[] url;
+    url=new URL[]{new URL("file://" + extraClassPath + "/")};
+    ClassLoader oldLoader=getClass().getClassLoader();
+    URLClassLoader loader=new URLClassLoader(url,oldLoader);
+    path=_bundle.getGraphPath();
+    if (path == null || !path.exists()) {
+      if (!_createEmptyGraphIfNotFound) {
+        _log.error("Graph not found. Verify path to stored graph: " + path);
+        throw new IllegalStateException("graph path not found: " + path);
+      }
+      Graph graph=new Graph();
+      graph.setBundle(_bundle);
+      List<TraverseOptions> modeList=Collections.emptyList();
+      setContractionHierarchySet(new ContractionHierarchySet(graph,modeList));
+      return;
+    }
+    ContractionHierarchySet chs=new GraphSerializationLibrary(loader).readGraph(path);
     setContractionHierarchySet(chs);
   }
  catch (  Exception ex) {

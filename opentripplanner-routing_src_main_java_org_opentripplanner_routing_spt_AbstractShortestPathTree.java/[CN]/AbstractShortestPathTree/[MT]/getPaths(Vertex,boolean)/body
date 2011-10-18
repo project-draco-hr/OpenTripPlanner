@@ -1,5 +1,5 @@
 {
-  List<State> stateList=getStates(dest);
+  List<? extends State> stateList=getStates(dest);
   if (stateList == null)   return Collections.emptyList();
   List<GraphPath> ret=new LinkedList<GraphPath>();
   for (  State s : stateList) {

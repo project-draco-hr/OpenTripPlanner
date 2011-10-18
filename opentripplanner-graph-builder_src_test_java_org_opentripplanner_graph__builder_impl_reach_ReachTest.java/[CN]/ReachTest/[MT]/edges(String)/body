@@ -1,0 +1,8 @@
+{
+  for (int i=0; i < vLabels.length - 1; i++) {
+    Vertex vA=graph.getVertex(vLabels[i]);
+    Vertex vB=graph.getVertex(vLabels[i + 1]);
+    graph.addEdge(vA,vB,edge(vA,vB));
+    graph.addEdge(vB,vA,edge(vB,vA));
+  }
+}

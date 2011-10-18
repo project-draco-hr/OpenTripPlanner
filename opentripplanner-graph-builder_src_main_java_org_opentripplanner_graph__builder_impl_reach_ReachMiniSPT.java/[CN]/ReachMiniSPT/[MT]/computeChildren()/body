@@ -1,0 +1,13 @@
+{
+  for (  ReachState s : states.values()) {
+    ReachState backState=(ReachState)s.getBackState();
+    if (backState == null) {
+      continue;
+    }
+    backState.addChild(s);
+    if (!settled.contains(s)) {
+      backState.height=Double.MAX_VALUE;
+      s.height=Double.MAX_VALUE;
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  ClassFile classFile=ctClass.getClassFile();
+  try {
+    if (!extraClassPath.exists()) {
+      extraClassPath.mkdirs();
+    }
+    FactoryHelper.writeFile(classFile,extraClassPath.getPath());
+    ClassLoader loader=getClass().getClassLoader();
+    Class<?> cls=FactoryHelper.toClass(classFile,loader);
+    return cls;
+  }
+ catch (  Exception e) {
+    throw new RuntimeException(e);
+  }
+}

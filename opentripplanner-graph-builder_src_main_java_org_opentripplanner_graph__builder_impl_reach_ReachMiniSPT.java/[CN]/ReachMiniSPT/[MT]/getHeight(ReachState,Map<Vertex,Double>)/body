@@ -1,0 +1,30 @@
+{
+  if (s.height != null) {
+    return s.height;
+  }
+  Vertex w=s.getVertex();
+  Collection<ReachState> wchildren=s.getChildren();
+  if (wchildren == null) {
+    s.height=0.0;
+    return 0.0;
+  }
+  double height=0;
+  for (  ReachState state : wchildren) {
+    if (!settled.contains(state)) {
+      s.height=Double.MAX_VALUE;
+      return Double.MAX_VALUE;
+    }
+    height=Math.max(height,getHeight(state,outPenalty) + s.getWeightDelta());
+    if (height > epsilon) {
+      s.height=Double.MAX_VALUE;
+      return Double.MAX_VALUE;
+    }
+  }
+  Double penalty=outPenalty.get(w);
+  if (penalty == null) {
+    penalty=0.0;
+  }
+  height=Math.max(height,penalty);
+  s.height=height;
+  return height;
+}

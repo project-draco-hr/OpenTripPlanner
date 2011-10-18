@@ -1,0 +1,8 @@
+{
+  if (current.getVertex() instanceof TransitStop) {
+    unsafe=true;
+    return false;
+  }
+  unsafe=spt.getVertexCount() >= vertexLimit;
+  return !unsafe;
+}

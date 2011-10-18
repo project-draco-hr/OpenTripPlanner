@@ -10,14 +10,13 @@
   }
   while (!queue.empty()) {
     State u=queue.extract_min();
-    Vertex fromv=u.getVertex();
+    Vertex u_vertex=u.getVertex();
     if (_verbose) {
       System.out.println("min," + u.getWeight());
-      System.out.println(fromv);
+      System.out.println(u_vertex);
     }
     if (_searchTerminationStrategy != null && !_searchTerminationStrategy.shouldSearchContinue(initialState.getVertex(),null,u,spt,options))     break;
-    Collection<Edge> outgoing=GraphLibrary.getOutgoingEdges(graph,fromv,extraEdges);
-    for (    Edge edge : outgoing) {
+    for (    Edge edge : getEdgesForVertex(graph,extraEdges,u_vertex,options)) {
       if (_skipEdgeStrategy != null && _skipEdgeStrategy.shouldSkipEdge(initialState.getVertex(),null,u,edge,spt,options))       continue;
       for (State v=edge.traverse(u); v != null; v=v.getNextResult()) {
         if (_skipTraverseResultStrategy != null && _skipTraverseResultStrategy.shouldSkipTraversalResult(initialState.getVertex(),null,u,v,spt,options))         continue;
@@ -26,6 +25,7 @@
         if (spt.add(v))         queue.insert(v,v.getWeight());
       }
     }
+    spt.postVisit(u);
   }
   return spt;
 }

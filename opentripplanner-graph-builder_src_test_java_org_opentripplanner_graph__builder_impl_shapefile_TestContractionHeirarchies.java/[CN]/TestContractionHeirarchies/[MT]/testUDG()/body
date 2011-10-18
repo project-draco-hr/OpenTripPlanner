@@ -13,11 +13,9 @@
     tree.insert(env,v);
     vertices.add(v);
   }
-  int i=0;
   int expansion=1;
   for (  GraphVertex gv : graph.getVertices()) {
     Vertex v=gv.vertex;
-    i++;
     final Coordinate c=v.getCoordinate();
     Envelope env=new Envelope(c);
     env.expandBy(50 * expansion);

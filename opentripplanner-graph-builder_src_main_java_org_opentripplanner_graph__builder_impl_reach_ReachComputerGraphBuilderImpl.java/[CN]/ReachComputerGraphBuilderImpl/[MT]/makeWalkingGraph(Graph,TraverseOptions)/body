@@ -1,0 +1,29 @@
+{
+  Graph newGraph=new Graph();
+  HashSet<Edge> edges=new HashSet<Edge>();
+  for (  GraphVertex gv : graph.getVertices()) {
+    Vertex vertex=gv.vertex;
+    newGraph.addVertex(vertex);
+    options.setArriveBy(false);
+    for (    Edge e : graph.getOutgoing(vertex)) {
+      if (e instanceof StreetEdge || e instanceof StreetTransitLink) {
+        if (e.traverse(new State(vertex,options)) != null) {
+          if (!edges.contains(e)) {
+            newGraph.addEdge((DirectEdge)e);
+          }
+        }
+      }
+    }
+    options.setArriveBy(true);
+    for (    Edge e : graph.getIncoming(vertex)) {
+      if (e instanceof StreetEdge || e instanceof StreetTransitLink) {
+        if (e.traverse(new State(vertex,options)) != null) {
+          if (!edges.contains(e)) {
+            newGraph.addEdge((DirectEdge)e);
+          }
+        }
+      }
+    }
+  }
+  return newGraph;
+}

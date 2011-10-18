@@ -1,0 +1,25 @@
+{
+  Class<?> origClass=original.getClass();
+  T newObj;
+  try {
+    Constructor<? extends T> ctor=newClass.getConstructor();
+    newObj=ctor.newInstance();
+    while (origClass != null) {
+      Field[] fields=origClass.getDeclaredFields();
+      for (      Field field : fields) {
+        field.setAccessible(true);
+        int modifiers=field.getModifiers();
+        if (Modifier.isStatic(modifiers)) {
+          continue;
+        }
+        Object value=field.get(original);
+        field.set(newObj,value);
+      }
+      origClass=origClass.getSuperclass();
+    }
+  }
+ catch (  Exception e) {
+    throw new RuntimeException(e);
+  }
+  return newObj;
+}

@@ -1,0 +1,13 @@
+{
+  if (options.getModes().contains(TraverseMode.TRANSIT)) {
+    return 10;
+  }
+ else {
+    if (options.optimizeFor == OptimizeType.QUICK) {
+      return options.speed;
+    }
+ else {
+      return options.speed * 10;
+    }
+  }
+}

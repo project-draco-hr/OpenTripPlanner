@@ -28,10 +28,8 @@
   long abortTime=Long.MAX_VALUE;
   if (options.searchAbortTime > 0)   abortTime=Math.min(abortTime,options.searchAbortTime);
   if (options.maxComputationTime > 0)   abortTime=Math.min(abortTime,System.currentTimeMillis() + options.maxComputationTime);
-  boolean exit=false;
   int nVisited=0;
   while (!pq.empty()) {
-    if (exit)     break;
     if (_verbose) {
       double w=pq.peek_min_key();
       System.out.println("pq min key = " + w);
