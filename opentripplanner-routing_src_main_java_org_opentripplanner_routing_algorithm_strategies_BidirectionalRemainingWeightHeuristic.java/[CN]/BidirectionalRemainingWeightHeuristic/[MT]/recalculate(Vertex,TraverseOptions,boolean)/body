@@ -1,19 +1,19 @@
 {
   if (target != this.target) {
     this.target=target;
-    this.nVertices=GenericVertex.getMaxIndex();
+    this.nVertices=Vertex.getMaxIndex();
     weights=new double[nVertices];
     Arrays.fill(weights,Double.POSITIVE_INFINITY);
     BinHeap<Vertex> q=new BinHeap<Vertex>();
     long t0=System.currentTimeMillis();
     if (target instanceof StreetLocation) {
       for (      DirectEdge de : ((StreetLocation)target).getExtra()) {
-        GenericVertex gv;
+        Vertex gv;
         if (options.isArriveBy()) {
-          gv=(GenericVertex)(de.getToVertex());
+          gv=(Vertex)(de.getToVertex());
         }
  else {
-          gv=(GenericVertex)(de.getFromVertex());
+          gv=(Vertex)(de.getFromVertex());
         }
         int gvi=gv.getIndex();
         if (gv == target)         continue;
@@ -23,21 +23,21 @@
       }
     }
  else {
-      int i=((GenericVertex)target).getIndex();
+      int i=((Vertex)target).getIndex();
       weights[i]=0;
       q.insert(target,0);
     }
     while (!q.empty()) {
       double uw=q.peek_min_key();
       Vertex u=q.extract_min();
-      int ui=((GenericVertex)u).getIndex();
+      int ui=((Vertex)u).getIndex();
       if (uw > weights[ui])       continue;
       Iterable<Edge> edges;
       if (options.isArriveBy())       edges=u.getOutgoing();
  else       edges=u.getIncoming();
       for (      Edge e : edges) {
         if (e instanceof DirectEdge) {
-          GenericVertex v=(GenericVertex)(options.isArriveBy() ? ((DirectEdge)e).getToVertex() : ((DirectEdge)e).getFromVertex());
+          Vertex v=(Vertex)(options.isArriveBy() ? ((DirectEdge)e).getToVertex() : ((DirectEdge)e).getFromVertex());
           double vw=uw + (timeNotWeight ? e.timeLowerBound(options) : e.weightLowerBound(options));
           int vi=v.getIndex();
           if (weights[vi] > vw) {

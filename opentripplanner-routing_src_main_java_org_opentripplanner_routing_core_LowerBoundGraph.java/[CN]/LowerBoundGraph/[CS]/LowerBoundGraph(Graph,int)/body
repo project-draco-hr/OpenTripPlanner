@@ -1,6 +1,6 @@
 {
   originalGraph=original;
-  nVertices=GenericVertex.maxIndex;
+  nVertices=Vertex.getMaxIndex();
   LOG.info("Table size is: {}",nVertices);
   vertex=new int[nVertices][];
   weight=new double[nVertices][];
@@ -9,8 +9,7 @@
   if (kind == INCOMING)   opt.setArriveBy(true);
   LOG.info("Loading origial graph into compact representation...");
   ArrayList<State> svs=new ArrayList<State>();
-  for (  Vertex gv : original.getVertices()) {
-    GenericVertex u=(GenericVertex)(gv);
+  for (  Vertex u : original.getVertices()) {
     State su=new State(u,opt);
     svs.clear();
     Iterable<Edge> edges;
@@ -28,7 +27,7 @@
     weight[ui]=new double[ne];
     int ei=0;
     for (    State sv : svs) {
-      vertex[ui][ei]=((GenericVertex)(sv.getVertex())).index;
+      vertex[ui][ei]=((Vertex)(sv.getVertex())).index;
       weight[ui][ei]=sv.getWeight();
       ei++;
     }

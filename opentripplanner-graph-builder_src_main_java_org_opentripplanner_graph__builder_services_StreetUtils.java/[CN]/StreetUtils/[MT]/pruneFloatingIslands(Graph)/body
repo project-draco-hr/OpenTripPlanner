@@ -9,7 +9,7 @@
     }
     State s0=new State(gv,options);
     for (    Edge e : gv.getOutgoing()) {
-      GenericVertex in=(GenericVertex)gv;
+      Vertex in=(Vertex)gv;
       if (!(e instanceof StreetEdge)) {
         continue;
       }
@@ -17,7 +17,7 @@
       if (s1 == null) {
         continue;
       }
-      GenericVertex out=(GenericVertex)s1.getVertex();
+      Vertex out=(Vertex)s1.getVertex();
       ArrayList<Vertex> vertexList=neighborsForVertex.get(in);
       if (vertexList == null) {
         vertexList=new ArrayList<Vertex>();

@@ -4,7 +4,7 @@
   Envelope env;
   for (  Vertex gv : graph.getVertices()) {
     Vertex v=gv;
-    if ((v instanceof TransitStop) || (v instanceof StreetLocation) || (v instanceof GenericVertex)) {
+    if ((v instanceof TransitStop) || (v instanceof StreetLocation) || (v instanceof Vertex)) {
       Coordinate c=gv.getCoordinate();
       env=new Envelope(c);
       vertexIndex.insert(env,v);

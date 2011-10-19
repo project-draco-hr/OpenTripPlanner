@@ -10,7 +10,7 @@
  else {
     return null;
   }
-  Vertex newEnd=new GenericVertex("replace " + endVertex.getLabel(),endVertex.getX(),endVertex.getY());
+  Vertex newEnd=new Vertex("replace " + endVertex.getLabel(),endVertex.getX(),endVertex.getY());
   newEnd=graph.addVertex(newEnd);
   for (  DirectEdge e : filter(startVertex.getOutgoing(),DirectEdge.class)) {
     final Vertex toVertex=e.getToVertex();
@@ -28,7 +28,7 @@
       graph.addEdge(new FreeEdge(newEnd,toVertex));
     }
   }
-  Vertex newStart=new GenericVertex("replace " + startVertex.getLabel(),startVertex.getX(),startVertex.getY());
+  Vertex newStart=new Vertex("replace " + startVertex.getLabel(),startVertex.getX(),startVertex.getY());
   newStart=graph.addVertex(newStart);
   for (  DirectEdge e : filter(endVertex.getOutgoing(),DirectEdge.class)) {
     final Vertex toVertex=e.getToVertex();

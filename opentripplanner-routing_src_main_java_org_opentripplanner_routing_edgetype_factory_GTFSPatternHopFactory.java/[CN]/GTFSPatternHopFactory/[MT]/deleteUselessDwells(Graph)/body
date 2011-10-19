@@ -15,8 +15,8 @@
       notSimplePatterns.add(pattern);
       continue;
     }
-    GenericVertex v=(GenericVertex)dwell.getFromVertex();
-    v.mergeFrom(graph,(GenericVertex)dwell.getToVertex());
+    Vertex v=(Vertex)dwell.getFromVertex();
+    v.mergeFrom(graph,(Vertex)dwell.getToVertex());
     if (!notSimplePatterns.contains(pattern)) {
       possiblySimplePatterns.add(pattern);
     }
