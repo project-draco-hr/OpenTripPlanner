@@ -47,20 +47,20 @@
       _log.debug("contracted: " + i + " / "+ totalVertices+ " ("+ i / (double)totalVertices + ") total time " + (now - start) / 1000.0 + "sec, average degree " + nEdges / (nVertices + 0.00001));
       lastNotified=now;
     }
-    GraphVertex downVertex=down.getGraphVertex(down.addVertex(vertex));
+    Vertex downVertex=down.getVertex(down.addVertex(vertex));
     HashSet<Vertex> neighbors=new HashSet<Vertex>();
     for (    Edge ee : graph.getIncoming(vertex)) {
       nEdges--;
-      GraphVertex originalFromVertex=graph.getGraphVertex(ee.getFromVertex());
+      Vertex originalFromVertex=graph.getVertex(ee.getFromVertex());
       down.addVertex(originalFromVertex.vertex);
       originalFromVertex.removeOutgoing(ee);
       downVertex.addIncoming(ee);
       neighbors.add(originalFromVertex.vertex);
     }
-    GraphVertex upVertex=up.getGraphVertex(up.addVertex(vertex));
+    Vertex upVertex=up.getVertex(up.addVertex(vertex));
     for (    DirectEdge ee : filter(graph.getOutgoing(vertex),DirectEdge.class)) {
       nEdges--;
-      GraphVertex originalToVertex=graph.getGraphVertex(ee.getToVertex());
+      Vertex originalToVertex=graph.getVertex(ee.getToVertex());
       up.addVertex(originalToVertex.vertex);
       originalToVertex.removeIncoming(ee);
       upVertex.addOutgoing(ee);

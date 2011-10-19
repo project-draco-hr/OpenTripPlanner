@@ -1,8 +1,8 @@
 {
-  Collection<GraphVertex> vertices=graph.getVertices();
+  Collection<Vertex> vertices=graph.getVertices();
   BinHeap<Vertex> pq=new BinHeap<Vertex>(vertices.size());
   int i=0;
-  for (  GraphVertex gv : vertices) {
+  for (  Vertex gv : vertices) {
     if (++i % 100000 == 0)     _log.debug("    vertex {}",i);
     Vertex v=gv.vertex;
     if (!isContractable(v)) {

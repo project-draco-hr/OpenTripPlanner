@@ -50,7 +50,7 @@
   graph.addEdge(new TurnEdge(right,topBack));
   graph.addEdge(new MockTransfer(bottom,trIn,99999));
   graph.addEdge(new MockTransfer(bottomBack,trIn,99999));
-  for (  GraphVertex gv : graph.getVertices()) {
+  for (  Vertex gv : graph.getVertices()) {
     gv.vertex.setDistanceToNearestTransitStop(0);
   }
   TraverseOptions options=new TraverseOptions();

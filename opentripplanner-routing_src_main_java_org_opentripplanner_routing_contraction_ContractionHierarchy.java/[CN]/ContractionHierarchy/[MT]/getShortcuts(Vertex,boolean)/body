@@ -64,10 +64,10 @@
             toRemove.add(e);
           }
         }
-        GraphVertex ugv=graph.getGraphVertex(wsresult.vertex);
+        Vertex ugv=graph.getVertex(wsresult.vertex);
         for (        DirectEdge e : toRemove) {
           ugv.removeOutgoing(e);
-          graph.getGraphVertex(e.getToVertex()).removeIncoming(e);
+          graph.getVertex(e.getToVertex()).removeIncoming(e);
         }
       }
       searchSpace+=wsresult.searchSpace;

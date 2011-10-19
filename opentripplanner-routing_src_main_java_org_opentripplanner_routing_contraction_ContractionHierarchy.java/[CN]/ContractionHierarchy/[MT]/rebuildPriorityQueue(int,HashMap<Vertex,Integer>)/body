@@ -2,7 +2,7 @@
   _log.debug("    rebuild priority queue, hoplimit is now {}",hopLimit);
   BinHeap<Vertex> newpq=new BinHeap<Vertex>(graph.getVertices().size());
   int i=0;
-  for (  GraphVertex gv : graph.getVertices()) {
+  for (  Vertex gv : graph.getVertices()) {
     if (++i % 100000 == 0)     _log.debug("    vertex {}",i);
     Vertex v=gv.vertex;
     if (!isContractable(v)) {

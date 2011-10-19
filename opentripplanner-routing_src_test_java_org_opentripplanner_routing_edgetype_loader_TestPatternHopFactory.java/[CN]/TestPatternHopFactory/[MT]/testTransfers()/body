@@ -14,6 +14,6 @@
   GraphPath path=spt.getPath(stop_g,false);
   assertNotNull(path);
   assertTrue("expected to use much later trip due to min transfer time",path.getEndTime() - startTime > 4.5 * 60 * 60);
-  graph.getGraphVertex(e_arrive).removeOutgoing(edge);
-  graph.getGraphVertex(f_depart).removeIncoming(edge);
+  graph.getVertex(e_arrive).removeOutgoing(edge);
+  graph.getVertex(f_depart).removeIncoming(edge);
 }

@@ -1,8 +1,8 @@
 {
-  for (  GraphVertex gv : graph.getVertices()) {
-    GraphVertex origgv=orig.getGraphVertex(gv.vertex.getLabel());
+  for (  Vertex gv : graph.getVertices()) {
+    Vertex origgv=orig.getVertex(gv.vertex.getLabel());
     if (origgv.equals(gv)) {
-      graph.addGraphVertex(origgv);
+      graph.addVertex(origgv);
     }
   }
 }
