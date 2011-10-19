@@ -1,6 +1,6 @@
 {
   LOG.debug("Consolidating edges...");
-  List<Edge> edges=new ArrayList<Edge>(countVertices() * 2);
+  List<Edge> edges=new ArrayList<Edge>(this.countEdges());
   for (  Vertex v : vertices.values()) {
     edges.addAll(v.getOutgoing());
   }
