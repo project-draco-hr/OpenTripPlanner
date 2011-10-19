@@ -27,7 +27,7 @@
     weight[ui]=new double[ne];
     int ei=0;
     for (    State sv : svs) {
-      vertex[ui][ei]=((Vertex)(sv.getVertex())).index;
+      vertex[ui][ei]=sv.getVertex().index;
       weight[ui][ei]=sv.getWeight();
       ei++;
     }

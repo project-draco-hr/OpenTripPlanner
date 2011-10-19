@@ -10,10 +10,10 @@
       for (      DirectEdge de : ((StreetLocation)target).getExtra()) {
         Vertex gv;
         if (options.isArriveBy()) {
-          gv=(Vertex)(de.getToVertex());
+          gv=de.getToVertex();
         }
  else {
-          gv=(Vertex)(de.getFromVertex());
+          gv=de.getFromVertex();
         }
         int gvi=gv.getIndex();
         if (gv == target)         continue;
@@ -23,21 +23,21 @@
       }
     }
  else {
-      int i=((Vertex)target).getIndex();
+      int i=target.getIndex();
       weights[i]=0;
       q.insert(target,0);
     }
     while (!q.empty()) {
       double uw=q.peek_min_key();
       Vertex u=q.extract_min();
-      int ui=((Vertex)u).getIndex();
+      int ui=u.getIndex();
       if (uw > weights[ui])       continue;
       Iterable<Edge> edges;
       if (options.isArriveBy())       edges=u.getOutgoing();
  else       edges=u.getIncoming();
       for (      Edge e : edges) {
         if (e instanceof DirectEdge) {
-          Vertex v=(Vertex)(options.isArriveBy() ? ((DirectEdge)e).getToVertex() : ((DirectEdge)e).getFromVertex());
+          Vertex v=options.isArriveBy() ? ((DirectEdge)e).getToVertex() : e.getFromVertex();
           double vw=uw + (timeNotWeight ? e.timeLowerBound(options) : e.weightLowerBound(options));
           int vi=v.getIndex();
           if (weights[vi] > vw) {
