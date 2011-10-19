@@ -1,8 +1,7 @@
 {
   this();
-  for (  GraphVertex gv : g.getVertices()) {
-    Vertex v=gv.vertex;
-    for (    Edge e : gv.getOutgoing())     this.addOutgoing(v,e);
-    for (    Edge e : gv.getIncoming())     this.addIncoming(v,e);
+  for (  Vertex v : g.getVertices()) {
+    for (    Edge e : v.getOutgoing())     this.addOutgoing(v,e);
+    for (    Edge e : v.getIncoming())     this.addIncoming(v,e);
   }
 }
