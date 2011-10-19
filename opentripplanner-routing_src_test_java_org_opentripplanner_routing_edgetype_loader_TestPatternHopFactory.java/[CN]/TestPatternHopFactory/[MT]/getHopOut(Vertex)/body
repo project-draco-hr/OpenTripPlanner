@@ -1,6 +1,6 @@
 {
-  for (  PatternBoard e : filter(graph.getOutgoing(v),PatternBoard.class)) {
-    for (    PatternHop f : filter(graph.getOutgoing(e.getToVertex()),PatternHop.class)) {
+  for (  PatternBoard e : filter(v.getOutgoing(),PatternBoard.class)) {
+    for (    PatternHop f : filter(e.getToVertex().getOutgoing(),PatternHop.class)) {
       return f;
     }
   }

@@ -7,7 +7,7 @@
     assertTrue(e instanceof PatternBoard);
   }
   PatternBoard pb=(PatternBoard)stop_a_depart.getOutgoing().iterator().next();
-  Vertex journey_a_1=graph.getVertex(pb.getToVertex());
+  Vertex journey_a_1=pb.getToVertex();
   assertEquals(1,journey_a_1.getDegreeIn());
   for (  DirectEdge e : filter(journey_a_1.getOutgoing(),DirectEdge.class)) {
     if (e.getToVertex() instanceof TransitStop) {

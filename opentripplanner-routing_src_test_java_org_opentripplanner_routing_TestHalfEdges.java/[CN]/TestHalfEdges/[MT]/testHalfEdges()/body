@@ -1,10 +1,10 @@
 {
   TraverseOptions options=new TraverseOptions();
-  HashSet<Edge> turns=new HashSet<Edge>(graph.getOutgoing(left));
-  turns.addAll(graph.getOutgoing(leftBack));
+  HashSet<Edge> turns=new HashSet<Edge>(left.getOutgoing());
+  turns.addAll(leftBack.getOutgoing());
   StreetLocation start=StreetLocation.createStreetLocation("start","start",cast(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()));
-  HashSet<Edge> endTurns=new HashSet<Edge>(graph.getOutgoing(right));
-  endTurns.addAll(graph.getOutgoing(rightBack));
+  HashSet<Edge> endTurns=new HashSet<Edge>(right.getOutgoing());
+  endTurns.addAll(rightBack.getOutgoing());
   StreetLocation end=StreetLocation.createStreetLocation("end","end",cast(endTurns,StreetEdge.class),new LinearLocation(0,0.8).getCoordinate(right.getGeometry()));
   assertTrue(start.getX() < end.getX());
   assertTrue(start.getY() < end.getY());
