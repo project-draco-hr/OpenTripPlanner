@@ -1,9 +1,8 @@
 {
   LOG.debug("Consolidating edges...");
-  Set<Edge> edges=new HashSet<Edge>();
+  List<Edge> edges=new ArrayList<Edge>(countVertices() * 2);
   for (  Vertex v : vertices.values()) {
     edges.addAll(v.getOutgoing());
-    edges.addAll(v.getIncoming());
   }
   LOG.debug("Writing graph...");
   out.defaultWriteObject();

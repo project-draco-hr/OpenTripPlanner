@@ -1,12 +1,12 @@
 {
   LOG.debug("Reading graph...");
   in.defaultReadObject();
-  Set<Edge> edges=(HashSet<Edge>)in.readObject();
+  List<Edge> edges=(ArrayList<Edge>)in.readObject();
   LOG.debug("Loading edges...");
   this.vertices=new HashMap<String,Vertex>();
   int count=0;
   for (  Edge e : edges) {
-    if (++count % 1000 == 0)     LOG.debug("loading edge {} : {}",count,e);
+    if (++count % 100000 == 0)     LOG.debug("loading edge {} / {}",count,edges.size());
     Vertex fromv=e.getFromVertex();
     Vertex tov=null;
     if (e instanceof AbstractEdge)     tov=((AbstractEdge)e).getToVertex();
