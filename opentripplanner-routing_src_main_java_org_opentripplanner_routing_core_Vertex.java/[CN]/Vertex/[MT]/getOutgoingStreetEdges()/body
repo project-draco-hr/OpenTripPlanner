@@ -1,6 +1,6 @@
 {
   List<DirectEdge> result=new ArrayList<DirectEdge>();
-  for (  Edge out : vertex.getOutgoing()) {
+  for (  Edge out : this.getOutgoing()) {
     if (!(out instanceof TurnEdge || out instanceof OutEdge || out instanceof PlainStreetEdge)) {
       continue;
     }

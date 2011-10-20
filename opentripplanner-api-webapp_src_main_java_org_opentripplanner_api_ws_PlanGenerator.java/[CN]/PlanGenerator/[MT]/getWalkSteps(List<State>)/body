@@ -56,9 +56,9 @@
         boolean shouldGenerateContinue=false;
         if (edge instanceof PlainStreetEdge) {
           double angleDiff=getAbsoluteAngleDiff(thisAngle,lastAngle);
-          for (          DirectEdge alternative : pathService.getOutgoingEdges(currState.getBackState().getVertex())) {
+          for (          DirectEdge alternative : currState.getBackState().getVertex().getOutgoingStreetEdges()) {
             if (alternative instanceof TinyTurnEdge) {
-              alternative=pathService.getOutgoingEdges(alternative.getToVertex()).get(0);
+              alternative=alternative.getToVertex().getOutgoingStreetEdges().get(0);
             }
             if (alternative.getName().equals(streetName)) {
               continue;
@@ -78,8 +78,8 @@
           State backState=currState.getBackState();
           State twoStatesBack=backState.getBackState();
           Vertex backVertex=twoStatesBack.getVertex();
-          for (          DirectEdge alternative : pathService.getOutgoingEdges(backVertex)) {
-            alternative=pathService.getOutgoingEdges(alternative.getToVertex()).get(0);
+          for (          DirectEdge alternative : backVertex.getOutgoingStreetEdges()) {
+            alternative=alternative.getToVertex().getOutgoingStreetEdges().get(0);
             if (alternative.getName().equals(streetName)) {
               continue;
             }
