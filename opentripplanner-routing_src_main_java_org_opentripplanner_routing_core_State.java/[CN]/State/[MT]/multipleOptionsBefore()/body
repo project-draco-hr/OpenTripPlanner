@@ -1,15 +1,13 @@
 {
-  Graph graph=_graphService.getGraph();
   boolean foundAlternatePaths=false;
-  Vertex start=edge.getFromVertex();
-  for (  Edge out : start.getOutgoing()) {
-    if (out == edge) {
+  for (  Edge out : backState.vertex.getOutgoing()) {
+    if (out == backEdge) {
       continue;
     }
     if (!(out instanceof TurnEdge || out instanceof OutEdge || out instanceof PlainStreetEdge)) {
       continue;
     }
-    if (state != null && out.traverse(state) == null) {
+    if (out.traverse(this) == null) {
       continue;
     }
     foundAlternatePaths=true;
