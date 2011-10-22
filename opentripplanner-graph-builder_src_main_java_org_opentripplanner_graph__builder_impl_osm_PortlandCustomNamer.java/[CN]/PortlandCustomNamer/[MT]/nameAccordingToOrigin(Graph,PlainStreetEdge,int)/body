@@ -1,0 +1,22 @@
+{
+  if (maxDepth == 0) {
+    return null;
+  }
+  Vertex fromVertex=e.getFromVertex();
+  for (  PlainStreetEdge in : IterableLibrary.filter(graph.getIncoming(fromVertex),PlainStreetEdge.class)) {
+    if (in.hasBogusName()) {
+      String name=nameAccordingToOrigin(graph,in,maxDepth - 1);
+      if (name == null) {
+        continue;
+      }
+      e.setName(name);
+      return name;
+    }
+ else {
+      String name=in.getName();
+      e.setName(name);
+      return name;
+    }
+  }
+  return null;
+}

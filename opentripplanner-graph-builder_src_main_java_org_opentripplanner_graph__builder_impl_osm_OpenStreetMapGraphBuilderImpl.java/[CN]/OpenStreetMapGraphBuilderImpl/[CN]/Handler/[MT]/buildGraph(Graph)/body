@@ -130,6 +130,9 @@
   for (  TurnRestriction restriction : turnRestrictionsByTag.values()) {
     turnRestrictions.put(restriction.from,restriction);
   }
+  if (customNamer != null) {
+    customNamer.postprocess(graph);
+  }
   StreetUtils.pruneFloatingIslands(graph);
   StreetUtils.makeEdgeBased(graph,endpoints,turnRestrictions);
 }
