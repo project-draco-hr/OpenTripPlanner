@@ -3,7 +3,7 @@
   Arrays.fill(result,Double.POSITIVE_INFINITY);
   BinHeap<Integer> q=new BinHeap<Integer>();
   for (  Vertex origin : origins) {
-    int originIndex=origin.index;
+    int originIndex=origin.getIndex();
     result[originIndex]=0;
     q.insert(originIndex,0);
   }
