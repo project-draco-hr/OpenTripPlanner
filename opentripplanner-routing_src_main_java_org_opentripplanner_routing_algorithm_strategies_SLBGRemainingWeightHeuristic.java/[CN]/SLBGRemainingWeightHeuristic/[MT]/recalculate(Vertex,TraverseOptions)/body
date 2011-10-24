@@ -1,0 +1,7 @@
+{
+  if (target != this.target) {
+    this.target=target;
+    if (target instanceof StreetLocation)     this.weights=lbg.sssp((StreetLocation)target,options);
+ else     this.weights=lbg.sssp((StreetLocation)target,options);
+  }
+}

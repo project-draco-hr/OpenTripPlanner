@@ -1,0 +1,8 @@
+{
+  int group=s.getVertex().getGroupIndex();
+  if (group < weights.length && group >= 0) {
+    double h=weights[group];
+    return h == Double.POSITIVE_INFINITY ? 0 : h;
+  }
+ else   return 0;
+}

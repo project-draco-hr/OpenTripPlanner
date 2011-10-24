@@ -1,0 +1,37 @@
+{
+  double[] result=new double[max_gindex];
+  Arrays.fill(result,Double.POSITIVE_INFINITY);
+  BinHeap<Integer> q=new BinHeap<Integer>();
+  for (  DirectEdge de : origin.getExtra()) {
+    Vertex toVertex=de.getToVertex();
+    int toGroup=toVertex.getGroupIndex();
+    if (toVertex == origin)     continue;
+    if (toGroup >= max_gindex || toGroup < 0)     continue;
+    result[toGroup]=0;
+    q.insert(toGroup,0);
+  }
+  double walkScale=-1 / options.speed * options.walkReluctance;
+  LOG.info("Performing SSSP");
+  long t0=System.currentTimeMillis();
+  while (!q.empty()) {
+    double uw=q.peek_min_key();
+    int ui=q.extract_min();
+    int[] vs=vertex[ui];
+    double[] ws=weight[ui];
+    LOG.trace("extract {}",uw);
+    if (vs == null)     continue;
+    int ne=vs.length;
+    for (int ei=0; ei < ne; ei++) {
+      int vi=vs[ei];
+      double weight=ws[ei];
+      if (weight < 0)       weight=weight * walkScale;
+      double vw=uw + weight;
+      if (result[vi] > vw) {
+        result[vi]=vw;
+        q.insert(vi,vw);
+      }
+    }
+  }
+  LOG.info("End SSSP ({} msec)",System.currentTimeMillis() - t0);
+  return result;
+}

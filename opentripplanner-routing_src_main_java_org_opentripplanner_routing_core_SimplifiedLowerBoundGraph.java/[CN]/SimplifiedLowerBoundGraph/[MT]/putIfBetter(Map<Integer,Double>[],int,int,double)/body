@@ -1,0 +1,9 @@
+{
+  Map<Integer,Double> map=mapArray[fg];
+  Double old_value=map.get(tg);
+  if (old_value == null || old_value > value) {
+    map.put(tg,value);
+    return true;
+  }
+  return false;
+}

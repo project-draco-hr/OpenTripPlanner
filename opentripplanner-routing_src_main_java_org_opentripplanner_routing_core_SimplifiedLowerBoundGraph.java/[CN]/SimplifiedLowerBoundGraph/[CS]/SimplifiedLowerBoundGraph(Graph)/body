@@ -1,0 +1,48 @@
+{
+  this.originalGraph=original;
+  groupVertices();
+  Map<Integer,Double>[] timeEdges=(Map<Integer,Double>[])new Map[max_gindex];
+  Map<Integer,Double>[] distEdges=(Map<Integer,Double>[])new Map[max_gindex];
+  for (int group=0; group < max_gindex; group++) {
+    timeEdges[group]=new HashMap<Integer,Double>();
+    distEdges[group]=new HashMap<Integer,Double>();
+  }
+  LOG.info("finding border edges...");
+  TraverseOptions dummyOptions=new TraverseOptions();
+  for (int from_gindex=0; from_gindex < max_gindex; from_gindex++) {
+    if (from_gindex % 10000 == 0)     LOG.info("    group {}",from_gindex);
+    List<Vertex> group=vertex_by_gindex.get(from_gindex);
+    for (    Vertex u : group) {
+      for (      Edge e : u.getOutgoing()) {
+        DirectEdge de=(DirectEdge)e;
+        Vertex v=de.getToVertex();
+        int to_gindex=v.getGroupIndex();
+        if (to_gindex == from_gindex)         continue;
+        if (de instanceof PatternHop || de instanceof Hop)         putIfBetter(distEdges,from_gindex,to_gindex,de.timeLowerBound(dummyOptions));
+ else         putIfBetter(distEdges,from_gindex,to_gindex,de.getDistance());
+      }
+    }
+  }
+  LOG.info("saving outgoing edges for each group vertex...");
+  vertex=new int[max_gindex][];
+  weight=new double[max_gindex][];
+  for (int group=0; group < max_gindex; group++) {
+    if (group % 10000 == 0)     LOG.info("    group {}",group);
+    Map<Integer,Double> te=timeEdges[group];
+    Map<Integer,Double> de=distEdges[group];
+    int nOutgoing=te.size() + de.size();
+    vertex[group]=new int[nOutgoing];
+    weight[group]=new double[nOutgoing];
+    int ei=0;
+    for (    Entry<Integer,Double> edge : te.entrySet()) {
+      vertex[group][ei]=edge.getKey();
+      weight[group][ei]=edge.getValue();
+      ei+=1;
+    }
+    for (    Entry<Integer,Double> edge : de.entrySet()) {
+      vertex[group][ei]=edge.getKey();
+      weight[group][ei]=-(edge.getValue());
+      ei+=1;
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  LOG.info("grouping vertices by location...");
+  max_gindex=0;
+  LOG.info("building spatial index...");
+  STRtree vertexIndex=new STRtree();
+  for (  Vertex v : originalGraph.getVertices()) {
+    Envelope env=new Envelope(v.getCoordinate());
+    vertexIndex.insert(env,v);
+    v.setGroupIndex(-1);
+  }
+  vertexIndex.build();
+  for (  Vertex v : originalGraph.getVertices()) {
+    if (v.getGroupIndex() != -1)     continue;
+    Envelope env=new Envelope(v.getCoordinate());
+    env.expandBy(DistanceLibrary.metersToDegrees(GROUP_RADIUS));
+    @SuppressWarnings("unchecked") List<Vertex> nearby=vertexIndex.query(env);
+    ArrayList<Vertex> group=new ArrayList<Vertex>();
+    for (    Vertex n : nearby) {
+      if (n.getGroupIndex() == -1 && n.distance(v) <= GROUP_RADIUS) {
+        n.setGroupIndex(max_gindex);
+        group.add(n);
+      }
+    }
+    group.trimToSize();
+    vertex_by_gindex.add(group);
+    max_gindex+=1;
+    if (max_gindex % 10000 == 0)     LOG.info("    group {}",max_gindex);
+  }
+}
