@@ -8,8 +8,8 @@
     throw new TransitTimesException();
   }
   Graph graph=_graphService.getGraph();
-  options.remainingWeightHeuristic=new BidirectionalRemainingWeightHeuristic(graph);
-  RemainingWeightHeuristic heuristic=options.remainingWeightHeuristic;
+  RemainingWeightHeuristic heuristic=_remainingWeightHeuristicFactory.getInstanceForSearch(options,target);
+  LOG.debug("Applied A* heuristic: {}",options.remainingWeightHeuristic);
   List<State> returnStates=new LinkedList<State>();
   final ExtraEdgesStrategy extraEdgesStrategy=options.extraEdgesStrategy;
   Map<Vertex,List<Edge>> extraEdges=new HashMap<Vertex,List<Edge>>();
