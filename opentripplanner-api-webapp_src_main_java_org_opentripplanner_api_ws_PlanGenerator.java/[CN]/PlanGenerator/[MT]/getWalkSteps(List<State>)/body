@@ -79,7 +79,11 @@
           State twoStatesBack=backState.getBackState();
           Vertex backVertex=twoStatesBack.getVertex();
           for (          DirectEdge alternative : pathService.getOutgoingEdges(backVertex)) {
-            alternative=pathService.getOutgoingEdges(alternative.getToVertex()).get(0);
+            List<DirectEdge> alternatives=pathService.getOutgoingEdges(alternative.getToVertex());
+            if (alternatives.size() == 0) {
+              continue;
+            }
+            alternative=alternatives.get(0);
             if (alternative.getName().equals(streetName)) {
               continue;
             }

@@ -39,6 +39,11 @@ case START:
         leg=makeLeg(itinerary,state);
         startWalk=i;
       }
+ else       if (mode == TraverseMode.CAR) {
+        pgstate=PlanGenState.CAR;
+        leg=makeLeg(itinerary,state);
+        startWalk=i;
+      }
  else       if (mode == TraverseMode.BOARDING) {
         pgstate=PlanGenState.PRETRANSIT;
         leg=makeLeg(itinerary,state);
@@ -87,6 +92,26 @@ finalizeLeg(leg,state,path.states,startWalk,i,coordinates);
 leg=makeLeg(itinerary,state);
 startWalk=i;
 pgstate=PlanGenState.WALK;
+}
+ else if (mode == TraverseMode.STL) {
+finalizeLeg(leg,state,path.states,startWalk,i,coordinates);
+leg=null;
+pgstate=PlanGenState.PRETRANSIT;
+}
+ else if (backEdgeNarrative instanceof LegSwitchingEdge) {
+finalizeLeg(leg,state,path.states,startWalk,i - 1,coordinates);
+leg=null;
+pgstate=PlanGenState.START;
+}
+ else {
+System.out.println("UNEXPECTED STATE: " + mode);
+}
+break;
+case CAR:
+if (leg == null) {
+leg=makeLeg(itinerary,state);
+}
+if (mode == TraverseMode.CAR) {
 }
  else if (mode == TraverseMode.STL) {
 finalizeLeg(leg,state,path.states,startWalk,i,coordinates);
