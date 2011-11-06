@@ -369,6 +369,7 @@ catch (          IllegalAccessException e1) {
   JScrollPane mdScrollPane=new JScrollPane(metadataList);
   mdScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
   rightPanelTabs.addTab("metadata",mdScrollPane);
+  metadataList.setMaximumSize(new Dimension(200,1600));
   rightPanelTabs.setMaximumSize(new Dimension(200,1600));
   showGraph.init();
   addWindowListener(new ExitListener());

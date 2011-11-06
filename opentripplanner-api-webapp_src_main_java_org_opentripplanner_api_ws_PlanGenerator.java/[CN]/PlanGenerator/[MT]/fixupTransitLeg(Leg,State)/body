@@ -10,4 +10,5 @@
     leg.routeLongName=trip.getRoute().getLongName();
   }
   leg.mode=en.getMode().toString();
+  leg.startTime=new Date(state.getBackState().getTimeInMillis());
 }

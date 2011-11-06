@@ -1,0 +1,26 @@
+{
+  _log.info("Multiplying all bike safety values by " + (1 / bestBikeSafety));
+  HashSet<Edge> seenEdges=new HashSet<Edge>();
+  for (  Vertex vertex : graph.getVertices()) {
+    for (    Edge e : vertex.getOutgoing()) {
+      if (!(e instanceof PlainStreetEdge)) {
+        continue;
+      }
+      PlainStreetEdge pse=(PlainStreetEdge)e;
+      if (!seenEdges.contains(e)) {
+        seenEdges.add(e);
+        pse.setBicycleSafetyEffectiveLength(pse.getBicycleSafetyEffectiveLength() / bestBikeSafety);
+      }
+    }
+    for (    Edge e : vertex.getIncoming()) {
+      if (!(e instanceof PlainStreetEdge)) {
+        continue;
+      }
+      PlainStreetEdge pse=(PlainStreetEdge)e;
+      if (!seenEdges.contains(e)) {
+        seenEdges.add(e);
+        pse.setBicycleSafetyEffectiveLength(pse.getBicycleSafetyEffectiveLength() / bestBikeSafety);
+      }
+    }
+  }
+}
