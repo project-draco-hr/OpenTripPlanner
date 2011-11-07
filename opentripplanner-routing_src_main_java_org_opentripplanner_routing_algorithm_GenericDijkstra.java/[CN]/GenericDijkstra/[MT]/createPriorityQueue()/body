@@ -1,4 +1,4 @@
 {
   if (_priorityQueueFactory != null)   return _priorityQueueFactory.create(graph.getVertices().size());
-  return new BinHeap<State>(graph.getVertices().size() / 2);
+  return new BinHeap<State>();
 }
