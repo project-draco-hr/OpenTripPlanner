@@ -1,5 +1,5 @@
 {
-  GenericDijkstra dijkstra=new GenericDijkstra(graph,options);
+  GenericDijkstra dijkstra=new GenericDijkstra(options);
   dijkstra.setShortestPathTreeFactory(new ShortestPathTreeFactory(){
     @Override public ShortestPathTree create(){
       ReachMiniSPT spt=new ReachMiniSPT(getEdgeTreesVertexLimit() * 2,Double.MAX_VALUE);
@@ -24,10 +24,10 @@
     ArrayList<EdgeWithReach> edgesToRemove=new ArrayList<EdgeWithReach>();
     Collection<Edge> edges;
     if (options.isArriveBy()) {
-      edges=graph.getIncoming(v);
+      edges=ograph.getIncoming(v);
     }
  else {
-      edges=graph.getOutgoing(v);
+      edges=ograph.getOutgoing(v);
     }
     for (    EdgeWithReach e : IterableLibrary.filter(edges,EdgeWithReach.class)) {
       double reach=spt.getHeight(spt.getState(v),outPenalty);
@@ -37,7 +37,7 @@
       edgesToRemove.add(e);
     }
     for (    EdgeWithReach e : edgesToRemove) {
-      graph.removeEdge(e);
+      ograph.removeDirectEdge(e);
       removed++;
     }
   }

@@ -2,16 +2,15 @@
   HashMap<Class<? extends DirectEdge>,Class<? extends DirectEdge>> classMapping=new HashMap<Class<? extends DirectEdge>,Class<? extends DirectEdge>>();
   HashSet<DirectEdge> edgesToRemove=new HashSet<DirectEdge>();
   HashSet<DirectEdge> edgesToAdd=new HashSet<DirectEdge>();
-  for (  GraphVertex gv : graph.getVertices()) {
-    Vertex vertex=gv.vertex;
-    for (    Edge e : graph.getOutgoing(vertex)) {
+  for (  Vertex vertex : graph.getVertices()) {
+    for (    Edge e : vertex.getOutgoing()) {
       if (e instanceof StreetEdge) {
         StreetEdge se=((StreetEdge)e);
         edgesToRemove.add(se);
         edgesToAdd.add(reachifyEdge(graph,classMapping,se));
       }
     }
-    for (    Edge e : graph.getIncoming(vertex)) {
+    for (    Edge e : vertex.getIncoming()) {
       if (edgesToRemove.contains(e)) {
         continue;
       }

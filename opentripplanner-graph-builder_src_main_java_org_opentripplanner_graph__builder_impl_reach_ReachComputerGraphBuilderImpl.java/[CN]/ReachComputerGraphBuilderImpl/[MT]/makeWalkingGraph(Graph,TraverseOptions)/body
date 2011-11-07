@@ -1,26 +1,19 @@
 {
-  Graph newGraph=new Graph();
-  HashSet<Edge> edges=new HashSet<Edge>();
-  for (  GraphVertex gv : graph.getVertices()) {
-    Vertex vertex=gv.vertex;
-    newGraph.addVertex(vertex);
+  OverlayGraph newGraph=new OverlayGraph(graph);
+  for (  Vertex vertex : graph.getVertices()) {
     options.setArriveBy(false);
-    for (    Edge e : graph.getOutgoing(vertex)) {
+    for (    Edge e : vertex.getOutgoing()) {
       if (e instanceof StreetEdge || e instanceof StreetTransitLink) {
         if (e.traverse(new State(vertex,options)) != null) {
-          if (!edges.contains(e)) {
-            newGraph.addEdge((DirectEdge)e);
-          }
+          newGraph.addOutgoing(vertex,e);
         }
       }
     }
     options.setArriveBy(true);
-    for (    Edge e : graph.getIncoming(vertex)) {
+    for (    Edge e : vertex.getIncoming()) {
       if (e instanceof StreetEdge || e instanceof StreetTransitLink) {
         if (e.traverse(new State(vertex,options)) != null) {
-          if (!edges.contains(e)) {
-            newGraph.addEdge((DirectEdge)e);
-          }
+          newGraph.addIncoming(vertex,e);
         }
       }
     }

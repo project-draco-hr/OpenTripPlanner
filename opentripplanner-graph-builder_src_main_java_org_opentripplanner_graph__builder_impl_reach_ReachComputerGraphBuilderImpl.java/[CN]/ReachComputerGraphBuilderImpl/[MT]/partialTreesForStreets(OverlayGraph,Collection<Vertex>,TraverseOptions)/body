@@ -1,29 +1,29 @@
 {
   HashSet<Edge> added=new HashSet<Edge>();
-  Graph workingGraph=new Graph();
+  OverlayGraph workingGraph=new OverlayGraph();
   for (  Vertex v : streetVertices) {
-    for (    Edge e : graph.getOutgoing(v)) {
+    for (    Edge e : v.getOutgoing()) {
       if (e instanceof EdgeWithReach) {
         if (!added.contains(e)) {
           added.add(e);
-          workingGraph.addEdge((DirectEdge)e);
+          workingGraph.addDirectEdge((DirectEdge)e);
         }
       }
     }
-    for (    Edge e : graph.getIncoming(v)) {
+    for (    Edge e : v.getIncoming()) {
       if (e instanceof EdgeWithReach) {
         if (!added.contains(e)) {
           added.add(e);
-          workingGraph.addEdge((DirectEdge)e);
+          workingGraph.addDirectEdge((DirectEdge)e);
         }
       }
     }
   }
   added.clear();
-  graph=workingGraph;
+  ograph=workingGraph;
   epsilon=initialStreetEpsilon;
   while (epsilon <= maxStreetEpsilon) {
-    graph=partialTreesPhase(graph,streetVertices,options,false);
+    ograph=partialTreesPhase(ograph,streetVertices,options,false);
     epsilon*=streetEpsilonMultiplier;
   }
 }
