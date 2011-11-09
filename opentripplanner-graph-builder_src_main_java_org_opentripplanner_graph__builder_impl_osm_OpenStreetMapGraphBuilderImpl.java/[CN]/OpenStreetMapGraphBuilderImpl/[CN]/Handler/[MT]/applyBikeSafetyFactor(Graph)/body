@@ -1,9 +1,8 @@
 {
   _log.info("Multiplying all bike safety values by " + (1 / bestBikeSafety));
   HashSet<Edge> seenEdges=new HashSet<Edge>();
-  for (  GraphVertex gv : graph.getVertices()) {
-    Vertex vertex=gv.vertex;
-    for (    Edge e : graph.getOutgoing(vertex)) {
+  for (  Vertex vertex : graph.getVertices()) {
+    for (    Edge e : vertex.getOutgoing()) {
       if (!(e instanceof PlainStreetEdge)) {
         continue;
       }
@@ -13,7 +12,7 @@
         pse.setBicycleSafetyEffectiveLength(pse.getBicycleSafetyEffectiveLength() / bestBikeSafety);
       }
     }
-    for (    Edge e : graph.getIncoming(vertex)) {
+    for (    Edge e : vertex.getIncoming()) {
       if (!(e instanceof PlainStreetEdge)) {
         continue;
       }
