@@ -3,7 +3,7 @@
     return null;
   }
   Vertex toVertex=e.getToVertex();
-  for (  PlainStreetEdge out : IterableLibrary.filter(graph.getOutgoing(toVertex),PlainStreetEdge.class)) {
+  for (  PlainStreetEdge out : IterableLibrary.filter(toVertex.getOutgoing(),PlainStreetEdge.class)) {
     if (out.hasBogusName()) {
       String name=nameAccordingToDestination(graph,out,maxDepth - 1);
       if (name == null) {
