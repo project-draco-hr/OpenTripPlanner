@@ -22,5 +22,8 @@
     street.setWheelchairAccessible(false);
   }
   street.setSlopeOverride(wayPropertySet.getSlopeOverride(way));
+  if (customNamer != null) {
+    customNamer.nameWithEdge(way,street);
+  }
   return street;
 }

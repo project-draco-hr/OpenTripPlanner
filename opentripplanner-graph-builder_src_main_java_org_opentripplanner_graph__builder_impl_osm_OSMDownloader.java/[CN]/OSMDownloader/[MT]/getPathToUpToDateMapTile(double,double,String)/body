@@ -7,16 +7,24 @@
     _log.debug(url.toString());
     InputStream in=url.openStream();
     FileOutputStream out=new FileOutputStream(path);
-    byte[] data=new byte[4096];
-    while (true) {
-      int numBytes=in.read(data);
-      if (numBytes == -1) {
-        break;
+    try {
+      byte[] data=new byte[4096];
+      while (true) {
+        int numBytes=in.read(data);
+        if (numBytes == -1) {
+          break;
+        }
+        out.write(data,0,numBytes);
       }
-      out.write(data,0,numBytes);
+      in.close();
+      out.close();
     }
-    in.close();
-    out.close();
+ catch (    RuntimeException e) {
+      out.close();
+      _log.info("Removing half-written file " + path);
+      path.delete();
+      throw e;
+    }
   }
   return path;
 }

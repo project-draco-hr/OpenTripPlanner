@@ -81,8 +81,11 @@
       PlainStreetEdge street=streets.getFirst();
       if (street != null) {
         graph.addEdge(street);
-        Double safety=wayData.getSafetyFeatures().getFirst();
-        street.setBicycleSafetyEffectiveLength(street.getLength() * safety * getBikeSafetyFactor());
+        double safety=wayData.getSafetyFeatures().getFirst();
+        street.setBicycleSafetyEffectiveLength(street.getLength() * safety);
+        if (safety < bestBikeSafety) {
+          bestBikeSafety=safety;
+        }
         if (note != null) {
           street.setNote(note);
         }
@@ -90,8 +93,11 @@
       PlainStreetEdge backStreet=streets.getSecond();
       if (backStreet != null) {
         graph.addEdge(backStreet);
-        Double safety=wayData.getSafetyFeatures().getSecond();
-        backStreet.setBicycleSafetyEffectiveLength(backStreet.getLength() * safety * getBikeSafetyFactor());
+        double safety=wayData.getSafetyFeatures().getSecond();
+        if (safety < bestBikeSafety) {
+          bestBikeSafety=safety;
+        }
+        backStreet.setBicycleSafetyEffectiveLength(backStreet.getLength() * safety);
         if (note != null) {
           backStreet.setNote(note);
         }
@@ -130,6 +136,10 @@
   for (  TurnRestriction restriction : turnRestrictionsByTag.values()) {
     turnRestrictions.put(restriction.from,restriction);
   }
+  if (customNamer != null) {
+    customNamer.postprocess(graph);
+  }
+  applyBikeSafetyFactor(graph);
   StreetUtils.pruneFloatingIslands(graph);
   StreetUtils.makeEdgeBased(graph,endpoints,turnRestrictions);
 }

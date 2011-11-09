@@ -1,0 +1,22 @@
+{
+  if (!edge.hasBogusName()) {
+    return;
+  }
+  String highway=way.getTag("highway");
+  if ("motorway_link".equals(highway) || "trunk_link".equals(highway)) {
+    if (edge.back) {
+      nameByDestination.add(edge);
+    }
+ else {
+      nameByOrigin.add(edge);
+    }
+  }
+ else   if ("secondary_link".equals(highway) || "primary_link".equals(highway) || "tertiary_link".equals(highway)) {
+    if (edge.back) {
+      nameByOrigin.add(edge);
+    }
+ else {
+      nameByDestination.add(edge);
+    }
+  }
+}
