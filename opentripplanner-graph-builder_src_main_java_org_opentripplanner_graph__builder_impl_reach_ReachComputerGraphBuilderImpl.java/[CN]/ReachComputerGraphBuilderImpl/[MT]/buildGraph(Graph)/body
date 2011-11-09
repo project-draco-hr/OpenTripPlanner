@@ -3,12 +3,12 @@
   options.walkReluctance=1;
   options.speed=1;
   addReachToGraph(graph);
-  graph=makeWalkingGraph(graph,options);
-  Set<Vertex> streetVertices=getWalkingVertices(graph,options);
+  OverlayGraph walkGraph=makeWalkingGraph(graph,options);
+  Set<Vertex> streetVertices=getWalkingVertices(walkGraph,options);
   options.setArriveBy(true);
-  removeEdgeTrees(graph,streetVertices,options);
+  removeEdgeTrees(walkGraph,streetVertices,options);
   options.setArriveBy(false);
-  removeEdgeTrees(graph,streetVertices,options);
-  partialTreesForStreets(graph,streetVertices,options);
+  removeEdgeTrees(walkGraph,streetVertices,options);
+  partialTreesForStreets(walkGraph,streetVertices,options);
   inPenalty=outPenalty=null;
 }

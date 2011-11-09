@@ -4,5 +4,5 @@
     toIncoming=new ArrayList<Edge>(INITIAL_EDGELIST_CAPACITY);
     incoming.put(tov,toIncoming);
   }
-  toIncoming.add(e);
+  if (!toIncoming.contains(e))   toIncoming.add(e);
 }

@@ -1,6 +1,6 @@
 {
   log.info("Partial trees phase at epsilon = " + epsilon);
-  GenericDijkstra dijkstra=new GenericDijkstra(graph,options);
+  GenericDijkstra dijkstra=new GenericDijkstra(options,oGraph);
   if (!transitStops) {
     dijkstra.setSearchTerminationStrategy(new PartialTreesPhaseTerminationCondition());
   }
@@ -14,7 +14,7 @@
   dijkstra.setPriorityQueueFactory(new OTPPriorityQueueFactory(){
     @SuppressWarnings("unchecked") public OTPPriorityQueue<State> create(    int maxSize){
       int size=(int)epsilon;
-      int graphSize=graph.getVertices().size();
+      int graphSize=oGraph.getVertices().size();
       if (graphSize < size) {
         size=graphSize;
       }
@@ -63,10 +63,10 @@
       }
     }
   }
-  Graph newGraph=new Graph();
+  OverlayGraph newGraph=new OverlayGraph();
   int edgesRemoved=0;
   HashSet<Edge> edges=new HashSet<Edge>();
-  for (  GraphVertex v : graph.getVertices()) {
+  for (  Vertex v : oGraph.getVertices()) {
     for (    EdgeWithReach edge : IterableLibrary.filter(v.getOutgoing(),EdgeWithReach.class)) {
       if (!edges.contains(edge)) {
         edgesRemoved+=processEdge(newGraph,edge,reachEstimateForEdge,transitStops);

@@ -1,11 +1,11 @@
 {
   Double reach=reachEstimateForEdge.get(edge);
   if (reach == null) {
-    newGraph.addEdge(edge);
+    newGraph.addDirectEdge(edge);
     return 0;
   }
   if (reach >= epsilon) {
-    newGraph.addEdge(edge);
+    newGraph.addDirectEdge(edge);
     return 0;
   }
   if (edge.getReach() > reach) {
