@@ -145,7 +145,6 @@ case TRANSIT:
 String route=backEdgeNarrative.getName();
 if (mode == TraverseMode.ALIGHTING) {
 if (showIntermediateStops && leg.stop != null && leg.stop.size() > 0) {
-leg.stop.remove(leg.stop.size() - 1);
 if (leg.stop.isEmpty()) {
 leg.stop=null;
 }
@@ -157,7 +156,7 @@ pgstate=PlanGenState.START;
  else if (mode.toString() == leg.mode) {
 if (showIntermediateStops) {
 if (!(backEdge instanceof Dwell || backEdge instanceof PatternDwell || backEdge instanceof PatternInterlineDwell)) {
-Place stop=makePlace(state);
+Place stop=makePlace(state.getBackState());
 leg.stop.add(stop);
 }
  else {
