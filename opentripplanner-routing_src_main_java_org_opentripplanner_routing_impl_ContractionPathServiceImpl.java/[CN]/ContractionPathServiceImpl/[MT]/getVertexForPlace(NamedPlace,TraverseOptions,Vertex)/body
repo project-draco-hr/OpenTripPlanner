@@ -1,0 +1,15 @@
+{
+  Matcher matcher=_latLonPattern.matcher(place.place);
+  if (matcher.matches()) {
+    double lat=Double.parseDouble(matcher.group(1));
+    double lon=Double.parseDouble(matcher.group(4));
+    Coordinate location=new Coordinate(lon,lat);
+    if (other instanceof StreetLocation) {
+      return _indexService.getClosestVertex(location,place.name,options,((StreetLocation)other).getExtra());
+    }
+ else {
+      return _indexService.getClosestVertex(location,place.name,options);
+    }
+  }
+  return _graphService.getContractionHierarchySet().getVertex(place.place);
+}

@@ -1,6 +1,6 @@
 {
   if (request.getWheelchair()) {
-    if (!pathService.isAccessible(request.getFrom(),options) || !pathService.isAccessible(request.getTo(),options)) {
+    if (!pathService.isAccessible(request.getFromPlace(),options) || !pathService.isAccessible(request.getToPlace(),options)) {
       throw new LocationNotAccessible();
     }
   }
