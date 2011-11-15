@@ -4,6 +4,11 @@
   Envelope rightEnv=new Envelope();
   double aRightCoordinate=0;
   for (  GraphVertex gv : graph.getVertices()) {
+    for (    Edge e : gv.getOutgoing()) {
+      if (e instanceof PatternHop) {
+        modes.add(((PatternHop)e).getMode());
+      }
+    }
     Coordinate c=gv.vertex.getCoordinate();
     if (c.x < 0) {
       leftEnv.expandToInclude(c);
