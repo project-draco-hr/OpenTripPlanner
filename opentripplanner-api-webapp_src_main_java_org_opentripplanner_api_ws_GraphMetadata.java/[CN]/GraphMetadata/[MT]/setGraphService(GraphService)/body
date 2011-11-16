@@ -6,7 +6,7 @@
   for (  GraphVertex gv : graph.getVertices()) {
     for (    Edge e : gv.getOutgoing()) {
       if (e instanceof PatternHop) {
-        modes.add(((PatternHop)e).getMode());
+        transitModes.add(((PatternHop)e).getMode());
       }
     }
     Coordinate c=gv.vertex.getCoordinate();
