@@ -13,7 +13,6 @@
     System.out.println(q.getClass() + " time " + (t1 - t0) / 1000.0 + " sec");
     doQueue(new PriorityQueueImpl<Integer>(),input,expected);
     doQueue(new FibHeap<Integer>(N),input,expected);
-    doQueue(new TLHeap<Integer>(N),input,expected);
     doQueue(new BinHeap<Integer>(N),input,expected);
     System.out.println("BinHeap initial capacity set to 10 (force grow)");
     doQueue(new BinHeap<Integer>(10),input,expected);

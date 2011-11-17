@@ -1,5 +1,6 @@
 {
   FibNode<T> z=this.min;
+  if (z == null)   return null;
   ListIterator<FibNode<T>> e=z.children.listIterator();
   while (e.hasNext()) {
     FibNode<T> x=e.next();
