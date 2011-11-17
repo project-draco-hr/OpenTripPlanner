@@ -1,3 +1,13 @@
 {
-  this.intermediatePlaces=intermediatePlaces;
+  this.intermediatePlaces=new ArrayList<NamedPlace>(intermediates.size());
+  for (  String place : intermediates) {
+    String name=place;
+    if (place.contains("::")) {
+      String[] parts=place.split("::");
+      name=parts[0];
+      place=parts[1];
+    }
+    NamedPlace intermediate=new NamedPlace(name,place);
+    intermediatePlaces.add(intermediate);
+  }
 }

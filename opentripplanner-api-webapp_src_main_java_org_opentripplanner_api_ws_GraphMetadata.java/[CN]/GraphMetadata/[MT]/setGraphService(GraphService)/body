@@ -3,8 +3,13 @@
   Envelope leftEnv=new Envelope();
   Envelope rightEnv=new Envelope();
   double aRightCoordinate=0;
-  for (  Vertex gv : graph.getVertices()) {
-    Coordinate c=gv.getCoordinate();
+  for (  Vertex v : graph.getVertices()) {
+    for (    Edge e : v.getOutgoing()) {
+      if (e instanceof PatternHop) {
+        transitModes.add(((PatternHop)e).getMode());
+      }
+    }
+    Coordinate c=v.getCoordinate();
     if (c.x < 0) {
       leftEnv.expandToInclude(c);
     }

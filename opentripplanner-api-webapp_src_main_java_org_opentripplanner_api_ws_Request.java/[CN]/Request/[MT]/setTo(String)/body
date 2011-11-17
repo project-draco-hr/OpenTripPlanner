@@ -1,4 +1,11 @@
 {
   paramPush(TO,to);
-  this.to=to;
+  if (to.contains("::")) {
+    String[] parts=to.split("::");
+    this.toName=parts[0];
+    this.to=parts[1];
+  }
+ else {
+    this.to=to;
+  }
 }
