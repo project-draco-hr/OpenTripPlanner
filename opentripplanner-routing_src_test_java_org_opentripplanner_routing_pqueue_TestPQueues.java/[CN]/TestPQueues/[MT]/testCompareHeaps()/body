@@ -2,19 +2,19 @@
   List<Integer> input, expected;
   input=new ArrayList<Integer>(N);
   for (int i=0; i < N; i++)   input.add((int)(Math.random() * 10000));
+  System.out.println("\ninsert/extract " + N + " Integers "+ INNER_ITER+ " times");
+  expected=new ArrayList<Integer>(N);
+  PriorityQueue<Integer> q=new PriorityQueue<Integer>(N);
+  for (  Integer j : input)   q.add(j);
+  while (!q.isEmpty())   expected.add(q.remove());
+  System.out.println(q.getClass() + " (expected results)");
   for (int i=0; i < ITER; i++) {
-    System.out.println("\nIteration " + i + " insert/extract "+ N);
-    expected=new ArrayList<Integer>(N);
-    PriorityQueue<Integer> q=new PriorityQueue<Integer>(N);
-    long t0=System.currentTimeMillis();
-    for (    Integer j : input)     q.add(j);
-    while (!q.isEmpty())     expected.add(q.remove());
-    long t1=System.currentTimeMillis();
-    System.out.println(q.getClass() + " time " + (t1 - t0) / 1000.0 + " sec");
-    doQueue(new PriorityQueueImpl<Integer>(),input,expected);
-    doQueue(new FibHeap<Integer>(N),input,expected);
-    doQueue(new BinHeap<Integer>(N),input,expected);
-    System.out.println("BinHeap initial capacity set to 10 (force grow)");
-    doQueue(new BinHeap<Integer>(10),input,expected);
+    for (    OTPPriorityQueue<Integer> queue : makeQueues()) {
+      doQueue(queue,input,expected);
+    }
+  }
+  System.out.println("\nmaintain queue at size " + N);
+  for (  OTPPriorityQueue<Integer> queue : makeQueues()) {
+    fillQueue(queue,input);
   }
 }

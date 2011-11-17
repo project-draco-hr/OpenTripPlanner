@@ -1,9 +1,13 @@
 {
   List<Integer> result=new ArrayList<Integer>(N);
-  long t0=System.currentTimeMillis();
-  for (  Integer i : input)   q.insert(i,i * 0.5);
-  while (!q.empty())   result.add(q.extract_min());
-  long t1=System.currentTimeMillis();
+  int expectedSum=0;
+  for (  Integer i : input) {
+    q.insert(i,i * 0.5);
+    expectedSum+=i;
+  }
+  while (!q.empty()) {
+    result.add(q.extract_min());
+  }
   assertEquals(result,expected);
   assertEquals(q.size(),0);
   assertNull(q.peek_min());
@@ -15,5 +19,13 @@
   assertNotNull(q.extract_min());
   assertNull(q.extract_min());
   assertEquals(q.size(),0);
-  System.out.println(q.getClass() + " time " + (t1 - t0) / 1000.0 + " sec");
+  long t0=System.currentTimeMillis();
+  for (int iter=0; iter < INNER_ITER; iter++) {
+    int sum=0;
+    for (    Integer i : input)     q.insert(i,i);
+    while (!q.empty())     sum+=q.extract_min();
+    assertTrue(sum == expectedSum);
+  }
+  long t1=System.currentTimeMillis();
+  System.out.println(q.getClass() + " \ttime " + (t1 - t0) / 1000.0 + " sec");
 }

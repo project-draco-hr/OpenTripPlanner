@@ -1,0 +1,6 @@
+{
+  if (capacity < size)   throw new IllegalStateException("BinHeap contains too many elements to fit in new capacity.");
+  this.capacity=capacity;
+  prio=Arrays.copyOf(prio,capacity + 1);
+  elem=Arrays.copyOf(elem,capacity + 1);
+}
