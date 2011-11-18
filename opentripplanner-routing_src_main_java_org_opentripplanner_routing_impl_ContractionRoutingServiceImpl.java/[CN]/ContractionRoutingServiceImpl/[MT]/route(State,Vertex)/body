@@ -11,6 +11,7 @@
     tries+=1;
     LOG.debug("try number {} ; max walk distance = {}",tries,options.getMaxWalkDistance());
     if (hierarchy == null) {
+      LOG.debug("No contraction hierarchies for this mode, falling back on A*.");
       GenericAStar aStar=getAStarInstance(options);
       Graph _graph=hierarchies.getGraph();
       ShortestPathTree spt=aStar.getShortestPathTree(_graph,origin,target);
@@ -26,6 +27,7 @@
         return paths;
       }
     }
+    LOG.debug("Contraction hierarchies exist for this mode, using them.");
     Vertex fromVertex=options.isArriveBy() ? target : origin.getVertex();
     Vertex toVertex=options.isArriveBy() ? origin.getVertex() : target;
     GraphPath path=hierarchy.getShortestPath(fromVertex,toVertex,origin.getTime(),options);
