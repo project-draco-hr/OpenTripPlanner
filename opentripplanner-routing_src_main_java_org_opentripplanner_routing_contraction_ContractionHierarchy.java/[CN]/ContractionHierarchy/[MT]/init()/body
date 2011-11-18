@@ -5,13 +5,13 @@
   HashMap<Vertex,Integer> deletedNeighbors=new HashMap<Vertex,Integer>();
   _log.debug("Preparing contraction hierarchy -- this may take quite a while");
   _log.debug("Initializing priority queue");
-  BinHeap<Vertex> pq=initPriorityQueue(graph);
+  BinHeap<Vertex> pq=initPriorityQueue(core);
   _log.debug("Contracting");
   long lastNotified=System.currentTimeMillis();
   int i=0;
   int nContractableVertices, totalContractableVertices;
   totalContractableVertices=nContractableVertices=pq.size();
-  int nContractableEdges=countContractableEdges(graph);
+  int nContractableEdges=countContractableEdges(core);
   boolean edgesRemoved=false;
   while (!pq.empty()) {
     i+=1;
@@ -46,21 +46,21 @@
       lastNotified=now;
     }
     HashSet<Vertex> neighbors=new HashSet<Vertex>();
-    for (    DirectEdge de : filter(graph.getOutgoing(vertex),DirectEdge.class)) {
+    for (    DirectEdge de : filter(core.getOutgoing(vertex),DirectEdge.class)) {
       Vertex toVertex=de.getToVertex();
-      graph.removeIncoming(toVertex,de);
+      core.removeIncoming(toVertex,de);
       updown.addOutgoing(vertex,de);
       neighbors.add(toVertex);
       nContractableEdges--;
     }
-    for (    DirectEdge de : filter(graph.getIncoming(vertex),DirectEdge.class)) {
+    for (    DirectEdge de : filter(core.getIncoming(vertex),DirectEdge.class)) {
       Vertex fromVertex=de.getFromVertex();
-      graph.removeOutgoing(fromVertex,de);
+      core.removeOutgoing(fromVertex,de);
       updown.addIncoming(vertex,de);
       neighbors.add(fromVertex);
       nContractableEdges--;
     }
-    graph.removeVertex(vertex);
+    core.removeVertex(vertex);
     for (    Vertex n : neighbors) {
       int deleted=0;
       if (deletedNeighbors.containsKey(n)) {
@@ -74,7 +74,7 @@
     }
     List<Shortcut> shortcuts=shortcutsAndSearchSpace.shortcuts;
     for (    Shortcut shortcut : shortcuts) {
-      graph.addDirectEdge(shortcut);
+      core.addDirectEdge(shortcut);
     }
     nContractableVertices--;
     nContractableEdges+=shortcuts.size();

@@ -1,7 +1,7 @@
 {
   State su=new State(u,backOptions);
   int searchSpace=0;
-  ArrayList<VertexIngress> vs=new ArrayList<VertexIngress>();
+  ArrayList<State> vs=new ArrayList<State>();
   for (  Edge e : u.getIncoming()) {
     if (!isContractable(e)) {
       continue;
@@ -10,12 +10,12 @@
     if (sv == null) {
       continue;
     }
-    vs.add(new VertexIngress(sv.getVertex(),(DirectEdge)e,sv.getWeight(),sv.getAbsTimeDeltaSec(),sv.getWalkDistance()));
+    vs.add(sv);
   }
-  su=new State(u,options);
+  su=new State(u,fwdOptions);
   double maxWWeight=0;
-  HashSet<Vertex> wSet=new HashSet<Vertex>();
-  ArrayList<VertexIngress> ws=new ArrayList<VertexIngress>();
+  HashSet<Vertex> wvSet=new HashSet<Vertex>();
+  ArrayList<State> ws=new ArrayList<State>();
   for (  DirectEdge e : filter(u.getOutgoing(),DirectEdge.class)) {
     if (!isContractable(e)) {
       continue;
@@ -24,9 +24,8 @@
     if (sw == null) {
       continue;
     }
-    Vertex w=sw.getVertex();
-    wSet.add(w);
-    ws.add(new VertexIngress(w,e,sw.getWeight(),sw.getTimeDeltaSec(),sw.getWalkDistance()));
+    wvSet.add(sw.getVertex());
+    ws.add(sw);
     if (sw.exceedsWeightLimit(maxWWeight)) {
       maxWWeight=sw.getWeight();
     }
@@ -35,9 +34,9 @@
   ArrayList<Callable<WitnessSearchResult>> tasks=new ArrayList<Callable<WitnessSearchResult>>(vs.size());
   int nodeLimit=simulate ? NODE_LIMIT_SIMULATE : NODE_LIMIT_CONTRACT;
   int hopLimit=simulate ? HOP_LIMIT_SIMULATE : HOP_LIMIT_CONTRACT;
-  for (  VertexIngress v : vs) {
-    double weightLimit=v.weight + maxWWeight + 1;
-    WitnessSearch task=new WitnessSearch(u,hopLimit,nodeLimit,weightLimit,wSet,ws,v);
+  for (  State v : vs) {
+    double weightLimit=v.getWeight() + maxWWeight + 1;
+    WitnessSearch task=new WitnessSearch(u,hopLimit,nodeLimit,weightLimit,wvSet,ws,v);
     tasks.add(task);
   }
   if (threadPool == null) {
@@ -49,7 +48,7 @@
       BasicShortestPathTree spt=wsresult.spt;
       if (!simulate && spt != null) {
         ArrayList<DirectEdge> toRemove=new ArrayList<DirectEdge>();
-        State sv0=new State(wsresult.vertex,options);
+        State sv0=new State(wsresult.vertex,fwdOptions);
         for (        DirectEdge e : filter(wsresult.vertex.getOutgoing(),DirectEdge.class)) {
           State sSpt=spt.getState(e.getToVertex());
           if (sSpt == null) {
