@@ -1,6 +1,6 @@
 {
-  int degree_in=graph.getDegreeIn(v);
-  int degree_out=graph.getDegreeOut(v);
+  int degree_in=v.getDegreeIn();
+  int degree_out=v.getDegreeOut();
   int edge_difference=shortcutsAndSearchSpace.shortcuts.size() - (degree_in + degree_out);
   int searchSpace=shortcutsAndSearchSpace.searchSpace;
   return edge_difference * 190 + deletedNeighbors * 120 + searchSpace;

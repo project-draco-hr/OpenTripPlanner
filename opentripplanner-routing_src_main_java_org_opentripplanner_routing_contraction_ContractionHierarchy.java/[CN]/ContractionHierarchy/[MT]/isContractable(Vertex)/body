@@ -1,6 +1,6 @@
 {
   if (v instanceof StreetVertex || v instanceof EndpointVertex) {
-    for (    Edge e : graph.getOutgoing(v)) {
+    for (    Edge e : v.getOutgoing()) {
       if (!(e instanceof DirectEdge))       return false;
       DirectEdge de=(DirectEdge)e;
       Vertex tov=de.getToVertex();

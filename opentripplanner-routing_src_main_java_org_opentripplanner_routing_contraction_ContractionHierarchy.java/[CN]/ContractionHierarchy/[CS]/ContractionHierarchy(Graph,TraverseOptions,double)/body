@@ -1,8 +1,5 @@
 {
-  graph=new Graph(orig);
-  for (  Vertex gv : orig.getVertices()) {
-    graph.addVertex(new Vertex(gv));
-  }
+  graph=new OverlayGraph(orig);
   this.options=options;
   this.options.setMaxWalkDistance(Double.MAX_VALUE);
   backOptions=this.options.clone();
@@ -10,5 +7,4 @@
   this.contractionFactor=contractionFactor;
   this.mode=this.options.getModes().getNonTransitMode();
   init();
-  useCoreVerticesFrom(orig);
 }

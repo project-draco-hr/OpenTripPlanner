@@ -1,8 +1,7 @@
 {
   _log.debug("removing non-optimal edges, hopLimit is {}",hopLimit);
   int removed=0;
-  for (  Vertex gu : graph.getVertices()) {
-    Vertex u=gu.vertex;
+  for (  Vertex u : graph.getVertices()) {
     State su=new State(u,options);
     Dijkstra dijkstra=new Dijkstra(graph,u,options,null,hopLimit);
     BasicShortestPathTree spt=dijkstra.getShortestPathTree(Double.POSITIVE_INFINITY,Integer.MAX_VALUE);
@@ -22,8 +21,7 @@
       }
     }
     for (    DirectEdge e : toRemove) {
-      gu.removeOutgoing(e);
-      graph.getVertex(e.getToVertex()).removeIncoming(e);
+      graph.removeDirectEdge(e);
     }
     removed+=toRemove.size();
   }

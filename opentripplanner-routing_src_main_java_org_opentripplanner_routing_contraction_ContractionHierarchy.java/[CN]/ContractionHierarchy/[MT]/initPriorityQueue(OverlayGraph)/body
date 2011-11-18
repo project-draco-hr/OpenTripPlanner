@@ -1,14 +1,13 @@
 {
-  Collection<Vertex> vertices=graph.getVertices();
+  Collection<Vertex> vertices=og.getVertices();
   BinHeap<Vertex> pq=new BinHeap<Vertex>(vertices.size());
   int i=0;
-  for (  Vertex gv : vertices) {
+  for (  Vertex v : vertices) {
     if (++i % 100000 == 0)     _log.debug("    vertex {}",i);
-    Vertex v=gv.vertex;
     if (!isContractable(v)) {
       continue;
     }
-    if (gv.getDegreeIn() > 7 || gv.getDegreeOut() > 7) {
+    if (v.getDegreeIn() > 7 || v.getDegreeOut() > 7) {
       continue;
     }
     WitnessSearchResult shortcuts=getShortcuts(v,true);

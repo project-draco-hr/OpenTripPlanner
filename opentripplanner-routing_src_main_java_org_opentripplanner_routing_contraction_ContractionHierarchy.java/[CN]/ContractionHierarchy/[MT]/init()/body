@@ -1,24 +1,22 @@
 {
   createThreadPool();
-  up=new Graph(graph);
-  down=new Graph(graph);
+  updown=new OverlayGraph();
   long start=System.currentTimeMillis();
   HashMap<Vertex,Integer> deletedNeighbors=new HashMap<Vertex,Integer>();
   _log.debug("Preparing contraction hierarchy -- this may take quite a while");
-  _log.debug("init prio queue");
+  _log.debug("Initializing priority queue");
   BinHeap<Vertex> pq=initPriorityQueue(graph);
-  _log.debug("contract");
+  _log.debug("Contracting");
   long lastNotified=System.currentTimeMillis();
   int i=0;
-  int nVertices=pq.size();
-  int totalVertices=nVertices;
-  int nEdges=countEdges(graph);
+  int nContractableVertices, totalContractableVertices;
+  totalContractableVertices=nContractableVertices=pq.size();
+  int nContractableEdges=countContractableEdges(graph);
   boolean edgesRemoved=false;
   while (!pq.empty()) {
-    if (i++ > Math.ceil(totalVertices * contractionFactor)) {
-      break;
-    }
+    i+=1;
     Vertex vertex=pq.extract_min();
+    _log.trace("contracting vertex " + vertex);
     WitnessSearchResult shortcutsAndSearchSpace;
     if (pq.empty()) {
       shortcutsAndSearchSpace=getShortcuts(vertex,false);
@@ -44,27 +42,23 @@
     }
     long now=System.currentTimeMillis();
     if (now - lastNotified > 5000) {
-      _log.debug("contracted: " + i + " / "+ totalVertices+ " ("+ i / (double)totalVertices + ") total time " + (now - start) / 1000.0 + "sec, average degree " + nEdges / (nVertices + 0.00001));
+      _log.debug("contracted: " + i + " / "+ totalContractableVertices+ " ("+ i / (double)totalContractableVertices + ") total time " + (now - start) / 1000.0 + "sec, average degree " + nContractableEdges / (nContractableVertices + 0.00001));
       lastNotified=now;
     }
-    Vertex downVertex=down.getVertex(down.addVertex(vertex));
     HashSet<Vertex> neighbors=new HashSet<Vertex>();
-    for (    Edge ee : graph.getIncoming(vertex)) {
-      nEdges--;
-      Vertex originalFromVertex=graph.getVertex(ee.getFromVertex());
-      down.addVertex(originalFromVertex.vertex);
-      originalFromVertex.removeOutgoing(ee);
-      downVertex.addIncoming(ee);
-      neighbors.add(originalFromVertex.vertex);
+    for (    DirectEdge de : filter(graph.getOutgoing(vertex),DirectEdge.class)) {
+      Vertex toVertex=de.getToVertex();
+      graph.removeIncoming(toVertex,de);
+      updown.addOutgoing(vertex,de);
+      neighbors.add(toVertex);
+      nContractableEdges--;
     }
-    Vertex upVertex=up.getVertex(up.addVertex(vertex));
-    for (    DirectEdge ee : filter(graph.getOutgoing(vertex),DirectEdge.class)) {
-      nEdges--;
-      Vertex originalToVertex=graph.getVertex(ee.getToVertex());
-      up.addVertex(originalToVertex.vertex);
-      originalToVertex.removeIncoming(ee);
-      upVertex.addOutgoing(ee);
-      neighbors.add(originalToVertex.vertex);
+    for (    DirectEdge de : filter(graph.getIncoming(vertex),DirectEdge.class)) {
+      Vertex fromVertex=de.getFromVertex();
+      graph.removeOutgoing(fromVertex,de);
+      updown.addIncoming(vertex,de);
+      neighbors.add(fromVertex);
+      nContractableEdges--;
     }
     graph.removeVertex(vertex);
     for (    Vertex n : neighbors) {
@@ -80,11 +74,11 @@
     }
     List<Shortcut> shortcuts=shortcutsAndSearchSpace.shortcuts;
     for (    Shortcut shortcut : shortcuts) {
-      graph.addEdge(shortcut.getFromVertex(),shortcut.getToVertex(),shortcut);
+      graph.addDirectEdge(shortcut);
     }
-    nVertices--;
-    nEdges+=shortcuts.size();
-    if (nVertices == 0) {
+    nContractableVertices--;
+    nContractableEdges+=shortcuts.size();
+    if (nContractableVertices == 0) {
       continue;
     }
   }

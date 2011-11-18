@@ -2,7 +2,7 @@
   State su=new State(u,backOptions);
   int searchSpace=0;
   ArrayList<VertexIngress> vs=new ArrayList<VertexIngress>();
-  for (  Edge e : graph.getIncoming(u)) {
+  for (  Edge e : u.getIncoming()) {
     if (!isContractable(e)) {
       continue;
     }
@@ -16,7 +16,7 @@
   double maxWWeight=0;
   HashSet<Vertex> wSet=new HashSet<Vertex>();
   ArrayList<VertexIngress> ws=new ArrayList<VertexIngress>();
-  for (  DirectEdge e : filter(graph.getOutgoing(u),DirectEdge.class)) {
+  for (  DirectEdge e : filter(u.getOutgoing(),DirectEdge.class)) {
     if (!isContractable(e)) {
       continue;
     }
@@ -50,7 +50,7 @@
       if (!simulate && spt != null) {
         ArrayList<DirectEdge> toRemove=new ArrayList<DirectEdge>();
         State sv0=new State(wsresult.vertex,options);
-        for (        DirectEdge e : filter(graph.getOutgoing(wsresult.vertex),DirectEdge.class)) {
+        for (        DirectEdge e : filter(wsresult.vertex.getOutgoing(),DirectEdge.class)) {
           State sSpt=spt.getState(e.getToVertex());
           if (sSpt == null) {
             continue;
@@ -64,10 +64,10 @@
             toRemove.add(e);
           }
         }
-        Vertex ugv=graph.getVertex(wsresult.vertex);
+        Vertex uv=wsresult.vertex;
         for (        DirectEdge e : toRemove) {
-          ugv.removeOutgoing(e);
-          graph.getVertex(e.getToVertex()).removeIncoming(e);
+          uv.removeOutgoing(e);
+          e.getToVertex().removeIncoming(e);
         }
       }
       searchSpace+=wsresult.searchSpace;
