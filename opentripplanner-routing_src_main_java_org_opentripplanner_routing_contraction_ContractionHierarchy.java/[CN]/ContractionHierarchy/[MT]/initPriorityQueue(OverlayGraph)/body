@@ -7,7 +7,7 @@
     if (!isContractable(v)) {
       continue;
     }
-    if (v.getDegreeIn() > 7 || v.getDegreeOut() > 7) {
+    if (og.getDegreeIn(v) > 7 || og.getDegreeOut(v) > 7) {
       continue;
     }
     WitnessSearchResult shortcuts=getShortcuts(v,true);

@@ -57,8 +57,10 @@
       if (opt.isArriveBy() && !outgoing.isEmpty()) {
         continue;
       }
+      if (VERBOSE)       _log.debug("        {} edges in core",outgoing.size());
       Collection<Edge> upOutgoing=updown.getOutgoing(u);
       if (!upOutgoing.isEmpty()) {
+        if (VERBOSE)         _log.debug("        {} edges in overlay",upOutgoing.size());
         if (outgoing.isEmpty()) {
           outgoing=upOutgoing;
         }
@@ -71,8 +73,9 @@
       }
       if (extraEdges.containsKey(u)) {
         List<Edge> newOutgoing=new ArrayList<Edge>();
-        newOutgoing.addAll(outgoing);
         newOutgoing.addAll(extraEdges.get(u));
+        if (VERBOSE)         _log.debug("        {} edges in extra",newOutgoing.size());
+        newOutgoing.addAll(outgoing);
         outgoing=newOutgoing;
       }
       for (      Edge edge : outgoing) {
@@ -126,6 +129,7 @@
       if (!opt.isArriveBy() && !incoming.isEmpty()) {
         continue;
       }
+      if (VERBOSE)       _log.debug("        {} edges in core",incoming.size());
       Collection<Edge> downIncoming=updown.getIncoming(down_u);
       if (!downIncoming.isEmpty()) {
         if (incoming.isEmpty()) {
@@ -138,12 +142,14 @@
           incoming=newIncoming;
         }
       }
+      if (VERBOSE)       _log.debug("        {} edges with overlay",incoming.size());
       if (extraEdges.containsKey(down_u)) {
         List<Edge> newIncoming=new ArrayList<Edge>();
         newIncoming.addAll(incoming);
         newIncoming.addAll(extraEdges.get(down_u));
         incoming=newIncoming;
       }
+      if (VERBOSE)       _log.debug("        {} edges with overlay and extra",incoming.size());
       for (      Edge edge : incoming) {
         if (VERBOSE)         _log.debug("        edge down {}",edge);
         Vertex down_v=edge.getFromVertex();

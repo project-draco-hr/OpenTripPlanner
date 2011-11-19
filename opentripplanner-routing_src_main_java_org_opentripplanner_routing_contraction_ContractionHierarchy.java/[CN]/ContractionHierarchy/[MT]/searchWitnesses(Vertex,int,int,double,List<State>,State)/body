@@ -1,6 +1,6 @@
 {
   Dijkstra dijkstra=new Dijkstra(core,v.getVertex(),fwdOptions,u,hopLimit);
-  dijkstra.setTargets(wvSet);
+  dijkstra.setTargets(ws);
   BasicShortestPathTree spt=dijkstra.getShortestPathTree(weightLimit,nodeLimit);
   ArrayList<Shortcut> shortcuts=new ArrayList<Shortcut>();
   for (  State w : ws) {

@@ -14,6 +14,9 @@
   int nContractableEdges=countContractableEdges(core);
   boolean edgesRemoved=false;
   while (!pq.empty()) {
+    if (i > Math.ceil(totalContractableVertices * contractionFactor)) {
+      break;
+    }
     i+=1;
     Vertex vertex=pq.extract_min();
     _log.trace("contracting vertex " + vertex);

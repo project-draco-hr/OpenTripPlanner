@@ -2,7 +2,7 @@
   State su=new State(u,backOptions);
   int searchSpace=0;
   ArrayList<State> vs=new ArrayList<State>();
-  for (  Edge e : u.getIncoming()) {
+  for (  Edge e : core.getIncoming(u)) {
     if (!isContractable(e)) {
       continue;
     }
@@ -14,9 +14,8 @@
   }
   su=new State(u,fwdOptions);
   double maxWWeight=0;
-  HashSet<Vertex> wvSet=new HashSet<Vertex>();
   ArrayList<State> ws=new ArrayList<State>();
-  for (  DirectEdge e : filter(u.getOutgoing(),DirectEdge.class)) {
+  for (  DirectEdge e : filter(core.getOutgoing(u),DirectEdge.class)) {
     if (!isContractable(e)) {
       continue;
     }
@@ -24,7 +23,6 @@
     if (sw == null) {
       continue;
     }
-    wvSet.add(sw.getVertex());
     ws.add(sw);
     if (sw.exceedsWeightLimit(maxWWeight)) {
       maxWWeight=sw.getWeight();
@@ -36,7 +34,7 @@
   int hopLimit=simulate ? HOP_LIMIT_SIMULATE : HOP_LIMIT_CONTRACT;
   for (  State v : vs) {
     double weightLimit=v.getWeight() + maxWWeight + 1;
-    WitnessSearch task=new WitnessSearch(u,hopLimit,nodeLimit,weightLimit,wvSet,ws,v);
+    WitnessSearch task=new WitnessSearch(u,hopLimit,nodeLimit,weightLimit,ws,v);
     tasks.add(task);
   }
   if (threadPool == null) {
@@ -49,7 +47,7 @@
       if (!simulate && spt != null) {
         ArrayList<DirectEdge> toRemove=new ArrayList<DirectEdge>();
         State sv0=new State(wsresult.vertex,fwdOptions);
-        for (        DirectEdge e : filter(wsresult.vertex.getOutgoing(),DirectEdge.class)) {
+        for (        DirectEdge e : filter(core.getOutgoing(wsresult.vertex),DirectEdge.class)) {
           State sSpt=spt.getState(e.getToVertex());
           if (sSpt == null) {
             continue;

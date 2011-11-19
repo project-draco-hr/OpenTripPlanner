@@ -1,7 +1,7 @@
 {
   int total=0;
-  for (  Vertex gv : graph2.getVertices()) {
-    for (    Edge e : gv.getOutgoing())     if (isContractable(e))     total++;
+  for (  Vertex v : og.getVertices()) {
+    for (    Edge e : og.getOutgoing(v))     if (isContractable(e))     total++;
   }
   return total;
 }
