@@ -4,7 +4,7 @@
     if (relation.isTag("type","restriction")) {
       processRestriction(relation);
     }
- else {
+ else     if (relation.isTag("type","route")) {
       processRoad(relation);
     }
   }
