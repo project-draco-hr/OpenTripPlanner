@@ -1,0 +1,7 @@
+{
+  AnyFileBasedOpenStreetMapProviderImpl pr=new AnyFileBasedOpenStreetMapProviderImpl();
+  OSMMap map=new OSMMap();
+  pr.setPath(new File(getClass().getResource("map.osm.pbf").getPath()));
+  pr.readOSM(map);
+  testParser(map);
+}

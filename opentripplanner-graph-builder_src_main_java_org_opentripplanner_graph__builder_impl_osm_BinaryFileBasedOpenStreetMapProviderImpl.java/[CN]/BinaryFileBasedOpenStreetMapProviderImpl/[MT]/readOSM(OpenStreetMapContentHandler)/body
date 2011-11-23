@@ -1,0 +1,15 @@
+{
+  try {
+    BinaryOpenStreetMapParser parser=new BinaryOpenStreetMapParser(handler);
+    FileInputStream input=new FileInputStream(_path);
+    parser.noNodes(true);
+    (new BlockInputStream(input,parser)).process();
+    handler.secondPhase();
+    parser.nodesOnly(true);
+    input=new FileInputStream(_path);
+    (new BlockInputStream(input,parser)).process();
+  }
+ catch (  Exception ex) {
+    throw new IllegalStateException("error loading OSM from path " + _path,ex);
+  }
+}

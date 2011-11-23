@@ -1,0 +1,7 @@
+{
+  StreamedFileBasedOpenStreetMapProviderImpl pr=new StreamedFileBasedOpenStreetMapProviderImpl();
+  OSMMap map=new OSMMap();
+  pr.setPath(new File(getClass().getResource("map.osm.gz").getPath()));
+  pr.readOSM(map);
+  testParser(map);
+}

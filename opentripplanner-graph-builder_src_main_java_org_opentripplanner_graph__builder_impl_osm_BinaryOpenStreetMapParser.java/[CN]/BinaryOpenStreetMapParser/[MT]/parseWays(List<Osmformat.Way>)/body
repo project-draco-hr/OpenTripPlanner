@@ -1,0 +1,25 @@
+{
+  if (_nodesOnly) {
+    return;
+  }
+  for (  Osmformat.Way i : ways) {
+    OSMWay tmp=new OSMWay();
+    tmp.setId(i.getId());
+    for (int j=0; j < i.getKeysCount(); j++) {
+      OSMTag tag=new OSMTag();
+      String key=getStringById(i.getKeys(j)).intern();
+      String value=getStringById(i.getVals(j)).intern();
+      tag.setK(key);
+      tag.setV(value);
+      tmp.addTag(tag);
+    }
+    long lastId=0;
+    for (    long j : i.getRefsList()) {
+      OSMNodeRef nodeRef=new OSMNodeRef();
+      nodeRef.setRef(j + lastId);
+      tmp.addNodeRef(nodeRef);
+      lastId=j + lastId;
+    }
+    _handler.addWay(tmp);
+  }
+}
