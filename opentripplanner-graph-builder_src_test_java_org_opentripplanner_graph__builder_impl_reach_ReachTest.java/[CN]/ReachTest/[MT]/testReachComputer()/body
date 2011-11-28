@@ -8,8 +8,9 @@
   computer.epsilon=500;
   Vertex vertex=graph.getVertex("56th_24th");
   Collection<Vertex> streetVertices=Arrays.asList(vertex);
-  computer.partialTreesPhase(graph,streetVertices,options,false);
-  for (  EdgeWithReach e : IterableLibrary.filter(graph.getOutgoing(vertex),EdgeWithReach.class)) {
+  OverlayGraph ograph=new OverlayGraph(graph);
+  computer.partialTreesPhase(ograph,streetVertices,options,false);
+  for (  EdgeWithReach e : IterableLibrary.filter(vertex.getOutgoing(),EdgeWithReach.class)) {
     assertTrue(e.getReach() < 400);
   }
   List<TraverseOptions> optionlist=Arrays.asList(options);
