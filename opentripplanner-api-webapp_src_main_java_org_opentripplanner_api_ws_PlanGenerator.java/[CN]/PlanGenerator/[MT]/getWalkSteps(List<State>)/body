@@ -3,7 +3,9 @@
   WalkStep step=null;
   double lastAngle=0, distance=0;
   int roundaboutExit=0;
+  String roundaboutPreviousStreet=null;
   for (  State currState : states) {
+    State backState=currState.getBackState();
     Edge edge=currState.getBackEdge();
     EdgeNarrative edgeNarrative=currState.getBackEdgeNarrative();
     boolean createdNewStep=false;
@@ -29,6 +31,9 @@
  else     if (step.streetName != streetName && (step.streetName != null && !step.streetName.equals(streetName)) && (!step.bogusName || !edgeNarrative.hasBogusName())) {
       if (roundaboutExit > 0) {
         step.exit=Integer.toString(roundaboutExit);
+        if (streetName.equals(roundaboutPreviousStreet)) {
+          step.stayOn=true;
+        }
         roundaboutExit=0;
       }
       step=createWalkStep(currState);
@@ -36,6 +41,7 @@
       steps.add(step);
       if (edgeNarrative.isRoundabout()) {
         roundaboutExit=1;
+        roundaboutPreviousStreet=backState.getBackEdgeNarrative().getName();
       }
       double thisAngle=DirectionUtils.getFirstAngle(geom);
       step.setDirections(lastAngle,thisAngle,edgeNarrative.isRoundabout());
@@ -44,7 +50,7 @@
  else {
       double thisAngle=DirectionUtils.getFirstAngle(geom);
       RelativeDirection direction=WalkStep.getRelativeDirection(lastAngle,thisAngle,edgeNarrative.isRoundabout());
-      boolean optionsBefore=currState.multipleOptionsBefore();
+      boolean optionsBefore=backState.multipleOptionsBefore();
       if (edgeNarrative.isRoundabout()) {
         if (optionsBefore) {
           roundaboutExit+=1;
@@ -56,7 +62,7 @@
         boolean shouldGenerateContinue=false;
         if (edge instanceof PlainStreetEdge) {
           double angleDiff=getAbsoluteAngleDiff(thisAngle,lastAngle);
-          for (          DirectEdge alternative : currState.getBackState().getVertex().getOutgoingStreetEdges()) {
+          for (          DirectEdge alternative : backState.getVertex().getOutgoingStreetEdges()) {
             if (alternative instanceof TinyTurnEdge) {
               alternative=alternative.getToVertex().getOutgoingStreetEdges().get(0);
             }
@@ -75,7 +81,6 @@
         }
  else {
           double angleDiff=getAbsoluteAngleDiff(lastAngle,thisAngle);
-          State backState=currState.getBackState();
           State twoStatesBack=backState.getBackState();
           Vertex backVertex=twoStatesBack.getVertex();
           for (          DirectEdge alternative : backVertex.getOutgoingStreetEdges()) {

@@ -1,5 +1,6 @@
 {
   boolean foundAlternatePaths=false;
+  TraverseMode requestedMode=getOptions().getModes().getNonTransitMode();
   for (  Edge out : backState.vertex.getOutgoing()) {
     if (out == backEdge) {
       continue;
@@ -8,6 +9,26 @@
       continue;
     }
     if (out.traverse(backState) == null) {
+      continue;
+    }
+    State outState=out.traverse(this);
+    if (outState == null) {
+      continue;
+    }
+    if (!outState.getBackEdgeNarrative().getMode().equals(requestedMode)) {
+      continue;
+    }
+    Vertex tov=outState.getVertex();
+    boolean found=false;
+    for (    Edge out2 : tov.getOutgoing()) {
+      State outState2=out2.traverse(outState);
+      if (outState2 != null && !outState2.getBackEdgeNarrative().getMode().equals(requestedMode)) {
+        continue;
+      }
+      found=true;
+      break;
+    }
+    if (!found) {
       continue;
     }
     foundAlternatePaths=true;
