@@ -89,14 +89,8 @@
   assertNotNull(hierarchy);
   Vertex start=null;
   Vertex end=null;
-  start=hierarchy.up.getVertex("0072480");
-  end=hierarchy.up.getVertex("0032341");
-  if (start == null)   start=hierarchy.down.getVertex("0072480");
-  if (start == null)   start=hierarchy.graph.getVertex("0072480");
-  if (end == null)   end=hierarchy.down.getVertex("0032341");
-  if (end == null)   end=hierarchy.graph.getVertex("0032341");
-  assertNotNull(start);
-  assertNotNull(end);
+  start=graph.getVertex("0072480");
+  end=graph.getVertex("0032341");
   path=hierarchy.getShortestPath(start,end,0,options);
   assertNotNull(path);
   GraphPath pathWithSubways=hierarchy.getShortestPath(start,end,startTime,options);
@@ -132,23 +126,20 @@
   long now=System.currentTimeMillis();
   int i=0;
   int notNull=0;
-  Collection<Vertex> upVertices=hierarchy.up.getVertices();
-  ArrayList<Vertex> vertices=new ArrayList<Vertex>(upVertices);
-  vertices.addAll(hierarchy.down.getVertices());
-  vertices.addAll(hierarchy.graph.getVertices());
+  Collection<Vertex> updownVertices=hierarchy.updown.getVertices();
+  Collection<Vertex> vertices=graph.getVertices();
   DisjointSet<Vertex> components=new DisjointSet<Vertex>();
-  for (  Vertex gv : vertices) {
-    for (    DirectEdge e : filter(gv.getOutgoing(),DirectEdge.class)) {
-      components.union(gv.vertex,e.getToVertex());
+  for (  Vertex v : vertices) {
+    for (    DirectEdge e : filter(v.getOutgoing(),DirectEdge.class)) {
+      components.union(v,e.getToVertex());
     }
   }
   ArrayList<Vertex> verticesOut=new ArrayList<Vertex>();
-  for (  Vertex gv : vertices) {
-    Vertex v=gv.vertex;
+  for (  Vertex v : vertices) {
     int componentSize=components.size(components.find(v));
-    if (componentSize > upVertices.size() / 2) {
-      if (gv.getDegreeOut() != 0) {
-        verticesOut.add(gv);
+    if (componentSize > updownVertices.size() / 2) {
+      if (v.getDegreeOut() != 0) {
+        verticesOut.add(v);
       }
     }
   }
@@ -156,33 +147,29 @@
   assertTrue(vertices.size() > verticesOut.size());
   vertices=verticesOut;
   Random random=new Random(0);
-  for (  Vertex gv1 : vertices) {
-    Vertex v1=gv1.vertex;
+  for (  Vertex orig : vertices) {
     if (++i == 100) {
       break;
     }
-    if (hierarchy.up.getVertex(v1.getLabel()) == null) {
+    if (hierarchy.updown.getOutgoing(orig).size() == 0) {
       --i;
       continue;
     }
-    Vertex gv2=null;
-    Vertex v2=null;
-    while (v2 == null || gv2.getDegreeIn() == 0) {
+    Vertex dest=null;
+    while (dest == null) {
       int j=Math.abs(random.nextInt()) % vertices.size();
-      gv2=vertices.get(j);
-      v2=gv2.vertex;
-      if (v1.getLabel() == v2.getLabel()) {
+      if (orig.getLabel() == dest.getLabel()) {
         continue;
       }
-      if (hierarchy.down.getVertex(v2.getLabel()) == null) {
-        v2=null;
+      if (hierarchy.updown.getIncoming(dest).size() == 0) {
+        dest=null;
         continue;
       }
     }
     options.setArriveBy(i % 2 == 0);
-    assertNotNull(v1);
-    assertNotNull(v2);
-    GraphPath path2=hierarchy.getShortestPath(v1,v2,startTime,options);
+    assertNotNull(orig);
+    assertNotNull(dest);
+    GraphPath path2=hierarchy.getShortestPath(orig,dest,startTime,options);
     if (path2 != null) {
       notNull+=1;
     }

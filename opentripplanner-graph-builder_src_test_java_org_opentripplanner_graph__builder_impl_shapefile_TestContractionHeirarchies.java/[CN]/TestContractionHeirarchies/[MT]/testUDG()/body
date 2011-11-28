@@ -14,8 +14,7 @@
     vertices.add(v);
   }
   int expansion=1;
-  for (  Vertex gv : graph.getVertices()) {
-    Vertex v=gv.vertex;
+  for (  Vertex v : graph.getVertices()) {
     final Coordinate c=v.getCoordinate();
     Envelope env=new Envelope(c);
     env.expandBy(50 * expansion);
@@ -41,7 +40,7 @@
   DisjointSet<Vertex> components=new DisjointSet<Vertex>();
   Vertex last=null;
   for (  Vertex v : vertices) {
-    for (    DirectEdge e : filter(graph.getOutgoing(v),DirectEdge.class)) {
+    for (    DirectEdge e : filter(v.getOutgoing(),DirectEdge.class)) {
       components.union(v,e.getToVertex());
     }
     last=v;

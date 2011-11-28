@@ -55,17 +55,17 @@
   for (int y=0; y < N; ++y) {
     for (int x=0; x < N; ++x) {
       Vertex vertexIn=verticesIn[y][x];
-      for (      DirectEdge e1 : filter(graph.getIncoming(vertexIn),DirectEdge.class)) {
+      for (      DirectEdge e1 : filter(vertexIn.getIncoming(),DirectEdge.class)) {
         Vertex vertexOut=verticesOut[y][x];
         StreetVertex fromv=(StreetVertex)e1.getFromVertex();
-        for (        DirectEdge e2 : filter(graph.getOutgoing(vertexOut),DirectEdge.class)) {
+        for (        DirectEdge e2 : filter(vertexOut.getOutgoing(),DirectEdge.class)) {
           StreetVertex tov=(StreetVertex)e2.getToVertex();
           if (tov.getEdgeId().equals(fromv.getEdgeId())) {
             continue;
           }
           graph.addEdge(new TurnEdge(fromv,tov));
         }
-        assertTrue(graph.getDegreeOut(fromv) <= 4);
+        assertTrue(fromv.getDegreeOut() <= 4);
       }
     }
   }
@@ -75,19 +75,20 @@
   options.optimizeFor=OptimizeType.QUICK;
   options.walkReluctance=1;
   options.speed=1;
-  Dijkstra dijkstra=new Dijkstra(graph,verticesOut[0][0],options,graph.getVertex("a(0, 0)"),3);
+  OverlayGraph og=new OverlayGraph(graph);
+  Dijkstra dijkstra=new Dijkstra(og,verticesOut[0][0],options,graph.getVertex("a(0, 0)"),3);
   BasicShortestPathTree spt=dijkstra.getShortestPathTree(verticesIn[0][2],4);
   State v03=spt.getState(verticesIn[0][3]);
   assertNull(v03);
-  dijkstra=new Dijkstra(graph,verticesOut[0][0],options,graph.getVertex("a(0, 0)"),6);
+  dijkstra=new Dijkstra(og,verticesOut[0][0],options,graph.getVertex("a(0, 0)"),6);
   spt=dijkstra.getShortestPathTree(verticesIn[0][3],500);
   v03=spt.getState(verticesIn[0][3]);
   assertNotNull(v03);
-  dijkstra=new Dijkstra(graph,verticesOut[0][1],options,verticesIn[0][2]);
+  dijkstra=new Dijkstra(og,verticesOut[0][1],options,verticesIn[0][2]);
   spt=dijkstra.getShortestPathTree(verticesIn[0][3],20);
   v03=spt.getState(verticesIn[0][3]);
   assertNull(v03);
-  dijkstra=new Dijkstra(graph,verticesOut[0][1],options,verticesIn[0][2]);
+  dijkstra=new Dijkstra(og,verticesOut[0][1],options,verticesIn[0][2]);
   spt=dijkstra.getShortestPathTree(verticesIn[0][3],130);
   v03=spt.getState(verticesIn[0][3]);
   assertNotNull(v03);
@@ -99,9 +100,8 @@
   shortcuts=testch.getShortcuts(v,true).shortcuts;
   assertEquals(0,shortcuts.size());
   ContractionHierarchy hierarchy=new ContractionHierarchy(graph,new TraverseOptions(TraverseMode.WALK,OptimizeType.QUICK),1.0);
-  assertTrue(hierarchy.down.getVertices().size() == graphSize);
-  assertTrue(hierarchy.up.getVertices().size() == graphSize);
-  assertTrue(hierarchy.graph.getVertices().size() == 0);
+  assertTrue(hierarchy.updown.getVertices().size() == graphSize);
+  assertTrue(hierarchy.core.getVertices().size() == 0);
   System.out.println("Contracted");
   GraphPath path=hierarchy.getShortestPath(verticesOut[0][0],verticesIn[N - 1][N - 1],1000000000,options);
   assertNotNull(path);
