@@ -5,7 +5,7 @@
     if (out == backEdge) {
       continue;
     }
-    if (!(out instanceof TurnEdge || out instanceof OutEdge || out instanceof PlainStreetEdge)) {
+    if (!(out instanceof StreetEdge)) {
       continue;
     }
     if (out.traverse(backState) == null) {
