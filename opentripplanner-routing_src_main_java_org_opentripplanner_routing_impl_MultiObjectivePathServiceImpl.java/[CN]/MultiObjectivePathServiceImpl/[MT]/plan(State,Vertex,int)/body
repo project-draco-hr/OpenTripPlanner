@@ -32,6 +32,9 @@
       }
     }
     Vertex u=su.getVertex();
+    if (traverseVisitor != null) {
+      traverseVisitor.visitVertex(su);
+    }
     if (u.equals(target)) {
       boundingStates.add(su);
       returnStates.add(su);
@@ -45,6 +48,9 @@
     }
     EDGE:     for (    Edge e : u.getEdges(extraEdges,null,options.isArriveBy())) {
       State new_sv=e.traverse(su);
+      if (traverseVisitor != null) {
+        traverseVisitor.visitEdge(e,new_sv);
+      }
       if (new_sv == null)       continue;
       double h=heuristic.computeForwardWeight(new_sv,target);
       for (      State bs : boundingStates) {
@@ -72,6 +78,7 @@
           }
         }
       }
+      if (traverseVisitor != null)       traverseVisitor.visitEnqueue(new_sv);
       old_states.add(new_sv);
       pq.insert(new_sv,new_sv.getWeight() + h);
     }
