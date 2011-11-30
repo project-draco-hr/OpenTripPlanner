@@ -1,0 +1,56 @@
+{
+  DisjointSet<Vertex> components=getConnectedComponents(graph);
+  Map<Integer,List<Coordinate>> componentCoordinates=new HashMap<Integer,List<Coordinate>>();
+  for (  Vertex v : graph.getVertices()) {
+    for (    Edge e : v.getOutgoing()) {
+      State s0=new State(time,v,options);
+      State s1=e.traverse(s0);
+      if (s1 != null) {
+        Integer component=components.find(e.getFromVertex());
+        Geometry geometry=s1.getBackEdgeNarrative().getGeometry();
+        if (geometry != null) {
+          List<Coordinate> coordinates=new ArrayList<Coordinate>(Arrays.asList(geometry.getCoordinates()));
+          for (int i=0; i < coordinates.size(); ++i) {
+            Coordinate coordinate=new Coordinate(coordinates.get(i));
+            coordinate.x=Math.round(coordinate.x * PRECISION) / PRECISION;
+            coordinate.y=Math.round(coordinate.y * PRECISION) / PRECISION;
+            coordinates.set(i,coordinate);
+          }
+          MapUtils.addToMapList(componentCoordinates,component,coordinates);
+        }
+      }
+    }
+  }
+  List<Geometry> geoms=new ArrayList<Geometry>();
+  GeometryFactory gf=new GeometryFactory();
+  int mainComponentSize=0;
+  int mainComponentIndex=-1;
+  int component=0;
+  for (  List<Coordinate> coords : componentCoordinates.values()) {
+    Coordinate[] coordArray=new Coordinate[coords.size()];
+    ConvexHull hull=new ConvexHull(coords.toArray(coordArray),gf);
+    Geometry geom=hull.getConvexHull();
+    if (geom instanceof LineString) {
+      geom=geom.buffer(0.01);
+    }
+ else     if (geom instanceof Point) {
+      geom=geom.buffer(0.05);
+    }
+    geoms.add(geom);
+    if (mainComponentSize < coordArray.length) {
+      mainComponentIndex=component;
+      mainComponentSize=coordArray.length;
+    }
+    ++component;
+  }
+  Geometry mainComponent=geoms.get(mainComponentIndex);
+  for (int i=0; i < geoms.size(); ++i) {
+    Geometry geom=geoms.get(i);
+    if (i == mainComponentIndex) {
+      continue;
+    }
+    mainComponent=mainComponent.difference(geom);
+  }
+  geoms.set(mainComponentIndex,mainComponent);
+  return geoms;
+}

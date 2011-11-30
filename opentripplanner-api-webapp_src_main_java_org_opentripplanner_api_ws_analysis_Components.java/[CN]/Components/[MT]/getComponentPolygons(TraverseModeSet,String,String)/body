@@ -1,0 +1,18 @@
+{
+  TraverseOptions options=new TraverseOptions(modes);
+  long dateTime=DateUtils.toDate(date,time).getTime();
+  options.setServiceDays(dateTime);
+  Graph graph=graphService.getGraph();
+  if (graphService.getCalendarService() != null) {
+    options.setCalendarService(graphService.getCalendarService());
+  }
+  List<Geometry> polygons=AnalysisUtils.getComponentPolygons(graph,options,dateTime);
+  GraphComponentPolygons out=new GraphComponentPolygons();
+  out.components=new ArrayList<GraphComponent>();
+  for (  Geometry geometry : polygons) {
+    GraphComponent component=new GraphComponent();
+    component.polygon=geometry;
+    out.components.add(component);
+  }
+  return out;
+}

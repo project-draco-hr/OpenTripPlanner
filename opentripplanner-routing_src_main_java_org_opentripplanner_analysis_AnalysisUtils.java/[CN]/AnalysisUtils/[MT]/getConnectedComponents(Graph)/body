@@ -1,0 +1,9 @@
+{
+  DisjointSet<Vertex> components=new DisjointSet<Vertex>();
+  for (  Vertex v : graph.getVertices()) {
+    for (    DirectEdge e : filter(v.getOutgoing(),DirectEdge.class)) {
+      components.union(e.getFromVertex(),e.getToVertex());
+    }
+  }
+  return components;
+}
