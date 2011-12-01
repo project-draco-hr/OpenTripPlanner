@@ -1,0 +1,13 @@
+{
+  String message=getMessage();
+switch (getLevel()) {
+case ERROR:
+    log.error(message);
+  break;
+case WARN:
+log.warn(message);
+break;
+default :
+log.info(message);
+}
+}
