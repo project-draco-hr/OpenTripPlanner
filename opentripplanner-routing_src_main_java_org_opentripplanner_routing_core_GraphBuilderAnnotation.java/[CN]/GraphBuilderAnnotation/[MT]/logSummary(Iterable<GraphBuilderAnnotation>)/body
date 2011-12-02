@@ -2,5 +2,5 @@
   int[] counts=new int[Variety.values().length];
   LOG.info("Summary (number of each type of annotation):");
   for (  GraphBuilderAnnotation gba : gbas)   ++counts[gba.variety.ordinal()];
-  for (  Variety v : Variety.values())   LOG.warn("    {} - {}",v.toString(),counts[v.ordinal()]);
+  for (  Variety v : Variety.values())   LOG.info("    {} - {}",v.toString(),counts[v.ordinal()]);
 }
