@@ -13,7 +13,7 @@
     }
   }
   if (from == -1 || to == -1 || via == -1) {
-    _log.debug("Bad restriction " + relation.getId());
+    _log.warn(GraphBuilderAnnotation.register(graph,Variety.TURN_RESTRICTION_BAD,relation.getId()));
     return;
   }
   Set<TraverseMode> modes=EnumSet.of(TraverseMode.BICYCLE,TraverseMode.CAR);
@@ -25,7 +25,7 @@
       }
  else       if (m.equals("bicycle")) {
         modes.remove(TraverseMode.BICYCLE);
-        _log.debug("turn restriction with bicycle exception at node {} from {}",via,from);
+        _log.warn(GraphBuilderAnnotation.register(graph,Variety.TURN_RESTRICTION_EXCEPTION,via,from));
       }
     }
   }
@@ -53,7 +53,7 @@
     tag=new TurnRestrictionTag(via,TurnRestrictionType.ONLY_TURN);
   }
  else {
-    _log.debug("unknown restriction type " + relation.getTag("restriction"));
+    _log.warn(GraphBuilderAnnotation.register(graph,Variety.TURN_RESTRICTION_UNKNOWN,relation.getTag("restriction")));
     return;
   }
   TurnRestriction restriction=new TurnRestriction();

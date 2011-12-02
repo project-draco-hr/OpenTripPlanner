@@ -25,7 +25,7 @@
     List<StopTime> originalStopTimes=getNonduplicateStopTimesForTrip(trip);
     interpolateStopTimes(originalStopTimes);
     if (originalStopTimes.size() < 2) {
-      _log.warn("Trip " + trip + " has fewer than two stops.  We will not use it for routing.  This is probably an error in your data");
+      _log.warn(GraphBuilderAnnotation.register(graph,Variety.TRIP_DEGENERATE,trip));
       continue;
     }
     List<List<StopTime>> allStopTimes=new ArrayList<List<StopTime>>();
@@ -65,12 +65,12 @@
         if (insertionPoint < 0) {
           insertionPoint=-(insertionPoint + 1);
           if (!tripPattern.stopTimesIdentical(stopTimes,insertionPoint)) {
-            _log.warn("Possible GTFS feed error: Duplicate first departure time. New trip: " + trip.getId() + " Existing trip: "+ tripPattern.getTrip(insertionPoint)+ " This will be handled correctly but inefficiently.");
+            _log.warn(GraphBuilderAnnotation.register(graph,Variety.TRIP_DUPLICATE_DEPARTURE,trip.getId(),tripPattern.getTrip(insertionPoint)));
             simple=true;
             createSimpleHops(graph,trip,stopTimes);
           }
  else {
-            _log.warn("Possible GTFS feed error: Duplicate trip (skipping). New: " + trip.getId() + " Existing: "+ tripPattern.getTrip(insertionPoint));
+            _log.warn(GraphBuilderAnnotation.register(graph,Variety.TRIP_DUPLICATE,trip.getId(),tripPattern.getTrip(insertionPoint)));
             break;
           }
         }
@@ -86,7 +86,7 @@
               tripPattern.addHop(i,insertionPoint,st0.getDepartureTime(),runningTime,st1.getArrivalTime(),dwellTime,st0.getStopHeadsign(),trip);
             }
  catch (            TripOvertakingException e) {
-              _log.warn(e.getMessage());
+              _log.warn(GraphBuilderAnnotation.register(graph,Variety.TRIP_DUPLICATE_DEPARTURE,e.overtaker,e.overtaken,e.stopIndex));
               for (i=i - 1; i >= 0; --i) {
                 tripPattern.removeHop(i,insertionPoint);
               }
