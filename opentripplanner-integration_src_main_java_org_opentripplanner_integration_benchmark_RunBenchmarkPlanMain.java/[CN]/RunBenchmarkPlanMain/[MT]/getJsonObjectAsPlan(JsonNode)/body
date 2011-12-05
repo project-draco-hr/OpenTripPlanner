@@ -1,0 +1,11 @@
+{
+  Plan plan=new Plan();
+  JsonNode from=obj.get("from");
+  plan.latFrom=from.get("lat").getValueAsDouble();
+  plan.lonFrom=from.get("lon").getValueAsDouble();
+  JsonNode to=obj.get("to");
+  plan.latTo=to.get("lat").getValueAsDouble();
+  plan.lonTo=to.get("lon").getValueAsDouble();
+  plan.time=DateLibrary.getIso8601StringAsDate(obj.get("time").getValueAsText());
+  return plan;
+}

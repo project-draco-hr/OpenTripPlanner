@@ -3,7 +3,7 @@
   Stop stop=stops.get(index);
   double lat=stop.getLat() + _random.nextGaussian() * _latNoise;
   double lon=stop.getLon() + _random.nextGaussian() * _lonNoise;
-  JSONObject obj=new JSONObject();
+  ObjectNode obj=mapper.createObjectNode();
   obj.put("lat",lat);
   obj.put("lon",lon);
   return obj;

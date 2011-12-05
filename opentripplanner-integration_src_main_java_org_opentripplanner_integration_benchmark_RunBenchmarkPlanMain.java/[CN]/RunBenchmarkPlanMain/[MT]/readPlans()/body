@@ -3,7 +3,8 @@
   String line=null;
   List<Plan> plans=new ArrayList<Plan>();
   while ((line=reader.readLine()) != null) {
-    JSONObject obj=new JSONObject(line);
+    ObjectMapper mapper=new ObjectMapper();
+    JsonNode obj=mapper.readTree(line);
     plans.add(getJsonObjectAsPlan(obj));
   }
   return plans;

@@ -3,9 +3,9 @@
   String timeAsString=DateLibrary.getTimeAsIso8601String(_time);
   PrintWriter out=new PrintWriter(_outputPath);
   for (int i=0; i < _samples; i++) {
-    JSONObject from=getRandomLocationNearTransitStop(stops);
-    JSONObject to=getRandomLocationNearTransitStop(stops);
-    JSONObject row=new JSONObject();
+    ObjectNode from=getRandomLocationNearTransitStop(stops);
+    ObjectNode to=getRandomLocationNearTransitStop(stops);
+    ObjectNode row=mapper.createObjectNode();
     row.put("from",from);
     row.put("to",to);
     row.put("time",timeAsString);
