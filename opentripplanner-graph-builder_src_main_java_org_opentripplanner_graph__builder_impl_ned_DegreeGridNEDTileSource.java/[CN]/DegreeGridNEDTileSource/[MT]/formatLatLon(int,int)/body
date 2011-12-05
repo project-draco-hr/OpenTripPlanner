@@ -1,0 +1,18 @@
+{
+  String northSouth, eastWest;
+  if (y < 0) {
+    northSouth="s";
+    y=-y;
+  }
+ else {
+    northSouth="n";
+  }
+  if (x < 0) {
+    eastWest="w";
+    x=-x;
+  }
+ else {
+    eastWest="e";
+  }
+  return String.format("%s%d%s%d",northSouth,y,eastWest,x);
+}

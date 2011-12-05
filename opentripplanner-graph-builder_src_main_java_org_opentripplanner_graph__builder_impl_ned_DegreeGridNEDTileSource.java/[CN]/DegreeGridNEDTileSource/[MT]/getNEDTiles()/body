@@ -1,0 +1,10 @@
+{
+  Envelope extent=graph.getExtent();
+  List<File> paths=new ArrayList<File>();
+  for (int y=(int)extent.getMinY(); y <= (int)extent.getMaxY(); ++y) {
+    for (int x=(int)extent.getMinX() - 1; x <= (int)extent.getMaxY() - 1; ++x) {
+      paths.add(getPathToTile(x,y));
+    }
+  }
+  return paths;
+}

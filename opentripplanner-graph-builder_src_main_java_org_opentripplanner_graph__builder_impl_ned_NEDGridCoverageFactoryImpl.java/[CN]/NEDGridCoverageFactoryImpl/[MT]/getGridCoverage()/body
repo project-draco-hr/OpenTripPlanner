@@ -1,9 +1,8 @@
 {
   if (coverage == null) {
-    NEDDownloader downloader=new NEDDownloader();
-    downloader.setGraph(graphService.getGraph());
-    downloader.setCacheDirectory(cacheDirectory);
-    List<File> paths=downloader.downloadNED();
+    tileSource.setGraph(graphService.getGraph());
+    tileSource.setCacheDirectory(cacheDirectory);
+    List<File> paths=tileSource.getNEDTiles();
     for (    File path : paths) {
       GeotiffGridCoverageFactoryImpl factory=new GeotiffGridCoverageFactoryImpl();
       factory.setPath(path);
