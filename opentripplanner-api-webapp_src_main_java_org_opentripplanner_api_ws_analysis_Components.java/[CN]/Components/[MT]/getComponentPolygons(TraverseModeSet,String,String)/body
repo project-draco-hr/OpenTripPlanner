@@ -1,15 +1,19 @@
 {
   TraverseOptions options=new TraverseOptions(modes);
   long dateTime=DateUtils.toDate(date,time).getTime();
-  Graph graph=graphService.getGraph();
-  if (graphService.getCalendarService() != null) {
-    options.setCalendarService(graphService.getCalendarService());
+  if (cachedPolygons == null || dateTime != cachedDateTime || !options.equals(cachedOptions)) {
+    cachedOptions=options;
+    cachedDateTime=dateTime;
+    Graph graph=graphService.getGraph();
+    if (graphService.getCalendarService() != null) {
+      options.setCalendarService(graphService.getCalendarService());
+    }
+    options.setServiceDays(dateTime);
+    cachedPolygons=AnalysisUtils.getComponentPolygons(graph,options,dateTime);
   }
-  options.setServiceDays(dateTime);
-  List<Geometry> polygons=AnalysisUtils.getComponentPolygons(graph,options,dateTime);
   GraphComponentPolygons out=new GraphComponentPolygons();
   out.components=new ArrayList<GraphComponent>();
-  for (  Geometry geometry : polygons) {
+  for (  Geometry geometry : cachedPolygons) {
     GraphComponent component=new GraphComponent();
     component.polygon=geometry;
     out.components.add(component);
