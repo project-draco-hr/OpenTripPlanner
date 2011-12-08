@@ -1,7 +1,5 @@
 {
-  File path=new File(cacheDirectory,formatLatLon(x,y));
-  path=new File(path,"grd" + formatLatLon(x,y));
-  path=new File(path,"w001001x.adf");
+  File path=new File(cacheDirectory,formatLatLon(x,y) + ".tiff");
   if (path.exists()) {
     return path;
   }
@@ -13,7 +11,7 @@
     AWSCredentials awsCredentials=new AWSCredentials(awsAccessKey,awsSecretKey);
     try {
       S3Service s3Service=new RestS3Service(awsCredentials);
-      String key=formatLatLon(x,y) + "/grd" + formatLatLon(x,y)+ "/w001001x.adf";
+      String key=formatLatLon(x,y) + ".tiff";
       S3Object object=s3Service.getObject("ned13",key);
       InputStream istream=object.getDataInputStream();
       FileOutputStream ostream=new FileOutputStream(path);
