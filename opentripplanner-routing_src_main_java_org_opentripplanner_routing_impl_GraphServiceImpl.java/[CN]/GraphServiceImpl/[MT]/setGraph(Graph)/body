@@ -1,6 +1,6 @@
 {
-  _contractionHierarchySet=contractionHierarchySet;
-  CalendarServiceData data=_contractionHierarchySet.getService(CalendarServiceData.class);
+  _graph=graph;
+  CalendarServiceData data=_graph.getService(CalendarServiceData.class);
   if (data != null) {
     CalendarServiceImpl calendarService=new CalendarServiceImpl();
     calendarService.setData(data);

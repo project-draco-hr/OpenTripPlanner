@@ -14,6 +14,5 @@
     assertTrue(e.getReach() < 400);
   }
   List<TraverseOptions> optionlist=Arrays.asList(options);
-  ContractionHierarchySet hierarchy=new ContractionHierarchySet(graph,optionlist);
-  GraphSerializationLibrary.writeGraph(hierarchy,new File("/tmp/ReachTestGraph.obj"));
+  GraphSerializationLibrary.writeGraph(graph,new File("/tmp/ReachTestGraph.obj"));
 }

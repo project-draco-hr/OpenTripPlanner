@@ -17,12 +17,11 @@
       }
       Graph graph=new Graph();
       graph.setBundle(_bundle);
-      List<TraverseOptions> modeList=Collections.emptyList();
-      setContractionHierarchySet(new ContractionHierarchySet(graph,modeList));
+      setGraph(graph);
       return;
     }
-    ContractionHierarchySet chs=new GraphSerializationLibrary(loader).readGraph(path);
-    setContractionHierarchySet(chs);
+    Graph graph=new GraphSerializationLibrary(loader).readGraph(path);
+    setGraph(graph);
   }
  catch (  Exception ex) {
     throw new IllegalStateException("error loading graph from " + path,ex);
