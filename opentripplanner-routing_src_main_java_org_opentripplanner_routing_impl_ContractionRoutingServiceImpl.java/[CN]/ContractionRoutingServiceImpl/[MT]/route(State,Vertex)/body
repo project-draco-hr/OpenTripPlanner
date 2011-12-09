@@ -2,7 +2,7 @@
   TraverseOptions options=origin.getOptions();
   ContractionHierarchySet hierarchies=_graphService.getContractionHierarchySet();
   ContractionHierarchy hierarchy=null;
-  hierarchy=hierarchies.getHierarchy(options);
+  if (hierarchies != null)   hierarchy=hierarchies.getHierarchy(options);
   int tries=0;
   while (tries < MAX_TRIES) {
     if (options.remainingWeightHeuristic != null) {
@@ -13,7 +13,7 @@
     if (hierarchy == null) {
       LOG.debug("No contraction hierarchies for this mode, falling back on A*.");
       GenericAStar aStar=getAStarInstance(options);
-      Graph _graph=hierarchies.getGraph();
+      Graph _graph=_graphService.getGraph();
       ShortestPathTree spt=aStar.getShortestPathTree(_graph,origin,target);
       if (spt == null) {
         return null;
