@@ -17,7 +17,7 @@
   }
   GraphBuilderAnnotation.logSummary(graph.getBuilderAnnotations());
   try {
-    GraphSerializationLibrary.writeGraph(graph,graphPath);
+    graph.save(graphPath);
   }
  catch (  Exception ex) {
     throw new IllegalStateException(ex);

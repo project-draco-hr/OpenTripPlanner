@@ -14,5 +14,5 @@
     assertTrue(e.getReach() < 400);
   }
   List<TraverseOptions> optionlist=Arrays.asList(options);
-  GraphSerializationLibrary.writeGraph(graph,new File("/tmp/ReachTestGraph.obj"));
+  graph.save(new File("/tmp/ReachTestGraph.obj"));
 }

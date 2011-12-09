@@ -1,0 +1,40 @@
+{
+  ObjectInputStream in=new GraphObjectInputStream(new BufferedInputStream(new FileInputStream(file)),classLoader);
+  LOG.info("Reading graph " + file.getAbsolutePath() + " ...");
+  try {
+    Graph graph=(Graph)in.readObject();
+    LOG.debug("Basic graph info and annotations read.");
+    if (level == LoadLevel.BASIC)     return graph;
+    LOG.debug("Loading edges...");
+    List<Edge> edges=(ArrayList<Edge>)in.readObject();
+    graph.vertices=new HashMap<String,Vertex>();
+    LOG.debug("Reconnecting graph...");
+    for (    Edge e : edges) {
+      Vertex fromv=e.getFromVertex();
+      Vertex tov=null;
+      if (e instanceof AbstractEdge)       tov=((AbstractEdge)e).getToVertex();
+ else       if (e instanceof TurnEdge)       tov=((TurnEdge)e).getToVertex();
+ else       LOG.warn("Edge with no to-vertex: " + e);
+      graph.vertices.put(fromv.getLabel(),fromv);
+      fromv.addOutgoing(e);
+      if (tov != null) {
+        graph.vertices.put(tov.getLabel(),tov);
+        tov.addIncoming(e);
+      }
+    }
+    LOG.info("Main graph read. |V|={} |E|={}",graph.countVertices(),graph.countEdges());
+    if (level == LoadLevel.NO_HIERARCHIES)     return graph;
+    graph.hierarchies=(ContractionHierarchySet)in.readObject();
+    if (graph.hierarchies != null)     LOG.debug("Contraction hierarchies read.");
+    if (level == LoadLevel.FULL)     return graph;
+    graph.vertexById=(List<Vertex>)in.readObject();
+    graph.edgeById=(List<Edge>)in.readObject();
+    graph.idForEdge=(Map<Edge,Integer>)in.readObject();
+    LOG.debug("Debug info read.");
+    return graph;
+  }
+ catch (  InvalidClassException ex) {
+    LOG.error("Stored graph is incompatible with this version of OTP, please rebuild it.");
+    throw new IllegalStateException("Stored Graph version error",ex);
+  }
+}

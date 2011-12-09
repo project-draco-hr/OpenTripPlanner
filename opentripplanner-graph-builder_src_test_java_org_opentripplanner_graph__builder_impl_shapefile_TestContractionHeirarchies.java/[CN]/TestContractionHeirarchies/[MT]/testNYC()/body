@@ -84,8 +84,8 @@
   chs.setGraph(graph);
   chs.build();
   graph.setHierarchies(chs);
-  GraphSerializationLibrary.writeGraph(graph,new File("/tmp/contracted"));
-  graph=new GraphSerializationLibrary().readGraph(new File("/tmp/contracted"));
+  graph.save(new File("/tmp/contracted"));
+  graph=Graph.load(new File("/tmp/contracted"),Graph.LoadLevel.FULL);
   chs=graph.getHierarchies();
   hierarchy=chs.getHierarchy(options);
   assertNotNull(hierarchy);
