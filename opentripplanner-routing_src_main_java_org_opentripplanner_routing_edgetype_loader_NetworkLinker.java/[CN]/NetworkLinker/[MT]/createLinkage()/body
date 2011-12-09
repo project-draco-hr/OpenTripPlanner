@@ -1,10 +1,7 @@
 {
   _log.debug("creating linkages...");
-  int i=0;
   ArrayList<Vertex> vertices=new ArrayList<Vertex>(graph.getVertices());
   for (  Vertex v : vertices) {
-    if (i % 100000 == 0)     _log.debug("vertices=" + i + "/"+ vertices.size());
-    i++;
     if (v instanceof TransitStop) {
       TransitStop ts=(TransitStop)v;
       if (!ts.isEntrance()) {
