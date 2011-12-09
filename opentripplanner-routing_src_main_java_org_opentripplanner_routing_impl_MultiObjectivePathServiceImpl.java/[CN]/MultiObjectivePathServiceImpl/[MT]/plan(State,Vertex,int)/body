@@ -32,17 +32,11 @@
  else         break WALK;
       }
       State su=pq.extract_min();
-      for (      State bs : boundingStates) {
-        if (eDominates(bs,su)) {
-          continue QUEUE;
-        }
-      }
       Vertex u=su.getVertex();
       if (traverseVisitor != null) {
         traverseVisitor.visitVertex(su);
       }
       if (u.equals(target)) {
-        boundingStates.add(su);
         returnStates.add(su);
         if (!options.getModes().getTransit())         break QUEUE;
         if (returnStates.size() >= _maxPaths)         break QUEUE;
@@ -59,11 +53,6 @@
         }
         if (new_sv == null)         continue;
         double h=heuristic.computeForwardWeight(new_sv,target);
-        for (        State bs : boundingStates) {
-          if (eDominates(bs,new_sv)) {
-            continue EDGE;
-          }
-        }
         Vertex v=new_sv.getVertex();
         List<State> old_states=states.get(v);
         if (old_states == null) {
@@ -91,6 +80,9 @@
     }
   }
   List<GraphPath> paths=new LinkedList<GraphPath>();
-  for (  State s : returnStates)   paths.add(new GraphPath(s,true));
+  for (  State s : returnStates) {
+    LOG.debug(s.toStringVerbose());
+    paths.add(new GraphPath(s,true));
+  }
   return paths;
 }
