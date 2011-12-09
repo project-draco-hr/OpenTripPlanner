@@ -2,11 +2,10 @@
   ObjectInputStream in=new GraphObjectInputStream(new BufferedInputStream(new FileInputStream(graphPath)));
   _log.info("Reading graph " + graphPath.getAbsolutePath() + " ...");
   try {
-    ContractionHierarchySet hierarchy=(ContractionHierarchySet)in.readObject();
+    Graph graph=(Graph)in.readObject();
     _log.info("Graph read");
-    Graph g=hierarchy.getGraph();
-    _log.info("Main graph size: |V|={} |E|={}",g.countVertices(),g.countEdges());
-    return hierarchy;
+    _log.info("Main graph size: |V|={} |E|={}",graph.countVertices(),graph.countEdges());
+    return graph;
   }
  catch (  InvalidClassException ex) {
     _log.error("Stored graph is incompatible with this version of OTP, please rebuild it.");
