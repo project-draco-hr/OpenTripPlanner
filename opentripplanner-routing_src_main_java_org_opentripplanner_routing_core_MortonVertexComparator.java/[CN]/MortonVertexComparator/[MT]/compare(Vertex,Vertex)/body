@@ -1,0 +1,18 @@
+{
+  double lon0=v0.getX() - minLon;
+  double lat0=v0.getY();
+  double lon1=v1.getX() - minLon;
+  double lat1=v1.getY();
+  long x0=(long)Math.abs(lon0 * meters_per_degree_lon);
+  long y0=(long)Math.abs(lat0 * METERS_PER_DEGREE_LAT);
+  long x1=(long)Math.abs(lon1 * meters_per_degree_lon);
+  long y1=(long)Math.abs(lat1 * METERS_PER_DEGREE_LAT);
+  long dx=x0 ^ x1;
+  long dy=y0 ^ y1;
+  if (dy < dx && (dy < (dx ^ dy))) {
+    return (int)(x0 - x1);
+  }
+ else {
+    return (int)(y0 - y1);
+  }
+}

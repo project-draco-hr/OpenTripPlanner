@@ -22,13 +22,14 @@
         tov.addIncoming(e);
       }
     }
+    for (    Vertex v : graph.vertices.values())     v.trimEdgeLists();
     LOG.info("Main graph read. |V|={} |E|={}",graph.countVertices(),graph.countEdges());
     if (level == LoadLevel.NO_HIERARCHIES)     return graph;
     graph.hierarchies=(ContractionHierarchySet)in.readObject();
     if (graph.hierarchies != null)     LOG.debug("Contraction hierarchies read.");
     if (level == LoadLevel.FULL)     return graph;
     graph.vertexById=(List<Vertex>)in.readObject();
-    graph.edgeById=(List<Edge>)in.readObject();
+    graph.edgeById=(Map<Integer,Edge>)in.readObject();
     graph.idForEdge=(Map<Edge,Integer>)in.readObject();
     LOG.debug("Debug info read.");
     return graph;
