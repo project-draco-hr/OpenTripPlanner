@@ -1,9 +1,0 @@
-{
-  initIndexes();
-  Envelope envelope=getEnvelope(lowerLeft,upperRight);
-  VertexSet out=new VertexSet();
-  Graph graph=graphService.getGraph();
-  @SuppressWarnings("unchecked") List<Vertex> query=vertexIndex.query(envelope);
-  out.vertices=query;
-  return out.withGraph(graph);
-}
