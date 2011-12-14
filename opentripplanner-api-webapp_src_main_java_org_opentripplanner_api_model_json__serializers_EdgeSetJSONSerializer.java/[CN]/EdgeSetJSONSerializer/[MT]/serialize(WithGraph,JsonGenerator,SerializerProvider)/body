@@ -1,0 +1,7 @@
+{
+  ObjectMapper mapper=SerializerUtils.getMapper();
+  SimpleModule module=SerializerUtils.getSerializerModule();
+  module.addSerializer(new VertexSerializer());
+  mapper.registerModule(module);
+  jgen.writeRawValue(mapper.writeValueAsString(object.getObject()));
+}

@@ -1,0 +1,14 @@
+{
+  initIndexes();
+  Envelope envelope=getEnvelope(lowerLeft,upperRight);
+  VertexSet out=new VertexSet();
+  Graph graph=graphService.getGraph();
+  @SuppressWarnings("unchecked") List<Vertex> query=vertexIndex.query(envelope);
+  out.vertices=query;
+  for (  Vertex v : query) {
+    if (!envelope.contains(v.getCoordinate())) {
+      System.out.println("doomx");
+    }
+  }
+  return out.withGraph(graph);
+}
