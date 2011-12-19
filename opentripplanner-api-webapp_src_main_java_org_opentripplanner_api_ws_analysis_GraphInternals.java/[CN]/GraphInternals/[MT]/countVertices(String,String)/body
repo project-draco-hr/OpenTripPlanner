@@ -1,0 +1,10 @@
+{
+  initIndexes();
+  Envelope envelope=getEnvelope(lowerLeft,upperRight);
+  FeatureCount out=new FeatureCount();
+  @SuppressWarnings("unchecked") List<Vertex> vertexQuery=vertexIndex.query(envelope);
+  out.vertices=vertexQuery.size();
+  @SuppressWarnings("unchecked") List<Edge> edgeQuery=edgeIndex.query(envelope);
+  out.edges=edgeQuery.size();
+  return out;
+}

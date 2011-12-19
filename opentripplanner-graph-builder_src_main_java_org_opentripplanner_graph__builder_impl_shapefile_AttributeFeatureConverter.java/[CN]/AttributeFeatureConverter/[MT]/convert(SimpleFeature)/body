@@ -1,3 +1,12 @@
 {
-  return (T)feature.getAttribute(_attributeName);
+  T value=(T)feature.getAttribute(_attributeName);
+  if (value instanceof String && decodeUTF8) {
+    String str=(String)value;
+    Charset charset=Charset.forName("UTF-8");
+    byte[] bytes=new byte[str.length()];
+    str.getBytes(0,str.length(),bytes,0);
+    ByteBuffer bb=ByteBuffer.wrap(bytes);
+    value=(T)charset.decode(bb).toString();
+  }
+  return value;
 }

@@ -1,0 +1,28 @@
+{
+  if (vertexIndex != null) {
+    return;
+  }
+  graphService.setLoadLevel(LoadLevel.DEBUG);
+  Graph graph=graphService.getGraph();
+  vertexIndex=new STRtree();
+  edgeIndex=new STRtree();
+  for (  Vertex v : graph.getVertices()) {
+    Envelope vertexEnvelope=new Envelope(v.getCoordinate());
+    vertexIndex.insert(vertexEnvelope,v);
+    for (    Edge e : v.getOutgoing()) {
+      if (e instanceof DirectEdge) {
+        Envelope envelope;
+        Geometry geometry=((DirectEdge)e).getGeometry();
+        if (geometry == null) {
+          envelope=vertexEnvelope;
+        }
+ else {
+          envelope=geometry.getEnvelopeInternal();
+        }
+        edgeIndex.insert(envelope,e);
+      }
+    }
+  }
+  vertexIndex.build();
+  edgeIndex.build();
+}

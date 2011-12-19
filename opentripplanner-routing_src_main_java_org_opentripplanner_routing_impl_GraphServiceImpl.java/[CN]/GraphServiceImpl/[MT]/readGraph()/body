@@ -20,7 +20,7 @@
       setGraph(graph);
       return;
     }
-    setGraph(Graph.load(classLoader,path,Graph.LoadLevel.FULL));
+    setGraph(Graph.load(classLoader,path,loadLevel));
   }
  catch (  Exception ex) {
     throw new IllegalStateException("error loading graph from " + path,ex);
