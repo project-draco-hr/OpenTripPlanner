@@ -1,0 +1,6 @@
+{
+  detachFrom();
+  if (fromv == null)   throw new IllegalStateException("attaching to fromv null");
+  this.fromv=fromv;
+  fromv.addOutgoing(this);
+}

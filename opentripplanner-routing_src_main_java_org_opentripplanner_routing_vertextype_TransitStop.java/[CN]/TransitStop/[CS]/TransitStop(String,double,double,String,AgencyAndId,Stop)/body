@@ -1,0 +1,7 @@
+{
+  super(id,lon,lat,stopId);
+  if (stop != null) {
+    this.wheelchairEntrance=stop.getWheelchairBoarding() == 1;
+  }
+  isEntrance=stop == null ? false : stop.getLocationType() == 2;
+}

@@ -1,0 +1,7 @@
+{
+  Vertex gv=vertices.get(v.getLabel());
+  if (gv != null) {
+    throw new IllegalStateException("vertices must have a unique label");
+  }
+  vertices.put(v.getLabel(),v);
+}

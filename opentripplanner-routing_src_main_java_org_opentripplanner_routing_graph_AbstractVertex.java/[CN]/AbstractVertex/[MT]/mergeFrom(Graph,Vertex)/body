@@ -1,0 +1,22 @@
+{
+  List<Edge> edges=new ArrayList<Edge>();
+  edges.addAll(this.getIncoming());
+  edges.addAll(this.getOutgoing());
+  edges.addAll(other.getIncoming());
+  edges.addAll(other.getOutgoing());
+  for (  Edge e : edges) {
+    DirectEdge de=(DirectEdge)e;
+    Vertex from=de.getFromVertex();
+    Vertex to=de.getToVertex();
+    if ((from == this && to == other) || (from == other && to == this)) {
+      e.detach();
+    }
+ else     if (from == other) {
+      e.attach(this,to);
+    }
+ else     if (to == other) {
+      e.attach(from,this);
+    }
+  }
+  graph.removeVertex(other);
+}
