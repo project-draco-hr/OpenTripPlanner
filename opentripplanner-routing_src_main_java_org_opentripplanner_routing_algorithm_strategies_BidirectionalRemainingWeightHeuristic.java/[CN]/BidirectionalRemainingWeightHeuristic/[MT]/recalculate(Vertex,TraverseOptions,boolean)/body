@@ -1,7 +1,7 @@
 {
   if (target != this.target) {
     this.target=target;
-    this.nVertices=Vertex.getMaxIndex();
+    this.nVertices=AbstractVertex.getMaxIndex();
     weights=new double[nVertices];
     Arrays.fill(weights,Double.POSITIVE_INFINITY);
     BinHeap<Vertex> q=new BinHeap<Vertex>();

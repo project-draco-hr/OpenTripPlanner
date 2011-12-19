@@ -22,9 +22,6 @@
     }
   }
   for (  DirectEdge e : edgesToRemove) {
-    graph.removeEdge(e);
-  }
-  for (  DirectEdge e : edgesToAdd) {
-    graph.addEdge(e);
+    e.detach();
   }
 }

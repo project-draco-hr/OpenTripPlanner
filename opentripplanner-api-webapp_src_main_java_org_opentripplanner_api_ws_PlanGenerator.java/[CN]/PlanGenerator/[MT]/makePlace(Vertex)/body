@@ -1,6 +1,6 @@
 {
   Coordinate endCoord=vertex.getCoordinate();
   Place place=new Place(endCoord.x,endCoord.y,vertex.getName());
-  place.stopId=vertex.getStopId();
+  if (vertex instanceof TransitVertex)   place.stopId=((TransitVertex)vertex).getStopId();
   return place;
 }
