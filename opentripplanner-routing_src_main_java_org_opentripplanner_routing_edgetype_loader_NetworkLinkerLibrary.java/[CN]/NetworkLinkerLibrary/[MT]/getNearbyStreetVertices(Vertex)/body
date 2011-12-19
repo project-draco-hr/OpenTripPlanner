@@ -1,14 +1,17 @@
 {
-  Collection<Vertex> existing=splitVertices.get(v);
+  Collection<StreetVertex> existing=splitVertices.get(v);
   if (existing != null)   return existing;
-  String vertexLabel="link for " + v.getStopId();
+  String vertexLabel;
+  if (v instanceof TransitVertex)   vertexLabel="link for " + ((TransitVertex)v).getStopId();
+ else   vertexLabel="link for " + v;
   Coordinate coordinate=v.getCoordinate();
-  List<Vertex> atIntersection=index.getIntersectionAt(coordinate);
+  List<StreetVertex> atIntersection=index.getIntersectionAt(coordinate);
   if (atIntersection != null) {
     return atIntersection;
   }
   Collection<StreetEdge> edges=index.getClosestEdges(coordinate,options);
   if (edges == null || edges.size() < 2) {
+    _log.debug("found too few edges: {}",edges);
     return null;
   }
   return getSplitterVertices(vertexLabel,edges,coordinate);

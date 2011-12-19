@@ -8,7 +8,7 @@
     Vertex toVertex=graph.getVertex(departureVertexId(id(toStop.getId())));
 switch (t.getTransferType()) {
 case 1:
-      graph.addEdge(new TimedTransferEdge(fromVertex,toVertex));
+      new TimedTransferEdge(fromVertex,toVertex);
     break;
 case 2:
   transferTable.setTransferTime(fromVertex,toVertex,t.getMinTransferTime());

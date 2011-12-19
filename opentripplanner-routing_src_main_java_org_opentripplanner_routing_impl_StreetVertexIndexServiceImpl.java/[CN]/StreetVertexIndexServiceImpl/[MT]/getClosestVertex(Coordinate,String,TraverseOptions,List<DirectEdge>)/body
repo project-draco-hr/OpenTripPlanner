@@ -1,6 +1,6 @@
 {
   _log.debug("Looking for/making a vertex near {}",coordinate);
-  List<Vertex> vertices=getIntersectionAt(coordinate);
+  List<StreetVertex> vertices=getIntersectionAt(coordinate);
   if (vertices != null && !vertices.isEmpty()) {
     StreetLocation closest=new StreetLocation("corner " + Math.random(),coordinate,name);
     for (    Vertex v : vertices) {
@@ -8,7 +8,7 @@
       closest.getExtra().add(e);
       e=new FreeEdge(v,closest);
       closest.getExtra().add(e);
-      if (v instanceof StreetVertex && ((StreetVertex)v).isWheelchairAccessible()) {
+      if (v instanceof TurnVertex && ((TurnVertex)v).isWheelchairAccessible()) {
         closest.setWheelchairAccessible(true);
       }
     }

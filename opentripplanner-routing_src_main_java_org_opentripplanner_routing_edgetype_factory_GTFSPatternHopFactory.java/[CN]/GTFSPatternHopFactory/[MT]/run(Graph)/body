@@ -135,7 +135,6 @@
         Vertex endJourney=graph.getVertex(endId);
         dwell=new PatternInterlineDwell(startJourney,endJourney,toTrip);
         putInterlineDwell(dwellKey,dwell);
-        graph.addEdge(dwell);
       }
       int dwellTime=st1.getDepartureTime() - st0.getArrivalTime();
       dwell.addTrip(fromTrip.getId(),toTrip.getId(),dwellTime,fromInterlineTrip.getPatternIndex(),toInterlineTrip.getPatternIndex());

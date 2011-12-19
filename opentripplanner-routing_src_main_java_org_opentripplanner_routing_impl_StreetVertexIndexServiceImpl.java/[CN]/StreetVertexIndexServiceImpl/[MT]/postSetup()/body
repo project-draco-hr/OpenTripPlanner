@@ -13,22 +13,13 @@
     }
     if (v instanceof TransitStop) {
       TransitStop ts=(TransitStop)v;
-      if (!ts.isEntrance()) {
-        boolean hasEntrance=false;
-        for (        Edge e : gv.getOutgoing()) {
-          if (e instanceof PathwayEdge) {
-            hasEntrance=true;
-            break;
-          }
-        }
-        if (hasEntrance) {
-          continue;
-        }
+      if (ts.isEntrance() || !ts.hasEntrances()) {
+        continue;
       }
       Envelope env=new Envelope(v.getCoordinate());
       transitStopTree.insert(env,v);
     }
-    if (v instanceof StreetVertex || v instanceof EndpointVertex) {
+    if (v instanceof TurnVertex || v instanceof IntersectionVertex) {
       Envelope env=new Envelope(v.getCoordinate());
       intersectionTree.insert(env,v);
     }

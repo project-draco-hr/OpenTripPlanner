@@ -1,18 +1,18 @@
 {
-  HashMap<StreetVertex,Set<Edge>> edgesStartingAt=new HashMap<StreetVertex,Set<Edge>>();
+  HashMap<TurnVertex,Set<Edge>> edgesStartingAt=new HashMap<TurnVertex,Set<Edge>>();
   for (  Edge edge : edges) {
     Set<Edge> starting=edgesStartingAt.get(edge.getFromVertex());
     if (starting == null) {
       starting=new HashSet<Edge>();
-      edgesStartingAt.put((StreetVertex)edge.getFromVertex(),starting);
+      edgesStartingAt.put((TurnVertex)edge.getFromVertex(),starting);
     }
     starting.add(edge);
   }
   int maxStarting=0;
   int maxEnding=0;
-  Entry<StreetVertex,Set<Edge>> startingVertex=null;
-  Entry<StreetVertex,Set<Edge>> endingVertex=null;
-  for (  Entry<StreetVertex,Set<Edge>> entry : edgesStartingAt.entrySet()) {
+  Entry<TurnVertex,Set<Edge>> startingVertex=null;
+  Entry<TurnVertex,Set<Edge>> endingVertex=null;
+  for (  Entry<TurnVertex,Set<Edge>> entry : edgesStartingAt.entrySet()) {
     int numEdges=entry.getValue().size();
     if (numEdges >= maxStarting) {
       endingVertex=startingVertex;
@@ -25,5 +25,5 @@
       maxEnding=numEdges;
     }
   }
-  return new P2<Entry<StreetVertex,Set<Edge>>>(startingVertex,endingVertex);
+  return new P2<Entry<TurnVertex,Set<Edge>>>(startingVertex,endingVertex);
 }

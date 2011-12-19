@@ -1,28 +1,14 @@
 {
   _log.debug("creating linkages...");
   ArrayList<Vertex> vertices=new ArrayList<Vertex>(graph.getVertices());
-  for (  Vertex v : vertices) {
-    if (v instanceof TransitStop) {
-      TransitStop ts=(TransitStop)v;
-      if (!ts.isEntrance()) {
-        boolean hasEntrance=false;
-        for (        Edge e : v.getOutgoing()) {
-          if (e instanceof PathwayEdge) {
-            hasEntrance=true;
-            break;
-          }
-        }
-        if (hasEntrance) {
-          continue;
-        }
-      }
+  for (  TransitStop ts : IterableLibrary.filter(vertices,TransitStop.class)) {
+    if (ts.isEntrance() || !ts.hasEntrances()) {
       boolean wheelchairAccessible=ts.hasWheelchairEntrance();
-      if (!networkLinkerLibrary.connectVertexToStreets(v,wheelchairAccessible)) {
+      if (!networkLinkerLibrary.connectVertexToStreets(ts,wheelchairAccessible)) {
         _log.warn(GraphBuilderAnnotation.register(graph,Variety.STOP_UNLINKED,ts));
       }
     }
   }
-  networkLinkerLibrary.addAllReplacementEdgesToGraph();
   networkLinkerLibrary.markLocalStops();
   FindMaxWalkDistances.find(graph);
 }

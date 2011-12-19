@@ -1,14 +1,14 @@
 {
   Graph gg=new Graph();
   double streetLength=100;
-  StreetVertex start=new StreetVertex("start",GeometryUtils.makeLineString(-74.002,40.5,-74.004,40.5,-74.004,40.5,-74.006,41.0),"start",streetLength,false,null);
-  StreetVertex end=new StreetVertex("end",GeometryUtils.makeLineString(-74.004,40.5,-74.006,41.0),"end",streetLength,false,null);
+  TurnVertex start=new TurnVertex("start",GeometryUtils.makeLineString(-74.002,40.5,-74.004,40.5,-74.004,40.5,-74.006,41.0),"start",streetLength,false,null);
+  TurnVertex end=new TurnVertex("end",GeometryUtils.makeLineString(-74.004,40.5,-74.006,41.0),"end",streetLength,false,null);
   gg.addVertex(start);
   gg.addVertex(end);
   TraverseOptions options=new TraverseOptions();
   options.speed=ConstantsForTests.WALKING_SPEED;
   TurnEdge ee=new TurnEdge(start,end);
-  gg.addEdge(ee);
+  gg.addVerticesFromEdge(ee);
   GregorianCalendar startTime=new GregorianCalendar(2009,9,21,13,0,0);
   GregorianCalendar endTime=(GregorianCalendar)startTime.clone();
   int expectedSecElapsed=(int)(streetLength / options.speed);
