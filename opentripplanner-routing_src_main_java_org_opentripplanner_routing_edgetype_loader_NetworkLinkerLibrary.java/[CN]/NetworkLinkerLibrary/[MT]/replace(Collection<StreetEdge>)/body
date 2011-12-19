@@ -10,8 +10,7 @@
  else {
     return null;
   }
-  StreetVertex newEnd=new IntersectionVertex("replace " + endVertex.getLabel(),endVertex.getX(),endVertex.getY());
-  graph.addVertex(newEnd);
+  StreetVertex newEnd=new IntersectionVertex(graph,"replace " + endVertex.getLabel(),endVertex.getX(),endVertex.getY());
   for (  DirectEdge e : filter(startVertex.getOutgoing(),DirectEdge.class)) {
     final Vertex toVertex=e.getToVertex();
     if (!toVertex.getCoordinate().equals(endVertex.getCoordinate())) {
@@ -27,8 +26,7 @@
       new FreeEdge(newEnd,toVertex);
     }
   }
-  StreetVertex newStart=new IntersectionVertex("replace " + startVertex.getLabel(),startVertex.getX(),startVertex.getY());
-  graph.addVertex(newStart);
+  StreetVertex newStart=new IntersectionVertex(graph,"replace " + startVertex.getLabel(),startVertex.getX(),startVertex.getY());
   for (  DirectEdge e : filter(endVertex.getOutgoing(),DirectEdge.class)) {
     final Vertex toVertex=e.getToVertex();
     if (!toVertex.getCoordinate().equals(startVertex.getCoordinate())) {

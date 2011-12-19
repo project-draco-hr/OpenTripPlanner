@@ -2,12 +2,11 @@
   for (  Pathway pathway : _dao.getAllPathways()) {
     Vertex fromVertex=graph.getVertex(id(pathway.getFromStop().getId()));
     Vertex toVertex=graph.getVertex(id(pathway.getToStop().getId()));
-    PathwayEdge path;
     if (pathway.isWheelchairTraversalTimeSet()) {
-      path=new PathwayEdge(fromVertex,toVertex,pathway.getTraversalTime());
+      new PathwayEdge(fromVertex,toVertex,pathway.getTraversalTime());
     }
  else {
-      path=new PathwayEdge(fromVertex,toVertex,pathway.getTraversalTime(),pathway.getWheelchairTraversalTime());
+      new PathwayEdge(fromVertex,toVertex,pathway.getTraversalTime(),pathway.getWheelchairTraversalTime());
     }
   }
 }

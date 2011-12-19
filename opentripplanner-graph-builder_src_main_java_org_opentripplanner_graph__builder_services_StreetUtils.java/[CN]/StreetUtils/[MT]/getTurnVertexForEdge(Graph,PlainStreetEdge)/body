@@ -5,7 +5,7 @@
   if (v != null) {
     return (TurnVertex)v;
   }
-  TurnVertex newv=new TurnVertex(id,e.getGeometry(),e.getName(),e.getLength(),back,e.getNotes());
+  TurnVertex newv=new TurnVertex(graph,id,e.getGeometry(),e.getName(),e.getLength(),back,e.getNotes());
   newv.setWheelchairAccessible(e.isWheelchairAccessible());
   newv.setBicycleSafetyEffectiveLength(e.getBicycleSafetyEffectiveLength());
   newv.setCrossable(e.isCrossable());
@@ -16,6 +16,5 @@
   newv.setBogusName(e.hasBogusName());
   newv.setNoThruTraffic(e.isNoThruTraffic());
   newv.setStairs(e.isStairs());
-  graph.addVertex(newv);
   return newv;
 }

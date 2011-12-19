@@ -11,22 +11,19 @@
     Vertex startStation=graph.getVertex(departureVertexId(id(s0.getId())));
     Vertex endStation=graph.getVertex(arrivalVertexId(id(s1.getId())));
     if (psv1arrive == null) {
-      psv0arrive=new PatternStopVertex(id(s0.getId()) + "_" + tripId+ "_"+ st0.getStopSequence()+ "_A",s0.getLon(),s0.getLat(),s0.getId(),null);
-      graph.addVertex(psv0arrive);
+      psv0arrive=new PatternStopVertex(graph,id(s0.getId()) + "_" + tripId+ "_"+ st0.getStopSequence()+ "_A",s0.getLon(),s0.getLat(),s0.getId(),null);
     }
  else {
       psv0arrive=psv1arrive;
     }
-    psv0depart=new PatternStopVertex(id(s0.getId()) + "_" + tripId+ "_"+ st0.getStopSequence()+ "_D",s0.getLon(),s0.getLat(),s0.getId(),null);
-    graph.addVertex(psv0depart);
-    psv1arrive=new PatternStopVertex(id(s1.getId()) + "_" + tripId+ "_"+ st1.getStopSequence()+ "_A",s1.getLon(),s1.getLat(),s1.getId(),null);
-    graph.addVertex(psv1arrive);
-    Dwell dwell=new Dwell(psv0arrive,psv0depart,st0);
+    psv0depart=new PatternStopVertex(graph,id(s0.getId()) + "_" + tripId+ "_"+ st0.getStopSequence()+ "_D",s0.getLon(),s0.getLat(),s0.getId(),null);
+    psv1arrive=new PatternStopVertex(graph,id(s1.getId()) + "_" + tripId+ "_"+ st1.getStopSequence()+ "_A",s1.getLon(),s1.getLat(),s1.getId(),null);
+    new Dwell(psv0arrive,psv0depart,st0);
     Hop hop=new Hop(psv0depart,psv1arrive,st0,st1,trip);
     hop.setGeometry(getHopGeometry(trip.getShapeId(),st0,st1,psv0depart,psv1arrive));
     hops.add(hop);
     if (st0.getPickupType() != 1) {
-      Board boarding=new Board(startStation,psv0depart,hop,tripWheelchairAccessible && s0.getWheelchairBoarding() == 1,st0.getStop().getZoneId(),trip);
+      new Board(startStation,psv0depart,hop,tripWheelchairAccessible && s0.getWheelchairBoarding() == 1,st0.getStop().getZoneId(),trip);
     }
     if (st0.getDropOffType() != 1) {
       new Alight(psv1arrive,endStation,hop,tripWheelchairAccessible && s1.getWheelchairBoarding() != 0,st0.getStop().getZoneId(),trip);

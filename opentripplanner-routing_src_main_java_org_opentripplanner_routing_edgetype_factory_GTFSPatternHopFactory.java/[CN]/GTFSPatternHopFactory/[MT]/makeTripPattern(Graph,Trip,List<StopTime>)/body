@@ -14,8 +14,7 @@
     int dwellTime=st0.getDepartureTime() - st0.getArrivalTime();
     String departId=id(s0.getId()) + "_" + id(trip.getId())+ "_"+ st0.getStopSequence()+ "_D";
     String arriveId=id(s1.getId()) + "_" + id(trip.getId())+ "_"+ st1.getStopSequence()+ "_A";
-    psv0depart=new PatternDepartVertex(departId,s0.getLon(),s0.getLat(),s0.getId(),tripPattern);
-    graph.addVertex(psv0depart);
+    psv0depart=new PatternDepartVertex(graph,departId,s0.getLon(),s0.getLat(),s0.getId(),tripPattern);
     if (i != 0) {
       psv0arrive=psv1arrive;
       PatternDwell dwell=new PatternDwell(psv0arrive,psv0depart,i,tripPattern);
@@ -23,8 +22,7 @@
         potentiallyUselessDwells.add(dwell);
       }
     }
-    psv1arrive=new PatternArriveVertex(arriveId,s1.getLon(),s1.getLat(),s1.getId(),tripPattern);
-    graph.addVertex(psv1arrive);
+    psv1arrive=new PatternArriveVertex(graph,arriveId,s1.getLon(),s1.getLat(),s1.getId(),tripPattern);
     PatternHop hop=new PatternHop(psv0depart,psv1arrive,s0,s1,i,tripPattern);
     hop.setGeometry(getHopGeometry(trip.getShapeId(),st0,st1,psv0depart,psv1arrive));
     int arrivalTime=st1.getArrivalTime();

@@ -1,8 +1,7 @@
 {
-  Graph gg=new Graph();
-  Vertex a=gg.addVertex(new IntersectionVertex("A",5,5));
-  Vertex b=gg.addVertex(new IntersectionVertex("B",6,6));
+  Graph g=new Graph();
+  Vertex a=new IntersectionVertex(g,"A",5,5);
+  Vertex b=new IntersectionVertex(g,"B",6,6);
   FreeEdge ee=new FreeEdge(a,b);
-  gg.addVerticesFromEdge(ee);
   assertNotNull(ee);
 }

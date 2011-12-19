@@ -62,8 +62,7 @@
         startEndpoint=(IntersectionVertex)graph.getVertex(label);
         if (startEndpoint == null) {
           Coordinate coordinate=getCoordinate(osmStartNode);
-          startEndpoint=new IntersectionVertex(label,coordinate.x,coordinate.y,label);
-          graph.addVertex(startEndpoint);
+          startEndpoint=new IntersectionVertex(graph,label,coordinate.x,coordinate.y,label);
           endpoints.add(startEndpoint);
         }
       }
@@ -74,8 +73,7 @@
       endEndpoint=(IntersectionVertex)graph.getVertex(label);
       if (endEndpoint == null) {
         Coordinate coordinate=getCoordinate(osmEndNode);
-        endEndpoint=new IntersectionVertex(label,coordinate.x,coordinate.y,label);
-        graph.addVertex(endEndpoint);
+        endEndpoint=new IntersectionVertex(graph,label,coordinate.x,coordinate.y,label);
         endpoints.add(endEndpoint);
       }
       P2<PlainStreetEdge> streets=getEdgesForStreet(startEndpoint,endEndpoint,way,i,permissions,geometry);
