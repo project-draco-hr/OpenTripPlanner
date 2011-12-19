@@ -6,7 +6,7 @@
       StreetTraversalPermission permission=pse.getPermission();
       permission=permission.remove(StreetTraversalPermission.PEDESTRIAN);
       if (permission == StreetTraversalPermission.NONE) {
-        graph.removeEdge(pse);
+        pse.detach();
       }
  else {
         pse.setPermission(permission);
