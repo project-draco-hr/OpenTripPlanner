@@ -1,0 +1,7 @@
+{
+  if (binSizeMeters < 0)   throw new IllegalStateException("bin size must be positive.");
+  this.binSizeMeters=binSizeMeters;
+  this.nBinsX=xBins;
+  this.nBinsY=yBins;
+  bins=(List<T>[][])new List[xBins][yBins];
+}
