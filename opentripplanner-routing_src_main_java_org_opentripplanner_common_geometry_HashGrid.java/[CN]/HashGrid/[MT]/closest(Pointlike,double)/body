@@ -17,6 +17,7 @@
         for (        T t : bin) {
           if (t == p)           continue;
           double distance=p.fastDistance(t);
+          if (distance > radiusMeters)           continue;
           if (distance < closestDistance) {
             closestT=t;
             closestDistance=distance;
