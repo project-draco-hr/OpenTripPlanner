@@ -1,6 +1,6 @@
 {
   _log.debug("Looking for/making a vertex near {}",coordinate);
-  List<Vertex> vertices=getIntersectionAt(coordinate);
+  List<Vertex> vertices=getIntersectionAt(coordinate,MAX_CORNER_DISTANCE);
   if (vertices != null && !vertices.isEmpty()) {
     if (name == null) {
       Set<String> uniqueNameSet=new HashSet<String>();
