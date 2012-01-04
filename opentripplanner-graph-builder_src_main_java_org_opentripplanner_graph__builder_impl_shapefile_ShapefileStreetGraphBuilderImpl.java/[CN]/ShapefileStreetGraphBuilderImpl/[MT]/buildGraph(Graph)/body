@@ -5,7 +5,7 @@
     Hints hints=new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER,Boolean.TRUE);
     CRSAuthorityFactory factory=ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG",hints);
     CoordinateReferenceSystem worldCRS=factory.createCoordinateReferenceSystem("EPSG:4326");
-    DefaultQuery query=new DefaultQuery();
+    Query query=new Query();
     query.setCoordinateSystem(sourceCRS);
     query.setCoordinateSystemReproject(worldCRS);
     FeatureCollection<SimpleFeatureType,SimpleFeature> features=featureSource.getFeatures(query);
@@ -21,7 +21,7 @@
     SimpleFeatureConverter<Boolean> featureSelector=_schema.getFeatureSelector();
     HashSet<Object> seen=new HashSet<Object>();
     List<SimpleFeature> featureList=new ArrayList<SimpleFeature>();
-    Iterator<SimpleFeature> it2=features.iterator();
+    FeatureIterator<SimpleFeature> it2=features.features();
     while (it2.hasNext()) {
       SimpleFeature feature=it2.next();
       if (featureSelector != null && !featureSelector.convert(feature)) {
@@ -29,7 +29,7 @@
       }
       featureList.add(feature);
     }
-    features.close(it2);
+    it2.close();
     HashMap<Coordinate,TreeSet<String>> coordinateToStreetNames=getCoordinatesToStreetNames(featureList);
     for (    SimpleFeature feature : featureList) {
       LineString geom=toLineString((Geometry)feature.getDefaultGeometry());
@@ -95,7 +95,7 @@
     }
     StreetUtils.pruneFloatingIslands(graph);
     StreetUtils.makeEdgeBased(graph,intersectionsByLocation.values(),null);
-    features.close(it2);
+    it2.close();
   }
  catch (  Exception ex) {
     throw new IllegalStateException("error loading shapefile street data",ex);
