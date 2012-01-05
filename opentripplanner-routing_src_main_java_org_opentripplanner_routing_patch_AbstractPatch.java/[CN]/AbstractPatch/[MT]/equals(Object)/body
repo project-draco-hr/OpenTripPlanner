@@ -1,0 +1,7 @@
+{
+  if (!(o instanceof AbstractPatch)) {
+    return false;
+  }
+  AbstractPatch other=(AbstractPatch)o;
+  return id.equals(other.id) && timePeriods.equals(other.timePeriods);
+}
