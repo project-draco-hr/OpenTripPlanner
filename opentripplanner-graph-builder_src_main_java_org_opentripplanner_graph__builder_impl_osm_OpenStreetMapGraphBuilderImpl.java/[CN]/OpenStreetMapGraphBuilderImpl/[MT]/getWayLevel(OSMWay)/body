@@ -1,0 +1,11 @@
+{
+  if (way.hasTag("level")) {
+    return Integer.parseInt(way.getTag("level"));
+  }
+ else   if (way.hasTag("layer")) {
+    return Integer.parseInt(way.getTag("layer"));
+  }
+ else {
+    return 0;
+  }
+}

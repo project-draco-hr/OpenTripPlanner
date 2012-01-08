@@ -1,0 +1,10 @@
+{
+  String label;
+  if (isMultiLevelNode(node)) {
+    label="osm node " + node.getId() + "_"+ Integer.toString(getWayLevel(way));
+  }
+ else {
+    label="osm node " + node.getId();
+  }
+  return label;
+}

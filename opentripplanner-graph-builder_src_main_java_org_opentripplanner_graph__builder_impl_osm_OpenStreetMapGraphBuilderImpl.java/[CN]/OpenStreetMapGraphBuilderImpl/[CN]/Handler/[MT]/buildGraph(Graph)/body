@@ -5,6 +5,7 @@
   long wayIndex=0;
   Set<Long> possibleIntersectionNodes=new HashSet<Long>();
   Set<Long> intersectionNodes=new HashSet<Long>();
+  Map<Long,Set> multiLevelNodesLevels=new HashMap<Long,Set>();
   for (  OSMWay way : _ways.values()) {
     List<Long> nodes=way.getNodeRefs();
     for (    long node : nodes) {
@@ -58,7 +59,18 @@
         continue;
       }
       if (startEndpoint == null) {
-        String label="osm node " + osmStartNode.getId();
+        String label=getVertexLabelFromNode(osmStartNode,way);
+        if (isMultiLevelNode(osmStartNode)) {
+          if (multiLevelNodesLevels.containsKey(osmStartNode.getId())) {
+            Set levels=multiLevelNodesLevels.get(osmStartNode.getId());
+            levels.add(getWayLevel(way));
+          }
+ else {
+            Set levels=new TreeSet<Integer>();
+            levels.add(getWayLevel(way));
+            multiLevelNodesLevels.put(osmStartNode.getId(),levels);
+          }
+        }
         startEndpoint=graph.getVertex(label);
         if (startEndpoint == null) {
           Coordinate coordinate=getCoordinate(osmStartNode);
@@ -70,7 +82,18 @@
  else {
         startEndpoint=endEndpoint;
       }
-      String label="osm node " + osmEndNode.getId();
+      String label=getVertexLabelFromNode(osmEndNode,way);
+      if (isMultiLevelNode(osmEndNode)) {
+        if (multiLevelNodesLevels.containsKey(osmEndNode.getId())) {
+          Set levels=multiLevelNodesLevels.get(osmEndNode.getId());
+          levels.add(getWayLevel(way));
+        }
+ else {
+          Set levels=new TreeSet<Integer>();
+          levels.add(getWayLevel(way));
+          multiLevelNodesLevels.put(osmEndNode.getId(),levels);
+        }
+      }
       endEndpoint=graph.getVertex(label);
       if (endEndpoint == null) {
         Coordinate coordinate=getCoordinate(osmEndNode);
@@ -131,6 +154,18 @@
       }
       startNode=endNode;
       osmStartNode=_nodes.get(startNode);
+    }
+  }
+  for (  Long nodeId : multiLevelNodesLevels.keySet()) {
+    OSMNode node=_nodes.get(nodeId);
+    Object[] levels=multiLevelNodesLevels.get(nodeId).toArray();
+    Integer levelSize=levels.length - 1;
+    for (Integer i=0; i < levelSize; i++) {
+      _log.debug("building elevator edge on node " + nodeId + " from level "+ levels[i]+ " to level "+ levels[i + 1]);
+      String fromVertLabel="osm node " + nodeId + "_"+ levels[i];
+      String toVertLabel="osm node " + nodeId + "_"+ levels[i + 1];
+      Vertex from=graph.getVertex(fromVertLabel);
+      Vertex to=graph.getVertex(toVertLabel);
     }
   }
   Map<Edge,TurnRestriction> turnRestrictions=new HashMap<Edge,TurnRestriction>();
