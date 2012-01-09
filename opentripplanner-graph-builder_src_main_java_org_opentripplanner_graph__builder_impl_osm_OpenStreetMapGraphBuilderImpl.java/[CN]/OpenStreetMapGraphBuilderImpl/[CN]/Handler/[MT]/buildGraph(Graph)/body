@@ -159,13 +159,33 @@
   for (  Long nodeId : multiLevelNodesLevels.keySet()) {
     OSMNode node=_nodes.get(nodeId);
     Object[] levels=multiLevelNodesLevels.get(nodeId).toArray();
-    Integer levelSize=levels.length - 1;
-    for (Integer i=0; i < levelSize; i++) {
+    ArrayList<Vertex> onboardVertices=new ArrayList<Vertex>();
+    for (    Object level : levels) {
+      String sourceVertLabel="osm node " + nodeId + "_"+ level;
+      EndpointVertex sourceVert=(EndpointVertex)graph.getVertex(sourceVertLabel);
+      Vertex middleVert=new Vertex(sourceVertLabel + "_middle",sourceVert.getX(),sourceVert.getY());
+      graph.addVertex(middleVert);
+      FreeEdge free=new FreeEdge(sourceVert,middleVert);
+      FreeEdge back=new FreeEdge(middleVert,sourceVert);
+      graph.addEdge(free);
+      graph.addEdge(back);
+      Vertex onboardVert=new Vertex(sourceVertLabel + "_onboard",sourceVert.getX(),sourceVert.getY());
+      graph.addVertex(onboardVert);
+      ElevatorBoardEdge board=new ElevatorBoardEdge(middleVert,onboardVert);
+      graph.addEdge(board);
+      ElevatorAlightEdge alight=new ElevatorAlightEdge(onboardVert,middleVert);
+      graph.addEdge(alight);
+      onboardVertices.add(onboardVert);
+    }
+    Integer vSize=onboardVertices.size() - 1;
+    for (Integer i=0; i < vSize; i++) {
       _log.debug("building elevator edge on node " + nodeId + " from level "+ levels[i]+ " to level "+ levels[i + 1]);
-      String fromVertLabel="osm node " + nodeId + "_"+ levels[i];
-      String toVertLabel="osm node " + nodeId + "_"+ levels[i + 1];
-      Vertex from=graph.getVertex(fromVertLabel);
-      Vertex to=graph.getVertex(toVertLabel);
+      Vertex from=onboardVertices.get(i);
+      Vertex to=onboardVertices.get(i + 1);
+      ElevatorHopEdge theEdge=new ElevatorHopEdge(from,to,StreetTraversalPermission.PEDESTRIAN);
+      ElevatorHopEdge backEdge=new ElevatorHopEdge(to,from,StreetTraversalPermission.PEDESTRIAN);
+      graph.addEdge(theEdge);
+      graph.addEdge(backEdge);
     }
   }
   Map<Edge,TurnRestriction> turnRestrictions=new HashMap<Edge,TurnRestriction>();
