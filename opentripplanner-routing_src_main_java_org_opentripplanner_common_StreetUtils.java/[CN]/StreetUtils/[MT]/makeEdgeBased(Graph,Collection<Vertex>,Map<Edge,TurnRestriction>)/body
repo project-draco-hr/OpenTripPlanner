@@ -9,33 +9,58 @@
     if (gv != v) {
       throw new IllegalStateException("Vertex in graph is not the same one at endpoint.");
     }
-    for (    Edge e : gv.getIncoming()) {
-      PlainStreetEdge pse=(PlainStreetEdge)e;
+    for (    Edge eraw : gv.getIncoming()) {
+      AbstractEdge e=(AbstractEdge)eraw;
       boolean replaced=false;
-      StreetVertex v1=getStreetVertexForEdge(graph,pse);
+      Vertex v1;
+      PlainStreetEdge pse=null;
+      if (e instanceof PlainStreetEdge) {
+        pse=(PlainStreetEdge)e;
+        v1=getStreetVertexForEdge(graph,pse);
+      }
+ else {
+        v1=e.getFromVertex();
+      }
       TurnRestriction restriction=null;
-      if (restrictions != null) {
+      if (restrictions != null && e instanceof PlainStreetEdge) {
         restriction=restrictions.get(pse);
       }
-      for (      Edge e2 : v.getOutgoing()) {
-        StreetVertex v2=getStreetVertexForEdge(graph,(PlainStreetEdge)e2);
-        TurnEdge turn=new TurnEdge(v1,v2);
-        if (restriction != null) {
-          if (restriction.type == TurnRestrictionType.NO_TURN && restriction.to == e2) {
-            turn.setRestrictedModes(restriction.modes);
+      for (      Edge e2raw : v.getOutgoing()) {
+        AbstractEdge e2=(AbstractEdge)e2raw;
+        Vertex v2;
+        if (e2 instanceof PlainStreetEdge) {
+          v2=getStreetVertexForEdge(graph,(PlainStreetEdge)e2);
+        }
+ else {
+          v2=e2.getToVertex();
+        }
+        if (e2 instanceof PlainStreetEdge && e instanceof PlainStreetEdge) {
+          StreetVertex v1sv=(StreetVertex)v1;
+          StreetVertex v2sv=(StreetVertex)v2;
+          TurnEdge turn=new TurnEdge(v1sv,v2sv);
+          if (restriction != null) {
+            if (restriction.type == TurnRestrictionType.NO_TURN && restriction.to == e2) {
+              turn.setRestrictedModes(restriction.modes);
+            }
+ else             if (restriction.type == TurnRestrictionType.ONLY_TURN && restriction.to != e2) {
+              turn.setRestrictedModes(restriction.modes);
+            }
           }
- else           if (restriction.type == TurnRestrictionType.ONLY_TURN && restriction.to != e2) {
-            turn.setRestrictedModes(restriction.modes);
+          if (v1sv != v2sv && !v1sv.getEdgeId().equals(v2sv.getEdgeId())) {
+            turns.add(turn);
+            replaced=true;
+          }
+          if (!replaced) {
+            pse.setFromVertex(v1);
+            turns.add(pse);
           }
         }
-        if (v1 != v2 && !v1.getEdgeId().equals(v2.getEdgeId())) {
-          turns.add(turn);
-          replaced=true;
+ else         if (e2 instanceof FreeEdge) {
+          if (v1 != v2) {
+            FreeEdge turn=new FreeEdge(v1,v2);
+            turns.add(turn);
+          }
         }
-      }
-      if (!replaced) {
-        pse.setFromVertex(v1);
-        turns.add(pse);
       }
     }
   }
