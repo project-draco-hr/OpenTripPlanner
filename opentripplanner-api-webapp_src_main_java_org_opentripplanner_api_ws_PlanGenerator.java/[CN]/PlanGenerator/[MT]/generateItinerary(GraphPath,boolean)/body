@@ -57,7 +57,7 @@ case START:
  else       if (mode == TraverseMode.STL) {
       }
  else {
-        System.out.println("UNEXPECTED STATE: " + mode);
+        System.out.println("STATE START: UNEXPECTED MODE: " + mode);
       }
     break;
 case WALK:
@@ -84,7 +84,7 @@ if (mode == TraverseMode.WALK) {
   pgstate=PlanGenState.START;
 }
  else {
-  System.out.println("UNEXPECTED STATE: " + mode);
+  System.out.println("STATE WALK: UNEXPECTED MODE: " + mode);
 }
 break;
 case BICYCLE:
@@ -110,7 +110,7 @@ leg=null;
 pgstate=PlanGenState.START;
 }
  else {
-System.out.println("UNEXPECTED STATE: " + mode);
+System.out.println("STATE BICYCLE: UNEXPECTED MODE: " + mode);
 }
 break;
 case CAR:
@@ -130,7 +130,7 @@ leg=null;
 pgstate=PlanGenState.START;
 }
  else {
-System.out.println("UNEXPECTED STATE: " + mode);
+System.out.println("STATE CAR: UNEXPECTED MODE: " + mode);
 }
 break;
 case PRETRANSIT:
