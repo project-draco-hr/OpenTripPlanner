@@ -173,7 +173,7 @@
       graph.addVertex(onboardVert);
       ElevatorBoardEdge board=new ElevatorBoardEdge(middleVert,onboardVert);
       graph.addEdge(board);
-      ElevatorAlightEdge alight=new ElevatorAlightEdge(onboardVert,middleVert);
+      ElevatorAlightEdge alight=new ElevatorAlightEdge(onboardVert,middleVert,new Float((Integer)level));
       graph.addEdge(alight);
       onboardVertices.add(onboardVert);
     }
