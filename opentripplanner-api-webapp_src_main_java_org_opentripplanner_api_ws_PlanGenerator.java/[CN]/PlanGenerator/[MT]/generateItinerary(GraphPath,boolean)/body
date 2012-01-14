@@ -5,6 +5,7 @@
   double previousElevation=Double.MAX_VALUE;
   int startWalk=-1;
   int i=-1;
+  State previousElevatorState=null;
   PlanGenState pgstate=PlanGenState.START;
   String nextName=null;
   for (  State state : path.states) {
@@ -73,9 +74,11 @@ if (mode == TraverseMode.WALK) {
   pgstate=PlanGenState.BICYCLE;
 }
  else if (mode == TraverseMode.ELEVATOR) {
+  System.out.println("Finalizing walk leg");
   finalizeLeg(leg,state,path.states,startWalk,i,coordinates);
   startWalk=i;
   leg=makeLeg(itinerary,state);
+  previousElevatorState=state;
   pgstate=PlanGenState.ELEVATOR;
 }
  else if (mode == TraverseMode.STL) {
@@ -192,7 +195,13 @@ if (leg == null) {
 leg=makeLeg(itinerary,state);
 }
 if (mode == TraverseMode.WALK) {
-finalizeLeg(leg,state,path.states,startWalk,i,coordinates);
+if (previousElevatorState != null) {
+finalizeLeg(leg,previousElevatorState,null,-1,-1,coordinates);
+previousElevatorState=null;
+}
+ else {
+System.out.println("WARNING: NOT GENERATING ELEVATOR NARRATIVE BECAUSE " + "THERE IS NO PREVIOUS STATE");
+}
 leg=makeLeg(itinerary,state);
 startWalk=i;
 pgstate=PlanGenState.WALK;
@@ -204,6 +213,7 @@ leg=makeLeg(itinerary,state);
 pgstate=PlanGenState.BICYCLE;
 }
  else if (mode == TraverseMode.ELEVATOR) {
+previousElevatorState=state;
 }
  else if (mode == TraverseMode.STL) {
 finalizeLeg(leg,state,path.states,startWalk,i,coordinates);
