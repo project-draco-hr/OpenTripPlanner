@@ -192,7 +192,7 @@
     Arrays.sort(levelKeys);
     for (    Integer level : levelKeys) {
       String humanLevel=levels.get(level);
-      String sourceVertLabel="osm node " + nodeId + "_"+ humanLevel;
+      String sourceVertLabel="osm node " + nodeId + "_"+ level;
       EndpointVertex sourceVert=(EndpointVertex)graph.getVertex(sourceVertLabel);
       Vertex middleVert=new Vertex(sourceVertLabel + "_middle",sourceVert.getX(),sourceVert.getY());
       graph.addVertex(middleVert);
