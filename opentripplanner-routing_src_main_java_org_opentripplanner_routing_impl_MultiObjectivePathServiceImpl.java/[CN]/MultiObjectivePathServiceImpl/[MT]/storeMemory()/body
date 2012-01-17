@@ -1,0 +1,7 @@
+{
+  if (store.isMonitoring("memoryUsed")) {
+    System.gc();
+    long memoryUsed=Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+    store.setLongMax("memoryUsed",memoryUsed);
+  }
+}

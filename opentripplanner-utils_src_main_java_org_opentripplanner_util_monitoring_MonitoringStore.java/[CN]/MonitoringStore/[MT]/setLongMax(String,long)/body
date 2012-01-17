@@ -1,4 +1,7 @@
 {
   if (!monitoring.contains(k))   return;
-  longs.put(k,v);
+  Long old=longs.get(k);
+  if (old == null || old < v) {
+    longs.put(k,v);
+  }
 }
