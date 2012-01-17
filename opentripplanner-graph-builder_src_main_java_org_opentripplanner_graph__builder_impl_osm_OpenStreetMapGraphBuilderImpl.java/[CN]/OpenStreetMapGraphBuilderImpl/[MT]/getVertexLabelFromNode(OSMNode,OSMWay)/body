@@ -1,7 +1,7 @@
 {
   String label;
   if (isMultiLevelNode(node)) {
-    label="osm node " + node.getId() + "_"+ Integer.toString(getWayLevel(way));
+    label="osm node " + node.getId() + "_"+ way.getTag("otp:human_level");
   }
  else {
     label="osm node " + node.getId();

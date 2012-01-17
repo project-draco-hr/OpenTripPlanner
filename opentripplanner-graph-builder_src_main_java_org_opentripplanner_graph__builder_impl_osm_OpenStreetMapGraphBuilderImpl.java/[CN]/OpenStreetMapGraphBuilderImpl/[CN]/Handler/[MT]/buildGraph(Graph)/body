@@ -5,7 +5,7 @@
   long wayIndex=0;
   Set<Long> possibleIntersectionNodes=new HashSet<Long>();
   Set<Long> intersectionNodes=new HashSet<Long>();
-  Map<Long,Set> multiLevelNodesLevels=new HashMap<Long,Set>();
+  HashMap<Long,HashMap> multiLevelNodesLevels=new HashMap<Long,HashMap>();
   for (  OSMWay way : _ways.values()) {
     List<Long> nodes=way.getNodeRefs();
     for (    long node : nodes) {
@@ -35,6 +35,22 @@
     List<Long> nodes=way.getNodeRefs();
     Vertex startEndpoint=null, endEndpoint=null;
     ArrayList<Coordinate> segmentCoordinates=new ArrayList<Coordinate>();
+    if (way.hasTag("otp:numeric_level")) {
+    }
+ else     if (way.hasTag("level")) {
+      String level=way.getTag("level");
+      way.addTag("otp:numeric_level",Integer.toString(Integer.parseInt(level) + 1000));
+      way.addTag("otp:human_level",level);
+    }
+ else     if (way.hasTag("layer")) {
+      String layer=way.getTag("layer");
+      way.addTag("otp:numeric_level",Integer.toString(Integer.parseInt(layer) + 2000));
+      way.addTag("otp:human_level",layer);
+    }
+ else {
+      way.addTag("otp:numeric_level","3000");
+      way.addTag("otp:human_level","ground level");
+    }
     Long startNode=null;
     OSMNode osmStartNode=null;
     for (int i=0; i < nodes.size() - 1; i++) {
@@ -61,14 +77,20 @@
       if (startEndpoint == null) {
         String label=getVertexLabelFromNode(osmStartNode,way);
         if (isMultiLevelNode(osmStartNode)) {
+          HashMap<Integer,String> levels;
+          int level=Integer.parseInt(way.getTag("otp:numeric_level"));
           if (multiLevelNodesLevels.containsKey(osmStartNode.getId())) {
-            Set levels=multiLevelNodesLevels.get(osmStartNode.getId());
-            levels.add(getWayLevel(way));
+            levels=multiLevelNodesLevels.get(osmStartNode.getId());
           }
  else {
-            Set levels=new TreeSet<Integer>();
-            levels.add(getWayLevel(way));
+            levels=new HashMap<Integer,String>();
             multiLevelNodesLevels.put(osmStartNode.getId(),levels);
+          }
+          if (!levels.containsKey(level)) {
+            levels.put(level,way.getTag("otp:human_level"));
+          }
+ else           if (!levels.get(level).equals(way.getTag("otp:human_level"))) {
+            throw new IllegalStateException("Multiple levels have the same " + "level number!");
           }
         }
         startEndpoint=graph.getVertex(label);
@@ -84,14 +106,20 @@
       }
       String label=getVertexLabelFromNode(osmEndNode,way);
       if (isMultiLevelNode(osmEndNode)) {
+        HashMap<Integer,String> levels;
+        int level=Integer.parseInt(way.getTag("otp:numeric_level"));
         if (multiLevelNodesLevels.containsKey(osmEndNode.getId())) {
-          Set levels=multiLevelNodesLevels.get(osmEndNode.getId());
-          levels.add(getWayLevel(way));
+          levels=multiLevelNodesLevels.get(osmEndNode.getId());
         }
  else {
-          Set levels=new TreeSet<Integer>();
-          levels.add(getWayLevel(way));
+          levels=new HashMap<Integer,String>();
           multiLevelNodesLevels.put(osmEndNode.getId(),levels);
+        }
+        if (!levels.containsKey(level)) {
+          levels.put(level,way.getTag("otp:human_level"));
+        }
+ else         if (!levels.get(level).equals(way.getTag("otp:human_level"))) {
+          throw new IllegalStateException("Multiple levels have the same " + "level number!");
         }
       }
       endEndpoint=graph.getVertex(label);
@@ -158,10 +186,13 @@
   }
   for (  Long nodeId : multiLevelNodesLevels.keySet()) {
     OSMNode node=_nodes.get(nodeId);
-    Object[] levels=multiLevelNodesLevels.get(nodeId).toArray();
+    HashMap<Integer,String> levels=multiLevelNodesLevels.get(nodeId);
     ArrayList<Vertex> onboardVertices=new ArrayList<Vertex>();
-    for (    Object level : levels) {
-      String sourceVertLabel="osm node " + nodeId + "_"+ level;
+    Integer[] levelKeys=levels.keySet().toArray(new Integer[0]);
+    Arrays.sort(levelKeys);
+    for (    Integer level : levelKeys) {
+      String humanLevel=levels.get(level);
+      String sourceVertLabel="osm node " + nodeId + "_"+ humanLevel;
       EndpointVertex sourceVert=(EndpointVertex)graph.getVertex(sourceVertLabel);
       Vertex middleVert=new Vertex(sourceVertLabel + "_middle",sourceVert.getX(),sourceVert.getY());
       graph.addVertex(middleVert);
@@ -173,13 +204,12 @@
       graph.addVertex(onboardVert);
       ElevatorBoardEdge board=new ElevatorBoardEdge(middleVert,onboardVert);
       graph.addEdge(board);
-      ElevatorAlightEdge alight=new ElevatorAlightEdge(onboardVert,middleVert,new Float((Integer)level));
+      ElevatorAlightEdge alight=new ElevatorAlightEdge(onboardVert,middleVert,humanLevel);
       graph.addEdge(alight);
       onboardVertices.add(onboardVert);
     }
     Integer vSize=onboardVertices.size() - 1;
     for (Integer i=0; i < vSize; i++) {
-      _log.debug("building elevator edge on node " + nodeId + " from level "+ levels[i]+ " to level "+ levels[i + 1]);
       Vertex from=onboardVertices.get(i);
       Vertex to=onboardVertices.get(i + 1);
       ElevatorHopEdge theEdge=new ElevatorHopEdge(from,to,StreetTraversalPermission.PEDESTRIAN);
