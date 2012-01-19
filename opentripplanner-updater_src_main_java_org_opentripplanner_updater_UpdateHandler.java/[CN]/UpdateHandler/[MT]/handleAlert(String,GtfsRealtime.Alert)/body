@@ -5,7 +5,7 @@
   alertText.alertUrl=deBuffer(alert.getUrl());
   ArrayList<TimePeriod> periods=new ArrayList<TimePeriod>();
   for (  TimeRange activePeriod : alert.getActivePeriodList()) {
-    final long start=activePeriod.hasStart() ? activePeriod.getStart() : 0;
+    final long start=activePeriod.hasStart() ? activePeriod.getStart() - earlyStart : 0;
     final long end=activePeriod.hasEnd() ? activePeriod.getEnd() : Long.MAX_VALUE;
     periods.add(new TimePeriod(start,end));
   }

@@ -2,6 +2,14 @@
   _log.debug("Looking for/making a vertex near {}",coordinate);
   List<StreetVertex> vertices=getIntersectionAt(coordinate);
   if (vertices != null && !vertices.isEmpty()) {
+    if (name == null) {
+      Set<String> uniqueNameSet=new HashSet<String>();
+      for (      StreetVertex v : IterableLibrary.filter(vertices,StreetVertex.class))       uniqueNameSet.add(v.getName());
+      List<String> uniqueNames=new ArrayList<String>(uniqueNameSet);
+      if (uniqueNames.size() > 1)       name=String.format("corner of %s and %s",uniqueNames.get(0),uniqueNames.get(1));
+ else       if (uniqueNames.size() == 1)       name=uniqueNames.get(0);
+ else       name="unnamed street";
+    }
     StreetLocation closest=new StreetLocation("corner " + Math.random(),coordinate,name);
     for (    Vertex v : vertices) {
       FreeEdge e=new FreeEdge(closest,v);

@@ -28,7 +28,10 @@
       if (System.currentTimeMillis() > endTime) {
         LOG.debug("timeout at {} msec",System.currentTimeMillis() - startTime);
         if (returnStates.isEmpty())         continue WALK;
- else         break WALK;
+ else {
+          storeMemory();
+          break WALK;
+        }
       }
       State su=pq.extract_min();
       Vertex u=su.getVertex();
@@ -78,6 +81,7 @@
       }
     }
   }
+  storeMemory();
   List<GraphPath> paths=new LinkedList<GraphPath>();
   for (  State s : returnStates) {
     LOG.debug(s.toStringVerbose());

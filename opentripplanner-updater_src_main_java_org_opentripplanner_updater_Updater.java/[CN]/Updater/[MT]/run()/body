@@ -6,6 +6,7 @@
     }
     FeedMessage feed=GtfsRealtime.FeedMessage.parseFrom(data);
     UpdateHandler updateHandler=new UpdateHandler(feed);
+    updateHandler.setEarlyStart(earlyStart);
     updateHandler.setDefaultAgencyId(defaultAgencyId);
     updateHandler.setPatchService(getPatchService());
     updateHandler.update();

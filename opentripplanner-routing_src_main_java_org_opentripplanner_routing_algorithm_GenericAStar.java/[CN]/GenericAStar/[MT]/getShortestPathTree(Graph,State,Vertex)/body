@@ -36,6 +36,7 @@
     }
     if (abortTime < Long.MAX_VALUE && System.currentTimeMillis() > abortTime) {
       LOG.warn("Search timeout. origin={} target={}",origin,target);
+      storeMemory();
       return null;
     }
     State u=pq.extract_min();
@@ -50,6 +51,7 @@
     }
  else     if (u_vertex == target) {
       LOG.debug("total vertices visited {}",nVisited);
+      storeMemory();
       return spt;
     }
     Collection<Edge> edges=getEdgesForVertex(graph,extraEdges,u_vertex,options);
@@ -84,5 +86,6 @@
       }
     }
   }
+  storeMemory();
   return spt;
 }
