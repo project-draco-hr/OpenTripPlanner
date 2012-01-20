@@ -49,14 +49,14 @@
       lastNotified=now;
     }
     HashSet<Vertex> neighbors=new HashSet<Vertex>();
-    for (    Edge de : filter(core.getOutgoing(vertex),Edge.class)) {
+    for (    Edge de : core.getOutgoing(vertex)) {
       Vertex toVertex=de.getToVertex();
       core.removeIncoming(toVertex,de);
       updown.addOutgoing(vertex,de);
       neighbors.add(toVertex);
       nContractableEdges--;
     }
-    for (    Edge de : filter(core.getIncoming(vertex),Edge.class)) {
+    for (    Edge de : core.getIncoming(vertex)) {
       Vertex fromVertex=de.getFromVertex();
       core.removeOutgoing(fromVertex,de);
       updown.addIncoming(vertex,de);

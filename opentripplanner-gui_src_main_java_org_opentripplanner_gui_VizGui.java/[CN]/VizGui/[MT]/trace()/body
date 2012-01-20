@@ -14,7 +14,7 @@
   HashSet<Vertex> newOpen=new HashSet<Vertex>();
   for (  Vertex v2 : open) {
     closed.add(v2);
-    for (    Edge e : filter(v2.getOutgoing(),Edge.class)) {
+    for (    Edge e : v2.getOutgoing()) {
       Vertex target=e.getToVertex();
       if (closed.contains(target)) {
         continue;

@@ -15,7 +15,7 @@
   su=new State(u,fwdOptions);
   double maxWWeight=0;
   ArrayList<State> ws=new ArrayList<State>();
-  for (  Edge e : filter(core.getOutgoing(u),Edge.class)) {
+  for (  Edge e : core.getOutgoing(u)) {
     if (!isContractable(e)) {
       continue;
     }
@@ -47,7 +47,7 @@
       if (!simulate && spt != null) {
         ArrayList<Edge> toRemove=new ArrayList<Edge>();
         State sv0=new State(wsresult.vertex,fwdOptions);
-        for (        Edge e : filter(core.getOutgoing(wsresult.vertex),Edge.class)) {
+        for (        Edge e : core.getOutgoing(wsresult.vertex)) {
           State sSpt=spt.getState(e.getToVertex());
           if (sSpt == null) {
             continue;

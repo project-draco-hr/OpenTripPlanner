@@ -6,7 +6,7 @@
     Dijkstra dijkstra=new Dijkstra(core,u,fwdOptions,null,hopLimit);
     BasicShortestPathTree spt=dijkstra.getShortestPathTree(Double.POSITIVE_INFINITY,Integer.MAX_VALUE);
     ArrayList<Edge> toRemove=new ArrayList<Edge>();
-    for (    Edge e : filter(core.getOutgoing(u),Edge.class)) {
+    for (    Edge e : core.getOutgoing(u)) {
       if (!isContractable(e)) {
         continue;
       }

@@ -8,7 +8,7 @@
   seenVertices.add(v);
   while (!toExplore.isEmpty()) {
     Vertex src=toExplore.poll();
-    for (    Edge e : filter(src.getOutgoing(),Edge.class)) {
+    for (    Edge e : src.getOutgoing()) {
       Vertex tov=e.getToVertex();
       if (!seenVertices.contains(tov)) {
         seenVertices.add(tov);

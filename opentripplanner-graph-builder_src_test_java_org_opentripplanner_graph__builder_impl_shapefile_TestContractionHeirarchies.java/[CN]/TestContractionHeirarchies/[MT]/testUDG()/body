@@ -39,7 +39,7 @@
   DisjointSet<Vertex> components=new DisjointSet<Vertex>();
   Vertex last=null;
   for (  Vertex v : vertices) {
-    for (    Edge e : filter(v.getOutgoing(),Edge.class)) {
+    for (    Edge e : v.getOutgoing()) {
       components.union(v,e.getToVertex());
     }
     last=v;
