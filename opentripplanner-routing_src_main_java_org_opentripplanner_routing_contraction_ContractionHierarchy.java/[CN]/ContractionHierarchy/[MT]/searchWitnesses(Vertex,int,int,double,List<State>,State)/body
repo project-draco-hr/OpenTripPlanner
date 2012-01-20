@@ -12,7 +12,7 @@
     if (pathAroundU == null || pathAroundU.exceedsWeightLimit(weightThroughU + .01)) {
       int timeThroughU=(int)(w.getAbsTimeDeltaSec() + v.getAbsTimeDeltaSec());
       double walkDistance=v.getWalkDistance() + w.getWalkDistance();
-      Shortcut vuw=new Shortcut((Edge)v.getBackEdge(),(Edge)w.getBackEdge(),timeThroughU,weightThroughU,walkDistance,mode);
+      Shortcut vuw=new Shortcut(v.getBackEdge(),w.getBackEdge(),timeThroughU,weightThroughU,walkDistance,mode);
       shortcuts.add(vuw);
     }
   }

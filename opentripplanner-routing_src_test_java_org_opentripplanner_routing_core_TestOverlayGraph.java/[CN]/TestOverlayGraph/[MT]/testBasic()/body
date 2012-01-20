@@ -16,9 +16,8 @@
   assertEquals(g.countEdges(),og.countEdges());
   for (  Vertex v : g.getVertices()) {
     for (    Edge e : v.getOutgoing()) {
-      Edge de=(Edge)e;
       assertTrue(og.getOutgoing(v).contains(e));
-      assertTrue(og.getIncoming(de.getToVertex()).contains(e));
+      assertTrue(og.getIncoming(e.getToVertex()).contains(e));
     }
     for (    Edge e : v.getIncoming()) {
       assertTrue(og.getIncoming(v).contains(e));
@@ -35,8 +34,7 @@
   assertTrue(og.getOutgoing(a).size() == 2);
   for (  Vertex v : g.getVertices()) {
     for (    Edge e : v.getOutgoing()) {
-      Edge de=(Edge)e;
-      og.removeEdge(de);
+      og.removeEdge(e);
     }
   }
   assertEquals(og.countEdges(),1);

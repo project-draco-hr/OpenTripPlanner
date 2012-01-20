@@ -36,14 +36,12 @@
       if (options.isArriveBy())       edges=u.getOutgoing();
  else       edges=u.getIncoming();
       for (      Edge e : edges) {
-        if (e instanceof Edge) {
-          Vertex v=options.isArriveBy() ? ((Edge)e).getToVertex() : e.getFromVertex();
-          double vw=uw + (timeNotWeight ? e.timeLowerBound(options) : e.weightLowerBound(options));
-          int vi=v.getIndex();
-          if (weights[vi] > vw) {
-            weights[vi]=vw;
-            q.insert(v,vw);
-          }
+        Vertex v=options.isArriveBy() ? e.getToVertex() : e.getFromVertex();
+        double vw=uw + (timeNotWeight ? e.timeLowerBound(options) : e.weightLowerBound(options));
+        int vi=v.getIndex();
+        if (weights[vi] > vw) {
+          weights[vi]=vw;
+          q.insert(v,vw);
         }
       }
     }

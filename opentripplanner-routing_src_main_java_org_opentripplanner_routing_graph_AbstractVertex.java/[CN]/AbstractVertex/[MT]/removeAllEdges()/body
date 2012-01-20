@@ -1,11 +1,8 @@
 {
   for (  Edge e : outgoing) {
-    if (e instanceof Edge) {
-      Edge edge=(Edge)e;
-      Vertex target=edge.getToVertex();
-      if (target != null) {
-        target.removeIncoming(e);
-      }
+    Vertex target=e.getToVertex();
+    if (target != null) {
+      target.removeIncoming(e);
     }
   }
   for (  Edge e : incoming) {
