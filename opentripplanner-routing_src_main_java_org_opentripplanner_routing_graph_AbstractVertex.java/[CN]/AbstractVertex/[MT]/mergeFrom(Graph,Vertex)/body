@@ -5,7 +5,7 @@
   edges.addAll(other.getIncoming());
   edges.addAll(other.getOutgoing());
   for (  Edge e : edges) {
-    DirectEdge de=(DirectEdge)e;
+    Edge de=(Edge)e;
     Vertex from=de.getFromVertex();
     Vertex to=de.getToVertex();
     if ((from == this && to == other) || (from == other && to == this)) {

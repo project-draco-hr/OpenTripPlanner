@@ -1,12 +1,12 @@
 {
-  Class<? extends DirectEdge> oldClass=e.getClass();
-  Class<? extends DirectEdge> newClass=classMapping.get(oldClass);
+  Class<? extends Edge> oldClass=e.getClass();
+  Class<? extends Edge> newClass=classMapping.get(oldClass);
   if (newClass == null) {
     String newClassName=oldClass.getName() + "WithReach";
     ClassCustomizer customizer=new ClassCustomizer(EdgeWithReach.class,oldClass.getName(),newClassName);
     customizer.setClassPath(graph.getBundle().getExtraClassPath());
     customizer.addDoubleField("reach");
-    newClass=(Class<? extends DirectEdge>)customizer.saveClass();
+    newClass=(Class<? extends Edge>)customizer.saveClass();
     classMapping.put(oldClass,newClass);
   }
   EdgeWithReach newEdge=(EdgeWithReach)ClassCustomizer.reclass(e,newClass);

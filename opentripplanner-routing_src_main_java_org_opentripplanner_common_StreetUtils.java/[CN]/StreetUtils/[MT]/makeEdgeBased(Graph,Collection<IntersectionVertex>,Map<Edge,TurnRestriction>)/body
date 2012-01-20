@@ -10,7 +10,7 @@
       }
       for (      Edge e_out : v.getOutgoing()) {
         if (e_in == e_out)         continue;
-        if (e_in.getFromVertex() == ((DirectEdge)e_out).getToVertex() && v.getOutgoing().size() > 1)         continue;
+        if (e_in.getFromVertex() == ((Edge)e_out).getToVertex() && v.getOutgoing().size() > 1)         continue;
         TurnVertex tv_out=getTurnVertexForEdge(graph,(PlainStreetEdge)e_out);
         TurnEdge turn=new TurnEdge(tv_in,tv_out);
         if (restriction != null) {

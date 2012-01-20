@@ -4,7 +4,7 @@
   stroke(256,0,0,128);
   strokeWeight(6);
   while (!newHighlightedEdges.isEmpty()) {
-    DirectEdge de=newHighlightedEdges.poll();
+    Edge de=newHighlightedEdges.poll();
     if (de != null) {
       drawEdge(de);
       highlightedEdges.add(de);

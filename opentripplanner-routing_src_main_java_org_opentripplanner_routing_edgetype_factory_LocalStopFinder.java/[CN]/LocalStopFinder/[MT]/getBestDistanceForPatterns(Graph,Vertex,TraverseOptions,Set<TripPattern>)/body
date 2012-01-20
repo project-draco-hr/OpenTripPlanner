@@ -14,7 +14,7 @@
     closed.add(fromv);
     if (fromv instanceof TransitStop) {
       Vertex departureVertex=null;
-      for (      DirectEdge e : filter(fromv.getOutgoing(),DirectEdge.class)) {
+      for (      Edge e : filter(fromv.getOutgoing(),Edge.class)) {
         departureVertex=e.getToVertex();
         break;
       }

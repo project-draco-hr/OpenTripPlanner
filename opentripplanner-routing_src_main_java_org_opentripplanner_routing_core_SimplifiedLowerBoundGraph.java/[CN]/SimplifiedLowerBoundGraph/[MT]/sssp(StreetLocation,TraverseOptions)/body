@@ -2,7 +2,7 @@
   double[] result=new double[max_gindex];
   Arrays.fill(result,Double.POSITIVE_INFINITY);
   IntBinHeap q=new IntBinHeap(max_gindex / 2);
-  for (  DirectEdge de : origin.getExtra()) {
+  for (  Edge de : origin.getExtra()) {
     Vertex toVertex=de.getToVertex();
     int toGroup=toVertex.getGroupIndex();
     if (toVertex == origin)     continue;

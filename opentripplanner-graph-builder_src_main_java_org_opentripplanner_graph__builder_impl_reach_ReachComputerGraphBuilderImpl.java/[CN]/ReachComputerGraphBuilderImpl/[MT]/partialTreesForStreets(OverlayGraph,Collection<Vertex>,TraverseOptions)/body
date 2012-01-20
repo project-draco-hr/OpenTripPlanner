@@ -6,7 +6,7 @@
       if (e instanceof EdgeWithReach) {
         if (!added.contains(e)) {
           added.add(e);
-          workingGraph.addDirectEdge((DirectEdge)e);
+          workingGraph.addEdge((Edge)e);
         }
       }
     }
@@ -14,7 +14,7 @@
       if (e instanceof EdgeWithReach) {
         if (!added.contains(e)) {
           added.add(e);
-          workingGraph.addDirectEdge((DirectEdge)e);
+          workingGraph.addEdge((Edge)e);
         }
       }
     }

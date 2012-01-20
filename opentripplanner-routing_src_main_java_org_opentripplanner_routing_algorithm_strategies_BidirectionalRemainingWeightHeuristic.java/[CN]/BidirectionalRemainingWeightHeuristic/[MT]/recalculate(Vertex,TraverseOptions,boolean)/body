@@ -7,7 +7,7 @@
     BinHeap<Vertex> q=new BinHeap<Vertex>();
     long t0=System.currentTimeMillis();
     if (target instanceof StreetLocation) {
-      for (      DirectEdge de : ((StreetLocation)target).getExtra()) {
+      for (      Edge de : ((StreetLocation)target).getExtra()) {
         Vertex gv;
         if (options.isArriveBy()) {
           gv=de.getToVertex();
@@ -36,8 +36,8 @@
       if (options.isArriveBy())       edges=u.getOutgoing();
  else       edges=u.getIncoming();
       for (      Edge e : edges) {
-        if (e instanceof DirectEdge) {
-          Vertex v=options.isArriveBy() ? ((DirectEdge)e).getToVertex() : e.getFromVertex();
+        if (e instanceof Edge) {
+          Vertex v=options.isArriveBy() ? ((Edge)e).getToVertex() : e.getFromVertex();
           double vw=uw + (timeNotWeight ? e.timeLowerBound(options) : e.weightLowerBound(options));
           int vi=v.getIndex();
           if (weights[vi] > vw) {

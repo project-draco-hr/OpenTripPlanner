@@ -1,8 +1,8 @@
 {
   if (vertex instanceof StreetLocation) {
-    Iterable<DirectEdge> extra=((StreetLocation)vertex).getExtra();
-    for (    DirectEdge edge : extra) {
-      extraEdges.addDirectEdge(edge);
+    Iterable<Edge> extra=((StreetLocation)vertex).getExtra();
+    for (    Edge edge : extra) {
+      extraEdges.addEdge(edge);
     }
   }
 }

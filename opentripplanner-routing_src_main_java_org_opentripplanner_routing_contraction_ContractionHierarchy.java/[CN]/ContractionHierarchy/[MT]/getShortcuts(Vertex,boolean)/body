@@ -15,7 +15,7 @@
   su=new State(u,fwdOptions);
   double maxWWeight=0;
   ArrayList<State> ws=new ArrayList<State>();
-  for (  DirectEdge e : filter(core.getOutgoing(u),DirectEdge.class)) {
+  for (  Edge e : filter(core.getOutgoing(u),Edge.class)) {
     if (!isContractable(e)) {
       continue;
     }
@@ -45,9 +45,9 @@
       WitnessSearchResult wsresult=future.get();
       BasicShortestPathTree spt=wsresult.spt;
       if (!simulate && spt != null) {
-        ArrayList<DirectEdge> toRemove=new ArrayList<DirectEdge>();
+        ArrayList<Edge> toRemove=new ArrayList<Edge>();
         State sv0=new State(wsresult.vertex,fwdOptions);
-        for (        DirectEdge e : filter(core.getOutgoing(wsresult.vertex),DirectEdge.class)) {
+        for (        Edge e : filter(core.getOutgoing(wsresult.vertex),Edge.class)) {
           State sSpt=spt.getState(e.getToVertex());
           if (sSpt == null) {
             continue;
@@ -62,7 +62,7 @@
           }
         }
         Vertex uv=wsresult.vertex;
-        for (        DirectEdge e : toRemove) {
+        for (        Edge e : toRemove) {
           uv.removeOutgoing(e);
           e.getToVertex().removeIncoming(e);
         }

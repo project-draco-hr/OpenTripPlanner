@@ -49,14 +49,14 @@
       lastNotified=now;
     }
     HashSet<Vertex> neighbors=new HashSet<Vertex>();
-    for (    DirectEdge de : filter(core.getOutgoing(vertex),DirectEdge.class)) {
+    for (    Edge de : filter(core.getOutgoing(vertex),Edge.class)) {
       Vertex toVertex=de.getToVertex();
       core.removeIncoming(toVertex,de);
       updown.addOutgoing(vertex,de);
       neighbors.add(toVertex);
       nContractableEdges--;
     }
-    for (    DirectEdge de : filter(core.getIncoming(vertex),DirectEdge.class)) {
+    for (    Edge de : filter(core.getIncoming(vertex),Edge.class)) {
       Vertex fromVertex=de.getFromVertex();
       core.removeOutgoing(fromVertex,de);
       updown.addIncoming(vertex,de);
@@ -77,7 +77,7 @@
     }
     List<Shortcut> shortcuts=shortcutsAndSearchSpace.shortcuts;
     for (    Shortcut shortcut : shortcuts) {
-      core.addDirectEdge(shortcut);
+      core.addEdge(shortcut);
     }
     nContractableVertices--;
     nContractableEdges+=shortcuts.size();

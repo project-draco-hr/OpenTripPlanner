@@ -132,7 +132,7 @@
   Collection<Vertex> vertices=graph.getVertices();
   DisjointSet<Vertex> components=new DisjointSet<Vertex>();
   for (  Vertex v : vertices) {
-    for (    DirectEdge e : filter(v.getOutgoing(),DirectEdge.class)) {
+    for (    Edge e : filter(v.getOutgoing(),Edge.class)) {
       components.union(v,e.getToVertex());
     }
   }

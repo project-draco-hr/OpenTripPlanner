@@ -11,7 +11,7 @@
     return null;
   }
   StreetVertex newEnd=new IntersectionVertex(graph,"replace " + endVertex.getLabel(),endVertex.getX(),endVertex.getY());
-  for (  DirectEdge e : filter(startVertex.getOutgoing(),DirectEdge.class)) {
+  for (  Edge e : filter(startVertex.getOutgoing(),Edge.class)) {
     final Vertex toVertex=e.getToVertex();
     if (!toVertex.getCoordinate().equals(endVertex.getCoordinate())) {
       continue;
@@ -27,7 +27,7 @@
     }
   }
   StreetVertex newStart=new IntersectionVertex(graph,"replace " + startVertex.getLabel(),startVertex.getX(),startVertex.getY());
-  for (  DirectEdge e : filter(endVertex.getOutgoing(),DirectEdge.class)) {
+  for (  Edge e : filter(endVertex.getOutgoing(),Edge.class)) {
     final Vertex toVertex=e.getToVertex();
     if (!toVertex.getCoordinate().equals(startVertex.getCoordinate())) {
       continue;

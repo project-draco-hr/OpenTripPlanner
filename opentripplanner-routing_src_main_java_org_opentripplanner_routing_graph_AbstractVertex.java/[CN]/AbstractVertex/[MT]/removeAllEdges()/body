@@ -1,7 +1,7 @@
 {
   for (  Edge e : outgoing) {
-    if (e instanceof DirectEdge) {
-      DirectEdge edge=(DirectEdge)e;
+    if (e instanceof Edge) {
+      Edge edge=(Edge)e;
       Vertex target=edge.getToVertex();
       if (target != null) {
         target.removeIncoming(e);
