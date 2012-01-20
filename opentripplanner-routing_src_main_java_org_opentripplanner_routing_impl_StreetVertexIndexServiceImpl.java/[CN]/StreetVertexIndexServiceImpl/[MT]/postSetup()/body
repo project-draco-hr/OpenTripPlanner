@@ -13,7 +13,7 @@
     }
     if (v instanceof TransitStop) {
       TransitStop ts=(TransitStop)v;
-      if (ts.isEntrance() || !ts.hasEntrances()) {
+      if (!ts.isEntrance() && ts.hasEntrances()) {
         continue;
       }
       Envelope env=new Envelope(v.getCoordinate());

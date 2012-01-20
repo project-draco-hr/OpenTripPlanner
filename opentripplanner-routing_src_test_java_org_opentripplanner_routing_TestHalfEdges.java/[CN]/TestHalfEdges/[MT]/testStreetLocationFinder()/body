@@ -1,7 +1,8 @@
 {
   StreetVertexIndexServiceImpl finder=new StreetVertexIndexServiceImpl(graph);
   finder.setup();
-  assertTrue(finder.getLocalTransitStops(new Coordinate(-74.005000001,40.01),100).size() > 0);
+  Coordinate c=new Coordinate(-74.005000001,40.01);
+  assertTrue(finder.getLocalTransitStops(c,100).size() > 0);
   StreetLocation some=(StreetLocation)finder.getClosestVertex(new Coordinate(-74.00,40.00),null,null);
   assertNotNull(some);
   assertTrue("wheelchair accessibility is correctly set (vertices)",some.isWheelchairAccessible());
