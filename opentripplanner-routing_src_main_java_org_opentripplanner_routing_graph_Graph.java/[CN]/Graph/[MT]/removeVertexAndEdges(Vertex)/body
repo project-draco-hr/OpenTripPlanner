@@ -1,11 +1,7 @@
 {
-  Vertex gv=this.getVertex(vertex.getLabel());
-  if (gv == null) {
-    return;
-  }
-  if (gv != vertex) {
-    throw new IllegalStateException("Vertex has the same label as one in the graph, but is not the same object.");
+  if (!vertices.contains(vertex)) {
+    throw new IllegalStateException("attempting to remove vertex that is not in graph.");
   }
   vertex.removeAllEdges();
-  vertices.remove(vertex.getLabel());
+  vertices.remove(vertex);
 }

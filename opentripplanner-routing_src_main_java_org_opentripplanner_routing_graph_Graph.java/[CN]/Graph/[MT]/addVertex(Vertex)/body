@@ -1,7 +1,3 @@
 {
-  Vertex gv=vertices.get(v.getLabel());
-  if (gv != null) {
-    throw new IllegalStateException("vertices must have a unique label");
-  }
-  vertices.put(v.getLabel(),v);
+  if (!vertices.add(v))   LOG.warn("repeatedly added the same vertex: {}",v);
 }
