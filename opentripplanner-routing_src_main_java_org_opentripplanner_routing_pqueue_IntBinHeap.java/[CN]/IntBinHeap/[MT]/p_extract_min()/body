@@ -3,7 +3,7 @@
   int minElem=elem[1];
   int lastElem=elem[size];
   double lastPrio=prio[size];
-  if (size <= 0)   return Integer.MIN_VALUE;
+  if (size <= 0)   return NOT_AN_ELEMENT;
   size-=1;
   for (i=1; i * 2 <= size; i=child) {
     child=i * 2;
