@@ -4,8 +4,8 @@
   for (  Transfer t : transfers) {
     Stop fromStop=t.getFromStop();
     Stop toStop=t.getToStop();
-    Vertex fromVertex=graph.getVertex(arrivalVertexId(id(fromStop.getId())));
-    Vertex toVertex=graph.getVertex(departureVertexId(id(toStop.getId())));
+    Vertex fromVertex=stopArriveNodes.get(fromStop);
+    Vertex toVertex=stopDepartNodes.get(toStop);
 switch (t.getTransferType()) {
 case 1:
       new TimedTransferEdge(fromVertex,toVertex);

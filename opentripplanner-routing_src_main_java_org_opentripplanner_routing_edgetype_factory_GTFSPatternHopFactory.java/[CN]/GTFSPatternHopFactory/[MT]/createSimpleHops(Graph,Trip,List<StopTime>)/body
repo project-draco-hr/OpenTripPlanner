@@ -8,8 +8,8 @@
     Stop s0=st0.getStop();
     StopTime st1=stopTimes.get(i + 1);
     Stop s1=st1.getStop();
-    Vertex startStation=graph.getVertex(departureVertexId(id(s0.getId())));
-    Vertex endStation=graph.getVertex(arrivalVertexId(id(s1.getId())));
+    Vertex startStation=stopDepartNodes.get(s0);
+    Vertex endStation=stopArriveNodes.get(s1);
     if (psv1arrive == null) {
       psv0arrive=new PatternStopVertex(graph,id(s0.getId()) + "_" + tripId+ "_"+ st0.getStopSequence()+ "_A",s0.getLon(),s0.getLat(),s0.getId(),null);
     }

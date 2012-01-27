@@ -1,6 +1,7 @@
 {
   _log.debug("creating linkages...");
-  ArrayList<Vertex> vertices=new ArrayList<Vertex>(graph.getVertices());
+  ArrayList<Vertex> vertices=new ArrayList<Vertex>();
+  vertices.addAll(graph.getVertices());
   for (  TransitStop ts : IterableLibrary.filter(vertices,TransitStop.class)) {
     if (ts.isEntrance() || !ts.hasEntrances()) {
       boolean wheelchairAccessible=ts.hasWheelchairEntrance();
@@ -9,6 +10,5 @@
       }
     }
   }
-  networkLinkerLibrary.markLocalStops();
   FindMaxWalkDistances.find(graph);
 }
