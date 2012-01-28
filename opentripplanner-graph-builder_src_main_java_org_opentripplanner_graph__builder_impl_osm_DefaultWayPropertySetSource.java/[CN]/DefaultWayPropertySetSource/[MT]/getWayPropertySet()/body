@@ -114,6 +114,11 @@
   setProperties(props,"highway=primary_link;cycleway=opposite",StreetTraversalPermission.ALL,2.06,2.99);
   setProperties(props,"highway=path;bicycle=designated",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,0.68,0.68);
   setProperties(props,"highway=footway;bicycle=designated",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,0.75,0.75);
+  setProperties(props,"highway=track;bicycle=yes",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,1.18,1.18);
+  setProperties(props,"highway=track;bicycle=designated",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,0.99,0.99);
+  setProperties(props,"highway=track;bicycle=yes;surface=*",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,1.18,1.18);
+  setProperties(props,"highway=track;bicycle=designated;surface=*",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,0.99,0.99);
+  setProperties(props,"highway=track;surface=*",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,1.3,1.3);
   setProperties(props,"highway=footway;RLIS:bicycle=designated",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,0.77,0.77);
   setProperties(props,"highway=footway;CCGIS:bicycle=designated",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,0.77,0.77);
   setProperties(props,"footway=sidewalk;highway=footway;bicycle=yes",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,2.5,2.5);
