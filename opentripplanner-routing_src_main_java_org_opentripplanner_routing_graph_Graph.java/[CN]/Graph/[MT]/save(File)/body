@@ -5,7 +5,7 @@
   ObjectOutputStream out=new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
   LOG.debug("Consolidating edges...");
   List<Edge> edges=new ArrayList<Edge>(this.countEdges());
-  for (  Vertex v : this) {
+  for (  Vertex v : getVertices()) {
     edges.addAll(v.getOutgoing());
   }
   LOG.debug("Assigning vertex/edge ID numbers...");

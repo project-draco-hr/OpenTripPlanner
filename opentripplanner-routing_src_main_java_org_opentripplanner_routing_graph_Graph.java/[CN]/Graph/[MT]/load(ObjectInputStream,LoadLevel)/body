@@ -5,13 +5,13 @@
     if (level == LoadLevel.BASIC)     return graph;
     LOG.debug("Loading edges...");
     List<Edge> edges=(ArrayList<Edge>)in.readObject();
-    graph.vertices=new HashSet<Vertex>();
+    graph.vertices=new HashMap<String,Vertex>();
     ;
     for (    Edge e : edges) {
-      graph.vertices.add(e.getFromVertex());
-      graph.vertices.add(e.getToVertex());
+      graph.vertices.put(e.getFromVertex().getLabel(),e.getFromVertex());
+      graph.vertices.put(e.getToVertex().getLabel(),e.getToVertex());
     }
-    for (    Vertex v : graph)     v.compact();
+    for (    Vertex v : graph.getVertices())     v.compact();
     LOG.info("Main graph read. |V|={} |E|={}",graph.countVertices(),graph.countEdges());
     if (level == LoadLevel.NO_HIERARCHIES)     return graph;
     graph.hierarchies=(ContractionHierarchySet)in.readObject();

@@ -1,6 +1,6 @@
 {
   Envelope env=new Envelope();
-  for (  Vertex v : this) {
+  for (  Vertex v : getVertices()) {
     env.expandToInclude(v.getCoordinate());
   }
   return env;
