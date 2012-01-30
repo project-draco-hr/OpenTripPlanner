@@ -53,24 +53,11 @@
         }
         continue;
       }
-      Collection<Edge> outgoing=core.getOutgoing(u);
-      if (opt.isArriveBy() && !outgoing.isEmpty()) {
+      if (opt.isArriveBy() && !(u instanceof StreetVertex)) {
         continue;
       }
+      Collection<Edge> outgoing=u.getOutgoing();
       if (VERBOSE)       _log.debug("        {} edges in core",outgoing.size());
-      Collection<Edge> upOutgoing=updown.getOutgoing(u);
-      if (!upOutgoing.isEmpty()) {
-        if (VERBOSE)         _log.debug("        {} edges in overlay",upOutgoing.size());
-        if (outgoing.isEmpty()) {
-          outgoing=upOutgoing;
-        }
- else {
-          ArrayList<Edge> newOutgoing=new ArrayList<Edge>(outgoing.size() + upOutgoing.size());
-          newOutgoing.addAll(outgoing);
-          newOutgoing.addAll(upOutgoing);
-          outgoing=newOutgoing;
-        }
-      }
       if (extraEdges.containsKey(u)) {
         List<Edge> newOutgoing=new ArrayList<Edge>();
         newOutgoing.addAll(extraEdges.get(u));
@@ -125,24 +112,11 @@
         }
       }
       downclosed.add(down_u);
-      Collection<Edge> incoming=core.getIncoming(down_u);
-      if (!opt.isArriveBy() && !incoming.isEmpty()) {
+      if (!opt.isArriveBy() && !(down_u instanceof StreetVertex)) {
         continue;
       }
+      Collection<Edge> incoming=down_u.getIncoming();
       if (VERBOSE)       _log.debug("        {} edges in core",incoming.size());
-      Collection<Edge> downIncoming=updown.getIncoming(down_u);
-      if (!downIncoming.isEmpty()) {
-        if (incoming.isEmpty()) {
-          incoming=downIncoming;
-        }
- else {
-          ArrayList<Edge> newIncoming=new ArrayList<Edge>(incoming.size() + downIncoming.size());
-          newIncoming.addAll(incoming);
-          newIncoming.addAll(downIncoming);
-          incoming=newIncoming;
-        }
-      }
-      if (VERBOSE)       _log.debug("        {} edges with overlay",incoming.size());
       if (extraEdges.containsKey(down_u)) {
         List<Edge> newIncoming=new ArrayList<Edge>();
         newIncoming.addAll(incoming);

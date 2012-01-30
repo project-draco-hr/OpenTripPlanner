@@ -10,9 +10,9 @@
       remainingTargets.remove(u);
       if (remainingTargets.isEmpty())       break;
     }
-    Iterable<Edge> outgoing=graph.getOutgoing(u);
+    Iterable<Edge> outgoing=u.getOutgoing();
     for (    Edge edge : outgoing) {
-      if (!(ContractionHierarchy.isContractable(edge)))       continue;
+      if (routeOn != null && !routeOn.contains(edge.getToVertex()))       continue;
       State sv=edge.traverse(su);
       if (sv != null && sv.getVertex() != taboo && spt.add(sv) && !sv.exceedsHopLimit(hopLimit) && !sv.exceedsWeightLimit(weightLimit))       queue.insert(sv,sv.getWeight());
     }

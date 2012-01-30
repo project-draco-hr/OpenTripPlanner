@@ -1,12 +1,8 @@
 {
   _log.debug("    rebuild priority queue, hoplimit is now {}",hopLimit);
-  BinHeap<Vertex> newpq=new BinHeap<Vertex>(core.getVertices().size());
-  int i=0;
-  for (  Vertex v : core.getVertices()) {
-    if (++i % 100000 == 0)     _log.debug("    vertex {}",i);
-    if (!isContractable(v)) {
-      continue;
-    }
+  BinHeap<Vertex> newpq=new BinHeap<Vertex>(corev.size());
+  for (  Vertex v : corev) {
+    if (!(v instanceof StreetVertex))     continue;
     WitnessSearchResult wsresult=getShortcuts(v,true);
     Integer deleted=deletedNeighbors.get(v);
     if (deleted == null) {

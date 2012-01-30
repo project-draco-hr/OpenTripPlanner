@@ -1,17 +1,15 @@
 {
   createThreadPool();
-  updown=new OverlayGraph();
   long start=System.currentTimeMillis();
   HashMap<Vertex,Integer> deletedNeighbors=new HashMap<Vertex,Integer>();
   _log.debug("Preparing contraction hierarchy -- this may take quite a while");
   _log.debug("Initializing priority queue");
-  BinHeap<Vertex> pq=initPriorityQueue(core);
+  BinHeap<Vertex> pq=initPriorityQueue(graph);
   _log.debug("Contracting");
   long lastNotified=System.currentTimeMillis();
   int i=0;
-  int nContractableVertices, totalContractableVertices;
-  totalContractableVertices=nContractableVertices=pq.size();
-  int nContractableEdges=countContractableEdges(core);
+  int totalContractableVertices=pq.size();
+  int nContractableEdges=countContractableEdges(graph);
   boolean edgesRemoved=false;
   while (!pq.empty()) {
     if (i > Math.ceil(totalContractableVertices * contractionFactor)) {
@@ -45,25 +43,20 @@
     }
     long now=System.currentTimeMillis();
     if (now - lastNotified > 5000) {
-      _log.debug("contracted: " + i + " / "+ totalContractableVertices+ " ("+ i / (double)totalContractableVertices + ") total time " + (now - start) / 1000.0 + "sec, average degree " + nContractableEdges / (nContractableVertices + 0.00001));
+      _log.debug("contracted: " + i + " / "+ totalContractableVertices+ " ("+ i / (double)totalContractableVertices + ") total time " + (now - start) / 1000.0 + "sec, average degree " + nContractableEdges / (corev.size() + 0.00001));
       lastNotified=now;
     }
     HashSet<Vertex> neighbors=new HashSet<Vertex>();
-    for (    Edge de : core.getOutgoing(vertex)) {
+    for (    Edge de : vertex.getOutgoing()) {
       Vertex toVertex=de.getToVertex();
-      core.removeIncoming(toVertex,de);
-      updown.addOutgoing(vertex,de);
       neighbors.add(toVertex);
       nContractableEdges--;
     }
-    for (    Edge de : core.getIncoming(vertex)) {
+    for (    Edge de : vertex.getIncoming()) {
       Vertex fromVertex=de.getFromVertex();
-      core.removeOutgoing(fromVertex,de);
-      updown.addIncoming(vertex,de);
       neighbors.add(fromVertex);
       nContractableEdges--;
     }
-    core.removeVertex(vertex);
     for (    Vertex n : neighbors) {
       int deleted=0;
       if (deletedNeighbors.containsKey(n)) {
@@ -75,13 +68,17 @@
       double new_prio=getImportance(n,nwsr,deleted);
       pq.rekey(n,new_prio);
     }
-    List<Shortcut> shortcuts=shortcutsAndSearchSpace.shortcuts;
-    for (    Shortcut shortcut : shortcuts) {
-      core.addEdge(shortcut);
+    for (    PotentialShortcut ps : shortcutsAndSearchSpace.shortcuts) {
+      ps.make();
+      nContractableEdges+=1;
     }
-    nContractableVertices--;
-    nContractableEdges+=shortcuts.size();
-    if (nContractableVertices == 0) {
+    if (corev.remove(vertex)) {
+      chv.add(vertex);
+    }
+ else {
+      _log.warn("attempt to move vertex out of core when it was not still in core.");
+    }
+    if (corev.size() == 0) {
       continue;
     }
   }

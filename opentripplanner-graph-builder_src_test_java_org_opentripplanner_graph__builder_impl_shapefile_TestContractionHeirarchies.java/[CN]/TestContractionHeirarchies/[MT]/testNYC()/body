@@ -128,7 +128,7 @@
   long now=System.currentTimeMillis();
   int i=0;
   int notNull=0;
-  Collection<Vertex> updownVertices=hierarchy.updown.getVertices();
+  Collection<Vertex> chv=hierarchy.chv;
   Collection<Vertex> vertices=graph.getVertices();
   DisjointSet<Vertex> components=new DisjointSet<Vertex>();
   for (  Vertex v : vertices) {
@@ -139,7 +139,7 @@
   ArrayList<Vertex> verticesOut=new ArrayList<Vertex>();
   for (  Vertex v : vertices) {
     int componentSize=components.size(components.find(v));
-    if (componentSize > updownVertices.size() / 2) {
+    if (componentSize > chv.size() / 2) {
       if (v.getDegreeOut() != 0) {
         verticesOut.add(v);
       }
@@ -153,7 +153,7 @@
     if (++i == 100) {
       break;
     }
-    if (hierarchy.updown.getOutgoing(orig).size() == 0) {
+    if (!chv.contains(orig) || orig.getDegreeOut() < 1) {
       --i;
       continue;
     }
@@ -163,7 +163,7 @@
       if (orig.getLabel() == dest.getLabel()) {
         continue;
       }
-      if (hierarchy.updown.getIncoming(dest).size() == 0) {
+      if (!chv.contains(dest) || dest.getDegreeIn() < 1) {
         dest=null;
         continue;
       }
