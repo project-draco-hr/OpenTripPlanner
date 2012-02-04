@@ -32,7 +32,11 @@
   int[][] resultTable=new int[rides.size()][rides.size()];
   for (int i=0; i < rides.size(); i++) {
     for (int j=0; j < rides.size() - i; j++) {
-      resultTable[j][j + i]=calculateCost(rides,j,j + i);
+      int cost=calculateCost(rides,j,j + i);
+      if (cost < 0) {
+        continue;
+      }
+      resultTable[j][j + i]=cost;
       for (int k=0; k < i; k++) {
         if (resultTable[j][j + i] > resultTable[j][j + k] + resultTable[j + k + 1][j + i])         resultTable[j][j + i]=resultTable[j][k + j] + resultTable[j + k + 1][j + i];
       }

@@ -42,7 +42,7 @@
   if (bestFare == Float.MAX_VALUE) {
     if (currentFare == -1) {
       _log.warn("No fare for a ride: " + ride);
-      return Integer.MAX_VALUE;
+      return -1;
     }
   }
   return (int)Math.round(bestFare * Math.pow(10,currency.getDefaultFractionDigits()));
