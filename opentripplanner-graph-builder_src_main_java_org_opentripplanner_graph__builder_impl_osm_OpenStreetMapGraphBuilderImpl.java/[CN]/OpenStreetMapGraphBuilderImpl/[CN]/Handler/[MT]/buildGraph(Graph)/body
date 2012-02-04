@@ -244,8 +244,12 @@
     for (Integer i=0; i < vSize; i++) {
       Vertex from=onboardVertices.get(i);
       Vertex to=onboardVertices.get(i + 1);
-      ElevatorHopEdge theEdge=new ElevatorHopEdge(from,to,StreetTraversalPermission.PEDESTRIAN);
-      ElevatorHopEdge backEdge=new ElevatorHopEdge(to,from,StreetTraversalPermission.PEDESTRIAN);
+      StreetTraversalPermission permission=StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE;
+      if (node.isTagFalse("bicycle")) {
+        permission=StreetTraversalPermission.PEDESTRIAN;
+      }
+      ElevatorHopEdge theEdge=new ElevatorHopEdge(from,to,permission);
+      ElevatorHopEdge backEdge=new ElevatorHopEdge(to,from,permission);
       graph.addEdge(theEdge);
       graph.addEdge(backEdge);
     }
