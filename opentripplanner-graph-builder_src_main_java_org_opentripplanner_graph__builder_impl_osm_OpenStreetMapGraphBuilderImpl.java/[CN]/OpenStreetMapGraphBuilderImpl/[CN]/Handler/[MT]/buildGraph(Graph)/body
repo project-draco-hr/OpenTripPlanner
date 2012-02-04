@@ -245,11 +245,17 @@
       Vertex from=onboardVertices.get(i);
       Vertex to=onboardVertices.get(i + 1);
       StreetTraversalPermission permission=StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE;
+      boolean wheelchairAccessible=true;
       if (node.isTagFalse("bicycle")) {
         permission=StreetTraversalPermission.PEDESTRIAN;
       }
+      if (node.isTagFalse("wheelchair")) {
+        wheelchairAccessible=false;
+      }
       ElevatorHopEdge theEdge=new ElevatorHopEdge(from,to,permission);
       ElevatorHopEdge backEdge=new ElevatorHopEdge(to,from,permission);
+      theEdge.wheelchairAccessible=wheelchairAccessible;
+      backEdge.wheelchairAccessible=wheelchairAccessible;
       graph.addEdge(theEdge);
       graph.addEdge(backEdge);
     }
