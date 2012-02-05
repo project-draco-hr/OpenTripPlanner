@@ -19,7 +19,7 @@
   }
   for (int i=0; i < levels.size(); i++) {
     String level=levels.get(i);
-    Integer numLevel=null;
+    Integer numLevel=1;
     try {
       numLevel=Integer.parseInt(level);
     }
@@ -29,11 +29,12 @@
       }
  catch (      NumberFormatException e2) {
         try {
-          numLevel=Integer.parseInt(level.split("@")[1]);
+          int lastInd=level.lastIndexOf('@');
+          if (lastInd != -1) {
+            numLevel=Integer.parseInt(level.substring(lastInd + 1));
+          }
         }
  catch (        NumberFormatException e3) {
-        }
-catch (        ArrayIndexOutOfBoundsException e4) {
         }
       }
     }
@@ -42,14 +43,19 @@ catch (        ArrayIndexOutOfBoundsException e4) {
     }
     String levelIndex;
     String levelName;
-    level=level.split("@")[0];
-    levelIndex=level.split("=")[0];
-    try {
-      levelName=level.split("=")[1];
+    int lastIndAt=level.lastIndexOf('@');
+    if (lastIndAt >= 1) {
+      level=level.substring(0,lastIndAt);
     }
- catch (    ArrayIndexOutOfBoundsException e) {
-      levelName=levelIndex;
+    Integer levelSplit=level.indexOf('=');
+    if (levelSplit >= 1) {
+      levelIndex=level.substring(0,levelSplit);
+      levelName=level.substring(levelSplit + 1);
     }
+ else {
+      levelIndex=levelName=level;
+    }
+    _log.debug("levelSplit: " + levelSplit + ", levelIndex: "+ levelIndex+ ", levelName: "+ levelName);
     levels.set(i,levelIndex);
     levelFullNames.put(levelIndex,levelName);
   }
