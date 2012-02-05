@@ -88,7 +88,7 @@
       totalTrips+=variant.getTrips().size();
     }
   }
-  _log.debug("Built transit index: " + variantsByRoute.size() + " routes, "+ totalTrips+ " trips, "+ totalVariants+ " variants ");
-  TransitIndexService service=new TransitIndexServiceImpl(variantsByRoute,variantsByTrip,preBoardEdges,preAlightEdges,directionsByRoute,modes);
+  _log.debug("Built transit index: " + variantsByAgency.size() + " agencies, "+ variantsByRoute.size()+ " routes, "+ totalTrips+ " trips, "+ totalVariants+ " variants ");
+  TransitIndexService service=new TransitIndexServiceImpl(variantsByAgency,variantsByRoute,variantsByTrip,preBoardEdges,preAlightEdges,directionsByRoute,modes);
   graph.putService(TransitIndexService.class,service);
 }

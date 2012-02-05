@@ -18,6 +18,11 @@
     stops.add(stopTime.getStop());
   }
   Route route=trip.getRoute();
+  List<RouteVariant> agencyVariants=variantsByAgency.get(route.getId().getAgencyId());
+  if (agencyVariants == null) {
+    agencyVariants=new ArrayList<RouteVariant>();
+    variantsByAgency.put(route.getId().getAgencyId(),agencyVariants);
+  }
   List<RouteVariant> variants=variantsByRoute.get(route.getId());
   if (variants == null) {
     variants=new ArrayList<RouteVariant>();
@@ -32,6 +37,7 @@
   if (variant == null) {
     variant=new RouteVariant(route,stops);
     variants.add(variant);
+    agencyVariants.add(variant);
   }
   variantsByTrip.put(trip.getId(),variant);
   variant.addTrip(trip);
