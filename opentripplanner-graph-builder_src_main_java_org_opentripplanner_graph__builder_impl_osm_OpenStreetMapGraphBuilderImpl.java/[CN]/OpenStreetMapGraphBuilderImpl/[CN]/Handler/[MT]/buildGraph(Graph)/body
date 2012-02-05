@@ -5,7 +5,6 @@
   long wayIndex=0;
   Set<Long> possibleIntersectionNodes=new HashSet<Long>();
   Set<Long> intersectionNodes=new HashSet<Long>();
-  HashMap<Long,HashMap> multiLevelNodesLevels=new HashMap<Long,HashMap>();
   int nextUnparsedLevel=10000;
   HashMap<String,Integer> unparsedLevels=new HashMap<String,Integer>();
   for (  OSMWay way : _ways.values()) {
@@ -122,21 +121,7 @@
       if (startEndpoint == null) {
         String label=getVertexLabelFromNode(osmStartNode,way);
         if (isMultiLevelNode(osmStartNode)) {
-          HashMap<Integer,String> levels;
-          int level=Integer.parseInt(way.getTag("otp:numeric_level"));
-          if (multiLevelNodesLevels.containsKey(osmStartNode.getId())) {
-            levels=multiLevelNodesLevels.get(osmStartNode.getId());
-          }
- else {
-            levels=new HashMap<Integer,String>();
-            multiLevelNodesLevels.put(osmStartNode.getId(),levels);
-          }
-          if (!levels.containsKey(level)) {
-            levels.put(level,way.getTag("otp:human_level"));
-          }
- else           if (!levels.get(level).equals(way.getTag("otp:human_level"))) {
-            throw new IllegalStateException("Multiple levels have the same " + "level number!");
-          }
+          recordLevel(way,osmStartNode);
         }
         startEndpoint=graph.getVertex(label);
         if (startEndpoint == null) {
@@ -151,21 +136,7 @@
       }
       String label=getVertexLabelFromNode(osmEndNode,way);
       if (isMultiLevelNode(osmEndNode)) {
-        HashMap<Integer,String> levels;
-        int level=Integer.parseInt(way.getTag("otp:numeric_level"));
-        if (multiLevelNodesLevels.containsKey(osmEndNode.getId())) {
-          levels=multiLevelNodesLevels.get(osmEndNode.getId());
-        }
- else {
-          levels=new HashMap<Integer,String>();
-          multiLevelNodesLevels.put(osmEndNode.getId(),levels);
-        }
-        if (!levels.containsKey(level)) {
-          levels.put(level,way.getTag("otp:human_level"));
-        }
- else         if (!levels.get(level).equals(way.getTag("otp:human_level"))) {
-          throw new IllegalStateException("Multiple levels have the same " + "level number!");
-        }
+        recordLevel(way,osmEndNode);
       }
       endEndpoint=graph.getVertex(label);
       if (endEndpoint == null) {

@@ -1,0 +1,17 @@
+{
+  HashMap<Integer,String> levels;
+  int level=Integer.parseInt(way.getTag("otp:numeric_level"));
+  if (multiLevelNodesLevels.containsKey(node.getId())) {
+    levels=multiLevelNodesLevels.get(node.getId());
+  }
+ else {
+    levels=new HashMap<Integer,String>();
+    multiLevelNodesLevels.put(node.getId(),levels);
+  }
+  if (!levels.containsKey(level)) {
+    levels.put(level,way.getTag("otp:human_level"));
+  }
+ else   if (!levels.get(level).equals(way.getTag("otp:human_level"))) {
+    throw new IllegalStateException("Multiple levels have the same " + "level number!");
+  }
+}
