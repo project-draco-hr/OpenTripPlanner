@@ -45,7 +45,6 @@
         numLevel=Integer.parseInt(level) + 1000;
         if (noZeroLevels && numLevel >= 1000) {
           level="" + (numLevel - 999);
-          _log.debug("adding 1 to level " + numLevel + " for US audiences.");
         }
       }
  catch (      NumberFormatException e) {
@@ -69,7 +68,6 @@
         numLayer=Integer.parseInt(layer) + 2000;
         if (noZeroLevels && numLayer >= 2000) {
           layer="" + (numLayer - 1999);
-          _log.debug("adding 1 to layer " + numLayer + " for US audiences.");
         }
       }
  catch (      NumberFormatException e) {
