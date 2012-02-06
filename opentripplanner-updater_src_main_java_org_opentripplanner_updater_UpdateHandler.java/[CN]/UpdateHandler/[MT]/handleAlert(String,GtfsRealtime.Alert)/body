@@ -20,6 +20,7 @@
     alertText.effectiveStartDate=new Date(bestStartTime);
   }
   for (  EntitySelector informed : alert.getInformedEntityList()) {
+    String patchId=createId(id,informed);
     String routeId=null;
     if (informed.hasRouteId()) {
       routeId=informed.getRouteId();
@@ -59,9 +60,9 @@
     patch.setCancelled(alert.getEffect() == GtfsRealtime.Alert.Effect.NO_SERVICE);
     patch.setTimePeriods(periods);
     patch.setDisplayTimePeriods(displayPeriods);
-    patch.setId(id);
     patch.setAlert(alertText);
+    patch.setId(patchId);
+    patchIds.add(patchId);
     patchService.apply(patch);
-    patchIds.add(id);
   }
 }
