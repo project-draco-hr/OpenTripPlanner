@@ -1,5 +1,6 @@
 {
   Itinerary itinerary=makeEmptyItinerary(path);
+  EdgeNarrative postponedAlerts=null;
   Leg leg=null;
   CoordinateArrayListSequence coordinates=new CoordinateArrayListSequence();
   double previousElevation=Double.MAX_VALUE;
@@ -15,6 +16,12 @@
       continue;
     }
     if (backEdge instanceof FreeEdge) {
+      if (backEdge instanceof PreBoardEdge) {
+        postponedAlerts=backEdgeNarrative;
+      }
+ else       if (backEdge instanceof PreAlightEdge) {
+        addNotesToLeg(itinerary.legs.get(itinerary.legs.size() - 1),backEdgeNarrative);
+      }
       continue;
     }
     TraverseMode mode=backEdgeNarrative.getMode();
@@ -198,6 +205,10 @@ coordinates.extend(edgeCoordinates,1);
  else {
 coordinates.extend(edgeCoordinates);
 }
+}
+if (postponedAlerts != null) {
+addNotesToLeg(leg,postponedAlerts);
+postponedAlerts=null;
 }
 addNotesToLeg(leg,backEdgeNarrative);
 if (pgstate == PlanGenState.TRANSIT) {
