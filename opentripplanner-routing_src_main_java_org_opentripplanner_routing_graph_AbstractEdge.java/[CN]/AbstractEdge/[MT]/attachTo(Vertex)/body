@@ -1,0 +1,6 @@
+{
+  detachTo();
+  if (tov == null)   throw new IllegalStateException("attaching to tov null");
+  this.tov=tov;
+  tov.addIncoming(this);
+}

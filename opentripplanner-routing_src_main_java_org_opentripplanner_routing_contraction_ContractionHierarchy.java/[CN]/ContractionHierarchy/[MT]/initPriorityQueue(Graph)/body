@@ -1,0 +1,14 @@
+{
+  BinHeap<Vertex> pq=new BinHeap<Vertex>(g.getVertices().size());
+  corev=new HashSet<Vertex>();
+  chv=new HashSet<Vertex>();
+  for (  Vertex v : g.getVertices()) {
+    if (v instanceof StreetVertex)     corev.add(v);
+  }
+  for (  Vertex v : corev) {
+    WitnessSearchResult shortcuts=getShortcuts(v,true);
+    int imp=getImportance(v,shortcuts,0);
+    pq.insert(v,imp);
+  }
+  return pq;
+}

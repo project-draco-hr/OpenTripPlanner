@@ -1,15 +1,13 @@
 {
   _log.debug("removing non-optimal edges, hopLimit is {}",hopLimit);
   int removed=0;
-  for (  Vertex u : core.getVertices()) {
+  for (  Vertex u : corev) {
     State su=new State(u,fwdOptions);
-    Dijkstra dijkstra=new Dijkstra(core,u,fwdOptions,null,hopLimit);
+    Dijkstra dijkstra=new Dijkstra(u,fwdOptions,null,hopLimit);
+    dijkstra.setRouteOn(corev);
     BasicShortestPathTree spt=dijkstra.getShortestPathTree(Double.POSITIVE_INFINITY,Integer.MAX_VALUE);
-    ArrayList<DirectEdge> toRemove=new ArrayList<DirectEdge>();
-    for (    DirectEdge e : filter(core.getOutgoing(u),DirectEdge.class)) {
-      if (!isContractable(e)) {
-        continue;
-      }
+    ArrayList<Edge> toRemove=new ArrayList<Edge>();
+    for (    Edge e : u.getOutgoing()) {
       State svSpt=spt.getState(e.getToVertex());
       State sv=e.traverse(su);
       if (sv == null) {
@@ -20,8 +18,8 @@
         toRemove.add(e);
       }
     }
-    for (    DirectEdge e : toRemove) {
-      core.removeDirectEdge(e);
+    for (    Edge e : toRemove) {
+      e.detach();
     }
     removed+=toRemove.size();
   }

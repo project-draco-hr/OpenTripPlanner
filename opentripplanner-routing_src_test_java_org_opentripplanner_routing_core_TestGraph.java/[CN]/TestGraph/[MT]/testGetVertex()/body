@@ -1,6 +1,6 @@
 {
-  Graph gg=new Graph();
-  Vertex a=gg.addVertex("A",5,5);
-  Vertex b=gg.getVertex("A");
+  Graph g=new Graph();
+  Vertex a=new IntersectionVertex(g,"A",5,5);
+  Vertex b=g.getVertex("A");
   assertEquals(a,b);
 }

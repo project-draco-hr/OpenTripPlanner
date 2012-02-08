@@ -1,7 +1,7 @@
 {
-  HashMap<Class<? extends DirectEdge>,Class<? extends DirectEdge>> classMapping=new HashMap<Class<? extends DirectEdge>,Class<? extends DirectEdge>>();
-  HashSet<DirectEdge> edgesToRemove=new HashSet<DirectEdge>();
-  HashSet<DirectEdge> edgesToAdd=new HashSet<DirectEdge>();
+  HashMap<Class<? extends Edge>,Class<? extends Edge>> classMapping=new HashMap<Class<? extends Edge>,Class<? extends Edge>>();
+  HashSet<Edge> edgesToRemove=new HashSet<Edge>();
+  HashSet<Edge> edgesToAdd=new HashSet<Edge>();
   for (  Vertex vertex : graph.getVertices()) {
     for (    Edge e : vertex.getOutgoing()) {
       if (e instanceof StreetEdge) {
@@ -21,10 +21,7 @@
       }
     }
   }
-  for (  DirectEdge e : edgesToRemove) {
-    graph.removeEdge(e);
-  }
-  for (  DirectEdge e : edgesToAdd) {
-    graph.addEdge(e);
+  for (  Edge e : edgesToRemove) {
+    e.detach();
   }
 }

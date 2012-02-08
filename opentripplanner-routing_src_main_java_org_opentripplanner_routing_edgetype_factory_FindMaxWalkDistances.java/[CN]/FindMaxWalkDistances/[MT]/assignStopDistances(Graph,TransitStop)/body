@@ -27,8 +27,8 @@
         continue;
       }
       double new_w=v.getWeight();
-      if (toVertex instanceof StreetVertex) {
-        StreetVertex sv=(StreetVertex)toVertex;
+      if (toVertex instanceof TurnVertex) {
+        TurnVertex sv=(TurnVertex)toVertex;
         if (sv.getDistanceToNearestTransitStop() <= new_w) {
           continue;
         }

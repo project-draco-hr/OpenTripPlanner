@@ -4,12 +4,12 @@
   _nodes.keySet().retainAll(_nodesWithNeighbors);
   long wayIndex=0;
   Set<Long> possibleIntersectionNodes=new HashSet<Long>();
-  Set<Long> intersectionNodes=new HashSet<Long>();
+  Map<Long,IntersectionVertex> intersectionNodes=new HashMap<Long,IntersectionVertex>();
   for (  OSMWay way : _ways.values()) {
     List<Long> nodes=way.getNodeRefs();
     for (    long node : nodes) {
       if (possibleIntersectionNodes.contains(node)) {
-        intersectionNodes.add(node);
+        intersectionNodes.put(node,null);
       }
  else {
         possibleIntersectionNodes.add(node);
@@ -17,7 +17,7 @@
     }
   }
   GeometryFactory geometryFactory=new GeometryFactory();
-  ArrayList<Vertex> endpoints=new ArrayList<Vertex>();
+  ArrayList<IntersectionVertex> endpoints=new ArrayList<IntersectionVertex>();
   for (  OSMWay way : _ways.values()) {
     if (wayIndex % 10000 == 0)     _log.debug("ways=" + wayIndex + "/"+ _ways.size());
     wayIndex++;
@@ -32,7 +32,7 @@
     StreetTraversalPermission permissions=getPermissionsForEntity(way,wayData.getPermission());
     if (permissions == StreetTraversalPermission.NONE)     continue;
     List<Long> nodes=way.getNodeRefs();
-    Vertex startEndpoint=null, endEndpoint=null;
+    IntersectionVertex startEndpoint=null, endEndpoint=null;
     ArrayList<Coordinate> segmentCoordinates=new ArrayList<Coordinate>();
     Long startNode=null;
     OSMNode osmStartNode=null;
@@ -48,7 +48,7 @@
       if (segmentCoordinates.size() == 0) {
         segmentCoordinates.add(getCoordinate(osmStartNode));
       }
-      if (intersectionNodes.contains(endNode) || i == nodes.size() - 2) {
+      if (intersectionNodes.containsKey(endNode) || i == nodes.size() - 2) {
         segmentCoordinates.add(getCoordinate(osmEndNode));
         geometry=geometryFactory.createLineString(segmentCoordinates.toArray(new Coordinate[0]));
         segmentCoordinates.clear();
@@ -58,30 +58,31 @@
         continue;
       }
       if (startEndpoint == null) {
-        String label="osm node " + osmStartNode.getId();
-        startEndpoint=graph.getVertex(label);
+        long sid=osmStartNode.getId();
+        startEndpoint=intersectionNodes.get(sid);
         if (startEndpoint == null) {
           Coordinate coordinate=getCoordinate(osmStartNode);
-          startEndpoint=new EndpointVertex(label,coordinate.x,coordinate.y,label);
-          graph.addVertex(startEndpoint);
+          String label="osm node " + sid;
+          startEndpoint=new IntersectionVertex(graph,label,coordinate.x,coordinate.y,label);
+          intersectionNodes.put(sid,startEndpoint);
           endpoints.add(startEndpoint);
         }
       }
  else {
         startEndpoint=endEndpoint;
       }
-      String label="osm node " + osmEndNode.getId();
-      endEndpoint=graph.getVertex(label);
+      long eid=osmEndNode.getId();
+      endEndpoint=intersectionNodes.get(eid);
       if (endEndpoint == null) {
+        String label="osm node " + eid;
         Coordinate coordinate=getCoordinate(osmEndNode);
-        endEndpoint=new EndpointVertex(label,coordinate.x,coordinate.y,label);
-        graph.addVertex(endEndpoint);
+        endEndpoint=new IntersectionVertex(graph,label,coordinate.x,coordinate.y,label);
+        intersectionNodes.put(eid,endEndpoint);
         endpoints.add(endEndpoint);
       }
       P2<PlainStreetEdge> streets=getEdgesForStreet(startEndpoint,endEndpoint,way,i,permissions,geometry);
       PlainStreetEdge street=streets.getFirst();
       if (street != null) {
-        graph.addEdge(street);
         double safety=wayData.getSafetyFeatures().getFirst();
         street.setBicycleSafetyEffectiveLength(street.getLength() * safety);
         if (safety < bestBikeSafety) {
@@ -93,7 +94,6 @@
       }
       PlainStreetEdge backStreet=streets.getSecond();
       if (backStreet != null) {
-        graph.addEdge(backStreet);
         double safety=wayData.getSafetyFeatures().getSecond();
         if (safety < bestBikeSafety) {
           bestBikeSafety=safety;

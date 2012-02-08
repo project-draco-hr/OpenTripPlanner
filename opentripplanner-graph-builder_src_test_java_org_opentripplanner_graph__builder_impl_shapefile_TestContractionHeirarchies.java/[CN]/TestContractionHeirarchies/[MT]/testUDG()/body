@@ -7,8 +7,7 @@
   for (int i=0; i < N; ++i) {
     double x=random.nextDouble() * 1000;
     double y=random.nextDouble() * 1000;
-    Vertex v=new EndpointVertex("(" + x + ", "+ y+ ")",x,y);
-    graph.addVertex(v);
+    Vertex v=new IntersectionVertex(graph,"(" + x + ", "+ y+ ")",x,y);
     Envelope env=new Envelope(v.getCoordinate());
     tree.insert(env,v);
     vertices.add(v);
@@ -31,16 +30,16 @@
     }
 );
     for (    Vertex n : nearby.subList(1,6)) {
-      graph.addEdge(new FreeEdge(v,n));
-      graph.addEdge(new FreeEdge(n,v));
+      new FreeEdge(v,n);
+      new FreeEdge(n,v);
     }
     Vertex badTarget=nearby.get(6);
-    graph.addEdge(new ForbiddenEdge(badTarget,v));
+    new ForbiddenEdge(badTarget,v);
   }
   DisjointSet<Vertex> components=new DisjointSet<Vertex>();
   Vertex last=null;
   for (  Vertex v : vertices) {
-    for (    DirectEdge e : filter(v.getOutgoing(),DirectEdge.class)) {
+    for (    Edge e : v.getOutgoing()) {
       components.union(v,e.getToVertex());
     }
     last=v;
@@ -52,8 +51,8 @@
       lastKey=components.union(v,last);
       last=v;
       Coordinate c=v.getCoordinate();
-      graph.addEdge(new SimpleEdge(v,last,last.distance(c),0));
-      graph.addEdge(new SimpleEdge(last,v,last.distance(c),0));
+      new SimpleEdge(v,last,last.distance(c),0);
+      new SimpleEdge(last,v,last.distance(c),0);
     }
   }
   ContractionHierarchy hierarchy=new ContractionHierarchy(graph,new TraverseOptions(TraverseMode.WALK,OptimizeType.QUICK),1.0);

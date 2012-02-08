@@ -5,7 +5,7 @@
     if (su.exceedsWeightLimit(weightLimit))     return spt;
     Vertex u=su.getVertex();
     if (u == target)     break;
-    Iterable<Edge> outgoing=graph.getOutgoing(u);
+    Iterable<Edge> outgoing=u.getOutgoing();
     for (    Edge edge : outgoing) {
       State sv=edge.traverse(su);
       if (sv != null && sv.getVertex() != taboo && !sv.exceedsHopLimit(hopLimit) && spt.add(sv))       queue.insert(sv,sv.getWeight());

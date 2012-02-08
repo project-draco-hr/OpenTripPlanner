@@ -4,10 +4,10 @@
     if (en == null)     continue;
     TraverseMode mode=en.getMode();
     if (en instanceof DelegatingEdgeNarrative) {
-      en=(DirectEdge)((DelegatingEdgeNarrative)en).getBase();
+      en=((DelegatingEdgeNarrative)en).getBase();
     }
-    if (!(en instanceof DirectEdge))     continue;
-    DirectEdge e=(DirectEdge)en;
+    if (!(en instanceof Edge))     continue;
+    Edge e=(Edge)en;
     if (mode.isTransit()) {
       stroke(200,050,000);
       strokeWeight(6);

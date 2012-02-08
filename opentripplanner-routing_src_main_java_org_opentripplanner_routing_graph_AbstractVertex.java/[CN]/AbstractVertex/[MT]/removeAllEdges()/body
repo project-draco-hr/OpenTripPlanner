@@ -1,0 +1,16 @@
+{
+  for (  Edge e : outgoing) {
+    Vertex target=e.getToVertex();
+    if (target != null) {
+      target.removeIncoming(e);
+    }
+  }
+  for (  Edge e : incoming) {
+    Vertex source=e.getFromVertex();
+    if (source != null) {
+      source.removeOutgoing(e);
+    }
+  }
+  incoming=new ArrayList<Edge>();
+  outgoing=new ArrayList<Edge>();
+}

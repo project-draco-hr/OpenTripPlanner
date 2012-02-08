@@ -1,10 +1,11 @@
 {
-  core=new OverlayGraph(orig);
-  this.fwdOptions=options;
-  this.fwdOptions.setMaxWalkDistance(Double.MAX_VALUE);
-  backOptions=this.fwdOptions.clone();
+  this.graph=graph;
+  fwdOptions=options;
+  fwdOptions.setMaxWalkDistance(Double.MAX_VALUE);
+  fwdOptions.setArriveBy(false);
+  backOptions=fwdOptions.clone();
   backOptions.setArriveBy(true);
   this.contractionFactor=contractionFactor;
   this.mode=this.fwdOptions.getModes().getNonTransitMode();
-  init();
+  build();
 }

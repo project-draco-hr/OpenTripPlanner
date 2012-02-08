@@ -1,0 +1,13 @@
+{
+  Collection<StreetVertex> nearbyStreetVertices=getNearbyStreetVertices(v);
+  if (nearbyStreetVertices == null) {
+    return false;
+  }
+ else {
+    for (    StreetVertex sv : nearbyStreetVertices) {
+      new StreetTransitLink(sv,v,wheelchairAccessible);
+      new StreetTransitLink(v,sv,wheelchairAccessible);
+    }
+    return true;
+  }
+}

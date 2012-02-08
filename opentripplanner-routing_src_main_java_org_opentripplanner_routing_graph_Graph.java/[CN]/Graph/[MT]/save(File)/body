@@ -1,0 +1,23 @@
+{
+  if (!file.getParentFile().exists())   if (!file.getParentFile().mkdirs())   LOG.error("Failed to create directories for graph bundle at " + file);
+  LOG.info("Main graph size: |V|={} |E|={}",this.countVertices(),this.countEdges());
+  LOG.info("Writing graph " + file.getAbsolutePath() + " ...");
+  ObjectOutputStream out=new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
+  LOG.debug("Consolidating edges...");
+  List<Edge> edges=new ArrayList<Edge>(this.countEdges());
+  for (  Vertex v : getVertices()) {
+    edges.addAll(v.getOutgoing());
+  }
+  LOG.debug("Assigning vertex/edge ID numbers...");
+  this.renumberVerticesAndEdges();
+  LOG.debug("Writing edges...");
+  out.writeObject(this);
+  out.writeObject(edges);
+  out.writeObject(this.hierarchies);
+  LOG.debug("Writing debug data...");
+  out.writeObject(this.vertexById);
+  out.writeObject(this.edgeById);
+  out.writeObject(this.idForEdge);
+  out.close();
+  LOG.info("Graph written.");
+}

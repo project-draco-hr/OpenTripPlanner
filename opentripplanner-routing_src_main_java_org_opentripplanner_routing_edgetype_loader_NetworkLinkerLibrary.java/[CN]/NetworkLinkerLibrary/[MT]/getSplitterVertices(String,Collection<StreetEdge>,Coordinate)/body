@@ -2,7 +2,7 @@
   if (edges.size() < 2) {
     return null;
   }
-  HashSet<Edge> edgeSet=new HashSet<Edge>(edges);
+  HashSet<StreetEdge> edgeSet=new HashSet<StreetEdge>(edges);
   LinkedList<P2<PlainStreetEdge>> replacement=replacements.get(edgeSet);
   if (replacement == null) {
     replacement=new LinkedList<P2<PlainStreetEdge>>();

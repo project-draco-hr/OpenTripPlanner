@@ -1,0 +1,7 @@
+{
+  if (!containsVertex(vertex)) {
+    throw new IllegalStateException("attempting to remove vertex that is not in graph.");
+  }
+  vertex.removeAllEdges();
+  vertices.remove(vertex);
+}
