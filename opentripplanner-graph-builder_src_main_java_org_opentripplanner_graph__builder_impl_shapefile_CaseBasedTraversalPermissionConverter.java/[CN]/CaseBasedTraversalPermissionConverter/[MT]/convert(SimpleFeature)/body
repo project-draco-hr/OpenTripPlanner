@@ -1,4 +1,7 @@
 {
+  if (_attributeName == null) {
+    return _defaultPermission;
+  }
   Object key=feature.getAttribute(_attributeName);
   if (key == null) {
     return _defaultPermission;
