@@ -41,6 +41,10 @@
       seen.add(id);
       String name=streetNameConverter.convert(feature);
       Coordinate[] coordinates=geom.getCoordinates();
+      if (coordinates.length < 2) {
+        log.warn("Bad geometry for street with id " + id + " name "+ name);
+        continue;
+      }
       Coordinate startCoordinate=new Coordinate(Math.round(coordinates[0].x * 1048576) / 1048576.0,Math.round(coordinates[0].y * 1048576) / 1048576.0);
       Coordinate endCoordinate=new Coordinate(Math.round(coordinates[coordinates.length - 1].x * 1048576) / 1048576.0,Math.round(coordinates[coordinates.length - 1].y * 1048576) / 1048576.0);
       String startIntersectionName=getIntersectionName(coordinateToStreetNames,intersectionNameToId,startCoordinate);
