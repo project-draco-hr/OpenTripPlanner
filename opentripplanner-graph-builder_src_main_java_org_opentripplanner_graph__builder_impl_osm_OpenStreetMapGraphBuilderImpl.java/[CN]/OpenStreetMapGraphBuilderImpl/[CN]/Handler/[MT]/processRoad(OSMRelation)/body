@@ -1,27 +1,26 @@
 {
   for (  OSMRelationMember member : relation.getMembers()) {
-    if ("way".equals(member.getType()) && _ways.containsKey(member.getRef())) {
-      OSMWay way=_ways.get(member.getRef());
-      if (way != null) {
-        if (relation.hasTag("name")) {
-          if (way.hasTag("otp:route_name")) {
-            way.addTag("otp:route_name",addUniqueName(way.getTag("otp:route_name"),relation.getTag("name")));
-          }
+    if (!("way".equals(member.getType()) && _ways.containsKey(member.getRef()))) {
+      continue;
+    }
+    OSMWay way=_ways.get(member.getRef());
+    if (way == null) {
+      continue;
+    }
+    if (relation.hasTag("name")) {
+      if (way.hasTag("otp:route_name")) {
+        way.addTag("otp:route_name",addUniqueName(way.getTag("otp:route_name"),relation.getTag("name")));
+      }
  else {
-            way.addTag(new OSMTag("otp:route_name",relation.getTag("name")));
-          }
-        }
-        if (relation.hasTag("ref")) {
-          if (way.hasTag("otp:route_ref")) {
-            way.addTag("otp:route_ref",addUniqueName(way.getTag("otp:route_ref"),relation.getTag("ref")));
-          }
+        way.addTag(new OSMTag("otp:route_name",relation.getTag("name")));
+      }
+    }
+    if (relation.hasTag("ref")) {
+      if (way.hasTag("otp:route_ref")) {
+        way.addTag("otp:route_ref",addUniqueName(way.getTag("otp:route_ref"),relation.getTag("ref")));
+      }
  else {
-            way.addTag(new OSMTag("otp:route_ref",relation.getTag("ref")));
-          }
-        }
-        if (relation.hasTag("highway") && relation.isTag("type","multipolygon") && !way.hasTag("highway")) {
-          way.addTag("highway",relation.getTag("highway"));
-        }
+        way.addTag(new OSMTag("otp:route_ref",relation.getTag("ref")));
       }
     }
   }

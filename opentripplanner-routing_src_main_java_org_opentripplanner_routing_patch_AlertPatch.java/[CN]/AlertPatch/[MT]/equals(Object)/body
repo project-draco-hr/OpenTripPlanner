@@ -13,6 +13,26 @@
       return false;
     }
   }
+  if (agency == null) {
+    if (other.agency != null) {
+      return false;
+    }
+  }
+ else {
+    if (!agency.equals(other.agency)) {
+      return false;
+    }
+  }
+  if (trip == null) {
+    if (other.trip != null) {
+      return false;
+    }
+  }
+ else {
+    if (!trip.equals(other.trip)) {
+      return false;
+    }
+  }
   if (stop == null) {
     if (other.stop != null) {
       return false;
@@ -32,6 +52,9 @@
     if (!route.equals(other.route)) {
       return false;
     }
+  }
+  if (cancelled != other.cancelled) {
+    return false;
   }
   return other.alert.equals(alert) && super.equals(other);
 }

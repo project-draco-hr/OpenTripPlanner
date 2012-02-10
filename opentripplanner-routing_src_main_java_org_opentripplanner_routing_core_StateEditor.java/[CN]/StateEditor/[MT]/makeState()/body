@@ -10,7 +10,9 @@
       _log.trace("Time was incremented the wrong direction during state editing. {}",child.backEdge);
       return null;
     }
-    applyPatches();
+    if (!applyPatches()) {
+      return null;
+    }
   }
   spawned=true;
   return child;

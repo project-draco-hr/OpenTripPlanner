@@ -1,0 +1,25 @@
+{
+  for (  OSMRelation relation : _relations.values()) {
+    if (!(relation.isTag("type","multipolygon") && relation.hasTag("highway"))) {
+      continue;
+    }
+    for (    OSMRelationMember member : relation.getMembers()) {
+      if (!("way".equals(member.getType()) && _ways.containsKey(member.getRef()))) {
+        continue;
+      }
+      OSMWay way=_ways.get(member.getRef());
+      if (way == null) {
+        continue;
+      }
+      if (relation.hasTag("highway") && !way.hasTag("highway")) {
+        way.addTag("highway",relation.getTag("highway"));
+      }
+      if (relation.hasTag("name") && !way.hasTag("name")) {
+        way.addTag("name",relation.getTag("name"));
+      }
+      if (relation.hasTag("ref") && !way.hasTag("ref")) {
+        way.addTag("ref",relation.getTag("ref"));
+      }
+    }
+  }
+}
