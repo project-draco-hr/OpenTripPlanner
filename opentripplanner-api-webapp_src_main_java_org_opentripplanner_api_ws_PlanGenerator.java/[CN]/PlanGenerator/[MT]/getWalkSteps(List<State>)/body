@@ -19,6 +19,13 @@
     if (geom == null) {
       continue;
     }
+    if (edge instanceof ElevatorAlightEdge) {
+      step=createWalkStep(currState);
+      step.streetName=((ElevatorAlightEdge)edge).getName();
+      step.relativeDirection=RelativeDirection.ELEVATOR;
+      steps.add(step);
+      continue;
+    }
     String streetName=edgeNarrative.getName();
     if (step == null) {
       step=createWalkStep(currState);

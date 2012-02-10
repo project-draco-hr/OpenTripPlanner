@@ -1,0 +1,20 @@
+{
+  HashMap<Integer,IntersectionVertex> levels;
+  long nid=node.getId();
+  int level=Integer.parseInt(way.getTag("otp:numeric_level"));
+  if (multiLevelNodes.containsKey(nid)) {
+    levels=multiLevelNodes.get(nid);
+  }
+ else {
+    levels=new HashMap<Integer,IntersectionVertex>();
+    multiLevelNodes.put(nid,levels);
+  }
+  if (!levels.containsKey(level)) {
+    Coordinate coordinate=getCoordinate(node);
+    String label="osm node " + nid;
+    IntersectionVertex iv=new IntersectionVertex(graph,label,coordinate.x,coordinate.y,label);
+    levels.put(level,iv);
+    return iv;
+  }
+  return levels.get(level);
+}
