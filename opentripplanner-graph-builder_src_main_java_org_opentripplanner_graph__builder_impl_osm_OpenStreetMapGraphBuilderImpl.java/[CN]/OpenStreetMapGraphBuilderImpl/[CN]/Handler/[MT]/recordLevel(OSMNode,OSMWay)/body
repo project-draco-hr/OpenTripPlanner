@@ -14,6 +14,7 @@
     String label="osm multilevel node " + nid + ", level "+ level;
     IntersectionVertex iv=new IntersectionVertex(graph,label,coordinate.x,coordinate.y,label);
     levels.put(level,iv);
+    endpoints.add(iv);
     return iv;
   }
   return levels.get(level);
