@@ -2,7 +2,7 @@
   double[] result=new double[nVertices];
   Arrays.fill(result,Double.POSITIVE_INFINITY);
   BinHeap<Integer> q=new BinHeap<Integer>();
-  for (  DirectEdge de : origin.getExtra()) {
+  for (  Edge de : origin.getExtra()) {
     Vertex toVertex=de.getToVertex();
     int toIndex=toVertex.getIndex();
     if (toVertex == origin)     continue;

@@ -1,0 +1,30 @@
+{
+  T closestT=null;
+  double closestDistance=Double.POSITIVE_INFINITY;
+  int radiusBins=(int)Math.ceil(radiusMeters / binSizeMeters);
+  int xBin=xBin(p);
+  int yBin=yBin(p);
+  int minBinX=xBin - radiusBins;
+  int maxBinX=xBin + radiusBins;
+  int minBinY=yBin - radiusBins;
+  int maxBinY=yBin + radiusBins;
+  for (int x=minBinX; x <= maxBinX; x+=1) {
+    int wrappedX=xWrap(x);
+    for (int y=minBinY; y <= maxBinY; y+=1) {
+      int wrappedY=yWrap(y);
+      List<T> bin=bins[wrappedX][wrappedY];
+      if (bin != null) {
+        for (        T t : bin) {
+          if (t == p)           continue;
+          double distance=p.fastDistance(t);
+          if (distance > radiusMeters)           continue;
+          if (distance < closestDistance) {
+            closestT=t;
+            closestDistance=distance;
+          }
+        }
+      }
+    }
+  }
+  return closestT;
+}

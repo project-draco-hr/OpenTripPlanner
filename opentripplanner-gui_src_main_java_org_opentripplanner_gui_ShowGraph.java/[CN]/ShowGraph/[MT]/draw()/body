@@ -50,7 +50,7 @@
       strokeWeight(4);
       noFill();
       while (drawOffset < visibleTransitEdges.size()) {
-        DirectEdge e=visibleTransitEdges.get(drawOffset);
+        Edge e=visibleTransitEdges.get(drawOffset);
         drawEdge(e);
         drawOffset+=1;
         if (drawOffset % BLOCK_SIZE == 0) {
@@ -72,7 +72,7 @@
     stroke(200,200,000,16);
     strokeWeight(8);
     if (highlightedEdges != null) {
-      for (      DirectEdge e : highlightedEdges) {
+      for (      Edge e : highlightedEdges) {
         drawEdge(e);
       }
     }

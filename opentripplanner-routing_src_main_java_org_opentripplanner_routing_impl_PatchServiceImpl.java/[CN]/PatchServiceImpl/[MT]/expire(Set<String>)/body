@@ -1,0 +1,8 @@
+{
+  for (  String patchId : purge) {
+    if (patches.containsKey(patchId)) {
+      expire(patches.get(patchId));
+    }
+  }
+  patches.keySet().removeAll(purge);
+}

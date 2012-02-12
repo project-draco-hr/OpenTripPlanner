@@ -1,5 +1,6 @@
 {
   int count=_ways.values().size();
+  processMultipolygons();
   for (Iterator<OSMWay> it=_ways.values().iterator(); it.hasNext(); ) {
     OSMWay way=it.next();
     if (!(way.hasTag("highway") || way.isTag("railway","platform"))) {

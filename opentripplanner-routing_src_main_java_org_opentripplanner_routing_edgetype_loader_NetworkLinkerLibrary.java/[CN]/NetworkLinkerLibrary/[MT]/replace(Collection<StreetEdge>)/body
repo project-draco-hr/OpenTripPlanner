@@ -1,18 +1,17 @@
 {
-  P2<Entry<StreetVertex,Set<Edge>>> ends=findEndVertices(edges);
-  Entry<StreetVertex,Set<Edge>> start=ends.getFirst();
-  Entry<StreetVertex,Set<Edge>> end=ends.getSecond();
-  StreetVertex startVertex=start.getKey();
-  StreetVertex endVertex=null;
+  P2<Entry<TurnVertex,Set<Edge>>> ends=findEndVertices(edges);
+  Entry<TurnVertex,Set<Edge>> start=ends.getFirst();
+  Entry<TurnVertex,Set<Edge>> end=ends.getSecond();
+  TurnVertex startVertex=start.getKey();
+  TurnVertex endVertex=null;
   if (end != null) {
     endVertex=end.getKey();
   }
  else {
     return null;
   }
-  Vertex newEnd=new Vertex("replace " + endVertex.getLabel(),endVertex.getX(),endVertex.getY());
-  newEnd=graph.addVertex(newEnd);
-  for (  DirectEdge e : filter(startVertex.getOutgoing(),DirectEdge.class)) {
+  StreetVertex newEnd=new IntersectionVertex(graph,"replace " + endVertex.getLabel(),endVertex.getX(),endVertex.getY());
+  for (  Edge e : startVertex.getOutgoing()) {
     final Vertex toVertex=e.getToVertex();
     if (!toVertex.getCoordinate().equals(endVertex.getCoordinate())) {
       continue;
@@ -22,15 +21,13 @@
       TinyTurnEdge newTurn=new TinyTurnEdge(newEnd,toVertex,turnEdge.getPermission());
       newTurn.setRestrictedModes(turnEdge.getRestrictedModes());
       newTurn.setTurnCost(turnEdge.turnCost);
-      graph.addEdge(newTurn);
     }
  else {
-      graph.addEdge(new FreeEdge(newEnd,toVertex));
+      new FreeEdge(newEnd,toVertex);
     }
   }
-  Vertex newStart=new Vertex("replace " + startVertex.getLabel(),startVertex.getX(),startVertex.getY());
-  newStart=graph.addVertex(newStart);
-  for (  DirectEdge e : filter(endVertex.getOutgoing(),DirectEdge.class)) {
+  StreetVertex newStart=new IntersectionVertex(graph,"replace " + startVertex.getLabel(),startVertex.getX(),startVertex.getY());
+  for (  Edge e : endVertex.getOutgoing()) {
     final Vertex toVertex=e.getToVertex();
     if (!toVertex.getCoordinate().equals(startVertex.getCoordinate())) {
       continue;
@@ -40,10 +37,9 @@
       TinyTurnEdge newTurn=new TinyTurnEdge(newStart,toVertex,turnEdge.getPermission());
       newTurn.setRestrictedModes(turnEdge.getRestrictedModes());
       newTurn.setTurnCost(turnEdge.turnCost);
-      graph.addEdge(newTurn);
     }
  else {
-      graph.addEdge(new FreeEdge(newStart,toVertex));
+      new FreeEdge(newStart,toVertex);
     }
   }
   PlainStreetEdge forward=new PlainStreetEdge(startVertex,newEnd,startVertex.getGeometry(),startVertex.getName(),startVertex.getLength(),startVertex.getPermission(),false);

@@ -3,13 +3,14 @@
   processRelations();
   _nodes.keySet().retainAll(_nodesWithNeighbors);
   long wayIndex=0;
+  int nextUnparsedLevel=0;
+  HashMap<String,Integer> unparsedLevels=new HashMap<String,Integer>();
   Set<Long> possibleIntersectionNodes=new HashSet<Long>();
-  Set<Long> intersectionNodes=new HashSet<Long>();
   for (  OSMWay way : _ways.values()) {
     List<Long> nodes=way.getNodeRefs();
     for (    long node : nodes) {
       if (possibleIntersectionNodes.contains(node)) {
-        intersectionNodes.add(node);
+        intersectionNodes.put(node,null);
       }
  else {
         possibleIntersectionNodes.add(node);
@@ -17,7 +18,6 @@
     }
   }
   GeometryFactory geometryFactory=new GeometryFactory();
-  ArrayList<Vertex> endpoints=new ArrayList<Vertex>();
   for (  OSMWay way : _ways.values()) {
     if (wayIndex % 10000 == 0)     _log.debug("ways=" + wayIndex + "/"+ _ways.size());
     wayIndex++;
@@ -32,8 +32,51 @@
     StreetTraversalPermission permissions=getPermissionsForEntity(way,wayData.getPermission());
     if (permissions == StreetTraversalPermission.NONE)     continue;
     List<Long> nodes=way.getNodeRefs();
-    Vertex startEndpoint=null, endEndpoint=null;
+    IntersectionVertex startEndpoint=null, endEndpoint=null;
     ArrayList<Coordinate> segmentCoordinates=new ArrayList<Coordinate>();
+    final int LEVEL_MAP_LEVEL=0;
+    final int LEVEL_TAG_LEVEL=100000;
+    final int LAYER_TAG_LEVEL=200000;
+    final int OTHER_LEVEL=300000;
+    final int UNPARSED_LEVEL=400000;
+    if (!way.hasTag("otp:numeric_level")) {
+      String strLevel=null;
+      int offset=LEVEL_MAP_LEVEL, intLevel;
+      if (way.hasTag("level")) {
+        strLevel=way.getTag("level");
+        offset=LEVEL_TAG_LEVEL;
+      }
+ else       if (way.hasTag("layer")) {
+        strLevel=way.getTag("layer");
+        offset=LAYER_TAG_LEVEL;
+      }
+      if (strLevel != null) {
+        try {
+          intLevel=Integer.parseInt(strLevel);
+        }
+ catch (        NumberFormatException e) {
+          if (unparsedLevels.containsKey(strLevel)) {
+            intLevel=unparsedLevels.get(strLevel);
+          }
+ else {
+            intLevel=nextUnparsedLevel++;
+            unparsedLevels.put(strLevel,intLevel);
+          }
+          offset=UNPARSED_LEVEL;
+          _log.warn("Could not determine ordinality of layer " + strLevel + ". Elevators will work, but costing may be incorrect. "+ "A level map should be used in this situation.");
+        }
+      }
+ else {
+        intLevel=0;
+        offset=OTHER_LEVEL;
+      }
+      if (noZeroLevels && intLevel >= 0) {
+        strLevel=Integer.toString(intLevel + 1);
+      }
+      way.addTag("otp:numeric_level",Integer.toString(intLevel + offset));
+      way.addTag("otp:human_level",strLevel);
+      levelHumanNames.put(intLevel + offset,strLevel);
+    }
     Long startNode=null;
     OSMNode osmStartNode=null;
     for (int i=0; i < nodes.size() - 1; i++) {
@@ -48,7 +91,7 @@
       if (segmentCoordinates.size() == 0) {
         segmentCoordinates.add(getCoordinate(osmStartNode));
       }
-      if (intersectionNodes.contains(endNode) || i == nodes.size() - 2) {
+      if (intersectionNodes.containsKey(endNode) || i == nodes.size() - 2) {
         segmentCoordinates.add(getCoordinate(osmEndNode));
         geometry=geometryFactory.createLineString(segmentCoordinates.toArray(new Coordinate[0]));
         segmentCoordinates.clear();
@@ -58,30 +101,15 @@
         continue;
       }
       if (startEndpoint == null) {
-        String label="osm node " + osmStartNode.getId();
-        startEndpoint=graph.getVertex(label);
-        if (startEndpoint == null) {
-          Coordinate coordinate=getCoordinate(osmStartNode);
-          startEndpoint=new EndpointVertex(label,coordinate.x,coordinate.y,label);
-          graph.addVertex(startEndpoint);
-          endpoints.add(startEndpoint);
-        }
+        startEndpoint=getVertexForOsmNode(osmStartNode,way);
       }
  else {
         startEndpoint=endEndpoint;
       }
-      String label="osm node " + osmEndNode.getId();
-      endEndpoint=graph.getVertex(label);
-      if (endEndpoint == null) {
-        Coordinate coordinate=getCoordinate(osmEndNode);
-        endEndpoint=new EndpointVertex(label,coordinate.x,coordinate.y,label);
-        graph.addVertex(endEndpoint);
-        endpoints.add(endEndpoint);
-      }
+      endEndpoint=getVertexForOsmNode(osmEndNode,way);
       P2<PlainStreetEdge> streets=getEdgesForStreet(startEndpoint,endEndpoint,way,i,permissions,geometry);
       PlainStreetEdge street=streets.getFirst();
       if (street != null) {
-        graph.addEdge(street);
         double safety=wayData.getSafetyFeatures().getFirst();
         street.setBicycleSafetyEffectiveLength(street.getLength() * safety);
         if (safety < bestBikeSafety) {
@@ -93,7 +121,6 @@
       }
       PlainStreetEdge backStreet=streets.getSecond();
       if (backStreet != null) {
-        graph.addEdge(backStreet);
         double safety=wayData.getSafetyFeatures().getSecond();
         if (safety < bestBikeSafety) {
           bestBikeSafety=safety;
@@ -131,6 +158,42 @@
       }
       startNode=endNode;
       osmStartNode=_nodes.get(startNode);
+    }
+  }
+  for (  Long nodeId : multiLevelNodes.keySet()) {
+    OSMNode node=_nodes.get(nodeId);
+    HashMap<Integer,IntersectionVertex> levels=multiLevelNodes.get(nodeId);
+    ArrayList<Vertex> onboardVertices=new ArrayList<Vertex>();
+    Integer[] levelKeys=levels.keySet().toArray(new Integer[0]);
+    Arrays.sort(levelKeys);
+    for (    Integer level : levelKeys) {
+      String humanLevel=levelHumanNames.get(level);
+      IntersectionVertex sourceVert=levels.get(level);
+      String sourceVertLabel=sourceVert.getLabel();
+      ElevatorOffboardVertex offboardVert=new ElevatorOffboardVertex(graph,sourceVertLabel + "_middle",sourceVert.getX(),sourceVert.getY());
+      new FreeEdge(sourceVert,offboardVert);
+      new FreeEdge(offboardVert,sourceVert);
+      ElevatorOnboardVertex onboardVert=new ElevatorOnboardVertex(graph,sourceVertLabel + "_onboard",sourceVert.getX(),sourceVert.getY());
+      new ElevatorBoardEdge(offboardVert,onboardVert);
+      new ElevatorAlightEdge(onboardVert,offboardVert,humanLevel);
+      onboardVertices.add(onboardVert);
+    }
+    Integer vSize=onboardVertices.size() - 1;
+    for (Integer i=0; i < vSize; i++) {
+      Vertex from=onboardVertices.get(i);
+      Vertex to=onboardVertices.get(i + 1);
+      StreetTraversalPermission permission=StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE;
+      boolean wheelchairAccessible=true;
+      if (node.isTagFalse("bicycle")) {
+        permission=StreetTraversalPermission.PEDESTRIAN;
+      }
+      if (node.isTagFalse("wheelchair")) {
+        wheelchairAccessible=false;
+      }
+      ElevatorHopEdge theEdge=new ElevatorHopEdge(from,to,permission);
+      ElevatorHopEdge backEdge=new ElevatorHopEdge(to,from,permission);
+      theEdge.wheelchairAccessible=wheelchairAccessible;
+      backEdge.wheelchairAccessible=wheelchairAccessible;
     }
   }
   Map<Edge,TurnRestriction> turnRestrictions=new HashMap<Edge,TurnRestriction>();

@@ -1,0 +1,16 @@
+{
+  IntersectionVertex iv=null;
+  if (isMultiLevelNode(node)) {
+    return recordLevel(node,way);
+  }
+  long nid=node.getId();
+  iv=intersectionNodes.get(nid);
+  if (iv == null) {
+    Coordinate coordinate=getCoordinate(node);
+    String label="osm node " + nid;
+    iv=new IntersectionVertex(graph,label,coordinate.x,coordinate.y,label);
+    intersectionNodes.put(nid,iv);
+    endpoints.add(iv);
+  }
+  return iv;
+}

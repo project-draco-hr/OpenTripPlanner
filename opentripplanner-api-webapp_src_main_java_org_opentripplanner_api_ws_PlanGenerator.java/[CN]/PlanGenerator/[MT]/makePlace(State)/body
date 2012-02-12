@@ -1,8 +1,14 @@
 {
-  Coordinate endCoord=state.getVertex().getCoordinate();
-  String name=state.getVertex().getName();
-  AgencyAndId stopId=state.getVertex().getStopId();
+  Vertex v=state.getVertex();
+  Coordinate endCoord=v.getCoordinate();
+  String name=v.getName();
+  AgencyAndId stopId=null;
+  String stopCode=null;
+  if (v instanceof TransitVertex) {
+    stopId=((TransitVertex)v).getStopId();
+    stopCode=((TransitVertex)v).getStopCode();
+  }
   Date timeAtState=new Date(state.getTimeInMillis());
-  Place place=new Place(endCoord.x,endCoord.y,name,stopId,timeAtState);
+  Place place=new Place(endCoord.x,endCoord.y,name,stopId,stopCode,timeAtState);
   return place;
 }

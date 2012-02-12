@@ -1,0 +1,56 @@
+{
+  Map<PlainStreetEdge,TurnVertex> turnVertices=new HashMap<PlainStreetEdge,TurnVertex>();
+  _log.debug("converting to edge-based graph");
+  for (  IntersectionVertex v : endpoints) {
+    for (    Edge e_in : v.getIncoming()) {
+      for (      Edge e_out : v.getOutgoing()) {
+        if (e_in == e_out)         continue;
+        if (e_in.getFromVertex() == e_out.getToVertex() && v.getOutgoing().size() > 1)         continue;
+        if (e_in instanceof PlainStreetEdge && e_out instanceof PlainStreetEdge) {
+          PlainStreetEdge pse_in=(PlainStreetEdge)e_in;
+          TurnVertex tv_in=getTurnVertexForEdge(graph,turnVertices,pse_in);
+          PlainStreetEdge pse_out=(PlainStreetEdge)e_out;
+          TurnVertex tv_out=getTurnVertexForEdge(graph,turnVertices,pse_out);
+          TurnEdge turn=new TurnEdge(tv_in,tv_out);
+          TurnRestriction restriction=null;
+          if (restrictions != null) {
+            restriction=restrictions.get(pse_in);
+          }
+          if (restriction != null) {
+            if (restriction.type == TurnRestrictionType.NO_TURN && restriction.to == e_out) {
+              turn.setRestrictedModes(restriction.modes);
+            }
+ else             if (restriction.type == TurnRestrictionType.ONLY_TURN && restriction.to != e_in) {
+              turn.setRestrictedModes(restriction.modes);
+            }
+          }
+        }
+ else {
+          Vertex v1=null;
+          Vertex v2=null;
+          if (e_in instanceof PlainStreetEdge) {
+            v1=getTurnVertexForEdge(graph,turnVertices,(PlainStreetEdge)e_in);
+          }
+ else           if (e_in instanceof FreeEdge) {
+            v1=e_in.getFromVertex();
+          }
+          if (e_out instanceof PlainStreetEdge) {
+            v2=getTurnVertexForEdge(graph,turnVertices,(PlainStreetEdge)e_out);
+          }
+ else {
+            v2=e_out.getToVertex();
+          }
+          if (v1 == null || v2 == null) {
+            throw new IllegalStateException("Null vertex when building FreeEdge!");
+          }
+ else           if (v1 != v2) {
+            FreeEdge turn=new FreeEdge(v1,v2);
+          }
+        }
+      }
+    }
+  }
+  for (  IntersectionVertex iv : endpoints) {
+    graph.removeVertex(iv);
+  }
+}

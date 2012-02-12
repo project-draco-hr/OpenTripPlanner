@@ -1,5 +1,5 @@
 {
   if (_ways.containsKey(way.getId()))   return;
   _ways.put(way.getId(),way);
-  if (_ways.size() % 1000 == 0)   _log.debug("ways=" + _ways.size());
+  if (_ways.size() % 10000 == 0)   _log.debug("ways=" + _ways.size());
 }

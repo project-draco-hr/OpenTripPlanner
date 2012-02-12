@@ -1,0 +1,5 @@
+{
+  LOG.info("Reading graph " + file.getAbsolutePath() + " ...");
+  ObjectInputStream in=new ObjectInputStream(new FileInputStream(file));
+  return load(in,level);
+}

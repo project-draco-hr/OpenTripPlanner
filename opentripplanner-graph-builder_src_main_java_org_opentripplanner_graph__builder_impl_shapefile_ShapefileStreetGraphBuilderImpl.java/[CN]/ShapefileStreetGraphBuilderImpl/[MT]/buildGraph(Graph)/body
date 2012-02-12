@@ -15,7 +15,7 @@
     SimpleFeatureConverter<String> streetNameConverter=_schema.getNameConverter();
     SimpleFeatureConverter<P2<StreetTraversalPermission>> permissionConverter=_schema.getPermissionConverter();
     SimpleFeatureConverter<String> noteConverter=_schema.getNoteConverter();
-    HashMap<Coordinate,Vertex> intersectionsByLocation=new HashMap<Coordinate,Vertex>();
+    HashMap<Coordinate,IntersectionVertex> intersectionsByLocation=new HashMap<Coordinate,IntersectionVertex>();
     SimpleFeatureConverter<P2<Double>> safetyConverter=_schema.getBicycleSafetyConverter();
     SimpleFeatureConverter<Boolean> slopeOverrideCoverter=_schema.getSlopeOverrideConverter();
     SimpleFeatureConverter<Boolean> featureSelector=_schema.getFeatureSelector();
@@ -48,17 +48,14 @@
         log.warn("No intersection name for " + name);
       }
       String endIntersectionName=getIntersectionName(coordinateToStreetNames,intersectionNameToId,endCoordinate);
-      Vertex startIntersection=intersectionsByLocation.get(startCoordinate);
+      IntersectionVertex startIntersection=intersectionsByLocation.get(startCoordinate);
       if (startIntersection == null) {
-        startIntersection=new EndpointVertex(startIntersectionName,startCoordinate.x,startCoordinate.y,startIntersectionName);
-        startIntersection=graph.addVertex(startIntersection);
-        startIntersection=graph.addVertex(startIntersection);
+        startIntersection=new IntersectionVertex(graph,startIntersectionName,startCoordinate.x,startCoordinate.y,startIntersectionName);
         intersectionsByLocation.put(startCoordinate,startIntersection);
       }
-      Vertex endIntersection=intersectionsByLocation.get(endCoordinate);
+      IntersectionVertex endIntersection=intersectionsByLocation.get(endCoordinate);
       if (endIntersection == null) {
-        endIntersection=new EndpointVertex(endIntersectionName,endCoordinate.x,endCoordinate.y,endIntersectionName);
-        endIntersection=graph.addVertex(endIntersection);
+        endIntersection=new IntersectionVertex(graph,endIntersectionName,endCoordinate.x,endCoordinate.y,endIntersectionName);
         intersectionsByLocation.put(endCoordinate,endIntersection);
       }
       double length=0;
@@ -68,11 +65,9 @@
       P2<StreetTraversalPermission> permissions=permissionConverter.convert(feature);
       PlainStreetEdge street=new PlainStreetEdge(startIntersection,endIntersection,geom,name,length,permissions.getFirst(),false);
       street.setId(id);
-      graph.addEdge(street);
       LineString reversed=(LineString)geom.reverse();
       PlainStreetEdge backStreet=new PlainStreetEdge(endIntersection,startIntersection,reversed,name,length,permissions.getSecond(),true);
       backStreet.setId(id);
-      graph.addEdge(backStreet);
       if (noteConverter != null) {
         String note=noteConverter.convert(feature);
         if (note != null && note.length() > 0) {

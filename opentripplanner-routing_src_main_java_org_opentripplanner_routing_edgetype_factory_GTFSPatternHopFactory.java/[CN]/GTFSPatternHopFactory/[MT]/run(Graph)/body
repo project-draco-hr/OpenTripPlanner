@@ -129,13 +129,10 @@
       InterlineSwitchoverKey dwellKey=new InterlineSwitchoverKey(s0,s1,fromInterlineTrip.tripPattern,toInterlineTrip.tripPattern);
       dwell=getInterlineDwell(dwellKey);
       if (dwell == null) {
-        String startId=id(s0.getId()) + "_" + id(fromExemplar.getId())+ "_"+ exemplarStopSequence0+ "_A";
-        Vertex startJourney=graph.getVertex(startId);
-        String endId=id(s1.getId()) + "_" + id(toExemplar.getId())+ "_"+ exemplarStopSequence1+ "_D";
-        Vertex endJourney=graph.getVertex(endId);
+        Vertex startJourney=patternArriveNodes.get(new T2<Stop,Trip>(s0,fromExemplar));
+        Vertex endJourney=patternDepartNodes.get(new T2<Stop,Trip>(s1,toExemplar));
         dwell=new PatternInterlineDwell(startJourney,endJourney,toTrip);
         putInterlineDwell(dwellKey,dwell);
-        graph.addEdge(dwell);
       }
       int dwellTime=st1.getDepartureTime() - st0.getArrivalTime();
       dwell.addTrip(fromTrip.getId(),toTrip.getId(),dwellTime,fromInterlineTrip.getPatternIndex(),toInterlineTrip.getPatternIndex());

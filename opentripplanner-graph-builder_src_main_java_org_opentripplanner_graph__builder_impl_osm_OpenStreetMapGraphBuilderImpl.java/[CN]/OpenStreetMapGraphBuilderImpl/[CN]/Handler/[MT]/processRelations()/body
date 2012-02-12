@@ -4,7 +4,10 @@
     if (relation.isTag("type","restriction")) {
       processRestriction(relation);
     }
- else {
+ else     if (relation.isTag("type","level_map")) {
+      processLevelMap(relation);
+    }
+ else     if (relation.isTag("type","route")) {
       processRoad(relation);
     }
   }

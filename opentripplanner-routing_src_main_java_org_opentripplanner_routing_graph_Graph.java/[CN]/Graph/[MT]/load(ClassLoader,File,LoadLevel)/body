@@ -1,0 +1,5 @@
+{
+  LOG.info("Reading graph " + file.getAbsolutePath() + " with alternate classloader ...");
+  ObjectInputStream in=new GraphObjectInputStream(new BufferedInputStream(new FileInputStream(file)),classLoader);
+  return load(in,level);
+}

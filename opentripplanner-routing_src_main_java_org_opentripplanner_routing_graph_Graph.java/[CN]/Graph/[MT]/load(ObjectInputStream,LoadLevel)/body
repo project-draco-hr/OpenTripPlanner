@@ -1,0 +1,30 @@
+{
+  try {
+    Graph graph=(Graph)in.readObject();
+    LOG.debug("Basic graph info and annotations read.");
+    if (level == LoadLevel.BASIC)     return graph;
+    LOG.debug("Loading edges...");
+    List<Edge> edges=(ArrayList<Edge>)in.readObject();
+    graph.vertices=new HashMap<String,Vertex>();
+    ;
+    for (    Edge e : edges) {
+      graph.vertices.put(e.getFromVertex().getLabel(),e.getFromVertex());
+      graph.vertices.put(e.getToVertex().getLabel(),e.getToVertex());
+    }
+    for (    Vertex v : graph.getVertices())     v.compact();
+    LOG.info("Main graph read. |V|={} |E|={}",graph.countVertices(),graph.countEdges());
+    if (level == LoadLevel.NO_HIERARCHIES)     return graph;
+    graph.hierarchies=(ContractionHierarchySet)in.readObject();
+    if (graph.hierarchies != null)     LOG.debug("Contraction hierarchies read.");
+    if (level == LoadLevel.FULL)     return graph;
+    graph.vertexById=(List<Vertex>)in.readObject();
+    graph.edgeById=(Map<Integer,Edge>)in.readObject();
+    graph.idForEdge=(Map<Edge,Integer>)in.readObject();
+    LOG.debug("Debug info read.");
+    return graph;
+  }
+ catch (  InvalidClassException ex) {
+    LOG.error("Stored graph is incompatible with this version of OTP, please rebuild it.");
+    throw new IllegalStateException("Stored Graph version error",ex);
+  }
+}

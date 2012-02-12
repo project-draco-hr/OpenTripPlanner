@@ -12,11 +12,9 @@
     for (int x=0; x < N; ++x) {
       double xc=x * STEP + LON0;
       double yc=y * STEP + LAT0;
-      Vertex in=new EndpointVertex("(" + x + ", "+ y+ ") in",xc,yc);
-      graph.addVertex(in);
+      Vertex in=new IntersectionVertex(graph,"(" + x + ", "+ y+ ") in",xc,yc);
       verticesIn[y][x]=in;
-      Vertex out=new EndpointVertex("(" + x + ", "+ y+ ") out",xc,yc);
-      graph.addVertex(out);
+      Vertex out=new IntersectionVertex(graph,"(" + x + ", "+ y+ ") out",xc,yc);
       verticesOut[y][x]=out;
     }
   }
@@ -26,44 +24,40 @@
       double lat=i * STEP + LAT0;
       double d=111.111;
       LineString geometry=GeometryUtils.makeLineString(lon,lat,lon + STEP,lat);
-      StreetVertex we=new StreetVertex("a(" + j + ", "+ i+ ")",geometry,"",d,false,null);
-      StreetVertex ew=new StreetVertex("a(" + j + ", "+ i+ ")",(LineString)geometry.reverse(),"",d,true,null);
-      graph.addVertex(we);
-      graph.addVertex(ew);
+      TurnVertex we=new TurnVertex(graph,"a(" + j + ", "+ i+ ")",geometry,"",d,false,null);
+      TurnVertex ew=new TurnVertex(graph,"a(" + j + ", "+ i+ ")",(LineString)geometry.reverse(),"",d,true,null);
       lon=i * STEP + LON0;
       lat=j * STEP + LAT0;
       d=111.111;
       geometry=GeometryUtils.makeLineString(lon,lat,lon,lat + STEP);
-      StreetVertex sn=new StreetVertex("d(" + i + ", "+ j+ ")",geometry,"",d,false,null);
-      StreetVertex ns=new StreetVertex("d(" + i + ", "+ j+ ")",(LineString)geometry.reverse(),"",d,true,null);
-      graph.addVertex(sn);
-      graph.addVertex(ns);
-      graph.addEdge(new FreeEdge(verticesOut[i][j],we));
-      graph.addEdge(new FreeEdge(verticesOut[j][i],sn));
-      graph.addEdge(new FreeEdge(verticesOut[i][j + 1],ew));
-      graph.addEdge(new FreeEdge(verticesOut[j + 1][i],ns));
-      graph.addEdge(new FreeEdge(ew,verticesIn[i][j]));
-      graph.addEdge(new FreeEdge(ns,verticesIn[j][i]));
-      graph.addEdge(new FreeEdge(we,verticesIn[i][j + 1]));
-      graph.addEdge(new FreeEdge(sn,verticesIn[j + 1][i]));
-      assertEquals(we,graph.addVertex(we));
-      assertEquals(ew,graph.addVertex(ew));
-      assertEquals(sn,graph.addVertex(sn));
-      assertEquals(ns,graph.addVertex(ns));
+      TurnVertex sn=new TurnVertex(graph,"d(" + i + ", "+ j+ ")",geometry,"",d,false,null);
+      TurnVertex ns=new TurnVertex(graph,"d(" + i + ", "+ j+ ")",(LineString)geometry.reverse(),"",d,true,null);
+      new FreeEdge(verticesOut[i][j],we);
+      new FreeEdge(verticesOut[j][i],sn);
+      new FreeEdge(verticesOut[i][j + 1],ew);
+      new FreeEdge(verticesOut[j + 1][i],ns);
+      new FreeEdge(ew,verticesIn[i][j]);
+      new FreeEdge(ns,verticesIn[j][i]);
+      new FreeEdge(we,verticesIn[i][j + 1]);
+      new FreeEdge(sn,verticesIn[j + 1][i]);
+      assertEquals(we,graph.getVertex(we.getLabel()));
+      assertEquals(ew,graph.getVertex(ew.getLabel()));
+      assertEquals(sn,graph.getVertex(sn.getLabel()));
+      assertEquals(ns,graph.getVertex(ns.getLabel()));
     }
   }
   for (int y=0; y < N; ++y) {
     for (int x=0; x < N; ++x) {
       Vertex vertexIn=verticesIn[y][x];
-      for (      DirectEdge e1 : filter(vertexIn.getIncoming(),DirectEdge.class)) {
+      for (      Edge e1 : vertexIn.getIncoming()) {
         Vertex vertexOut=verticesOut[y][x];
-        StreetVertex fromv=(StreetVertex)e1.getFromVertex();
-        for (        DirectEdge e2 : filter(vertexOut.getOutgoing(),DirectEdge.class)) {
-          StreetVertex tov=(StreetVertex)e2.getToVertex();
+        TurnVertex fromv=(TurnVertex)e1.getFromVertex();
+        for (        Edge e2 : vertexOut.getOutgoing()) {
+          TurnVertex tov=(TurnVertex)e2.getToVertex();
           if (tov.getEdgeId().equals(fromv.getEdgeId())) {
             continue;
           }
-          graph.addEdge(new TurnEdge(fromv,tov));
+          new TurnEdge(fromv,tov);
         }
         assertTrue(fromv.getDegreeOut() <= 4);
       }
@@ -75,33 +69,31 @@
   options.optimizeFor=OptimizeType.QUICK;
   options.walkReluctance=1;
   options.speed=1;
-  OverlayGraph og=new OverlayGraph(graph);
-  Dijkstra dijkstra=new Dijkstra(og,verticesOut[0][0],options,graph.getVertex("a(0, 0)"),3);
+  Dijkstra dijkstra=new Dijkstra(verticesOut[0][0],options,graph.getVertex("a(0, 0)"),3);
   BasicShortestPathTree spt=dijkstra.getShortestPathTree(verticesIn[0][2],4);
   State v03=spt.getState(verticesIn[0][3]);
   assertNull(v03);
-  dijkstra=new Dijkstra(og,verticesOut[0][0],options,graph.getVertex("a(0, 0)"),6);
+  dijkstra=new Dijkstra(verticesOut[0][0],options,graph.getVertex("a(0, 0)"),6);
   spt=dijkstra.getShortestPathTree(verticesIn[0][3],500);
   v03=spt.getState(verticesIn[0][3]);
   assertNotNull(v03);
-  dijkstra=new Dijkstra(og,verticesOut[0][1],options,verticesIn[0][2]);
+  dijkstra=new Dijkstra(verticesOut[0][1],options,verticesIn[0][2]);
   spt=dijkstra.getShortestPathTree(verticesIn[0][3],20);
   v03=spt.getState(verticesIn[0][3]);
   assertNull(v03);
-  dijkstra=new Dijkstra(og,verticesOut[0][1],options,verticesIn[0][2]);
+  dijkstra=new Dijkstra(verticesOut[0][1],options,verticesIn[0][2]);
   spt=dijkstra.getShortestPathTree(verticesIn[0][3],130);
   v03=spt.getState(verticesIn[0][3]);
   assertNotNull(v03);
   ContractionHierarchy testch=new ContractionHierarchy(graph,new TraverseOptions(TraverseMode.WALK,OptimizeType.QUICK),0.0);
   Vertex v=graph.getVertex("a(2, 2)");
-  List<Shortcut> shortcuts=testch.getShortcuts(v,true).shortcuts;
+  List<PotentialShortcut> shortcuts=testch.getShortcuts(v,true).shortcuts;
   assertEquals(16,shortcuts.size());
   v=graph.getVertex("(0, 0) in");
   shortcuts=testch.getShortcuts(v,true).shortcuts;
   assertEquals(0,shortcuts.size());
   ContractionHierarchy hierarchy=new ContractionHierarchy(graph,new TraverseOptions(TraverseMode.WALK,OptimizeType.QUICK),1.0);
-  int n=hierarchy.updown.getVertices().size();
-  assertTrue(hierarchy.core.getVertices().size() == 0);
+  assertTrue("remaining vertices = " + hierarchy.corev.size(),hierarchy.corev.size() == 0);
   System.out.println("Contracted");
   GraphPath path=hierarchy.getShortestPath(verticesOut[0][0],verticesIn[N - 1][N - 1],1000000000,options);
   assertNotNull(path);

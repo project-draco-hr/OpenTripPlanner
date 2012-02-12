@@ -1,7 +1,20 @@
 {
-  if (route != null) {
-    TransitIndexService index=graph.getService(TransitIndexService.class);
-    List<RouteVariant> variants=index.getVariantsForRoute(route);
+  TransitIndexService index=graph.getService(TransitIndexService.class);
+  if (route != null || trip != null || agency != null) {
+    List<RouteVariant> variants;
+    if (trip != null) {
+      variants=new LinkedList<RouteVariant>();
+      RouteVariant tripVariant=index.getVariantForTrip(trip);
+      if (tripVariant != null) {
+        variants.add(index.getVariantForTrip(trip));
+      }
+    }
+ else     if (route != null) {
+      variants=index.getVariantsForRoute(route);
+    }
+ else {
+      variants=index.getVariantsForAgency(agency);
+    }
     for (    RouteVariant variant : variants) {
       if (direction != null && !direction.equals(variant.getDirection())) {
         continue;
@@ -11,15 +24,17 @@
           if (segment.board != null) {
             segment.board.addPatch(this);
           }
+          if (segment.alight != null) {
+            segment.alight.addPatch(this);
+          }
         }
       }
     }
   }
  else   if (stop != null) {
-    TransitIndexService index=graph.getService(TransitIndexService.class);
     Edge edge=index.getPreboardEdge(stop);
-    edge.addPatch(this);
+    if (edge != null)     edge.addPatch(this);
     edge=index.getPrealightEdge(stop);
-    edge.addPatch(this);
+    if (edge != null)     edge.addPatch(this);
   }
 }

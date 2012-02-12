@@ -1,0 +1,15 @@
+{
+  Graph graph=graphService.getGraph();
+  if (patch instanceof AlertPatch) {
+    AlertPatch alertPatch=(AlertPatch)patch;
+    AgencyAndId stop=alertPatch.getStop();
+    if (stop != null) {
+      MapUtils.removeFromMapList(patchesByStop,stop,patch);
+    }
+    AgencyAndId route=alertPatch.getRoute();
+    if (route != null) {
+      MapUtils.removeFromMapList(patchesByRoute,stop,patch);
+    }
+  }
+  patch.remove(graph);
+}

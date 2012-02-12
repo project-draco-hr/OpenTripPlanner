@@ -1,7 +1,7 @@
 {
   if (target instanceof StreetLocation) {
-    Iterable<DirectEdge> extra=((StreetLocation)target).getExtra();
-    for (    DirectEdge edge : extra) {
+    Iterable<Edge> extra=((StreetLocation)target).getExtra();
+    for (    Edge edge : extra) {
       Vertex fromv=edge.getFromVertex();
       List<Edge> edges=extraEdges.get(fromv);
       if (edges == null) {

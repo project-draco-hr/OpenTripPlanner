@@ -1,12 +1,9 @@
 {
   _log.debug("Building transit index");
   HashMap<Vertex,RouteSegment> segmentsByVertex=new HashMap<Vertex,RouteSegment>();
-  for (  Vertex gv : graph.getVertices()) {
+  for (  TransitVertex tv : IterableLibrary.filter(graph.getVertices(),TransitVertex.class)) {
     RouteSegment segment=null;
-    if (gv instanceof StreetVertex || gv instanceof EndpointVertex) {
-      continue;
-    }
-    for (    Edge e : gv.getOutgoing()) {
+    for (    Edge e : tv.getOutgoing()) {
       RouteVariant variant=null;
       if (!(e instanceof AbstractEdge)) {
         continue;
@@ -36,7 +33,7 @@
         continue;
       }
       if (segment == null) {
-        segment=getOrMakeSegment(variant,segmentsByVertex,gv);
+        segment=getOrMakeSegment(variant,segmentsByVertex,tv);
       }
       if (e instanceof Alight || e instanceof PatternAlight) {
         segment.alight=e;
@@ -48,7 +45,7 @@
         segment.dwell=e;
       }
     }
-    for (    Edge e : gv.getIncoming()) {
+    for (    Edge e : tv.getIncoming()) {
       RouteVariant variant=null;
       if (!(e instanceof AbstractEdge)) {
         continue;
@@ -69,7 +66,7 @@
         continue;
       }
       if (segment == null) {
-        segment=getOrMakeSegment(variant,segmentsByVertex,gv);
+        segment=getOrMakeSegment(variant,segmentsByVertex,tv);
       }
       if (e instanceof Board || e instanceof PatternBoard) {
         segment.board=e;
@@ -88,7 +85,7 @@
       totalTrips+=variant.getTrips().size();
     }
   }
-  _log.debug("Built transit index: " + variantsByRoute.size() + " routes, "+ totalTrips+ " trips, "+ totalVariants+ " variants ");
-  TransitIndexService service=new TransitIndexServiceImpl(variantsByRoute,variantsByTrip,preBoardEdges,preAlightEdges,directionsByRoute,modes);
+  _log.debug("Built transit index: " + variantsByAgency.size() + " agencies, "+ variantsByRoute.size()+ " routes, "+ totalTrips+ " trips, "+ totalVariants+ " variants ");
+  TransitIndexService service=new TransitIndexServiceImpl(variantsByAgency,variantsByRoute,variantsByTrip,preBoardEdges,preAlightEdges,directionsByRoute,modes);
   graph.putService(TransitIndexService.class,service);
 }

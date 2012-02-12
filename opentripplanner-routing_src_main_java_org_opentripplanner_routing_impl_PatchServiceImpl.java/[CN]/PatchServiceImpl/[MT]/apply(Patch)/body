@@ -1,5 +1,8 @@
 {
   Graph graph=graphService.getGraph();
+  if (patches.containsKey(patch.getId())) {
+    expire(patches.get(patch.getId()));
+  }
   patch.apply(graph);
   patches.put(patch.getId(),patch);
   if (patch instanceof AlertPatch) {

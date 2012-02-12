@@ -2,33 +2,23 @@
   State su=new State(u,backOptions);
   int searchSpace=0;
   ArrayList<State> vs=new ArrayList<State>();
-  for (  Edge e : core.getIncoming(u)) {
-    if (!isContractable(e)) {
-      continue;
-    }
+  for (  Edge e : u.getIncoming()) {
+    if (!corev.contains(e.getFromVertex()))     continue;
     State sv=e.traverse(su);
-    if (sv == null) {
-      continue;
-    }
+    if (sv == null)     continue;
     vs.add(sv);
   }
   su=new State(u,fwdOptions);
   double maxWWeight=0;
   ArrayList<State> ws=new ArrayList<State>();
-  for (  DirectEdge e : filter(core.getOutgoing(u),DirectEdge.class)) {
-    if (!isContractable(e)) {
-      continue;
-    }
+  for (  Edge e : u.getOutgoing()) {
+    if (!corev.contains(e.getToVertex()))     continue;
     State sw=e.traverse(su);
-    if (sw == null) {
-      continue;
-    }
+    if (sw == null)     continue;
     ws.add(sw);
-    if (sw.exceedsWeightLimit(maxWWeight)) {
-      maxWWeight=sw.getWeight();
-    }
+    if (sw.exceedsWeightLimit(maxWWeight))     maxWWeight=sw.getWeight();
   }
-  List<Shortcut> shortcuts=new ArrayList<Shortcut>();
+  List<PotentialShortcut> shortcuts=new ArrayList<PotentialShortcut>();
   ArrayList<Callable<WitnessSearchResult>> tasks=new ArrayList<Callable<WitnessSearchResult>>(vs.size());
   int nodeLimit=simulate ? NODE_LIMIT_SIMULATE : NODE_LIMIT_CONTRACT;
   int hopLimit=simulate ? HOP_LIMIT_SIMULATE : HOP_LIMIT_CONTRACT;
@@ -44,37 +34,11 @@
     for (    Future<WitnessSearchResult> future : threadPool.invokeAll(tasks)) {
       WitnessSearchResult wsresult=future.get();
       BasicShortestPathTree spt=wsresult.spt;
-      if (!simulate && spt != null) {
-        ArrayList<DirectEdge> toRemove=new ArrayList<DirectEdge>();
-        State sv0=new State(wsresult.vertex,fwdOptions);
-        for (        DirectEdge e : filter(core.getOutgoing(wsresult.vertex),DirectEdge.class)) {
-          State sSpt=spt.getState(e.getToVertex());
-          if (sSpt == null) {
-            continue;
-          }
-          State sv1=e.traverse(sv0);
-          if (sv1 == null) {
-            toRemove.add(e);
-            continue;
-          }
-          if (sSpt.getWeight() < sv1.getWeight()) {
-            toRemove.add(e);
-          }
-        }
-        Vertex uv=wsresult.vertex;
-        for (        DirectEdge e : toRemove) {
-          uv.removeOutgoing(e);
-          e.getToVertex().removeIncoming(e);
-        }
-      }
       searchSpace+=wsresult.searchSpace;
       shortcuts.addAll(wsresult.shortcuts);
     }
   }
- catch (  InterruptedException e1) {
-    throw new RuntimeException(e1);
-  }
-catch (  ExecutionException e1) {
+ catch (  Exception e1) {
     throw new RuntimeException(e1);
   }
   return new WitnessSearchResult(shortcuts,null,null,searchSpace);
