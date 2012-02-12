@@ -170,10 +170,10 @@
       String humanLevel=levelHumanNames.get(level);
       IntersectionVertex sourceVert=levels.get(level);
       String sourceVertLabel=sourceVert.getLabel();
-      ElevatorOffboardVertex offboardVert=new ElevatorOffboardVertex(graph,sourceVertLabel + "_middle",sourceVert.getX(),sourceVert.getY());
+      ElevatorOffboardVertex offboardVert=new ElevatorOffboardVertex(graph,sourceVertLabel + "_middle",sourceVert.getX(),sourceVert.getY(),humanLevel);
       new FreeEdge(sourceVert,offboardVert);
       new FreeEdge(offboardVert,sourceVert);
-      ElevatorOnboardVertex onboardVert=new ElevatorOnboardVertex(graph,sourceVertLabel + "_onboard",sourceVert.getX(),sourceVert.getY());
+      ElevatorOnboardVertex onboardVert=new ElevatorOnboardVertex(graph,sourceVertLabel + "_onboard",sourceVert.getX(),sourceVert.getY(),humanLevel);
       new ElevatorBoardEdge(offboardVert,onboardVert);
       new ElevatorAlightEdge(onboardVert,offboardVert,humanLevel);
       onboardVertices.add(onboardVert);
