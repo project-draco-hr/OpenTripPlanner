@@ -4,7 +4,6 @@
   for (  IntersectionVertex v : endpoints) {
     for (    Edge e_in : v.getIncoming()) {
       for (      Edge e_out : v.getOutgoing()) {
-        if (e_in == e_out)         continue;
         if (e_in.getFromVertex() == e_out.getToVertex() && v.getOutgoing().size() > 1)         continue;
         if (e_in instanceof PlainStreetEdge && e_out instanceof PlainStreetEdge) {
           PlainStreetEdge pse_in=(PlainStreetEdge)e_in;
