@@ -3,8 +3,6 @@
   processRelations();
   _nodes.keySet().retainAll(_nodesWithNeighbors);
   long wayIndex=0;
-  int nextUnparsedLevel=0;
-  HashMap<String,Integer> unparsedLevels=new HashMap<String,Integer>();
   Set<Long> possibleIntersectionNodes=new HashSet<Long>();
   for (  OSMWay way : _ways.values()) {
     List<Long> nodes=way.getNodeRefs();
