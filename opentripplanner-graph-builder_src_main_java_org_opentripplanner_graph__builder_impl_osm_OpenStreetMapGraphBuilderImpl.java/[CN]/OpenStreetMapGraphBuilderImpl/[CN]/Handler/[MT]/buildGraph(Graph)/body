@@ -34,48 +34,22 @@
     List<Long> nodes=way.getNodeRefs();
     IntersectionVertex startEndpoint=null, endEndpoint=null;
     ArrayList<Coordinate> segmentCoordinates=new ArrayList<Coordinate>();
-    final int LEVEL_MAP_LEVEL=0;
-    final int LEVEL_TAG_LEVEL=100000;
-    final int LAYER_TAG_LEVEL=200000;
-    final int OTHER_LEVEL=300000;
-    final int UNPARSED_LEVEL=400000;
-    if (!way.hasTag("otp:numeric_level")) {
-      String strLevel=null;
-      int offset=LEVEL_MAP_LEVEL, intLevel;
+    if (!wayLevels.containsKey(way)) {
+      String levelName=null;
+      OSMLevel.Source source=OSMLevel.Source.NONE;
+      OSMLevel level=OSMLevel.DEFAULT;
       if (way.hasTag("level")) {
-        strLevel=way.getTag("level");
-        offset=LEVEL_TAG_LEVEL;
+        levelName=way.getTag("level");
+        source=OSMLevel.Source.LEVEL_TAG;
       }
  else       if (way.hasTag("layer")) {
-        strLevel=way.getTag("layer");
-        offset=LAYER_TAG_LEVEL;
+        levelName=way.getTag("layer");
+        source=OSMLevel.Source.LAYER_TAG;
       }
-      if (strLevel != null) {
-        try {
-          intLevel=Integer.parseInt(strLevel);
-        }
- catch (        NumberFormatException e) {
-          if (unparsedLevels.containsKey(strLevel)) {
-            intLevel=unparsedLevels.get(strLevel);
-          }
- else {
-            intLevel=nextUnparsedLevel++;
-            unparsedLevels.put(strLevel,intLevel);
-          }
-          offset=UNPARSED_LEVEL;
-          _log.warn("Could not determine ordinality of layer " + strLevel + ". Elevators will work, but costing may be incorrect. "+ "A level map should be used in this situation.");
-        }
+      if (levelName != null) {
+        level=OSMLevel.fromString(levelName,source);
       }
- else {
-        intLevel=0;
-        offset=OTHER_LEVEL;
-      }
-      if (noZeroLevels && intLevel >= 0) {
-        strLevel=Integer.toString(intLevel + 1);
-      }
-      way.addTag("otp:numeric_level",Integer.toString(intLevel + offset));
-      way.addTag("otp:human_level",strLevel);
-      levelHumanNames.put(intLevel + offset,strLevel);
+      wayLevels.put(way,level);
     }
     Long startNode=null;
     OSMNode osmStartNode=null;
@@ -162,37 +136,36 @@
   }
   for (  Long nodeId : multiLevelNodes.keySet()) {
     OSMNode node=_nodes.get(nodeId);
-    HashMap<Integer,IntersectionVertex> levels=multiLevelNodes.get(nodeId);
+    HashMap<OSMLevel,IntersectionVertex> vertices=multiLevelNodes.get(nodeId);
     ArrayList<Vertex> onboardVertices=new ArrayList<Vertex>();
-    Integer[] levelKeys=levels.keySet().toArray(new Integer[0]);
-    Arrays.sort(levelKeys);
-    for (    Integer level : levelKeys) {
-      String humanLevel=levelHumanNames.get(level);
-      IntersectionVertex sourceVert=levels.get(level);
-      String sourceVertLabel=sourceVert.getLabel();
-      ElevatorOffboardVertex offboardVert=new ElevatorOffboardVertex(graph,sourceVertLabel + "_middle",sourceVert.getX(),sourceVert.getY(),humanLevel);
-      new FreeEdge(sourceVert,offboardVert);
-      new FreeEdge(offboardVert,sourceVert);
-      ElevatorOnboardVertex onboardVert=new ElevatorOnboardVertex(graph,sourceVertLabel + "_onboard",sourceVert.getX(),sourceVert.getY(),humanLevel);
-      new ElevatorBoardEdge(offboardVert,onboardVert);
-      new ElevatorAlightEdge(onboardVert,offboardVert,humanLevel);
-      onboardVertices.add(onboardVert);
+    OSMLevel[] levels=vertices.keySet().toArray(new OSMLevel[0]);
+    Arrays.sort(levels);
+    for (    OSMLevel level : levels) {
+      IntersectionVertex sourceVertex=vertices.get(level);
+      String sourceVertexLabel=sourceVertex.getLabel();
+      String levelName=level.longName;
+      ElevatorOffboardVertex offboardVertex=new ElevatorOffboardVertex(graph,sourceVertexLabel + "_offboard",sourceVertex.getX(),sourceVertex.getY(),levelName);
+      new FreeEdge(sourceVertex,offboardVertex);
+      new FreeEdge(offboardVertex,sourceVertex);
+      ElevatorOnboardVertex onboardVertex=new ElevatorOnboardVertex(graph,sourceVertexLabel + "_onboard",sourceVertex.getX(),sourceVertex.getY(),levelName);
+      new ElevatorBoardEdge(offboardVertex,onboardVertex);
+      new ElevatorAlightEdge(onboardVertex,offboardVertex,level.longName);
+      onboardVertices.add(onboardVertex);
     }
-    Integer vSize=onboardVertices.size() - 1;
-    for (Integer i=0; i < vSize; i++) {
+    for (Integer i=0, vSize=onboardVertices.size() - 1; i < vSize; i++) {
       Vertex from=onboardVertices.get(i);
       Vertex to=onboardVertices.get(i + 1);
-      StreetTraversalPermission permission=StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE;
       boolean wheelchairAccessible=true;
+      StreetTraversalPermission permission=StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE;
       if (node.isTagFalse("bicycle")) {
         permission=StreetTraversalPermission.PEDESTRIAN;
       }
       if (node.isTagFalse("wheelchair")) {
         wheelchairAccessible=false;
       }
-      ElevatorHopEdge theEdge=new ElevatorHopEdge(from,to,permission);
+      ElevatorHopEdge foreEdge=new ElevatorHopEdge(from,to,permission);
       ElevatorHopEdge backEdge=new ElevatorHopEdge(to,from,permission);
-      theEdge.wheelchairAccessible=wheelchairAccessible;
+      foreEdge.wheelchairAccessible=wheelchairAccessible;
       backEdge.wheelchairAccessible=wheelchairAccessible;
     }
   }

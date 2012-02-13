@@ -1,72 +1,13 @@
 {
-  ArrayList<String> levels=new ArrayList<String>();
-  HashMap<String,String> levelFullNames=new HashMap<String,String>();
-  int levelDelta=0;
-  Pattern isRange=Pattern.compile("^[0-9]+\\-[0-9]+$");
-  Matcher m;
-  for (  String level : relation.getTag("levels").split(";")) {
-    m=isRange.matcher(level);
-    if (m.matches()) {
-      String[] range=level.split("-");
-      int endOfRange=Integer.parseInt(range[1]);
-      for (int i=Integer.parseInt(range[0]); i <= endOfRange; i++) {
-        levels.add(Integer.toString(i));
-      }
-    }
- else {
-      levels.add(level);
-    }
-  }
-  for (int i=0; i < levels.size(); i++) {
-    String level=levels.get(i);
-    Integer numLevel=1;
-    try {
-      numLevel=Integer.parseInt(level);
-    }
- catch (    NumberFormatException e) {
-      try {
-        numLevel=Integer.parseInt(level.split("=")[0]);
-      }
- catch (      NumberFormatException e2) {
-        try {
-          int lastInd=level.lastIndexOf('@');
-          if (lastInd != -1) {
-            numLevel=Integer.parseInt(level.substring(lastInd + 1));
-          }
-        }
- catch (        NumberFormatException e3) {
-        }
-      }
-    }
-    if (numLevel == 0) {
-      levelDelta=-1 * levels.indexOf(level);
-    }
-    String levelIndex;
-    String levelName;
-    int lastIndAt=level.lastIndexOf('@');
-    if (lastIndAt >= 1) {
-      level=level.substring(0,lastIndAt);
-    }
-    Integer levelSplit=level.indexOf('=');
-    if (levelSplit >= 1) {
-      levelIndex=level.substring(0,levelSplit);
-      levelName=level.substring(levelSplit + 1);
-    }
- else {
-      levelIndex=levelName=level;
-    }
-    levels.set(i,levelIndex);
-    levelFullNames.put(levelIndex,levelName);
-  }
+  Map<String,OSMLevel> levels=OSMLevel.mapFromSpecList(relation.getTag("levels"));
   for (  OSMRelationMember member : relation.getMembers()) {
     if ("way".equals(member.getType()) && _ways.containsKey(member.getRef())) {
       OSMWay way=_ways.get(member.getRef());
       if (way != null) {
         String role=member.getRole();
         if (!relation.hasTag("role:" + role)) {
-          if (levels.indexOf(role) != -1) {
-            way.addTag("otp:numeric_level",Integer.toString(levels.indexOf(role) + levelDelta));
-            way.addTag("otp:human_level",levelFullNames.get(role));
+          if (levels.containsKey(role)) {
+            wayLevels.put(way,levels.get(role));
           }
  else {
             _log.warn(member.getRef() + " has undefined level " + role);
