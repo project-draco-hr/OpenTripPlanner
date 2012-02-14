@@ -135,9 +135,9 @@
   for (  Long nodeId : multiLevelNodes.keySet()) {
     OSMNode node=_nodes.get(nodeId);
     HashMap<OSMLevel,IntersectionVertex> vertices=multiLevelNodes.get(nodeId);
-    ArrayList<Vertex> onboardVertices=new ArrayList<Vertex>();
     OSMLevel[] levels=vertices.keySet().toArray(new OSMLevel[0]);
     Arrays.sort(levels);
+    ArrayList<Vertex> onboardVertices=new ArrayList<Vertex>();
     for (    OSMLevel level : levels) {
       IntersectionVertex sourceVertex=vertices.get(level);
       String sourceVertexLabel=sourceVertex.getLabel();
