@@ -4,7 +4,6 @@
   for (  IntersectionVertex v : endpoints) {
     for (    Edge e_in : v.getIncoming()) {
       for (      Edge e_out : v.getOutgoing()) {
-        if (e_in == e_out)         continue;
         if (e_in.getFromVertex() == e_out.getToVertex() && v.getOutgoing().size() > 1)         continue;
         if (e_in instanceof PlainStreetEdge && e_out instanceof PlainStreetEdge) {
           PlainStreetEdge pse_in=(PlainStreetEdge)e_in;
@@ -26,25 +25,25 @@
           }
         }
  else {
-          Vertex v1=null;
-          Vertex v2=null;
+          Vertex fromv=null;
+          Vertex tov=null;
           if (e_in instanceof PlainStreetEdge) {
-            v1=getTurnVertexForEdge(graph,turnVertices,(PlainStreetEdge)e_in);
+            fromv=getTurnVertexForEdge(graph,turnVertices,(PlainStreetEdge)e_in);
           }
  else           if (e_in instanceof FreeEdge) {
-            v1=e_in.getFromVertex();
+            fromv=e_in.getFromVertex();
           }
           if (e_out instanceof PlainStreetEdge) {
-            v2=getTurnVertexForEdge(graph,turnVertices,(PlainStreetEdge)e_out);
+            tov=getTurnVertexForEdge(graph,turnVertices,(PlainStreetEdge)e_out);
+          }
+ else           if (e_out instanceof FreeEdge) {
+            tov=e_out.getToVertex();
+          }
+          if (fromv instanceof TurnVertex) {
+            new TurnEdge((TurnVertex)fromv,(StreetVertex)tov);
           }
  else {
-            v2=e_out.getToVertex();
-          }
-          if (v1 == null || v2 == null) {
-            throw new IllegalStateException("Null vertex when building FreeEdge!");
-          }
- else           if (v1 != v2) {
-            FreeEdge turn=new FreeEdge(v1,v2);
+            new FreeEdge(fromv,tov);
           }
         }
       }
