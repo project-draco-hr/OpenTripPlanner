@@ -2,4 +2,22 @@
   trips.trimToSize();
   stops.trimToSize();
   segments.trimToSize();
+  HashMap<Edge,RouteSegment> successors=new HashMap<Edge,RouteSegment>();
+  RouteSegment segment=null;
+  for (  RouteSegment s : segments) {
+    if (s.hopIn == null) {
+      segment=s;
+    }
+ else {
+      successors.put(s.hopIn,s);
+    }
+  }
+  int i=0;
+  while (segment != null) {
+    segments.set(i++,segment);
+    segment=successors.get(segment.hopOut);
+  }
+  if (i != segments.size()) {
+    _log.error("Failed to organize hops in route variant " + name);
+  }
 }
