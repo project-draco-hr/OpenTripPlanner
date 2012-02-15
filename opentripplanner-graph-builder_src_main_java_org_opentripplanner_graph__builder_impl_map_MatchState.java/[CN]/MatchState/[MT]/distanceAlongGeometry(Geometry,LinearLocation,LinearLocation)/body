@@ -1,0 +1,23 @@
+{
+  if (endIndex == null) {
+    endIndex=LinearLocation.getEndLocation(geometry);
+  }
+  double total=0;
+  LinearIterator it=new LinearIterator(geometry,startIndex);
+  LinearLocation index=startIndex;
+  Coordinate previousCoordinate=startIndex.getCoordinate(geometry);
+  it.next();
+  index=it.getLocation();
+  while (index.compareTo(endIndex) < 0) {
+    Coordinate thisCoordinate=index.getCoordinate(geometry);
+    double distance=DistanceLibrary.fastDistance(previousCoordinate,thisCoordinate);
+    total+=distance;
+    previousCoordinate=thisCoordinate;
+    if (!it.hasNext())     break;
+    it.next();
+    index=it.getLocation();
+  }
+  Coordinate finalCoordinate=endIndex.getCoordinate(geometry);
+  total+=DistanceLibrary.distance(previousCoordinate,finalCoordinate);
+  return total;
+}

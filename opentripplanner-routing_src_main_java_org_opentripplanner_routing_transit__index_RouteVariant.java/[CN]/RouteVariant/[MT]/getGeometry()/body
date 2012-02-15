@@ -1,11 +1,14 @@
 {
-  List<Coordinate> coords=new ArrayList<Coordinate>();
-  for (  RouteSegment segment : segments) {
-    if (segment.hopOut != null) {
-      Geometry segGeometry=segment.getGeometry();
-      coords.addAll(Arrays.asList(segGeometry.getCoordinates()));
+  if (geometry == null) {
+    List<Coordinate> coords=new ArrayList<Coordinate>();
+    for (    RouteSegment segment : segments) {
+      if (segment.hopOut != null) {
+        Geometry segGeometry=segment.getGeometry();
+        coords.addAll(Arrays.asList(segGeometry.getCoordinates()));
+      }
     }
+    Coordinate[] coordArray=new Coordinate[coords.size()];
+    geometry=geometryFactory.createLineString(coords.toArray(coordArray));
   }
-  Coordinate[] coordArray=new Coordinate[coords.size()];
-  return geometryFactory.createLineString(coords.toArray(coordArray));
+  return geometry;
 }

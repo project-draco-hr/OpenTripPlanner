@@ -1,0 +1,104 @@
+{
+  ArrayList<MatchState> nextStates=new ArrayList<MatchState>();
+  if (routeIndex.getSegmentIndex() == routeGeometry.getNumPoints() - 1) {
+    Coordinate pt=routeIndex.getCoordinate(routeGeometry);
+    double error=distance(pt,edgeIndex.getCoordinate(edgeGeometry));
+    nextStates.add(new EndMatchState(this,error,getDistanceAlongRoute()));
+    return nextStates;
+  }
+  LinearIterator it=new LinearIterator(routeGeometry,routeIndex);
+  if (it.hasNext()) {
+    it.next();
+    LinearLocation routeSuccessor=it.getLocation();
+    Coordinate newRouteCoord=routeSuccessor.getCoordinate(routeGeometry);
+    LinearLocation newEdgeIndex=indexedEdge.project(newRouteCoord);
+    Coordinate edgeCoord=newEdgeIndex.getCoordinate(edgeGeometry);
+    if (newEdgeIndex.compareTo(edgeIndex) <= 0) {
+      try {
+        LinearLocation projected2=indexedEdge.indexOfAfter(edgeCoord,edgeIndex);
+        if (Double.isNaN(projected2.getSegmentFraction())) {
+          return Collections.emptyList();
+        }
+ else {
+          newEdgeIndex=projected2;
+          if (newEdgeIndex.equals(edgeIndex)) {
+            return Collections.emptyList();
+          }
+        }
+        edgeCoord=newEdgeIndex.getCoordinate(edgeGeometry);
+      }
+ catch (      AssertionFailedException e) {
+        return Collections.emptyList();
+      }
+    }
+    if (newEdgeIndex.getSegmentIndex() == edgeGeometry.getNumPoints() - 1) {
+      Vertex toVertex=edge.getToVertex();
+      Coordinate endCoord=toVertex.getCoordinate();
+      LocationIndexedLine indexedRoute=new LocationIndexedLine(routeGeometry);
+      LinearLocation routeProjectedEndIndex=indexedRoute.project(endCoord);
+      Coordinate routeProjectedEndCoord=routeProjectedEndIndex.getCoordinate(routeGeometry);
+      if (routeProjectedEndIndex.compareTo(routeIndex) <= 0) {
+        try {
+          routeProjectedEndIndex=indexedRoute.indexOfAfter(routeProjectedEndCoord,routeIndex);
+          if (Double.isNaN(routeProjectedEndIndex.getSegmentFraction())) {
+            routeProjectedEndIndex=routeIndex;
+          }
+        }
+ catch (        AssertionFailedException e) {
+          routeProjectedEndIndex=routeIndex;
+        }
+        routeProjectedEndCoord=routeProjectedEndIndex.getCoordinate(routeGeometry);
+      }
+      double positionError=distance(routeProjectedEndCoord,endCoord);
+      double travelAlongRoute=distanceAlongGeometry(routeGeometry,routeIndex,routeProjectedEndIndex);
+      double travelAlongEdge=distanceAlongGeometry(edgeGeometry,edgeIndex,newEdgeIndex);
+      double travelError=Math.abs(travelAlongEdge - travelAlongRoute);
+      double error=positionError + travelError;
+      if (error > MAX_ERROR) {
+        return nextStates;
+      }
+      for (      Edge e : getOutgoingMatchableEdges(toVertex)) {
+        double cost=error + NEW_SEGMENT_PENALTY;
+        if (!carsCanTraverse(e)) {
+          cost+=NO_TRAVERSE_PENALTY;
+        }
+        MatchState nextState=new MidblockMatchState(this,routeGeometry,e,routeProjectedEndIndex,new LinearLocation(),cost,travelAlongRoute);
+        distanceAlongGeometry(routeGeometry,routeIndex,routeProjectedEndIndex);
+        nextStates.add(nextState);
+      }
+    }
+ else {
+      double travelAlongEdge=distanceAlongGeometry(edgeGeometry,edgeIndex,newEdgeIndex);
+      double travelAlongRoute=distanceAlongGeometry(routeGeometry,routeIndex,routeSuccessor);
+      double travelError=Math.abs(travelAlongRoute - travelAlongEdge);
+      double positionError=distance(edgeCoord,newRouteCoord);
+      double error=travelError + positionError;
+      MatchState nextState=new MidblockMatchState(this,routeGeometry,edge,routeSuccessor,newEdgeIndex,error,travelAlongRoute);
+      nextStates.add(nextState);
+      Vertex toVertex=edge.getToVertex();
+      positionError=edge.getToVertex().distance(newRouteCoord);
+      travelAlongEdge=distanceAlongGeometry(edgeGeometry,edgeIndex,null);
+      travelError=Math.abs(travelAlongRoute - travelAlongEdge);
+      error=travelError + positionError;
+      if (error > MAX_ERROR) {
+        return nextStates;
+      }
+      for (      Edge e : getOutgoingMatchableEdges(toVertex)) {
+        double cost=error + NEW_SEGMENT_PENALTY;
+        if (!carsCanTraverse(e)) {
+          cost+=NO_TRAVERSE_PENALTY;
+        }
+        nextState=new MidblockMatchState(this,routeGeometry,e,routeSuccessor,new LinearLocation(),cost,travelAlongRoute);
+        nextStates.add(nextState);
+      }
+    }
+    return nextStates;
+  }
+ else {
+    Coordinate routeCoord=routeIndex.getCoordinate(routeGeometry);
+    LinearLocation projected=indexedEdge.project(routeCoord);
+    double locationError=distance(projected.getCoordinate(edgeGeometry),routeCoord);
+    MatchState end=new EndMatchState(this,locationError,getDistanceAlongRoute());
+    return Arrays.asList(end);
+  }
+}
