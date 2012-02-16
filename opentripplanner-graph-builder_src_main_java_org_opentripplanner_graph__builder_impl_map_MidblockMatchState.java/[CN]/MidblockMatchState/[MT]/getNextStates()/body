@@ -63,7 +63,6 @@
           cost+=NO_TRAVERSE_PENALTY;
         }
         MatchState nextState=new MidblockMatchState(this,routeGeometry,e,routeProjectedEndIndex,new LinearLocation(),cost,travelAlongRoute);
-        distanceAlongGeometry(routeGeometry,routeIndex,routeProjectedEndIndex);
         nextStates.add(nextState);
       }
     }
@@ -82,7 +81,7 @@
         LocationIndexedLine newIndexedEdge=new LocationIndexedLine(newEdgeGeometry);
         newEdgeIndex=newIndexedEdge.project(newRouteCoord);
         Coordinate newEdgeCoord=newEdgeIndex.getCoordinate(newEdgeGeometry);
-        positionError=newEdgeCoord.distance(newRouteCoord);
+        positionError=distance(newEdgeCoord,newRouteCoord);
         travelAlongEdge=travelAlongOldEdge + distanceAlongGeometry(newEdgeGeometry,new LinearLocation(),newEdgeIndex);
         travelError=Math.abs(travelAlongRoute - travelAlongEdge);
         error=travelError + positionError;
