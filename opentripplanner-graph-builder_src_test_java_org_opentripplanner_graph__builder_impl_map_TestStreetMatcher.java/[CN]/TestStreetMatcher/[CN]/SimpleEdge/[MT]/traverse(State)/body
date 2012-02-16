@@ -1,0 +1,8 @@
+{
+  double d=getDistance();
+  int t=(int)(d / s0.getOptions().speed);
+  StateEditor s1=s0.edit(this);
+  s1.incrementTimeInSeconds(t);
+  s1.incrementWeight(d);
+  return s1.makeState();
+}

@@ -1,0 +1,8 @@
+{
+  for (int i=0; i < vLabels.length - 1; i++) {
+    StreetVertex vA=(StreetVertex)_graph.getVertex(vLabels[i]);
+    StreetVertex vB=(StreetVertex)_graph.getVertex(vLabels[i + 1]);
+    new SimpleEdge(vA,vB);
+    new SimpleEdge(vB,vA);
+  }
+}

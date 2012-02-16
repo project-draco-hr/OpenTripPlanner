@@ -1,0 +1,6 @@
+{
+  int lastComponentIndex=linear.getNumGeometries() - 1;
+  LineString lastLine=(LineString)linear.getGeometryN(lastComponentIndex);
+  int lastSegmentIndex=lastLine.getNumPoints() - 1;
+  return new LinearLocation(lastComponentIndex,lastSegmentIndex,0.0);
+}

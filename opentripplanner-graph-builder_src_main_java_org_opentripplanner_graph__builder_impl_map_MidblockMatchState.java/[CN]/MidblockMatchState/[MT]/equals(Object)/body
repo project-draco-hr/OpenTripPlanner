@@ -1,0 +1,7 @@
+{
+  if (!(o instanceof MidblockMatchState)) {
+    return false;
+  }
+  MidblockMatchState other=(MidblockMatchState)o;
+  return other.edge == edge && other.edgeIndex.compareTo(edgeIndex) == 0 && other.routeIndex.compareTo(routeIndex) == 0;
+}

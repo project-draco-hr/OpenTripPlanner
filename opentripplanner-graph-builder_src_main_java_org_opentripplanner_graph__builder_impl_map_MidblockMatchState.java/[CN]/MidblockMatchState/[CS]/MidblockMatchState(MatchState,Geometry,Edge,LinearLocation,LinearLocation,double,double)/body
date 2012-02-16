@@ -1,0 +1,9 @@
+{
+  super(parent,edge,distanceAlongRoute);
+  this.routeGeometry=routeGeometry;
+  this.routeIndex=routeIndex;
+  this.edgeIndex=edgeIndex;
+  edgeGeometry=edge.getGeometry();
+  indexedEdge=new LocationIndexedLine(edgeGeometry);
+  currentError=error;
+}
