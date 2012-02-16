@@ -1,0 +1,14 @@
+{
+  ArrayList<Edge> edges=new ArrayList<Edge>();
+  Edge lastEdge=null;
+  while (next != null) {
+    Edge edge=next.getEdge();
+    if (edge != lastEdge) {
+      edges.add(edge);
+      lastEdge=edge;
+    }
+    next=next.parent;
+  }
+  Collections.reverse(edges);
+  return edges;
+}

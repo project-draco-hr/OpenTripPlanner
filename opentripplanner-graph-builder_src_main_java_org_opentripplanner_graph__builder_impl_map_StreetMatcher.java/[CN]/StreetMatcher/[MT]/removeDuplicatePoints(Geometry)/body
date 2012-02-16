@@ -1,0 +1,12 @@
+{
+  List<Coordinate> coords=new ArrayList<Coordinate>();
+  Coordinate last=null;
+  for (  Coordinate c : routeGeometry.getCoordinates()) {
+    if (!c.equals(last)) {
+      last=c;
+      coords.add(c);
+    }
+  }
+  Coordinate[] coordArray=new Coordinate[coords.size()];
+  return routeGeometry.getFactory().createLineString(coords.toArray(coordArray));
+}

@@ -1,0 +1,15 @@
+{
+  STRtree edgeIndex=new STRtree();
+  for (  Vertex v : graph.getVertices()) {
+    for (    Edge e : v.getOutgoing()) {
+      if (e instanceof StreetEdge) {
+        Envelope envelope;
+        Geometry geometry=e.getGeometry();
+        envelope=geometry.getEnvelopeInternal();
+        edgeIndex.insert(envelope,e);
+      }
+    }
+  }
+  log.debug("Created index");
+  return edgeIndex;
+}

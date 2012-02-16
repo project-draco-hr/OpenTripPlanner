@@ -1,0 +1,12 @@
+{
+  List<U> list=mapList.get(key);
+  if (list == null) {
+    list=new ArrayList<U>(values.size());
+    mapList.put(key,list);
+  }
+  for (  U value : values) {
+    if (!list.contains(value)) {
+      list.add(value);
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  List<Edge> edges=new ArrayList<Edge>();
+  for (  Edge e : vertex.getOutgoing()) {
+    if (!(e instanceof StreetEdge))     continue;
+    if (e.getGeometry() == null)     continue;
+    edges.add(e);
+  }
+  return edges;
+}

@@ -1,0 +1,12 @@
+{
+  if (!hasNext())   return;
+  segmentFraction=0.0;
+  vertexIndex++;
+  if (vertexIndex >= currentLine.getNumPoints()) {
+    componentIndex++;
+    if (componentIndex < linearGeom.getNumGeometries() - 1) {
+      loadCurrentLine();
+      vertexIndex=0;
+    }
+  }
+}

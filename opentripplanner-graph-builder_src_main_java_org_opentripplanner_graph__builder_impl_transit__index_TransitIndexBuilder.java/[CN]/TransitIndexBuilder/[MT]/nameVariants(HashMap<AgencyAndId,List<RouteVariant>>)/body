@@ -10,7 +10,6 @@
     HashMap<Stop,List<RouteVariant>> ends=new HashMap<Stop,List<RouteVariant>>();
     HashMap<Stop,List<RouteVariant>> vias=new HashMap<Stop,List<RouteVariant>>();
     for (    RouteVariant variant : variants) {
-      variant.cleanup();
       List<Stop> stops=variant.getStops();
       MapUtils.addToMapList(starts,stops.get(0),variant);
       MapUtils.addToMapList(ends,stops.get(stops.size() - 1),variant);
