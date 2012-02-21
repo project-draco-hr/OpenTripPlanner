@@ -22,10 +22,10 @@
     hop.setGeometry(getHopGeometry(trip.getShapeId(),st0,st1,psv0depart,psv1arrive));
     hops.add(hop);
     if (st0.getPickupType() != 1) {
-      new Board(startStation,psv0depart,hop,tripWheelchairAccessible && s0.getWheelchairBoarding() == 1,st0.getStop().getZoneId(),trip);
+      new Board(startStation,psv0depart,hop,tripWheelchairAccessible && s0.getWheelchairBoarding() == 1,st0.getStop().getZoneId(),trip,st0.getPickupType());
     }
     if (st0.getDropOffType() != 1) {
-      new Alight(psv1arrive,endStation,hop,tripWheelchairAccessible && s1.getWheelchairBoarding() != 0,st0.getStop().getZoneId(),trip);
+      new Alight(psv1arrive,endStation,hop,tripWheelchairAccessible && s1.getWheelchairBoarding() != 0,st0.getStop().getZoneId(),trip,st0.getDropOffType());
     }
   }
 }

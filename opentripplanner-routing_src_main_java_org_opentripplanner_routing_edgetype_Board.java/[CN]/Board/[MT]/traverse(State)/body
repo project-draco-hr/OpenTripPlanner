@@ -8,6 +8,7 @@
     s1.setTripId(null);
     s1.setLastAlightedTime(state0.getTime());
     s1.setPreviousStop(fromv);
+    TransitUtils.handleBoardAlightType(s1,pickupType);
     return s1.makeState();
   }
  else {
@@ -40,6 +41,7 @@
       return null;
     }
     StateEditor s1=state0.edit(this);
+    TransitUtils.handleBoardAlightType(s1,pickupType);
     s1.incrementTimeInSeconds(wait);
     s1.incrementWeight(wait * options.waitReluctance + options.boardCost);
     s1.incrementNumBoardings();

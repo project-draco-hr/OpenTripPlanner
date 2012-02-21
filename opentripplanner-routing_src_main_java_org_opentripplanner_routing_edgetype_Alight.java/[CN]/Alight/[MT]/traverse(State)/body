@@ -24,6 +24,7 @@
       return null;
     }
     StateEditor s1=s0.edit(this);
+    TransitUtils.handleBoardAlightType(s1,dropoffType);
     s1.incrementTimeInSeconds(wait);
     s1.incrementWeight(wait * options.waitReluctance + options.boardCost);
     s1.incrementNumBoardings();
@@ -34,6 +35,7 @@
   }
  else {
     StateEditor s1=s0.edit(this);
+    TransitUtils.handleBoardAlightType(s1,dropoffType);
     s1.setTripId(null);
     s1.setLastAlightedTime(s0.getTime());
     s1.setPreviousStop(tov);

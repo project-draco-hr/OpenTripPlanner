@@ -152,6 +152,7 @@ if (leg != null) {
 System.out.println("leg unexpectedly not null");
 }
 leg=makeLeg(itinerary,state);
+leg.boardRule=(String)state.getExtension("boardAlightRule");
 itinerary.transfers++;
 }
 if (backEdge instanceof Hop || backEdge instanceof PatternHop) {
@@ -168,6 +169,7 @@ if (leg.stop.isEmpty()) {
 leg.stop=null;
 }
 }
+leg.alightRule=(String)state.getExtension("boardAlightRule");
 finalizeLeg(leg,state,null,-1,-1,coordinates);
 leg=null;
 pgstate=PlanGenState.START;

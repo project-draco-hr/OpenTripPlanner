@@ -26,12 +26,8 @@
     if (stopTime.getStop().getWheelchairBoarding() != 0) {
       perStopFlags[i]|=FLAG_WHEELCHAIR_ACCESSIBLE;
     }
-    if (stopTime.getPickupType() != 1) {
-      perStopFlags[i]|=FLAG_PICKUP;
-    }
-    if (stopTime.getDropOffType() != 1) {
-      perStopFlags[i]|=FLAG_DROPOFF;
-    }
+    perStopFlags[i]|=stopTime.getPickupType() << SHIFT_PICKUP;
+    perStopFlags[i]|=stopTime.getDropOffType() << SHIFT_DROPOFF;
     ++i;
   }
 }

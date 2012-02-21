@@ -4,10 +4,11 @@
     if (state0.getBackEdgeNarrative() instanceof PatternAlight) {
       return null;
     }
-    if (!getPattern().canBoard(stopIndex)) {
+    StateEditor s1=state0.edit(this);
+    int type=pattern.getBoardType(stopIndex);
+    if (TransitUtils.handleBoardAlightType(s1,type)) {
       return null;
     }
-    StateEditor s1=state0.edit(this);
     s1.setTripId(null);
     s1.setLastAlightedTime(state0.getTime());
     s1.setPreviousStop(fromv);
@@ -71,6 +72,10 @@
       }
     }
     StateEditor s1=state0.edit(this);
+    int type=pattern.getBoardType(stopIndex);
+    if (TransitUtils.handleBoardAlightType(s1,type)) {
+      return null;
+    }
     s1.setTrip(bestPatternIndex);
     s1.incrementTimeInSeconds(bestWait);
     s1.incrementNumBoardings();

@@ -1,3 +1,3 @@
 {
-  return (perStopFlags[stopIndex] & FLAG_DROPOFF) != 0;
+  return (perStopFlags[stopIndex] & MASK_DROPOFF) >> SHIFT_DROPOFF != NO_PICKUP;
 }

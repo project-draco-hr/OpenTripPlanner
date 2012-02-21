@@ -1,6 +1,7 @@
 {
-  int flag=pickup ? FLAG_PICKUP : FLAG_DROPOFF;
-  if ((perStopFlags[stopIndex] & flag) == 0) {
+  int mask=pickup ? MASK_PICKUP : MASK_DROPOFF;
+  int shift=pickup ? SHIFT_PICKUP : SHIFT_DROPOFF;
+  if ((perStopFlags[stopIndex] & mask) >> shift == NO_PICKUP) {
     return -1;
   }
   if (wheelchairAccessible && (perStopFlags[stopIndex] & FLAG_WHEELCHAIR_ACCESSIBLE) == 0) {

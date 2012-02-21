@@ -58,6 +58,10 @@
       }
     }
     StateEditor s1=state0.edit(this);
+    int type=pattern.getAlightType(stopIndex + 1);
+    if (TransitUtils.handleBoardAlightType(s1,type)) {
+      return null;
+    }
     s1.setTrip(bestPatternIndex);
     s1.incrementTimeInSeconds(bestWait);
     s1.incrementNumBoardings();
@@ -79,10 +83,11 @@
     if (state0.getBackEdgeNarrative() instanceof PatternBoard) {
       return null;
     }
-    if (!pattern.canAlight(stopIndex + 1)) {
+    StateEditor s1=state0.edit(this);
+    int type=pattern.getAlightType(stopIndex + 1);
+    if (TransitUtils.handleBoardAlightType(s1,type)) {
       return null;
     }
-    StateEditor s1=state0.edit(this);
     s1.setTripId(null);
     s1.setLastAlightedTime(state0.getTime());
     s1.setPreviousStop(tov);
