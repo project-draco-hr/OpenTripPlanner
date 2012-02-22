@@ -9,10 +9,11 @@
   if (atIntersection != null) {
     return atIntersection;
   }
-  Collection<StreetEdge> edges=index.getClosestEdges(coordinate,options);
+  CandidateEdgeBundle edges=index.getClosestEdges(coordinate,options);
   if (edges == null || edges.size() < 2) {
     _log.debug("found too few edges: {}",edges);
     return null;
   }
-  return getSplitterVertices(vertexLabel,edges,coordinate);
+  if (edges.endwise())   return index.getIntersectionAt(edges.endwiseVertex.getCoordinate());
+ else   return getSplitterVertices(vertexLabel,edges.toEdgeList(),coordinate);
 }
