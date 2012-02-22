@@ -35,20 +35,18 @@
   }
   _log.debug(" best stop: {} distance: {}",closest_stop,closest_stop_distance);
   StreetLocation closest_street=null;
-  Collection<StreetEdge> edges=getClosestEdges(coordinate,options,extraEdges);
+  CandidateEdgeBundle bundle=getClosestEdges(coordinate,options,extraEdges);
+  CandidateEdge candidate=bundle.closest;
   double closest_street_distance=Double.POSITIVE_INFINITY;
-  if (edges != null) {
-    StreetEdge bestStreet=edges.iterator().next();
-    Geometry g=bestStreet.getGeometry();
-    LocationIndexedLine l=new LocationIndexedLine(g);
-    LinearLocation location=l.project(coordinate);
-    Coordinate nearestPoint=location.getCoordinate(g);
+  if (candidate != null) {
+    StreetEdge bestStreet=candidate.edge;
+    Coordinate nearestPoint=candidate.nearestPointOnEdge;
     closest_street_distance=DistanceLibrary.distance(coordinate,nearestPoint);
     _log.debug("best street: {} dist: {}",bestStreet.toString(),closest_street_distance);
     if (name == null) {
       name=bestStreet.getName();
     }
-    closest_street=StreetLocation.createStreetLocation(bestStreet.getName() + "_" + coordinate.toString(),name,edges,nearestPoint);
+    closest_street=StreetLocation.createStreetLocation(bestStreet.getName() + "_" + coordinate.toString(),name,bundle.toEdgeList(),nearestPoint);
   }
   if (closest_street == null) {
     _log.debug("returning only transit stop (no street found)");
