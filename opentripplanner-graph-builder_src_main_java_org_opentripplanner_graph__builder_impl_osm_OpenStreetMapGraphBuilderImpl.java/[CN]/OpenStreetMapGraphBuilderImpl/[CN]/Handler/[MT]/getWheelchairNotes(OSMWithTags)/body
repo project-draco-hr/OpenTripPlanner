@@ -1,0 +1,21 @@
+{
+  Map<String,String> tags=way.getTagsByPrefix("wheelchair:description");
+  if (tags == null) {
+    return null;
+  }
+  Set<Alert> alerts=new HashSet<Alert>();
+  Alert alert=new Alert();
+  alerts.add(alert);
+  for (  Map.Entry<String,String> entry : tags.entrySet()) {
+    String k=entry.getKey();
+    String v=entry.getValue();
+    if (k.equals("wheelchair:description")) {
+      alert.alertHeaderText=new TranslatedString(v);
+    }
+ else {
+      String lang=k.substring("wheelchair:description:".length());
+      alert.alertHeaderText=new TranslatedString(lang,v);
+    }
+  }
+  return alerts;
+}

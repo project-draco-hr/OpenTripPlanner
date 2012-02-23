@@ -1,0 +1,11 @@
+{
+  Map<String,String> out=new HashMap<String,String>();
+  for (  Map.Entry<String,String> entry : _tags.entrySet()) {
+    String k=entry.getKey();
+    if (k.equals(prefix) || k.startsWith(prefix + ":")) {
+      out.put(k,entry.getValue());
+    }
+  }
+  if (out.isEmpty())   return null;
+  return out;
+}

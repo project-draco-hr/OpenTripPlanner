@@ -36,7 +36,8 @@
     }
   }
  else {
-    e=new OutEdge(location,(StreetVertex)tov);
+    OutEdge outEdge=new OutEdge(location,(StreetVertex)tov);
+    e=outEdge;
   }
   base.extra.add(e);
   return location;
