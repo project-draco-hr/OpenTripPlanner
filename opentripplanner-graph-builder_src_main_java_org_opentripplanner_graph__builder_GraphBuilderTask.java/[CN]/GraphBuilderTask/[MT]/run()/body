@@ -9,7 +9,8 @@
     _log.info("graph already exists and alwaysRebuild=false => skipping graph build");
     return;
   }
-  for (  GraphBuilder load : _graphBuilders)   load.buildGraph(graph);
+  HashMap<Class<?>,Object> extra=new HashMap<Class<?>,Object>();
+  for (  GraphBuilder load : _graphBuilders)   load.buildGraph(graph,extra);
   if (_modeList != null) {
     ContractionHierarchySet chs=new ContractionHierarchySet(graph,_modeList,_contractionFactor);
     chs.build();

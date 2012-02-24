@@ -11,7 +11,7 @@
   List<GraphBuilderWithGtfsDao> builders=new ArrayList<GraphBuilderWithGtfsDao>();
   builders.add(builder);
   gtfsBuilder.setGtfsGraphBuilders(builders);
-  gtfsBuilder.buildGraph(graph);
+  gtfsBuilder.buildGraph(graph,new HashMap<Class<?>,Object>());
   TransitIndexService index=graph.getService(TransitIndexService.class);
   assertNotNull(index);
   Edge prealightEdge=index.getPrealightEdge(new AgencyAndId("agency","A"));

@@ -26,7 +26,7 @@
   ShapefileStreetGraphBuilderImpl loader=new ShapefileStreetGraphBuilderImpl();
   loader.setFeatureSourceFactory(factory);
   loader.setSchema(schema);
-  loader.buildGraph(gg);
+  loader.buildGraph(gg,new HashMap<Class<?>,Object>());
   Vertex start=null;
   Vertex end=null;
   Vertex carlton=null;

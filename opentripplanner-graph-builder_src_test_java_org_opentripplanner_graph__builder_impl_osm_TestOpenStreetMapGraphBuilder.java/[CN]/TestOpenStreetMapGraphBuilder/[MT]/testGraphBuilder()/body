@@ -6,7 +6,7 @@
   File file=new File(getClass().getResource("map.osm.gz").getFile());
   provider.setPath(file);
   loader.setProvider(provider);
-  loader.buildGraph(gg);
+  loader.buildGraph(gg,extra);
   Vertex v2=gg.getVertex("way 25660216 from 1");
   Vertex v2back=gg.getVertex("way 25660216 from 1 back");
   Vertex v3=gg.getVertex("way 25691274 from 0");

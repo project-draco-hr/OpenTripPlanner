@@ -30,7 +30,7 @@
   ShapefileStreetGraphBuilderImpl loader=new ShapefileStreetGraphBuilderImpl();
   loader.setFeatureSourceFactory(factory);
   loader.setSchema(schema);
-  loader.buildGraph(graph);
+  loader.buildGraph(graph,new HashMap<Class<?>,Object>());
   resource=getClass().getResource("subway.zip");
   file=null;
   if (resource != null) {
@@ -48,7 +48,7 @@
   GtfsBundles bundles=new GtfsBundles();
   bundles.setBundles(bundleList);
   gtfsBuilder.setGtfsBundles(bundles);
-  gtfsBuilder.buildGraph(graph);
+  gtfsBuilder.buildGraph(graph,new HashMap<Class<?>,Object>());
   NetworkLinker nl=new NetworkLinker(graph);
   nl.createLinkage();
   TraverseOptions options=new TraverseOptions();
