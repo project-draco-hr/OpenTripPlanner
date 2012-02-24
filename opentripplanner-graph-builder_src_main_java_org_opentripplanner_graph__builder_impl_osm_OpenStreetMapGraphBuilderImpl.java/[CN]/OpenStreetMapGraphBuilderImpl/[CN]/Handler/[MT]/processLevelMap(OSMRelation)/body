@@ -1,5 +1,5 @@
 {
-  Map<String,OSMLevel> levels=OSMLevel.mapFromSpecList(relation.getTag("levels"));
+  Map<String,OSMLevel> levels=OSMLevel.mapFromSpecList(relation.getTag("levels"),Source.LEVEL_MAP,true);
   for (  OSMRelationMember member : relation.getMembers()) {
     if ("way".equals(member.getType()) && _ways.containsKey(member.getRef())) {
       OSMWay way=_ways.get(member.getRef());

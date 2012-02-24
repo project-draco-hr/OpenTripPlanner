@@ -1,0 +1,53 @@
+{
+  Double altitude=null;
+  int lastIndexAt=spec.lastIndexOf('@');
+  if (lastIndexAt != -1) {
+    try {
+      altitude=Double.parseDouble(spec.substring(lastIndexAt + 1));
+    }
+ catch (    NumberFormatException e) {
+    }
+    spec=spec.substring(0,lastIndexAt);
+  }
+  String shortName="";
+  String longName="";
+  Integer indexEquals=spec.indexOf('=');
+  if (indexEquals >= 1) {
+    shortName=spec.substring(0,indexEquals);
+    longName=spec.substring(indexEquals + 1);
+  }
+ else {
+    shortName=longName=spec;
+  }
+  Integer floorNumber=null;
+  try {
+    floorNumber=Integer.parseInt(longName);
+    if (incrementNonNegative && floorNumber >= 0) {
+      if (source == Source.LEVEL_MAP)       floorNumber-=1;
+ else       longName=Integer.toString(floorNumber + 1);
+    }
+  }
+ catch (  NumberFormatException e) {
+  }
+  try {
+    floorNumber=Integer.parseInt(shortName);
+    if (incrementNonNegative && floorNumber >= 0) {
+      if (source == Source.LEVEL_MAP)       floorNumber-=1;
+ else       shortName=Integer.toString(floorNumber + 1);
+    }
+  }
+ catch (  NumberFormatException e) {
+  }
+  if (floorNumber == null && altitude != null) {
+    floorNumber=(int)(altitude / METERS_PER_FLOOR);
+    _log.warn("Could not determine floor number for layer {}. Guessed {} (0-based) from altitude.",spec,floorNumber);
+  }
+  if (altitude == null) {
+    altitude=0.0;
+  }
+  if (floorNumber == null) {
+    floorNumber=0;
+    _log.warn("Could not infer floor number for layer '{}'. Vertical movement will still be possible, but elevator cost might be incorrect. Consider an OSM level map.",spec);
+  }
+  return new OSMLevel(floorNumber,altitude,shortName,longName,source);
+}
