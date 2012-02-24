@@ -22,18 +22,26 @@
   Integer floorNumber=null;
   try {
     floorNumber=Integer.parseInt(longName);
-    if (incrementNonNegative && floorNumber >= 0) {
-      if (source == Source.LEVEL_MAP)       floorNumber-=1;
- else       longName=Integer.toString(floorNumber + 1);
+    if (incrementNonNegative) {
+      if (source == Source.LEVEL_MAP) {
+        if (floorNumber >= 1)         floorNumber-=1;
+      }
+ else {
+        if (floorNumber >= 0)         longName=Integer.toString(floorNumber + 1);
+      }
     }
   }
  catch (  NumberFormatException e) {
   }
   try {
     floorNumber=Integer.parseInt(shortName);
-    if (incrementNonNegative && floorNumber >= 0) {
-      if (source == Source.LEVEL_MAP)       floorNumber-=1;
- else       shortName=Integer.toString(floorNumber + 1);
+    if (incrementNonNegative) {
+      if (source == Source.LEVEL_MAP) {
+        if (floorNumber >= 1)         floorNumber-=1;
+      }
+ else {
+        if (floorNumber >= 0)         shortName=Integer.toString(floorNumber + 1);
+      }
     }
   }
  catch (  NumberFormatException e) {
