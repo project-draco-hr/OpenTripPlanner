@@ -48,7 +48,10 @@ weight*=options.stairsReluctance;
  else {
 weight*=options.walkReluctance;
 }
-EdgeNarrative en=new FixedModeEdge(this,options.getModes().getNonTransitMode());
+FixedModeEdge en=new FixedModeEdge(this,options.getModes().getNonTransitMode());
+if (wheelchairNotes != null && options.wheelchairAccessible) {
+en.addNotes(wheelchairNotes);
+}
 StateEditor s1=s0.edit(this,en);
 switch (s0.getNoThruTrafficState()) {
 case INIT:

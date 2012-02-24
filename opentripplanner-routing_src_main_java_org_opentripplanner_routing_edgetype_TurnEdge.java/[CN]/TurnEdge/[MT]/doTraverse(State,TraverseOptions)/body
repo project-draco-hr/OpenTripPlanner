@@ -9,7 +9,11 @@
     return null;
   }
   TraverseMode traverseMode=options.getModes().getNonTransitMode();
-  EdgeNarrative en=new FixedModeEdge(this,traverseMode);
+  FixedModeEdge en=new FixedModeEdge(this,traverseMode);
+  Set<Alert> wheelchairNotes=fromv.getWheelchairNotes();
+  if (options.wheelchairAccessible) {
+    en.addNotes(wheelchairNotes);
+  }
   StateEditor s1=s0.edit(this,en);
 switch (s0.getNoThruTrafficState()) {
 case INIT:

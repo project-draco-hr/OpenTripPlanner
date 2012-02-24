@@ -9,7 +9,10 @@
     }
   }
   TraverseMode traverseMode=options.getModes().getNonTransitMode();
-  EdgeNarrative en=new FixedModeEdge(this,traverseMode);
+  FixedModeEdge en=new FixedModeEdge(this,traverseMode);
+  if (fromv.getWheelchairNotes() != null && options.wheelchairAccessible) {
+    en.addNotes(fromv.getWheelchairNotes());
+  }
   StateEditor s1=s0.edit(this,en);
   double time=fromv.getEffectiveLength(traverseMode) / options.speed;
   double weight=fromv.computeWeight(s0,options,time);

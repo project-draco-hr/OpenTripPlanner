@@ -13,11 +13,11 @@
     double lengthRatioIn=geometries.getFirst().getLength() / totalGeomLength;
     double lengthIn=street.getLength() * lengthRatioIn;
     double lengthOut=street.getLength() * (1 - lengthRatioIn);
-    newFrom=new TurnVertex(null,label + " (vertex going in to splitter)",geometries.getFirst(),name,lengthIn,false,street.getNotes());
+    newFrom=new TurnVertex(null,label + " (vertex going in to splitter)",geometries.getFirst(),street.getName(),lengthIn,false,street.getNotes());
     newFrom.setElevationProfile(street.getElevationProfile(0,lengthIn));
     newFrom.setPermission(street.getPermission());
     newFrom.setNoThruTraffic(street.isNoThruTraffic());
-    location=new TurnVertex(null,label + " (vertex at splitter)",geometries.getSecond(),name,lengthOut,false,street.getNotes());
+    location=new TurnVertex(null,label + " (vertex at splitter)",geometries.getSecond(),street.getName(),lengthOut,false,street.getNotes());
     location.setElevationProfile(street.getElevationProfile(lengthIn,lengthIn + lengthOut));
     location.setPermission(street.getPermission());
     location.setNoThruTraffic(street.isNoThruTraffic());
@@ -36,7 +36,8 @@
     }
   }
  else {
-    e=new OutEdge(location,(StreetVertex)tov);
+    OutEdge outEdge=new OutEdge(location,(StreetVertex)tov);
+    e=outEdge;
   }
   base.extra.add(e);
   return location;

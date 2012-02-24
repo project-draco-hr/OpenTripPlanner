@@ -1,7 +1,7 @@
 {
   if (geometry == null) {
     List<Coordinate> coords=new ArrayList<Coordinate>();
-    for (    RouteSegment segment : segments) {
+    for (    RouteSegment segment : exemplarSegments) {
       if (segment.hopOut != null) {
         Geometry segGeometry=segment.getGeometry();
         coords.addAll(Arrays.asList(segGeometry.getCoordinates()));
