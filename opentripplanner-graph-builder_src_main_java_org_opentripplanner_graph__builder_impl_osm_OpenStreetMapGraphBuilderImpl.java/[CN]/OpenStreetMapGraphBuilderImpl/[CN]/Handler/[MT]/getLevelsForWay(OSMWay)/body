@@ -1,0 +1,19 @@
+{
+  if (!wayLevels.containsKey(way)) {
+    String levelName=null;
+    OSMLevel.Source source=OSMLevel.Source.NONE;
+    OSMLevel level=OSMLevel.DEFAULT;
+    if (way.hasTag("level")) {
+      levelName=way.getTag("level");
+      source=OSMLevel.Source.LEVEL_TAG;
+    }
+ else     if (way.hasTag("layer")) {
+      levelName=way.getTag("layer");
+      source=OSMLevel.Source.LAYER_TAG;
+    }
+    if (levelName != null) {
+      level=OSMLevel.fromString(levelName,source);
+    }
+    wayLevels.put(way,level);
+  }
+}

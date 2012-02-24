@@ -1,0 +1,14 @@
+{
+  Set<Long> possibleIntersectionNodes=new HashSet<Long>();
+  for (  OSMWay way : _ways.values()) {
+    List<Long> nodes=way.getNodeRefs();
+    for (    long node : nodes) {
+      if (possibleIntersectionNodes.contains(node)) {
+        intersectionNodes.put(node,null);
+      }
+ else {
+        possibleIntersectionNodes.add(node);
+      }
+    }
+  }
+}

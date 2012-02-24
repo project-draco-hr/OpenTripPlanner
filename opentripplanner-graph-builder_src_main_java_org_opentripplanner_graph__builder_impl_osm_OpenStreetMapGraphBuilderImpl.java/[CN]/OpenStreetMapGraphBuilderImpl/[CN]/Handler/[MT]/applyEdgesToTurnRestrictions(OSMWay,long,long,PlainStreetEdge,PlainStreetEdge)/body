@@ -1,0 +1,28 @@
+{
+  List<TurnRestrictionTag> restrictionTags=turnRestrictionsByFromWay.get(way.getId());
+  if (restrictionTags != null) {
+    for (    TurnRestrictionTag tag : restrictionTags) {
+      if (tag.via == startNode) {
+        TurnRestriction restriction=turnRestrictionsByTag.get(tag);
+        restriction.from=backStreet;
+      }
+ else       if (tag.via == endNode) {
+        TurnRestriction restriction=turnRestrictionsByTag.get(tag);
+        restriction.from=street;
+      }
+    }
+  }
+  restrictionTags=turnRestrictionsByToWay.get(way.getId());
+  if (restrictionTags != null) {
+    for (    TurnRestrictionTag tag : restrictionTags) {
+      if (tag.via == startNode) {
+        TurnRestriction restriction=turnRestrictionsByTag.get(tag);
+        restriction.to=street;
+      }
+ else       if (tag.via == endNode) {
+        TurnRestriction restriction=turnRestrictionsByTag.get(tag);
+        restriction.to=backStreet;
+      }
+    }
+  }
+}

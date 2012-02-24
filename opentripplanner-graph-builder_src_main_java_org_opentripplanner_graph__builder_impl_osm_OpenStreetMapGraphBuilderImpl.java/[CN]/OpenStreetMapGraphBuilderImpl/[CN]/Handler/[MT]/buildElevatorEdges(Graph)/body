@@ -1,0 +1,37 @@
+{
+  for (  Long nodeId : multiLevelNodes.keySet()) {
+    OSMNode node=_nodes.get(nodeId);
+    HashMap<OSMLevel,IntersectionVertex> vertices=multiLevelNodes.get(nodeId);
+    OSMLevel[] levels=vertices.keySet().toArray(new OSMLevel[0]);
+    Arrays.sort(levels);
+    ArrayList<Vertex> onboardVertices=new ArrayList<Vertex>();
+    for (    OSMLevel level : levels) {
+      IntersectionVertex sourceVertex=vertices.get(level);
+      String sourceVertexLabel=sourceVertex.getLabel();
+      String levelName=level.longName;
+      ElevatorOffboardVertex offboardVertex=new ElevatorOffboardVertex(graph,sourceVertexLabel + "_offboard",sourceVertex.getX(),sourceVertex.getY(),levelName);
+      new FreeEdge(sourceVertex,offboardVertex);
+      new FreeEdge(offboardVertex,sourceVertex);
+      ElevatorOnboardVertex onboardVertex=new ElevatorOnboardVertex(graph,sourceVertexLabel + "_onboard",sourceVertex.getX(),sourceVertex.getY(),levelName);
+      new ElevatorBoardEdge(offboardVertex,onboardVertex);
+      new ElevatorAlightEdge(onboardVertex,offboardVertex,level.longName);
+      onboardVertices.add(onboardVertex);
+    }
+    for (Integer i=0, vSize=onboardVertices.size() - 1; i < vSize; i++) {
+      Vertex from=onboardVertices.get(i);
+      Vertex to=onboardVertices.get(i + 1);
+      boolean wheelchairAccessible=true;
+      StreetTraversalPermission permission=StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE;
+      if (node.isTagFalse("bicycle")) {
+        permission=StreetTraversalPermission.PEDESTRIAN;
+      }
+      if (node.isTagFalse("wheelchair")) {
+        wheelchairAccessible=false;
+      }
+      ElevatorHopEdge foreEdge=new ElevatorHopEdge(from,to,permission);
+      ElevatorHopEdge backEdge=new ElevatorHopEdge(to,from,permission);
+      foreEdge.wheelchairAccessible=wheelchairAccessible;
+      backEdge.wheelchairAccessible=wheelchairAccessible;
+    }
+  }
+}
