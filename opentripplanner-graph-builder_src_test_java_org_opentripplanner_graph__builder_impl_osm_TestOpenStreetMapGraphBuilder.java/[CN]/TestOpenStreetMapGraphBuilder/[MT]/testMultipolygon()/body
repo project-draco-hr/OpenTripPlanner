@@ -4,6 +4,6 @@
   FileBasedOpenStreetMapProviderImpl pr=new FileBasedOpenStreetMapProviderImpl();
   pr.setPath(new File(getClass().getResource("otp-multipolygon-test.osm").getPath()));
   loader.setProvider(pr);
-  loader.buildGraph(gg);
+  loader.buildGraph(gg,extra);
   assertNotNull(gg.getVertex("way -3535 from 4"));
 }

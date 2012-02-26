@@ -23,7 +23,7 @@
   schema.setPermissionConverter(perms);
   schema.setNoteConverter(new AttributeFeatureConverter<String>("PREFIX"));
   builder.setSchema(schema);
-  builder.buildGraph(graph);
+  builder.buildGraph(graph,new HashMap<Class<?>,Object>());
   GraphServiceImpl graphService=new GraphServiceImpl();
   graphService.setGraph(graph);
   pathService.setGraphService(graphService);
