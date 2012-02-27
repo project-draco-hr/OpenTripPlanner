@@ -188,6 +188,9 @@ catch (          IllegalAccessException e1) {
           }
           field.setAccessible(true);
           String name=field.getName();
+          if (name.equals("incoming") || name.equals("outgoing")) {
+            continue;
+          }
           String value="(unknown -- see console for stack trace)";
           try {
             value="" + field.get(fromv);
@@ -357,7 +360,7 @@ catch (          IllegalAccessException e1) {
   rightPanel.setLayout(new BorderLayout());
   pane.add(rightPanel,BorderLayout.LINE_END);
   JTabbedPane rightPanelTabs=new JTabbedPane();
-  rightPanel.add(rightPanelTabs,BorderLayout.CENTER);
+  rightPanel.add(rightPanelTabs,BorderLayout.LINE_END);
   serviceIdLabel=new JLabel("[service id]");
   rightPanel.add(serviceIdLabel,BorderLayout.PAGE_END);
   departurePattern=new JList();
@@ -369,8 +372,11 @@ catch (          IllegalAccessException e1) {
   JScrollPane mdScrollPane=new JScrollPane(metadataList);
   mdScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
   rightPanelTabs.addTab("metadata",mdScrollPane);
-  metadataList.setMaximumSize(new Dimension(200,1600));
-  rightPanelTabs.setMaximumSize(new Dimension(200,1600));
+  Dimension size=new Dimension(200,1600);
+  mdScrollPane.setMaximumSize(size);
+  mdScrollPane.setPreferredSize(size);
+  rightPanelTabs.setMaximumSize(size);
+  rightPanel.setMaximumSize(size);
   showGraph.init();
   addWindowListener(new ExitListener());
   pack();
