@@ -16,7 +16,7 @@
   }
   List<OSMLevel> levels=new ArrayList<OSMLevel>();
   for (  String spec : levelSpecs) {
-    levels.add(fromString(spec,Source.LEVEL_MAP));
+    levels.add(fromString(spec,source,incrementNonNegative));
   }
   return levels;
 }

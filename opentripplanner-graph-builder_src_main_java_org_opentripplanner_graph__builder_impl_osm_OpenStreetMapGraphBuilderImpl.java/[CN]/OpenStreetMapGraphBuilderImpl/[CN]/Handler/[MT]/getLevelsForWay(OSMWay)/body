@@ -12,7 +12,7 @@
       source=OSMLevel.Source.LAYER_TAG;
     }
     if (levelName != null) {
-      level=OSMLevel.fromString(levelName,source);
+      level=OSMLevel.fromString(levelName,source,noZeroLevels);
     }
     wayLevels.put(way,level);
   }
