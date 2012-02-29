@@ -20,5 +20,5 @@
   coordList.add(new Coordinate(edgeLenM,getElevation(coords[coords.length - 1])));
   Coordinate coordArr[]=new Coordinate[coordList.size()];
   PackedCoordinateSequence elevPCS=new PackedCoordinateSequence.Double(coordList.toArray(coordArr));
-  ee.setElevationProfile(elevPCS);
+  ee.setElevationProfile(elevPCS,false);
 }

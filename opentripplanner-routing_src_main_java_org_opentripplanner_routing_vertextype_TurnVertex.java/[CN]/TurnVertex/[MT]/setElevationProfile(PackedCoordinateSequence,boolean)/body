@@ -1,0 +1,17 @@
+{
+  if (elev == null || elev.size() < 2) {
+    return;
+  }
+  if (slopeOverride && !computed) {
+    return;
+  }
+  elevationProfile=elev;
+  double lengthMultiplier=ElevationUtils.getLengthMultiplierFromElevation(elev);
+  length*=lengthMultiplier;
+  bicycleSafetyEffectiveLength*=lengthMultiplier;
+  SlopeCosts costs=ElevationUtils.getSlopeCosts(elev,getName());
+  slopeSpeedEffectiveLength=costs.slopeSpeedEffectiveLength;
+  maxSlope=costs.maxSlope;
+  slopeWorkCost=costs.slopeWorkCost;
+  bicycleSafetyEffectiveLength+=costs.slopeSafetyCost;
+}

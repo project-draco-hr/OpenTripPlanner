@@ -1,11 +1,17 @@
 {
   Coverage gridCov=gridCoverageFactory.getGridCoverage();
   coverage=(gridCov instanceof GridCoverage2D) ? Interpolator2D.create((GridCoverage2D)gridCov,new InterpolationBilinear()) : gridCov;
+  List<EdgeWithElevation> edgesWithElevation=new ArrayList<EdgeWithElevation>();
   for (  Vertex gv : graph.getVertices()) {
     for (    Edge ee : gv.getOutgoing()) {
       if (ee instanceof EdgeWithElevation) {
-        processEdge((EdgeWithElevation)ee);
+        EdgeWithElevation edgeWithElevation=(EdgeWithElevation)ee;
+        processEdge(edgeWithElevation);
+        if (edgeWithElevation.getElevationProfile() != null) {
+          edgesWithElevation.add(edgeWithElevation);
+        }
       }
     }
   }
+  assignMissingElevations(graph,edgesWithElevation);
 }

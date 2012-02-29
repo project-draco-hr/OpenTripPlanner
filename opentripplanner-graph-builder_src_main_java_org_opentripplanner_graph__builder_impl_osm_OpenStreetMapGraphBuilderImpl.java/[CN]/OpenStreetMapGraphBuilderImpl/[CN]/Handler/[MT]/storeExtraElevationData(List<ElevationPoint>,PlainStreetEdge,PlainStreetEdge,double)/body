@@ -1,0 +1,9 @@
+{
+  if (elevationPoints.isEmpty()) {
+    return;
+  }
+  for (  ElevationPoint p : elevationPoints) {
+    MapUtils.addToMapList(extraElevationData.data,street,p);
+    MapUtils.addToMapList(extraElevationData.data,backStreet,p.fromBack(length));
+  }
+}

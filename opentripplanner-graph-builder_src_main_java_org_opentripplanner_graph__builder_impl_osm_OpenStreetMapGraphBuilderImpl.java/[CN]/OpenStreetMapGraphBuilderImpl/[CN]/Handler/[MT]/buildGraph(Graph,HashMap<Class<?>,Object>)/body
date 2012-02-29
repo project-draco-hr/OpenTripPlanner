@@ -1,0 +1,143 @@
+{
+  this.graph=graph;
+  processRelations();
+  _nodes.keySet().retainAll(_nodesWithNeighbors);
+  long wayIndex=0;
+  initIntersectionNodes();
+  GeometryFactory geometryFactory=new GeometryFactory();
+  for (  OSMWay way : _ways.values()) {
+    if (wayIndex % 10000 == 0)     _log.debug("ways=" + wayIndex + "/"+ _ways.size());
+    wayIndex++;
+    WayProperties wayData=wayPropertySet.getDataForWay(way);
+    if (!way.hasTag("name")) {
+      String creativeName=wayPropertySet.getCreativeNameForWay(way);
+      if (creativeName != null) {
+        way.addTag("otp:gen_name",creativeName);
+      }
+    }
+    Set<Alert> note=wayPropertySet.getNoteForWay(way);
+    Set<Alert> wheelchairNote=getWheelchairNotes(way);
+    StreetTraversalPermission permissions=getPermissionsForEntity(way,wayData.getPermission());
+    if (permissions == StreetTraversalPermission.NONE)     continue;
+    List<Long> nodes=way.getNodeRefs();
+    IntersectionVertex startEndpoint=null, endEndpoint=null;
+    ArrayList<Coordinate> segmentCoordinates=new ArrayList<Coordinate>();
+    getLevelsForWay(way);
+    Long startNode=null;
+    OSMNode osmStartNode=null;
+    List<ElevationPoint> elevationPoints=new ArrayList<ElevationPoint>();
+    double distance=0;
+    for (int i=0; i < nodes.size() - 1; i++) {
+      OSMNode segmentStartOSMNode=_nodes.get(nodes.get(i));
+      if (segmentStartOSMNode == null) {
+        continue;
+      }
+      Long endNode=nodes.get(i + 1);
+      if (osmStartNode == null) {
+        startNode=nodes.get(i);
+        osmStartNode=segmentStartOSMNode;
+        elevationPoints.clear();
+      }
+      OSMNode osmEndNode=_nodes.get(endNode);
+      if (osmStartNode == null || osmEndNode == null)       continue;
+      LineString geometry;
+      if (segmentCoordinates.size() == 0) {
+        segmentCoordinates.add(getCoordinate(osmStartNode));
+      }
+      String ele=segmentStartOSMNode.getTag("ele");
+      if (ele != null) {
+        elevationPoints.add(new ElevationPoint(distance,Double.parseDouble(ele)));
+      }
+      distance+=DistanceLibrary.distance(segmentStartOSMNode.getLat(),segmentStartOSMNode.getLon(),osmEndNode.getLat(),osmEndNode.getLon());
+      if (intersectionNodes.containsKey(endNode) || i == nodes.size() - 2) {
+        segmentCoordinates.add(getCoordinate(osmEndNode));
+        ele=osmEndNode.getTag("ele");
+        if (ele != null) {
+          elevationPoints.add(new ElevationPoint(distance,Double.parseDouble(ele)));
+        }
+        geometry=geometryFactory.createLineString(segmentCoordinates.toArray(new Coordinate[0]));
+        segmentCoordinates.clear();
+      }
+ else {
+        segmentCoordinates.add(getCoordinate(osmEndNode));
+        continue;
+      }
+      if (startEndpoint == null) {
+        startEndpoint=getVertexForOsmNode(osmStartNode,way);
+      }
+ else {
+        startEndpoint=endEndpoint;
+      }
+      endEndpoint=getVertexForOsmNode(osmEndNode,way);
+      P2<PlainStreetEdge> streets=getEdgesForStreet(startEndpoint,endEndpoint,way,i,permissions,geometry);
+      PlainStreetEdge street=streets.getFirst();
+      if (street != null) {
+        double safety=wayData.getSafetyFeatures().getFirst();
+        street.setBicycleSafetyEffectiveLength(street.getLength() * safety);
+        if (safety < bestBikeSafety) {
+          bestBikeSafety=safety;
+        }
+        if (note != null) {
+          street.setNote(note);
+        }
+        if (wheelchairNote != null) {
+          street.setWheelchairNote(wheelchairNote);
+        }
+      }
+      PlainStreetEdge backStreet=streets.getSecond();
+      if (backStreet != null) {
+        double safety=wayData.getSafetyFeatures().getSecond();
+        if (safety < bestBikeSafety) {
+          bestBikeSafety=safety;
+        }
+        backStreet.setBicycleSafetyEffectiveLength(backStreet.getLength() * safety);
+        if (note != null) {
+          backStreet.setNote(note);
+        }
+        if (wheelchairNote != null) {
+          backStreet.setWheelchairNote(wheelchairNote);
+        }
+      }
+      storeExtraElevationData(elevationPoints,street,backStreet,distance);
+      applyEdgesToTurnRestrictions(way,startNode,endNode,street,backStreet);
+      startNode=endNode;
+      osmStartNode=_nodes.get(startNode);
+    }
+  }
+  buildElevatorEdges(graph);
+  Map<Edge,TurnRestriction> turnRestrictions=new HashMap<Edge,TurnRestriction>();
+  for (  TurnRestriction restriction : turnRestrictionsByTag.values()) {
+    turnRestrictions.put(restriction.from,restriction);
+  }
+  if (customNamer != null) {
+    customNamer.postprocess(graph);
+  }
+  Map<EdgeWithElevation,List<ElevationPoint>> data=extraElevationData.data;
+  for (  Map.Entry<EdgeWithElevation,List<ElevationPoint>> entry : data.entrySet()) {
+    EdgeWithElevation edge=entry.getKey();
+    System.out.println("setting extra elevation for " + edge);
+    List<ElevationPoint> points=entry.getValue();
+    Collections.sort(points);
+    if (points.size() == 1) {
+      ElevationPoint firstPoint=points.get(0);
+      ElevationPoint endPoint=new ElevationPoint(edge.getDistance(),firstPoint.ele);
+      points.add(endPoint);
+    }
+    Coordinate[] coords=new Coordinate[points.size()];
+    int i=0;
+    for (    ElevationPoint p : points) {
+      double d=p.distanceAlongShape;
+      if (i == 0) {
+        d=0;
+      }
+ else       if (i == points.size() - 1) {
+        d=edge.getDistance();
+      }
+      coords[i++]=new Coordinate(d,p.ele);
+    }
+    edge.setElevationProfile(new PackedCoordinateSequence.Double(coords),true);
+  }
+  applyBikeSafetyFactor(graph);
+  StreetUtils.pruneFloatingIslands(graph);
+  StreetUtils.makeEdgeBased(graph,endpoints,turnRestrictions);
+}
