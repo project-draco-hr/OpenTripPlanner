@@ -12,6 +12,7 @@
   service.setData(data);
   GtfsContext context=GtfsLibrary.createContext(_dao,service);
   GTFSPatternHopFactory hf=new GTFSPatternHopFactory(context);
+  hf.setFareServiceFactory(_fareServiceFactory);
   hf.run(graph);
   graph.putService(CalendarServiceData.class,data);
   graph.updateTransitFeedValidity(data);
