@@ -1,0 +1,19 @@
+{
+  Long sfmtaTransferIssueTime=null;
+  Edge lastEdge=null;
+  TraverseMode lastMode=null;
+  Stop firstStop=null;
+  for (  Edge edge : path.edges) {
+    TraverseMode mode=edge.getMode();
+    Trip trip=edge.getTrip();
+    Route route=trip.getRoute();
+    Agency agency=route.getAgency();
+    System.out.println(mode);
+    System.out.println(trip);
+    System.out.println(route);
+    System.out.println(agency);
+    System.out.println("---");
+  }
+  Fare fare=new Fare();
+  return fare;
+}
