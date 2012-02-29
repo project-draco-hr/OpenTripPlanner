@@ -1,0 +1,15 @@
+{
+  Graph graph=graphService.getGraph();
+  Vertex vertex=graph.getVertex(label);
+  if (vertex == null) {
+    return null;
+  }
+  EdgeSet incoming=new EdgeSet();
+  incoming.addEdges(vertex.getIncoming(),graph);
+  EdgeSet outgoing=new EdgeSet();
+  outgoing.addEdges(vertex.getOutgoing(),graph);
+  EdgesForVertex e4v=new EdgesForVertex();
+  e4v.incoming=incoming.withGraph(graph);
+  e4v.outgoing=outgoing.withGraph(graph);
+  return e4v;
+}

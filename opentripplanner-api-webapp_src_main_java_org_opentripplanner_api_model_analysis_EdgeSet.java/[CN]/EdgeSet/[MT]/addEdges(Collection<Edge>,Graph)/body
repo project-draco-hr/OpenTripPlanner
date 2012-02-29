@@ -1,0 +1,8 @@
+{
+  if (edges == null) {
+    edges=new ArrayList<WrappedEdge>();
+  }
+  for (  Edge edge : newEdges) {
+    edges.add(new WrappedEdge(edge,graph.getIdForEdge(edge)));
+  }
+}
