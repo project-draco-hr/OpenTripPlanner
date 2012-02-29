@@ -45,6 +45,19 @@
     @Override public List<AgencyAndId> getAllRouteIds(){
       return Collections.emptyList();
     }
+    @Override public void addCalendars(    Collection<ServiceCalendar> allCalendars){
+    }
+    @Override public void addCalendarDates(    Collection<ServiceCalendarDate> allDates){
+    }
+    @Override public List<String> getAllAgencies(){
+      return Arrays.asList("agency");
+    }
+    @Override public List<ServiceCalendarDate> getCalendarDatesByAgency(    String agency){
+      return null;
+    }
+    @Override public List<ServiceCalendar> getCalendarsByAgency(    String agency){
+      return null;
+    }
   }
 ;
   graph.putService(TransitIndexService.class,index);
