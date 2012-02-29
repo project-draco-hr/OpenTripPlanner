@@ -2,7 +2,7 @@
   if (turnRestricted(options) && !options.getModes().contains(TraverseMode.WALK)) {
     return null;
   }
-  if (!fromv.canTraverse(options)) {
+  if (!((TurnVertex)fromv).canTraverse(options)) {
     if (options.getModes().contains(TraverseMode.BICYCLE)) {
       return doTraverse(s0,options.getWalkingOptions());
     }
@@ -10,14 +10,14 @@
   }
   TraverseMode traverseMode=options.getModes().getNonTransitMode();
   FixedModeEdge en=new FixedModeEdge(this,traverseMode);
-  Set<Alert> wheelchairNotes=fromv.getWheelchairNotes();
+  Set<Alert> wheelchairNotes=((TurnVertex)fromv).getWheelchairNotes();
   if (options.wheelchairAccessible) {
     en.addNotes(wheelchairNotes);
   }
   StateEditor s1=s0.edit(this,en);
 switch (s0.getNoThruTrafficState()) {
 case INIT:
-    if (fromv.isNoThruTraffic()) {
+    if (((TurnVertex)fromv).isNoThruTraffic()) {
       s1.setNoThruTrafficState(NoThruTrafficState.IN_INITIAL_ISLAND);
     }
  else {
@@ -25,24 +25,24 @@ case INIT:
     }
   break;
 case IN_INITIAL_ISLAND:
-if (!fromv.isNoThruTraffic()) {
+if (!((TurnVertex)fromv).isNoThruTraffic()) {
   s1.setNoThruTrafficState(NoThruTrafficState.BETWEEN_ISLANDS);
 }
 break;
 case BETWEEN_ISLANDS:
-if (fromv.isNoThruTraffic()) {
+if (((TurnVertex)fromv).isNoThruTraffic()) {
 s1.setNoThruTrafficState(NoThruTrafficState.IN_FINAL_ISLAND);
 }
 break;
 case IN_FINAL_ISLAND:
-if (!fromv.isNoThruTraffic()) {
+if (!((TurnVertex)fromv).isNoThruTraffic()) {
 return null;
 }
 break;
 }
-double time=(fromv.getEffectiveLength(traverseMode) + turnCost / 20.0) / options.speed;
-double weight=fromv.computeWeight(s0,options,time);
-s1.incrementWalkDistance(fromv.getLength());
+double time=(((TurnVertex)fromv).getEffectiveLength(traverseMode) + turnCost / 20.0) / options.speed;
+double weight=((TurnVertex)fromv).computeWeight(s0,options,time);
+s1.incrementWalkDistance(((TurnVertex)fromv).getLength());
 s1.incrementTimeInSeconds((int)Math.ceil(time));
 s1.incrementWeight(weight);
 if (s1.weHaveWalkedTooFar(options)) return null;
