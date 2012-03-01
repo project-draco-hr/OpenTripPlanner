@@ -138,6 +138,5 @@
     edge.setElevationProfile(new PackedCoordinateSequence.Double(coords),true);
   }
   applyBikeSafetyFactor(graph);
-  StreetUtils.pruneFloatingIslands(graph);
   StreetUtils.makeEdgeBased(graph,endpoints,turnRestrictions);
 }
