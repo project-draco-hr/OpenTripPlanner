@@ -1,52 +1,19 @@
 {
-  LinkedList<State> states=path.states;
-  List<Ride> rides=new ArrayList<Ride>();
-  Ride newRide=null;
-  for (  State curr : states) {
-    EdgeNarrative edgeNarrative=curr.getBackEdgeNarrative();
-    if (edgeNarrative == null)     continue;
-    String zone=curr.getZone();
-    AgencyAndId route=curr.getRoute();
-    TraverseMode mode=edgeNarrative.getMode();
-    if (zone == null && route == null) {
-      newRide=null;
-    }
- else {
-      if (mode.isTransit() || mode == TraverseMode.BOARDING) {
-        if (newRide == null || !route.equals(newRide.route)) {
-          newRide=new Ride();
-          rides.add(newRide);
-          newRide.startZone=zone;
-          newRide.route=route;
-          newRide.startTime=curr.getTime();
-        }
-        newRide.zones.add(zone);
-        newRide.endZone=zone;
-        newRide.endTime=curr.getTime();
-      }
-    }
-  }
+  List<Ride> rides=createRides(path);
   if (rides.size() == 0) {
     return null;
   }
-  int[][] resultTable=new int[rides.size()][rides.size()];
-  for (int i=0; i < rides.size(); i++) {
-    for (int j=0; j < rides.size() - i; j++) {
-      int cost=calculateCost(rides,j,j + i);
-      if (cost < 0) {
-        continue;
-      }
-      resultTable[j][j + i]=cost;
-      for (int k=0; k < i; k++) {
-        if (resultTable[j][j + i] > resultTable[j][j + k] + resultTable[j + k + 1][j + i])         resultTable[j][j + i]=resultTable[j][k + j] + resultTable[j + k + 1][j + i];
-      }
-    }
-  }
   WrappedCurrency wrappedCurrency=null;
-  Fare fare=new Fare();
   if (fareAttributes.size() > 0) {
     wrappedCurrency=new WrappedCurrency(fareAttributes.values().iterator().next().getCurrencyType());
   }
-  fare.addFare(FareType.regular,wrappedCurrency,resultTable[0][rides.size() - 1]);
-  return fare;
+  int lowestCost=getLowestCost(rides);
+  if (lowestCost < Integer.MAX_VALUE) {
+    Fare fare=new Fare();
+    fare.addFare(FareType.regular,wrappedCurrency,lowestCost);
+    return fare;
+  }
+ else {
+    return null;
+  }
 }

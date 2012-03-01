@@ -2,26 +2,34 @@
   Currency currency=null;
   Set<String> zones=new HashSet<String>();
   Set<AgencyAndId> routes=new HashSet<AgencyAndId>();
-  String startZone=null;
   int transfersUsed=-1;
-  float currentFare=-1;
-  long startTime=rides.get(first).startTime;
-  Ride ride=rides.get(first);
-  for (int i=first; i <= last; ++i) {
-    ride=rides.get(i);
-    if (startZone == null) {
-      startZone=ride.startZone;
+  Ride firstRide=rides.get(0);
+  long startTime=firstRide.startTime;
+  String startZone=firstRide.startZone;
+  String endZone=firstRide.endZone;
+  String agencyId=firstRide.route.getAgencyId();
+  long lastRideStartTime=firstRide.startTime;
+  long lastRideEndTime=firstRide.endTime;
+  for (  Ride ride : rides) {
+    if (!ride.route.getAgencyId().equals(agencyId)) {
+      _log.debug("skipped multi-agency ride sequence {}",rides);
+      return Integer.MAX_VALUE;
     }
+    lastRideStartTime=ride.startTime;
+    lastRideEndTime=ride.endTime;
+    endZone=ride.endZone;
     routes.add(ride.route);
     zones.addAll(ride.zones);
     transfersUsed+=1;
   }
+  FareAttribute bestAttribute=null;
   float bestFare=Float.MAX_VALUE;
-  long tripTime=ride.startTime - startTime;
-  long journeyTime=ride.endTime - startTime;
+  long tripTime=lastRideStartTime - startTime;
+  long journeyTime=lastRideEndTime - startTime;
   for (  AgencyAndId fareId : fareAttributes.keySet()) {
+    if (!fareId.getAgencyId().equals(agencyId))     continue;
     FareRuleSet ruleSet=fareRules.get(fareId);
-    if (ruleSet == null || ruleSet.matches(startZone,ride.endZone,zones,routes)) {
+    if (ruleSet == null || ruleSet.matches(startZone,endZone,zones,routes)) {
       FareAttribute attribute=fareAttributes.get(fareId);
       if (attribute.isTransfersSet() && attribute.getTransfers() < transfersUsed) {
         continue;
@@ -34,16 +42,16 @@
       }
       float newFare=attribute.getPrice();
       if (newFare < bestFare) {
+        bestAttribute=attribute;
         bestFare=newFare;
         currency=Currency.getInstance(attribute.getCurrencyType());
       }
     }
   }
+  _log.debug("{} best for {}",bestAttribute,rides);
   if (bestFare == Float.MAX_VALUE) {
-    if (currentFare == -1) {
-      _log.warn("No fare for a ride: " + ride);
-      return -1;
-    }
+    _log.warn("No fare for a ride sequence: {}",rides);
+    return Integer.MAX_VALUE;
   }
   return (int)Math.round(bestFare * Math.pow(10,currency.getDefaultFractionDigits()));
 }
