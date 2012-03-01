@@ -99,5 +99,6 @@
   }
   _log.debug("Built transit index: " + variantsByAgency.size() + " agencies, "+ variantsByRoute.size()+ " routes, "+ totalTrips+ " trips, "+ totalVariants+ " variants ");
   TransitIndexService service=new TransitIndexServiceImpl(variantsByAgency,variantsByRoute,variantsByTrip,preBoardEdges,preAlightEdges,directionsByRoute,modes);
+  insertCalendarData(service);
   graph.putService(TransitIndexService.class,service);
 }
