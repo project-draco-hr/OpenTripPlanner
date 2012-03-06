@@ -1,0 +1,16 @@
+{
+  List<TransitStop> stops=streetVertexIndexService.getNearbyTransitStops(new Coordinate(lon,lat),STOP_SEARCH_RADIUS);
+  StopList response=new StopList();
+  for (  TransitStop transitStop : stops) {
+    AgencyAndId stopId=transitStop.getStopId();
+    if (agency != null && !agency.equals(stopId.getAgencyId()))     continue;
+    Stop stop=new Stop();
+    stop.id=stopId;
+    stop.lat=transitStop.getLat();
+    stop.lon=transitStop.getLon();
+    stop.stopCode=transitStop.getStopCode();
+    stop.stopName=transitStop.getName();
+    response.stops.add(stop);
+  }
+  return response;
+}
