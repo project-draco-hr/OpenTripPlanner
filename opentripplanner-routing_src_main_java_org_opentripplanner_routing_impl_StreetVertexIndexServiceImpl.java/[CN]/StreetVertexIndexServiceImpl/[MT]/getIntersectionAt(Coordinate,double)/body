@@ -1,0 +1,15 @@
+{
+  Envelope envelope=new Envelope(coordinate);
+  envelope.expandBy(distanceError * 2);
+  List<StreetVertex> nearby=intersectionTree.query(envelope);
+  List<StreetVertex> atIntersection=new ArrayList<StreetVertex>(nearby.size());
+  for (  StreetVertex v : nearby) {
+    if (coordinate.distance(v.getCoordinate()) < distanceError) {
+      atIntersection.add(v);
+    }
+  }
+  if (atIntersection.isEmpty()) {
+    return null;
+  }
+  return atIntersection;
+}
