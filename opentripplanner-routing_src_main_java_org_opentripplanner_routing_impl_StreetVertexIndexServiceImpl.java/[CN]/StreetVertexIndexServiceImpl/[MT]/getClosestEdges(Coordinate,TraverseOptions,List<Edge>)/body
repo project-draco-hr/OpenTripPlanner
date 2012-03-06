@@ -11,9 +11,9 @@
   double envelopeGrowthAmount=0.002;
   CandidateEdgeBundle candidateEdges=new CandidateEdgeBundle();
   while (candidateEdges.size() == 0) {
+    if (envelope.getWidth() > MAX_DISTANCE_FROM_STREET * 2)     return candidateEdges;
     envelope.expandBy(envelopeGrowthAmount);
     envelopeGrowthAmount*=2;
-    if (envelope.getWidth() > MAX_DISTANCE_FROM_STREET * 2)     return candidateEdges;
     List<StreetEdge> nearbyEdges=edgeTree.query(envelope);
     if (extraEdges != null && nearbyEdges != null) {
       nearbyEdges=new JoinedList<StreetEdge>(nearbyEdges,extraStreets);
