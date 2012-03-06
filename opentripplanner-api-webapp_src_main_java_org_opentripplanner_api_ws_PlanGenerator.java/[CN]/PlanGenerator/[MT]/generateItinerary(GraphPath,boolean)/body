@@ -184,7 +184,7 @@ pgstate=PlanGenState.START;
  else if (mode.toString() == leg.mode) {
 if (showIntermediateStops) {
 if (!(backEdge instanceof Dwell || backEdge instanceof PatternDwell || backEdge instanceof PatternInterlineDwell)) {
-Place stop=makePlace(state.getBackState());
+Place stop=makePlace(state.getBackState(),true);
 leg.stop.add(stop);
 }
  else if (leg.stop.size() > 0) {
