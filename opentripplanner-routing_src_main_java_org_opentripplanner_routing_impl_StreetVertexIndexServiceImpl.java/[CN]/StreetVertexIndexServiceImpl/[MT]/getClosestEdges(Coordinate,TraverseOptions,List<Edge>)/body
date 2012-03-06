@@ -8,17 +8,22 @@
   if (options != null) {
     walkingOptions=options.getWalkingOptions();
   }
-  envelope.expandBy(MAX_DISTANCE_FROM_STREET);
-  List<StreetEdge> nearbyEdges=edgeTree.query(envelope);
-  if (extraEdges != null && nearbyEdges != null) {
-    nearbyEdges=new JoinedList<StreetEdge>(nearbyEdges,extraStreets);
-  }
+  double envelopeGrowthAmount=0.002;
   CandidateEdgeBundle candidateEdges=new CandidateEdgeBundle();
-  for (  StreetEdge e : nearbyEdges) {
-    if (e == null || e instanceof OutEdge)     continue;
-    if (options != null && (!(e.canTraverse(options) || e.canTraverse(walkingOptions))))     continue;
-    CandidateEdge ce=new CandidateEdge(e,p);
-    if (ce.distance < MAX_DISTANCE_FROM_STREET)     candidateEdges.add(ce);
+  while (candidateEdges.size() == 0) {
+    envelope.expandBy(envelopeGrowthAmount);
+    envelopeGrowthAmount*=2;
+    if (envelope.getWidth() > MAX_DISTANCE_FROM_STREET * 2)     return candidateEdges;
+    List<StreetEdge> nearbyEdges=edgeTree.query(envelope);
+    if (extraEdges != null && nearbyEdges != null) {
+      nearbyEdges=new JoinedList<StreetEdge>(nearbyEdges,extraStreets);
+    }
+    for (    StreetEdge e : nearbyEdges) {
+      if (e == null || e instanceof OutEdge)       continue;
+      if (options != null && (!(e.canTraverse(options) || e.canTraverse(walkingOptions))))       continue;
+      CandidateEdge ce=new CandidateEdge(e,p);
+      if (ce.distance < MAX_DISTANCE_FROM_STREET)       candidateEdges.add(ce);
+    }
   }
   Collection<CandidateEdgeBundle> bundles=candidateEdges.binByAngleAndDirection();
   CandidateEdgeBundle best=null;
