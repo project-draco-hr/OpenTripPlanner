@@ -4,7 +4,7 @@
   Map<Vertex,ArrayList<Vertex>> neighborsForVertex=new HashMap<Vertex,ArrayList<Vertex>>();
   TraverseOptions options=new TraverseOptions(new TraverseModeSet(TraverseMode.WALK,TraverseMode.TRANSIT));
   for (  Vertex gv : graph.getVertices()) {
-    if (!(gv instanceof IntersectionVertex)) {
+    if (!(gv instanceof StreetVertex)) {
       continue;
     }
     State s0=new State(gv,options);
@@ -34,7 +34,7 @@
   }
   ArrayList<HashSet<Vertex>> islands=new ArrayList<HashSet<Vertex>>();
   for (  Vertex gv : graph.getVertices()) {
-    if (!(gv instanceof IntersectionVertex)) {
+    if (!(gv instanceof StreetVertex)) {
       continue;
     }
     Vertex vertex=gv;
