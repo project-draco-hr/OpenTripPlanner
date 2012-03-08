@@ -2,17 +2,17 @@
   StringBuilder builder=new StringBuilder();
   builder.append("Ride");
   if (startZone != null) {
-    builder.append("(from ");
+    builder.append("(from zone ");
     builder.append(startZone);
   }
   if (endZone != null) {
-    builder.append(" to ");
+    builder.append(" to zone ");
     builder.append(endZone);
   }
-  builder.append(" on ");
+  builder.append(" on route ");
   builder.append(route);
   if (zones.size() > 0) {
-    builder.append(" through ");
+    builder.append(" through zones ");
     boolean first=true;
     for (    String zone : zones) {
       if (first) {

@@ -10,7 +10,7 @@
   testStreet.setBicycleSafetyEffectiveLength(length * 0.74);
   Coordinate[] profile=new Coordinate[]{new Coordinate(0,0),new Coordinate(length / 2,length / 20.0),new Coordinate(length,0)};
   PackedCoordinateSequence elev=new PackedCoordinateSequence.Double(profile);
-  testStreet.setElevationProfile(elev);
+  testStreet.setElevationProfile(elev,false);
   double trueLength=ElevationUtils.getLengthMultiplierFromElevation(elev) * length;
   testStreet.setSlopeSpeedEffectiveLength(trueLength);
   SlopeCosts costs=ElevationUtils.getSlopeCosts(elev,"test");

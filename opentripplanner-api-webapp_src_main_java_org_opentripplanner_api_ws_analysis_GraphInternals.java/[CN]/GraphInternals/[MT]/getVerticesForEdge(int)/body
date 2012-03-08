@@ -1,0 +1,9 @@
+{
+  Graph graph=graphService.getGraph();
+  Edge edge=graph.getEdgeById(edgeId);
+  VertexSet out=new VertexSet();
+  out.vertices=new ArrayList<Vertex>(2);
+  out.vertices.add(edge.getFromVertex());
+  out.vertices.add(edge.getToVertex());
+  return out.withGraph(graph);
+}

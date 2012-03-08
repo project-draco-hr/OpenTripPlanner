@@ -1,0 +1,24 @@
+{
+  List<Ride> rides=new LinkedList<Ride>();
+  Ride ride=null;
+  for (  State state : path.states) {
+    Edge edge=state.getBackEdge();
+    if (!(edge instanceof HopEdge))     continue;
+    HopEdge hEdge=(HopEdge)edge;
+    if (ride == null || !state.getRoute().equals(ride.route)) {
+      ride=new Ride();
+      rides.add(ride);
+      ride.startZone=hEdge.getStartStop().getZoneId();
+      ride.zones.add(ride.startZone);
+      ride.route=state.getRoute();
+      ride.startTime=state.getBackState().getTime();
+      ride.firstStop=hEdge.getStartStop();
+    }
+    ride.lastStop=hEdge.getEndStop();
+    ride.endZone=ride.lastStop.getZoneId();
+    ride.zones.add(ride.endZone);
+    ride.endTime=state.getTime();
+    ride.classifier=edge.getMode();
+  }
+  return rides;
+}

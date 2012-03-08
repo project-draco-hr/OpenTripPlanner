@@ -1,0 +1,10 @@
+{
+  TransitIndexService transitIndexService=graphService.getGraph().getService(TransitIndexService.class);
+  if (transitIndexService == null) {
+    return new TransitError("No transit index found.  Add TransitIndexBuilder to your graph builder configuration and rebuild your graph.");
+  }
+  ServiceCalendarData data=new ServiceCalendarData();
+  data.calendars=transitIndexService.getCalendarsByAgency(agency);
+  data.calendarDates=transitIndexService.getCalendarDatesByAgency(agency);
+  return data;
+}

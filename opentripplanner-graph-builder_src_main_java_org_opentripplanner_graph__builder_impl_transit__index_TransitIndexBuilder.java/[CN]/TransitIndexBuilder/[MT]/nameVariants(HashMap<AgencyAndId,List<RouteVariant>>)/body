@@ -6,51 +6,59 @@
       variants.get(0).setName(routeName);
       continue;
     }
-    HashMap<Stop,List<RouteVariant>> starts=new HashMap<Stop,List<RouteVariant>>();
-    HashMap<Stop,List<RouteVariant>> ends=new HashMap<Stop,List<RouteVariant>>();
-    HashMap<Stop,List<RouteVariant>> vias=new HashMap<Stop,List<RouteVariant>>();
+    HashMap<String,List<RouteVariant>> starts=new HashMap<String,List<RouteVariant>>();
+    HashMap<String,List<RouteVariant>> ends=new HashMap<String,List<RouteVariant>>();
+    HashMap<String,List<RouteVariant>> vias=new HashMap<String,List<RouteVariant>>();
     for (    RouteVariant variant : variants) {
       List<Stop> stops=variant.getStops();
-      MapUtils.addToMapList(starts,stops.get(0),variant);
-      MapUtils.addToMapList(ends,stops.get(stops.size() - 1),variant);
+      MapUtils.addToMapList(starts,getName(stops.get(0)),variant);
+      MapUtils.addToMapList(ends,getName(stops.get(stops.size() - 1)),variant);
       for (      Stop stop : stops) {
-        MapUtils.addToMapList(vias,stop,variant);
+        MapUtils.addToMapList(vias,getName(stop),variant);
       }
     }
     for (    RouteVariant variant : variants) {
       List<Stop> stops=variant.getStops();
-      if (starts.get(stops.get(0)).size() == 1) {
-        String name=routeName + " from " + stops.get(0).getName();
-        variant.setName(name);
-      }
- else       if (ends.get(stops.get(stops.size() - 1)).size() == 1) {
-        String name=routeName + " to " + stops.get(stops.size() - 1).getName();
+      String firstStop=getName(stops.get(0));
+      if (starts.get(firstStop).size() == 1) {
+        String name=routeName + " from " + firstStop;
         variant.setName(name);
       }
  else {
-        for (        Stop stop : stops) {
-          if (vias.get(stop).size() == 1) {
-            variant.setName(routeName + " via " + stop.getName());
-            break;
+        String lastStop=getName(stops.get(stops.size() - 1));
+        if (ends.get(lastStop).size() == 1) {
+          String name=routeName + " to " + lastStop;
+          variant.setName(name);
+        }
+ else {
+          for (          Stop stop : stops) {
+            String viaStop=getName(stop);
+            if (vias.get(viaStop).size() == 1) {
+              String name=routeName + " via " + viaStop;
+              variant.setName(name);
+              break;
+            }
           }
         }
       }
     }
     for (    RouteVariant variant : variants) {
+      if (variant.getName() != null)       continue;
       List<Stop> stops=variant.getStops();
-      Stop firstStop=stops.get(0);
+      String firstStop=getName(stops.get(0));
       HashSet<RouteVariant> remainingVariants=new HashSet<RouteVariant>(starts.get(firstStop));
-      Stop lastStop=stops.get(stops.size() - 1);
+      String lastStop=getName(stops.get(stops.size() - 1));
       remainingVariants.retainAll(ends.get(lastStop));
       if (remainingVariants.size() == 1) {
-        String name=routeName + " from " + firstStop.getName()+ " to "+ lastStop.getName();
+        String name=routeName + " from " + firstStop+ " to "+ lastStop;
         variant.setName(name);
+        continue;
       }
       for (      Stop stop : stops) {
-        if (stop == firstStop || stop == lastStop) {
+        if (getName(stop).equals(firstStop) || getName(stop).equals(lastStop)) {
           continue;
         }
-        List<RouteVariant> via=vias.get(stop);
+        List<RouteVariant> via=vias.get(getName(stop));
         boolean found=false;
         boolean bad=false;
         for (        RouteVariant viaVariant : via) {
@@ -65,14 +73,15 @@
           }
         }
         if (found && !bad) {
-          String name=routeName + " from " + firstStop.getName()+ " to "+ lastStop.getName()+ " via "+ stop.getName();
+          String name=routeName + " from " + firstStop+ " to "+ lastStop+ " via "+ getName(stop);
           variant.setName(name);
           break;
         }
       }
       if (variant.getName() == null) {
         if (remainingVariants.size() == 2) {
-          variant.setName(routeName + " from " + firstStop.getName()+ " to "+ lastStop.getName()+ " express");
+          String name=routeName + " from " + firstStop+ " to "+ lastStop+ " express";
+          variant.setName(name);
         }
  else {
           variant.setName(routeName + " like " + variant.getTrips().get(0).getId());

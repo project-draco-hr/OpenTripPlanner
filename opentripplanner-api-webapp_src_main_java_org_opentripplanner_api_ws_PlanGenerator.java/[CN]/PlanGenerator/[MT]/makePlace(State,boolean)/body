@@ -1,0 +1,20 @@
+{
+  Vertex v=state.getVertex();
+  Coordinate endCoord=v.getCoordinate();
+  String name=v.getName();
+  Place place;
+  if (time) {
+    Date timeAtState=new Date(state.getTimeInMillis());
+    place=new Place(endCoord.x,endCoord.y,name,timeAtState);
+  }
+ else {
+    place=new Place(endCoord.x,endCoord.y,name);
+  }
+  if (v instanceof TransitVertex) {
+    TransitVertex transitVertex=(TransitVertex)v;
+    place.stopId=transitVertex.getStopId();
+    place.stopCode=transitVertex.getStopCode();
+    place.zoneId=state.getZone();
+  }
+  return place;
+}

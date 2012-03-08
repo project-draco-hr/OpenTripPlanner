@@ -1,0 +1,53 @@
+{
+  StringBuilder description=new StringBuilder();
+  List<Ride> bartBlock=null;
+  Long sfmtaTransferIssued=null;
+  Long alightedBart=null;
+  String alightedBartStop=null;
+  int cost=0;
+  String agencyId=null;
+  for (  Ride ride : rides) {
+    agencyId=ride.route.getAgencyId();
+    if (agencyId.equals("BART")) {
+      if (bartBlock == null) {
+        bartBlock=new ArrayList<Ride>();
+      }
+      bartBlock.add(ride);
+      alightedBart=ride.endTime;
+      alightedBartStop=ride.lastStop.getId().getId();
+    }
+ else {
+      if (bartBlock != null) {
+        cost+=calculateCost(bartBlock);
+        bartBlock=null;
+      }
+      if (agencyId.equals("SFMTA")) {
+        if (ride.classifier == TraverseMode.CABLE_CAR) {
+          cost+=CABLE_CAR_FARE;
+        }
+ else         if (sfmtaTransferIssued == null || sfmtaTransferIssued + SFMTA_TRANSFER_DURATION < ride.endTime) {
+          sfmtaTransferIssued=ride.startTime;
+          if (alightedBart != null && alightedBart + BART_TRANSFER_DURATION > ride.startTime && SFMTA_BART_TRANSFER_STOPS.contains(alightedBartStop)) {
+            if (alightedBartStop.equals(SFMTA_BART_FREE_TRANSFER_STOP)) {
+            }
+ else {
+              cost+=SFMTA_BART_TRANSFER_FARE;
+            }
+          }
+ else {
+            cost+=SFMTA_BASE_FARE;
+          }
+        }
+ else {
+        }
+      }
+ else       if (agencyId.equals("AirBART")) {
+        cost+=AIRBART_FARE;
+      }
+    }
+  }
+  if (bartBlock != null) {
+    cost+=calculateCost(bartBlock);
+  }
+  return cost;
+}

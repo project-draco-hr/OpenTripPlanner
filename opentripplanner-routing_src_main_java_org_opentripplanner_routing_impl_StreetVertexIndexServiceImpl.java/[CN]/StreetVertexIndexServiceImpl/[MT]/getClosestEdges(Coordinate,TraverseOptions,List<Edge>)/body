@@ -1,95 +1,42 @@
 {
   ArrayList<StreetEdge> extraStreets=new ArrayList<StreetEdge>();
-  if (extraEdges != null) {
-    for (    Edge e : extraEdges) {
-      if (e instanceof StreetEdge) {
-        extraStreets.add((StreetEdge)e);
-      }
-    }
-  }
+  if (extraEdges != null)   for (  StreetEdge se : IterableLibrary.filter(extraEdges,StreetEdge.class))   extraStreets.add(se);
   Envelope envelope=new Envelope(coordinate);
-  int i=0;
-  double envelopeGrowthRate=0.0002;
   GeometryFactory factory=new GeometryFactory();
   Point p=factory.createPoint(coordinate);
-  double bestDistance=Double.MAX_VALUE;
   TraverseOptions walkingOptions=null;
   if (options != null) {
     walkingOptions=options.getWalkingOptions();
   }
-  while (bestDistance > MAX_DISTANCE_FROM_STREET && i < 10) {
-    ++i;
-    envelope.expandBy(envelopeGrowthRate);
-    envelopeGrowthRate*=2;
-    bestDistance=Double.MAX_VALUE;
-    StreetEdge bestEdge=null;
-    List<StreetEdge> nearby=edgeTree.query(envelope);
-    if (extraEdges != null && nearby != null) {
-      nearby=new JoinedList<StreetEdge>(nearby,extraStreets);
+  double envelopeGrowthAmount=0.002;
+  CandidateEdgeBundle candidateEdges=new CandidateEdgeBundle();
+  while (candidateEdges.size() == 0) {
+    if (envelope.getWidth() > MAX_DISTANCE_FROM_STREET * 2)     return candidateEdges;
+    envelope.expandBy(envelopeGrowthAmount);
+    envelopeGrowthAmount*=2;
+    List<StreetEdge> nearbyEdges=edgeTree.query(envelope);
+    if (extraEdges != null && nearbyEdges != null) {
+      nearbyEdges=new JoinedList<StreetEdge>(nearbyEdges,extraStreets);
     }
-    if (nearby != null) {
-      for (      StreetEdge e : nearby) {
-        if (e == null || e instanceof OutEdge)         continue;
-        Geometry g=e.getGeometry();
-        if (g != null) {
-          if (options != null) {
-            if (!(e.canTraverse(options) || e.canTraverse(walkingOptions))) {
-              continue;
-            }
-          }
-          double distance=g.distance(p);
-          if (distance > envelope.getWidth() / 2) {
-            continue;
-          }
-          if (distance < bestDistance) {
-            bestDistance=distance;
-            bestEdge=e;
-          }
-        }
-      }
-      if (bestDistance <= MAX_DISTANCE_FROM_STREET) {
-        LocationIndexedLine lil=new LocationIndexedLine(bestEdge.getGeometry());
-        LinearLocation location=lil.project(coordinate);
-        Coordinate nearestPointOnEdge=lil.extractPoint(location);
-        double xd=nearestPointOnEdge.x - coordinate.x;
-        double yd=nearestPointOnEdge.y - coordinate.y;
-        double edgeDirection=Math.atan2(yd,xd);
-        if (Double.isNaN(edgeDirection))         return Arrays.asList(bestEdge);
-        List<StreetEdge> parallel=new ArrayList<StreetEdge>();
-        for (        StreetEdge e : nearby) {
-          if (e == null || e instanceof OutEdge) {
-            continue;
-          }
-          if (options != null) {
-            if (!(e.canTraverse(options) || e.canTraverse(walkingOptions))) {
-              continue;
-            }
-          }
-          Geometry eg=e.getGeometry();
-          if (eg != null) {
-            double distance=eg.distance(p);
-            if (distance <= bestDistance + DISTANCE_ERROR) {
-              lil=new LocationIndexedLine(eg);
-              location=lil.project(coordinate);
-              nearestPointOnEdge=lil.extractPoint(location);
-              if (distance > bestDistance) {
-                Coordinate[] coordinates=eg.getCoordinates();
-                if (nearestPointOnEdge.equals(coordinates[0]) || nearestPointOnEdge.equals(coordinates[coordinates.length - 1])) {
-                  continue;
-                }
-              }
-              xd=nearestPointOnEdge.x - coordinate.x;
-              yd=nearestPointOnEdge.y - coordinate.y;
-              double direction=Math.atan2(yd,xd);
-              if (Math.abs(direction - edgeDirection) < DIRECTION_ERROR) {
-                parallel.add(e);
-              }
-            }
-          }
-        }
-        return parallel;
+    for (    StreetEdge e : nearbyEdges) {
+      if (e == null || e instanceof OutEdge)       continue;
+      if (options != null && (!(e.canTraverse(options) || e.canTraverse(walkingOptions))))       continue;
+      CandidateEdge ce=new CandidateEdge(e,p);
+      if (ce.distance < MAX_DISTANCE_FROM_STREET)       candidateEdges.add(ce);
+    }
+  }
+  Collection<CandidateEdgeBundle> bundles=candidateEdges.binByAngleAndDirection();
+  CandidateEdgeBundle best=null;
+  for (  CandidateEdgeBundle bundle : bundles) {
+    if (best == null || bundle.closest.distance < best.closest.distance)     best=bundle;
+  }
+  if (best != null && best.endwise()) {
+    for (    CandidateEdgeBundle bundle : bundles) {
+      if (bundle.closest.distance < best.closest.distance * 1.5 && !bundle.endwise()) {
+        best=bundle;
+        break;
       }
     }
   }
-  return null;
+  return best;
 }

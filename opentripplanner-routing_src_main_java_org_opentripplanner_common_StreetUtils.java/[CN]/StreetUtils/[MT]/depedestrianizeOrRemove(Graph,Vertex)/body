@@ -12,6 +12,17 @@
         pse.setPermission(permission);
       }
     }
+    if (e instanceof TurnEdge) {
+      TurnEdge turn=(TurnEdge)e;
+      StreetTraversalPermission permission=turn.getPermission();
+      permission=permission.remove(StreetTraversalPermission.PEDESTRIAN);
+      if (permission == StreetTraversalPermission.NONE) {
+        turn.detach();
+      }
+ else {
+        ((TurnVertex)turn.getFromVertex()).setPermission(permission);
+      }
+    }
   }
   if (v.getOutgoing().size() == 0) {
     graph.removeVertexAndEdges(v);

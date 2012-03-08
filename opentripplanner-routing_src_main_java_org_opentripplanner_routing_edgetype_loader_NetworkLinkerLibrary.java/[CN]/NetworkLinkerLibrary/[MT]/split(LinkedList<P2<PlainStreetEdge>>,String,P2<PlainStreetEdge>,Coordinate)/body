@@ -36,10 +36,10 @@
   double backwardBseLengthOut=e2.getBicycleSafetyEffectiveLength() * (1 - lengthRatioIn);
   backward1.setBicycleSafetyEffectiveLength(backwardBseLengthIn);
   backward2.setBicycleSafetyEffectiveLength(backwardBseLengthOut);
-  forward1.setElevationProfile(e1.getElevationProfile(0,lengthIn));
-  backward1.setElevationProfile(e2.getElevationProfile(0,lengthOut));
-  forward2.setElevationProfile(e1.getElevationProfile(lengthOut,totalGeomLength));
-  backward2.setElevationProfile(e2.getElevationProfile(lengthIn,totalGeomLength));
+  forward1.setElevationProfile(e1.getElevationProfile(0,lengthIn),false);
+  backward1.setElevationProfile(e2.getElevationProfile(0,lengthOut),false);
+  forward2.setElevationProfile(e1.getElevationProfile(lengthOut,totalGeomLength),false);
+  backward2.setElevationProfile(e2.getElevationProfile(lengthIn,totalGeomLength),false);
   ListIterator<P2<PlainStreetEdge>> it=replacement.listIterator();
   while (it.hasNext()) {
     P2<PlainStreetEdge> pair=it.next();
