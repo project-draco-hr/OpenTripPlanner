@@ -52,7 +52,7 @@
   }
   for (  HashSet<Vertex> island : islands) {
     if (island.size() < 20) {
-      _log.warn("Depedestrianizing or deleting floating island at " + island.iterator().next());
+      _log.warn(GraphBuilderAnnotation.register(graph,Variety.GRAPH_CONNECTIVITY,island.iterator().next(),island));
       for (      Vertex vertex : island) {
         depedestrianizeOrRemove(graph,vertex);
       }
