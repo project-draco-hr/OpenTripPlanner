@@ -54,8 +54,7 @@
     altitude=0.0;
   }
   if (floorNumber == null) {
-    floorNumber=0;
-    _log.warn("Could not infer floor number for layer '{}'. Vertical movement will still be possible, but elevator cost might be incorrect. Consider an OSM level map.",spec);
+    return null;
   }
   return new OSMLevel(floorNumber,altitude,shortName,longName,source);
 }
