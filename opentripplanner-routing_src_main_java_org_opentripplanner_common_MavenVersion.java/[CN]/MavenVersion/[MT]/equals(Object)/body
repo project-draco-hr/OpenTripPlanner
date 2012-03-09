@@ -1,0 +1,5 @@
+{
+  if (!(other instanceof MavenVersion))   return false;
+  MavenVersion that=(MavenVersion)other;
+  return this.major == that.major && this.minor == that.minor && this.incremental == that.incremental && this.qualifier.equals(that.qualifier);
+}

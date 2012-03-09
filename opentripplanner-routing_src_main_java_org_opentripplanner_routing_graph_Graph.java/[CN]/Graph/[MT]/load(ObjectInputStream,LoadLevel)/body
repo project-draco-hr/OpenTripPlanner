@@ -25,6 +25,6 @@
   }
  catch (  InvalidClassException ex) {
     LOG.error("Stored graph is incompatible with this version of OTP, please rebuild it.");
-    throw new IllegalStateException("Stored Graph version error",ex);
+    return null;
   }
 }
