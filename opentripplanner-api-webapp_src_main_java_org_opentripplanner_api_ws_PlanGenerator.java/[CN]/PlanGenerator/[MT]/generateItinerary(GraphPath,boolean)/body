@@ -226,5 +226,6 @@ if (leg != null) {
 finalizeLeg(leg,path.states.getLast(),path.states,startWalk,i,coordinates);
 }
 itinerary.removeBogusLegs();
+if (itinerary.legs.size() == 0) throw new TrivialPathException();
 return itinerary;
 }

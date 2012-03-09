@@ -30,7 +30,7 @@
     for (    Itinerary i : plan.itinerary) {
       i.tooSloped=tooSloped;
       if (i.legs.size() == 0) {
-        LOGGER.log(Level.WARNING,"plan has no legs");
+        LOGGER.log(Level.WARNING,"itinerary has no legs");
         continue;
       }
       Leg firstLeg=i.legs.get(0);
