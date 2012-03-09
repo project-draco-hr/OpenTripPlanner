@@ -159,8 +159,9 @@
     }
     Vertex dest=null;
     while (dest == null) {
-      int j=Math.abs(random.nextInt()) % vertices.size();
-      if (orig.getLabel() == dest.getLabel()) {
+      int j=(int)(Math.abs((long)random.nextInt()) % verticesOut.size());
+      dest=verticesOut.get(j);
+      if (orig.equals(dest)) {
         continue;
       }
       if (!chv.contains(dest) || dest.getDegreeIn() < 1) {
