@@ -1,4 +1,6 @@
 {
+  dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+  dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
   recentlyUsedNonceList=new LinkedList<T2<String,Long>>();
   recentlyUsedNonceSet=new HashSet<String>();
   try {
