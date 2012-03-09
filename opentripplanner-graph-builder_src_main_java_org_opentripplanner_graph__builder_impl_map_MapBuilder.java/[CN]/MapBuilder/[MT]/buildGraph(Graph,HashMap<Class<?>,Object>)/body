@@ -1,6 +1,8 @@
 {
   TransitIndexService transit=graph.getService(TransitIndexService.class);
   StreetMatcher matcher=new StreetMatcher(graph);
+  EdgesForRoute edgesForRoute=new EdgesForRoute();
+  extra.put(EdgesForRoute.class,edgesForRoute);
   for (  AgencyAndId route : transit.getAllRouteIds()) {
     for (    RouteVariant variant : transit.getVariantsForRoute(route)) {
       Geometry geometry=variant.getGeometry();
@@ -15,6 +17,7 @@
         List<Coordinate> coordinates=new ArrayList<Coordinate>();
         for (        Edge e : edges) {
           coordinates.addAll(Arrays.asList(e.getGeometry().getCoordinates()));
+          MapUtils.addToMapList(edgesForRoute.edgesForRoute,route,e);
         }
         Coordinate[] coordinateArray=new Coordinate[coordinates.size()];
         LineString ls=gf.createLineString(coordinates.toArray(coordinateArray));

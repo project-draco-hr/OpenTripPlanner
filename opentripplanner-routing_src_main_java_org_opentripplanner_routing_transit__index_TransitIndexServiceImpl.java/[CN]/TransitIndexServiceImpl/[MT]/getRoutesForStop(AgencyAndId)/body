@@ -1,0 +1,13 @@
+{
+  HashSet<AgencyAndId> out=new HashSet<AgencyAndId>();
+  Edge edge=preBoardEdges.get(stop);
+  for (  Edge e : edge.getToVertex().getOutgoing()) {
+    if (e instanceof PatternBoard) {
+      PatternBoard board=(PatternBoard)e;
+      for (      Trip t : board.getPattern().getTrips()) {
+        out.add(t.getRoute().getId());
+      }
+    }
+  }
+  return new ArrayList<AgencyAndId>(Arrays.asList(out.toArray(new AgencyAndId[0])));
+}

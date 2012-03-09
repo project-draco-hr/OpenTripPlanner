@@ -21,22 +21,18 @@
     for (    StreetEdge e : nearbyEdges) {
       if (e == null || e instanceof OutEdge)       continue;
       if (options != null && (!(e.canTraverse(options) || e.canTraverse(walkingOptions))))       continue;
-      CandidateEdge ce=new CandidateEdge(e,p);
+      double preferrence=1;
+      if (routeEdges != null && routeEdges.contains(e)) {
+        preferrence=3.0;
+      }
+      CandidateEdge ce=new CandidateEdge(e,p,preferrence);
       if (ce.distance < MAX_DISTANCE_FROM_STREET)       candidateEdges.add(ce);
     }
   }
   Collection<CandidateEdgeBundle> bundles=candidateEdges.binByAngleAndDirection();
   CandidateEdgeBundle best=null;
   for (  CandidateEdgeBundle bundle : bundles) {
-    if (best == null || bundle.closest.distance < best.closest.distance)     best=bundle;
-  }
-  if (best != null && best.endwise()) {
-    for (    CandidateEdgeBundle bundle : bundles) {
-      if (bundle.closest.distance < best.closest.distance * 1.5 && !bundle.endwise()) {
-        best=bundle;
-        break;
-      }
-    }
+    if (best == null || bundle.best.score < best.best.score)     best=bundle;
   }
   return best;
 }

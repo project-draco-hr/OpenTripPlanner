@@ -9,6 +9,17 @@
   if (nearestPointOnEdge.equals(edgeCoords[0]))   endwiseVertex=edge.getFromVertex();
  else   if (nearestPointOnEdge.equals(edgeCoords[edgeCoords.length - 1]))   endwiseVertex=edge.getToVertex();
  else   endwiseVertex=null;
+  score=distance;
+  if (endwise()) {
+    score*=1.5;
+  }
+  score/=preference;
+  if (e.getName().contains("platform")) {
+    score/=PLATFORM_PREFERENCE;
+  }
+  if (e.getName().contains("sidewalk") || !e.getPermission().allows(StreetTraversalPermission.CAR)) {
+    score/=SIDEWALK_PREFERENCE;
+  }
   double xd=nearestPointOnEdge.x - p.getX();
   double yd=nearestPointOnEdge.y - p.getY();
   directionToEdge=Math.atan2(yd,xd);

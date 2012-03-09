@@ -1,0 +1,9 @@
+{
+  this.graph=graph;
+  this.transitIndex=graph.getService(TransitIndexService.class);
+  EdgesForRoute edgesForRoute=(EdgesForRoute)extra.get(EdgesForRoute.class);
+  this.edgesForRoute=edgesForRoute;
+  _log.debug("constructing index...");
+  this.index=new StreetVertexIndexServiceImpl(graph);
+  this.index.setup();
+}

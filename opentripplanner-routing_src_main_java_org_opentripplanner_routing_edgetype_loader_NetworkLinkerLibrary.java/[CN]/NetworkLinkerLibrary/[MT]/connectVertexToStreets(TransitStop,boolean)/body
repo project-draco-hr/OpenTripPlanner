@@ -1,5 +1,15 @@
 {
-  Collection<StreetVertex> nearbyStreetVertices=getNearbyStreetVertices(v);
+  List<Edge> nearbyEdges=null;
+  if (edgesForRoute != null && transitIndex != null) {
+    nearbyEdges=new ArrayList<Edge>();
+    for (    AgencyAndId route : transitIndex.getRoutesForStop(v.getStopId())) {
+      List<Edge> edges=edgesForRoute.get(route);
+      if (edges != null) {
+        nearbyEdges.addAll(edges);
+      }
+    }
+  }
+  Collection<StreetVertex> nearbyStreetVertices=getNearbyStreetVertices(v,nearbyEdges);
   if (nearbyStreetVertices == null) {
     return false;
   }

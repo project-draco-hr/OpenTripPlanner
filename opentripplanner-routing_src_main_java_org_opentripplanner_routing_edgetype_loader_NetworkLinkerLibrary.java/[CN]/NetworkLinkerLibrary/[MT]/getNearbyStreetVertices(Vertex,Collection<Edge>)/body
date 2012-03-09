@@ -1,0 +1,23 @@
+{
+  Collection<StreetVertex> existing=splitVertices.get(v);
+  if (existing != null)   return existing;
+  String vertexLabel;
+  if (v instanceof TransitVertex)   vertexLabel="link for " + ((TransitVertex)v).getStopId();
+ else   vertexLabel="link for " + v;
+  Coordinate coordinate=v.getCoordinate();
+  CandidateEdgeBundle edges=index.getClosestEdges(coordinate,options,null,nearbyRouteEdges);
+  if (edges == null || edges.size() < 2) {
+    _log.debug("found too few edges: {} {}",v.getName(),v.getCoordinate());
+    return null;
+  }
+  if (edges.endwise()) {
+    return index.getIntersectionAt(edges.endwiseVertex.getCoordinate());
+  }
+ else {
+    List<StreetVertex> atIntersection=index.getIntersectionAt(coordinate);
+    if (atIntersection != null) {
+      if (edges.getScore() > atIntersection.get(0).distance(coordinate))       return atIntersection;
+    }
+    return getSplitterVertices(vertexLabel,edges.toEdgeList(),coordinate);
+  }
+}
