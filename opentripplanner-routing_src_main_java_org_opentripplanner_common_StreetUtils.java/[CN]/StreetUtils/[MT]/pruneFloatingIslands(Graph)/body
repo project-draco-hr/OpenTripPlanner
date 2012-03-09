@@ -53,12 +53,10 @@
   for (  HashSet<Vertex> island : islands) {
     if (island.size() < 20) {
       _log.warn(GraphBuilderAnnotation.register(graph,Variety.GRAPH_CONNECTIVITY,island.iterator().next(),island));
-      for (      Vertex vertex : island) {
-        depedestrianizeOrRemove(graph,vertex);
-      }
+      depedestrianizeOrRemove(graph,island);
     }
   }
   if (graph.removeEdgelessVertices() > 0) {
-    _log.debug("Removed edgeless vertices after pruning islands.");
+    _log.warn("Removed edgeless vertices after pruning islands.");
   }
 }

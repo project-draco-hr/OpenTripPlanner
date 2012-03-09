@@ -1,0 +1,34 @@
+{
+  for (  Vertex v : vertices) {
+    Collection<Edge> outgoing=new ArrayList<Edge>(v.getOutgoing());
+    for (    Edge e : outgoing) {
+      if (e instanceof PlainStreetEdge) {
+        PlainStreetEdge pse=(PlainStreetEdge)e;
+        StreetTraversalPermission permission=pse.getPermission();
+        permission=permission.remove(StreetTraversalPermission.PEDESTRIAN);
+        if (permission == StreetTraversalPermission.NONE) {
+          pse.detach();
+        }
+ else {
+          pse.setPermission(permission);
+        }
+      }
+      if (e instanceof TurnEdge) {
+        TurnEdge turn=(TurnEdge)e;
+        StreetTraversalPermission permission=turn.getPermission();
+        permission=permission.remove(StreetTraversalPermission.PEDESTRIAN);
+        if (permission == StreetTraversalPermission.NONE) {
+          turn.detach();
+        }
+ else {
+          ((TurnVertex)turn.getFromVertex()).setPermission(permission);
+        }
+      }
+    }
+  }
+  for (  Vertex v : vertices) {
+    if (v.getDegreeOut() + v.getDegreeIn() == 0) {
+      graph.remove(v);
+    }
+  }
+}
