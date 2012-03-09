@@ -1,6 +1,9 @@
 {
   TraverseOptions upOptions=opt.clone();
   TraverseOptions downOptions=opt.clone();
+  if (origin == null || target == null) {
+    return null;
+  }
   double minWalkDistance=origin.getDistanceToNearestTransitStop() + target.getDistanceToNearestTransitStop();
   upOptions.setMaxWalkDistance(Math.max(upOptions.getMaxWalkDistance(),minWalkDistance));
   downOptions.setMaxWalkDistance(Math.max(downOptions.getMaxWalkDistance(),minWalkDistance));
@@ -8,9 +11,6 @@
   downOptions.setArriveBy(true);
   final boolean VERBOSE=false;
   final int INITIAL_SIZE=1000;
-  if (origin == null || target == null) {
-    return null;
-  }
   if (VERBOSE)   _log.debug("origin {} target {}",origin,target);
   Map<Vertex,ArrayList<Edge>> extraEdges=getExtraEdges(origin,target);
   BasicShortestPathTree upspt=new BasicShortestPathTree();
