@@ -1,0 +1,11 @@
+{
+  int removed=0;
+  List<Vertex> toRemove=new LinkedList<Vertex>();
+  for (  Vertex v : this.getVertices())   if (v.getDegreeOut() + v.getDegreeIn() == 0)   toRemove.add(v);
+  for (  Vertex v : toRemove) {
+    this.remove(v);
+    removed+=1;
+    LOG.debug("removed edgeless vertex {}",v);
+  }
+  return removed;
+}

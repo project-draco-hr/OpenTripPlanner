@@ -7,7 +7,7 @@
   List<Edge> edges=new ArrayList<Edge>(this.countEdges());
   for (  Vertex v : getVertices()) {
     edges.addAll(v.getOutgoing());
-    if (v.getOutgoing().size() + v.getIncoming().size() == 0)     LOG.warn("vertex {} has no edges, it will not survive serialization.",v);
+    if (v.getDegreeOut() + v.getDegreeIn() == 0)     LOG.debug("vertex {} has no edges, it will not survive serialization.",v);
   }
   LOG.debug("Assigning vertex/edge ID numbers...");
   this.renumberVerticesAndEdges();
