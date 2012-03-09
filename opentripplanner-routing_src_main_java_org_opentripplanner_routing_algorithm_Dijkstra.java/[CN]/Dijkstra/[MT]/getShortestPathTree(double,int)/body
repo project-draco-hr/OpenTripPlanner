@@ -1,6 +1,6 @@
 {
-  HashSet<String> remainingTargets=null;
-  if (targets != null)   remainingTargets=(HashSet<String>)targets.clone();
+  HashSet<Vertex> remainingTargets=null;
+  if (targets != null)   remainingTargets=(HashSet<Vertex>)targets.clone();
   while (!queue.empty()) {
     State su=queue.extract_min();
     if (!spt.visit(su))     continue;
