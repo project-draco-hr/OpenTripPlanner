@@ -1,0 +1,9 @@
+{
+  clazz=filterPrimitives(clazz);
+  for (  Constructor<?> constructor : clazz.getDeclaredConstructors()) {
+    Class<?>[] params=constructor.getParameterTypes();
+    if (params.length != 1)     continue;
+    if (params[0].equals(String.class))     return constructor;
+  }
+  return null;
+}

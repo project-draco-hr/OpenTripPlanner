@@ -1,0 +1,12 @@
+{
+  String value=req.getParameter(param);
+  if (value == null)   return false;
+  try {
+    apply0(obj,constructor.newInstance(value));
+    return true;
+  }
+ catch (  Exception e) {
+    LOG.warn("exception {} while applying {}",e,this);
+    return false;
+  }
+}

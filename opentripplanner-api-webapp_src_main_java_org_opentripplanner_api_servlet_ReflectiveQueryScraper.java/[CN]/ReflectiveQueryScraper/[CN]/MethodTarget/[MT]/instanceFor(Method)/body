@@ -1,0 +1,11 @@
+{
+  String methodName=method.getName();
+  Class<?>[] params=method.getParameterTypes();
+  if (params.length != 1)   return null;
+  Constructor<?> c=stringConstructor(params[0]);
+  if (c == null)   return null;
+  if (!methodName.startsWith("set"))   return null;
+  if (methodName.length() == 3)   return null;
+  String baseName=methodName.substring(3,4).toLowerCase() + methodName.substring(4);
+  return new MethodTarget(baseName,method,c);
+}
