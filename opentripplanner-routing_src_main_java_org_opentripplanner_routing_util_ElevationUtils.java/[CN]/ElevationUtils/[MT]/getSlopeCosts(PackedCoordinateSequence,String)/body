@@ -1,5 +1,6 @@
 {
   Coordinate[] coordinates=elev.toCoordinateArray();
+  boolean flattened=false;
   double maxSlope=0;
   double slopeSpeedEffectiveLength=0;
   double slopeWorkCost=0;
@@ -13,7 +14,7 @@
     double slope=rise / run;
     if (slope > 0.35 || slope < -0.35) {
       slope=0;
-      log.warn("Warning: street " + name + " steeper than Baldwin Street.  This is an error in the algorithm or the data");
+      flattened=true;
     }
     if (maxSlope < Math.abs(slope)) {
       maxSlope=Math.abs(slope);
@@ -28,5 +29,5 @@
       slopeSafetyCost+=safetyCost;
     }
   }
-  return new SlopeCosts(slopeSpeedEffectiveLength,slopeWorkCost,slopeSafetyCost,maxSlope);
+  return new SlopeCosts(slopeSpeedEffectiveLength,slopeWorkCost,slopeSafetyCost,maxSlope,flattened);
 }

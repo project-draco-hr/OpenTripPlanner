@@ -1,9 +1,9 @@
 {
   if (elev == null || elev.size() < 2) {
-    return;
+    return false;
   }
   if (slopeOverride && !computed) {
-    return;
+    return false;
   }
   elevationProfile=elev;
   double lengthMultiplier=ElevationUtils.getLengthMultiplierFromElevation(elev);
@@ -14,4 +14,5 @@
   maxSlope=costs.maxSlope;
   slopeWorkCost=costs.slopeWorkCost;
   bicycleSafetyEffectiveLength+=costs.slopeSafetyCost;
+  return costs.flattened;
 }
