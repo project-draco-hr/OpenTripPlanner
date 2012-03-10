@@ -1,5 +1,6 @@
 {
   GraphBuilderAnnotation gba=new GraphBuilderAnnotation(variety,refs);
   graph.addBuilderAnnotation(gba);
-  return "(annotation registered) " + gba.toString();
+  LOG.trace("Registering {}",gba);
+  return gba.getMessage() + " (annotation registered)";
 }
