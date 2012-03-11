@@ -1,0 +1,5 @@
+{
+  Object obj=scraper.scrape(request);
+  if (obj != null)   request.setAttribute(scraper.targetClass.getSimpleName(),obj);
+  chain.doFilter(request,response);
+}
