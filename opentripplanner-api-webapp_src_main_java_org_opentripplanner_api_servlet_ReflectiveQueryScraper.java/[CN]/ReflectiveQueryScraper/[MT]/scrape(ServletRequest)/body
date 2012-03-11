@@ -1,11 +1,11 @@
 {
   Object obj=null;
   try {
-    obj=getTargetClass().newInstance();
+    obj=targetClass.newInstance();
     for (    Target t : targets)     t.apply(request,obj);
   }
  catch (  Exception e) {
-    LOG.warn("exception {} while scraping {}",e,getTargetClass());
+    LOG.warn("exception {} while scraping {}",e,targetClass);
   }
   return obj;
 }
