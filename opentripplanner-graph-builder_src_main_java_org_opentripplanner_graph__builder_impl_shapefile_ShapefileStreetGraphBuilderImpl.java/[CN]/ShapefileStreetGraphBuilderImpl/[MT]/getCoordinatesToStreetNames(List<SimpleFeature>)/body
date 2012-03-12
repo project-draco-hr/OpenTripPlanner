@@ -8,6 +8,10 @@
     if (featureSelector != null && !featureSelector.convert(feature)) {
       continue;
     }
+    if (feature.getDefaultGeometry() == null) {
+      log.warn("feature has no geometry: " + feature.getIdentifier());
+      continue;
+    }
     LineString geom=toLineString((Geometry)feature.getDefaultGeometry());
     for (    Coordinate coord : geom.getCoordinates()) {
       Coordinate rounded=new Coordinate(Math.round(coord.x * 1048576) / 1048576.0,Math.round(coord.y * 1048576) / 1048576.0);
