@@ -29,7 +29,7 @@
       if (ce.distance < MAX_DISTANCE_FROM_STREET)       candidateEdges.add(ce);
     }
   }
-  Collection<CandidateEdgeBundle> bundles=candidateEdges.binByAngleAndDirection();
+  Collection<CandidateEdgeBundle> bundles=candidateEdges.binByDistanceAndAngle();
   CandidateEdgeBundle best=null;
   for (  CandidateEdgeBundle bundle : bundles) {
     if (best == null || bundle.best.score < best.best.score)     best=bundle;
