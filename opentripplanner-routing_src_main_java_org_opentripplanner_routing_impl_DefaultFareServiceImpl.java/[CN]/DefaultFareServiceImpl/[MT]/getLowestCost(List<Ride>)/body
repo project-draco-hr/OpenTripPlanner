@@ -1,15 +1,15 @@
 {
-  int[][] resultTable=new int[rides.size()][rides.size()];
+  float[][] resultTable=new float[rides.size()][rides.size()];
   for (int i=0; i < rides.size(); i++) {
     for (int j=0; j < rides.size() - i; j++) {
-      int cost=calculateCost(rides.subList(j,j + i + 1));
+      float cost=calculateCost(rides.subList(j,j + i + 1));
       if (cost < 0) {
         _log.error("negative cost for a ride sequence");
-        cost=Integer.MAX_VALUE;
+        cost=Float.POSITIVE_INFINITY;
       }
       resultTable[j][j + i]=cost;
       for (int k=0; k < i; k++) {
-        int via=resultTable[j][j + k] + resultTable[j + k + 1][j + i];
+        float via=resultTable[j][j + k] + resultTable[j + k + 1][j + i];
         if (resultTable[j][j + i] > via)         resultTable[j][j + i]=via;
       }
     }

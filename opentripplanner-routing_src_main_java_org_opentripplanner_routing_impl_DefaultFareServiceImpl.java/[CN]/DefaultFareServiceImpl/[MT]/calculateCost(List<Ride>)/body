@@ -1,5 +1,4 @@
 {
-  Currency currency=null;
   Set<String> zones=new HashSet<String>();
   Set<AgencyAndId> routes=new HashSet<AgencyAndId>();
   int transfersUsed=-1;
@@ -13,7 +12,7 @@
   for (  Ride ride : rides) {
     if (!ride.route.getAgencyId().equals(agencyId)) {
       _log.debug("skipped multi-agency ride sequence {}",rides);
-      return Integer.MAX_VALUE;
+      return Float.POSITIVE_INFINITY;
     }
     lastRideStartTime=ride.startTime;
     lastRideEndTime=ride.endTime;
@@ -23,7 +22,7 @@
     transfersUsed+=1;
   }
   FareAttribute bestAttribute=null;
-  float bestFare=Float.MAX_VALUE;
+  float bestFare=Float.POSITIVE_INFINITY;
   long tripTime=lastRideStartTime - startTime;
   long journeyTime=lastRideEndTime - startTime;
   for (  AgencyAndId fareId : fareAttributes.keySet()) {
@@ -44,14 +43,10 @@
       if (newFare < bestFare) {
         bestAttribute=attribute;
         bestFare=newFare;
-        currency=Currency.getInstance(attribute.getCurrencyType());
       }
     }
   }
   _log.debug("{} best for {}",bestAttribute,rides);
-  if (bestFare == Float.MAX_VALUE) {
-    _log.warn("No fare for a ride sequence: {}",rides);
-    return Integer.MAX_VALUE;
-  }
-  return (int)Math.round(bestFare * Math.pow(10,currency.getDefaultFractionDigits()));
+  if (bestFare == Float.POSITIVE_INFINITY)   _log.warn("No fare for a ride sequence: {}",rides);
+  return bestFare;
 }

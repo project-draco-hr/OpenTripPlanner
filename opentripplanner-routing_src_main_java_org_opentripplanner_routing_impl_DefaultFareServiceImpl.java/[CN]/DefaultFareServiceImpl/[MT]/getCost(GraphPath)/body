@@ -3,14 +3,19 @@
   if (rides.size() == 0) {
     return null;
   }
+  Currency currency=null;
   WrappedCurrency wrappedCurrency=null;
   if (fareAttributes.size() > 0) {
-    wrappedCurrency=new WrappedCurrency(fareAttributes.values().iterator().next().getCurrencyType());
+    currency=Currency.getInstance(fareAttributes.values().iterator().next().getCurrencyType());
+    wrappedCurrency=new WrappedCurrency(currency);
   }
-  int lowestCost=getLowestCost(rides);
-  if (lowestCost < Integer.MAX_VALUE) {
+  float lowestCost=getLowestCost(rides);
+  if (lowestCost != Float.POSITIVE_INFINITY) {
+    int fractionDigits=2;
+    if (currency != null)     fractionDigits=currency.getDefaultFractionDigits();
+    int cents=(int)Math.round(lowestCost * Math.pow(10,fractionDigits));
     Fare fare=new Fare();
-    fare.addFare(FareType.regular,wrappedCurrency,lowestCost);
+    fare.addFare(FareType.regular,wrappedCurrency,cents);
     return fare;
   }
  else {
