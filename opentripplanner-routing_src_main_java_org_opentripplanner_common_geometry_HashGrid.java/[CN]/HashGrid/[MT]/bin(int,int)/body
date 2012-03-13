@@ -1,0 +1,9 @@
+{
+  List<Object> bin=bins[xBin][yBin];
+  if (bin == null) {
+    bin=new ArrayList<Object>();
+    bins[xBin][yBin]=bin;
+    nBins+=1;
+  }
+  return bin;
+}

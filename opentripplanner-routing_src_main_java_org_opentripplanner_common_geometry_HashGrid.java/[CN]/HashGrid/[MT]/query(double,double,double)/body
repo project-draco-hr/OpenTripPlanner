@@ -1,9 +1,9 @@
 {
-  Pointlike p=new Point(lon,lat);
-  List<T> ret=new ArrayList<T>();
+  Coordinate c=new Coordinate(lon,lat);
+  List<Object> ret=new ArrayList<Object>();
   int radiusBins=(int)Math.ceil(radiusMeters / binSizeMeters);
-  int xBin=xBin(p);
-  int yBin=yBin(p);
+  int xBin=xBin(c);
+  int yBin=yBin(c);
   int minBinX=xBin - radiusBins;
   int maxBinX=xBin + radiusBins;
   int minBinY=yBin - radiusBins;
@@ -12,7 +12,7 @@
     int wrappedX=xWrap(x);
     for (int y=minBinY; y <= maxBinY; y+=1) {
       int wrappedY=yWrap(y);
-      List<T> bin=bins[wrappedX][wrappedY];
+      List<Object> bin=bins[wrappedX][wrappedY];
       if (bin != null) {
         ret.addAll(bin);
       }

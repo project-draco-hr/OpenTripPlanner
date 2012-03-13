@@ -1,0 +1,60 @@
+{
+  int n=0;
+  Coordinate c0, c1;
+  if (a.x <= b.x) {
+    c0=a;
+    c1=b;
+  }
+ else {
+    c0=b;
+    c1=a;
+  }
+  double x0, y0, x1, y1;
+  x0=projLon(c0.x,c0.y);
+  y0=projLat(c0.y);
+  x1=projLon(c1.x,c1.y);
+  y1=projLat(c1.y);
+  double slope=(y1 - y0) / (x1 - x0);
+  boolean negSlope=slope < 0;
+  double xStartBinFloor=Math.floor(x0 / binSizeMeters) * binSizeMeters;
+  double yStartBinFloor=Math.floor(y0 / binSizeMeters) * binSizeMeters;
+  if (negSlope)   yStartBinFloor+=binSizeMeters;
+  double yBinFloor=yStartBinFloor;
+  double x=x0;
+  double y=y0;
+  int xSteps=0, ySteps=0;
+  int xBin=xBin(c0);
+  int yBin=yBin(c0);
+  boolean done=false;
+  while (!done) {
+    xSteps+=1;
+    x=xStartBinFloor + xSteps * binSizeMeters;
+    if (x >= x1) {
+      x=x1;
+      y=y1;
+      done=true;
+    }
+ else {
+      y=(x - x0) * slope + y0;
+    }
+    if (negSlope) {
+      while (yBinFloor - binSizeMeters > y) {
+        bin(xBin,yBin).add(obj);
+        ySteps+=1;
+        yBinFloor=yStartBinFloor - ySteps * binSizeMeters;
+        yBin=yWrap(yBin - 1);
+      }
+    }
+ else {
+      while (yBinFloor + binSizeMeters < y) {
+        bin(xBin,yBin).add(obj);
+        ySteps+=1;
+        yBinFloor=yStartBinFloor + ySteps * binSizeMeters;
+        yBin=yWrap(yBin + 1);
+      }
+    }
+    bin(xBin,yBin).add(obj);
+    xBin=xWrap(xBin + 1);
+  }
+  return n;
+}

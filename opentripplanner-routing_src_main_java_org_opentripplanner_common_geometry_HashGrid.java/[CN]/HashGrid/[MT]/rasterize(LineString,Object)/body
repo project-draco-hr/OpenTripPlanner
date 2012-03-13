@@ -1,0 +1,11 @@
+{
+  Coordinate[] coords=ls.getCoordinates();
+  double dist=0;
+  for (int i=0; i < coords.length - 1; i++) {
+    Coordinate c0=coords[i];
+    Coordinate c1=coords[i + 1];
+    RasterizedSegment rs=new RasterizedSegment(c0,c1,dist,t);
+    rasterize(c0,c1,rs);
+    dist+=DistanceLibrary.fastDistance(coords[i],coords[i + 1]);
+  }
+}

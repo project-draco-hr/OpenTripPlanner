@@ -1,23 +1,18 @@
 {
+  final int SATURATE_AT=10;
+  String[] block=new String[]{"??????","??????","??????","??????"};
   StringBuilder sb=new StringBuilder();
   sb.append("HashGrid:\n");
   for (int y=nBinsY - 1; y >= 0; y--) {
     for (int x=0; x < nBinsX; x++) {
       if (bins[x][y] == null) {
-        sb.append("__");
+        sb.append("  ");
       }
  else {
         int z=bins[x][y].size();
-        if (z < 10) {
-          sb.append('.');
-          sb.append(z);
-        }
- else         if (z < 100) {
-          sb.append(z);
-        }
- else {
-          sb.append("XX");
-        }
+        int i=z * 3 / SATURATE_AT;
+        if (i > 3)         i=3;
+        sb.append(block[i]);
       }
     }
     sb.append('\n');
