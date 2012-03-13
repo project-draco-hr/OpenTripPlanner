@@ -356,6 +356,14 @@ catch (          IllegalAccessException e1) {
   }
 );
   buttonPanel.add(traceButton);
+  JButton annotationButton=new JButton("Find annotations");
+  annotationButton.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+      findAnnotation();
+    }
+  }
+);
+  buttonPanel.add(annotationButton);
   JPanel rightPanel=new JPanel();
   rightPanel.setLayout(new BorderLayout());
   pane.add(rightPanel,BorderLayout.LINE_END);
@@ -372,6 +380,21 @@ catch (          IllegalAccessException e1) {
   JScrollPane mdScrollPane=new JScrollPane(metadataList);
   mdScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
   rightPanelTabs.addTab("metadata",mdScrollPane);
+  annotationMatches=new JList();
+  annotationMatches.addListSelectionListener(new ListSelectionListener(){
+    public void valueChanged(    ListSelectionEvent e){
+      JList theList=(JList)e.getSource();
+      SelectableGraphBuilderAnnotation anno=(SelectableGraphBuilderAnnotation)theList.getSelectedValue();
+      if (anno == null)       return;
+      anno.select(showGraph);
+    }
+  }
+);
+  annotationMatchesModel=new DefaultListModel();
+  annotationMatches.setModel(annotationMatchesModel);
+  JScrollPane amScrollPane=new JScrollPane(annotationMatches);
+  amScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+  rightPanelTabs.addTab("annotations",amScrollPane);
   Dimension size=new Dimension(200,1600);
   mdScrollPane.setMaximumSize(size);
   mdScrollPane.setPreferredSize(size);
