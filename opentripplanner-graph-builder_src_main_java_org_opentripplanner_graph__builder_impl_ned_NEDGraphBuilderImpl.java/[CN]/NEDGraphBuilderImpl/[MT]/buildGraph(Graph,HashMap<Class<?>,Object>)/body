@@ -6,7 +6,7 @@
     for (    Edge ee : gv.getOutgoing()) {
       if (ee instanceof EdgeWithElevation) {
         EdgeWithElevation edgeWithElevation=(EdgeWithElevation)ee;
-        processEdge(edgeWithElevation);
+        processEdge(graph,edgeWithElevation);
         if (edgeWithElevation.getElevationProfile() != null) {
           edgesWithElevation.add(edgeWithElevation);
         }
