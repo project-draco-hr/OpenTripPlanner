@@ -396,6 +396,8 @@ catch (          IllegalAccessException e1) {
   amScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
   rightPanelTabs.addTab("annotations",amScrollPane);
   Dimension size=new Dimension(200,1600);
+  amScrollPane.setMaximumSize(size);
+  amScrollPane.setPreferredSize(size);
   mdScrollPane.setMaximumSize(size);
   mdScrollPane.setPreferredSize(size);
   rightPanelTabs.setMaximumSize(size);
