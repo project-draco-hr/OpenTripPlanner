@@ -22,12 +22,12 @@
       }
       if (e instanceof PreBoardEdge) {
         TransitStop stop=(TransitStop)e.getFromVertex();
-        preBoardEdges.put(stop.getStopId(),e);
+        preBoardEdges.put(stop.getStopId(),(PreBoardEdge)e);
         start=false;
       }
       if (e instanceof PreAlightEdge) {
         TransitStop stop=(TransitStop)((PreAlightEdge)e).getToVertex();
-        preAlightEdges.put(stop.getStopId(),e);
+        preAlightEdges.put(stop.getStopId(),(PreAlightEdge)e);
         start=false;
       }
     }

@@ -14,7 +14,7 @@
   gtfsBuilder.buildGraph(graph,new HashMap<Class<?>,Object>());
   TransitIndexService index=graph.getService(TransitIndexService.class);
   assertNotNull(index);
-  Edge prealightEdge=index.getPrealightEdge(new AgencyAndId("agency","A"));
+  Edge prealightEdge=index.getPreAlightEdge(new AgencyAndId("agency","A"));
   assertTrue(prealightEdge instanceof PreAlightEdge);
   List<RouteVariant> variantsForRoute=index.getVariantsForRoute(new AgencyAndId("agency","18"));
   assertEquals(2,variantsForRoute.size());

@@ -6,11 +6,11 @@
   GTFSPatternHopFactory factory=new GTFSPatternHopFactory(context);
   factory.run(graph);
   TransitIndexService index=new TransitIndexService(){
-    @Override public Edge getPrealightEdge(    AgencyAndId stop){
-      return graph.getVertex("agency_A_arrive").getOutgoing().iterator().next();
+    @Override public PreAlightEdge getPreAlightEdge(    AgencyAndId stop){
+      return (PreAlightEdge)graph.getVertex("agency_A_arrive").getOutgoing().iterator().next();
     }
-    @Override public Edge getPreboardEdge(    AgencyAndId stop){
-      return graph.getVertex("agency_A_depart").getIncoming().iterator().next();
+    @Override public PreBoardEdge getPreBoardEdge(    AgencyAndId stop){
+      return (PreBoardEdge)graph.getVertex("agency_A_depart").getIncoming().iterator().next();
     }
     @Override public RouteVariant getVariantForTrip(    AgencyAndId trip){
       return null;

@@ -57,7 +57,8 @@
         preferences_penalty+=options.useUnpreferredRoutesPenalty;
       }
     }
-    StateEditor s1=state0.edit(this);
+    EdgeNarrative en=new TransitNarrative(trip,this);
+    StateEditor s1=state0.edit(this,en);
     int type=pattern.getAlightType(stopIndex + 1);
     if (TransitUtils.handleBoardAlightType(s1,type)) {
       return null;
@@ -83,7 +84,9 @@
     if (state0.getBackEdgeNarrative() instanceof PatternBoard) {
       return null;
     }
-    StateEditor s1=state0.edit(this);
+    Trip trip=pattern.getTrip(state0.getTrip());
+    EdgeNarrative en=new TransitNarrative(trip,this);
+    StateEditor s1=state0.edit(this,en);
     int type=pattern.getAlightType(stopIndex + 1);
     if (TransitUtils.handleBoardAlightType(s1,type)) {
       return null;
