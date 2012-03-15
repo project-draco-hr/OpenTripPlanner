@@ -1,0 +1,13 @@
+{
+  String src;
+  if (path != null) {
+    src=path.toString();
+  }
+ else   if (url != null) {
+    src=url.toString();
+  }
+ else {
+    src="(no source)";
+  }
+  return "GTFS bundle at " + src;
+}
