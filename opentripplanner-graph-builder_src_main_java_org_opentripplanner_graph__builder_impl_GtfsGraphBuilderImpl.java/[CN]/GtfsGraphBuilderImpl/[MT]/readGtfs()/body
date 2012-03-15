@@ -1,8 +1,9 @@
 {
   StoreImpl store=new StoreImpl();
-  List<GtfsReader> readers=new ArrayList<GtfsReader>();
   EntityHandler counter=new EntityCounter();
+  store.open();
   for (  GtfsBundle gtfsBundle : _gtfsBundles.getBundles()) {
+    _log.info("reading {}",gtfsBundle.toString());
     GtfsReader reader=new GtfsReader();
     reader.setInputSource(gtfsBundle.getCsvInputSource());
     reader.setEntityStore(store);
@@ -11,17 +12,8 @@
     for (    Map.Entry<String,String> entry : gtfsBundle.getAgencyIdMappings().entrySet())     reader.addAgencyIdMapping(entry.getKey(),entry.getValue());
     if (_log.isDebugEnabled())     reader.addEntityHandler(counter);
     if (gtfsBundle.getDefaultBikesAllowed())     reader.addEntityHandler(new EntityBikeability(true));
-    readers.add(reader);
-  }
-  if (readers.isEmpty()) {
-    _log.info("no feeds specified");
-    return;
-  }
-  store.open();
-  List<Class<?>> entityClasses=readers.get(0).getEntityClasses();
-  for (  Class<?> entityClass : entityClasses) {
-    _log.info("reading entities: " + entityClass.getName());
-    for (    GtfsReader reader : readers) {
+    for (    Class<?> entityClass : reader.getEntityClasses()) {
+      _log.info("reading entities: " + entityClass.getName());
       reader.readEntities(entityClass);
       store.flush();
     }
