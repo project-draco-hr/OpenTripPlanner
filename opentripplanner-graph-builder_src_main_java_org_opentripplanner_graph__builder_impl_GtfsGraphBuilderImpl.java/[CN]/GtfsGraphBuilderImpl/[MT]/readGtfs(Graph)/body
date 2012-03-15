@@ -21,7 +21,7 @@
         for (        Agency agency : reader.getAgencies()) {
           GtfsBundle existing=agenciesSeen.get(agency);
           if (existing != null) {
-            _log.warn("Agency {} was already defined by {}. Both feeds will refer to " + "the same agency. Is this intentional?",agency,existing);
+            _log.warn(GraphBuilderAnnotation.register(graph,Variety.AGENCY_NAME_COLLISION,agency,existing.toString()));
           }
  else {
             agenciesSeen.put(agency,gtfsBundle);
