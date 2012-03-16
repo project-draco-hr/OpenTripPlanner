@@ -1,0 +1,15 @@
+{
+  HashMap<Edge,RouteSegment> successors=new HashMap<Edge,RouteSegment>();
+  for (  RouteSegment s : segments) {
+    if (s.hopIn != null) {
+      successors.put(s.hopIn,s);
+    }
+  }
+  segment=successors.get(segment.hopOut);
+  ArrayList<RouteSegment> out=new ArrayList<RouteSegment>();
+  while (segment != null) {
+    out.add(segment);
+    segment=successors.get(segment.hopOut);
+  }
+  return out;
+}

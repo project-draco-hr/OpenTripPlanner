@@ -12,11 +12,7 @@
   AgencyAndId stop=new AgencyAndId(stopAgency,stopId);
   Edge preBoardEdge=transitIndexService.getPreBoardEdge(stop);
   Vertex boarding=preBoardEdge.getToVertex();
-  TraverseOptions options=new TraverseOptions();
-  if (graphService.getCalendarService() != null) {
-    options.setCalendarService(graphService.getCalendarService());
-    options.setServiceDays(startTime);
-  }
+  TraverseOptions options=makeTraverseOptions(startTime);
   HashSet<AgencyAndId> trips=new HashSet<AgencyAndId>();
   StopTimeList result=new StopTimeList();
   result.stopTimes=new ArrayList<StopTime>();

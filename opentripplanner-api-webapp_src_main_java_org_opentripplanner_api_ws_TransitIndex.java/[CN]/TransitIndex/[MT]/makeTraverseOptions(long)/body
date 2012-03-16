@@ -1,0 +1,8 @@
+{
+  TraverseOptions options=new TraverseOptions();
+  if (graphService.getCalendarService() != null) {
+    options.setCalendarService(graphService.getCalendarService());
+    options.setServiceDays(startTime);
+  }
+  return options;
+}
