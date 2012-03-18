@@ -1,7 +1,7 @@
 {
   LineString geometry=_geometriesByShapeId.get(shapeId);
   if (geometry != null)   return geometry;
-  List<ShapePoint> points=_dao.getShapePointsForShapeId(shapeId);
+  List<ShapePoint> points=getUniqueShapePointsForShapeId(shapeId);
   Coordinate[] coordinates=new Coordinate[points.size()];
   double[] distances=new double[points.size()];
   boolean hasAllDistances=true;

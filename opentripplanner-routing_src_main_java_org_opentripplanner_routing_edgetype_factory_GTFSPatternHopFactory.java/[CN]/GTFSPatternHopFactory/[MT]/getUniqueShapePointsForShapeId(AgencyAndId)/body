@@ -1,0 +1,23 @@
+{
+  List<ShapePoint> points=_dao.getShapePointsForShapeId(shapeId);
+  ArrayList<ShapePoint> filtered=new ArrayList<ShapePoint>(points.size());
+  ShapePoint last=null;
+  for (  ShapePoint sp : points) {
+    if (last == null || last.getSequence() != sp.getSequence()) {
+      if (last != null && last.getLat() == sp.getLat() && last.getLon() == sp.getLon()) {
+        _log.trace("pair of identical shape points (skipping): {} {}",last,sp);
+      }
+ else {
+        filtered.add(sp);
+      }
+    }
+    last=sp;
+  }
+  if (filtered.size() != points.size()) {
+    filtered.trimToSize();
+    return filtered;
+  }
+ else {
+    return points;
+  }
+}
