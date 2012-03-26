@@ -5,6 +5,7 @@
   fareServiceFactory.setDao(_dao);
   loadStops(graph);
   loadPathways(graph);
+  loadAgencies(graph);
   _log.debug("Loading hops");
   clearCachedData();
   Collection<Trip> trips=_dao.getAllTrips();

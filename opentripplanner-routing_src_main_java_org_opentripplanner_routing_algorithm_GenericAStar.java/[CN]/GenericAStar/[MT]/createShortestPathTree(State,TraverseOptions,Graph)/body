@@ -4,7 +4,7 @@
   if (spt == null) {
     if (options.getModes().getTransit()) {
       spt=new MultiShortestPathTree();
-      options.setServiceDays(init.getTime());
+      options.setServiceDays(init.getTime(),graph.getAgencyIds());
     }
  else {
       spt=new BasicShortestPathTree();

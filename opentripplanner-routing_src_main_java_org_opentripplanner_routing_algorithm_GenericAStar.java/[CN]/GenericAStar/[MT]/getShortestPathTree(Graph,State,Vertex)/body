@@ -3,7 +3,7 @@
     return null;
   }
   TraverseOptions options=origin.getOptions();
-  ShortestPathTree spt=createShortestPathTree(origin,options);
+  ShortestPathTree spt=createShortestPathTree(origin,options,graph);
   options.setTransferTable(graph.getTransferTable());
   final ExtraEdgesStrategy extraEdgesStrategy=options.extraEdgesStrategy;
   Map<Vertex,List<Edge>> extraEdges=new HashMap<Vertex,List<Edge>>();
