@@ -9,7 +9,7 @@
     return new TransitError("No transit index found.  Add TransitIndexBuilder to your graph builder configuration and rebuild your graph.");
   }
   RouteVariant variant=transitIndexService.getVariantForTrip(trip);
-  TraverseOptions options=makeTraverseOptions(time,transitIndexService.getAllAgencies());
+  TraverseOptions options=makeTraverseOptions(time);
   StopTimeList result=new StopTimeList();
   result.stopTimes=new ArrayList<StopTime>();
   State state=null;
