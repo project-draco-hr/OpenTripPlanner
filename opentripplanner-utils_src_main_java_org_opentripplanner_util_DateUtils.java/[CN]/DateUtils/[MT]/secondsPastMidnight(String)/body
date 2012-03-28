@@ -28,7 +28,7 @@
     retVal=(hour * 60 * 60) + (min * 60) + sec;
   }
  catch (  Exception e) {
-    LOGGER.log(Level.INFO,time + " didn't parse",e);
+    LOG.info(time + " didn't parse",e);
     retVal=null;
   }
   return retVal;
