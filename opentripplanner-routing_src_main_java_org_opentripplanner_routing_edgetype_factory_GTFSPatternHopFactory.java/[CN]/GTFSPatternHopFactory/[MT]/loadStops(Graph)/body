@@ -1,5 +1,9 @@
 {
   for (  Stop stop : _dao.getAllStops()) {
+    if (stops.contains(stop)) {
+      continue;
+    }
+    stops.add(stop);
     TransitStop stopVertex=new TransitStop(graph,stop);
     stopNodes.put(stop,stopVertex);
     if (stop.getLocationType() != 2) {

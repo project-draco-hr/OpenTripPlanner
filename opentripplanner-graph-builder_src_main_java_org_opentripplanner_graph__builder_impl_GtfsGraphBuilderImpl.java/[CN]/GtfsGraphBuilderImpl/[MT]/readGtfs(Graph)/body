@@ -1,9 +1,9 @@
 {
-  StoreImpl store=new StoreImpl();
   EntityHandler counter=new EntityCounter();
   Map<Agency,GtfsBundle> agenciesSeen=new HashMap<Agency,GtfsBundle>();
-  store.open();
   for (  GtfsBundle gtfsBundle : _gtfsBundles.getBundles()) {
+    StoreImpl store=new StoreImpl();
+    store.open();
     _log.info("reading {}",gtfsBundle.toString());
     GtfsReader reader=new GtfsReader();
     reader.setInputSource(gtfsBundle.getCsvInputSource());
@@ -29,6 +29,6 @@
         }
       }
     }
+    store.close();
   }
-  store.close();
 }

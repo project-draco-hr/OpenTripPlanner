@@ -9,7 +9,6 @@
   _log.debug("Loading hops");
   clearCachedData();
   Collection<Trip> trips=_dao.getAllTrips();
-  HashMap<ScheduledStopPattern,BasicTripPattern> patterns=new HashMap<ScheduledStopPattern,BasicTripPattern>();
   int index=0;
   HashMap<Trip,List<Frequency>> tripFrequencies=new HashMap<Trip,List<Frequency>>();
   for (  Frequency freq : _dao.getAllFrequencies()) {
@@ -133,10 +132,6 @@
       Stop s1=st1.getStop();
       Trip fromExemplar=fromInterlineTrip.tripPattern.exemplar;
       Trip toExemplar=toInterlineTrip.tripPattern.exemplar;
-      List<StopTime> fromStopTimes=getNonduplicateStopTimesForTrip(fromExemplar);
-      int exemplarStopSequence0=fromStopTimes.get(fromStopTimes.size() - 1).getStopSequence();
-      List<StopTime> toStopTimes=getNonduplicateStopTimesForTrip(toExemplar);
-      int exemplarStopSequence1=toStopTimes.get(0).getStopSequence();
       PatternInterlineDwell dwell;
       InterlineSwitchoverKey dwellKey=new InterlineSwitchoverKey(s0,s1,fromInterlineTrip.tripPattern,toInterlineTrip.tripPattern);
       dwell=getInterlineDwell(dwellKey);
