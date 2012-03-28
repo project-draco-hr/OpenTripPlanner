@@ -1,7 +1,7 @@
 {
   Vertex stop_i=graph.getVertex("agency_I_depart");
   Vertex stop_k=graph.getVertex("agency_K_arrive");
-  long startTime=TestUtils.dateInSeconds(2009,8,19,12,0,0);
+  long startTime=TestUtils.dateInSeconds("America/New_York",2009,8,19,12,0,0);
   TraverseOptions options=new TraverseOptions(context);
   ShortestPathTree spt=AStar.getShortestPathTree(graph,stop_i,stop_k,startTime,options);
   GraphPath path=spt.getPath(stop_k,false);

@@ -1,0 +1,6 @@
+{
+  TimeZone timeZone=TimeZone.getTimeZone(timeZoneId);
+  GregorianCalendar calendar=new GregorianCalendar(year,month,day,hour,minute,second);
+  calendar.setTimeZone(timeZone);
+  return calendar.getTimeInMillis() / 1000;
+}
