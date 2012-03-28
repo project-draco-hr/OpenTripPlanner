@@ -71,7 +71,7 @@ case START:
  else       if (mode == TraverseMode.STL) {
       }
  else {
-        System.out.println("UNEXPECTED STATE: " + mode);
+        LOG.error("Unexpected state: " + mode);
       }
     break;
 case WALK:
@@ -104,7 +104,7 @@ if (mode == TraverseMode.WALK) {
   pgstate=PlanGenState.START;
 }
  else {
-  System.out.println("UNEXPECTED STATE: " + mode);
+  LOG.error("Unexpected state: " + mode);
 }
 break;
 case BICYCLE:
@@ -130,7 +130,7 @@ leg=null;
 pgstate=PlanGenState.START;
 }
  else {
-System.out.println("UNEXPECTED STATE: " + mode);
+LOG.error("Unexpected state: " + mode);
 }
 break;
 case CAR:
@@ -150,13 +150,13 @@ leg=null;
 pgstate=PlanGenState.START;
 }
  else {
-System.out.println("UNEXPECTED STATE: " + mode);
+LOG.error("Unexpected state: " + mode);
 }
 break;
 case PRETRANSIT:
 if (mode == TraverseMode.BOARDING) {
 if (leg != null) {
-System.out.println("leg unexpectedly not null");
+LOG.error("leg unexpectedly not null");
 }
 leg=makeLeg(itinerary,state);
 leg.boardRule=(String)state.getExtension("boardAlightRule");
@@ -199,7 +199,7 @@ leg.interlineWithPreviousLeg=true;
 }
 }
  else {
-System.out.println("UNEXPECTED STATE: " + mode);
+LOG.error("Unexpected state: " + mode);
 }
 break;
 }

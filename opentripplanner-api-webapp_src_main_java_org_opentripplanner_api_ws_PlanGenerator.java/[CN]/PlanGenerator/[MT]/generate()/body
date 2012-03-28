@@ -18,11 +18,11 @@
     }
   }
  catch (  VertexNotFoundException e) {
-    LOGGER.log(Level.INFO,"Vertex not found: " + request.getFrom() + " : "+ request.getTo(),e);
+    LOG.info("Vertex not found: " + request.getFrom() + " : "+ request.getTo(),e);
     throw e;
   }
   if (paths == null || paths.size() == 0) {
-    LOGGER.log(Level.INFO,"Path not found: " + request.getFrom() + " : "+ request.getTo());
+    LOG.info("Path not found: " + request.getFrom() + " : "+ request.getTo());
     throw new PathNotFoundException();
   }
   TripPlan plan=generatePlan(paths,request);
@@ -30,7 +30,7 @@
     for (    Itinerary i : plan.itinerary) {
       i.tooSloped=tooSloped;
       if (i.legs.size() == 0) {
-        LOGGER.log(Level.WARNING,"itinerary has no legs");
+        LOG.warn("itinerary has no legs");
         continue;
       }
       Leg firstLeg=i.legs.get(0);
