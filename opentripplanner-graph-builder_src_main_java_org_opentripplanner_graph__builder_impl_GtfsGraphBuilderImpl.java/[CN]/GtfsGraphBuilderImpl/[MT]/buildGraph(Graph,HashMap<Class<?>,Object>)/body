@@ -1,27 +1,34 @@
 {
+  MultiCalendarServiceImpl service=new MultiCalendarServiceImpl();
   try {
-    readGtfs(graph);
+    for (    GtfsBundle gtfsBundle : _gtfsBundles.getBundles()) {
+      GtfsMutableRelationalDao dao=new GtfsRelationalDaoImpl();
+      GtfsContext context=GtfsLibrary.createContext(dao,service);
+      GTFSPatternHopFactory hf=new GTFSPatternHopFactory(context);
+      hf.setFareServiceFactory(_fareServiceFactory);
+      loadBundle(gtfsBundle,graph,dao);
+      CalendarServiceDataFactoryImpl csfactory=new CalendarServiceDataFactoryImpl();
+      csfactory.setGtfsDao(dao);
+      CalendarServiceData data=csfactory.createData();
+      service.addData(data,dao);
+      hf.setDefaultStreetToStopTime(gtfsBundle.getDefaultStreetToStopTime());
+      hf.run(graph);
+      if (gtfsBundle.doesTransfersTxtDefineStationPaths()) {
+        hf.createStationTransfers(graph);
+      }
+      if (gtfsGraphBuilders != null) {
+        for (        GraphBuilderWithGtfsDao builder : gtfsGraphBuilders) {
+          builder.setDao(dao);
+          builder.buildGraph(graph);
+          builder.setDao(null);
+        }
+      }
+    }
   }
  catch (  IOException e) {
     throw new RuntimeException(e);
   }
-  CalendarServiceDataFactoryImpl factory=new CalendarServiceDataFactoryImpl();
-  factory.setGtfsDao(_dao);
-  CalendarServiceData data=factory.createData();
-  CalendarServiceImpl service=new CalendarServiceImpl();
-  service.setData(data);
-  GtfsContext context=GtfsLibrary.createContext(_dao,service);
-  GTFSPatternHopFactory hf=new GTFSPatternHopFactory(context);
-  hf.setFareServiceFactory(_fareServiceFactory);
-  hf.run(graph);
+  CalendarServiceData data=service.getData();
   graph.putService(CalendarServiceData.class,data);
   graph.updateTransitFeedValidity(data);
-  if (gtfsGraphBuilders != null) {
-    for (    GraphBuilderWithGtfsDao builder : gtfsGraphBuilders) {
-      builder.setDao(_dao);
-      builder.buildGraph(graph);
-      builder.setDao(null);
-    }
-  }
-  if (_dao instanceof GtfsRelationalDaoImpl)   _dao=new GtfsRelationalDaoImpl();
 }
