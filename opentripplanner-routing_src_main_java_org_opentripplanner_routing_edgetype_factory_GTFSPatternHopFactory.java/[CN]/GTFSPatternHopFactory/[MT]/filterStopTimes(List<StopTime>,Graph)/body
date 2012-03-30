@@ -19,8 +19,6 @@
     if (st0.getArrivalTime() == st1.getArrivalTime() || st0.getDepartureTime() == st1.getDepartureTime()) {
       _log.debug("{} {}",st0,st1);
       _log.warn(GraphBuilderAnnotation.register(graph,Variety.HOP_ZERO_TIME,hopDistance,st1.getTrip().getRoute(),st1.getTrip().getId(),st1.getStopSequence()));
-      st1.clearArrivalTime();
-      st1.clearDepartureTime();
       st1bogus=true;
     }
  else     if (hopSpeed > 45) {
