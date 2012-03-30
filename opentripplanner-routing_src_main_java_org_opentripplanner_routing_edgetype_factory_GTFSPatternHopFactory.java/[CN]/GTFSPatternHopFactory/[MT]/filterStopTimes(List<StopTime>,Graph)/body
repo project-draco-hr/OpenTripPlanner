@@ -1,10 +1,18 @@
 {
   if (stopTimes.size() < 2)   return;
   StopTime st0=stopTimes.get(0);
+  if (!st0.isDepartureTimeSet() && st0.isArrivalTimeSet()) {
+    st0.setDepartureTime(st0.getArrivalTime());
+  }
   for (int i=1; i < stopTimes.size(); i++) {
     boolean st1bogus=false;
     StopTime st1=stopTimes.get(i);
-    if (!(st1.isArrivalTimeSet() && st1.isDepartureTimeSet()))     continue;
+    if (!st1.isDepartureTimeSet() && st1.isArrivalTimeSet()) {
+      st1.setDepartureTime(st1.getArrivalTime());
+    }
+    if (!(st1.isArrivalTimeSet() && st1.isDepartureTimeSet())) {
+      continue;
+    }
     int runningTime=st1.getArrivalTime() - st0.getDepartureTime();
     double hopDistance=DistanceLibrary.fastDistance(st0.getStop().getLon(),st0.getStop().getLat(),st1.getStop().getLon(),st1.getStop().getLat());
     double hopSpeed=hopDistance / runningTime;
