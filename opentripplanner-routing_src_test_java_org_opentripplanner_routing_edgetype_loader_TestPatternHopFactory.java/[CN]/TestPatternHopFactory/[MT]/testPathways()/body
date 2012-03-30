@@ -4,8 +4,8 @@
   Vertex stop=graph.getVertex("agency_A");
   assertNotNull(stop);
   TraverseOptions options=new TraverseOptions(context);
-  ShortestPathTree spt=AStar.getShortestPathTree(graph,entrance,stop,TestUtils.dateInSeconds(2009,8,1,16,0,0),options);
+  ShortestPathTree spt=AStar.getShortestPathTree(graph,entrance,stop,TestUtils.dateInSeconds("America/New_York",2009,8,1,16,0,0),options);
   GraphPath path=spt.getPath(stop,false);
   assertNotNull(path);
-  assertEquals(TestUtils.dateInSeconds(2009,8,1,16,0,34),path.getEndTime());
+  assertEquals(TestUtils.dateInSeconds("America/New_York",2009,8,1,16,0,34),path.getEndTime());
 }

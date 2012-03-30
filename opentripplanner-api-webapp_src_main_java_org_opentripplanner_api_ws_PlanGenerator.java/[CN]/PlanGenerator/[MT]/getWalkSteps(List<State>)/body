@@ -35,7 +35,7 @@
       step.setAbsoluteDirection(thisAngle);
       distance=edgeNarrative.getDistance();
     }
- else     if ((!step.streetName.equals(streetName)) && (step.streetName != null && !step.streetName.equals(streetName)) && (!step.bogusName || !edgeNarrative.hasBogusName())) {
+ else     if ((step.streetName != null && !step.streetName.equals(streetName)) && (!step.bogusName || !edgeNarrative.hasBogusName())) {
       if (roundaboutExit > 0) {
         step.exit=Integer.toString(roundaboutExit);
         if (streetName.equals(roundaboutPreviousStreet)) {

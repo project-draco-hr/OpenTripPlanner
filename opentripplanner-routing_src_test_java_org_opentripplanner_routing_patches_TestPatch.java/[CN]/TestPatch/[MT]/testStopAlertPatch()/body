@@ -10,7 +10,7 @@
   Vertex stop_e=graph.getVertex("agency_E_arrive");
   ShortestPathTree spt;
   GraphPath path;
-  long startTime=TestUtils.dateInSeconds(2009,8,7,0,0,0);
+  long startTime=TestUtils.dateInSeconds("America/New_York",2009,8,7,0,0,0);
   spt=AStar.getShortestPathTree(graph,stop_a,stop_e,startTime,options);
   path=spt.getPath(stop_e,true);
   assertNotNull(path);

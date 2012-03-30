@@ -11,13 +11,14 @@
   options.wheelchairAccessible=true;
   ShortestPathTree spt;
   GraphPath path;
-  spt=AStar.getShortestPathTree(graph,near_a,near_b,TestUtils.dateInSeconds(2009,8,18,0,0,0),options);
+  spt=AStar.getShortestPathTree(graph,near_a,near_b,TestUtils.dateInSeconds("America/New_York",2009,8,18,0,0,0),options);
   path=spt.getPath(near_b,false);
   assertNotNull(path);
-  spt=AStar.getShortestPathTree(graph,near_a,near_c,TestUtils.dateInSeconds(2009,8,18,0,0,0),options);
+  spt=AStar.getShortestPathTree(graph,near_a,near_c,TestUtils.dateInSeconds("America/New_York",2009,8,18,0,0,0),options);
   path=spt.getPath(near_c,false);
   assertNull(path);
   GregorianCalendar time=new GregorianCalendar(2009,8,18,0,0,0);
+  time.setTimeZone(TimeZone.getTimeZone("America/New_York"));
   spt=AStar.getShortestPathTree(graph,near_a,split_d,TestUtils.toSeconds(time),options);
   time.add(Calendar.HOUR,1);
   time.add(Calendar.SECOND,1);

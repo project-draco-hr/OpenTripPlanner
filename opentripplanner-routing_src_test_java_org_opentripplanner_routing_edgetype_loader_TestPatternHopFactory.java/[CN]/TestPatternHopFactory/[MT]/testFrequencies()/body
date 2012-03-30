@@ -5,22 +5,22 @@
   GraphPath path;
   TraverseOptions options=new TraverseOptions(context);
   options.setModes(new TraverseModeSet("TRANSIT"));
-  spt=AStar.getShortestPathTree(graph,stop_u,stop_v,TestUtils.dateInSeconds(2009,8,7,0,0,0),options);
+  spt=AStar.getShortestPathTree(graph,stop_u,stop_v,TestUtils.dateInSeconds("America/New_York",2009,8,7,0,0,0),options);
   path=spt.getPath(stop_v,false);
   assertNotNull(path);
   assertEquals(4,path.states.size());
-  long endTime=TestUtils.dateInSeconds(2009,8,7,6,40,0);
+  long endTime=TestUtils.dateInSeconds("America/New_York",2009,8,7,6,40,0);
   assertEquals(endTime,path.getEndTime());
-  spt=AStar.getShortestPathTree(graph,stop_u.getLabel(),stop_v.getLabel(),TestUtils.dateInSeconds(2009,8,7,7,0,0),options);
+  spt=AStar.getShortestPathTree(graph,stop_u.getLabel(),stop_v.getLabel(),TestUtils.dateInSeconds("America/New_York",2009,8,7,7,0,0),options);
   path=spt.getPath(stop_v,false);
   assertNotNull(path);
   assertEquals(4,path.states.size());
-  endTime=TestUtils.dateInSeconds(2009,8,7,7,40,0);
+  endTime=TestUtils.dateInSeconds("America/New_York",2009,8,7,7,40,0);
   assertEquals(endTime,path.getEndTime());
-  spt=AStar.getShortestPathTree(graph,stop_u.getLabel(),stop_v.getLabel(),TestUtils.dateInSeconds(2009,8,7,14,0,0),options);
+  spt=AStar.getShortestPathTree(graph,stop_u.getLabel(),stop_v.getLabel(),TestUtils.dateInSeconds("America/New_York",2009,8,7,14,0,0),options);
   path=spt.getPath(stop_v,false);
   assertNotNull(path);
   assertEquals(4,path.states.size());
-  endTime=TestUtils.dateInSeconds(2009,8,7,14,40,0);
+  endTime=TestUtils.dateInSeconds("America/New_York",2009,8,7,14,40,0);
   assertEquals(endTime,path.getEndTime());
 }

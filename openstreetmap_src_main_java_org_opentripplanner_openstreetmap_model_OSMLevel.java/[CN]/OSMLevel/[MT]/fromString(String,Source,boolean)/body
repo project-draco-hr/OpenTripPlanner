@@ -1,5 +1,6 @@
 {
   Double altitude=null;
+  boolean reliable=true;
   int lastIndexAt=spec.lastIndexOf('@');
   if (lastIndexAt != -1) {
     try {
@@ -49,12 +50,15 @@
   if (floorNumber == null && altitude != null) {
     floorNumber=(int)(altitude / METERS_PER_FLOOR);
     _log.warn("Could not determine floor number for layer {}. Guessed {} (0-based) from altitude.",spec,floorNumber);
+    reliable=false;
   }
   if (altitude == null) {
     altitude=0.0;
   }
   if (floorNumber == null) {
-    return null;
+    floorNumber=0;
+    _log.warn("Could not determine floor number for layer {}, assumed to be ground-level.",spec,floorNumber);
+    reliable=false;
   }
-  return new OSMLevel(floorNumber,altitude,shortName,longName,source);
+  return new OSMLevel(floorNumber,altitude,shortName,longName,source,reliable);
 }

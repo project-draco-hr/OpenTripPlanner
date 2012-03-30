@@ -10,7 +10,12 @@
       retval.context=new ClassPathXmlApplicationContext(subApplicationContextList,parentContext);
       AutowireCapableBeanFactory factory=retval.context.getAutowireCapableBeanFactory();
       retval.pathService=(PathService)factory.getBean("pathService",PathService.class);
-      retval.patchService=(PatchService)factory.getBean("patchService",PatchService.class);
+      try {
+        retval.patchService=(PatchService)factory.getBean("patchService",PatchService.class);
+      }
+ catch (      NoSuchBeanDefinitionException e) {
+        LOG.warn("No bean 'patchService' defined in application-context.xml, skipping it.");
+      }
       break;
     }
  catch (    BeanCreationException e) {
