@@ -10,12 +10,6 @@
     st1=stopTimes.get(i + 1);
     prevDepartureTime=departureTime;
     departureTime=st0.getDepartureTime();
-    if (!st0.isDepartureTimeSet() && st0.isArrivalTimeSet()) {
-      st0.setDepartureTime(st0.getArrivalTime());
-    }
-    if (!st1.isDepartureTimeSet() && st1.isArrivalTimeSet()) {
-      st1.setDepartureTime(st1.getArrivalTime());
-    }
     if (!(st0.isDepartureTimeSet() && st0.isArrivalTimeSet())) {
       int j;
       StopTime st=null;
