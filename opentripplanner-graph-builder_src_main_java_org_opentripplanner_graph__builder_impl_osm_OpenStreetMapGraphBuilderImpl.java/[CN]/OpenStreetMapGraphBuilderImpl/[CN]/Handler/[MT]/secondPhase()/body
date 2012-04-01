@@ -3,20 +3,9 @@
   processMultipolygons();
   for (Iterator<OSMWay> it=_ways.values().iterator(); it.hasNext(); ) {
     OSMWay way=it.next();
-    if (!(way.hasTag("highway") || way.isTag("railway","platform"))) {
-      it.remove();
-    }
- else     if (way.isTag("highway","conveyer") || way.isTag("highway","proposed")) {
-      it.remove();
-    }
- else     if (way.isTag("area","yes")) {
-      it.remove();
-    }
- else {
-      List<Long> nodes=way.getNodeRefs();
-      if (nodes.size() > 1) {
-        _nodesWithNeighbors.addAll(nodes);
-      }
+    List<Long> nodes=way.getNodeRefs();
+    if (nodes.size() > 1) {
+      _nodesWithNeighbors.addAll(nodes);
     }
   }
   _log.trace("purged " + (count - _ways.values().size()) + " ways out of "+ count);

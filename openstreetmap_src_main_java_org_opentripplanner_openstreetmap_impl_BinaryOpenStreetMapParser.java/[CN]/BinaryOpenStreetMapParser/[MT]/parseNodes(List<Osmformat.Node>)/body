@@ -8,9 +8,9 @@
     tmp.setLat(parseLat(i.getLat()));
     tmp.setLon(parseLon(i.getLon()));
     for (int j=0; j < i.getKeysCount(); j++) {
-      OSMTag tag=new OSMTag();
       String key=getStringById(i.getKeys(j)).intern();
       String value=getStringById(i.getVals(j)).intern();
+      OSMTag tag=new OSMTag();
       tag.setK(key);
       tag.setV(value);
       tmp.addTag(tag);
