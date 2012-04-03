@@ -30,6 +30,7 @@
     while (!q.empty()) {
       double uw=q.peek_min_key();
       Vertex u=q.extract_min();
+      if (uw > 60 * 60 * 3)       break;
       int ui=u.getIndex();
       if (uw > weights[ui])       continue;
       Iterable<Edge> edges;
