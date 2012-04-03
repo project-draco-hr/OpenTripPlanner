@@ -4,12 +4,12 @@
     Properties props=new java.util.Properties();
     InputStream in=MavenVersion.class.getClassLoader().getResourceAsStream(FILE);
     props.load(in);
-    MavenVersion ver=new MavenVersion(props.getProperty("version"));
-    LOG.info("Parsed Maven artifact version: {}",ver.toStringVerbose());
-    return ver;
+    MavenVersion version=new MavenVersion(props.getProperty("project.version"),props.getProperty("git.commit.id"));
+    LOG.info("Parsed Maven artifact version: {}",version.toStringVerbose());
+    return version;
   }
  catch (  Exception e) {
-    LOG.error("Error reading Maven build version from properties file: {}",e.getMessage());
-    return new MavenVersion("-1.-1.-1");
+    LOG.error("Error reading version from properties file: {}",e.getMessage());
+    return new MavenVersion("0.0.0-ParseFailure","0");
   }
 }
