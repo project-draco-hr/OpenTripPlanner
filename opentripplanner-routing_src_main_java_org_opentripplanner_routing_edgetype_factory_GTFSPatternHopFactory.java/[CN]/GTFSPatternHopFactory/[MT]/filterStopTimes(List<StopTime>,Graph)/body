@@ -17,12 +17,12 @@
     double hopDistance=DistanceLibrary.fastDistance(st0.getStop().getLon(),st0.getStop().getLat(),st1.getStop().getLon(),st1.getStop().getLat());
     double hopSpeed=hopDistance / runningTime;
     if (st0.getArrivalTime() == st1.getArrivalTime() || st0.getDepartureTime() == st1.getDepartureTime()) {
-      _log.debug("{} {}",st0,st1);
-      _log.warn(GraphBuilderAnnotation.register(graph,Variety.HOP_ZERO_TIME,hopDistance,st1.getTrip().getRoute(),st1.getTrip().getId(),st1.getStopSequence()));
+      _log.trace("{} {}",st0,st1);
+      _log.trace(GraphBuilderAnnotation.register(graph,Variety.HOP_ZERO_TIME,hopDistance,st1.getTrip().getRoute(),st1.getTrip().getId(),st1.getStopSequence()));
       st1bogus=true;
     }
  else     if (hopSpeed > 45) {
-      _log.warn(GraphBuilderAnnotation.register(graph,Variety.HOP_SPEED,hopSpeed,hopDistance,st0.getTrip().getRoute(),st0.getTrip().getId(),st0.getStopSequence()));
+      _log.trace(GraphBuilderAnnotation.register(graph,Variety.HOP_SPEED,hopSpeed,hopDistance,st0.getTrip().getRoute(),st0.getTrip().getId(),st0.getStopSequence()));
     }
     if (!st1bogus)     st0=st1;
   }
