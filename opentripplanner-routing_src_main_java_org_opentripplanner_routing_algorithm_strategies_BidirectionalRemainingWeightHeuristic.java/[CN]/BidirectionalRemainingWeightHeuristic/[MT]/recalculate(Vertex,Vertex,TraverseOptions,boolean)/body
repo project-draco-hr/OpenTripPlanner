@@ -1,6 +1,11 @@
 {
-  if (target != this.target) {
+  final double AVG_TRANSIT_SPEED=25;
+  double cutoff=(origin.distance(target) * 1.5) / AVG_TRANSIT_SPEED;
+  cutoff+=options.getMaxWalkDistance() * options.walkReluctance;
+  if (target != this.target || cutoff > this.cutoff) {
+    LOG.debug("recalc");
     this.target=target;
+    this.cutoff=cutoff;
     this.nVertices=AbstractVertex.getMaxIndex();
     weights=new double[nVertices];
     Arrays.fill(weights,Double.POSITIVE_INFINITY);
@@ -30,7 +35,7 @@
     while (!q.empty()) {
       double uw=q.peek_min_key();
       Vertex u=q.extract_min();
-      if (uw > 60 * 60 * 3)       break;
+      if (uw > cutoff)       break;
       int ui=u.getIndex();
       if (uw > weights[ui])       continue;
       Iterable<Edge> edges;
