@@ -13,11 +13,11 @@
   extraEdgesStrategy.addEdgesFor(extraEdges,origin.getVertex());
   extraEdgesStrategy.addEdgesFor(extraEdges,target);
   BinHeap<State> pq=new BinHeap<State>();
-  heuristic.computeInitialWeight(origin,target);
   WALK:   for (double maxWalk=options.getMaxWalkDistance(); maxWalk < 100000 && returnStates.isEmpty(); maxWalk*=2) {
     LOG.debug("try search with max walk {}",maxWalk);
     if (maxWalk < Math.min(origin.getVertex().distance(target),origin.getVertex().getDistanceToNearestTransitStop() + target.getDistanceToNearestTransitStop()))     continue WALK;
     options.setMaxWalkDistance(maxWalk);
+    heuristic.computeInitialWeight(origin,target);
     HashMap<Vertex,List<State>> states=new HashMap<Vertex,List<State>>();
     pq.reset();
     pq.insert(origin,0);
