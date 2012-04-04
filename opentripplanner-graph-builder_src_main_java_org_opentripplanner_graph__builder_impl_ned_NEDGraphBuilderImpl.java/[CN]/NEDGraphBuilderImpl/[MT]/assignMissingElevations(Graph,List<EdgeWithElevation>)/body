@@ -77,9 +77,6 @@
     }
     if (bestDistance != Double.MAX_VALUE) {
       double totalDistance=bestDistance + state.distance;
-      if (state.backEdge != null) {
-        System.out.println("here");
-      }
       while (true) {
         double elevation=(bestElevation * state.distance + state.initialElevation * bestDistance) / totalDistance;
         elevations.put(state.vertex,elevation);
@@ -98,6 +95,9 @@
         Double toElevation=elevations.get(edge.getToVertex());
         if (fromElevation == null || toElevation == null) {
           log.warn("Unexpectedly missing elevation for edge " + edge);
+          continue;
+        }
+        if (edge.getElevationProfile() != null && edge.getElevationProfile().size() > 2) {
           continue;
         }
         Coordinate[] coords=new Coordinate[2];
