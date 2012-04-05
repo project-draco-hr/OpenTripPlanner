@@ -21,6 +21,6 @@
   Coordinate coordArr[]=new Coordinate[coordList.size()];
   PackedCoordinateSequence elevPCS=new PackedCoordinateSequence.Double(coordList.toArray(coordArr));
   if (ee.setElevationProfile(elevPCS,true)) {
-    log.warn(GraphBuilderAnnotation.register(graph,Variety.ELEVATION_FLATTENED,ee));
+    log.trace(GraphBuilderAnnotation.register(graph,Variety.ELEVATION_FLATTENED,ee));
   }
 }

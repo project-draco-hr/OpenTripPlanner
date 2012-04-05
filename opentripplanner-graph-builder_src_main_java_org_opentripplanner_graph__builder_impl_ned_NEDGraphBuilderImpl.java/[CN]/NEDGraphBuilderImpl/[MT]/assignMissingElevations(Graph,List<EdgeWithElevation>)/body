@@ -105,7 +105,7 @@
         coords[1]=new Coordinate(edge.getDistance(),toElevation);
         PackedCoordinateSequence profile=new PackedCoordinateSequence.Double(coords);
         if (edge.setElevationProfile(profile,true)) {
-          log.warn(GraphBuilderAnnotation.register(graph,Variety.ELEVATION_FLATTENED,edge));
+          log.trace(GraphBuilderAnnotation.register(graph,Variety.ELEVATION_FLATTENED,edge));
         }
       }
     }
