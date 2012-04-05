@@ -3,6 +3,7 @@
   coverage=(gridCov instanceof GridCoverage2D) ? Interpolator2D.create((GridCoverage2D)gridCov,new InterpolationBilinear()) : gridCov;
   List<EdgeWithElevation> edgesWithElevation=new ArrayList<EdgeWithElevation>();
   int nProcessed=0;
+  int nTotal=graph.countEdges();
   for (  Vertex gv : graph.getVertices()) {
     for (    Edge ee : gv.getOutgoing()) {
       if (ee instanceof EdgeWithElevation) {
@@ -11,7 +12,7 @@
         if (edgeWithElevation.getElevationProfile() != null) {
           edgesWithElevation.add(edgeWithElevation);
           nProcessed+=1;
-          if (nProcessed % 50000 == 0)           log.info("set elevation on {} edges",nProcessed);
+          if (nProcessed % 50000 == 0)           log.info("set elevation on {}/{} edges",nProcessed,nTotal);
         }
       }
     }
