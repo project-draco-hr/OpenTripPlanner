@@ -1,6 +1,8 @@
 {
   if (outgoing.contains(ee)) {
-    LOG.trace("repeatedly added edge {} to vertex {}",ee,this);
+    LOG.error("repeatedly added edge {} to vertex {}",ee,this);
   }
-  outgoing.add(ee);
+ else {
+    outgoing.add(ee);
+  }
 }
