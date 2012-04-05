@@ -1,13 +1,16 @@
 {
   for (  Coverage region : regions) {
-    double[] result;
-    try {
-      result=region.evaluate(point,values);
+    GeneralEnvelope env=((GeneralEnvelope)region.getEnvelope());
+    if (env.contains(point)) {
+      double[] result;
+      try {
+        result=region.evaluate(point,values);
+      }
+ catch (      PointOutsideCoverageException e) {
+        continue;
+      }
+      return result;
     }
- catch (    PointOutsideCoverageException e) {
-      continue;
-    }
-    return result;
   }
   log.warn("Point not found: " + point);
   return null;
