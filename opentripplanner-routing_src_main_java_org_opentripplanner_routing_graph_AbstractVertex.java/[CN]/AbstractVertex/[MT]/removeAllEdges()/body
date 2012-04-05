@@ -11,6 +11,6 @@
       source.removeOutgoing(e);
     }
   }
-  incoming=new ArrayList<Edge>();
-  outgoing=new ArrayList<Edge>();
+  incoming=new CopyOnWriteArraySet<Edge>();
+  outgoing=new CopyOnWriteArraySet<Edge>();
 }

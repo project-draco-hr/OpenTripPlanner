@@ -1,6 +1,6 @@
 {
   in.defaultReadObject();
-  this.incoming=new ArrayList<Edge>(2);
-  this.outgoing=new ArrayList<Edge>(2);
+  this.incoming=new CopyOnWriteArraySet<Edge>();
+  this.outgoing=new CopyOnWriteArraySet<Edge>();
   index=maxIndex++;
 }
