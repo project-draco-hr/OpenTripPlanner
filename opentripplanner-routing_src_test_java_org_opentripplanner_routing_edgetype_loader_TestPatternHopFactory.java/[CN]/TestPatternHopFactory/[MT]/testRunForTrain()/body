@@ -4,6 +4,7 @@
   wo.minTransferTime=0;
   wo.setGtfsContext(context);
   GregorianCalendar startTime=new GregorianCalendar(2009,11,2,8,30,0);
+  startTime.setTimeZone(TimeZone.getTimeZone("America/New_York"));
   ShortestPathTree spt=AStar.getShortestPathTree(graph,"agency_Q",destination.getLabel(),TestUtils.toSeconds(startTime),wo);
   GraphPath path=spt.getPath(destination,false);
   long endTime=path.getEndTime();

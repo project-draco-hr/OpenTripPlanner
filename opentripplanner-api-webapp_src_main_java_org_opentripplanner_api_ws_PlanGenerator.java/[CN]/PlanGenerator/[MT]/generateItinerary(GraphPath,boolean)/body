@@ -70,8 +70,16 @@ case START:
       }
  else       if (mode == TraverseMode.STL) {
       }
+ else       if (mode == TraverseMode.TRANSFER) {
+        leg=makeLeg(itinerary,state);
+        coordinates=new CoordinateArrayListSequence();
+        coordinates.add(state.getBackState().getVertex().getCoordinate());
+        coordinates.add(state.getVertex().getCoordinate());
+        finalizeLeg(leg,state,path.states,i,i,coordinates);
+        coordinates.clear();
+      }
  else {
-        System.out.println("UNEXPECTED STATE: " + mode);
+        LOG.error("Unexpected state (in START): " + mode);
       }
     break;
 case WALK:
@@ -104,7 +112,7 @@ if (mode == TraverseMode.WALK) {
   pgstate=PlanGenState.START;
 }
  else {
-  System.out.println("UNEXPECTED STATE: " + mode);
+  LOG.error("Unexpected state (in WALK): " + mode);
 }
 break;
 case BICYCLE:
@@ -130,7 +138,7 @@ leg=null;
 pgstate=PlanGenState.START;
 }
  else {
-System.out.println("UNEXPECTED STATE: " + mode);
+LOG.error("Unexpected state (in BICYCLE): " + mode);
 }
 break;
 case CAR:
@@ -150,22 +158,27 @@ leg=null;
 pgstate=PlanGenState.START;
 }
  else {
-System.out.println("UNEXPECTED STATE: " + mode);
+LOG.error("Unexpected state (in CAR): " + mode);
 }
 break;
 case PRETRANSIT:
 if (mode == TraverseMode.BOARDING) {
 if (leg != null) {
-System.out.println("leg unexpectedly not null");
+LOG.error("leg unexpectedly not null (boarding loop)");
 }
+ else {
 leg=makeLeg(itinerary,state);
-leg.boardRule=(String)state.getExtension("boardAlightRule");
 itinerary.transfers++;
+leg.boardRule=(String)state.getExtension("boardAlightRule");
 }
-if (backEdge instanceof Hop || backEdge instanceof PatternHop) {
+}
+ else if (backEdge instanceof Hop || backEdge instanceof PatternHop) {
 pgstate=PlanGenState.TRANSIT;
 fixupTransitLeg(leg,state);
 leg.stop=new ArrayList<Place>();
+}
+ else {
+LOG.error("Unexpected state (in PRETRANSIT): " + mode);
 }
 break;
 case TRANSIT:
@@ -199,7 +212,7 @@ leg.interlineWithPreviousLeg=true;
 }
 }
  else {
-System.out.println("UNEXPECTED STATE: " + mode);
+LOG.error("Unexpected state (in TRANSIT): " + mode);
 }
 break;
 }

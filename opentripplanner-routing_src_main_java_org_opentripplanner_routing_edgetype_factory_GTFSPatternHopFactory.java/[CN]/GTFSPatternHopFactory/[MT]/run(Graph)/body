@@ -9,7 +9,6 @@
   _log.debug("Loading hops");
   clearCachedData();
   Collection<Trip> trips=_dao.getAllTrips();
-  HashMap<ScheduledStopPattern,BasicTripPattern> patterns=new HashMap<ScheduledStopPattern,BasicTripPattern>();
   int index=0;
   HashMap<Trip,List<Frequency>> tripFrequencies=new HashMap<Trip,List<Frequency>>();
   for (  Frequency freq : _dao.getAllFrequencies()) {
@@ -24,6 +23,7 @@
     if (index % 10000 == 0)     _log.debug("trips=" + index + "/"+ trips.size());
     index++;
     List<StopTime> originalStopTimes=getNonduplicateStopTimesForTrip(trip);
+    filterStopTimes(originalStopTimes,graph);
     interpolateStopTimes(originalStopTimes);
     if (originalStopTimes.size() < 2) {
       _log.warn(GraphBuilderAnnotation.register(graph,Variety.TRIP_DEGENERATE,trip));
@@ -83,17 +83,6 @@
             st1=stopTimes.get(i + 1);
             int dwellTime=st0.getDepartureTime() - st0.getArrivalTime();
             int runningTime=st1.getArrivalTime() - st0.getDepartureTime();
-            double hopDistance=DistanceLibrary.fastDistance(st0.getStop().getLon(),st0.getStop().getLat(),st1.getStop().getLon(),st1.getStop().getLat());
-            double hopSpeed=hopDistance / runningTime;
-            if (hopDistance == 0) {
-              _log.warn(GraphBuilderAnnotation.register(graph,Variety.HOP_ZERO_DISTANCE,runningTime,st0.getTrip().getId(),st0.getStopSequence()));
-            }
-            if (st0.getArrivalTime() == st1.getArrivalTime() && st0.getDepartureTime() == st1.getDepartureTime()) {
-              _log.trace(GraphBuilderAnnotation.register(graph,Variety.HOP_ZERO_TIME,hopDistance,st0.getTrip().getRoute(),st0.getTrip().getId(),st0.getStopSequence()));
-            }
- else             if (hopSpeed > 45) {
-              _log.warn(GraphBuilderAnnotation.register(graph,Variety.HOP_SPEED,hopSpeed,hopDistance,st0.getTrip().getRoute(),st0.getTrip().getId(),st0.getStopSequence()));
-            }
             try {
               tripPattern.addHop(i,insertionPoint,st0.getDepartureTime(),runningTime,st1.getArrivalTime(),dwellTime,st0.getStopHeadsign(),trip);
             }
@@ -133,10 +122,6 @@
       Stop s1=st1.getStop();
       Trip fromExemplar=fromInterlineTrip.tripPattern.exemplar;
       Trip toExemplar=toInterlineTrip.tripPattern.exemplar;
-      List<StopTime> fromStopTimes=getNonduplicateStopTimesForTrip(fromExemplar);
-      int exemplarStopSequence0=fromStopTimes.get(fromStopTimes.size() - 1).getStopSequence();
-      List<StopTime> toStopTimes=getNonduplicateStopTimesForTrip(toExemplar);
-      int exemplarStopSequence1=toStopTimes.get(0).getStopSequence();
       PatternInterlineDwell dwell;
       InterlineSwitchoverKey dwellKey=new InterlineSwitchoverKey(s0,s1,fromInterlineTrip.tripPattern,toInterlineTrip.tripPattern);
       dwell=getInterlineDwell(dwellKey);

@@ -1,0 +1,21 @@
+{
+  for (  Transfer transfer : _dao.getAllTransfers()) {
+    int type=transfer.getTransferType();
+    if (type == 3)     continue;
+    Vertex fromv=stopArriveNodes.get(transfer.getFromStop());
+    Vertex tov=stopDepartNodes.get(transfer.getToStop());
+    if (fromv.equals(tov))     continue;
+    double distance=DistanceLibrary.distance(fromv.getCoordinate(),tov.getCoordinate());
+    int time;
+    if (transfer.getTransferType() == 2) {
+      time=transfer.getMinTransferTime();
+    }
+ else {
+      time=(int)distance;
+    }
+    TransferEdge transferEdge=new TransferEdge(fromv,tov,distance,time);
+    CoordinateSequence sequence=new PackedCoordinateSequence.Float(new Coordinate[]{fromv.getCoordinate(),tov.getCoordinate()},2);
+    Geometry geometry=_factory.createLineString(sequence);
+    transferEdge.setGeometry(geometry);
+  }
+}

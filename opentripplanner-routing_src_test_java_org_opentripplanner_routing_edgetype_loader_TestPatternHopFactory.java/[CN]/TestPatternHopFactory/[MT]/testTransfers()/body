@@ -5,7 +5,7 @@
   Vertex e_arrive=graph.getVertex("agency_E_arrive");
   Vertex f_depart=graph.getVertex("agency_F_depart");
   Edge edge=new SimpleEdge(e_arrive,f_depart,10000,10000);
-  long startTime=TestUtils.dateInSeconds(2009,8,18,0,50,0);
+  long startTime=TestUtils.dateInSeconds("America/New_York",2009,8,18,0,50,0);
   Vertex stop_b=graph.getVertex("agency_B_depart");
   Vertex stop_g=graph.getVertex("agency_G_arrive");
   TraverseOptions options=new TraverseOptions(context);

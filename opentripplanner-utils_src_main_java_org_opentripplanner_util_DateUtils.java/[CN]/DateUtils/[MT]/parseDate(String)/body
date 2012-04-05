@@ -9,7 +9,7 @@
       }
       for (      String df : dl) {
         retVal=DateUtils.parseDate(new SimpleDateFormat(df),newString);
-        if (retVal != null)         break;
+        if (retVal != null && retVal.getYear() + 1900 >= 2000)         break;
       }
     }
   }

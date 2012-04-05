@@ -8,13 +8,13 @@
   options.getModes().setTransit(true);
   ShortestPathTree spt;
   GraphPath path;
-  spt=AStar.getShortestPathTree(graph,stop_a,stop_b,TestUtils.dateInSeconds(2009,8,18,0,0,0),options);
+  spt=AStar.getShortestPathTree(graph,stop_a,stop_b,TestUtils.dateInSeconds("America/New_York",2009,8,18,0,0,0),options);
   path=spt.getPath(stop_b,false);
   assertNotNull(path);
-  spt=AStar.getShortestPathTree(graph,stop_d,stop_c,TestUtils.dateInSeconds(2009,8,18,0,0,0),options);
+  spt=AStar.getShortestPathTree(graph,stop_d,stop_c,TestUtils.dateInSeconds("America/New_York",2009,8,18,0,0,0),options);
   path=spt.getPath(stop_c,false);
   assertNull(path);
-  spt=AStar.getShortestPathTree(graph,stop_c,stop_d,TestUtils.dateInSeconds(2009,8,18,0,0,0),options);
+  spt=AStar.getShortestPathTree(graph,stop_c,stop_d,TestUtils.dateInSeconds("America/New_York",2009,8,18,0,0,0),options);
   path=spt.getPath(stop_d,false);
   assertNotNull(path);
 }

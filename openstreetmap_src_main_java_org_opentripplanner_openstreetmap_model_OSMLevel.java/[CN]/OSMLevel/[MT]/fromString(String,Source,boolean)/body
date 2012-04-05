@@ -20,6 +20,12 @@
  else {
     shortName=longName=spec;
   }
+  if (longName.startsWith("+")) {
+    longName=longName.substring(1);
+  }
+  if (shortName.startsWith("+")) {
+    shortName=shortName.substring(1);
+  }
   Integer floorNumber=null;
   try {
     floorNumber=Integer.parseInt(longName);

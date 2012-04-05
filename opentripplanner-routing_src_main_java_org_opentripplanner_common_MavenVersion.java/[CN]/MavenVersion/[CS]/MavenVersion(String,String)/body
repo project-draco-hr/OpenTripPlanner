@@ -1,0 +1,14 @@
+{
+  version=v;
+  String[] fields=v.split("\\-");
+  if (fields.length > 1)   qualifier=fields[1];
+ else   qualifier="";
+  fields=fields[0].split("\\.");
+  if (fields.length > 0)   major=Integer.parseInt(fields[0]);
+ else   major=0;
+  if (fields.length > 1)   minor=Integer.parseInt(fields[1]);
+ else   minor=0;
+  if (fields.length > 2)   incremental=Integer.parseInt(fields[2]);
+ else   incremental=0;
+  commit=c;
+}

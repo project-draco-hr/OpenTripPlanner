@@ -2,10 +2,10 @@
   Vertex stop_a=graph.getVertex("agency_A_depart");
   Vertex stop_c=graph.getVertex("agency_C_arrive");
   TraverseOptions options=new TraverseOptions(context);
-  ShortestPathTree spt=AStar.getShortestPathTree(graph,stop_a.getLabel(),stop_c.getLabel(),TestUtils.dateInSeconds(2009,8,7,8,0,0),options);
+  ShortestPathTree spt=AStar.getShortestPathTree(graph,stop_a.getLabel(),stop_c.getLabel(),TestUtils.dateInSeconds("America/New_York",2009,8,7,8,0,0),options);
   GraphPath path=spt.getPath(stop_c,false);
   assertNotNull(path);
   assertEquals(6,path.states.size());
-  long endTime=TestUtils.dateInSeconds(2009,8,7,8,30,0);
+  long endTime=TestUtils.dateInSeconds("America/New_York",2009,8,7,8,30,0);
   assertEquals(endTime,path.getEndTime());
 }

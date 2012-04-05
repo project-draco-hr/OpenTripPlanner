@@ -1,7 +1,7 @@
 {
   TraverseOptions options=state0.getOptions();
   if (options.isArriveBy()) {
-    if (state0.getBackEdgeNarrative() instanceof PatternAlight) {
+    if (state0.getBackEdge() instanceof PatternAlight) {
       return null;
     }
     Trip trip=pattern.getTrip(state0.getTrip());
