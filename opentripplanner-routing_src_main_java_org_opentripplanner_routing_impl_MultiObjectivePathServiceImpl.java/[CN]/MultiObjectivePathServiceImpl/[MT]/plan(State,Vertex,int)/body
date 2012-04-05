@@ -17,7 +17,12 @@
     LOG.debug("try search with max walk {}",maxWalk);
     if (maxWalk < Math.min(origin.getVertex().distance(target),origin.getVertex().getDistanceToNearestTransitStop() + target.getDistanceToNearestTransitStop()))     continue WALK;
     options.setMaxWalkDistance(maxWalk);
+    final double AVG_TRANSIT_SPEED=25;
+    double cutoff=(origin.getVertex().distance(target) * 1.5) / AVG_TRANSIT_SPEED;
+    cutoff+=options.getMaxWalkDistance() * options.walkReluctance;
+    options.maxWeight=cutoff;
     heuristic.computeInitialWeight(origin,target);
+    options.maxWeight=cutoff + 30 * 60 * options.waitReluctance;
     HashMap<Vertex,List<State>> states=new HashMap<Vertex,List<State>>();
     pq.reset();
     pq.insert(origin,0);
@@ -32,6 +37,10 @@
           storeMemory();
           break WALK;
         }
+      }
+      if (pq.peek_min_key() > options.maxWeight) {
+        LOG.debug("max weight {} exceeded",options.maxWeight);
+        break QUEUE;
       }
       State su=pq.extract_min();
       Vertex u=su.getVertex();
