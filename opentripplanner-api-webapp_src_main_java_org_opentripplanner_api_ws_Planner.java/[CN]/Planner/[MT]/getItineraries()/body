@@ -1,15 +1,14 @@
 {
+  Response response=new Response(httpServletRequest);
   Request request;
   try {
     request=buildRequestFromQueryParamFields();
   }
  catch (  ParameterException pe) {
-    Response response=new Response();
     PlannerError error=new PlannerError(pe.message);
     response.setError(error);
     return response;
   }
-  Response response=new Response(request);
   try {
     PlanGenerator generator=new PlanGenerator(request,pathServiceFactory);
     TripPlan plan=generator.generate();
