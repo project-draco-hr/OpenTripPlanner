@@ -4,7 +4,7 @@
   this.serviceDays=new ArrayList<ServiceDay>(3);
   CalendarService cs=this.getCalendarService();
   if (cs == null) {
-    _log.warn("TraverseOptions has no CalendarService or GTFSContext. Transit will never be boarded.");
+    LOG.warn("TraverseOptions has no CalendarService or GTFSContext. Transit will never be boarded.");
     return;
   }
   for (  String agency : agencies) {
