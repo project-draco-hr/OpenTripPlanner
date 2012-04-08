@@ -5,11 +5,11 @@
     double lon=Double.parseDouble(matcher.group(4));
     Coordinate location=new Coordinate(lon,lat);
     if (other instanceof StreetLocation) {
-      return _indexService.getClosestVertex(location,place.name,options,((StreetLocation)other).getExtra());
+      return getClosestVertex(location,place.name,options,((StreetLocation)other).getExtra());
     }
  else {
-      return _indexService.getClosestVertex(location,place.name,options);
+      return getClosestVertex(location,place.name,options);
     }
   }
-  return _graphService.getGraph().getVertex(place.place);
+  return graphService.getGraph().getVertex(place.place);
 }
