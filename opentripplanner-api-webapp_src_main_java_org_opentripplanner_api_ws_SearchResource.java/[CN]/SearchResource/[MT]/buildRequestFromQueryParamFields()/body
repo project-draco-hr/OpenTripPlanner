@@ -6,12 +6,6 @@
   request.setDateTime(date,time);
   request.setWheelchair(wheelchair);
   if (numItineraries != null) {
-    if (numItineraries > CLAMP_ITINERARIES) {
-      numItineraries=CLAMP_ITINERARIES;
-    }
-    if (numItineraries < 1) {
-      numItineraries=1;
-    }
     request.setNumItineraries(numItineraries);
   }
   if (maxWalkDistance != null) {
@@ -70,9 +64,6 @@
   request.setModes(modes);
   request.setMinTransferTime(minTransferTime);
   if (maxTransfers != null) {
-    if (maxTransfers > CLAMP_TRANSFERS) {
-      maxTransfers=CLAMP_TRANSFERS;
-    }
     request.setMaxTransfers(maxTransfers);
   }
   return request;
