@@ -2,7 +2,7 @@
   ShortestPathTree spt=null;
   if (_shortestPathTreeFactory != null)   spt=_shortestPathTreeFactory.create();
   if (spt == null) {
-    if (options.getModes().getTransit()) {
+    if (options.getModes().isTransit()) {
       spt=new MultiShortestPathTree();
       options.setServiceDays(init.getTime(),graph.getAgencyIds());
     }

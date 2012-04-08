@@ -24,7 +24,7 @@
   }
   double closest_stop_distance=Double.POSITIVE_INFINITY;
   Vertex closest_stop=null;
-  if (options != null && options.getModes().getTransit()) {
+  if (options != null && options.getModes().isTransit()) {
     for (    Vertex v : getLocalTransitStops(coordinate,1000)) {
       double d=v.distance(coordinate);
       if (d < closest_stop_distance) {

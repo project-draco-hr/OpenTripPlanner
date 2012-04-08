@@ -4,12 +4,12 @@
   setCalendarService(graph.getService(CalendarService.class));
   setTransferTable(graph.getTransferTable());
   setServiceDays(dateTime.getTime() / 1000,graph.getAgencyIds());
-  if (getModes().getTransit() && !graph.transitFeedCovers(dateTime)) {
+  if (getModes().isTransit() && !graph.transitFeedCovers(dateTime)) {
     throw new TransitTimesException();
   }
   remainingWeightHeuristic=_remainingWeightHeuristicFactory.getInstanceForSearch(this);
   LOG.debug("Applied A* heuristic: {}",remainingWeightHeuristic);
-  if (!getModes().getTransit()) {
+  if (!getModes().isTransit()) {
     numItineraries=1;
     setMaxWalkDistance(Double.MAX_VALUE);
   }
