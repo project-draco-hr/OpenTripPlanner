@@ -1,5 +1,5 @@
 {
-  Request request=new Request();
+  TraverseOptions request=new TraverseOptions();
   request.setRouterId(routerId);
   request.setFrom(fromPlace);
   request.setTo(toPlace);
@@ -18,7 +18,7 @@
     request.setMaxWalkDistance(maxWalkDistance);
   }
   if (walkSpeed != null) {
-    request.setWalkSpeed(walkSpeed);
+    request.setSpeed(walkSpeed);
   }
   if (triangleSafetyFactor != null || triangleSlopeFactor != null || triangleTimeFactor != null) {
     if (triangleSafetyFactor == null || triangleSlopeFactor == null || triangleTimeFactor == null) {
@@ -53,16 +53,13 @@
     request.setIntermediatePlacesOrdered(intermediatePlacesOrdered);
   }
   if (preferredRoutes != null && !preferredRoutes.equals("")) {
-    String[] table=preferredRoutes.split(",");
-    request.setPreferredRoutes(table);
+    request.setPreferredRoutes(preferredRoutes);
   }
   if (unpreferredRoutes != null && !unpreferredRoutes.equals("")) {
-    String[] table=unpreferredRoutes.split(",");
-    request.setUnpreferredRoutes(table);
+    request.setUnpreferredRoutes(unpreferredRoutes);
   }
   if (bannedRoutes != null && !bannedRoutes.equals("")) {
-    String[] table=bannedRoutes.split(",");
-    request.setBannedRoutes(table);
+    request.setBannedRoutes(bannedRoutes);
   }
   if (optimize == OptimizeType.TRANSFERS) {
     optimize=OptimizeType.QUICK;
