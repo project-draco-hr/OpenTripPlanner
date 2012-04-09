@@ -66,5 +66,6 @@
   if (maxTransfers != null) {
     request.setMaxTransfers(maxTransfers);
   }
+  request.prepareForSearch(graphService.getGraph());
   return request;
 }
