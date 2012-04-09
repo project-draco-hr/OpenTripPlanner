@@ -7,7 +7,7 @@
     return;
   }
   planner=new Planner();
-  pathService=new ContractionPathServiceImpl();
+  pathService=new RetryingPathServiceImpl();
   graph=new Graph();
   pathService.setRemainingWeightHeuristicFactory(new DefaultRemainingWeightHeuristicFactoryImpl());
   ShapefileStreetGraphBuilderImpl builder=new ShapefileStreetGraphBuilderImpl();
