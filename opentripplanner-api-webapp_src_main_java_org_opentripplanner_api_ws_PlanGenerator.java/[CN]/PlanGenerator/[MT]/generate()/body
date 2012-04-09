@@ -1,5 +1,5 @@
 {
-  checkLocationsAccessible(options);
+  if (!options.isAccessible())   throw new LocationNotAccessible();
   List<GraphPath> paths=null;
   boolean tooSloped=false;
   try {

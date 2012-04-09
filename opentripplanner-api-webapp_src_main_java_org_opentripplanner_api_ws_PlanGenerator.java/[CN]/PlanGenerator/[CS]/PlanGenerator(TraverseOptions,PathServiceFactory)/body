@@ -1,7 +1,7 @@
 {
   this.options=options;
   pathService=pathServiceFactory.getPathService(options.getRouterId());
-  Graph graph=pathService.getGraphService().getGraph();
+  Graph graph=options.graph;
   transitIndex=graph.getService(TransitIndexService.class);
   fareService=graph.getService(FareService.class);
 }
