@@ -66,8 +66,9 @@
   if (maxTransfers != null) {
     request.setMaxTransfers(maxTransfers);
   }
-  request.graph=graphService.getGraph();
-  request.remainingWeightHeuristic=this.heuristicFactory.getInstanceForSearch(request);
+  request.graph=_graphService.getGraph();
+  request.remainingWeightHeuristic=_heuristicFactory.getInstanceForSearch(request);
+  request.streetIndex=_streetIndex;
   request.prepareForSearch();
   return request;
 }

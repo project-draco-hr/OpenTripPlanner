@@ -1,13 +1,12 @@
 {
-  if (graph == null)   return;
-  StreetVertexIndexService index=graph.getService(StreetVertexIndexService.class);
-  if (index == null)   return;
+  if (graph == null)   throw new RuntimeException("graph not yet set, cannot find endpoints");
+  if (streetIndex == null)   throw new RuntimeException("street index not yet set, cannot find endpoints");
   ArrayList<String> notFound=new ArrayList<String>();
-  fromVertex=index.getVertexForPlace(getFromPlace(),this);
+  fromVertex=streetIndex.getVertexForPlace(getFromPlace(),this);
   if (fromVertex == null) {
     notFound.add("from");
   }
-  toVertex=index.getVertexForPlace(getToPlace(),this,fromVertex);
+  toVertex=streetIndex.getVertexForPlace(getToPlace(),this,fromVertex);
   if (toVertex == null) {
     notFound.add("to");
   }
