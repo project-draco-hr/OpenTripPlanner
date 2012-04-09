@@ -1,0 +1,22 @@
+{
+  if (getModes().contains(TraverseMode.TRANSIT)) {
+    throw new UnsupportedOperationException("TSP is not supported for transit trips");
+  }
+  if (intermediatePlaces == null)   return;
+  ArrayList<String> notFound=new ArrayList<String>();
+  ArrayList<Vertex> intermediateVertices=new ArrayList<Vertex>();
+  int i=0;
+  for (  NamedPlace intermediate : intermediatePlaces) {
+    Vertex vertex=streetIndex.getVertexForPlace(intermediate,this);
+    if (vertex == null) {
+      notFound.add("intermediate." + i);
+    }
+ else {
+      intermediateVertices.add(vertex);
+    }
+    i+=1;
+  }
+  if (notFound.size() > 0) {
+    throw new VertexNotFoundException(notFound);
+  }
+}
