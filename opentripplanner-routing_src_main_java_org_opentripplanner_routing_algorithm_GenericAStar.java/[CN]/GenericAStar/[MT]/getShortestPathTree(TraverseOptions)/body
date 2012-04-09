@@ -1,8 +1,10 @@
 {
+  Graph graph=options.graph;
+  State origin=options.getInitialState();
+  Vertex target=options.getTargetVertex();
   if (origin == null || target == null) {
     return null;
   }
-  TraverseOptions options=origin.getOptions();
   ShortestPathTree spt=createShortestPathTree(origin,options,graph);
   options.setTransferTable(graph.getTransferTable());
   final ExtraEdgesStrategy extraEdgesStrategy=options.extraEdgesStrategy;
