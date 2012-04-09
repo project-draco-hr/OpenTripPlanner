@@ -9,14 +9,15 @@
     return new TransitError("No transit index found.  Add TransitIndexBuilder to your graph builder configuration and rebuild your graph.");
   }
   RouteVariant variant=transitIndexService.getVariantForTrip(trip);
-  TraverseOptions options=makeTraverseOptions(time,transitIndexService.getAllAgencies());
+  TraverseOptions options=makeTraverseOptions(time);
   StopTimeList result=new StopTimeList();
   result.stopTimes=new ArrayList<StopTime>();
   State state=null;
   RouteSegment start=null;
   for (  RouteSegment segment : variant.getSegments()) {
     if (segment.stop.equals(firstStop)) {
-      State s0=new State(time,segment.board.getFromVertex(),options);
+      options.fromVertex=segment.board.getFromVertex();
+      State s0=new State(options);
       state=segment.board.traverse(s0);
       if (state == null)       continue;
       if (state.getBackEdgeNarrative().getTrip().getId().equals(trip)) {
@@ -33,7 +34,9 @@
     return null;
   }
   for (  RouteSegment segment : variant.segmentsAfter(start)) {
-    State s0=new State(state.getTime(),segment.hopIn.getFromVertex(),options);
+    options.fromVertex=segment.hopIn.getFromVertex();
+    options.dateTime=new Date(state.getTime() * 1000);
+    State s0=new State(options);
     state=segment.hopIn.traverse(s0);
     StopTime st=new StopTime();
     st.time=state.getTime();
