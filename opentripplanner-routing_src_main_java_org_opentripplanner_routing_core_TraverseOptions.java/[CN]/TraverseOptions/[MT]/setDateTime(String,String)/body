@@ -1,5 +1,6 @@
 {
-  dateTime=DateUtils.toDate(date,time);
+  Date dateObject=DateUtils.toDate(date,time);
   LOG.debug("JVM default timezone is {}",TimeZone.getDefault());
-  LOG.debug("Request datetime parsed as {}",dateTime);
+  LOG.debug("Request datetime parsed as {}",dateObject);
+  setDateTime(dateObject);
 }

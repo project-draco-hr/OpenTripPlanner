@@ -35,7 +35,7 @@
   }
   for (  RouteSegment segment : variant.segmentsAfter(start)) {
     options.fromVertex=segment.hopIn.getFromVertex();
-    options.dateTime=new Date(state.getTime() * 1000);
+    options.dateTime=state.getTime();
     State s0=new State(options);
     state=segment.hopIn.traverse(s0);
     StopTime st=new StopTime();

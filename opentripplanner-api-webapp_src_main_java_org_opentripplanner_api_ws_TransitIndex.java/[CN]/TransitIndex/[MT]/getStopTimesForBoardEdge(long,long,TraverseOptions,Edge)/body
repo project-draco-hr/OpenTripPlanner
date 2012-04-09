@@ -3,7 +3,7 @@
   State result;
   long time=startTime;
   do {
-    options.dateTime=new Date(time * 1000);
+    options.dateTime=time;
     options.fromVertex=e.getFromVertex();
     State s0=new State(options);
     result=e.traverse(s0);
