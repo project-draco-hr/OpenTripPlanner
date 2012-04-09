@@ -1,5 +1,5 @@
 {
-  this.graph=graph;
+  if (graph != null)   throw new IllegalStateException("Graph must be set before preparing for search.");
   findEndpointVertices();
   setCalendarService(graph.getService(CalendarService.class));
   setTransferTable(graph.getTransferTable());
@@ -13,4 +13,6 @@
     numItineraries=1;
     setMaxWalkDistance(Double.MAX_VALUE);
   }
+  setServiceDays(dateTime.getTime() / 1000,graph.getAgencyIds());
+  this.initialized=true;
 }
