@@ -1,5 +1,5 @@
 {
-  if (graph != null)   throw new IllegalStateException("Graph must be set before preparing for search.");
+  if (graph == null)   throw new IllegalStateException("Graph must be set before preparing for search.");
   findEndpointVertices();
   setCalendarService(graph.getService(CalendarService.class));
   setTransferTable(graph.getTransferTable());
