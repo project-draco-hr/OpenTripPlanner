@@ -20,11 +20,13 @@
   options.boardCost=Integer.parseInt(boardingPenaltyField.getText()) * 60;
   options.setOptimize(OptimizeType.QUICK);
   options.setMaxWalkDistance(Double.MAX_VALUE);
+  options.remainingWeightHeuristic=new BidirectionalRemainingWeightHeuristic(graph);
   System.out.println("--------");
   System.out.println("Path from " + from + " to "+ to+ " at "+ when);
   System.out.println("\tModes: " + modeSet);
   System.out.println("\tOptions: " + options);
-  List<GraphPath> paths=pathservice.plan(new NamedPlace(from),new NamedPlace(to),when,options,1);
+  options.prepareForSearch();
+  List<GraphPath> paths=pathservice.getPaths(options);
   if (paths == null) {
     System.out.println("no path");
     showGraph.highlightGraphPath(null);

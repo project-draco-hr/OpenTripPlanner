@@ -1,14 +1,9 @@
 {
   graph=graphService.getGraph();
   pathservice=new RetryingPathServiceImpl();
-  pathservice.setGraphService(graphService);
-  pathservice.setRemainingWeightHeuristicFactory(new DefaultRemainingWeightHeuristicFactoryImpl());
   indexService=new StreetVertexIndexServiceImpl();
   indexService.setGraphService(graphService);
   indexService.setup();
-  pathservice.setIndexService(indexService);
   routingService=new ContractionRoutingServiceImpl();
   routingService.setGraphService(graphService);
-  pathservice.setRoutingService(routingService);
-  pathservice.setRemainingWeightHeuristicFactory(this);
 }
