@@ -3,16 +3,13 @@
   findEndpointVertices();
   setCalendarService(graph.getService(CalendarService.class));
   setTransferTable(graph.getTransferTable());
-  setServiceDays(dateTime.getTime() / 1000,graph.getAgencyIds());
+  setServiceDays();
   if (getModes().isTransit() && !graph.transitFeedCovers(dateTime)) {
     throw new TransitTimesException();
   }
-  remainingWeightHeuristic=_remainingWeightHeuristicFactory.getInstanceForSearch(this);
-  LOG.debug("Applied A* heuristic: {}",remainingWeightHeuristic);
   if (!getModes().isTransit()) {
     numItineraries=1;
     setMaxWalkDistance(Double.MAX_VALUE);
   }
-  setServiceDays(dateTime.getTime() / 1000,graph.getAgencyIds());
   this.initialized=true;
 }

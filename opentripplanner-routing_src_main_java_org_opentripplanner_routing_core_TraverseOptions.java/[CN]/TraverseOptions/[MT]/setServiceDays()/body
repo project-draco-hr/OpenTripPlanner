@@ -1,13 +1,14 @@
 {
   if (!useServiceDays)   return;
   final long SEC_IN_DAY=60 * 60 * 24;
+  final long time=this.getSecondsSinceEpoch();
   this.serviceDays=new ArrayList<ServiceDay>(3);
   CalendarService cs=this.getCalendarService();
   if (cs == null) {
     LOG.warn("TraverseOptions has no CalendarService or GTFSContext. Transit will never be boarded.");
     return;
   }
-  for (  String agency : agencies) {
+  for (  String agency : graph.getAgencyIds()) {
     addIfNotExists(this.serviceDays,new ServiceDay(time - SEC_IN_DAY,cs,agency));
     addIfNotExists(this.serviceDays,new ServiceDay(time,cs,agency));
     addIfNotExists(this.serviceDays,new ServiceDay(time + SEC_IN_DAY,cs,agency));
