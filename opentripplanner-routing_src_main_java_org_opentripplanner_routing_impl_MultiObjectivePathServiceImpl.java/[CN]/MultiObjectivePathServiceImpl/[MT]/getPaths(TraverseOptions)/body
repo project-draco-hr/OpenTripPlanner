@@ -1,12 +1,6 @@
 {
-  TraverseOptions options=origin.getOptions();
-  if (_graphService.getCalendarService() != null)   options.setCalendarService(_graphService.getCalendarService());
-  options.setTransferTable(_graphService.getGraph().getTransferTable());
-  options.setServiceDays(origin.getTime(),_graphService.getGraph().getAgencyIds());
-  if (options.getModes().isTransit() && !_graphService.getGraph().transitFeedCovers(new Date(origin.getTime() * 1000))) {
-    throw new TransitTimesException();
-  }
-  RemainingWeightHeuristic heuristic=new BidirectionalRemainingWeightHeuristic(_graphService.getGraph());
+  RemainingWeightHeuristic heuristic=new BidirectionalRemainingWeightHeuristic(options.graph);
+  options.remainingWeightHeuristic=heuristic;
   List<State> returnStates=new LinkedList<State>();
   final ExtraEdgesStrategy extraEdgesStrategy=options.extraEdgesStrategy;
   OverlayGraph extraEdges=new OverlayGraph();
