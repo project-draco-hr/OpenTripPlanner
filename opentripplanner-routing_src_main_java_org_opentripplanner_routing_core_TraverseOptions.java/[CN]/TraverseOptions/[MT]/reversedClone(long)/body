@@ -2,6 +2,6 @@
   TraverseOptions ret=this.clone();
   ret.setArriveBy(!ret.isArriveBy());
   ret.reverseOptimizing=!ret.reverseOptimizing;
-  ret.dateTime=new Date(finalTime);
+  ret.dateTime=new Date(finalTime * 1000);
   return ret;
 }
