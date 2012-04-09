@@ -1,7 +1,12 @@
 {
   if (graph == null)   throw new IllegalStateException("Graph must be set before preparing for search.");
   findEndpointVertices();
-  setCalendarService(graph.getService(CalendarService.class));
+  CalendarServiceData csData=graph.getService(CalendarServiceData.class);
+  if (csData != null) {
+    CalendarServiceImpl calendarService=new CalendarServiceImpl();
+    calendarService.setData(csData);
+    setCalendarService(calendarService);
+  }
   setTransferTable(graph.getTransferTable());
   setServiceDays();
   if (getModes().isTransit() && !graph.transitFeedCovers(dateTime)) {
