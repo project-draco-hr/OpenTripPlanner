@@ -16,8 +16,7 @@
   RouteSegment start=null;
   for (  RouteSegment segment : variant.getSegments()) {
     if (segment.stop.equals(firstStop)) {
-      options.fromVertex=segment.board.getFromVertex();
-      State s0=new State(options);
+      State s0=new State(segment.board.getFromVertex(),options);
       state=segment.board.traverse(s0);
       if (state == null)       continue;
       if (state.getBackEdgeNarrative().getTrip().getId().equals(trip)) {
@@ -34,9 +33,7 @@
     return null;
   }
   for (  RouteSegment segment : variant.segmentsAfter(start)) {
-    options.fromVertex=segment.hopIn.getFromVertex();
-    options.dateTime=state.getTime();
-    State s0=new State(options);
+    State s0=new State(segment.hopIn.getFromVertex(),state.getTime(),options);
     state=segment.hopIn.traverse(s0);
     StopTime st=new StopTime();
     st.time=state.getTime();

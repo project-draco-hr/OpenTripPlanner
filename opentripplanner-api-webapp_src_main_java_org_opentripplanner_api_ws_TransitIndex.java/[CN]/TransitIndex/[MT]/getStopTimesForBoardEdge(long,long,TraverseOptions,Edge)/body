@@ -3,9 +3,7 @@
   State result;
   long time=startTime;
   do {
-    options.dateTime=time;
-    options.fromVertex=e.getFromVertex();
-    State s0=new State(options);
+    State s0=new State(e.getFromVertex(),time,options);
     result=e.traverse(s0);
     if (result == null)     break;
     time=result.getTime();

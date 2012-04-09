@@ -3,9 +3,8 @@
   State result;
   long time=endTime;
   options=options.reversedClone(time);
-  options.toVertex=e.getToVertex();
   do {
-    State s0=new State(options);
+    State s0=new State(e.getToVertex(),options);
     result=e.traverse(s0);
     if (result == null)     break;
     time=result.getTime();
