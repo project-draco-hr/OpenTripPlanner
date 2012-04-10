@@ -3,7 +3,18 @@
   request.setRouterId(routerId);
   request.setFrom(fromPlace);
   request.setTo(toPlace);
-  request.setDateTime(date,time);
+  if (date == null && time != null) {
+    LOG.debug("parsing ISO datetime {}",time);
+    try {
+      request.setDateTime(javax.xml.datatype.DatatypeFactory.newInstance().newXMLGregorianCalendar(time).toGregorianCalendar().getTime());
+    }
+ catch (    DatatypeConfigurationException e) {
+      request.setDateTime(date,time);
+    }
+  }
+ else {
+    request.setDateTime(date,time);
+  }
   request.setWheelchair(wheelchair);
   if (numItineraries != null) {
     request.setNumItineraries(numItineraries);
