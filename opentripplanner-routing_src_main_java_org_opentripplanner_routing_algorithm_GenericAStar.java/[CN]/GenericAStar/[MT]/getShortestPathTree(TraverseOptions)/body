@@ -6,7 +6,6 @@
     return null;
   }
   ShortestPathTree spt=createShortestPathTree(origin,options,graph);
-  options.setTransferTable(graph.getTransferTable());
   final ExtraEdgesStrategy extraEdgesStrategy=options.extraEdgesStrategy;
   Map<Vertex,List<Edge>> extraEdges=new HashMap<Vertex,List<Edge>>();
   if (options.isArriveBy()) {
@@ -18,7 +17,7 @@
     extraEdgesStrategy.addOutgoingEdgesForTarget(extraEdges,target);
   }
   if (extraEdges.isEmpty())   extraEdges=Collections.emptyMap();
-  final RemainingWeightHeuristic heuristic=options.remainingWeightHeuristic;
+  final RemainingWeightHeuristic heuristic=options.goalDirection ? options.remainingWeightHeuristic : new TrivialRemainingWeightHeuristic();
   double initialWeight=heuristic.computeInitialWeight(origin,target);
   spt.add(origin);
   OTPPriorityQueueFactory factory=BinHeap.FACTORY;
@@ -51,7 +50,7 @@
     if (_searchTerminationStrategy != null) {
       if (!_searchTerminationStrategy.shouldSearchContinue(origin.getVertex(),target,u,spt,options))       break;
     }
- else     if (u_vertex == target) {
+ else     if (options.goalDirection && u_vertex == target) {
       LOG.debug("total vertices visited {}",nVisited);
       storeMemory();
       return spt;

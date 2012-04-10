@@ -77,9 +77,8 @@
   request.setOptimize(optimize);
   request.setModes(modes);
   request.setMinTransferTime(minTransferTime);
-  if (maxTransfers != null) {
-    request.setMaxTransfers(maxTransfers);
-  }
+  if (maxTransfers != null)   request.setMaxTransfers(maxTransfers);
+  if (batch != null)   request.goalDirection=!batch;
   request.graph=_graphService.getGraph();
   request.remainingWeightHeuristic=_heuristicFactory.getInstanceForSearch(request);
   request.streetIndex=_streetIndex;
