@@ -1,0 +1,16 @@
+{
+  graph=graphService.getGraph();
+  streetIndex=graph.getService(StreetVertexIndexService.class);
+  fromVertex=streetIndex.getVertexForPlace(opt.getFromPlace(),opt);
+  toVertex=streetIndex.getVertexForPlace(opt.getToPlace(),opt,fromVertex);
+  origin=opt.arriveBy ? toVertex : fromVertex;
+  target=opt.arriveBy ? fromVertex : toVertex;
+  checkEndpointVertices();
+  findIntermediateVertices();
+  calendarService=graphService.getCalendarService();
+  transferTable=graph.getTransferTable();
+  if (useServiceDays)   setServiceDays();
+  if (opt.getModes().isTransit() && !graph.transitFeedCovers(opt.dateTime)) {
+    throw new TransitTimesException();
+  }
+}

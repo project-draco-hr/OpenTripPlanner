@@ -1,3 +1,8 @@
 {
-  return maxWalkDistance;
+  if (getModes().isTransit()) {
+    return Double.MAX_VALUE;
+  }
+ else {
+    return maxWalkDistance;
+  }
 }
