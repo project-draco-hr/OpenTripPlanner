@@ -1,10 +1,12 @@
 {
   graph=graphService.getGraph();
+  opt.graph=graph;
   streetIndex=graph.getService(StreetVertexIndexService.class);
   fromVertex=streetIndex.getVertexForPlace(opt.getFromPlace(),opt);
   toVertex=streetIndex.getVertexForPlace(opt.getToPlace(),opt,fromVertex);
   origin=opt.arriveBy ? toVertex : fromVertex;
   target=opt.arriveBy ? fromVertex : toVertex;
+  initialState=new State(origin,opt);
   checkEndpointVertices();
   findIntermediateVertices();
   calendarService=graphService.getCalendarService();
