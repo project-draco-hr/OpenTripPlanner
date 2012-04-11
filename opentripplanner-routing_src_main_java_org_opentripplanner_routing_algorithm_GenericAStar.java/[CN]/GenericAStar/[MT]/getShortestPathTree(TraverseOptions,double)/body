@@ -1,0 +1,85 @@
+{
+  RoutingContext rctx=options.getRoutingContext(graphService);
+  long abortTime=DateUtils.absoluteTimeout(relTimeout);
+  if (rctx.origin == null || rctx.target == null) {
+    return null;
+  }
+  ShortestPathTree spt=createShortestPathTree(rctx);
+  final ExtraEdgesStrategy extraEdgesStrategy=rctx.extraEdgesStrategy;
+  Map<Vertex,List<Edge>> extraEdges=new HashMap<Vertex,List<Edge>>();
+  if (options.isArriveBy()) {
+    extraEdgesStrategy.addIncomingEdgesForOrigin(extraEdges,rctx.origin);
+    extraEdgesStrategy.addIncomingEdgesForTarget(extraEdges,rctx.target);
+  }
+ else {
+    extraEdgesStrategy.addOutgoingEdgesForOrigin(extraEdges,rctx.origin);
+    extraEdgesStrategy.addOutgoingEdgesForTarget(extraEdges,rctx.target);
+  }
+  if (extraEdges.isEmpty())   extraEdges=Collections.emptyMap();
+  final RemainingWeightHeuristic heuristic=rctx.goalDirection ? rctx.remainingWeightHeuristic : new TrivialRemainingWeightHeuristic();
+  double initialWeight=heuristic.computeInitialWeight(rctx.initialState,rctx.target);
+  spt.add(rctx.initialState);
+  OTPPriorityQueueFactory qFactory=BinHeap.FACTORY;
+  OTPPriorityQueue<State> pq=qFactory.create(rctx.graph.getVertices().size() + extraEdges.size());
+  pq.insert(rctx.initialState,initialWeight);
+  int nVisited=0;
+  while (!pq.empty()) {
+    if (_verbose) {
+      double w=pq.peek_min_key();
+      System.out.println("pq min key = " + w);
+    }
+    if (abortTime < Long.MAX_VALUE && System.currentTimeMillis() > abortTime) {
+      LOG.warn("Search timeout. origin={} target={}",rctx.origin,rctx.target);
+      storeMemory();
+      return null;
+    }
+    State u=pq.extract_min();
+    if (!spt.visit(u))     continue;
+    if (traverseVisitor != null) {
+      traverseVisitor.visitVertex(u);
+    }
+    Vertex u_vertex=u.getVertex();
+    if (_verbose)     System.out.println("   vertex " + u_vertex);
+    if (_searchTerminationStrategy != null) {
+      if (!_searchTerminationStrategy.shouldSearchContinue(rctx.origin,rctx.target,u,spt,options))       break;
+    }
+ else     if (rctx.goalDirection && u_vertex == rctx.target) {
+      LOG.debug("total vertices visited {}",nVisited);
+      storeMemory();
+      return spt;
+    }
+    Collection<Edge> edges=getEdgesForVertex(rctx.graph,extraEdges,u_vertex,options);
+    nVisited+=1;
+    for (    Edge edge : edges) {
+      for (State v=edge.traverse(u); v != null; v=v.getNextResult()) {
+        if (traverseVisitor != null) {
+          traverseVisitor.visitEdge(edge,v);
+        }
+        if (_skipTraversalResultStrategy != null && _skipTraversalResultStrategy.shouldSkipTraversalResult(rctx.origin,rctx.target,u,v,spt,options))         continue;
+        double remaining_w=computeRemainingWeight(heuristic,v,rctx.target,options);
+        if (remaining_w < 0 || Double.isInfinite(remaining_w)) {
+          continue;
+        }
+        double estimate=v.getWeight() + remaining_w;
+        if (_verbose) {
+          System.out.println("      edge " + edge);
+          System.out.println("      " + u.getWeight() + " -> "+ v.getWeight()+ "(w) + "+ remaining_w+ "(heur) = "+ estimate+ " vert = "+ v.getVertex());
+        }
+        if (estimate > rctx.maxWeight) {
+          if (_verbose)           System.out.println("         too expensive to reach, not enqueued. estimated weight = " + estimate);
+        }
+ else         if (isWorstTimeExceeded(v,rctx)) {
+          if (_verbose)           System.out.println("         too much time to reach, not enqueued. time = " + v.getTime());
+        }
+ else {
+          if (spt.add(v)) {
+            if (traverseVisitor != null)             traverseVisitor.visitEnqueue(v);
+            pq.insert(v,estimate);
+          }
+        }
+      }
+    }
+  }
+  storeMemory();
+  return spt;
+}
