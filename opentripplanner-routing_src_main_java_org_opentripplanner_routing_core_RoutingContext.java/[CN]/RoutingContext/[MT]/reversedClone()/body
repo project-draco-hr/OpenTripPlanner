@@ -1,0 +1,10 @@
+{
+  try {
+    RoutingContext ret=(RoutingContext)this.clone();
+    ret.opt=ret.opt.reversedClone();
+    return ret;
+  }
+ catch (  CloneNotSupportedException e) {
+    return null;
+  }
+}
