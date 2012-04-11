@@ -14,6 +14,8 @@
     }
     for (    Vertex v : graph.getVertices())     v.compact();
     LOG.info("Main graph read. |V|={} |E|={}",graph.countVertices(),graph.countEdges());
+    graph.streetIndex=new StreetVertexIndexServiceImpl(graph);
+    LOG.debug("street index built.");
     if (level == LoadLevel.NO_HIERARCHIES)     return graph;
     graph.hierarchies=(ContractionHierarchySet)in.readObject();
     if (graph.hierarchies != null)     LOG.debug("Contraction hierarchies read.");
