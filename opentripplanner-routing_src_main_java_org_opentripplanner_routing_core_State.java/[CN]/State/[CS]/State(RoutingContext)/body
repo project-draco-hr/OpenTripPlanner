@@ -1,13 +1,14 @@
 {
+  TraverseOptions opt=rctx.opt;
   this.time=opt.getSecondsSinceEpoch();
   this.weight=0;
-  this.vertex=opt.getOriginVertex();
+  this.vertex=rctx.origin;
   this.backState=null;
   this.backEdge=null;
   this.backEdgeNarrative=null;
   this.hops=0;
   this.stateData=new StateData();
-  stateData.options=opt;
-  stateData.startTime=time;
-  stateData.tripSeqHash=0;
+  this.stateData.rctx=rctx;
+  this.stateData.startTime=time;
+  this.stateData.tripSeqHash=0;
 }
