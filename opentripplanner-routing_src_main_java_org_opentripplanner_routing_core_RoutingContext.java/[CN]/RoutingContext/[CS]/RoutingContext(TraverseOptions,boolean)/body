@@ -10,6 +10,7 @@
   calendarService=graphService.getCalendarService();
   transferTable=graph.getTransferTable();
   if (useServiceDays)   setServiceDays();
+  remainingWeightHeuristic=heuristicFactory.getInstanceForSearch(opt);
   if (opt.getModes().isTransit() && !graph.transitFeedCovers(opt.dateTime)) {
     throw new TransitTimesException();
   }
