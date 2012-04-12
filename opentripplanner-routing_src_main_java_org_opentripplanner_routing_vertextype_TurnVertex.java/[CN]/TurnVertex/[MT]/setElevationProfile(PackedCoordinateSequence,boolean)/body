@@ -7,6 +7,10 @@
   }
   elevationProfile=elev;
   double lengthMultiplier=ElevationUtils.getLengthMultiplierFromElevation(elev);
+  if (Double.isNaN(lengthMultiplier)) {
+    LOG.error("lengthMultiplier from elevation profile is NaN, setting to 1");
+    lengthMultiplier=1;
+  }
   length*=lengthMultiplier;
   bicycleSafetyEffectiveLength*=lengthMultiplier;
   SlopeCosts costs=ElevationUtils.getSlopeCosts(elev,permission.allows(StreetTraversalPermission.CAR));
