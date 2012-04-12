@@ -1,14 +1,20 @@
 {
   opt=traverseOptions;
-  graph=graphService.getGraph();
+  this.graph=graph;
   fromVertex=graph.streetIndex.getVertexForPlace(opt.getFromPlace(),opt);
   toVertex=graph.streetIndex.getVertexForPlace(opt.getToPlace(),opt,fromVertex);
   origin=opt.arriveBy ? toVertex : fromVertex;
   target=opt.arriveBy ? fromVertex : toVertex;
-  initialState=new State(this);
   checkEndpointVertices();
   findIntermediateVertices();
-  calendarService=graphService.getCalendarService();
+  CalendarServiceData csData=graph.getService(CalendarServiceData.class);
+  if (csData != null) {
+    calendarService=new CalendarServiceImpl();
+    calendarService.setData(csData);
+  }
+ else {
+    calendarService=null;
+  }
   transferTable=graph.getTransferTable();
   if (useServiceDays)   setServiceDays();
   remainingWeightHeuristic=heuristicFactory.getInstanceForSearch(opt);

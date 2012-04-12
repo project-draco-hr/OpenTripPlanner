@@ -1,0 +1,13 @@
+{
+  ShortestPathTree spt=null;
+  if (_shortestPathTreeFactory != null)   spt=_shortestPathTreeFactory.create();
+  if (spt == null) {
+    if (opts.getModes().isTransit()) {
+      spt=new MultiShortestPathTree();
+    }
+ else {
+      spt=new BasicShortestPathTree();
+    }
+  }
+  return spt;
+}
