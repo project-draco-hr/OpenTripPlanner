@@ -5,6 +5,6 @@
     return ret;
   }
  catch (  CloneNotSupportedException e) {
-    return null;
+    throw new RuntimeException("I <3 checked exceptions",e);
   }
 }

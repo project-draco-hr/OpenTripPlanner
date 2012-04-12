@@ -1,4 +1,5 @@
 {
+  RoutingContext rctx=state0.getContext();
   TraverseOptions options=state0.getOptions();
   if (options.isArriveBy()) {
     if (!options.getModes().get(modeMask)) {
@@ -8,7 +9,7 @@
     int bestWait=-1;
     int bestPatternIndex=-1;
     AgencyAndId serviceId=getPattern().getExemplar().getServiceId();
-    SD:     for (    ServiceDay sd : options.serviceDays) {
+    SD:     for (    ServiceDay sd : rctx.serviceDays) {
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
       if (secondsSinceMidnight < 0)       continue;
       if (sd.serviceIdRunning(serviceId)) {

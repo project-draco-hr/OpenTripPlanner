@@ -4,9 +4,9 @@
   if (patches != null) {
     for (    Patch patch : patches) {
       active=false;
-      display=patch.displayDuring(child.stateData.options,child.getStartTime(),child.getTime());
+      display=patch.displayDuring(child.stateData.rctx.opt,child.getStartTime(),child.getTime());
       if (!display) {
-        active=patch.activeDuring(child.stateData.options,child.getStartTime(),child.getTime());
+        active=patch.activeDuring(child.stateData.rctx.opt,child.getStartTime(),child.getTime());
       }
       if (display || active) {
         if (!patch.filterTraverseResult(this,display))         return false;

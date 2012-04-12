@@ -24,7 +24,7 @@
     long board_after=t0 + options.minTransferTime / 2;
     long transfer_penalty=0;
     if (s0.getLastAlightedTime() != 0) {
-      TransferTable transferTable=options.getTransferTable();
+      TransferTable transferTable=s0.getContext().transferTable;
       if (transferTable.hasPreferredTransfers()) {
         transfer_penalty=options.nonpreferredTransferPenalty;
       }

@@ -1,4 +1,5 @@
 {
+  RoutingContext rctx=s0.getContext();
   TraverseOptions options=s0.getOptions();
   if (options.wheelchairAccessible && !wheelchairAccessible)   return null;
   if (options.isArriveBy()) {
@@ -10,7 +11,7 @@
     long current_time=s0.getTime();
     AgencyAndId serviceId=hop.getServiceId();
     int wait=-1;
-    for (    ServiceDay sd : options.serviceDays) {
+    for (    ServiceDay sd : rctx.serviceDays) {
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
       if (secondsSinceMidnight < 0)       continue;
       if (sd.serviceIdRunning(serviceId)) {

@@ -1,10 +1,10 @@
 {
-  if (options.isArriveBy()) {
-    if (!options.getModes().get(modeMask)) {
+  if (rctx.opt.isArriveBy()) {
+    if (!rctx.opt.getModes().get(modeMask)) {
       return Double.POSITIVE_INFINITY;
     }
     AgencyAndId serviceId=getPattern().getExemplar().getServiceId();
-    for (    ServiceDay sd : options.serviceDays)     if (sd.serviceIdRunning(serviceId))     return 0;
+    for (    ServiceDay sd : rctx.serviceDays)     if (sd.serviceIdRunning(serviceId))     return 0;
     return Double.POSITIVE_INFINITY;
   }
  else {

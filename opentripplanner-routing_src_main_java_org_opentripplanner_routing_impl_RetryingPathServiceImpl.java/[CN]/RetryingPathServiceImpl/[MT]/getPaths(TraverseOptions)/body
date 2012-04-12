@@ -1,8 +1,6 @@
 {
   ArrayList<GraphPath> paths=new ArrayList<GraphPath>();
   long searchBeginTime=System.currentTimeMillis();
-  long abortFirst=firstPathTimeout <= 0 ? 0 : (long)(searchBeginTime + firstPathTimeout * 1000);
-  long abortMulti=multiPathTimeout <= 0 ? 0 : (long)(searchBeginTime + multiPathTimeout * 1000);
   Queue<TraverseOptions> optionQueue=new LinkedList<TraverseOptions>();
   optionQueue.add(options);
   if (options.getModes().getTrainish() && options.getModes().contains(TraverseMode.BUS)) {
@@ -20,12 +18,10 @@
       break;
     }
     options.setMaxWalkDistance(maxWalk);
-    options.searchAbortTime=paths.isEmpty() ? abortFirst : abortMulti;
-    options.maxComputationTime=0;
-    options.maxWeight=maxWeight;
+    double timeout=paths.isEmpty() ? firstPathTimeout : multiPathTimeout;
     long subsearchBeginTime=System.currentTimeMillis();
     LOG.debug("BEGIN SUBSEARCH");
-    ShortestPathTree spt=sptService.getShortestPathTree(options);
+    ShortestPathTree spt=sptService.getShortestPathTree(options,timeout);
     List<GraphPath> somePaths=spt.getPaths();
     LOG.debug("END SUBSEARCH ({} msec of {} msec total)",System.currentTimeMillis() - subsearchBeginTime,System.currentTimeMillis() - searchBeginTime);
     if (somePaths == null) {

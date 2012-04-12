@@ -4,7 +4,7 @@
   ArrayList<Vertex> intermediateVertices=new ArrayList<Vertex>();
   int i=0;
   for (  NamedPlace intermediate : opt.intermediatePlaces) {
-    Vertex vertex=streetIndex.getVertexForPlace(intermediate,opt);
+    Vertex vertex=graph.streetIndex.getVertexForPlace(intermediate,opt);
     if (vertex == null) {
       notFound.add("intermediate." + i);
     }

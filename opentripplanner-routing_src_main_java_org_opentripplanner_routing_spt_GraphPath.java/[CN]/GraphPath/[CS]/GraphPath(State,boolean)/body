@@ -1,6 +1,6 @@
 {
-  this.options=s.getOptions();
-  this.back=options.isArriveBy();
+  this.rctx=s.getContext();
+  this.back=rctx.opt.isArriveBy();
   State lastState;
   walkDistance=s.getWalkDistance();
   if (back) {
