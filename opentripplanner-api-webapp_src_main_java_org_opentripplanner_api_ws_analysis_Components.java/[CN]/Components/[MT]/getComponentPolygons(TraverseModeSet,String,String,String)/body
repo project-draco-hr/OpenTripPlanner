@@ -15,8 +15,7 @@
     cachedOptions=options;
     cachedDateTime=dateTime;
     Graph graph=graphService.getGraph();
-    options.graph=graph;
-    options.prepareForSearch();
+    options.setRoutingContext(graph);
     cachedPolygons=AnalysisUtils.getComponentPolygons(graph,options,dateTime);
   }
   GraphComponentPolygons out=new GraphComponentPolygons();

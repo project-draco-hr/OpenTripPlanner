@@ -1,8 +1,6 @@
 {
   graph=graphService.getGraph();
   pathservice=new RetryingPathServiceImpl();
-  indexService=new StreetVertexIndexServiceImpl();
-  indexService.setGraphService(graphService);
-  indexService.setup();
-  routingService=new ContractionRoutingServiceImpl();
+  indexService=graph.streetIndex;
+  sptService=new GenericAStar();
 }

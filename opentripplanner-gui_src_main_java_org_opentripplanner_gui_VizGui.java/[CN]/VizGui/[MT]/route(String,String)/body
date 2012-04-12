@@ -16,16 +16,13 @@
   if (transitCheckBox.isSelected())   modeSet.setTransit(true);
   TraverseOptions options=new TraverseOptions(modeSet);
   VisualTraverseVisitor visitor=new VisualTraverseVisitor(showGraph);
-  options.aStarSearchFactory=visitor.getAStarSearchFactory();
   options.boardCost=Integer.parseInt(boardingPenaltyField.getText()) * 60;
   options.setOptimize(OptimizeType.QUICK);
   options.setMaxWalkDistance(Double.MAX_VALUE);
-  options.remainingWeightHeuristic=new BidirectionalRemainingWeightHeuristic(graph);
   System.out.println("--------");
   System.out.println("Path from " + from + " to "+ to+ " at "+ when);
   System.out.println("\tModes: " + modeSet);
   System.out.println("\tOptions: " + options);
-  options.prepareForSearch();
   List<GraphPath> paths=pathservice.getPaths(options);
   if (paths == null) {
     System.out.println("no path");

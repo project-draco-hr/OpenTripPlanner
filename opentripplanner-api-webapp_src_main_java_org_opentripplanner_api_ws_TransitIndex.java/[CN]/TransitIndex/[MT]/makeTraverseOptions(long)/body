@@ -1,7 +1,6 @@
 {
   TraverseOptions options=new TraverseOptions();
   options.dateTime=startTime;
-  options.graph=this.graphService.getGraph();
-  options.prepareForSearch();
+  options.setRoutingContext(this.graphService.getGraph());
   return options;
 }

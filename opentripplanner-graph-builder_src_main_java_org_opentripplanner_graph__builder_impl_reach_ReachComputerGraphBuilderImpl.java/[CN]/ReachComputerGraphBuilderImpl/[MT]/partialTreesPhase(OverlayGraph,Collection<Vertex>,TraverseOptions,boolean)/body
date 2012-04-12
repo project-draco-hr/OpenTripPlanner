@@ -5,7 +5,7 @@
     dijkstra.setSearchTerminationStrategy(new PartialTreesPhaseTerminationCondition());
   }
   dijkstra.setShortestPathTreeFactory(new ShortestPathTreeFactory(){
-    @Override public ShortestPathTree create(){
+    @Override public ShortestPathTree create(    TraverseOptions opts){
       ReachMiniSPT spt=new ReachMiniSPT(epsilon);
       return spt;
     }
