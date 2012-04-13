@@ -1,4 +1,24 @@
 {
+  for (  Stop stop : _dao.getAllStops()) {
+    String parentStation=stop.getParentStation();
+    if (parentStation != null) {
+      Vertex stopVertex=stopNodes.get(stop);
+      String agencyId=stop.getId().getAgencyId();
+      AgencyAndId parentStationId=new AgencyAndId(agencyId,parentStation);
+      Stop parentStop=_dao.getStopForId(parentStationId);
+      Vertex parentStopVertex=stopNodes.get(parentStop);
+      new FreeEdge(parentStopVertex,stopVertex);
+      new FreeEdge(stopVertex,parentStopVertex);
+      Vertex stopArriveVertex=stopArriveNodes.get(stop);
+      Vertex parentStopArriveVertex=stopArriveNodes.get(parentStop);
+      new FreeEdge(parentStopArriveVertex,stopArriveVertex);
+      new FreeEdge(stopArriveVertex,parentStopArriveVertex);
+      Vertex stopDepartVertex=stopDepartNodes.get(stop);
+      Vertex parentStopDepartVertex=stopDepartNodes.get(parentStop);
+      new FreeEdge(parentStopDepartVertex,stopDepartVertex);
+      new FreeEdge(stopDepartVertex,parentStopDepartVertex);
+    }
+  }
   for (  Transfer transfer : _dao.getAllTransfers()) {
     int type=transfer.getTransferType();
     if (type == 3)     continue;
