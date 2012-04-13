@@ -87,7 +87,7 @@
               tripPattern.addHop(i,insertionPoint,st0.getDepartureTime(),runningTime,st1.getArrivalTime(),dwellTime,st0.getStopHeadsign(),trip);
             }
  catch (            TripOvertakingException e) {
-              _log.warn(GraphBuilderAnnotation.register(graph,Variety.TRIP_DUPLICATE_DEPARTURE,e.overtaker,e.overtaken,e.stopIndex));
+              _log.warn(GraphBuilderAnnotation.register(graph,Variety.TRIP_OVERTAKING,e.overtaker,e.overtaken,e.stopIndex));
               for (i=i - 1; i >= 0; --i) {
                 tripPattern.removeHop(i,insertionPoint);
               }
