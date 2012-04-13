@@ -1,0 +1,13 @@
+{
+  for (  Map.Entry<T,V> entry : from.entrySet()) {
+    T key=entry.getKey();
+    V value=entry.getValue();
+    V originalValue=mapList.get(key);
+    if (originalValue != null) {
+      originalValue.addAll(value);
+    }
+ else {
+      mapList.put(key,value);
+    }
+  }
+}
