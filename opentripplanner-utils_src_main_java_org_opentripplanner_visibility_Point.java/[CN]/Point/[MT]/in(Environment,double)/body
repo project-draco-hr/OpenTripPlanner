@@ -1,0 +1,6 @@
+{
+  if (on_boundary_of(environment_temp,epsilon))   return true;
+  if (!in(environment_temp.outer_boundary,epsilon))   return false;
+  for (int i=0; i < environment_temp.h(); i++)   if (in(environment_temp.holes.get(i)))   return false;
+  return true;
+}

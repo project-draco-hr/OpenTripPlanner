@@ -1,0 +1,7 @@
+{
+  if (data_temp >= 0)   angle_radians=data_temp % (2 * Math.PI);
+ else {
+    angle_radians=2 * Math.PI + data_temp % -(2 * Math.PI);
+    if (angle_radians == 2 * Math.PI)     angle_radians=0;
+  }
+}

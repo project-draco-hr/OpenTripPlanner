@@ -1,0 +1,5 @@
+{
+  double R=distance(ray_temp.base_point());
+  LineSegment seg_approx=new LineSegment(ray_temp.base_point(),ray_temp.base_point().plus(new Point(R * Math.cos(ray_temp.bearing().get()),R * Math.sin(ray_temp.bearing().get()))));
+  return projection_onto(seg_approx);
+}

@@ -1,0 +1,6 @@
+{
+  while (vertices.size() >= 3 && is_spike(observer,vertices.get(vertices.size() - 3),vertices.get(vertices.size() - 2),vertices.get(vertices.size() - 1),epsilon)) {
+    vertices.set(vertices.size() - 2,vertices.get(vertices.size() - 1));
+    vertices.remove(vertices.size() - 1);
+  }
+}

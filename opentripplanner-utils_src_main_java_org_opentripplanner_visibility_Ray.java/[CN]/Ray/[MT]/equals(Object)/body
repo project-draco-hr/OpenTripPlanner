@@ -1,0 +1,8 @@
+{
+  if (!(o instanceof Ray)) {
+    return false;
+  }
+  Ray ray2=(Ray)o;
+  if (base_point().equals(ray2.base_point) && bearing().equals(ray2.bearing))   return true;
+ else   return false;
+}

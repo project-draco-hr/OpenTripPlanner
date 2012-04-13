@@ -1,16 +1,10 @@
 {
-  GeometryFactory geometryFactory=new GeometryFactory();
   long wayIndex=0;
   for (  OSMWay way : _ways.values()) {
     if (wayIndex % 10000 == 0)     _log.debug("ways=" + wayIndex + "/"+ _ways.size());
     wayIndex++;
     WayProperties wayData=wayPropertySet.getDataForWay(way);
-    if (!way.hasTag("name")) {
-      String creativeName=wayPropertySet.getCreativeNameForWay(way);
-      if (creativeName != null) {
-        way.addTag("otp:gen_name",creativeName);
-      }
-    }
+    setWayName(way);
     Set<Alert> note=wayPropertySet.getNoteForWay(way);
     Set<Alert> wheelchairNote=getWheelchairNotes(way);
     StreetTraversalPermission permissions=getPermissionsForEntity(way,wayData.getPermission());

@@ -1,0 +1,32 @@
+{
+  if (n() <= 2)   return false;
+  if (!outer_boundary.is_simple(epsilon)) {
+    return false;
+  }
+  for (int i=0; i < h(); i++)   if (!holes.get(i).is_simple(epsilon)) {
+    return false;
+  }
+  for (int i=0; i < h(); i++)   if (outer_boundary.boundary_distance(holes.get(i)) <= epsilon) {
+    return false;
+  }
+  for (int i=0; i < h(); i++)   for (int j=i + 1; j < h(); j++)   if (holes.get(i).boundary_distance(holes.get(j)) <= epsilon) {
+    return false;
+  }
+  for (int i=0; i < h(); i++) {
+    for (int j=0; j < holes.get(i).n(); j++) {
+      if (!holes.get(i).get(j).in(outer_boundary,epsilon)) {
+        return false;
+      }
+      for (int k=0; k < h(); k++)       if (i != k && holes.get(i).get(j).in(holes.get(k),epsilon)) {
+        return false;
+      }
+    }
+  }
+  if (outer_boundary.area() <= 0) {
+    return false;
+  }
+  for (int i=0; i < h(); i++)   if (holes.get(i).area() >= 0) {
+    return false;
+  }
+  return true;
+}

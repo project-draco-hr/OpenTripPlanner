@@ -1,0 +1,5 @@
+{
+  double area_temp=outer_boundary.area();
+  for (int i=0; i < h(); i++)   area_temp+=holes.get(i).area();
+  return area_temp;
+}

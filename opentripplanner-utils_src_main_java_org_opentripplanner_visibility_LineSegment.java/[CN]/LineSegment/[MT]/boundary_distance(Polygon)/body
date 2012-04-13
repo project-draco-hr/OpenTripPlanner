@@ -1,0 +1,9 @@
+{
+  assert(size() > 0 && polygon.n() > 0);
+  double running_min=distance(polygon.get(0));
+  if (polygon.n() > 1)   for (int i=0; i < polygon.n(); i++) {
+    double d=distance(new LineSegment(polygon.get(i),polygon.get(i + 1)));
+    if (running_min > d)     running_min=d;
+  }
+  return running_min;
+}

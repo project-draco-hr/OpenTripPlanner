@@ -1,0 +1,14 @@
+{
+  assert(n() > 0 && polygon2.n() > 0);
+  if (n() == 1)   return get(0).boundary_distance(polygon2);
+ else   if (polygon2.n() == 1)   return polygon2.get(0).boundary_distance(this);
+  double running_min=get(0).boundary_distance(polygon2);
+  double distance_temp;
+  for (int i=0; i <= n() - 1; i++) {
+    for (int j=0; j <= polygon2.n() - 1; j++) {
+      distance_temp=new LineSegment(get(i),get(i + 1)).distance(new LineSegment(polygon2.get(j),polygon2.get(j + 1)));
+      if (distance_temp < running_min)       running_min=distance_temp;
+    }
+  }
+  return running_min;
+}

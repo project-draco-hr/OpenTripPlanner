@@ -1,0 +1,14 @@
+{
+  pair<Integer,Integer> two=new pair<Integer,Integer>(0,0);
+  int current_polygon_index=0;
+  int vertex_count_up_to_current_polygon=get(0).n();
+  int vertex_count_up_to_last_polygon=0;
+  while (k >= vertex_count_up_to_current_polygon && current_polygon_index < h()) {
+    current_polygon_index++;
+    two.first=two.first + 1;
+    vertex_count_up_to_last_polygon=vertex_count_up_to_current_polygon;
+    vertex_count_up_to_current_polygon+=get(current_polygon_index).n();
+  }
+  two.second=k - vertex_count_up_to_last_polygon;
+  return two;
+}

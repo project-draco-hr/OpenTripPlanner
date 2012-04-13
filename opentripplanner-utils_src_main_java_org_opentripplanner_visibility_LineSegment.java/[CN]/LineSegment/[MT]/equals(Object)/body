@@ -1,0 +1,8 @@
+{
+  if (!(o instanceof LineSegment)) {
+    return false;
+  }
+  LineSegment line_segment2=(LineSegment)o;
+  if (size() != line_segment2.size() || size() == 0 || line_segment2.size() == 0)   return false;
+ else   return (first().equals(line_segment2.first()) && second().equals(line_segment2.second()));
+}

@@ -1,0 +1,10 @@
+{
+  String name=way.getAssumedName();
+  if (customNamer != null) {
+    name=customNamer.name(way,name);
+  }
+  if (name == null) {
+    name=id;
+  }
+  return name;
+}

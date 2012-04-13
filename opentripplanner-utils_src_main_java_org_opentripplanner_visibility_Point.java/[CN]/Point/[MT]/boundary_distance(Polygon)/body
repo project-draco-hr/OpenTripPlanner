@@ -1,0 +1,9 @@
+{
+  double running_min=distance(polygon_temp.get(0));
+  double distance_temp;
+  for (int i=0; i <= polygon_temp.n(); i++) {
+    distance_temp=distance(new LineSegment(polygon_temp.get(i),polygon_temp.get(i + 1)));
+    if (distance_temp < running_min)     running_min=distance_temp;
+  }
+  return running_min;
+}

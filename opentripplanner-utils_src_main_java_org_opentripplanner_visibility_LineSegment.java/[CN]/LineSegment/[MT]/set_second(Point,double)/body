@@ -1,0 +1,27 @@
+{
+  Point first_point_temp;
+switch (size()) {
+case 0:
+    endpoints=new Point[1];
+  endpoints[0]=point_temp;
+break;
+case 1:
+if (endpoints[0].distance(point_temp) <= epsilon) {
+endpoints[0]=point_temp;
+return;
+}
+first_point_temp=endpoints[0];
+endpoints=new Point[2];
+endpoints[0]=first_point_temp;
+endpoints[1]=point_temp;
+break;
+case 2:
+if (endpoints[0].distance(point_temp) > epsilon) {
+endpoints[1]=point_temp;
+return;
+}
+endpoints=new Point[1];
+endpoints[0]=point_temp;
+break;
+}
+}

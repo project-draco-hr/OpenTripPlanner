@@ -1,0 +1,4 @@
+{
+  if (size() != line_segment2.size() || size() == 0 || line_segment2.size() == 0)   return false;
+ else   return (first().distance(line_segment2.first()) <= epsilon && second().distance(line_segment2.second()) <= epsilon) || (first().distance(line_segment2.second()) <= epsilon && second().distance(line_segment2.first()) <= epsilon);
+}

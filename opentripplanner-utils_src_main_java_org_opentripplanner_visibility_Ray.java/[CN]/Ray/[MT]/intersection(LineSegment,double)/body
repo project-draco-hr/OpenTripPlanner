@@ -1,0 +1,9 @@
+{
+  double R=base_point().distance(line_segment_temp) + line_segment_temp.length();
+  LineSegment seg_approx=new LineSegment(base_point,base_point.plus(new Point(R * Math.cos(bearing.get()),R * Math.sin(bearing.get()))));
+  LineSegment intersect_seg=line_segment_temp.intersection(seg_approx,epsilon);
+  if (intersect_seg.size() == 2 && intersect_seg.first().distance(base_point()) > intersect_seg.second().distance(base_point())) {
+    intersect_seg.reverse();
+  }
+  return intersect_seg;
+}

@@ -1,0 +1,6 @@
+{
+  int n_count=0;
+  n_count=outer_boundary.n();
+  for (int i=0; i < h(); i++)   n_count+=holes.get(i).n();
+  return n_count;
+}

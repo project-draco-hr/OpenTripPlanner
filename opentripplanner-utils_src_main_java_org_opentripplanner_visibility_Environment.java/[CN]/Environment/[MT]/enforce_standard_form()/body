@@ -1,0 +1,8 @@
+{
+  if (outer_boundary.area() < 0)   outer_boundary.reverse();
+  outer_boundary.enforce_standard_form();
+  for (int i=0; i < h(); i++) {
+    if (holes.get(i).area() > 0)     holes.get(i).reverse();
+    holes.get(i).enforce_standard_form();
+  }
+}

@@ -1,0 +1,9 @@
+{
+  double running_min=distance(environment_temp.get(0).get(0));
+  double distance_temp;
+  for (int i=0; i <= environment_temp.h(); i++) {
+    distance_temp=boundary_distance(environment_temp.get(i));
+    if (distance_temp < running_min)     running_min=distance_temp;
+  }
+  return running_min;
+}

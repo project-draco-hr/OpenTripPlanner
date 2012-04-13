@@ -1,0 +1,15 @@
+{
+switch (line_segment_temp.size()) {
+case 0:
+    endpoints=null;
+  break;
+case 1:
+endpoints=new Point[1];
+endpoints[0]=line_segment_temp.endpoints[0].clone();
+break;
+case 2:
+endpoints=new Point[2];
+endpoints[0]=line_segment_temp.endpoints[0].clone();
+endpoints[1]=line_segment_temp.endpoints[1].clone();
+}
+}
