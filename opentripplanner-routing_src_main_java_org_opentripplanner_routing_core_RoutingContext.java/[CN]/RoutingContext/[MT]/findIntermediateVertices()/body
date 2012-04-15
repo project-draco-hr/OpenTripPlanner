@@ -1,7 +1,6 @@
 {
   if (opt.intermediatePlaces == null)   return;
   ArrayList<String> notFound=new ArrayList<String>();
-  ArrayList<Vertex> intermediateVertices=new ArrayList<Vertex>();
   int i=0;
   for (  NamedPlace intermediate : opt.intermediatePlaces) {
     Vertex vertex=graph.streetIndex.getVertexForPlace(intermediate,opt);

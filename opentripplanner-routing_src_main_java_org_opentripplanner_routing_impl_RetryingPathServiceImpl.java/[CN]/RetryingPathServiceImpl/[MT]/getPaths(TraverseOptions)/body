@@ -1,5 +1,6 @@
 {
   ArrayList<GraphPath> paths=new ArrayList<GraphPath>();
+  options.setRoutingContext(graphService.getGraph());
   long searchBeginTime=System.currentTimeMillis();
   Queue<TraverseOptions> optionQueue=new LinkedList<TraverseOptions>();
   optionQueue.add(options);

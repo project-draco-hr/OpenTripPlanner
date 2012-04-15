@@ -1,6 +1,7 @@
 {
-  outgoing.remove(ee);
+  boolean removed=outgoing.remove(ee);
   if (outgoing.contains(ee)) {
     LOG.error("edge {} still in edgelist of {} after removed. there must have been multiple copies.");
   }
+  return removed;
 }

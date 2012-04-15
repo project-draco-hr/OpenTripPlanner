@@ -1,6 +1,8 @@
 {
+  boolean detached=false;
   if (tov != null) {
-    tov.removeIncoming(this);
+    detached=tov.removeIncoming(this);
     tov=null;
   }
+  return detached;
 }

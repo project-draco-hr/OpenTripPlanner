@@ -1,0 +1,7 @@
+{
+  int nRemoved=0;
+  for (  Edge e : getExtra()) {
+    if (e.detach() != 0)     nRemoved+=1;
+  }
+  return nRemoved;
+}
