@@ -1,0 +1,42 @@
+{
+  for (  OSMWay areaWay : _areas.values()) {
+    setWayName(areaWay);
+    List<Point> vertices=new ArrayList<Point>();
+    List<OSMNode> nodes=new ArrayList<OSMNode>();
+    for (    Long nodeRef : areaWay.getNodeRefs()) {
+      OSMNode node=_nodes.get(nodeRef);
+      if (nodes.contains(node)) {
+        continue;
+      }
+      if (node == null) {
+        throw new RuntimeException("node " + nodeRef + " for area "+ areaWay.getId()+ " does not exist");
+      }
+      Point point=new Point(node.getLon(),node.getLat());
+      nodes.add(node);
+      vertices.add(point);
+    }
+    Polygon polygon=new Polygon(vertices);
+    if (polygon.area() < 0)     polygon.reverse();
+    Environment areaEnv=new Environment(polygon);
+    VisibilityGraph vg=new VisibilityGraph(areaEnv,0.0000001);
+    for (int i=0; i < nodes.size(); ++i) {
+      OSMNode nodeI=nodes.get(i);
+      for (int j=0; j < nodes.size(); ++j) {
+        if (i == j)         continue;
+        if (vg.get(0,i,0,j)) {
+          IntersectionVertex startEndpoint=getVertexForOsmNode(nodeI,areaWay);
+          OSMNode nodeJ=nodes.get(j);
+          IntersectionVertex endEndpoint=getVertexForOsmNode(nodeJ,areaWay);
+          Coordinate[] coordinates=new Coordinate[]{startEndpoint.getCoordinate(),endEndpoint.getCoordinate()};
+          LineString geometry=geometryFactory.createLineString(coordinates);
+          String id="way (area) " + areaWay.getId() + " from "+ nodeI.getId()+ " to "+ nodeJ.getId();
+          id=unique(id);
+          String name=getNameForWay(areaWay,id);
+          double length=DistanceLibrary.distance(startEndpoint.getCoordinate(),endEndpoint.getCoordinate());
+          PlainStreetEdge street=new PlainStreetEdge(startEndpoint,endEndpoint,geometry,name,length,getPermissionsForEntity(areaWay,StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE),i > j);
+          street.setId(id);
+        }
+      }
+    }
+  }
+}

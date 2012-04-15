@@ -1,0 +1,8 @@
+{
+  String outs="//Environment Model\n";
+  outs+="//Outer Boundary\n" + get(0);
+  for (int i=1; i <= h(); i++) {
+    outs+="//Hole\n " + get(i);
+  }
+  return outs;
+}

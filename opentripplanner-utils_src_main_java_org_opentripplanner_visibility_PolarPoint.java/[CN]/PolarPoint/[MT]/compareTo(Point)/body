@@ -1,0 +1,20 @@
+{
+  if (!(point2 instanceof PolarPoint)) {
+    return super.compareTo(point2);
+  }
+  PolarPoint polar_point2=(PolarPoint)point2;
+  int bearingComp=bearing.compareTo(polar_point2.bearing);
+  if (bearingComp < 0)   return -1;
+ else   if (bearingComp == 0) {
+    if (range < polar_point2.range) {
+      return -1;
+    }
+ else     if (range > polar_point2.range) {
+      return 1;
+    }
+ else {
+      return 0;
+    }
+  }
+  return 1;
+}

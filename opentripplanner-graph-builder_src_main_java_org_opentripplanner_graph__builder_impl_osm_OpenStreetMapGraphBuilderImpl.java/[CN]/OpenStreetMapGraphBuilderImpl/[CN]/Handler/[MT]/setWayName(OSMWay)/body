@@ -1,0 +1,8 @@
+{
+  if (!way.hasTag("name")) {
+    String creativeName=wayPropertySet.getCreativeNameForWay(way);
+    if (creativeName != null) {
+      way.addTag("otp:gen_name",creativeName);
+    }
+  }
+}

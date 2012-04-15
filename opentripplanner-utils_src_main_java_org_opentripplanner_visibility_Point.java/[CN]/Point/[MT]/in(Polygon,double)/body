@@ -1,0 +1,9 @@
+{
+  int n=polygon_temp.vertices.size();
+  if (on_boundary_of(polygon_temp,epsilon))   return true;
+  boolean c=false;
+  for (int i=0, j=n - 1; i < n; j=i++) {
+    if ((((polygon_temp.get(i).y <= y) && (y < polygon_temp.get(j).y)) || ((polygon_temp.get(j).y <= y) && (y < polygon_temp.get(i).y))) && (x < (polygon_temp.get(j).x - polygon_temp.get(i).x) * (y - polygon_temp.get(i).y) / (polygon_temp.get(j).y - polygon_temp.get(i).y) + polygon_temp.get(i).x))     c=!c;
+  }
+  return c;
+}

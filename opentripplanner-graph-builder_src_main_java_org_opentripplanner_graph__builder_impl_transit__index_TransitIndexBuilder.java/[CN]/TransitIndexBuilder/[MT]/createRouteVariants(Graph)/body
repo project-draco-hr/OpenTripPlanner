@@ -5,6 +5,10 @@
     TripPattern pattern=null;
     Trip trip=null;
     for (    Edge e : gv.getIncoming()) {
+      if (handledEdges.contains(e)) {
+        continue;
+      }
+      handledEdges.add(e);
       if (!(e instanceof AbstractEdge)) {
         continue;
       }

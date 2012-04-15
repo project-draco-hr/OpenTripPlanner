@@ -1,0 +1,7 @@
+{
+  if (line_segment_temp.size() == 1)   return line_segment_temp.first();
+  double theta=((line_segment_temp.second().x - x) * (line_segment_temp.second().x - line_segment_temp.first().x) + (line_segment_temp.second().y - y) * (line_segment_temp.second().y - line_segment_temp.first().y)) / (Math.pow(line_segment_temp.second().x - line_segment_temp.first().x,2) + Math.pow(line_segment_temp.second().y - line_segment_temp.first().y,2));
+  if ((0.0 <= theta) && (theta <= 1.0))   return line_segment_temp.first().times(theta).plus(line_segment_temp.second().times(1.0 - theta));
+  if (distance(line_segment_temp.first()) < distance(line_segment_temp.second()))   return line_segment_temp.first();
+  return line_segment_temp.second();
+}

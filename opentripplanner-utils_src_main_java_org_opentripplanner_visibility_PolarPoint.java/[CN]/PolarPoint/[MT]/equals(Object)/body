@@ -1,0 +1,7 @@
+{
+  if (!(o instanceof PolarPoint)) {
+    return false;
+  }
+  PolarPoint polar_point2=(PolarPoint)o;
+  return polar_origin.equals(polar_point2.polar_origin) && range == polar_point2.range && bearing.equals(polar_point2.bearing);
+}

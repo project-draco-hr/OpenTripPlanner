@@ -1,0 +1,18 @@
+{
+  if (size() == 0 || line_segment2.size() == 0)   return false;
+  Point a=new Point(first());
+  Point b=new Point(second());
+  Point c=new Point(line_segment2.first());
+  Point d=new Point(line_segment2.second());
+  double running_min, distance_temp;
+  running_min=a.distance(line_segment2);
+  distance_temp=b.distance(line_segment2);
+  if (distance_temp < running_min)   running_min=distance_temp;
+  distance_temp=c.distance(this);
+  if (distance_temp < running_min)   running_min=distance_temp;
+  distance_temp=d.distance(this);
+  if (distance_temp < running_min)   running_min=distance_temp;
+  if (running_min <= epsilon)   return false;
+  if (b.minus(a).cross(c.minus(b)) * b.minus(a).cross(d.minus(b)) < 0 && d.minus(c).cross(b.minus(d)) * d.minus(c).cross(a.minus(d)) < 0)   return true;
+  return false;
+}

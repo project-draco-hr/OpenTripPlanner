@@ -1,8 +1,12 @@
 {
   if (_ways.containsKey(way.getId()))   return;
   if (!(way.hasTag("highway") || way.isTag("railway","platform")))   return;
-  if (way.isTag("highway","conveyer") || way.isTag("highway","proposed"))   return;
-  if (way.isTag("area","yes"))   return;
+  String highway=way.getTag("highway");
+  if (highway != null && (highway.equals("conveyer") || highway.equals("proposed") || highway.equals("raceway")))   return;
+  if (way.isTag("area","yes") && way.getNodeRefs().size() > 2) {
+    _areas.put(way.getId(),way);
+    return;
+  }
   _ways.put(way.getId(),way);
   if (_ways.size() % 10000 == 0)   _log.debug("ways=" + _ways.size());
 }

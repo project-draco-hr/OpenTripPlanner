@@ -12,7 +12,13 @@
     }
   }
   _log.debug("Built transit index: " + variantsByAgency.size() + " agencies, "+ variantsByRoute.size()+ " routes, "+ totalTrips+ " trips, "+ totalVariants+ " variants ");
-  TransitIndexServiceImpl service=new TransitIndexServiceImpl(variantsByAgency,variantsByRoute,variantsByTrip,preBoardEdges,preAlightEdges,directionsByRoute,modes);
+  TransitIndexServiceImpl service=(TransitIndexServiceImpl)graph.getService(TransitIndexService.class);
+  if (service == null) {
+    service=new TransitIndexServiceImpl(variantsByAgency,variantsByRoute,variantsByTrip,preBoardEdges,preAlightEdges,directionsByRoute,modes);
+  }
+ else {
+    service.merge(variantsByAgency,variantsByRoute,variantsByTrip,preBoardEdges,preAlightEdges,directionsByRoute,modes);
+  }
   insertCalendarData(service);
   addAgencies(service);
   graph.putService(TransitIndexService.class,service);

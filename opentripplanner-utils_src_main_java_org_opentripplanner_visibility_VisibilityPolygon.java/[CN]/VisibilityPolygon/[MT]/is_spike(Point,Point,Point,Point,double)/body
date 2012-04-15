@@ -1,0 +1,3 @@
+{
+  return (observer.distance(point1) > epsilon && observer.distance(point2) > epsilon && observer.distance(point3) > epsilon && ((observer.distance(point2) >= observer.distance(point1) && observer.distance(point2) >= observer.distance(point3)) || (observer.distance(point2) <= observer.distance(point1) && observer.distance(point2) <= observer.distance(point3))) && Math.max(point2.distance(new Ray(observer,point1)),point2.distance(new Ray(observer,point3))) <= epsilon);
+}

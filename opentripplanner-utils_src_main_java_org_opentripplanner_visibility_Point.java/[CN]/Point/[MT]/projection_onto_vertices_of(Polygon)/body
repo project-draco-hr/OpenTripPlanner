@@ -1,0 +1,11 @@
+{
+  Point running_projection=polygon_temp.get(0);
+  double running_min=distance(running_projection);
+  for (int i=1; i <= polygon_temp.n() - 1; i++) {
+    if (distance(polygon_temp.get(i)) < running_min) {
+      running_projection=polygon_temp.get(i);
+      running_min=distance(running_projection);
+    }
+  }
+  return running_projection;
+}

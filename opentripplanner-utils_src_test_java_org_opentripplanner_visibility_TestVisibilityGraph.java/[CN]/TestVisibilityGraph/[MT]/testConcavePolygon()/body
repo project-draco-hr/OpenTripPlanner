@@ -1,0 +1,14 @@
+{
+  Polygon poly=poly(1,1,5,1,5,5,3,5,3,4,4,4,4,2,2,2,2,3,1,3);
+  if (poly.area() < 0) {
+    poly.reverse();
+  }
+  Environment environment=new Environment(Arrays.asList(poly));
+  VisibilityGraph vg=new VisibilityGraph(environment,0.01);
+  boolean expected[][]={{true,true,false,false,false,false,true,true,true,true},{true,true,true,false,false,true,true,true,false,false},{false,true,true,true,true,true,true,false,false,false},{false,false,true,true,true,true,false,false,false,false},{false,false,true,true,true,true,false,false,false,false},{false,true,true,true,true,true,true,false,false,false},{true,true,true,false,false,true,true,true,false,false},{true,true,false,false,false,false,true,true,true,true},{true,false,false,false,false,false,false,true,true,true},{true,false,false,false,false,false,false,true,true,true}};
+  for (int i=0; i < expected.length; ++i) {
+    for (int j=0; j < expected[i].length; ++j) {
+      assertEquals(expected[i][j],vg.get(i,j));
+    }
+  }
+}

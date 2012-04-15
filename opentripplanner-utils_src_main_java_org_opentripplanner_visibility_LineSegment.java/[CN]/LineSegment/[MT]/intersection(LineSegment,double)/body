@@ -1,0 +1,66 @@
+{
+  LineSegment line_segment_temp=new LineSegment();
+  if (size() == 0 || line_segment2.size() == 0)   return line_segment_temp;
+  if (!intersect(line_segment2,epsilon))   return line_segment_temp;
+  Point a=new Point(first());
+  Point b=new Point(second());
+  Point c=new Point(line_segment2.first());
+  Point d=new Point(line_segment2.second());
+  if (intersect_proper(line_segment2,epsilon)) {
+    double D=a.x * (d.y - c.y) + b.x * (c.y - d.y) + d.x * (b.y - a.y) + c.x * (a.y - b.y);
+    double s=(a.x * (d.y - c.y) + c.x * (a.y - d.y) + d.x * (c.y - a.y)) / D;
+    line_segment_temp.set_first(a.plus(b.minus(a).times(s)),epsilon);
+    return line_segment_temp;
+  }
+  double distance_temp_a=a.distance(line_segment2);
+  double distance_temp_b=b.distance(line_segment2);
+  double distance_temp_c=c.distance(this);
+  double distance_temp_d=d.distance(this);
+  if (distance_temp_a <= epsilon && distance_temp_b <= epsilon) {
+    line_segment_temp.set_first(a,epsilon);
+    line_segment_temp.set_second(b,epsilon);
+    return line_segment_temp;
+  }
+ else   if (distance_temp_c <= epsilon && distance_temp_d <= epsilon) {
+    line_segment_temp.set_first(c,epsilon);
+    line_segment_temp.set_second(d,epsilon);
+    return line_segment_temp;
+  }
+ else   if (distance_temp_a <= epsilon && distance_temp_c <= epsilon) {
+    line_segment_temp.set_first(a,epsilon);
+    line_segment_temp.set_second(c,epsilon);
+    return line_segment_temp;
+  }
+ else   if (distance_temp_a <= epsilon && distance_temp_d <= epsilon) {
+    line_segment_temp.set_first(a,epsilon);
+    line_segment_temp.set_second(d,epsilon);
+    return line_segment_temp;
+  }
+ else   if (distance_temp_b <= epsilon && distance_temp_c <= epsilon) {
+    line_segment_temp.set_first(b,epsilon);
+    line_segment_temp.set_second(c,epsilon);
+    return line_segment_temp;
+  }
+ else   if (distance_temp_b <= epsilon && distance_temp_d <= epsilon) {
+    line_segment_temp.set_first(b,epsilon);
+    line_segment_temp.set_second(d,epsilon);
+    return line_segment_temp;
+  }
+ else   if (distance_temp_a <= epsilon) {
+    line_segment_temp.set_first(a,epsilon);
+    return line_segment_temp;
+  }
+ else   if (distance_temp_b <= epsilon) {
+    line_segment_temp.set_first(b,epsilon);
+    return line_segment_temp;
+  }
+ else   if (distance_temp_c <= epsilon) {
+    line_segment_temp.set_first(c,epsilon);
+    return line_segment_temp;
+  }
+ else   if (distance_temp_d <= epsilon) {
+    line_segment_temp.set_first(d,epsilon);
+    return line_segment_temp;
+  }
+  return line_segment_temp;
+}

@@ -1,0 +1,16 @@
+{
+  if (n() == 0 || polygon2.n() == 0)   return false;
+  if (n() != polygon2.n())   return false;
+  int n=n();
+  for (int offset=0; offset < n; offset++) {
+    boolean successful_match=true;
+    for (int i=0; i < n; i++) {
+      if (get(i).distance(polygon2.get(i + offset)) > epsilon) {
+        successful_match=false;
+        break;
+      }
+    }
+    if (successful_match)     return true;
+  }
+  return false;
+}

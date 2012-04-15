@@ -1,0 +1,10 @@
+{
+  int n=n();
+  if (n > 2) {
+    for (int i=0; i < n / 2; ++i) {
+      Point temp=vertices.get(i + 1);
+      vertices.set(i + 1,vertices.get((n - i) - 1));
+      vertices.set((n - i) - 1,temp);
+    }
+  }
+}

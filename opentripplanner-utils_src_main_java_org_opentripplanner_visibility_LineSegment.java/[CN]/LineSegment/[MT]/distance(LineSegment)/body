@@ -1,0 +1,13 @@
+{
+  assert(size() > 0 && line_segment2.size() > 0);
+  if (intersect_proper(line_segment2))   return 0;
+  double running_min, distance_temp;
+  running_min=first().distance(line_segment2);
+  distance_temp=second().distance(line_segment2);
+  if (distance_temp < running_min)   running_min=distance_temp;
+  distance_temp=line_segment2.first().distance(this);
+  if (distance_temp < running_min)   running_min=distance_temp;
+  distance_temp=line_segment2.second().distance(this);
+  if (distance_temp < running_min)   return distance_temp;
+  return running_min;
+}

@@ -1,0 +1,12 @@
+{
+  super(point_temp);
+  polar_origin=polar_origin_temp.clone();
+  if (polar_origin.distance(point_temp) <= epsilon) {
+    bearing=new Angle(0.0);
+    range=0.0;
+  }
+ else {
+    bearing=new Angle(point_temp.y - polar_origin_temp.y,point_temp.x - polar_origin_temp.x);
+    range=polar_origin_temp.distance(point_temp);
+  }
+}

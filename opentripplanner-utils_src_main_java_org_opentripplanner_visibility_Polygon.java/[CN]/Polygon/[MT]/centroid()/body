@@ -1,0 +1,10 @@
+{
+  assert(vertices.size() > 0);
+  double area_temp=area();
+  assert(area_temp != 0);
+  double x_temp=0;
+  for (int i=0; i <= n() - 1; i++)   x_temp+=(get(i).x + get(i + 1).x) * (get(i).x * get(i + 1).y - get(i + 1).x * get(i).y);
+  double y_temp=0;
+  for (int i=0; i <= n() - 1; i++)   y_temp+=(get(i).y + get(i + 1).y) * (get(i).x * get(i + 1).y - get(i + 1).x * get(i).y);
+  return new Point(x_temp / (6 * area_temp),y_temp / (6 * area_temp));
+}
