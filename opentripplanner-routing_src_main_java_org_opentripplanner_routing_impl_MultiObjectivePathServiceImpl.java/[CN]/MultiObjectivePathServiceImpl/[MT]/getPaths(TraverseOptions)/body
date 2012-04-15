@@ -1,14 +1,14 @@
 {
-  RemainingWeightHeuristic heuristic=new BidirectionalRemainingWeightHeuristic(options.graph);
-  options.remainingWeightHeuristic=heuristic;
+  RemainingWeightHeuristic heuristic=new BidirectionalRemainingWeightHeuristic(options.rctx.graph);
+  options.rctx.remainingWeightHeuristic=heuristic;
   List<State> returnStates=new LinkedList<State>();
   final ExtraEdgesStrategy extraEdgesStrategy=options.extraEdgesStrategy;
   OverlayGraph extraEdges=new OverlayGraph();
   extraEdgesStrategy.addEdgesFor(extraEdges,options.getOriginVertex());
   extraEdgesStrategy.addEdgesFor(extraEdges,options.getTargetVertex());
   BinHeap<State> pq=new BinHeap<State>();
-  Vertex originVertex=options.getOriginVertex();
-  Vertex targetVertex=options.getTargetVertex();
+  Vertex originVertex=options.rctx.origin;
+  Vertex targetVertex=options.rctx.target;
   WALK:   for (double maxWalk=options.getMaxWalkDistance(); maxWalk < 100000 && returnStates.isEmpty(); maxWalk*=2) {
     LOG.debug("try search with max walk {}",maxWalk);
     if (maxWalk < Math.min(originVertex.distance(targetVertex),originVertex.getDistanceToNearestTransitStop() + targetVertex.getDistanceToNearestTransitStop()))     continue WALK;
@@ -17,7 +17,7 @@
     double cutoff=(originVertex.distance(targetVertex) * 1.5) / AVG_TRANSIT_SPEED;
     cutoff+=options.getMaxWalkDistance() * options.walkReluctance;
     options.maxWeight=cutoff;
-    State origin=options.getInitialState();
+    State origin=new State(options);
     heuristic.computeInitialWeight(origin,targetVertex);
     options.maxWeight=cutoff + 30 * 60 * options.waitReluctance;
     HashMap<Vertex,List<State>> states=new HashMap<Vertex,List<State>>();
