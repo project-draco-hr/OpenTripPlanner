@@ -1,0 +1,15 @@
+{
+  TraverseOptions options=s0.getOptions();
+  if (!s0.isBikeRenting())   return null;
+  BikeRentalStationVertex pickup=(BikeRentalStationVertex)tov;
+  if (options.useBikeRentalAvailabilityInformation() && pickup.getSpacesAvailable() == 0) {
+    return null;
+  }
+  EdgeNarrative en=new FixedModeEdge(this,s0.getNonTransitMode(options));
+  StateEditor s1e=s0.edit(this,en);
+  s1e.incrementWeight(options.bikeRentalDropoffCost);
+  s1e.incrementTimeInSeconds(options.bikeRentalDropoffTime);
+  s1e.setBikeRenting(false);
+  State s1=s1e.makeState();
+  return s1;
+}
