@@ -8,12 +8,13 @@
   if (options != null) {
     walkingOptions=options.getWalkingOptions();
   }
-  double envelopeGrowthAmount=0.002;
+  double envelopeGrowthAmount=0.001;
+  double radius=0;
   CandidateEdgeBundle candidateEdges=new CandidateEdgeBundle();
   while (candidateEdges.size() == 0) {
-    if (envelope.getWidth() > MAX_DISTANCE_FROM_STREET * 2)     return candidateEdges;
     envelope.expandBy(envelopeGrowthAmount);
-    envelopeGrowthAmount*=2;
+    radius+=envelopeGrowthAmount;
+    if (radius > MAX_DISTANCE_FROM_STREET)     return candidateEdges;
     List<StreetEdge> nearbyEdges=edgeTree.query(envelope);
     if (extraEdges != null && nearbyEdges != null) {
       nearbyEdges=new JoinedList<StreetEdge>(nearbyEdges,extraStreets);
@@ -26,7 +27,7 @@
         preferrence=3.0;
       }
       CandidateEdge ce=new CandidateEdge(e,p,preferrence);
-      if (ce.distance < MAX_DISTANCE_FROM_STREET)       candidateEdges.add(ce);
+      if (ce.distance < radius)       candidateEdges.add(ce);
     }
   }
   Collection<CandidateEdgeBundle> bundles=candidateEdges.binByDistanceAndAngle();
