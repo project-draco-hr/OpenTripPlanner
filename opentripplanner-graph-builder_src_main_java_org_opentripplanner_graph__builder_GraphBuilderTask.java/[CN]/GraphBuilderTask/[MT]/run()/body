@@ -1,23 +1,9 @@
 {
-  Graph graph;
-  if (_baseGraph != null) {
-    try {
-      graph=Graph.load(new File(_baseGraph),LoadLevel.FULL);
-    }
- catch (    Exception e) {
-      throw new RuntimeException("error loading base graph");
-    }
+  if (graphFile == null) {
+    throw new RuntimeException("graphBuilderTask has no attribute graphFile.");
   }
- else {
-    graph=_graphService.getGraph();
-  }
-  if (_graphBundle == null) {
-    throw new RuntimeException("graphBuilderTask has no attribute graphBundle.");
-  }
-  graph.setBundle(_graphBundle);
-  File graphPath=_graphBundle.getGraphPath();
-  if (graphPath.exists() && !_alwaysRebuild) {
-    _log.info("graph already exists and alwaysRebuild=false => skipping graph build");
+  if (graphFile.exists() && !_alwaysRebuild) {
+    LOG.info("graph already exists and alwaysRebuild=false => skipping graph build");
     return;
   }
   ArrayList<String> provided=new ArrayList<String>();
@@ -26,13 +12,13 @@
     List<String> prerequisites=builder.getPrerequisites();
     for (    String prereq : prerequisites) {
       if (!provided.contains(prereq)) {
-        _log.error("Graph builder " + builder + " requires "+ prereq+ " but no previous stages provide it");
+        LOG.error("Graph builder " + builder + " requires "+ prereq+ " but no previous stages provide it");
         bad=true;
       }
     }
     provided.addAll(builder.provides());
   }
-  if (_baseGraph != null)   _log.warn("base graph loaded, not enforcing prerequisites");
+  if (_baseGraph != null)   LOG.warn("base graph loaded, not enforcing prerequisites");
  else   if (bad)   throw new RuntimeException("Prerequisites unsatisfied");
   HashMap<Class<?>,Object> extra=new HashMap<Class<?>,Object>();
   for (  GraphBuilder load : _graphBuilders)   load.buildGraph(graph,extra);
@@ -43,10 +29,9 @@
   }
   GraphBuilderAnnotation.logSummary(graph.getBuilderAnnotations());
   try {
-    graph.save(graphPath);
+    graph.save(graphFile);
   }
  catch (  Exception ex) {
     throw new IllegalStateException(ex);
   }
-  _graphService.refreshGraph();
 }

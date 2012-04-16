@@ -1,7 +1,6 @@
 {
-  Graph graph=_graphService.getGraph();
   List<Envelope> regions=new ArrayList<Envelope>();
-  for (  Vertex gv : graph.getVertices()) {
+  for (  Vertex gv : task.getGraph().getVertices()) {
     if (gv instanceof TransitStop) {
       Coordinate c=gv.getCoordinate();
       Envelope env=new Envelope(c);

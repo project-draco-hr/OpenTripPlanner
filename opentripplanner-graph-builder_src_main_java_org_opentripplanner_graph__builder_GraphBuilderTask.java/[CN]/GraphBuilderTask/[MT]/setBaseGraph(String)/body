@@ -1,3 +1,9 @@
 {
-  _baseGraph=baseGraph;
+  this._baseGraph=baseGraph;
+  try {
+    graph=Graph.load(new File(baseGraph),LoadLevel.FULL);
+  }
+ catch (  Exception e) {
+    throw new RuntimeException("error loading base graph");
+  }
 }

@@ -10,7 +10,7 @@
     return response;
   }
   try {
-    PlanGenerator generator=new PlanGenerator(request,pathServiceFactory);
+    PlanGenerator generator=new PlanGenerator(request,pathService);
     TripPlan plan=generator.generate();
     response.setPlan(plan);
   }
