@@ -53,7 +53,7 @@
   nl.createLinkage();
   TraverseOptions options=new TraverseOptions();
   options.setModes(new TraverseModeSet(TraverseMode.WALK,TraverseMode.SUBWAY));
-  options.optimizeFor=OptimizeType.QUICK;
+  options.optimize=OptimizeType.QUICK;
   CalendarServiceData data=graph.getService(CalendarServiceData.class);
   assertNotNull(data);
   CalendarServiceImpl calendarService=new CalendarServiceImpl();

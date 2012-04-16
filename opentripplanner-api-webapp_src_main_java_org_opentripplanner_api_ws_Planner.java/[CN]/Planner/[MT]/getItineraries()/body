@@ -2,7 +2,7 @@
   Response response=new Response(httpServletRequest);
   TraverseOptions request;
   try {
-    request=buildRequestFromQueryParamFields();
+    request=buildRequest();
   }
  catch (  ParameterException pe) {
     PlannerError error=new PlannerError(pe.message);
