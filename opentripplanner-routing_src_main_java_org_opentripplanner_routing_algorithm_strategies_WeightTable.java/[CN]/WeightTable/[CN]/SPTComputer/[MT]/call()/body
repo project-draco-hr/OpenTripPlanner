@@ -7,7 +7,7 @@
  catch (  Exception e) {
     throw new RuntimeException(e);
   }
-  BasicShortestPathTree spt=new BasicShortestPathTree(500000);
+  BasicShortestPathTree spt=new BasicShortestPathTree(options);
   State s0=new State(origin,options);
   spt.add(s0);
   heap.insert(s0,s0.getWeight());
@@ -29,7 +29,7 @@
     }
   }
   heap.reset();
-  spt=new BasicShortestPathTree(50000);
+  spt=new BasicShortestPathTree(options);
   Queue<Vertex> q=new ArrayDeque<Vertex>(100);
   q.add(origin);
   while (!q.isEmpty()) {
