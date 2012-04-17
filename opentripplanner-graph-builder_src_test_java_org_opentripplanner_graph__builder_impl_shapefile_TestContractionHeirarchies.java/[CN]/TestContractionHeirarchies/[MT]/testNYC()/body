@@ -54,13 +54,7 @@
   TraverseOptions options=new TraverseOptions();
   options.setModes(new TraverseModeSet(TraverseMode.WALK,TraverseMode.SUBWAY));
   options.optimize=OptimizeType.QUICK;
-  CalendarServiceData data=graph.getService(CalendarServiceData.class);
-  assertNotNull(data);
-  CalendarServiceImpl calendarService=new CalendarServiceImpl();
-  calendarService.setData(data);
-  options.setCalendarService(calendarService);
-  options.setServiceDays(startTime,Arrays.asList("MTA NYCT"));
-  options.setTransferTable(graph.getTransferTable());
+  options.setRoutingContext(graph);
   Vertex start1=graph.getVertex("0072480");
   Vertex end1=graph.getVertex("0032341");
   assertNotNull(end1);
