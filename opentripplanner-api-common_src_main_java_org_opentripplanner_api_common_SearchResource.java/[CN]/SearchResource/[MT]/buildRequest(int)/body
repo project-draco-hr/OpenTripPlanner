@@ -73,6 +73,7 @@
  else {
     request.setTransferPenalty(get(transferPenalty,n));
   }
+  if (batch != null)   request.batch=batch;
   request.setOptimize(opt);
   request.setModes(get(modes,n));
   request.setMinTransferTime(get(minTransferTime,n));

@@ -5,7 +5,7 @@
     return null;
   }
   ShortestPathTree spt=createShortestPathTree(options);
-  final RemainingWeightHeuristic heuristic=rctx.goalDirection ? rctx.remainingWeightHeuristic : new TrivialRemainingWeightHeuristic();
+  final RemainingWeightHeuristic heuristic=options.batch ? new TrivialRemainingWeightHeuristic() : rctx.remainingWeightHeuristic;
   State initialState=new State(options);
   double initialWeight=heuristic.computeInitialWeight(initialState,rctx.target);
   spt.add(initialState);
@@ -33,7 +33,7 @@
     if (_searchTerminationStrategy != null) {
       if (!_searchTerminationStrategy.shouldSearchContinue(rctx.origin,rctx.target,u,spt,options))       break;
     }
- else     if (rctx.goalDirection && u_vertex == rctx.target) {
+ else     if (!options.batch && u_vertex == rctx.target) {
       LOG.debug("total vertices visited {}",nVisited);
       storeMemory();
       return spt;
