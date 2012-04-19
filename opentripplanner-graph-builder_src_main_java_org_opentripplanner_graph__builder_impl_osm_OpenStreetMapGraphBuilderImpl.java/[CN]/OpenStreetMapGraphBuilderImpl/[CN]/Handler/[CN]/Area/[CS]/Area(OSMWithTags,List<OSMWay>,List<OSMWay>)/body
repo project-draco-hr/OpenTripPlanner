@@ -1,0 +1,28 @@
+{
+  this.parent=parent;
+  List<List<Long>> innerRingNodes=constructRings(innerRingWays);
+  List<List<Long>> outerRingNodes=constructRings(outerRingWays);
+  ArrayList<List<Long>> allRings=new ArrayList<List<Long>>(innerRingNodes);
+  allRings.addAll(outerRingNodes);
+  List<Ring> innerRings=new ArrayList<Ring>();
+  List<Ring> outerRings=new ArrayList<Ring>();
+  for (  List<Long> ring : innerRingNodes) {
+    innerRings.add(new Ring(ring));
+  }
+  for (  List<Long> ring : outerRingNodes) {
+    outerRings.add(new Ring(ring));
+  }
+  OUTER:   for (  Ring outer : outerRings) {
+    for (    Ring possibleContainer : outerRings) {
+      if (outer != possibleContainer && outer.geometry.hasPointInside(possibleContainer.geometry)) {
+        continue OUTER;
+      }
+    }
+    outermostRings.add(outer);
+    for (    Ring possibleHole : innerRings) {
+      if (possibleHole.geometry.hasPointInside(outer.geometry)) {
+        outer.holes.add(possibleHole);
+      }
+    }
+  }
+}

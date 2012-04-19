@@ -2,11 +2,18 @@
   try {
     BinaryOpenStreetMapParser parser=new BinaryOpenStreetMapParser(handler);
     FileInputStream input=new FileInputStream(_path);
-    parser.noNodes(true);
+    parser.setParseNodes(false);
+    parser.setParseWays(false);
+    (new BlockInputStream(input,parser)).process();
+    handler.doneRelations();
+    input=new FileInputStream(_path);
+    parser.setParseRelations(false);
+    parser.setParseWays(true);
     (new BlockInputStream(input,parser)).process();
     handler.secondPhase();
-    parser.nodesOnly(true);
     input=new FileInputStream(_path);
+    parser.setParseNodes(true);
+    parser.setParseWays(false);
     (new BlockInputStream(input,parser)).process();
   }
  catch (  Exception ex) {

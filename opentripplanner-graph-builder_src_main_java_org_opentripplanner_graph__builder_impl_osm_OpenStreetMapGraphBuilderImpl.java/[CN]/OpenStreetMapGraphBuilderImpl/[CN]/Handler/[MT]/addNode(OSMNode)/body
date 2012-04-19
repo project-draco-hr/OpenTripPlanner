@@ -1,5 +1,5 @@
 {
-  if (!_nodesWithNeighbors.contains(node.getId()))   return;
+  if (!(_nodesWithNeighbors.contains(node.getId()) || _areaNodes.contains(node.getId())))   return;
   if (_nodes.containsKey(node.getId()))   return;
   _nodes.put(node.getId(),node);
   if (_nodes.size() % 100000 == 0)   _log.debug("nodes=" + _nodes.size());

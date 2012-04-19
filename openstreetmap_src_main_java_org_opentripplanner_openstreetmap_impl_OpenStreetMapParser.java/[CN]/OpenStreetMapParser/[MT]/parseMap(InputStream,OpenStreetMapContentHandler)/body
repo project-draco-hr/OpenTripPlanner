@@ -2,9 +2,12 @@
   try {
     DocumentBuilder builder=DocumentBuilderFactory.newInstance().newDocumentBuilder();
     Document doc=builder.parse(in);
-    processDocument(doc,map,false);
+    processDocument(doc,map,1);
+    map.doneRelations();
+    processDocument(doc,map,2);
     map.secondPhase();
-    processDocument(doc,map,true);
+    processDocument(doc,map,3);
+    map.nodesLoaded();
   }
  catch (  ParserConfigurationException e) {
     throw new RuntimeException(e);

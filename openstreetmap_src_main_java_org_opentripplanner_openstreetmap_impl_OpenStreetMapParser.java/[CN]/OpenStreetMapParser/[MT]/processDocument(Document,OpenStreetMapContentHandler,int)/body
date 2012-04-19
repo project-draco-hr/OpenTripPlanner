@@ -7,7 +7,7 @@
       continue;
     }
     Element element=(Element)node;
-    if (nodesOnly && element.getTagName().equals("node")) {
+    if (phase == 3 && element.getTagName().equals("node")) {
       OSMNode osmNode=new OSMNode();
       osmNode.setId(Long.parseLong(element.getAttribute("id")));
       osmNode.setLat(Double.parseDouble(element.getAttribute("lat")));
@@ -15,7 +15,7 @@
       processTags(osmNode,element);
       map.addNode(osmNode);
     }
- else     if (!nodesOnly && element.getTagName().equals("way")) {
+ else     if (phase == 2 && element.getTagName().equals("way")) {
       OSMWay osmWay=new OSMWay();
       osmWay.setId(Long.parseLong(element.getAttribute("id")));
       processTags(osmWay,element);
@@ -35,7 +35,7 @@
       }
       map.addWay(osmWay);
     }
- else     if (!nodesOnly && element.getTagName().equals("relation")) {
+ else     if (phase == 1 && element.getTagName().equals("relation")) {
       OSMRelation osmRelation=new OSMRelation();
       osmRelation.setId(Long.parseLong(element.getAttribute("id")));
       processTags(osmRelation,element);

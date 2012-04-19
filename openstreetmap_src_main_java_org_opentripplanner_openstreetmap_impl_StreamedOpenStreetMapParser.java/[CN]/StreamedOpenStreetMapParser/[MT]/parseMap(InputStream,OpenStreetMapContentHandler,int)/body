@@ -8,17 +8,17 @@
     XMLEvent xmlEvent=xmlEventReader.nextEvent();
     if (xmlEvent.isStartElement()) {
       StartElement element=xmlEvent.asStartElement();
-      if (onlyNodes && element.getName().equals(qNode)) {
+      if (phase == 3 && element.getName().equals(qNode)) {
         osmNode=new OSMNode();
         osmNode.setId(Long.parseLong(element.getAttributeByName(qId).getValue()));
         osmNode.setLat(Double.parseDouble(element.getAttributeByName(qLat).getValue()));
         osmNode.setLon(Double.parseDouble(element.getAttributeByName(qLon).getValue()));
       }
- else       if (!onlyNodes && element.getName().equals(qWay)) {
+ else       if (phase == 2 && element.getName().equals(qWay)) {
         osmWay=new OSMWay();
         osmWay.setId(Long.parseLong(element.getAttributeByName(qId).getValue()));
       }
- else       if (!onlyNodes && element.getName().equals(qRelation)) {
+ else       if (phase == 1 && element.getName().equals(qRelation)) {
         osmRelation=new OSMRelation();
         osmRelation.setId(Long.parseLong(element.getAttributeByName(qId).getValue()));
       }

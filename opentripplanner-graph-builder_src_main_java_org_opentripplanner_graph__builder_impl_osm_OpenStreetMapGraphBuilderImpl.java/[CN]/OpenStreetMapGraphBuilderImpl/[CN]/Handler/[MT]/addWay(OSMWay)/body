@@ -1,12 +1,19 @@
 {
-  if (_ways.containsKey(way.getId()))   return;
-  if (!(way.hasTag("highway") || way.isTag("railway","platform")))   return;
-  String highway=way.getTag("highway");
-  if (highway != null && (highway.equals("conveyer") || highway.equals("proposed") || highway.equals("raceway")))   return;
-  if (way.isTag("area","yes") && way.getNodeRefs().size() > 2) {
-    _areas.put(way.getId(),way);
+  long wayId=way.getId();
+  if (_ways.containsKey(wayId) || _areaWaysById.containsKey(wayId))   return;
+  if (_areaWayIds.contains(wayId)) {
+    _areaWaysById.put(wayId,way);
+  }
+  if (!isWayRouteable(way)) {
     return;
   }
-  _ways.put(way.getId(),way);
+  if (way.isTag("area","yes") && way.getNodeRefs().size() > 2) {
+    if (!_areaWayIds.contains(wayId)) {
+      _singleWayAreas.add(way);
+      _areaWaysById.put(wayId,way);
+    }
+    return;
+  }
+  _ways.put(wayId,way);
   if (_ways.size() % 10000 == 0)   _log.debug("ways=" + _ways.size());
 }
