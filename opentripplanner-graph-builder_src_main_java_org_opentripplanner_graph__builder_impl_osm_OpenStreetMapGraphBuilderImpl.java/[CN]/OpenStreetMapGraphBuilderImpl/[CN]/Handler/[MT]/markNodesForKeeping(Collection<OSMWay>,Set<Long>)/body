@@ -1,0 +1,9 @@
+{
+  for (Iterator<OSMWay> it=osmWays.iterator(); it.hasNext(); ) {
+    OSMWay way=it.next();
+    List<Long> nodes=way.getNodeRefs();
+    if (nodes.size() > 1) {
+      nodeSet.addAll(nodes);
+    }
+  }
+}

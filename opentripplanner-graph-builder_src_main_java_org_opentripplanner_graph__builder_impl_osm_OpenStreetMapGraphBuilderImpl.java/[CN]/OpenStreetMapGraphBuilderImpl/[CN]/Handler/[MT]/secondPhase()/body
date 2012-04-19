@@ -1,19 +1,4 @@
 {
-  int count=_ways.values().size();
-  processMultipolygons();
-  for (Iterator<OSMWay> it=_ways.values().iterator(); it.hasNext(); ) {
-    OSMWay way=it.next();
-    List<Long> nodes=way.getNodeRefs();
-    if (nodes.size() > 1) {
-      _nodesWithNeighbors.addAll(nodes);
-    }
-  }
-  for (Iterator<OSMWay> it=_areas.values().iterator(); it.hasNext(); ) {
-    OSMWay way=it.next();
-    List<Long> nodes=way.getNodeRefs();
-    if (nodes.size() > 1) {
-      _nodesWithNeighbors.addAll(nodes);
-    }
-  }
-  _log.trace("purged " + (count - _ways.values().size()) + " ways out of "+ count);
+  markNodesForKeeping(_ways.values(),_nodesWithNeighbors);
+  markNodesForKeeping(_areaWaysById.values(),_areaNodes);
 }

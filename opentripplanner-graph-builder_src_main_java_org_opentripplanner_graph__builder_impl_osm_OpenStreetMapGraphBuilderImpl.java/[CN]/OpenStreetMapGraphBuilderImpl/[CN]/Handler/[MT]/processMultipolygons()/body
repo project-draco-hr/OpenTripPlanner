@@ -1,8 +1,36 @@
 {
-  for (  OSMRelation relation : _relations.values()) {
+  RELATION:   for (  OSMRelation relation : _relations.values()) {
+    if (_processedRelations.contains(relation)) {
+      continue;
+    }
     if (!(relation.isTag("type","multipolygon") && relation.hasTag("highway"))) {
       continue;
     }
+    ArrayList<OSMWay> innerWays=new ArrayList<OSMWay>();
+    ArrayList<OSMWay> outerWays=new ArrayList<OSMWay>();
+    for (    OSMRelationMember member : relation.getMembers()) {
+      String role=member.getRole();
+      OSMWay way=_areaWaysById.get(member.getRef());
+      if (way == null) {
+        continue RELATION;
+      }
+      for (      Long nodeId : way.getNodeRefs()) {
+        if (!_nodes.containsKey(nodeId)) {
+          continue RELATION;
+        }
+      }
+      if (role.equals("inner")) {
+        innerWays.add(way);
+      }
+ else       if (role.equals("outer")) {
+        outerWays.add(way);
+      }
+ else {
+        _log.warn("Unexpected role " + role + " in multipolygon");
+      }
+    }
+    _processedRelations.add(relation);
+    _areas.add(new Area(relation,outerWays,innerWays));
     for (    OSMRelationMember member : relation.getMembers()) {
       if (!("way".equals(member.getType()) && _ways.containsKey(member.getRef()))) {
         continue;

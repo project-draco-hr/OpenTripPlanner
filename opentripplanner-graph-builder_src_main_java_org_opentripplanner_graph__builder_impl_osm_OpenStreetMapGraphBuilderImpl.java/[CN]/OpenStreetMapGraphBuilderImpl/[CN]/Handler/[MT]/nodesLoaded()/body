@@ -1,0 +1,11 @@
+{
+  processMultipolygons();
+  AREA:   for (  OSMWay way : _singleWayAreas) {
+    for (    Long nodeRef : way.getNodeRefs()) {
+      if (!_nodes.containsKey(nodeRef)) {
+        continue AREA;
+      }
+    }
+    _areas.add(new Area(way,Arrays.asList(way),Collections.<OSMWay>emptyList()));
+  }
+}

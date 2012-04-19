@@ -1,6 +1,14 @@
 {
   if (_relations.containsKey(relation.getId()))   return;
-  if (!(relation.isTag("type","restriction")) && !(relation.isTag("type","route") && relation.isTag("route","road")) && !(relation.isTag("type","multipolygon") && relation.hasTag("highway"))&& !(relation.isTag("type","level_map"))) {
+  if (relation.isTag("type","multipolygon") && relation.hasTag("highway")) {
+    if (!isWayRouteable(relation)) {
+      return;
+    }
+    for (    OSMRelationMember member : relation.getMembers()) {
+      _areaWayIds.add(member.getRef());
+    }
+  }
+ else   if (!(relation.isTag("type","restriction")) && !(relation.isTag("type","route") && relation.isTag("route","road")) && !(relation.isTag("type","multipolygon") && relation.hasTag("highway"))&& !(relation.isTag("type","level_map"))) {
     return;
   }
   _relations.put(relation.getId(),relation);

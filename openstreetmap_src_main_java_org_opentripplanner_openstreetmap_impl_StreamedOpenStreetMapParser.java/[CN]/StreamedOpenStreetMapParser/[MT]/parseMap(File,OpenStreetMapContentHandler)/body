@@ -1,7 +1,10 @@
 {
   BufferedInputStream in=new BufferedInputStream(new FileInputStream(path));
-  parseMap(in,map,false);
+  parseMap(in,map,1);
+  map.doneRelations();
+  in=new BufferedInputStream(new FileInputStream(path));
+  parseMap(in,map,2);
   map.secondPhase();
   in=new BufferedInputStream(new FileInputStream(path));
-  parseMap(in,map,true);
+  parseMap(in,map,3);
 }
