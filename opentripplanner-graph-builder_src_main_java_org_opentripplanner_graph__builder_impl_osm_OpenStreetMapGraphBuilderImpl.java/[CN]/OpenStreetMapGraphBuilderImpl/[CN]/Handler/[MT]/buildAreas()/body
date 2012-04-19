@@ -60,7 +60,7 @@
       }
       Environment areaEnv=new Environment(polygons);
       if (visibilityPoints.size() > MAX_AREA_NODES)       continue;
-      VisibilityGraph vg=new VisibilityGraph(areaEnv,0.0000001,visibilityPoints);
+      VisibilityGraph vg=new VisibilityGraph(areaEnv,VISIBILITY_EPSILON,visibilityPoints);
       for (int i=0; i < nodes.size(); ++i) {
         OSMNode nodeI=nodes.get(i);
         for (int j=0; j < nodes.size(); ++j) {
