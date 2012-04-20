@@ -5,6 +5,8 @@
   itinerary.startTime=new Date(startState.getTimeInMillis());
   itinerary.endTime=new Date(endState.getTimeInMillis());
   itinerary.duration=endState.getTimeInMillis() - startState.getTimeInMillis();
+  Graph graph=path.getRoutingContext().graph;
+  FareService fareService=graph.getService(FareService.class);
   if (fareService != null) {
     itinerary.fare=fareService.getCost(path);
   }

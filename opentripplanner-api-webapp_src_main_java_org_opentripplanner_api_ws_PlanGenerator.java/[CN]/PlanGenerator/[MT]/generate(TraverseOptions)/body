@@ -17,9 +17,6 @@
     LOG.info("Path not found: " + options.getFrom() + " : "+ options.getTo());
     throw new PathNotFoundException();
   }
-  Graph graph=paths.get(0).getRoutingContext().graph;
-  transitIndex=graph.getService(TransitIndexService.class);
-  fareService=graph.getService(FareService.class);
   TripPlan plan=generatePlan(paths,options);
   if (plan != null) {
     for (    Itinerary i : plan.itinerary) {

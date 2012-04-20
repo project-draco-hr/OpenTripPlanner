@@ -1,4 +1,6 @@
 {
+  Graph graph=path.getRoutingContext().graph;
+  TransitIndexService transitIndex=graph.getService(TransitIndexService.class);
   Itinerary itinerary=makeEmptyItinerary(path);
   EdgeNarrative postponedAlerts=null;
   Leg leg=null;
@@ -174,7 +176,7 @@ leg.boardRule=(String)state.getExtension("boardAlightRule");
 }
  else if (backEdge instanceof Hop || backEdge instanceof PatternHop) {
 pgstate=PlanGenState.TRANSIT;
-fixupTransitLeg(leg,state);
+fixupTransitLeg(leg,state,transitIndex);
 leg.stop=new ArrayList<Place>();
 }
  else {
@@ -207,7 +209,7 @@ leg.stop.get(leg.stop.size() - 1).departure=new Date(state.getTimeInMillis());
 if (!route.equals(leg.route)) {
 finalizeLeg(leg,state,null,-1,-1,coordinates);
 leg=makeLeg(itinerary,state);
-fixupTransitLeg(leg,state);
+fixupTransitLeg(leg,state,transitIndex);
 leg.startTime=new Date(state.getTimeInMillis());
 leg.interlineWithPreviousLeg=true;
 }

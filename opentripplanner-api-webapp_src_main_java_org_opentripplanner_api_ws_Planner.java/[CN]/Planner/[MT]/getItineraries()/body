@@ -10,8 +10,7 @@
     return response;
   }
   try {
-    PlanGenerator generator=new PlanGenerator(request,pathService);
-    TripPlan plan=generator.generate();
+    TripPlan plan=planGenerator.generate(request);
     response.setPlan(plan);
   }
  catch (  VertexNotFoundException e) {
