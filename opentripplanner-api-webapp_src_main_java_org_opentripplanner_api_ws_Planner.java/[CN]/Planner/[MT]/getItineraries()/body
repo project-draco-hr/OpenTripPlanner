@@ -11,10 +11,7 @@
     response.setError(error);
   }
  finally {
-    if (request != null && request.rctx != null) {
-      int nRemoved=request.rctx.destroy();
-      LOG.debug("routing context destroyed ({} temporary edges removed)",nRemoved);
-    }
+    if (request != null)     request.cleanup();
   }
   return response;
 }

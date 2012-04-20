@@ -2,5 +2,7 @@
   ArrayList<String> notFound=new ArrayList<String>();
   if (fromVertex == null)   notFound.add("from");
   if (toVertex == null)   notFound.add("to");
-  if (notFound.size() > 0)   throw new VertexNotFoundException(notFound);
+  if (notFound.size() > 0) {
+    throw new VertexNotFoundException(notFound);
+  }
 }

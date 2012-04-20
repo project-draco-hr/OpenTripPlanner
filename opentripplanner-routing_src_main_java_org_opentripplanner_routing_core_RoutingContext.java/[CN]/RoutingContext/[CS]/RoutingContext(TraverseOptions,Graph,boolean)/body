@@ -1,5 +1,6 @@
 {
   opt=traverseOptions;
+  opt.rctx=this;
   this.graph=graph;
   fromVertex=graph.streetIndex.getVertexForPlace(opt.getFromPlace(),opt);
   toVertex=graph.streetIndex.getVertexForPlace(opt.getToPlace(),opt,fromVertex);
