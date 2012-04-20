@@ -1,6 +1,6 @@
 {
   this();
-  Message message=messages.get(e);
+  Message message=messages.get(e.getClass());
   if (message == null) {
     LOG.error("exception planning trip: ",e);
     message=Message.SYSTEM_ERROR;
