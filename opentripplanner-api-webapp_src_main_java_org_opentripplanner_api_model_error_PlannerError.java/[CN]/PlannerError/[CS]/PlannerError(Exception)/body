@@ -1,0 +1,10 @@
+{
+  this();
+  Message message=messages.get(e);
+  if (message == null) {
+    LOG.error("exception planning trip: ",e);
+    message=Message.SYSTEM_ERROR;
+  }
+  this.setMsg(message);
+  if (e instanceof VertexNotFoundException)   this.setMissing(((VertexNotFoundException)e).getMissing());
+}
