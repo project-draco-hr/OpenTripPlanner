@@ -24,6 +24,7 @@
     long subsearchBeginTime=System.currentTimeMillis();
     LOG.debug("BEGIN SUBSEARCH");
     ShortestPathTree spt=sptService.getShortestPathTree(currOptions,timeout);
+    if (spt == null)     break;
     List<GraphPath> somePaths=spt.getPaths();
     LOG.debug("END SUBSEARCH ({} msec of {} msec total)",System.currentTimeMillis() - subsearchBeginTime,System.currentTimeMillis() - searchBeginTime);
     if (somePaths == null) {
