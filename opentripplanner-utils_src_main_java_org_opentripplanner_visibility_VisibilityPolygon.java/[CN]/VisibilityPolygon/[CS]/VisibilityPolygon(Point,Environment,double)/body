@@ -1,8 +1,11 @@
 {
   this.observer=observer;
   assert(environment_temp.is_valid(epsilon));
+  assert(environment_temp.is_in_standard_form());
   assert(observer.in(environment_temp,epsilon));
   vertices.ensureCapacity(environment_temp.n());
+  final Angle ANGLE_PI=new Angle(Math.PI);
+  final Angle ANGLE_ZERO=new Angle(0.0);
   ArrayList<PolarEdge> elp=new ArrayList<PolarEdge>();
   PolarPoint ppoint1, ppoint2;
   PolarPoint split_bottom, split_top;
@@ -14,10 +17,12 @@
     for (int j=0; j < polygon.n(); j++) {
       ppoint1=new PolarPoint(observer,polygon.get(j));
       ppoint2=new PolarPoint(observer,polygon.get(j + 1));
+      log.debug("contemplating " + ppoint1 + " and "+ ppoint1);
       if (observer.in_relative_interior_of(new LineSegment(ppoint1,ppoint2),epsilon)) {
+        log.debug("in relative interior");
         split_bottom=new PolarPoint(observer,observer);
         split_top=new PolarPoint(observer,observer);
-        if (ppoint2.bearing.equals(new Angle(0.0)))         ppoint2.set_bearing_to_2pi();
+        if (ppoint2.bearing.equals(ANGLE_ZERO))         ppoint2.set_bearing_to_2pi();
         left_wall_bearing=ppoint1.bearing.clone();
         right_wall_bearing=ppoint2.bearing.clone();
         elp.add(new PolarEdge(ppoint1,split_bottom));
@@ -25,7 +30,8 @@
         continue;
       }
  else       if (observer.distance(ppoint1) <= epsilon) {
-        if (ppoint2.bearing.equals(new Angle(0.0))) {
+        log.debug("on first vertex");
+        if (ppoint2.bearing.equals(ANGLE_ZERO)) {
           ppoint2.set_bearing_to_2pi();
         }
         right_wall_bearing=ppoint2.bearing.clone();
@@ -33,30 +39,38 @@
         continue;
       }
  else       if (observer.distance(ppoint2) <= epsilon) {
+        log.debug("on second vertex");
         left_wall_bearing=ppoint1.bearing.clone();
         elp.add(new PolarEdge(ppoint1,new PolarPoint(observer,observer)));
         continue;
       }
  else       if (Math.abs(ppoint1.y - ppoint2.y) > epsilon) {
+        log.debug("off edge");
         t=(observer.y - ppoint2.y) / (ppoint1.y - ppoint2.y);
         if (0 < t && t < 1 && observer.x < t * ppoint1.x + (1 - t) * ppoint2.x) {
+          log.debug("crosses ray");
           if (ppoint1.y > observer.y)           continue;
           split_bottom=new PolarPoint(observer,new Point(t * ppoint1.x + (1 - t) * ppoint2.x,observer.y));
           split_top=new PolarPoint(observer,new Point(t * ppoint1.x + (1 - t) * ppoint2.x,observer.y));
-          split_top.set_bearing(new Angle(0.0));
+          split_top.set_bearing(ANGLE_ZERO);
           split_bottom.set_bearing_to_2pi();
           elp.add(new PolarEdge(ppoint1,split_bottom));
           elp.add(new PolarEdge(split_top,ppoint2));
           continue;
         }
- else         if (ppoint1.bearing.compareTo(ppoint2.bearing) >= 0 && ppoint2.bearing.equals(new Angle(0.0)) && ppoint1.bearing.compareTo(new Angle(Math.PI)) > 0)         ppoint2.set_bearing_to_2pi();
- else         if ((ppoint1.bearing.equals(new Angle(0,0)) && ppoint2.bearing.compareTo(new Angle(Math.PI)) > 0) || ppoint1.bearing.compareTo(ppoint2.bearing) >= 0) {
-          continue;
+ else {
+          if (ppoint1.bearing.compareTo(ppoint2.bearing) >= 0 && ppoint2.bearing.equals(ANGLE_ZERO) && ppoint1.bearing.compareTo(ANGLE_PI) > 0) {
+            ppoint2.set_bearing_to_2pi();
+          }
+ else           if ((ppoint1.bearing.equals(ANGLE_ZERO) && ppoint2.bearing.compareTo(ANGLE_PI) > 0) || ppoint1.bearing.compareTo(ppoint2.bearing) >= 0) {
+            continue;
+          }
         }
         elp.add(new PolarEdge(ppoint1,ppoint2));
         continue;
       }
  else {
+        log.debug("epsilon horizontal");
         if (ppoint1.bearing.compareTo(ppoint2.bearing) >= 0)         continue;
         elp.add(new PolarEdge(ppoint1,ppoint2));
       }
@@ -79,8 +93,8 @@
         edge.first.set_bearing(right_wall_bearing);
       }
  else {
-        ppoint_wei1.set_bearing(new Angle(0.0));
-        edge.first.set_bearing(new Angle(0.0));
+        ppoint_wei1.set_bearing(ANGLE_ZERO);
+        edge.first.set_bearing(ANGLE_ZERO);
       }
     }
  else     if (observer.distance(ppoint_wei2) <= epsilon) {
@@ -97,6 +111,9 @@
     q1.add(ppoint_wei2.clone());
   }
   Collections.sort(q1);
+  for (  PolarPointWithEdgeInfo q : q1) {
+    log.debug("q: " + q);
+  }
   PolarPointWithEdgeInfo current_vertex=new PolarPointWithEdgeInfo();
   PolarEdge active_edge, e;
   PolarPoint k=new PolarPoint();
@@ -109,19 +126,24 @@
   if (observer.distance(active_edge.first) > epsilon && observer.distance(active_edge.second) > epsilon) {
     q2.add(active_edge);
   }
-  vertices.add(current_vertex.clone());
+  vertices.add(new Point(current_vertex));
+  log.debug("adding: " + current_vertex + "\n--");
   while (!q1.isEmpty()) {
     current_vertex.set(q1.remove(0));
+    log.debug("cv: " + current_vertex);
     if (current_vertex.incident_edge.equals(active_edge) && !current_vertex.is_first) {
+      log.debug("type 1");
       if (!q1.isEmpty()) {
         if (current_vertex.distance(q1.get(0)) <= epsilon) {
           continue;
         }
       }
-      vertices.add(current_vertex.clone());
+      vertices.add(new Point(current_vertex));
+      log.debug("adding: " + current_vertex);
       chop_spikes_at_back(observer,epsilon);
       while (!q2.isEmpty()) {
         e=q2.peek();
+        log.debug("q2: " + e);
         if ((current_vertex.bearing.get() <= e.second.bearing.get()) && new Ray(observer,current_vertex.bearing).distance(e.second) >= epsilon) {
           xing=new Ray(observer,current_vertex.bearing).intersection(new LineSegment(e.first,e.second),epsilon);
           if (xing.size() > 0) {
@@ -131,7 +153,8 @@
             k=current_vertex;
             e=current_vertex.incident_edge;
           }
-          vertices.add(k.clone());
+          vertices.add(new Point(k));
+          log.debug("adding k1: " + k);
           chop_spikes_at_back(observer,epsilon);
           active_edge=e;
           break;
@@ -140,6 +163,7 @@
       }
     }
     if (current_vertex.is_first) {
+      log.debug("is first");
       xing=new Ray(observer,current_vertex.bearing).intersection(new LineSegment(active_edge.first,active_edge.second),epsilon);
       if (xing.size() == 0 || (active_edge.first.distance(observer) <= epsilon && active_edge.second.bearing.compareTo(current_vertex.bearing) <= 0) || active_edge.second.compareTo(current_vertex) < 0) {
         k_range=Double.POSITIVE_INFINITY;
@@ -153,13 +177,17 @@
         q2.add(e);
       }
       if (k_range < current_vertex.range) {
+        log.debug("type 2");
       }
       if (k_range >= current_vertex.range) {
+        log.debug("type 3");
         if (xing.size() > 0 && k_range != Double.POSITIVE_INFINITY && k.distance(current_vertex) > epsilon && active_edge.first.distance(observer) > epsilon) {
-          vertices.add(k.clone());
+          vertices.add(new Point(k));
+          log.debug("adding k2: " + k);
           chop_spikes_at_back(observer,epsilon);
         }
-        vertices.add(current_vertex.clone());
+        vertices.add(new Point(current_vertex));
+        log.debug("adding: " + current_vertex);
         chop_spikes_at_back(observer,epsilon);
         active_edge=e;
       }
