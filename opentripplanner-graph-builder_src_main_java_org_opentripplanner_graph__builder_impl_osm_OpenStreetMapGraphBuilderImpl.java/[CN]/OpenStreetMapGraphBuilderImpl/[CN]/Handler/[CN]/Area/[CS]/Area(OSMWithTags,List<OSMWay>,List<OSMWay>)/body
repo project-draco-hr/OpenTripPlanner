@@ -2,6 +2,9 @@
   this.parent=parent;
   List<List<Long>> innerRingNodes=constructRings(innerRingWays);
   List<List<Long>> outerRingNodes=constructRings(outerRingWays);
+  if (innerRingNodes == null || outerRingNodes == null) {
+    throw new AreaConstructionException();
+  }
   ArrayList<List<Long>> allRings=new ArrayList<List<Long>>(innerRingNodes);
   allRings.addAll(outerRingNodes);
   List<Ring> innerRings=new ArrayList<Ring>();

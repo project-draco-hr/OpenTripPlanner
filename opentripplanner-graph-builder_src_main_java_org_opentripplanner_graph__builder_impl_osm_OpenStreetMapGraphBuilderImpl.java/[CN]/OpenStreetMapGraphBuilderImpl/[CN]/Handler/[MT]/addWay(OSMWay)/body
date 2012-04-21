@@ -11,6 +11,10 @@
     if (!_areaWayIds.contains(wayId)) {
       _singleWayAreas.add(way);
       _areaWaysById.put(wayId,way);
+      _areaWayIds.add(wayId);
+      for (      Long node : way.getNodeRefs()) {
+        MapUtils.addToMapSet(_areasForNode,node,way);
+      }
     }
     return;
   }
