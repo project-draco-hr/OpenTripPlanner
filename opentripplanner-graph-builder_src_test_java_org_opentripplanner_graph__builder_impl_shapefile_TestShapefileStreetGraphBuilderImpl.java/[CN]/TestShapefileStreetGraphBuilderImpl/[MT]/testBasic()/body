@@ -75,11 +75,14 @@
   assertNotNull(carlton);
   assertEquals(3,start.getDegreeOut());
   assertEquals(3,start.getDegreeIn());
-  TraverseOptions wo=new TraverseOptions();
-  ShortestPathTree spt=AStar.getShortestPathTree(gg,start,end,0,wo);
+  GenericAStar aStar=new GenericAStar();
+  TraverseOptions opt=new TraverseOptions();
+  opt.setRoutingContext(gg,start,end);
+  ShortestPathTree spt=aStar.getShortestPathTree(opt);
   assertNotNull(spt);
-  wo=new TraverseOptions(new TraverseModeSet(TraverseMode.BICYCLE));
-  wo.speed=2;
-  spt=AStar.getShortestPathTree(gg,start,carlton,0,wo);
+  opt=new TraverseOptions(new TraverseModeSet(TraverseMode.BICYCLE));
+  opt.speed=2;
+  opt.setRoutingContext(gg,start,carlton);
+  spt=aStar.getShortestPathTree(opt);
   assertNotNull(spt);
 }

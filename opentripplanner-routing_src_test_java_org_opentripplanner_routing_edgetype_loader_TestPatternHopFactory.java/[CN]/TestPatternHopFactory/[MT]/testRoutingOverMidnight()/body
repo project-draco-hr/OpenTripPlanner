@@ -1,16 +1,19 @@
 {
   Vertex stop_g=graph.getVertex("agency_G_depart");
   Vertex stop_h=graph.getVertex("agency_H_arrive");
-  TraverseOptions options=new TraverseOptions();
-  options.setGtfsContext(context);
   ShortestPathTree spt;
   GraphPath path;
-  spt=AStar.getShortestPathTree(graph,stop_g.getLabel(),stop_h.getLabel(),TestUtils.dateInSeconds("America/New_York",2009,8,18,23,20,0),options);
+  TraverseOptions options=new TraverseOptions();
+  options.dateTime=TestUtils.dateInSeconds("America/New_York",2009,8,18,23,20,0);
+  options.setRoutingContext(graph,stop_g,stop_h);
+  spt=aStar.getShortestPathTree(options);
   path=spt.getPath(stop_h,false);
   assertNotNull(path);
   assertEquals(4,path.states.size());
   long startTime=TestUtils.dateInSeconds("America/New_York",2009,8,19,0,5,0);
-  spt=AStar.getShortestPathTree(graph,stop_g.getLabel(),stop_h.getLabel(),startTime,options);
+  options.dateTime=startTime;
+  options.setRoutingContext(graph,stop_g.getLabel(),stop_h.getLabel());
+  spt=aStar.getShortestPathTree(options);
   path=spt.getPath(stop_h,false);
   assertNotNull(path);
   assertEquals(4,path.states.size());

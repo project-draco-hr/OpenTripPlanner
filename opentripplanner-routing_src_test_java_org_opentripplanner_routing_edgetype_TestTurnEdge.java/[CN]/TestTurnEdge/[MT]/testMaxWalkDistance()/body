@@ -45,8 +45,10 @@
   for (  Vertex gv : graph.getVertices()) {
     gv.setDistanceToNearestTransitStop(0);
   }
+  GenericAStar aStar=new GenericAStar();
   TraverseOptions options=new TraverseOptions();
-  ShortestPathTree spt=AStar.getShortestPathTree(graph,blOut,trIn,0,options);
+  options.setRoutingContext(graph,blOut,trIn);
+  ShortestPathTree spt=aStar.getShortestPathTree(options);
   GraphPath path=spt.getPath(trIn,false);
   assertNotNull(path);
   boolean found=false;
@@ -57,7 +59,8 @@
   }
   assertFalse(found);
   options.setMaxWalkDistance(10000);
-  spt=AStar.getShortestPathTree(graph,blOut,trIn,0,options);
+  options.setRoutingContext(graph,blOut,trIn);
+  spt=aStar.getShortestPathTree(options);
   path=spt.getPath(trIn,false);
   assertNotNull(path);
   found=false;

@@ -2,7 +2,7 @@
   Response response=new Response(httpServletRequest);
   TraverseOptions request=null;
   try {
-    request=buildRequest();
+    request=super.buildRequest();
     TripPlan plan=planGenerator.generate(request);
     response.setPlan(plan);
   }

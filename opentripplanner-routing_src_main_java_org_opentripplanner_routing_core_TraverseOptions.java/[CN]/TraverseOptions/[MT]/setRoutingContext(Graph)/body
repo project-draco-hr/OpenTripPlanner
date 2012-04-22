@@ -1,6 +1,7 @@
 {
   if (rctx == null) {
     this.rctx=new RoutingContext(this,graph);
+    this.rctx.check();
   }
  else {
     if (rctx.graph == graph) {

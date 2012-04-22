@@ -1,14 +1,11 @@
 {
   Vertex destination=graph.getVertex("agency_T");
-  TraverseOptions wo=new TraverseOptions();
-  wo.minTransferTime=0;
-  wo.setGtfsContext(context);
+  TraverseOptions options=new TraverseOptions();
+  options.minTransferTime=0;
   GregorianCalendar startTime=new GregorianCalendar(2009,11,2,8,30,0);
   startTime.setTimeZone(TimeZone.getTimeZone("America/New_York"));
-  ShortestPathTree spt=AStar.getShortestPathTree(graph,"agency_Q",destination.getLabel(),TestUtils.toSeconds(startTime),wo);
+  options.dateTime=TestUtils.toSeconds(startTime);
+  options.setRoutingContext(graph,"agency_Q",destination.getLabel());
+  ShortestPathTree spt=aStar.getShortestPathTree(options);
   GraphPath path=spt.getPath(destination,false);
-  long endTime=path.getEndTime();
-  Calendar c=new GregorianCalendar();
-  c.setTimeInMillis(endTime);
-  assertTrue(endTime - startTime.getTimeInMillis() < 7200);
 }

@@ -1,11 +1,8 @@
 {
-  Graph graph;
-  GtfsContext context;
-  graph=ConstantsForTests.getInstance().getPortlandGraph();
-  context=ConstantsForTests.getInstance().getPortlandContext();
-  GregorianCalendar startTime=new GregorianCalendar(2009,11,1,12,34,25);
+  Graph graph=ConstantsForTests.getInstance().getPortlandGraph();
+  long startTime=TestUtils.dateInSeconds("America/Los_Angeles",2009,11,1,12,34,25);
   TraverseOptions options=new TraverseOptions();
-  options.setGtfsContext(context);
+  options.dateTime=startTime;
   Vertex airport=graph.getVertex("TriMet_10579");
   long startClock, endClock;
   Random rng=new Random();
@@ -26,7 +23,8 @@
   startClock=System.nanoTime();
   ShortestPathTree spt=null;
   for (int i=0; i < n_trials; ++i) {
-    spt=AStar.getShortestPathTree(graph,random[i],airport.getLabel(),TestUtils.toSeconds(startTime),options);
+    options.setRoutingContext(graph,random[i],airport.getLabel());
+    spt=aStar.getShortestPathTree(options);
   }
   endClock=System.nanoTime();
   long aStarTime=endClock - startClock;

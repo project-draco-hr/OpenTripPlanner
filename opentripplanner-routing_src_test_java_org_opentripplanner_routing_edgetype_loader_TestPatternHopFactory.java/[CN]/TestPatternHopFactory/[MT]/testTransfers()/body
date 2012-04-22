@@ -8,8 +8,10 @@
   long startTime=TestUtils.dateInSeconds("America/New_York",2009,8,18,0,50,0);
   Vertex stop_b=graph.getVertex("agency_B_depart");
   Vertex stop_g=graph.getVertex("agency_G_arrive");
-  TraverseOptions options=new TraverseOptions(context);
-  ShortestPathTree spt=AStar.getShortestPathTree(graph,stop_b,stop_g,startTime,options);
+  TraverseOptions options=new TraverseOptions();
+  options.dateTime=startTime;
+  options.setRoutingContext(graph,stop_b,stop_g);
+  ShortestPathTree spt=aStar.getShortestPathTree(options);
   GraphPath path=spt.getPath(stop_g,false);
   assertNotNull(path);
   assertTrue("expected to use much later trip due to min transfer time",path.getEndTime() - startTime > 4.5 * 60 * 60);

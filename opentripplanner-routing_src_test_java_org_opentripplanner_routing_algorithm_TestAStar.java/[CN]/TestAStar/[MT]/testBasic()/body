@@ -1,19 +1,22 @@
 {
   GtfsContext context=GtfsLibrary.readGtfs(new File(ConstantsForTests.CALTRAIN_GTFS));
-  TraverseOptions options=new TraverseOptions();
-  options.setGtfsContext(context);
   Graph gg=new Graph();
   GTFSPatternHopFactory factory=new GTFSPatternHopFactory(context);
   factory.run(gg);
+  gg.putService(CalendarServiceData.class,GtfsLibrary.createCalendarServiceData(context.getDao()));
+  TraverseOptions options=new TraverseOptions();
   ShortestPathTree spt;
   GraphPath path=null;
-  long startTime=TestUtils.dateInSeconds("America/Los_Angeles",2009,8,7,12,0,0);
-  spt=AStar.getShortestPathTree(gg,"Caltrain_Millbrae Caltrain","Caltrain_Mountain View Caltrain",startTime,options);
+  options.dateTime=TestUtils.dateInSeconds("America/Los_Angeles",2009,8,7,12,0,0);
+  options.setRoutingContext(gg,"Caltrain_Millbrae Caltrain","Caltrain_Mountain View Caltrain");
+  spt=aStar.getShortestPathTree(options);
   path=spt.getPath(gg.getVertex("Caltrain_Mountain View Caltrain"),true);
   long endTime=TestUtils.dateInSeconds("America/Los_Angeles",2009,8,7,13,29,0);
   assertEquals(path.getEndTime(),endTime);
   options.setArriveBy(true);
-  spt=AStar.getShortestPathTree(gg,"Caltrain_Millbrae Caltrain","Caltrain_Mountain View Caltrain",endTime,options);
+  options.dateTime=endTime;
+  options.setRoutingContext(gg,"Caltrain_Millbrae Caltrain","Caltrain_Mountain View Caltrain");
+  spt=aStar.getShortestPathTree(options);
   path=spt.getPath(gg.getVertex("Caltrain_Millbrae Caltrain"),true);
   long expectedStartTime=TestUtils.dateInSeconds("America/Los_Angeles",2009,8,7,12,39,0);
   assertTrue(path.getStartTime() - expectedStartTime <= 1);

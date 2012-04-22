@@ -1,19 +1,16 @@
 {
-  Graph graph;
-  GtfsContext context;
-  graph=ConstantsForTests.getInstance().getPortlandGraph();
-  context=ConstantsForTests.getInstance().getPortlandContext();
-  Vertex start=graph.getVertex("TriMet_8371");
+  Graph graph=ConstantsForTests.getInstance().getPortlandGraph();
   TraverseOptions options=new TraverseOptions();
-  options.setGtfsContext(context);
-  GregorianCalendar startTime=new GregorianCalendar(2009,11,1,12,34,25);
-  ShortestPathTree spt=null;
+  Vertex start=graph.getVertex("TriMet_8371");
   Vertex end=graph.getVertex("TriMet_8374");
+  options.dateTime=TestUtils.dateInSeconds("America/Los_Angeles",2009,11,1,12,34,25);
+  options.setRoutingContext(graph,start,end);
+  ShortestPathTree spt=null;
   String[] maxLines={"MAX Red Line","MAX Blue Line","MAX Green Line"};
   for (int i=0; i < maxLines.length; ++i) {
     String line=maxLines[i];
     options.bannedRoutes.add(new RouteSpec("TriMet",line));
-    spt=AStar.getShortestPathTree(graph,start,end,TestUtils.toSeconds(startTime),options);
+    spt=aStar.getShortestPathTree(options);
     GraphPath path=spt.getPath(end,true);
     for (    State s : path.states) {
       if (s.getBackEdge() instanceof PatternHop) {

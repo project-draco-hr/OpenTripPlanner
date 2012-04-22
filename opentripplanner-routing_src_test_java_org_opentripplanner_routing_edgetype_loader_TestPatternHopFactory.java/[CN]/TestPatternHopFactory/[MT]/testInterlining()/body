@@ -2,8 +2,10 @@
   Vertex stop_i=graph.getVertex("agency_I_depart");
   Vertex stop_k=graph.getVertex("agency_K_arrive");
   long startTime=TestUtils.dateInSeconds("America/New_York",2009,8,19,12,0,0);
-  TraverseOptions options=new TraverseOptions(context);
-  ShortestPathTree spt=AStar.getShortestPathTree(graph,stop_i,stop_k,startTime,options);
+  TraverseOptions options=new TraverseOptions();
+  options.dateTime=startTime;
+  options.setRoutingContext(graph,stop_i,stop_k);
+  ShortestPathTree spt=aStar.getShortestPathTree(options);
   GraphPath path=spt.getPath(stop_k,false);
   int num_alights=0;
   for (  State s : path.states) {
@@ -16,7 +18,8 @@
   }
   assertEquals(1,num_alights);
   options.setArriveBy(true);
-  spt=AStar.getShortestPathTree(graph,stop_i,stop_k,startTime,options);
+  options.setRoutingContext(graph,stop_i,stop_k);
+  spt=aStar.getShortestPathTree(options);
   path=spt.getPath(stop_i,false);
   num_alights=0;
   for (  State s : path.states) {
