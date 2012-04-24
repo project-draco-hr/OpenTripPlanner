@@ -1,7 +1,7 @@
 {
   State resultChain=null;
   for (int i=0; i < 4; i++) {
-    State r=new State(i * 1000,null,null);
+    State r=new State(null,i * 1000,null);
     resultChain=r.addToExistingResultChain(resultChain);
   }
   assertEquals(3000,resultChain.time,0.0);
