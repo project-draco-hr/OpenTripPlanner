@@ -1,5 +1,8 @@
 {
   this.requestParameters=new HashMap<String,String>();
+  if (sr == null) {
+    return;
+  }
   @SuppressWarnings("unchecked") Map<String,String[]> params=sr.getParameterMap();
   for (  Entry<String,String[]> e : params.entrySet()) {
     requestParameters.put(e.getKey(),e.getValue()[0]);
