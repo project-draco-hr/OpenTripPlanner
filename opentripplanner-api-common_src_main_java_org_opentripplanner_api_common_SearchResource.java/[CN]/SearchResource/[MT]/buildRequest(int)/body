@@ -1,35 +1,33 @@
 {
   TraverseOptions request=new TraverseOptions();
-  request.setRouterId(get(routerId,n));
-  request.setFrom(get(fromPlace,n));
-  request.setTo(get(toPlace,n));
-  if (get(date,n) == null && get(time,n) != null) {
-    LOG.debug("parsing ISO datetime {}",get(time,n));
-    try {
-      request.setDateTime(javax.xml.datatype.DatatypeFactory.newInstance().newXMLGregorianCalendar(get(time,n)).toGregorianCalendar().getTime());
-    }
- catch (    DatatypeConfigurationException e) {
-      request.setDateTime(get(date,n),get(time,n));
-    }
-  }
- else {
-    request.setDateTime(get(date,n),get(time,n));
-  }
-  request.setWheelchair(get(wheelchair,n));
-  if (get(numItineraries,n) != null) {
-    request.setNumItineraries(get(numItineraries,n));
-  }
-  if (get(maxWalkDistance,n) != null) {
-    request.setMaxWalkDistance(get(maxWalkDistance,n));
-  }
-  if (get(walkSpeed,n) != null) {
-    request.setSpeed(get(walkSpeed,n));
-  }
-  OptimizeType opt=get(optimize,n);
+  request.setRouterId(get(routerId,n,""));
+  request.setFrom(get(fromPlace,n,null));
+  request.setTo(get(toPlace,n,null));
 {
-    Double tsafe=get(triangleSafetyFactor,n);
-    Double tslope=get(triangleSlopeFactor,n);
-    Double ttime=get(triangleTimeFactor,n);
+    String d=get(date,n,null);
+    String t=get(time,n,null);
+    if (d == null && t != null) {
+      LOG.debug("parsing ISO datetime {}",t);
+      try {
+        request.setDateTime(javax.xml.datatype.DatatypeFactory.newInstance().newXMLGregorianCalendar(t).toGregorianCalendar().getTime());
+      }
+ catch (      DatatypeConfigurationException e) {
+        request.setDateTime(d,t);
+      }
+    }
+ else {
+      request.setDateTime(d,t);
+    }
+  }
+  request.setWheelchair(get(wheelchair,n,false));
+  request.setNumItineraries(get(numItineraries,n,3));
+  request.setMaxWalkDistance(get(maxWalkDistance,n,840.0));
+  request.setSpeed(get(walkSpeed,n,1.33));
+  OptimizeType opt=get(optimize,n,OptimizeType.QUICK);
+{
+    Double tsafe=get(triangleSafetyFactor,n,null);
+    Double tslope=get(triangleSlopeFactor,n,null);
+    Double ttime=get(triangleTimeFactor,n,null);
     if (tsafe != null || tslope != null || ttime != null) {
       if (tsafe == null || tslope == null || ttime == null) {
         throw new ParameterException(Message.UNDERSPECIFIED_TRIANGLE);
@@ -51,35 +49,28 @@
       throw new ParameterException(Message.TRIANGLE_VALUES_NOT_SET);
     }
   }
-  if (get(arriveBy,n) != null) {
-    request.setArriveBy(get(arriveBy,n));
-  }
-  if (get(showIntermediateStops,n) != null) {
-    request.setShowIntermediateStops(get(showIntermediateStops,n));
-  }
+  request.setArriveBy(get(arriveBy,n,false));
+  request.setShowIntermediateStops(get(showIntermediateStops,n,false));
   if (intermediatePlaces != null && intermediatePlaces.size() > 0 && !intermediatePlaces.get(0).equals("")) {
     request.setIntermediatePlaces(intermediatePlaces);
   }
-  if (intermediatePlacesOrdered != null) {
-    request.setIntermediatePlacesOrdered(intermediatePlacesOrdered);
-  }
-  request.setPreferredRoutes(get(preferredRoutes,n));
-  request.setUnpreferredRoutes(get(unpreferredRoutes,n));
-  request.setBannedRoutes(get(bannedRoutes,n));
+  if (intermediatePlacesOrdered == null)   intermediatePlacesOrdered=true;
+  request.setIntermediatePlacesOrdered(intermediatePlacesOrdered);
+  request.setPreferredRoutes(get(preferredRoutes,n,""));
+  request.setUnpreferredRoutes(get(unpreferredRoutes,n,""));
+  request.setBannedRoutes(get(bannedRoutes,n,""));
   if (opt == OptimizeType.TRANSFERS) {
     opt=OptimizeType.QUICK;
-    request.setTransferPenalty(get(transferPenalty,n) + 1800);
+    request.setTransferPenalty(get(transferPenalty,n,0) + 1800);
   }
  else {
-    request.setTransferPenalty(get(transferPenalty,n));
+    request.setTransferPenalty(get(transferPenalty,n,0));
   }
-  if (batch != null)   request.batch=batch;
+  request.setBatch(get(batch,n,new Boolean(false)));
   request.setOptimize(opt);
-  request.setModes(get(modes,n));
-  request.setMinTransferTime(get(minTransferTime,n));
-  if (get(maxTransfers,n) != null)   request.setMaxTransfers(get(maxTransfers,n));
-  if (intermediatePlaces != null && intermediatePlacesOrdered && request.getModes().isTransit()) {
-    throw new UnsupportedOperationException("TSP is not supported for transit trips");
-  }
+  request.setModes(get(modes,n,new TraverseModeSet("WALK,TRANSIT")));
+  request.setMinTransferTime(get(minTransferTime,n,0));
+  request.setMaxTransfers(get(maxTransfers,n,2));
+  if (intermediatePlaces != null && intermediatePlacesOrdered && request.getModes().isTransit())   throw new UnsupportedOperationException("TSP is not supported for transit trips");
   return request;
 }
