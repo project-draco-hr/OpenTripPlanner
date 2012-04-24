@@ -17,9 +17,12 @@
       vertex.setSpacesAvailable(station.spacesAvailable);
     }
   }
+  List<BikeRentalStationVertex> toRemove=new ArrayList<BikeRentalStationVertex>();
   for (  Entry<String,BikeRentalStationVertex> entry : verticesByStation.entrySet()) {
     if (stationIds.contains(entry.getKey()))     continue;
-    Vertex vertex=entry.getValue();
+    BikeRentalStationVertex vertex=entry.getValue();
     graph.removeVertexAndEdges(vertex);
+    toRemove.add(vertex);
   }
+  verticesByStation.keySet().removeAll(toRemove);
 }
