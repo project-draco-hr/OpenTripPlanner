@@ -1,0 +1,6 @@
+{
+  if (getWalk() && !restrictedModes.contains(TraverseMode.WALK))   return false;
+  if (getBicycle() && !restrictedModes.contains(TraverseMode.BICYCLE))   return false;
+  if (getCar() && !restrictedModes.contains(TraverseMode.CAR))   return false;
+  return true;
+}

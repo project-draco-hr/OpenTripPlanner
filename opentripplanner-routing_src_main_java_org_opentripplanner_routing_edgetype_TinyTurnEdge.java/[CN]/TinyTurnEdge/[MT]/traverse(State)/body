@@ -1,7 +1,8 @@
 {
   TraverseOptions options=s0.getOptions();
-  if (!canTraverse(options)) {
-    if (options.getModes().contains(TraverseMode.BICYCLE)) {
+  TraverseMode traverseMode=s0.getNonTransitMode(options);
+  if (!canTraverse(options,traverseMode)) {
+    if (traverseMode == TraverseMode.BICYCLE) {
       return doTraverse(s0,options.getWalkingOptions());
     }
     return null;

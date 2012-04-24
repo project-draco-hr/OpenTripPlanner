@@ -1,42 +1,44 @@
 {
-  if (!canTraverse(options)) {
-    if (options.getModes().contains(TraverseMode.BICYCLE)) {
+  TraverseMode traverseMode=s0.getNonTransitMode(options);
+  if (!canTraverse(options,traverseMode)) {
+    if (traverseMode == TraverseMode.BICYCLE) {
       return doTraverse(s0,options.getWalkingOptions());
     }
     return null;
   }
-  double time=length / options.speed;
+  double speed=options.getSpeed(s0.getNonTransitMode(options));
+  double time=length / speed;
   double weight;
   if (options.wheelchairAccessible) {
-    weight=slopeSpeedEffectiveLength / options.speed;
+    weight=slopeSpeedEffectiveLength / speed;
   }
- else   if (options.getModes().contains(TraverseMode.BICYCLE)) {
-    time=slopeSpeedEffectiveLength / options.speed;
+ else   if (s0.getNonTransitMode(options).equals(TraverseMode.BICYCLE)) {
+    time=slopeSpeedEffectiveLength / speed;
 switch (options.optimizeFor) {
 case SAFE:
-      weight=bicycleSafetyEffectiveLength / options.speed;
+      weight=bicycleSafetyEffectiveLength / speed;
     break;
 case GREENWAYS:
-  weight=bicycleSafetyEffectiveLength / options.speed;
+  weight=bicycleSafetyEffectiveLength / speed;
 if (bicycleSafetyEffectiveLength / length <= TurnVertex.GREENWAY_SAFETY_FACTOR) {
   weight*=0.66;
 }
 break;
 case FLAT:
-weight=length / options.speed + slopeWorkCost;
+weight=length / speed + slopeWorkCost;
 break;
 case QUICK:
-weight=slopeSpeedEffectiveLength / options.speed;
+weight=slopeSpeedEffectiveLength / speed;
 break;
 case TRIANGLE:
 double quick=slopeSpeedEffectiveLength;
 double safety=bicycleSafetyEffectiveLength;
 double slope=slopeWorkCost;
 weight=quick * options.getTriangleTimeFactor() + slope * options.getTriangleSlopeFactor() + safety * options.getTriangleSafetyFactor();
-weight/=options.speed;
+weight/=speed;
 break;
 default :
-weight=length / options.speed;
+weight=length / speed;
 }
 }
  else {
@@ -48,7 +50,7 @@ weight*=options.stairsReluctance;
  else {
 weight*=options.walkReluctance;
 }
-FixedModeEdge en=new FixedModeEdge(this,options.getModes().getNonTransitMode());
+FixedModeEdge en=new FixedModeEdge(this,s0.getNonTransitMode(options));
 if (wheelchairNotes != null && options.wheelchairAccessible) {
 en.addNotes(wheelchairNotes);
 }

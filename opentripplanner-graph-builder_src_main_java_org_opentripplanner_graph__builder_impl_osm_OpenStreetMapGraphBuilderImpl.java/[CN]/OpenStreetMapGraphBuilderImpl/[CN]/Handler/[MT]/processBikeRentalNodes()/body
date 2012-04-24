@@ -1,0 +1,17 @@
+{
+  _log.debug("Processing bike rental nodes...");
+  int n=0;
+  for (  OSMNode node : _bikeRentalNodes) {
+    n++;
+    String name=node.getTag("name");
+    if (name == null)     name="Bike rental " + node.getId();
+    int capacity=Integer.MAX_VALUE;
+    if (node.hasTag("capacity")) {
+      capacity=Integer.parseInt(node.getTag("capacity"));
+    }
+    BikeRentalStationVertex station=new BikeRentalStationVertex(graph,"bike rental " + node.getId(),node.getLon(),node.getLat(),"Bike rental station " + name,capacity);
+    new RentABikeOnEdge(station,station);
+    new RentABikeOffEdge(station,station);
+  }
+  _log.debug("Created " + n + " bike rental stations.");
+}

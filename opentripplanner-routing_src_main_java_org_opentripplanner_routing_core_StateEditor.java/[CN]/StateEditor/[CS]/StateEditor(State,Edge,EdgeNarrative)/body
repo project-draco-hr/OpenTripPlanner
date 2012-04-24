@@ -12,7 +12,11 @@
   }
  else {
     child.hops=parent.hops + 1;
-    if (parent.vertex.equals(en.getFromVertex())) {
+    if (en.getFromVertex().equals(en.getToVertex()) && parent.vertex.equals(en.getFromVertex())) {
+      traversingBackward=parent.getOptions().isArriveBy();
+      child.vertex=en.getToVertex();
+    }
+ else     if (parent.vertex.equals(en.getFromVertex())) {
       traversingBackward=false;
       child.vertex=en.getToVertex();
     }

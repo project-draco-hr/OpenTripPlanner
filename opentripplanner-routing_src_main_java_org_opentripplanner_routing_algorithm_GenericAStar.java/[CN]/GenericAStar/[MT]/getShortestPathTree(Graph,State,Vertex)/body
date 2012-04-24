@@ -49,7 +49,7 @@
     if (_searchTerminationStrategy != null) {
       if (!_searchTerminationStrategy.shouldSearchContinue(origin.getVertex(),target,u,spt,options))       break;
     }
- else     if (u_vertex == target) {
+ else     if (u_vertex == target && u.isFinal()) {
       LOG.debug("total vertices visited {}",nVisited);
       storeMemory();
       return spt;

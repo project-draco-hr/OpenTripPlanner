@@ -17,7 +17,8 @@
   TraverseOptions options=new TraverseOptions(modeSet);
   VisualTraverseVisitor visitor=new VisualTraverseVisitor(showGraph);
   options.aStarSearchFactory=visitor.getAStarSearchFactory();
-  options.boardCost=Integer.parseInt(boardingPenaltyField.getText()) * 60;
+  options.setWalkBoardCost(Integer.parseInt(boardingPenaltyField.getText()) * 60);
+  options.setBikeBoardCost(Integer.parseInt(boardingPenaltyField.getText()) * 60 * 2);
   options.setOptimize(OptimizeType.QUICK);
   options.setMaxWalkDistance(Double.MAX_VALUE);
   System.out.println("--------");

@@ -1,7 +1,7 @@
 {
   TraverseOptions options=new TraverseOptions(TraverseMode.WALK);
   options.walkReluctance=1;
-  options.speed=1;
+  options.setWalkSpeed(1);
   addReachToGraph(graph);
   OverlayGraph walkGraph=makeWalkingGraph(graph,options);
   Set<Vertex> streetVertices=getWalkingVertices(walkGraph,options);

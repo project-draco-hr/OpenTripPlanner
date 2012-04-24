@@ -68,7 +68,7 @@
   TraverseOptions options=new TraverseOptions();
   options.optimizeFor=OptimizeType.QUICK;
   options.walkReluctance=1;
-  options.speed=1;
+  options.setWalkSpeed(1);
   Dijkstra dijkstra=new Dijkstra(verticesOut[0][0],options,graph.getVertex("a(0, 0)"),3);
   BasicShortestPathTree spt=dijkstra.getShortestPathTree(verticesIn[0][2],4);
   State v03=spt.getState(verticesIn[0][3]);
@@ -106,7 +106,7 @@
   }
   options=new TraverseOptions();
   options.optimizeFor=OptimizeType.QUICK;
-  options.speed=1;
+  options.setWalkSpeed(1);
   options.remainingWeightHeuristic=new TrivialRemainingWeightHeuristic();
   for (int x1=0; x1 < N; ++x1) {
     for (int y1=0; y1 < N; ++y1) {

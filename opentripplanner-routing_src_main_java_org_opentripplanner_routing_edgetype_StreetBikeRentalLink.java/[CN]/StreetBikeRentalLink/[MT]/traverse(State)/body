@@ -1,0 +1,8 @@
+{
+  if (s0.getBackEdge() instanceof StreetBikeRentalLink)   return null;
+  FixedModeEdge en=new FixedModeEdge(this,s0.getNonTransitMode(s0.getOptions()));
+  StateEditor s1=s0.edit(this,en);
+  s1.incrementTimeInSeconds(1);
+  s1.incrementWeight(1);
+  return s1.makeState();
+}

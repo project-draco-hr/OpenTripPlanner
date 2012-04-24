@@ -79,7 +79,7 @@
   ShortestPathTree spt=AStar.getShortestPathTree(gg,start,end,0,wo);
   assertNotNull(spt);
   wo=new TraverseOptions(new TraverseModeSet(TraverseMode.BICYCLE));
-  wo.speed=2;
+  wo.setBikeSpeed(2);
   spt=AStar.getShortestPathTree(gg,start,carlton,0,wo);
   assertNotNull(spt);
 }
