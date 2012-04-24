@@ -4,13 +4,14 @@
   if (options.wheelchairAccessible && !wheelchairAccessible) {
     return null;
   }
-  if (options.getModes().getWalk() && !permission.allows(StreetTraversalPermission.PEDESTRIAN)) {
+  TraverseMode mode=s0.getNonTransitMode(options);
+  if (mode == TraverseMode.WALK && !permission.allows(StreetTraversalPermission.PEDESTRIAN)) {
     return null;
   }
-  if (options.getModes().getBicycle() && !permission.allows(StreetTraversalPermission.BICYCLE)) {
+  if (mode == TraverseMode.BICYCLE && !permission.allows(StreetTraversalPermission.BICYCLE)) {
     return null;
   }
-  if (options.getModes().getCar() && !permission.allows(StreetTraversalPermission.CAR)) {
+  if (mode == TraverseMode.CAR && !permission.allows(StreetTraversalPermission.CAR)) {
     return null;
   }
   StateEditor s1=s0.edit(this,en);
