@@ -2,10 +2,6 @@
   TraverseOptions options=s0.getOptions();
   if (options.isArriveBy()) {
     if (!s0.isBikeRenting())     return null;
-    BikeRentalStationVertex dropoff=(BikeRentalStationVertex)tov;
-    if (dropoff.getSpacesAvailable() == 0) {
-      return null;
-    }
     BikeRentalStationVertex pickup=(BikeRentalStationVertex)tov;
     if (pickup.getSpacesAvailable() == 0) {
       return null;
