@@ -2,6 +2,14 @@
   TraverseOptions options=s0.getOptions();
   if (options.isArriveBy()) {
     if (!s0.isBikeRenting())     return null;
+    BikeRentalStationVertex dropoff=(BikeRentalStationVertex)tov;
+    if (dropoff.getSpacesAvailable() == 0) {
+      return null;
+    }
+    BikeRentalStationVertex pickup=(BikeRentalStationVertex)tov;
+    if (pickup.getSpacesAvailable() == 0) {
+      return null;
+    }
     EdgeNarrative en=new FixedModeEdge(this,s0.getNonTransitMode(options));
     StateEditor s1=s0.edit(this,en);
     s1.incrementWeight(options.bikeRentalDropoffCost);
@@ -12,6 +20,10 @@
  else {
     if (!s0.getNonTransitMode(options).equals(TraverseMode.WALK))     return null;
     if (!options.getModes().contains(TraverseMode.BICYCLE))     return null;
+    BikeRentalStationVertex dropoff=(BikeRentalStationVertex)tov;
+    if (dropoff.getBikesAvailable() == 0) {
+      return null;
+    }
     EdgeNarrative en=new FixedModeEdge(this,s0.getNonTransitMode(options));
     StateEditor s1=s0.edit(this,en);
     s1.incrementWeight(options.bikeRentalPickupCost);

@@ -1,0 +1,25 @@
+{
+  if (!source.update())   return;
+  List<BikeRentalStation> stations=source.getStations();
+  Set<String> stationIds=new HashSet<String>();
+  for (  BikeRentalStation station : stations) {
+    String id=station.id;
+    stationIds.add(id);
+    BikeRentalStationVertex vertex=verticesByStation.get(id);
+    if (vertex == null) {
+      vertex=new BikeRentalStationVertex(graph,"bike rental station " + id,station.x,station.y,station.name,station.bikesAvailable,station.spacesAvailable);
+      networkLinkerLibrary.connectVertexToStreets(vertex);
+      new RentABikeOnEdge(vertex,vertex);
+      new RentABikeOffEdge(vertex,vertex);
+    }
+ else {
+      vertex.setBikesAvailable(station.bikesAvailable);
+      vertex.setSpacesAvailable(station.spacesAvailable);
+    }
+  }
+  for (  Entry<String,BikeRentalStationVertex> entry : verticesByStation.entrySet()) {
+    if (stationIds.contains(entry.getKey()))     continue;
+    Vertex vertex=entry.getValue();
+    graph.removeVertexAndEdges(vertex);
+  }
+}

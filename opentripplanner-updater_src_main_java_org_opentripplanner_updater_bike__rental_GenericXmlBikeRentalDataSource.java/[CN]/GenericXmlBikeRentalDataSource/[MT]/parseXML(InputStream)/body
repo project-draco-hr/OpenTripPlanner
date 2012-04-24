@@ -1,0 +1,34 @@
+{
+  ArrayList<BikeRentalStation> out=new ArrayList<BikeRentalStation>();
+  DocumentBuilderFactory factory=DocumentBuilderFactory.newInstance();
+  factory.setNamespaceAware(true);
+  DocumentBuilder builder=factory.newDocumentBuilder();
+  Document doc=builder.parse(data);
+  NodeList nodes;
+  try {
+    Object result=xpathExpr.evaluate(doc,XPathConstants.NODESET);
+    nodes=(NodeList)result;
+  }
+ catch (  XPathExpressionException e) {
+    throw new RuntimeException(e);
+  }
+  for (int i=0; i < nodes.getLength(); ++i) {
+    Node node=nodes.item(i);
+    if (!(node instanceof Element)) {
+      continue;
+    }
+    HashMap<String,String> attributes=new HashMap<String,String>();
+    Node child=node.getFirstChild();
+    while (child != null) {
+      if (!(child instanceof Element)) {
+        child=child.getNextSibling();
+        continue;
+      }
+      attributes.put(child.getNodeName(),child.getTextContent());
+      child=child.getNextSibling();
+    }
+    BikeRentalStation brstation=makeStation(attributes);
+    if (brstation != null)     out.add(brstation);
+  }
+  stations=out;
+}

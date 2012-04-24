@@ -13,6 +13,10 @@
   }
  else {
     if (!s0.isBikeRenting())     return null;
+    BikeRentalStationVertex pickup=(BikeRentalStationVertex)tov;
+    if (pickup.getSpacesAvailable() == 0) {
+      return null;
+    }
     EdgeNarrative en=new FixedModeEdge(this,s0.getNonTransitMode(options));
     StateEditor s1e=s0.edit(this,en);
     s1e.incrementWeight(options.bikeRentalDropoffCost);

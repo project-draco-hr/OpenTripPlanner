@@ -1,0 +1,10 @@
+{
+  XPathFactory factory=XPathFactory.newInstance();
+  XPath xpath=factory.newXPath();
+  try {
+    xpathExpr=xpath.compile(path);
+  }
+ catch (  XPathExpressionException e) {
+    throw new RuntimeException(e);
+  }
+}

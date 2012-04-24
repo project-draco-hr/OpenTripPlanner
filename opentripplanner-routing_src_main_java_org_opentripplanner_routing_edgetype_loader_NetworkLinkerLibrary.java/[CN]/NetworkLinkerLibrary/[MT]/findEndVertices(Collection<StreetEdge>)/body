@@ -4,7 +4,9 @@
     Set<Edge> starting=edgesStartingAt.get(edge.getFromVertex());
     if (starting == null) {
       starting=new HashSet<Edge>();
-      edgesStartingAt.put((TurnVertex)edge.getFromVertex(),starting);
+      if (edge.getFromVertex() instanceof TurnVertex) {
+        edgesStartingAt.put((TurnVertex)edge.getFromVertex(),starting);
+      }
     }
     starting.add(edge);
   }
