@@ -52,5 +52,7 @@
   if (request.getTransferPenalty() != null) {
     options.transferPenalty=request.getTransferPenalty();
   }
+  boolean tripPlannedForNow=Math.abs(request.getDateTime().getTime() - new Date().getTime()) < NOW_THRESHOLD_MILLIS;
+  options.setUseBikeRentalAvailabilityInformation(tripPlannedForNow);
   return options;
 }
