@@ -1,15 +1,4 @@
 {
-  DataHolder holder=DataHolder.getInstance();
-  graph=holder.graph;
-  planner=holder.planner;
-  pathService=holder.pathService;
-  if (graph != null) {
-    return;
-  }
-  planner=new Planner();
-  pathService=new RetryingPathServiceImpl();
-  graph=new Graph();
-  pathService.setRemainingWeightHeuristicFactory(new DefaultRemainingWeightHeuristicFactoryImpl());
   ShapefileStreetGraphBuilderImpl builder=new ShapefileStreetGraphBuilderImpl();
   FeatureSourceFactory factory=new ShapefileFeatureSourceFactoryImpl(new File("src/test/resources/portland/Streets_pdx.shp"));
   builder.setFeatureSourceFactory(factory);
@@ -24,16 +13,8 @@
   schema.setNoteConverter(new AttributeFeatureConverter<String>("PREFIX"));
   builder.setSchema(schema);
   builder.buildGraph(graph,new HashMap<Class<?>,Object>());
-  GraphServiceImpl graphService=new GraphServiceImpl();
-  graphService.setGraph(graph);
-  pathService.setGraphService(graphService);
-  ContractionRoutingServiceImpl routingService=new ContractionRoutingServiceImpl();
-  routingService.setGraphService(graphService);
-  pathService.setRoutingService(routingService);
-  SingletonPathServiceFactoryImpl pathServiceFactory=new SingletonPathServiceFactoryImpl();
-  pathServiceFactory.setPathService(pathService);
-  planner.setPathServiceFactory(pathServiceFactory);
-  holder.graph=graph;
-  holder.planner=planner;
-  holder.pathService=pathService;
+  graph.streetIndex=new StreetVertexIndexServiceImpl(graph);
+  pathService.sptService=new GenericAStar();
+  pathService.graphService=graphService;
+  planGenerator.pathService=pathService;
 }

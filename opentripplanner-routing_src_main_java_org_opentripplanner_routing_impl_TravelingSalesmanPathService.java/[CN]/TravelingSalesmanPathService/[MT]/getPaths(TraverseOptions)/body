@@ -23,30 +23,5 @@
     }
     return Arrays.asList(joinPaths(paths));
   }
-  Graph graph=graphService.getGraph(options.routerId);
-  options.setRoutingContext(graph);
-  Map<Vertex,HashMap<Vertex,GraphPath>> paths=new HashMap<Vertex,HashMap<Vertex,GraphPath>>();
-  HashMap<Vertex,GraphPath> firstLegPaths=new HashMap<Vertex,GraphPath>();
-  paths.put(fromVertex,firstLegPaths);
-  for (  Vertex v : intermediates) {
-    List<GraphPath> firstPaths=route(new State(time,fromVertex,options),v);
-    if (!firstPaths.isEmpty()) {
-      firstLegPaths.put(v,firstPaths.get(0));
-    }
-    HashMap<Vertex,GraphPath> outPaths=new HashMap<Vertex,GraphPath>();
-    paths.put(v,outPaths);
-    State intermediateState=new State(time,v,options);
-    for (    Vertex tv : intermediates) {
-      if (v == tv)       continue;
-      List<GraphPath> morePaths=route(intermediateState,tv);
-      if (!morePaths.isEmpty()) {
-        outPaths.put(tv,morePaths.get(0));
-      }
-    }
-    List<GraphPath> lastPaths=route(intermediateState,toVertex);
-    if (!lastPaths.isEmpty())     outPaths.put(toVertex,lastPaths.get(0));
-  }
-  HashSet<Vertex> vertices=new HashSet<Vertex>();
-  vertices.addAll(intermediates);
-  return TSPPathFinder.findShortestPath(toVertex,fromVertex,paths,vertices,time,options);
+  return null;
 }
