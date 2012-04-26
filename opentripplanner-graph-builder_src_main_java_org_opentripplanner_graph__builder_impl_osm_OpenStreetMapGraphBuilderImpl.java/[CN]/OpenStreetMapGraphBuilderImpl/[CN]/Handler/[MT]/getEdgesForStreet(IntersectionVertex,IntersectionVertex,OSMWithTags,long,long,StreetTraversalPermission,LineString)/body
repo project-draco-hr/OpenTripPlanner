@@ -33,11 +33,11 @@
   String access=way.getTag("access");
   boolean noThruTraffic="destination".equals(access) || "private".equals(access) || "customers".equals(access)|| "delivery".equals(access)|| "forestry".equals(access)|| "agricultural".equals(access);
   if (permissionsFront != StreetTraversalPermission.NONE) {
-    street=getEdgeForStreet(start,end,way,startNode,d,permissionsFront,geometry,false);
+    street=getEdgeForStreet(start,end,way,startNode,endNode,d,permissionsFront,geometry,false);
     street.setNoThruTraffic(noThruTraffic);
   }
   if (permissionsBack != StreetTraversalPermission.NONE) {
-    backStreet=getEdgeForStreet(end,start,way,startNode,d,permissionsBack,backGeometry,true);
+    backStreet=getEdgeForStreet(end,start,way,startNode,endNode,d,permissionsBack,backGeometry,true);
     backStreet.setNoThruTraffic(noThruTraffic);
   }
   if ("roundabout".equals(tags.get("junction"))) {

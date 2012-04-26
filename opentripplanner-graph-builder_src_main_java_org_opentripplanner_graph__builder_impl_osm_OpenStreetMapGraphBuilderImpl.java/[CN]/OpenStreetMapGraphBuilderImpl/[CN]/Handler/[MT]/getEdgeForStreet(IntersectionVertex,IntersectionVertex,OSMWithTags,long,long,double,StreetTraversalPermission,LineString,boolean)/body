@@ -6,7 +6,7 @@
   if (steps) {
     length*=2;
   }
-  PlainStreetEdge street=new PlainStreetEdge(start,end,geometry,name,length,permissions,back);
+  PlainStreetEdge street=edgeFactory.createEdge(_nodes.get(startNode),_nodes.get(endNode),way,start,end,geometry,name,length,permissions,back);
   street.setId(id);
   if (!way.hasTag("name")) {
     street.setBogusName(true);

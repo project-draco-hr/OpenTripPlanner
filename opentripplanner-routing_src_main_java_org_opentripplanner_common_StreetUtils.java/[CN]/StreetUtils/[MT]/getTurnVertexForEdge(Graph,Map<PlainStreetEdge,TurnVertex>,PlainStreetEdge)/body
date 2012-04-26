@@ -3,20 +3,7 @@
   if (tv != null) {
     return tv;
   }
-  boolean back=pse.back;
-  String id=pse.getId();
-  tv=new TurnVertex(graph,id,pse.getGeometry(),pse.getName(),pse.getLength(),back,pse.getNotes());
-  tv.setWheelchairNotes(pse.getWheelchairNotes());
-  tv.setWheelchairAccessible(pse.isWheelchairAccessible());
-  tv.setBicycleSafetyEffectiveLength(pse.getBicycleSafetyEffectiveLength());
-  tv.setCrossable(pse.isCrossable());
-  tv.setPermission(pse.getPermission());
-  tv.setSlopeOverride(pse.getSlopeOverride());
-  tv.setElevationProfile(pse.getElevationProfile(),true);
-  tv.setRoundabout(pse.isRoundabout());
-  tv.setBogusName(pse.hasBogusName());
-  tv.setNoThruTraffic(pse.isNoThruTraffic());
-  tv.setStairs(pse.isStairs());
+  tv=pse.createTurnVertex(graph);
   turnVertices.put(pse,tv);
   return tv;
 }
