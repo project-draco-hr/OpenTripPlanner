@@ -20,7 +20,7 @@
     freqs.add(freq);
   }
   for (  Trip trip : trips) {
-    if (index % 10000 == 0)     _log.debug("trips=" + index + "/"+ trips.size());
+    if (index % 100000 == 0)     _log.debug("trips=" + index + "/"+ trips.size());
     index++;
     List<StopTime> originalStopTimes=getNonduplicateStopTimesForTrip(trip);
     filterStopTimes(originalStopTimes,graph);
