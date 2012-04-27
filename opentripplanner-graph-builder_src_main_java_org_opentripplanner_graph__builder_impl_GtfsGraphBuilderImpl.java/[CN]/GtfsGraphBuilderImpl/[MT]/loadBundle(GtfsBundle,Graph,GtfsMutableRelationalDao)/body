@@ -5,7 +5,7 @@
   GtfsReader reader=new GtfsReader();
   reader.setInputSource(gtfsBundle.getCsvInputSource());
   reader.setEntityStore(store);
-  reader.setInternStrings(false);
+  reader.setInternStrings(true);
   if (gtfsBundle.getDefaultAgencyId() != null)   reader.setDefaultAgencyId(gtfsBundle.getDefaultAgencyId());
   for (  Map.Entry<String,String> entry : gtfsBundle.getAgencyIdMappings().entrySet())   reader.addAgencyIdMapping(entry.getKey(),entry.getValue());
   if (_log.isDebugEnabled())   reader.addEntityHandler(counter);

@@ -78,7 +78,14 @@
         polygons.add(hole);
       }
       Environment areaEnv=new Environment(polygons);
-      if (visibilityPoints.size() > MAX_AREA_NODES)       continue;
+      if (visibilityPoints.size() > MAX_AREA_NODES) {
+        _log.warn("Area " + area.parent + " is too complicated ("+ visibilityPoints.size()+ " > "+ MAX_AREA_NODES);
+        continue;
+      }
+      if (!areaEnv.is_valid(VISIBILITY_EPSILON)) {
+        _log.warn("Area " + area.parent + " is not epsilon-valid (epsilon = "+ VISIBILITY_EPSILON+ ")");
+        continue;
+      }
       VisibilityGraph vg=new VisibilityGraph(areaEnv,VISIBILITY_EPSILON,visibilityPoints);
       for (int i=0; i < nodes.size(); ++i) {
         OSMNode nodeI=nodes.get(i);
@@ -94,7 +101,7 @@
             id=unique(id);
             String name=getNameForWay(areaEntity,id);
             double length=DistanceLibrary.distance(startEndpoint.getCoordinate(),endEndpoint.getCoordinate());
-            PlainStreetEdge street=new PlainStreetEdge(startEndpoint,endEndpoint,geometry,name,length,areaPermissions,i > j);
+            PlainStreetEdge street=edgeFactory.createEdge(nodeI,nodeJ,areaEntity,startEndpoint,endEndpoint,geometry,name,length,areaPermissions,i > j);
             street.setId(id);
             edges.add(street);
             if (startingNodes.contains(nodeI)) {

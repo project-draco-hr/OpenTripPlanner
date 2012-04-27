@@ -13,8 +13,8 @@
       }
       now=System.currentTimeMillis();
     }
-    for (    Updater updater : getUpdaters()) {
-      System.out.println("running updater " + updater.getUrl());
+    for (    Runnable updater : getUpdaters()) {
+      System.out.println("running updater " + updater);
       updater.run();
     }
     lastUpdate=now;
