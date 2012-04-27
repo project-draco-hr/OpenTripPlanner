@@ -7,20 +7,17 @@
   Edge mustBike=new PlainStreetEdge(v2,v3,GeometryUtils.makeLineString(-77.0492,38.857,-77.0492,38.858),"S. Crystal Dr",87,StreetTraversalPermission.BICYCLE,false);
   GenericAStar aStar=new GenericAStar();
   TraverseOptions options=new TraverseOptions(new TraverseModeSet("WALK,TRANSIT"));
-  options.dateTime=1000;
   options.setRoutingContext(graph,v1,v3);
   ShortestPathTree tree=aStar.getShortestPathTree(options);
   GraphPath path=tree.getPath(v3,false);
   assertNull(path);
   options=new TraverseOptions(new TraverseModeSet("BICYCLE,TRANSIT"));
-  options.dateTime=1000;
   options.freezeTraverseMode();
   options.setRoutingContext(graph,v1,v3);
   tree=aStar.getShortestPathTree(options);
   path=tree.getPath(v3,false);
   assertNull(path);
   options=new TraverseOptions(new TraverseModeSet("WALK,BICYCLE,TRANSIT"));
-  options.dateTime=1000;
   options.freezeTraverseMode();
   options.setRoutingContext(graph,v1,v3);
   tree=aStar.getShortestPathTree(options);
@@ -32,7 +29,6 @@
   new RentABikeOnEdge(station,station);
   new RentABikeOffEdge(station,station);
   options=new TraverseOptions(new TraverseModeSet("WALK,BICYCLE,TRANSIT"));
-  options.dateTime=1000;
   options.freezeTraverseMode();
   options.setRoutingContext(graph,v1,v3);
   tree=aStar.getShortestPathTree(options);
@@ -45,7 +41,6 @@
   new RentABikeOnEdge(station2,station2);
   new RentABikeOffEdge(station2,station2);
   options=new TraverseOptions(new TraverseModeSet("WALK,BICYCLE,TRANSIT"));
-  options.dateTime=1000;
   options.setRoutingContext(graph,v1,v3);
   tree=aStar.getShortestPathTree(options);
   path=tree.getPath(v3,false);
