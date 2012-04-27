@@ -1,15 +1,18 @@
 {
-  final int MAX_AREA_NODES=50;
+  final int MAX_AREA_NODES=500;
   _log.debug("building visibility graphs for areas");
   for (  Area area : _areas) {
+    Set<OSMNode> startingNodes=new HashSet<OSMNode>();
+    List<Vertex> startingVertices=new ArrayList<Vertex>();
+    Set<Edge> edges=new HashSet<Edge>();
     OSMWithTags areaEntity=area.parent;
     StreetTraversalPermission areaPermissions=getPermissionsForEntity(areaEntity,StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
     if (areaPermissions == StreetTraversalPermission.NONE)     continue;
     setWayName(areaEntity);
     List<Point> vertices=new ArrayList<Point>();
-    List<OSMNode> nodes=new ArrayList<OSMNode>();
     Set<Point> visibilityPoints=new HashSet<Point>();
     for (    Ring ring : area.outermostRings) {
+      List<OSMNode> nodes=new ArrayList<OSMNode>();
       for (      OSMNode node : ring.nodes) {
         if (nodes.contains(node)) {
           continue;
@@ -24,38 +27,54 @@
       Polygon polygon=new Polygon(vertices);
       if (polygon.area() < 0) {
         polygon.reverse();
-        for (int i=1; i < (nodes.size() + 1) / 2; ++i) {
-          OSMNode tmp=nodes.get(i);
-          int opposite=nodes.size() - i;
-          nodes.set(i,nodes.get(opposite));
-          nodes.set(opposite,tmp);
-        }
+        reversePolygonOfOSMNodes(nodes);
+      }
+      if (!polygon.is_in_standard_form()) {
+        standardize(polygon.vertices,nodes);
       }
       int n=polygon.vertices.size();
       for (int i=0; i < n; ++i) {
         Point cur=polygon.vertices.get(i);
         Point prev=polygon.vertices.get((i + n - 1) % n);
         Point next=polygon.vertices.get((i + 1) % n);
-        if ((cur.x - prev.x) * (next.y - cur.y) - (cur.y - prev.y) * (next.x - cur.x) < 0 || _nodesWithNeighbors.contains(nodes.get(i).getId()))         visibilityPoints.add(cur);
+        OSMNode curNode=nodes.get(i);
+        if (_nodesWithNeighbors.contains(curNode.getId()) || multipleAreasContain(curNode.getId())) {
+          visibilityPoints.add(cur);
+          startingNodes.add(curNode);
+        }
+ else         if ((cur.x - prev.x) * (next.y - cur.y) - (cur.y - prev.y) * (next.x - cur.x) < 0) {
+          visibilityPoints.add(cur);
+        }
       }
       ArrayList<Polygon> polygons=new ArrayList<Polygon>();
       polygons.add(polygon);
       for (      Ring innerRing : ring.holes) {
+        ArrayList<OSMNode> holeNodes=new ArrayList<OSMNode>();
         vertices=new ArrayList<Point>();
         for (        OSMNode node : innerRing.nodes) {
-          if (nodes.contains(node)) {
+          if (holeNodes.contains(node)) {
             continue;
           }
           if (node == null) {
             throw new RuntimeException("node for area does not exist");
           }
           Point point=new Point(node.getLon(),node.getLat());
-          nodes.add(node);
+          holeNodes.add(node);
           vertices.add(point);
           visibilityPoints.add(point);
+          if (_nodesWithNeighbors.contains(node.getId()) || multipleAreasContain(node.getId())) {
+            startingNodes.add(node);
+          }
         }
         Polygon hole=new Polygon(vertices);
-        if (hole.area() > 0)         hole.reverse();
+        if (hole.area() > 0) {
+          reversePolygonOfOSMNodes(holeNodes);
+          hole.reverse();
+        }
+        if (!hole.is_in_standard_form()) {
+          standardize(hole.vertices,holeNodes);
+        }
+        nodes.addAll(holeNodes);
         polygons.add(hole);
       }
       Environment areaEnv=new Environment(polygons);
@@ -77,9 +96,14 @@
             double length=DistanceLibrary.distance(startEndpoint.getCoordinate(),endEndpoint.getCoordinate());
             PlainStreetEdge street=new PlainStreetEdge(startEndpoint,endEndpoint,geometry,name,length,areaPermissions,i > j);
             street.setId(id);
+            edges.add(street);
+            if (startingNodes.contains(nodeI)) {
+              startingVertices.add(startEndpoint);
+            }
           }
         }
       }
     }
+    pruneAreaEdges(startingVertices,edges);
   }
 }

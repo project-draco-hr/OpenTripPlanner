@@ -2,7 +2,10 @@
   try {
     if (_visitedMapTiles.add(key))     _parser.parseMap(pathToMapTile,_contentHandler);
   }
- catch (  Exception ex) {
+ catch (  IOException ex) {
+    throw new IllegalStateException("error reading osm file " + pathToMapTile,ex);
+  }
+catch (  SAXException ex) {
     throw new IllegalStateException("error parsing osm file " + pathToMapTile,ex);
   }
 }

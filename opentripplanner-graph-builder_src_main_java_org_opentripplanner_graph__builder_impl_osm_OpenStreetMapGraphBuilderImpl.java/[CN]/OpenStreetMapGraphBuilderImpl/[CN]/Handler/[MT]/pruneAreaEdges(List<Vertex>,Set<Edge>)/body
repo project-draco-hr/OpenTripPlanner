@@ -1,0 +1,21 @@
+{
+  TraverseOptions options=new TraverseOptions(TraverseMode.WALK);
+  GenericDijkstra search=new GenericDijkstra(options);
+  search.setSkipEdgeStrategy(new ListedEdgesOnly(edges));
+  Set<Edge> usedEdges=new HashSet<Edge>();
+  for (  Vertex vertex : startingVertices) {
+    State state=new State(vertex,options);
+    ShortestPathTree spt=search.getShortestPathTree(state);
+    for (    Vertex endVertex : startingVertices) {
+      GraphPath path=spt.getPath(endVertex,false);
+      for (      Edge edge : path.edges) {
+        usedEdges.add(edge);
+      }
+    }
+  }
+  for (  Edge edge : edges) {
+    if (!usedEdges.contains(edge)) {
+      edge.detach();
+    }
+  }
+}

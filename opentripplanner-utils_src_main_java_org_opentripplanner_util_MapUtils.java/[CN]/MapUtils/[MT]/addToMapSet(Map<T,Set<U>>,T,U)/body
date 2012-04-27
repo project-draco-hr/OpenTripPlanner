@@ -1,0 +1,8 @@
+{
+  Set<U> list=mapList.get(key);
+  if (list == null) {
+    list=new HashSet<U>();
+    mapList.put(key,list);
+  }
+  list.add(value);
+}

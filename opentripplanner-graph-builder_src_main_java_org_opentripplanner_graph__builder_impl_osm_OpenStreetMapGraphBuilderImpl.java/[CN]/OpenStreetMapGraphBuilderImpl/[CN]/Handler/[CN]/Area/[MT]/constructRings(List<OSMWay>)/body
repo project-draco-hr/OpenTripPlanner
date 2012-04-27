@@ -14,7 +14,8 @@
   endpoints.add(nextEndNode);
   endpoints.add(nextStartNode);
   if (!assignWayToRing(endpoints,way,remainingUnassigned,rings,0)) {
-    throw new RuntimeException("failed to construct rings for OSM area " + parent);
+    _log.warn("Failed to construct rings for " + parent);
+    return null;
   }
   return rings;
 }

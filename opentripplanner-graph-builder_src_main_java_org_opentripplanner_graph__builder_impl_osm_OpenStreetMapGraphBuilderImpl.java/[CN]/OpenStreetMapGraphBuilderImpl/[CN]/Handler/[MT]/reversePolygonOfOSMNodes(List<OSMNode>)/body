@@ -1,0 +1,8 @@
+{
+  for (int i=1; i < (nodes.size() + 1) / 2; ++i) {
+    OSMNode tmp=nodes.get(i);
+    int opposite=nodes.size() - i;
+    nodes.set(i,nodes.get(opposite));
+    nodes.set(opposite,tmp);
+  }
+}
