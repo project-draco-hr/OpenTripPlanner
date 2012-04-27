@@ -1,10 +1,14 @@
 {
-  Envelope extent=graph.getExtent();
+  HashSet<P2<Integer>> tiles=new HashSet<P2<Integer>>();
+  for (  Vertex v : graph.getVertices()) {
+    Coordinate coord=v.getCoordinate();
+    tiles.add(new P2<Integer>((int)coord.x,(int)coord.y));
+  }
   List<File> paths=new ArrayList<File>();
-  for (int y=(int)extent.getMinY() + 1; y <= (int)extent.getMaxY() + 1; ++y) {
-    for (int x=(int)extent.getMinX() - 1; x <= (int)extent.getMaxX() - 1; ++x) {
-      paths.add(getPathToTile(x,y));
-    }
+  for (  P2<Integer> tile : tiles) {
+    int x=tile.getFirst() - 1;
+    int y=tile.getSecond() + 1;
+    paths.add(getPathToTile(x,y));
   }
   return paths;
 }
