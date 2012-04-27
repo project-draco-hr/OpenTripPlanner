@@ -16,10 +16,11 @@
     if (options.bannedTrips.contains(getTrip().getId())) {
       return null;
     }
+    TraverseMode mode=state0.getNonTransitMode(options);
     if (!options.getModes().contains(hop.getMode())) {
       return null;
     }
-    if (options.getModes().getBicycle() && !hop.getBikesAllowed()) {
+    if (mode.equals(TraverseMode.BICYCLE) && !hop.getBikesAllowed()) {
       return null;
     }
     if (options.wheelchairAccessible && !wheelchairAccessible) {
@@ -44,7 +45,7 @@
     StateEditor s1=state0.edit(this);
     TransitUtils.handleBoardAlightType(s1,pickupType);
     s1.incrementTimeInSeconds(wait);
-    s1.incrementWeight(wait * options.waitReluctance + options.boardCost);
+    s1.incrementWeight(wait * options.waitReluctance + options.getBoardCost(mode));
     s1.incrementNumBoardings();
     s1.setTripId(trip.getId());
     s1.setZone(zone);

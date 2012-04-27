@@ -7,7 +7,8 @@
       return null;
     }
     if (!options.getModes().contains(hop.getMode()))     return null;
-    if (options.getModes().getBicycle() && !hop.getBikesAllowed())     return null;
+    TraverseMode mode=s0.getNonTransitMode(options);
+    if (mode.equals(TraverseMode.BICYCLE) && !hop.getBikesAllowed())     return null;
     long current_time=s0.getTime();
     AgencyAndId serviceId=hop.getServiceId();
     int wait=-1;
@@ -27,7 +28,7 @@
     StateEditor s1=s0.edit(this);
     TransitUtils.handleBoardAlightType(s1,dropoffType);
     s1.incrementTimeInSeconds(wait);
-    s1.incrementWeight(wait * options.waitReluctance + options.boardCost);
+    s1.incrementWeight(wait * options.waitReluctance + options.getBoardCost(mode));
     s1.incrementNumBoardings();
     s1.setTripId(trip.getId());
     s1.setZone(zone);

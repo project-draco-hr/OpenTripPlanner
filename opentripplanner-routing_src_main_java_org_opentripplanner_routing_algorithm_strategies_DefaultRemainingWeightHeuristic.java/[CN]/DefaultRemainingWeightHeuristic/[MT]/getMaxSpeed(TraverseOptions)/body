@@ -4,10 +4,10 @@
   }
  else {
     if (options.optimize == OptimizeType.QUICK) {
-      return options.speed;
+      return options.getSpeedUpperBound();
     }
  else {
-      return options.speed * 10;
+      return options.getSpeedUpperBound() * 10;
     }
   }
 }

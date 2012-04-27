@@ -1,6 +1,6 @@
 {
   TraverseOptions options=new TraverseOptions();
-  options.speed=1.0;
+  options.setWalkSpeed(1.0);
   options.setArriveBy(true);
   options.setRoutingContext(_graph,_graph.getVertex("56th_24th"),_graph.getVertex("leary_20th"));
   ShortestPathTree tree=new GenericAStar().getShortestPathTree(options);

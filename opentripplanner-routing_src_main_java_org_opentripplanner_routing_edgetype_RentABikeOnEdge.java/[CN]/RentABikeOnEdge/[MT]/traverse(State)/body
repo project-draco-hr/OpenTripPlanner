@@ -1,0 +1,22 @@
+{
+  TraverseOptions options=s0.getOptions();
+  if (options.isArriveBy()) {
+    if (!s0.isBikeRenting())     return null;
+    EdgeNarrative en=new FixedModeEdge(this,s0.getNonTransitMode(options));
+    StateEditor s1=s0.edit(this,en);
+    s1.incrementWeight(options.bikeRentalDropoffCost);
+    s1.incrementTimeInSeconds(options.bikeRentalDropoffTime);
+    s1.setBikeRenting(false);
+    return s1.makeState();
+  }
+ else {
+    if (!s0.getNonTransitMode(options).equals(TraverseMode.WALK))     return null;
+    if (!options.getModes().contains(TraverseMode.BICYCLE))     return null;
+    EdgeNarrative en=new FixedModeEdge(this,s0.getNonTransitMode(options));
+    StateEditor s1=s0.edit(this,en);
+    s1.incrementWeight(options.bikeRentalPickupCost);
+    s1.incrementTimeInSeconds(options.bikeRentalPickupTime);
+    s1.setBikeRenting(true);
+    return s1.makeState();
+  }
+}

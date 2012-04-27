@@ -1,20 +1,21 @@
 {
   TurnVertex fromv=((TurnVertex)this.fromv);
-  if (!fromv.canTraverse(options)) {
-    if (options.getModes().contains(TraverseMode.BICYCLE)) {
+  TraverseMode traverseMode=s0.getNonTransitMode(options);
+  if (!fromv.canTraverse(options,traverseMode)) {
+    if (traverseMode == TraverseMode.BICYCLE) {
       return doTraverse(s0,options.getWalkingOptions());
     }
  else {
       return null;
     }
   }
-  TraverseMode traverseMode=options.getModes().getNonTransitMode();
   FixedModeEdge en=new FixedModeEdge(this,traverseMode);
   if (fromv.getWheelchairNotes() != null && options.wheelchairAccessible) {
     en.addNotes(fromv.getWheelchairNotes());
   }
   StateEditor s1=s0.edit(this,en);
-  double time=fromv.getEffectiveLength(traverseMode) / options.speed;
+  double speed=options.getSpeed(traverseMode);
+  double time=fromv.getEffectiveLength(traverseMode) / speed;
   double weight=fromv.computeWeight(s0,options,time);
   s1.incrementWalkDistance(fromv.getLength());
   s1.incrementTimeInSeconds((int)time);

@@ -1,8 +1,9 @@
 {
-  final double BOARD_COST=options.boardCost;
+  final double BOARD_COST=options.getBoardCostLowerBound();
+  final double speed=s0.getOptions().getSpeedUpperBound();
   Vertex v=s0.getVertex();
   if (weightCache.containsKey(v))   return weightCache.get(v);
-  if (s0.getOptions().speed > wt.getMaxWalkSpeed()) {
+  if (speed > wt.getMaxWalkSpeed()) {
     double w=defaultHeuristic.computeForwardWeight(s0,target);
     weightCache.put(s0.getVertex(),w);
     return w;

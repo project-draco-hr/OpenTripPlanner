@@ -2,16 +2,13 @@
   this.modes=modes;
   assert(modes.isValid());
   if (modes.getBicycle()) {
-    speed=5;
-    boardCost=10 * 60;
     walkingOptions=new TraverseOptions();
     walkingOptions.setArriveBy(this.isArriveBy());
     walkingOptions.maxWalkDistance=maxWalkDistance;
-    walkingOptions.speed*=0.3;
+    walkingOptions.walkSpeed*=0.3;
     walkingOptions.optimize=optimize;
   }
  else   if (modes.getCar()) {
-    speed=15;
     walkingOptions=new TraverseOptions();
     walkingOptions.setArriveBy(this.isArriveBy());
     walkingOptions.maxWalkDistance=maxWalkDistance;

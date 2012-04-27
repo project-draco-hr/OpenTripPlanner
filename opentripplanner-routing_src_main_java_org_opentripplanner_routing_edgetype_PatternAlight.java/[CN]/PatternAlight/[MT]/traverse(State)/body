@@ -70,6 +70,7 @@
     s1.setTripId(trip.getId());
     s1.setZone(pattern.getZone(stopIndex + 1));
     s1.setRoute(trip.getRoute().getId());
+    TraverseMode mode=state0.getNonTransitMode(options);
     long wait_cost=bestWait;
     if (state0.getNumBoardings() == 0) {
       wait_cost*=options.waitAtBeginningFactor;
@@ -78,7 +79,7 @@
       wait_cost*=options.waitReluctance;
     }
     s1.incrementWeight(preferences_penalty);
-    s1.incrementWeight(wait_cost + options.boardCost);
+    s1.incrementWeight(wait_cost + options.getBoardCost(mode));
     return s1.makeState();
   }
  else {

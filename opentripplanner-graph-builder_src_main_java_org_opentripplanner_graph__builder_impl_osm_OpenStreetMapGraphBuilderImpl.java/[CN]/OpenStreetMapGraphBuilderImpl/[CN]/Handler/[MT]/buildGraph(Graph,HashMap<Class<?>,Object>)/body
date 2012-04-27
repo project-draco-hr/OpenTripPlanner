@@ -1,6 +1,9 @@
 {
   this.graph=graph;
   processRelations();
+  if (staticBikeRental) {
+    processBikeRentalNodes();
+  }
   HashSet<Long> _keep=new HashSet<Long>(_nodesWithNeighbors);
   _keep.addAll(_areaNodes);
   _nodes.keySet().retainAll(_keep);
@@ -18,4 +21,7 @@
   generateElevationProfiles(graph);
   applyBikeSafetyFactor(graph);
   StreetUtils.makeEdgeBased(graph,endpoints,turnRestrictions);
+  if (staticBikeRental) {
+    linkBikeRentalStations();
+  }
 }

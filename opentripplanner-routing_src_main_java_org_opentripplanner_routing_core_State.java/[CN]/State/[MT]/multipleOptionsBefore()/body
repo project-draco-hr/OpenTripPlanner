@@ -1,6 +1,6 @@
 {
   boolean foundAlternatePaths=false;
-  TraverseMode requestedMode=getOptions().getModes().getNonTransitMode();
+  TraverseMode requestedMode=getNonTransitMode(getOptions());
   for (  Edge out : backState.vertex.getOutgoing()) {
     if (out == backEdge) {
       continue;

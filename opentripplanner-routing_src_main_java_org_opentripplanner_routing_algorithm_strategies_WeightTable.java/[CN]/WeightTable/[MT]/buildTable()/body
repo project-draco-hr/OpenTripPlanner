@@ -16,9 +16,9 @@
   ThreadPoolExecutor threadPool=new ThreadPoolExecutor(nThreads,nThreads,10,TimeUnit.SECONDS,taskQueue);
   GenericObjectPool heapPool=new GenericObjectPool(new PoolableBinHeapFactory<State>(g.getVertices().size()),nThreads);
   TraverseOptions options=new TraverseOptions();
-  options.speed=maxWalkSpeed;
+  options.setWalkSpeed(maxWalkSpeed);
   final double MAX_WEIGHT=60 * 60 * options.walkReluctance;
-  final double OPTIMISTIC_BOARD_COST=options.boardCost;
+  final double OPTIMISTIC_BOARD_COST=options.getBoardCostLowerBound();
   ArrayList<Callable<Void>> tasks=new ArrayList<Callable<Void>>();
   for (  TransitStop origin : stopVertices) {
     SPTComputer task=new SPTComputer(heapPool,options,MAX_WEIGHT,OPTIMISTIC_BOARD_COST,origin);

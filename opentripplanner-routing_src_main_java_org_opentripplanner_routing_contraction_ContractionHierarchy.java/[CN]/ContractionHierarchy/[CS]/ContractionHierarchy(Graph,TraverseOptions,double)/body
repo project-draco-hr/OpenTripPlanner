@@ -6,6 +6,7 @@
   backOptions=fwdOptions.clone();
   backOptions.setArriveBy(true);
   this.contractionFactor=contractionFactor;
-  this.mode=this.fwdOptions.getModes().getNonTransitMode();
+  TraverseModeSet modes=this.fwdOptions.getModes();
+  this.mode=modes.getCar() ? TraverseMode.CAR : modes.getBicycle() ? TraverseMode.BICYCLE : TraverseMode.WALK;
   build();
 }

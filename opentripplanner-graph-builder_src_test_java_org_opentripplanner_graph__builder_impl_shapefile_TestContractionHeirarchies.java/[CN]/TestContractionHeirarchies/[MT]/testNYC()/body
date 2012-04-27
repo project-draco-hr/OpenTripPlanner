@@ -54,12 +54,13 @@
   TraverseOptions options=new TraverseOptions();
   options.setModes(new TraverseModeSet(TraverseMode.WALK,TraverseMode.SUBWAY));
   options.optimize=OptimizeType.QUICK;
-  options.setRoutingContext(graph);
   Vertex start1=graph.getVertex("0072480");
   Vertex end1=graph.getVertex("0032341");
   assertNotNull(end1);
   assertNotNull(start1);
-  ShortestPathTree shortestPathTree=AStar.getShortestPathTree(graph,start1,end1,startTime,options);
+  options.dateTime=startTime;
+  options.setRoutingContext(graph,start1,end1);
+  ShortestPathTree shortestPathTree=new GenericAStar().getShortestPathTree(options);
   path=shortestPathTree.getPath(end1,true);
   assertNotNull(path);
   boolean subway1=false;

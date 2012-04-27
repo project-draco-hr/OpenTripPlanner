@@ -2,11 +2,12 @@
   Vertex sv=s.getVertex();
   double euclidianDistance=sv.fastDistance(target);
   if (useTransit) {
+    double speed=options.getSpeedUpperBound();
     if (s.isAlightedLocal()) {
       if (euclidianDistance + s.getWalkDistance() > options.getMaxWalkDistance()) {
         return -1;
       }
-      return options.walkReluctance * euclidianDistance / options.speed;
+      return options.walkReluctance * euclidianDistance / speed;
     }
  else {
       int boardCost;
@@ -14,7 +15,7 @@
         boardCost=0;
       }
  else {
-        boardCost=options.boardCost;
+        boardCost=options.getBoardCostLowerBound();
       }
       if (s.isEverBoarded()) {
         boardCost+=options.transferPenalty;
@@ -23,15 +24,15 @@
         if (euclidianDistance + s.getWalkDistance() > options.getMaxWalkDistance()) {
           return -1;
         }
-        return options.walkReluctance * euclidianDistance / options.speed;
+        return options.walkReluctance * euclidianDistance / speed;
       }
  else {
         double mandatoryWalkDistance=target.getDistanceToNearestTransitStop() + sv.getDistanceToNearestTransitStop();
         if (mandatoryWalkDistance + s.getWalkDistance() > options.getMaxWalkDistance()) {
           return -1;
         }
-        double distance=(euclidianDistance - mandatoryWalkDistance) / maxSpeed + mandatoryWalkDistance * options.walkReluctance / options.speed + boardCost;
-        return Math.min(distance,options.walkReluctance * euclidianDistance / options.speed);
+        double distance=(euclidianDistance - mandatoryWalkDistance) / maxSpeed + mandatoryWalkDistance * options.walkReluctance / speed + boardCost;
+        return Math.min(distance,options.walkReluctance * euclidianDistance / speed);
       }
     }
   }
