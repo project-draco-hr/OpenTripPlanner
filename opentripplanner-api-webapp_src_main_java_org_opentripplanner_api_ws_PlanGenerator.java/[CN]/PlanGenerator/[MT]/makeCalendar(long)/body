@@ -1,0 +1,14 @@
+{
+  CalendarServiceData service=graph.getService(CalendarServiceData.class);
+  Collection<String> agencyIds=graph.getAgencyIds();
+  TimeZone timeZone;
+  if (agencyIds.size() == 0) {
+    timeZone=TimeZone.getTimeZone("GMT");
+  }
+ else {
+    timeZone=service.getTimeZoneForAgencyId(agencyIds.iterator().next());
+  }
+  Calendar calendar=Calendar.getInstance(timeZone);
+  calendar.setTimeInMillis(millis);
+  return calendar;
+}
