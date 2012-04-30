@@ -65,7 +65,7 @@
         startEndpoint=endEndpoint;
       }
       endEndpoint=getVertexForOsmNode(osmEndNode,way);
-      P2<PlainStreetEdge> streets=getEdgesForStreet(startEndpoint,endEndpoint,way,i,osmEndNode.getId(),permissions,geometry);
+      P2<PlainStreetEdge> streets=getEdgesForStreet(startEndpoint,endEndpoint,way,i,osmStartNode.getId(),osmEndNode.getId(),permissions,geometry);
       PlainStreetEdge street=streets.getFirst();
       if (street != null) {
         double safety=wayData.getSafetyFeatures().getFirst();
