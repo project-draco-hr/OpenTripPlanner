@@ -1,0 +1,7 @@
+{
+  if (other instanceof TileRequest) {
+    TileRequest that=(TileRequest)other;
+    return this.bbox.equals(that.bbox) && this.width == that.width && this.height == that.height;
+  }
+  return false;
+}

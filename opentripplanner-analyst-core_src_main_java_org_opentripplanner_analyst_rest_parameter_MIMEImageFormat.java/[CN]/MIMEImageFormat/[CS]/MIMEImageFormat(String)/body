@@ -1,0 +1,14 @@
+{
+  String[] parts=s.split("/");
+  if (parts.length == 2 && parts[0].equals("image")) {
+    if (acceptedTypes.contains(parts[1])) {
+      type=parts[1];
+    }
+ else {
+      throw new WebApplicationException(Response.status(Status.BAD_REQUEST).entity("unsupported image format: " + parts[1]).build());
+    }
+  }
+ else {
+    throw new WebApplicationException(Response.status(Status.BAD_REQUEST).entity("malformed image format mime type: " + s).build());
+  }
+}

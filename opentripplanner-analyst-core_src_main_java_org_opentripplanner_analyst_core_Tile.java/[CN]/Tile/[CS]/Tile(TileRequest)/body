@@ -1,0 +1,7 @@
+{
+  GridEnvelope2D gridEnv=new GridEnvelope2D(0,0,req.width,req.height);
+  this.gg=new GridGeometry2D(gridEnv,(org.opengis.geometry.Envelope)(req.bbox));
+  LOG.debug("preparing tile for {}",gg.getEnvelope2D());
+  this.width=gridEnv.width;
+  this.height=gridEnv.height;
+}

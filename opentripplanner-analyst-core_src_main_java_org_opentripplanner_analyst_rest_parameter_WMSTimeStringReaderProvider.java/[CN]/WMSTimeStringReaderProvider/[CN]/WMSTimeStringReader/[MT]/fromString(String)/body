@@ -1,0 +1,8 @@
+{
+  try {
+    return javax.xml.datatype.DatatypeFactory.newInstance().newXMLGregorianCalendar(param).toGregorianCalendar();
+  }
+ catch (  Exception e) {
+    throw new WebApplicationException(fail(param,e));
+  }
+}

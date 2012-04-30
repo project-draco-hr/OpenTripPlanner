@@ -1,0 +1,25 @@
+{
+  Tile tile=tileCache.get(tileRequest);
+  ShortestPathTree sptA=sptCache.get(sptRequestA);
+  ShortestPathTree sptB=sptCache.get(sptRequestB);
+  BufferedImage image;
+switch (renderRequest.layer) {
+case DIFFERENCE:
+    image=tile.linearCombination(1,sptA,-1,sptB,128,renderRequest);
+  break;
+case HAGERSTRAND:
+long elapsed=Math.abs(sptRequestB.dateTime - sptRequestA.dateTime);
+image=tile.linearCombination(-1,sptA,-1,sptB,elapsed / 60,renderRequest);
+break;
+case TRAVELTIME:
+default :
+image=tile.generateImage(sptA,renderRequest);
+}
+if (renderRequest.format.toString().equals("image/geotiff")) {
+GridCoverage2D gc=tile.getGridCoverage2D(image);
+return generateStreamingGeotiffResponse(gc);
+}
+ else {
+return generateStreamingImageResponse(image,renderRequest.format);
+}
+}

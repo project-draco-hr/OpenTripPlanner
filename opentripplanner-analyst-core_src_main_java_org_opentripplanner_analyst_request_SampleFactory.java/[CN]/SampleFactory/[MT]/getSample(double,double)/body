@@ -1,0 +1,41 @@
+{
+  Coordinate c=new Coordinate(lon,lat);
+  Point p=geometryFactory.createPoint(c);
+  TurnVertex v0=null;
+  TurnVertex v1=null;
+  DistanceOp o0=null;
+  DistanceOp o1=null;
+  double d0=Double.MAX_VALUE;
+  double d1=Double.MAX_VALUE;
+  Envelope env=new Envelope(c);
+  env.expandBy(SEARCH_RADIUS_DEG,SEARCH_RADIUS_DEG);
+  @SuppressWarnings("unchecked") List<TurnVertex> vs=(List<TurnVertex>)index.query(env);
+  for (  TurnVertex v : vs) {
+    Geometry g=v.getGeometry();
+    DistanceOp o=new DistanceOp(p,g);
+    double d=o.distance();
+    if (d > SEARCH_RADIUS_DEG)     continue;
+    if (d < d1) {
+      if (d < d0) {
+        v1=v0;
+        o1=o0;
+        d1=d0;
+        v0=v;
+        o0=o;
+        d0=d;
+      }
+ else {
+        v1=v;
+        o1=o;
+        d1=d;
+      }
+    }
+  }
+  if (v0 != null) {
+    int t0=timeToVertex(v0,o0);
+    int t1=timeToVertex(v1,o1);
+    Sample s=new Sample(v0,t0,v1,t1);
+    return s;
+  }
+  return null;
+}

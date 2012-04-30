@@ -1,0 +1,11 @@
+{
+  try {
+    Envelope bounds=(Envelope)index.getRoot().getBounds();
+    ReferencedEnvelope refEnv=new ReferencedEnvelope(bounds,CRS.decode("EPSG:4326",true));
+    return refEnv.toBounds(crs);
+  }
+ catch (  Exception e) {
+    LOG.error("error transforming graph bounding box to request CRS : {}",crs);
+    return null;
+  }
+}

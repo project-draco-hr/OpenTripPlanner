@@ -1,0 +1,14 @@
+{
+  if (v == null)   return -1;
+  GeometryLocation[] gl=o.nearestLocations();
+  Geometry g=v.getGeometry();
+  LocationIndexedLine lil=new LocationIndexedLine(g);
+  LinearLocation ll=lil.indexOf(gl[1].getCoordinate());
+  LineString beginning=(LineString)lil.extractLine(lil.getStartIndex(),ll);
+  double lengthRatio=beginning.getLength() / g.getLength();
+  double distOnStreet=v.getLength() * lengthRatio;
+  double distToStreet=DistanceLibrary.fastDistance(gl[0].getCoordinate(),gl[1].getCoordinate());
+  double dist=distOnStreet + distToStreet;
+  int t=(int)(dist / 1.33);
+  return t;
+}

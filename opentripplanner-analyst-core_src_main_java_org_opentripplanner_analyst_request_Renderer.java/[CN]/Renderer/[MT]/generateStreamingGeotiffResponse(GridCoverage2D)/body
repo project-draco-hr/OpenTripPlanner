@@ -1,0 +1,27 @@
+{
+  StreamingOutput streamingOutput=new StreamingOutput(){
+    public void write(    OutputStream outStream){
+      try {
+        long t0=System.currentTimeMillis();
+        GeoTiffWriteParams wp=new GeoTiffWriteParams();
+        wp.setCompressionMode(GeoTiffWriteParams.MODE_EXPLICIT);
+        wp.setCompressionType("LZW");
+        ParameterValueGroup params=new GeoTiffFormat().getWriteParameters();
+        params.parameter(AbstractGridFormat.GEOTOOLS_WRITE_PARAMS.getName().toString()).setValue(wp);
+        new GeoTiffWriter(outStream).write(coverage,(GeneralParameterValue[])params.values().toArray(new GeneralParameterValue[1]));
+        new GeoTiffWriter(outStream).write(coverage,null);
+        long t1=System.currentTimeMillis();
+        LOG.debug("wrote geotiff in {}msec",t1 - t0);
+      }
+ catch (      Exception e) {
+        LOG.error("exception while preparing geotiff : {}",e.getMessage());
+        throw new WebApplicationException(e);
+      }
+    }
+  }
+;
+  CacheControl cc=new CacheControl();
+  cc.setMaxAge(3600);
+  cc.setNoCache(false);
+  return Response.ok(streamingOutput).type("image/geotiff").cacheControl(cc).build();
+}
