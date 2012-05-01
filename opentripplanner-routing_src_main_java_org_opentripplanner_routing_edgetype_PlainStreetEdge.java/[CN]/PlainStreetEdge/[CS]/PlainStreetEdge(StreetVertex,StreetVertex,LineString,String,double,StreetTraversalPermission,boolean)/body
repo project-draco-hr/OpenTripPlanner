@@ -2,9 +2,7 @@
   super(v1,v2);
   this.geometry=geometry;
   this.length=length;
-  slopeSpeedEffectiveLength=length;
-  bicycleSafetyEffectiveLength=length;
-  slopeWorkCost=length;
+  this.elevationProfileSegment=new ElevationProfileSegment(length);
   this.name=name;
   this.permission=permission;
   this.back=back;

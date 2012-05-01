@@ -3,9 +3,7 @@
   this.edgeId=id;
   this.geometry=geometry;
   this.length=length;
-  this.bicycleSafetyEffectiveLength=length;
-  this.slopeWorkCost=length;
-  this.slopeSpeedEffectiveLength=length;
+  this.elevationProfileSegment=new ElevationProfileSegment(length);
   this.permission=StreetTraversalPermission.ALL;
   this.notes=notes;
   if (geometry != null) {
