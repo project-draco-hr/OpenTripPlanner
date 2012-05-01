@@ -20,6 +20,9 @@
     _log.info("graph already exists and alwaysRebuild=false => skipping graph build");
     return;
   }
+  if (!graphPath.canWrite()) {
+    throw new RuntimeException("Cannot write to graph path " + graphPath);
+  }
   ArrayList<String> provided=new ArrayList<String>();
   boolean bad=false;
   for (  GraphBuilder builder : _graphBuilders) {
