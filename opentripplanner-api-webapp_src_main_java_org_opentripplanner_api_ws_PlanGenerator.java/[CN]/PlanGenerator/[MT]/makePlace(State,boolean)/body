@@ -4,7 +4,7 @@
   String name=v.getName();
   Place place;
   if (time) {
-    Date timeAtState=new Date(state.getTimeInMillis());
+    Calendar timeAtState=makeCalendar(state.getTimeInMillis());
     place=new Place(endCoord.x,endCoord.y,name,timeAtState);
   }
  else {

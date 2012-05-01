@@ -1,0 +1,23 @@
+{
+  String id="way " + way.getId() + " from "+ index;
+  id=unique(id);
+  String name=getNameForWay(way,id);
+  boolean steps="steps".equals(way.getTag("highway"));
+  if (steps) {
+    length*=2;
+  }
+  PlainStreetEdge street=edgeFactory.createEdge(_nodes.get(startNode),_nodes.get(endNode),way,start,end,geometry,name,length,permissions,back);
+  street.setId(id);
+  if (!way.hasTag("name")) {
+    street.setBogusName(true);
+  }
+  street.setStairs(steps);
+  if (way.isTagFalse("wheelchair") || (steps && !way.isTagTrue("wheelchair"))) {
+    street.setWheelchairAccessible(false);
+  }
+  street.setSlopeOverride(wayPropertySet.getSlopeOverride(way));
+  if (customNamer != null) {
+    customNamer.nameWithEdge(way,street);
+  }
+  return street;
+}

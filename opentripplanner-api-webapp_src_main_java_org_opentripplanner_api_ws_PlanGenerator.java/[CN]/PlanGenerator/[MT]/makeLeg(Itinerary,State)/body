@@ -1,7 +1,7 @@
 {
   Leg leg=new Leg();
   itinerary.addLeg(leg);
-  leg.startTime=new Date(s.getBackState().getTimeInMillis());
+  leg.startTime=makeCalendar(s.getBackState().getTimeInMillis());
   EdgeNarrative en=s.getBackEdgeNarrative();
   leg.distance=0.0;
   leg.from=makePlace(s.getBackState(),false);

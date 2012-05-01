@@ -2,8 +2,8 @@
   Itinerary itinerary=new Itinerary();
   State startState=path.states.getFirst();
   State endState=path.states.getLast();
-  itinerary.startTime=new Date(startState.getTimeInMillis());
-  itinerary.endTime=new Date(endState.getTimeInMillis());
+  itinerary.startTime=makeCalendar(startState.getTimeInMillis());
+  itinerary.endTime=makeCalendar(endState.getTimeInMillis());
   itinerary.duration=endState.getTimeInMillis() - startState.getTimeInMillis();
   if (fareService != null) {
     itinerary.fare=fareService.getCost(path);
