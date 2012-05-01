@@ -5,4 +5,5 @@
   calendar=Calendar.getInstance(timeZone);
   calendar.setTime(endTime.getTime());
   endTime=calendar;
+  agencyTimeZoneOffset=timeZone.getOffset(startTime.getTimeInMillis());
 }
