@@ -1,0 +1,37 @@
+{
+  TimeZone startTimeZone=null;
+  TimeZone timeZone=null;
+  Iterator<Leg> it=legs.iterator();
+  while (it.hasNext()) {
+    Leg leg=it.next();
+    if (leg.agencyId == null) {
+      if (timeZone != null) {
+        leg.setTimeZone(timeZone);
+      }
+    }
+ else {
+      timeZone=service.getTimeZoneForAgencyId(leg.agencyId);
+      if (startTimeZone == null) {
+        startTimeZone=timeZone;
+      }
+    }
+  }
+  if (timeZone != null) {
+    Calendar calendar=Calendar.getInstance(startTimeZone);
+    calendar.setTime(startTime.getTime());
+    startTime=calendar;
+    it=legs.iterator();
+    while (it.hasNext()) {
+      Leg leg=it.next();
+      if (leg.agencyId == null) {
+        leg.setTimeZone(startTimeZone);
+      }
+ else {
+        break;
+      }
+    }
+    calendar=Calendar.getInstance(timeZone);
+    calendar.setTime(endTime.getTime());
+    endTime=calendar;
+  }
+}

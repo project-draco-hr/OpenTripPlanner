@@ -1,0 +1,9 @@
+{
+  Calendar calendar=Calendar.getInstance(timeZone);
+  calendar.setTime(startTime.getTime());
+  startTime=calendar;
+  calendar=Calendar.getInstance(timeZone);
+  calendar.setTime(endTime.getTime());
+  endTime=calendar;
+  agencyTimeZoneOffset=timeZone.getOffset(startTime.getTimeInMillis());
+}

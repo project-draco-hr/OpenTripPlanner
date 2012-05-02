@@ -1,18 +1,3 @@
 {
-  if (elev == null || elev.size() < 2) {
-    return false;
-  }
-  if (slopeOverride && !computed) {
-    return false;
-  }
-  elevationProfile=elev;
-  double lengthMultiplier=ElevationUtils.getLengthMultiplierFromElevation(elev);
-  length*=lengthMultiplier;
-  bicycleSafetyEffectiveLength*=lengthMultiplier;
-  SlopeCosts costs=ElevationUtils.getSlopeCosts(elev,permission.allows(StreetTraversalPermission.CAR));
-  slopeSpeedEffectiveLength=costs.slopeSpeedEffectiveLength;
-  maxSlope=costs.maxSlope;
-  slopeWorkCost=costs.slopeWorkCost;
-  bicycleSafetyEffectiveLength+=costs.slopeSafetyCost;
-  return costs.flattened;
+  return elevationProfileSegment.setElevationProfile(elev,computed,permission.allows(StreetTraversalPermission.CAR));
 }
