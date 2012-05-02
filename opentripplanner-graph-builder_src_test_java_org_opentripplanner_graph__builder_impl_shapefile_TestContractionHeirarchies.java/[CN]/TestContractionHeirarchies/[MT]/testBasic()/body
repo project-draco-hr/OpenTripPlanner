@@ -115,6 +115,7 @@
             continue;
           }
           options.setArriveBy(false);
+          options.setRoutingContext(graph,verticesOut[y1][x1],verticesIn[y2][x2]);
           path=hierarchy.getShortestPath(verticesOut[y1][x1],verticesIn[y2][x2],1000000000,options);
           assertNotNull(path);
           options.setArriveBy(true);

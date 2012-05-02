@@ -1,13 +1,15 @@
 {
-  TraverseOptions upOptions=opt.clone();
-  TraverseOptions downOptions=opt.clone();
   if (origin == null || target == null) {
     return null;
   }
+  TraverseOptions upOptions=opt.clone();
+  TraverseOptions downOptions=opt.clone();
   upOptions.setArriveBy(false);
   upOptions.dateTime=time;
+  upOptions.setRoutingContext(graph,origin,target);
   downOptions.setArriveBy(true);
   downOptions.dateTime=time;
+  upOptions.setRoutingContext(graph,target,origin);
   double minWalkDistance=origin.getDistanceToNearestTransitStop() + target.getDistanceToNearestTransitStop();
   upOptions.setMaxWalkDistance(Math.max(upOptions.getMaxWalkDistance(),minWalkDistance));
   downOptions.setMaxWalkDistance(Math.max(downOptions.getMaxWalkDistance(),minWalkDistance));
