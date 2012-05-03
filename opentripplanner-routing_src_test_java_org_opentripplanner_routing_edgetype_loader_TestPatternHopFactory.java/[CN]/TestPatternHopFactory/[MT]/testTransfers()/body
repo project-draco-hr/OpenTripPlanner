@@ -8,7 +8,7 @@
   long startTime=TestUtils.dateInSeconds("America/New_York",2009,8,18,0,50,0);
   Vertex stop_b=graph.getVertex("agency_B_depart");
   Vertex stop_g=graph.getVertex("agency_G_arrive");
-  TraverseOptions options=new TraverseOptions();
+  RoutingRequest options=new RoutingRequest();
   options.dateTime=startTime;
   options.setRoutingContext(graph,stop_b,stop_g);
   ShortestPathTree spt=aStar.getShortestPathTree(options);

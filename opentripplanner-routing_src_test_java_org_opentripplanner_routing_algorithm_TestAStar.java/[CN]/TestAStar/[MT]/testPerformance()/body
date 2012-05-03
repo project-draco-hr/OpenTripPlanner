@@ -1,7 +1,7 @@
 {
   Graph graph=ConstantsForTests.getInstance().getPortlandGraph();
   long startTime=TestUtils.dateInSeconds("America/Los_Angeles",2009,11,1,12,34,25);
-  TraverseOptions options=new TraverseOptions();
+  RoutingRequest options=new RoutingRequest();
   options.dateTime=startTime;
   Vertex airport=graph.getVertex("TriMet_10579");
   long startClock, endClock;

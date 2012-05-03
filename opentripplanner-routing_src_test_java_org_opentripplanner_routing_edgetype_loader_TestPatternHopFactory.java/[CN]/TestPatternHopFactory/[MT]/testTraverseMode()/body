@@ -2,7 +2,7 @@
   Vertex stop_a=graph.getVertex("agency_A_depart");
   Vertex stop_b=graph.getVertex("agency_B_arrive");
   ShortestPathTree spt;
-  TraverseOptions options=new TraverseOptions();
+  RoutingRequest options=new RoutingRequest();
   options.setModes(new TraverseModeSet("TRAINISH"));
   options.dateTime=TestUtils.dateInSeconds("America/New_York",2009,8,0,0,0,0);
   options.setRoutingContext(graph,stop_a,stop_b);

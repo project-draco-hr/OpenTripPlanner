@@ -12,7 +12,7 @@
   AgencyAndId stop=new AgencyAndId(stopAgency,stopId);
   Edge preBoardEdge=transitIndexService.getPreBoardEdge(stop);
   Vertex boarding=preBoardEdge.getToVertex();
-  TraverseOptions options=makeTraverseOptions(startTime);
+  RoutingRequest options=makeTraverseOptions(startTime);
   HashSet<AgencyAndId> trips=new HashSet<AgencyAndId>();
   StopTimeList result=new StopTimeList();
   result.stopTimes=new ArrayList<StopTime>();

@@ -1,5 +1,5 @@
 {
-  TraverseOptions options=new TraverseOptions();
+  RoutingRequest options=new RoutingRequest();
   HashSet<Edge> turns=new HashSet<Edge>(left.getOutgoing());
   turns.addAll(leftBack.getOutgoing());
   StreetLocation start=StreetLocation.createStreetLocation("start","start",cast(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()));
@@ -38,7 +38,7 @@
     assertNotSame(s.getVertex(),graph.getVertex("bottom"));
     assertNotSame(s.getVertex(),graph.getVertex("bottomBack"));
   }
-  options=new TraverseOptions(new TraverseModeSet(TraverseMode.BICYCLE));
+  options=new RoutingRequest(new TraverseModeSet(TraverseMode.BICYCLE));
   start=StreetLocation.createStreetLocation("start1","start1",cast(turns,StreetEdge.class),new LinearLocation(0,0.95).getCoordinate(top.getGeometry()));
   end=StreetLocation.createStreetLocation("end1","end1",cast(turns,StreetEdge.class),new LinearLocation(0,0.95).getCoordinate(bottom.getGeometry()));
   options.setRoutingContext(graph,start,end);

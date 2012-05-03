@@ -3,7 +3,7 @@
   double streetLength=100;
   TurnVertex start=new TurnVertex(gg,"start",GeometryUtils.makeLineString(-74.002,40.5,-74.004,40.5,-74.004,40.5,-74.006,41.0),"start",streetLength,false,null);
   TurnVertex end=new TurnVertex(gg,"end",GeometryUtils.makeLineString(-74.004,40.5,-74.006,41.0),"end",streetLength,false,null);
-  TraverseOptions options=new TraverseOptions();
+  RoutingRequest options=new RoutingRequest();
   options.setWalkSpeed(ConstantsForTests.WALKING_SPEED);
   TurnEdge ee=new TurnEdge(start,end);
   GregorianCalendar startTime=new GregorianCalendar(2009,9,21,13,0,0);

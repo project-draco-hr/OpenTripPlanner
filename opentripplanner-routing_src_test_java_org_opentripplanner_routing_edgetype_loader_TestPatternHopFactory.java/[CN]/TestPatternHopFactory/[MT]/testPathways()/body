@@ -3,7 +3,7 @@
   assertNotNull(entrance);
   Vertex stop=graph.getVertex("agency_A");
   assertNotNull(stop);
-  TraverseOptions options=new TraverseOptions();
+  RoutingRequest options=new RoutingRequest();
   options.dateTime=TestUtils.dateInSeconds("America/New_York",2009,8,1,16,0,0);
   options.setRoutingContext(graph,entrance,stop);
   ShortestPathTree spt=aStar.getShortestPathTree(options);

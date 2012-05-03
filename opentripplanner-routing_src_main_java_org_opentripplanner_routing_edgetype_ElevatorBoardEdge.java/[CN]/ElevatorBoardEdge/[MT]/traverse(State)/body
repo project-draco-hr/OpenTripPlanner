@@ -1,6 +1,6 @@
 {
   EdgeNarrative en=new FixedModeEdge(this,s0.getNonTransitMode(s0.getOptions()));
-  TraverseOptions options=s0.getOptions();
+  RoutingRequest options=s0.getOptions();
   StateEditor s1=s0.edit(this,en);
   s1.incrementWeight(options.elevatorBoardCost);
   s1.incrementTimeInSeconds(options.elevatorBoardTime);

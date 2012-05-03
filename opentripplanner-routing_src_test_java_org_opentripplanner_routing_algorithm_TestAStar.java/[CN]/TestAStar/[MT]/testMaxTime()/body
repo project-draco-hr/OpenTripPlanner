@@ -2,7 +2,7 @@
   Graph graph=ConstantsForTests.getInstance().getPortlandGraph();
   Vertex start=graph.getVertex("TriMet_8371");
   Vertex end=graph.getVertex("TriMet_8374");
-  TraverseOptions options=new TraverseOptions();
+  RoutingRequest options=new RoutingRequest();
   long startTime=TestUtils.dateInSeconds("America/Los_Angeles",2009,11,1,12,34,25);
   options.dateTime=startTime;
   options.worstTime=startTime + 60 * 60;

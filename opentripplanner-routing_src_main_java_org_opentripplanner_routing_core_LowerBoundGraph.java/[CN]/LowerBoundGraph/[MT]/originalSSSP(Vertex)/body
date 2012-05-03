@@ -1,7 +1,7 @@
 {
   LOG.info("Initializing original SSSP");
   BinHeap<State> q=new BinHeap<State>();
-  TraverseOptions opt=new TraverseOptions();
+  RoutingRequest opt=new RoutingRequest();
   BasicShortestPathTree spt=new BasicShortestPathTree(opt);
   opt.maxWalkDistance=Double.MAX_VALUE;
   State initialState=new State(o,opt);

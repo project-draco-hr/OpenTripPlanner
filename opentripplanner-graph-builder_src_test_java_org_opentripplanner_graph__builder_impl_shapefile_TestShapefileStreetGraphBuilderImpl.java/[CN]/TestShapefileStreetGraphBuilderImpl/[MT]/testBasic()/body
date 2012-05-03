@@ -76,11 +76,11 @@
   assertEquals(3,start.getDegreeOut());
   assertEquals(3,start.getDegreeIn());
   GenericAStar aStar=new GenericAStar();
-  TraverseOptions opt=new TraverseOptions();
+  RoutingRequest opt=new RoutingRequest();
   opt.setRoutingContext(gg,start,end);
   ShortestPathTree spt=aStar.getShortestPathTree(opt);
   assertNotNull(spt);
-  opt=new TraverseOptions(new TraverseModeSet(TraverseMode.BICYCLE));
+  opt=new RoutingRequest(new TraverseModeSet(TraverseMode.BICYCLE));
   opt.setBikeSpeed(2);
   opt.setRoutingContext(gg,start,carlton);
   spt=aStar.getShortestPathTree(opt);

@@ -5,8 +5,8 @@
     height=(int)Math.ceil(bbox.height / resolution);
   }
   if (version == new WMSVersion("1.3.0") && crs != null)   srs=crs;
-  TraverseOptions reqA=this.buildRequest(0);
-  TraverseOptions reqB=this.buildRequest(1);
+  RoutingRequest reqA=this.buildRequest(0);
+  RoutingRequest reqB=this.buildRequest(1);
   LOG.debug("params {}",uriInfo.getQueryParameters());
   LOG.debug("layers = {}",layers);
   LOG.debug("styles = {}",styles);

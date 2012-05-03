@@ -14,7 +14,7 @@
   modeSet.setTrainish(trainCheckBox.isSelected());
   modeSet.setBusish(busCheckBox.isSelected());
   if (transitCheckBox.isSelected())   modeSet.setTransit(true);
-  TraverseOptions options=new TraverseOptions(modeSet);
+  RoutingRequest options=new RoutingRequest(modeSet);
   VisualTraverseVisitor visitor=new VisualTraverseVisitor(showGraph);
   options.setWalkBoardCost(Integer.parseInt(boardingPenaltyField.getText()) * 60);
   options.setBikeBoardCost(Integer.parseInt(boardingPenaltyField.getText()) * 60 * 2);

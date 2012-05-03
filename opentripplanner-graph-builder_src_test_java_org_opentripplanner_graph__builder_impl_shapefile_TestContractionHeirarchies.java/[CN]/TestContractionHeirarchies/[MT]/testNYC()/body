@@ -51,7 +51,7 @@
   gtfsBuilder.buildGraph(graph,new HashMap<Class<?>,Object>());
   NetworkLinker nl=new NetworkLinker(graph);
   nl.createLinkage();
-  TraverseOptions options=new TraverseOptions();
+  RoutingRequest options=new RoutingRequest();
   options.setModes(new TraverseModeSet(TraverseMode.WALK,TraverseMode.SUBWAY));
   options.optimize=OptimizeType.QUICK;
   Vertex start1=graph.getVertex("0072480");
@@ -74,7 +74,7 @@
   }
   assertTrue("Path must take subway",subway1);
   ContractionHierarchySet chs=new ContractionHierarchySet();
-  chs.addTraverseOptions(new TraverseOptions(TraverseMode.WALK,OptimizeType.QUICK));
+  chs.addTraverseOptions(new RoutingRequest(TraverseMode.WALK,OptimizeType.QUICK));
   chs.setContractionFactor(0.50);
   chs.setGraph(graph);
   chs.build();

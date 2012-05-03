@@ -1,6 +1,6 @@
 {
   RoutingContext rctx=s0.getContext();
-  TraverseOptions options=s0.getOptions();
+  RoutingRequest options=s0.getOptions();
   if (options.isArriveBy()) {
     if (!options.getModes().isTransit())     return null;
     if (s0.isAlightedLocal()) {

@@ -3,7 +3,7 @@
     return;
   }
   _log.debug("Building contraction hierarchies for " + modeList.size() + " modes");
-  for (  TraverseOptions mo : modeList) {
+  for (  RoutingRequest mo : modeList) {
     _log.debug("Building contraction hierarchy for " + mo);
     ContractionHierarchy ch=new ContractionHierarchy(getGraph(),mo,contractionFactor);
     hierarchiesByMode.put(mo,ch);

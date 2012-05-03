@@ -1,6 +1,6 @@
 {
   GtfsContext context=GtfsLibrary.readGtfs(new File(ConstantsForTests.FAKE_GTFS));
-  options=new TraverseOptions();
+  options=new RoutingRequest();
   graph=new Graph();
   GTFSPatternHopFactory factory=new GTFSPatternHopFactory(context);
   factory.run(graph);

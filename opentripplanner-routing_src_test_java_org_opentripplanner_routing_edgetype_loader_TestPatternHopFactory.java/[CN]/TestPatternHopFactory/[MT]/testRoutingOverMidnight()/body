@@ -3,7 +3,7 @@
   Vertex stop_h=graph.getVertex("agency_H_arrive");
   ShortestPathTree spt;
   GraphPath path;
-  TraverseOptions options=new TraverseOptions();
+  RoutingRequest options=new RoutingRequest();
   options.dateTime=TestUtils.dateInSeconds("America/New_York",2009,8,18,23,20,0);
   options.setRoutingContext(graph,stop_g,stop_h);
   spt=aStar.getShortestPathTree(options);

@@ -1,0 +1,7 @@
+{
+  if (o instanceof RoutingRequest) {
+    RoutingRequest other=(RoutingRequest)o;
+    return from.equals(other.from) && to.equals(other.to) && walkSpeed == other.walkSpeed && bikeSpeed == other.bikeSpeed && carSpeed == other.carSpeed && maxWeight == other.maxWeight && worstTime == other.worstTime && getModes().equals(other.getModes()) && isArriveBy() == other.isArriveBy() && wheelchairAccessible == other.wheelchairAccessible && optimize == other.optimize && maxWalkDistance == other.maxWalkDistance && transferPenalty == other.transferPenalty && maxSlope == other.maxSlope && walkReluctance == other.walkReluctance && waitReluctance == other.waitReluctance && walkBoardCost == other.walkBoardCost && bikeBoardCost == other.bikeBoardCost && bannedRoutes.equals(other.bannedRoutes) && bannedTrips.equals(other.bannedTrips) && minTransferTime == other.minTransferTime && nonpreferredTransferPenalty == other.nonpreferredTransferPenalty && transferPenalty == other.transferPenalty && triangleSafetyFactor == other.triangleSafetyFactor && triangleSlopeFactor == other.triangleSlopeFactor && triangleTimeFactor == other.triangleTimeFactor && stairsReluctance == other.stairsReluctance;
+  }
+  return false;
+}

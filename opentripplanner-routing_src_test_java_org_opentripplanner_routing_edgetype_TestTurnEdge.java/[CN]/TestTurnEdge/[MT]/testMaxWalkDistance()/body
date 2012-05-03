@@ -46,7 +46,7 @@
     gv.setDistanceToNearestTransitStop(0);
   }
   GenericAStar aStar=new GenericAStar();
-  TraverseOptions options=new TraverseOptions();
+  RoutingRequest options=new RoutingRequest();
   options.setRoutingContext(graph,blOut,trIn);
   ShortestPathTree spt=aStar.getShortestPathTree(options);
   GraphPath path=spt.getPath(trIn,false);
