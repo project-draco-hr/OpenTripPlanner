@@ -1,8 +1,9 @@
 {
-  TraverseOptions options=new TraverseOptions();
+  RoutingRequest options=new RoutingRequest();
   options.setWalkSpeed(1.0);
   options.setArriveBy(true);
-  ShortestPathTree tree=AStar.getShortestPathTree(_graph,"56th_24th","leary_20th",1000,options);
+  options.setRoutingContext(_graph,_graph.getVertex("56th_24th"),_graph.getVertex("leary_20th"));
+  ShortestPathTree tree=new GenericAStar().getShortestPathTree(options);
   GraphPath path=tree.getPath(_graph.getVertex("56th_24th"),false);
   List<State> states=path.states;
   assertTrue(states.size() == 6 || states.size() == 7);

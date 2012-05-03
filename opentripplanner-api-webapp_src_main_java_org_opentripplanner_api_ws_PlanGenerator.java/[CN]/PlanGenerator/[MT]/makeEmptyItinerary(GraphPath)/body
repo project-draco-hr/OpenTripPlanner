@@ -2,9 +2,11 @@
   Itinerary itinerary=new Itinerary();
   State startState=path.states.getFirst();
   State endState=path.states.getLast();
-  itinerary.startTime=makeCalendar(startState.getTimeInMillis());
-  itinerary.endTime=makeCalendar(endState.getTimeInMillis());
+  itinerary.startTime=makeCalendar(startState);
+  itinerary.endTime=makeCalendar(endState);
   itinerary.duration=endState.getTimeInMillis() - startState.getTimeInMillis();
+  Graph graph=path.getRoutingContext().graph;
+  FareService fareService=graph.getService(FareService.class);
   if (fareService != null) {
     itinerary.fare=fareService.getCost(path);
   }

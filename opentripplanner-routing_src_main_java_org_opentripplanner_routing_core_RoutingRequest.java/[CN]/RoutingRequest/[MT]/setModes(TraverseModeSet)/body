@@ -1,0 +1,15 @@
+{
+  this.modes=modes;
+  if (modes.getBicycle()) {
+    walkingOptions=new RoutingRequest();
+    walkingOptions.setArriveBy(this.isArriveBy());
+    walkingOptions.maxWalkDistance=maxWalkDistance;
+    walkingOptions.walkSpeed*=0.3;
+    walkingOptions.optimize=optimize;
+  }
+ else   if (modes.getCar()) {
+    walkingOptions=new RoutingRequest();
+    walkingOptions.setArriveBy(this.isArriveBy());
+    walkingOptions.maxWalkDistance=maxWalkDistance;
+  }
+}

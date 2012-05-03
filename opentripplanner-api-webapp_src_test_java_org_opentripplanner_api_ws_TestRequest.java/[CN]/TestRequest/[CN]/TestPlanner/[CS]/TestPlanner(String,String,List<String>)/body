@@ -1,0 +1,8 @@
+{
+  this(v1,v2);
+  this.intermediatePlaces=intermediates;
+  TravelingSalesmanPathService tsp=new TravelingSalesmanPathService();
+  tsp.chainedPathService=TestContext.getInstance().pathService;
+  tsp.graphService=TestContext.getInstance().graphService;
+  this.planGenerator.pathService=tsp;
+}

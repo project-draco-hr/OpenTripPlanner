@@ -1,0 +1,20 @@
+{
+  ShapefileStreetGraphBuilderImpl builder=new ShapefileStreetGraphBuilderImpl();
+  FeatureSourceFactory factory=new ShapefileFeatureSourceFactoryImpl(new File("src/test/resources/portland/Streets_pdx.shp"));
+  builder.setFeatureSourceFactory(factory);
+  ShapefileStreetSchema schema=new ShapefileStreetSchema();
+  schema.setIdAttribute("LOCALID");
+  schema.setNameAttribute("FULL_NAME");
+  CaseBasedTraversalPermissionConverter perms=new CaseBasedTraversalPermissionConverter("DIRECTION",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
+  perms.addPermission("2",StreetTraversalPermission.ALL,StreetTraversalPermission.PEDESTRIAN);
+  perms.addPermission("3",StreetTraversalPermission.PEDESTRIAN,StreetTraversalPermission.ALL);
+  perms.addPermission("1",StreetTraversalPermission.ALL,StreetTraversalPermission.ALL);
+  schema.setPermissionConverter(perms);
+  schema.setNoteConverter(new AttributeFeatureConverter<String>("PREFIX"));
+  builder.setSchema(schema);
+  builder.buildGraph(graph,new HashMap<Class<?>,Object>());
+  graph.streetIndex=new StreetVertexIndexServiceImpl(graph);
+  pathService.sptService=new GenericAStar();
+  pathService.graphService=graphService;
+  planGenerator.pathService=pathService;
+}

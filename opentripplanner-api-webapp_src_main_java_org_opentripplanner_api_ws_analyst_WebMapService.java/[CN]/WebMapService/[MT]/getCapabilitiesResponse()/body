@@ -1,0 +1,4 @@
+{
+  InputStream xml=getClass().getResourceAsStream("wms-capabilities.xml");
+  return Response.ok().entity(xml).type("text/xml").build();
+}

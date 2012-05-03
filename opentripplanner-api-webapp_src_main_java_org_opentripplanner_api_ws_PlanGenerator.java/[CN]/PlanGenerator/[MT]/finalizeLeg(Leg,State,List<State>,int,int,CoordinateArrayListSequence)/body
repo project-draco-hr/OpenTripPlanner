@@ -2,7 +2,7 @@
   if (start != -1) {
     leg.walkSteps=getWalkSteps(states.subList(start,end + 1));
   }
-  leg.endTime=makeCalendar(state.getBackState().getTimeInMillis());
+  leg.endTime=makeCalendar(state.getBackState());
   Geometry geometry=geometryFactory.createLineString(coordinates);
   leg.legGeometry=PolylineEncoder.createEncodings(geometry);
   leg.to=makePlace(state,true);

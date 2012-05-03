@@ -6,6 +6,7 @@
     factory.run(portlandGraph);
     TransferGraphLinker linker=new TransferGraphLinker(portlandGraph);
     linker.run();
+    portlandGraph.putService(CalendarServiceData.class,GtfsLibrary.createCalendarServiceData(portlandContext.getDao()));
   }
  catch (  Exception e) {
     e.printStackTrace();

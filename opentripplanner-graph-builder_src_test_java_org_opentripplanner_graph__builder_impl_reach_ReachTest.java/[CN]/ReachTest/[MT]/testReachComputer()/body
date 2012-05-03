@@ -1,7 +1,7 @@
 {
   graph=new Graph();
   makeGraph(graph);
-  TraverseOptions options=new TraverseOptions(TraverseMode.WALK);
+  RoutingRequest options=new RoutingRequest(TraverseMode.WALK);
   options.walkReluctance=1;
   options.setWalkSpeed(1);
   ReachComputerGraphBuilderImpl computer=new ReachComputerGraphBuilderImpl();
@@ -13,6 +13,6 @@
   for (  EdgeWithReach e : IterableLibrary.filter(vertex.getOutgoing(),EdgeWithReach.class)) {
     assertTrue(e.getReach() < 400);
   }
-  List<TraverseOptions> optionlist=Arrays.asList(options);
+  List<RoutingRequest> optionlist=Arrays.asList(options);
   graph.save(new File("/tmp/ReachTestGraph.obj"));
 }

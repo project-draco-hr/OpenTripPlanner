@@ -5,7 +5,7 @@
   vertex=new int[nVertices][];
   weight=new double[nVertices][];
   vertexByIndex=new Vertex[nVertices];
-  TraverseOptions opt=new TraverseOptions();
+  RoutingRequest opt=new RoutingRequest();
   if (kind == INCOMING)   opt.setArriveBy(true);
   LOG.info("Loading origial graph into compact representation...");
   ArrayList<State> svs=new ArrayList<State>();

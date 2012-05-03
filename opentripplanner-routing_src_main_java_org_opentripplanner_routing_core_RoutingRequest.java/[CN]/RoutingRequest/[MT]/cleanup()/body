@@ -1,0 +1,7 @@
+{
+  if (this.rctx == null)   LOG.warn("routing context was not set, cannot destroy it.");
+ else {
+    int nRemoved=this.rctx.destroy();
+    LOG.debug("routing context destroyed ({} temporary edges removed)",nRemoved);
+  }
+}

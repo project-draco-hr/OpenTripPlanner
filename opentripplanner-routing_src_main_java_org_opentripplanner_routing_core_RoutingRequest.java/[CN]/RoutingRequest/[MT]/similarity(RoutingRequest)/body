@@ -1,0 +1,13 @@
+{
+  int s=0;
+  if (getModes().getNonTransitSet().equals(options.getModes().getNonTransitSet())) {
+    s+=1000;
+  }
+  if (optimize == options.optimize) {
+    s+=700;
+  }
+  if (wheelchairAccessible == options.wheelchairAccessible) {
+    s+=500;
+  }
+  return s;
+}

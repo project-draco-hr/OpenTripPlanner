@@ -2,7 +2,7 @@
   _log.debug("pruning");
   Map<Vertex,HashSet<Vertex>> subgraphs=new HashMap<Vertex,HashSet<Vertex>>();
   Map<Vertex,ArrayList<Vertex>> neighborsForVertex=new HashMap<Vertex,ArrayList<Vertex>>();
-  TraverseOptions options=new TraverseOptions(new TraverseModeSet(TraverseMode.WALK,TraverseMode.TRANSIT));
+  RoutingRequest options=new RoutingRequest(new TraverseModeSet(TraverseMode.WALK,TraverseMode.TRANSIT));
   for (  Vertex gv : graph.getVertices()) {
     if (!(gv instanceof StreetVertex)) {
       continue;

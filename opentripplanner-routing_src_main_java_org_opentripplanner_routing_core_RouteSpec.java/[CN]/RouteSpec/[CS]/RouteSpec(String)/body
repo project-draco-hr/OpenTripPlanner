@@ -1,0 +1,8 @@
+{
+  String[] routeSpec=agencyAndRouteName.split("_",2);
+  if (routeSpec.length != 2) {
+    throw new IllegalArgumentException("AgencyId or routeId not set");
+  }
+  agency=routeSpec[0];
+  routeName=routeSpec[1];
+}

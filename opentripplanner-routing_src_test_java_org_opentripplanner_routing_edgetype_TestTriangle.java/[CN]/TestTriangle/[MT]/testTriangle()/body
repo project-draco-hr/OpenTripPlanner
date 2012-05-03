@@ -14,8 +14,8 @@
   double trueLength=ElevationUtils.getLengthMultiplierFromElevation(elev) * length;
   testStreet.setSlopeSpeedEffectiveLength(trueLength);
   SlopeCosts costs=ElevationUtils.getSlopeCosts(elev,true);
-  TraverseOptions options=new TraverseOptions(TraverseMode.BICYCLE);
-  options.optimizeFor=OptimizeType.TRIANGLE;
+  RoutingRequest options=new RoutingRequest(TraverseMode.BICYCLE);
+  options.optimize=OptimizeType.TRIANGLE;
   options.setBikeSpeed(6.0);
   options.walkReluctance=1;
   options.setTriangleSafetyFactor(0);

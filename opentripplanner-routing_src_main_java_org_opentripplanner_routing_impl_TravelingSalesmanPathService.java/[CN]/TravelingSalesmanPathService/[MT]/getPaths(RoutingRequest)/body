@@ -1,0 +1,27 @@
+{
+  if (options.getIntermediatePlaces() == null || options.getIntermediatePlaces().size() == 0) {
+    return chainedPathService.getPaths(options);
+  }
+  Graph graph=graphService.getGraph(options.getRouterId());
+  long time=options.dateTime;
+  options.setRoutingContext(graph);
+  List<Vertex> vertices=options.rctx.intermediateVertices;
+  vertices.add(options.rctx.toVertex);
+  options.intermediatePlaces.clear();
+  if (options.intermediatePlacesOrdered) {
+    List<GraphPath> paths=new ArrayList<GraphPath>();
+    Vertex previousVertex=options.rctx.fromVertex;
+    for (    Vertex v : vertices) {
+      options.dateTime=time;
+      options.setRoutingContext(graph,previousVertex,v);
+      List<GraphPath> partialPaths=chainedPathService.getPaths(options);
+      if (partialPaths == null || partialPaths.size() == 0)       return null;
+      GraphPath path=partialPaths.get(0);
+      paths.add(path);
+      previousVertex=v;
+      time=path.getEndTime();
+    }
+    return Arrays.asList(joinPaths(paths));
+  }
+  return null;
+}

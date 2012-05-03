@@ -1,0 +1,7 @@
+{
+  double maxLat=tile2lat(y,zoom);
+  double minLat=tile2lat(y + 1,zoom);
+  double minLon=tile2lon(x,zoom);
+  double maxLon=tile2lon(x + 1,zoom);
+  return new Envelope2D(DefaultGeographicCRS.WGS84,minLon,minLat,maxLon - minLon,maxLat - minLat);
+}

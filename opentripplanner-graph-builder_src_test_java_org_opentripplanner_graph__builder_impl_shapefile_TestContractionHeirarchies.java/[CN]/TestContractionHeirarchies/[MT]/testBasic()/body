@@ -65,8 +65,8 @@
   }
   final int graphSize=N * N * 2 + (N * (N - 1) * 4);
   assertEquals(graphSize,graph.getVertices().size());
-  TraverseOptions options=new TraverseOptions();
-  options.optimizeFor=OptimizeType.QUICK;
+  RoutingRequest options=new RoutingRequest();
+  options.optimize=OptimizeType.QUICK;
   options.walkReluctance=1;
   options.setWalkSpeed(1);
   Dijkstra dijkstra=new Dijkstra(verticesOut[0][0],options,graph.getVertex("a(0, 0)"),3);
@@ -85,14 +85,14 @@
   spt=dijkstra.getShortestPathTree(verticesIn[0][3],130);
   v03=spt.getState(verticesIn[0][3]);
   assertNotNull(v03);
-  ContractionHierarchy testch=new ContractionHierarchy(graph,new TraverseOptions(TraverseMode.WALK,OptimizeType.QUICK),0.0);
+  ContractionHierarchy testch=new ContractionHierarchy(graph,new RoutingRequest(TraverseMode.WALK,OptimizeType.QUICK),0.0);
   Vertex v=graph.getVertex("a(2, 2)");
   List<PotentialShortcut> shortcuts=testch.getShortcuts(v,true).shortcuts;
   assertEquals(16,shortcuts.size());
   v=graph.getVertex("(0, 0) in");
   shortcuts=testch.getShortcuts(v,true).shortcuts;
   assertEquals(0,shortcuts.size());
-  ContractionHierarchy hierarchy=new ContractionHierarchy(graph,new TraverseOptions(TraverseMode.WALK,OptimizeType.QUICK),1.0);
+  ContractionHierarchy hierarchy=new ContractionHierarchy(graph,new RoutingRequest(TraverseMode.WALK,OptimizeType.QUICK),1.0);
   assertTrue("remaining vertices = " + hierarchy.corev.size(),hierarchy.corev.size() == 0);
   System.out.println("Contracted");
   GraphPath path=hierarchy.getShortestPath(verticesOut[0][0],verticesIn[N - 1][N - 1],1000000000,options);
@@ -104,10 +104,9 @@
     Edge e=path.edges.get(i);
     assertSame(e.getFromVertex(),sv);
   }
-  options=new TraverseOptions();
-  options.optimizeFor=OptimizeType.QUICK;
+  options=new RoutingRequest();
+  options.optimize=OptimizeType.QUICK;
   options.setWalkSpeed(1);
-  options.remainingWeightHeuristic=new TrivialRemainingWeightHeuristic();
   for (int x1=0; x1 < N; ++x1) {
     for (int y1=0; y1 < N; ++y1) {
       for (int x2=0; x2 < N; ++x2) {
@@ -116,6 +115,7 @@
             continue;
           }
           options.setArriveBy(false);
+          options.setRoutingContext(graph,verticesOut[y1][x1],verticesIn[y2][x2]);
           path=hierarchy.getShortestPath(verticesOut[y1][x1],verticesIn[y2][x2],1000000000,options);
           assertNotNull(path);
           options.setArriveBy(true);

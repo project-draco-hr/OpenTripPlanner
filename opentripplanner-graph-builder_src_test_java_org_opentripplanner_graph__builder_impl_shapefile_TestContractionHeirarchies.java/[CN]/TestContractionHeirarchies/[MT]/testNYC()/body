@@ -51,21 +51,16 @@
   gtfsBuilder.buildGraph(graph,new HashMap<Class<?>,Object>());
   NetworkLinker nl=new NetworkLinker(graph);
   nl.createLinkage();
-  TraverseOptions options=new TraverseOptions();
+  RoutingRequest options=new RoutingRequest();
   options.setModes(new TraverseModeSet(TraverseMode.WALK,TraverseMode.SUBWAY));
-  options.optimizeFor=OptimizeType.QUICK;
-  CalendarServiceData data=graph.getService(CalendarServiceData.class);
-  assertNotNull(data);
-  CalendarServiceImpl calendarService=new CalendarServiceImpl();
-  calendarService.setData(data);
-  options.setCalendarService(calendarService);
-  options.setServiceDays(startTime,Arrays.asList("MTA NYCT"));
-  options.setTransferTable(graph.getTransferTable());
+  options.optimize=OptimizeType.QUICK;
   Vertex start1=graph.getVertex("0072480");
   Vertex end1=graph.getVertex("0032341");
   assertNotNull(end1);
   assertNotNull(start1);
-  ShortestPathTree shortestPathTree=AStar.getShortestPathTree(graph,start1,end1,startTime,options);
+  options.dateTime=startTime;
+  options.setRoutingContext(graph,start1,end1);
+  ShortestPathTree shortestPathTree=new GenericAStar().getShortestPathTree(options);
   path=shortestPathTree.getPath(end1,true);
   assertNotNull(path);
   boolean subway1=false;
@@ -79,7 +74,7 @@
   }
   assertTrue("Path must take subway",subway1);
   ContractionHierarchySet chs=new ContractionHierarchySet();
-  chs.addTraverseOptions(new TraverseOptions(TraverseMode.WALK,OptimizeType.QUICK));
+  chs.addTraverseOptions(new RoutingRequest(TraverseMode.WALK,OptimizeType.QUICK));
   chs.setContractionFactor(0.50);
   chs.setGraph(graph);
   chs.build();

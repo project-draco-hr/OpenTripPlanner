@@ -1,0 +1,11 @@
+{
+  if (v instanceof TransitStop) {
+    TransitStop ts=(TransitStop)v;
+    return ts.hasWheelchairEntrance();
+  }
+ else   if (v instanceof StreetLocation) {
+    StreetLocation sl=(StreetLocation)v;
+    return sl.isWheelchairAccessible();
+  }
+  return true;
+}

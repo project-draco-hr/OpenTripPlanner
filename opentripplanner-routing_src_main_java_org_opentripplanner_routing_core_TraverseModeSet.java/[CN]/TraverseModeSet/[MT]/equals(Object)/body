@@ -1,5 +1,6 @@
 {
-  if (!(another instanceof TraverseModeSet))   return false;
-  TraverseModeSet otherset=(TraverseModeSet)another;
-  return modes == otherset.modes;
+  if (other instanceof TraverseModeSet) {
+    return modes == ((TraverseModeSet)other).modes;
+  }
+  return false;
 }

@@ -1,0 +1,35 @@
+{
+  List<GraphPath> paths=null;
+  boolean tooSloped=false;
+  try {
+    paths=pathService.getPaths(options);
+    if (paths == null && options.getWheelchair()) {
+      options.maxSlope=Double.MAX_VALUE;
+      paths=pathService.getPaths(options);
+      tooSloped=true;
+    }
+  }
+ catch (  VertexNotFoundException e) {
+    LOG.info("Vertex not found: " + options.getFrom() + " : "+ options.getTo(),e);
+    throw e;
+  }
+  if (paths == null || paths.size() == 0) {
+    LOG.info("Path not found: " + options.getFrom() + " : "+ options.getTo());
+    throw new PathNotFoundException();
+  }
+  TripPlan plan=generatePlan(paths,options);
+  if (plan != null) {
+    for (    Itinerary i : plan.itinerary) {
+      i.tooSloped=tooSloped;
+      if (i.legs.size() == 0) {
+        LOG.warn("itinerary has no legs");
+        continue;
+      }
+      Leg firstLeg=i.legs.get(0);
+      firstLeg.from.orig=options.getFromName();
+      Leg lastLeg=i.legs.get(i.legs.size() - 1);
+      lastLeg.to.orig=options.getToName();
+    }
+  }
+  return plan;
+}

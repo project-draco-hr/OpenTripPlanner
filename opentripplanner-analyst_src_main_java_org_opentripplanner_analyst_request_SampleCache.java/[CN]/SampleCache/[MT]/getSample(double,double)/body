@@ -1,0 +1,10 @@
+{
+  SampleRequest sr=new SampleRequest(lon,lat);
+  Sample ret=cache.get(sr);
+  if (ret == null) {
+    ret=sampleFactory.getSample(lon,lat);
+    if (ret == null)     ret=emptySample;
+    cache.put(sr,ret);
+  }
+  return ret;
+}

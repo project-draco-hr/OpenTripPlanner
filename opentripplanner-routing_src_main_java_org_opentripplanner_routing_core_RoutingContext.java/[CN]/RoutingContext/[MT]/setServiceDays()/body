@@ -1,0 +1,14 @@
+{
+  final long SEC_IN_DAY=60 * 60 * 24;
+  final long time=opt.getSecondsSinceEpoch();
+  this.serviceDays=new ArrayList<ServiceDay>(3);
+  if (calendarService == null) {
+    LOG.warn("RoutingContext has no CalendarService. Transit will never be boarded.");
+    return;
+  }
+  for (  String agency : graph.getAgencyIds()) {
+    addIfNotExists(this.serviceDays,new ServiceDay(time - SEC_IN_DAY,calendarService,agency));
+    addIfNotExists(this.serviceDays,new ServiceDay(time,calendarService,agency));
+    addIfNotExists(this.serviceDays,new ServiceDay(time + SEC_IN_DAY,calendarService,agency));
+  }
+}

@@ -1,0 +1,11 @@
+{
+  Vertex target=opt.rctx.target;
+  if (opt.getModes().isTransit()) {
+    LOG.debug("Transit itinerary requested.");
+    return new LBGRemainingWeightHeuristic(_graphService.getGraph(),opt);
+  }
+ else {
+    LOG.debug("Non-transit itinerary requested.");
+    return new DefaultRemainingWeightHeuristic();
+  }
+}

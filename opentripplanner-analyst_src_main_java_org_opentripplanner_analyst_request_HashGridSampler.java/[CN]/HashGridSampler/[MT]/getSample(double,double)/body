@@ -1,0 +1,38 @@
+{
+  Coordinate coord=new Coordinate(lon,lat);
+  RasterizedSegment s0=null;
+  RasterizedSegment s1=null;
+  Coordinate c0=null;
+  Coordinate c1=null;
+  double d0=Double.MAX_VALUE;
+  double d1=Double.MAX_VALUE;
+  List<Object> os=index.query(lon,lat,SEARCH_RADIUS_M);
+  for (  Object o : os) {
+    RasterizedSegment s=(RasterizedSegment)o;
+    Coordinate c=s.closestPoint(coord);
+    double d=c.distance(coord);
+    if (d > SEARCH_RADIUS_M)     continue;
+    if (d < d1) {
+      if (d < d0) {
+        s1=s0;
+        c1=c0;
+        d1=d0;
+        s0=s;
+        c0=c;
+        d0=d;
+      }
+ else {
+        s1=s;
+        c1=c;
+        d1=d;
+      }
+    }
+  }
+  if (s0 != null) {
+    int t0=timeToVertex(s0,c0,d0);
+    int t1=timeToVertex(s1,c1,d1);
+    Sample s=new Sample((Vertex)s0.payload,t0,(Vertex)s1.payload,t1);
+    return s;
+  }
+  return null;
+}

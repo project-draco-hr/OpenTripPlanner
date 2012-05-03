@@ -1,13 +1,8 @@
 {
-  ShortestPathTree spt=createShortestPathTree();
+  ShortestPathTree spt=createShortestPathTree(options);
   OTPPriorityQueue<State> queue=createPriorityQueue();
   spt.add(initialState);
   queue.insert(initialState,initialState.getWeight());
-  OverlayGraph extraEdges=null;
-  if (_extraEdgesStrategy != null) {
-    extraEdges=new OverlayGraph();
-    _extraEdgesStrategy.addEdgesFor(extraEdges,initialState.getVertex());
-  }
   while (!queue.empty()) {
     State u=queue.extract_min();
     Vertex u_vertex=u.getVertex();
@@ -16,7 +11,7 @@
       System.out.println(u_vertex);
     }
     if (_searchTerminationStrategy != null && !_searchTerminationStrategy.shouldSearchContinue(initialState.getVertex(),null,u,spt,options))     break;
-    for (    Edge edge : u_vertex.getEdges(extraEdges,replacementEdges,options.isArriveBy())) {
+    for (    Edge edge : options.isArriveBy() ? u_vertex.getIncoming() : u_vertex.getOutgoing()) {
       if (_skipEdgeStrategy != null && _skipEdgeStrategy.shouldSkipEdge(initialState.getVertex(),null,u,edge,spt,options))       continue;
       for (State v=edge.traverse(u); v != null; v=v.getNextResult()) {
         if (_skipTraverseResultStrategy != null && _skipTraverseResultStrategy.shouldSkipTraversalResult(initialState.getVertex(),null,u,v,spt,options))         continue;

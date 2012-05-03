@@ -1,5 +1,5 @@
 {
-  TraverseOptions options=s0.getOptions();
+  RoutingRequest options=s0.getOptions();
   if (options.isArriveBy()) {
     StateEditor s1=s0.edit(this);
     TransitStop fromVertex=(TransitStop)getFromVertex();
@@ -11,7 +11,7 @@
     return s1.makeState();
   }
  else {
-    if (!options.getModes().getTransit())     return null;
+    if (!options.getModes().isTransit())     return null;
     if (s0.isAlightedLocal()) {
       return null;
     }
@@ -24,7 +24,7 @@
     long board_after=t0 + options.minTransferTime / 2;
     long transfer_penalty=0;
     if (s0.getLastAlightedTime() != 0) {
-      TransferTable transferTable=options.getTransferTable();
+      TransferTable transferTable=s0.getContext().transferTable;
       if (transferTable.hasPreferredTransfers()) {
         transfer_penalty=options.nonpreferredTransferPenalty;
       }

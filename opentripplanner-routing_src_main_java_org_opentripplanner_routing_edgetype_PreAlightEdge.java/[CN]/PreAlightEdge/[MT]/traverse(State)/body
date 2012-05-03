@@ -1,7 +1,8 @@
 {
-  TraverseOptions options=s0.getOptions();
+  RoutingContext rctx=s0.getContext();
+  RoutingRequest options=s0.getOptions();
   if (options.isArriveBy()) {
-    if (!options.getModes().getTransit())     return null;
+    if (!options.getModes().isTransit())     return null;
     if (s0.isAlightedLocal()) {
       return null;
     }
@@ -14,7 +15,7 @@
     long alight_before=t0 - options.minTransferTime / 2;
     int transfer_penalty=0;
     if (s0.getLastAlightedTime() != 0) {
-      TransferTable transferTable=options.getTransferTable();
+      TransferTable transferTable=rctx.transferTable;
       if (transferTable.hasPreferredTransfers()) {
         transfer_penalty=options.nonpreferredTransferPenalty;
       }

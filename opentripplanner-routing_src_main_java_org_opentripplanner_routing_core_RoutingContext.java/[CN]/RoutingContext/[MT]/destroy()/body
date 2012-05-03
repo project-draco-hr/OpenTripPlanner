@@ -1,0 +1,7 @@
+{
+  int nRemoved=0;
+  nRemoved+=origin.removeTemporaryEdges();
+  nRemoved+=target.removeTemporaryEdges();
+  for (  Vertex v : intermediateVertices)   nRemoved+=v.removeTemporaryEdges();
+  return nRemoved;
+}

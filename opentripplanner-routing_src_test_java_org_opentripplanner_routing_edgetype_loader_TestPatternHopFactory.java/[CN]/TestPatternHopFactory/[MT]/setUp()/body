@@ -3,6 +3,7 @@
   graph=new Graph();
   GTFSPatternHopFactory factory=new GTFSPatternHopFactory(context);
   factory.run(graph);
+  graph.putService(CalendarServiceData.class,GtfsLibrary.createCalendarServiceData(context.getDao()));
   String[] stops={"agency_A","agency_B","agency_C","agency_D","agency_E"};
   for (int i=0; i < stops.length; ++i) {
     TransitStop stop=(TransitStop)(graph.getVertex(stops[i]));

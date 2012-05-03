@@ -1,0 +1,20 @@
+{
+  if (options.wheelchairAccessible) {
+    if (!wheelchairAccessible) {
+      return false;
+    }
+    if (elevationProfileSegment.getMaxSlope() > options.maxSlope) {
+      return false;
+    }
+  }
+  if (options.getModes().getWalk() && permission.allows(StreetTraversalPermission.PEDESTRIAN)) {
+    return true;
+  }
+  if (options.getModes().getBicycle() && permission.allows(StreetTraversalPermission.BICYCLE)) {
+    return true;
+  }
+  if (options.getModes().getCar() && permission.allows(StreetTraversalPermission.CAR)) {
+    return true;
+  }
+  return false;
+}

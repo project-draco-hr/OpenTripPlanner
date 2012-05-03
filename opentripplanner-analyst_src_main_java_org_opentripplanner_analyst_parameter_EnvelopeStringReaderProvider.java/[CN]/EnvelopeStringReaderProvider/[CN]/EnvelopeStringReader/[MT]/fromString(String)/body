@@ -1,0 +1,13 @@
+{
+  String[] tokens=param.split(",");
+  try {
+    double minx=Double.parseDouble(tokens[0]);
+    double miny=Double.parseDouble(tokens[1]);
+    double maxx=Double.parseDouble(tokens[2]);
+    double maxy=Double.parseDouble(tokens[3]);
+    return new Envelope2D(null,minx,miny,maxx - minx,maxy - miny);
+  }
+ catch (  Exception e) {
+    throw new WebApplicationException(fail(param,e));
+  }
+}

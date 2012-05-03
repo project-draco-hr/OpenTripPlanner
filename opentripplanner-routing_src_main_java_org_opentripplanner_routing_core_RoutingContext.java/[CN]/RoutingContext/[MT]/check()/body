@@ -1,0 +1,20 @@
+{
+  ArrayList<String> notFound=new ArrayList<String>();
+  if (fromVertex == null) {
+    notFound.add("from");
+  }
+  if (toVertex == null) {
+    notFound.add("to");
+  }
+  for (int i=0; i < intermediateVertices.size(); i++) {
+    if (intermediateVertices.get(i) == null) {
+      notFound.add("intermediate." + i);
+    }
+  }
+  if (notFound.size() > 0) {
+    throw new VertexNotFoundException(notFound);
+  }
+  if (opt.getModes().isTransit() && !graph.transitFeedCovers(opt.dateTime)) {
+    throw new TransitTimesException();
+  }
+}

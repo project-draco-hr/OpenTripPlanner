@@ -1,0 +1,24 @@
+{
+  if (image == null) {
+    LOG.warn("response image is null");
+  }
+  StreamingOutput streamingOutput=new StreamingOutput(){
+    public void write(    OutputStream outStream){
+      try {
+        long t0=System.currentTimeMillis();
+        ImageIO.write(image,format.type,outStream);
+        long t1=System.currentTimeMillis();
+        LOG.debug("wrote image in {}msec",(int)(t1 - t0));
+      }
+ catch (      Exception e) {
+        LOG.error("exception while preparing image : {}",e.getMessage());
+        throw new WebApplicationException(e);
+      }
+    }
+  }
+;
+  CacheControl cc=new CacheControl();
+  cc.setMaxAge(3600);
+  cc.setNoCache(false);
+  return Response.ok(streamingOutput).type(format.toString()).cacheControl(cc).build();
+}

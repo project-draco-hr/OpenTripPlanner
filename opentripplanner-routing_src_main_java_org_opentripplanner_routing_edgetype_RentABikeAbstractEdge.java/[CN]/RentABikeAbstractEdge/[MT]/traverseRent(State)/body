@@ -1,5 +1,5 @@
 {
-  TraverseOptions options=s0.getOptions();
+  RoutingRequest options=s0.getOptions();
   if (!s0.getNonTransitMode(options).equals(TraverseMode.WALK))   return null;
   if (!options.getModes().contains(TraverseMode.BICYCLE))   return null;
   BikeRentalStationVertex dropoff=(BikeRentalStationVertex)tov;

@@ -55,9 +55,9 @@
       new SimpleEdge(last,v,last.distance(c),0);
     }
   }
-  ContractionHierarchy hierarchy=new ContractionHierarchy(graph,new TraverseOptions(TraverseMode.WALK,OptimizeType.QUICK),1.0);
-  TraverseOptions options=new TraverseOptions();
-  options.optimizeFor=OptimizeType.QUICK;
+  ContractionHierarchy hierarchy=new ContractionHierarchy(graph,new RoutingRequest(TraverseMode.WALK,OptimizeType.QUICK),1.0);
+  RoutingRequest options=new RoutingRequest();
+  options.optimize=OptimizeType.QUICK;
   options.walkReluctance=1;
   options.setWalkSpeed(1);
   GraphPath path=hierarchy.getShortestPath(vertices.get(0),vertices.get(1),0,options);

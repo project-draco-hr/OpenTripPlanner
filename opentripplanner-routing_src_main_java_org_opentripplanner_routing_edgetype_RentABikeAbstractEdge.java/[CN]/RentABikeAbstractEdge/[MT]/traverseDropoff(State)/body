@@ -1,5 +1,5 @@
 {
-  TraverseOptions options=s0.getOptions();
+  RoutingRequest options=s0.getOptions();
   if (!s0.isBikeRenting())   return null;
   BikeRentalStationVertex pickup=(BikeRentalStationVertex)tov;
   if (options.useBikeRentalAvailabilityInformation() && pickup.getSpacesAvailable() == 0) {

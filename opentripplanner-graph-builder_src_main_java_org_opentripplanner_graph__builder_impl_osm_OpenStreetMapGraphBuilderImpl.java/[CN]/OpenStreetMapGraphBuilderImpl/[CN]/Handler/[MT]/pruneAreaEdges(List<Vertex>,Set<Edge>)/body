@@ -1,5 +1,5 @@
 {
-  TraverseOptions options=new TraverseOptions(TraverseMode.WALK);
+  RoutingRequest options=new RoutingRequest(TraverseMode.WALK);
   GenericDijkstra search=new GenericDijkstra(options);
   search.setSkipEdgeStrategy(new ListedEdgesOnly(edges));
   Set<Edge> usedEdges=new HashSet<Edge>();

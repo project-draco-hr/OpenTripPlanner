@@ -1,0 +1,7 @@
+{
+  if (segment == null)   return -1;
+  double distOnSegment=segment.p0.distance(coordOnSegment);
+  double dist=distOnSegment + distToSegment + segment.distAlongLinestring;
+  int t=(int)(dist / 1.33);
+  return t;
+}

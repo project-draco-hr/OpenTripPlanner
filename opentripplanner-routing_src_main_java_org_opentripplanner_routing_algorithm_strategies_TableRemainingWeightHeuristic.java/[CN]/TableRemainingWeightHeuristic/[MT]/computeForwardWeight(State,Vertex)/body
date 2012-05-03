@@ -1,6 +1,6 @@
 {
   final double BOARD_COST=options.getBoardCostLowerBound();
-  double speed=s0.getOptions().getSpeedUpperBound();
+  final double speed=s0.getOptions().getSpeedUpperBound();
   Vertex v=s0.getVertex();
   if (weightCache.containsKey(v))   return weightCache.get(v);
   if (speed > wt.getMaxWalkSpeed()) {

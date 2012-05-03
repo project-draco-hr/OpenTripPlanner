@@ -8,7 +8,7 @@
     distEdges[group]=new HashMap<Integer,Double>();
   }
   LOG.info("finding border edges...");
-  TraverseOptions dummyOptions=new TraverseOptions();
+  RoutingRequest dummyOptions=new RoutingRequest();
   for (int from_gindex=0; from_gindex < max_gindex; from_gindex++) {
     if (from_gindex % 10000 == 0)     LOG.info("    group {}",from_gindex);
     List<Vertex> group=vertex_by_gindex.get(from_gindex);

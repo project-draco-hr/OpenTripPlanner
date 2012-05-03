@@ -2,11 +2,13 @@
   Vertex stop_a=graph.getVertex("agency_A_depart");
   Vertex stop_b=graph.getVertex("agency_B_arrive");
   ShortestPathTree spt;
-  TraverseOptions options=new TraverseOptions(context);
+  RoutingRequest options=new RoutingRequest();
   options.setModes(new TraverseModeSet("TRAINISH"));
-  spt=AStar.getShortestPathTree(graph,stop_a.getLabel(),stop_b.getLabel(),TestUtils.dateInSeconds("America/New_York",2009,8,0,0,0,0),options);
+  options.dateTime=TestUtils.dateInSeconds("America/New_York",2009,8,0,0,0,0);
+  options.setRoutingContext(graph,stop_a,stop_b);
+  spt=aStar.getShortestPathTree(options);
   assertNull(spt.getPath(stop_b,false));
   options.setModes(new TraverseModeSet("TRAINISH,BUSISH"));
-  spt=AStar.getShortestPathTree(graph,stop_a.getLabel(),stop_b.getLabel(),TestUtils.dateInSeconds("America/New_York",2009,8,0,0,0,0),options);
+  spt=aStar.getShortestPathTree(options);
   assertNotNull(spt.getPath(stop_b,false));
 }

@@ -1,12 +1,11 @@
 {
   Vertex stop_f=graph.getVertex("agency_F_depart");
   Vertex stop_h=graph.getVertex("agency_H_arrive");
-  TraverseOptions options=new TraverseOptions();
-  options.setGtfsContext(context);
-  ShortestPathTree spt;
-  GraphPath path;
-  spt=AStar.getShortestPathTree(graph,stop_f,stop_h,TestUtils.dateInSeconds("America/New_York",2009,8,18,5,0,0),options);
-  path=spt.getPath(stop_h,false);
+  RoutingRequest options=new RoutingRequest();
+  options.dateTime=TestUtils.dateInSeconds("America/New_York",2009,8,18,5,0,0);
+  options.setRoutingContext(graph,stop_f,stop_h);
+  ShortestPathTree spt=aStar.getShortestPathTree(options);
+  GraphPath path=spt.getPath(stop_h,false);
   assertNotNull(path);
   assertEquals(5,path.states.size());
 }

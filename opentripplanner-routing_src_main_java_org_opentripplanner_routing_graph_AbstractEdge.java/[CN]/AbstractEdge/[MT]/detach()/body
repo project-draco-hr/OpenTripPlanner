@@ -1,4 +1,6 @@
 {
-  detachFrom();
-  detachTo();
+  int nDetached=0;
+  if (detachFrom())   nDetached+=1;
+  if (detachTo())   nDetached+=1;
+  return nDetached;
 }

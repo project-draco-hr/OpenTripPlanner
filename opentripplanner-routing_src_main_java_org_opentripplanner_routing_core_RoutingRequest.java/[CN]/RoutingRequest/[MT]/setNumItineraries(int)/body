@@ -1,0 +1,9 @@
+{
+  if (numItineraries > CLAMP_ITINERARIES) {
+    numItineraries=CLAMP_ITINERARIES;
+  }
+ else   if (numItineraries < 1) {
+    numItineraries=1;
+  }
+  this.numItineraries=numItineraries;
+}

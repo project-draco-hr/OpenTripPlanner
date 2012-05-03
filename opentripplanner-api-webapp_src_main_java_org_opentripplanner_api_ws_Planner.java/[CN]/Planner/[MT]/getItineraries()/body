@@ -1,0 +1,17 @@
+{
+  Response response=new Response(httpServletRequest);
+  RoutingRequest request=null;
+  try {
+    request=super.buildRequest();
+    TripPlan plan=planGenerator.generate(request);
+    response.setPlan(plan);
+  }
+ catch (  Exception e) {
+    PlannerError error=new PlannerError(e);
+    response.setError(error);
+  }
+ finally {
+    if (request != null)     request.cleanup();
+  }
+  return response;
+}

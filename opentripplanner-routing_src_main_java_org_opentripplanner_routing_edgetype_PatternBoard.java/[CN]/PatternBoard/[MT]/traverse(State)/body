@@ -1,5 +1,6 @@
 {
-  TraverseOptions options=state0.getOptions();
+  RoutingContext rctx=state0.getContext();
+  RoutingRequest options=state0.getOptions();
   if (options.isArriveBy()) {
     if (state0.getBackEdge() instanceof PatternAlight) {
       return null;
@@ -25,7 +26,7 @@
     int bestPatternIndex=-1;
     TraverseMode mode=state0.getNonTransitMode(options);
     AgencyAndId serviceId=getPattern().getExemplar().getServiceId();
-    SD:     for (    ServiceDay sd : options.serviceDays) {
+    SD:     for (    ServiceDay sd : rctx.serviceDays) {
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
       if (secondsSinceMidnight < 0)       continue;
       if (sd.serviceIdRunning(serviceId)) {

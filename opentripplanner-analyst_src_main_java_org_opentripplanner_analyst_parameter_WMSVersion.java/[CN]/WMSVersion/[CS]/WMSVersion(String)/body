@@ -1,0 +1,15 @@
+{
+  super();
+  try {
+    for (    String v : s.split("\\.",3)) {
+      this.add(Integer.parseInt(v));
+    }
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+    throw new WebApplicationException(Response.status(Status.BAD_REQUEST).entity("error parsing WMS version: " + e.getMessage()).build());
+  }
+  if (!supported.contains(this)) {
+    throw new WebApplicationException(Response.status(Status.BAD_REQUEST).entity("WMS version unsupported: " + s).build());
+  }
+}

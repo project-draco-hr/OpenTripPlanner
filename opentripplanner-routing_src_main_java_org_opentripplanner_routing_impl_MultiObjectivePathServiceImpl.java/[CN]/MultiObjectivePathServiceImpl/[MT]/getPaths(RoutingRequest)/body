@@ -1,0 +1,88 @@
+{
+  RemainingWeightHeuristic heuristic=new BidirectionalRemainingWeightHeuristic(options.rctx.graph);
+  List<State> returnStates=new LinkedList<State>();
+  BinHeap<State> pq=new BinHeap<State>();
+  Vertex originVertex=options.rctx.origin;
+  Vertex targetVertex=options.rctx.target;
+  WALK:   for (double maxWalk=options.getMaxWalkDistance(); maxWalk < 100000 && returnStates.isEmpty(); maxWalk*=2) {
+    LOG.debug("try search with max walk {}",maxWalk);
+    if (maxWalk < Math.min(originVertex.distance(targetVertex),originVertex.getDistanceToNearestTransitStop() + targetVertex.getDistanceToNearestTransitStop()))     continue WALK;
+    options.setMaxWalkDistance(maxWalk);
+    final double AVG_TRANSIT_SPEED=25;
+    double cutoff=(originVertex.distance(targetVertex) * 1.5) / AVG_TRANSIT_SPEED;
+    cutoff+=options.getMaxWalkDistance() * options.walkReluctance;
+    options.maxWeight=cutoff;
+    State origin=new State(options);
+    heuristic.computeInitialWeight(origin,targetVertex);
+    options.maxWeight=cutoff + 30 * 60 * options.waitReluctance;
+    HashMap<Vertex,List<State>> states=new HashMap<Vertex,List<State>>();
+    pq.reset();
+    pq.insert(origin,0);
+    long startTime=System.currentTimeMillis();
+    long endTime=startTime + (int)(_timeouts[0] * 1000);
+    LOG.debug("starttime {} endtime {}",startTime,endTime);
+    QUEUE:     while (!pq.empty()) {
+      if (System.currentTimeMillis() > endTime) {
+        LOG.debug("timeout at {} msec",System.currentTimeMillis() - startTime);
+        if (returnStates.isEmpty())         continue WALK;
+ else {
+          storeMemory();
+          break WALK;
+        }
+      }
+      State su=pq.extract_min();
+      Vertex u=su.getVertex();
+      if (traverseVisitor != null) {
+        traverseVisitor.visitVertex(su);
+      }
+      if (u.equals(targetVertex)) {
+        returnStates.add(su);
+        if (!options.getModes().isTransit())         break QUEUE;
+        if (returnStates.size() >= _maxPaths)         break QUEUE;
+        if (returnStates.size() < _timeouts.length) {
+          endTime=startTime + (int)(_timeouts[returnStates.size()] * 1000);
+          LOG.debug("{} path, set timeout to {}",returnStates.size(),_timeouts[returnStates.size()] * 1000);
+        }
+        continue QUEUE;
+      }
+      for (      Edge e : options.isArriveBy() ? u.getIncoming() : u.getOutgoing()) {
+        STATE:         for (State new_sv=e.traverse(su); new_sv != null; new_sv=new_sv.getNextResult()) {
+          if (traverseVisitor != null) {
+            traverseVisitor.visitEdge(e,new_sv);
+          }
+          double h=heuristic.computeForwardWeight(new_sv,targetVertex);
+          Vertex v=new_sv.getVertex();
+          List<State> old_states=states.get(v);
+          if (old_states == null) {
+            old_states=new LinkedList<State>();
+            states.put(v,old_states);
+          }
+ else {
+            for (            State old_sv : old_states) {
+              if (eDominates(old_sv,new_sv)) {
+                continue STATE;
+              }
+            }
+            Iterator<State> iter=old_states.iterator();
+            while (iter.hasNext()) {
+              State old_sv=iter.next();
+              if (eDominates(new_sv,old_sv)) {
+                iter.remove();
+              }
+            }
+          }
+          if (traverseVisitor != null)           traverseVisitor.visitEnqueue(new_sv);
+          old_states.add(new_sv);
+          pq.insert(new_sv,new_sv.getWeight() + h);
+        }
+      }
+    }
+  }
+  storeMemory();
+  List<GraphPath> paths=new LinkedList<GraphPath>();
+  for (  State s : returnStates) {
+    LOG.debug(s.toStringVerbose());
+    paths.add(new GraphPath(s,true));
+  }
+  return paths;
+}

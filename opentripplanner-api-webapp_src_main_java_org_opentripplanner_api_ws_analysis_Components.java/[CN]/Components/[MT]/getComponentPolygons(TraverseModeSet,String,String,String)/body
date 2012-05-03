@@ -1,5 +1,5 @@
 {
-  TraverseOptions options=new TraverseOptions(modes);
+  RoutingRequest options=new RoutingRequest(modes);
   options.bannedRoutes=new HashSet<RouteSpec>();
   if (bannedRoutes.length() > 0) {
     for (    String element : bannedRoutes.split(",")) {
@@ -15,10 +15,7 @@
     cachedOptions=options;
     cachedDateTime=dateTime;
     Graph graph=graphService.getGraph();
-    if (graphService.getCalendarService() != null) {
-      options.setCalendarService(graphService.getCalendarService());
-    }
-    options.setServiceDays(dateTime,graph.getAgencyIds());
+    options.setRoutingContext(graph);
     cachedPolygons=AnalysisUtils.getComponentPolygons(graph,options,dateTime);
   }
   GraphComponentPolygons out=new GraphComponentPolygons();

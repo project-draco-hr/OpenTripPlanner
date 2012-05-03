@@ -1,0 +1,45 @@
+{
+  double weight;
+  double speed=options.getSpeed(s0.getNonTransitMode(options));
+  if (options.wheelchairAccessible) {
+    weight=elevationProfileSegment.getSlopeSpeedEffectiveLength() / speed;
+  }
+ else   if (s0.getNonTransitMode(options).equals(TraverseMode.BICYCLE)) {
+switch (options.optimize) {
+case SAFE:
+      weight=elevationProfileSegment.getBicycleSafetyEffectiveLength() / speed;
+    break;
+case GREENWAYS:
+  weight=elevationProfileSegment.getBicycleSafetyEffectiveLength() / speed;
+if (elevationProfileSegment.getBicycleSafetyEffectiveLength() / length <= GREENWAY_SAFETY_FACTOR) {
+  weight*=0.66;
+}
+break;
+case FLAT:
+weight=length / speed + elevationProfileSegment.getSlopeWorkCost();
+break;
+case QUICK:
+weight=elevationProfileSegment.getSlopeSpeedEffectiveLength() / speed;
+break;
+case TRIANGLE:
+double quick=elevationProfileSegment.getSlopeSpeedEffectiveLength();
+double safety=elevationProfileSegment.getBicycleSafetyEffectiveLength();
+double slope=elevationProfileSegment.getSlopeWorkCost();
+weight=quick * options.getTriangleTimeFactor() + slope * options.getTriangleSlopeFactor() + safety * options.getTriangleSafetyFactor();
+weight/=speed;
+break;
+default :
+weight=length / speed;
+}
+}
+ else {
+weight=time;
+}
+if (stairs) {
+weight*=options.stairsReluctance;
+}
+ else {
+weight*=options.walkReluctance;
+}
+return weight;
+}

@@ -10,8 +10,9 @@
   Vertex stop_e=graph.getVertex("agency_E_arrive");
   ShortestPathTree spt;
   GraphPath path;
-  long startTime=TestUtils.dateInSeconds("America/New_York",2009,8,7,7,0,0);
-  spt=AStar.getShortestPathTree(graph,stop_a,stop_e,startTime,options);
+  long startTime=options.dateTime=TestUtils.dateInSeconds("America/New_York",2009,8,7,7,0,0);
+  options.setRoutingContext(graph,stop_a,stop_e);
+  spt=aStar.getShortestPathTree(options);
   path=spt.getPath(stop_e,false);
   assertNotNull(path);
   HashSet<Alert> expectedNotes=new HashSet<Alert>();
