@@ -12,7 +12,7 @@
       continue;
     }
     double slope=rise / run;
-    if (slopeLimit && (slope > 0.35 || slope < -0.35)) {
+    if ((slopeLimit && (slope > 0.35 || slope < -0.35)) || slope > 1.0 || slope < -1.0) {
       slope=0;
       flattened=true;
     }
