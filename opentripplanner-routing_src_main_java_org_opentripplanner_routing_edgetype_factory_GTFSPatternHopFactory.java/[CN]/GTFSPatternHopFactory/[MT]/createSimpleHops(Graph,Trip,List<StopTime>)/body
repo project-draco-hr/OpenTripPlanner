@@ -35,7 +35,7 @@
     new Dwell(psv0arrive,psv0depart,st0);
     Hop hop=new Hop(psv0depart,psv1arrive,st0,st1,trip);
     created.add(hop);
-    hop.setGeometry(getHopGeometry(trip.getShapeId(),st0,st1,psv0depart,psv1arrive));
+    hop.setGeometry(getHopGeometry(graph,trip.getShapeId(),st0,st1,psv0depart,psv1arrive));
     hops.add(hop);
     if (st0.getPickupType() != 1) {
       Edge board=new Board(startStation,psv0depart,hop,tripWheelchairAccessible && s0.getWheelchairBoarding() == 1,st0.getStop().getZoneId(),trip,st0.getPickupType());

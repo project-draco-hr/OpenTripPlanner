@@ -44,7 +44,7 @@
     patternArriveNodes.put(new T2<Stop,Trip>(s1,trip),psv1arrive);
     PatternHop hop=new PatternHop(psv0depart,psv1arrive,s0,s1,i,tripPattern);
     createdEdges.add(hop);
-    hop.setGeometry(getHopGeometry(trip.getShapeId(),st0,st1,psv0depart,psv1arrive));
+    hop.setGeometry(getHopGeometry(graph,trip.getShapeId(),st0,st1,psv0depart,psv1arrive));
     tripPattern.addHop(i,0,departureTime,runningTime,arrivalTime,dwellTime,st0.getStopHeadsign(),trip);
     TransitStopDepart stopDepart=stopDepartNodes.get(s0);
     TransitStopArrive stopArrive=stopArriveNodes.get(s1);
