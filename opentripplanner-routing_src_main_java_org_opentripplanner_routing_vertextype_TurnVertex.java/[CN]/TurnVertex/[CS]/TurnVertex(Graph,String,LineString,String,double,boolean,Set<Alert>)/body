@@ -1,15 +1,3 @@
 {
-  super(g,id + (back ? " back" : ""),getCoord(geometry),name);
-  this.edgeId=id;
-  this.geometry=geometry;
-  this.length=length;
-  this.elevationProfileSegment=new ElevationProfileSegment(length);
-  this.permission=StreetTraversalPermission.ALL;
-  this.notes=notes;
-  if (geometry != null) {
-    double angleR=DirectionUtils.getLastAngle(geometry);
-    outAngle=((int)(180 * angleR / Math.PI) + 180 + 360) % 360;
-    angleR=DirectionUtils.getFirstAngle(geometry);
-    inAngle=((int)(180 * angleR / Math.PI) + 180 + 360) % 360;
-  }
+  this(g,id,geometry,name,length,back,notes,null);
 }
