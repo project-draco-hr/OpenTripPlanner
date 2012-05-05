@@ -1,0 +1,63 @@
+{
+  List<OSMWay> ways=new ArrayList<OSMWay>(waysByEndpoint.get(endpoint));
+  for (  OSMWay way : ways) {
+    List<Long> nodeRefs=way.getNodeRefs();
+    long firstEndpoint=nodeRefs.get(0);
+    long otherEndpoint=nodeRefs.get(nodeRefs.size() - 1);
+    MapUtils.removeFromMapList(waysByEndpoint,firstEndpoint,way);
+    MapUtils.removeFromMapList(waysByEndpoint,otherEndpoint,way);
+    ArrayList<Long> newRing=new ArrayList<Long>(ring.size() + nodeRefs.size());
+    long newFirstEndpoint;
+    if (firstEndpoint == endpoint) {
+      for (int j=nodeRefs.size() - 1; j >= 1; --j) {
+        newRing.add(nodeRefs.get(j));
+      }
+      newRing.addAll(ring);
+      newFirstEndpoint=otherEndpoint;
+    }
+ else {
+      newRing.addAll(nodeRefs.subList(0,nodeRefs.size() - 1));
+      newRing.addAll(ring);
+      newFirstEndpoint=firstEndpoint;
+    }
+    if (newRing.get(newRing.size() - 1).equals(newRing.get(0))) {
+      closedRings.add(newRing);
+      if (waysByEndpoint.size() == 0) {
+        return true;
+      }
+      newRing=new ArrayList<Long>();
+      OSMWay firstWay=null;
+      for (      Map.Entry<Long,List<OSMWay>> entry : waysByEndpoint.entrySet()) {
+        firstEndpoint=entry.getKey();
+        List<OSMWay> list=entry.getValue();
+        firstWay=list.get(0);
+        nodeRefs=firstWay.getNodeRefs();
+        newRing.addAll(nodeRefs);
+        firstEndpoint=nodeRefs.get(0);
+        otherEndpoint=nodeRefs.get(nodeRefs.size() - 1);
+        break;
+      }
+      MapUtils.removeFromMapList(waysByEndpoint,firstEndpoint,firstWay);
+      MapUtils.removeFromMapList(waysByEndpoint,otherEndpoint,firstWay);
+      if (constructRingsRecursive(waysByEndpoint,newRing,closedRings,firstEndpoint)) {
+        return true;
+      }
+      MapUtils.addToMapList(waysByEndpoint,firstEndpoint,firstWay);
+      MapUtils.addToMapList(waysByEndpoint,otherEndpoint,firstWay);
+    }
+ else {
+      if (waysByEndpoint.get(newFirstEndpoint) != null) {
+        if (constructRingsRecursive(waysByEndpoint,newRing,closedRings,newFirstEndpoint)) {
+          return true;
+        }
+      }
+    }
+    if (firstEndpoint == endpoint) {
+      MapUtils.addToMapList(waysByEndpoint,otherEndpoint,way);
+    }
+ else {
+      MapUtils.addToMapList(waysByEndpoint,firstEndpoint,way);
+    }
+  }
+  return false;
+}
