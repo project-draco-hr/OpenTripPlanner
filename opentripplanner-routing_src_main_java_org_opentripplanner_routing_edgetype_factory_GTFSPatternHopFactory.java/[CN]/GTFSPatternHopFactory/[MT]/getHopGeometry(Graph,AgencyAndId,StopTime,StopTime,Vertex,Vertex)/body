@@ -8,7 +8,11 @@
     LineString geometry=_geometriesByShapeSegmentKey.get(key);
     if (geometry != null)     return geometry;
     double[] distances=getDistanceForShapeId(shapeId);
-    if (distances != null) {
+    if (distances == null) {
+      _log.warn(GraphBuilderAnnotation.register(graph,Variety.BOGUS_SHAPE_GEOMETRY,shapeId));
+      return null;
+    }
+ else {
       LinearLocation startIndex=getSegmentFraction(distances,startDistance);
       LinearLocation endIndex=getSegmentFraction(distances,endDistance);
       LineString line=getLineStringForShapeId(shapeId);
@@ -17,6 +21,10 @@
     }
   }
   LineString line=getLineStringForShapeId(shapeId);
+  if (line == null) {
+    _log.warn(GraphBuilderAnnotation.register(graph,Variety.BOGUS_SHAPE_GEOMETRY,shapeId));
+    return null;
+  }
   LocationIndexedLine lol=new LocationIndexedLine(line);
   LinearLocation startCoord=lol.indexOf(startJourney.getCoordinate());
   LinearLocation endCoord=lol.indexOf(endJourney.getCoordinate());

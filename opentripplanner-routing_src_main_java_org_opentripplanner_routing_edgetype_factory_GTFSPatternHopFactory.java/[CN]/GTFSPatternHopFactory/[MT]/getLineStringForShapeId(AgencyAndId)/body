@@ -2,6 +2,9 @@
   LineString geometry=_geometriesByShapeId.get(shapeId);
   if (geometry != null)   return geometry;
   List<ShapePoint> points=getUniqueShapePointsForShapeId(shapeId);
+  if (points.size() < 2) {
+    return null;
+  }
   Coordinate[] coordinates=new Coordinate[points.size()];
   double[] distances=new double[points.size()];
   boolean hasAllDistances=true;
