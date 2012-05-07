@@ -13,6 +13,7 @@
     Set<Point> visibilityPoints=new HashSet<Point>();
     for (    Ring ring : area.outermostRings) {
       List<OSMNode> nodes=new ArrayList<OSMNode>();
+      vertices.clear();
       for (      OSMNode node : ring.nodes) {
         if (nodes.contains(node)) {
           continue;
