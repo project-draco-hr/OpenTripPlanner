@@ -6,12 +6,12 @@
   long startTime=firstRide.startTime;
   String startZone=firstRide.startZone;
   String endZone=firstRide.endZone;
-  String agencyId=firstRide.route.getAgencyId();
+  String feedId=firstRide.firstStop.getId().getAgencyId();
   long lastRideStartTime=firstRide.startTime;
   long lastRideEndTime=firstRide.endTime;
   for (  Ride ride : rides) {
-    if (!ride.route.getAgencyId().equals(agencyId)) {
-      _log.debug("skipped multi-agency ride sequence {}",rides);
+    if (!ride.firstStop.getId().getAgencyId().equals(feedId)) {
+      _log.debug("skipped multi-feed ride sequence {}",rides);
       return Float.POSITIVE_INFINITY;
     }
     lastRideStartTime=ride.startTime;
@@ -26,7 +26,7 @@
   long tripTime=lastRideStartTime - startTime;
   long journeyTime=lastRideEndTime - startTime;
   for (  AgencyAndId fareId : fareAttributes.keySet()) {
-    if (!fareId.getAgencyId().equals(agencyId))     continue;
+    if (!fareId.getAgencyId().equals(feedId))     continue;
     FareRuleSet ruleSet=fareRules.get(fareId);
     if (ruleSet == null || ruleSet.matches(startZone,endZone,zones,routes)) {
       FareAttribute attribute=fareAttributes.get(fareId);
