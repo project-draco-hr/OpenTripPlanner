@@ -30,5 +30,7 @@
     BikeRentalStation brstation=makeStation(attributes);
     if (brstation != null)     out.add(brstation);
   }
-  stations=out;
+synchronized (this) {
+    stations=out;
+  }
 }
