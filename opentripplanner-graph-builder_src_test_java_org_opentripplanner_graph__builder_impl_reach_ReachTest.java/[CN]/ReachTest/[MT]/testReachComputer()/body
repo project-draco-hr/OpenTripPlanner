@@ -14,5 +14,5 @@
     assertTrue(e.getReach() < 400);
   }
   List<RoutingRequest> optionlist=Arrays.asList(options);
-  graph.save(new File("/tmp/ReachTestGraph.obj"));
+  graph.save(File.createTempFile("ReachTestGraph",".obj"));
 }
