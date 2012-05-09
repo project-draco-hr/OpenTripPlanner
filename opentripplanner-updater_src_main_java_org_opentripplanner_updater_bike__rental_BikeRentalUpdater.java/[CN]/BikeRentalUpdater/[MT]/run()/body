@@ -1,15 +1,16 @@
 {
   if (!source.update())   return;
   List<BikeRentalStation> stations=source.getStations();
-  Set<String> stationIds=new HashSet<String>();
+  Set<BikeRentalStation> stationSet=new HashSet<BikeRentalStation>();
   for (  BikeRentalStation station : stations) {
+    service.addStation(station);
     String id=station.id;
-    stationIds.add(id);
+    stationSet.add(station);
     BikeRentalStationVertex vertex=verticesByStation.get(id);
     if (vertex == null) {
       vertex=new BikeRentalStationVertex(graph,"bike rental station " + id,station.x,station.y,station.name,station.bikesAvailable,station.spacesAvailable);
       networkLinkerLibrary.connectVertexToStreets(vertex);
-      verticesByStation.put(id,vertex);
+      verticesByStation.put(station,vertex);
       new RentABikeOnEdge(vertex,vertex);
       new RentABikeOffEdge(vertex,vertex);
     }
@@ -19,11 +20,13 @@
     }
   }
   List<BikeRentalStationVertex> toRemove=new ArrayList<BikeRentalStationVertex>();
-  for (  Entry<String,BikeRentalStationVertex> entry : verticesByStation.entrySet()) {
-    if (stationIds.contains(entry.getKey()))     continue;
+  for (  Entry<BikeRentalStation,BikeRentalStationVertex> entry : verticesByStation.entrySet()) {
+    BikeRentalStation station=entry.getKey();
+    if (stationSet.contains(station))     continue;
     BikeRentalStationVertex vertex=entry.getValue();
     graph.removeVertexAndEdges(vertex);
     toRemove.add(vertex);
+    service.removeStation(station);
   }
   verticesByStation.keySet().removeAll(toRemove);
 }
