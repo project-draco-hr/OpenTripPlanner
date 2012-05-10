@@ -1,4 +1,8 @@
 {
+  if (routerId == null || routerId.isEmpty()) {
+    routerId=defaultRouterId;
+    LOG.debug("routerId not specified, set to default of '{}'",routerId);
+  }
   Graph graph;
   File graphFile=getFileForRouterId(routerId);
   graph=graphs.get(graphFile.getAbsolutePath());
