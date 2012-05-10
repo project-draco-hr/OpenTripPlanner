@@ -1,0 +1,7 @@
+{
+  if (format.equals("jpg"))   format="jpeg";
+  MIMEImageFormat mimeFormat=new MIMEImageFormat("image/" + format);
+  Style style=styles.get(0);
+  BufferedImage image=Tile.getLegend(style,width,height);
+  return Renderer.generateStreamingImageResponse(image,mimeFormat);
+}
