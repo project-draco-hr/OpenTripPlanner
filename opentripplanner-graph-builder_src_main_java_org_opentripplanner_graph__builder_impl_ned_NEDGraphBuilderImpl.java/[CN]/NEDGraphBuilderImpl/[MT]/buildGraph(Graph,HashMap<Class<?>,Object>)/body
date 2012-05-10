@@ -1,4 +1,5 @@
 {
+  gridCoverageFactory.setGraph(graph);
   Coverage gridCov=gridCoverageFactory.getGridCoverage();
   coverage=(gridCov instanceof GridCoverage2D) ? Interpolator2D.create((GridCoverage2D)gridCov,new InterpolationBilinear()) : gridCov;
   List<EdgeWithElevation> edgesWithElevation=new ArrayList<EdgeWithElevation>();
