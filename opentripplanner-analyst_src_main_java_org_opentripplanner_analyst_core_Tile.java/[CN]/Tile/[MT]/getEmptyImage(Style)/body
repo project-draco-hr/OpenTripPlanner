@@ -1,21 +1,5 @@
 {
-  BufferedImage image;
-switch (style) {
-case GRAY:
-    image=new BufferedImage(width,height,BufferedImage.TYPE_BYTE_GRAY);
-  break;
-case DIFFERENCE:
-image=new BufferedImage(width,height,BufferedImage.TYPE_BYTE_INDEXED,DIFFERENCE_COLOR_MAP);
-break;
-case TRANSPARENT:
-image=new BufferedImage(width,height,BufferedImage.TYPE_BYTE_INDEXED,TRANSPARENT_COLOR_MAP);
-break;
-case MASK:
-image=new BufferedImage(width,height,BufferedImage.TYPE_BYTE_INDEXED,MASK_COLOR_MAP);
-break;
-case COLOR30:
-default :
-image=new BufferedImage(width,height,BufferedImage.TYPE_BYTE_INDEXED,DEFAULT_COLOR_MAP);
-}
-return image;
+  IndexColorModel colorMap=getMapForStyle(style);
+  if (colorMap == null)   return new BufferedImage(width,height,BufferedImage.TYPE_BYTE_GRAY);
+ else   return new BufferedImage(width,height,BufferedImage.TYPE_BYTE_INDEXED,colorMap);
 }
