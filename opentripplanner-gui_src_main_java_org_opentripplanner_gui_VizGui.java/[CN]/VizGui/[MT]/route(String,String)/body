@@ -20,6 +20,8 @@
   options.setBikeBoardCost(Integer.parseInt(boardingPenaltyField.getText()) * 60 * 2);
   options.setOptimize(OptimizeType.QUICK);
   options.setMaxWalkDistance(Double.MAX_VALUE);
+  options.from=from;
+  options.to=to;
   System.out.println("--------");
   System.out.println("Path from " + from + " to "+ to+ " at "+ when);
   System.out.println("\tModes: " + modeSet);
