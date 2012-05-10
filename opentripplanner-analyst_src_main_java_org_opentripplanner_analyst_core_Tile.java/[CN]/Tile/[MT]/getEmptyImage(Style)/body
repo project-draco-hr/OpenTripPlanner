@@ -1,5 +1,5 @@
 {
-  IndexColorModel colorMap=getMapForStyle(style);
-  if (colorMap == null)   return new BufferedImage(width,height,BufferedImage.TYPE_BYTE_GRAY);
- else   return new BufferedImage(width,height,BufferedImage.TYPE_BYTE_INDEXED,colorMap);
+  IndexColorModel colorModel=modelsByStyle.get(style);
+  if (colorModel == null)   return new BufferedImage(width,height,BufferedImage.TYPE_BYTE_GRAY);
+ else   return new BufferedImage(width,height,BufferedImage.TYPE_BYTE_INDEXED,colorModel);
 }
