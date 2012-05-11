@@ -1,0 +1,23 @@
+{
+  List<Edge> nearbyEdges=null;
+  if (linker.edgesForRoute != null && linker.transitIndex != null) {
+    nearbyEdges=new ArrayList<Edge>();
+    for (    AgencyAndId route : linker.transitIndex.getRoutesForStop(v.getStopId())) {
+      List<Edge> edges=linker.edgesForRoute.get(route);
+      if (edges != null) {
+        nearbyEdges.addAll(edges);
+      }
+    }
+  }
+  Collection<StreetVertex> nearbyStreetVertices=getNearbyStreetVertices(v,nearbyEdges);
+  if (nearbyStreetVertices == null) {
+    result=false;
+  }
+ else {
+    for (    StreetVertex sv : nearbyStreetVertices) {
+      new StreetTransitLink(sv,v,wheelchairAccessible);
+      new StreetTransitLink(v,sv,wheelchairAccessible);
+    }
+    result=true;
+  }
+}

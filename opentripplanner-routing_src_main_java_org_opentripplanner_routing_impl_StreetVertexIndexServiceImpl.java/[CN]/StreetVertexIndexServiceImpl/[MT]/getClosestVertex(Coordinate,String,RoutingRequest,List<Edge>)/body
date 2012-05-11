@@ -10,7 +10,7 @@
  else       if (uniqueNames.size() == 1)       name=uniqueNames.get(0);
  else       name="unnamed street";
     }
-    StreetLocation closest=new StreetLocation("corner " + Math.random(),coordinate,name);
+    StreetLocation closest=new StreetLocation(graph,"corner " + Math.random(),coordinate,name);
     for (    Vertex v : vertices) {
       FreeEdge e=new FreeEdge(closest,v);
       closest.getExtra().add(e);
@@ -46,7 +46,7 @@
     if (name == null) {
       name=bestStreet.getName();
     }
-    closest_street=StreetLocation.createStreetLocation(bestStreet.getName() + "_" + coordinate.toString(),name,bundle.toEdgeList(),nearestPoint);
+    closest_street=StreetLocation.createStreetLocation(graph,bestStreet.getName() + "_" + coordinate.toString(),name,bundle.toEdgeList(),nearestPoint);
   }
   if (closest_street == null) {
     _log.debug("returning only transit stop (no street found)");

@@ -1,6 +1,7 @@
 {
   ArrayList<StreetEdge> extraStreets=new ArrayList<StreetEdge>();
   if (extraEdges != null)   for (  StreetEdge se : IterableLibrary.filter(extraEdges,StreetEdge.class))   extraStreets.add(se);
+  for (  StreetEdge se : IterableLibrary.filter(graph.getTemporaryEdges(),StreetEdge.class))   extraStreets.add(se);
   Envelope envelope=new Envelope(coordinate);
   GeometryFactory factory=new GeometryFactory();
   Point p=factory.createPoint(coordinate);
@@ -16,7 +17,7 @@
     radius+=envelopeGrowthAmount;
     if (radius > MAX_DISTANCE_FROM_STREET)     return candidateEdges;
     List<StreetEdge> nearbyEdges=edgeTree.query(envelope);
-    if (extraEdges != null && nearbyEdges != null) {
+    if (nearbyEdges != null) {
       nearbyEdges=new JoinedList<StreetEdge>(nearbyEdges,extraStreets);
     }
     for (    StreetEdge e : nearbyEdges) {

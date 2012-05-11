@@ -20,6 +20,7 @@
   if (e.getName().contains("sidewalk") || !e.getPermission().allows(StreetTraversalPermission.CAR)) {
     score/=SIDEWALK_PREFERENCE;
   }
+  score+=edge.getLength() / 1000000;
   double xd=nearestPointOnEdge.x - p.getX();
   double yd=nearestPointOnEdge.y - p.getY();
   directionToEdge=Math.atan2(yd,xd);

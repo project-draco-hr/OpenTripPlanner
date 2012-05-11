@@ -1,6 +1,7 @@
 {
   int nRemoved=0;
   for (  Edge e : getExtra()) {
+    graph.removeTemporaryEdge(e);
     if (e.detach() != 0)     nRemoved+=1;
   }
   return nRemoved;

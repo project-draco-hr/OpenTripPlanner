@@ -1,3 +1,4 @@
 {
-  this.vertices=new HashMap<String,Vertex>();
+  this.vertices=new ConcurrentHashMap<String,Vertex>();
+  temporaryEdges=Collections.newSetFromMap(new ConcurrentHashMap<Edge,Boolean>());
 }

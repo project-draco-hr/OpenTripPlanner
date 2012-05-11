@@ -1,0 +1,12 @@
+{
+  Collection<StreetVertex> nearbyStreetVertices=getNearbyStreetVertices(v,null);
+  if (nearbyStreetVertices == null) {
+    result=false;
+  }
+ else {
+    for (    StreetVertex sv : nearbyStreetVertices) {
+      addEdges(new StreetBikeRentalLink(sv,v),new StreetBikeRentalLink(v,sv));
+    }
+    result=true;
+  }
+}

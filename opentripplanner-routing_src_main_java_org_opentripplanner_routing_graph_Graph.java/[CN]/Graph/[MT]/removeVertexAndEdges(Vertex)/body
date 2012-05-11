@@ -2,6 +2,12 @@
   if (!containsVertex(vertex)) {
     throw new IllegalStateException("attempting to remove vertex that is not in graph.");
   }
+  for (  Edge e : vertex.getIncoming()) {
+    temporaryEdges.remove(e);
+  }
+  for (  Edge e : vertex.getOutgoing()) {
+    temporaryEdges.remove(e);
+  }
   vertex.removeAllEdges();
   this.remove(vertex);
 }
