@@ -1,0 +1,45 @@
+{
+  int cost=0;
+  long start=-1;
+  for (  State state : path.states) {
+    if (state.getVertex() instanceof BikeRentalStationVertex && state.getBackState().getVertex() instanceof BikeRentalStationVertex) {
+      if (start == -1) {
+        start=state.getTime();
+      }
+ else {
+        int time_on_bike=(int)(state.getTime() - start);
+        int ride_cost=-1;
+        for (        P2<Integer> bracket : pricing_by_second) {
+          int time=bracket.getFirst();
+          if (time_on_bike < time) {
+            ride_cost=bracket.getSecond();
+            break;
+          }
+        }
+        if (ride_cost == -1) {
+          log.warn("Bike rental has no associated pricing (too long?) : " + time_on_bike + " seconds");
+        }
+ else {
+          cost+=ride_cost;
+        }
+        start=-1;
+      }
+    }
+  }
+  if (cost == 0) {
+    return next.getCost(path);
+  }
+  if (next == null) {
+    Fare fare=new Fare();
+    fare.addFare(FareType.regular,new WrappedCurrency(Currency.getInstance(currency)),cost);
+    return fare;
+  }
+  Fare fare=next.getCost(path);
+  if (fare == null) {
+    fare=new Fare();
+    fare.addFare(FareType.regular,new WrappedCurrency(Currency.getInstance(currency)),cost);
+    return fare;
+  }
+  fare.addCost(cost);
+  return fare;
+}

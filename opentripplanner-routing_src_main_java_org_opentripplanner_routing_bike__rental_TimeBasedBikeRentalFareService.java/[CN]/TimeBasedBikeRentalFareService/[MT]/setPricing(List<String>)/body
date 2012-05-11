@@ -1,0 +1,34 @@
+{
+  pricing_by_second=new ArrayList<P2<Integer>>();
+  for (  String pair : pricing) {
+    String[] strings=pair.split(",");
+    String[] hms=strings[0].split(":");
+    int seconds=0;
+    for (    String field : hms) {
+      seconds*=60;
+      int fieldValue=Integer.parseInt(field);
+      seconds+=fieldValue;
+    }
+    pricing_by_second.add((new P2<Integer>(seconds,Integer.parseInt(strings[1]))));
+  }
+  Collections.sort(pricing_by_second,new Comparator<P2<Integer>>(){
+    @Override public int compare(    P2<Integer> arg0,    P2<Integer> arg1){
+      return arg0.getFirst() - arg1.getFirst();
+    }
+  }
+);
+  int seconds=-1;
+  int lastCost=0;
+  for (  P2<Integer> bracket : pricing_by_second) {
+    int maxTime=bracket.getFirst();
+    int cost=bracket.getSecond();
+    if (maxTime == seconds) {
+      throw new RuntimeException("Bike share pricing has two entries for " + maxTime);
+    }
+    if (cost < lastCost) {
+      log.warn("Bike share pricing has pathological pricing; keeping the bike for a " + maxTime + "  is cheaper than keeping it for "+ seconds);
+    }
+    seconds=maxTime;
+    lastCost=cost;
+  }
+}
