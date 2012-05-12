@@ -21,5 +21,7 @@
   }
   insertCalendarData(service);
   addAgencies(service);
+  Coordinate coord=findTransitCenter();
+  service.setCenter(coord);
   graph.putService(TransitIndexService.class,service);
 }
