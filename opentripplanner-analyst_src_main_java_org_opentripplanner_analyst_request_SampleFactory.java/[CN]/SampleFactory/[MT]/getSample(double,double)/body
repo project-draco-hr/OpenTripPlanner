@@ -9,7 +9,7 @@
   double d1=Double.MAX_VALUE;
   Envelope env=new Envelope(c);
   env.expandBy(SEARCH_RADIUS_DEG,SEARCH_RADIUS_DEG);
-  @SuppressWarnings("unchecked") List<TurnVertex> vs=(List<TurnVertex>)index.query(env);
+  @SuppressWarnings("unchecked") List<TurnVertex> vs=(List<TurnVertex>)index.queryPedestrian(env);
   for (  TurnVertex v : vs) {
     Geometry g=v.getGeometry();
     DistanceOp o=new DistanceOp(p,g);
