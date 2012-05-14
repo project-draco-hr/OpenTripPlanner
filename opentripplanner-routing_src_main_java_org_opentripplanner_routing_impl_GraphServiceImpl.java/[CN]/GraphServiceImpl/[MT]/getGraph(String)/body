@@ -10,7 +10,10 @@
   LOG.debug("graph for routerId '{}' is at {}",routerId,graphFile.getAbsolutePath());
   if (graphFile == null || !graphFile.exists()) {
     LOG.warn("graph file not found: {}",graphFile);
-    if (routerId.equals(defaultRouterId))     throw new RuntimeException("graph for default routerId does not exist: " + graphFile);
+    if (routerId.equals(defaultRouterId)) {
+      LOG.warn("graph for default routerId {} does not exist at {}",routerId,graphFile);
+      return null;
+    }
     return getGraph(null);
   }
   if (modTime == null || graphFile.lastModified() > modTime) {

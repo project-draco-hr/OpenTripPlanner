@@ -1,5 +1,6 @@
 {
   Graph graph=graphService.getGraph();
+  if (graph == null)   return;
   pedestrianIndex=new STRtree();
   index=new STRtree();
   for (  TurnVertex tv : IterableLibrary.filter(graph.getVertices(),TurnVertex.class)) {
