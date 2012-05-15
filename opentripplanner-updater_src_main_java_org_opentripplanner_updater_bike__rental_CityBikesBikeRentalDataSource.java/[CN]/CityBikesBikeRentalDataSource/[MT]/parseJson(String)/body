@@ -1,0 +1,18 @@
+{
+  ArrayList<BikeRentalStation> out=new ArrayList<BikeRentalStation>();
+  JSONArray stationArray=JSONArray.fromObject(data);
+  for (int i=0; i < stationArray.size(); ++i) {
+    JSONObject station=stationArray.getJSONObject(i);
+    BikeRentalStation brstation=new BikeRentalStation();
+    brstation.id=station.getString("id");
+    brstation.x=station.getLong("lng") / 1000000.0;
+    brstation.y=station.getLong("lat") / 1000000.0;
+    brstation.name=station.getString("name");
+    brstation.bikesAvailable=station.getInt("bikes");
+    brstation.spacesAvailable=station.getInt("free");
+    if (brstation != null)     out.add(brstation);
+  }
+synchronized (this) {
+    stations=out;
+  }
+}
