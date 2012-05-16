@@ -20,8 +20,8 @@
     freqs.add(freq);
   }
   for (  Trip trip : trips) {
-    if (index % 100000 == 0)     _log.debug("trips=" + index + "/"+ trips.size());
     index++;
+    if (index % 100000 == 0)     _log.debug("trips=" + index + "/"+ trips.size());
     List<StopTime> stopTimes=getNonduplicateStopTimesForTrip(trip);
     filterStopTimes(stopTimes,graph);
     interpolateStopTimes(stopTimes);
@@ -66,7 +66,7 @@
         }
  else {
           _log.warn(GraphBuilderAnnotation.register(graph,Variety.TRIP_DUPLICATE,trip.getId(),tripPattern.getTrip(insertionPoint)));
-          break;
+          simple=true;
         }
       }
  else {
