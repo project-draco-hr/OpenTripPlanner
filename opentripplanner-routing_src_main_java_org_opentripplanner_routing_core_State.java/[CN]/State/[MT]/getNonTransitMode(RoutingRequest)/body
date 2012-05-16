@@ -3,5 +3,6 @@
   if (modes.getCar())   return TraverseMode.CAR;
   if (modes.getWalk() && !isBikeRenting())   return TraverseMode.WALK;
   if (modes.getBicycle())   return TraverseMode.BICYCLE;
+  if (modes.getWalk())   return TraverseMode.WALK;
   return null;
 }
