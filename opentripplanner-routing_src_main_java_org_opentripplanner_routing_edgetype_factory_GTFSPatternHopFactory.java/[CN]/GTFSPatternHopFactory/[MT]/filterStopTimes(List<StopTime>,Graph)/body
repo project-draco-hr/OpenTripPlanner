@@ -22,7 +22,10 @@
       st1bogus=true;
     }
  else     if (hopSpeed > 45) {
-      _log.trace(GraphBuilderAnnotation.register(graph,Variety.HOP_SPEED,hopSpeed,hopDistance,st0.getTrip().getRoute(),st0.getTrip().getId(),st0.getStopSequence()));
+      _log.trace(GraphBuilderAnnotation.register(graph,Variety.HOP_SPEED_FAST,hopSpeed,hopDistance,st0.getTrip().getRoute(),st0.getTrip().getId(),st0.getStopSequence()));
+    }
+ else     if (hopSpeed < 0.1) {
+      _log.trace(GraphBuilderAnnotation.register(graph,Variety.HOP_SPEED_SLOW,hopSpeed,hopDistance,st0.getTrip().getRoute(),st0.getTrip().getId(),st0.getStopSequence()));
     }
     if (!st1bogus)     st0=st1;
   }
