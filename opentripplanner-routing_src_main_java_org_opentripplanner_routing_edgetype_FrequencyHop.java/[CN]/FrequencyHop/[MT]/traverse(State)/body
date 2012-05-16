@@ -1,0 +1,11 @@
+{
+  int runningTime=pattern.getRunningTime(stopIndex);
+  EdgeNarrative en=new TransitNarrative(pattern.getTrip(),pattern.getHeadsign(stopIndex),this);
+  StateEditor s1=s0.edit(this,en);
+  s1.incrementTimeInSeconds(runningTime);
+  if (s0.getOptions().isArriveBy())   s1.setZone(getStartStop().getZoneId());
+ else   s1.setZone(getEndStop().getZoneId());
+  s1.setRoute(pattern.getTrip().getRoute().getId());
+  s1.incrementWeight(runningTime);
+  return s1.makeState();
+}

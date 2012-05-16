@@ -1,0 +1,52 @@
+{
+  int mask=pickup ? TripPattern.MASK_PICKUP : TripPattern.MASK_DROPOFF;
+  int shift=pickup ? TripPattern.SHIFT_PICKUP : TripPattern.SHIFT_DROPOFF;
+  if ((perStopFlags[stopIndex + 1] & mask) >> shift == TripPattern.NO_PICKUP) {
+    return -1;
+  }
+  if (wheelchairAccessible && (perStopFlags[stopIndex] & TripPattern.FLAG_WHEELCHAIR_ACCESSIBLE) == 0) {
+    return -1;
+  }
+  if (wheelchairAccessible || bikesAllowed) {
+    int flags=(bikesAllowed ? TripPattern.FLAG_BIKES_ALLOWED : 0) | (wheelchairAccessible ? TripPattern.FLAG_WHEELCHAIR_ACCESSIBLE : 0);
+    if ((tripFlags & flags) == 0) {
+      return -1;
+    }
+  }
+  int stopArrivalTimeOffset=arrivalTimes[stopIndex];
+  int beforeTimeAtStart=beforeTime - stopArrivalTimeOffset;
+  int timeRange=Arrays.binarySearch(timeRangeEnd,beforeTimeAtStart);
+  if (timeRange < 0) {
+    timeRange=-timeRange - 1;
+  }
+  if (timeRange >= timeRangeStart.length)   timeRange-=1;
+  if (beforeTimeAtStart < timeRangeStart[timeRange])   timeRange-=1;
+  if (timeRange < 0)   return -1;
+  System.out.println("before " + beforeTime);
+  System.out.println("range is " + timeRange);
+  int frequency=timeRangeFrequency[timeRange];
+  int frequencyOffset=(timeRangeEnd[timeRange] - timeRangeStart[timeRange]) % frequency;
+  int lastArrivalTimeInRange=stopArrivalTimeOffset + timeRangeEnd[timeRange] - frequencyOffset;
+  System.out.println("lat " + lastArrivalTimeInRange);
+  int arrivalTime;
+  if (exact) {
+    if (beforeTime > lastArrivalTimeInRange) {
+      arrivalTime=lastArrivalTimeInRange;
+    }
+ else {
+      int offset=(lastArrivalTimeInRange - beforeTime) % frequency;
+      System.out.println("offset " + offset);
+      if (offset == 0)       offset=frequency;
+      arrivalTime=beforeTime - frequency + offset;
+      System.out.println("at " + arrivalTime);
+    }
+  }
+ else {
+    arrivalTime=beforeTime - frequency;
+  }
+  int arrivalTimeAtFirstStop=arrivalTime - stopArrivalTimeOffset;
+  if (arrivalTimeAtFirstStop < timeRangeEnd[timeRange] && arrivalTimeAtFirstStop >= timeRangeStart[timeRange]) {
+    return arrivalTime;
+  }
+  return -1;
+}

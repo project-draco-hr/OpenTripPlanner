@@ -40,7 +40,7 @@
             }
             trip=pattern.getTrip(patternIndex);
           }
-          int wait=(int)(sd.time(getPattern().getDepartureTime(stopIndex,patternIndex)) - current_time);
+          int wait=(int)(sd.time(pattern.getDepartureTime(stopIndex,patternIndex)) - current_time);
           if (wait < 0)           _log.error("negative wait time on board");
           if (bestWait < 0 || wait < bestWait) {
             bestWait=wait;

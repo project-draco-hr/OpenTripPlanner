@@ -177,7 +177,7 @@ itinerary.transfers++;
 leg.boardRule=(String)state.getExtension("boardAlightRule");
 }
 }
- else if (backEdge instanceof Hop || backEdge instanceof PatternHop) {
+ else if (backEdge instanceof HopEdge) {
 pgstate=PlanGenState.TRANSIT;
 fixupTransitLeg(leg,state,transitIndex);
 leg.stop=new ArrayList<Place>();
@@ -201,7 +201,7 @@ pgstate=PlanGenState.START;
 }
  else if (mode.toString().equals(leg.mode)) {
 if (showIntermediateStops) {
-if (!(backEdge instanceof Dwell || backEdge instanceof PatternDwell || backEdge instanceof PatternInterlineDwell)) {
+if (!(backEdge instanceof DwellEdge)) {
 Place stop=makePlace(state.getBackState(),true);
 leg.stop.add(stop);
 }

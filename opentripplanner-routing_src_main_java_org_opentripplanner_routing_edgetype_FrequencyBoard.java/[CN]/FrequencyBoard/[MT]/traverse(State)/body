@@ -1,0 +1,92 @@
+{
+  RoutingContext rctx=state0.getContext();
+  RoutingRequest options=state0.getOptions();
+  Trip trip=pattern.getTrip();
+  if (options.isArriveBy()) {
+    if (state0.getBackEdge() instanceof PatternAlight) {
+      return null;
+    }
+    EdgeNarrative en=new TransitNarrative(trip,this);
+    StateEditor s1=state0.edit(this,en);
+    int type=pattern.getBoardType(stopIndex);
+    if (TransitUtils.handleBoardAlightType(s1,type)) {
+      return null;
+    }
+    s1.setTripId(null);
+    s1.setLastAlightedTime(state0.getTime());
+    s1.setPreviousStop(fromv);
+    return s1.makeState();
+  }
+ else {
+    if (!options.getModes().get(modeMask)) {
+      return null;
+    }
+    long currentTime=state0.getTime();
+    int bestWait=-1;
+    TraverseMode mode=state0.getNonTransitMode(options);
+    if (options.bannedTrips.contains(trip.getId())) {
+      return null;
+    }
+    AgencyAndId serviceId=trip.getServiceId();
+    for (    ServiceDay sd : rctx.serviceDays) {
+      int secondsSinceMidnight=sd.secondsSinceMidnight(currentTime);
+      if (secondsSinceMidnight < 0)       continue;
+      if (sd.serviceIdRunning(serviceId)) {
+        int startTime=pattern.getNextDepartureTime(stopIndex,secondsSinceMidnight,options.wheelchairAccessible,mode == TraverseMode.BICYCLE,true);
+        if (startTime >= 0) {
+          int wait=(int)(sd.time(startTime) - currentTime);
+          if (wait < 0)           _log.error("negative wait time on board");
+          if (bestWait < 0 || wait < bestWait) {
+            bestWait=wait;
+          }
+        }
+      }
+    }
+    if (bestWait < 0) {
+      return null;
+    }
+    if (options.bannedRoutes != null) {
+      Route route=trip.getRoute();
+      RouteSpec spec=new RouteSpec(route.getId().getAgencyId(),GtfsLibrary.getRouteName(route));
+      if (options.bannedRoutes.contains(spec)) {
+        return null;
+      }
+    }
+    long preferences_penalty=0;
+    if (options.preferredRoutes != null && options.preferredRoutes.size() > 0) {
+      Route route=trip.getRoute();
+      RouteSpec spec=new RouteSpec(route.getId().getAgencyId(),GtfsLibrary.getRouteName(route));
+      if (!options.preferredRoutes.contains(spec)) {
+        preferences_penalty+=options.useAnotherThanPreferredRoutesPenalty;
+      }
+    }
+    if (options.unpreferredRoutes != null && options.unpreferredRoutes.size() > 0) {
+      Route route=trip.getRoute();
+      RouteSpec spec=new RouteSpec(route.getId().getAgencyId(),GtfsLibrary.getRouteName(route));
+      if (options.unpreferredRoutes.contains(spec)) {
+        preferences_penalty+=options.useUnpreferredRoutesPenalty;
+      }
+    }
+    EdgeNarrative en=new TransitNarrative(trip,this);
+    StateEditor s1=state0.edit(this,en);
+    int type=pattern.getBoardType(stopIndex);
+    if (TransitUtils.handleBoardAlightType(s1,type)) {
+      return null;
+    }
+    s1.incrementTimeInSeconds(bestWait);
+    s1.incrementNumBoardings();
+    s1.setTripId(trip.getId());
+    s1.setZone(pattern.getZone(stopIndex));
+    s1.setRoute(trip.getRoute().getId());
+    long wait_cost=bestWait;
+    if (state0.getNumBoardings() == 0) {
+      wait_cost*=options.waitAtBeginningFactor;
+    }
+ else {
+      wait_cost*=options.waitReluctance;
+    }
+    s1.incrementWeight(preferences_penalty);
+    s1.incrementWeight(wait_cost + options.getBoardCost(mode));
+    return s1.makeState();
+  }
+}

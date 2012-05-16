@@ -22,102 +22,92 @@
   for (  Trip trip : trips) {
     if (index % 100000 == 0)     _log.debug("trips=" + index + "/"+ trips.size());
     index++;
-    List<StopTime> originalStopTimes=getNonduplicateStopTimesForTrip(trip);
-    filterStopTimes(originalStopTimes,graph);
-    interpolateStopTimes(originalStopTimes);
-    if (originalStopTimes.size() < 2) {
+    List<StopTime> stopTimes=getNonduplicateStopTimesForTrip(trip);
+    filterStopTimes(stopTimes,graph);
+    interpolateStopTimes(stopTimes);
+    if (stopTimes.size() < 2) {
       _log.warn(GraphBuilderAnnotation.register(graph,Variety.TRIP_DEGENERATE,trip));
       continue;
     }
-    List<List<StopTime>> allStopTimes=new ArrayList<List<StopTime>>();
     List<Frequency> frequencies=tripFrequencies.get(trip);
     ScheduledStopPattern stopPattern=stopPatternfromTrip(trip,_dao);
     BasicTripPattern tripPattern=patterns.get(stopPattern);
     String blockId=trip.getBlockId();
-    if (frequencies == null) {
-      allStopTimes.add(originalStopTimes);
-    }
- else {
-      for (      Frequency freq : frequencies) {
-        for (int i=freq.getStartTime(); i < freq.getEndTime(); i+=freq.getHeadwaySecs()) {
-          int diff=i - originalStopTimes.get(0).getArrivalTime();
-          List<StopTime> newStopTimes=new ArrayList<StopTime>();
-          for (          StopTime st : originalStopTimes) {
-            StopTime modified=cloneStopTime(st);
-            if (st.isArrivalTimeSet())             modified.setArrivalTime(st.getArrivalTime() + diff);
-            if (st.isDepartureTimeSet())             modified.setDepartureTime(st.getDepartureTime() + diff);
-            newStopTimes.add(modified);
-          }
-          allStopTimes.add(newStopTimes);
-        }
-      }
-    }
-    for (    List<StopTime> stopTimes : allStopTimes) {
-      boolean simple=false;
-      if (tripPattern == null) {
-        tripPattern=makeTripPattern(graph,trip,stopTimes);
-        if (tripPattern == null) {
+    if (frequencies != null) {
+      Frequency frequency=frequencies.get(0);
+      if (frequencies.size() > 1 || frequency.getStartTime() != stopTimes.get(0).getDepartureTime() || frequency.getEndTime() - frequency.getStartTime() > frequency.getHeadwaySecs()) {
+        FrequencyBasedTripPattern frequencyPattern=makeFrequencyPattern(graph,trip,stopTimes);
+        if (frequencyPattern == null) {
           continue;
         }
-        patterns.put(stopPattern,tripPattern);
-        if (blockId != null && !blockId.equals("")) {
-          addTripToInterliningMap(trip,stopTimes,tripPattern);
+        frequencyPattern.createRanges(frequencies);
+        continue;
+      }
+    }
+    boolean simple=false;
+    if (tripPattern == null) {
+      tripPattern=makeTripPattern(graph,trip,stopTimes);
+      if (tripPattern == null) {
+        continue;
+      }
+      patterns.put(stopPattern,tripPattern);
+      if (blockId != null && !blockId.equals("")) {
+        addTripToInterliningMap(trip,stopTimes,tripPattern);
+      }
+    }
+ else {
+      int insertionPoint=tripPattern.getDepartureTimeInsertionPoint(stopTimes.get(0).getDepartureTime());
+      if (insertionPoint < 0) {
+        insertionPoint=-(insertionPoint + 1);
+        if (!tripPattern.stopTimesIdentical(stopTimes,insertionPoint)) {
+          _log.warn(GraphBuilderAnnotation.register(graph,Variety.TRIP_DUPLICATE_DEPARTURE,trip.getId(),tripPattern.getTrip(insertionPoint)));
+          simple=true;
+          createSimpleHops(graph,trip,stopTimes);
+        }
+ else {
+          _log.warn(GraphBuilderAnnotation.register(graph,Variety.TRIP_DUPLICATE,trip.getId(),tripPattern.getTrip(insertionPoint)));
+          break;
         }
       }
  else {
-        int insertionPoint=tripPattern.getDepartureTimeInsertionPoint(stopTimes.get(0).getDepartureTime());
-        if (insertionPoint < 0) {
-          insertionPoint=-(insertionPoint + 1);
-          if (!tripPattern.stopTimesIdentical(stopTimes,insertionPoint)) {
-            _log.warn(GraphBuilderAnnotation.register(graph,Variety.TRIP_DUPLICATE_DEPARTURE,trip.getId(),tripPattern.getTrip(insertionPoint)));
+        StopTime st1=null;
+        int i;
+        for (i=0; i < stopTimes.size() - 1; i++) {
+          StopTime st0=stopTimes.get(i);
+          st1=stopTimes.get(i + 1);
+          int dwellTime=st0.getDepartureTime() - st0.getArrivalTime();
+          int runningTime=st1.getArrivalTime() - st0.getDepartureTime();
+          if (runningTime < 0) {
+            _log.warn(GraphBuilderAnnotation.register(graph,Variety.NEGATIVE_HOP_TIME,st0,st1));
+            for (i=i - 1; i >= 0; --i) {
+              tripPattern.removeHop(i,insertionPoint);
+            }
             simple=true;
-            createSimpleHops(graph,trip,stopTimes);
+            break;
           }
- else {
-            _log.warn(GraphBuilderAnnotation.register(graph,Variety.TRIP_DUPLICATE,trip.getId(),tripPattern.getTrip(insertionPoint)));
+          if (dwellTime < 0) {
+            _log.warn(GraphBuilderAnnotation.register(graph,Variety.NEGATIVE_DWELL_TIME,st0));
+            dwellTime=0;
+          }
+          try {
+            tripPattern.addHop(i,insertionPoint,st0.getDepartureTime(),runningTime,st1.getArrivalTime(),dwellTime,st0.getStopHeadsign(),trip);
+          }
+ catch (          TripOvertakingException e) {
+            _log.warn(GraphBuilderAnnotation.register(graph,Variety.TRIP_OVERTAKING,e.overtaker,e.overtaken,e.stopIndex));
+            for (i=i - 1; i >= 0; --i) {
+              tripPattern.removeHop(i,insertionPoint);
+            }
+            createSimpleHops(graph,trip,stopTimes);
+            simple=true;
             break;
           }
         }
- else {
-          StopTime st1=null;
-          int i;
-          for (i=0; i < stopTimes.size() - 1; i++) {
-            StopTime st0=stopTimes.get(i);
-            st1=stopTimes.get(i + 1);
-            int dwellTime=st0.getDepartureTime() - st0.getArrivalTime();
-            int runningTime=st1.getArrivalTime() - st0.getDepartureTime();
-            if (runningTime < 0) {
-              _log.warn(GraphBuilderAnnotation.register(graph,Variety.NEGATIVE_HOP_TIME,st0,st1));
-              for (i=i - 1; i >= 0; --i) {
-                tripPattern.removeHop(i,insertionPoint);
-              }
-              simple=true;
-              break;
-            }
-            if (dwellTime < 0) {
-              _log.warn(GraphBuilderAnnotation.register(graph,Variety.NEGATIVE_DWELL_TIME,st0));
-              dwellTime=0;
-            }
-            try {
-              tripPattern.addHop(i,insertionPoint,st0.getDepartureTime(),runningTime,st1.getArrivalTime(),dwellTime,st0.getStopHeadsign(),trip);
-            }
- catch (            TripOvertakingException e) {
-              _log.warn(GraphBuilderAnnotation.register(graph,Variety.TRIP_OVERTAKING,e.overtaker,e.overtaken,e.stopIndex));
-              for (i=i - 1; i >= 0; --i) {
-                tripPattern.removeHop(i,insertionPoint);
-              }
-              createSimpleHops(graph,trip,stopTimes);
-              simple=true;
-              break;
-            }
-          }
+      }
+      if (!simple) {
+        if (blockId != null && !blockId.equals("")) {
+          addTripToInterliningMap(trip,stopTimes,tripPattern);
         }
-        if (!simple) {
-          if (blockId != null && !blockId.equals("")) {
-            addTripToInterliningMap(trip,stopTimes,tripPattern);
-          }
-          tripPattern.setTripFlags(insertionPoint,((trip.getWheelchairAccessible() == 1) ? TripPattern.FLAG_WHEELCHAIR_ACCESSIBLE : 0) | (((trip.getRoute().getBikesAllowed() == 2 && trip.getTripBikesAllowed() != 1) || trip.getTripBikesAllowed() == 2) ? TripPattern.FLAG_BIKES_ALLOWED : 0));
-        }
+        tripPattern.setTripFlags(insertionPoint,((trip.getWheelchairAccessible() == 1) ? TripPattern.FLAG_WHEELCHAIR_ACCESSIBLE : 0) | (((trip.getRoute().getBikesAllowed() == 2 && trip.getTripBikesAllowed() != 1) || trip.getTripBikesAllowed() == 2) ? TripPattern.FLAG_BIKES_ALLOWED : 0));
       }
     }
   }

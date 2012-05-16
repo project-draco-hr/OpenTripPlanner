@@ -1,0 +1,63 @@
+{
+  FrequencyBasedTripPattern pattern=new FrequencyBasedTripPattern(trip,stopTimes.size());
+  TraverseMode mode=GtfsLibrary.getTraverseMode(trip.getRoute());
+  int lastStop=stopTimes.size() - 1;
+  int i;
+  StopTime st1=null;
+  TransitVertex psv0arrive, psv1arrive=null;
+  TransitVertex psv0depart;
+  ArrayList<Edge> createdEdges=new ArrayList<Edge>();
+  ArrayList<Vertex> createdVertices=new ArrayList<Vertex>();
+  int offset=stopTimes.get(0).getDepartureTime();
+  for (i=0; i < lastStop; i++) {
+    StopTime st0=stopTimes.get(i);
+    Stop s0=st0.getStop();
+    st1=stopTimes.get(i + 1);
+    Stop s1=st1.getStop();
+    int arrivalTime=st1.getArrivalTime() - offset;
+    int departureTime=st0.getDepartureTime() - offset;
+    int dwellTime=st0.getDepartureTime() - st0.getArrivalTime();
+    int runningTime=arrivalTime - departureTime;
+    if (runningTime < 0) {
+      _log.warn(GraphBuilderAnnotation.register(graph,Variety.NEGATIVE_HOP_TIME,st0,st1));
+      for (      Edge e : createdEdges) {
+        e.getFromVertex().removeOutgoing(e);
+        e.getToVertex().removeIncoming(e);
+      }
+      for (      Vertex v : createdVertices) {
+        graph.removeVertexAndEdges(v);
+      }
+      return null;
+    }
+    if (i != 0) {
+      psv0arrive=psv1arrive;
+      if (dwellTime == 0) {
+        psv0depart=psv0arrive;
+      }
+ else {
+        psv0depart=new PatternDepartVertex(graph,trip,st0);
+        createdVertices.add(psv0depart);
+        FrequencyDwell dwell=new FrequencyDwell(psv0arrive,psv0depart,i,pattern);
+        createdEdges.add(dwell);
+      }
+    }
+ else {
+      psv0depart=new PatternDepartVertex(graph,trip,st0);
+      createdVertices.add(psv0depart);
+    }
+    psv1arrive=new PatternArriveVertex(graph,trip,st1);
+    createdVertices.add(psv1arrive);
+    FrequencyHop hop=new FrequencyHop(psv0depart,psv1arrive,s0,s1,i,pattern);
+    createdEdges.add(hop);
+    hop.setGeometry(getHopGeometry(graph,trip.getShapeId(),st0,st1,psv0depart,psv1arrive));
+    pattern.addHop(i,departureTime,runningTime,arrivalTime,dwellTime,st0.getStopHeadsign());
+    TransitStopDepart stopDepart=stopDepartNodes.get(s0);
+    TransitStopArrive stopArrive=stopArriveNodes.get(s1);
+    Edge board=new FrequencyBoard(stopDepart,psv0depart,pattern,i,mode);
+    Edge alight=new FrequencyAlight(psv1arrive,stopArrive,pattern,i,mode);
+    createdEdges.add(board);
+    createdEdges.add(alight);
+  }
+  pattern.setTripFlags(((trip.getWheelchairAccessible() == 1) ? TripPattern.FLAG_WHEELCHAIR_ACCESSIBLE : 0) | (((trip.getRoute().getBikesAllowed() == 2 && trip.getTripBikesAllowed() != 1) || trip.getTripBikesAllowed() == 2) ? TripPattern.FLAG_BIKES_ALLOWED : 0));
+  return pattern;
+}
