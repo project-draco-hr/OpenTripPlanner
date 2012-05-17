@@ -5,8 +5,7 @@
  else   if (g instanceof MultiLineString) {
     MultiLineString ml=(MultiLineString)g;
     Coordinate[] coords=ml.getCoordinates();
-    GeometryFactory factory=new GeometryFactory(new PrecisionModel(PrecisionModel.FLOATING),4326);
-    return factory.createLineString(coords);
+    return GeometryUtils.getGeometryFactory().createLineString(coords);
   }
  else {
     throw new RuntimeException("found a geometry feature that's not a linestring: " + g);

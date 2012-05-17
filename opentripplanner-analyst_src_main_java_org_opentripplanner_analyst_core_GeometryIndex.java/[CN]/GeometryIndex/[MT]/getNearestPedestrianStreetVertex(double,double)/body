@@ -1,6 +1,6 @@
 {
   Coordinate c=new Coordinate(lon,lat);
-  Point p=geometryFactory.createPoint(c);
+  Point p=GeometryUtils.getGeometryFactory().createPoint(c);
   TurnVertex closestVertex=null;
   double bestDistance=Double.MAX_VALUE;
   Envelope env=new Envelope(c);

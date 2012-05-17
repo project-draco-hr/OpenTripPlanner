@@ -51,7 +51,7 @@
             elevationPoints.add(new ElevationPoint(distance,elevation));
           }
         }
-        geometry=geometryFactory.createLineString(segmentCoordinates.toArray(new Coordinate[0]));
+        geometry=GeometryUtils.getGeometryFactory().createLineString(segmentCoordinates.toArray(new Coordinate[0]));
         segmentCoordinates.clear();
       }
  else {

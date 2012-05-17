@@ -19,7 +19,7 @@
     distances=null;
   }
   CoordinateSequence sequence=new PackedCoordinateSequence.Float(coordinates,2);
-  geometry=_factory.createLineString(sequence);
+  geometry=_geometryFactory.createLineString(sequence);
   _geometriesByShapeId.put(shapeId,geometry);
   _distancesByShapeId.put(shapeId,distances);
   return geometry;

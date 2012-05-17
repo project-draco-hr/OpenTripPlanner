@@ -1,5 +1,4 @@
 {
-  GeometryFactory factory=new GeometryFactory();
   for (  TransferTable.Transfer transfer : graph.getTransferTable().getAllTransfers()) {
     double distance=transfer.from.distance(transfer.to.getCoordinate());
     TransferEdge edge=null;
@@ -14,7 +13,7 @@ default :
 edge=new TransferEdge(transfer.from,transfer.to,distance,transfer.seconds);
 }
 if (edge != null) {
-LineString geometry=factory.createLineString(new Coordinate[]{transfer.from.getCoordinate(),transfer.to.getCoordinate()});
+LineString geometry=GeometryUtils.getGeometryFactory().createLineString(new Coordinate[]{transfer.from.getCoordinate(),transfer.to.getCoordinate()});
 edge.setGeometry(geometry);
 }
 }

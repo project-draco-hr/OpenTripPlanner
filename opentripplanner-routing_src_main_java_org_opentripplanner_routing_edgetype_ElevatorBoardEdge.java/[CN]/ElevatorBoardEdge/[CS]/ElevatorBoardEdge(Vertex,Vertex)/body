@@ -3,5 +3,5 @@
   Coordinate[] coords=new Coordinate[2];
   coords[0]=new Coordinate(from.getX(),from.getY());
   coords[1]=new Coordinate(to.getX(),to.getY());
-  the_geom=new GeometryFactory().createLineString(coords);
+  the_geom=GeometryUtils.getGeometryFactory().createLineString(coords);
 }

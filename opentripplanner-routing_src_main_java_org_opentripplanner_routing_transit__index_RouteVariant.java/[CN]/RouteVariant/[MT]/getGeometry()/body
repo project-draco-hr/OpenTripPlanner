@@ -8,7 +8,7 @@
       }
     }
     Coordinate[] coordArray=new Coordinate[coords.size()];
-    geometry=geometryFactory.createLineString(coords.toArray(coordArray));
+    geometry=GeometryUtils.getGeometryFactory().createLineString(coords.toArray(coordArray));
   }
   return geometry;
 }

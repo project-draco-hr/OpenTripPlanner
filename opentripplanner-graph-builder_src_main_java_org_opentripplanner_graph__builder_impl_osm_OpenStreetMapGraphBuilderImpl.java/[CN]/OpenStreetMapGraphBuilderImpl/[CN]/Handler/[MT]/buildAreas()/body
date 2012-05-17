@@ -97,7 +97,7 @@
             OSMNode nodeJ=nodes.get(j);
             IntersectionVertex endEndpoint=getVertexForOsmNode(nodeJ,areaEntity);
             Coordinate[] coordinates=new Coordinate[]{startEndpoint.getCoordinate(),endEndpoint.getCoordinate()};
-            LineString geometry=geometryFactory.createLineString(coordinates);
+            LineString geometry=GeometryUtils.getGeometryFactory().createLineString(coordinates);
             String id="way (area) " + areaEntity.getId() + " from "+ nodeI.getId()+ " to "+ nodeJ.getId();
             id=unique(id);
             String name=getNameForWay(areaEntity,id);

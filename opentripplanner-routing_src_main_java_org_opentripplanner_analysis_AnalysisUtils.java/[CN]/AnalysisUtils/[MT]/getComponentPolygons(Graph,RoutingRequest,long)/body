@@ -22,13 +22,12 @@
     }
   }
   List<Geometry> geoms=new ArrayList<Geometry>();
-  GeometryFactory gf=new GeometryFactory();
   int mainComponentSize=0;
   int mainComponentIndex=-1;
   int component=0;
   for (  List<Coordinate> coords : componentCoordinates.values()) {
     Coordinate[] coordArray=new Coordinate[coords.size()];
-    ConvexHull hull=new ConvexHull(coords.toArray(coordArray),gf);
+    ConvexHull hull=new ConvexHull(coords.toArray(coordArray),GeometryUtils.getGeometryFactory());
     Geometry geom=hull.getConvexHull();
     if (geom instanceof LineString) {
       geom=geom.buffer(0.01);

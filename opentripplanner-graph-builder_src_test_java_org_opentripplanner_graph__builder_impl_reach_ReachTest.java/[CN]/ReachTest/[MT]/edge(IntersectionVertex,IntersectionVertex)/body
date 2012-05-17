@@ -3,7 +3,7 @@
   Coordinate c2=vB.getCoordinate();
   double length=DistanceLibrary.distance(c1,c2);
   String name=vA.getName() + " - " + vB.getName();
-  GeometryFactory gf=new GeometryFactory();
+  GeometryFactory gf=GeometryUtils.getGeometryFactory();
   LineString geometry=gf.createLineString(new Coordinate[]{c1,c2});
   return new PlainStreetEdge(vA,vB,geometry,name,length,StreetTraversalPermission.ALL,false);
 }

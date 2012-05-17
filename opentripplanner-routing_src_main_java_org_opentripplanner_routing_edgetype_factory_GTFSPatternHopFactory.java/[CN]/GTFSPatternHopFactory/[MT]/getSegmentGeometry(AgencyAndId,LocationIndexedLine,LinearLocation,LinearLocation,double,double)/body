@@ -4,7 +4,7 @@
   if (geometry == null) {
     geometry=locationIndexedLine.extractLine(startIndex,endIndex);
     CoordinateSequence sequence=new PackedCoordinateSequence.Float(geometry.getCoordinates(),2);
-    geometry=_factory.createLineString(sequence);
+    geometry=_geometryFactory.createLineString(sequence);
     _geometriesByShapeSegmentKey.put(key,(LineString)geometry);
   }
   return geometry;

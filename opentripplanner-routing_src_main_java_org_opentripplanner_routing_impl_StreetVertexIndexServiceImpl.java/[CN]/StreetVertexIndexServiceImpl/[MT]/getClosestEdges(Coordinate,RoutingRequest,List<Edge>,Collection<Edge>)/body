@@ -3,8 +3,7 @@
   if (extraEdges != null)   for (  StreetEdge se : IterableLibrary.filter(extraEdges,StreetEdge.class))   extraStreets.add(se);
   for (  StreetEdge se : IterableLibrary.filter(graph.getTemporaryEdges(),StreetEdge.class))   extraStreets.add(se);
   Envelope envelope=new Envelope(coordinate);
-  GeometryFactory factory=new GeometryFactory();
-  Point p=factory.createPoint(coordinate);
+  Point p=GeometryUtils.getGeometryFactory().createPoint(coordinate);
   RoutingRequest walkingOptions=null;
   if (options != null) {
     walkingOptions=options.getWalkingOptions();

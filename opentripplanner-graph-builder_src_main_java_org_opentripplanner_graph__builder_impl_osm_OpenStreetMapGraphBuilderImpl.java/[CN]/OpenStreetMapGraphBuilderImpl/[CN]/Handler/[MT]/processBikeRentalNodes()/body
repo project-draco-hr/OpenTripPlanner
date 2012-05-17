@@ -13,7 +13,7 @@
       }
     }
     String creativeName=wayPropertySet.getCreativeNameForWay(node);
-    BikeRentalStationVertex station=new BikeRentalStationVertex(graph,"bike rental " + node.getId(),node.getLon(),node.getLat(),creativeName,capacity);
+    BikeRentalStationVertex station=new BikeRentalStationVertex(graph,"" + node.getId(),"bike rental " + node.getId(),node.getLon(),node.getLat(),creativeName,capacity);
     new RentABikeOnEdge(station,station);
     new RentABikeOffEdge(station,station);
   }

@@ -13,14 +13,13 @@
           log.warn("Could not match " + variant.getName() + " to street network");
           continue;
         }
-        GeometryFactory gf=geometry.getFactory();
         List<Coordinate> coordinates=new ArrayList<Coordinate>();
         for (        Edge e : edges) {
           coordinates.addAll(Arrays.asList(e.getGeometry().getCoordinates()));
           MapUtils.addToMapList(edgesForRoute.edgesForRoute,route,e);
         }
         Coordinate[] coordinateArray=new Coordinate[coordinates.size()];
-        LineString ls=gf.createLineString(coordinates.toArray(coordinateArray));
+        LineString ls=GeometryUtils.getGeometryFactory().createLineString(coordinates.toArray(coordinateArray));
         variant.setGeometry(ls);
       }
     }
