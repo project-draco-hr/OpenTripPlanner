@@ -7,6 +7,9 @@
       coords.add(c);
     }
   }
+  if (coords.size() < 2) {
+    return null;
+  }
   Coordinate[] coordArray=new Coordinate[coords.size()];
   return routeGeometry.getFactory().createLineString(coords.toArray(coordArray));
 }

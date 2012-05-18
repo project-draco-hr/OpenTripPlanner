@@ -1,5 +1,6 @@
 {
   routeGeometry=removeDuplicatePoints(routeGeometry);
+  if (routeGeometry == null)   return null;
   LocationIndexedLine indexedLine=new LocationIndexedLine(routeGeometry);
   LinearLocation startIndex=indexedLine.getStartIndex();
   Coordinate routeStartCoordinate=startIndex.getCoordinate(routeGeometry);
