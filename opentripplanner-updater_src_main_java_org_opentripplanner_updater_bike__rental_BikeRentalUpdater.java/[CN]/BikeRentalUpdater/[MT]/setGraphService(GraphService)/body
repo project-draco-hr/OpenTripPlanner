@@ -1,5 +1,10 @@
 {
-  graph=graphService.getGraph();
+  if (routerId != null) {
+    graph=graphService.getGraph(routerId);
+  }
+ else {
+    graph=graphService.getGraph();
+  }
   networkLinkerLibrary=new NetworkLinkerLibrary(graph,Collections.<Class<?>,Object>emptyMap());
   service=graph.getService(BikeRentalStationService.class);
   if (service == null) {
