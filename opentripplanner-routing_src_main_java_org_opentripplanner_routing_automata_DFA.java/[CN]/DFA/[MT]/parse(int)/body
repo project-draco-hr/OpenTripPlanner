@@ -1,0 +1,8 @@
+{
+  int state=0;
+  for (  int sym : symbols) {
+    state=table[state][sym];
+    if (state == AutomatonState.REJECT)     return false;
+  }
+  return acceptStates.contains(state);
+}
