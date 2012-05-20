@@ -1,9 +1,0 @@
-{
-  Set<Character> charSet=new HashSet<Character>();
-  for (  AutomatonState as : this)   for (  char c : as.label.toCharArray())   charSet.add(c);
-  List<Character> chars=new ArrayList<Character>(charSet);
-  Collections.sort(chars);
-  StringBuilder sb=new StringBuilder();
-  for (  char c : chars)   sb.append(c);
-  return sb.toString();
-}

@@ -1,4 +1,5 @@
 {
   super(nfa.nt,false);
-  table=determinize(nfa);
+  this.table=determinize(nfa);
+  this.relabelNodes();
 }

@@ -5,6 +5,7 @@
     AutomatonState accept=nt.build(start);
     this.startStates.add(start);
     this.acceptStates.add(accept);
-    states.addAll(findStates());
+    this.states.addAll(findStates());
+    this.relabelNodes();
   }
 }
