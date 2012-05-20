@@ -1,6 +1,6 @@
 {
   Nonterminal plus=new NTKleenePlus(nt);
-  AutomatonState exit=plus.build(start);
-  start.epsilonTransitions.add(exit);
-  return exit;
+  AutomatonState out=plus.build(in);
+  in.epsilonTransitions.add(out);
+  return out;
 }

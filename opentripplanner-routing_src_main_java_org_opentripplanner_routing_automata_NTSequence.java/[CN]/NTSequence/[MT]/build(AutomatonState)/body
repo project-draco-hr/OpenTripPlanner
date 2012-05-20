@@ -1,7 +1,7 @@
 {
-  AutomatonState exit=start;
+  AutomatonState out=in;
   for (  Nonterminal nt : nts) {
-    exit=nt.build(exit);
+    out=nt.build(out);
   }
-  return exit;
+  return out;
 }
