@@ -11,4 +11,6 @@
   this.stateData.tripSeqHash=0;
   this.stateData.usingRentedBike=false;
   this.time=time;
+  this.pathParserStates=new int[options.rctx.pathParsers.length];
+  Arrays.fill(this.pathParserStates,AutomatonState.START);
 }
