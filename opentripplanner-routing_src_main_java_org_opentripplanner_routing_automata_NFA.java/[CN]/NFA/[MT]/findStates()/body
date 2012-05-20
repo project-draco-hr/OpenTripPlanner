@@ -1,16 +1,14 @@
 {
   Set<AutomatonState> states=new HashSet<AutomatonState>();
-{
-    Queue<AutomatonState> q=new LinkedList<AutomatonState>();
-    q.addAll(startStates);
-    states.addAll(startStates);
-    while (!q.isEmpty()) {
-      AutomatonState s=q.poll();
-      List<AutomatonState> targets=new ArrayList<AutomatonState>();
-      for (      Transition transition : s.transitions)       targets.add(transition.target);
-      targets.addAll(s.epsilonTransitions);
-      for (      AutomatonState target : targets)       if (states.add(target))       q.add(target);
-    }
+  Queue<AutomatonState> q=new LinkedList<AutomatonState>();
+  q.addAll(startStates);
+  states.addAll(startStates);
+  while (!q.isEmpty()) {
+    AutomatonState s=q.poll();
+    Set<AutomatonState> targets=new HashSet<AutomatonState>();
+    for (    Transition transition : s.transitions)     targets.add(transition.target);
+    targets.addAll(s.epsilonTransitions);
+    for (    AutomatonState target : targets)     if (states.add(target))     q.add(target);
   }
   return states;
 }
