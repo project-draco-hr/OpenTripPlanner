@@ -1,8 +1,8 @@
 {
-  int state=0;
-  for (  int sym : symbols) {
-    state=table[state][sym];
+  int state=AutomatonState.START;
+  for (  int terminal : terminals) {
+    state=transition(state,terminal);
     if (state == AutomatonState.REJECT)     return false;
   }
-  return acceptStates.contains(states.get(state));
+  return this.accepts(state);
 }
