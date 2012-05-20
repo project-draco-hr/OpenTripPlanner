@@ -3,7 +3,7 @@
   if (stateList == null)   return Collections.emptyList();
   List<GraphPath> ret=new LinkedList<GraphPath>();
   for (  State s : stateList) {
-    if (s.isFinal())     ret.add(new GraphPath(s,optimize));
+    if (s.isFinal() && s.allPathParsersAccept())     ret.add(new GraphPath(s,optimize));
   }
   return ret;
 }

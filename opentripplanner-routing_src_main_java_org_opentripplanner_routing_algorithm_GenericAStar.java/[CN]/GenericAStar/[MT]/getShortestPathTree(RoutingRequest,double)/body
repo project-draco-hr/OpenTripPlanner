@@ -33,7 +33,7 @@
     if (_searchTerminationStrategy != null) {
       if (!_searchTerminationStrategy.shouldSearchContinue(rctx.origin,rctx.target,u,spt,options))       break;
     }
- else     if (!options.batch && u_vertex == rctx.target && u.isFinal()) {
+ else     if (!options.batch && u_vertex == rctx.target && u.isFinal() && u.allPathParsersAccept()) {
       LOG.debug("total vertices visited {}",nVisited);
       storeMemory();
       return spt;
