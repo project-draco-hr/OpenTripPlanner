@@ -1,5 +1,7 @@
 {
-  AutomatonState exit=nt.build(start);
-  exit.add(new EpsilonTransition(start));
-  return exit;
+  AutomatonState start=new AutomatonState();
+  in.epsilonTransitions.add(start);
+  AutomatonState end=nt.build(start);
+  end.epsilonTransitions.add(start);
+  return end;
 }

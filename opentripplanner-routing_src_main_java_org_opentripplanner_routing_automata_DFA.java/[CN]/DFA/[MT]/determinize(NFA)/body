@@ -3,6 +3,7 @@
   Map<DFAState,AutomatonState> newStates=new HashMap<DFAState,AutomatonState>();
   Queue<DFAState> queue=new LinkedList<DFAState>();
   DFAState dStart=new DFAState(nfa.start);
+  dStart.followEpsilons();
   newStates.put(dStart,this.start);
   queue.add(dStart);
   Set<AutomatonState> acceptStates=new HashSet<AutomatonState>();
@@ -15,13 +16,12 @@
         acceptStates.add(fromAutomatonState);
         fromAutomatonState.accept=true;
       }
-      for (      Transition t : as) {
-        if (t.token == Transition.EPSILON)         continue;
-        if (t.token > maxTerminal)         maxTerminal=t.token;
-        DFAState targets=transitions.get(t.token);
+      for (      Transition t : as.transitions) {
+        if (t.terminal > maxTerminal)         maxTerminal=t.terminal;
+        DFAState targets=transitions.get(t.terminal);
         if (targets == null) {
           targets=new DFAState();
-          transitions.put(t.token,targets);
+          transitions.put(t.terminal,targets);
         }
         targets.add(t.target);
       }
@@ -32,11 +32,11 @@
       target.followEpsilons();
       AutomatonState toAutomatonState=newStates.get(target);
       if (toAutomatonState == null) {
-        toAutomatonState=new AutomatonState();
+        toAutomatonState=new AutomatonState(target.deriveLabel());
         newStates.put(target,toAutomatonState);
         queue.add(target);
       }
-      fromAutomatonState.add(new SymbolTransition(token,toAutomatonState));
+      fromAutomatonState.transitions.add(new Transition(token,toAutomatonState));
     }
   }
   int[][] table=new int[newStates.size()][maxTerminal + 1];
@@ -48,7 +48,7 @@
   for (  AutomatonState as : newStates.values())   stateNumbers.put(as,i++);
   for (  AutomatonState as : newStates.values()) {
     int row=stateNumbers.get(as);
-    for (    Transition t : as)     table[row][t.token]=stateNumbers.get(t.target);
+    for (    Transition t : as.transitions)     table[row][t.terminal]=stateNumbers.get(t.target);
     row++;
   }
   for (  AutomatonState as : acceptStates)   this.acceptStates.add(stateNumbers.get(as));

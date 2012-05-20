@@ -1,6 +1,6 @@
 {
   this.nt=nt;
-  this.start=new AutomatonState();
+  this.start=new AutomatonState("START");
   AutomatonState acceptState=nt.build(start);
   acceptState.accept=true;
 }

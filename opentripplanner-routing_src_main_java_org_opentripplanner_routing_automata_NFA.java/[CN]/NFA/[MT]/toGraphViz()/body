@@ -1,33 +1,36 @@
 {
-  Queue<AutomatonState> q=new LinkedList<AutomatonState>();
-  Map<AutomatonState,String> names=new HashMap<AutomatonState,String>();
-  q.add(start);
-  names.put(start,"START");
-  char counter='A';
-  while (!q.isEmpty()) {
-    AutomatonState s=q.poll();
-    for (    Transition e : s) {
-      if (!names.containsKey(e.target)) {
-        names.put(e.target,Character.toString(counter++));
-        q.add(e.target);
-      }
+  Set<AutomatonState> states=new HashSet<AutomatonState>();
+{
+    Queue<AutomatonState> q=new LinkedList<AutomatonState>();
+    q.add(start);
+    states.add(start);
+    while (!q.isEmpty()) {
+      AutomatonState s=q.poll();
+      List<AutomatonState> targets=new ArrayList<AutomatonState>();
+      for (      Transition transition : s.transitions)       targets.add(transition.target);
+      targets.addAll(s.epsilonTransitions);
+      for (      AutomatonState target : targets)       if (states.add(target))       q.add(target);
     }
   }
   StringBuilder sb=new StringBuilder();
   sb.append("digraph automaton { \n");
   sb.append("  rankdir=LR; \n");
   sb.append("  node [shape = doublecircle]; \n");
-  for (  AutomatonState as : names.keySet())   if (as.accept)   sb.append(String.format("  %s; \n",names.get(as)));
+  for (  AutomatonState as : states)   if (as.accept)   sb.append(String.format("  %s; \n",as.label));
   sb.append("  node [shape = circle]; \n");
-  for (  AutomatonState as : names.keySet()) {
-    for (    Transition e : as) {
-      sb.append("  ");
-      sb.append(names.get(as));
-      sb.append("->");
-      sb.append(names.get(e.target));
-      String label=Integer.toString(e.token);
-      if (e.token == Transition.EPSILON)       label="e";
+  for (  AutomatonState fromState : states) {
+    for (    Transition transition : fromState.transitions) {
+      sb.append("  " + fromState.label);
+      sb.append(" -> ");
+      sb.append(transition.target.label);
+      String label=Integer.toString(transition.terminal);
       sb.append(String.format(" [label=%s];\n",label));
+    }
+    for (    AutomatonState toState : fromState.epsilonTransitions) {
+      sb.append("  " + fromState.label);
+      sb.append(" -> ");
+      sb.append(toState.label);
+      sb.append(" [label=??];\n");
     }
   }
   sb.append("}\n");
