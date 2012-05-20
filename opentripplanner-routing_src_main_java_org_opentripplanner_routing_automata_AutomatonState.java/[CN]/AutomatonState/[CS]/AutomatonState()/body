@@ -1,3 +1,5 @@
 {
-  this(Character.toString(nextLabel++));
+  this(Character.toString(nextLabel));
+  nextLabel++;
+  if (nextLabel > 'Z')   nextLabel='A';
 }

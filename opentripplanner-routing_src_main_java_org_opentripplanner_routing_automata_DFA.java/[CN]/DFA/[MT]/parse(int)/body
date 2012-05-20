@@ -4,5 +4,5 @@
     state=table[state][sym];
     if (state == AutomatonState.REJECT)     return false;
   }
-  return acceptStates.contains(state);
+  return acceptStates.contains(states.get(state));
 }

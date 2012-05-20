@@ -1,22 +1,10 @@
 {
-  Set<AutomatonState> states=new HashSet<AutomatonState>();
-{
-    Queue<AutomatonState> q=new LinkedList<AutomatonState>();
-    q.add(start);
-    states.add(start);
-    while (!q.isEmpty()) {
-      AutomatonState s=q.poll();
-      List<AutomatonState> targets=new ArrayList<AutomatonState>();
-      for (      Transition transition : s.transitions)       targets.add(transition.target);
-      targets.addAll(s.epsilonTransitions);
-      for (      AutomatonState target : targets)       if (states.add(target))       q.add(target);
-    }
-  }
+  Set<AutomatonState> states=this.findStates();
   StringBuilder sb=new StringBuilder();
   sb.append("digraph automaton { \n");
   sb.append("  rankdir=LR; \n");
   sb.append("  node [shape = doublecircle]; \n");
-  for (  AutomatonState as : states)   if (as.accept)   sb.append(String.format("  %s; \n",as.label));
+  for (  AutomatonState as : acceptStates)   sb.append(String.format("  %s; \n",as.label));
   sb.append("  node [shape = circle]; \n");
   for (  AutomatonState fromState : states) {
     for (    Transition transition : fromState.transitions) {

@@ -2,11 +2,13 @@
   int maxTerminal=0;
   Map<NFAStateSet,AutomatonState> dfaStates=new HashMap<NFAStateSet,AutomatonState>();
   Queue<NFAStateSet> queue=new LinkedList<NFAStateSet>();
-  Set<AutomatonState> dfaAcceptStates=new HashSet<AutomatonState>();
 {
-    NFAStateSet startSet=new NFAStateSet(nfa.start);
+    AutomatonState dfaStart=new AutomatonState("START");
+    this.startStates.add(dfaStart);
+    this.states.add(dfaStart);
+    NFAStateSet startSet=new NFAStateSet(nfa.startStates);
     startSet.followEpsilons();
-    dfaStates.put(startSet,this.start);
+    dfaStates.put(startSet,dfaStart);
     queue.add(startSet);
   }
   while (!queue.isEmpty()) {
@@ -14,10 +16,7 @@
     AutomatonState dfaFromState=dfaStates.get(nfaFromStates);
     Map<Integer,NFAStateSet> dfaTransitions=new HashMap<Integer,NFAStateSet>();
     for (    AutomatonState nfaFromState : nfaFromStates) {
-      if (nfaFromState.accept) {
-        dfaAcceptStates.add(dfaFromState);
-        dfaFromState.accept=true;
-      }
+      if (nfa.acceptStates.contains(nfaFromState))       this.acceptStates.add(dfaFromState);
       for (      Transition t : nfaFromState.transitions) {
         if (t.terminal > maxTerminal)         maxTerminal=t.terminal;
         NFAStateSet nfaTargetStates=dfaTransitions.get(t.terminal);
@@ -34,23 +33,16 @@
       nfaToStates.followEpsilons();
       AutomatonState dfaToState=dfaStates.get(nfaToStates);
       if (dfaToState == null) {
-        dfaToState=new AutomatonState(nfaToStates.deriveLabel());
+        dfaToState=new AutomatonState();
         dfaStates.put(nfaToStates,dfaToState);
+        this.states.add(dfaToState);
         queue.add(nfaToStates);
       }
       dfaFromState.transitions.add(new Transition(terminal,dfaToState));
     }
   }
-  int[][] table=new int[dfaStates.size()][maxTerminal + 1];
+  int[][] table=new int[this.states.size()][maxTerminal + 1];
   for (  int[] row : table)   Arrays.fill(row,AutomatonState.REJECT);
-  Map<AutomatonState,Integer> stateNumbers=new HashMap<AutomatonState,Integer>();
-  int i=0;
-  for (  AutomatonState as : dfaStates.values())   stateNumbers.put(as,i++);
-  for (  AutomatonState as : dfaStates.values()) {
-    int row=stateNumbers.get(as);
-    for (    Transition t : as.transitions)     table[row][t.terminal]=stateNumbers.get(t.target);
-    row++;
-  }
-  for (  AutomatonState as : dfaAcceptStates)   this.acceptStates.add(stateNumbers.get(as));
+  for (int row=0; row < this.states.size(); row++)   for (  Transition t : this.states.get(row).transitions)   table[row][t.terminal]=this.states.indexOf(t.target);
   return table;
 }
