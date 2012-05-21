@@ -1,0 +1,8 @@
+{
+  int state=AutomatonState.START;
+  for (  int terminal : terminals) {
+    state=transition(state,terminal);
+    if (state == AutomatonState.REJECT)     return false;
+  }
+  return this.accepts(state);
+}

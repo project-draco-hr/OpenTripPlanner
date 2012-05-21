@@ -4,29 +4,38 @@
     LOG.debug("routerId not specified, set to default of '{}'",routerId);
   }
   Graph graph;
-  File graphFile=getFileForRouterId(routerId);
-  graph=graphs.get(graphFile.getAbsolutePath());
-  Long modTime=modTimes.get(graphFile.getAbsolutePath());
-  LOG.debug("graph for routerId '{}' is at {}",routerId,graphFile.getAbsolutePath());
-  if (graphFile == null || !graphFile.exists()) {
-    LOG.warn("graph file not found: {}",graphFile);
-    if (routerId.equals(defaultRouterId)) {
-      LOG.warn("graph for default routerId {} does not exist at {}",routerId,graphFile);
-      return null;
-    }
-    return getGraph(null);
+  String resourceName;
+  if (routerId.indexOf("../") != -1) {
+    LOG.warn("attempt to navigate up the directory hierarchy using a routerId");
+    return null;
   }
-  if (modTime == null || graphFile.lastModified() > modTime) {
-    LOG.debug("this graph has changed or was not yet loaded");
-    modTime=graphFile.lastModified();
+ else {
+    resourceName=resourcePattern.replace("{}",routerId);
+  }
+  LOG.debug("graph for routerId '{}' is at {}",routerId,resourceName);
+  graph=graphs.get(resourceName);
+  if (graph == null) {
+    LOG.debug("this graph was not yet loaded");
+    InputStream is;
     try {
-      graph=Graph.load(graphFile,loadLevel);
-      modTimes.put(graphFile.getAbsolutePath(),modTime);
-      graphs.put(graphFile.getAbsolutePath(),graph);
+      Resource resource=resourceLoader.getResource(resourceName.concat("/Graph.obj"));
+      is=resource.getInputStream();
+    }
+ catch (    Exception e) {
+      LOG.warn("graph file not found at {}",resourceName);
+      if (routerId.equals(defaultRouterId)) {
+        LOG.warn("graph for default routerId {} does not exist at {}",routerId,resourceName);
+        return null;
+      }
+      return getGraph(null);
+    }
+    try {
+      graph=Graph.load(is,LoadLevel.FULL);
+      graphs.put(resourceName,graph);
     }
  catch (    Exception ex) {
-      LOG.error("Exception while loading graph from {}.",graphFile);
-      throw new RuntimeException("error loading graph from " + graphFile,ex);
+      LOG.error("Exception while loading graph from {}.",resourceName);
+      throw new RuntimeException("error loading graph from " + resourceName,ex);
     }
   }
  else {

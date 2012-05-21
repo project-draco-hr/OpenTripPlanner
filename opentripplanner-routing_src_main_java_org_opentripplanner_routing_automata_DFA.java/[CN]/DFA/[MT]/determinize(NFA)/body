@@ -1,0 +1,48 @@
+{
+  int maxTerminal=0;
+  Map<NFAStateSet,AutomatonState> dfaStates=new HashMap<NFAStateSet,AutomatonState>();
+  Queue<NFAStateSet> queue=new LinkedList<NFAStateSet>();
+{
+    AutomatonState dfaStart=new AutomatonState("START");
+    this.startStates.add(dfaStart);
+    this.states.add(dfaStart);
+    NFAStateSet startSet=new NFAStateSet(nfa.startStates);
+    startSet.followEpsilons();
+    dfaStates.put(startSet,dfaStart);
+    queue.add(startSet);
+  }
+  while (!queue.isEmpty()) {
+    NFAStateSet nfaFromStates=queue.poll();
+    AutomatonState dfaFromState=dfaStates.get(nfaFromStates);
+    Map<Integer,NFAStateSet> dfaTransitions=new HashMap<Integer,NFAStateSet>();
+    for (    AutomatonState nfaFromState : nfaFromStates) {
+      if (nfa.acceptStates.contains(nfaFromState))       this.acceptStates.add(dfaFromState);
+      for (      Transition t : nfaFromState.transitions) {
+        if (t.terminal > maxTerminal)         maxTerminal=t.terminal;
+        NFAStateSet nfaTargetStates=dfaTransitions.get(t.terminal);
+        if (nfaTargetStates == null) {
+          nfaTargetStates=new NFAStateSet();
+          dfaTransitions.put(t.terminal,nfaTargetStates);
+        }
+        nfaTargetStates.add(t.target);
+      }
+    }
+    for (    Entry<Integer,NFAStateSet> t : dfaTransitions.entrySet()) {
+      int terminal=t.getKey();
+      NFAStateSet nfaToStates=t.getValue();
+      nfaToStates.followEpsilons();
+      AutomatonState dfaToState=dfaStates.get(nfaToStates);
+      if (dfaToState == null) {
+        dfaToState=new AutomatonState();
+        dfaStates.put(nfaToStates,dfaToState);
+        this.states.add(dfaToState);
+        queue.add(nfaToStates);
+      }
+      dfaFromState.transitions.add(new Transition(terminal,dfaToState));
+    }
+  }
+  int[][] table=new int[this.states.size()][maxTerminal + 1];
+  for (  int[] row : table)   Arrays.fill(row,AutomatonState.REJECT);
+  for (int row=0; row < this.states.size(); row++)   for (  Transition t : this.states.get(row).transitions)   table[row][t.terminal]=this.states.indexOf(t.target);
+  return table;
+}

@@ -1,0 +1,7 @@
+{
+  Vertex v=state.getVertex();
+  if (v instanceof StreetVertex || v instanceof StreetLocation)   return WALK;
+  if (v instanceof OnboardVertex)   return TRANSIT;
+  if (v instanceof OffboardVertex)   return STATION;
+ else   throw new RuntimeException("failed to tokenize path");
+}

@@ -1,0 +1,26 @@
+{
+  Set<AutomatonState> states=this.findStates();
+  StringBuilder sb=new StringBuilder();
+  sb.append("digraph automaton { \n");
+  sb.append("  rankdir=LR; \n");
+  sb.append("  node [shape = doublecircle]; \n");
+  for (  AutomatonState as : acceptStates)   sb.append(String.format("  %s; \n",as.label));
+  sb.append("  node [shape = circle]; \n");
+  for (  AutomatonState fromState : states) {
+    for (    Transition transition : fromState.transitions) {
+      sb.append("  " + fromState.label);
+      sb.append(" -> ");
+      sb.append(transition.target.label);
+      String label=Integer.toString(transition.terminal);
+      sb.append(String.format(" [label=%s];\n",label));
+    }
+    for (    AutomatonState toState : fromState.epsilonTransitions) {
+      sb.append("  " + fromState.label);
+      sb.append(" -> ");
+      sb.append(toState.label);
+      sb.append(" [label=??];\n");
+    }
+  }
+  sb.append("}\n");
+  return sb.toString();
+}

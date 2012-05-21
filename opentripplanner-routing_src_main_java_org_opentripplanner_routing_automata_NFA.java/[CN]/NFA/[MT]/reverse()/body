@@ -1,0 +1,20 @@
+{
+  Set<AutomatonState> states=this.findStates();
+  Map<AutomatonState,AutomatonState> newStates=new HashMap<AutomatonState,AutomatonState>();
+  for (  AutomatonState state : states)   newStates.put(state,new AutomatonState(state.label));
+  for (  AutomatonState oldFromState : states) {
+    AutomatonState newToState=newStates.get(oldFromState);
+    for (    Transition t : oldFromState.transitions) {
+      AutomatonState newFromState=newStates.get(t.target);
+      newFromState.transitions.add(new Transition(t.terminal,newToState));
+    }
+    for (    AutomatonState oldToState : oldFromState.epsilonTransitions) {
+      AutomatonState newFromState=newStates.get(oldToState);
+      newFromState.epsilonTransitions.add(newToState);
+    }
+  }
+  NFA result=new NFA(this.nt,false);
+  for (  AutomatonState old : this.acceptStates)   result.startStates.add(newStates.get(old));
+  for (  AutomatonState old : this.startStates)   result.acceptStates.add(newStates.get(old));
+  return result;
+}

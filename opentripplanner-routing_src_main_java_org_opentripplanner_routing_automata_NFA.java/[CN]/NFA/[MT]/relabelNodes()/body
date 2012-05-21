@@ -1,0 +1,10 @@
+{
+  char c='A';
+  for (  AutomatonState state : this.states) {
+    if (state.label == null) {
+      state.label=Character.toString(c);
+      c+=1;
+      if (c > 'Z')       c='A';
+    }
+  }
+}

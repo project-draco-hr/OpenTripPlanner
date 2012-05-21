@@ -1,0 +1,11 @@
+{
+  this.nt=nt;
+  if (build) {
+    AutomatonState start=new AutomatonState("START");
+    AutomatonState accept=nt.build(start);
+    this.startStates.add(start);
+    this.acceptStates.add(accept);
+    this.states.addAll(findStates());
+    this.relabelNodes();
+  }
+}

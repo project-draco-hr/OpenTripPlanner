@@ -1,0 +1,11 @@
+{
+  Collection<AutomatonState> outs=new LinkedList<AutomatonState>();
+  for (  Nonterminal nt : nts) {
+    outs.add(nt.build(in));
+  }
+  AutomatonState out=new AutomatonState();
+  for (  AutomatonState subExit : outs) {
+    subExit.epsilonTransitions.add(out);
+  }
+  return out;
+}

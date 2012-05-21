@@ -1,0 +1,19 @@
+{
+  StringBuilder sb=new StringBuilder();
+  sb.append("AutomatonState ");
+  sb.append(label);
+  sb.append(" transitions ");
+  for (  Transition transition : this.transitions) {
+    sb.append(transition.terminal);
+    sb.append("-");
+    sb.append(transition.target.label);
+    sb.append(" ");
+  }
+  sb.append(" epsilon moves {");
+  for (  AutomatonState as : this.epsilonTransitions) {
+    sb.append(as.label);
+    sb.append(" ");
+  }
+  sb.append("}");
+  return sb.toString();
+}
