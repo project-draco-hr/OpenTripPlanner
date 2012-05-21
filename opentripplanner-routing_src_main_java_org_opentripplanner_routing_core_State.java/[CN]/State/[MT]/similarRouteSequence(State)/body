@@ -1,0 +1,8 @@
+{
+  AgencyAndId[] rs0=this.stateData.routeSequence;
+  AgencyAndId[] rs1=that.stateData.routeSequence;
+  if (rs0 == rs1)   return true;
+  int n=rs0.length < rs1.length ? rs0.length : rs1.length;
+  for (int i=0; i < n; i++)   if (rs0[i] != rs1[i])   return false;
+  return true;
+}

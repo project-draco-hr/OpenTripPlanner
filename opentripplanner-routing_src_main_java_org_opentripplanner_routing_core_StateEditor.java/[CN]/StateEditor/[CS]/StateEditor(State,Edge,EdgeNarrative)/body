@@ -25,14 +25,14 @@
       child.vertex=en.getFromVertex();
     }
  else {
-      _log.warn("Edge is not connected to parent state: {}",en);
-      _log.warn("   from   vertex: {}",en.getFromVertex());
-      _log.warn("   to     vertex: {}",en.getToVertex());
-      _log.warn("   parent vertex: {}",parent.vertex);
+      LOG.warn("Edge is not connected to parent state: {}",en);
+      LOG.warn("   from   vertex: {}",en.getFromVertex());
+      LOG.warn("   to     vertex: {}",en.getToVertex());
+      LOG.warn("   parent vertex: {}",parent.vertex);
       defectiveTraversal=true;
     }
     if (traversingBackward != parent.getOptions().isArriveBy()) {
-      _log.error("Actual traversal direction does not match traversal direction in TraverseOptions.");
+      LOG.error("Actual traversal direction does not match traversal direction in TraverseOptions.");
       defectiveTraversal=true;
     }
     if (parent.stateData.noThruTrafficState == NoThruTrafficState.INIT && !(e instanceof FreeEdge)) {

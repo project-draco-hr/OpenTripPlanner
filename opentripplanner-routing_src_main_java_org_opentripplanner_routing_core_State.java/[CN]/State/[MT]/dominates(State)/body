@@ -3,7 +3,7 @@
     return false;
   }
   if (isBikeRenting() != other.isBikeRenting())   return false;
-  if (this.similarTripSeq(other)) {
+  if (this.similarRouteSequence(other)) {
     return this.weight <= other.weight;
   }
   double weightDiff=this.weight / other.weight;

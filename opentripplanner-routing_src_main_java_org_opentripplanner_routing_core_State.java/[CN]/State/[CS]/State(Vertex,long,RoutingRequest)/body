@@ -8,11 +8,11 @@
   this.stateData=new StateData();
   this.stateData.opt=options;
   this.stateData.startTime=time;
-  this.stateData.tripSeqHash=0;
   this.stateData.usingRentedBike=false;
   this.time=time;
   if (options.rctx != null) {
     this.pathParserStates=new int[options.rctx.pathParsers.length];
     Arrays.fill(this.pathParserStates,AutomatonState.START);
   }
+  stateData.routeSequence=new AgencyAndId[0];
 }
