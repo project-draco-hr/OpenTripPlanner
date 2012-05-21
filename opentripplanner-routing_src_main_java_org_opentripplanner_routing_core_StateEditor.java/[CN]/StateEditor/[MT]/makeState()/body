@@ -1,13 +1,13 @@
 {
   if (spawned)   throw new IllegalStateException("A StateEditor can only be used once.");
   if (defectiveTraversal) {
-    _log.error("Defective traversal flagged on edge " + child.backEdge);
+    LOG.error("Defective traversal flagged on edge " + child.backEdge);
     return null;
   }
   if (child.backState != null) {
     child.checkNegativeWeight();
     if (traversingBackward ? (child.getTimeDeltaSec() > 0) : (child.getTimeDeltaSec() < 0)) {
-      _log.trace("Time was incremented the wrong direction during state editing. {}",child.backEdge);
+      LOG.trace("Time was incremented the wrong direction during state editing. {}",child.backEdge);
       return null;
     }
     if (!applyPatches()) {

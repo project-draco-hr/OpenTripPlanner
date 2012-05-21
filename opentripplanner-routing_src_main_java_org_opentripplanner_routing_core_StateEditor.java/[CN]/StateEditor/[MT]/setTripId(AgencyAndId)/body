@@ -1,10 +1,4 @@
 {
-  final int SMALL_PRIME=31;
-  final int LARGE_PRIME=24421;
   cloneStateDataAsNeeded();
   child.stateData.tripId=tripId;
-  if (tripId != null) {
-    child.stateData.tripSeqHash*=LARGE_PRIME;
-    child.stateData.tripSeqHash+=tripId.getId().hashCode() * SMALL_PRIME;
-  }
 }

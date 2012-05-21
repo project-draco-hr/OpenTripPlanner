@@ -5,6 +5,5 @@
   s1.incrementWeight(elapsed);
   if (s0.getOptions().isArriveBy())   s1.setZone(getStartStop().getZoneId());
  else   s1.setZone(getEndStop().getZoneId());
-  s1.setRoute(start.getTrip().getRoute().getId());
   return s1.makeState();
 }
