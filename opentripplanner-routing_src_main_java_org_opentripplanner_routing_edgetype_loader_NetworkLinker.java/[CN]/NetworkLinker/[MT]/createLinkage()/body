@@ -10,6 +10,12 @@
       }
     }
   }
+  for (  HashSet<StreetEdge> toRemove : networkLinkerLibrary.replacements.keySet()) {
+    for (    StreetEdge edge : toRemove) {
+      edge.getFromVertex().removeOutgoing(edge);
+      edge.getToVertex().removeIncoming(edge);
+    }
+  }
   networkLinkerLibrary.markLocalStops();
   FindMaxWalkDistances.find(graph);
   _log.debug("Linking bike rental stations...");

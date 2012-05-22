@@ -1,4 +1,12 @@
 {
+  if (edges.size() == 2) {
+    Iterator<StreetEdge> it=edges.iterator();
+    Edge firstEdge=it.next();
+    Edge secondEdge=it.next();
+    if (firstEdge instanceof PlainStreetEdge && secondEdge instanceof PlainStreetEdge) {
+      return new P2<PlainStreetEdge>((PlainStreetEdge)firstEdge,(PlainStreetEdge)secondEdge);
+    }
+  }
   P2<Entry<TurnVertex,Set<Edge>>> ends=findEndVertices(edges);
   Entry<TurnVertex,Set<Edge>> start=ends.getFirst();
   Entry<TurnVertex,Set<Edge>> end=ends.getSecond();
