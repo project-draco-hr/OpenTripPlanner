@@ -1,4 +1,5 @@
 {
-  int[] stopDwellTimes=dwellTimes[stopIndex];
-  return stopDwellTimes[trip];
+  int arrivalTime=getArrivalTime(stopIndex - 1,trip);
+  int departureTime=getDepartureTime(stopIndex,trip);
+  return departureTime - arrivalTime;
 }
