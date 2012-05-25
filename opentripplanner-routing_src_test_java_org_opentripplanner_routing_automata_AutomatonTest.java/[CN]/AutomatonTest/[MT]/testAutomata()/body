@@ -1,7 +1,4 @@
 {
-  Nonterminal walkLeg=plus(WALK);
-  Nonterminal transitLeg=plus(plus(STATION),plus(TRANSIT),plus(STATION));
-  Nonterminal itinerary=seq(walkLeg,star(transitLeg,walkLeg));
   NFA nfa=itinerary.toNFA();
   System.out.print(nfa.toGraphViz());
   DFA dfa=new DFA(nfa);

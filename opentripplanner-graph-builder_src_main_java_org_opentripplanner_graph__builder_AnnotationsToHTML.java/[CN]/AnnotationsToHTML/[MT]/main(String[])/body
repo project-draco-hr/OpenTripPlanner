@@ -1,0 +1,22 @@
+{
+  @SuppressWarnings("unchecked") List<Logger> loggers=Collections.<Logger>list(LogManager.getCurrentLoggers());
+  loggers.add(LogManager.getRootLogger());
+  for (  Logger logger : loggers) {
+    logger.setLevel(Level.OFF);
+  }
+  if (args.length < 1) {
+    System.out.println("Usage: AnnotationsToHTML /path/to/graph");
+  }
+  String graphPath=args[0];
+  File path=new File(graphPath);
+  if (path.getName().equals("Graph.obj")) {
+    path=path.getParentFile();
+  }
+  try {
+    Graph graph=Graph.load(new File(graphPath),Graph.LoadLevel.BASIC);
+    process(graph,graphPath);
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+  }
+}
