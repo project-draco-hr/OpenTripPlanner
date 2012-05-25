@@ -9,11 +9,12 @@
     int bestWait=-1;
     int bestPatternIndex=-1;
     AgencyAndId serviceId=getPattern().getExemplar().getServiceId();
+    TraverseMode mode=state0.getNonTransitMode(options);
     SD:     for (    ServiceDay sd : rctx.serviceDays) {
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
       if (secondsSinceMidnight < 0)       continue;
       if (sd.serviceIdRunning(serviceId)) {
-        int patternIndex=pattern.getPreviousTrip(stopIndex,secondsSinceMidnight,options.wheelchairAccessible,options.getModes().getBicycle(),false);
+        int patternIndex=pattern.getPreviousTrip(stopIndex,secondsSinceMidnight,options.wheelchairAccessible,mode == TraverseMode.BICYCLE,false);
         if (patternIndex >= 0) {
           Trip trip=pattern.getTrip(patternIndex);
           while (options.bannedTrips.contains(trip.getId())) {
@@ -70,7 +71,6 @@
     s1.setTripId(trip.getId());
     s1.setZone(pattern.getZone(stopIndex + 1));
     s1.setRoute(trip.getRoute().getId());
-    TraverseMode mode=state0.getNonTransitMode(options);
     long wait_cost=bestWait;
     if (state0.getNumBoardings() == 0) {
       wait_cost*=options.waitAtBeginningFactor;
