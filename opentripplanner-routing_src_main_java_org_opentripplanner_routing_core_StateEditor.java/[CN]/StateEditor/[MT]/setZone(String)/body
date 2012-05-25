@@ -1,4 +1,12 @@
 {
-  cloneStateDataAsNeeded();
-  child.stateData.zone=zone;
+  if (zone == null) {
+    if (child.stateData.zone != null) {
+      cloneStateDataAsNeeded();
+      child.stateData.zone=zone;
+    }
+  }
+ else   if (!zone.equals(child.stateData.zone)) {
+    cloneStateDataAsNeeded();
+    child.stateData.zone=zone;
+  }
 }
