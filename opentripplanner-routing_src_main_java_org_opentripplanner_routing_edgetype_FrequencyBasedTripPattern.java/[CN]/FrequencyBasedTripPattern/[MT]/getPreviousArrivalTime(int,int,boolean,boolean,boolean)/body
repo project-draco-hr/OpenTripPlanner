@@ -1,14 +1,14 @@
 {
-  int mask=pickup ? TripPattern.MASK_PICKUP : TripPattern.MASK_DROPOFF;
-  int shift=pickup ? TripPattern.SHIFT_PICKUP : TripPattern.SHIFT_DROPOFF;
-  if ((perStopFlags[stopIndex + 1] & mask) >> shift == TripPattern.NO_PICKUP) {
+  int mask=pickup ? TableTripPattern.MASK_PICKUP : TableTripPattern.MASK_DROPOFF;
+  int shift=pickup ? TableTripPattern.SHIFT_PICKUP : TableTripPattern.SHIFT_DROPOFF;
+  if ((perStopFlags[stopIndex + 1] & mask) >> shift == TableTripPattern.NO_PICKUP) {
     return -1;
   }
-  if (wheelchairAccessible && (perStopFlags[stopIndex] & TripPattern.FLAG_WHEELCHAIR_ACCESSIBLE) == 0) {
+  if (wheelchairAccessible && (perStopFlags[stopIndex] & TableTripPattern.FLAG_WHEELCHAIR_ACCESSIBLE) == 0) {
     return -1;
   }
   if (wheelchairAccessible || bikesAllowed) {
-    int flags=(bikesAllowed ? TripPattern.FLAG_BIKES_ALLOWED : 0) | (wheelchairAccessible ? TripPattern.FLAG_WHEELCHAIR_ACCESSIBLE : 0);
+    int flags=(bikesAllowed ? TableTripPattern.FLAG_BIKES_ALLOWED : 0) | (wheelchairAccessible ? TableTripPattern.FLAG_WHEELCHAIR_ACCESSIBLE : 0);
     if ((tripFlags & flags) == 0) {
       return -1;
     }

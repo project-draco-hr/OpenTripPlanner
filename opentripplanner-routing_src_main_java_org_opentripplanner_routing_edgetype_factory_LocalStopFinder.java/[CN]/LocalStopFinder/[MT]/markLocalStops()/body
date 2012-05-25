@@ -15,6 +15,10 @@
         TripPattern pattern=((PatternBoard)e).getPattern();
         patterns.add(pattern);
       }
+      if (e instanceof FrequencyBoard) {
+        TripPattern pattern=((FrequencyBoard)e).getPattern();
+        patterns.add(pattern);
+      }
     }
   }
   neighborhoods=new HashMap<Stop,HashMap<TripPattern,P2<Double>>>();

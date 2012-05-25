@@ -2,7 +2,7 @@
   for (  TransitVertex gv : IterableLibrary.filter(graph.getVertices(),TransitVertex.class)) {
     boolean start=false;
     boolean noStart=false;
-    TripPattern pattern=null;
+    TableTripPattern pattern=null;
     Trip trip=null;
     for (    Edge e : gv.getIncoming()) {
       if (handledEdges.contains(e)) {

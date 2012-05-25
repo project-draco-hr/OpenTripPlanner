@@ -1,18 +1,10 @@
 {
   List<AgencyAndId> ret=new LinkedList<AgencyAndId>();
   for (  State s : states) {
-    Edge e=s.getBackEdge();
-    Trip trip=null;
-    if (e instanceof PatternBoard) {
-      trip=((PatternBoard)e).getPattern().getTrip(s.getTrip());
-    }
- else     if (e instanceof Board) {
-      trip=((Board)e).getTrip();
-    }
- else {
-      continue;
-    }
-    ret.add(trip.getId());
+    EdgeNarrative e=s.getBackEdgeNarrative();
+    if (e == null)     continue;
+    Trip trip=e.getTrip();
+    if (trip != null)     ret.add(trip.getId());
   }
   return ret;
 }
