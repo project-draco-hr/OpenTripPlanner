@@ -1,0 +1,15 @@
+{
+  int low=0;
+  int high=trips.length - 1;
+  int mid=0;
+  while (low <= high) {
+    mid=(low + high) >>> 1;
+    final int d;
+    if (tripTimes[mid].arrivalTimes == null)     d=tripTimes[mid].departureTimes[stopIndex + 1];
+ else     d=tripTimes[mid].arrivalTimes[stopIndex];
+    if (d == key)     return mid;
+ else     if (d > key)     high=--mid;
+ else     low=mid + 1;
+  }
+  return mid;
+}

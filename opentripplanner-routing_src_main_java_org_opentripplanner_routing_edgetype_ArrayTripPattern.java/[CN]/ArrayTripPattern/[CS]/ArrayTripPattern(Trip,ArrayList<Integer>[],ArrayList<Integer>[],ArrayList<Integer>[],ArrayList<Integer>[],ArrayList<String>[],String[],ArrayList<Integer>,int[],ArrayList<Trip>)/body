@@ -3,30 +3,24 @@
   int nStops=nHops + 1;
   int nTrips=departureTimes[0].size();
   this.exemplar=exemplar;
-  if (arrivalTimes == null) {
-    this.departureTimes=new int[nTrips][nStops];
-    this.arrivalTimes=null;
-    this.bestDwellTimes=null;
-  }
- else {
-    this.departureTimes=new int[nTrips][nHops];
-    this.arrivalTimes=new int[nTrips][nHops];
-    this.bestDwellTimes=new int[nHops];
-  }
+  this.tripTimes=new TripTimes[nTrips];
+  boolean nullArrivals=arrivalTimes == null;
+  for (int i=0; i < tripTimes.length; i++)   tripTimes[i]=new TripTimes(nStops,nullArrivals);
   this.zones=zones;
   this.perTripFlags=new int[nTrips];
   this.perStopFlags=perStopFlags;
   this.bestRunningTimes=new int[nHops];
+  this.bestDwellTimes=nullArrivals ? null : new int[nHops];
   this.trips=new Trip[nTrips];
   for (int h=0; h < departureTimes.length; ++h) {
     for (int t=0; t < nTrips; ++t) {
-      this.departureTimes[t][h]=departureTimes[h].get(t);
+      this.tripTimes[t].departureTimes[h]=departureTimes[h].get(t);
     }
   }
-  if (arrivalTimes != null) {
+  if (!nullArrivals) {
     for (int h=0; h < nHops; ++h) {
       for (int t=0; t < nTrips; ++t) {
-        this.arrivalTimes[t][h]=arrivalTimes[h].get(t);
+        this.tripTimes[t].arrivalTimes[h]=arrivalTimes[h].get(t);
       }
     }
     for (int h=1; h < nHops; ++h) {

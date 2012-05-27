@@ -7,8 +7,10 @@
   if (wheelchairAccessible && (perStopFlags[stopIndex] & FLAG_WHEELCHAIR_ACCESSIBLE) == 0) {
     return -1;
   }
-  int tripIndex=binarySearch2D(departureTimes,stopIndex,afterTime,0,trips.length - 1);
-  if (tripIndex == trips.length)   return -1;
+  int tripIndex=findDepartureAfter(stopIndex,afterTime);
+  if (tripIndex == trips.length) {
+    return -1;
+  }
   if (wheelchairAccessible || bikesAllowed) {
     int flags=(bikesAllowed ? FLAG_BIKES_ALLOWED : 0) | (wheelchairAccessible ? FLAG_WHEELCHAIR_ACCESSIBLE : 0);
     while ((perTripFlags[tripIndex] & flags) == 0) {
