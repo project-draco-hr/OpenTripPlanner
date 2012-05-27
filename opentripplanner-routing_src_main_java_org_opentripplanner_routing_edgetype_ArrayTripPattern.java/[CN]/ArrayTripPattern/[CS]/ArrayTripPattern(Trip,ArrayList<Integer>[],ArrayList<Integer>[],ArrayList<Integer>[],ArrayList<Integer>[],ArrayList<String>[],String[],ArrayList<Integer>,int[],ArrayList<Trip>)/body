@@ -1,79 +1,78 @@
 {
+  int nHops=runningTimes.length;
+  int nStops=nHops + 1;
+  int nTrips=departureTimes[0].size();
   this.exemplar=exemplar;
-  this.departureTimes=new int[departureTimes.length][departureTimes[0].size()];
-  this.runningTimes=new int[runningTimes.length][runningTimes[0].size()];
-  if (headsigns != null) {
-    this.headsigns=new String[headsigns.length][headsigns[0].size()];
-  }
   if (arrivalTimes == null) {
+    this.departureTimes=new int[nTrips][nStops];
     this.arrivalTimes=null;
-    this.dwellTimes=null;
     this.bestDwellTimes=null;
   }
  else {
-    this.arrivalTimes=new int[arrivalTimes.length][arrivalTimes[0].size()];
-    this.dwellTimes=new int[dwellTimes.length][dwellTimes[0].size()];
-    this.bestDwellTimes=new int[perStopFlags.length];
+    this.departureTimes=new int[nTrips][nHops];
+    this.arrivalTimes=new int[nTrips][nHops];
+    this.bestDwellTimes=new int[nHops];
   }
   this.zones=zones;
-  this.perTripFlags=new int[perTripFlags.size()];
+  this.perTripFlags=new int[nTrips];
   this.perStopFlags=perStopFlags;
-  this.bestRunningTimes=new int[perStopFlags.length];
-  this.trips=new Trip[trips.size()];
-  for (int i=0; i < departureTimes.length; ++i) {
-    for (int j=0; j < departureTimes[i].size(); ++j) {
-      this.departureTimes[i][j]=departureTimes[i].get(j);
+  this.bestRunningTimes=new int[nHops];
+  this.trips=new Trip[nTrips];
+  for (int h=0; h < departureTimes.length; ++h) {
+    for (int t=0; t < nTrips; ++t) {
+      this.departureTimes[t][h]=departureTimes[h].get(t);
     }
   }
-  for (int i=0; i < runningTimes.length; ++i) {
-    bestRunningTimes[i]=Integer.MAX_VALUE;
-    for (int j=0; j < runningTimes[i].size(); ++j) {
-      this.runningTimes[i][j]=runningTimes[i].get(j);
-      if (bestRunningTimes[i] > this.runningTimes[i][j]) {
-        bestRunningTimes[i]=this.runningTimes[i][j];
+  if (arrivalTimes != null) {
+    for (int h=0; h < nHops; ++h) {
+      for (int t=0; t < nTrips; ++t) {
+        this.arrivalTimes[t][h]=arrivalTimes[h].get(t);
       }
     }
-  }
-  if (this.arrivalTimes != null) {
-    for (int i=0; i < arrivalTimes.length; ++i) {
-      for (int j=0; j < arrivalTimes[i].size(); ++j) {
-        this.arrivalTimes[i][j]=arrivalTimes[i].get(j);
-      }
-    }
-    for (int i=0; i < dwellTimes.length; ++i) {
-      bestDwellTimes[i]=Integer.MAX_VALUE;
-      for (int j=0; j < dwellTimes[i].size(); ++j) {
-        this.dwellTimes[i][j]=dwellTimes[i].get(j);
-        if (bestDwellTimes[i] > this.dwellTimes[i][j]) {
-          bestDwellTimes[i]=this.dwellTimes[i][j];
+    for (int h=1; h < nHops; ++h) {
+      bestDwellTimes[h]=Integer.MAX_VALUE;
+      for (int t=0; t < nTrips; ++t) {
+        int dt=this.getDwellTime(h,t);
+        if (bestDwellTimes[h] > dt) {
+          bestDwellTimes[h]=dt;
         }
       }
     }
   }
+  for (int h=0; h < nHops; ++h) {
+    bestRunningTimes[h]=Integer.MAX_VALUE;
+    for (int t=0; t < nTrips; ++t) {
+      int rt=this.getRunningTime(h,t);
+      if (bestRunningTimes[h] > rt) {
+        bestRunningTimes[h]=rt;
+      }
+    }
+  }
   if (headsigns != null) {
+    this.headsigns=new String[nHops][nTrips];
     String[] nullRow=null;
-    for (int i=0; i < headsigns.length; ++i) {
+    for (int s=0; s < nHops; ++s) {
       boolean rowIsNull=true;
-      for (int j=0; j < headsigns[i].size(); ++j) {
-        this.headsigns[i][j]=headsigns[i].get(j);
-        if (this.headsigns[i][j] != null) {
+      for (int t=0; t < headsigns[s].size(); ++t) {
+        this.headsigns[s][t]=headsigns[s].get(t);
+        if (this.headsigns[s][t] != null) {
           rowIsNull=false;
         }
       }
       if (rowIsNull) {
         if (nullRow == null) {
-          nullRow=this.headsigns[i];
+          nullRow=this.headsigns[s];
         }
  else {
-          this.headsigns[i]=nullRow;
+          this.headsigns[s]=nullRow;
         }
       }
     }
   }
-  for (int i=0; i < perTripFlags.size(); ++i) {
-    this.perTripFlags[i]=perTripFlags.get(i);
+  for (int t=0; t < nTrips; ++t) {
+    this.perTripFlags[t]=perTripFlags.get(t);
   }
-  for (int i=0; i < trips.size(); ++i) {
-    this.trips[i]=trips.get(i);
+  for (int t=0; t < nTrips; ++t) {
+    this.trips[t]=trips.get(t);
   }
 }

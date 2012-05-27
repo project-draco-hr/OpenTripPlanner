@@ -1,0 +1,11 @@
+{
+  int mid=0;
+  while (low <= high) {
+    mid=(low + high) >>> 1;
+    final int d=array[mid][col];
+    if (d == key)     return mid;
+ else     if (d > key)     high=mid - 1;
+ else     low=++mid;
+  }
+  return mid;
+}

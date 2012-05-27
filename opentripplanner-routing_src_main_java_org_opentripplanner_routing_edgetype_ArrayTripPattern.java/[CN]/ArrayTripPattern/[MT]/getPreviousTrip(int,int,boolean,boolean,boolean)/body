@@ -12,20 +12,18 @@
     arrivals=departureTimes;
     stopIndex+=1;
   }
-  int[] stopArrivalTimes=arrivals[stopIndex];
-  int index=Arrays.binarySearch(stopArrivalTimes,beforeTime);
-  if (index == -1)   return -1;
-  if (index < 0) {
-    index=-index - 2;
-  }
+  int tripIndex=binarySearch2D(arrivals,stopIndex,beforeTime,0,trips.length - 1);
+  if (tripIndex == trips.length)   return -1;
+  if (arrivals[tripIndex][stopIndex] != beforeTime)   tripIndex-=1;
+  if (tripIndex == -1)   return -1;
   if (wheelchairAccessible || bikesAllowed) {
     int flags=(bikesAllowed ? FLAG_BIKES_ALLOWED : 0) | (wheelchairAccessible ? FLAG_WHEELCHAIR_ACCESSIBLE : 0);
-    while ((perTripFlags[index] & flags) == 0) {
-      index--;
-      if (index == -1) {
+    while ((perTripFlags[tripIndex] & flags) == 0) {
+      tripIndex--;
+      if (tripIndex == -1) {
         return -1;
       }
     }
   }
-  return index;
+  return tripIndex;
 }

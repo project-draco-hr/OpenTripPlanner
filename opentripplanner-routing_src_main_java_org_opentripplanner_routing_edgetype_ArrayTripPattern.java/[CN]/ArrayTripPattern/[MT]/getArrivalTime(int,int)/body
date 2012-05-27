@@ -1,5 +1,4 @@
 {
-  if (arrivalTimes == null)   return getDepartureTime(stopIndex + 1,trip);
-  int[] stopArrivalTimes=arrivalTimes[stopIndex];
-  return stopArrivalTimes[trip];
+  if (arrivalTimes == null)   return getDepartureTime(hop + 1,trip);
+  return arrivalTimes[trip][hop];
 }
