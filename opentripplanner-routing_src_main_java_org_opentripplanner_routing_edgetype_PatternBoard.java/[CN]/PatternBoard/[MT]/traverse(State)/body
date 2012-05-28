@@ -24,22 +24,14 @@
     long current_time=state0.getTime();
     int bestWait=-1;
     int bestPatternIndex=-1;
-    TraverseMode mode=state0.getNonTransitMode(options);
     AgencyAndId serviceId=getPattern().getExemplar().getServiceId();
     SD:     for (    ServiceDay sd : rctx.serviceDays) {
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
       if (secondsSinceMidnight < 0)       continue;
       if (sd.serviceIdRunning(serviceId)) {
-        int patternIndex=getPattern().getNextTrip(stopIndex,secondsSinceMidnight,options.wheelchairAccessible,mode == TraverseMode.BICYCLE,true);
+        int patternIndex=getPattern().getNextTrip(stopIndex,secondsSinceMidnight,options);
         if (patternIndex >= 0) {
           Trip trip=pattern.getTrip(patternIndex);
-          while (options.bannedTrips.contains(trip.getId())) {
-            patternIndex+=1;
-            if (patternIndex >= pattern.getTrips().size()) {
-              continue SD;
-            }
-            trip=pattern.getTrip(patternIndex);
-          }
           int wait=(int)(sd.time(pattern.getDepartureTime(stopIndex,patternIndex)) - current_time);
           if (wait < 0)           _log.error("negative wait time on board");
           if (bestWait < 0 || wait < bestWait) {
@@ -95,6 +87,7 @@
       wait_cost*=options.waitReluctance;
     }
     s1.incrementWeight(preferences_penalty);
+    TraverseMode mode=state0.getNonTransitMode(options);
     s1.incrementWeight(wait_cost + options.getBoardCost(mode));
     return s1.makeState();
   }

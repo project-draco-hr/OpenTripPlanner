@@ -13,16 +13,9 @@
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
       if (secondsSinceMidnight < 0)       continue;
       if (sd.serviceIdRunning(serviceId)) {
-        int patternIndex=pattern.getPreviousTrip(stopIndex,secondsSinceMidnight,options.wheelchairAccessible,options.getModes().getBicycle(),false);
+        int patternIndex=pattern.getPreviousTrip(stopIndex,secondsSinceMidnight,options);
         if (patternIndex >= 0) {
           Trip trip=pattern.getTrip(patternIndex);
-          while (options.bannedTrips.contains(trip.getId())) {
-            patternIndex-=1;
-            if (patternIndex < 0) {
-              continue SD;
-            }
-            trip=pattern.getTrip(patternIndex);
-          }
           int wait=(int)(current_time - sd.time(pattern.getArrivalTime(stopIndex,patternIndex)));
           if (wait < 0)           _log.error("negative wait time on alight");
           if (bestWait < 0 || wait < bestWait) {
@@ -70,7 +63,6 @@
     s1.setTripId(trip.getId());
     s1.setZone(pattern.getZone(stopIndex + 1));
     s1.setRoute(trip.getRoute().getId());
-    TraverseMode mode=state0.getNonTransitMode(options);
     long wait_cost=bestWait;
     if (state0.getNumBoardings() == 0) {
       wait_cost*=options.waitAtBeginningFactor;
@@ -79,6 +71,7 @@
       wait_cost*=options.waitReluctance;
     }
     s1.incrementWeight(preferences_penalty);
+    TraverseMode mode=state0.getNonTransitMode(options);
     s1.incrementWeight(wait_cost + options.getBoardCost(mode));
     return s1.makeState();
   }
