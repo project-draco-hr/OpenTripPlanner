@@ -7,18 +7,19 @@
   if (wheelchairAccessible && (perStopFlags[stopIndex + 1] & FLAG_WHEELCHAIR_ACCESSIBLE) == 0) {
     return -1;
   }
-  int tripIndex=findArrivalBefore(stopIndex,beforeTime);
-  if (tripIndex == -1) {
-    return -1;
-  }
-  if (wheelchairAccessible || bikesAllowed) {
-    int flags=(bikesAllowed ? FLAG_BIKES_ALLOWED : 0) | (wheelchairAccessible ? FLAG_WHEELCHAIR_ACCESSIBLE : 0);
-    while ((perTripFlags[tripIndex] & flags) == 0) {
-      tripIndex--;
-      if (tripIndex == -1) {
-        return -1;
-      }
+  TripTimes bestTrip=null;
+  int bestTime=Integer.MIN_VALUE;
+  int bestIndex=-1;
+  int flags=(bikesAllowed ? FLAG_BIKES_ALLOWED : 0) | (wheelchairAccessible ? FLAG_WHEELCHAIR_ACCESSIBLE : 0);
+  for (int i=0; i < trips.length; i++) {
+    TripTimes currTrip=tripTimes[i];
+    int currTime=currTrip.getDepartureTime(stopIndex);
+    boolean acceptableTrip=flags == 0 ? true : (perTripFlags[i] & flags) != 0;
+    if (currTime < beforeTime && currTime > bestTime && acceptableTrip) {
+      bestTrip=currTrip;
+      bestTime=currTime;
+      bestIndex=i;
     }
   }
-  return tripIndex;
+  return bestIndex;
 }
