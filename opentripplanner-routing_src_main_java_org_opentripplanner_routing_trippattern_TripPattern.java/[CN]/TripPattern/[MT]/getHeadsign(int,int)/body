@@ -1,6 +1,6 @@
 {
-  if (headsigns == null) {
-    return null;
-  }
-  return headsigns.get(trip).get(stopIndex);
+  if (headsigns == null)   return null;
+  List<String> headsignsForTrip=headsigns.get(trip);
+  if (headsignsForTrip == null)   return null;
+  return headsignsForTrip.get(stopIndex);
 }
