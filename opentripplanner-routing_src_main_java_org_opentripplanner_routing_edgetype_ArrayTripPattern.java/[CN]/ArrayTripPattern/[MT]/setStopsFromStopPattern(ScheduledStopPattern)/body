@@ -1,0 +1,14 @@
+{
+  this.stops=new Stop[stopPattern.stops.size()];
+  perStopFlags=new int[stops.length];
+  int i=0;
+  for (  Stop stop : stopPattern.stops) {
+    this.stops[i]=stop;
+    if (stop.getWheelchairBoarding() == 1) {
+      perStopFlags[i]|=FLAG_WHEELCHAIR_ACCESSIBLE;
+    }
+    perStopFlags[i]|=stopPattern.pickups.get(i) << SHIFT_PICKUP;
+    perStopFlags[i]|=stopPattern.dropoffs.get(i) << SHIFT_DROPOFF;
+    ++i;
+  }
+}

@@ -1,23 +1,21 @@
 {
   boolean pickup=true;
-  boolean wheelchairAccessible=options.wheelchairAccessible;
-  boolean bikesAllowed=options.modes.getBicycle();
   int mask=pickup ? MASK_PICKUP : MASK_DROPOFF;
   int shift=pickup ? SHIFT_PICKUP : SHIFT_DROPOFF;
   if ((perStopFlags[stopIndex] & mask) >> shift == NO_PICKUP) {
     return null;
   }
-  if (wheelchairAccessible && (perStopFlags[stopIndex] & FLAG_WHEELCHAIR_ACCESSIBLE) == 0) {
+  boolean wheelchair=options.wheelchairAccessible;
+  boolean bicycle=options.modes.getBicycle();
+  if (wheelchair && (perStopFlags[stopIndex] & FLAG_WHEELCHAIR_ACCESSIBLE) == 0) {
     return null;
   }
   TripTimes bestTrip=null;
   int bestTime=Integer.MAX_VALUE;
-  int flags=(bikesAllowed ? FLAG_BIKES_ALLOWED : 0) | (wheelchairAccessible ? FLAG_WHEELCHAIR_ACCESSIBLE : 0);
   for (int i=0; i < trips.size(); i++) {
     TripTimes currTrip=tripTimes.get(i);
     int currTime=currTrip.getDepartureTime(stopIndex);
-    boolean acceptableTrip=flags == 0 ? true : (perTripFlags.get(i) & flags) != 0;
-    if (currTime > afterTime && currTime < bestTime && acceptableTrip && !options.bannedTrips.contains(trips.get(i).getId())) {
+    if (currTime > afterTime && currTime < bestTime && tripAcceptable(currTrip.trip,bicycle,wheelchair) && !options.bannedTrips.contains(trips.get(i).getId())) {
       bestTrip=currTrip;
       bestTime=currTime;
     }

@@ -1,6 +1,14 @@
 {
-  int index=tripTimes.size();
-  tripTimes.add(new TripTimes(trip,index,stopTimes));
+  int nextIndex=tripTimes.size();
+  tripTimes.add(new TripTimes(trip,nextIndex,stopTimes));
   trips.add(trip);
-  perTripFlags.add((trip.getWheelchairAccessible() == 1 ? TripPattern.FLAG_WHEELCHAIR_ACCESSIBLE : 0) | (((trip.getRoute().getBikesAllowed() == 2 && trip.getTripBikesAllowed() != 1) || trip.getTripBikesAllowed() == 2) ? TripPattern.FLAG_BIKES_ALLOWED : 0));
+  ArrayList<String> headsigns=new ArrayList<String>();
+  boolean allHeadsignsNull=true;
+  for (  StopTime st : stopTimes) {
+    String headsign=st.getStopHeadsign();
+    if (headsign != null)     allHeadsignsNull=false;
+    headsigns.add(headsign);
+  }
+  if (allHeadsignsNull)   headsigns=null;
+  this.headsigns.add(headsigns);
 }
