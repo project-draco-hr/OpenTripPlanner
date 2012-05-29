@@ -1,0 +1,12 @@
+{
+  TransitIndexService transitIndexService=getGraph(routerId).getService(TransitIndexService.class);
+  if (transitIndexService == null) {
+    return new TransitError("No transit index found.  Add TransitIndexBuilder to your graph builder configuration and rebuild your graph.");
+  }
+  ModeList modes=new ModeList();
+  modes.modes=new ArrayList<TraverseMode>();
+  for (  TraverseMode mode : transitIndexService.getAllModes()) {
+    modes.modes.add(mode);
+  }
+  return modes;
+}
