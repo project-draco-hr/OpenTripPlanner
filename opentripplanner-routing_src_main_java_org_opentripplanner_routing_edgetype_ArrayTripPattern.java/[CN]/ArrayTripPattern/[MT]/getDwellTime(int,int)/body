@@ -1,5 +1,3 @@
 {
-  int arrivalTime=getArrivalTime(hop - 1,trip);
-  int departureTime=getDepartureTime(hop,trip);
-  return departureTime - arrivalTime;
+  return tripTimes.get(trip).getDwellTime(hop);
 }

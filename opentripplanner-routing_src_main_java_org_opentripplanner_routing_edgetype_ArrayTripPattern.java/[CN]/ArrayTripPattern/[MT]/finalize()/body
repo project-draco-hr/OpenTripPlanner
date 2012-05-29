@@ -1,0 +1,47 @@
+{
+  this.zones=zones;
+  this.perStopFlags=perStopFlags;
+  this.bestRunningTimes=new int[nHops];
+  this.bestDwellTimes=nullArrivals ? null : new int[nHops];
+  if (!nullArrivals) {
+    for (int h=1; h < nHops; ++h) {
+      bestDwellTimes[h]=Integer.MAX_VALUE;
+      for (int t=0; t < nTrips; ++t) {
+        int dt=this.getDwellTime(h,t);
+        if (bestDwellTimes[h] > dt) {
+          bestDwellTimes[h]=dt;
+        }
+      }
+    }
+  }
+  for (int h=0; h < nHops; ++h) {
+    bestRunningTimes[h]=Integer.MAX_VALUE;
+    for (int t=0; t < nTrips; ++t) {
+      int rt=this.getRunningTime(h,t);
+      if (bestRunningTimes[h] > rt) {
+        bestRunningTimes[h]=rt;
+      }
+    }
+  }
+  if (headsigns != null) {
+    this.headsigns=new String[nHops][nTrips];
+    String[] nullRow=null;
+    for (int s=0; s < nHops; ++s) {
+      boolean rowIsNull=true;
+      for (int t=0; t < headsigns[s].size(); ++t) {
+        this.headsigns[s][t]=headsigns[s].get(t);
+        if (this.headsigns[s][t] != null) {
+          rowIsNull=false;
+        }
+      }
+      if (rowIsNull) {
+        if (nullRow == null) {
+          nullRow=this.headsigns[s];
+        }
+ else {
+          this.headsigns[s]=nullRow;
+        }
+      }
+    }
+  }
+}
