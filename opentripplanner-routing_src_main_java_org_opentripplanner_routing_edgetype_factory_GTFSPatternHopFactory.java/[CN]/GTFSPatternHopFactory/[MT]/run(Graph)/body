@@ -39,9 +39,9 @@
       }
     }
     ScheduledStopPattern stopPattern=ScheduledStopPattern.fromTrip(trip,_dao);
-    ArrayTripPattern tripPattern=patterns.get(stopPattern);
+    TripPattern tripPattern=patterns.get(stopPattern);
     if (tripPattern == null) {
-      tripPattern=new ArrayTripPattern(trip,stopPattern);
+      tripPattern=new TripPattern(trip,stopPattern);
       makePatternVerticesAndEdges(graph,tripPattern,trip,stopTimes);
       patterns.put(stopPattern,tripPattern);
     }
