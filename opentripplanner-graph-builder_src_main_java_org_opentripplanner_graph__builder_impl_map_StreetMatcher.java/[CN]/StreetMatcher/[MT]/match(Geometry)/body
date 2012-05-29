@@ -1,6 +1,7 @@
 {
   routeGeometry=removeDuplicatePoints(routeGeometry);
   if (routeGeometry == null)   return null;
+  routeGeometry=DouglasPeuckerSimplifier.simplify(routeGeometry,0.00001);
   LocationIndexedLine indexedLine=new LocationIndexedLine(routeGeometry);
   LinearLocation startIndex=indexedLine.getStartIndex();
   Coordinate routeStartCoordinate=startIndex.getCoordinate(routeGeometry);
@@ -20,7 +21,7 @@
     LocationIndexedLine indexedEdge=new LocationIndexedLine(edgeGeometry);
     LinearLocation initialLocation=indexedEdge.project(routeStartCoordinate);
     double error=MatchState.distance(initialLocation.getCoordinate(edgeGeometry),routeStartCoordinate);
-    MatchState state=new MidblockMatchState(null,routeGeometry,initialEdge,startIndex,initialLocation,error,0.01);
+    MidblockMatchState state=new MidblockMatchState(null,routeGeometry,initialEdge,startIndex,initialLocation,error,0.01);
     states.insert(state,0);
   }
   int seen_count=0, total=0;
