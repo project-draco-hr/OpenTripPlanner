@@ -1,6 +1,10 @@
 {
+  startTime/=1000;
   if (endTime == null) {
     endTime=startTime + 86400;
+  }
+ else {
+    endTime/=1000;
   }
   if (endTime - startTime > MAX_STOP_TIME_QUERY_INTERVAL) {
     return new TransitError("Max stop time query interval is " + (endTime - startTime));
