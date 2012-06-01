@@ -12,5 +12,6 @@
   }
   if (v instanceof OnboardVertex)   return TRANSIT;
   if (v instanceof OffboardVertex)   return STATION;
+  if (v instanceof BikeRentalStationVertex)   return OTHERPATH;
  else   throw new RuntimeException("failed to tokenize path");
 }
