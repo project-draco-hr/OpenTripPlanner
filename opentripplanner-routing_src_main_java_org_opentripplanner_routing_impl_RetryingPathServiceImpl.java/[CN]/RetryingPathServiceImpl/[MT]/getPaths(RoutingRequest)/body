@@ -1,6 +1,8 @@
 {
   ArrayList<GraphPath> paths=new ArrayList<GraphPath>();
   options.setRoutingContext(graphService.getGraph(options.getRouterId()));
+  options.rctx.pathParsers=new PathParser[1];
+  options.rctx.pathParsers[0]=new BasicPathParser();
   long searchBeginTime=System.currentTimeMillis();
   Queue<RoutingRequest> optionQueue=new LinkedList<RoutingRequest>();
   optionQueue.add(options);

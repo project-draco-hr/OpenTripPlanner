@@ -7,11 +7,11 @@
       return cls;
     }
  else {
-      return OTHERPATH;
+      return StreetEdge.CLASS_OTHERPATH;
     }
   }
   if (v instanceof OnboardVertex)   return TRANSIT;
   if (v instanceof OffboardVertex)   return STATION;
-  if (v instanceof BikeRentalStationVertex)   return OTHERPATH;
+  if (v instanceof BikeRentalStationVertex)   return StreetEdge.CLASS_OTHERPATH;
  else   throw new RuntimeException("failed to tokenize path");
 }

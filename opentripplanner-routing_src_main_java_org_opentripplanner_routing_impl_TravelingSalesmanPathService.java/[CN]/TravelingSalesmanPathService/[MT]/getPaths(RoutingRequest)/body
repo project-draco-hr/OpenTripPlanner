@@ -5,6 +5,8 @@
   Graph graph=graphService.getGraph(options.getRouterId());
   long time=options.dateTime;
   options.setRoutingContext(graph);
+  options.rctx.pathParsers=new PathParser[1];
+  options.rctx.pathParsers[0]=new BasicPathParser();
   List<Vertex> vertices=options.rctx.intermediateVertices;
   vertices.add(options.rctx.toVertex);
   options.intermediatePlaces.clear();

@@ -7,9 +7,13 @@
   upOptions.setArriveBy(false);
   upOptions.dateTime=time;
   upOptions.setRoutingContext(graph,origin,target);
+  upOptions.rctx.pathParsers=new PathParser[1];
+  upOptions.rctx.pathParsers[0]=new BasicPathParser();
   downOptions.setArriveBy(true);
   downOptions.dateTime=time;
   downOptions.setRoutingContext(graph,target,origin);
+  downOptions.rctx.pathParsers=new PathParser[1];
+  downOptions.rctx.pathParsers[0]=new BasicPathParser();
   double minWalkDistance=origin.getDistanceToNearestTransitStop() + target.getDistanceToNearestTransitStop();
   upOptions.setMaxWalkDistance(Math.max(upOptions.getMaxWalkDistance(),minWalkDistance));
   downOptions.setMaxWalkDistance(Math.max(downOptions.getMaxWalkDistance(),minWalkDistance));
