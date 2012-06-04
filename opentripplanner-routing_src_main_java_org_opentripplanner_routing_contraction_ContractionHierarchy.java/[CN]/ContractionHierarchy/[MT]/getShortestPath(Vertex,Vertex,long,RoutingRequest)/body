@@ -9,7 +9,7 @@
   upOptions.setRoutingContext(graph,origin,target);
   downOptions.setArriveBy(true);
   downOptions.dateTime=time;
-  upOptions.setRoutingContext(graph,target,origin);
+  downOptions.setRoutingContext(graph,target,origin);
   double minWalkDistance=origin.getDistanceToNearestTransitStop() + target.getDistanceToNearestTransitStop();
   upOptions.setMaxWalkDistance(Math.max(upOptions.getMaxWalkDistance(),minWalkDistance));
   downOptions.setMaxWalkDistance(Math.max(downOptions.getMaxWalkDistance(),minWalkDistance));
