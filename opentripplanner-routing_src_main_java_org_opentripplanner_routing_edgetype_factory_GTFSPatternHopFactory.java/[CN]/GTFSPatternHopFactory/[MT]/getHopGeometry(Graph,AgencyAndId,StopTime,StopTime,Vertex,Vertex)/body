@@ -17,7 +17,8 @@
       LinearLocation endIndex=getSegmentFraction(distances,endDistance);
       LineString line=getLineStringForShapeId(shapeId);
       LocationIndexedLine lol=new LocationIndexedLine(line);
-      return getSegmentGeometry(shapeId,lol,startIndex,endIndex,startDistance,endDistance);
+      geometry=getSegmentGeometry(graph,shapeId,lol,startIndex,endIndex,startDistance,endDistance,st0,st1);
+      return geometry;
     }
   }
   LineString line=getLineStringForShapeId(shapeId);
@@ -30,5 +31,5 @@
   LinearLocation endCoord=lol.indexOf(endJourney.getCoordinate());
   double distanceFrom=startCoord.getSegmentLength(line);
   double distanceTo=endCoord.getSegmentLength(line);
-  return getSegmentGeometry(shapeId,lol,startCoord,endCoord,distanceFrom,distanceTo);
+  return getSegmentGeometry(graph,shapeId,lol,startCoord,endCoord,distanceFrom,distanceTo,st0,st1);
 }

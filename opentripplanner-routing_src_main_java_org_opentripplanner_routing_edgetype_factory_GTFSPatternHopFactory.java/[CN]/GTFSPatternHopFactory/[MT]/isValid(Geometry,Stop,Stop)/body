@@ -1,0 +1,25 @@
+{
+  Coordinate[] coordinates=geometry.getCoordinates();
+  if (coordinates.length < 2) {
+    return false;
+  }
+  if (geometry.getLength() == 0) {
+    return false;
+  }
+  for (  Coordinate coordinate : coordinates) {
+    if (Double.isNaN(coordinate.x) || Double.isNaN(coordinate.y)) {
+      return false;
+    }
+  }
+  Coordinate geometryStartCoord=coordinates[0];
+  Coordinate geometryEndCoord=coordinates[coordinates.length - 1];
+  Coordinate startCoord=new Coordinate(s0.getLon(),s0.getLat());
+  Coordinate endCoord=new Coordinate(s1.getLon(),s1.getLat());
+  if (DistanceLibrary.distance(startCoord,geometryStartCoord) > 100) {
+    return false;
+  }
+ else   if (DistanceLibrary.distance(endCoord,geometryEndCoord) > 100) {
+    return false;
+  }
+  return true;
+}

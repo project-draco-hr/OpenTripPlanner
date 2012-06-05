@@ -34,7 +34,7 @@
       time=(int)distance;
     }
     TransferEdge transferEdge=new TransferEdge(fromv,tov,distance,time);
-    CoordinateSequence sequence=new PackedCoordinateSequence.Float(new Coordinate[]{fromv.getCoordinate(),tov.getCoordinate()},2);
+    CoordinateSequence sequence=new PackedCoordinateSequence.Double(new Coordinate[]{fromv.getCoordinate(),tov.getCoordinate()},2);
     Geometry geometry=_geometryFactory.createLineString(sequence);
     transferEdge.setGeometry(geometry);
   }
