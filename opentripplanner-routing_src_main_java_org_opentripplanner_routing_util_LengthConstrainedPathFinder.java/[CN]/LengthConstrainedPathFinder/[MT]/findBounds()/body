@@ -1,18 +1,19 @@
 {
-  Map<Edge,Double> ret=new HashMap<Edge,Double>();
-  ret.put(targetEdge,0.0);
-  BinHeap<Edge> pq=new BinHeap<Edge>();
-  pq.insert(targetEdge,0.0);
+  Map<Vertex,Double> ret=new HashMap<Vertex,Double>();
+  ret.put(targetVertex,0.0);
+  BinHeap<Vertex> pq=new BinHeap<Vertex>();
+  pq.insert(targetVertex,0.0);
   while (!pq.empty()) {
-    double length=pq.peek_min_key();
-    Edge e0=pq.extract_min();
-    for (    Edge e1 : getAdjacentEdges(e0,!reverse)) {
-      double length1=length + e1.getDistance();
+    double length0=pq.peek_min_key();
+    Vertex v0=pq.extract_min();
+    for (    Edge edge : getTurns(v0,!reverse)) {
+      double length1=length0 + edge.getDistance();
+      Vertex v1=reverse ? edge.getToVertex() : edge.getFromVertex();
       if (length1 < targetLength) {
-        Double existingLength=ret.get(e1);
+        Double existingLength=ret.get(v1);
         if (existingLength == null || length1 < existingLength) {
-          ret.put(e1,length1);
-          pq.insert(e1,length1);
+          ret.put(v1,length1);
+          pq.insert(v1,length1);
         }
       }
     }
