@@ -1,10 +1,16 @@
 {
   Vertex v=state.getVertex();
   if (v instanceof StreetVertex || v instanceof StreetLocation) {
-    Edge edge=state.getBackEdge();
-    if (edge instanceof StreetEdge) {
-      int cls=((StreetEdge)edge).getStreetClass();
-      return cls;
+    TraverseModeSet modes=state.getOptions().getModes();
+    if (modes.contains(TraverseMode.BICYCLE) && (!modes.contains(TraverseMode.WALK) || !state.isBikeRenting())) {
+      Edge edge=state.getBackEdge();
+      if (edge instanceof StreetEdge) {
+        int cls=((StreetEdge)edge).getStreetClass();
+        return cls;
+      }
+ else {
+        return StreetEdge.CLASS_OTHERPATH;
+      }
     }
  else {
       return StreetEdge.CLASS_OTHERPATH;
