@@ -25,5 +25,30 @@
     }
     return Arrays.asList(joinPaths(paths));
   }
-  return null;
+  Map<Vertex,HashMap<Vertex,GraphPath>> paths=new HashMap<Vertex,HashMap<Vertex,GraphPath>>();
+  HashMap<Vertex,GraphPath> firstLegPaths=new HashMap<Vertex,GraphPath>();
+  paths.put(options.rctx.fromVertex,firstLegPaths);
+  for (  Vertex v : options.rctx.intermediateVertices) {
+    options.dateTime=time;
+    options.setRoutingContext(graph,options.rctx.fromVertex,v);
+    List<GraphPath> partialPaths=chainedPathService.getPaths(options);
+    if (partialPaths == null || partialPaths.size() == 0)     return null;
+    firstLegPaths.put(v,partialPaths.get(0));
+    HashMap<Vertex,GraphPath> outPaths=new HashMap<Vertex,GraphPath>();
+    paths.put(v,outPaths);
+    for (    Vertex tv : options.rctx.intermediateVertices) {
+      if (v == tv)       continue;
+      options.setRoutingContext(graph,options.rctx.fromVertex,tv);
+      List<GraphPath> morePaths=chainedPathService.getPaths(options);
+      if (!morePaths.isEmpty()) {
+        outPaths.put(tv,morePaths.get(0));
+      }
+    }
+    options.setRoutingContext(graph,v,options.rctx.toVertex);
+    List<GraphPath> lastPaths=chainedPathService.getPaths(options);
+    if (!lastPaths.isEmpty())     outPaths.put(options.rctx.toVertex,lastPaths.get(0));
+  }
+  HashSet<Vertex> verticesCopy=new HashSet<Vertex>();
+  verticesCopy.addAll(options.rctx.intermediateVertices);
+  return Arrays.asList(TSPPathFinder.findShortestPath(options.rctx.toVertex,options.rctx.fromVertex,paths,verticesCopy,time,options));
 }
