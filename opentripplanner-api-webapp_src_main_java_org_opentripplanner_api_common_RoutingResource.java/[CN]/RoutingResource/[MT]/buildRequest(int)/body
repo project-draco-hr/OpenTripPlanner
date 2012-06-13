@@ -78,6 +78,6 @@
   final long NOW_THRESHOLD_MILLIS=15 * 60 * 60* 1000;
   boolean tripPlannedForNow=Math.abs(request.getDateTime().getTime() - new Date().getTime()) < NOW_THRESHOLD_MILLIS;
   request.setUseBikeRentalAvailabilityInformation(tripPlannedForNow);
-  if (intermediatePlaces != null && (request.getModes().isTransit() || (request.getModes().getWalk() && request.getModes().getBicycle())))   throw new UnsupportedOperationException("TSP is not supported for transit or bike share trips");
+  if (intermediatePlaces != null && intermediatePlaces.size() > 0 && (request.getModes().isTransit() || (request.getModes().getWalk() && request.getModes().getBicycle())))   throw new UnsupportedOperationException("TSP is not supported for transit or bike share trips");
   return request;
 }
