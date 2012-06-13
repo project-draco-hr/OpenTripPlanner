@@ -1,6 +1,8 @@
 {
   try {
-    return this.planGenerator.pathService.getPaths(this.buildRequest());
+    RoutingRequest options=this.buildRequest();
+    options.intermediatePlacesOrdered=false;
+    return this.planGenerator.pathService.getPaths(options);
   }
  catch (  ParameterException e) {
     e.printStackTrace();
