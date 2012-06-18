@@ -1,14 +1,3 @@
 {
-  if (routerId != null) {
-    graph=graphService.getGraph(routerId);
-  }
- else {
-    graph=graphService.getGraph();
-  }
-  networkLinkerLibrary=new NetworkLinkerLibrary(graph,Collections.<Class<?>,Object>emptyMap());
-  service=graph.getService(BikeRentalStationService.class);
-  if (service == null) {
-    service=new BikeRentalStationService();
-    graph.putService(BikeRentalStationService.class,service);
-  }
+  this.graphService=graphService;
 }
