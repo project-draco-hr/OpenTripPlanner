@@ -1,3 +1,11 @@
 {
-  return new RouterIdList(graphService.getGraphIds());
+  RouterList routerList=new RouterList();
+  for (  String id : graphService.getGraphIds()) {
+    RouterInfo routerInfo=new RouterInfo();
+    routerInfo.routerId=id;
+    Graph graph=graphService.getGraph();
+    routerInfo.polygon=GraphUtils.makeConcaveHull(graph);
+    routerList.routerInfo.add(routerInfo);
+  }
+  return routerList;
 }
