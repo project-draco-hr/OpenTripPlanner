@@ -7,7 +7,7 @@
     }
     EdgeNarrative en=new TransitNarrative(state0.getTripTimes().trip,this);
     StateEditor s1=state0.edit(this,en);
-    int type=pattern.getBoardType(stopIndex);
+    int type=getPattern().getBoardType(stopIndex);
     if (TransitUtils.handleBoardAlightType(s1,type)) {
       return null;
     }
@@ -24,7 +24,7 @@
     int bestWait=-1;
     TripTimes bestTripTimes=null;
     AgencyAndId serviceId=getPattern().getExemplar().getServiceId();
-    SD:     for (    ServiceDay sd : rctx.serviceDays) {
+    for (    ServiceDay sd : rctx.serviceDays) {
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
       if (secondsSinceMidnight < 0)       continue;
       if (sd.serviceIdRunning(serviceId)) {
@@ -67,7 +67,7 @@
     }
     EdgeNarrative en=new TransitNarrative(trip,this);
     StateEditor s1=state0.edit(this,en);
-    int type=pattern.getBoardType(stopIndex);
+    int type=getPattern().getBoardType(stopIndex);
     if (TransitUtils.handleBoardAlightType(s1,type)) {
       return null;
     }
