@@ -1,0 +1,12 @@
+{
+  TripTimes ret=(TripTimes)this.clone();
+  for (int i=0; i < ul.updates.size(); i++) {
+    int targetIndex=startIndex + i;
+    Update u=ul.updates.get(i);
+    ret.departureTimes[targetIndex]=u.depart;
+    if (targetIndex >= 1)     ret.arrivalTimes[targetIndex - 1]=u.arrive;
+  }
+  System.out.println(this.dumpTimes());
+  System.out.println(ret.dumpTimes());
+  return ret;
+}
