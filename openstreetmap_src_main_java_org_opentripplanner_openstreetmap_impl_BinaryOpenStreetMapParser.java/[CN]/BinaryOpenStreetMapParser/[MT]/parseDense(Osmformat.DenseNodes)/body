@@ -21,8 +21,8 @@
         int keyid=nodes.getKeysVals(j++);
         int valid=nodes.getKeysVals(j++);
         OSMTag tag=new OSMTag();
-        String key=getStringById(keyid).intern();
-        String value=getStringById(valid).intern();
+        String key=internalize(getStringById(keyid));
+        String value=internalize(getStringById(valid));
         tag.setK(key);
         tag.setV(value);
         tmp.addTag(tag);

@@ -7,8 +7,8 @@
     tmp.setId(i.getId());
     for (int j=0; j < i.getKeysCount(); j++) {
       OSMTag tag=new OSMTag();
-      String key=getStringById(i.getKeys(j)).intern();
-      String value=getStringById(i.getVals(j)).intern();
+      String key=internalize(getStringById(i.getKeys(j)));
+      String value=internalize(getStringById(i.getVals(j)));
       tag.setK(key);
       tag.setV(value);
       tmp.addTag(tag);
