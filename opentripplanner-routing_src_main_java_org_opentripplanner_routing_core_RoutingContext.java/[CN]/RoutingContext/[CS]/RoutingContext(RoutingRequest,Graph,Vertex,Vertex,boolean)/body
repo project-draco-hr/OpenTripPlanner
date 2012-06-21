@@ -1,7 +1,7 @@
 {
   this.opt=traverseOptions;
   this.graph=graph;
-  if (from == null && to == null) {
+  if (findPlaces) {
     fromVertex=graph.streetIndex.getVertexForPlace(opt.getFromPlace(),opt);
     toVertex=graph.streetIndex.getVertexForPlace(opt.getToPlace(),opt,fromVertex);
     if (opt.intermediatePlaces != null) {

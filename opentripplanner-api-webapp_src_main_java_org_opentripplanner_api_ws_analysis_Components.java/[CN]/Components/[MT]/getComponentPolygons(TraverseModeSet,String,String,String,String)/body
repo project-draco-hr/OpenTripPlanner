@@ -14,8 +14,7 @@
   if (cachedPolygons == null || dateTime != cachedDateTime || !options.equals(cachedOptions)) {
     cachedOptions=options;
     cachedDateTime=dateTime;
-    Graph graph=graphService.getGraph();
-    options.setRoutingContext(graph);
+    Graph graph=graphService.getGraph(routerId);
     cachedPolygons=AnalysisUtils.getComponentPolygons(graph,options,dateTime);
   }
   GraphComponentPolygons out=new GraphComponentPolygons();
