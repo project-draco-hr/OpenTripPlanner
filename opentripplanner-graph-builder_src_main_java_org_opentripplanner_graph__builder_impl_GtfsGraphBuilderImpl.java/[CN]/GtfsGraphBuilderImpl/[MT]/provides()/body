@@ -1,3 +1,8 @@
 {
-  return Arrays.asList("transit");
+  List<String> result=new ArrayList<String>();
+  result.add("transit");
+  for (  GraphBuilderWithGtfsDao builder : gtfsGraphBuilders) {
+    result.addAll(builder.provides());
+  }
+  return result;
 }
