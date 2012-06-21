@@ -16,6 +16,7 @@
   builder.setSchema(schema);
   builder.buildGraph(graph,new HashMap<Class<?>,Object>());
   graph.streetIndex=new StreetVertexIndexServiceImpl(graph);
+  initBikeRental();
   pathService.sptService=new GenericAStar();
   pathService.graphService=graphService;
   planGenerator.pathService=pathService;
