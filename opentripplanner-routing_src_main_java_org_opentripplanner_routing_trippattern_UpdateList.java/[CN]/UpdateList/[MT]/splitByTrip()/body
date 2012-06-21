@@ -1,0 +1,13 @@
+{
+  List<UpdateList> ret=new LinkedList<UpdateList>();
+  Collections.sort(updates);
+  UpdateList ul=null;
+  for (  Update u : updates) {
+    if (ul == null || !ul.tripId.equals(u.tripId)) {
+      ul=new UpdateList(u.tripId);
+      ret.add(ul);
+    }
+    ul.updates.add(u);
+  }
+  return ret;
+}
