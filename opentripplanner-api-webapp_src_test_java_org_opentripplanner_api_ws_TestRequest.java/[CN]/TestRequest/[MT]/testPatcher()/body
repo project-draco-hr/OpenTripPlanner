@@ -1,0 +1,11 @@
+{
+  Patcher p=new Patcher();
+  PatchService service=mock(PatchService.class);
+  when(service.getStopPatches(any(AgencyAndId.class))).thenReturn(new ArrayList<Patch>());
+  when(service.getRoutePatches(any(AgencyAndId.class))).thenReturn(new ArrayList<Patch>());
+  p.setPatchService(service);
+  PatchResponse stopPatches=p.getStopPatches("TriMet","5678");
+  assertNull(stopPatches.patches);
+  PatchResponse routePatches=p.getRoutePatches("TriMet","100");
+  assertNull(routePatches.patches);
+}
