@@ -1,0 +1,10 @@
+{
+  if (!dirty) {
+    arrivals=arrivals.clone();
+    departures=departures.clone();
+    dirty=true;
+  }
+  arrivals[stopIndex]=arrival;
+  departures[stopIndex]=departure;
+  updateTimes[stopIndex]=UPDATED;
+}

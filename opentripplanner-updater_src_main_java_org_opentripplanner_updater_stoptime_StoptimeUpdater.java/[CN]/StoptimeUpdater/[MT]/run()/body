@@ -1,0 +1,19 @@
+{
+  while (true) {
+    for (    UpdateList ul : updateStreamer.getUpdates().splitByTrip()) {
+      System.out.println(ul.toString());
+      if (!ul.isSane()) {
+        LOG.debug("incoherent stoptime UpdateList");
+        continue;
+      }
+      TripPattern pattern=patternForTripId.get(ul.tripId);
+      if (pattern != null) {
+        LOG.debug("pattern found for {}",ul.tripId);
+        pattern.update(ul);
+      }
+ else {
+        LOG.debug("pattern not found {}",ul.tripId);
+      }
+    }
+  }
+}

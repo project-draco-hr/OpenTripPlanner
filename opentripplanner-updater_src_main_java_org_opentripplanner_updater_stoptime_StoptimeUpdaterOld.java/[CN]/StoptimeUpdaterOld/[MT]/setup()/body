@@ -1,0 +1,11 @@
+{
+  Graph g=graphService.getGraph();
+  for (  TransitStopDepart tsd : filter(g.getVertices(),TransitStopDepart.class)) {
+    for (    PatternBoard pb : filter(tsd.getOutgoing(),PatternBoard.class)) {
+      TripPattern pattern=pb.getPattern();
+      for (      Trip trip : pattern.getTrips()) {
+        patternForTripId.put(trip.getId(),pattern);
+      }
+    }
+  }
+}

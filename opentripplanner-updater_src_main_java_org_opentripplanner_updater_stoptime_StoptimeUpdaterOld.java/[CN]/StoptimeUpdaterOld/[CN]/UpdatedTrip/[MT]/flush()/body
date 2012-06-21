@@ -1,0 +1,10 @@
+{
+  if (dirty) {
+    interpolate();
+    pattern.setArrivals(arrivals);
+    pattern.setDepartures(departures);
+    dirty=false;
+    return true;
+  }
+  return false;
+}
