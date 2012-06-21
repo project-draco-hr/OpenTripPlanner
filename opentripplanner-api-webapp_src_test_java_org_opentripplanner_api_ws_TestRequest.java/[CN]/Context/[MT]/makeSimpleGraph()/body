@@ -1,0 +1,12 @@
+{
+  Graph graph=new Graph();
+  StreetVertex tl=new IntersectionVertex(graph,"tl",-80.01,40.01,"top and left");
+  StreetVertex tr=new IntersectionVertex(graph,"tr",-80.0,40.01,"top and right");
+  StreetVertex bl=new IntersectionVertex(graph,"bl",-80.01,40.0,"bottom and left");
+  StreetVertex br=new IntersectionVertex(graph,"br",-80.0,40.0,"bottom and right");
+  makeEdges(tl,tr,"top");
+  makeEdges(tl,bl,"left");
+  makeEdges(br,tr,"right");
+  makeEdges(bl,br,"bottom");
+  return graph;
+}

@@ -1,0 +1,7 @@
+{
+  LineString geometry=GeometryUtils.makeLineString(v1.getCoordinate().x,v1.getCoordinate().y,v2.getCoordinate().x,v2.getCoordinate().y);
+  double length=DistanceLibrary.distance(v1.getCoordinate(),v2.getCoordinate());
+  new PlainStreetEdge(v1,v2,geometry,name,length,StreetTraversalPermission.ALL,false);
+  geometry=GeometryUtils.makeLineString(v2.getCoordinate().x,v2.getCoordinate().y,v1.getCoordinate().x,v1.getCoordinate().y);
+  new PlainStreetEdge(v2,v1,geometry,name,length,StreetTraversalPermission.ALL,true);
+}
