@@ -15,7 +15,7 @@
       List<Object> bin=bins[wrappedX][wrappedY];
       if (bin != null) {
         for (        Object t : bin) {
-          double distance=DistanceLibrary.fastDistance(c,c);
+          double distance=distanceLibrary.fastDistance(c,c);
           if (distance > radiusMeters)           continue;
           if (distance < closestDistance) {
             closestT=t;

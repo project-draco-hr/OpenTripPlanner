@@ -13,10 +13,10 @@
     }
     boolean seen=cache.containsKey(street.getGeometry());
     Vertex edgeLocation;
-    if (DistanceLibrary.distance(nearestPoint,fromv.getCoordinate()) < 0.0001) {
+    if (distanceLibrary.distance(nearestPoint,fromv.getCoordinate()) < 0.0001) {
       edgeLocation=fromv;
     }
- else     if (DistanceLibrary.distance(nearestPoint,tov.getCoordinate()) < 0.0001) {
+ else     if (distanceLibrary.distance(nearestPoint,tov.getCoordinate()) < 0.0001) {
       edgeLocation=tov;
     }
  else {

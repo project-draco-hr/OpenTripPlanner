@@ -1,11 +1,12 @@
 {
   Envelope envelope=new Envelope(coordinate);
-  envelope.expandBy(DistanceLibrary.metersToDegrees(radius));
+  getDistanceLibrary();
+  envelope.expandBy(SphericalDistanceLibrary.metersToDegrees(radius));
   List<?> stops=transitStopTree.query(envelope);
   ArrayList<TransitStop> out=new ArrayList<TransitStop>();
   for (  Object o : stops) {
     TransitStop stop=(TransitStop)o;
-    if (stop.distance(coordinate) < radius) {
+    if (distanceLibrary.distance(stop.getCoordinate(),coordinate) < radius) {
       out.add(stop);
     }
   }

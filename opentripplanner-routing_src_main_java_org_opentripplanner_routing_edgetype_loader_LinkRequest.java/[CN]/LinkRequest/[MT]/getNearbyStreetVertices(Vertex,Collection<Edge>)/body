@@ -16,7 +16,7 @@
  else {
     List<StreetVertex> atIntersection=linker.index.getIntersectionAt(coordinate);
     if (atIntersection != null) {
-      if (edges.getScore() > atIntersection.get(0).distance(coordinate))       return atIntersection;
+      if (edges.getScore() > distanceLibrary.distance(atIntersection.get(0).getCoordinate(),coordinate))       return atIntersection;
     }
     return getSplitterVertices(vertexLabel,edges.toEdgeList(),coordinate);
   }

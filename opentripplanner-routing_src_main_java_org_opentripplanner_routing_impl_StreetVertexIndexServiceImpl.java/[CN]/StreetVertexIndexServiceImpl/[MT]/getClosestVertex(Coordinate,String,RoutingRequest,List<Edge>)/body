@@ -26,7 +26,7 @@
   Vertex closest_stop=null;
   if (options != null && options.getModes().isTransit()) {
     for (    Vertex v : getLocalTransitStops(coordinate,1000)) {
-      double d=v.distance(coordinate);
+      double d=distanceLibrary.distance(v.getCoordinate(),coordinate);
       if (d < closest_stop_distance) {
         closest_stop_distance=d;
         closest_stop=v;
@@ -41,7 +41,7 @@
   if (candidate != null) {
     StreetEdge bestStreet=candidate.edge;
     Coordinate nearestPoint=candidate.nearestPointOnEdge;
-    closest_street_distance=DistanceLibrary.distance(coordinate,nearestPoint);
+    closest_street_distance=distanceLibrary.distance(coordinate,nearestPoint);
     _log.debug("best street: {} dist: {}",bestStreet.toString(),closest_street_distance);
     if (name == null) {
       name=bestStreet.getName();

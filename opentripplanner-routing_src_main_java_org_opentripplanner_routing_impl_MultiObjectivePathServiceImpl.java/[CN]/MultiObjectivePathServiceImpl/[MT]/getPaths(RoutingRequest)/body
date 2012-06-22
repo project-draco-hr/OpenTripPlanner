@@ -6,10 +6,10 @@
   Vertex targetVertex=options.rctx.target;
   WALK:   for (double maxWalk=options.getMaxWalkDistance(); maxWalk < 100000 && returnStates.isEmpty(); maxWalk*=2) {
     LOG.debug("try search with max walk {}",maxWalk);
-    if (maxWalk < Math.min(originVertex.distance(targetVertex),originVertex.getDistanceToNearestTransitStop() + targetVertex.getDistanceToNearestTransitStop()))     continue WALK;
+    if (maxWalk < Math.min(distanceLibrary.distance(originVertex.getCoordinate(),targetVertex.getCoordinate()),originVertex.getDistanceToNearestTransitStop() + targetVertex.getDistanceToNearestTransitStop()))     continue WALK;
     options.setMaxWalkDistance(maxWalk);
     final double AVG_TRANSIT_SPEED=25;
-    double cutoff=(originVertex.distance(targetVertex) * 1.5) / AVG_TRANSIT_SPEED;
+    double cutoff=(distanceLibrary.distance(originVertex.getCoordinate(),targetVertex.getCoordinate()) * 1.5) / AVG_TRANSIT_SPEED;
     cutoff+=options.getMaxWalkDistance() * options.walkReluctance;
     options.maxWeight=cutoff;
     State origin=new State(options);

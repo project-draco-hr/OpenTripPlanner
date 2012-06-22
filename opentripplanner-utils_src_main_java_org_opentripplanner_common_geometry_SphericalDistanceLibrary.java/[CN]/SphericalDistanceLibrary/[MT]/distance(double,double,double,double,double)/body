@@ -4,7 +4,7 @@
   lat2=toRadians(lat2);
   lon2=toRadians(lon2);
   double deltaLon=lon2 - lon1;
-  double y=sqrt(DistanceLibrary.p2(cos(lat2) * sin(deltaLon)) + DistanceLibrary.p2(cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(deltaLon)));
+  double y=sqrt(p2(cos(lat2) * sin(deltaLon)) + p2(cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(deltaLon)));
   double x=sin(lat1) * sin(lat2) + cos(lat1) * cos(lat2) * cos(deltaLon);
   return radius * atan2(y,x);
 }

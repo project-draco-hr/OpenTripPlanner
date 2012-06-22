@@ -1,6 +1,6 @@
 {
   for (  TransferTable.Transfer transfer : graph.getTransferTable().getAllTransfers()) {
-    double distance=transfer.from.distance(transfer.to.getCoordinate());
+    double distance=distanceLibrary.distance(transfer.from.getCoordinate(),transfer.to.getCoordinate());
     TransferEdge edge=null;
 switch (transfer.seconds) {
 case TransferTable.FORBIDDEN_TRANSFER:

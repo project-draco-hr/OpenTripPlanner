@@ -2,5 +2,5 @@
   this.options=s.getOptions();
   this.useTransit=options.getModes().isTransit();
   this.maxSpeed=getMaxSpeed(options);
-  return s.getVertex().fastDistance(target) / maxSpeed;
+  return getDistanceLibrary().fastDistance(s.getVertex().getCoordinate(),target.getCoordinate()) / maxSpeed;
 }
