@@ -1,6 +1,6 @@
 {
   this.vertexById=new ArrayList<Vertex>(getVertices());
-  Collections.sort(this.vertexById,new MortonVertexComparator(this.vertexById));
+  Collections.sort(this.vertexById,getVertexComparatorFactory().getComparator(vertexById));
   this.edgeById=new HashMap<Integer,Edge>();
   this.idForEdge=new HashMap<Edge,Integer>();
   int i=0;
