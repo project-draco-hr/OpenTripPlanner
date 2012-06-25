@@ -1,3 +1,8 @@
 {
-  LOG.info("Hello, this is the batch processor. My renderer is: {}",renderer);
+  for (  Individual oi : origins) {
+    RoutingRequest req=buildRequest(oi.getLat(),oi.getLon());
+    ShortestPathTree spt=sptService.getShortestPathTree(req);
+    destinations.writeCsv("/home/abyrd/disagg.csv",spt,oi);
+    req.cleanup();
+  }
 }

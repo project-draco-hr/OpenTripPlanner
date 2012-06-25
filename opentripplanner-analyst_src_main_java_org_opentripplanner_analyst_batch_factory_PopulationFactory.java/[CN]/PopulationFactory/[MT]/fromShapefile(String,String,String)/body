@@ -24,6 +24,9 @@
  else       if (geom instanceof Polygon) {
         point=((Polygon)geom).getCentroid();
       }
+ else       if (geom instanceof MultiPolygon) {
+        point=((MultiPolygon)geom).getCentroid();
+      }
  else {
         throw new IllegalStateException("Shapefile must contain either points or polygons.");
       }

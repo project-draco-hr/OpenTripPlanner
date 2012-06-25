@@ -2,7 +2,6 @@
   GenericApplicationContext ctx=new GenericApplicationContext();
   XmlBeanDefinitionReader xmlReader=new XmlBeanDefinitionReader(ctx);
   xmlReader.loadBeanDefinitions(new ClassPathResource(CONFIG));
-  xmlReader.loadBeanDefinitions(new ClassPathResource(BATCH_CONFIG));
   ctx.refresh();
   ctx.registerShutdownHook();
 }
