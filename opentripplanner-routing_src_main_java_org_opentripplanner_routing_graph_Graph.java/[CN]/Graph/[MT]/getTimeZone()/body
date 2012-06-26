@@ -1,0 +1,23 @@
+{
+  if (timeZone == null) {
+    Collection<String> agencyIds=this.getAgencyIds();
+    if (agencyIds.size() == 0) {
+      timeZone=TimeZone.getTimeZone("GMT");
+      LOG.warn("graph contains no agencies; API request times will be interpreted as GMT.");
+    }
+ else {
+      CalendarService cs=this.getCalendarService();
+      for (      String agencyId : agencyIds) {
+        TimeZone tz=cs.getTimeZoneForAgencyId(agencyId);
+        if (timeZone == null) {
+          LOG.debug("graph time zone set to {}",tz);
+          timeZone=tz;
+        }
+ else         if (!timeZone.equals(tz)) {
+          LOG.error("agency time zone differs from graph time zone: {}",tz);
+        }
+      }
+    }
+  }
+  return timeZone;
+}
