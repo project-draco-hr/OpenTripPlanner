@@ -15,6 +15,10 @@
  else {
       LinearLocation startIndex=getSegmentFraction(distances,startDistance);
       LinearLocation endIndex=getSegmentFraction(distances,endDistance);
+      if (equals(startIndex,endIndex)) {
+        GraphBuilderAnnotation.register(graph,Variety.BOGUS_SHAPE_DIST_TRAVELED,st1);
+        return createSimpleGeometry(st0.getStop(),st1.getStop());
+      }
       LineString line=getLineStringForShapeId(shapeId);
       LocationIndexedLine lol=new LocationIndexedLine(line);
       geometry=getSegmentGeometry(graph,shapeId,lol,startIndex,endIndex,startDistance,endDistance,st0,st1);
