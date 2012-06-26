@@ -6,17 +6,18 @@
 {
     String d=get(date,n,null);
     String t=get(time,n,null);
+    TimeZone tz=graphService.getGraph(request.routerId).getTimeZone();
     if (d == null && t != null) {
       LOG.debug("parsing ISO datetime {}",t);
       try {
         request.setDateTime(javax.xml.datatype.DatatypeFactory.newInstance().newXMLGregorianCalendar(t).toGregorianCalendar().getTime());
       }
  catch (      DatatypeConfigurationException e) {
-        request.setDateTime(d,t);
+        request.setDateTime(d,t,tz);
       }
     }
  else {
-      request.setDateTime(d,t);
+      request.setDateTime(d,t,tz);
     }
   }
   request.setWheelchair(get(wheelchair,n,false));

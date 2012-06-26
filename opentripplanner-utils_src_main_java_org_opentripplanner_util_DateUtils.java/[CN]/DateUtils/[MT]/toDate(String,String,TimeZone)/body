@@ -1,7 +1,7 @@
 {
   Date retVal=new Date();
   if (date != null) {
-    Date d=parseDate(date);
+    Date d=parseDate(date,tz);
     Integer s=null;
     if (time != null)     s=secPastMid(time);
     if (s == null || s < 0)     s=secPastMid();
@@ -10,8 +10,8 @@
  else   if (time != null) {
     Integer s=secPastMid(time);
     if (s != null && s > 0) {
-      String p=formatDate(DATE_FORMAT,retVal);
-      Date d=parseDate(p);
+      String p=formatDate(DATE_FORMAT,retVal,tz);
+      Date d=parseDate(p,tz);
       retVal=new Date(d.getTime() + s * 1000);
     }
   }
