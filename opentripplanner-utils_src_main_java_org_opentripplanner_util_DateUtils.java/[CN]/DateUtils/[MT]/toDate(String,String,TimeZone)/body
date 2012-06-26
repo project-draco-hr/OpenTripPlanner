@@ -1,4 +1,6 @@
 {
+  LOG.debug("Parsing date {} and time {}",date,time);
+  LOG.debug("using timezone {}",tz);
   Date retVal=new Date();
   if (date != null) {
     Date d=parseDate(date,tz);
@@ -15,5 +17,6 @@
       retVal=new Date(d.getTime() + s * 1000);
     }
   }
+  LOG.debug("resulting date is {}",retVal);
   return retVal;
 }
