@@ -28,6 +28,7 @@
     RoutingRequest options=makeTraverseOptions(startTime,routerId);
     for (    Edge e : boarding.getOutgoing()) {
       for (      StopTime st : getStopTimesForBoardEdge(startTime,endTime,options,e,extended)) {
+        st.phase="departure";
         if (extended != null && extended.equals(true)) {
           if (routeId != null && !routeId.equals("") && !st.trip.getRoute().getId().getId().equals(routeId))           continue;
           if (references != null && references.equals(true))           result.routes.add(st.trip.getRoute());
@@ -42,6 +43,7 @@
     for (    Edge e : alighting.getIncoming()) {
       for (      StopTime st : getStopTimesForAlightEdge(startTime,endTime,options,e,extended)) {
         if (!trips.contains(st.trip)) {
+          st.phase="arrival";
           if (extended != null && extended.equals(true)) {
             if (routeId != null && !routeId.equals("") && !st.trip.getRoute().getId().getId().equals(routeId))             continue;
             if (references != null && references.equals(true))             result.routes.add(st.trip.getRoute());
@@ -52,5 +54,13 @@
       }
     }
   }
+  Collections.sort(result.stopTimes,new Comparator<StopTime>(){
+    @Override public int compare(    StopTime o1,    StopTime o2){
+      if (o1.phase.equals("arrival") && o2.phase.equals("departure"))       return 1;
+      if (o1.phase.equals("departure") && o2.phase.equals("arrival"))       return -1;
+      return o1.time - o2.time > 0 ? 1 : -1;
+    }
+  }
+);
   return result;
 }
