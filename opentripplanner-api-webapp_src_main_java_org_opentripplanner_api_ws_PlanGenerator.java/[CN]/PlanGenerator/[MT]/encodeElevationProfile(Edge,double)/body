@@ -1,18 +1,15 @@
 {
   if (!(edge instanceof EdgeWithElevation)) {
-    return "";
+    return Collections.emptyList();
   }
   EdgeWithElevation elevEdge=(EdgeWithElevation)edge;
   if (elevEdge.getElevationProfile() == null) {
-    return "";
+    return Collections.emptyList();
   }
-  StringBuilder str=new StringBuilder();
+  ArrayList<P2<Double>> out=new ArrayList<P2<Double>>();
   Coordinate[] coordArr=elevEdge.getElevationProfile().toCoordinateArray();
   for (int i=0; i < coordArr.length; i++) {
-    str.append(Math.round(coordArr[i].x + offset));
-    str.append(",");
-    str.append(Math.round(coordArr[i].y * 10.0) / 10.0);
-    str.append(i < coordArr.length - 1 ? "," : "");
+    out.add(new P2<Double>(coordArr[i].x + offset,coordArr[i].y));
   }
-  return str.toString();
+  return out;
 }
