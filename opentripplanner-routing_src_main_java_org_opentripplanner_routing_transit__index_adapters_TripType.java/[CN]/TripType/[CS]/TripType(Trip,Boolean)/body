@@ -1,0 +1,15 @@
+{
+  this.id=obj.getId();
+  this.tripShortName=obj.getTripShortName();
+  this.tripHeadsign=obj.getTripHeadsign();
+  if (extended != null && extended.equals(true)) {
+    this.route=obj.getRoute();
+    this.serviceId=obj.getServiceId();
+    this.routeId=obj.getRoute().getId();
+    this.directionId=obj.getDirectionId();
+    this.blockId=obj.getBlockId();
+    this.shapeId=obj.getShapeId();
+    this.wheelchairAccessible=obj.getWheelchairAccessible();
+    this.tripBikesAllowed=obj.getTripBikesAllowed();
+  }
+}

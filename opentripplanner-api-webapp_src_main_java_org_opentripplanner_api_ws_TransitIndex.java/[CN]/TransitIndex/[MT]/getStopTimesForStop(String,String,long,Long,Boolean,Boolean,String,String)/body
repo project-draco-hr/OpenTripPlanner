@@ -1,0 +1,64 @@
+{
+  startTime/=1000;
+  if (endTime == null) {
+    endTime=startTime + 86400;
+  }
+ else {
+    endTime/=1000;
+  }
+  if (endTime - startTime > MAX_STOP_TIME_QUERY_INTERVAL) {
+    return new TransitError("Max stop time query interval is " + (endTime - startTime));
+  }
+  TransitIndexService transitIndexService=getGraph(routerId).getService(TransitIndexService.class);
+  if (transitIndexService == null) {
+    return new TransitError("No transit index found.  Add TransitIndexBuilder to your graph builder configuration and rebuild your graph.");
+  }
+  Graph graph=getGraph(routerId);
+  ArrayList<String> agencyList=new ArrayList<String>();
+  if (stopAgency == null || stopAgency.equals("")) {
+    for (    Agency a : graph.getAgencies()) {
+      agencyList.add(a.getId());
+    }
+  }
+ else {
+    agencyList.add(stopAgency);
+  }
+  HashSet<TripType> trips=new HashSet<TripType>();
+  StopTimeList result=new StopTimeList();
+  result.stopTimes=new ArrayList<StopTime>();
+  if (references != null && references.equals(true)) {
+    result.routes=new HashSet<Route>();
+  }
+  for (  String stopAgencyId : agencyList) {
+    AgencyAndId stop=new AgencyAndId(stopAgencyId,stopId);
+    Edge preBoardEdge=transitIndexService.getPreBoardEdge(stop);
+    Vertex boarding=preBoardEdge.getToVertex();
+    RoutingRequest options=makeTraverseOptions(startTime,routerId);
+    for (    Edge e : boarding.getOutgoing()) {
+      for (      StopTime st : getStopTimesForBoardEdge(startTime,endTime,options,e,extended)) {
+        if (extended != null && extended.equals(true)) {
+          if (routeId != null && !routeId.equals("") && !st.trip.getRoute().getId().getId().equals(routeId))           continue;
+          if (references != null && references.equals(true))           result.routes.add(st.trip.getRoute());
+          result.stopTimes.add(st);
+        }
+ else         result.stopTimes.add(st);
+        trips.add(st.trip);
+      }
+    }
+    Edge preAlightEdge=transitIndexService.getPreAlightEdge(stop);
+    Vertex alighting=preAlightEdge.getFromVertex();
+    for (    Edge e : alighting.getIncoming()) {
+      for (      StopTime st : getStopTimesForAlightEdge(startTime,endTime,options,e,extended)) {
+        if (!trips.contains(st.trip)) {
+          if (extended != null && extended.equals(true)) {
+            if (routeId != null && !routeId.equals("") && !st.trip.getRoute().getId().getId().equals(routeId))             continue;
+            if (references != null && references.equals(true))             result.routes.add(st.trip.getRoute());
+            result.stopTimes.add(st);
+          }
+ else           result.stopTimes.add(st);
+        }
+      }
+    }
+  }
+  return result;
+}

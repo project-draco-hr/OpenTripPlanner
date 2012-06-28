@@ -17,6 +17,14 @@
   for (  StopTime stopTime : stopTimes) {
     if (stops.size() == 0 || !stopTime.getStop().equals(stops.get(stops.size() - 1)))     stops.add(stopTime.getStop());
   }
+  HashSet<Stop> stopsForRoute=stopsByRoute.get(routeId);
+  if (stopsForRoute == null) {
+    stopsForRoute=new HashSet<Stop>();
+    stopsByRoute.put(routeId,stopsForRoute);
+  }
+  for (  StopTime stopTime : stopTimes) {
+    stopsByRoute.get(routeId).add(stopTime.getStop());
+  }
   Route route=trip.getRoute();
   List<RouteVariant> agencyVariants=variantsByAgency.get(route.getId().getAgencyId());
   if (agencyVariants == null) {
