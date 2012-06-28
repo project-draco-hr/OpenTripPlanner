@@ -1,0 +1,13 @@
+{
+  RouteDataList routeDataList=(RouteDataList)this.getRouteData(agency,route.getId().getId(),false,false,routerId);
+  for (  RouteData routeData : routeDataList.routeData)   for (  RouteVariant variant : routeData.variants)   for (  String endStopAgency : getAgenciesIds(endAgency,routerId)) {
+    Boolean start=false;
+    for (    Stop stop : variant.getStops()) {
+      if (stop.getId().getId().equals(startStopId))       start=true;
+      if (start && stop.getId().equals(new AgencyAndId(endStopAgency,endStopId))) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

@@ -14,24 +14,16 @@
     return new TransitError("No transit index found.  Add TransitIndexBuilder to your graph builder configuration and rebuild your graph.");
   }
   Graph graph=getGraph(routerId);
-  ArrayList<String> agencyList=new ArrayList<String>();
-  if (stopAgency == null || stopAgency.equals("")) {
-    for (    Agency a : graph.getAgencies()) {
-      agencyList.add(a.getId());
-    }
-  }
- else {
-    agencyList.add(stopAgency);
-  }
   HashSet<TripType> trips=new HashSet<TripType>();
   StopTimeList result=new StopTimeList();
   result.stopTimes=new ArrayList<StopTime>();
   if (references != null && references.equals(true)) {
     result.routes=new HashSet<Route>();
   }
-  for (  String stopAgencyId : agencyList) {
+  for (  String stopAgencyId : getAgenciesIds(stopAgency,routerId)) {
     AgencyAndId stop=new AgencyAndId(stopAgencyId,stopId);
     Edge preBoardEdge=transitIndexService.getPreBoardEdge(stop);
+    if (preBoardEdge == null)     break;
     Vertex boarding=preBoardEdge.getToVertex();
     RoutingRequest options=makeTraverseOptions(startTime,routerId);
     for (    Edge e : boarding.getOutgoing()) {

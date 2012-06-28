@@ -3,7 +3,10 @@
   if (transitIndexService == null) {
     return new TransitError("No transit index found.  Add TransitIndexBuilder to your graph builder configuration and rebuild your graph.");
   }
-  List<AgencyAndId> routes=transitIndexService.getRoutesForStop(new AgencyAndId(agency,id));
-  RouteList result=makeRouteList(routes,null,extended,routerId);
+  RouteList result=new RouteList();
+  for (  String string : getAgenciesIds(agency,routerId)) {
+    List<AgencyAndId> routes=transitIndexService.getRoutesForStop(new AgencyAndId(string,id));
+    result.routes.addAll(makeRouteList(routes,null,extended,routerId).routes);
+  }
   return result;
 }
