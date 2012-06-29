@@ -1,8 +1,10 @@
 {
-  initIndexes();
+  initIndexes(routerId);
+  if (className.equals(""))   className=null;
   Envelope envelope=getEnvelope(lowerLeft,upperRight);
   EdgeSet out=new EdgeSet();
-  Graph graph=graphService.getGraph();
+  Graph graph=graphService.getGraph(routerId);
+  STRtree edgeIndex=edgeIndices.get(routerId);
   @SuppressWarnings("unchecked") List<Edge> query=edgeIndex.query(envelope);
   out.edges=new ArrayList<WrappedEdge>();
   for (  Edge e : query) {

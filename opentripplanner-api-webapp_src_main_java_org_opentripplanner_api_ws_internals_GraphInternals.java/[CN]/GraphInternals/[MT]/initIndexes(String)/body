@@ -1,9 +1,12 @@
 {
+  STRtree vertexIndex=vertexIndices.get(routerId);
   if (vertexIndex != null) {
     return;
   }
+  vertexIndex=new STRtree();
+  STRtree edgeIndex=new STRtree();
   graphService.setLoadLevel(LoadLevel.DEBUG);
-  Graph graph=graphService.getGraph();
+  Graph graph=graphService.getGraph(routerId);
   vertexIndex=new STRtree();
   edgeIndex=new STRtree();
   for (  Vertex v : graph.getVertices()) {
@@ -23,4 +26,6 @@
   }
   vertexIndex.build();
   edgeIndex.build();
+  vertexIndices.put(routerId,vertexIndex);
+  edgeIndices.put(routerId,edgeIndex);
 }

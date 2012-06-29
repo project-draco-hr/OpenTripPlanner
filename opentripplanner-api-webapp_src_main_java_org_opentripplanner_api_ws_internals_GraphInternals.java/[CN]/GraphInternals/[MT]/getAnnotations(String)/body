@@ -1,5 +1,5 @@
 {
-  Graph graph=graphService.getGraph();
+  Graph graph=graphService.getGraph(routerId);
   List<GraphBuilderAnnotation> builderAnnotations=graph.getBuilderAnnotations();
   List<Annotation> out=new ArrayList<Annotation>();
   for (  GraphBuilderAnnotation annotation : builderAnnotations) {

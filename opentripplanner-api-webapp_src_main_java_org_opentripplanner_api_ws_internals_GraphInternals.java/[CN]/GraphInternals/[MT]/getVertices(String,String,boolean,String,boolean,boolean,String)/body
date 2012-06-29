@@ -1,6 +1,7 @@
 {
-  initIndexes();
+  initIndexes(routerId);
   Envelope envelope=getEnvelope(lowerLeft,upperRight);
+  STRtree vertexIndex=vertexIndices.get(routerId);
   @SuppressWarnings("unchecked") List<Vertex> query=vertexIndex.query(envelope);
   List<Vertex> filtered=new ArrayList<Vertex>();
   for (  Vertex v : query) {
@@ -20,7 +21,7 @@
  else {
     VertexSet out=new VertexSet();
     out.vertices=filtered;
-    Graph graph=graphService.getGraph();
+    Graph graph=graphService.getGraph(routerId);
     return out.withGraph(graph);
   }
 }
