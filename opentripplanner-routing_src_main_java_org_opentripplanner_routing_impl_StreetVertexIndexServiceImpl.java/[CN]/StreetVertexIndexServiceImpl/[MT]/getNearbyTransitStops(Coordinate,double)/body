@@ -1,6 +1,5 @@
 {
   Envelope envelope=new Envelope(coordinate);
-  getDistanceLibrary();
   envelope.expandBy(SphericalDistanceLibrary.metersToDegrees(radius));
   List<?> stops=transitStopTree.query(envelope);
   ArrayList<TransitStop> out=new ArrayList<TransitStop>();
