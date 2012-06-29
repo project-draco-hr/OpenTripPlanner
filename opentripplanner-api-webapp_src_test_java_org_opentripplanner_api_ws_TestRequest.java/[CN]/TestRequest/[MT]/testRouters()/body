@@ -1,0 +1,21 @@
+{
+  Routers routerApi=new Routers();
+  routerApi.graphService=Context.getInstance().graphService;
+  RouterList routers=routerApi.getRouterIds();
+  assertEquals(2,routers.routerInfo.size());
+  RouterInfo router0=routers.routerInfo.get(0);
+  RouterInfo router1=routers.routerInfo.get(1);
+  RouterInfo otherRouter;
+  RouterInfo defaultRouter;
+  if (router0.routerId == null) {
+    defaultRouter=router0;
+    otherRouter=router1;
+  }
+ else {
+    defaultRouter=router1;
+    otherRouter=router0;
+  }
+  assertNull(defaultRouter.routerId);
+  assertNotNull(otherRouter.routerId);
+  assertTrue(otherRouter.polygon.getArea() > 0);
+}

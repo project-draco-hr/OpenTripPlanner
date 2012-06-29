@@ -1,0 +1,15 @@
+{
+  GtfsGraphBuilderImpl gtfsBuilder=new GtfsGraphBuilderImpl();
+  GtfsBundle bundle=new GtfsBundle();
+  bundle.setPath(new File("../opentripplanner-routing/" + ConstantsForTests.PORTLAND_GTFS));
+  ArrayList<GtfsBundle> bundleList=new ArrayList<GtfsBundle>();
+  bundleList.add(bundle);
+  GtfsBundles bundles=new GtfsBundles();
+  bundles.setBundles(bundleList);
+  gtfsBuilder.setGtfsBundles(bundles);
+  gtfsBuilder.setGtfsGraphBuilders(Arrays.asList((GraphBuilderWithGtfsDao)new TransitIndexBuilder()));
+  HashMap<Class<?>,Object> extra=new HashMap<Class<?>,Object>();
+  gtfsBuilder.buildGraph(graph,extra);
+  TransitToStreetNetworkGraphBuilderImpl linker=new TransitToStreetNetworkGraphBuilderImpl();
+  linker.buildGraph(graph,extra);
+}

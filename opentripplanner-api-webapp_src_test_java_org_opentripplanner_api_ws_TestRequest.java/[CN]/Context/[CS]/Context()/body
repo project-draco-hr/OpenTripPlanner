@@ -15,8 +15,9 @@
   schema.setNoteConverter(new AttributeFeatureConverter<String>("PREFIX"));
   builder.setSchema(schema);
   builder.buildGraph(graph,new HashMap<Class<?>,Object>());
-  graph.streetIndex=new StreetVertexIndexServiceImpl(graph);
+  initTransit();
   initBikeRental();
+  graph.streetIndex=new StreetVertexIndexServiceImpl(graph);
   pathService.sptService=new GenericAStar();
   pathService.graphService=graphService;
   planGenerator.pathService=pathService;
