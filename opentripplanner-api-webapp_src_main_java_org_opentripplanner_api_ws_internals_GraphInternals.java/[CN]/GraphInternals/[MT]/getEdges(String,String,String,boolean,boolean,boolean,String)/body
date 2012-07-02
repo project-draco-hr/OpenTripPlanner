@@ -1,6 +1,6 @@
 {
   initIndexes(routerId);
-  if (className.equals(""))   className=null;
+  if (className != null && className.equals(""))   className=null;
   Envelope envelope=getEnvelope(lowerLeft,upperRight);
   EdgeSet out=new EdgeSet();
   Graph graph=graphService.getGraph(routerId);
