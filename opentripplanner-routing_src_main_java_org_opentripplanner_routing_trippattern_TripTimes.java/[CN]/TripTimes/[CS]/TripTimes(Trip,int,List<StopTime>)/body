@@ -1,7 +1,10 @@
 {
   this(trip,index,stopTimes.size(),false);
+  boolean nullArrivals=true;
   for (int hop=0; hop < stopTimes.size() - 1; hop++) {
     departureTimes[hop]=stopTimes.get(hop).getDepartureTime();
     arrivalTimes[hop]=stopTimes.get(hop + 1).getArrivalTime();
+    if (departureTimes[hop] != arrivalTimes[hop])     nullArrivals=false;
   }
+  if (nullArrivals)   arrivalTimes=null;
 }

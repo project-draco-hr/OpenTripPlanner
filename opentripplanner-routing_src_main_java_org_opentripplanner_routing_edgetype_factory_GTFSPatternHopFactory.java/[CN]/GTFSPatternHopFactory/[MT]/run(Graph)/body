@@ -83,6 +83,7 @@
     }
   }
   loadTransfers(graph);
+  if (_deleteUselessDwells)   deleteUselessDwells(graph);
   clearCachedData();
   graph.putService(FareService.class,fareServiceFactory.makeFareService());
 }
