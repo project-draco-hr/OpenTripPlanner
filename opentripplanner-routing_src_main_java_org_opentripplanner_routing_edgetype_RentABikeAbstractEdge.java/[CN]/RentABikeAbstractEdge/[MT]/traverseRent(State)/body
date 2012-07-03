@@ -3,7 +3,7 @@
   if (!s0.getNonTransitMode(options).equals(TraverseMode.WALK))   return null;
   if (!options.getModes().contains(TraverseMode.BICYCLE))   return null;
   BikeRentalStationVertex dropoff=(BikeRentalStationVertex)tov;
-  if (options.useBikeRentalAvailabilityInformation() && dropoff.getBikesAvailable() == 0) {
+  if (options.isUseBikeRentalAvailabilityInformation() && dropoff.getBikesAvailable() == 0) {
     return null;
   }
   EdgeNarrative en=new FixedModeEdge(this,s0.getNonTransitMode(options));
