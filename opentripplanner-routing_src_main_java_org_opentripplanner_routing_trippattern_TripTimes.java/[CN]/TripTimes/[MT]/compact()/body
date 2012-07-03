@@ -1,3 +1,13 @@
 {
+  if (arrivalTimes == null)   return false;
+  int nHops=arrivalTimes.length;
+  for (int hop=1; hop < nHops; hop++) {
+    if (this.getDwellTime(hop) != 0) {
+      return false;
+    }
+  }
+  departureTimes=Arrays.copyOf(departureTimes,nHops + 1);
+  departureTimes[nHops]=arrivalTimes[nHops - 1];
+  arrivalTimes=null;
   return true;
 }
