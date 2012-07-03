@@ -1,5 +1,9 @@
 {
-  this(trip,index,stopTimes.size(),false);
+  this.trip=trip;
+  this.index=index;
+  int nStops=stopTimes.size();
+  departureTimes=new int[nStops];
+  arrivalTimes=new int[nStops];
   boolean nullArrivals=true;
   for (int hop=0; hop < stopTimes.size() - 1; hop++) {
     departureTimes[hop]=stopTimes.get(hop).getDepartureTime();
