@@ -1,7 +1,7 @@
 {
   return wrapGenerate(new OneArgFunc<TripPlan,RoutingRequest>(){
     public TripPlan call(    RoutingRequest request){
-      return planGenerator.generate(request);
+      return planGenerator.generateLastTrip(request);
     }
   }
 );
