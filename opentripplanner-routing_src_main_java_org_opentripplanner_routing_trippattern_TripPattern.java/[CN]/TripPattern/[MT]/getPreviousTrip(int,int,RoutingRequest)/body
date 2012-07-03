@@ -15,7 +15,7 @@
   for (int i=0; i < trips.size(); i++) {
     TripTimes currTrip=tripTimes.get(i);
     int currTime=currTrip.getArrivalTime(stopIndex);
-    if (currTime < beforeTime && currTime > bestTime && tripAcceptable(currTrip.trip,bicycle,wheelchair) && !options.bannedTrips.contains(trips.get(i).getId())) {
+    if (currTime <= beforeTime && currTime > bestTime && tripAcceptable(currTrip.trip,bicycle,wheelchair) && !options.bannedTrips.contains(trips.get(i).getId())) {
       bestTrip=currTrip;
       bestTime=currTime;
     }
