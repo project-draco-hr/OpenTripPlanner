@@ -15,6 +15,7 @@
       for (      Long node : way.getNodeRefs()) {
         MapUtils.addToMapSet(_areasForNode,node,way);
       }
+      getLevelsForWay(way);
     }
     return;
   }

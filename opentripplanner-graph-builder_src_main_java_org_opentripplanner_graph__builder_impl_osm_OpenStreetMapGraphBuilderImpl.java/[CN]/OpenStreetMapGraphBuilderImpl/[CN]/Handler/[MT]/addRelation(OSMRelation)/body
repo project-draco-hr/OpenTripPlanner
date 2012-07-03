@@ -7,6 +7,7 @@
     for (    OSMRelationMember member : relation.getMembers()) {
       _areaWayIds.add(member.getRef());
     }
+    getLevelsForWay(relation);
   }
  else   if (!(relation.isTag("type","restriction")) && !(relation.isTag("type","route") && relation.isTag("route","road")) && !(relation.isTag("type","multipolygon") && relation.hasTag("highway"))&& !(relation.isTag("type","level_map"))) {
     return;
