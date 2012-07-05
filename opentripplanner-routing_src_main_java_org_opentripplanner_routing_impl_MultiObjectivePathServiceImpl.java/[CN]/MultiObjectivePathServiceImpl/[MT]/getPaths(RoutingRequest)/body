@@ -4,7 +4,7 @@
   BinHeap<State> pq=new BinHeap<State>();
   Vertex originVertex=options.rctx.origin;
   Vertex targetVertex=options.rctx.target;
-  WALK:   for (double maxWalk=options.getMaxWalkDistance(); maxWalk < 100000 && returnStates.isEmpty(); maxWalk*=2) {
+  WALK:   for (double maxWalk=options.getMaxWalkDistance(); returnStates.isEmpty(); maxWalk*=2) {
     LOG.debug("try search with max walk {}",maxWalk);
     if (maxWalk < Math.min(distanceLibrary.distance(originVertex.getCoordinate(),targetVertex.getCoordinate()),originVertex.getDistanceToNearestTransitStop() + targetVertex.getDistanceToNearestTransitStop()))     continue WALK;
     options.setMaxWalkDistance(maxWalk);
@@ -24,7 +24,7 @@
     QUEUE:     while (!pq.empty()) {
       if (System.currentTimeMillis() > endTime) {
         LOG.debug("timeout at {} msec",System.currentTimeMillis() - startTime);
-        if (returnStates.isEmpty())         continue WALK;
+        if (returnStates.isEmpty())         break WALK;
  else {
           storeMemory();
           break WALK;
