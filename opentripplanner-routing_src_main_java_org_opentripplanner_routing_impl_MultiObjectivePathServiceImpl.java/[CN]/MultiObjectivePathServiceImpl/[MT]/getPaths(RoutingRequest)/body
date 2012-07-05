@@ -1,4 +1,9 @@
 {
+  if (options.rctx == null) {
+    options.setRoutingContext(graphService.getGraph(options.getRouterId()));
+    options.rctx.pathParsers=new PathParser[1];
+    options.rctx.pathParsers[0]=new BasicPathParser();
+  }
   RemainingWeightHeuristic heuristic=new BidirectionalRemainingWeightHeuristic(options.rctx.graph);
   List<State> returnStates=new LinkedList<State>();
   BinHeap<State> pq=new BinHeap<State>();
