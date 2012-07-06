@@ -6,7 +6,7 @@
     if (fromVertex.isLocal()) {
       s1.setAlightedLocal(true);
     }
-    s1.incrementTimeInSeconds(options.minTransferTime / 2);
+    s1.incrementTimeInSeconds(options.getBoardSlack());
     s1.alightTransit();
     return s1.makeState();
   }
@@ -21,7 +21,14 @@
     }
     if (s0.getNumBoardings() > options.maxTransfers)     return null;
     long t0=s0.getTime();
-    long board_after=t0 + options.minTransferTime / 2;
+    long slack;
+    if (s0.isEverBoarded()) {
+      slack=options.getTransferSlack() - options.getAlightSlack();
+    }
+ else {
+      slack=options.getBoardSlack();
+    }
+    long board_after=t0 + slack;
     long transfer_penalty=0;
     if (s0.getLastAlightedTime() != 0) {
       TransferTable transferTable=s0.getContext().transferTable;
