@@ -18,6 +18,9 @@
   Vertex originVertex=options.rctx.origin;
   Vertex targetVertex=options.rctx.target;
   WALK:   for (double maxWalk=options.getMaxWalkDistance(); returnStates.isEmpty(); maxWalk*=2) {
+    if (maxWalk != Double.MAX_VALUE && maxWalk > MAX_WALK) {
+      break;
+    }
     LOG.debug("try search with max walk {}",maxWalk);
     if (maxWalk < Math.min(distanceLibrary.distance(originVertex.getCoordinate(),targetVertex.getCoordinate()),originVertex.getDistanceToNearestTransitStop() + targetVertex.getDistanceToNearestTransitStop()))     continue WALK;
     options.setMaxWalkDistance(maxWalk);
