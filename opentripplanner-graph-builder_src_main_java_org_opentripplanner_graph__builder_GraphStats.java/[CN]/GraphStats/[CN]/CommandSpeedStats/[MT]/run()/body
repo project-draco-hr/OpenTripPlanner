@@ -1,0 +1,21 @@
+{
+  System.out.println("dumping hop info...");
+  out.println("route,distance,time,speed");
+  for (  Vertex v : graph.getVertices()) {
+    for (    PatternHop ph : IterableLibrary.filter(v.getOutgoing(),PatternHop.class)) {
+      double distance=ph.getDistance();
+      if (distance < 3)       continue;
+      TableTripPattern ttp=ph.getPattern();
+      List<Trip> trips=ttp.getTrips();
+      int hop=ph.stopIndex;
+      String route=ttp.getExemplar().getRoute().getId().toString();
+      for (int trip=0; trip < trips.size(); trip++) {
+        int time=ttp.getRunningTime(hop,trip);
+        double speed=distance / time;
+        if (Double.isInfinite(speed) || Double.isNaN(speed))         continue;
+        out.printf("%s,%f,%d,%f\n",route,distance,time,speed);
+      }
+    }
+  }
+  System.out.println("done...");
+}

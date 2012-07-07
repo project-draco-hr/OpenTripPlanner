@@ -1,0 +1,17 @@
+{
+  jc=new JCommander(this);
+  jc.addCommand(commandEndpoints);
+  jc.addCommand(commandSpeedStats);
+  try {
+    jc.parse(args);
+  }
+ catch (  Exception e) {
+    System.out.println(e.getMessage());
+    jc.usage();
+    System.exit(1);
+  }
+  if (help || jc.getParsedCommand() == null) {
+    jc.usage();
+    System.exit(0);
+  }
+}
