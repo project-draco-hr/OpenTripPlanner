@@ -3,10 +3,8 @@
   child.stateData.route=routeId;
   if (routeId != null) {
     AgencyAndId[] oldRouteSequence=child.stateData.routeSequence;
-    LOG.debug("old route seq {}",Arrays.asList(oldRouteSequence));
     int oldLength=oldRouteSequence.length;
     child.stateData.routeSequence=Arrays.copyOf(oldRouteSequence,oldLength + 1);
     child.stateData.routeSequence[oldLength]=routeId;
-    LOG.debug("new route seq {}",Arrays.asList(child.stateData.routeSequence));
   }
 }
