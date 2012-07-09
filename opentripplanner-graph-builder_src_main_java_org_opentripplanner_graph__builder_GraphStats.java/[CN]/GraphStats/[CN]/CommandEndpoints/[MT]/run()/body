@@ -1,2 +1,37 @@
 {
+  System.out.printf("Producing %d random endpoints within radius %2.2fm around %s.\n",n,radius,useStops ? "stops" : "streets");
+  List<Vertex> vertices=new ArrayList<Vertex>();
+  GeodeticCalculator gc=new GeodeticCalculator();
+  Class<?> klasse=useStops ? TransitStop.class : TurnVertex.class;
+  for (  Vertex v : graph.getVertices())   if (klasse.isInstance(v))   vertices.add(v);
+  Random random=new Random();
+  if (seed != null)   random.setSeed(seed);
+  Collections.shuffle(vertices,random);
+  vertices=vertices.subList(0,n);
+  out.printf("n,name,lat,lon\n");
+  int i=0;
+  for (  Vertex v : vertices) {
+    Coordinate c;
+    if (v instanceof TurnVertex) {
+      LineString ls=((TurnVertex)v).geometry;
+      int numPoints=ls.getNumPoints();
+      LocationIndexedLine lil=new LocationIndexedLine(ls);
+      int seg=random.nextInt(numPoints);
+      double frac=random.nextDouble();
+      LinearLocation ll=new LinearLocation(seg,frac);
+      c=lil.extractPoint(ll);
+    }
+ else {
+      c=v.getCoordinate();
+    }
+    double distance=random.nextDouble() * radius;
+    double azimuth=random.nextDouble() * 360 - 180;
+    gc.setStartingGeographicPoint(c.x,c.y);
+    gc.setDirection(azimuth,distance);
+    Point2D dest=gc.getDestinationGeographicPoint();
+    String name=v.getName();
+    out.printf("%d,%s,%f,%f\n",i,name,dest.getY(),dest.getX());
+    i+=1;
+  }
+  System.out.printf("done.\n");
 }
