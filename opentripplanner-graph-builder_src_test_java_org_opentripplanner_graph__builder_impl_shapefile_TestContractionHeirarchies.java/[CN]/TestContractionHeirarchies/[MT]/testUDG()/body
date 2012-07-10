@@ -59,6 +59,7 @@
   RoutingRequest options=new RoutingRequest();
   options.optimize=OptimizeType.QUICK;
   options.walkReluctance=1;
+  options.setMaxWalkDistance(Double.MAX_VALUE);
   options.setWalkSpeed(1);
   GraphPath path=hierarchy.getShortestPath(vertices.get(0),vertices.get(1),0,options);
   assertNotNull(path);
