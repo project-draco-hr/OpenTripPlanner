@@ -58,6 +58,6 @@
     createdEdges.add(board);
     createdEdges.add(alight);
   }
-  pattern.setTripFlags(((trip.getWheelchairAccessible() == 1) ? TripPattern.FLAG_WHEELCHAIR_ACCESSIBLE : 0) | (((trip.getRoute().getBikesAllowed() == 2 && trip.getTripBikesAllowed() != 1) || trip.getTripBikesAllowed() == 2) ? TripPattern.FLAG_BIKES_ALLOWED : 0));
+  pattern.setTripFlags(((trip.getWheelchairAccessible() == 1) ? TableTripPattern.FLAG_WHEELCHAIR_ACCESSIBLE : 0) | (((trip.getRoute().getBikesAllowed() == 2 && trip.getTripBikesAllowed() != 1) || trip.getTripBikesAllowed() == 2) ? TableTripPattern.FLAG_BIKES_ALLOWED : 0));
   return pattern;
 }

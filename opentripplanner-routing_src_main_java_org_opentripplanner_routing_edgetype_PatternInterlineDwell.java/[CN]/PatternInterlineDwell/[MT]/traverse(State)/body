@@ -15,7 +15,7 @@
     return null;
   }
   StateEditor s1=state0.edit(this);
-  TripPattern pattern=((OnboardVertex)s1.getVertex()).getTripPattern();
+  TableTripPattern pattern=((OnboardVertex)s1.getVertex()).getTripPattern();
   s1.incrementTimeInSeconds(dwellData.dwellTime);
   s1.setTripId(targetTrip.getId());
   s1.setTripTimes(pattern.getTripTimes(dwellData.patternIndex));

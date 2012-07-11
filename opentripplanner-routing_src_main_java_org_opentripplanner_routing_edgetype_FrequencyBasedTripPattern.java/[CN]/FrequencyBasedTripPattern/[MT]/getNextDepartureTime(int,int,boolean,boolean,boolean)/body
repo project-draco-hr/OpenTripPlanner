@@ -1,0 +1,47 @@
+{
+  int mask=pickup ? TableTripPattern.MASK_PICKUP : TableTripPattern.MASK_DROPOFF;
+  int shift=pickup ? TableTripPattern.SHIFT_PICKUP : TableTripPattern.SHIFT_DROPOFF;
+  if ((perStopFlags[stopIndex] & mask) >> shift == TableTripPattern.NO_PICKUP) {
+    return -1;
+  }
+  if (wheelchairAccessible && (perStopFlags[stopIndex] & TableTripPattern.FLAG_WHEELCHAIR_ACCESSIBLE) == 0) {
+    return -1;
+  }
+  if (wheelchairAccessible || bikesAllowed) {
+    int flags=(bikesAllowed ? TableTripPattern.FLAG_BIKES_ALLOWED : 0) | (wheelchairAccessible ? TableTripPattern.FLAG_WHEELCHAIR_ACCESSIBLE : 0);
+    if ((tripFlags & flags) == 0) {
+      return -1;
+    }
+  }
+  int stopDepartureTimeOffset=departureTimes[stopIndex];
+  int afterTimeAtStart=afterTime - stopDepartureTimeOffset;
+  int timeRange=Arrays.binarySearch(timeRangeStart,afterTimeAtStart);
+  if (timeRange < 0) {
+    timeRange=-timeRange - 1;
+    if (timeRange > 0)     timeRange-=1;
+  }
+  int firstDepartureTimeInRange=stopDepartureTimeOffset + timeRangeStart[timeRange];
+  int frequency=timeRangeFrequency[timeRange];
+  int departureTime;
+  if (exact) {
+    if (afterTime < firstDepartureTimeInRange) {
+      departureTime=firstDepartureTimeInRange;
+    }
+ else {
+      int offset=(afterTime - firstDepartureTimeInRange) % frequency;
+      if (offset == 0)       offset=frequency;
+      departureTime=afterTime + frequency - offset;
+    }
+  }
+ else {
+    departureTime=afterTime + frequency;
+    if (departureTime < firstDepartureTimeInRange) {
+      departureTime=firstDepartureTimeInRange;
+    }
+  }
+  if (departureTime - stopDepartureTimeOffset < timeRangeEnd[timeRange]) {
+    return departureTime;
+  }
+  timeRange++;
+  return -1;
+}

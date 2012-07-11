@@ -1,0 +1,59 @@
+{
+  HashSet<Vertex> closed=new HashSet<Vertex>();
+  BinHeap<State> queue=new BinHeap<State>(50);
+  BasicShortestPathTree spt=new BasicShortestPathTree(options);
+  State initial=new State(origin,options);
+  spt.add(initial);
+  queue.insert(initial,0);
+  HashMap<TableTripPattern,Double> patternCosts=new HashMap<TableTripPattern,Double>();
+  int patternsSeen=0;
+  while (!queue.empty()) {
+    State u=queue.extract_min();
+    if (!spt.visit(u))     continue;
+    Vertex fromv=u.getVertex();
+    closed.add(fromv);
+    if (fromv instanceof TransitStop) {
+      Vertex departureVertex=null;
+      for (      Edge e : fromv.getOutgoing()) {
+        departureVertex=e.getToVertex();
+        break;
+      }
+      if (departureVertex == null) {
+        _log.debug("Stop without departure vertex.");
+        continue;
+      }
+      for (      Edge e : departureVertex.getOutgoing()) {
+        if (e instanceof PatternBoard) {
+          TableTripPattern pattern=((PatternBoard)e).getPattern();
+          if (nearbyPatterns.contains(pattern)) {
+            Double cost=patternCosts.get(pattern);
+            if (cost == null) {
+              patternCosts.put(pattern,u.getWeight());
+              patternsSeen++;
+              if (patternsSeen == nearbyPatterns.size()) {
+                return patternCosts;
+              }
+            }
+ else             if (cost > u.getWeight()) {
+              patternCosts.put(pattern,u.getWeight());
+            }
+          }
+        }
+      }
+    }
+    if (fromv.fastDistance(origin) > LOCAL_STOP_SEARCH_RADIUS) {
+      return patternCosts;
+    }
+    Iterable<Edge> outgoing=fromv.getOutgoing();
+    for (    Edge edge : outgoing) {
+      State v=edge.traverse(u);
+      if (v == null)       continue;
+      double dw=v.getWeight() - u.getWeight();
+      if (dw < 0)       throw new NegativeWeightException(String.valueOf(dw));
+      Vertex toVertex=v.getVertex();
+      if (closed.contains(toVertex))       continue;
+      if (spt.add(v))       queue.insert(v,v.getWeight());
+    }
+  }
+  return patternCosts;
+}
