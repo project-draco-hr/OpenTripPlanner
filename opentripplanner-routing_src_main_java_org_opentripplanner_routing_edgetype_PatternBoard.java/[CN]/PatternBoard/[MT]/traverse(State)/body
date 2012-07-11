@@ -15,9 +15,13 @@
     s1.setTripId(null);
     s1.setLastAlightedTime(state0.getTime());
     s1.setPreviousStop(fromv);
+    s1.setLastPattern(pattern);
     return s1.makeState();
   }
  else {
+    if (state0.getLastPattern() == pattern) {
+      return null;
+    }
     if (!options.getModes().get(modeMask)) {
       return null;
     }
