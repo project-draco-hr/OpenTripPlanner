@@ -1,0 +1,12 @@
+{
+  initIndexes(routerId);
+  Envelope envelope=getEnvelope(lowerLeft,upperRight);
+  FeatureCount out=new FeatureCount();
+  @SuppressWarnings("unchecked") STRtree vertexIndex=vertexIndices.get(routerId);
+  List<Vertex> vertexQuery=vertexIndex.query(envelope);
+  out.vertices=vertexQuery.size();
+  @SuppressWarnings("unchecked") STRtree edgeIndex=edgeIndices.get(routerId);
+  List<Edge> edgeQuery=edgeIndex.query(envelope);
+  out.edges=edgeQuery.size();
+  return out;
+}

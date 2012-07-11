@@ -1,0 +1,31 @@
+{
+  STRtree vertexIndex=vertexIndices.get(routerId);
+  if (vertexIndex != null) {
+    return;
+  }
+  vertexIndex=new STRtree();
+  STRtree edgeIndex=new STRtree();
+  graphService.setLoadLevel(LoadLevel.DEBUG);
+  Graph graph=graphService.getGraph(routerId);
+  vertexIndex=new STRtree();
+  edgeIndex=new STRtree();
+  for (  Vertex v : graph.getVertices()) {
+    Envelope vertexEnvelope=new Envelope(v.getCoordinate());
+    vertexIndex.insert(vertexEnvelope,v);
+    for (    Edge e : v.getOutgoing()) {
+      Envelope envelope;
+      Geometry geometry=e.getGeometry();
+      if (geometry == null) {
+        envelope=vertexEnvelope;
+      }
+ else {
+        envelope=geometry.getEnvelopeInternal();
+      }
+      edgeIndex.insert(envelope,e);
+    }
+  }
+  vertexIndex.build();
+  edgeIndex.build();
+  vertexIndices.put(routerId,vertexIndex);
+  edgeIndices.put(routerId,edgeIndex);
+}

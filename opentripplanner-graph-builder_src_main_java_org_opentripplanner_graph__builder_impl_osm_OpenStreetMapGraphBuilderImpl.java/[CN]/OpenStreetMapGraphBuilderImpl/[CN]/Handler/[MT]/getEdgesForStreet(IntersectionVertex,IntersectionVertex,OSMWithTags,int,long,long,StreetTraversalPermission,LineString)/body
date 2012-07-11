@@ -2,7 +2,7 @@
   Coordinate[] coordinates=geometry.getCoordinates();
   double d=0;
   for (int i=1; i < coordinates.length; ++i) {
-    d+=DistanceLibrary.distance(coordinates[i - 1],coordinates[i]);
+    d+=distanceLibrary.distance(coordinates[i - 1],coordinates[i]);
   }
   LineString backGeometry=(LineString)geometry.reverse();
   Map<String,String> tags=way.getTags();

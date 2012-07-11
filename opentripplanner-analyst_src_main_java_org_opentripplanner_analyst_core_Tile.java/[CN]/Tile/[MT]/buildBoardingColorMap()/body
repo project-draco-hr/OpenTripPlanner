@@ -1,0 +1,14 @@
+{
+  byte[] r=new byte[256];
+  byte[] g=new byte[256];
+  byte[] b=new byte[256];
+  byte[] a=new byte[256];
+  Arrays.fill(a,(byte)80);
+  g[0]=(byte)255;
+  b[1]=(byte)255;
+  r[2]=(byte)255;
+  g[2]=(byte)255;
+  r[3]=(byte)255;
+  a[255]=0;
+  return new IndexColorModel(8,256,r,g,b,a);
+}

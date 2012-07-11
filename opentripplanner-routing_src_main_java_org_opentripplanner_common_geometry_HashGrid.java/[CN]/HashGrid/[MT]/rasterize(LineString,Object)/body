@@ -6,6 +6,6 @@
     Coordinate c1=coords[i + 1];
     RasterizedSegment rs=new RasterizedSegment(c0,c1,dist,t);
     rasterize(c0,c1,rs);
-    dist+=DistanceLibrary.fastDistance(coords[i],coords[i + 1]);
+    dist+=distanceLibrary.fastDistance(coords[i],coords[i + 1]);
   }
 }

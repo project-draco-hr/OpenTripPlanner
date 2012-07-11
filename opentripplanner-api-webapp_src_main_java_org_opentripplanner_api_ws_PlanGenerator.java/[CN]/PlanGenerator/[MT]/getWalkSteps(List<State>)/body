@@ -27,6 +27,10 @@
       continue;
     }
     String streetName=edgeNarrative.getName();
+    int idx=streetName.indexOf('(');
+    String streetNameNoParens;
+    if (idx > 0)     streetNameNoParens=streetName.substring(0,idx - 1);
+ else     streetNameNoParens=streetName;
     if (step == null) {
       step=createWalkStep(currState);
       createdNewStep=true;
@@ -35,10 +39,10 @@
       step.setAbsoluteDirection(thisAngle);
       distance=edgeNarrative.getDistance();
     }
- else     if ((step.streetName != null && !step.streetName.equals(streetName)) && (!step.bogusName || !edgeNarrative.hasBogusName())) {
+ else     if ((step.streetName != null && !step.streetNameNoParens().equals(streetNameNoParens)) && (!step.bogusName || !edgeNarrative.hasBogusName())) {
       if (roundaboutExit > 0) {
         step.exit=Integer.toString(roundaboutExit);
-        if (streetName.equals(roundaboutPreviousStreet)) {
+        if (streetNameNoParens.equals(roundaboutPreviousStreet)) {
           step.stayOn=true;
         }
         roundaboutExit=0;
@@ -49,6 +53,8 @@
       if (edgeNarrative.isRoundabout()) {
         roundaboutExit=1;
         roundaboutPreviousStreet=backState.getBackEdgeNarrative().getName();
+        idx=roundaboutPreviousStreet.indexOf('(');
+        if (idx > 0)         roundaboutPreviousStreet=roundaboutPreviousStreet.substring(0,idx - 1);
       }
       double thisAngle=DirectionUtils.getFirstAngle(geom);
       step.setDirections(lastAngle,thisAngle,edgeNarrative.isRoundabout());
@@ -117,11 +123,39 @@
         }
       }
     }
-    if (!createdNewStep) {
+    if (createdNewStep) {
+      int last=steps.size() - 1;
+      if (last >= 2) {
+        WalkStep threeBack=steps.get(last - 2);
+        WalkStep twoBack=steps.get(last - 1);
+        WalkStep lastStep=steps.get(last);
+        if (twoBack.distance < MAX_ZAG_DISTANCE && lastStep.streetNameNoParens().equals(threeBack.streetNameNoParens())) {
+          steps.remove(last);
+          steps.remove(last - 1);
+          step=threeBack;
+          step.distance+=twoBack.distance;
+          if (twoBack.elevation != null) {
+            if (step.elevation == null) {
+              step.elevation=twoBack.elevation;
+            }
+ else {
+              for (              P2<Double> d : twoBack.elevation) {
+                step.elevation.add(new P2<Double>(d.getFirst() + step.distance,d.getSecond()));
+              }
+            }
+          }
+        }
+      }
+    }
+ else {
       if (step.elevation != null) {
-        String s=encodeElevationProfile(edge,distance);
-        if (step.elevation.length() > 0 && s != null && s.length() > 0)         step.elevation+=",";
-        step.elevation+=s;
+        List<P2<Double>> s=encodeElevationProfile(edge,distance);
+        if (step.elevation != null && step.elevation.size() > 0) {
+          step.elevation.addAll(s);
+        }
+ else {
+          step.elevation=s;
+        }
       }
       distance+=edgeNarrative.getDistance();
     }

@@ -1,0 +1,27 @@
+{
+  TransitIndex index=new TransitIndex();
+  index.setGraphService(Context.getInstance().graphService);
+  String routerId="portland";
+  AgencyList agencyIds=index.getAgencyIds(routerId);
+  assertTrue(agencyIds.agencyIds.contains("TriMet"));
+  assertEquals(1,agencyIds.agencyIds.size());
+  RouteData routeData=(RouteData)index.getRouteData("TriMet","100",routerId);
+  assertEquals(new AgencyAndId("TriMet","100"),routeData.id);
+  assertTrue(routeData.variants.size() >= 2);
+  RouteList routes=(RouteList)index.getRoutes("TriMet",routerId);
+  assertTrue(routes.routes.size() > 50);
+  ModeList modes=(ModeList)index.getModes(routerId);
+  assertTrue(modes.modes.contains(TraverseMode.TRAM));
+  assertFalse(modes.modes.contains(TraverseMode.FUNICULAR));
+  RouteList routesForStop=(RouteList)index.getRoutesForStop("TriMet","10579",routerId);
+  assertEquals(1,routesForStop.routes.size());
+  assertEquals("MAX Red Line",routesForStop.routes.get(0).routeLongName);
+  StopList stopsNearPoint=(StopList)index.getStopsNearPoint("TriMet",45.464783,-122.578918,routerId);
+  assertTrue(stopsNearPoint.stops.size() > 0);
+  long startTime=TestUtils.dateInSeconds("America/Los_Angeles",2009,9,1,7,50,0) * 1000;
+  long endTime=startTime + 60 * 60 * 1000;
+  StopTimeList stopTimesForStop=(StopTimeList)index.getStopTimesForStop("TriMet","10579",startTime,endTime,routerId);
+  assertTrue(stopTimesForStop.stopTimes.size() > 0);
+  StopTimeList stopTimesForTrip=(StopTimeList)index.getStopTimesForTrip("TriMet","1254","TriMet","10W1040",startTime,routerId);
+  assertTrue(stopTimesForTrip.stopTimes.size() > 0);
+}

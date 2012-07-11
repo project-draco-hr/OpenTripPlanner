@@ -2,5 +2,11 @@
   if (l == null || l.size() == 0)   return defaultValue;
   int maxIndex=l.size() - 1;
   if (n > maxIndex)   n=maxIndex;
-  return l.get(n);
+  T value=l.get(n);
+  if (value instanceof Integer) {
+    if (value.equals(-1)) {
+      return defaultValue;
+    }
+  }
+  return value;
 }

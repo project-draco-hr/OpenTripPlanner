@@ -1,0 +1,18 @@
+{
+  RouteList response=new RouteList();
+  TransitIndexService transitIndexService=getGraph(routerId).getService(TransitIndexService.class);
+  for (  AgencyAndId routeId : routeIds) {
+    for (    RouteVariant variant : transitIndexService.getVariantsForRoute(routeId)) {
+      Route route=variant.getRoute();
+      if (agencyFilter != null && !agencyFilter.equals(route.getAgency().getId()))       continue;
+      TransitRoute transitRoute=new TransitRoute();
+      transitRoute.id=route.getId();
+      transitRoute.routeLongName=route.getLongName();
+      transitRoute.routeShortName=route.getShortName();
+      transitRoute.url=route.getUrl();
+      response.routes.add(transitRoute);
+      break;
+    }
+  }
+  return response;
+}

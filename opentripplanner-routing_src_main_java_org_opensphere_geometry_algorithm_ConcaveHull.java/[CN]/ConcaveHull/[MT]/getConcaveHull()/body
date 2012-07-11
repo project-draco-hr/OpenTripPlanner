@@ -1,0 +1,12 @@
+{
+  if (this.geometries.getNumGeometries() == 0) {
+    return this.geomFactory.createGeometryCollection(null);
+  }
+  if (this.geometries.getNumGeometries() == 1) {
+    return this.geometries.getGeometryN(0);
+  }
+  if (this.geometries.getNumGeometries() == 2) {
+    return this.geomFactory.createLineString(this.geometries.getCoordinates());
+  }
+  return concaveHull();
+}

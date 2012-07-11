@@ -1,0 +1,5 @@
+{
+  Coordinate[] coordinates=new Coordinate[]{new Coordinate(s0.getLon(),s0.getLat()),new Coordinate(s1.getLon(),s1.getLat())};
+  CoordinateSequence sequence=new PackedCoordinateSequence.Double(coordinates,2);
+  return _geometryFactory.createLineString(sequence);
+}

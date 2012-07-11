@@ -23,5 +23,6 @@
   addAgencies(service);
   Coordinate coord=findTransitCenter();
   service.setCenter(coord);
+  service.setOvernightBreak(findOvernightBreak());
   graph.putService(TransitIndexService.class,service);
 }

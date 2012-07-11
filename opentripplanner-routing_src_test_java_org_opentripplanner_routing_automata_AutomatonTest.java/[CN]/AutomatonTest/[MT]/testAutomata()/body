@@ -1,0 +1,19 @@
+{
+  NFA nfa=itinerary.toNFA();
+  System.out.print(nfa.toGraphViz());
+  DFA dfa=new DFA(nfa);
+  System.out.print(dfa.toGraphViz());
+  System.out.print(dfa.dumpTable());
+  testParse(dfa);
+  nfa=nfa.reverse().reverse().reverse().reverse();
+  dfa=new DFA(nfa);
+  testParse(dfa);
+  dfa=dfa.minimize();
+  System.out.print(dfa.toGraphViz());
+  System.out.print(dfa.dumpTable());
+  testParse(dfa);
+  dfa=itinerary.toDFA().minimize();
+  System.out.print(dfa.toGraphViz());
+  System.out.print(dfa.dumpTable());
+  testParse(dfa);
+}

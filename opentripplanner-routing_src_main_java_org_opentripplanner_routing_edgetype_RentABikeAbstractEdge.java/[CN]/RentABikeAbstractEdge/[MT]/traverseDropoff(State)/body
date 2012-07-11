@@ -2,7 +2,7 @@
   RoutingRequest options=s0.getOptions();
   if (!s0.isBikeRenting())   return null;
   BikeRentalStationVertex pickup=(BikeRentalStationVertex)tov;
-  if (options.useBikeRentalAvailabilityInformation() && pickup.getSpacesAvailable() == 0) {
+  if (options.isUseBikeRentalAvailabilityInformation() && pickup.getSpacesAvailable() == 0) {
     return null;
   }
   EdgeNarrative en=new FixedModeEdge(this,s0.getNonTransitMode(options));

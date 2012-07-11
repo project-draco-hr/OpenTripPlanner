@@ -1,0 +1,6 @@
+{
+  transitIndexRequired(transitIndex);
+  if (transitIndex.getOvernightBreak() == -1) {
+    throw new RuntimeException("TransitIndexBuilder could not find an overnight break " + "in the transit schedule; first/last trips are undefined");
+  }
+}

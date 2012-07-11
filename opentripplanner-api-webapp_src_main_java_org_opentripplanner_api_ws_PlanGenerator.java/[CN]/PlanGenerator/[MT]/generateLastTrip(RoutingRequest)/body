@@ -1,0 +1,16 @@
+{
+  Graph graph=graphService.getGraph(request.getRouterId());
+  TransitIndexService transitIndex=graph.getService(TransitIndexService.class);
+  transitIndexWithBreakRequired(transitIndex);
+  request.setArriveBy(true);
+  TimeZone tz=graph.getTimeZone();
+  GregorianCalendar calendar=new GregorianCalendar(tz);
+  calendar.setTimeInMillis(request.dateTime * 1000);
+  calendar.set(Calendar.HOUR,0);
+  calendar.set(Calendar.MINUTE,0);
+  calendar.set(Calendar.AM_PM,0);
+  calendar.set(Calendar.SECOND,transitIndex.getOvernightBreak());
+  calendar.add(Calendar.DAY_OF_YEAR,1);
+  request.dateTime=calendar.getTimeInMillis() / 1000;
+  return generate(request);
+}

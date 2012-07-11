@@ -1,0 +1,33 @@
+{
+  this.opt=traverseOptions;
+  this.graph=graph;
+  if (findPlaces) {
+    fromVertex=graph.streetIndex.getVertexForPlace(opt.getFromPlace(),opt);
+    toVertex=graph.streetIndex.getVertexForPlace(opt.getToPlace(),opt,fromVertex);
+    if (opt.intermediatePlaces != null) {
+      for (      NamedPlace intermediate : opt.intermediatePlaces) {
+        Vertex vertex=graph.streetIndex.getVertexForPlace(intermediate,opt);
+        intermediateVertices.add(vertex);
+      }
+    }
+  }
+ else {
+    fromVertex=from;
+    toVertex=to;
+  }
+  if (opt.getStartingTransitStopId() != null) {
+    TransitIndexService tis=graph.getService(TransitIndexService.class);
+    if (tis == null) {
+      throw new RuntimeException("Next/Previous/First/Last trip " + "functionality depends on the transit index. Rebuild " + "the graph with TransitIndexBuilder");
+    }
+    AgencyAndId stopId=opt.getStartingTransitStopId();
+    startingStop=tis.getPreBoardEdge(stopId).getToVertex();
+  }
+  origin=opt.arriveBy ? toVertex : fromVertex;
+  target=opt.arriveBy ? fromVertex : toVertex;
+  calendarService=graph.getCalendarService();
+  transferTable=graph.getTransferTable();
+  setServiceDays();
+  if (opt.batch)   remainingWeightHeuristic=new TrivialRemainingWeightHeuristic();
+ else   remainingWeightHeuristic=heuristicFactory.getInstanceForSearch(opt);
+}

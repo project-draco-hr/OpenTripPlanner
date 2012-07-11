@@ -1,0 +1,25 @@
+{
+  LOG.debug("Parsing date {} and time {}",date,time);
+  LOG.debug("using timezone {}",tz);
+  Date retVal=new Date();
+  if (date != null) {
+    Date d=parseDate(date,tz);
+    Integer s=null;
+    if (time != null)     s=secPastMid(time);
+    if (s == null || s < 0)     s=secPastMid();
+    if (d != null && s != null)     retVal=new Date(d.getTime() + s * 1000);
+  }
+ else   if (time != null) {
+    Integer s=secPastMid(time);
+    if (s != null && s > 0) {
+      Calendar cal=new GregorianCalendar(tz);
+      cal.set(Calendar.HOUR_OF_DAY,0);
+      cal.set(Calendar.MINUTE,0);
+      cal.set(Calendar.SECOND,0);
+      cal.set(Calendar.MILLISECOND,0);
+      retVal=new Date(cal.getTimeInMillis() + s * 1000);
+    }
+  }
+  LOG.debug("resulting date is {}",retVal);
+  return retVal;
+}

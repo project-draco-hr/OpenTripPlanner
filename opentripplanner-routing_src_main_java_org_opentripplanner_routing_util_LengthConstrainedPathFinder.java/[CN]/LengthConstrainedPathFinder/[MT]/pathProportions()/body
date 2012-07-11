@@ -1,0 +1,17 @@
+{
+  Map<Vertex,Double> vertexCounts=new HashMap<Vertex,Double>();
+  for (  State path : getSolutions()) {
+    for (    Vertex vertex : path.toVertexList()) {
+      Double count=vertexCounts.get(vertex);
+      if (count == null)       count=0.0;
+      vertexCounts.put(vertex,count + 1);
+    }
+  }
+  int nPaths=getSolutions().size();
+  List<Vertex> vs=new ArrayList<Vertex>(vertexCounts.keySet());
+  for (  Vertex v : vs) {
+    Double count=vertexCounts.get(v);
+    vertexCounts.put(v,count / nPaths);
+  }
+  return vertexCounts;
+}

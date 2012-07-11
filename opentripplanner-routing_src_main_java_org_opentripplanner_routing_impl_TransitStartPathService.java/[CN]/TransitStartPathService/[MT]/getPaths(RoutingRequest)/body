@@ -1,0 +1,43 @@
+{
+  Graph graph=graphService.getGraph(options.routerId);
+  options.setRoutingContext(graph);
+  Vertex startingTransitStop=options.rctx.startingStop;
+  if (startingTransitStop == null) {
+    return chainedPathService.getPaths(options);
+  }
+  RoutingRequest subOptions=options.clone();
+  subOptions.setStartingTransitStopId(null);
+  subOptions.setRoutingContext(graph,startingTransitStop,options.rctx.toVertex);
+  List<GraphPath> pathsOnTransit=chainedPathService.getPaths(subOptions);
+  if (pathsOnTransit == null || pathsOnTransit.size() == 0)   return null;
+  subOptions.setArriveBy(true);
+  List<GraphPath> finishedPaths=new ArrayList<GraphPath>(pathsOnTransit.size());
+  for (  GraphPath onTransit : pathsOnTransit) {
+    subOptions.dateTime=onTransit.getStartTime();
+    subOptions.setRoutingContext(graph,options.rctx.fromVertex,startingTransitStop);
+    subOptions.rctx.pathParsers=new PathParser[1];
+    subOptions.rctx.pathParsers[0]=new TransitStartPathParser();
+    List<GraphPath> pathsToTransit=chainedPathService.getPaths(subOptions);
+    if (pathsToTransit == null || pathsToTransit.size() == 0)     continue;
+    GraphPath toTransit=pathsToTransit.get(0);
+    subOptions.setArriveBy(false);
+    subOptions.rctx.pathParsers[0]=new BasicPathParser();
+    State firstState=toTransit.states.getFirst();
+    State state=new State(firstState.getVertex(),firstState.getTime(),subOptions);
+    LinkedList<Edge> edges=toTransit.edges;
+    toTransit.edges=new LinkedList<Edge>();
+    toTransit.states=new LinkedList<State>();
+    for (    Edge e : edges) {
+      toTransit.states.add(state);
+      toTransit.edges.add(e);
+      state=e.traverse(state);
+    }
+    for (    Edge e : onTransit.edges) {
+      state=e.traverse(state);
+      toTransit.edges.add(e);
+      toTransit.states.add(state);
+    }
+    finishedPaths.add(toTransit);
+  }
+  return finishedPaths;
+}

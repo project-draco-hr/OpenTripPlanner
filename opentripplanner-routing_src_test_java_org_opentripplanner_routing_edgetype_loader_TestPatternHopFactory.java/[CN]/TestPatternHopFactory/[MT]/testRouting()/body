@@ -5,7 +5,7 @@
   Vertex stop_d=graph.getVertex("agency_D");
   Vertex stop_e=graph.getVertex("agency_E");
   RoutingRequest options=new RoutingRequest();
-  options.minTransferTime=0;
+  options.setTransferSlack(0);
   long startTime=TestUtils.dateInSeconds("America/New_York",2009,8,7,0,0,0);
   options.dateTime=startTime;
   ShortestPathTree spt;

@@ -25,7 +25,7 @@
     Vertex fromv=stopArriveNodes.get(transfer.getFromStop());
     Vertex tov=stopDepartNodes.get(transfer.getToStop());
     if (fromv.equals(tov))     continue;
-    double distance=DistanceLibrary.distance(fromv.getCoordinate(),tov.getCoordinate());
+    double distance=distanceLibrary.distance(fromv.getCoordinate(),tov.getCoordinate());
     int time;
     if (transfer.getTransferType() == 2) {
       time=transfer.getMinTransferTime();
@@ -34,7 +34,7 @@
       time=(int)distance;
     }
     TransferEdge transferEdge=new TransferEdge(fromv,tov,distance,time);
-    CoordinateSequence sequence=new PackedCoordinateSequence.Float(new Coordinate[]{fromv.getCoordinate(),tov.getCoordinate()},2);
+    CoordinateSequence sequence=new PackedCoordinateSequence.Double(new Coordinate[]{fromv.getCoordinate(),tov.getCoordinate()},2);
     Geometry geometry=_geometryFactory.createLineString(sequence);
     transferEdge.setGeometry(geometry);
   }

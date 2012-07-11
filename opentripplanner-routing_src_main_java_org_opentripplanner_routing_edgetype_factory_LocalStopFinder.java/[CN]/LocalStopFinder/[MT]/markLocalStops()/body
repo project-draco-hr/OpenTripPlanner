@@ -1,6 +1,6 @@
 {
   _log.debug("Finding local stops");
-  patterns=new HashSet<TableTripPattern>();
+  patterns=new HashSet<TripPattern>();
   transitStops=new HashMap<AgencyAndId,TransitStop>();
   int total=0;
   for (  Vertex gv : graph.getVertices()) {
@@ -15,6 +15,10 @@
         TableTripPattern pattern=((PatternBoard)e).getPattern();
         patterns.add(pattern);
       }
+      if (e instanceof FrequencyBoard) {
+        TripPattern pattern=((FrequencyBoard)e).getPattern();
+        patterns.add(pattern);
+      }
     }
   }
   neighborhoods=new HashMap<Stop,HashMap<TableTripPattern,P2<Double>>>();
@@ -22,7 +26,7 @@
   bikingOptions=new RoutingRequest(new TraverseModeSet(TraverseMode.BICYCLE));
   bikingOptions.optimize=OptimizeType.SAFE;
   int nonLocal=0;
-  for (  TableTripPattern pattern : patterns) {
+  for (  TripPattern pattern : patterns) {
     List<Stop> stops=getStops(pattern);
     HashMap<TableTripPattern,P2<Double>> previousDistances=null;
     HashMap<TableTripPattern,P2<Double>> distances=null;

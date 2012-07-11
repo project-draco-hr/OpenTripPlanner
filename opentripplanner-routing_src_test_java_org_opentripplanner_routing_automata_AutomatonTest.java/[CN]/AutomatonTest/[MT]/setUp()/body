@@ -1,0 +1,5 @@
+{
+  Nonterminal walkLeg=plus(WALK);
+  Nonterminal transitLeg=plus(plus(STATION),plus(TRANSIT),plus(STATION));
+  itinerary=seq(walkLeg,star(transitLeg,walkLeg));
+}

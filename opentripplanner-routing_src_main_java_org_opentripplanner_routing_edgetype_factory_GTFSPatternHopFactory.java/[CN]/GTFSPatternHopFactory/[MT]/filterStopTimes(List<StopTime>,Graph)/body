@@ -23,7 +23,7 @@
     if (runningTime < 0) {
       _log.warn(GraphBuilderAnnotation.register(graph,Variety.NEGATIVE_HOP_TIME,st0,st1));
     }
-    double hopDistance=DistanceLibrary.fastDistance(st0.getStop().getLon(),st0.getStop().getLat(),st1.getStop().getLon(),st1.getStop().getLat());
+    double hopDistance=distanceLibrary.fastDistance(st0.getStop().getLon(),st0.getStop().getLat(),st1.getStop().getLon(),st1.getStop().getLat());
     double hopSpeed=hopDistance / runningTime;
     if (st0.getArrivalTime() == st1.getArrivalTime() || st0.getDepartureTime() == st1.getDepartureTime()) {
       _log.trace("{} {}",st0,st1);

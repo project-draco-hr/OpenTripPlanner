@@ -1,0 +1,12 @@
+{
+  String retVal=defValue;
+  try {
+    SimpleDateFormat sdf=new SimpleDateFormat(sdfFormat);
+    sdf.setTimeZone(tz);
+    retVal=sdf.format(date);
+  }
+ catch (  Exception e) {
+    retVal=defValue;
+  }
+  return retVal;
+}

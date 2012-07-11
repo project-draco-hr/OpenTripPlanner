@@ -1,15 +1,31 @@
 {
-  RemainingWeightHeuristic heuristic=new BidirectionalRemainingWeightHeuristic(options.rctx.graph);
+  if (options.rctx == null) {
+    options.setRoutingContext(graphService.getGraph(options.getRouterId()));
+    options.rctx.pathParsers=new PathParser[1];
+    options.rctx.pathParsers[0]=new BasicPathParser();
+  }
+  RemainingWeightHeuristic heuristic;
+  if (options.getModes().isTransit()) {
+    LOG.debug("Transit itinerary requested.");
+    heuristic=new BidirectionalRemainingWeightHeuristic(options.rctx.graph);
+  }
+ else {
+    LOG.debug("Non-transit itinerary requested.");
+    heuristic=new DefaultRemainingWeightHeuristic();
+  }
   List<State> returnStates=new LinkedList<State>();
   BinHeap<State> pq=new BinHeap<State>();
   Vertex originVertex=options.rctx.origin;
   Vertex targetVertex=options.rctx.target;
-  WALK:   for (double maxWalk=options.getMaxWalkDistance(); maxWalk < 100000 && returnStates.isEmpty(); maxWalk*=2) {
+  WALK:   for (double maxWalk=options.getMaxWalkDistance(); returnStates.isEmpty(); maxWalk*=2) {
+    if (maxWalk != Double.MAX_VALUE && maxWalk > MAX_WALK) {
+      break;
+    }
     LOG.debug("try search with max walk {}",maxWalk);
-    if (maxWalk < Math.min(originVertex.distance(targetVertex),originVertex.getDistanceToNearestTransitStop() + targetVertex.getDistanceToNearestTransitStop()))     continue WALK;
+    if (maxWalk < Math.min(distanceLibrary.distance(originVertex.getCoordinate(),targetVertex.getCoordinate()),originVertex.getDistanceToNearestTransitStop() + targetVertex.getDistanceToNearestTransitStop()))     continue WALK;
     options.setMaxWalkDistance(maxWalk);
     final double AVG_TRANSIT_SPEED=25;
-    double cutoff=(originVertex.distance(targetVertex) * 1.5) / AVG_TRANSIT_SPEED;
+    double cutoff=(distanceLibrary.distance(originVertex.getCoordinate(),targetVertex.getCoordinate()) * 1.5) / AVG_TRANSIT_SPEED;
     cutoff+=options.getMaxWalkDistance() * options.walkReluctance;
     options.maxWeight=cutoff;
     State origin=new State(options);
@@ -24,7 +40,7 @@
     QUEUE:     while (!pq.empty()) {
       if (System.currentTimeMillis() > endTime) {
         LOG.debug("timeout at {} msec",System.currentTimeMillis() - startTime);
-        if (returnStates.isEmpty())         continue WALK;
+        if (returnStates.isEmpty())         break WALK;
  else {
           storeMemory();
           break WALK;

@@ -1,0 +1,32 @@
+{
+  File graphFile=new File(graphPath);
+  try {
+    graph=Graph.load(graphFile,Graph.LoadLevel.FULL);
+  }
+ catch (  Exception e) {
+    System.out.println("Exception while loading graph from " + graphFile);
+    return;
+  }
+  if (outPath != null) {
+    File outFile=new File(outPath);
+    try {
+      out=new PrintStream(outFile);
+    }
+ catch (    Exception e) {
+      System.out.println("Exception while opening output file " + outFile);
+      return;
+    }
+  }
+ else {
+    out=System.out;
+  }
+  System.out.println("done loading graph.");
+  String command=jc.getParsedCommand();
+  if (command.equals("endpoints")) {
+    commandEndpoints.run();
+  }
+ else   if (command.equals("speedstats")) {
+    commandSpeedStats.run();
+  }
+  out.close();
+}

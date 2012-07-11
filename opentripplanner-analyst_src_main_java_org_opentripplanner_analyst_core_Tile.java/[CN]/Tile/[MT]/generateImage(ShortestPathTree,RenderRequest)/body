@@ -7,7 +7,12 @@
   for (  Sample s : getSamples()) {
     byte pixel;
     if (s != null) {
-      pixel=s.evalByte(spt);
+      if (renderRequest.style == Style.BOARDINGS) {
+        pixel=s.evalBoardings(spt);
+      }
+ else {
+        pixel=s.evalByte(spt);
+      }
     }
  else {
       pixel=TRANSPARENT;

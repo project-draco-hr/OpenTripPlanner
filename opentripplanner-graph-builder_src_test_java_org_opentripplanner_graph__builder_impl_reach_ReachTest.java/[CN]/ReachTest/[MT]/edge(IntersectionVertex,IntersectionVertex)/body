@@ -1,7 +1,7 @@
 {
   Coordinate c1=vA.getCoordinate();
   Coordinate c2=vB.getCoordinate();
-  double length=DistanceLibrary.distance(c1,c2);
+  double length=SphericalDistanceLibrary.getInstance().distance(c1,c2);
   String name=vA.getName() + " - " + vB.getName();
   GeometryFactory gf=GeometryUtils.getGeometryFactory();
   LineString geometry=gf.createLineString(new Coordinate[]{c1,c2});

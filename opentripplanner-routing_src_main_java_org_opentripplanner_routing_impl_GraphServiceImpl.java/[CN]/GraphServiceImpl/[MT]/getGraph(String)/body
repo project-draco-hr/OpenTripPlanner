@@ -14,6 +14,10 @@
   }
   LOG.debug("graph for routerId '{}' is at {}",routerId,resourceName);
   graph=graphs.get(resourceName);
+  LoadLevel level=levels.get(resourceName);
+  if (level != loadLevel) {
+    graph=null;
+  }
   if (graph == null) {
     LOG.debug("this graph was not yet loaded");
     InputStream is;
@@ -22,16 +26,18 @@
       is=resource.getInputStream();
     }
  catch (    Exception e) {
-      LOG.warn("graph file not found at {}",resourceName);
+      LOG.warn("graph file not found or not openable at {}",resourceName);
       if (routerId.equals(defaultRouterId)) {
-        LOG.warn("graph for default routerId {} does not exist at {}",routerId,resourceName);
+        LOG.warn("graph for default routerId {} does not exist or cannot be opened at {}",routerId,resourceName);
+        e.printStackTrace();
         return null;
       }
       return getGraph(null);
     }
     try {
-      graph=Graph.load(is,LoadLevel.FULL);
+      graph=Graph.load(is,loadLevel);
       graphs.put(resourceName,graph);
+      levels.put(resourceName,loadLevel);
     }
  catch (    Exception ex) {
       LOG.error("Exception while loading graph from {}.",resourceName);

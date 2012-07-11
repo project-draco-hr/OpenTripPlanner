@@ -18,7 +18,7 @@
   if (!hasAllDistances) {
     distances=null;
   }
-  CoordinateSequence sequence=new PackedCoordinateSequence.Float(coordinates,2);
+  CoordinateSequence sequence=new PackedCoordinateSequence.Double(coordinates,2);
   geometry=_geometryFactory.createLineString(sequence);
   _geometriesByShapeId.put(shapeId,geometry);
   _distancesByShapeId.put(shapeId,distances);

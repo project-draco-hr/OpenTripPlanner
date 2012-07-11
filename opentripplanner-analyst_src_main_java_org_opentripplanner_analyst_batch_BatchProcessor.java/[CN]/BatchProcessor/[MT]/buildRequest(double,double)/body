@@ -1,0 +1,8 @@
+{
+  RoutingRequest req=new RoutingRequest();
+  req.setDateTime(DATE,TIME,TIMEZONE);
+  req.setFrom(String.format("%f, %f",lat,lon));
+  req.batch=true;
+  req.setRoutingContext(graphService.getGraph());
+  return req;
+}

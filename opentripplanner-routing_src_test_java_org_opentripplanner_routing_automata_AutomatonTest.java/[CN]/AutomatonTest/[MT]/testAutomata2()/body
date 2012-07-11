@@ -1,0 +1,12 @@
+{
+  Nonterminal any=choice(WALK,STATION,TRANSIT);
+  NFA nfa=choice(star(WALK),seq(star(any),TRANSIT,star(any))).toNFA();
+  System.out.print(nfa.toGraphViz());
+  DFA dfa=new DFA(nfa);
+  testParse(dfa);
+  nfa=nfa.reverse().reverse().reverse().reverse();
+  dfa=new DFA(nfa);
+  testParse(dfa);
+  dfa=dfa.minimize();
+  testParse(dfa);
+}

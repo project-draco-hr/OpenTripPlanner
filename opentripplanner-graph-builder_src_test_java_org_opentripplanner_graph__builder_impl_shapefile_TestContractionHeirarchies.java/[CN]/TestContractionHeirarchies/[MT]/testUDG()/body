@@ -25,7 +25,7 @@
     }
     Collections.sort(nearby,new Comparator<Vertex>(){
       public int compare(      Vertex a,      Vertex b){
-        return (int)(a.distance(c) - b.distance(c));
+        return (int)(distanceLibrary.distance(a.getCoordinate(),c) - distanceLibrary.distance(b.getCoordinate(),c));
       }
     }
 );
@@ -51,8 +51,8 @@
       lastKey=components.union(v,last);
       last=v;
       Coordinate c=v.getCoordinate();
-      new SimpleEdge(v,last,last.distance(c),0);
-      new SimpleEdge(last,v,last.distance(c),0);
+      new SimpleEdge(v,last,distanceLibrary.distance(last.getCoordinate(),c),0);
+      new SimpleEdge(last,v,distanceLibrary.distance(last.getCoordinate(),c),0);
     }
   }
   ContractionHierarchy hierarchy=new ContractionHierarchy(graph,new RoutingRequest(TraverseMode.WALK,OptimizeType.QUICK),1.0);

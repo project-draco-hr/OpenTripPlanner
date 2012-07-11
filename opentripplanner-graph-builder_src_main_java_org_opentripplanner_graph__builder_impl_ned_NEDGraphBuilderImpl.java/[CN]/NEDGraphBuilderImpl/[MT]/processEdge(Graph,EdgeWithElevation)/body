@@ -7,7 +7,7 @@
   List<Coordinate> coordList=new LinkedList<Coordinate>();
   double edgeLenM=0;
   for (int i=0; i < coords.length - 1; i++) {
-    edgeLenM+=DistanceLibrary.distance(coords[i].y,coords[i].x,coords[i + 1].y,coords[i + 1].x);
+    edgeLenM+=distanceLibrary.distance(coords[i].y,coords[i].x,coords[i + 1].y,coords[i + 1].x);
   }
   coordList.add(new Coordinate(0,getElevation(coords[0])));
   for (double x=distanceBetweenSamplesM; x < edgeLenM; x+=distanceBetweenSamplesM) {

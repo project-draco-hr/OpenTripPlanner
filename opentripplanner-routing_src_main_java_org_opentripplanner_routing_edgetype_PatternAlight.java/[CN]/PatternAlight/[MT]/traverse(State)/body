@@ -9,11 +9,12 @@
     int bestWait=-1;
     TripTimes bestTripTimes=null;
     AgencyAndId serviceId=getPattern().getExemplar().getServiceId();
+    TraverseMode nonTransitMode=state0.getNonTransitMode(options);
     SD:     for (    ServiceDay sd : rctx.serviceDays) {
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
       if (secondsSinceMidnight < 0)       continue;
       if (sd.serviceIdRunning(serviceId)) {
-        TripTimes tripTimes=getPattern().getPreviousTrip(stopIndex,secondsSinceMidnight,options);
+        TripTimes tripTimes=getPattern().getPreviousTrip(stopIndex,secondsSinceMidnight,nonTransitMode == TraverseMode.BICYCLE,options);
         if (tripTimes != null) {
           int wait=(int)(current_time - sd.time(tripTimes.getArrivalTime(stopIndex)));
           if (wait < 0)           _log.error("negative wait time on alight");
@@ -70,8 +71,7 @@
       wait_cost*=options.waitReluctance;
     }
     s1.incrementWeight(preferences_penalty);
-    TraverseMode mode=state0.getNonTransitMode(options);
-    s1.incrementWeight(wait_cost + options.getBoardCost(mode));
+    s1.incrementWeight(wait_cost + options.getBoardCost(nonTransitMode));
     return s1.makeState();
   }
  else {

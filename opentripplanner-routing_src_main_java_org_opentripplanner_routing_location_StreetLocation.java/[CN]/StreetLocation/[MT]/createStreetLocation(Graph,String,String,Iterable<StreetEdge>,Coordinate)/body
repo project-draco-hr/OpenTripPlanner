@@ -4,6 +4,7 @@
   HashMap<Geometry,P2<TurnVertex>> cache=new HashMap<Geometry,P2<TurnVertex>>();
   for (  StreetEdge street : edges) {
     Vertex fromv=street.getFromVertex();
+    Vertex tov=street.getToVertex();
     if (street instanceof PlainStreetEdge) {
       wheelchairAccessible|=((PlainStreetEdge)street).isWheelchairAccessible();
     }
@@ -11,14 +12,21 @@
       wheelchairAccessible|=((TurnVertex)fromv).isWheelchairAccessible();
     }
     boolean seen=cache.containsKey(street.getGeometry());
-    TurnVertex edgeLocation=createHalfLocation(graph,location,label + " to " + street.getToVertex().getLabel(),name,nearestPoint,street,cache);
+    Vertex edgeLocation;
+    if (distanceLibrary.distance(nearestPoint,fromv.getCoordinate()) < 0.0001) {
+      edgeLocation=fromv;
+    }
+ else     if (distanceLibrary.distance(nearestPoint,tov.getCoordinate()) < 0.0001) {
+      edgeLocation=tov;
+    }
+ else {
+      edgeLocation=createHalfLocation(graph,location,label + " to " + tov.getLabel(),name,nearestPoint,street,cache);
+    }
     if (!seen) {
       FreeEdge l1in=new FreeEdge(location,edgeLocation);
       FreeEdge l1out=new FreeEdge(edgeLocation,location);
       location.extra.add(l1in);
       location.extra.add(l1out);
-      graph.addTemporaryEdge(l1in);
-      graph.addTemporaryEdge(l1out);
     }
     double distance=fromv.getDistanceToNearestTransitStop();
     if (distance < location.getDistanceToNearestTransitStop()) {

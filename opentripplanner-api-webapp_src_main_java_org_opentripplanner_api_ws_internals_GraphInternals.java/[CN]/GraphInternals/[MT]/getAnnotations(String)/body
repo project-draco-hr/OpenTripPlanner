@@ -1,0 +1,19 @@
+{
+  Graph graph=graphService.getGraph(routerId);
+  List<GraphBuilderAnnotation> builderAnnotations=graph.getBuilderAnnotations();
+  List<Annotation> out=new ArrayList<Annotation>();
+  for (  GraphBuilderAnnotation annotation : builderAnnotations) {
+    Annotation outAnnotation=new Annotation();
+    out.add(outAnnotation);
+    outAnnotation.annotation=annotation.getVariety().name();
+    Collection<Object> referencedObjects=annotation.getReferencedObjects();
+    for (    Object object : referencedObjects) {
+      AnnotationObject annotationObj=new AnnotationObject();
+      applyObjectToAnnotation(graph,annotationObj,object);
+      outAnnotation.addObject(annotationObj);
+    }
+  }
+  Annotations annotations=new Annotations();
+  annotations.annotations=out;
+  return annotations;
+}

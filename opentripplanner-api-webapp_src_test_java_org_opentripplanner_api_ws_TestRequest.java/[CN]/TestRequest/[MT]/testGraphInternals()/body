@@ -1,0 +1,13 @@
+{
+  GraphInternals internals=new GraphInternals();
+  internals.setGraphService(Context.getInstance().graphService);
+  FeatureCount counts=internals.countVertices("45.5,-122.6","45.6,-122.5","portland");
+  assertTrue(counts.vertices > 0);
+  assertTrue(counts.edges > 0);
+  WithGraph obj=(WithGraph)internals.getEdges("45.5,-122.6","45.55,-122.55","",false,false,true,"portland");
+  EdgeSet edges=(EdgeSet)obj.getObject();
+  assertTrue(edges.edges.size() > 0);
+  obj=(WithGraph)internals.getVertices("45.5,-122.6","45.55,-122.55",false,"",false,false,"portland");
+  VertexSet vertices=(VertexSet)obj.getObject();
+  assertTrue(vertices.vertices.size() > 0);
+}

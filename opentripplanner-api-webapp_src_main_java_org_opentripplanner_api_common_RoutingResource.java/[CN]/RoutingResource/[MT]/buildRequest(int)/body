@@ -1,29 +1,37 @@
 {
-  RoutingRequest request=new RoutingRequest();
-  request.setRouterId(get(routerId,n,""));
-  request.setFrom(get(fromPlace,n,null));
-  request.setTo(get(toPlace,n,null));
+  RoutingRequest request=prototypeRoutingRequest.clone();
+  request.setRouterId(get(routerId,n,request.getRouterId()));
+  request.setFrom(get(fromPlace,n,request.getFromPlace().getRepresentation()));
+  request.setTo(get(toPlace,n,request.getToPlace().getRepresentation()));
 {
     String d=get(date,n,null);
     String t=get(time,n,null);
+    TimeZone tz;
+    if (graphService != null) {
+      tz=graphService.getGraph(request.routerId).getTimeZone();
+    }
+ else {
+      LOG.warn("no graph service available, using default timezone.");
+      tz=TimeZone.getDefault();
+    }
     if (d == null && t != null) {
       LOG.debug("parsing ISO datetime {}",t);
       try {
         request.setDateTime(javax.xml.datatype.DatatypeFactory.newInstance().newXMLGregorianCalendar(t).toGregorianCalendar().getTime());
       }
  catch (      DatatypeConfigurationException e) {
-        request.setDateTime(d,t);
+        request.setDateTime(d,t,tz);
       }
     }
  else {
-      request.setDateTime(d,t);
+      request.setDateTime(d,t,tz);
     }
   }
-  request.setWheelchair(get(wheelchair,n,false));
-  request.setNumItineraries(get(numItineraries,n,3));
-  request.setMaxWalkDistance(get(maxWalkDistance,n,840.0));
-  request.setWalkSpeed(get(walkSpeed,n,1.33));
-  OptimizeType opt=get(optimize,n,OptimizeType.QUICK);
+  request.setWheelchairAccessible(get(wheelchair,n,request.isWheelchairAccessible()));
+  request.setNumItineraries(get(numItineraries,n,request.getNumItineraries()));
+  request.setMaxWalkDistance(get(maxWalkDistance,n,request.getMaxWalkDistance()));
+  request.setWalkSpeed(get(walkSpeed,n,request.getWalkSpeed()));
+  OptimizeType opt=get(optimize,n,request.getOptimize());
 {
     Double tsafe=get(triangleSafetyFactor,n,null);
     Double tslope=get(triangleSlopeFactor,n,null);
@@ -50,30 +58,43 @@
     }
   }
   request.setArriveBy(get(arriveBy,n,false));
-  request.setShowIntermediateStops(get(showIntermediateStops,n,false));
+  request.setShowIntermediateStops(get(showIntermediateStops,n,request.isShowIntermediateStops()));
   if (intermediatePlaces != null && intermediatePlaces.size() > 0 && !intermediatePlaces.get(0).equals("")) {
     request.setIntermediatePlaces(intermediatePlaces);
   }
-  if (intermediatePlacesOrdered == null)   intermediatePlacesOrdered=true;
+  if (intermediatePlacesOrdered == null)   intermediatePlacesOrdered=request.isIntermediatePlacesOrdered();
   request.setIntermediatePlacesOrdered(intermediatePlacesOrdered);
-  request.setPreferredRoutes(get(preferredRoutes,n,""));
-  request.setUnpreferredRoutes(get(unpreferredRoutes,n,""));
-  request.setBannedRoutes(get(bannedRoutes,n,""));
+  request.setPreferredRoutes(get(preferredRoutes,n,request.getPreferredRouteStr()));
+  request.setUnpreferredRoutes(get(unpreferredRoutes,n,request.getUnpreferredRouteStr()));
+  request.setBannedRoutes(get(bannedRoutes,n,request.getBannedRouteStr()));
   if (opt == OptimizeType.TRANSFERS) {
     opt=OptimizeType.QUICK;
     request.setTransferPenalty(get(transferPenalty,n,0) + 1800);
   }
  else {
-    request.setTransferPenalty(get(transferPenalty,n,0));
+    request.setTransferPenalty(get(transferPenalty,n,request.getTransferPenalty()));
   }
-  request.setBatch(get(batch,n,new Boolean(false)));
+  request.setBatch(get(batch,n,new Boolean(request.isBatch())));
   request.setOptimize(opt);
-  request.setModes(get(modes,n,new TraverseModeSet("WALK,TRANSIT")));
-  request.setMinTransferTime(get(minTransferTime,n,0));
-  request.setMaxTransfers(get(maxTransfers,n,2));
+  TraverseModeSet modeSet=get(modes,n,request.getModes());
+  request.setModes(modeSet);
+  if (modeSet.getBicycle() && modeSet.getWalk()) {
+    request.setBikeSpeed(3.5);
+  }
+  request.setBoardSlack(get(boardSlack,n,request.getBoardSlack()));
+  request.setAlightSlack(get(alightSlack,n,request.getAlightSlack()));
+  request.setTransferSlack(get(minTransferTime,n,request.getTransferSlack()));
+  if (request.getBoardSlack() + request.getAlightSlack() > request.getTransferSlack()) {
+    throw new RuntimeException("Invalid parameters: transfer slack must " + "be greater than or equal to board slack plus alight slack");
+  }
+  request.setMaxTransfers(get(maxTransfers,n,request.getMaxTransfers()));
   final long NOW_THRESHOLD_MILLIS=15 * 60 * 60* 1000;
   boolean tripPlannedForNow=Math.abs(request.getDateTime().getTime() - new Date().getTime()) < NOW_THRESHOLD_MILLIS;
   request.setUseBikeRentalAvailabilityInformation(tripPlannedForNow);
-  if (intermediatePlaces != null && intermediatePlacesOrdered && request.getModes().isTransit())   throw new UnsupportedOperationException("TSP is not supported for transit trips");
+  if (request.getIntermediatePlaces() != null && (request.getModes().isTransit() || (request.getModes().getWalk() && request.getModes().getBicycle())))   throw new UnsupportedOperationException("TSP is not supported for transit or bike share trips");
+  String startTransitStopId=get(this.startTransitStopId,n,AgencyAndId.convertToString(request.getStartingTransitStopId()));
+  if (startTransitStopId != null && !"".equals(startTransitStopId)) {
+    request.setStartingTransitStopId(AgencyAndId.convertFromString(startTransitStopId));
+  }
   return request;
 }

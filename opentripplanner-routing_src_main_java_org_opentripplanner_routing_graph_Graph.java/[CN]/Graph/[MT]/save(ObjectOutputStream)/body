@@ -1,0 +1,19 @@
+{
+  LOG.debug("Consolidating edges...");
+  List<Edge> edges=new ArrayList<Edge>(this.countEdges());
+  for (  Vertex v : getVertices()) {
+    edges.addAll(v.getOutgoing());
+    if (v.getDegreeOut() + v.getDegreeIn() == 0)     LOG.debug("vertex {} has no edges, it will not survive serialization.",v);
+  }
+  LOG.debug("Assigning vertex/edge ID numbers...");
+  this.renumberVerticesAndEdges();
+  LOG.debug("Writing edges...");
+  out.writeObject(this);
+  out.writeObject(edges);
+  out.writeObject(this.hierarchies);
+  LOG.debug("Writing debug data...");
+  out.writeObject(this.vertexById);
+  out.writeObject(this.edgeById);
+  out.writeObject(this.idForEdge);
+  LOG.info("Graph written.");
+}

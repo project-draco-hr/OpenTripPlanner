@@ -1,0 +1,8 @@
+{
+  Graph graph=graphService.getGraph(routerId);
+  Vertex vertex=graph.getVertex(label);
+  if (vertex == null) {
+    return null;
+  }
+  return new WrappedVertex(vertex).withGraph(graph);
+}

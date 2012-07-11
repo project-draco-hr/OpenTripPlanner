@@ -41,7 +41,7 @@
           elevationPoints.add(new ElevationPoint(distance,elevation));
         }
       }
-      distance+=DistanceLibrary.distance(segmentStartOSMNode.getLat(),segmentStartOSMNode.getLon(),osmEndNode.getLat(),osmEndNode.getLon());
+      distance+=distanceLibrary.distance(segmentStartOSMNode.getLat(),segmentStartOSMNode.getLon(),osmEndNode.getLat(),osmEndNode.getLon());
       if (intersectionNodes.containsKey(endNode) || i == nodes.size() - 2) {
         segmentCoordinates.add(getCoordinate(osmEndNode));
         ele=osmEndNode.getTag("ele");

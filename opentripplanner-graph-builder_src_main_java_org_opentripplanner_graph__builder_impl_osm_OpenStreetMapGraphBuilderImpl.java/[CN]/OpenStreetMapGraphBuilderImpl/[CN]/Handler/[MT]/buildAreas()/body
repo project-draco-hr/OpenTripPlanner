@@ -101,7 +101,7 @@
             String id="way (area) " + areaEntity.getId() + " from "+ nodeI.getId()+ " to "+ nodeJ.getId();
             id=unique(id);
             String name=getNameForWay(areaEntity,id);
-            double length=DistanceLibrary.distance(startEndpoint.getCoordinate(),endEndpoint.getCoordinate());
+            double length=distanceLibrary.distance(startEndpoint.getCoordinate(),endEndpoint.getCoordinate());
             PlainStreetEdge street=edgeFactory.createEdge(nodeI,nodeJ,areaEntity,startEndpoint,endEndpoint,geometry,name,length,areaPermissions,i > j);
             street.setId(id);
             edges.add(street);

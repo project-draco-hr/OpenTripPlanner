@@ -41,7 +41,7 @@
         }
       }
     }
-    if (fromv.fastDistance(origin) > LOCAL_STOP_SEARCH_RADIUS) {
+    if (distanceLibrary.fastDistance(fromv.getCoordinate(),origin.getCoordinate()) > LOCAL_STOP_SEARCH_RADIUS) {
       return patternCosts;
     }
     Iterable<Edge> outgoing=fromv.getOutgoing();

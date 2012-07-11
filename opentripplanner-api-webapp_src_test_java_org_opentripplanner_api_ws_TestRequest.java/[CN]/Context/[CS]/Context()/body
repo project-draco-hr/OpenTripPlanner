@@ -1,4 +1,6 @@
 {
+  graphService.putGraph(null,makeSimpleGraph());
+  graphService.putGraph("portland",graph);
   ShapefileStreetGraphBuilderImpl builder=new ShapefileStreetGraphBuilderImpl();
   FeatureSourceFactory factory=new ShapefileFeatureSourceFactoryImpl(new File("src/test/resources/portland/Streets_pdx.shp"));
   builder.setFeatureSourceFactory(factory);
@@ -13,7 +15,15 @@
   schema.setNoteConverter(new AttributeFeatureConverter<String>("PREFIX"));
   builder.setSchema(schema);
   builder.buildGraph(graph,new HashMap<Class<?>,Object>());
+  initTransit();
+  initBikeRental();
   graph.streetIndex=new StreetVertexIndexServiceImpl(graph);
+  try {
+    graph.save(File.createTempFile("graph",".obj"));
+  }
+ catch (  IOException e) {
+    throw new RuntimeException(e);
+  }
   pathService.sptService=new GenericAStar();
   pathService.graphService=graphService;
   planGenerator.pathService=pathService;
