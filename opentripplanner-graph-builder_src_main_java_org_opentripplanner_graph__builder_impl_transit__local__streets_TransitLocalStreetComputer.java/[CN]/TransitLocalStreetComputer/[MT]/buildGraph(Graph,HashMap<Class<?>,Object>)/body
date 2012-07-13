@@ -1,0 +1,41 @@
+{
+  HashSet<Vertex> transitShortestPathVertices=new HashSet<Vertex>();
+  RoutingRequest walk=new RoutingRequest(TraverseMode.WALK);
+  RoutingRequest wheelchair=new RoutingRequest(TraverseMode.WALK);
+  wheelchair.wheelchairAccessible=true;
+  RoutingRequest bikeflat=new RoutingRequest(TraverseMode.BICYCLE);
+  bikeflat.optimize=OptimizeType.FLAT;
+  RoutingRequest bikesafe=new RoutingRequest(TraverseMode.BICYCLE);
+  bikesafe.optimize=OptimizeType.SAFE;
+  RoutingRequest bikequick=new RoutingRequest(TraverseMode.BICYCLE);
+  bikequick.optimize=OptimizeType.QUICK;
+  RoutingRequest[] requests=new RoutingRequest[]{walk,wheelchair,bikeflat,bikesafe,bikequick};
+  int i=0;
+  final Collection<Vertex> allVertices=graph.getVertices();
+  for (  Vertex v : allVertices) {
+    ++i;
+    if (i % 1000 == 0) {
+      log.debug(i + " / " + allVertices.size());
+    }
+    if (!(v instanceof TransitStop)) {
+      continue;
+    }
+    for (    RoutingRequest req : requests) {
+      req.setRoutingContext(graph,v,null);
+      req.setMaxWalkDistance(5000);
+      GenericDijkstra dijkstra=new GenericDijkstra(req);
+      State origin=new MaxWalkState(v,req);
+      ShortestPathTree spt=dijkstra.getShortestPathTree(origin);
+      for (      State s : spt.getAllStates()) {
+        if (s.getVertex() instanceof TransitStop) {
+          while (s != null) {
+            transitShortestPathVertices.add(s.getVertex());
+            s=s.getBackState();
+          }
+        }
+      }
+    }
+  }
+  TransitLocalStreetService service=new TransitLocalStreetService(transitShortestPathVertices);
+  graph.putService(TransitLocalStreetService.class,service);
+}
