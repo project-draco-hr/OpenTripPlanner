@@ -1,0 +1,5 @@
+{
+  long activeTime=getElapsedTime() - stateData.initialWaitTime;
+  if (activeTime < 0)   activeTime=getElapsedTime();
+  return activeTime;
+}
