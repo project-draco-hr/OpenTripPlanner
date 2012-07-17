@@ -30,7 +30,7 @@
       LOG.warn("Aborting search. {} paths found, elapsed time {} sec",paths.size(),(System.currentTimeMillis() - searchBeginTime) / 1000.0);
       break;
     }
-    if (maxWeight == Double.MAX_VALUE) {
+    if (maxWeight == Double.MAX_VALUE && maxWalk == Double.MAX_VALUE) {
       if (somePaths.isEmpty()) {
         return null;
       }
@@ -48,6 +48,8 @@
       }
     }
     if (somePaths.isEmpty()) {
+      maxWalk*=2;
+      optionQueue.add(currOptions);
       LOG.debug("No paths were found.");
       continue;
     }

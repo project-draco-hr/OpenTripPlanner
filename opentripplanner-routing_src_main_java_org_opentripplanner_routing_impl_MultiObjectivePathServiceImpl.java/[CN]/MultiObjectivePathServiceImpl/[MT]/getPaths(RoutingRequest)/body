@@ -67,6 +67,7 @@
             traverseVisitor.visitEdge(e,new_sv);
           }
           double h=heuristic.computeForwardWeight(new_sv,targetVertex);
+          if (h == Double.MAX_VALUE)           continue;
           Vertex v=new_sv.getVertex();
           List<State> old_states=states.get(v);
           if (old_states == null) {

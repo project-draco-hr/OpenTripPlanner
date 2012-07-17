@@ -2,6 +2,9 @@
   RoutingContext rctx=state0.getContext();
   RoutingRequest options=state0.getOptions();
   if (options.isArriveBy()) {
+    if (state0.getLastPattern() == this.getPattern()) {
+      return null;
+    }
     if (!options.getModes().get(modeMask)) {
       return null;
     }
@@ -87,6 +90,7 @@
     s1.setTripId(null);
     s1.setLastAlightedTime(state0.getTime());
     s1.setPreviousStop(tov);
+    s1.setLastPattern(this.getPattern());
     return s1.makeState();
   }
 }

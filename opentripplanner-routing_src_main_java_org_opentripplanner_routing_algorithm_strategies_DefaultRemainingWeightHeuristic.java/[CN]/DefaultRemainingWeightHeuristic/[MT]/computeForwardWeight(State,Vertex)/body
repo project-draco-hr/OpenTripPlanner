@@ -19,6 +19,11 @@
       }
       if (s.isEverBoarded()) {
         boardCost+=options.transferPenalty;
+        if (localStreetService != null) {
+          if (s.getOptions().getMaxWalkDistance() - s.getWalkDistance() < distanceLibrary.fastDistance(sv.getCoordinate(),target.getCoordinate()) && !localStreetService.transferrable(sv)) {
+            return Double.POSITIVE_INFINITY;
+          }
+        }
       }
       if (euclidianDistance < target.getDistanceToNearestTransitStop()) {
         if (euclidianDistance + s.getWalkDistance() > options.getMaxWalkDistance()) {
