@@ -2,7 +2,7 @@
   for (  Individual oi : origins) {
     RoutingRequest req=buildRequest(oi.getLat(),oi.getLon());
     ShortestPathTree spt=sptService.getShortestPathTree(req);
-    destinations.writeCsv("/home/abyrd/disagg.csv",spt,oi);
+    destinations.writeCsv(outputPath,spt,oi);
     req.cleanup();
   }
 }
