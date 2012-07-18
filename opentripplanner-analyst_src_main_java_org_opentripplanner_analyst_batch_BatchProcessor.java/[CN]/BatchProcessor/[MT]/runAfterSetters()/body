@@ -2,9 +2,11 @@
   if (aggregator == null) {
     for (    Individual oi : origins) {
       RoutingRequest req=buildRequest(oi);
-      ShortestPathTree spt=sptService.getShortestPathTree(req);
-      destinations.writeCsv(outputPath,spt,oi);
-      req.cleanup();
+      if (req != null) {
+        ShortestPathTree spt=sptService.getShortestPathTree(req);
+        destinations.writeCsv(outputPath,spt,oi);
+        req.cleanup();
+      }
     }
   }
  else {

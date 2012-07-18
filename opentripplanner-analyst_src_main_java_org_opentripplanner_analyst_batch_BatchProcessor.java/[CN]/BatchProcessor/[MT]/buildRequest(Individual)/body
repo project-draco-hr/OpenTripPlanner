@@ -4,6 +4,12 @@
   req.setDateTime(date,time,timeZone);
   req.setFrom(String.format("%f,%f",i.getLat(),i.getLon()));
   req.batch=true;
-  req.setRoutingContext(graphService.getGraph(routerId));
-  return req;
+  try {
+    req.setRoutingContext(graphService.getGraph(routerId));
+    return req;
+  }
+ catch (  VertexNotFoundException vnfe) {
+    LOG.debug("no vertex could be created near the origin point");
+    return null;
+  }
 }
