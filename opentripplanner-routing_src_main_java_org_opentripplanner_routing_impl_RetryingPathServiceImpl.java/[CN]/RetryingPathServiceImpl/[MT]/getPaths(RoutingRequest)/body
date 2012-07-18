@@ -10,6 +10,7 @@
   optionQueue.add(options);
   double maxWeight=Double.MAX_VALUE;
   double maxWalk=options.getMaxWalkDistance();
+  double initialMaxWalk=maxWalk;
   long maxTime=options.isArriveBy() ? 0 : Long.MAX_VALUE;
   RoutingRequest currOptions;
   while (paths.size() < options.numItineraries) {
@@ -48,6 +49,7 @@
       }
     }
     if (somePaths.isEmpty()) {
+      if (maxWalk > initialMaxWalk * MAX_WALK_MULTIPLE || maxWalk >= Double.MAX_VALUE)       break;
       maxWalk*=2;
       optionQueue.add(currOptions);
       LOG.debug("No paths were found.");
