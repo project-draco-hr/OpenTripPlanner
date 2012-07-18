@@ -1,8 +1,12 @@
 {
-  for (  Individual oi : origins) {
-    RoutingRequest req=buildRequest(oi.getLat(),oi.getLon());
-    ShortestPathTree spt=sptService.getShortestPathTree(req);
-    destinations.writeCsv(outputPath,spt,oi);
-    req.cleanup();
+  if (aggregator == null) {
+    for (    Individual oi : origins) {
+      RoutingRequest req=buildRequest(oi);
+      ShortestPathTree spt=sptService.getShortestPathTree(req);
+      destinations.writeCsv(outputPath,spt,oi);
+      req.cleanup();
+    }
+  }
+ else {
   }
 }

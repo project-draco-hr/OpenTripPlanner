@@ -1,0 +1,33 @@
+{
+  LOG.debug("Loading population from raster file {}",sourceFilename);
+  try {
+    File rasterFile=new File(sourceFilename);
+    AbstractGridFormat format=GridFormatFinder.findFormat(rasterFile);
+    AbstractGridCoverage2DReader reader=format.getReader(rasterFile);
+    CoordinateReferenceSystem sourceCRS=reader.getCrs();
+    GridCoverage2D cov=reader.read(null);
+    CoordinateReferenceSystem WGS84=CRS.decode("EPSG:4326",true);
+    MathTransform tr=CRS.findMathTransform(sourceCRS,WGS84);
+    GridGeometry2D gridGeometry=cov.getGridGeometry();
+    GridEnvelope2D gridEnvelope=gridGeometry.getGridRange2D();
+    int width=gridEnvelope.width;
+    int height=gridEnvelope.height;
+    GridCoordinates2D coord=new GridCoordinates2D();
+    int[] val=new int[1];
+    for (int gy=gridEnvelope.y, iy=0; iy < height; gy++, iy++) {
+      for (int gx=gridEnvelope.x, ix=0; ix < width; gx++, ix++) {
+        coord.x=gx;
+        coord.y=gy;
+        DirectPosition sourcePos=gridGeometry.gridToWorld(coord);
+        cov.evaluate(sourcePos,val);
+        DirectPosition targetPos=tr.transform(sourcePos,null);
+        Individual individual=individualFactory.build(ix + "," + iy,targetPos.getOrdinate(0),targetPos.getOrdinate(1),val[0]);
+        this.add(individual);
+      }
+    }
+  }
+ catch (  Exception ex) {
+    throw new IllegalStateException("Error loading population from raster file: ",ex);
+  }
+  LOG.debug("Done loading raster from file.");
+}

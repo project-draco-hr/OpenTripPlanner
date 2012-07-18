@@ -1,9 +1,0 @@
-{
-  RoutingRequest req=prototypeRoutingRequest.clone();
-  req.setRouterId(routerId);
-  req.setDateTime(date,time,timeZone);
-  req.setFrom(String.format("%f, %f",lat,lon));
-  req.batch=true;
-  req.setRoutingContext(graphService.getGraph(routerId));
-  return req;
-}
