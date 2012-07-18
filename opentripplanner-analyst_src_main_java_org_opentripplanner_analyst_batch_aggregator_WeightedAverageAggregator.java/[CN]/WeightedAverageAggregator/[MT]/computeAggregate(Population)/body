@@ -3,8 +3,8 @@
   int n=0;
   for (  Individual destination : destinations) {
     if (Double.isInfinite(destination.input))     continue;
-    double t=destination.sample.eval(spt);
-    if (Double.isInfinite(t))     continue;
+    double t=destination.output;
+    if (Double.isInfinite(t) || t < 0)     continue;
     result+=destination.input * t;
     n+=destination.input;
   }
