@@ -4,14 +4,9 @@
   PrintWriter csvWriter;
   try {
     csvWriter=new PrintWriter(outFile);
-    csvWriter.printf("lat,lon,data,traveltime\n");
+    csvWriter.printf("label,lat,lon,input,output\n");
     for (    Individual i : this.individuals) {
-      Sample s=i.sample;
-      long t=Long.MAX_VALUE;
-      if (s == null)       t=-2;
- else       t=s.eval(spt);
-      if (t == Long.MAX_VALUE)       t=-1;
-      csvWriter.printf("%f,%f,%f,%d\n",i.getLat(),i.getLon(),i.input,t);
+      csvWriter.printf("%s,%f,%f,%f,%f\n",i.label,i.lat,i.lon,i.input,i.output);
     }
     csvWriter.close();
   }
