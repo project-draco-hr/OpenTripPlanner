@@ -96,6 +96,6 @@
   if (startTransitStopId != null && !"".equals(startTransitStopId)) {
     request.setStartingTransitStopId(AgencyAndId.convertFromString(startTransitStopId));
   }
-  request.setMaxWait(get(maxWait,n,request.getMaxWait()));
+  request.setClampInitialWait(get(clampInitialWait,n,request.getClampInitialWait()));
   return request;
 }

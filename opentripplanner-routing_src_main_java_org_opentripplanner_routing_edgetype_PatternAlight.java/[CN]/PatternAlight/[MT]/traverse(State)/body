@@ -75,9 +75,6 @@
     s1.setZone(pattern.getZone(stopIndex + 1));
     s1.setRoute(trip.getRoute().getId());
     long wait_cost=bestWait;
-    if (options.maxWait > 0 && bestWait > options.maxWait) {
-      return null;
-    }
     if (state0.getNumBoardings() == 0) {
       wait_cost*=options.waitAtBeginningFactor;
       s1.setInitialWaitTime(bestWait);
