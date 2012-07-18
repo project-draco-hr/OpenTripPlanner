@@ -1,11 +1,7 @@
 {
   ArrayList<String> notFound=new ArrayList<String>();
-  if (fromVertex == null) {
-    notFound.add("from");
-  }
-  if (toVertex == null) {
-    notFound.add("to");
-  }
+  if (!(opt.batch && opt.arriveBy))   if (fromVertex == null)   notFound.add("from");
+  if (!opt.batch || opt.arriveBy)   if (toVertex == null)   notFound.add("to");
   for (int i=0; i < intermediateVertices.size(); i++) {
     if (intermediateVertices.get(i) == null) {
       notFound.add("intermediate." + i);
