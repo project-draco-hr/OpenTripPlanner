@@ -14,7 +14,7 @@
   for (double lat=top; lat > bottom; lat-=yStep) {
     col=0;
     for (double lon=left; lon < right; lon+=xStep) {
-      Individual individual=individualFactory.build(String.format("r%02d,c%02d",row,col),lon,lat,i);
+      Individual individual=individualFactory.build(String.format("r%02d_c%02d",row,col),lon,lat,i);
       this.add(individual);
       col+=1;
       i+=1;

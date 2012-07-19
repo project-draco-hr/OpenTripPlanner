@@ -9,7 +9,7 @@
   }
   GridEnvelope2D gridEnv=new GridEnvelope2D(0,0,width,height);
   Envelope refEnv=new ReferencedEnvelope(left,right,bottom,top,crs);
-  RenderedImage image=new BufferedImage(width,height,BufferedImage.TYPE_BYTE_GRAY);
+  RenderedImage image=new BufferedImage(width,height,BufferedImage.TYPE_USHORT_GRAY);
   GridCoverage2D coverage=new GridCoverageFactory().create(name,image,refEnv);
   this.cov=coverage;
   super.createIndividuals();
