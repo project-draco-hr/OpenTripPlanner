@@ -1,0 +1,14 @@
+{
+  try {
+    GeoTiffWriteParams wp=new GeoTiffWriteParams();
+    wp.setCompressionMode(GeoTiffWriteParams.MODE_EXPLICIT);
+    wp.setCompressionType("LZW");
+    ParameterValueGroup params=new GeoTiffFormat().getWriteParameters();
+    params.parameter(AbstractGridFormat.GEOTOOLS_WRITE_PARAMS.getName().toString()).setValue(wp);
+    new GeoTiffWriter(new File(fileName)).write(this.cov,(GeneralParameterValue[])params.values().toArray(new GeneralParameterValue[1]));
+  }
+ catch (  Exception e) {
+    LOG.error("exception while writing geotiff.");
+    e.printStackTrace();
+  }
+}

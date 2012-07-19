@@ -1,0 +1,35 @@
+{
+  this.covCRS=cov.getCoordinateReferenceSystem();
+  MathTransform tr;
+  try {
+    final CoordinateReferenceSystem WGS84=CRS.decode("EPSG:4326",true);
+    tr=CRS.findMathTransform(covCRS,WGS84);
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+    return;
+  }
+  GridGeometry2D gridGeometry=cov.getGridGeometry();
+  GridEnvelope2D gridEnvelope=gridGeometry.getGridRange2D();
+  this.width=gridEnvelope.width;
+  this.height=gridEnvelope.height;
+  GridCoordinates2D coord=new GridCoordinates2D();
+  int[] val=new int[1];
+  for (int gy=gridEnvelope.y, iy=0; iy < height; gy++, iy++) {
+    for (int gx=gridEnvelope.x, ix=0; ix < width; gx++, ix++) {
+      coord.x=gx;
+      coord.y=gy;
+      try {
+        DirectPosition sourcePos=gridGeometry.gridToWorld(coord);
+        cov.evaluate(sourcePos,val);
+        DirectPosition targetPos=tr.transform(sourcePos,null);
+        Individual individual=individualFactory.build(ix + "," + iy,targetPos.getOrdinate(0),targetPos.getOrdinate(1),val[0]);
+        this.add(individual);
+      }
+ catch (      Exception e) {
+        e.printStackTrace();
+        return;
+      }
+    }
+  }
+}
