@@ -3,10 +3,15 @@
   BufferedImage image=new BufferedImage(width,height,BufferedImage.TYPE_USHORT_GRAY);
   short[] imagePixelData=((DataBufferUShort)image.getRaster().getDataBuffer()).getData();
   int i=0;
+  double maxOutput=0;
   for (  Individual indiv : this.getIndividuals()) {
-    short pixel=(short)indiv.output;
+    if (indiv.output > maxOutput)     maxOutput=indiv.output;
+  }
+  for (  Individual indiv : this.getIndividuals()) {
+    int pixel=(int)(indiv.output / maxOutput * 65535);
     if (pixel < 0)     pixel=0;
-    imagePixelData[i]=pixel;
+    if (pixel > 65535)     pixel=65535;
+    imagePixelData[i]=(short)pixel;
     i++;
   }
   this.cov=new GridCoverageFactory().create(cov.getName(),image,cov.getEnvelope());
