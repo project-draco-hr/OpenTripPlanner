@@ -1,4 +1,15 @@
 {
+  LOG.debug("writing geotiff.");
+  BufferedImage image=new BufferedImage(width,height,BufferedImage.TYPE_USHORT_GRAY);
+  short[] imagePixelData=((DataBufferUShort)image.getRaster().getDataBuffer()).getData();
+  int i=0;
+  for (  Individual indiv : this.getIndividuals()) {
+    short pixel=(short)indiv.output;
+    if (pixel < 0)     pixel=0;
+    imagePixelData[i]=pixel;
+    i++;
+  }
+  this.cov=new GridCoverageFactory().create(cov.getName(),image,cov.getEnvelope());
   try {
     GeoTiffWriteParams wp=new GeoTiffWriteParams();
     wp.setCompressionMode(GeoTiffWriteParams.MODE_EXPLICIT);
@@ -11,4 +22,5 @@
     LOG.error("exception while writing geotiff.");
     e.printStackTrace();
   }
+  LOG.debug("done writing geotiff.");
 }
