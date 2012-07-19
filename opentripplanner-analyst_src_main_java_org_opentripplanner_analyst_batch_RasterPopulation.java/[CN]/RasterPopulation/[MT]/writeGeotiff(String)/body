@@ -1,20 +1,17 @@
 {
   LOG.info("writing geotiff.");
-  BufferedImage image=new BufferedImage(width,height,BufferedImage.TYPE_USHORT_GRAY);
-  short[] imagePixelData=((DataBufferUShort)image.getRaster().getDataBuffer()).getData();
-  int i=0;
-  double maxOutput=0;
-  for (  Individual indiv : this.getIndividuals()) {
-    if (indiv.output > maxOutput)     maxOutput=indiv.output;
+  float[][] imagePixelData=new float[height][width];
+  List<Individual> individuals=this.getIndividuals();
+  Iterator<Individual> indivIter=this.iterator();
+  for (int row=0; row < height; row++) {
+    for (int col=0; col < width; col++) {
+      Individual indiv=indivIter.next();
+      int index=row * width + col;
+      float pixel=(float)indiv.output;
+      imagePixelData[row][col]=pixel;
+    }
   }
-  for (  Individual indiv : this.getIndividuals()) {
-    int pixel=(int)(indiv.output / maxOutput * 65535);
-    if (pixel < 0)     pixel=0;
-    if (pixel > 65535)     pixel=65535;
-    imagePixelData[i]=(short)pixel;
-    i++;
-  }
-  this.cov=new GridCoverageFactory().create(cov.getName(),image,cov.getEnvelope());
+  this.cov=new GridCoverageFactory().create(cov.getName(),imagePixelData,cov.getEnvelope());
   try {
     GeoTiffWriteParams wp=new GeoTiffWriteParams();
     wp.setCompressionMode(GeoTiffWriteParams.MODE_EXPLICIT);
