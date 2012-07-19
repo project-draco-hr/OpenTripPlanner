@@ -1,5 +1,5 @@
 {
-  LOG.debug("Loading population from raster file {}",sourceFilename);
+  LOG.info("Loading population from raster file {}",sourceFilename);
   try {
     File rasterFile=new File(sourceFilename);
     AbstractGridFormat format=GridFormatFinder.findFormat(rasterFile);
@@ -9,5 +9,5 @@
  catch (  Exception ex) {
     throw new IllegalStateException("Error loading population from raster file: ",ex);
   }
-  LOG.debug("Done loading raster from file.");
+  LOG.info("Done loading raster from file.");
 }

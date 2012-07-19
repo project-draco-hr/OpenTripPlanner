@@ -1,5 +1,5 @@
 {
-  LOG.debug("writing geotiff.");
+  LOG.info("writing geotiff.");
   BufferedImage image=new BufferedImage(width,height,BufferedImage.TYPE_USHORT_GRAY);
   short[] imagePixelData=((DataBufferUShort)image.getRaster().getDataBuffer()).getData();
   int i=0;
@@ -22,5 +22,5 @@
     LOG.error("exception while writing geotiff.");
     e.printStackTrace();
   }
-  LOG.debug("done writing geotiff.");
+  LOG.info("done writing geotiff.");
 }
