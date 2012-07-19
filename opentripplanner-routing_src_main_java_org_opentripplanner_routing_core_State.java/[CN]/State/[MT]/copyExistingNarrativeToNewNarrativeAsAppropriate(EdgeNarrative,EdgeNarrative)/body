@@ -1,0 +1,6 @@
+{
+  if (!(to instanceof MutableEdgeNarrative))   return;
+  MutableEdgeNarrative m=(MutableEdgeNarrative)to;
+  if (to.getFromVertex() == null)   m.setFromVertex(from.getFromVertex());
+  if (to.getToVertex() == null)   m.setToVertex(from.getToVertex());
+}
