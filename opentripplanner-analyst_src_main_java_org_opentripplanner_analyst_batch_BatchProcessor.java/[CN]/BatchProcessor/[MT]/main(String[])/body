@@ -4,4 +4,5 @@
   xmlReader.loadBeanDefinitions(new ClassPathResource(CONFIG));
   ctx.refresh();
   ctx.registerShutdownHook();
+  ctx.getBean(BatchProcessor.class).run();
 }
