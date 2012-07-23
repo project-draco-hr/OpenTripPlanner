@@ -1,0 +1,14 @@
+{
+  double aggregate=0;
+  int i=0;
+  int n=0;
+  for (  Individual target : rs.population) {
+    double t=rs.results[i++];
+    if (Double.isInfinite(target.input))     continue;
+    if (Double.isInfinite(t) || t < 0)     continue;
+    aggregate+=target.input * t;
+    n+=target.input;
+  }
+  aggregate/=n;
+  return aggregate;
+}

@@ -1,8 +1,0 @@
-{
-  double result=0;
-  for (  Individual destination : destinations) {
-    double t=destination.output;
-    if (t > 0 && t < thresholdSeconds)     result+=destination.input * (thresholdSeconds - t);
-  }
-  return result;
-}

@@ -1,0 +1,35 @@
+{
+  MathTransform tr;
+  try {
+    final CoordinateReferenceSystem WGS84=CRS.decode("EPSG:4326",true);
+    tr=CRS.findMathTransform(coverageCRS,WGS84);
+  }
+ catch (  Exception e) {
+    LOG.equals("error creating CRS transform.");
+    e.printStackTrace();
+    return;
+  }
+  GridCoordinates2D coord=new GridCoordinates2D();
+  int[] val=new int[1];
+  for (int row=0; row < rows; row++) {
+    for (int col=0; col < cols; col++) {
+      coord.x=col;
+      coord.y=row;
+      try {
+        DirectPosition sourcePos=gridGeometry.gridToWorld(coord);
+        DirectPosition targetPos=tr.transform(sourcePos,null);
+        double lon=targetPos.getOrdinate(0);
+        double lat=targetPos.getOrdinate(1);
+        if (coverage != null)         coverage.evaluate(coord,val);
+        String label=row + "_" + col;
+        Individual individual=individualFactory.build(label,lon,lat,val[band]);
+        this.addIndividual(individual);
+      }
+ catch (      Exception e) {
+        LOG.error("error creating individuals for raster");
+        e.printStackTrace();
+        return;
+      }
+    }
+  }
+}
