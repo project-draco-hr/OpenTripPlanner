@@ -1,0 +1,12 @@
+{
+  if (current.population != accumulated.population) {
+    return;
+  }
+  int n=accumulated.population.size();
+  for (int i=0; i < n; i++) {
+    double t=current.results[i];
+    if (t > 0 && t < threshold) {
+      accumulated.results[i]+=amount;
+    }
+  }
+}
