@@ -134,8 +134,8 @@
       InterlineSwitchoverKey dwellKey=new InterlineSwitchoverKey(s0,s1,fromInterlineTrip.tripPattern,toInterlineTrip.tripPattern);
       dwell=getInterlineDwell(dwellKey);
       if (dwell == null) {
-        Vertex startJourney=patternArriveNodes.get(new T2<Stop,Trip>(s0,fromExemplar));
-        Vertex endJourney=patternDepartNodes.get(new T2<Stop,Trip>(s1,toExemplar));
+        Vertex startJourney=context.patternArriveNodes.get(new T2<Stop,Trip>(s0,fromExemplar));
+        Vertex endJourney=context.patternDepartNodes.get(new T2<Stop,Trip>(s1,toExemplar));
         dwell=new PatternInterlineDwell(startJourney,endJourney,toTrip);
         putInterlineDwell(dwellKey,dwell);
       }

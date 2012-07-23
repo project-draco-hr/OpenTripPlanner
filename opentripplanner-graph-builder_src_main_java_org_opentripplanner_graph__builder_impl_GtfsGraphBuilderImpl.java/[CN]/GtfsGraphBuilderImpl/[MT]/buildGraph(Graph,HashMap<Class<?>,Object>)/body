@@ -1,5 +1,6 @@
 {
   MultiCalendarServiceImpl service=new MultiCalendarServiceImpl();
+  GtfsStopContext stopContext=new GtfsStopContext();
   try {
     int bundleIndex=0;
     for (    GtfsBundle gtfsBundle : _gtfsBundles.getBundles()) {
@@ -7,6 +8,7 @@
       GtfsMutableRelationalDao dao=new GtfsRelationalDaoImpl();
       GtfsContext context=GtfsLibrary.createContext(dao,service);
       GTFSPatternHopFactory hf=new GTFSPatternHopFactory(context);
+      hf.setStopContext(stopContext);
       hf.setFareServiceFactory(_fareServiceFactory);
       if (generateFeedIds && gtfsBundle.getDefaultAgencyId() == null) {
         gtfsBundle.setDefaultAgencyId("FEED#" + bundleIndex);
