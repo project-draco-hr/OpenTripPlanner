@@ -94,9 +94,8 @@
     spt=dijkstra.getShortestPathTree(start);
   }
  else {
-    dijkstra.setShortestPathTreeFactory(MultiShortestPathTree.FACTORY);
     if (options.rctx.graph.getService(TransitLocalStreetService.class) != null)     dijkstra.setSkipEdgeStrategy(new SkipNonTransferEdgeStrategy(options));
-    List<State> startPoints=new ArrayList<State>();
+    final List<State> startPoints=new ArrayList<State>();
     STARTWALK:     for (    RaptorState state : createdStates) {
       if (false) {
         double maxWalk=options.getMaxWalkDistance();
@@ -133,6 +132,16 @@
     }
     System.out.println("walk starts: " + startPoints.size() + " / "+ cur.visitedEver.size());
     dijkstra.setPriorityQueueFactory(new PrefilledPriorityQueueFactory(startPoints.subList(1,startPoints.size())));
+    dijkstra.setShortestPathTreeFactory(new ShortestPathTreeFactory(){
+      @Override public ShortestPathTree create(      RoutingRequest options){
+        MultiShortestPathTree result=new MultiShortestPathTree(options);
+        for (        State state : startPoints.subList(1,startPoints.size())) {
+          result.add(state);
+        }
+        return result;
+      }
+    }
+);
     spt=dijkstra.getShortestPathTree(startPoints.get(0));
   }
   final List<? extends State> targetStates=spt.getStates(walkOptions.rctx.target);
