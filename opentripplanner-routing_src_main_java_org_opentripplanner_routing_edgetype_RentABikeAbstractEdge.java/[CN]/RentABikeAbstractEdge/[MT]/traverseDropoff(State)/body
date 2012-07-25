@@ -1,6 +1,6 @@
 {
   RoutingRequest options=s0.getOptions();
-  if (!s0.isBikeRenting())   return null;
+  if (!s0.isBikeRenting() || !s0.getBikeRentalNetwork().equals(network))   return null;
   BikeRentalStationVertex pickup=(BikeRentalStationVertex)tov;
   if (options.isUseBikeRentalAvailabilityInformation() && pickup.getSpacesAvailable() == 0) {
     return null;
