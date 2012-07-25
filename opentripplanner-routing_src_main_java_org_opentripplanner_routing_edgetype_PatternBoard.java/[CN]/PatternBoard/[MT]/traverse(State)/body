@@ -30,6 +30,7 @@
     int bestPatternIndex=-1;
     TraverseMode mode=state0.getNonTransitMode(options);
     AgencyAndId serviceId=getPattern().getExemplar().getServiceId();
+    ServiceDay serviceDay=null;
     SD:     for (    ServiceDay sd : rctx.serviceDays) {
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
       if (secondsSinceMidnight < 0)       continue;
@@ -49,6 +50,7 @@
           if (bestWait < 0 || wait < bestWait) {
             bestWait=wait;
             bestPatternIndex=patternIndex;
+            serviceDay=sd;
           }
         }
       }
@@ -85,6 +87,7 @@
     if (TransitUtils.handleBoardAlightType(s1,type)) {
       return null;
     }
+    s1.setServiceDay(serviceDay);
     s1.setTrip(bestPatternIndex);
     s1.incrementTimeInSeconds(bestWait);
     s1.incrementNumBoardings();

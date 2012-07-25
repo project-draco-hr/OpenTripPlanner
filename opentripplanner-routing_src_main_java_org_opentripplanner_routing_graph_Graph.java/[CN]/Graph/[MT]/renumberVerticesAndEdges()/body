@@ -1,14 +1,13 @@
 {
-  this.vertexById=new ArrayList<Vertex>(getVertices());
-  Collections.sort(this.vertexById,getVertexComparatorFactory().getComparator(vertexById));
+  this.vertexById=Arrays.asList(new Vertex[AbstractVertex.getMaxIndex()]);
+  for (  Vertex v : getVertices()) {
+    vertexById.set(v.getIndex(),v);
+  }
   this.edgeById=new HashMap<Integer,Edge>();
   this.idForEdge=new HashMap<Edge,Integer>();
   int i=0;
   for (  Vertex v : this.vertexById) {
-    v.setIndex(i++);
-  }
-  i=0;
-  for (  Vertex v : this.vertexById) {
+    if (v == null)     continue;
     int j=0;
     for (    Edge e : v.getOutgoing()) {
       int eid=(i * 100) + j;

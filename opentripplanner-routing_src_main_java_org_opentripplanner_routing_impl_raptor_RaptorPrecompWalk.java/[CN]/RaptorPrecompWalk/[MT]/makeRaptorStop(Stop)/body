@@ -1,0 +1,10 @@
+{
+  RaptorStop rs=raptorStopsForStopId.get(stop.getId());
+  if (rs == null) {
+    rs=new RaptorStop();
+    rs.index=raptorStopsForStopId.size();
+    stops[rs.index]=rs;
+    raptorStopsForStopId.put(stop.getId(),rs);
+  }
+  return rs;
+}
