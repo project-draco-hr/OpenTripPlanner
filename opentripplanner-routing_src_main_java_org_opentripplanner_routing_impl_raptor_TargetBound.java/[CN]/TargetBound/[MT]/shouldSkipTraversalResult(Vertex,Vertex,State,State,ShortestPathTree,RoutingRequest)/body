@@ -1,0 +1,20 @@
+{
+  final Vertex vertex=current.getVertex();
+  final double targetDistance=distanceLibrary.fastDistance(realTargetCoordinate,vertex.getCoordinate());
+  final double remainingWalk=traverseOptions.getMaxWalkDistance() - current.getWalkDistance();
+  final double minWalk;
+  if (targetDistance > remainingWalk) {
+    minWalk=this.distanceToNearestTransitStop + vertex.getDistanceToNearestTransitStop();
+    if (minWalk > remainingWalk)     return true;
+  }
+ else {
+    minWalk=targetDistance;
+  }
+  final double optimisticDistance=current.getWalkDistance() + minWalk;
+  final double minTime=(targetDistance - minWalk) / 25 + minWalk / current.getOptions().getSpeedUpperBound();
+  for (  State bounder : bounders) {
+    if (optimisticDistance < bounder.getWalkDistance())     continue;
+    if (bounder.getTime() < current.getTime() + minTime)     return true;
+  }
+  return false;
+}
