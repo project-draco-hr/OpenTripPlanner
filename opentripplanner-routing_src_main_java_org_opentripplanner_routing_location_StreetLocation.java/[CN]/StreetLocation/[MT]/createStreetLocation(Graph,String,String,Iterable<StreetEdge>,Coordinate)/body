@@ -1,6 +1,7 @@
 {
   boolean wheelchairAccessible=false;
   StreetLocation location=new StreetLocation(graph,label,nearestPoint,name);
+  location.setDistanceToNearestTransitStop(Double.MAX_VALUE);
   HashMap<Geometry,P2<TurnVertex>> cache=new HashMap<Geometry,P2<TurnVertex>>();
   for (  StreetEdge street : edges) {
     Vertex fromv=street.getFromVertex();
