@@ -20,7 +20,7 @@
   coordList.add(new Coordinate(edgeLenM,getElevation(coords[coords.length - 1])));
   Coordinate coordArr[]=new Coordinate[coordList.size()];
   PackedCoordinateSequence elevPCS=new PackedCoordinateSequence.Double(coordList.toArray(coordArr));
-  if (ee.setElevationProfile(elevPCS,true)) {
+  if (ee.setElevationProfile(elevPCS,false)) {
     log.trace(GraphBuilderAnnotation.register(graph,Variety.ELEVATION_FLATTENED,ee));
   }
 }
