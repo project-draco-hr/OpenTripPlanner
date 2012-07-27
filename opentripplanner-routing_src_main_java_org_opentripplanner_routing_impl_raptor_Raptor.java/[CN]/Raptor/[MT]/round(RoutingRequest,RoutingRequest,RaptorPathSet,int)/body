@@ -154,7 +154,7 @@
       if (targetDistance + state.walkDistance > options.getMaxWalkDistance()) {
         if (state.stop.stopVertex.isLocal())         continue;
       }
-      double minTime=(targetDistance - distanceToNearestTransitStop) / 25 + distanceToNearestTransitStop / options.getSpeedUpperBound();
+      double minTime=(targetDistance - distanceToNearestTransitStop) / MAX_TRANSIT_SPEED + distanceToNearestTransitStop / options.getSpeedUpperBound();
       state.arrivalTime+=minTime;
       state.walkDistance+=distanceToNearestTransitStop;
       for (      RaptorState bound : cur.boundingStates) {
@@ -251,7 +251,7 @@
       }
     }
     double targetDistance=distanceLibrary.fastDistance(options.rctx.target.getCoordinate(),vertex.getCoordinate());
-    double minTime=(targetDistance - minWalk) / 25 + minWalk / options.getSpeedUpperBound();
+    double minTime=(targetDistance - minWalk) / MAX_TRANSIT_SPEED + minWalk / options.getSpeedUpperBound();
     for (    RaptorState oldState : cur.getTargetStates()) {
       if (oldState.arrivalTime <= newState.arrivalTime + minTime && oldState.walkDistance <= newState.walkDistance + minWalk)       continue SPTSTATE;
       if ((oldState.arrivalTime - options.dateTime) * 3 <= (newState.arrivalTime + minTime - options.dateTime))       continue SPTSTATE;

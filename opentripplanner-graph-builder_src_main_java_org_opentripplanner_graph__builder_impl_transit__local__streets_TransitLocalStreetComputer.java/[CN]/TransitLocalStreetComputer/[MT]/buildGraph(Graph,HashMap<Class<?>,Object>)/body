@@ -31,7 +31,7 @@
       ShortestPathTree spt=dijkstra.getShortestPathTree(origin);
       HashMap<Vertex,int[]> map=null;
       HashMap<Vertex,T2<Double,Integer>> cost=null;
-      if (req == walk) {
+      if (req == walk && saveShortestPaths) {
         map=new HashMap<Vertex,int[]>();
         cost=new HashMap<Vertex,T2<Double,Integer>>();
         paths.put(v,map);
@@ -42,7 +42,7 @@
         Vertex destStopVertex=s.getVertex();
         if (destStopVertex instanceof TransitStop) {
           int pathIndex=0;
-          if (req == walk) {
+          if (req == walk && saveShortestPaths) {
             cost.put(destStopVertex,new T2<Double,Integer>(s.getWalkDistance(),(int)s.getElapsedTime()));
           }
           while (s != null) {
@@ -50,7 +50,7 @@
             path[pathIndex++]=s.getVertex().getIndex();
             s=s.getBackState();
           }
-          if (req == walk) {
+          if (req == walk && saveShortestPaths) {
             map.put(destStopVertex,Arrays.copyOf(path,pathIndex));
           }
         }
