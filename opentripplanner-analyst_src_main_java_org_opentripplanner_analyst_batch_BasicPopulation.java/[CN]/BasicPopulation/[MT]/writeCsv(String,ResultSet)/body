@@ -1,0 +1,18 @@
+{
+  LOG.debug("Writing population to CSV: {}",outFileName);
+  File outFile=new File(outFileName);
+  PrintWriter csvWriter;
+  try {
+    csvWriter=new PrintWriter(outFile);
+    csvWriter.printf("label,lat,lon,input,output\n");
+    int i=0;
+    for (    Individual indiv : this) {
+      csvWriter.printf("%s,%f,%f,%f,%f\n",indiv.label,indiv.lat,indiv.lon,indiv.input,results.results[i]);
+    }
+    csvWriter.close();
+  }
+ catch (  Exception e) {
+    LOG.debug("error writing population to CSV: {}",e);
+  }
+  LOG.debug("Done writing population to CSV.");
+}

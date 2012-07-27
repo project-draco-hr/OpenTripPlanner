@@ -1,7 +1,7 @@
 {
   for (  Pathway pathway : _dao.getAllPathways()) {
-    Vertex fromVertex=stopNodes.get(pathway.getFromStop());
-    Vertex toVertex=stopNodes.get(pathway.getToStop());
+    Vertex fromVertex=context.stopNodes.get(pathway.getFromStop());
+    Vertex toVertex=context.stopNodes.get(pathway.getToStop());
     if (pathway.isWheelchairTraversalTimeSet()) {
       new PathwayEdge(fromVertex,toVertex,pathway.getTraversalTime());
     }

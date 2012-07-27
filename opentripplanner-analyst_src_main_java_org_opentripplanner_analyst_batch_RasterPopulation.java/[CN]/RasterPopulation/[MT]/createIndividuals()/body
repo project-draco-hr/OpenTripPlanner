@@ -1,0 +1,20 @@
+{
+  LOG.info("Loading population from raster file {}",sourceFilename);
+  try {
+    File rasterFile=new File(sourceFilename);
+    AbstractGridFormat format=GridFormatFinder.findFormat(rasterFile);
+    AbstractGridCoverage2DReader reader=format.getReader(rasterFile);
+    GridCoverage2D coverage=reader.read(null);
+    this.coverageCRS=coverage.getCoordinateReferenceSystem();
+    GridGeometry2D gridGeometry=coverage.getGridGeometry();
+    GridEnvelope2D gridEnvelope=gridGeometry.getGridRange2D();
+    gridGeometry.getGridToCRS();
+    this.cols=gridEnvelope.width;
+    this.rows=gridEnvelope.height;
+    this.createIndividuals0();
+  }
+ catch (  Exception ex) {
+    throw new IllegalStateException("Error loading population from raster file: ",ex);
+  }
+  LOG.info("Done loading raster from file.");
+}

@@ -22,8 +22,8 @@
       _log.warn(GraphBuilderAnnotation.register(graph,Variety.NEGATIVE_DWELL_TIME,st0));
       dwellTime=0;
     }
-    Vertex startStation=stopDepartNodes.get(s0);
-    Vertex endStation=stopArriveNodes.get(s1);
+    Vertex startStation=context.stopDepartNodes.get(s0);
+    Vertex endStation=context.stopArriveNodes.get(s1);
     if (psv1arrive == null) {
       psv0arrive=new PatternArriveVertex(graph,trip,st0);
     }

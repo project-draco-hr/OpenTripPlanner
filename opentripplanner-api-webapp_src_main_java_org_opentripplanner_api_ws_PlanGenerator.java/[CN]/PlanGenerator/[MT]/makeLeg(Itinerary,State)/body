@@ -6,5 +6,8 @@
   leg.distance=0.0;
   leg.from=makePlace(s.getBackState(),false);
   leg.mode=en.getMode().toString();
+  if (s.isBikeRenting()) {
+    leg.rentedBike=true;
+  }
   return leg;
 }

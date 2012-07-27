@@ -54,8 +54,8 @@
     createdEdges.add(hop);
     hop.setGeometry(getHopGeometry(graph,trip.getShapeId(),st0,st1,psv0depart,psv1arrive));
     pattern.addHop(i,departureTime,runningTime,arrivalTime,dwellTime,st0.getStopHeadsign());
-    TransitStopDepart stopDepart=stopDepartNodes.get(s0);
-    TransitStopArrive stopArrive=stopArriveNodes.get(s1);
+    TransitStopDepart stopDepart=context.stopDepartNodes.get(s0);
+    TransitStopArrive stopArrive=context.stopArriveNodes.get(s1);
     Edge board=new FrequencyBoard(stopDepart,psv0depart,pattern,i,mode);
     Edge alight=new FrequencyAlight(psv1arrive,stopArrive,pattern,i,mode);
     createdEdges.add(board);
