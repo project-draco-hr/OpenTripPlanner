@@ -2,7 +2,7 @@
   Set<RaptorStop> visitedLastRound=cur.visitedLastRound;
   Set<RaptorRoute> routesToVisit=new HashSet<RaptorRoute>();
   for (  RaptorStop stop : visitedLastRound) {
-    for (    RaptorRoute route : routesForStop[stop.index]) {
+    for (    RaptorRoute route : data.routesForStop[stop.index]) {
       routesToVisit.add(route);
     }
   }
@@ -71,6 +71,7 @@
           bound.arrivalTime=newState.arrivalTime + nearTarget.time;
           bound.walkDistance=newState.walkDistance + nearTarget.walkDistance;
           bound.nBoardings=newState.nBoardings;
+          bound.stop=stop;
           for (          RaptorState oldBound : cur.boundingStates) {
             if (eDominates(oldBound,bound)) {
               continue CONTINUE;
@@ -131,7 +132,7 @@
     for (    State state : targetSpt.getAllStates()) {
       final Vertex vertex=state.getVertex();
       if (!(vertex instanceof TransitStop))       continue;
-      RaptorStop stop=raptorStopsForStopId.get(((TransitStop)vertex).getStopId());
+      RaptorStop stop=data.raptorStopsForStopId.get(((TransitStop)vertex).getStopId());
       if (stop == null) {
         continue;
       }
@@ -141,10 +142,16 @@
  else {
     if (options.rctx.graph.getService(TransitLocalStreetService.class) != null)     dijkstra.setSkipEdgeStrategy(new SkipNonTransferEdgeStrategy(options));
     final List<State> startPoints=new ArrayList<State>();
+    RegionData regionData=data.regionData;
+    List<Integer> destinationRegions=regionData.getRegionsForVertex(options.rctx.target);
+    List<double[]> minWalks=new ArrayList<double[]>(2);
+    for (    int destinationRegion : destinationRegions) {
+      minWalks.add(regionData.minWalk[destinationRegion]);
+    }
     STARTWALK:     for (    RaptorState state : createdStates) {
       if (false) {
         double maxWalk=options.getMaxWalkDistance() - state.walkDistance - distanceToNearestTransitStop;
-        CHECK:         for (        T2<Double,RaptorStop> nearby : nearbyStops[state.stop.index]) {
+        CHECK:         for (        T2<Double,RaptorStop> nearby : data.nearbyStops[state.stop.index]) {
           double distance=nearby.getFirst();
           RaptorStop stop=nearby.getSecond();
           if (distance > maxWalk) {
@@ -168,19 +175,20 @@
       if (targetDistance + state.walkDistance > options.getMaxWalkDistance()) {
         if (state.stop.stopVertex.isLocal())         continue;
       }
-      double minTime=(targetDistance - distanceToNearestTransitStop) / MAX_TRANSIT_SPEED + distanceToNearestTransitStop / options.getSpeedUpperBound();
+      double minWalk=distanceToNearestTransitStop;
+      double minTime=(targetDistance - minWalk) / MAX_TRANSIT_SPEED + minWalk / options.getSpeedUpperBound();
       state.arrivalTime+=minTime;
-      state.walkDistance+=distanceToNearestTransitStop;
+      state.walkDistance+=minWalk;
       for (      RaptorState bound : cur.boundingStates) {
         if (eDominates(bound,state)) {
           state.arrivalTime-=minTime;
-          state.walkDistance-=distanceToNearestTransitStop;
+          state.walkDistance-=minWalk;
           continue STARTWALK;
         }
       }
       state.arrivalTime-=minTime;
-      state.walkDistance-=distanceToNearestTransitStop;
-      if (distanceToNearestTransitStop + state.walkDistance > options.getMaxWalkDistance()) {
+      state.walkDistance-=minWalk;
+      if (minWalk + state.walkDistance > options.getMaxWalkDistance()) {
         continue;
       }
       StateEditor dijkstraState=new MaxWalkState.MaxWalkStateEditor(walkOptions,stopVertex);
@@ -238,7 +246,7 @@
   SPTSTATE:   for (  State state : spt.getAllStates()) {
     final Vertex vertex=state.getVertex();
     if (!(vertex instanceof TransitStop))     continue;
-    RaptorStop stop=raptorStopsForStopId.get(((TransitStop)vertex).getStopId());
+    RaptorStop stop=data.raptorStopsForStopId.get(((TransitStop)vertex).getStopId());
     if (stop == null) {
       continue;
     }

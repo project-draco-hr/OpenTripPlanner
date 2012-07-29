@@ -1,0 +1,71 @@
+{
+  ArrayList<Vertex> vertices=new ArrayList<Vertex>();
+  for (  Vertex v : graph.getVertices()) {
+    if (!(v instanceof OnboardVertex)) {
+      vertices.add(v);
+    }
+  }
+  int[] regionForVertex=new int[AbstractVertex.getMaxIndex()];
+  Arrays.fill(regionForVertex,-1);
+  ArrayList<ArrayList<Vertex>> verticesForRegion=new ArrayList<ArrayList<Vertex>>();
+  split(regionForVertex,verticesForRegion,vertices,0,true,MAX_REGION_SIZE);
+  RegionData regions=new RegionData();
+  regions.regionForVertex=regionForVertex;
+  regions.minWalk=new double[verticesForRegion.size()][verticesForRegion.size()];
+  int regionIndex=0;
+  for (  ArrayList<Vertex> region : verticesForRegion) {
+    HashMap<Vertex,Double> distances=new HashMap<Vertex,Double>();
+    BinHeap<Vertex> queue=new BinHeap<Vertex>();
+    for (    Vertex v : region) {
+      queue.insert(v,0);
+      distances.put(v,0.0);
+    }
+    HashSet<Vertex> closed=new HashSet<Vertex>();
+    while (!queue.empty()) {
+      Vertex u=queue.extract_min();
+      if (closed.contains(u))       continue;
+      closed.add(u);
+      double distance=distances.get(u);
+      for (      Edge e : u.getOutgoing()) {
+        if (!((e instanceof StreetEdge) || (e instanceof StreetTransitLink)))         continue;
+        double edgeDistance=e.getDistance() + distance;
+        Vertex v=e.getToVertex();
+        Double originalDistance=distances.get(v);
+        if (originalDistance == null || originalDistance > edgeDistance) {
+          distances.put(v,edgeDistance);
+          queue.insert(v,edgeDistance);
+        }
+        if (v instanceof TransitStop) {
+          RaptorStop stop=data.raptorStopsForStopId.get(((TransitStop)v).getStopId());
+          if (stop == null)           continue;
+          for (          RaptorRoute route : data.routesForStop[stop.index]) {
+            for (            RaptorStop stopOnRoute : route.stops) {
+              Vertex stopVertex=stopOnRoute.stopVertex;
+              originalDistance=distances.get(stopVertex);
+              if (originalDistance == null || originalDistance > edgeDistance) {
+                distances.put(stopVertex,edgeDistance);
+                queue.insert(stopVertex,edgeDistance);
+              }
+            }
+          }
+        }
+      }
+    }
+    final double[] minWalk=regions.minWalk[regionIndex];
+    Arrays.fill(minWalk,Double.MAX_VALUE);
+    for (    Map.Entry<Vertex,Double> entry : distances.entrySet()) {
+      Vertex v=entry.getKey();
+      double distance=entry.getValue();
+      int toRegion=regions.regionForVertex[v.getIndex()];
+      if (toRegion == -1) {
+        System.out.println("Warning: no region for " + v);
+        continue;
+      }
+      if (minWalk[toRegion] > distance) {
+        minWalk[toRegion]=distance;
+      }
+    }
+    regionIndex+=1;
+  }
+  return regions;
+}

@@ -1,13 +1,14 @@
 {
-  nearbyStops=new List[nTotalStops];
+  final int nTotalStops=data.stops.length;
+  data.nearbyStops=new List[nTotalStops];
   for (int i=0; i < nTotalStops; ++i) {
     if (i % 500 == 0) {
       System.out.println("Precomputing nearby stops:" + i + " / "+ nTotalStops);
     }
-    nearbyStops[i]=new ArrayList<T2<Double,RaptorStop>>();
-    RaptorStop stop=stops[i];
+    data.nearbyStops[i]=new ArrayList<T2<Double,RaptorStop>>();
+    RaptorStop stop=data.stops[i];
     Coordinate coord=stop.stopVertex.getCoordinate();
-    for (    RaptorStop other : stops) {
+    for (    RaptorStop other : data.stops) {
       if (other == stop)       continue;
       Coordinate otherCoord=other.stopVertex.getCoordinate();
       if (Math.abs(otherCoord.x - coord.x) > 4850 / 111111.0) {
@@ -18,9 +19,9 @@
       }
       double distance=distanceLibrary.fastDistance(coord,otherCoord);
       if (distance > 4850)       continue;
-      nearbyStops[i].add(new T2<Double,RaptorStop>(distance,other));
+      data.nearbyStops[i].add(new T2<Double,RaptorStop>(distance,other));
     }
-    Collections.sort(nearbyStops[i],new Comparator<T2<Double,RaptorStop>>(){
+    Collections.sort(data.nearbyStops[i],new Comparator<T2<Double,RaptorStop>>(){
       @Override public int compare(      T2<Double,RaptorStop> arg0,      T2<Double,RaptorStop> arg1){
         return (int)Math.signum(arg0.getFirst() - arg1.getFirst());
       }
