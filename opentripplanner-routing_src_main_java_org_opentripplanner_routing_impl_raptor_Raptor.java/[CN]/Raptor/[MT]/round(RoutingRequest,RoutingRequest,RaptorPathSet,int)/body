@@ -48,6 +48,20 @@
             continue CONTINUE;
           }
         }
+        Iterator<RaptorState> it=states.iterator();
+        while (it.hasNext()) {
+          RaptorState oldState=it.next();
+          if (eDominates(newState,oldState)) {
+            it.remove();
+          }
+        }
+        it=newStates.iterator();
+        while (it.hasNext()) {
+          RaptorState oldState=it.next();
+          if (eDominates(newState,oldState)) {
+            it.remove();
+          }
+        }
         cur.visitedLastRound.add(stop);
         cur.visitedEver.add(stop);
         newStates.add(newState);
