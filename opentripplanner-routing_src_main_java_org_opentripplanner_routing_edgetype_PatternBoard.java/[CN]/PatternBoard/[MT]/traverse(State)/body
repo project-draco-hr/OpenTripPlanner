@@ -29,7 +29,7 @@
     int bestWait=-1;
     int bestPatternIndex=-1;
     TraverseMode mode=state0.getNonTransitMode(options);
-    AgencyAndId serviceId=getPattern().getExemplar().getServiceId();
+    int serviceId=getPattern().getServiceId();
     SD:     for (    ServiceDay sd : rctx.serviceDays) {
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
       if (secondsSinceMidnight < 0)       continue;

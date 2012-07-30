@@ -1,9 +1,0 @@
-{
-  TimeZone timeZone=cs.getTimeZoneForAgencyId(agencyId);
-  GregorianCalendar calendar=new GregorianCalendar(timeZone);
-  calendar.setTime(new Date(time * 1000));
-  ServiceDate sd=new ServiceDate(calendar);
-  Date d=sd.getAsDate(timeZone);
-  this.midnight=d.getTime() / 1000;
-  this.serviceIdsRunning=cs.getServiceIdsOnDate(sd);
-}

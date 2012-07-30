@@ -1,0 +1,34 @@
+{
+  this.exemplar=exemplar;
+  int hops=stopTimes.size() - 1;
+  departureTimes=(ArrayList<Integer>[])Array.newInstance(ArrayList.class,hops);
+  runningTimes=(ArrayList<Integer>[])Array.newInstance(ArrayList.class,hops);
+  dwellTimes=(ArrayList<Integer>[])Array.newInstance(ArrayList.class,hops);
+  arrivalTimes=(ArrayList<Integer>[])Array.newInstance(ArrayList.class,hops);
+  headsigns=(ArrayList<String>[])Array.newInstance(ArrayList.class,hops);
+  perTripFlags=new ArrayList<Integer>();
+  perStopFlags=new int[hops + 1];
+  zones=new String[hops + 1];
+  trips=new ArrayList<Trip>();
+  int i;
+  for (i=0; i < hops; ++i) {
+    departureTimes[i]=new ArrayList<Integer>();
+    runningTimes[i]=new ArrayList<Integer>();
+    dwellTimes[i]=new ArrayList<Integer>();
+    arrivalTimes[i]=new ArrayList<Integer>();
+    headsigns[i]=new ArrayList<String>();
+  }
+  stops=new ArrayList<Stop>(stopTimes.size());
+  i=0;
+  for (  StopTime stopTime : stopTimes) {
+    stops.add(stopTime.getStop());
+    zones[i]=stopTimes.get(i).getStop().getZoneId();
+    if (stopTime.getStop().getWheelchairBoarding() == 1) {
+      perStopFlags[i]|=FLAG_WHEELCHAIR_ACCESSIBLE;
+    }
+    perStopFlags[i]|=stopTime.getPickupType() << SHIFT_PICKUP;
+    perStopFlags[i]|=stopTime.getDropOffType() << SHIFT_DROPOFF;
+    ++i;
+  }
+  this.serviceId=serviceId;
+}

@@ -1,5 +1,5 @@
 {
-  BasicTripPattern tripPattern=new BasicTripPattern(trip,stopTimes);
+  BasicTripPattern tripPattern=new BasicTripPattern(trip,stopTimes,getServiceId(trip));
   TraverseMode mode=GtfsLibrary.getTraverseMode(trip.getRoute());
   int lastStop=stopTimes.size() - 1;
   int i;

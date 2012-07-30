@@ -1,0 +1,80 @@
+{
+  this.exemplar=exemplar;
+  this.departureTimes=new int[departureTimes.length][departureTimes[0].size()];
+  this.runningTimes=new int[runningTimes.length][runningTimes[0].size()];
+  if (headsigns != null) {
+    this.headsigns=new String[headsigns.length][headsigns[0].size()];
+  }
+  if (arrivalTimes == null) {
+    this.arrivalTimes=null;
+    this.dwellTimes=null;
+    this.bestDwellTimes=null;
+  }
+ else {
+    this.arrivalTimes=new int[arrivalTimes.length][arrivalTimes[0].size()];
+    this.dwellTimes=new int[dwellTimes.length][dwellTimes[0].size()];
+    this.bestDwellTimes=new int[perStopFlags.length];
+  }
+  this.zones=zones;
+  this.perTripFlags=new int[perTripFlags.size()];
+  this.perStopFlags=perStopFlags;
+  this.bestRunningTimes=new int[perStopFlags.length];
+  this.trips=new Trip[trips.size()];
+  for (int i=0; i < departureTimes.length; ++i) {
+    for (int j=0; j < departureTimes[i].size(); ++j) {
+      this.departureTimes[i][j]=departureTimes[i].get(j);
+    }
+  }
+  for (int i=0; i < runningTimes.length; ++i) {
+    bestRunningTimes[i]=Integer.MAX_VALUE;
+    for (int j=0; j < runningTimes[i].size(); ++j) {
+      this.runningTimes[i][j]=runningTimes[i].get(j);
+      if (bestRunningTimes[i] > this.runningTimes[i][j]) {
+        bestRunningTimes[i]=this.runningTimes[i][j];
+      }
+    }
+  }
+  if (this.arrivalTimes != null) {
+    for (int i=0; i < arrivalTimes.length; ++i) {
+      for (int j=0; j < arrivalTimes[i].size(); ++j) {
+        this.arrivalTimes[i][j]=arrivalTimes[i].get(j);
+      }
+    }
+    for (int i=0; i < dwellTimes.length; ++i) {
+      bestDwellTimes[i]=Integer.MAX_VALUE;
+      for (int j=0; j < dwellTimes[i].size(); ++j) {
+        this.dwellTimes[i][j]=dwellTimes[i].get(j);
+        if (bestDwellTimes[i] > this.dwellTimes[i][j]) {
+          bestDwellTimes[i]=this.dwellTimes[i][j];
+        }
+      }
+    }
+  }
+  if (headsigns != null) {
+    String[] nullRow=null;
+    for (int i=0; i < headsigns.length; ++i) {
+      boolean rowIsNull=true;
+      for (int j=0; j < headsigns[i].size(); ++j) {
+        this.headsigns[i][j]=headsigns[i].get(j);
+        if (this.headsigns[i][j] != null) {
+          rowIsNull=false;
+        }
+      }
+      if (rowIsNull) {
+        if (nullRow == null) {
+          nullRow=this.headsigns[i];
+        }
+ else {
+          this.headsigns[i]=nullRow;
+        }
+      }
+    }
+  }
+  for (int i=0; i < perTripFlags.size(); ++i) {
+    this.perTripFlags[i]=perTripFlags.get(i);
+  }
+  for (int i=0; i < trips.size(); ++i) {
+    this.trips[i]=trips.get(i);
+  }
+  this.serviceId=serviceId;
+}

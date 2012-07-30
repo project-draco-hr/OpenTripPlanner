@@ -7,8 +7,8 @@
     return;
   }
   for (  String agency : graph.getAgencyIds()) {
-    addIfNotExists(this.serviceDays,new ServiceDay(time - SEC_IN_DAY,calendarService,agency));
-    addIfNotExists(this.serviceDays,new ServiceDay(time,calendarService,agency));
-    addIfNotExists(this.serviceDays,new ServiceDay(time + SEC_IN_DAY,calendarService,agency));
+    addIfNotExists(this.serviceDays,new ServiceDay(graph,time - SEC_IN_DAY,calendarService,agency));
+    addIfNotExists(this.serviceDays,new ServiceDay(graph,time,calendarService,agency));
+    addIfNotExists(this.serviceDays,new ServiceDay(graph,time + SEC_IN_DAY,calendarService,agency));
   }
 }

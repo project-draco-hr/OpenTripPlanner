@@ -147,4 +147,5 @@
   deleteUselessDwells(graph);
   clearCachedData();
   graph.putService(FareService.class,fareServiceFactory.makeFareService());
+  graph.putService(ServiceIdToNumberService.class,new ServiceIdToNumberService(context.serviceIds));
 }
