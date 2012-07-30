@@ -216,7 +216,7 @@
       }
     }
 );
-    final TargetBound bounder=new TargetBound(options.rctx.target);
+    final TargetBound bounder=new TargetBound(options.rctx.target,cur.boundingStates);
     dijkstra.setSearchTerminationStrategy(bounder);
     dijkstra.setSkipTraverseResultStrategy(bounder);
     spt=dijkstra.getShortestPathTree(startPoints.get(0));
