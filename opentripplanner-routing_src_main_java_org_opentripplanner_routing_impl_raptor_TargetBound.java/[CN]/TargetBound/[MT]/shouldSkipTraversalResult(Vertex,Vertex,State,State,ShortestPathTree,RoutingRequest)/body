@@ -3,8 +3,10 @@
   final double targetDistance=distanceLibrary.fastDistance(realTargetCoordinate,vertex.getCoordinate());
   final double remainingWalk=traverseOptions.maxWalkDistance - current.getWalkDistance();
   final double minWalk;
+  double minTime=0;
   if (targetDistance > remainingWalk) {
     minWalk=this.distanceToNearestTransitStop + vertex.getDistanceToNearestTransitStop();
+    minTime=traverseOptions.getBoardSlack();
   }
  else {
     minWalk=targetDistance;

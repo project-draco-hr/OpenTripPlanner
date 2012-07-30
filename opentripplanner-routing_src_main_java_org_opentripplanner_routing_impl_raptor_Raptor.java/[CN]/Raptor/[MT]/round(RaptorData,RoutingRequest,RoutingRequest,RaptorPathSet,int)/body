@@ -8,6 +8,7 @@
   }
   cur.visitedLastRound=new HashSet<RaptorStop>();
   List<RaptorState>[] statesByStop=cur.getStates();
+  int boardSlack=nBoardings == 1 ? options.getBoardSlack() : (options.getTransferSlack() - options.getAlightSlack());
   List<RaptorState> createdStates=new ArrayList<RaptorState>();
   System.out.println("Round " + nBoardings);
   final double distanceToNearestTransitStop=options.rctx.target.getDistanceToNearestTransitStop();
@@ -29,6 +30,7 @@
         ServiceDay sd=boardState.serviceDay;
         int alightTime=route.getAlightTime(boardState.patternIndex,boardState.tripIndex,stopNo);
         newState.arrivalTime=(int)sd.time(alightTime);
+        newState.arrivalTime+=options.getAlightSlack();
         newState.boardStop=boardState.boardStop;
         newState.boardStopSequence=boardState.boardStopSequence;
         newState.route=route;
@@ -89,7 +91,7 @@
         TRYBOARD:         for (        RaptorState oldState : states) {
           if (oldState.nBoardings != nBoardings - 1)           continue;
           if (oldState.route == route)           continue;
-          RaptorBoardSpec boardSpec=route.getTripIndex(options,oldState.arrivalTime,stopNo);
+          RaptorBoardSpec boardSpec=route.getTripIndex(options,oldState.arrivalTime + boardSlack,stopNo);
           if (boardSpec == null)           continue;
           RaptorState boardState=new RaptorState();
           boardState.nBoardings=nBoardings;
@@ -171,12 +173,13 @@
       }
       Vertex stopVertex=state.stop.stopVertex;
       Vertex dest=options.rctx.target;
+      double minWalk=distanceToNearestTransitStop;
       double targetDistance=distanceLibrary.fastDistance(dest.getCoordinate(),stopVertex.getCoordinate());
+      double minTime=(targetDistance - minWalk) / MAX_TRANSIT_SPEED + minWalk / options.getSpeedUpperBound();
       if (targetDistance + state.walkDistance > options.getMaxWalkDistance()) {
         if (state.stop.stopVertex.isLocal())         continue;
+        minTime+=boardSlack;
       }
-      double minWalk=distanceToNearestTransitStop;
-      double minTime=(targetDistance - minWalk) / MAX_TRANSIT_SPEED + minWalk / options.getSpeedUpperBound();
       state.arrivalTime+=minTime;
       state.walkDistance+=minWalk;
       for (      RaptorState bound : cur.boundingStates) {
@@ -274,6 +277,7 @@
     }
     double targetDistance=distanceLibrary.fastDistance(options.rctx.target.getCoordinate(),vertex.getCoordinate());
     double minTime=(targetDistance - minWalk) / MAX_TRANSIT_SPEED + minWalk / options.getSpeedUpperBound();
+    if (targetDistance > options.maxWalkDistance - state.getWalkDistance())     minTime+=boardSlack;
     for (    RaptorState oldState : cur.getTargetStates()) {
       if (oldState.arrivalTime <= newState.arrivalTime + minTime && oldState.walkDistance <= newState.walkDistance + minWalk)       continue SPTSTATE;
       if ((oldState.arrivalTime - options.dateTime) * 3 <= (newState.arrivalTime + minTime - options.dateTime))       continue SPTSTATE;
