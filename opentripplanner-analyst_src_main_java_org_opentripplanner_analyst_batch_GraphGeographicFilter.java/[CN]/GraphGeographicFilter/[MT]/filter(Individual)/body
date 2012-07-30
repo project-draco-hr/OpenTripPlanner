@@ -1,4 +1,6 @@
 {
-  Point p=new Point(individual.lon,individual.lat);
-  return hull.contains(p);
+  Coordinate coord=new Coordinate(individual.lon,individual.lat);
+  Point pt=gf.createPoint(coord);
+  boolean accept=hull.contains(pt);
+  return accept;
 }
