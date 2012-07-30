@@ -1,0 +1,11 @@
+{
+  this.skip=new boolean[individuals.size()];
+  if (filters == null)   return;
+  for (  IndividualFilter filter : filters) {
+    int i=0;
+    for (    Individual individual : this.individuals) {
+      boolean skipThis=!filter.filter(individual);
+      skip[i++]|=skipThis;
+    }
+  }
+}
