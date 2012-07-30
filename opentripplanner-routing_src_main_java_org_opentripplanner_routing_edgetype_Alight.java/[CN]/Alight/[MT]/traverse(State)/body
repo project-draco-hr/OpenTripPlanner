@@ -10,7 +10,7 @@
     TraverseMode mode=s0.getNonTransitMode(options);
     if (mode.equals(TraverseMode.BICYCLE) && !hop.getBikesAllowed())     return null;
     long current_time=s0.getTime();
-    AgencyAndId serviceId=hop.getServiceId();
+    int serviceId=hop.getServiceId();
     int wait=-1;
     for (    ServiceDay sd : rctx.serviceDays) {
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);

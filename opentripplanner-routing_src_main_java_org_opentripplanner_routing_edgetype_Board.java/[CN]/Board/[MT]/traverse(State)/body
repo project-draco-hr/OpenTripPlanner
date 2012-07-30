@@ -27,7 +27,7 @@
       return null;
     }
     long current_time=state0.getTime();
-    AgencyAndId serviceId=hop.getServiceId();
+    int serviceId=hop.getServiceId();
     int wait=-1;
     for (    ServiceDay sd : rctx.serviceDays) {
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);

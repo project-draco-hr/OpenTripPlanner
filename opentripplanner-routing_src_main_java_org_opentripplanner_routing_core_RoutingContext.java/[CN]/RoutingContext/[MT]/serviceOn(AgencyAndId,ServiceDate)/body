@@ -1,8 +1,0 @@
-{
-  Set<ServiceDate> dates=serviceDatesByServiceId.get(serviceId);
-  if (dates == null) {
-    dates=calendarService.getServiceDatesForServiceId(serviceId);
-    serviceDatesByServiceId.put(serviceId,dates);
-  }
-  return dates.contains(serviceDate);
-}

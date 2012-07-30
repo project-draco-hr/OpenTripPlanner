@@ -3,7 +3,7 @@
     if (!rctx.opt.getModes().get(modeMask)) {
       return Double.POSITIVE_INFINITY;
     }
-    AgencyAndId serviceId=pattern.getTrip().getServiceId();
+    int serviceId=pattern.getServiceId();
     for (    ServiceDay sd : rctx.serviceDays)     if (sd.serviceIdRunning(serviceId))     return 0;
     return Double.POSITIVE_INFINITY;
   }

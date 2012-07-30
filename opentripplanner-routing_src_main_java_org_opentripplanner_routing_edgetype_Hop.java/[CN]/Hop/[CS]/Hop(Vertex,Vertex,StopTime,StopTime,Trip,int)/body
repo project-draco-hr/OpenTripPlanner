@@ -1,0 +1,8 @@
+{
+  super(startJourney,endJourney);
+  this.start=start;
+  this.end=end;
+  this.trip=trip;
+  this._serviceId=serviceId;
+  this.elapsed=end.getArrivalTime() - start.getDepartureTime();
+}

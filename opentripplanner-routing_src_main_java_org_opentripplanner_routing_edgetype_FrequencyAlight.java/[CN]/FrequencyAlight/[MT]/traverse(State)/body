@@ -13,7 +13,6 @@
     if (options.bannedTrips.contains(trip.getId())) {
       return null;
     }
-    AgencyAndId serviceId=trip.getServiceId();
     for (    ServiceDay sd : rctx.serviceDays) {
       int secondsSinceMidnight=sd.secondsSinceMidnight(currentTime);
       if (secondsSinceMidnight < 0)       continue;

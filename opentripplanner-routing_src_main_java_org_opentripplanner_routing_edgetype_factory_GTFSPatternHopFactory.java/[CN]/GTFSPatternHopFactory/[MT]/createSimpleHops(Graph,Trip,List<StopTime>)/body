@@ -3,6 +3,7 @@
   boolean tripWheelchairAccessible=trip.getWheelchairAccessible() == 1;
   PatternStopVertex psv0arrive, psv0depart, psv1arrive=null;
   ArrayList<Edge> created=new ArrayList<Edge>();
+  int serviceId=getServiceId(trip);
   for (int i=0; i < stopTimes.size() - 1; i++) {
     StopTime st0=stopTimes.get(i);
     Stop s0=st0.getStop();
@@ -33,7 +34,7 @@
     psv0depart=new PatternDepartVertex(graph,trip,st0);
     psv1arrive=new PatternArriveVertex(graph,trip,st1);
     new Dwell(psv0arrive,psv0depart,st0);
-    Hop hop=new Hop(psv0depart,psv1arrive,st0,st1,trip);
+    Hop hop=new Hop(psv0depart,psv1arrive,st0,st1,trip,serviceId);
     created.add(hop);
     hop.setGeometry(getHopGeometry(graph,trip.getShapeId(),st0,st1,psv0depart,psv1arrive));
     hops.add(hop);
