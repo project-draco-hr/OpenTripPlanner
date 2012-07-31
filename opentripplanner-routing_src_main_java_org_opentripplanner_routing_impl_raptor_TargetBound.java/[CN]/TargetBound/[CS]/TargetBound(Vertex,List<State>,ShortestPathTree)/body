@@ -2,11 +2,11 @@
   this.realTarget=realTarget;
   this.realTargetCoordinate=realTarget.getCoordinate();
   this.distanceToNearestTransitStop=realTarget.getDistanceToNearestTransitStop();
-  this.boundingStates=boundingStates;
-  if (bounders == null) {
-    this.bounders=new ArrayList<State>();
+  if (dijkstraBoundingStates != null) {
+    bounders=dijkstraBoundingStates;
   }
  else {
-    this.bounders=bounders;
+    bounders=new ArrayList<State>();
   }
+  this.boundingSpt=boundingSpt;
 }
