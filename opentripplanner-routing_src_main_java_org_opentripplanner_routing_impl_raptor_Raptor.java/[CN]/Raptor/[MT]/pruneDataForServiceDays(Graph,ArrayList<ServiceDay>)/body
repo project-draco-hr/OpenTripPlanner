@@ -1,0 +1,57 @@
+{
+  if (serviceDays.equals(cachedServiceDays))   return cachedRaptorData;
+  RaptorData data=graph.getService(RaptorDataService.class).getData();
+  RaptorData pruned=new RaptorData();
+  pruned.raptorStopsForStopId=data.raptorStopsForStopId;
+  pruned.stops=data.stops;
+  pruned.routes=new ArrayList<RaptorRoute>();
+  pruned.routesForStop=new List[pruned.stops.length];
+  for (  RaptorRoute route : data.routes) {
+    ArrayList<Integer> keep=new ArrayList<Integer>();
+    for (int i=0; i < route.boards[0].length; ++i) {
+      Edge board=route.boards[0][i];
+      int serviceId;
+      if (board instanceof PatternBoard) {
+        serviceId=((PatternBoard)board).getPattern().getServiceId();
+      }
+ else       if (board instanceof Board) {
+        serviceId=((Board)board).getServiceId();
+      }
+ else {
+        System.out.println("Unexpected nonboard among boards");
+        continue;
+      }
+      for (      ServiceDay day : serviceDays) {
+        if (day.serviceIdRunning(serviceId)) {
+          keep.add(i);
+          break;
+        }
+      }
+    }
+    if (keep.isEmpty())     continue;
+    int nPatterns=keep.size();
+    RaptorRoute prunedRoute=new RaptorRoute(route.getNStops(),nPatterns);
+    for (int stop=0; stop < route.getNStops() - 1; ++stop) {
+      for (int pattern=0; pattern < nPatterns; ++pattern) {
+        prunedRoute.boards[stop][pattern]=route.boards[stop][keep.get(pattern)];
+      }
+    }
+    pruned.routes.add(route);
+    for (    RaptorStop stop : route.stops) {
+      List<RaptorRoute> routes=pruned.routesForStop[stop.index];
+      if (routes == null) {
+        routes=new ArrayList<RaptorRoute>();
+        pruned.routesForStop[stop.index]=routes;
+      }
+      routes.add(route);
+    }
+  }
+  for (  RaptorStop stop : data.stops) {
+    if (pruned.routesForStop[stop.index] == null) {
+      pruned.routesForStop[stop.index]=Collections.emptyList();
+    }
+  }
+  cachedServiceDays=serviceDays;
+  cachedRaptorData=pruned;
+  return pruned;
+}
