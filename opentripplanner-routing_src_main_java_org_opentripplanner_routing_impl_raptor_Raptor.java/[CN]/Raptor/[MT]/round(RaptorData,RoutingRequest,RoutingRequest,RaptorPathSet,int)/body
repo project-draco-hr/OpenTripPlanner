@@ -179,6 +179,9 @@
       state.arrivalTime+=minTime;
       state.walkDistance+=minWalk;
       for (      RaptorState bound : cur.boundingStates) {
+        if (bound == state) {
+          break;
+        }
         if (eDominates(bound,state)) {
           state.arrivalTime-=minTime;
           state.walkDistance-=minWalk;
