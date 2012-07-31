@@ -3,4 +3,10 @@
   this.realTargetCoordinate=realTarget.getCoordinate();
   this.distanceToNearestTransitStop=realTarget.getDistanceToNearestTransitStop();
   this.boundingStates=boundingStates;
+  if (bounders == null) {
+    this.bounders=new ArrayList<State>();
+  }
+ else {
+    this.bounders=bounders;
+  }
 }

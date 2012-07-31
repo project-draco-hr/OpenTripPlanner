@@ -18,7 +18,7 @@
   for (  State bounder : bounders) {
     if (optimisticDistance > bounder.getWalkDistance() && current.getTime() + minTime > bounder.getTime())     return true;
     double bounderWeight=bounder.getWalkDistance() + bounder.getTime() - traverseOptions.dateTime;
-    if (bounderWeight < stateWeight * 4) {
+    if (bounderWeight < stateWeight) {
       return true;
     }
   }
