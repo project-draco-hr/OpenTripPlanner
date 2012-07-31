@@ -211,7 +211,7 @@
       @Override public ShortestPathTree create(      RoutingRequest options){
         ShortestPathTree result;
         if (cur.spt == null) {
-          result=new MultiShortestPathTree(options);
+          result=new ArrayMultiShortestPathTree(options);
         }
  else {
           result=cur.spt;
