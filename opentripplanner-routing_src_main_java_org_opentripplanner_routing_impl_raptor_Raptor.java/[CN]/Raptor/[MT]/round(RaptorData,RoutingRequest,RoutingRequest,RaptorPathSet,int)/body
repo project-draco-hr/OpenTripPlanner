@@ -207,7 +207,13 @@
     dijkstra.setPriorityQueueFactory(new PrefilledPriorityQueueFactory(startPoints.subList(1,startPoints.size())));
     dijkstra.setShortestPathTreeFactory(new ShortestPathTreeFactory(){
       @Override public ShortestPathTree create(      RoutingRequest options){
-        MultiShortestPathTree result=new MultiShortestPathTree(options);
+        ShortestPathTree result;
+        if (cur.spt == null) {
+          result=new MultiShortestPathTree(options);
+        }
+ else {
+          result=cur.spt;
+        }
         for (        State state : startPoints.subList(1,startPoints.size())) {
           result.add(state);
         }
@@ -215,14 +221,14 @@
       }
     }
 );
-    final TargetBound bounder=new TargetBound(options.rctx.target,cur.dijkstraBoundingStates,cur.boundingSpt);
+    final TargetBound bounder=new TargetBound(options.rctx.target,cur.dijkstraBoundingStates);
     dijkstra.setSearchTerminationStrategy(bounder);
     dijkstra.setSkipTraverseResultStrategy(bounder);
     spt=dijkstra.getShortestPathTree(startPoints.get(0));
     if (!bounder.bounders.isEmpty()) {
       cur.dijkstraBoundingStates=bounder.bounders;
     }
-    if (cur.boundingSpt == null)     cur.boundingSpt=spt;
+    if (cur.spt == null)     cur.spt=spt;
   }
   final List<? extends State> targetStates=spt.getStates(walkOptions.rctx.target);
   if (targetStates != null) {
