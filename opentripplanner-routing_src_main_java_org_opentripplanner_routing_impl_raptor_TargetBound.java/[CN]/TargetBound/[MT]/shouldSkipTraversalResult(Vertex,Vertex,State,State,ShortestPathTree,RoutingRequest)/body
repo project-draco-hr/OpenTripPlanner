@@ -14,9 +14,13 @@
   if (minWalk > remainingWalk)   return true;
   final double optimisticDistance=current.getWalkDistance() + minWalk;
   minTime+=(targetDistance - minWalk) / Raptor.MAX_TRANSIT_SPEED + minWalk / current.getOptions().getSpeedUpperBound();
+  double stateWeight=optimisticDistance + current.getTime() + minTime - traverseOptions.dateTime;
   for (  State bounder : bounders) {
-    if (optimisticDistance < bounder.getWalkDistance())     continue;
-    if (bounder.getTime() < current.getTime() + minTime)     return true;
+    if (optimisticDistance > bounder.getWalkDistance() && current.getTime() + minTime > bounder.getTime())     return true;
+    double bounderWeight=bounder.getWalkDistance() + bounder.getTime() - traverseOptions.dateTime;
+    if (bounderWeight < stateWeight * 4) {
+      return true;
+    }
   }
   return false;
 }
