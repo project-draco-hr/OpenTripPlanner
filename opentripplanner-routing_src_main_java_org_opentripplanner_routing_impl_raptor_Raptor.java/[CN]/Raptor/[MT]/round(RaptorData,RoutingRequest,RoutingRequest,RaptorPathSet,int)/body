@@ -223,7 +223,7 @@
       }
     }
 );
-    final TargetBound bounder=new TargetBound(options.rctx.graph,options.rctx.target,cur.dijkstraBoundingStates);
+    final TargetBound bounder=new TargetBound(options,cur.dijkstraBoundingStates);
     dijkstra.setSearchTerminationStrategy(bounder);
     dijkstra.setSkipTraverseResultStrategy(bounder);
     spt=dijkstra.getShortestPathTree(startPoints.get(0));
