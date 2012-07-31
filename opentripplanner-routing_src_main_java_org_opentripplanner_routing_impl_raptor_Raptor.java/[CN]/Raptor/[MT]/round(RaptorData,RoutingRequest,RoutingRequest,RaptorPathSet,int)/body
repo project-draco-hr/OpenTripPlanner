@@ -144,12 +144,6 @@
  else {
     if (options.rctx.graph.getService(TransitLocalStreetService.class) != null)     dijkstra.setSkipEdgeStrategy(new SkipNonTransferEdgeStrategy(options));
     final List<State> startPoints=new ArrayList<State>();
-    RegionData regionData=data.regionData;
-    List<Integer> destinationRegions=regionData.getRegionsForVertex(options.rctx.target);
-    List<double[]> minWalks=new ArrayList<double[]>(2);
-    for (    int destinationRegion : destinationRegions) {
-      minWalks.add(regionData.minWalk[destinationRegion]);
-    }
     STARTWALK:     for (    RaptorState state : createdStates) {
       if (false) {
         double maxWalk=options.getMaxWalkDistance() - state.walkDistance - distanceToNearestTransitStop;
