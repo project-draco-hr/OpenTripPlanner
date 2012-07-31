@@ -1,6 +1,6 @@
 {
-  if (Math.abs(lat1 - lat2) > MAX_LAT_DELTA_DEG || Math.abs(lon1 - lon2) > MAX_LON_DELTA_DEG)   return distance(lat1,lon1,lat2,lon2,radius);
-  double dLat=Math.toRadians(lat2 - lat1);
-  double dLon=Math.toRadians(lon2 - lon1) * Math.cos(Math.toRadians((lat1 + lat2) / 2));
-  return radius * Math.sqrt(dLat * dLat + dLon * dLon) * MAX_ERR_INV;
+  if (abs(lat1 - lat2) > MAX_LAT_DELTA_DEG || abs(lon1 - lon2) > MAX_LON_DELTA_DEG)   return distance(lat1,lon1,lat2,lon2,radius);
+  double dLat=toRadians(lat2 - lat1);
+  double dLon=toRadians(lon2 - lon1) * cos(toRadians((lat1 + lat2) / 2));
+  return radius * sqrt(dLat * dLat + dLon * dLon) * MAX_ERR_INV;
 }
