@@ -1,0 +1,45 @@
+{
+  HashMap<Vertex,Integer> times=new HashMap<Vertex,Integer>();
+  BinHeap<Vertex> queue=new BinHeap<Vertex>();
+  for (  Vertex v : region) {
+    queue.insert(v,0);
+    times.put(v,0);
+  }
+  RoutingRequest options=new RoutingRequest();
+  options.setWalkSpeed(6);
+  graph.streetIndex=new StreetVertexIndexServiceImpl(graph);
+  options.setRoutingContext(graph,region.get(0),null);
+  options.rctx.serviceDays=new ArrayList<ServiceDay>();
+  options.rctx.serviceDays.add(ServiceDay.universalService(graph));
+  HashSet<Vertex> closed=new HashSet<Vertex>();
+  while (!queue.empty()) {
+    Vertex u=queue.extract_min();
+    if (closed.contains(u))     continue;
+    closed.add(u);
+    int time=times.get(u);
+    for (    Edge e : u.getOutgoing()) {
+      final double timeLowerBound=e.timeLowerBound(options);
+      if (Double.isNaN(timeLowerBound))       continue;
+      int edgeTime=(int)(timeLowerBound + time);
+      Vertex v=e.getToVertex();
+      Integer originalTime=times.get(v);
+      if (originalTime == null || originalTime > edgeTime) {
+        times.put(v,edgeTime);
+        queue.insert(v,(double)edgeTime);
+      }
+    }
+  }
+  final int[] minTime=regions.minTime[regionIndex];
+  Arrays.fill(minTime,Integer.MAX_VALUE);
+  for (  Map.Entry<Vertex,Integer> entry : times.entrySet()) {
+    Vertex v=entry.getKey();
+    int distance=entry.getValue();
+    int toRegion=v.getGroupIndex();
+    if (toRegion == -1) {
+      continue;
+    }
+    if (minTime[toRegion] > distance) {
+      minTime[toRegion]=distance;
+    }
+  }
+}

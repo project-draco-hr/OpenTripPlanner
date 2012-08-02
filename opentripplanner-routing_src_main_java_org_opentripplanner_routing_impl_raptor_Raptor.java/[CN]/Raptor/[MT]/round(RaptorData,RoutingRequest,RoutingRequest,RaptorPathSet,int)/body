@@ -9,6 +9,7 @@
   cur.visitedLastRound=new HashSet<RaptorStop>();
   List<RaptorState>[] statesByStop=cur.getStates();
   int boardSlack=nBoardings == 1 ? options.getBoardSlack() : (options.getTransferSlack() - options.getAlightSlack());
+  int trips=0;
   List<RaptorState> createdStates=new ArrayList<RaptorState>();
   System.out.println("Round " + nBoardings);
   final double distanceToNearestTransitStop=options.rctx.target.getDistanceToNearestTransitStop();
@@ -93,6 +94,7 @@
         TRYBOARD:         for (        RaptorState oldState : states) {
           if (oldState.nBoardings != nBoardings - 1)           continue;
           if (oldState.route == route)           continue;
+          ++trips;
           RaptorBoardSpec boardSpec=route.getTripIndex(options,oldState.arrivalTime + boardSlack,stopNo);
           if (boardSpec == null)           continue;
           RaptorState boardState=new RaptorState();
@@ -123,6 +125,7 @@
       states.addAll(newStates);
     }
   }
+  System.out.println("Trips: " + trips);
   ShortestPathTree spt;
   EdgeBasedGenericDijkstra dijkstra=new EdgeBasedGenericDijkstra(walkOptions);
   if (nBoardings == 0) {
@@ -273,7 +276,6 @@
       states=new ArrayList<RaptorState>();
       statesByStop[stop.index]=states;
     }
-    double minWalk=distanceToNearestTransitStop;
     RaptorState baseState=(RaptorState)state.getExtension("raptorParent");
     RaptorState newState=new RaptorState();
     if (baseState != null) {
@@ -289,6 +291,7 @@
         continue SPTSTATE;
       }
     }
+    double minWalk=distanceToNearestTransitStop;
     double targetDistance=distanceLibrary.fastDistance(options.rctx.target.getCoordinate(),vertex.getCoordinate());
     double minTime=(targetDistance - minWalk) / MAX_TRANSIT_SPEED + minWalk / options.getSpeedUpperBound();
     if (targetDistance > options.maxWalkDistance - state.getWalkDistance())     minTime+=boardSlack;
