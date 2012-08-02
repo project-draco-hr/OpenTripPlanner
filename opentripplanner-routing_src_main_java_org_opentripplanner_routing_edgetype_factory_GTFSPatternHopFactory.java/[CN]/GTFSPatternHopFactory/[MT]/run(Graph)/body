@@ -41,7 +41,7 @@
     ScheduledStopPattern stopPattern=ScheduledStopPattern.fromTrip(trip,_dao);
     TableTripPattern tripPattern=patterns.get(stopPattern);
     if (tripPattern == null) {
-      tripPattern=new TableTripPattern(trip,stopPattern);
+      tripPattern=new TableTripPattern(trip,stopPattern,getServiceId(trip));
       makePatternVerticesAndEdges(graph,tripPattern,trip,stopTimes);
       patterns.put(stopPattern,tripPattern);
     }
