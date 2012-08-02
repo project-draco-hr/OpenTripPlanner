@@ -6,7 +6,16 @@
   LinkedList<P2<PlainStreetEdge>> replacement=linker.replacements.get(edgeSet);
   if (replacement == null) {
     replacement=new LinkedList<P2<PlainStreetEdge>>();
-    P2<PlainStreetEdge> newEdges=replace(edges);
+    Iterator<StreetEdge> iter=edges.iterator();
+    StreetEdge first=iter.next();
+    StreetEdge second=iter.next();
+    P2<PlainStreetEdge> newEdges;
+    if (first instanceof PlainStreetEdge && second instanceof PlainStreetEdge && edges.size() == 2) {
+      newEdges=new P2<PlainStreetEdge>(((PlainStreetEdge)first).clone(),((PlainStreetEdge)second).clone());
+    }
+ else {
+      newEdges=replace(edges);
+    }
     if (newEdges == null) {
       return null;
     }

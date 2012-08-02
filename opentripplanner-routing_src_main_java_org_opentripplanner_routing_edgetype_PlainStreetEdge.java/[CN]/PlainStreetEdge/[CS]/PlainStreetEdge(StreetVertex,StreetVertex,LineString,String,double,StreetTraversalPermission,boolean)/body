@@ -6,4 +6,15 @@
   this.name=name;
   this.permission=permission;
   this.back=back;
+  if (geometry != null) {
+    for (    Coordinate c : geometry.getCoordinates()) {
+      if (Double.isNaN(c.x)) {
+        System.out.println("DOOM");
+      }
+    }
+    double angleR=DirectionUtils.getLastAngle(geometry);
+    outAngle=((int)(180 * angleR / Math.PI) + 180 + 360) % 360;
+    angleR=DirectionUtils.getFirstAngle(geometry);
+    inAngle=((int)(180 * angleR / Math.PI) + 180 + 360) % 360;
+  }
 }

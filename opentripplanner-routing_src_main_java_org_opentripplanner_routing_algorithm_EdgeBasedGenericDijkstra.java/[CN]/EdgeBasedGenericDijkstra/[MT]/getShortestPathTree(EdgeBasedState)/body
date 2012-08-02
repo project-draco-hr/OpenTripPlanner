@@ -1,0 +1,64 @@
+{
+  ShortestPathTree spt=createShortestPathTree(options);
+  OTPPriorityQueue<EdgeBasedState> queue=createPriorityQueue();
+  spt.add(initialState);
+  Vertex initialVertex=initialState.getVertex();
+  for (  Edge e : options.isArriveBy() ? initialVertex.getIncoming() : initialVertex.getOutgoing()) {
+    EdgeBasedState state=(EdgeBasedState)initialState.clone();
+    state.outgoing=e;
+    queue.insert(state,state.getWeight());
+  }
+  while (!queue.empty()) {
+    EdgeBasedState u=queue.extract_min();
+    Vertex u_vertex=u.getVertex();
+    if (_verbose) {
+      System.out.println("min," + u.getWeight());
+      System.out.println(u_vertex);
+    }
+    if (_searchTerminationStrategy != null && !_searchTerminationStrategy.shouldSearchContinue(initialState.getVertex(),null,u,spt,options))     break;
+    Edge edge=u.outgoing;
+    if (_skipEdgeStrategy != null && _skipEdgeStrategy.shouldSkipEdge(initialState.getVertex(),null,u,edge,spt,options))     continue;
+    for (State v=edge.traverse(u); v != null; v=v.getNextResult()) {
+      if (_skipTraverseResultStrategy != null && _skipTraverseResultStrategy.shouldSkipTraversalResult(initialState.getVertex(),null,u,v,spt,options))       continue;
+      if (_verbose)       System.out.printf("  w = %f + %f = %f %s",u.getWeight(),v.getWeightDelta(),v.getWeight(),v.getVertex());
+      if (v.exceedsWeightLimit(options.maxWeight))       continue;
+      if (spt.add(v)) {
+        PlainStreetEdge backPSE=null;
+        Edge backEdge=v.getBackEdge();
+        if (backEdge != null && backEdge instanceof PlainStreetEdge) {
+          backPSE=(PlainStreetEdge)backEdge;
+        }
+        boolean first=true;
+        TraverseMode traverseMode=v.getBackEdgeNarrative().getMode();
+        for (        Edge e : options.isArriveBy() ? v.getVertex().getIncoming() : v.getVertex().getOutgoing()) {
+          if ((options.isArriveBy() ? e.getFromVertex() : e.getToVertex()) == u_vertex)           continue;
+          EdgeBasedState state;
+          if (first) {
+            first=false;
+            state=(EdgeBasedState)v;
+          }
+ else {
+            state=(EdgeBasedState)v.clone();
+          }
+          if (backPSE != null && e instanceof StreetEdge) {
+            if (!backPSE.canTurnOnto(e,state))             continue;
+            if (e instanceof PlainStreetEdge) {
+              int outAngle=backPSE.getOutAngle();
+              int inAngle=((PlainStreetEdge)e).getInAngle();
+              int turnCost=Math.abs(outAngle - inAngle);
+              if (turnCost > 180) {
+                turnCost=360 - turnCost;
+              }
+              final double realTurnCost=(turnCost / 20.0) / options.getSpeed(traverseMode);
+              state.turn(realTurnCost,(long)Math.ceil(realTurnCost));
+            }
+          }
+          state.outgoing=e;
+          queue.insert(state,state.getWeight());
+        }
+      }
+    }
+    spt.postVisit(u);
+  }
+  return spt;
+}

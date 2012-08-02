@@ -7,11 +7,11 @@
       return new P2<PlainStreetEdge>((PlainStreetEdge)firstEdge,(PlainStreetEdge)secondEdge);
     }
   }
-  P2<Entry<TurnVertex,Set<Edge>>> ends=findEndVertices(edges);
-  Entry<TurnVertex,Set<Edge>> start=ends.getFirst();
-  Entry<TurnVertex,Set<Edge>> end=ends.getSecond();
-  TurnVertex startVertex=start.getKey();
-  TurnVertex endVertex=null;
+  P2<Entry<StreetVertex,Set<Edge>>> ends=findEndVertices(edges);
+  Entry<StreetVertex,Set<Edge>> start=ends.getFirst();
+  Entry<StreetVertex,Set<Edge>> end=ends.getSecond();
+  StreetVertex startVertex=start.getKey();
+  StreetVertex endVertex=null;
   if (end != null) {
     endVertex=end.getKey();
   }
@@ -19,11 +19,13 @@
     return null;
   }
   StreetVertex newEnd=new IntersectionVertex(linker.graph,"replace " + endVertex.getLabel(),endVertex.getX(),endVertex.getY(),endVertex.getName());
+  StreetEdge forwardEdge=null;
   for (  Edge e : startVertex.getOutgoing()) {
     final Vertex toVertex=e.getToVertex();
     if (!toVertex.getCoordinate().equals(endVertex.getCoordinate())) {
       continue;
     }
+    if (e instanceof StreetEdge)     forwardEdge=(StreetEdge)e;
     if (e instanceof TurnEdge) {
       final TurnEdge turnEdge=(TurnEdge)e;
       TinyTurnEdge newTurn=new TinyTurnEdge(newEnd,toVertex,turnEdge.getPermission());
@@ -36,11 +38,13 @@
     }
   }
   StreetVertex newStart=new IntersectionVertex(linker.graph,"replace " + startVertex.getLabel(),startVertex.getX(),startVertex.getY(),startVertex.getName());
+  StreetEdge backwardEdge=null;
   for (  Edge e : endVertex.getOutgoing()) {
     final Vertex toVertex=e.getToVertex();
     if (!toVertex.getCoordinate().equals(startVertex.getCoordinate())) {
       continue;
     }
+    if (e instanceof StreetEdge)     backwardEdge=(StreetEdge)e;
     if (e instanceof TurnEdge) {
       final TurnEdge turnEdge=(TurnEdge)e;
       TinyTurnEdge newTurn=new TinyTurnEdge(newStart,toVertex,turnEdge.getPermission());
@@ -52,14 +56,14 @@
       addEdges(new FreeEdge(newStart,toVertex));
     }
   }
-  PlainStreetEdge forward=new PlainStreetEdge(startVertex,newEnd,startVertex.getGeometry(),startVertex.getName(),startVertex.getLength(),startVertex.getPermission(),false);
-  PlainStreetEdge backward=new PlainStreetEdge(endVertex,newStart,endVertex.getGeometry(),endVertex.getName(),endVertex.getLength(),endVertex.getPermission(),true);
-  forward.setWheelchairAccessible(startVertex.isWheelchairAccessible());
-  backward.setWheelchairAccessible(endVertex.isWheelchairAccessible());
-  forward.setElevationProfile(startVertex.getElevationProfile(),false);
-  backward.setElevationProfile(endVertex.getElevationProfile(),false);
-  forward.setBicycleSafetyEffectiveLength(startVertex.getBicycleSafetyEffectiveLength());
-  backward.setBicycleSafetyEffectiveLength(endVertex.getBicycleSafetyEffectiveLength());
+  PlainStreetEdge forward=new PlainStreetEdge(startVertex,newEnd,forwardEdge.getGeometry(),startVertex.getName(),forwardEdge.getLength(),forwardEdge.getPermission(),false);
+  PlainStreetEdge backward=new PlainStreetEdge(endVertex,newStart,backwardEdge.getGeometry(),endVertex.getName(),backwardEdge.getLength(),backwardEdge.getPermission(),true);
+  forward.setWheelchairAccessible(forwardEdge.isWheelchairAccessible());
+  backward.setWheelchairAccessible(backwardEdge.isWheelchairAccessible());
+  forward.setElevationProfile(forwardEdge.getElevationProfile(),false);
+  backward.setElevationProfile(backwardEdge.getElevationProfile(),false);
+  forward.setBicycleSafetyEffectiveLength(forwardEdge.getElevationProfileSegment().getBicycleSafetyEffectiveLength());
+  backward.setBicycleSafetyEffectiveLength(backwardEdge.getElevationProfileSegment().getBicycleSafetyEffectiveLength());
   addEdges(forward,backward);
   P2<PlainStreetEdge> replacement=new P2<PlainStreetEdge>(forward,backward);
   return replacement;

@@ -18,7 +18,7 @@
     for (    Edge edge : outgoing) {
       v=edge.traverse(u);
       if (v == null)       continue;
-      double dw=v.getWeight() - u.getWeight();
+      double dw=v.getWeightDelta();
       if (dw < 0) {
         throw new NegativeWeightException(String.valueOf(dw));
       }
@@ -27,8 +27,8 @@
         continue;
       }
       double new_w=v.getWeight();
-      if (toVertex instanceof TurnVertex) {
-        TurnVertex sv=(TurnVertex)toVertex;
+      if (toVertex instanceof StreetVertex) {
+        StreetVertex sv=(StreetVertex)toVertex;
         if (sv.getDistanceToNearestTransitStop() <= new_w) {
           continue;
         }

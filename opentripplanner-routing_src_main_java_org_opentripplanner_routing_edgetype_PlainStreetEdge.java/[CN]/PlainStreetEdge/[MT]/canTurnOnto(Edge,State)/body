@@ -1,0 +1,8 @@
+{
+  for (  TurnRestriction restriction : turnRestrictions) {
+    if (restriction.to == e && restriction.modes.contains(state.getNonTransitMode(state.getOptions()))) {
+      return restriction.type == TurnRestrictionType.ONLY_TURN;
+    }
+  }
+  return true;
+}

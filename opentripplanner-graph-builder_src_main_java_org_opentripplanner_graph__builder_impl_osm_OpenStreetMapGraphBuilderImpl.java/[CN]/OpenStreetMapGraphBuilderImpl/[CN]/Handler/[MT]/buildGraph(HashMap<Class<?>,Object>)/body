@@ -19,5 +19,13 @@
   }
   generateElevationProfiles(graph);
   applyBikeSafetyFactor(graph);
-  StreetUtils.makeEdgeBased(graph,endpoints,turnRestrictions);
+  for (  Map.Entry<Edge,TurnRestriction> entry : turnRestrictions.entrySet()) {
+    Edge edge=entry.getKey();
+    TurnRestriction turnRestriction=entry.getValue();
+    if (edge == null) {
+      _log.warn("unexpected null edge from restriction " + turnRestriction);
+      continue;
+    }
+    ((PlainStreetEdge)edge).addTurnRestriction(turnRestriction);
+  }
 }
