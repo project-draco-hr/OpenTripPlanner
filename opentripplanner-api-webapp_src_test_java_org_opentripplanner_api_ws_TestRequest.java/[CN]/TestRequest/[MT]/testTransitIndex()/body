@@ -22,6 +22,4 @@
   long endTime=startTime + 60 * 60 * 1000;
   StopTimeList stopTimesForStop=(StopTimeList)index.getStopTimesForStop("TriMet","10579",startTime,endTime,routerId);
   assertTrue(stopTimesForStop.stopTimes.size() > 0);
-  StopTimeList stopTimesForTrip=(StopTimeList)index.getStopTimesForTrip("TriMet","1254","TriMet","10W1040",startTime,routerId);
-  assertTrue(stopTimesForTrip.stopTimes.size() > 0);
 }
