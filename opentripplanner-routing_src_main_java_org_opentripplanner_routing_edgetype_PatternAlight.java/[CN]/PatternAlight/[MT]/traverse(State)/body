@@ -11,9 +11,9 @@
     long current_time=state0.getTime();
     int bestWait=-1;
     TripTimes bestTripTimes=null;
-    AgencyAndId serviceId=getPattern().getExemplar().getServiceId();
+    int serviceId=getPattern().getServiceId();
     TraverseMode nonTransitMode=state0.getNonTransitMode(options);
-    SD:     for (    ServiceDay sd : rctx.serviceDays) {
+    for (    ServiceDay sd : rctx.serviceDays) {
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
       if (secondsSinceMidnight < 0)       continue;
       if (sd.serviceIdRunning(serviceId)) {

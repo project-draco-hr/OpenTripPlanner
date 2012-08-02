@@ -3,7 +3,7 @@
   double latRadians=toRadians(lat);
   double lonRadians=toRadians(lon);
   double latRadius=radiusOfEarth;
-  double lonRadius=Math.cos(latRadians) * radiusOfEarth;
+  double lonRadius=cos(latRadians) * radiusOfEarth;
   double latOffset=latDistance / latRadius;
   double lonOffset=lonDistance / lonRadius;
   double latFrom=toDegrees(latRadians - latOffset);

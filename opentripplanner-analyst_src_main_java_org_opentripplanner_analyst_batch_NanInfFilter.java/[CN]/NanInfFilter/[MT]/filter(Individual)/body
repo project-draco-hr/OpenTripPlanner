@@ -1,0 +1,20 @@
+{
+  double input=individual.input;
+  if (Double.isInfinite(input)) {
+    if (rejectInfinite) {
+      return false;
+    }
+ else {
+      individual.input=replaceInfiniteWith;
+    }
+  }
+ else   if (Double.isNaN(input)) {
+    if (rejectNan) {
+      return false;
+    }
+ else {
+      individual.input=replaceNanWith;
+    }
+  }
+  return true;
+}

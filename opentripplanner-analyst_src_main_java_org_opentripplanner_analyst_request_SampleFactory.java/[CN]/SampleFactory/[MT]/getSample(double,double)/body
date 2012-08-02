@@ -8,13 +8,13 @@
   double d0=Double.MAX_VALUE;
   double d1=Double.MAX_VALUE;
   Envelope env=new Envelope(c);
-  env.expandBy(SEARCH_RADIUS_DEG,SEARCH_RADIUS_DEG);
+  env.expandBy(searchRadiusLon,searchRadiusLat);
   @SuppressWarnings("unchecked") List<TurnVertex> vs=(List<TurnVertex>)index.queryPedestrian(env);
   for (  TurnVertex v : vs) {
     Geometry g=v.getGeometry();
     DistanceOp o=new DistanceOp(p,g);
     double d=o.distance();
-    if (d > SEARCH_RADIUS_DEG)     continue;
+    if (d > searchRadiusLon)     continue;
     if (d < d1) {
       if (d < d0) {
         v1=v0;
