@@ -1,0 +1,16 @@
+{
+  this.skip=new boolean[individuals.size()];
+  if (filterChain == null)   return;
+  for (  IndividualFilter filter : filterChain) {
+    LOG.debug("filter {}",filter);
+    int accepted=0, rejected=0;
+    int i=0;
+    for (    Individual individual : this.individuals) {
+      boolean skipThis=!filter.filter(individual);
+      if (skipThis)       rejected+=1;
+ else       accepted+=1;
+      skip[i++]|=skipThis;
+    }
+    LOG.debug("accepted {}, rejected {}",accepted,rejected);
+  }
+}

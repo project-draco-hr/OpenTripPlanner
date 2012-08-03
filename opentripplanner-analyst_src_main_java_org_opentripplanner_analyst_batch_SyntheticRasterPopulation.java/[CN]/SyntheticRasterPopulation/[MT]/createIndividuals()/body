@@ -7,6 +7,8 @@
     e.printStackTrace();
     return;
   }
+  if (boundsFromGraph) {
+  }
   gridEnvelope=new GridEnvelope2D(0,0,cols,rows);
   refEnvelope=new ReferencedEnvelope(left,right,bottom,top,coverageCRS);
   gridGeometry=new GridGeometry2D(gridEnvelope,refEnvelope);

@@ -1,0 +1,10 @@
+{
+  final double mPerDegreeLat=111111.111111;
+  double lat=pt.getY();
+  double lonScale=Math.cos(Math.PI * lat / 180);
+  double latExpand=distanceMeters / mPerDegreeLat;
+  double lonExpand=latExpand / lonScale;
+  Envelope env=pt.getEnvelopeInternal();
+  env.expandBy(lonExpand,latExpand);
+  return gf.toGeometry(env);
+}

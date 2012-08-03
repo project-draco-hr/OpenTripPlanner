@@ -4,5 +4,7 @@
   xmlReader.loadBeanDefinitions(new ClassPathResource(CONFIG));
   ctx.refresh();
   ctx.registerShutdownHook();
-  ctx.getBean(BatchProcessor.class).run();
+  BatchProcessor processor=ctx.getBean(BatchProcessor.class);
+  if (processor == null)   LOG.error("No BatchProcessor bean was defined.");
+ else   processor.run();
 }

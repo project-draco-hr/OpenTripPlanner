@@ -19,8 +19,8 @@
         graph.addTemporaryEdge(e);
       }
       verticesByStation.put(station,vertex);
-      new RentABikeOnEdge(vertex,vertex);
-      new RentABikeOffEdge(vertex,vertex);
+      new RentABikeOnEdge(vertex,vertex,network);
+      new RentABikeOffEdge(vertex,vertex,network);
     }
  else {
       vertex.setBikesAvailable(station.bikesAvailable);

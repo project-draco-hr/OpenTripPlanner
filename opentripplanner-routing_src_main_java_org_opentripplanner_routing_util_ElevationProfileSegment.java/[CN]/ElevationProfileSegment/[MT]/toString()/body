@@ -1,0 +1,11 @@
+{
+  String out="";
+  if (elevationProfile.size() == 0) {
+    return "(empty elevation profile)";
+  }
+  for (int i=0; i < elevationProfile.size(); ++i) {
+    Coordinate coord=elevationProfile.getCoordinate(i);
+    out+="(" + coord.x + ","+ coord.y+ "), ";
+  }
+  return out.substring(0,out.length() - 2);
+}

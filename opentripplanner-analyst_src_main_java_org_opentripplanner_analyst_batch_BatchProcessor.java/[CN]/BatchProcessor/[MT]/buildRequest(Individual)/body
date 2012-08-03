@@ -1,13 +1,12 @@
 {
   RoutingRequest req=prototypeRoutingRequest.clone();
-  req.setRouterId(routerId);
   req.setDateTime(date,time,timeZone);
   String latLon=String.format("%f,%f",i.getLat(),i.getLon());
   req.batch=true;
   if (req.arriveBy)   req.setTo(latLon);
  else   req.setFrom(latLon);
   try {
-    req.setRoutingContext(graphService.getGraph(routerId));
+    req.setRoutingContext(graphService.getGraph(req.routerId));
     return req;
   }
  catch (  VertexNotFoundException vnfe) {
