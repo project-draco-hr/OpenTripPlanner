@@ -1,6 +1,6 @@
 {
   final Vertex vertex=current.getVertex();
-  final double targetDistance=distanceLibrary.fastDistance(realTargetCoordinate.x,realTargetCoordinate.y,vertex.getX(),vertex.getY());
+  targetDistance=distanceLibrary.fastDistance(realTargetCoordinate.x,realTargetCoordinate.y,vertex.getX(),vertex.getY());
   final double remainingWalk=traverseOptions.maxWalkDistance - current.getWalkDistance();
   final double minWalk;
   double minTime=0;
@@ -21,7 +21,7 @@
   for (  State bounder : bounders) {
     if (optimisticDistance * 1.05 > bounder.getWalkDistance() && current.getTime() + minTime > bounder.getTime())     return true;
     double bounderTime=bounder.getTime() - traverseOptions.dateTime;
-    if (bounderTime * 1.5 < stateTime) {
+    if (bounderTime * timeBoundFactor < stateTime) {
       return true;
     }
   }

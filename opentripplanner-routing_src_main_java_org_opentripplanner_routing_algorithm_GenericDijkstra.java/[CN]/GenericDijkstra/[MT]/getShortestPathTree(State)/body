@@ -1,4 +1,5 @@
 {
+  Vertex target=initialState.getOptions().rctx.target;
   ShortestPathTree spt=createShortestPathTree(options);
   OTPPriorityQueue<State> queue=createPriorityQueue();
   spt.add(initialState);
@@ -20,7 +21,10 @@
         if (_skipTraverseResultStrategy != null && _skipTraverseResultStrategy.shouldSkipTraversalResult(initialState.getVertex(),null,u,v,spt,options))         continue;
         if (_verbose)         System.out.printf("  w = %f + %f = %f %s",u.getWeight(),v.getWeightDelta(),v.getWeight(),v.getVertex());
         if (v.exceedsWeightLimit(options.maxWeight))         continue;
-        if (spt.add(v))         queue.insert(v,v.getWeight());
+        if (spt.add(v)) {
+          double estimate=heuristic.computeForwardWeight(v,target);
+          queue.insert(v,v.getWeight() + estimate);
+        }
       }
     }
     spt.postVisit(u);

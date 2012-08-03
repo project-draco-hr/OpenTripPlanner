@@ -10,4 +10,5 @@
   }
   transitLocalStreets=options.rctx.graph.getService(TransitLocalStreetService.class);
   speedUpperBound=options.getSpeedUpperBound();
+  this.speedWeight=options.getWalkReluctance() / speedUpperBound;
 }

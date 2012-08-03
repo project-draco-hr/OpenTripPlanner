@@ -230,6 +230,7 @@
     final TargetBound bounder=new TargetBound(options,cur.dijkstraBoundingStates);
     dijkstra.setSearchTerminationStrategy(bounder);
     dijkstra.setSkipTraverseResultStrategy(bounder);
+    dijkstra.setHeuristic(bounder);
     spt=dijkstra.getShortestPathTree(startPoints.get(0));
     if (!bounder.bounders.isEmpty()) {
       cur.dijkstraBoundingStates=bounder.bounders;
