@@ -1,5 +1,5 @@
 {
-  int runningTime=pattern.getBestRunningTime(stopIndex);
+  int runningTime=getPattern().getBestRunningTime(stopIndex);
   StateEditor s1=state0.edit(this);
   s1.incrementTimeInSeconds(runningTime);
   s1.incrementWeight(runningTime);

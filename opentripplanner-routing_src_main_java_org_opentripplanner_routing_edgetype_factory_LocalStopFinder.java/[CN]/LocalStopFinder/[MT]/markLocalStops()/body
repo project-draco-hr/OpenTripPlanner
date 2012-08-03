@@ -12,7 +12,7 @@
     }
     for (    Edge e : gv.getOutgoing()) {
       if (e instanceof PatternBoard) {
-        TripPattern pattern=((PatternBoard)e).getPattern();
+        TableTripPattern pattern=((PatternBoard)e).getPattern();
         patterns.add(pattern);
       }
       if (e instanceof FrequencyBoard) {
@@ -21,21 +21,21 @@
       }
     }
   }
-  neighborhoods=new HashMap<Stop,HashMap<TripPattern,P2<Double>>>();
+  neighborhoods=new HashMap<Stop,HashMap<TableTripPattern,P2<Double>>>();
   walkingOptions=new RoutingRequest(new TraverseModeSet(TraverseMode.WALK));
   bikingOptions=new RoutingRequest(new TraverseModeSet(TraverseMode.BICYCLE));
   bikingOptions.optimize=OptimizeType.SAFE;
   int nonLocal=0;
   for (  TripPattern pattern : patterns) {
     List<Stop> stops=getStops(pattern);
-    HashMap<TripPattern,P2<Double>> previousDistances=null;
-    HashMap<TripPattern,P2<Double>> distances=null;
+    HashMap<TableTripPattern,P2<Double>> previousDistances=null;
+    HashMap<TableTripPattern,P2<Double>> distances=null;
     for (int i=0; i < stops.size() - 1; ++i) {
       Stop stop=stops.get(i);
       TransitStop transitStop=getVertexForStop(stop);
       previousDistances=distances;
       distances=getNeighborhood(stop);
-      HashMap<TripPattern,P2<Double>> nextDistances=null;
+      HashMap<TableTripPattern,P2<Double>> nextDistances=null;
       Stop nextStop=stops.get(i + 1);
       nextDistances=getNeighborhood(nextStop);
       if (previousDistances == null) {
@@ -47,8 +47,8 @@
       }
  else {
         boolean local=true;
-        for (        Entry<TripPattern,P2<Double>> entry : distances.entrySet()) {
-          TripPattern key=entry.getKey();
+        for (        Entry<TableTripPattern,P2<Double>> entry : distances.entrySet()) {
+          TableTripPattern key=entry.getKey();
           if (key == pattern) {
             continue;
           }

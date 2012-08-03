@@ -6,10 +6,10 @@
   loadStops(graph);
   loadPathways(graph);
   loadAgencies(graph);
-  _log.debug("Loading hops");
   clearCachedData();
+  _log.debug("building hops from trips");
   Collection<Trip> trips=_dao.getAllTrips();
-  int index=0;
+  int tripCount=0;
   HashMap<Trip,List<Frequency>> tripFrequencies=new HashMap<Trip,List<Frequency>>();
   for (  Frequency freq : _dao.getAllFrequencies()) {
     List<Frequency> freqs=tripFrequencies.get(freq.getTrip());
@@ -19,96 +19,36 @@
     }
     freqs.add(freq);
   }
-  for (  Trip trip : trips) {
-    index++;
-    if (index % 100000 == 0)     _log.debug("trips=" + index + "/"+ trips.size());
+  TRIP:   for (  Trip trip : trips) {
+    tripCount++;
+    if (tripCount % 100000 == 0)     _log.debug("trips=" + tripCount + "/"+ trips.size());
     List<StopTime> stopTimes=getNonduplicateStopTimesForTrip(trip);
     filterStopTimes(stopTimes,graph);
     interpolateStopTimes(stopTimes);
     if (stopTimes.size() < 2) {
       _log.warn(GraphBuilderAnnotation.register(graph,Variety.TRIP_DEGENERATE,trip));
-      continue;
+      continue TRIP;
     }
     List<Frequency> frequencies=tripFrequencies.get(trip);
-    ScheduledStopPattern stopPattern=stopPatternfromTrip(trip,_dao);
-    BasicTripPattern tripPattern=patterns.get(stopPattern);
-    String blockId=trip.getBlockId();
     if (frequencies != null) {
       Frequency frequency=frequencies.get(0);
       if (frequencies.size() > 1 || frequency.getStartTime() != stopTimes.get(0).getDepartureTime() || frequency.getEndTime() - frequency.getStartTime() > frequency.getHeadwaySecs()) {
         FrequencyBasedTripPattern frequencyPattern=makeFrequencyPattern(graph,trip,stopTimes);
-        if (frequencyPattern == null) {
-          continue;
-        }
-        frequencyPattern.createRanges(frequencies);
-        continue;
+        if (frequencyPattern != null)         frequencyPattern.createRanges(frequencies);
+        continue TRIP;
       }
     }
-    boolean simple=false;
+    ScheduledStopPattern stopPattern=ScheduledStopPattern.fromTrip(trip,_dao);
+    TableTripPattern tripPattern=patterns.get(stopPattern);
     if (tripPattern == null) {
-      tripPattern=makeTripPattern(graph,trip,stopTimes);
-      if (tripPattern == null) {
-        continue;
-      }
+      tripPattern=new TableTripPattern(trip,stopPattern,getServiceId(trip));
+      makePatternVerticesAndEdges(graph,tripPattern,trip,stopTimes);
       patterns.put(stopPattern,tripPattern);
-      if (blockId != null && !blockId.equals("")) {
-        addTripToInterliningMap(trip,stopTimes,tripPattern);
-      }
     }
- else {
-      int insertionPoint=tripPattern.getDepartureTimeInsertionPoint(stopTimes.get(0).getDepartureTime());
-      if (insertionPoint < 0) {
-        insertionPoint=-(insertionPoint + 1);
-        if (!tripPattern.stopTimesIdentical(stopTimes,insertionPoint)) {
-          _log.warn(GraphBuilderAnnotation.register(graph,Variety.TRIP_DUPLICATE_DEPARTURE,trip.getId(),tripPattern.getTrip(insertionPoint)));
-          simple=true;
-          createSimpleHops(graph,trip,stopTimes);
-        }
- else {
-          _log.warn(GraphBuilderAnnotation.register(graph,Variety.TRIP_DUPLICATE,trip.getId(),tripPattern.getTrip(insertionPoint)));
-          simple=true;
-        }
-      }
- else {
-        StopTime st1=null;
-        int i;
-        for (i=0; i < stopTimes.size() - 1; i++) {
-          StopTime st0=stopTimes.get(i);
-          st1=stopTimes.get(i + 1);
-          int dwellTime=st0.getDepartureTime() - st0.getArrivalTime();
-          int runningTime=st1.getArrivalTime() - st0.getDepartureTime();
-          if (runningTime < 0) {
-            _log.warn(GraphBuilderAnnotation.register(graph,Variety.NEGATIVE_HOP_TIME,st0,st1));
-            for (i=i - 1; i >= 0; --i) {
-              tripPattern.removeHop(i,insertionPoint);
-            }
-            simple=true;
-            break;
-          }
-          if (dwellTime < 0) {
-            _log.warn(GraphBuilderAnnotation.register(graph,Variety.NEGATIVE_DWELL_TIME,st0));
-            dwellTime=0;
-          }
-          try {
-            tripPattern.addHop(i,insertionPoint,st0.getDepartureTime(),runningTime,st1.getArrivalTime(),dwellTime,st0.getStopHeadsign(),trip);
-          }
- catch (          TripOvertakingException e) {
-            _log.warn(GraphBuilderAnnotation.register(graph,Variety.TRIP_OVERTAKING,e.overtaker,e.overtaken,e.stopIndex));
-            for (i=i - 1; i >= 0; --i) {
-              tripPattern.removeHop(i,insertionPoint);
-            }
-            createSimpleHops(graph,trip,stopTimes);
-            simple=true;
-            break;
-          }
-        }
-      }
-      if (!simple) {
-        if (blockId != null && !blockId.equals("")) {
-          addTripToInterliningMap(trip,stopTimes,tripPattern);
-        }
-        tripPattern.setTripFlags(insertionPoint,((trip.getWheelchairAccessible() == 1) ? TableTripPattern.FLAG_WHEELCHAIR_ACCESSIBLE : 0) | (((trip.getRoute().getBikesAllowed() == 2 && trip.getTripBikesAllowed() != 1) || trip.getTripBikesAllowed() == 2) ? TableTripPattern.FLAG_BIKES_ALLOWED : 0));
-      }
+    tripPattern.addTrip(trip,stopTimes);
+    String blockId=trip.getBlockId();
+    if (blockId != null && !blockId.equals("")) {
+      addTripToInterliningMap(trip,stopTimes,tripPattern);
     }
   }
   for (  List<InterliningTrip> blockTrips : tripsForBlock.values()) {
@@ -130,21 +70,20 @@
       }
       Trip fromExemplar=fromInterlineTrip.tripPattern.exemplar;
       Trip toExemplar=toInterlineTrip.tripPattern.exemplar;
-      PatternInterlineDwell dwell;
       InterlineSwitchoverKey dwellKey=new InterlineSwitchoverKey(s0,s1,fromInterlineTrip.tripPattern,toInterlineTrip.tripPattern);
-      dwell=getInterlineDwell(dwellKey);
+      PatternInterlineDwell dwell=getInterlineDwell(dwellKey);
       if (dwell == null) {
         Vertex startJourney=context.patternArriveNodes.get(new T2<Stop,Trip>(s0,fromExemplar));
         Vertex endJourney=context.patternDepartNodes.get(new T2<Stop,Trip>(s1,toExemplar));
         dwell=new PatternInterlineDwell(startJourney,endJourney,toTrip);
-        putInterlineDwell(dwellKey,dwell);
+        interlineDwells.put(dwellKey,dwell);
       }
       int dwellTime=st1.getDepartureTime() - st0.getArrivalTime();
       dwell.addTrip(fromTrip.getId(),toTrip.getId(),dwellTime,fromInterlineTrip.getPatternIndex(),toInterlineTrip.getPatternIndex());
     }
   }
   loadTransfers(graph);
-  deleteUselessDwells(graph);
+  if (_deleteUselessDwells)   deleteUselessDwells(graph);
   clearCachedData();
   graph.putService(FareService.class,fareServiceFactory.makeFareService());
   graph.putService(ServiceIdToNumberService.class,new ServiceIdToNumberService(context.serviceIds));

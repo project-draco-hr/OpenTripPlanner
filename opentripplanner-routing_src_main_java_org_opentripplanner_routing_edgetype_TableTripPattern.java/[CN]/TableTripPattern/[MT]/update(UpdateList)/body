@@ -1,0 +1,15 @@
+{
+  int tripIndex=this.getTripIndex(ul.tripId);
+  if (tripIndex == -1) {
+    LOG.debug("tripId {} not found",ul.tripId);
+    return;
+  }
+  int stopIndex=ul.findUpdateStopIndex(this);
+  if (stopIndex == -1) {
+    LOG.debug("update block did not match stopIds");
+    return;
+  }
+  TripTimes oldTimes=getTripTimes(tripIndex);
+  TripTimes newTimes=oldTimes.updatedClone(ul,stopIndex);
+  this.tripTimes.set(tripIndex,newTimes);
+}

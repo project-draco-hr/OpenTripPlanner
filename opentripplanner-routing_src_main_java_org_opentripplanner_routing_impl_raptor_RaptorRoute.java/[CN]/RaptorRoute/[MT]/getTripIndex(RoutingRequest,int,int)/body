@@ -1,7 +1,7 @@
 {
   RaptorBoardSpec spec=new RaptorBoardSpec();
   spec.departureTime=Integer.MAX_VALUE;
-  spec.tripIndex=-1;
+  spec.tripTimes=null;
   spec.patternIndex=-1;
   for (int i=0; i < boards[stopNo].length; ++i) {
     PatternBoard board=boards[stopNo][i];
@@ -11,7 +11,7 @@
     int time=(int)result.getTime();
     if (time < spec.departureTime) {
       spec.departureTime=time;
-      spec.tripIndex=result.getTrip();
+      spec.tripTimes=result.getTripTimes();
       spec.patternIndex=i;
       spec.serviceDay=result.getServiceDay();
     }

@@ -5,21 +5,20 @@
     if (state0.getBackEdge() instanceof PatternAlight) {
       return null;
     }
-    Trip trip=pattern.getTrip(state0.getTrip());
-    EdgeNarrative en=new TransitNarrative(trip,this);
+    EdgeNarrative en=new TransitNarrative(state0.getTripTimes().trip,this);
     StateEditor s1=state0.edit(this,en);
-    int type=pattern.getBoardType(stopIndex);
+    int type=getPattern().getBoardType(stopIndex);
     if (TransitUtils.handleBoardAlightType(s1,type)) {
       return null;
     }
     s1.setTripId(null);
     s1.setLastAlightedTime(state0.getTime());
     s1.setPreviousStop(fromv);
-    s1.setLastPattern(pattern);
+    s1.setLastPattern(this.getPattern());
     return s1.makeState();
   }
  else {
-    if (state0.getLastPattern() == pattern) {
+    if (state0.getLastPattern() == this.getPattern()) {
       return null;
     }
     if (!options.getModes().get(modeMask)) {
@@ -27,30 +26,22 @@
     }
     long current_time=state0.getTime();
     int bestWait=-1;
-    int bestPatternIndex=-1;
-    TraverseMode mode=state0.getNonTransitMode(options);
+    TripTimes bestTripTimes=null;
     int serviceId=getPattern().getServiceId();
+    TraverseMode mode=state0.getNonTransitMode(options);
     ServiceDay serviceDay=null;
-    SD:     for (    ServiceDay sd : rctx.serviceDays) {
+    for (    ServiceDay sd : rctx.serviceDays) {
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
       if (secondsSinceMidnight < 0)       continue;
       if (sd.serviceIdRunning(serviceId)) {
-        int patternIndex=getPattern().getNextTrip(stopIndex,secondsSinceMidnight,options.wheelchairAccessible,mode == TraverseMode.BICYCLE,true);
-        if (patternIndex >= 0) {
-          Trip trip=pattern.getTrip(patternIndex);
-          while (options.bannedTrips.contains(trip.getId())) {
-            patternIndex+=1;
-            if (patternIndex >= pattern.getTrips().size()) {
-              continue SD;
-            }
-            trip=pattern.getTrip(patternIndex);
-          }
-          int wait=(int)(sd.time(pattern.getDepartureTime(stopIndex,patternIndex)) - current_time);
+        TripTimes tripTimes=getPattern().getNextTrip(stopIndex,secondsSinceMidnight,mode == TraverseMode.BICYCLE,options);
+        if (tripTimes != null) {
+          int wait=(int)(sd.time(tripTimes.getDepartureTime(stopIndex)) - current_time);
           if (wait < 0)           _log.error("negative wait time on board");
           if (bestWait < 0 || wait < bestWait) {
             bestWait=wait;
-            bestPatternIndex=patternIndex;
             serviceDay=sd;
+            bestTripTimes=tripTimes;
           }
         }
       }
@@ -58,7 +49,7 @@
     if (bestWait < 0) {
       return null;
     }
-    Trip trip=getPattern().getTrip(bestPatternIndex);
+    Trip trip=bestTripTimes.getTrip();
     if (options.bannedRoutes != null) {
       Route route=trip.getRoute();
       RouteSpec spec=new RouteSpec(route.getId().getAgencyId(),GtfsLibrary.getRouteName(route));
@@ -83,12 +74,12 @@
     }
     EdgeNarrative en=new TransitNarrative(trip,this);
     StateEditor s1=state0.edit(this,en);
-    int type=pattern.getBoardType(stopIndex);
+    int type=getPattern().getBoardType(stopIndex);
     if (TransitUtils.handleBoardAlightType(s1,type)) {
       return null;
     }
     s1.setServiceDay(serviceDay);
-    s1.setTrip(bestPatternIndex);
+    s1.setTripTimes(bestTripTimes);
     s1.incrementTimeInSeconds(bestWait);
     s1.incrementNumBoardings();
     s1.setTripId(trip.getId());

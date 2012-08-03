@@ -1,27 +1,11 @@
 {
-  HashSet<BasicTripPattern> possiblySimplePatterns=new HashSet<BasicTripPattern>();
-  HashSet<BasicTripPattern> notSimplePatterns=new HashSet<BasicTripPattern>();
+  int nDwells=potentiallyUselessDwells.size();
+  int nDeleted=0;
   for (  PatternDwell dwell : potentiallyUselessDwells) {
-    BasicTripPattern pattern=(BasicTripPattern)dwell.getPattern();
-    boolean useless=true;
-    for (int i=0; i < pattern.getNumDwells(); ++i) {
-      if (pattern.getDwellTime(dwell.getStopIndex(),i) != 0) {
-        useless=false;
-        break;
-      }
-    }
-    if (!useless) {
-      possiblySimplePatterns.remove(pattern);
-      notSimplePatterns.add(pattern);
-      continue;
-    }
-    Vertex v=dwell.getFromVertex();
-    v.mergeFrom(graph,dwell.getToVertex());
-    if (!notSimplePatterns.contains(pattern)) {
-      possiblySimplePatterns.add(pattern);
+    if (dwell.allDwellsZero()) {
+      dwell.getFromVertex().mergeFrom(graph,dwell.getToVertex());
+      nDeleted+=1;
     }
   }
-  for (  BasicTripPattern pattern : possiblySimplePatterns) {
-    pattern.simplify();
-  }
+  _log.debug("deleted {} dwell edges / {} candidates, merging arrival and departure vertices.",nDeleted,nDwells);
 }

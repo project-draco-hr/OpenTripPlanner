@@ -1,5 +1,5 @@
 {
-  int dwellTime=pattern.getBestDwellTime(stopIndex);
+  int dwellTime=getPattern().getBestDwellTime(stopIndex);
   StateEditor s1=s0.edit(this);
   s1.incrementTimeInSeconds(dwellTime);
   s1.incrementWeight(dwellTime);
