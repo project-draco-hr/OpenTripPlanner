@@ -127,14 +127,14 @@
   }
   System.out.println("Trips: " + trips);
   ShortestPathTree spt;
-  EdgeBasedGenericDijkstra dijkstra=new EdgeBasedGenericDijkstra(walkOptions);
+  GenericDijkstra dijkstra=new GenericDijkstra(walkOptions);
   if (nBoardings == 0) {
-    EdgeBasedState start=new EdgeBasedState(options.rctx.origin,walkOptions);
+    MaxWalkState start=new MaxWalkState(options.rctx.origin,walkOptions);
     spt=dijkstra.getShortestPathTree(start);
     RoutingRequest reversedWalkOptions=walkOptions.clone();
     reversedWalkOptions.setArriveBy(true);
-    EdgeBasedGenericDijkstra destDijkstra=new EdgeBasedGenericDijkstra(reversedWalkOptions);
-    start=new EdgeBasedState(options.rctx.target,reversedWalkOptions);
+    GenericDijkstra destDijkstra=new GenericDijkstra(reversedWalkOptions);
+    start=new MaxWalkState(options.rctx.target,reversedWalkOptions);
     ShortestPathTree targetSpt=destDijkstra.getShortestPathTree(start);
     for (    State state : targetSpt.getAllStates()) {
       final Vertex vertex=state.getVertex();
@@ -147,7 +147,7 @@
     }
   }
  else {
-    final List<EdgeBasedState> startPoints=new ArrayList<EdgeBasedState>();
+    final List<MaxWalkState> startPoints=new ArrayList<MaxWalkState>();
     STARTWALK:     for (    RaptorState state : createdStates) {
       if (false) {
         double maxWalk=options.getMaxWalkDistance() - state.walkDistance - distanceToNearestTransitStop;
@@ -195,21 +195,15 @@
       if (minWalk + state.walkDistance > options.getMaxWalkDistance()) {
         continue;
       }
-      StateEditor dijkstraState=new EdgeBasedState.EdgeBasedStateEditor(walkOptions,stopVertex);
+      StateEditor dijkstraState=new MaxWalkState.MaxWalkStateEditor(walkOptions,stopVertex);
       dijkstraState.setNumBoardings(state.nBoardings);
       dijkstraState.setWalkDistance(state.walkDistance);
       dijkstraState.setTime(state.arrivalTime);
       dijkstraState.setExtension("raptorParent",state);
       dijkstraState.setOptions(walkOptions);
       dijkstraState.incrementWeight(state.arrivalTime - options.dateTime);
-      EdgeBasedState newState=(EdgeBasedState)dijkstraState.makeState();
-      for (      Edge e : stopVertex.getOutgoing()) {
-        if (e instanceof StreetTransitLink) {
-          newState=newState.clone();
-          newState.outgoing=e;
-          startPoints.add(newState);
-        }
-      }
+      MaxWalkState newState=(MaxWalkState)dijkstraState.makeState();
+      startPoints.add(newState);
     }
     if (startPoints.size() == 0) {
       System.out.println("warning: no walk in round " + nBoardings);
