@@ -26,6 +26,7 @@
     }
     long current_time=state0.getTime();
     int bestWait=-1;
+    ServiceDay bestServiceDay=null;
     TripTimes bestTripTimes=null;
     int serviceId=getPattern().getServiceId();
     TraverseMode mode=state0.getNonTransitMode(options);
@@ -40,6 +41,7 @@
           if (bestWait < 0 || wait < bestWait) {
             bestWait=wait;
             bestTripTimes=tripTimes;
+            bestServiceDay=sd;
           }
         }
       }
@@ -92,6 +94,17 @@
     }
     s1.incrementWeight(preferences_penalty);
     s1.incrementWeight(wait_cost + options.getBoardCost(mode));
+    if (options.isReverseOptimizeOnTheFly() && state0.getNumBoardings() > 0) {
+      _log.debug("Considering reverse optimizing on the fly");
+      long lastAlight=state0.getLastAlightedTime();
+      long latestPossibleAlight=lastAlight + bestWait;
+      boolean needToReverseOptimize=false;
+      int secondsSinceMidnight=bestServiceDay.secondsSinceMidnight(latestPossibleAlight);
+      if (secondsSinceMidnight < 0)       needToReverseOptimize=true;
+      TripTimes possibleTripTimes=getPattern().getPreviousTrip(stopIndex,secondsSinceMidnight,mode == TraverseMode.BICYCLE,options);
+      if (possibleTripTimes != bestTripTimes)       needToReverseOptimize=true;
+      if (needToReverseOptimize)       return s1.makeState().optimize(true);
+    }
     return s1.makeState();
   }
 }

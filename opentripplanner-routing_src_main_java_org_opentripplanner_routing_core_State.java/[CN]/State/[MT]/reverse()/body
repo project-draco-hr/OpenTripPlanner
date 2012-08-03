@@ -8,8 +8,12 @@
     editor.setFromState(orig);
     editor.incrementTimeInSeconds(orig.getAbsTimeDeltaSec());
     editor.incrementWeight(orig.getWeightDelta());
+    editor.incrementWalkDistance(orig.getWalkDistanceDelta());
     if (orig.isBikeRenting() != orig.getBackState().isBikeRenting())     editor.setBikeRenting(!orig.isBikeRenting());
     ret=editor.makeState();
+    if (ret == null) {
+      LOG.warn("Returned state is null for edge " + edge + "; OTP will crash momentarily");
+    }
     orig=orig.getBackState();
   }
   return ret;

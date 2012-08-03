@@ -1,24 +1,3 @@
 {
-  if (state.stateData.opt.rctx == null)   return true;
-  PathParser[] parsers=state.stateData.opt.rctx.pathParsers;
-  int[] parserStates=state.pathParserStates;
-  boolean accept=true;
-  boolean modified=false;
-  int i=0;
-  for (  PathParser parser : parsers) {
-    int terminal=parser.terminalFor(state);
-    int oldState=parserStates[i];
-    int newState=parser.transition(oldState,terminal);
-    if (newState != oldState) {
-      if (!modified) {
-        parserStates=parserStates.clone();
-        modified=true;
-      }
-      parserStates[i]=newState;
-      if (newState == AutomatonState.REJECT)       accept=false;
-    }
-    i++;
-  }
-  if (modified)   state.pathParserStates=parserStates;
-  return accept;
+  return true;
 }
