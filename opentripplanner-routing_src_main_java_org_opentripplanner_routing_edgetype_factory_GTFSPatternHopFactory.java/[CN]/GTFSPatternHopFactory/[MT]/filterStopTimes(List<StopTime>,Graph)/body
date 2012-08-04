@@ -28,7 +28,7 @@
     }
     int runningTime=st1.getArrivalTime() - st0.getDepartureTime();
     if (runningTime < 0) {
-      _log.warn(GraphBuilderAnnotation.register(graph,Variety.NEGATIVE_HOP_TIME,st0,st1));
+      _log.warn(GraphBuilderAnnotation.register(graph,Variety.NEGATIVE_HOP_TIME,new StopTime(st0),new StopTime(st1)));
       midnightCrossed=true;
       if (st0.getDepartureTime() > 23 * HOUR && st1.getArrivalTime() < 1 * HOUR) {
         st1.setArrivalTime(st1.getArrivalTime() + 24 * HOUR);
