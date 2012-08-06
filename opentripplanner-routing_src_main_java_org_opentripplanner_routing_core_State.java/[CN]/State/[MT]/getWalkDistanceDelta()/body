@@ -1,3 +1,4 @@
 {
-  return Math.abs(this.walkDistance - backState.walkDistance);
+  if (backState != null)   return Math.abs(this.walkDistance - backState.walkDistance);
+ else   return 0.0;
 }

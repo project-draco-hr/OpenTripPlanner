@@ -15,6 +15,19 @@
     s1.setLastAlightedTime(state0.getTime());
     s1.setPreviousStop(fromv);
     s1.setLastPattern(this.getPattern());
+    if (options.isReverseOptimizeOnTheFly()) {
+      int thisDeparture=state0.getTripTimes().getDepartureTime(stopIndex);
+      int numTrips=getPattern().getNumTrips();
+      int nextDeparture;
+      s1.setLastNextArrivalDelta(Integer.MAX_VALUE);
+      for (int tripIndex=0; tripIndex < numTrips; tripIndex++) {
+        nextDeparture=getPattern().getDepartureTime(stopIndex,tripIndex);
+        if (nextDeparture > thisDeparture) {
+          s1.setLastNextArrivalDelta(nextDeparture - thisDeparture);
+          break;
+        }
+      }
+    }
     return s1.makeState();
   }
  else {
@@ -31,7 +44,6 @@
     TraverseMode mode=state0.getNonTransitMode(options);
     for (    ServiceDay sd : rctx.serviceDays) {
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
-      if (secondsSinceMidnight < 0)       continue;
       if (sd.serviceIdRunning(serviceId)) {
         TripTimes tripTimes=getPattern().getNextTrip(stopIndex,secondsSinceMidnight,mode == TraverseMode.BICYCLE,options);
         if (tripTimes != null) {
@@ -93,8 +105,9 @@
     s1.incrementWeight(preferences_penalty);
     s1.incrementWeight(wait_cost + options.getBoardCost(mode));
     if (options.isReverseOptimizeOnTheFly() && !options.isReverseOptimizing() && state0.getNumBoardings() > 0 && state0.getLastNextArrivalDelta() <= bestWait) {
-      _log.debug("Reverse optimizing on the fly");
-      return s1.makeState().optimizeOrReverse(true,true);
+      State optimized=s1.makeState().optimizeOrReverse(true,true);
+      if (optimized == null)       _log.error("Null optimized state. This shouldn't happen");
+      return optimized;
     }
     return s1.makeState();
   }
