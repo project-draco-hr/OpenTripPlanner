@@ -286,14 +286,6 @@
         continue SPTSTATE;
       }
     }
-    double minWalk=distanceToNearestTransitStop;
-    double targetDistance=distanceLibrary.fastDistance(options.rctx.target.getCoordinate(),vertex.getCoordinate());
-    double minTime=(targetDistance - minWalk) / MAX_TRANSIT_SPEED + minWalk / options.getSpeedUpperBound();
-    if (targetDistance > options.maxWalkDistance - state.getWalkDistance())     minTime+=boardSlack;
-    for (    RaptorState oldState : cur.getTargetStates()) {
-      if (oldState.arrivalTime <= newState.arrivalTime + minTime && oldState.walkDistance <= newState.walkDistance + minWalk)       continue SPTSTATE;
-      if ((oldState.arrivalTime - options.dateTime) * 3 <= (newState.arrivalTime + minTime - options.dateTime))       continue SPTSTATE;
-    }
     cur.visitedLastRound.add(stop);
     cur.visitedEver.add(stop);
     states.add(newState);
