@@ -26,7 +26,6 @@
     }
     long current_time=state0.getTime();
     int bestWait=-1;
-    ServiceDay bestServiceDay=null;
     TripTimes bestTripTimes=null;
     int serviceId=getPattern().getServiceId();
     TraverseMode mode=state0.getNonTransitMode(options);
@@ -41,7 +40,6 @@
           if (bestWait < 0 || wait < bestWait) {
             bestWait=wait;
             bestTripTimes=tripTimes;
-            bestServiceDay=sd;
           }
         }
       }
