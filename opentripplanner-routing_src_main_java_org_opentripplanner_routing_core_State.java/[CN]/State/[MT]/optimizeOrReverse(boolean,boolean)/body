@@ -1,0 +1,58 @@
+{
+  State orig=this;
+  State unoptimized=orig;
+  State ret=orig.reversedClone();
+  long newInitialWaitTime=0;
+  boolean needToFigureInAdditionalWaitTime=false;
+  Edge edge=null;
+  try {
+    while (orig.getBackState() != null) {
+      edge=orig.getBackEdge();
+      if (optimize) {
+        ret=edge.traverse(ret);
+        if (ret == null) {
+          LOG.warn("Returned state is null for edge " + edge + "; OTP will crash momentarily");
+        }
+      }
+ else {
+        EdgeNarrative narrative=orig.getBackEdgeNarrative();
+        StateEditor editor=ret.edit(edge,narrative);
+        editor.setFromState(orig);
+        if (needToFigureInAdditionalWaitTime) {
+          editor.incrementTimeInSeconds((int)newInitialWaitTime);
+          needToFigureInAdditionalWaitTime=false;
+        }
+        editor.incrementTimeInSeconds(orig.getAbsTimeDeltaSec());
+        editor.incrementWeight(orig.getWeightDelta());
+        editor.incrementWalkDistance(orig.getWalkDistanceDelta());
+        if (orig.isBikeRenting() != orig.getBackState().isBikeRenting())         editor.setBikeRenting(!orig.isBikeRenting());
+        ret=editor.makeState();
+        EdgeNarrative origNarrative=orig.getBackEdgeNarrative();
+        EdgeNarrative retNarrative=ret.getBackEdgeNarrative();
+        copyExistingNarrativeToNewNarrativeAsAppropriate(origNarrative,retNarrative);
+      }
+      orig=orig.getBackState();
+      if (forward && orig.getNumBoardings() == 0 && optimize) {
+        optimize=false;
+        if (isEverBoarded()) {
+          newInitialWaitTime=ret.getTime() - orig.getTime();
+          needToFigureInAdditionalWaitTime=true;
+        }
+      }
+    }
+  }
+ catch (  NullPointerException e) {
+    LOG.warn("Cannot reverse path at edge: " + edge + ", returning unoptimized path. If edge is a PatternInterlineDwell,"+ " this is not totally unexpected; otherwise, you might want to"+ " look into it");
+    if (forward)     return this;
+ else     return unoptimized.reverse();
+  }
+  if (forward) {
+    State reversed=ret.reverse();
+    reversed.stateData=reversed.stateData.clone();
+    reversed.stateData.initialWaitTime=newInitialWaitTime;
+    LOG.debug("Reversed state has intact initialWaitTime of " + reversed.stateData.initialWaitTime + " secs, original "+ stateData.initialWaitTime);
+    new GraphPath(reversed,false).dump();
+    return reversed;
+  }
+ else   return ret;
+}

@@ -94,16 +94,16 @@
     }
     s1.incrementWeight(preferences_penalty);
     s1.incrementWeight(wait_cost + options.getBoardCost(mode));
-    if (options.isReverseOptimizeOnTheFly() && state0.getNumBoardings() > 0) {
+    if (options.isReverseOptimizeOnTheFly() && !options.isReverseOptimizing() && state0.getNumBoardings() > 0) {
       _log.debug("Considering reverse optimizing on the fly");
       long lastAlight=state0.getLastAlightedTime();
       long latestPossibleAlight=lastAlight + bestWait;
-      boolean needToReverseOptimize=false;
+      boolean needToReverseOptimize=true;
       int secondsSinceMidnight=bestServiceDay.secondsSinceMidnight(latestPossibleAlight);
       if (secondsSinceMidnight < 0)       needToReverseOptimize=true;
       TripTimes possibleTripTimes=getPattern().getPreviousTrip(stopIndex,secondsSinceMidnight,mode == TraverseMode.BICYCLE,options);
       if (possibleTripTimes != bestTripTimes)       needToReverseOptimize=true;
-      if (needToReverseOptimize)       return s1.makeState().optimize(true);
+      if (needToReverseOptimize)       return s1.makeState().optimizeOrReverse(true,true);
     }
     return s1.makeState();
   }

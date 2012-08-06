@@ -1,6 +1,7 @@
 {
   long clampInitialWait=stateData.opt.clampInitialWait;
   long initialWait=stateData.initialWaitTime;
+  LOG.debug("Initial wait: " + initialWait + ", clamp: "+ clampInitialWait+ ", elapsed: "+ getElapsedTime());
   if (clampInitialWait > 0 && initialWait > clampInitialWait)   initialWait=clampInitialWait;
   long activeTime=getElapsedTime() - initialWait;
   if (activeTime < 0)   activeTime=getElapsedTime();
