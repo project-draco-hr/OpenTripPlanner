@@ -15,7 +15,6 @@
     TraverseMode nonTransitMode=state0.getNonTransitMode(options);
     for (    ServiceDay sd : rctx.serviceDays) {
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
-      if (secondsSinceMidnight < 0)       continue;
       if (sd.serviceIdRunning(serviceId)) {
         TripTimes tripTimes=getPattern().getPreviousTrip(stopIndex,secondsSinceMidnight,nonTransitMode == TraverseMode.BICYCLE,options);
         if (tripTimes != null) {
