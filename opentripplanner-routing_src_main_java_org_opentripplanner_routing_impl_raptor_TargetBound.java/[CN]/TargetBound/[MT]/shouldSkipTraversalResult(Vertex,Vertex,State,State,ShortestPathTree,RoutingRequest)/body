@@ -12,7 +12,8 @@
     }
   }
  else {
-    minWalk=targetDistance;
+    if (targetDistance < distanceToNearestTransitStop)     minWalk=targetDistance;
+ else     minWalk=distanceToNearestTransitStop;
   }
   if (minWalk > remainingWalk)   return true;
   final double optimisticDistance=current.getWalkDistance() + minWalk;
