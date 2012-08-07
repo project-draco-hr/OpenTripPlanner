@@ -19,12 +19,18 @@
   final double optimisticDistance=current.getWalkDistance() + minWalk;
   minTime+=(targetDistance - minWalk) / Raptor.MAX_TRANSIT_SPEED + minWalk / speedUpperBound;
   double stateTime=current.getTime() + minTime - traverseOptions.dateTime;
+  int i=0;
+  boolean prevBounded=!bounders.isEmpty();
   for (  State bounder : bounders) {
+    int prevTime=previousArrivalTime.get(i++);
     if (optimisticDistance * 1.1 > bounder.getWalkDistance() && current.getTime() + minTime > bounder.getTime())     return true;
+    if (!(optimisticDistance * 1.1 > bounder.getWalkDistance() && current.getTime() + minTime > prevTime)) {
+      prevBounded=false;
+    }
     double bounderTime=bounder.getTime() - traverseOptions.dateTime;
     if (bounderTime * timeBoundFactor < stateTime) {
       return true;
     }
   }
-  return false;
+  return prevBounded;
 }

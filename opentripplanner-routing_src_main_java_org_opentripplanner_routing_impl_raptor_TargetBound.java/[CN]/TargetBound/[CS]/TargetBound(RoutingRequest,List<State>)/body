@@ -1,12 +1,13 @@
 {
+  this.options=options;
   this.realTarget=options.rctx.target;
   this.realTargetCoordinate=realTarget.getCoordinate();
   this.distanceToNearestTransitStop=realTarget.getDistanceToNearestTransitStop();
+  bounders=new ArrayList<State>();
   if (dijkstraBoundingStates != null) {
-    bounders=dijkstraBoundingStates;
-  }
- else {
-    bounders=new ArrayList<State>();
+    for (    State bounder : dijkstraBoundingStates) {
+      addBounder(bounder);
+    }
   }
   transitLocalStreets=options.rctx.graph.getService(TransitLocalStreetService.class);
   speedUpperBound=options.getSpeedUpperBound();

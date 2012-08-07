@@ -1,0 +1,22 @@
+{
+  int bestArrivalTime=-1;
+  request.arriveBy=true;
+  for (  Edge prealight : stopVertex.getIncoming()) {
+    if (prealight instanceof PreAlightEdge) {
+      Vertex arrival=prealight.getFromVertex();
+      for (      Edge alight : arrival.getIncoming()) {
+        if (alight instanceof PatternAlight) {
+          State state=new State(alight.getToVertex(),arrivalTime,request);
+          State result=alight.traverse(state);
+          if (result == null)           continue;
+          int time=(int)result.getTime();
+          if (time > bestArrivalTime) {
+            bestArrivalTime=time;
+          }
+        }
+      }
+    }
+  }
+  request.arriveBy=false;
+  return bestArrivalTime;
+}

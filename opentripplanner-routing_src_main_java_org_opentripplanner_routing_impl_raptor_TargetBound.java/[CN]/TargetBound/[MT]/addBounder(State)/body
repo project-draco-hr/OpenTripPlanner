@@ -1,0 +1,7 @@
+{
+  bounders.add(bounder);
+  RaptorState state=(RaptorState)bounder.getExtension("raptorParent");
+  RaptorStop stop=state.stop;
+  final int previousArriveTime=getPreviousArriveTime(options,state.arrivalTime - options.getAlightSlack() - 2,stop.stopVertex);
+  previousArrivalTime.add((int)(previousArriveTime + options.getAlightSlack() + bounder.getElapsedTime()));
+}
