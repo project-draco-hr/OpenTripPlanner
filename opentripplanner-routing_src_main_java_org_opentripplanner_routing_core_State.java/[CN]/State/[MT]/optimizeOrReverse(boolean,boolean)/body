@@ -12,7 +12,7 @@
     while (orig.getBackState() != null) {
       edge=orig.getBackEdge();
       if (optimize) {
-        if (edge instanceof PatternBoard && orig.getNumBoardings() == 1 && forward)         ret=((PatternBoard)edge).traverse(ret,orig.getTime());
+        if (edge instanceof PatternBoard && orig.getNumBoardings() == 1 && forward)         ret=((PatternBoard)edge).traverse(ret,orig.getBackState().getTime());
  else         ret=edge.traverse(ret);
         if (ret == null)         LOG.debug("Error traversing edge " + edge + " in reverse optimization");
       }
@@ -40,7 +40,10 @@
   }
   stateData.opt.rctx.pathParsers=pathParsers;
   if (forward) {
-    return ret.reverse();
+    State reversed=ret.reverse();
+    LOG.debug("Weights: before " + this.getWeight() + " after "+ reversed.getWeight());
+    LOG.debug("Times: before " + this.getElapsedTime() + " after "+ reversed.getElapsedTime());
+    return reversed;
   }
  else   return ret;
 }
