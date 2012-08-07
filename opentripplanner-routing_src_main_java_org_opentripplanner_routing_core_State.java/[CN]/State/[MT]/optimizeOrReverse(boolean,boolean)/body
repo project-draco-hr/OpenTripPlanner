@@ -12,19 +12,14 @@
     while (orig.getBackState() != null) {
       edge=orig.getBackEdge();
       if (optimize) {
-        ret=edge.traverse(ret);
+        if (edge instanceof PatternBoard && orig.getNumBoardings() == 1 && forward)         ret=((PatternBoard)edge).traverse(ret,orig.getTime());
+ else         ret=edge.traverse(ret);
         if (ret == null)         LOG.debug("Error traversing edge " + edge + " in reverse optimization");
       }
  else {
         EdgeNarrative narrative=orig.getBackEdgeNarrative();
         StateEditor editor=ret.edit(edge,narrative);
         editor.setFromState(orig);
-        if (needToFigureInAdditionalWaitTime) {
-          editor.incrementTimeInSeconds((int)newInitialWaitTime);
-          editor.setInitialWaitTime(newInitialWaitTime);
-          editor.incrementWeight(newInitialWaitTime * stateData.opt.waitAtBeginningFactor);
-          needToFigureInAdditionalWaitTime=false;
-        }
         editor.incrementTimeInSeconds(orig.getAbsTimeDeltaSec());
         editor.incrementWeight(orig.getWeightDelta());
         editor.incrementWalkDistance(orig.getWalkDistanceDelta());
@@ -35,13 +30,6 @@
         copyExistingNarrativeToNewNarrativeAsAppropriate(origNarrative,retNarrative);
       }
       orig=orig.getBackState();
-      if (forward && orig.getNumBoardings() == 0 && optimize) {
-        optimize=false;
-        if (isEverBoarded()) {
-          newInitialWaitTime=Math.abs(ret.getTime() - orig.getTime());
-          needToFigureInAdditionalWaitTime=true;
-        }
-      }
     }
   }
  catch (  NullPointerException e) {
