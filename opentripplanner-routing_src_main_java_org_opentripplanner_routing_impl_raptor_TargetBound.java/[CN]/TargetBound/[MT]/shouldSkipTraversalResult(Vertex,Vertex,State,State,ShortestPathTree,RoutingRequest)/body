@@ -12,7 +12,7 @@
     }
   }
  else {
-    if (targetDistance < distanceToNearestTransitStop)     minWalk=targetDistance;
+    if (targetDistance < distanceToNearestTransitStop || !transitLocalStreets.transferrable(vertex))     minWalk=targetDistance;
  else     minWalk=distanceToNearestTransitStop;
   }
   if (minWalk > remainingWalk)   return true;
