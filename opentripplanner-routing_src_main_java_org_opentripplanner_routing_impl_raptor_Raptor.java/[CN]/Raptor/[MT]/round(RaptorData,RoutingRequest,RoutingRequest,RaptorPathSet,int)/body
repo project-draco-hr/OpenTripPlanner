@@ -166,7 +166,7 @@
       Vertex stopVertex=state.stop.stopVertex;
       Vertex dest=options.rctx.target;
       double minWalk=distanceToNearestTransitStop;
-      double targetDistance=distanceLibrary.fastDistance(dest.getCoordinate(),stopVertex.getCoordinate());
+      double targetDistance=cur.bounder.getTargetDistance(stopVertex);
       double minTime=(targetDistance - minWalk) / MAX_TRANSIT_SPEED + minWalk / options.getSpeedUpperBound();
       if (targetDistance + state.walkDistance > options.getMaxWalkDistance()) {
         if (state.stop.stopVertex.isLocal())         continue;
