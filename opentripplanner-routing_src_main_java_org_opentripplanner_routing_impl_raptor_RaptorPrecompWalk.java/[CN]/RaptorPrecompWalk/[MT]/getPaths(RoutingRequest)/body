@@ -13,7 +13,7 @@
   TraverseModeSet modes=options.getModes().clone();
   modes.setTransit(false);
   walkOptions.setModes(modes);
-  RaptorPathSet routeSet=new RaptorPathSet(stops.length);
+  RaptorPathSet routeSet=new RaptorPathSet(stops.length,walkOptions);
   for (int i=0; i < options.getMaxTransfers() + 2; ++i) {
     round(options,walkOptions,routeSet,i);
     if (routeSet.getTargetStates().size() >= options.getNumItineraries())     break;

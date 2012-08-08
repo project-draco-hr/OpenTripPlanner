@@ -166,31 +166,13 @@
     }
     System.out.println("walk starts: " + startPoints.size() + " / "+ cur.visitedEver.size());
     dijkstra.setPriorityQueueFactory(new PrefilledPriorityQueueFactory(startPoints.subList(1,startPoints.size())));
-    dijkstra.setShortestPathTreeFactory(new ShortestPathTreeFactory(){
-      @Override public ShortestPathTree create(      RoutingRequest options){
-        ShortestPathTree result;
-        if (cur.spt == null) {
-          result=new ArrayMultiShortestPathTree(options);
-        }
- else {
-          result=cur.spt;
-        }
-        for (        State state : startPoints.subList(1,startPoints.size())) {
-          result.add(state);
-        }
-        return result;
-      }
-    }
-);
-    final TargetBound bounder=new TargetBound(options,cur.dijkstraBoundingStates);
+    TargetBound bounder=cur.bounder;
+    dijkstra.setShortestPathTreeFactory(bounder);
+    bounder.addSptStates(startPoints.subList(1,startPoints.size()));
     dijkstra.setSearchTerminationStrategy(bounder);
     dijkstra.setSkipTraverseResultStrategy(bounder);
     dijkstra.setHeuristic(bounder);
     spt=dijkstra.getShortestPathTree(startPoints.get(0));
-    if (!bounder.bounders.isEmpty()) {
-      cur.dijkstraBoundingStates=bounder.bounders;
-    }
-    if (cur.spt == null)     cur.spt=spt;
   }
   final List<? extends State> targetStates=spt.getStates(walkOptions.rctx.target);
   if (targetStates != null) {
