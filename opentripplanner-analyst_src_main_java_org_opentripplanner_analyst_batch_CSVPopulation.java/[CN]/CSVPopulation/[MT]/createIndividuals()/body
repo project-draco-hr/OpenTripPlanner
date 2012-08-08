@@ -2,7 +2,7 @@
   try {
     CSVReader reader=new CSVReader(new FileReader(sourceFilename));
     String[] nextLine;
-    if (headers) {
+    if (skipHeaders) {
       reader.readNext();
     }
     while ((nextLine=reader.readNext()) != null) {
