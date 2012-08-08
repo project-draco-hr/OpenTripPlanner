@@ -8,6 +8,9 @@
  else {
       targetDistance=distanceLibrary.fastDistance(realTargetCoordinate.x,realTargetCoordinate.y,vertex.getX(),vertex.getY());
       distance[vertexIndex]=targetDistance;
+      if (targetDistance < bestTargetDistance) {
+        bestTargetDistance=targetDistance;
+      }
     }
   }
  else {
@@ -35,7 +38,7 @@
   boolean prevBounded=!bounders.isEmpty();
   for (  State bounder : bounders) {
     int prevTime=previousArrivalTime.get(i++);
-    if (optimisticDistance * 1.1 > bounder.getWalkDistance() && current.getTime() + minTime > bounder.getTime())     return true;
+    if (optimisticDistance * 1.1 > bounder.getWalkDistance() && current.getTime() + minTime > bounder.getTime() && current.getNumBoardings() >= bounder.getNumBoardings())     return true;
     if (!(optimisticDistance * 1.1 > bounder.getWalkDistance() && current.getTime() + minTime > prevTime)) {
       prevBounded=false;
     }

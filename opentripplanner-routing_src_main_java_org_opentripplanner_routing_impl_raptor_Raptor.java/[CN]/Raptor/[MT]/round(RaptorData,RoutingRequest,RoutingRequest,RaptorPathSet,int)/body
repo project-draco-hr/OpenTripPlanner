@@ -1,16 +1,34 @@
 {
+  boolean stalling=cur.stalling;
+  Collection<RaptorRoute> routesToVisit=new HashSet<RaptorRoute>();
   Set<RaptorStop> visitedLastRound=cur.visitedLastRound;
-  Set<RaptorRoute> routesToVisit=new HashSet<RaptorRoute>();
+  List<RaptorState> createdStates=new ArrayList<RaptorState>();
+  List<RaptorState>[] statesByStop=cur.getStates();
   for (  RaptorStop stop : visitedLastRound) {
     for (    RaptorRoute route : data.routesForStop[stop.index]) {
       routesToVisit.add(route);
     }
   }
+  if (!stalling) {
+    for (int i=0; i < statesByStop.length; ++i) {
+      if (statesByStop[i] == null)       continue;
+      boolean found=false;
+      for (      RaptorState state : statesByStop[i]) {
+        if (state.nBoardings == nBoardings && state.stalled) {
+          createdStates.add(state);
+          found=true;
+        }
+      }
+      if (found) {
+        for (        RaptorRoute route : data.routesForStop[i]) {
+          routesToVisit.add(route);
+        }
+      }
+    }
+  }
   cur.visitedLastRound=new HashSet<RaptorStop>();
-  List<RaptorState>[] statesByStop=cur.getStates();
   int boardSlack=nBoardings == 1 ? options.getBoardSlack() : (options.getTransferSlack() - options.getAlightSlack());
   int trips=0;
-  List<RaptorState> createdStates=new ArrayList<RaptorState>();
   System.out.println("Round " + nBoardings);
   final double distanceToNearestTransitStop=options.rctx.target.getDistanceToNearestTransitStop();
   for (  RaptorRoute route : routesToVisit) {
@@ -18,7 +36,7 @@
     boolean started=false;
     for (int stopNo=0; stopNo < route.getNStops(); ++stopNo) {
       RaptorStop stop=route.stops[stopNo];
-      if (!started && !visitedLastRound.contains(stop))       continue;
+      if (!started && !visitedLastRound.contains(stop) && stalling)       continue;
       started=true;
       List<RaptorState> states=statesByStop[stop.index];
       List<RaptorState> newStates=new ArrayList<RaptorState>();
@@ -41,6 +59,7 @@
         newState.walkDistance=boardState.walkDistance;
         newState.parent=boardState.parent;
         newState.stop=stop;
+        newState.stalled=boardState.stalled;
         for (        RaptorState oldState : states) {
           if (eDominates(oldState,newState)) {
             continue CONTINUE;
@@ -76,6 +95,7 @@
         TRYBOARD:         for (        RaptorState oldState : states) {
           if (oldState.nBoardings != nBoardings - 1)           continue;
           if (oldState.route == route)           continue;
+          if (stalling == oldState.stalled)           continue;
           ++trips;
           RaptorBoardSpec boardSpec=route.getTripIndex(options,oldState.arrivalTime + boardSlack,stopNo);
           if (boardSpec == null)           continue;
@@ -90,6 +110,7 @@
           boardState.serviceDay=boardSpec.serviceDay;
           boardState.route=route;
           boardState.walkDistance=oldState.walkDistance;
+          boardState.stalled=oldState.stalled;
           for (          RaptorState state : newStates) {
             if (eDominates(state,boardState)) {
               continue TRYBOARD;
@@ -147,6 +168,10 @@
         minTime+=boardSlack;
       }
       if (minWalk + state.walkDistance > options.getMaxWalkDistance()) {
+        continue;
+      }
+      if (stalling && targetDistance > cur.bounder.bestTargetDistance * 1.33) {
+        state.stalled=true;
         continue;
       }
       StateEditor dijkstraState=new MaxWalkState.MaxWalkStateEditor(walkOptions,stopVertex);
@@ -212,6 +237,7 @@
     RaptorState newState=new RaptorState();
     if (baseState != null) {
       newState.nBoardings=baseState.nBoardings;
+      newState.stalled=baseState.stalled;
     }
     newState.walkDistance=state.getWalkDistance();
     newState.arrivalTime=(int)state.getTime();
