@@ -8,7 +8,7 @@
  else {
       targetDistance=distanceLibrary.fastDistance(realTargetCoordinate.x,realTargetCoordinate.y,vertex.getX(),vertex.getY());
       distance[vertexIndex]=targetDistance;
-      if (targetDistance < bestTargetDistance) {
+      if (vertex instanceof TransitStop && targetDistance < bestTargetDistance) {
         bestTargetDistance=targetDistance;
       }
     }
