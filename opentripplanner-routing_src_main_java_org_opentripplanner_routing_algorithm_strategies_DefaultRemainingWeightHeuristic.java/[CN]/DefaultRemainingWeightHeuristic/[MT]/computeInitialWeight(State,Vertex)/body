@@ -6,5 +6,5 @@
   localStreetService=graph.getService(TransitLocalStreetService.class);
   targetX=target.getX();
   targetY=target.getY();
-  return distanceLibrary.fastDistance(s.getVertex().getX(),s.getVertex().getY(),targetX,targetY) / maxSpeed;
+  return distanceLibrary.fastDistance(s.getVertex().getY(),s.getVertex().getX(),targetY,targetX) / maxSpeed;
 }
