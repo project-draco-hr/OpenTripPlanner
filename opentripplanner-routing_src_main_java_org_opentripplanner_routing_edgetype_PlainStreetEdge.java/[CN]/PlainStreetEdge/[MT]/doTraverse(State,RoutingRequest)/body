@@ -87,12 +87,12 @@ backPSE=(PlainStreetEdge)backEdge;
 int outAngle=0;
 int inAngle=0;
 if (options.arriveBy) {
-if (!canTurnOnto(backPSE,s0)) return null;
+if (!canTurnOnto(backPSE,s0,traverseMode)) return null;
 outAngle=backPSE.getOutAngle();
 inAngle=getInAngle();
 }
  else {
-if (!backPSE.canTurnOnto(this,s0)) return null;
+if (!backPSE.canTurnOnto(this,s0,traverseMode)) return null;
 outAngle=getOutAngle();
 inAngle=backPSE.getInAngle();
 }
