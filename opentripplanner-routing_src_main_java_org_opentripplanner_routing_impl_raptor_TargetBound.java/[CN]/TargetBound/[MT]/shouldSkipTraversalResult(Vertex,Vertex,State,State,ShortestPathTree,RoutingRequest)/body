@@ -1,6 +1,18 @@
 {
   final Vertex vertex=current.getVertex();
-  targetDistance=distanceLibrary.fastDistance(realTargetCoordinate.x,realTargetCoordinate.y,vertex.getX(),vertex.getY());
+  int vertexIndex=vertex.getIndex();
+  if (vertexIndex < distance.length) {
+    if (distance[vertexIndex] > 0.0) {
+      targetDistance=distance[vertexIndex];
+    }
+ else {
+      targetDistance=distanceLibrary.fastDistance(realTargetCoordinate.x,realTargetCoordinate.y,vertex.getX(),vertex.getY());
+      distance[vertexIndex]=targetDistance;
+    }
+  }
+ else {
+    targetDistance=distanceLibrary.fastDistance(realTargetCoordinate.x,realTargetCoordinate.y,vertex.getX(),vertex.getY());
+  }
   final double remainingWalk=traverseOptions.maxWalkDistance - current.getWalkDistance();
   final double minWalk;
   double minTime=0;
