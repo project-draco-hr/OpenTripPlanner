@@ -1,4 +1,7 @@
 {
+  if (stopTimes.size() != stops.length) {
+    LOG.warn("Trip length does not match stop length");
+  }
   int nextIndex=tripTimes.size();
   tripTimes.add(new TripTimes(trip,nextIndex,stopTimes));
   trips.add(trip);
