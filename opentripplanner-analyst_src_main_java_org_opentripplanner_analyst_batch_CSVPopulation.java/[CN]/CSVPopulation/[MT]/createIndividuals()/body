@@ -1,15 +1,14 @@
 {
   try {
-    CSVReader reader=new CSVReader(new FileReader(sourceFilename));
-    String[] nextLine;
+    CsvReader reader=new CsvReader(sourceFilename,',',Charset.forName("UTF8"));
     if (skipHeaders) {
-      reader.readNext();
+      reader.readHeaders();
     }
-    while ((nextLine=reader.readNext()) != null) {
-      double lat=Double.parseDouble(nextLine[latCol]);
-      double lon=Double.parseDouble(nextLine[lonCol]);
-      String label=nextLine[labelCol];
-      Double input=Double.parseDouble(nextLine[inputCol]);
+    while (reader.readRecord()) {
+      double lat=Double.parseDouble(reader.get(latCol));
+      double lon=Double.parseDouble(reader.get(lonCol));
+      String label=reader.get(labelCol);
+      Double input=Double.parseDouble(reader.get(inputCol));
       Individual individual=individualFactory.build(label,lon,lat,input);
       this.addIndividual(individual);
     }
