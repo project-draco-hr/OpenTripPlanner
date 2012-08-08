@@ -38,7 +38,7 @@
         continue TRIP;
       }
     }
-    ScheduledStopPattern stopPattern=ScheduledStopPattern.fromTrip(trip,_dao);
+    ScheduledStopPattern stopPattern=ScheduledStopPattern.fromTrip(trip,stopTimes);
     TableTripPattern tripPattern=patterns.get(stopPattern);
     if (tripPattern == null) {
       tripPattern=new TableTripPattern(trip,stopPattern,getServiceId(trip));
