@@ -35,8 +35,8 @@
   while (!q.isEmpty()) {
     Vertex u=q.poll();
     for (    Edge e : u.getOutgoing()) {
-      if (e instanceof PatternBoard) {
-        Vertex v=((PatternBoard)e).getToVertex();
+      if (e instanceof TransitBoardAlight && ((TransitBoardAlight)e).isBoarding()) {
+        Vertex v=((TransitBoardAlight)e).getToVertex();
         stopIndices.put(v,oi);
         StateEditor se=(new State(u,options)).edit(e);
         se.incrementWeight(OPTIMISTIC_BOARD_COST);
