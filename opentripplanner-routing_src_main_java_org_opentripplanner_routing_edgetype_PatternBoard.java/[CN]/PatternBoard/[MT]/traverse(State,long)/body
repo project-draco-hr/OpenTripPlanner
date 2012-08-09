@@ -1,6 +1,7 @@
 {
   RoutingContext rctx=state0.getContext();
   RoutingRequest options=state0.getOptions();
+  TraverseMode mode=state0.getNonTransitMode(options);
   if (options.isArriveBy()) {
     if (state0.getBackEdge() instanceof PatternAlight) {
       return null;
@@ -20,8 +21,8 @@
       s1.incrementTimeInSeconds(wait);
       s1.incrementWeight(wait * options.waitAtBeginningFactor);
       s1.setInitialWaitTime(wait);
-      _log.debug("Initial wait time set to {} in PatternBoard",wait);
     }
+    if (options.isReverseOptimizing())     s1.incrementWeight(options.getBoardCost(mode));
     if (options.isReverseOptimizeOnTheFly()) {
       int thisDeparture=state0.getTripTimes().getDepartureTime(stopIndex);
       int numTrips=getPattern().getNumTrips();
@@ -48,7 +49,6 @@
     int bestWait=-1;
     TripTimes bestTripTimes=null;
     int serviceId=getPattern().getServiceId();
-    TraverseMode mode=state0.getNonTransitMode(options);
     for (    ServiceDay sd : rctx.serviceDays) {
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
       if (sd.serviceIdRunning(serviceId)) {

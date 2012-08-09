@@ -66,7 +66,7 @@
     s1.setZone(getPattern().getZone(stopIndex + 1));
     s1.setRoute(trip.getRoute().getId());
     long wait_cost=bestWait;
-    if (state0.getNumBoardings() == 0) {
+    if (state0.getNumBoardings() == 0 && !options.isReverseOptimizing()) {
       wait_cost*=options.waitAtBeginningFactor;
       s1.setInitialWaitTime(bestWait);
     }
@@ -74,7 +74,8 @@
       wait_cost*=options.waitReluctance;
     }
     s1.incrementWeight(preferences_penalty);
-    s1.incrementWeight(wait_cost + options.getBoardCost(nonTransitMode));
+    if (options.isReverseOptimizing())     s1.incrementWeight(wait_cost);
+ else     s1.incrementWeight(wait_cost + options.getBoardCost(nonTransitMode));
     if (options.isReverseOptimizeOnTheFly() && !options.isReverseOptimizing() && state0.getNumBoardings() > 0 && state0.getLastNextArrivalDelta() <= bestWait) {
       State optimized=s1.makeState().optimizeOrReverse(true,true);
       if (optimized == null)       _log.error("Null optimized state. This shouldn't happen");
