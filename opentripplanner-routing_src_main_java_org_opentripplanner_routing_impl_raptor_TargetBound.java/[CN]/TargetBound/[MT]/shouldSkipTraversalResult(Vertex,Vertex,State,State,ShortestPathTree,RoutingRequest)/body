@@ -39,7 +39,7 @@
   for (  State bounder : bounders) {
     int prevTime=previousArrivalTime.get(i++);
     if (optimisticDistance * 1.1 > bounder.getWalkDistance() && current.getTime() + minTime > bounder.getTime() && current.getNumBoardings() >= bounder.getNumBoardings())     return true;
-    if (!(optimisticDistance * 1.1 > bounder.getWalkDistance() && current.getTime() + minTime > prevTime)) {
+    if (!(optimisticDistance * 1.1 > bounder.getWalkDistance() && current.getTime() + minTime > prevTime) && current.getNumBoardings() >= bounder.getNumBoardings()) {
       prevBounded=false;
     }
     double bounderTime=bounder.getTime() - traverseOptions.dateTime;
