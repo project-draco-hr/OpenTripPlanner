@@ -9,6 +9,7 @@
       routesToVisit.add(route);
     }
   }
+  int worstTime=0;
   if (!stalling) {
     for (int i=0; i < statesByStop.length; ++i) {
       if (statesByStop[i] == null)       continue;
@@ -29,6 +30,9 @@
           routesToVisit.add(route);
         }
       }
+    }
+    for (    State bounder : cur.bounder.bounders) {
+      worstTime=(int)((bounder.getTime() - options.dateTime) * 1.5 + options.dateTime);
     }
   }
   cur.visitedLastRound=new HashSet<RaptorStop>();
@@ -104,6 +108,11 @@
           if (oldState.nBoardings != nBoardings - 1)           continue;
           if (oldState.route == route)           continue;
           if (stalling == oldState.stalled)           continue;
+          if (!stalling) {
+            if (oldState.arrivalTime > worstTime) {
+              continue;
+            }
+          }
           ++trips;
           RaptorBoardSpec boardSpec=route.getTripIndex(options,oldState.arrivalTime + boardSlack,stopNo);
           if (boardSpec == null)           continue;
