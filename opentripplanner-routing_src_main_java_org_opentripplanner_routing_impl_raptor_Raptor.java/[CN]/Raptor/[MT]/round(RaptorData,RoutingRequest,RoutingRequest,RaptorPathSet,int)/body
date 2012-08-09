@@ -198,7 +198,7 @@
               }
               continue;
             }
-            if (cur.bounder.getTargetDistance(stop.stopVertex) < targetDistance) {
+            if (cur.statesByStop[stop.index] == null) {
               found=true;
               break ROUTE;
             }
