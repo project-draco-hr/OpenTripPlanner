@@ -256,6 +256,9 @@
       System.out.println("TARGET: " + state);
     }
   }
+  for (  State state : cur.bounder.removedBoundingStates) {
+    cur.removeTargetState(state);
+  }
   SPTSTATE:   for (  State state : spt.getAllStates()) {
     final Vertex vertex=state.getVertex();
     if (!(vertex instanceof TransitStop))     continue;

@@ -1,0 +1,8 @@
+{
+  for (Iterator<RaptorState> it=targetStates.iterator(); it.hasNext(); ) {
+    RaptorState state=it.next();
+    if (state.walkPath == toRemove) {
+      it.remove();
+    }
+  }
+}
