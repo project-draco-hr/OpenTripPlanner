@@ -9,6 +9,7 @@
  else {
     lastState=optimize ? s.optimize().reverse() : s;
   }
+  lastState=s;
   this.states=new LinkedList<State>();
   this.edges=new LinkedList<Edge>();
   for (State cur=lastState; cur != null; cur=cur.getBackState()) {

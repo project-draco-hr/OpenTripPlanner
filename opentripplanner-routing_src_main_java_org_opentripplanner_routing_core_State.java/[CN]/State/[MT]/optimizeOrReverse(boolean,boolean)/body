@@ -3,7 +3,6 @@
   State unoptimized=orig;
   State ret=orig.reversedClone();
   long newInitialWaitTime=-1;
-  boolean needToFigureInAdditionalWaitTime=false;
   PathParser pathParsers[];
   pathParsers=stateData.opt.rctx.pathParsers;
   stateData.opt.rctx.pathParsers=new PathParser[0];
@@ -44,10 +43,12 @@
     State reversed=ret.reverse();
     if (getWeight() <= reversed.getWeight())     LOG.warn("Optimization did not decrease weight: before " + this.getWeight() + " after "+ reversed.getWeight());
     if (getElapsedTime() != reversed.getElapsedTime())     LOG.warn("Optimization changed time: before " + this.getElapsedTime() + " after "+ reversed.getElapsedTime());
-    if (getActiveTime() <= reversed.getActiveTime())     LOG.warn("Optimization increased active time: before " + this.getActiveTime() + " after "+ reversed.getActiveTime()+ ", boardings: "+ this.getNumBoardings());
-    if (reversed.getWeight() > this.getBackState().getWeight())     LOG.warn("Weight has been reduced enough to make it run backwards, now:" + reversed.getWeight() + " backState "+ getBackState().getWeight()+ ", "+ "number of boardings: "+ getNumBoardings());
+    if (getActiveTime() <= reversed.getActiveTime())     LOG.warn("Optimization did not decrease active time: before " + this.getActiveTime() + " after "+ reversed.getActiveTime()+ ", boardings: "+ this.getNumBoardings());
+    if (reversed.getWeight() < this.getBackState().getWeight())     LOG.warn("Weight has been reduced enough to make it run backwards, now:" + reversed.getWeight() + " backState "+ getBackState().getWeight()+ ", "+ "number of boardings: "+ getNumBoardings());
     if (getTime() != reversed.getTime())     LOG.warn("Times do not match");
+    if (Math.abs(getWeight() - reversed.getWeight()) > 1 && newInitialWaitTime == stateData.initialWaitTime)     LOG.warn("Weight is changed (before: " + getWeight() + ", after: "+ reversed.getWeight()+ "), initial wait times "+ "constant at "+ newInitialWaitTime);
     if (newInitialWaitTime != reversed.stateData.initialWaitTime)     LOG.warn("Initial wait time not propagated: is " + reversed.stateData.initialWaitTime + ", should be "+ newInitialWaitTime);
+    reversed.initializeFieldsFrom(this);
     return reversed;
   }
  else   return ret;
