@@ -1,4 +1,8 @@
 {
+  for (Iterator<State> it=bounders.iterator(); it.hasNext(); ) {
+    State old=it.next();
+    if (bounder.dominates(old))     it.remove();
+  }
   bounders.add(bounder);
   RaptorState state=(RaptorState)bounder.getExtension("raptorParent");
   RaptorStop stop=state.stop;

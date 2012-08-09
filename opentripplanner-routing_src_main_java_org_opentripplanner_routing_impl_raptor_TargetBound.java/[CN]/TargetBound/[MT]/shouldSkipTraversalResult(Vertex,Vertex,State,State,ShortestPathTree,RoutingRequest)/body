@@ -38,8 +38,15 @@
   boolean prevBounded=!bounders.isEmpty();
   for (  State bounder : bounders) {
     int prevTime=previousArrivalTime.get(i++);
-    if (optimisticDistance * 1.1 > bounder.getWalkDistance() && current.getTime() + minTime > bounder.getTime() && current.getNumBoardings() >= bounder.getNumBoardings())     return true;
-    if (!(optimisticDistance * 1.1 > bounder.getWalkDistance() && current.getTime() + minTime > prevTime) && current.getNumBoardings() >= bounder.getNumBoardings()) {
+    if (optimisticDistance * 1.1 > bounder.getWalkDistance() && current.getNumBoardings() >= bounder.getNumBoardings()) {
+      if (current.getTime() + minTime > bounder.getTime()) {
+        return true;
+      }
+ else       if (current.getTime() + minTime <= prevTime) {
+        prevBounded=false;
+      }
+    }
+ else {
       prevBounded=false;
     }
     double bounderTime=bounder.getTime() - traverseOptions.dateTime;
