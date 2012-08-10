@@ -1,5 +1,4 @@
 {
-  boolean stalling=cur.stalling;
   Collection<RaptorRoute> routesToVisit=new HashSet<RaptorRoute>();
   Set<RaptorStop> visitedLastRound=cur.visitedLastRound;
   List<RaptorState> createdStates=new ArrayList<RaptorState>();
@@ -7,36 +6,6 @@
   for (  RaptorStop stop : visitedLastRound) {
     for (    RaptorRoute route : data.routesForStop[stop.index]) {
       routesToVisit.add(route);
-    }
-  }
-  int worstTime=Integer.MAX_VALUE;
-  if (!stalling) {
-    for (int i=0; i < statesByStop.length; ++i) {
-      if (statesByStop[i] == null)       continue;
-      boolean found=false;
-      for (      RaptorState state : statesByStop[i]) {
-        if (nBoardings == cur.highWater)         state.stalled=true;
-        if (state.stalled) {
-          if (state.nBoardings == nBoardings) {
-            createdStates.add(state);
-          }
- else           if (state.nBoardings == nBoardings - 1) {
-            found=true;
-            visitedLastRound.add(state.stop);
-          }
-        }
-      }
-      if (found) {
-        for (        RaptorRoute route : data.routesForStop[i]) {
-          routesToVisit.add(route);
-        }
-      }
-    }
-    for (    State bounder : cur.bounder.bounders) {
-      int time=(int)((bounder.getTime() - options.dateTime) * 1.5 + options.dateTime);
-      if (time < worstTime) {
-        worstTime=time;
-      }
     }
   }
   cur.visitedLastRound=new HashSet<RaptorStop>();
@@ -75,7 +44,6 @@
         newState.walkDistance=boardState.walkDistance;
         newState.parent=boardState.parent;
         newState.stop=stop;
-        newState.stalled=boardState.stalled;
         for (        RaptorState oldState : states) {
           if (eDominates(oldState,newState)) {
             continue CONTINUE;
@@ -111,12 +79,6 @@
         TRYBOARD:         for (        RaptorState oldState : states) {
           if (oldState.nBoardings != nBoardings - 1)           continue;
           if (oldState.route == route)           continue;
-          if (stalling == oldState.stalled)           continue;
-          if (!stalling) {
-            if (oldState.arrivalTime > worstTime) {
-              continue;
-            }
-          }
           ++trips;
           RaptorBoardSpec boardSpec=route.getTripIndex(options,oldState.arrivalTime + boardSlack,stopNo);
           if (boardSpec == null)           continue;
@@ -131,7 +93,6 @@
           boardState.serviceDay=boardSpec.serviceDay;
           boardState.route=route;
           boardState.walkDistance=oldState.walkDistance;
-          boardState.stalled=oldState.stalled;
           for (          RaptorState state : newStates) {
             if (eDominates(state,boardState)) {
               continue TRYBOARD;
@@ -190,28 +151,6 @@
       }
       if (minWalk + state.walkDistance > options.getMaxWalkDistance()) {
         continue;
-      }
-      if (stalling && nBoardings > 3) {
-        boolean found=false;
-        ROUTE:         for (        RaptorRoute route : data.routesForStop[state.stop.index]) {
-          boolean started=false;
-          for (          RaptorStop stop : route.stops) {
-            if (!started) {
-              if (stop == state.stop) {
-                started=true;
-              }
-              continue;
-            }
-            if (cur.statesByStop[stop.index] == null) {
-              found=true;
-              break ROUTE;
-            }
-          }
-        }
-        if (!found) {
-          state.stalled=true;
-          continue;
-        }
       }
       StateEditor dijkstraState=new MaxWalkState.MaxWalkStateEditor(walkOptions,stopVertex);
       dijkstraState.setNumBoardings(state.nBoardings);
@@ -279,7 +218,6 @@
     RaptorState newState=new RaptorState();
     if (baseState != null) {
       newState.nBoardings=baseState.nBoardings;
-      newState.stalled=baseState.stalled;
     }
     newState.walkDistance=state.getWalkDistance();
     newState.arrivalTime=(int)state.getTime();
