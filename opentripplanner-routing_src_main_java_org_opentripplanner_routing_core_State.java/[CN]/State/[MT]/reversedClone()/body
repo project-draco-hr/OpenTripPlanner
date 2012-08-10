@@ -1,7 +1,5 @@
 {
   State newState=new State(this.vertex,this.time,stateData.opt.reversedClone());
   newState.stateData.tripTimes=stateData.tripTimes;
-  newState.stateData.initialWaitTime=stateData.initialWaitTime;
-  newState.pathParserStates=Arrays.copyOf(this.pathParserStates,this.pathParserStates.length);
   return newState;
 }
