@@ -10,7 +10,7 @@
   while (orig.getBackState() != null) {
     edge=orig.getBackEdge();
     if (optimize) {
-      if (edge instanceof TransitBoardAlight && ((TransitBoardAlight)edge).isBoarding() && orig.getNumBoardings() == 1 && forward) {
+      if (edge instanceof TransitBoardAlight && forward && orig.getNumBoardings() == 1 && ((((TransitBoardAlight)edge).isBoarding() && !stateData.opt.isArriveBy()) || (!((TransitBoardAlight)edge).isBoarding() && stateData.opt.isArriveBy()))) {
         ret=((TransitBoardAlight)edge).traverse(ret,orig.getBackState().getTime());
         newInitialWaitTime=ret.stateData.initialWaitTime;
       }
@@ -35,7 +35,6 @@
       EdgeNarrative retNarrative=ret.getBackEdgeNarrative();
       copyExistingNarrativeToNewNarrativeAsAppropriate(origNarrative,retNarrative);
     }
-    if (ret.getTime() - orig.getBackState().getTime() < -0.5)     LOG.warn("A transfer has been missed, time delta is negative: " + ret.getTime() + " - "+ orig.getBackState().getTime());
     orig=orig.getBackState();
   }
   stateData.opt.rctx.pathParsers=pathParsers;
