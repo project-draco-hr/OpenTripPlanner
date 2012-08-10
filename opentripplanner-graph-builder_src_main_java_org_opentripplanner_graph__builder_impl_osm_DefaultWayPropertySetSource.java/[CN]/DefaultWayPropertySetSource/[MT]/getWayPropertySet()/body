@@ -7,7 +7,7 @@
   setProperties(props,"public_transport=platform",StreetTraversalPermission.PEDESTRIAN);
   setProperties(props,"railway=platform",StreetTraversalPermission.PEDESTRIAN);
   setProperties(props,"footway=sidewalk;highway=footway",StreetTraversalPermission.PEDESTRIAN);
-  setProperties(props,"highway=cycleway",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,0.6,0.6);
+  setProperties(props,"highway=cycleway",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,0.68,0.68);
   setProperties(props,"highway=path",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,0.75,0.75);
   setProperties(props,"highway=pedestrian",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,0.90,0.90);
   setProperties(props,"highway=footway",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,1.1,1.1);
@@ -26,8 +26,8 @@
   setProperties(props,"highway=secondary_link",StreetTraversalPermission.ALL,1.5,1.5);
   setProperties(props,"highway=primary",StreetTraversalPermission.ALL,2.06,2.06);
   setProperties(props,"highway=primary_link",StreetTraversalPermission.ALL,2.06,2.06);
-  setProperties(props,"highway=trunk_link",StreetTraversalPermission.BICYCLE_AND_CAR,2.06,2.06);
-  setProperties(props,"highway=motorway_link",StreetTraversalPermission.BICYCLE_AND_CAR,2.06,2.06);
+  setProperties(props,"highway=trunk_link",StreetTraversalPermission.CAR,2.06,2.06);
+  setProperties(props,"highway=motorway_link",StreetTraversalPermission.CAR,2.06,2.06);
   setProperties(props,"highway=trunk",StreetTraversalPermission.CAR,7.47,7.47);
   setProperties(props,"highway=motorway",StreetTraversalPermission.CAR,8,8);
   setProperties(props,"highway=*;cycleway=lane",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,0.87,0.87);
@@ -114,9 +114,8 @@
   setProperties(props,"highway=secondary_link;cycleway=opposite",StreetTraversalPermission.ALL,1.5,1.71);
   setProperties(props,"highway=primary;cycleway=opposite",StreetTraversalPermission.ALL,2.06,2.99);
   setProperties(props,"highway=primary_link;cycleway=opposite",StreetTraversalPermission.ALL,2.06,2.99);
-  setProperties(props,"highway=path;bicycle=designated",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,0.6,0.6);
+  setProperties(props,"highway=path;bicycle=designated",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,0.68,0.68);
   setProperties(props,"highway=footway;bicycle=designated",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,0.75,0.75);
-  setProperties(props,"highway=footway;bicycle=yes",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,0.75,0.75);
   setProperties(props,"highway=footway;RLIS:bicycle=designated",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,0.77,0.77);
   setProperties(props,"highway=footway;CCGIS:bicycle=designated",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,0.77,0.77);
   setProperties(props,"footway=sidewalk;highway=footway;bicycle=yes",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,2.5,2.5);
