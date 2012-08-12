@@ -10,6 +10,6 @@
   }
  catch (  Exception e) {
     LOG.error("Error reading version from properties file: {}",e.getMessage());
-    return new MavenVersion("0.0.0-ParseFailure","0");
+    return new MavenVersion();
   }
 }
