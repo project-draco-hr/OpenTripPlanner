@@ -1,21 +1,28 @@
 {
   System.out.println("dumping hop info...");
-  out.println("route,distance,time,speed");
-  for (  Vertex v : graph.getVertices()) {
-    for (    PatternHop ph : IterableLibrary.filter(v.getOutgoing(),PatternHop.class)) {
-      double distance=ph.getDistance();
-      if (distance < 3)       continue;
-      TableTripPattern ttp=ph.getPattern();
-      List<Trip> trips=ttp.getTrips();
-      int hop=ph.stopIndex;
-      String route=ttp.getExemplar().getRoute().getId().toString();
-      for (int trip=0; trip < trips.size(); trip++) {
-        int time=ttp.getRunningTime(hop,trip);
-        double speed=distance / time;
-        if (Double.isInfinite(speed) || Double.isNaN(speed))         continue;
-        out.printf("%s,%f,%d,%f\n",route,distance,time,speed);
+  try {
+    writer.writeRecord(new String[]{"route","distance","time","speed"});
+    for (    Vertex v : graph.getVertices()) {
+      for (      PatternHop ph : IterableLibrary.filter(v.getOutgoing(),PatternHop.class)) {
+        double distance=ph.getDistance();
+        if (distance < 3)         continue;
+        TableTripPattern ttp=ph.getPattern();
+        List<Trip> trips=ttp.getTrips();
+        int hop=ph.stopIndex;
+        String route=ttp.getExemplar().getRoute().getId().toString();
+        for (int trip=0; trip < trips.size(); trip++) {
+          int time=ttp.getRunningTime(hop,trip);
+          double speed=distance / time;
+          if (Double.isInfinite(speed) || Double.isNaN(speed))           continue;
+          String[] entries=new String[]{route,Double.toString(distance),Integer.toString(time),Double.toString(speed)};
+          writer.writeRecord(entries);
+        }
       }
     }
   }
-  System.out.println("done...");
+ catch (  IOException e) {
+    LOG.error("Exception writing CSV: {}",e.getMessage());
+    return;
+  }
+  LOG.info("done.");
 }
