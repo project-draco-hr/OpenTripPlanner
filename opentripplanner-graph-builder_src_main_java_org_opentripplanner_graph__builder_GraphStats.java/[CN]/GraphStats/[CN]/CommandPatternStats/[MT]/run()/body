@@ -1,0 +1,26 @@
+{
+  LOG.info("counting number of trips per pattern...");
+  try {
+    writer.writeRecord(new String[]{"nTrips","nPatterns"});
+    Set<TableTripPattern> patterns=new HashSet<TableTripPattern>();
+    for (    Vertex v : graph.getVertices()) {
+      for (      PatternHop ph : IterableLibrary.filter(v.getOutgoing(),PatternHop.class)) {
+        TableTripPattern ttp=ph.getPattern();
+        patterns.add(ttp);
+      }
+    }
+    Multiset<Integer> counts=TreeMultiset.create();
+    for (    TableTripPattern ttp : patterns) {
+      List<Trip> trips=ttp.getTrips();
+      counts.add(trips.size());
+    }
+    for (    Multiset.Entry<Integer> count : counts.entrySet()) {
+      writer.writeRecord(new String[]{count.getElement().toString(),Integer.toString(count.getCount())});
+    }
+  }
+ catch (  IOException e) {
+    LOG.error("Exception writing CSV: {}",e.getMessage());
+    return;
+  }
+  LOG.info("done.");
+}
