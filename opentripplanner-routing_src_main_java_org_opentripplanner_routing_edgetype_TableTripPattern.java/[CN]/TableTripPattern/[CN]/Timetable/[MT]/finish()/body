@@ -1,10 +1,10 @@
 {
   int nHops=stops.length - 1;
   int nTrips=trips.size();
-  this.bestRunningTimes=new int[nHops];
+  TableTripPattern.this.bestRunningTimes=new int[nHops];
   boolean nullArrivals=false;
   if (!nullArrivals) {
-    this.bestDwellTimes=new int[nHops];
+    TableTripPattern.this.bestDwellTimes=new int[nHops];
     for (int h=1; h < nHops; ++h) {
       bestDwellTimes[h]=Integer.MAX_VALUE;
       for (int t=0; t < nTrips; ++t) {
