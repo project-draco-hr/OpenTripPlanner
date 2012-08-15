@@ -1,0 +1,10 @@
+{
+  arrivalsIndex=new TripTimes[stops.length][];
+  departuresIndex=new TripTimes[stops.length][];
+  for (int stopIndex=0; stopIndex < stops.length; stopIndex++) {
+    arrivalsIndex[stopIndex]=(TripTimes[])tripTimes.clone();
+    departuresIndex[stopIndex]=(TripTimes[])tripTimes.clone();
+    Arrays.sort(arrivalsIndex[stopIndex],TripTimes.getArrivalsComparator(stopIndex));
+    Arrays.sort(departuresIndex[stopIndex],TripTimes.getDeparturesComparator(stopIndex));
+  }
+}

@@ -1,10 +1,10 @@
 {
   int nHops=stops.length - 1;
   int nTrips=trips.size();
-  TableTripPattern.this.bestRunningTimes=new int[nHops];
+  bestRunningTimes=new int[nHops];
   boolean nullArrivals=false;
   if (!nullArrivals) {
-    TableTripPattern.this.bestDwellTimes=new int[nHops];
+    bestDwellTimes=new int[nHops];
     for (int h=1; h < nHops; ++h) {
       bestDwellTimes[h]=Integer.MAX_VALUE;
       for (int t=0; t < nTrips; ++t) {
@@ -23,5 +23,13 @@
         bestRunningTimes[h]=rt;
       }
     }
+  }
+  if (nTrips > 16) {
+    LOG.debug("indexing pattern with {} trips",nTrips);
+    index();
+  }
+ else {
+    arrivalsIndex=null;
+    departuresIndex=null;
   }
 }
