@@ -1,0 +1,10 @@
+{
+  Envelope envelope=new Envelope(coordinateOne,coordinateTwo);
+  List<?> stops=transitStopTree.query(envelope);
+  ArrayList<TransitStop> out=new ArrayList<TransitStop>();
+  for (  Object o : stops) {
+    TransitStop stop=(TransitStop)o;
+    out.add(stop);
+  }
+  return out;
+}

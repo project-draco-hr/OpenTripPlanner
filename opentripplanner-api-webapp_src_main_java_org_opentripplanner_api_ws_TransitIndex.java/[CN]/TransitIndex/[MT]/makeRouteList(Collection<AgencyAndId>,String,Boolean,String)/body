@@ -1,0 +1,14 @@
+{
+  RouteList response=new RouteList();
+  TransitIndexService transitIndexService=getGraph(routerId).getService(TransitIndexService.class);
+  for (  AgencyAndId routeId : routeIds) {
+    for (    RouteVariant variant : transitIndexService.getVariantsForRoute(routeId)) {
+      Route route=variant.getRoute();
+      if (agencyFilter != null && !agencyFilter.equals(route.getAgency().getId()))       continue;
+      RouteType routeType=new RouteType(route,extended);
+      response.routes.add(routeType);
+      break;
+    }
+  }
+  return response;
+}

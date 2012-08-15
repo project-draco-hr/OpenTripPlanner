@@ -1,0 +1,20 @@
+{
+  Graph graph=getGraph(routerId);
+  StreetVertexIndexService streetVertexIndexService=graph.streetIndex;
+  Coordinate cOne=new Coordinate(leftUpLat,leftUpLon);
+  Coordinate cTwo=new Coordinate(rightUpLat,rightUpLon);
+  List<TransitStop> stops=streetVertexIndexService.getNearbyTransitStops(cOne,cTwo);
+  TransitIndexService transitIndexService=graph.getService(TransitIndexService.class);
+  if (transitIndexService == null) {
+    return new TransitError("No transit index found.  Add TransitIndexBuilder to your graph builder configuration and rebuild your graph.");
+  }
+  StopList response=new StopList();
+  for (  TransitStop transitStop : stops) {
+    AgencyAndId stopId=transitStop.getStopId();
+    if (agency != null && !agency.equals(stopId.getAgencyId()))     continue;
+    StopType stop=new StopType(transitStop.getStop(),extended);
+    if (extended != null && extended.equals(true))     stop.routes=transitIndexService.getRoutesForStop(stopId);
+    response.stops.add(stop);
+  }
+  return response;
+}
