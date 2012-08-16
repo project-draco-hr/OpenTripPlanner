@@ -22,8 +22,8 @@
     hop.setGeometry(getHopGeometry(graph,trip.getShapeId(),st0,st1,psv0depart,psv1arrive));
     TransitStopDepart stopDepart=context.stopDepartNodes.get(s0);
     TransitStopArrive stopArrive=context.stopArriveNodes.get(s1);
-    new PatternBoard(stopDepart,psv0depart,hopIndex,mode);
-    new PatternAlight(psv1arrive,stopArrive,hopIndex,mode);
+    new TransitBoardAlight(stopDepart,psv0depart,hopIndex,mode);
+    new TransitBoardAlight(psv1arrive,stopArrive,hopIndex,mode);
   }
   return tripPattern;
 }

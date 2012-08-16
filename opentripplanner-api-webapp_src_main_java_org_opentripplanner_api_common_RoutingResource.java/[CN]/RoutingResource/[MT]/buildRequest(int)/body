@@ -99,5 +99,6 @@
     request.setStartingTransitStopId(AgencyAndId.convertFromString(startTransitStopId));
   }
   request.setClampInitialWait(get(clampInitialWait,n,request.getClampInitialWait()));
+  request.setReverseOptimizeOnTheFly(get(reverseOptimizeOnTheFly,n,request.isReverseOptimizeOnTheFly()));
   return request;
 }

@@ -23,8 +23,8 @@
         continue;
       }
       for (      Edge e : departureVertex.getOutgoing()) {
-        if (e instanceof PatternBoard) {
-          TableTripPattern pattern=((PatternBoard)e).getPattern();
+        if (e instanceof TransitBoardAlight && ((TransitBoardAlight)e).isBoarding()) {
+          TableTripPattern pattern=((TransitBoardAlight)e).getPattern();
           if (nearbyPatterns.contains(pattern)) {
             Double cost=patternCosts.get(pattern);
             if (cost == null) {

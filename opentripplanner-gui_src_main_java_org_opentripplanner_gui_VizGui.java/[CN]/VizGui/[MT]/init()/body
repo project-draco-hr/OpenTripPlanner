@@ -160,13 +160,13 @@
       metadataList.revalidate();
       TableTripPattern pattern=null;
       int stopIndex=0;
-      if (selected instanceof PatternBoard) {
-        PatternBoard boardEdge=(PatternBoard)selected;
+      if (selected instanceof TransitBoardAlight && ((TransitBoardAlight)selected).isBoarding()) {
+        TransitBoardAlight boardEdge=(TransitBoardAlight)selected;
         pattern=boardEdge.getPattern();
         stopIndex=boardEdge.getStopIndex();
       }
- else       if (selected instanceof PatternAlight) {
-        PatternAlight alightEdge=(PatternAlight)selected;
+ else       if (selected instanceof TransitBoardAlight && !((TransitBoardAlight)selected).isBoarding()) {
+        TransitBoardAlight alightEdge=(TransitBoardAlight)selected;
         pattern=alightEdge.getPattern();
         stopIndex=alightEdge.getStopIndex();
       }

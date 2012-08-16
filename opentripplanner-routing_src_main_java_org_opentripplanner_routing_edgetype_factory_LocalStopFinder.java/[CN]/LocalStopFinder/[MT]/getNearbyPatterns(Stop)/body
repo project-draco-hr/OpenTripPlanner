@@ -12,8 +12,8 @@
       }
       for (      Edge e : v.getOutgoing()) {
         for (        Edge e2 : e.getToVertex().getOutgoing()) {
-          if (e2 instanceof PatternBoard) {
-            neighborhood.add(((PatternBoard)e2).getPattern());
+          if (e2 instanceof TransitBoardAlight && ((TransitBoardAlight)e2).isBoarding()) {
+            neighborhood.add(((TransitBoardAlight)e2).getPattern());
           }
         }
       }
