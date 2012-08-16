@@ -20,5 +20,6 @@
   s1.setTripId(targetTrip.getId());
   s1.setTripTimes(pattern.getTripTimes(dwellData.patternIndex));
   s1.incrementWeight(dwellData.dwellTime);
+  s1.setBackMode(getMode());
   return s1.makeState();
 }

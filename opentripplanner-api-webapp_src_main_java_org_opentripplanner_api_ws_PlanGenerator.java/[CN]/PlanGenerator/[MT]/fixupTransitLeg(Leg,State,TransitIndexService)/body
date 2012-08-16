@@ -1,5 +1,5 @@
 {
-  EdgeNarrative en=state.getBackEdgeNarrative();
+  Edge en=state.getBackEdge();
   leg.route=en.getName();
   Trip trip=en.getTrip();
   if (trip != null) {
@@ -18,6 +18,6 @@
       leg.agencyUrl=agency.getUrl();
     }
   }
-  leg.mode=en.getMode().toString();
+  leg.mode=state.getBackMode().toString();
   leg.startTime=makeCalendar(state.getBackState());
 }

@@ -20,7 +20,7 @@
       State s0=new State(segment.board.getFromVertex(),options);
       state=segment.board.traverse(s0);
       if (state == null)       continue;
-      if (state.getBackEdgeNarrative().getTrip().getId().equals(trip)) {
+      if (state.getBackEdge().getTrip().getId().equals(trip)) {
         start=segment;
         StopTime st=new StopTime();
         st.time=state.getTime();

@@ -1,5 +1,4 @@
 {
-  EdgeNarrative en=new FixedModeEdge(this,s0.getNonTransitMode(s0.getOptions()));
   RoutingRequest options=s0.getOptions();
   if (options.wheelchairAccessible && !wheelchairAccessible) {
     return null;
@@ -14,7 +13,8 @@
   if (mode == TraverseMode.CAR && !permission.allows(StreetTraversalPermission.CAR)) {
     return null;
   }
-  StateEditor s1=s0.edit(this,en);
+  StateEditor s1=s0.edit(this);
+  s1.setBackMode(mode);
   s1.incrementWeight(options.elevatorHopCost);
   s1.incrementTimeInSeconds(options.elevatorHopTime);
   return s1.makeState();

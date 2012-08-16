@@ -1,3 +1,4 @@
 {
-  child.backEdgeNarrative=new NoteNarrative(child.backEdgeNarrative,notes);
+  if (this.notes == null)   this.notes=new HashSet<Alert>();
+  this.notes.add(notes);
 }

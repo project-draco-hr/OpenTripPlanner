@@ -1,6 +1,7 @@
 {
   State orig=this;
   State unoptimized=orig;
+  TraverseMode mode=null;
   State ret=orig.reversedClone();
   long newInitialWaitTime=this.stateData.initialWaitTime;
   PathParser pathParsers[];
@@ -23,18 +24,16 @@
       }
     }
  else {
-      EdgeNarrative narrative=orig.getBackEdgeNarrative();
-      StateEditor editor=ret.edit(edge,narrative);
+      StateEditor editor=ret.edit(edge);
       editor.setFromState(orig);
       editor.incrementTimeInSeconds(orig.getAbsTimeDeltaSec());
       editor.incrementWeight(orig.getWeightDelta());
       editor.incrementWalkDistance(orig.getWalkDistanceDelta());
+      editor.setBackMode(mode);
       if (orig.isBikeRenting() != orig.getBackState().isBikeRenting())       editor.setBikeRenting(!orig.isBikeRenting());
       ret=editor.makeState();
-      EdgeNarrative origNarrative=orig.getBackEdgeNarrative();
-      EdgeNarrative retNarrative=ret.getBackEdgeNarrative();
-      copyExistingNarrativeToNewNarrativeAsAppropriate(origNarrative,retNarrative);
     }
+    mode=orig.getBackMode();
     orig=orig.getBackState();
   }
   stateData.opt.rctx.pathParsers=pathParsers;

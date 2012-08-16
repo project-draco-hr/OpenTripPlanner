@@ -15,7 +15,7 @@
     if (s2 == null)     return null;
     time=(int)Math.abs(s0.getTime() - s2.getTime());
     weight=s2.getWeight() - s0.getWeight();
-    mode=s2.getBackEdgeNarrative().getMode();
+    mode=s2.getBackMode();
     walkDistance=s2.getWalkDistance() - s0.getWalkDistance();
   }
   StateEditor ret=s0.edit(this);

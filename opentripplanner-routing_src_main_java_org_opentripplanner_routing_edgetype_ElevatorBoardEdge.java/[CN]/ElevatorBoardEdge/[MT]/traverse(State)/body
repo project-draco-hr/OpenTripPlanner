@@ -1,7 +1,7 @@
 {
-  EdgeNarrative en=new FixedModeEdge(this,s0.getNonTransitMode(s0.getOptions()));
   RoutingRequest options=s0.getOptions();
-  StateEditor s1=s0.edit(this,en);
+  StateEditor s1=s0.edit(this);
+  s1.setBackMode(s0.getNonTransitMode(options));
   s1.incrementWeight(options.elevatorBoardCost);
   s1.incrementTimeInSeconds(options.elevatorBoardTime);
   return s1.makeState();
