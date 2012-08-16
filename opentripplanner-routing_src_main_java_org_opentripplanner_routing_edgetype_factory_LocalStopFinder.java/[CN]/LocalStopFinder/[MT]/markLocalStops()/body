@@ -11,8 +11,8 @@
       total++;
     }
     for (    Edge e : gv.getOutgoing()) {
-      if (e instanceof PatternBoard) {
-        TableTripPattern pattern=((PatternBoard)e).getPattern();
+      if (e instanceof TransitBoardAlight && ((TransitBoardAlight)e).isBoarding()) {
+        TableTripPattern pattern=((TransitBoardAlight)e).getPattern();
         patterns.add(pattern);
       }
       if (e instanceof FrequencyBoard) {

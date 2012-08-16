@@ -1,9 +1,0 @@
-{
-  if (rctx.opt.isArriveBy())   return 0;
- else   if (!rctx.opt.getModes().get(modeMask)) {
-    return Double.POSITIVE_INFINITY;
-  }
-  int serviceId=getPattern().getServiceId();
-  for (  ServiceDay sd : rctx.serviceDays)   if (sd.serviceIdRunning(serviceId))   return 0;
-  return Double.POSITIVE_INFINITY;
-}

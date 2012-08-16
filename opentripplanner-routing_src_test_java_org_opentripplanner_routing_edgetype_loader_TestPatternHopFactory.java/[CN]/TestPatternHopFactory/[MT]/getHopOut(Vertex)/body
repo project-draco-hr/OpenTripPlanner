@@ -1,5 +1,6 @@
 {
-  for (  PatternBoard e : filter(v.getOutgoing(),PatternBoard.class)) {
+  for (  TransitBoardAlight e : filter(v.getOutgoing(),TransitBoardAlight.class)) {
+    if (!e.isBoarding())     continue;
     for (    PatternHop f : filter(e.getToVertex().getOutgoing(),PatternHop.class)) {
       return f;
     }

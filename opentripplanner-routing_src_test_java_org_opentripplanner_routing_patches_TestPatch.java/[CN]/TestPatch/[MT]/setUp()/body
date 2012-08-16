@@ -22,7 +22,8 @@
       Route route=new Route();
       route.setId(routeId);
       route.setShortName(routeId.getId());
-      PatternBoard somePatternBoard=(PatternBoard)graph.getVertex("agency_A_depart").getOutgoing().iterator().next();
+      TransitBoardAlight somePatternBoard=(TransitBoardAlight)graph.getVertex("agency_A_depart").getOutgoing().iterator().next();
+      assertTrue(somePatternBoard.isBoarding());
       PatternHop somePatternHop=(PatternHop)somePatternBoard.getToVertex().getOutgoing().iterator().next();
       Stop stopA=somePatternHop.getStartStop();
       ArrayList<Stop> stops=new ArrayList<Stop>();

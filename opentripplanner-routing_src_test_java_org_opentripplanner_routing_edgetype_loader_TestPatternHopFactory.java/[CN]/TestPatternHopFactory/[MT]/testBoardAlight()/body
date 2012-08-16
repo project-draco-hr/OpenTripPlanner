@@ -4,9 +4,10 @@
   assertEquals(1,stop_a_depart.getDegreeOut());
   assertEquals(3,stop_b_depart.getDegreeOut());
   for (  Edge e : stop_a_depart.getOutgoing()) {
-    assertTrue(e instanceof PatternBoard);
+    assertEquals(TransitBoardAlight.class,e.getClass());
+    assertTrue(((TransitBoardAlight)e).isBoarding());
   }
-  PatternBoard pb=(PatternBoard)stop_a_depart.getOutgoing().iterator().next();
+  TransitBoardAlight pb=(TransitBoardAlight)stop_a_depart.getOutgoing().iterator().next();
   Vertex journey_a_1=pb.getToVertex();
   assertEquals(1,journey_a_1.getDegreeIn());
   for (  Edge e : journey_a_1.getOutgoing()) {
