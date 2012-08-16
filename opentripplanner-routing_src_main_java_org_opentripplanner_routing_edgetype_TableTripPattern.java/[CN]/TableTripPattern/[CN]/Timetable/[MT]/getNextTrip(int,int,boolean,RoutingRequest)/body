@@ -9,6 +9,19 @@
   if (wheelchair && (perStopFlags[stopIndex] & FLAG_WHEELCHAIR_ACCESSIBLE) == 0) {
     return null;
   }
+  if (departuresIndex != null) {
+    TripTimes[] index=departuresIndex[stopIndex];
+    int tripIndex=TripTimes.binarySearchDepartures(index,stopIndex,afterTime);
+    while (tripIndex < index.length) {
+      TripTimes tt=index[tripIndex];
+      Trip t=tt.trip;
+      if (tripAcceptable(t,haveBicycle,wheelchair) && !options.bannedTrips.contains(t.getId())) {
+        return tt;
+      }
+      tripIndex+=1;
+    }
+    return null;
+  }
   TripTimes bestTrip=null;
   int bestTime=Integer.MAX_VALUE;
   for (int i=0; i < trips.size(); i++) {
