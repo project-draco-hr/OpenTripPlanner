@@ -11,7 +11,7 @@
     EdgeNarrative en=new TransitNarrative(state0.getTripTimes().trip,this);
     StateEditor s1=state0.edit(this,en);
     if (boarding)     type=getPattern().getBoardType(stopIndex);
- else     type=getPattern().getAlightType(stopIndex);
+ else     type=getPattern().getAlightType(stopIndex + 1);
     if (TransitUtils.handleBoardAlightType(s1,type)) {
       return null;
     }
@@ -99,7 +99,7 @@
     EdgeNarrative en=new TransitNarrative(trip,this);
     StateEditor s1=state0.edit(this,en);
     if (boarding)     type=getPattern().getBoardType(stopIndex);
- else     type=getPattern().getAlightType(stopIndex);
+ else     type=getPattern().getAlightType(stopIndex + 1);
     if (TransitUtils.handleBoardAlightType(s1,type)) {
       return null;
     }
