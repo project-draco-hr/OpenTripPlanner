@@ -1,7 +1,6 @@
 {
   State orig=this;
   State unoptimized=orig;
-  TraverseMode mode=null;
   State ret=orig.reversedClone();
   long newInitialWaitTime=this.stateData.initialWaitTime;
   PathParser pathParsers[];
@@ -29,11 +28,10 @@
       editor.incrementTimeInSeconds(orig.getAbsTimeDeltaSec());
       editor.incrementWeight(orig.getWeightDelta());
       editor.incrementWalkDistance(orig.getWalkDistanceDelta());
-      editor.setBackMode(mode);
+      editor.setBackMode(orig.getBackMode());
       if (orig.isBikeRenting() != orig.getBackState().isBikeRenting())       editor.setBikeRenting(!orig.isBikeRenting());
       ret=editor.makeState();
     }
-    mode=orig.getBackMode();
     orig=orig.getBackState();
   }
   stateData.opt.rctx.pathParsers=pathParsers;
