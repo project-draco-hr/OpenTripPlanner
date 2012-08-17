@@ -1,23 +1,7 @@
 {
-  boolean pickup=true;
-  int mask=pickup ? MASK_PICKUP : MASK_DROPOFF;
-  int shift=pickup ? SHIFT_PICKUP : SHIFT_DROPOFF;
-  if ((perStopFlags[stopIndex] & mask) >> shift == NO_PICKUP) {
-    return null;
-  }
-  boolean wheelchair=options.wheelchairAccessible;
-  if (wheelchair && (perStopFlags[stopIndex] & FLAG_WHEELCHAIR_ACCESSIBLE) == 0) {
-    return null;
-  }
-  TripTimes bestTrip=null;
-  int bestTime=Integer.MAX_VALUE;
-  for (int i=0; i < trips.size(); i++) {
-    TripTimes currTrip=tripTimes.get(i);
-    int currTime=currTrip.getDepartureTime(stopIndex);
-    if (currTime >= afterTime && currTime < bestTime && tripAcceptable(currTrip.trip,haveBicycle,wheelchair) && !options.bannedTrips.contains(trips.get(i).getId())) {
-      bestTrip=currTrip;
-      bestTime=currTime;
-    }
-  }
-  return bestTrip;
+  Timetable timetable;
+  TimetableSnapshot snapshot=options.rctx.timetableSnapshot;
+  if (snapshot != null)   timetable=snapshot.resolve(this);
+ else   timetable=scheduledTimetable;
+  return timetable.getNextTrip(stopIndex,afterTime,haveBicycle,options);
 }
