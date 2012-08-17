@@ -2,5 +2,6 @@
   updater=new UpdateTask();
   thread=new Thread(updater);
   thread.setDaemon(false);
+  thread.setName("Graph Updater Thread");
   thread.start();
 }

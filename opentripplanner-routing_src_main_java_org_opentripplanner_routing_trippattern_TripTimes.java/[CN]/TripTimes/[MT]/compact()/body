@@ -3,6 +3,7 @@
   int nHops=arrivalTimes.length;
   for (int hop=1; hop < nHops; hop++) {
     if (this.getDwellTime(hop) != 0) {
+      LOG.trace("compact failed: nonzero dwell time before hop {}",hop);
       return false;
     }
   }
