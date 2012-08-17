@@ -1,0 +1,7 @@
+{
+  if (arrivalTimes != null)   return false;
+  int nHops=departureTimes.length;
+  if (nHops < 1)   throw new RuntimeException("improper array length in TripTimes");
+  arrivalTimes=Arrays.copyOfRange(departureTimes,1,nHops);
+  return true;
+}
