@@ -1,29 +1,40 @@
 {
   ZMsg msg=ZMsg.recvMsg(subscriber);
-  try {
-    Iterator<ZFrame> msgs=msg.iterator();
-    msgs.next();
-    ArrayList<Byte> receivedMsgs=new ArrayList<Byte>();
-    while (msgs.hasNext()) {
-      for (      byte b : msgs.next().getData()) {
-        receivedMsgs.add(b);
-      }
-    }
-    byte[] fullMsg=new byte[receivedMsgs.size()];
-    for (int i=0; i < fullMsg.length; i++) {
-      fullMsg[i]=receivedMsgs.get(i);
-    }
-    InputStream gzipped=new ByteArrayInputStream(fullMsg);
-    InputStream in=new GZIPInputStream(gzipped);
-    StringBuffer out=new StringBuffer();
-    byte[] b=new byte[4096];
-    for (int n; (n=in.read(b)) != -1; ) {
-      out.append(new String(b,0,n));
-    }
-    return parseCTX(out.toString());
-  }
- catch (  Exception e) {
-    e.printStackTrace();
+  if (msg == null) {
+    LOG.warn("ZMQ received null message.");
     return null;
   }
+  UpdateList ret=null;
+  try {
+    Iterator<ZFrame> frames=msg.iterator();
+    frames.next();
+    ByteArrayOutputStream buffer=new ByteArrayOutputStream();
+    while (frames.hasNext()) {
+      ZFrame frame=frames.next();
+      byte[] frameData=frame.getData();
+      buffer.write(frameData);
+    }
+    if (buffer.size() == 0) {
+      LOG.debug("received 0-length CTX message {}",msg);
+      return null;
+    }
+    InputStream gzippedMessageStream=new ByteArrayInputStream(buffer.toByteArray());
+    InputStream messageStream=new GZIPInputStream(gzippedMessageStream);
+    buffer.reset();
+    byte[] b=new byte[4096];
+    for (int n; (n=messageStream.read(b)) != -1; ) {
+      buffer.write(b,0,n);
+    }
+    if (++count % 1 == 0) {
+      LOG.debug("received CTX message #{}: {}",count,msg);
+    }
+    ret=parseCTX(buffer.toString());
+  }
+ catch (  Exception e) {
+    LOG.error("exception while decoding (unzipping) incoming CTX message: {}",e.getMessage());
+  }
+ finally {
+    msg.destroy();
+  }
+  return ret;
 }
