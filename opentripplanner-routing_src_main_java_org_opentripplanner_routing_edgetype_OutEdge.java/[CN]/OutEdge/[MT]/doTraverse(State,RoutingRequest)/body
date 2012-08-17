@@ -21,5 +21,6 @@
   s1.incrementWeight(weight);
   s1.setBackMode(s0.getNonTransitMode(options));
   if (s1.weHaveWalkedTooFar(options))   return null;
+  s1.addAlerts(getNotes());
   return s1.makeState();
 }
