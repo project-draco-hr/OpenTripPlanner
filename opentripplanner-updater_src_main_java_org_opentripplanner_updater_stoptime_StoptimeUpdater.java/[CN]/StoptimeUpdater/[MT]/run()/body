@@ -1,18 +1,20 @@
 {
   while (true) {
-    for (    UpdateList ul : updateStreamer.getUpdates().splitByTrip()) {
-      System.out.println(ul.toString());
+    UpdateList updates=updateStreamer.getUpdates();
+    if (updates == null)     continue;
+    for (    UpdateList ul : updates.splitByTrip()) {
+      LOG.trace(ul.toString());
       if (!ul.isSane()) {
-        LOG.debug("incoherent stoptime UpdateList");
+        LOG.trace("incoherent stoptime UpdateList");
         continue;
       }
       TableTripPattern pattern=patternForTripId.get(ul.tripId);
       if (pattern != null) {
-        LOG.debug("pattern found for {}",ul.tripId);
+        LOG.trace("pattern found for {}",ul.tripId);
         pattern.update(ul);
       }
  else {
-        LOG.debug("pattern not found {}",ul.tripId);
+        LOG.trace("pattern not found {}",ul.tripId);
       }
     }
   }
