@@ -3,7 +3,7 @@
   for (  State s : states) {
     Edge e=s.getBackEdge();
     if (e == null)     continue;
-    Trip trip=e.getTrip();
+    Trip trip=s.getBackTrip();
     if (trip != null)     ret.add(trip.getId());
   }
   return ret;
