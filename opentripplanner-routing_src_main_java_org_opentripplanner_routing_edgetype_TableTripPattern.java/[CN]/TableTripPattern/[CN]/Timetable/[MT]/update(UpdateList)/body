@@ -1,15 +1,19 @@
 {
   int tripIndex=getTripIndex(ul.tripId);
   if (tripIndex == -1) {
-    LOG.debug("tripId {} not found",ul.tripId);
-    return;
+    LOG.trace("tripId {} not found",ul.tripId);
+    return false;
+  }
+ else {
+    LOG.trace("tripId {} found at index {}",ul.tripId,tripIndex);
   }
   int stopIndex=ul.findUpdateStopIndex(TableTripPattern.this);
   if (stopIndex == -1) {
-    LOG.debug("update block did not match stopIds");
-    return;
+    LOG.trace("update block did not match stopIds");
+    return false;
   }
   TripTimes oldTimes=getTripTimes(tripIndex);
   TripTimes newTimes=oldTimes.updatedClone(ul,stopIndex);
   this.tripTimes.set(tripIndex,newTimes);
+  return true;
 }
