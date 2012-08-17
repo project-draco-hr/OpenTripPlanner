@@ -19,7 +19,7 @@
   spt=aStar.getShortestPathTree(options);
   path=spt.getPath(stop_e,true);
   assertNotNull(path);
-  assertNull(path.states.get(1).getBackEdgeNarrative().getNotes());
+  assertNull(path.states.get(1).getBackAlerts());
   options.dateTime=TestUtils.dateInSeconds("America/New_York",2009,8,7,8,0,0);
   options.setRoutingContext(graph,stop_a,stop_e);
   spt=aStar.getShortestPathTree(options);
@@ -27,5 +27,5 @@
   assertNotNull(path);
   HashSet<Alert> expectedNotes=new HashSet<Alert>();
   expectedNotes.add(note1);
-  assertEquals(expectedNotes,path.states.get(1).getBackEdgeNarrative().getNotes());
+  assertEquals(expectedNotes,path.states.get(1).getBackAlerts());
 }

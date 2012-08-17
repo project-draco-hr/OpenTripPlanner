@@ -7,6 +7,6 @@
   step.lat=en.getFromVertex().getY();
   step.elevation=encodeElevationProfile(s.getBackEdge(),0);
   step.bogusName=en.hasBogusName();
-  step.addAlerts(en.getNotes());
+  step.addAlerts(s.getBackAlerts());
   return step;
 }

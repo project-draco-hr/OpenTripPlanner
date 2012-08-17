@@ -17,5 +17,5 @@
   assertNotNull(path);
   HashSet<Alert> expectedNotes=new HashSet<Alert>();
   expectedNotes.add(note1);
-  assertEquals(expectedNotes,path.states.get(2).getBackEdgeNarrative().getNotes());
+  assertEquals(expectedNotes,path.states.get(2).getBackAlerts());
 }

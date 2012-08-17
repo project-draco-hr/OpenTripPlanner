@@ -160,7 +160,7 @@
       distance+=edge.getDistance();
     }
     step.distance+=edge.getDistance();
-    step.addAlerts(edge.getNotes());
+    step.addAlerts(currState.getBackAlerts());
     lastAngle=DirectionUtils.getLastAngle(geom);
   }
   return steps;
