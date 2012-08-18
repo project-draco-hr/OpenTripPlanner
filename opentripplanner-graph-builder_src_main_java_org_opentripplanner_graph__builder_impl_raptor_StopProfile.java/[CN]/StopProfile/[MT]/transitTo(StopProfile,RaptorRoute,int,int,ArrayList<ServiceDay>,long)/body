@@ -1,0 +1,7 @@
+{
+  boolean anyBetter=false;
+  for (  PatternBoard board : route.boards[originStopIndex]) {
+    anyBetter|=transitTo(destination,board.getPattern(),originStopIndex,destinationStopIndex,days,startTime);
+  }
+  return anyBetter;
+}

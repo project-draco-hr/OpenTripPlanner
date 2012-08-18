@@ -1,0 +1,60 @@
+{
+  ArrayList<Vertex> vertices=new ArrayList<Vertex>();
+  for (  Vertex v : graph.getVertices()) {
+    if (v instanceof TransitStop) {
+      vertices.add(v);
+    }
+  }
+  ArrayList<ArrayList<Vertex>> verticesForRegion=new ArrayList<ArrayList<Vertex>>();
+  int nRegions=split(verticesForRegion,vertices,0,true,1000);
+  for (int region=0; region < verticesForRegion.size(); ++region) {
+    for (    Vertex vertex : verticesForRegion.get(region)) {
+      vertex.setGroupIndex(region);
+    }
+  }
+  MaxTransitRegions regions=new MaxTransitRegions();
+  HashMap<Vertex,T2<Integer,Double>>[] stopToStopWalkTimes=computeStopToStopWalkTimes(vertices,MIN_SPEED);
+  regions.minSpeed=MIN_SPEED;
+  final int NDAYS=5;
+  CalendarService calendarService=graph.getCalendarService();
+  TimeZone timeZone=graph.getTimeZone();
+  Calendar calendar=Calendar.getInstance(timeZone);
+  int year=calendar.get(Calendar.YEAR);
+  int month=calendar.get(Calendar.MONTH);
+  int day=calendar.get(Calendar.DAY_OF_MONTH);
+  regions.startYear=year;
+  regions.startMonth=month;
+  regions.startDay=day;
+  regions.maxTransit=new int[NDAYS][nRegions][nRegions];
+  Map<List<ServiceDay>,int[][]> cache=new HashMap<List<ServiceDay>,int[][]>();
+  for (int d=0; d < NDAYS; ++d) {
+    calendar=Calendar.getInstance(timeZone);
+    calendar.set(Calendar.YEAR,year);
+    calendar.set(Calendar.MONTH,month);
+    calendar.set(Calendar.DAY_OF_MONTH,day);
+    calendar.add(Calendar.DAY_OF_MONTH,-1);
+    int yesterday=(int)(calendar.getTime().getTime() / 1000);
+    calendar.add(Calendar.DAY_OF_MONTH,1);
+    int today=(int)(calendar.getTime().getTime() / 1000);
+    calendar.add(Calendar.DAY_OF_MONTH,1);
+    int tomorrow=(int)(calendar.getTime().getTime() / 1000);
+    ArrayList<ServiceDay> serviceDays=new ArrayList<ServiceDay>();
+    for (    String agency : graph.getAgencyIds()) {
+      serviceDays.add(new ServiceDay(graph,yesterday,calendarService,agency));
+      serviceDays.add(new ServiceDay(graph,today,calendarService,agency));
+      serviceDays.add(new ServiceDay(graph,tomorrow,calendarService,agency));
+    }
+    int[][] cached=cache.get(serviceDays);
+    if (cached != null) {
+      log.debug("using cached values for " + calendar);
+      regions.maxTransit[d]=cached;
+      continue;
+    }
+    log.debug("Computing max transit data for day " + d);
+    for (int region=0; region < nRegions; ++region) {
+      log.debug("Computing max transit data for region " + region);
+      regions.maxTransit[d][region]=computeMaxTransitData(data,serviceDays,verticesForRegion.get(region),stopToStopWalkTimes,today,nRegions);
+    }
+  }
+  return regions;
+}

@@ -1,0 +1,56 @@
+{
+  CostsAtTime inserted=profile.get(originIndex);
+  originIndex-=1;
+  int timeAtOrigin=inserted.time;
+  int startRemove=-1;
+  boolean shouldContinue=false;
+  while (originIndex >= 0) {
+    CostsAtTime costsAtPrevTime=profile.get(originIndex);
+    int waitTime=timeAtOrigin - costsAtPrevTime.time;
+    ArrayList<TimeAndDistance> toAdd=new ArrayList<TimeAndDistance>();
+    for (Iterator<TimeAndDistance> costsIt=inserted.costs.iterator(); costsIt.hasNext(); ) {
+      TimeAndDistance costs=costsIt.next();
+      int duration=costs.duration + waitTime;
+      boolean add=false;
+      for (Iterator<TimeAndDistance> it=costsAtPrevTime.costs.iterator(); it.hasNext(); ) {
+        TimeAndDistance prevCost=it.next();
+        if (prevCost.duration >= duration && prevCost.distance * 1.001 >= costs.distance) {
+          it.remove();
+          add=true;
+        }
+ else         if (prevCost.duration > duration || prevCost.distance > costs.distance * 1.001) {
+          add=true;
+        }
+ else {
+          add=false;
+          break;
+        }
+      }
+      if (costsAtPrevTime.costs.isEmpty()) {
+        if (startRemove == -1)         startRemove=originIndex;
+        shouldContinue=true;
+        toAdd.clear();
+      }
+ else       if (add) {
+        if (startRemove != -1) {
+          profile.subList(originIndex + 1,startRemove + 1).clear();
+          startRemove=-1;
+        }
+        toAdd.add(new TimeAndDistance(duration,costs.distance));
+        shouldContinue=true;
+      }
+    }
+    for (    TimeAndDistance cost : toAdd) {
+      costsAtPrevTime.forceAdd(cost);
+    }
+    if (shouldContinue) {
+      originIndex--;
+    }
+ else {
+      break;
+    }
+  }
+  if (startRemove != -1) {
+    profile.subList(originIndex + 1,startRemove + 1).clear();
+  }
+}

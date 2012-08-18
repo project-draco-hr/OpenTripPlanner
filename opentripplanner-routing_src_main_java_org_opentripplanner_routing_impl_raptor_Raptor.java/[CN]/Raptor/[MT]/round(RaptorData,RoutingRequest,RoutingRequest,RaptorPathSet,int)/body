@@ -116,6 +116,20 @@
   if (nBoardings == 0) {
     MaxWalkState start=new MaxWalkState(options.rctx.origin,walkOptions);
     spt=dijkstra.getShortestPathTree(start);
+    RoutingRequest reversedWalkOptions=walkOptions.clone();
+    reversedWalkOptions.setArriveBy(true);
+    GenericDijkstra destDijkstra=new GenericDijkstra(reversedWalkOptions);
+    start=new MaxWalkState(options.rctx.target,reversedWalkOptions);
+    ShortestPathTree targetSpt=destDijkstra.getShortestPathTree(start);
+    for (    State state : targetSpt.getAllStates()) {
+      final Vertex vertex=state.getVertex();
+      if (!(vertex instanceof TransitStop))       continue;
+      RaptorStop stop=data.raptorStopsForStopId.get(((TransitStop)vertex).getStopId());
+      if (stop == null) {
+        continue;
+      }
+      cur.addStopNearTarget(stop,state.getWalkDistance(),(int)state.getElapsedTime());
+    }
   }
  else {
     final List<MaxWalkState> startPoints=new ArrayList<MaxWalkState>();
@@ -146,7 +160,6 @@
       double targetDistance=cur.bounder.getTargetDistance(stopVertex);
       double minTime=(targetDistance - minWalk) / MAX_TRANSIT_SPEED + minWalk / options.getSpeedUpperBound();
       if (targetDistance + state.walkDistance > options.getMaxWalkDistance()) {
-        if (state.stop.stopVertex.isLocal())         continue;
         minTime+=boardSlack;
       }
       if (minWalk + state.walkDistance > options.getMaxWalkDistance()) {
@@ -208,6 +221,31 @@
     RaptorStop stop=data.raptorStopsForStopId.get(((TransitStop)vertex).getStopId());
     if (stop == null) {
       continue;
+    }
+    double minWalk=distanceToNearestTransitStop;
+    double targetDistance=distanceLibrary.fastDistance(options.rctx.target.getCoordinate(),vertex.getCoordinate());
+    double minTime=(targetDistance - minWalk) / MAX_TRANSIT_SPEED + minWalk / options.getSpeedUpperBound();
+    final double remainingWalk=options.maxWalkDistance - state.getWalkDistance();
+    if (targetDistance > remainingWalk)     minTime+=boardSlack;
+    if (cur.maxTimeDayIndex > 0 && remainingWalk < 3218) {
+      int maxTimeForVertex=0;
+      for (      StopNearTarget stopNearTarget : cur.stopsNearTarget.values()) {
+        int destinationRegion=stopNearTarget.stop.stopVertex.getGroupIndex();
+        int region=vertex.getGroupIndex();
+        final int maxTimeFromThisRegion=data.maxTransitRegions.maxTransit[cur.maxTimeDayIndex][destinationRegion][region];
+        int maxTime=(int)((state.getTime() - options.dateTime) + maxTimeFromThisRegion + stopNearTarget.time);
+        if (maxTime > maxTimeForVertex) {
+          maxTimeForVertex=maxTime;
+        }
+      }
+      if (maxTimeForVertex < cur.maxTime) {
+        cur.maxTime=maxTimeForVertex;
+      }
+ else {
+        if ((state.getTime() - options.dateTime) + minTime > cur.maxTime * 1.5) {
+          continue;
+        }
+      }
     }
     List<RaptorState> states=statesByStop[stop.index];
     if (states == null) {

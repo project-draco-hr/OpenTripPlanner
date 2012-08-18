@@ -1,0 +1,16 @@
+{
+  String costStr="";
+  int i=1;
+  for (  TimeAndDistance cost : costs) {
+    costStr+=cost;
+    costStr+="@" + (cost.duration + time);
+    if (i++ < costs.size()) {
+      if (i > 30) {
+        costStr+="...";
+        break;
+      }
+      costStr+=", ";
+    }
+  }
+  return "[@" + time + ": "+ costStr+ "]";
+}
