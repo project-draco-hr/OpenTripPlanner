@@ -1,9 +1,7 @@
 {
-  super();
   for (  String s : v.split(",")) {
-    if (s.isEmpty())     s="TRAVELTIME";
     try {
-      this.add(Layer.valueOf(s.toUpperCase()));
+      layers.add(Layer.valueOf(s.toUpperCase()));
     }
  catch (    Exception e) {
       throw new WebApplicationException(Response.status(Status.BAD_REQUEST).entity("unknown layer name: " + s).build());
