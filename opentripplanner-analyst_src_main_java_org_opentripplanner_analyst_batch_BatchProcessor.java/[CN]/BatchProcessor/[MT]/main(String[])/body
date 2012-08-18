@@ -1,7 +1,16 @@
 {
+  org.springframework.core.io.Resource appContextResource;
+  if (args.length == 0) {
+    LOG.warn("no configuration XML file specified; using example on classpath");
+    appContextResource=new ClassPathResource(EXAMPLE_CONTEXT);
+  }
+ else {
+    String configFile=args[0];
+    appContextResource=new FileSystemResource(configFile);
+  }
   GenericApplicationContext ctx=new GenericApplicationContext();
   XmlBeanDefinitionReader xmlReader=new XmlBeanDefinitionReader(ctx);
-  xmlReader.loadBeanDefinitions(new ClassPathResource(CONFIG));
+  xmlReader.loadBeanDefinitions(appContextResource);
   ctx.refresh();
   ctx.registerShutdownHook();
   BatchProcessor processor=ctx.getBean(BatchProcessor.class);
