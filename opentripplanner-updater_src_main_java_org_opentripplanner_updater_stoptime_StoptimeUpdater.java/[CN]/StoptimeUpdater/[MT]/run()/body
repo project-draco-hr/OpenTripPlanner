@@ -1,5 +1,4 @@
 {
-  TimetableSnapshot buffer=snapshot;
   while (true) {
     UpdateList updates=updateStreamer.getUpdates();
     if (updates == null)     continue;
@@ -14,20 +13,9 @@
         LOG.trace("pattern not found {}",ul.tripId);
         continue;
       }
-      if (buffer == snapshot) {
-        buffer=snapshot.mutableCopy();
-      }
-      Timetable tt=buffer.modify(pattern);
-      tt.update(ul);
-    }
-    if (buffer != snapshot) {
-      long now=System.currentTimeMillis();
-      if (now - lastSnapshotTime > maxSnapshotFrequency) {
-        LOG.debug("committing {}",buffer.toString());
-        buffer.commit();
-        snapshot=buffer;
-        graph.timetableSnapshot=snapshot;
-        lastSnapshotTime=now;
+synchronized (buffer) {
+        Timetable tt=buffer.modify(pattern);
+        tt.update(ul);
       }
     }
   }

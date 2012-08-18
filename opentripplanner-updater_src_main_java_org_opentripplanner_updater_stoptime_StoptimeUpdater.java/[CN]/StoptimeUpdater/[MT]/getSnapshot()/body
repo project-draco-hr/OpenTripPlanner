@@ -1,0 +1,18 @@
+{
+  long now=System.currentTimeMillis();
+  if (now - lastSnapshotTime > maxSnapshotFrequency) {
+synchronized (buffer) {
+      if (buffer.isDirty()) {
+        LOG.debug("committing {}",buffer.toString());
+        buffer.commit();
+        snapshot=buffer;
+        buffer=buffer.mutableCopy();
+      }
+    }
+    lastSnapshotTime=now;
+  }
+ else {
+    LOG.debug("Snapshot frequency exceeded. Reusing snapshot {}",snapshot.toString());
+  }
+  return snapshot;
+}
