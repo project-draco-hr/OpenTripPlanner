@@ -50,7 +50,7 @@
           }
         }
         for (        RaptorState oldState : newStates) {
-          if (oldState != newState && eDominates(oldState,newState)) {
+          if (eDominates(oldState,newState)) {
             continue CONTINUE;
           }
         }
@@ -74,6 +74,8 @@
       }
       if (stopNo < route.getNStops() - 1) {
         if (stop.stopVertex.isLocal() && nBoardings > 1) {
+          createdStates.addAll(newStates);
+          states.addAll(newStates);
           continue;
         }
         TRYBOARD:         for (        RaptorState oldState : states) {
@@ -95,11 +97,6 @@
           boardState.walkDistance=oldState.walkDistance;
           for (          RaptorState state : newStates) {
             if (eDominates(state,boardState)) {
-              continue TRYBOARD;
-            }
-          }
-          for (          RaptorState state : states) {
-            if (state != oldState && eDominates(state,boardState)) {
               continue TRYBOARD;
             }
           }
@@ -160,6 +157,7 @@
       double targetDistance=cur.bounder.getTargetDistance(stopVertex);
       double minTime=(targetDistance - minWalk) / MAX_TRANSIT_SPEED + minWalk / options.getSpeedUpperBound();
       if (targetDistance + state.walkDistance > options.getMaxWalkDistance()) {
+        if (state.stop.stopVertex.isLocal())         continue;
         minTime+=boardSlack;
       }
       if (minWalk + state.walkDistance > options.getMaxWalkDistance()) {
@@ -270,8 +268,5 @@
     cur.visitedLastRound.add(stop);
     cur.visitedEver.add(stop);
     states.add(newState);
-  }
-  for (int stop=0; stop < statesByStop.length; ++stop) {
-    cur.setStates(stop,statesByStop[stop]);
   }
 }
