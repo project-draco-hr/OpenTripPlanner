@@ -16,7 +16,14 @@
     return pi;
   }
   LOG.debug("match failed");
-  System.out.println(patternStops);
-  System.out.println(updates);
+  for (int i=0; i < patternStops.size(); i++) {
+    Stop s=patternStops.get(i);
+    Update u=null;
+    if (i < updates.size())     u=updates.get(i);
+    int ti=pattern.getTripIndex(this.tripId);
+    int schedArr=pattern.getArrivalTime(i,ti);
+    int schedDep=pattern.getDepartureTime(i,ti);
+    System.out.printf("Stop %02d %s %d %d >>> %s\n",i,s.getId().getId(),schedArr,schedDep,(u == null) ? "--" : u.toString());
+  }
   return -1;
 }

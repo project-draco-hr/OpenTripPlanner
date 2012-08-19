@@ -1,10 +1,10 @@
 {
-  List<UpdateList> ret=new LinkedList<UpdateList>();
+  List<UpdateBlock> ret=new LinkedList<UpdateBlock>();
   Collections.sort(mixedUpdates);
-  UpdateList ul=null;
+  UpdateBlock ul=null;
   for (  Update u : mixedUpdates) {
     if (ul == null || !ul.tripId.equals(u.tripId)) {
-      ul=new UpdateList(u.tripId);
+      ul=new UpdateBlock(u.tripId);
       ret.add(ul);
     }
     ul.updates.add(u);

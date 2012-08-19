@@ -30,8 +30,10 @@
       logWriter.append('\n');
     }
     ret=parseCTX(buffer.toString());
-    if (++count % 1 == 0) {
-      LOG.debug("decoded gzipped CTX message #{}: {}",count,msg);
+    count+=1;
+    LOG.debug("decoded gzipped CTX message #{}: {}",count,msg);
+    if (count % 1000 == 0) {
+      LOG.info("received {} KV8 messages.",count);
     }
   }
  catch (  Exception e) {
