@@ -1,8 +1,8 @@
 {
   List<UpdateList> ret=new LinkedList<UpdateList>();
-  Collections.sort(updates);
+  Collections.sort(mixedUpdates);
   UpdateList ul=null;
-  for (  Update u : updates) {
+  for (  Update u : mixedUpdates) {
     if (ul == null || !ul.tripId.equals(u.tripId)) {
       ul=new UpdateList(u.tripId);
       ret.add(ul);

@@ -4,7 +4,7 @@
     LOG.warn("ZMQ received null message.");
     return null;
   }
-  UpdateList ret=null;
+  List<Update> ret=null;
   try {
     Iterator<ZFrame> frames=msg.iterator();
     frames.next();
