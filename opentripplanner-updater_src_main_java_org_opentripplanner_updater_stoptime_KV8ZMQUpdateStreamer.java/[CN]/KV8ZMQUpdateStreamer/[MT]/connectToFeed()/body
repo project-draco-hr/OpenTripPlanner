@@ -1,4 +1,13 @@
 {
   subscriber.connect(address);
   subscriber.subscribe(feed.getBytes());
+  if (messageLogFile != null) {
+    try {
+      logWriter=new FileWriter(messageLogFile);
+    }
+ catch (    IOException e) {
+      LOG.warn("problem opening message log file: {}",e);
+      logWriter=null;
+    }
+  }
 }

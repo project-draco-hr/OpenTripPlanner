@@ -5,7 +5,7 @@
     HashMap<String,String> row=ctx.rows.get(i);
     int arrival=secondsSinceMidnight(row.get("ExpectedArrivalTime"));
     int departure=secondsSinceMidnight(row.get("ExpectedDepartureTime"));
-    Update u=new Update(kv7TripId(row),row.get("UserStopCode"),Integer.parseInt(row.get("UserStopOrderNumber")),arrival,departure);
+    Update u=new Update(kv7TripId(row),kv7StopId(row),Integer.parseInt(row.get("UserStopOrderNumber")),arrival,departure,kv8Status(row));
     ret.addUpdate(u);
   }
   return ret;

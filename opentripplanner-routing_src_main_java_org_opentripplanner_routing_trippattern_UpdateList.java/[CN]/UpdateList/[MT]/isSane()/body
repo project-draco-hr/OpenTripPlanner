@@ -5,14 +5,16 @@
   boolean timesCoherent=true;
   Update prev_u=null;
   for (  Update u : updates) {
-    if (u.depart < u.arrive && u.depart != 0)     timesCoherent=false;
+    if (u.depart < u.arrive && u.depart != 0) {
+      LOG.warn("negative dwell time, patched incoming data");
+      u.arrive=u.depart;
+    }
     if (prev_u != null) {
-      if (u.stopSeq < prev_u.stopSeq)       increasing=false;
+      if (u.stopSeq <= prev_u.stopSeq)       increasing=false;
       if (u.stopSeq - prev_u.stopSeq != 1)       sequential=false;
       if (u.arrive < prev_u.depart)       timesCoherent=false;
     }
     prev_u=u;
   }
-  if (!increasing || !timesCoherent)   return false;
- else   return true;
+  return increasing && timesCoherent;
 }
