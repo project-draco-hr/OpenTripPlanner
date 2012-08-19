@@ -3,5 +3,7 @@
   result=this.tripId.compareTo(other.tripId);
   if (result != 0)   return result;
   result=this.stopSeq - other.stopSeq;
+  if (result != 0)   return result;
+  result=this.depart - other.depart;
   return result;
 }

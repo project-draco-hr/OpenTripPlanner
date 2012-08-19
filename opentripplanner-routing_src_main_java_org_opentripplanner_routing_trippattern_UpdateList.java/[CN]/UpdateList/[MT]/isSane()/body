@@ -5,10 +5,6 @@
   boolean timesCoherent=true;
   Update prev_u=null;
   for (  Update u : updates) {
-    if (u.depart < u.arrive && u.depart != 0) {
-      LOG.warn("negative dwell time, patched incoming data");
-      u.arrive=u.depart;
-    }
     if (prev_u != null) {
       if (u.stopSeq <= prev_u.stopSeq)       increasing=false;
       if (u.stopSeq - prev_u.stopSeq != 1)       sequential=false;

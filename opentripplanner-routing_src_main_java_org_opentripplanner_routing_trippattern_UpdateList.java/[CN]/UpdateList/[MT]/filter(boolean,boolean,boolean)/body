@@ -1,0 +1,24 @@
+{
+  boolean modified=false;
+  Update u, prev_u=null;
+  for (Iterator<Update> iter=updates.iterator(); iter.hasNext(); prev_u=u) {
+    u=iter.next();
+    if (passed && u.status == Update.Status.PASSED) {
+      iter.remove();
+      modified=true;
+      continue;
+    }
+    if (duplicateStops && prev_u != null && prev_u.stopId.equals(u.stopId)) {
+      LOG.warn("filtered duplicate stop {} from update for trip {}",u.stopId,u.tripId);
+      iter.remove();
+      modified=true;
+      continue;
+    }
+    if (negativeDwells && u.depart < u.arrive && u.depart != 0) {
+      LOG.warn("filtered negative dwell time at stop {} in update for trip {}",u.stopId,u.tripId);
+      u.arrive=u.depart;
+      modified=true;
+    }
+  }
+  return modified;
+}
