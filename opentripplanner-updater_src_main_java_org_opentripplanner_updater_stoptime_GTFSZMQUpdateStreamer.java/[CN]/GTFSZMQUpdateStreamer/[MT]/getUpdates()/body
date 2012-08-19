@@ -4,15 +4,15 @@
     FeedMessage feed=GtfsRealtime.FeedMessage.parseFrom(is);
     FeedHeader header=feed.getHeader();
     long timestamp=header.getTimestamp();
-    UpdateList updates=new UpdateList(null);
+    List<Update> updates=new ArrayList<Update>();
     for (    FeedEntity entity : feed.getEntityList()) {
       System.out.println(entity);
       TripUpdate tUpdate=entity.getTripUpdate();
       String trip=tUpdate.getTrip().getTripId();
       AgencyAndId tripId=new AgencyAndId("agency",trip);
       for (      StopTimeUpdate sUpdate : tUpdate.getStopTimeUpdateList()) {
-        Update u=new Update(tripId,sUpdate.getStopId(),sUpdate.getStopSequence(),(int)sUpdate.getArrival().getTime(),(int)sUpdate.getDeparture().getTime());
-        updates.addUpdate(u);
+        Update u=new Update(tripId,sUpdate.getStopId(),sUpdate.getStopSequence(),(int)sUpdate.getArrival().getTime(),(int)sUpdate.getDeparture().getTime(),Update.Status.UNKNOWN);
+        updates.add(u);
       }
     }
     return updates;
