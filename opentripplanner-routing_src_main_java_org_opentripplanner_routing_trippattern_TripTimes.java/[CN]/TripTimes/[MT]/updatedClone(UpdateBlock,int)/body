@@ -2,9 +2,9 @@
   LOG.trace(this.dumpTimes());
   TripTimes ret=(TripTimes)this.clone();
   ret.decompact();
-  for (int i=0; i < ul.updates.size(); i++) {
+  for (int i=0; i < block.updates.size(); i++) {
     int stopIndex=startIndex + i;
-    Update u=ul.updates.get(i);
+    Update u=block.updates.get(i);
     if (stopIndex < ret.departureTimes.length) {
       ret.departureTimes[stopIndex]=u.depart;
     }
