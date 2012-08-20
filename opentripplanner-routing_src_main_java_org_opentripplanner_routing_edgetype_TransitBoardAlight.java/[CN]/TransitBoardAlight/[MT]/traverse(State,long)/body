@@ -28,7 +28,7 @@
     if (options.isReverseOptimizing())     s1.incrementWeight(options.getBoardCost(mode));
     if (options.isReverseOptimizeOnTheFly()) {
       int thisDeparture=state0.getTripTimes().getDepartureTime(stopIndex);
-      int numTrips=getPattern().getNumTrips();
+      int numTrips=getPattern().getNumScheduledTrips();
       int nextDeparture;
       s1.setLastNextArrivalDelta(Integer.MAX_VALUE);
       for (int tripIndex=0; tripIndex < numTrips; tripIndex++) {
