@@ -29,10 +29,17 @@
     }
     routeSet.maxTimeDayIndex=day;
   }
-  for (int i=0; i < options.getMaxTransfers() + 2; ++i) {
-    round(data,options,walkOptions,routeSet,i);
-    if (routeSet.getTargetStates().size() >= options.getNumItineraries())     break;
+  double initialWalk=options.getMaxWalkDistance();
+  RETRY:   do {
+    for (int i=0; i < options.getMaxTransfers() + 2; ++i) {
+      round(data,options,walkOptions,routeSet,i);
+      if (routeSet.getTargetStates().size() >= options.getNumItineraries())       break RETRY;
+    }
+    if (routeSet.getTargetStates().size() > 0)     break RETRY;
+    options.setMaxWalkDistance(options.getMaxWalkDistance() * 2);
+    routeSet.bounder=new TargetBound(options);
   }
+ while (options.getMaxWalkDistance() < initialWalk * MAX_WALK_MULTIPLE);
   if (routeSet.getTargetStates().isEmpty()) {
     log.info("RAPTOR found no paths (try retrying?)");
   }
