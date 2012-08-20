@@ -32,12 +32,13 @@
     ret=parseCTX(buffer.toString());
     count+=1;
     LOG.debug("decoded gzipped CTX message #{}: {}",count,msg);
-    if (count % 1000 == 0) {
+    if (count % 100 == 0) {
       LOG.info("received {} KV8 messages.",count);
     }
   }
  catch (  Exception e) {
     LOG.error("exception while decoding (unzipping) incoming CTX message: {}",e.getMessage());
+    e.printStackTrace();
   }
  finally {
     msg.destroy();

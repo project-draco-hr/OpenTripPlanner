@@ -15,7 +15,7 @@
       continue;
     }
     if (negativeDwells && u.depart < u.arrive && u.depart != 0) {
-      LOG.warn("filtered negative dwell time at stop {} in update for trip {}",u.stopId,u.tripId);
+      LOG.debug("filtered negative dwell time at stop {} in update for trip {}",u.stopId,u.tripId);
       u.arrive=u.depart;
       modified=true;
     }

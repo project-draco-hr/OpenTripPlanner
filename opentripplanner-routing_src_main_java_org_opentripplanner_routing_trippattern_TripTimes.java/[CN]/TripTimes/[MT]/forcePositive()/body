@@ -1,0 +1,21 @@
+{
+  boolean found=false;
+  int nHops=getNumHops();
+  int prevArr=-1;
+  for (int hop=0; hop < nHops; hop++) {
+    int dep=this.getDepartureTime(hop);
+    int arr=this.getArrivalTime(hop);
+    if (arr < dep) {
+      LOG.error("negative hop time in updated TripTimes at index {}",hop);
+      found=true;
+    }
+    if (prevArr > dep) {
+      found=true;
+      LOG.error("negative dwell time in updated TripTimes at index {}",hop);
+    }
+    prevArr=arr;
+  }
+  if (found) {
+    LOG.error(this.dumpTimes());
+  }
+}

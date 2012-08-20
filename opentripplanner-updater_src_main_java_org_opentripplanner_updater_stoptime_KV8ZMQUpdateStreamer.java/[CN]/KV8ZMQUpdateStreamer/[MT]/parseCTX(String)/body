@@ -3,9 +3,10 @@
   List<Update> ret=new ArrayList<Update>();
   for (int i=0; i < ctx.rows.size(); i++) {
     HashMap<String,String> row=ctx.rows.get(i);
+    if (row.get("JourneyStopType").equals("INFOPOINT"))     continue;
     int arrival=secondsSinceMidnight(row.get("ExpectedArrivalTime"));
     int departure=secondsSinceMidnight(row.get("ExpectedDepartureTime"));
-    Update u=new Update(kv7TripId(row),kv7StopId(row),Integer.parseInt(row.get("UserStopOrderNumber")),arrival,departure,kv8Status(row));
+    Update u=new Update(kv7TripId(row),kv7StopId(row),Integer.parseInt(row.get("UserStopOrderNumber")),arrival,departure,kv8Status(row),kv8Timestamp(row));
     ret.add(u);
   }
   return ret;

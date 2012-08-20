@@ -1,5 +1,8 @@
 {
-  if (updates == null || updates.size() < 1)   return -1;
+  if (updates == null || updates.size() < 1) {
+    LOG.debug("Zzero-length or null update block. Cannot match.");
+    return MATCH_FAILED;
+  }
   int result=matchBlockSimple(pattern);
   if (result == MATCH_FAILED) {
     LOG.debug("simple block matching failed, trying fuzzy matching.");

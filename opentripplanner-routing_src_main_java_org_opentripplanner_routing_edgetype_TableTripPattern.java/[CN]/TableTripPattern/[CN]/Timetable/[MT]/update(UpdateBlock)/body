@@ -1,19 +1,49 @@
 {
-  int tripIndex=getTripIndex(ul.tripId);
+  int tripIndex=scheduledTimetable.getTripIndex(block.tripId);
   if (tripIndex == -1) {
-    LOG.debug("tripId {} not found",ul.tripId);
+    LOG.info("tripId {} not found in pattern.",block.tripId);
     return false;
   }
  else {
-    LOG.debug("tripId {} found at index {}",ul.tripId,tripIndex);
+    LOG.trace("tripId {} found at index {} (in scheduled timetable)",block.tripId,tripIndex);
   }
-  int stopIndex=ul.findUpdateStopIndex(TableTripPattern.this);
+  int stopIndex=block.findUpdateStopIndex(TableTripPattern.this);
   if (stopIndex == UpdateBlock.MATCH_FAILED) {
-    LOG.trace("update block did not match stopIds");
+    LOG.warn("Unable to match update block to stopIds.");
     return false;
   }
-  TripTimes oldTimes=getTripTimes(tripIndex);
-  TripTimes newTimes=oldTimes.updatedClone(ul,stopIndex);
+  TripTimes oldTimes=scheduledTimetable.getTripTimes(tripIndex);
+  TripTimes newTimes=oldTimes.clone();
+  LOG.trace(block.toString());
+  LOG.trace(newTimes.dumpTimes());
+  newTimes.decompact();
+  for (int hop=0; hop < stopIndex; hop++) {
+    newTimes.departureTimes[hop]=-1;
+    newTimes.arrivalTimes[hop]=-1;
+  }
+  int nApplied=0;
+  for (  Update u : block.updates) {
+    Stop s=stops[stopIndex];
+    if (!s.getId().getId().equals(u.stopId)) {
+      continue;
+    }
+    if (stopIndex < newTimes.departureTimes.length) {
+      newTimes.departureTimes[stopIndex]=u.depart;
+    }
+    if (stopIndex >= 1 && stopIndex <= newTimes.arrivalTimes.length) {
+      newTimes.arrivalTimes[stopIndex - 1]=u.arrive;
+    }
+    nApplied+=1;
+    stopIndex+=1;
+  }
+  if (nApplied < 1) {
+    LOG.error("matched update block was not actually applied! TripTimes may be corrupt.");
+    return false;
+  }
+  newTimes.forcePositive();
+  LOG.trace(newTimes.dumpTimes());
+  newTimes.compact();
+  LOG.trace(newTimes.dumpTimes());
   this.tripTimes.set(tripIndex,newTimes);
   return true;
 }

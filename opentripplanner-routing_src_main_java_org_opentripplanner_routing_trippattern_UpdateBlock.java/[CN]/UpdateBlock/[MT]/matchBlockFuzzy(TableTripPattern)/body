@@ -5,8 +5,8 @@
   for (int pi=0; pi < nStops; pi++) {
     LOG.trace("---{}",pi);
     int score=0;
+    int si=pi;
     for (int ui=0; ui < updates.size(); ui++) {
-      int si=pi + ui;
       if (si >= nStops) {
         break;
       }
@@ -16,6 +16,7 @@
       if (!ps.getId().getId().equals(u.stopId)) {
         continue;
       }
+      si+=1;
       score+=1;
     }
     scores[pi]=score;

@@ -1,0 +1,6 @@
+{
+  String timestamp=row.get("LastUpdateTimeStamp");
+  DateTimeFormatter parser=ISODateTimeFormat.dateTimeNoMillis();
+  DateTime dt=parser.parseDateTime(timestamp);
+  return dt.getMillis();
+}

@@ -10,4 +10,13 @@
       logWriter=null;
     }
   }
+  if (fakeInput != null) {
+    try {
+      fakeInputReader=new FileReader(fakeInput);
+    }
+ catch (    IOException e) {
+      LOG.warn("problem opening fake input file: {}",e);
+      fakeInputReader=null;
+    }
+  }
 }
