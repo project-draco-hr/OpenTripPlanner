@@ -40,7 +40,7 @@
       step.setAbsoluteDirection(thisAngle);
       distance=edge.getDistance();
     }
- else     if ((step.streetName != null && !step.streetNameNoParens().equals(streetNameNoParens)) && (!step.bogusName || !edge.hasBogusName())) {
+ else     if (((step.streetName != null && !step.streetNameNoParens().equals(streetNameNoParens)) && (!step.bogusName || !edge.hasBogusName())) || edge.isRoundabout() != (roundaboutExit > 0)) {
       if (roundaboutExit > 0) {
         step.exit=Integer.toString(roundaboutExit);
         if (streetNameNoParens.equals(roundaboutPreviousStreet)) {
