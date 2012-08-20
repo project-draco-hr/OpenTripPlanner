@@ -18,8 +18,8 @@
   LOG.trace(newTimes.dumpTimes());
   newTimes.decompact();
   for (int hop=0; hop < stopIndex; hop++) {
-    newTimes.departureTimes[hop]=-1;
-    newTimes.arrivalTimes[hop]=-1;
+    newTimes.departureTimes[hop]=TripTimes.PASSED;
+    newTimes.arrivalTimes[hop]=TripTimes.PASSED;
   }
   int nApplied=0;
   for (  Update u : block.updates) {

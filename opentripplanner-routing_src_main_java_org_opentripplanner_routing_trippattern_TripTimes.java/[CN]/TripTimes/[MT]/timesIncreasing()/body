@@ -10,8 +10,8 @@
       increasing=false;
     }
     if (prevArr > dep) {
-      increasing=false;
       LOG.error("negative dwell time in updated TripTimes at index {}",hop);
+      increasing=false;
     }
     prevArr=arr;
   }
