@@ -7,7 +7,7 @@
   for (  State currState : states) {
     State backState=currState.getBackState();
     Edge edge=currState.getBackEdge();
-    boolean createdNewStep=false;
+    boolean createdNewStep=false, disableZagRemovalForThisStep=false;
     if (edge instanceof FreeEdge) {
       continue;
     }
@@ -20,6 +20,8 @@
     }
     if (edge instanceof ElevatorAlightEdge) {
       step=createWalkStep(currState);
+      createdNewStep=true;
+      disableZagRemovalForThisStep=true;
       step.streetName=((ElevatorAlightEdge)edge).getName();
       step.relativeDirection=RelativeDirection.ELEVATOR;
       steps.add(step);
@@ -122,7 +124,7 @@
         }
       }
     }
-    if (createdNewStep) {
+    if (createdNewStep && !disableZagRemovalForThisStep) {
       int last=steps.size() - 1;
       if (last >= 2) {
         WalkStep threeBack=steps.get(last - 2);

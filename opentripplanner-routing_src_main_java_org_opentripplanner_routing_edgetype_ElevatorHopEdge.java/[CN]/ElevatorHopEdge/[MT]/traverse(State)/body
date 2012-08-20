@@ -13,12 +13,8 @@
   if (mode == TraverseMode.CAR && !permission.allows(StreetTraversalPermission.CAR)) {
     return null;
   }
-  if (mode == TraverseMode.BICYCLE && s0.getBackMode() != TraverseMode.BICYCLE) {
-    options=options.getWalkingOptions();
-    mode=s0.getNonTransitMode(options);
-  }
   StateEditor s1=s0.edit(this);
-  s1.setBackMode(mode);
+  s1.setBackMode(TraverseMode.WALK);
   s1.incrementWeight(options.elevatorHopCost);
   s1.incrementTimeInSeconds(options.elevatorHopTime);
   return s1.makeState();

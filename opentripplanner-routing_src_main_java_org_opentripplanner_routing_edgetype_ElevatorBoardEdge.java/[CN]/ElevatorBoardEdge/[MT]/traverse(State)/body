@@ -1,12 +1,7 @@
 {
   RoutingRequest options=s0.getOptions();
-  TraverseMode mode=s0.getNonTransitMode(options);
-  if (mode == TraverseMode.BICYCLE && s0.getBackMode() != TraverseMode.BICYCLE) {
-    options=options.getWalkingOptions();
-    mode=s0.getNonTransitMode(options);
-  }
   StateEditor s1=s0.edit(this);
-  s1.setBackMode(mode);
+  s1.setBackMode(TraverseMode.WALK);
   s1.incrementWeight(options.elevatorBoardCost);
   s1.incrementTimeInSeconds(options.elevatorBoardTime);
   return s1.makeState();

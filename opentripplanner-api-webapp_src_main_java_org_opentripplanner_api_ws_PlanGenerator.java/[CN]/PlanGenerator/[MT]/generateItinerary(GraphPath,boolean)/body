@@ -8,6 +8,7 @@
   double previousElevation=Double.MAX_VALUE;
   int startWalk=-1;
   int i=-1;
+  boolean foldingElevatorLegIntoCycleLeg=false;
   PlanGenState pgstate=PlanGenState.START;
   String nextName=null;
   for (  State state : path.states) {
@@ -120,6 +121,19 @@ break;
 case BICYCLE:
 if (leg == null) {
 leg=makeLeg(itinerary,state);
+}
+if (state.getBackEdge() instanceof ElevatorBoardEdge) {
+int j=i + 1;
+while (path.states.get(j).getBackEdge() instanceof ElevatorEdge) j++;
+if (path.states.get(j).getBackMode() == TraverseMode.BICYCLE) foldingElevatorLegIntoCycleLeg=true;
+}
+if (foldingElevatorLegIntoCycleLeg) {
+if (state.getBackEdge() instanceof ElevatorEdge) {
+break;
+}
+ else {
+foldingElevatorLegIntoCycleLeg=false;
+}
 }
 if (mode == TraverseMode.BICYCLE) {
 }
