@@ -3,12 +3,10 @@
   int lastTime=0;
   for (  CostsAtTime costs : profile) {
     if (costs.time < startTime) {
-      lastTime=costs.time;
       continue;
     }
-    if (costs.time >= endTime)     break;
     int bestDuration=Integer.MAX_VALUE;
-    for (    TimeAndDistance departure : costs.costs) {
+    for (    DurationAndDistance departure : costs.costs) {
       final int time=departure.duration + costs.time - lastTime;
       if (time < bestDuration) {
         bestDuration=time;
@@ -18,6 +16,9 @@
       worstDuration=bestDuration;
     }
     lastTime=costs.time;
+    if (costs.time >= endTime) {
+      break;
+    }
   }
   return worstDuration;
 }

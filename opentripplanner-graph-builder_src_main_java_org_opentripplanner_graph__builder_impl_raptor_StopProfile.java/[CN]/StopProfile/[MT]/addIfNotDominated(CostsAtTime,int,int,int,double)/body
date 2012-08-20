@@ -2,14 +2,14 @@
   CostsAtTime costsAtNextTime=profile.get(originIndex);
   int waitTime=costsAtNextTime.time - timeAtOrigin;
   CostsAtTime toInsert=new CostsAtTime(timeAtOrigin);
-  for (  TimeAndDistance atDestination : destinationCosts.costs) {
+  for (  DurationAndDistance atDestination : destinationCosts.costs) {
     double walkDistance=distance + atDestination.distance;
     if (walkDistance > 3218)     continue;
     int walkDuration=duration + atDestination.duration;
     toInsert.forceAdd(walkDuration,walkDistance);
   }
-  for (Iterator<TimeAndDistance> costsIt=toInsert.costs.iterator; costsIt.hasNext(); ) {
-    TimeAndDistance costs=costsIt.next();
+  for (Iterator<DurationAndDistance> costsIt=toInsert.costs.iterator; costsIt.hasNext(); ) {
+    DurationAndDistance costs=costsIt.next();
     if (!costsAtNextTime.codominant(costs.duration + waitTime,costs.distance)) {
       costsIt.remove();
     }
@@ -19,7 +19,7 @@
   }
   if (waitTime == 0) {
     costsAtNextTime=profile.get(originIndex);
-    for (    TimeAndDistance costs : toInsert.costs) {
+    for (    DurationAndDistance costs : toInsert.costs) {
       costsAtNextTime.add(costs.duration,costs.distance);
     }
     return true;

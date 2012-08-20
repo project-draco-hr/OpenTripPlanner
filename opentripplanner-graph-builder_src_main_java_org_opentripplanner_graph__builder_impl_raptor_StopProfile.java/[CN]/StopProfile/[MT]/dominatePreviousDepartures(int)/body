@@ -7,13 +7,13 @@
   while (originIndex >= 0) {
     CostsAtTime costsAtPrevTime=profile.get(originIndex);
     int waitTime=timeAtOrigin - costsAtPrevTime.time;
-    ArrayList<TimeAndDistance> toAdd=new ArrayList<TimeAndDistance>();
-    for (Iterator<TimeAndDistance> costsIt=inserted.costs.iterator(); costsIt.hasNext(); ) {
-      TimeAndDistance costs=costsIt.next();
+    ArrayList<DurationAndDistance> toAdd=new ArrayList<DurationAndDistance>();
+    for (Iterator<DurationAndDistance> costsIt=inserted.costs.iterator(); costsIt.hasNext(); ) {
+      DurationAndDistance costs=costsIt.next();
       int duration=costs.duration + waitTime;
       boolean add=false;
-      for (Iterator<TimeAndDistance> it=costsAtPrevTime.costs.iterator(); it.hasNext(); ) {
-        TimeAndDistance prevCost=it.next();
+      for (Iterator<DurationAndDistance> it=costsAtPrevTime.costs.iterator(); it.hasNext(); ) {
+        DurationAndDistance prevCost=it.next();
         if (prevCost.duration >= duration && prevCost.distance * 1.001 >= costs.distance) {
           it.remove();
           add=true;
@@ -36,11 +36,11 @@
           profile.subList(originIndex + 1,startRemove + 1).clear();
           startRemove=-1;
         }
-        toAdd.add(new TimeAndDistance(duration,costs.distance));
+        toAdd.add(new DurationAndDistance(duration,costs.distance));
         shouldContinue=true;
       }
     }
-    for (    TimeAndDistance cost : toAdd) {
+    for (    DurationAndDistance cost : toAdd) {
       costsAtPrevTime.forceAdd(cost);
     }
     if (shouldContinue) {

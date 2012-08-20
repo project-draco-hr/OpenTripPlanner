@@ -4,7 +4,7 @@
   RoutingRequest walkOptions=new RoutingRequest(TraverseMode.WALK);
   walkOptions.setWalkSpeed(minSpeed);
   walkOptions.setArriveBy(true);
-  walkOptions.setMaxWalkDistance(3218);
+  walkOptions.setMaxWalkDistance(maxDistance);
   GenericDijkstra dijkstra=new GenericDijkstra(walkOptions);
   for (  Vertex destination : vertices) {
     final HashMap<Vertex,T2<Integer,Double>> timesByDestination=new HashMap<Vertex,T2<Integer,Double>>();

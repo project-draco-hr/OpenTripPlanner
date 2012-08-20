@@ -12,7 +12,7 @@
     }
     if (originIndex == profile.size()) {
       CostsAtTime toInsert=new CostsAtTime(timeAtOrigin);
-      for (      TimeAndDistance atDestination : nextDestination.costs) {
+      for (      DurationAndDistance atDestination : nextDestination.costs) {
         int walkDuration=atDestination.duration + duration;
         double walkDistance=atDestination.distance + distance;
         if (walkDistance > 3218)         continue;

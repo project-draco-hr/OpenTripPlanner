@@ -1,6 +1,6 @@
 {
-  for (Iterator<TimeAndDistance> it=costs.iterator(); it.hasNext(); ) {
-    TimeAndDistance existing=it.next();
+  for (Iterator<DurationAndDistance> it=costs.iterator(); it.hasNext(); ) {
+    DurationAndDistance existing=it.next();
     if (existing.duration <= duration && existing.distance <= distance * 1.05) {
       return false;
     }
@@ -8,6 +8,6 @@
       it.remove();
     }
   }
-  costs.add(new TimeAndDistance(duration,distance));
+  costs.add(new DurationAndDistance(duration,distance));
   return true;
 }

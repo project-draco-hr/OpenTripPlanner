@@ -13,8 +13,9 @@
     }
   }
   MaxTransitRegions regions=new MaxTransitRegions();
-  HashMap<Vertex,T2<Integer,Double>>[] stopToStopWalkTimes=computeStopToStopWalkTimes(vertices,MIN_SPEED);
+  HashMap<Vertex,T2<Integer,Double>>[] stopToStopWalkTimes=computeStopToStopWalkTimes(vertices,MIN_SPEED,MAX_DISTANCE);
   regions.minSpeed=MIN_SPEED;
+  regions.maxDistance=MAX_DISTANCE;
   final int NDAYS=5;
   CalendarService calendarService=graph.getCalendarService();
   TimeZone timeZone=graph.getTimeZone();
