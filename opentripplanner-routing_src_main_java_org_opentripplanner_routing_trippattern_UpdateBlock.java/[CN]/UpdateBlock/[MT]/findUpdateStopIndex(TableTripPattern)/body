@@ -1,19 +1,19 @@
 {
   if (updates == null || updates.size() < 1) {
-    LOG.debug("Zzero-length or null update block. Cannot match.");
+    LOG.warn("Zero-length or null update block. Cannot match.");
     return MATCH_FAILED;
   }
   int result=matchBlockSimple(pattern);
   if (result == MATCH_FAILED) {
-    LOG.debug("simple block matching failed, trying fuzzy matching.");
+    LOG.debug("Simple block matching failed, trying fuzzy matching.");
     result=matchBlockFuzzy(pattern);
   }
   if (result != MATCH_FAILED) {
-    LOG.debug("found matching stop block at index {}",result);
+    LOG.debug("Found matching stop block at index {}.",result);
     return result;
   }
-  LOG.warn("update block matching failed completely.");
-  LOG.warn("have a look at the pattern and block:");
+  LOG.warn("Update block matching failed completely.");
+  LOG.warn("Have a look at the pattern and block:");
   List<Stop> patternStops=pattern.getStops();
   int nStops=patternStops.size();
   int nHops=nStops - 1;
