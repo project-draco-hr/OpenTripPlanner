@@ -1,0 +1,21 @@
+{
+  HashSet<Edge> turns=new HashSet<Edge>(left.getOutgoing());
+  turns.addAll(leftBack.getOutgoing());
+  Set<Alert> alert=new HashSet<Alert>();
+  alert.add(Alert.createSimpleAlerts("This is the alert"));
+  left.setNotes(alert);
+  leftBack.setNotes(alert);
+  StreetLocation start=StreetLocation.createStreetLocation(graph,"start","start",cast(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()));
+  State traversedOne=new State((Vertex)start,new RoutingRequest());
+  for (  Edge e : start.getOutgoing()) {
+    traversedOne=e.traverse(traversedOne);
+    break;
+  }
+  for (  Edge e : traversedOne.getVertex().getOutgoing()) {
+    traversedOne=e.traverse(traversedOne);
+    break;
+  }
+  assertEquals(alert,traversedOne.getBackAlerts());
+  assertNotSame(left,traversedOne.getBackEdge().getFromVertex());
+  assertNotSame(leftBack,traversedOne.getBackEdge().getFromVertex());
+}
