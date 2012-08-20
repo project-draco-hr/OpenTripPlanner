@@ -1,0 +1,148 @@
+{
+  final double distanceToNearestTransitStop=options.rctx.target.getDistanceToNearestTransitStop();
+  final int boardSlack=nBoardings == 1 ? options.getBoardSlack() : (options.getTransferSlack() - options.getAlightSlack());
+  ShortestPathTree spt;
+  GenericDijkstra dijkstra=new GenericDijkstra(walkOptions);
+  List<State> transitStopStates=new ArrayList<State>();
+  if (nBoardings == 0) {
+    MaxWalkState start=new MaxWalkState(options.rctx.origin,walkOptions);
+    spt=dijkstra.getShortestPathTree(start);
+    for (    State state : spt.getAllStates()) {
+      if (state.getVertex() instanceof TransitStop)       transitStopStates.add(state);
+    }
+    if (maxTimeDayIndex > 0) {
+      RoutingRequest reversedWalkOptions=walkOptions.clone();
+      reversedWalkOptions.setArriveBy(true);
+      GenericDijkstra destDijkstra=new GenericDijkstra(reversedWalkOptions);
+      start=new MaxWalkState(options.rctx.target,reversedWalkOptions);
+      ShortestPathTree targetSpt=destDijkstra.getShortestPathTree(start);
+      for (      State state : targetSpt.getAllStates()) {
+        final Vertex vertex=state.getVertex();
+        if (!(vertex instanceof TransitStop))         continue;
+        RaptorStop stop=data.raptorStopsForStopId.get(((TransitStop)vertex).getStopId());
+        if (stop == null) {
+          continue;
+        }
+        addStopNearTarget(stop,state.getWalkDistance(),(int)state.getElapsedTime());
+      }
+    }
+  }
+ else {
+    final List<MaxWalkState> startPoints=new ArrayList<MaxWalkState>();
+    for (    RaptorState state : createdStates) {
+      Vertex stopVertex=state.stop.stopVertex;
+      double minWalk=distanceToNearestTransitStop;
+      double targetDistance=bounder.getTargetDistance(stopVertex);
+      if (targetDistance + state.walkDistance > options.getMaxWalkDistance()) {
+        if (state.stop.stopVertex.isLocal())         continue;
+      }
+      if (minWalk + state.walkDistance > options.getMaxWalkDistance()) {
+        continue;
+      }
+      StateEditor dijkstraState=new MaxWalkState.MaxWalkStateEditor(walkOptions,stopVertex);
+      dijkstraState.setNumBoardings(state.nBoardings);
+      dijkstraState.setWalkDistance(state.walkDistance);
+      dijkstraState.setStartTime(state.arrivalTime);
+      dijkstraState.setTime(state.arrivalTime);
+      dijkstraState.setExtension("raptorParent",state);
+      dijkstraState.setOptions(walkOptions);
+      dijkstraState.incrementWeight(state.arrivalTime - options.dateTime);
+      MaxWalkState newState=(MaxWalkState)dijkstraState.makeState();
+      startPoints.add(newState);
+    }
+    if (startPoints.size() == 0) {
+      System.out.println("warning: no walk in round " + nBoardings);
+      return;
+    }
+    System.out.println("walk starts: " + startPoints.size() + " / "+ visitedEver.size());
+    dijkstra.setPriorityQueueFactory(new PrefilledPriorityQueueFactory(startPoints.subList(1,startPoints.size())));
+    dijkstra.setShortestPathTreeFactory(bounder);
+    bounder.addSptStates(startPoints.subList(1,startPoints.size()));
+    bounder.prepareForSearch();
+    dijkstra.setSearchTerminationStrategy(bounder);
+    dijkstra.setSkipTraverseResultStrategy(bounder);
+    dijkstra.setHeuristic(bounder);
+    spt=dijkstra.getShortestPathTree(startPoints.get(0));
+    transitStopStates=bounder.getTransitStopsVisited();
+  }
+  final List<? extends State> targetStates=spt.getStates(walkOptions.rctx.target);
+  if (targetStates != null) {
+    TARGET:     for (    State targetState : targetStates) {
+      RaptorState state=new RaptorState();
+      RaptorState parent=(RaptorState)targetState.getExtension("raptorParent");
+      state.parent=parent;
+      state.walkDistance=targetState.getWalkDistance();
+      state.arrivalTime=(int)targetState.getTime();
+      if (parent != null) {
+        state.nBoardings=parent.nBoardings;
+        state.waitingTime=parent.waitingTime;
+      }
+      state.walkPath=targetState;
+      for (      RaptorState oldState : getTargetStates()) {
+        if (oldState.eDominates(state)) {
+          continue TARGET;
+        }
+      }
+      addTargetState(state);
+      log.debug("Found target at: " + state);
+    }
+  }
+  for (  State state : bounder.removedBoundingStates) {
+    removeTargetState(state);
+  }
+  SPTSTATE:   for (  State state : transitStopStates) {
+    final Vertex vertex=state.getVertex();
+    RaptorStop stop=data.raptorStopsForStopId.get(((TransitStop)vertex).getStopId());
+    if (stop == null) {
+      continue;
+    }
+    double minWalk=distanceToNearestTransitStop;
+    double targetDistance=bounder.getTargetDistance(vertex);
+    final double remainingWalk=options.maxWalkDistance - state.getWalkDistance();
+    if (maxTimeDayIndex > 0 && remainingWalk < 3218) {
+      double minTime=(targetDistance - minWalk) / Raptor.MAX_TRANSIT_SPEED + minWalk / options.getSpeedUpperBound();
+      if (targetDistance > remainingWalk)       minTime+=boardSlack;
+      int maxTimeForVertex=0;
+      int region=vertex.getGroupIndex();
+      for (      StopNearTarget stopNearTarget : stopsNearTarget.values()) {
+        int destinationRegion=stopNearTarget.stop.stopVertex.getGroupIndex();
+        final int maxTimeFromThisRegion=data.maxTransitRegions.maxTransit[maxTimeDayIndex][destinationRegion][region];
+        int maxTime=(int)((state.getTime() - options.dateTime) + maxTimeFromThisRegion + stopNearTarget.time);
+        if (maxTime > maxTimeForVertex) {
+          maxTimeForVertex=maxTime;
+        }
+      }
+      if (maxTimeForVertex < maxTime) {
+        maxTime=maxTimeForVertex;
+      }
+ else {
+        if ((state.getTime() - options.dateTime) + minTime > maxTime * 1.5) {
+          continue;
+        }
+      }
+    }
+    List<RaptorState> states=statesByStop[stop.index];
+    if (states == null) {
+      states=new ArrayList<RaptorState>();
+      statesByStop[stop.index]=states;
+    }
+    RaptorState baseState=(RaptorState)state.getExtension("raptorParent");
+    RaptorState newState=new RaptorState();
+    if (baseState != null) {
+      newState.nBoardings=baseState.nBoardings;
+    }
+    newState.walkDistance=state.getWalkDistance();
+    newState.arrivalTime=(int)state.getTime();
+    newState.walkPath=state;
+    newState.parent=baseState;
+    newState.stop=stop;
+    for (    RaptorState oldState : states) {
+      if (oldState.eDominates(newState)) {
+        continue SPTSTATE;
+      }
+    }
+    visitedLastRound.add(stop);
+    visitedEver.add(stop);
+    states.add(newState);
+  }
+}

@@ -1,5 +1,9 @@
 {
-  if (current.getVertex() == realTarget) {
+  final Vertex vertex=current.getVertex();
+  if (vertex instanceof TransitStop) {
+    transitStopsVisited.add(current);
+  }
+  if (vertex == realTarget) {
     addBounder(current);
   }
   return true;

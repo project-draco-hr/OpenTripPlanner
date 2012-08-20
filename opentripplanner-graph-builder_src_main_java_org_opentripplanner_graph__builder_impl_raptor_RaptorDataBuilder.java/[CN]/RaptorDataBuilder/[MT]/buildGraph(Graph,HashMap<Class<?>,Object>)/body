@@ -56,7 +56,5 @@
   }
   data.stops=Arrays.copyOfRange(data.stops,0,data.raptorStopsForStopId.size());
   nTotalStops=data.stops.length;
-  MaxTransitRegions regions=makeMaxTransitRegions(graph,data);
-  data.maxTransitRegions=regions;
   graph.putService(RaptorDataService.class,new RaptorDataService(data));
 }
