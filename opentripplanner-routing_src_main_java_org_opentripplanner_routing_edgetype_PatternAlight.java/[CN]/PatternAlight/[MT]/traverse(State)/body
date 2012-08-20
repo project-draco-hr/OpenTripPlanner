@@ -13,6 +13,7 @@
     TripTimes bestTripTimes=null;
     int serviceId=getPattern().getServiceId();
     TraverseMode nonTransitMode=state0.getNonTransitMode(options);
+    ServiceDay serviceDay=null;
     for (    ServiceDay sd : rctx.serviceDays) {
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
       if (secondsSinceMidnight < 0)       continue;
@@ -23,6 +24,7 @@
           if (wait < 0)           _log.error("negative wait time on alight");
           if (bestWait < 0 || wait < bestWait) {
             bestWait=wait;
+            serviceDay=sd;
             bestTripTimes=tripTimes;
           }
         }
@@ -60,6 +62,7 @@
     if (TransitUtils.handleBoardAlightType(s1,type)) {
       return null;
     }
+    s1.setServiceDay(serviceDay);
     s1.setTripTimes(bestTripTimes);
     s1.incrementTimeInSeconds(bestWait);
     s1.incrementNumBoardings();
