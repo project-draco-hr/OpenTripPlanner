@@ -40,7 +40,7 @@
     LOG.error("matched update block was not actually applied! TripTimes may be corrupt.");
     return false;
   }
-  newTimes.forcePositive();
+  newTimes.timesIncreasing();
   LOG.trace(newTimes.dumpTimes());
   newTimes.compact();
   LOG.trace(newTimes.dumpTimes());
