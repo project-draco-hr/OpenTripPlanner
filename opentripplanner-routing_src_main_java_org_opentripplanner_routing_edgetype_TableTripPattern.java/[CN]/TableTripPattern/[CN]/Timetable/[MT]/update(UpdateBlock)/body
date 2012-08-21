@@ -1,32 +1,38 @@
 {
-  int tripIndex=getTripIndex(block.tripId);
-  if (tripIndex == -1) {
-    LOG.info("tripId {} not found in pattern.",block.tripId);
-    return false;
-  }
- else {
-    LOG.trace("tripId {} found at index {} (in scheduled timetable)",block.tripId,tripIndex);
-  }
-  int stopIndex=block.findUpdateStopIndex(TableTripPattern.this);
-  if (stopIndex == UpdateBlock.MATCH_FAILED) {
-    LOG.warn("Unable to match update block to stopIds.");
-    return false;
-  }
-  TripTimes existingTimes=getTripTimes(tripIndex);
-  ScheduledTripTimes scheduledTimes=existingTimes.getScheduledTripTimes();
-  TripTimes newTimes=new UpdatedTripTimes(scheduledTimes,block,stopIndex);
-  if (!newTimes.timesIncreasing()) {
-    LOG.warn("Resulting UpdatedTripTimes has non-increasing times. " + "Falling back on DecayingDelayTripTimes.");
-    LOG.warn(block.toString());
-    LOG.warn(newTimes.toString());
-    int delay=newTimes.getDepartureDelay(stopIndex);
-    newTimes=new DecayingDelayTripTimes(scheduledTimes,stopIndex,delay);
-    LOG.warn(newTimes.toString());
-    if (!newTimes.timesIncreasing()) {
-      LOG.error("Even these trip times are non-increasing. Underlying schedule problem?");
+  try {
+    int tripIndex=getTripIndex(block.tripId);
+    if (tripIndex == -1) {
+      LOG.info("tripId {} not found in pattern.",block.tripId);
       return false;
     }
+ else {
+      LOG.trace("tripId {} found at index {} (in scheduled timetable)",block.tripId,tripIndex);
+    }
+    int stopIndex=block.findUpdateStopIndex(TableTripPattern.this);
+    if (stopIndex == UpdateBlock.MATCH_FAILED) {
+      LOG.warn("Unable to match update block to stopIds.");
+      return false;
+    }
+    TripTimes existingTimes=getTripTimes(tripIndex);
+    ScheduledTripTimes scheduledTimes=existingTimes.getScheduledTripTimes();
+    TripTimes newTimes=new UpdatedTripTimes(scheduledTimes,block,stopIndex);
+    if (!newTimes.timesIncreasing()) {
+      LOG.warn("Resulting UpdatedTripTimes has non-increasing times. " + "Falling back on DecayingDelayTripTimes.");
+      LOG.warn(block.toString());
+      LOG.warn(newTimes.toString());
+      int delay=newTimes.getDepartureDelay(stopIndex);
+      newTimes=new DecayingDelayTripTimes(scheduledTimes,stopIndex,delay);
+      LOG.warn(newTimes.toString());
+      if (!newTimes.timesIncreasing()) {
+        LOG.error("Even these trip times are non-increasing. Underlying schedule problem?");
+        return false;
+      }
+    }
+    this.tripTimes.set(tripIndex,newTimes);
+    return true;
   }
-  this.tripTimes.set(tripIndex,newTimes);
-  return true;
+ catch (  Exception e) {
+    e.printStackTrace();
+    return false;
+  }
 }
