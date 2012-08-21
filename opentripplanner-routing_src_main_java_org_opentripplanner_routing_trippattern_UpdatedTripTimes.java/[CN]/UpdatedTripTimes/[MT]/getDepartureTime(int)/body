@@ -1,0 +1,6 @@
+{
+  int stop=hop;
+  if (stop < offset)   return TripTimes.PASSED;
+  if (stop >= offset + departures.length)   return super.getDepartureTime(hop);
+  return departures[stop];
+}
