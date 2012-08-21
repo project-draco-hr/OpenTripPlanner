@@ -4,6 +4,9 @@
     options.rctx.pathParsers=new PathParser[1];
     options.rctx.pathParsers[0]=new BasicPathParser();
   }
+  if (!options.getModes().isTransit()) {
+    return sptService.getShortestPathTree(options).getPaths();
+  }
   Graph graph=graphService.getGraph(options.getRouterId());
   RaptorData data=graph.getService(RaptorDataService.class).getData();
   RoutingRequest walkOptions=options.clone();
