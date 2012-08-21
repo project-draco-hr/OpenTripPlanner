@@ -1,5 +1,8 @@
 {
   int stop=hop;
-  if (stop < currentStop)   return TripTimes.PASSED;
+  if (stop < currentStop) {
+    if (readThrough)     return super.getDepartureTime(hop);
+    return TripTimes.PASSED;
+  }
   return super.getDepartureTime(hop) + decayedDelay(stop);
 }
