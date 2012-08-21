@@ -11,10 +11,10 @@
   }
   if (arrivalsIndex != null) {
     TripTimes[] index=arrivalsIndex[stopIndex];
-    int tripIndex=TripTimes.binarySearchArrivals(index,stopIndex,beforeTime);
+    int tripIndex=TripTimesUtil.binarySearchArrivals(index,stopIndex,beforeTime);
     while (tripIndex >= 0) {
       TripTimes tt=index[tripIndex];
-      Trip t=tt.trip;
+      Trip t=tt.getTrip();
       if (tripAcceptable(t,haveBicycle,wheelchair) && !options.bannedTrips.contains(t.getId())) {
         return tt;
       }
@@ -27,7 +27,7 @@
   for (int i=0; i < trips.size(); i++) {
     TripTimes currTrip=tripTimes.get(i);
     int currTime=currTrip.getArrivalTime(stopIndex);
-    if (currTime <= beforeTime && currTime > bestTime && tripAcceptable(currTrip.trip,haveBicycle,wheelchair) && !options.bannedTrips.contains(trips.get(i).getId())) {
+    if (currTime <= beforeTime && currTime > bestTime && tripAcceptable(currTrip.getTrip(),haveBicycle,wheelchair) && !options.bannedTrips.contains(trips.get(i).getId())) {
       bestTrip=currTrip;
       bestTime=currTime;
     }

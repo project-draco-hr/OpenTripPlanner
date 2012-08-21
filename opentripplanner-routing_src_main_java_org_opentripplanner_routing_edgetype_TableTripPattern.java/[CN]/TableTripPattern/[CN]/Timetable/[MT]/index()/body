@@ -5,7 +5,7 @@
   for (int hop=0; hop < nHops; hop++) {
     arrivalsIndex[hop]=tripTimes.toArray(new TripTimes[tripTimes.size()]);
     departuresIndex[hop]=tripTimes.toArray(new TripTimes[tripTimes.size()]);
-    Arrays.sort(arrivalsIndex[hop],TripTimes.getArrivalsComparator(hop));
-    Arrays.sort(departuresIndex[hop],TripTimes.getDeparturesComparator(hop));
+    Arrays.sort(arrivalsIndex[hop],new TripTimes.ArrivalsComparator(hop));
+    Arrays.sort(departuresIndex[hop],new TripTimes.DeparturesComparator(hop));
   }
 }
