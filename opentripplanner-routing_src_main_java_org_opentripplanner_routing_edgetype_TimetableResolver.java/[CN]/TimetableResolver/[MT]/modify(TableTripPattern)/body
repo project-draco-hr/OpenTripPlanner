@@ -1,5 +1,5 @@
 {
-  if (dirty == null)   throw new ConcurrentModificationException();
+  if (dirty == null)   throw new ConcurrentModificationException("This TimetableResolver snapshot was already committed for reading.");
   Timetable existing=resolve(pattern);
   if (dirty.contains(existing)) {
     return existing;
