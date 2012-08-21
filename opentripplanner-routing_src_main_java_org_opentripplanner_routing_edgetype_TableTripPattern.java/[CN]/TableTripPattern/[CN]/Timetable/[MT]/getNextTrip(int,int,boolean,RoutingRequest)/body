@@ -11,7 +11,7 @@
   }
   if (departuresIndex != null) {
     TripTimes[] index=departuresIndex[stopIndex];
-    int tripIndex=TripTimesUtil.binarySearchDepartures(index,stopIndex,afterTime);
+    int tripIndex=TripTimes.binarySearchDepartures(index,stopIndex,afterTime);
     while (tripIndex < index.length) {
       TripTimes tt=index[tripIndex];
       Trip t=tt.getTrip();

@@ -15,14 +15,14 @@
   TripTimes existingTimes=getTripTimes(tripIndex);
   ScheduledTripTimes scheduledTimes=existingTimes.getScheduledTripTimes();
   TripTimes newTimes=new UpdatedTripTimes(scheduledTimes,block,stopIndex);
-  if (!TripTimesUtil.timesIncreasing(newTimes)) {
+  if (!newTimes.timesIncreasing()) {
     LOG.warn("Resulting UpdatedTripTimes has non-increasing times. " + "Falling back on DecayingDelayTripTimes.");
-    LOG.debug(block.toString());
-    LOG.debug(newTimes.toString());
-    int delay=newTimes.getDepartureTime(stopIndex) - scheduledTimes.getDepartureTime(stopIndex);
-    newTimes=new DecayingDelayTripTimes(scheduledTimes,stopIndex,delay,0.7,false);
+    LOG.warn(block.toString());
     LOG.warn(newTimes.toString());
-    if (!TripTimesUtil.timesIncreasing(newTimes)) {
+    int delay=newTimes.getDepartureDelay(stopIndex);
+    newTimes=new DecayingDelayTripTimes(scheduledTimes,stopIndex,delay);
+    LOG.warn(newTimes.toString());
+    if (!newTimes.timesIncreasing()) {
       LOG.error("Even these trip times are non-increasing. Underlying schedule problem?");
       return false;
     }
