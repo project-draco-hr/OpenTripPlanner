@@ -98,6 +98,32 @@
     if (stop == null) {
       continue;
     }
+    double minWalk=distanceToNearestTransitStop;
+    double targetDistance=bounder.getTargetDistance(vertex);
+    final double remainingWalk=options.maxWalkDistance - state.getWalkDistance();
+    if (maxTimeDayIndex > 0 && remainingWalk < 3218) {
+      double minTime=(targetDistance - minWalk) / Raptor.MAX_TRANSIT_SPEED + minWalk / options.getSpeedUpperBound();
+      if (targetDistance > remainingWalk)       minTime+=boardSlack;
+      int maxTimeForVertex=0;
+      int region=vertex.getGroupIndex();
+      final int elapsedTime=(int)state.getElapsedTime();
+      for (      StopNearTarget stopNearTarget : stopsNearTarget.values()) {
+        int destinationRegion=stopNearTarget.stop.stopVertex.getGroupIndex();
+        final int maxTimeFromThisRegion=data.maxTransitRegions.maxTransit[maxTimeDayIndex][destinationRegion][region];
+        int maxTime=elapsedTime + maxTimeFromThisRegion + stopNearTarget.time;
+        if (maxTime > maxTimeForVertex) {
+          maxTimeForVertex=maxTime;
+        }
+      }
+      if (maxTimeForVertex < maxTime) {
+        maxTime=maxTimeForVertex;
+      }
+ else {
+        if (elapsedTime + minTime > maxTime * 1.5) {
+          continue;
+        }
+      }
+    }
     List<RaptorState> states=statesByStop[stop.index];
     if (states == null) {
       states=new ArrayList<RaptorState>();
