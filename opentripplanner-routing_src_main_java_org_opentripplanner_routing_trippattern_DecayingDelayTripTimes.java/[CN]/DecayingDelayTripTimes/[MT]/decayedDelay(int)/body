@@ -1,11 +1,8 @@
 {
   if (delay == 0)   return 0;
   int n=stop - currentStop;
-  if (linear) {
-    return delay / n;
-  }
- else {
-    double decay=Math.pow(k,n);
-    return (int)(decay * delay);
-  }
+  double decay;
+  if (linear)   decay=(n > k) ? 0.0 : 1.0 - n / k;
+ else   decay=Math.pow(k,n);
+  return (int)(decay * delay);
 }

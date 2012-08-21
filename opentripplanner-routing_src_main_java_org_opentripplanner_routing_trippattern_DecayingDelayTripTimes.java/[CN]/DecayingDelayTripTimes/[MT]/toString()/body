@@ -1,0 +1,13 @@
+{
+  val sb=new StringBuilder();
+  sb.append(String.format("%s DecayingDelayTripTimes delay=%d stop=%d param=%3.2f\n",linear ? "Linear" : "Exponential",delay,currentStop,k));
+  for (int i=0; i < getNumHops(); i++) {
+    int j=0;
+    if (i >= currentStop)     j=decayedDelay(i);
+    sb.append(j);
+    sb.append(' ');
+  }
+  sb.append('\n');
+  sb.append(super.toString());
+  return sb.toString();
+}
