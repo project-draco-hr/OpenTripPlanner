@@ -4,10 +4,10 @@
   State lastState;
   walkDistance=s.getWalkDistance();
   if (back) {
-    lastState=optimize ? optimize(s) : reverse(s);
+    lastState=optimize ? s.optimize() : s.reverse();
   }
  else {
-    lastState=optimize ? reverse(optimize(s)) : s;
+    lastState=optimize ? s.optimize().reverse() : s;
   }
   this.states=new LinkedList<State>();
   this.edges=new LinkedList<Edge>();

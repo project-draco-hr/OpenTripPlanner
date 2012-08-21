@@ -2,7 +2,8 @@
   TripTimes ret=null;
   try {
     ret=(TripTimes)super.clone();
-    ret.arrivalTimes=this.arrivalTimes.clone();
+    if (arrivalTimes == null)     ret.arrivalTimes=null;
+ else     ret.arrivalTimes=this.arrivalTimes.clone();
     ret.departureTimes=this.departureTimes.clone();
   }
  catch (  CloneNotSupportedException e) {

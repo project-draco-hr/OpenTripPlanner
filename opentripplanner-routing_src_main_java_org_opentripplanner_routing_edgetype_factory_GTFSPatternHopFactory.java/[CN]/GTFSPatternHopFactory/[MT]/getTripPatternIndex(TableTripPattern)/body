@@ -1,0 +1,8 @@
+{
+  Integer id=context.tripPatternIds.get(pattern);
+  if (id == null) {
+    id=context.serviceIds.size();
+    context.tripPatternIds.put(pattern,id);
+  }
+  return id;
+}

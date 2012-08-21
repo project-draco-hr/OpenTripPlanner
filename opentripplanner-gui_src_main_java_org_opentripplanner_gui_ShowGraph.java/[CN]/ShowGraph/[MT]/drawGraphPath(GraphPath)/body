@@ -46,11 +46,13 @@
   labelState(gp.states.getFirst(),"begin");
   for (  State s : gp.states) {
     Edge e=s.getBackEdge();
-    if (e instanceof PatternBoard) {
-      labelState(s,"board");
-    }
- else     if (e instanceof PatternAlight) {
-      labelState(s,"alight");
+    if (e instanceof TransitBoardAlight) {
+      if (((TransitBoardAlight)e).isBoarding()) {
+        labelState(s,"board");
+      }
+ else {
+        labelState(s,"alight");
+      }
     }
   }
   labelState(gp.states.getLast(),"end");

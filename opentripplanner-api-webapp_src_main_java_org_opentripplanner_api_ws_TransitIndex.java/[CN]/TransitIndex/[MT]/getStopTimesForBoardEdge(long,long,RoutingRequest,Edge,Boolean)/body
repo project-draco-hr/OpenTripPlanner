@@ -1,0 +1,19 @@
+{
+  List<StopTime> out=new ArrayList<StopTime>();
+  State result;
+  long time=startTime;
+  do {
+    State s0=new State(e.getFromVertex(),time,options);
+    result=e.traverse(s0);
+    if (result == null)     break;
+    time=result.getTime();
+    if (time > endTime)     break;
+    StopTime stopTime=new StopTime();
+    stopTime.time=time;
+    stopTime.trip=new TripType(result.getBackEdgeNarrative().getTrip(),extended);
+    out.add(stopTime);
+    time+=1;
+  }
+ while (true);
+  return out;
+}

@@ -3,7 +3,7 @@
   RoutingRequest options=state0.getOptions();
   Trip trip=pattern.getTrip();
   if (options.isArriveBy()) {
-    if (state0.getBackEdge() instanceof PatternAlight) {
+    if (state0.getBackEdge() instanceof TransitBoardAlight && !((TransitBoardAlight)state0.getBackEdge()).isBoarding()) {
       return null;
     }
     EdgeNarrative en=new TransitNarrative(trip,this);

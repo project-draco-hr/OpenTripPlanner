@@ -5,7 +5,7 @@
     if (prealight instanceof PreAlightEdge) {
       Vertex arrival=prealight.getFromVertex();
       for (      Edge alight : arrival.getIncoming()) {
-        if (alight instanceof PatternAlight) {
+        if (alight instanceof TransitBoardAlight) {
           State state=new State(alight.getToVertex(),arrivalTime,request);
           State result=alight.traverse(state);
           if (result == null)           continue;

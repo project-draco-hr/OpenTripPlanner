@@ -1,18 +1,21 @@
 {
   LOG.debug("Writing population to CSV: {}",outFileName);
-  File outFile=new File(outFileName);
-  PrintWriter csvWriter;
   try {
-    csvWriter=new PrintWriter(outFile);
-    csvWriter.printf("label,lat,lon,input,output\n");
+    CsvWriter writer=new CsvWriter(outFileName,',',Charset.forName("UTF8"));
+    writer.writeRecord(new String[]{"label","lat","lon","input","output"});
     int i=0;
-    for (    Individual indiv : this) {
-      csvWriter.printf("%s,%f,%f,%f,%f\n",indiv.label,indiv.lat,indiv.lon,indiv.input,results.results[i]);
+    for (    Individual indiv : this.individuals) {
+      if (!this.skip[i]) {
+        String[] entries=new String[]{indiv.label,Double.toString(indiv.lat),Double.toString(indiv.lon),Double.toString(indiv.input),Double.toString(results.results[i])};
+        writer.writeRecord(entries);
+      }
+      i++;
     }
-    csvWriter.close();
+    writer.close();
   }
  catch (  Exception e) {
-    LOG.debug("error writing population to CSV: {}",e);
+    LOG.error("Error while writing to CSV file: {}",e.getMessage());
+    return;
   }
-  LOG.debug("Done writing population to CSV.");
+  LOG.debug("Done writing population to CSV at {}.",outFileName);
 }

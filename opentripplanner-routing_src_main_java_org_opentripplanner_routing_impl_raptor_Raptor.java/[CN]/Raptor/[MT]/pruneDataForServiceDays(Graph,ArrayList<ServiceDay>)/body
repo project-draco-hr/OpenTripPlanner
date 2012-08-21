@@ -11,11 +11,8 @@
     for (int i=0; i < route.boards[0].length; ++i) {
       Edge board=route.boards[0][i];
       int serviceId;
-      if (board instanceof PatternBoard) {
-        serviceId=((PatternBoard)board).getPattern().getServiceId();
-      }
- else       if (board instanceof Board) {
-        serviceId=((Board)board).getServiceId();
+      if (board instanceof TransitBoardAlight) {
+        serviceId=((TransitBoardAlight)board).getPattern().getServiceId();
       }
  else {
         log.debug("Unexpected nonboard among boards");

@@ -1,0 +1,13 @@
+{
+  int low=0;
+  int hi=a.length - 1;
+  int mid=hi;
+  while (low <= hi) {
+    mid=(low + hi) >>> 1;
+    final int d=a[mid].getArrivalTime(hop);
+    if (d == key)     return mid;
+ else     if (d < key)     low=mid + 1;
+ else     hi=--mid;
+  }
+  return mid;
+}

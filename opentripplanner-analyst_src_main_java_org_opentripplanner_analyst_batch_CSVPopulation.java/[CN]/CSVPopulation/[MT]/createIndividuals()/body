@@ -1,0 +1,21 @@
+{
+  try {
+    CsvReader reader=new CsvReader(sourceFilename,',',Charset.forName("UTF8"));
+    if (skipHeaders) {
+      reader.readHeaders();
+    }
+    while (reader.readRecord()) {
+      double lat=Double.parseDouble(reader.get(latCol));
+      double lon=Double.parseDouble(reader.get(lonCol));
+      String label=reader.get(labelCol);
+      Double input=Double.parseDouble(reader.get(inputCol));
+      Individual individual=individualFactory.build(label,lon,lat,input);
+      this.addIndividual(individual);
+    }
+    reader.close();
+  }
+ catch (  Exception e) {
+    LOG.error("exception while loading individuals from CSV file:");
+    e.printStackTrace();
+  }
+}

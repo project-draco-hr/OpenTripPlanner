@@ -18,7 +18,7 @@
           state=e.traverse(state);
         }
       }
-      PatternBoard board=cur.route.boards[cur.boardStopSequence][cur.patternIndex];
+      TransitBoardAlight board=cur.route.boards[cur.boardStopSequence][cur.patternIndex];
       State oldState=state;
       state=board.traverse(state);
       if (state == null) {
@@ -32,7 +32,7 @@
  else           if (e instanceof PatternHop) {
             state=e.traverse(state);
             for (            Edge e2 : state.getVertex().getOutgoing()) {
-              if (e2 instanceof PatternAlight) {
+              if (e2 instanceof TransitBoardAlight) {
                 for (                Edge e3 : e2.getToVertex().getOutgoing()) {
                   if (e3 instanceof PreAlightEdge) {
                     if (data.raptorStopsForStopId.get(((TransitStop)e3.getToVertex()).getStopId()) == cur.stop) {

@@ -31,6 +31,8 @@
   request.setNumItineraries(get(numItineraries,n,request.getNumItineraries()));
   request.setMaxWalkDistance(get(maxWalkDistance,n,request.getMaxWalkDistance()));
   request.setWalkSpeed(get(walkSpeed,n,request.getWalkSpeed()));
+  double bikeSpeedParam=get(bikeSpeed,n,request.getBikeSpeed());
+  request.setBikeSpeed(bikeSpeedParam);
   OptimizeType opt=get(optimize,n,request.getOptimize());
 {
     Double tsafe=get(triangleSafetyFactor,n,null);
@@ -78,8 +80,8 @@
   request.setOptimize(opt);
   TraverseModeSet modeSet=get(modes,n,request.getModes());
   request.setModes(modeSet);
-  if (modeSet.getBicycle() && modeSet.getWalk()) {
-    request.setBikeSpeed(3.5);
+  if (modeSet.getBicycle() && modeSet.getWalk() && bikeSpeedParam == -1) {
+    request.setBikeSpeed(4.3);
   }
   request.setBoardSlack(get(boardSlack,n,request.getBoardSlack()));
   request.setAlightSlack(get(alightSlack,n,request.getAlightSlack()));
@@ -97,5 +99,6 @@
     request.setStartingTransitStopId(AgencyAndId.convertFromString(startTransitStopId));
   }
   request.setClampInitialWait(get(clampInitialWait,n,request.getClampInitialWait()));
+  request.setReverseOptimizeOnTheFly(get(reverseOptimizeOnTheFly,n,request.isReverseOptimizeOnTheFly()));
   return request;
 }

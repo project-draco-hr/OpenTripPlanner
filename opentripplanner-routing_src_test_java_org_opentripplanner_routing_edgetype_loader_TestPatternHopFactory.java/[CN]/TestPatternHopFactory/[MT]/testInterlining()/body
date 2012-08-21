@@ -9,7 +9,7 @@
   GraphPath path=spt.getPath(stop_k,false);
   int num_alights=0;
   for (  State s : path.states) {
-    if (s.getBackEdge() instanceof PatternAlight || s.getBackEdge() instanceof Alight) {
+    if (s.getBackEdge() instanceof Alight || (s.getBackEdge() instanceof TransitBoardAlight && !((TransitBoardAlight)s.getBackEdge()).isBoarding())) {
       num_alights+=1;
     }
     if (s.getBackEdge() instanceof PatternDwell) {
@@ -23,7 +23,7 @@
   path=spt.getPath(stop_i,false);
   num_alights=0;
   for (  State s : path.states) {
-    if (s.getBackEdge() instanceof PatternAlight || s.getBackEdge() instanceof Alight) {
+    if (s.getBackEdge() instanceof Alight || (s.getBackEdge() instanceof TransitBoardAlight && !((TransitBoardAlight)s.getBackEdge()).isBoarding())) {
       num_alights+=1;
     }
     if (s.getBackEdge() instanceof PatternDwell) {

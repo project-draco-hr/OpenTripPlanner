@@ -5,7 +5,7 @@
     if (preboard instanceof PreBoardEdge) {
       Vertex departure=preboard.getToVertex();
       for (      Edge board : departure.getOutgoing()) {
-        if (board instanceof PatternBoard) {
+        if (board instanceof TransitBoardAlight) {
           State state=new State(board.getFromVertex(),departureTime,request);
           State result=board.traverse(state);
           if (result == null)           continue;

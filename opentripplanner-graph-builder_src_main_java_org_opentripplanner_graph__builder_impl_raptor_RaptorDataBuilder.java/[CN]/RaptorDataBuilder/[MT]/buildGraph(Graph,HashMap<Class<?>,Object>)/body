@@ -34,7 +34,7 @@
               route.stops[stop].stopVertex=(TransitStop)e.getFromVertex();
             }
           }
-          route.boards[stop][pattern]=(PatternBoard)segment.board;
+          route.boards[stop][pattern]=(TransitBoardAlight)segment.board;
         }
         if (stop != 0) {
           for (          Edge e : segment.alight.getToVertex().getOutgoing()) {
@@ -42,7 +42,7 @@
               route.stops[stop].stopVertex=(TransitStop)e.getToVertex();
             }
           }
-          route.alights[stop - 1][pattern]=(PatternAlight)segment.alight;
+          route.alights[stop - 1][pattern]=(TransitBoardAlight)segment.alight;
         }
         if (++pattern == nPatterns) {
           pattern=0;

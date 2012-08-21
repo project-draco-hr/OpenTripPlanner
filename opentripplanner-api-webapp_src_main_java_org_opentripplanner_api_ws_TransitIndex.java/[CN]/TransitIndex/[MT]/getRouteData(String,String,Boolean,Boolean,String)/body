@@ -1,0 +1,22 @@
+{
+  TransitIndexService transitIndexService=getGraph(routerId).getService(TransitIndexService.class);
+  if (transitIndexService == null) {
+    return new TransitError("No transit index found.  Add TransitIndexBuilder to your graph builder configuration and rebuild your graph.");
+  }
+  RouteDataList respond=new RouteDataList();
+  for (  String agencyId : getAgenciesIds(agency,routerId)) {
+    AgencyAndId routeId=new AgencyAndId(agencyId,id);
+    List<RouteVariant> variants=transitIndexService.getVariantsForRoute(routeId);
+    if (variants.isEmpty())     continue;
+    RouteData response=new RouteData();
+    response.id=routeId;
+    response.variants=variants;
+    response.directions=new ArrayList<String>(transitIndexService.getDirectionsForRoute(routeId));
+    if (references != null && references.equals(true)) {
+      response.stops=new ArrayList<StopType>();
+      for (      org.onebusaway.gtfs.model.Stop stop : transitIndexService.getStopsForRoute(routeId))       response.stops.add(new StopType(stop,extended));
+    }
+    respond.routeData.add(response);
+  }
+  return respond;
+}

@@ -1,12 +1,19 @@
 {
+  LOG.trace(this.dumpTimes());
   TripTimes ret=(TripTimes)this.clone();
+  ret.decompact();
   for (int i=0; i < ul.updates.size(); i++) {
-    int targetIndex=startIndex + i;
+    int stopIndex=startIndex + i;
     Update u=ul.updates.get(i);
-    ret.departureTimes[targetIndex]=u.depart;
-    if (targetIndex >= 1)     ret.arrivalTimes[targetIndex - 1]=u.arrive;
+    if (stopIndex < ret.departureTimes.length) {
+      ret.departureTimes[stopIndex]=u.depart;
+    }
+    if (stopIndex >= 1 && stopIndex <= ret.arrivalTimes.length) {
+      ret.arrivalTimes[stopIndex - 1]=u.arrive;
+    }
   }
-  System.out.println(this.dumpTimes());
-  System.out.println(ret.dumpTimes());
+  LOG.trace(ret.dumpTimes());
+  ret.compact();
+  LOG.trace(ret.dumpTimes());
   return ret;
 }

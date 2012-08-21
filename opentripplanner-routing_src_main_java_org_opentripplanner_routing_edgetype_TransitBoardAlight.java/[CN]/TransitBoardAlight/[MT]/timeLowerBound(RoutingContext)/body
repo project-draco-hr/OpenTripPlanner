@@ -1,0 +1,13 @@
+{
+  if ((rctx.opt.isArriveBy() && boarding) || (!rctx.opt.isArriveBy() && !boarding)) {
+    if (!rctx.opt.getModes().get(modeMask)) {
+      return Double.POSITIVE_INFINITY;
+    }
+    int serviceId=getPattern().getServiceId();
+    for (    ServiceDay sd : rctx.serviceDays)     if (sd.serviceIdRunning(serviceId))     return 0;
+    return Double.POSITIVE_INFINITY;
+  }
+ else {
+    return 0;
+  }
+}
