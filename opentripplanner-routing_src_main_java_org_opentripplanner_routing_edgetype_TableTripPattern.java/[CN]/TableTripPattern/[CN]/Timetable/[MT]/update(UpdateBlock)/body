@@ -1,5 +1,5 @@
 {
-  int tripIndex=scheduledTimetable.getTripIndex(block.tripId);
+  int tripIndex=getTripIndex(block.tripId);
   if (tripIndex == -1) {
     LOG.info("tripId {} not found in pattern.",block.tripId);
     return false;
@@ -12,38 +12,15 @@
     LOG.warn("Unable to match update block to stopIds.");
     return false;
   }
-  TripTimes oldTimes=scheduledTimetable.getTripTimes(tripIndex);
-  TripTimes newTimes=oldTimes.clone();
-  LOG.trace(block.toString());
-  LOG.trace(newTimes.dumpTimes());
-  newTimes.decompact();
-  for (int hop=0; hop < stopIndex; hop++) {
-    newTimes.departureTimes[hop]=TripTimes.PASSED;
-    newTimes.arrivalTimes[hop]=TripTimes.PASSED;
+  TripTimes existingTimes=getTripTimes(tripIndex);
+  ScheduledTripTimes scheduledTimes=existingTimes.getScheduledTripTimes();
+  TripTimes newTimes=new UpdatedTripTimes(scheduledTimes,block,stopIndex);
+  if (TripTimesUtil.timesIncreasing(newTimes)) {
+    this.tripTimes.set(tripIndex,newTimes);
+    return true;
   }
-  int nApplied=0;
-  for (  Update u : block.updates) {
-    Stop s=stops[stopIndex];
-    if (!s.getId().getId().equals(u.stopId)) {
-      continue;
-    }
-    if (stopIndex < newTimes.departureTimes.length) {
-      newTimes.departureTimes[stopIndex]=u.depart;
-    }
-    if (stopIndex >= 1 && stopIndex <= newTimes.arrivalTimes.length) {
-      newTimes.arrivalTimes[stopIndex - 1]=u.arrive;
-    }
-    nApplied+=1;
-    stopIndex+=1;
-  }
-  if (nApplied < 1) {
-    LOG.error("matched update block was not actually applied! TripTimes may be corrupt.");
-    return false;
-  }
-  newTimes.timesIncreasing();
-  LOG.trace(newTimes.dumpTimes());
-  newTimes.compact();
-  LOG.trace(newTimes.dumpTimes());
-  this.tripTimes.set(tripIndex,newTimes);
-  return true;
+  LOG.error("Resulting UpdatedTripTimes has non-increasing times.");
+  LOG.error(block.toString());
+  LOG.error(newTimes.dumpTimes());
+  return false;
 }
