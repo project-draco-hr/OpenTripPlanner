@@ -4,5 +4,7 @@
     if (readThrough)     return super.getDepartureTime(hop);
     return TripTimes.PASSED;
   }
-  return super.getDepartureTime(hop) + decayedDelay(stop);
+  int t=super.getDepartureTime(hop);
+  int elapsed=t - t0;
+  return t + decayedDelay(elapsed);
 }

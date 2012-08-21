@@ -1,8 +1,9 @@
 {
   super(sched);
+  this.t0=sched.getDepartureTime(currentStop);
   this.delay=delay;
   this.currentStop=currentStop;
-  this.k=decayParam;
   this.linear=linear;
   this.readThrough=readThrough;
+  this.lambda=1.0 / halfLife;
 }
