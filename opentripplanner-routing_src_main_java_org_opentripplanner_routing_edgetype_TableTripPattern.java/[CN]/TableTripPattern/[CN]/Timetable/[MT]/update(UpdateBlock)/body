@@ -14,13 +14,13 @@
   }
   TripTimes existingTimes=getTripTimes(tripIndex);
   ScheduledTripTimes scheduledTimes=existingTimes.getScheduledTripTimes();
-  TripTimes newTimes=new UpdatedTripTimes(scheduledTimes,block,stopIndex);
+  UpdatedTripTimes newTimes=new UpdatedTripTimes(scheduledTimes,block,stopIndex);
   if (TripTimesUtil.timesIncreasing(newTimes)) {
     this.tripTimes.set(tripIndex,newTimes);
     return true;
   }
   LOG.error("Resulting UpdatedTripTimes has non-increasing times.");
   LOG.error(block.toString());
-  LOG.error(newTimes.dumpTimes());
+  LOG.error(newTimes.toString());
   return false;
 }

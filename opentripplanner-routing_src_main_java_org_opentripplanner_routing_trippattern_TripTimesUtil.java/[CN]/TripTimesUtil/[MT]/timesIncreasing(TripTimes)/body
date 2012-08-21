@@ -6,17 +6,14 @@
     int dep=tt.getDepartureTime(hop);
     int arr=tt.getArrivalTime(hop);
     if (arr < dep) {
-      LOG.error("negative hop time in TripTimes at index {}",hop);
+      LOG.error("Negative hop time in TripTimes at index {}.",hop);
       increasing=false;
     }
     if (prevArr > dep) {
-      LOG.error("negative dwell time in TripTimes at index {}",hop);
+      LOG.error("Negative dwell time in TripTimes at index {}.",hop);
       increasing=false;
     }
     prevArr=arr;
-  }
-  if (!increasing) {
-    LOG.error(tt.dumpTimes());
   }
   return increasing;
 }
