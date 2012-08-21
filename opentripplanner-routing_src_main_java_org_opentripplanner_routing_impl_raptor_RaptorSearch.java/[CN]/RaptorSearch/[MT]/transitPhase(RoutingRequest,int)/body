@@ -7,11 +7,30 @@
   }
   HashSet<RaptorStop> visitedThisRound=new HashSet<RaptorStop>();
   List<RaptorState> createdStates=new ArrayList<RaptorState>();
-  int boardSlack=nBoardings == 1 ? options.getBoardSlack() : (options.getTransferSlack() - options.getAlightSlack());
+  int boardSlack;
+  if (options.isArriveBy()) {
+    boardSlack=nBoardings == 1 ? options.getAlightSlack() : (options.getTransferSlack() - options.getBoardSlack());
+  }
+ else {
+    boardSlack=nBoardings == 1 ? options.getBoardSlack() : (options.getTransferSlack() - options.getAlightSlack());
+  }
   for (  RaptorRoute route : routesToVisit) {
     List<RaptorState> boardStates=new ArrayList<RaptorState>();
     boolean started=false;
-    for (int stopNo=0; stopNo < route.getNStops(); ++stopNo) {
+    int firstStop, lastStop, direction, lastBoardStop;
+    if (options.isArriveBy()) {
+      firstStop=route.getNStops() - 1;
+      lastStop=-1;
+      direction=-1;
+      lastBoardStop=0;
+    }
+ else {
+      firstStop=0;
+      lastStop=route.getNStops();
+      direction=1;
+      lastBoardStop=lastStop - 1;
+    }
+    for (int stopNo=firstStop; stopNo != lastStop; stopNo+=direction) {
       RaptorStop stop=route.stops[stopNo];
       if (!started && !visitedLastRound.contains(stop))       continue;
       started=true;
@@ -22,14 +41,20 @@
         statesByStop[stop.index]=states;
       }
       CONTINUE:       for (      RaptorState boardState : boardStates) {
-        RaptorState newState=new RaptorState();
+        RaptorState newState=new RaptorState(options.arriveBy);
         ServiceDay sd=boardState.serviceDay;
-        if (!route.boards[0][boardState.patternIndex].getPattern().canAlight(stopNo)) {
-          continue;
+        if (options.isArriveBy()) {
+          if (!route.alights[0][boardState.patternIndex].getPattern().canBoard(stopNo))           continue;
+          int boardTime=route.getBoardTime(boardState.tripTimes,stopNo);
+          newState.arrivalTime=(int)sd.time(boardTime);
+          newState.arrivalTime-=options.getBoardSlack();
         }
-        int alightTime=route.getAlightTime(boardState.tripTimes,stopNo);
-        newState.arrivalTime=(int)sd.time(alightTime);
-        newState.arrivalTime+=options.getAlightSlack();
+ else {
+          if (!route.boards[0][boardState.patternIndex].getPattern().canAlight(stopNo))           continue;
+          int alightTime=route.getAlightTime(boardState.tripTimes,stopNo);
+          newState.arrivalTime=(int)sd.time(alightTime);
+          newState.arrivalTime+=options.getAlightSlack();
+        }
         newState.boardStop=boardState.boardStop;
         newState.boardStopSequence=boardState.boardStopSequence;
         newState.route=route;
@@ -67,7 +92,7 @@
         visitedEver.add(stop);
         newStates.add(newState);
       }
-      if (stopNo < route.getNStops() - 1) {
+      if (stopNo != lastBoardStop) {
         if (stop.stopVertex.isLocal() && nBoardings > 1) {
           createdStates.addAll(newStates);
           states.addAll(newStates);
@@ -76,16 +101,21 @@
         TRYBOARD:         for (        RaptorState oldState : states) {
           if (oldState.nBoardings != nBoardings - 1)           continue;
           if (oldState.route == route)           continue;
-          RaptorBoardSpec boardSpec=route.getTripIndex(options,oldState.arrivalTime + boardSlack,stopNo);
+          RaptorBoardSpec boardSpec;
+          if (options.isArriveBy()) {
+            boardSpec=route.getTripIndexReverse(options,oldState.arrivalTime - boardSlack,stopNo);
+          }
+ else {
+            boardSpec=route.getTripIndex(options,oldState.arrivalTime + boardSlack,stopNo);
+          }
           if (boardSpec == null)           continue;
-          RaptorState boardState=new RaptorState();
+          RaptorState boardState=new RaptorState(oldState);
           boardState.nBoardings=nBoardings;
           boardState.boardStop=stop;
           boardState.boardStopSequence=stopNo;
           boardState.arrivalTime=boardSpec.departureTime;
           boardState.patternIndex=boardSpec.patternIndex;
           boardState.tripTimes=boardSpec.tripTimes;
-          boardState.parent=oldState;
           boardState.serviceDay=boardSpec.serviceDay;
           boardState.route=route;
           boardState.walkDistance=oldState.walkDistance;

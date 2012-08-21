@@ -1,3 +1,8 @@
 {
-  return nBoardings <= oldState.nBoardings && waitingTime <= oldState.waitingTime && walkDistance <= oldState.walkDistance * 1.1 && arrivalTime <= oldState.arrivalTime;
+  if (arriveBy) {
+    return nBoardings <= other.nBoardings && walkDistance <= other.walkDistance * 1.1 && arrivalTime >= other.arrivalTime;
+  }
+ else {
+    return nBoardings <= other.nBoardings && walkDistance <= other.walkDistance * 1.1 && arrivalTime <= other.arrivalTime;
+  }
 }

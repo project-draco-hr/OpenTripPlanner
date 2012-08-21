@@ -5,7 +5,7 @@
       it.remove();
       removedBoundingStates.add(old);
     }
- else     if (bounder.getNumBoardings() <= old.getNumBoardings() && bounder.getTime() + WORST_TIME_DIFFERENCE < old.getTime()) {
+ else     if (bounder.getNumBoardings() <= old.getNumBoardings() && options.arriveBy ? (bounder.getTime() - WORST_TIME_DIFFERENCE > old.getTime()) : (bounder.getTime() + WORST_TIME_DIFFERENCE < old.getTime())) {
       it.remove();
       removedBoundingStates.add(old);
     }
@@ -13,6 +13,12 @@
   bounders.add(bounder);
   RaptorState state=(RaptorState)bounder.getExtension("raptorParent");
   RaptorStop stop=state.stop;
-  final int previousArriveTime=getPreviousArriveTime(options,state.arrivalTime - options.getAlightSlack() - 2,stop.stopVertex);
-  previousArrivalTime.add((int)(previousArriveTime + options.getAlightSlack() + bounder.getElapsedTime()));
+  if (options.isArriveBy()) {
+    final int nextDepartTime=getNextDepartTime(options,(state.arrivalTime - options.getBoardSlack()) - 2,stop.stopVertex);
+    previousArrivalTime.add((int)((nextDepartTime - options.getAlightSlack()) - bounder.getElapsedTime()));
+  }
+ else {
+    final int previousArriveTime=getPreviousArriveTime(options,state.arrivalTime - options.getAlightSlack() + 2,stop.stopVertex);
+    previousArrivalTime.add((int)(previousArriveTime + options.getAlightSlack() + bounder.getElapsedTime()));
+  }
 }
