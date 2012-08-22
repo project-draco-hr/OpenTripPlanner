@@ -1,13 +1,8 @@
 {
   for (  State s : gp.states) {
-    EdgeNarrative en=s.getBackEdgeNarrative();
-    if (en == null)     continue;
-    TraverseMode mode=en.getMode();
-    if (en instanceof DelegatingEdgeNarrative) {
-      en=((DelegatingEdgeNarrative)en).getBase();
-    }
-    if (!(en instanceof Edge))     continue;
-    Edge e=(Edge)en;
+    TraverseMode mode=s.getBackMode();
+    Edge e=s.getBackEdge();
+    if (e == null)     continue;
     if (mode.isTransit()) {
       stroke(200,050,000);
       strokeWeight(6);

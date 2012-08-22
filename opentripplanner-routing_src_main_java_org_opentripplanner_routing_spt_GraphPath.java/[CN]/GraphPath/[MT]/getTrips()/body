@@ -1,9 +1,9 @@
 {
   List<AgencyAndId> ret=new LinkedList<AgencyAndId>();
   for (  State s : states) {
-    EdgeNarrative e=s.getBackEdgeNarrative();
+    Edge e=s.getBackEdge();
     if (e == null)     continue;
-    Trip trip=e.getTrip();
+    Trip trip=s.getBackTrip();
     if (trip != null)     ret.add(trip.getId());
   }
   return ret;

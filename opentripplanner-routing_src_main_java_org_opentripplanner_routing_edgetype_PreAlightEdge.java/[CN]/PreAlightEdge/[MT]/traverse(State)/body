@@ -56,6 +56,7 @@
     s1.setEverBoarded(true);
     long wait_cost=t0 - alight_before;
     s1.incrementWeight(wait_cost + transfer_penalty);
+    s1.setBackMode(getMode());
     return s1.makeState();
   }
  else {
@@ -66,6 +67,7 @@
     }
     s1.alightTransit();
     s1.incrementTimeInSeconds(options.getAlightSlack());
+    s1.setBackMode(getMode());
     return s1.makeState();
   }
 }

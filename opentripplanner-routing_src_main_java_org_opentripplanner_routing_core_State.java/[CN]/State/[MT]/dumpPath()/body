@@ -2,7 +2,7 @@
   System.out.printf("---- FOLLOWING CHAIN OF STATES ----\n");
   State s=this;
   while (s != null) {
-    System.out.printf("%s via %s \n",s,s.backEdgeNarrative);
+    System.out.printf("%s via %s by %s\n",s,s.backEdge,s.getBackMode());
     s=s.backState;
   }
   System.out.printf("---- END CHAIN OF STATES ----\n");

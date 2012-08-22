@@ -10,6 +10,10 @@
     return null;
   }
   StateEditor s1=s0.edit(this);
+  Set<Alert> wheelchairNotes=((TurnVertex)fromv).getWheelchairNotes();
+  if (options.wheelchairAccessible) {
+    s1.addAlerts(wheelchairNotes);
+  }
 switch (s0.getNoThruTrafficState()) {
 case INIT:
     if (((TurnVertex)fromv).isNoThruTraffic()) {
@@ -42,5 +46,6 @@ s1.incrementWalkDistance(((TurnVertex)fromv).getLength());
 s1.incrementTimeInSeconds((int)Math.ceil(time));
 s1.incrementWeight(weight);
 if (s1.weHaveWalkedTooFar(options)) return null;
+s1.addAlerts(((TurnVertex)fromv).getNotes());
 return s1.makeState();
 }

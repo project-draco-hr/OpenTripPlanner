@@ -4,7 +4,7 @@
       _log.warn("Vertex " + gv + " has NaN location; this will cause doom.");
       _log.warn(GraphBuilderAnnotation.register(graph,Variety.BOGUS_VERTEX_GEOMETRY,gv));
     }
-    for (    EdgeNarrative e : filter(gv.getOutgoing(),EdgeNarrative.class)) {
+    for (    Edge e : gv.getOutgoing()) {
       Geometry g=e.getGeometry();
       if (g == null) {
         continue;

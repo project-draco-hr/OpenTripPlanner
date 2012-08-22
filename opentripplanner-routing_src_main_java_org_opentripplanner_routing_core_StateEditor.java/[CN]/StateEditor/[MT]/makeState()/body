@@ -15,6 +15,10 @@
     }
   }
   if (!parsePath(this.child))   return null;
+  if (this.notes != child.stateData.notes) {
+    cloneStateDataAsNeeded();
+    child.stateData.notes=this.notes;
+  }
   spawned=true;
   return child;
 }

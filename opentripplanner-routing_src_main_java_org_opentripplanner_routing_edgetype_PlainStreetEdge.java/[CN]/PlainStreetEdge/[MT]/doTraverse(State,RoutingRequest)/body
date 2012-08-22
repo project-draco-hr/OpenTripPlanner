@@ -50,11 +50,11 @@ weight*=options.stairsReluctance;
  else {
 weight*=options.walkReluctance;
 }
-FixedModeEdge en=new FixedModeEdge(this,s0.getNonTransitMode(options));
+StateEditor s1=s0.edit(this);
+s1.setBackMode(s0.getNonTransitMode(options));
 if (wheelchairNotes != null && options.wheelchairAccessible) {
-en.addNotes(wheelchairNotes);
+s1.addAlerts(wheelchairNotes);
 }
-StateEditor s1=s0.edit(this,en);
 switch (s0.getNoThruTrafficState()) {
 case INIT:
 if (isNoThruTraffic()) {
@@ -109,5 +109,6 @@ s1.incrementWalkDistance(length);
 s1.incrementTimeInSeconds((int)Math.ceil(time));
 s1.incrementWeight(weight);
 if (s1.weHaveWalkedTooFar(options)) return null;
+s1.addAlerts(getNotes());
 return s1.makeState();
 }
