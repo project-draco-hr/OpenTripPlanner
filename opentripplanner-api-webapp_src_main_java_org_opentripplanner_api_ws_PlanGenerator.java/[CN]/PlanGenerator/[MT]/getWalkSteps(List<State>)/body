@@ -11,7 +11,7 @@
     if (edge instanceof FreeEdge) {
       continue;
     }
-    if (!currState.getBackMode().isOnStreetNonTransit()) {
+    if (currState.getBackMode() == null || !currState.getBackMode().isOnStreetNonTransit()) {
       continue;
     }
     Geometry geom=edge.getGeometry();
