@@ -5,6 +5,7 @@
   GenericDijkstra dijkstra=new GenericDijkstra(walkOptions);
   List<State> transitStopStates=new ArrayList<State>();
   if (nBoardings == 0) {
+    if (bounder.getTargetDistance(options.rctx.origin) < options.getMaxWalkDistance())     dijkstra.setHeuristic(bounder);
     MaxWalkState start=new MaxWalkState(options.rctx.origin,walkOptions);
     spt=dijkstra.getShortestPathTree(start);
     for (    State state : spt.getAllStates()) {
