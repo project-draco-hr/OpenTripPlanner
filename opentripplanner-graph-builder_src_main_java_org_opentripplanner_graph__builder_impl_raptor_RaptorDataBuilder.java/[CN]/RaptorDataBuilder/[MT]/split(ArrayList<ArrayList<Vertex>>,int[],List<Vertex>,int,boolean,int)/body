@@ -3,7 +3,12 @@
     final ArrayList<Vertex> region=new ArrayList<Vertex>();
     vertexForRegion.add(region);
     for (    Vertex vertex : vertices) {
-      vertex.setGroupIndex(index);
+      if (regionsForVertex == null) {
+        vertex.setGroupIndex(index);
+      }
+ else {
+        regionsForVertex[vertex.getIndex()]=index;
+      }
       region.add(vertex);
     }
     return index + 1;
@@ -21,12 +26,17 @@
     final ArrayList<Vertex> region=new ArrayList<Vertex>();
     vertexForRegion.add(region);
     for (    Vertex vertex : vertices) {
-      vertex.setGroupIndex(index);
+      if (regionsForVertex == null) {
+        vertex.setGroupIndex(index);
+      }
+ else {
+        regionsForVertex[vertex.getIndex()]=index;
+      }
       region.add(vertex);
     }
     return index + 1;
   }
-  index=split(vertexForRegion,vertices.subList(0,mid),index,!horiz,regionSize);
-  index=split(vertexForRegion,vertices.subList(mid,vertices.size()),index,!horiz,regionSize);
+  index=split(vertexForRegion,regionsForVertex,vertices.subList(0,mid),index,!horiz,regionSize);
+  index=split(vertexForRegion,regionsForVertex,vertices.subList(mid,vertices.size()),index,!horiz,regionSize);
   return index;
 }

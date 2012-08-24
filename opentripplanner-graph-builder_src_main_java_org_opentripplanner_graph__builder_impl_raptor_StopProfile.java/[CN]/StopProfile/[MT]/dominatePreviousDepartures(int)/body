@@ -2,55 +2,37 @@
   CostsAtTime inserted=profile.get(originIndex);
   originIndex-=1;
   int timeAtOrigin=inserted.time;
-  int startRemove=-1;
-  boolean shouldContinue=false;
-  while (originIndex >= 0) {
-    CostsAtTime costsAtPrevTime=profile.get(originIndex);
-    int waitTime=timeAtOrigin - costsAtPrevTime.time;
-    ArrayList<DurationAndDistance> toAdd=new ArrayList<DurationAndDistance>();
-    for (Iterator<DurationAndDistance> costsIt=inserted.costs.iterator(); costsIt.hasNext(); ) {
-      DurationAndDistance costs=costsIt.next();
+  for (Iterator<DurationAndDistance> costsIt=inserted.costs.iterator(); costsIt.hasNext(); ) {
+    DurationAndDistance costs=costsIt.next();
+    int index=originIndex;
+    BACKWARDSEARCH:     while (index >= 0) {
+      boolean shouldContinue=false;
+      CostsAtTime costsAtPrevTime=profile.get(index);
+      int waitTime=timeAtOrigin - costsAtPrevTime.time;
       int duration=costs.duration + waitTime;
-      boolean add=false;
       for (Iterator<DurationAndDistance> it=costsAtPrevTime.costs.iterator(); it.hasNext(); ) {
         DurationAndDistance prevCost=it.next();
         if (prevCost.duration >= duration && prevCost.distance * 1.001 >= costs.distance) {
           it.remove();
-          add=true;
+          shouldContinue=true;
         }
  else         if (prevCost.duration > duration || prevCost.distance > costs.distance * 1.001) {
-          add=true;
+          shouldContinue=true;
         }
  else {
-          add=false;
-          break;
+          break BACKWARDSEARCH;
         }
       }
       if (costsAtPrevTime.costs.isEmpty()) {
-        if (startRemove == -1)         startRemove=originIndex;
-        shouldContinue=true;
-        toAdd.clear();
+        profile.remove(index);
+        originIndex-=1;
       }
- else       if (add) {
-        if (startRemove != -1) {
-          profile.subList(originIndex + 1,startRemove + 1).clear();
-          startRemove=-1;
-        }
-        toAdd.add(new DurationAndDistance(duration,costs.distance));
-        shouldContinue=true;
+      if (shouldContinue) {
+        index--;
       }
-    }
-    for (    DurationAndDistance cost : toAdd) {
-      costsAtPrevTime.forceAdd(cost);
-    }
-    if (shouldContinue) {
-      originIndex--;
-    }
  else {
-      break;
+        break;
+      }
     }
-  }
-  if (startRemove != -1) {
-    profile.subList(originIndex + 1,startRemove + 1).clear();
   }
 }

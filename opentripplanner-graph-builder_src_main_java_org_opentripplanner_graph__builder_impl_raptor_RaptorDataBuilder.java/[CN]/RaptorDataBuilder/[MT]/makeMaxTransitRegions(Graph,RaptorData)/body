@@ -6,7 +6,7 @@
     }
   }
   ArrayList<ArrayList<Vertex>> verticesForRegion=new ArrayList<ArrayList<Vertex>>();
-  int nRegions=split(verticesForRegion,vertices,0,true,1000);
+  int nRegions=split(verticesForRegion,null,vertices,0,true,vertices.size() / 20);
   for (int region=0; region < verticesForRegion.size(); ++region) {
     for (    Vertex vertex : verticesForRegion.get(region)) {
       vertex.setGroupIndex(region);
@@ -54,7 +54,7 @@
     log.debug("Computing max transit data for day " + d);
     for (int region=0; region < nRegions; ++region) {
       log.debug("Computing max transit data for region " + region);
-      regions.maxTransit[d][region]=computeMaxTransitData(data,serviceDays,verticesForRegion.get(region),stopToStopWalkTimes,today,nRegions);
+      regions.maxTransit[d][region]=computeMaxTransitData(data,serviceDays,verticesForRegion.get(region),stopToStopWalkTimes,today,nRegions,region);
     }
   }
   return regions;

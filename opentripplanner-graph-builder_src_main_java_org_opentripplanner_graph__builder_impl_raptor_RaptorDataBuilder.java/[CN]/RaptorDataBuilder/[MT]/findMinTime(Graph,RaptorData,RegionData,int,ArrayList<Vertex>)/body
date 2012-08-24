@@ -34,7 +34,7 @@
   for (  Map.Entry<Vertex,Integer> entry : times.entrySet()) {
     Vertex v=entry.getKey();
     int distance=entry.getValue();
-    int toRegion=v.getGroupIndex();
+    int toRegion=regions.getRegionForVertex(v);
     if (toRegion == -1) {
       continue;
     }

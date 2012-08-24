@@ -1,6 +1,4 @@
 {
-  CostsAtTime costsAtNextTime=profile.get(originIndex);
-  int waitTime=costsAtNextTime.time - timeAtOrigin;
   CostsAtTime toInsert=new CostsAtTime(timeAtOrigin);
   for (  DurationAndDistance atDestination : destinationCosts.costs) {
     double walkDistance=distance + atDestination.distance;
@@ -8,21 +6,33 @@
     int walkDuration=duration + atDestination.duration;
     toInsert.forceAdd(walkDuration,walkDistance);
   }
-  for (Iterator<DurationAndDistance> costsIt=toInsert.costs.iterator; costsIt.hasNext(); ) {
+  for (Iterator<DurationAndDistance> costsIt=toInsert.costs.iterator(); costsIt.hasNext(); ) {
     DurationAndDistance costs=costsIt.next();
-    if (!costsAtNextTime.codominant(costs.duration + waitTime,costs.distance)) {
-      costsIt.remove();
+    int index=originIndex;
+    FORWARDSEARCH:     while (index < profile.size()) {
+      CostsAtTime costsAtNextTime=profile.get(index);
+      int waitTime=costsAtNextTime.time - timeAtOrigin;
+      for (      DurationAndDistance nextCosts : costsAtNextTime.costs) {
+        if (costs.distance * 1.05 >= nextCosts.distance) {
+          if (costs.duration - waitTime >= nextCosts.duration) {
+            costsIt.remove();
+            break FORWARDSEARCH;
+          }
+        }
+      }
+      ++index;
     }
   }
   if (toInsert.costs.isEmpty()) {
     return false;
   }
-  if (waitTime == 0) {
-    costsAtNextTime=profile.get(originIndex);
+  CostsAtTime costsAtNextTime=profile.get(originIndex);
+  if (costsAtNextTime.time - timeAtOrigin == 0) {
+    boolean better=false;
     for (    DurationAndDistance costs : toInsert.costs) {
-      costsAtNextTime.add(costs.duration,costs.distance);
+      better|=costsAtNextTime.add(costs.duration,costs.distance);
     }
-    return true;
+    return better;
   }
  else {
     profile.add(originIndex,toInsert);

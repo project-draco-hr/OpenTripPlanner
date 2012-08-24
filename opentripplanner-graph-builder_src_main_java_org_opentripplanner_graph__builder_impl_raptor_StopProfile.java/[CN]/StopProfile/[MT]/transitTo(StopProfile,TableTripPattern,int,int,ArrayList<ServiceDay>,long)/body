@@ -6,7 +6,7 @@
   }
   ServiceDay[] runningDays=runningList.toArray(new ServiceDay[0]);
   boolean anyBetter=false;
-  for (int trip=nTrips - 1; trip >= 0; --trip) {
+  for (int trip=0; trip < nTrips; ++trip) {
     int departureSecondsSinceMidnight=pattern.getDepartureTime(originStopIndex,trip);
     int arrivalSecondsSinceMidnight=pattern.getArrivalTime(destinationStopIndex - 1,trip);
     final int duration=arrivalSecondsSinceMidnight - departureSecondsSinceMidnight;

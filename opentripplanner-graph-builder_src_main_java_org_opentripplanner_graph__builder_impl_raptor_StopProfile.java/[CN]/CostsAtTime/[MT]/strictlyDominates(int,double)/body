@@ -1,11 +1,11 @@
 {
   for (  DurationAndDistance existing : costs) {
     if (existing.duration <= duration && existing.distance <= distance * 1.05) {
-      return false;
-    }
-    if (existing.duration > duration && existing.distance * 1.05 > distance) {
       return true;
     }
+    if (existing.duration > duration && existing.distance * 1.05 > distance) {
+      return false;
+    }
   }
-  return true;
+  return false;
 }

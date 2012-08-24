@@ -5,8 +5,8 @@
     stopProfile.put(v,new StopProfile(v,true));
     visitedLastRound.add(v);
   }
-  for (int round=0; round < MAX_TRANSFERS; ++round) {
-    System.out.println("round " + round + " from "+ visitedLastRound.size());
+  for (int round=0; round < 7; ++round) {
+    log.debug("round " + round + " from "+ visitedLastRound.size());
     HashSet<Vertex> visitedThisRound=new HashSet<Vertex>();
     HashSet<StopProfile> newlyBoarded=new HashSet<StopProfile>();
     for (    RaptorRoute route : data.routes) {
@@ -66,6 +66,7 @@
       log.warn("Missing region for " + vertex);
       continue;
     }
+    if (region == destinationRegion)     continue;
     StopProfile profile=stopProfile.get(vertex);
     if (profile == null) {
       timeForRegion[region]=Integer.MAX_VALUE;

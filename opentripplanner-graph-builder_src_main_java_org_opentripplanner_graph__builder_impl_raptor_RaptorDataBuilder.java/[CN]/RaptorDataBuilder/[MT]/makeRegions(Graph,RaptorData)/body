@@ -6,8 +6,10 @@
     }
   }
   ArrayList<ArrayList<Vertex>> verticesForRegion=new ArrayList<ArrayList<Vertex>>();
-  int nRegions=split(verticesForRegion,vertices,0,true,MAX_REGION_SIZE);
-  RegionData regions=new RegionData();
+  int[] regionsForVertex=new int[AbstractVertex.getMaxIndex()];
+  Arrays.fill(regionsForVertex,-1);
+  int nRegions=split(verticesForRegion,regionsForVertex,vertices,0,true,MAX_REGION_SIZE);
+  RegionData regions=new RegionData(regionsForVertex);
   regions.minTime=new int[nRegions][nRegions];
   int regionIndex=0;
   for (  ArrayList<Vertex> region : verticesForRegion) {
