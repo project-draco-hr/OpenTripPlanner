@@ -130,15 +130,18 @@
       states=new ArrayList<RaptorState>();
       statesByStop[stop.index]=states;
     }
-    RaptorState baseState=(RaptorState)state.getExtension("raptorParent");
-    RaptorState newState=new RaptorState(options.arriveBy);
-    if (baseState != null) {
-      newState.nBoardings=baseState.nBoardings;
+    RaptorState parent=(RaptorState)state.getExtension("raptorParent");
+    RaptorState newState;
+    if (parent != null) {
+      newState=new RaptorState(parent);
     }
+ else {
+      newState=new RaptorState(options.arriveBy);
+    }
+    newState.nBoardings=nBoardings;
     newState.walkDistance=state.getWalkDistance();
     newState.arrivalTime=(int)state.getTime();
     newState.walkPath=state;
-    newState.parent=baseState;
     newState.stop=stop;
     for (    RaptorState oldState : states) {
       if (oldState.eDominates(newState)) {

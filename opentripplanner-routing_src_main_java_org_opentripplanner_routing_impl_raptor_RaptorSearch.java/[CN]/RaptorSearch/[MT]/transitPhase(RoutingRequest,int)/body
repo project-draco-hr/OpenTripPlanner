@@ -41,7 +41,7 @@
         statesByStop[stop.index]=states;
       }
       CONTINUE:       for (      RaptorState boardState : boardStates) {
-        RaptorState newState=new RaptorState(options.arriveBy);
+        RaptorState newState=new RaptorState(boardState.parent);
         ServiceDay sd=boardState.serviceDay;
         if (options.isArriveBy()) {
           if (!route.alights[0][boardState.patternIndex].getPattern().canBoard(stopNo))           continue;
@@ -62,7 +62,6 @@
         newState.tripTimes=boardState.tripTimes;
         newState.nBoardings=boardState.nBoardings;
         newState.walkDistance=boardState.walkDistance;
-        newState.parent=boardState.parent;
         newState.stop=stop;
         for (        RaptorState oldState : states) {
           if (oldState.eDominates(newState)) {
