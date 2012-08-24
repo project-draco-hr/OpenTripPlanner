@@ -1,14 +1,4 @@
 {
-  int nextIndex=tripTimes.size();
-  tripTimes.add(new ScheduledTripTimes(trip,nextIndex,stopTimes));
+  tripTimes.add(new ScheduledTripTimes(trip,stopTimes));
   trips.add(trip);
-  ArrayList<String> headsigns=new ArrayList<String>();
-  boolean allHeadsignsNull=true;
-  for (  StopTime st : stopTimes) {
-    String headsign=st.getStopHeadsign();
-    if (headsign != null)     allHeadsignsNull=false;
-    headsigns.add(headsign);
-  }
-  if (allHeadsignsNull)   headsigns=null;
-  TableTripPattern.this.headsigns.add(headsigns);
 }

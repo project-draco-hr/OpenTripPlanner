@@ -1,6 +1,5 @@
 {
   this.trip=trip;
-  this.index=index;
   int nStops=stopTimes.size();
   int nHops=nStops - 1;
   departureTimes=new int[nHops];
@@ -9,5 +8,6 @@
     departureTimes[hop]=stopTimes.get(hop).getDepartureTime();
     arrivalTimes[hop]=stopTimes.get(hop + 1).getArrivalTime();
   }
+  this.headsigns=makeHeadsignsArray(stopTimes);
   this.compact();
 }
