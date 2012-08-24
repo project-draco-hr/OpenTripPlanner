@@ -34,7 +34,7 @@ synchronized (buffer) {
       }
       if (applied) {
         appliedBlockCount+=1;
-        if (appliedBlockCount % 100 == 0) {
+        if (appliedBlockCount % logFrequency == 0) {
           LOG.info("applied {} stoptime update blocks.",appliedBlockCount);
         }
       }

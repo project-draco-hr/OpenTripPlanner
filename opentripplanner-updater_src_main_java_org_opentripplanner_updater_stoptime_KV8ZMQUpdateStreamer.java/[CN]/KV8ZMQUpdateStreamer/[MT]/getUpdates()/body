@@ -13,7 +13,7 @@
     ret=KV8Update.fromCTX(kv8ctx);
     count+=1;
     LOG.debug("decoded gzipped CTX message #{}: {}",count,msg);
-    if (count % 100 == 0) {
+    if (count % logFrequency == 0) {
       LOG.info("received {} KV8 messages.",count);
     }
   }
