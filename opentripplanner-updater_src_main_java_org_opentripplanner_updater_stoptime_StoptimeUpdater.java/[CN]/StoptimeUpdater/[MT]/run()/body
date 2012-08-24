@@ -27,18 +27,15 @@
         LOG.debug("No pattern found for tripId {}, skipping UpdateBlock.",block.tripId);
         continue;
       }
-      boolean applied=false;
-synchronized (buffer) {
-        Timetable tt=buffer.modify(pattern);
-        applied=tt.update(block);
-      }
+      boolean applied=buffer.update(pattern,block);
       if (applied) {
         appliedBlockCount+=1;
         if (appliedBlockCount % logFrequency == 0) {
           LOG.info("applied {} stoptime update blocks.",appliedBlockCount);
         }
+        getSnapshot();
       }
     }
-    LOG.debug("end of update message",uIndex);
+    LOG.debug("end of update message");
   }
 }

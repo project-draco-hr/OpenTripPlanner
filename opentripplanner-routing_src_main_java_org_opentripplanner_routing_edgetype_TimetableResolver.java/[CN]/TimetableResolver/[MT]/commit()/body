@@ -1,4 +1,11 @@
 {
-  for (  Timetable tt : dirty)   tt.finish();
-  dirty=null;
+  TimetableResolver ret=new TimetableResolver();
+synchronized (this) {
+    if (!this.isDirty())     return null;
+    for (    Timetable tt : dirty)     tt.finish();
+    ret.timetables=(HashMap<TableTripPattern,Timetable>)this.timetables.clone();
+    this.dirty.clear();
+  }
+  ret.dirty=null;
+  return ret;
 }
