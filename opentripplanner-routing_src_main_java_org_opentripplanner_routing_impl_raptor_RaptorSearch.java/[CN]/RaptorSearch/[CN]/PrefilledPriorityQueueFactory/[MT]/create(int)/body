@@ -1,7 +1,7 @@
 {
   BinHeap heap=new BinHeap<T>();
   for (  State state : startPoints) {
-    heap.insert(state,0);
+    heap.insert(state,state.getWeight());
   }
   return heap;
 }

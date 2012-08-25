@@ -47,7 +47,7 @@
       dijkstraState.setTime(state.arrivalTime);
       dijkstraState.setExtension("raptorParent",state);
       dijkstraState.setOptions(walkOptions);
-      dijkstraState.incrementWeight(options.arriveBy ? (options.dateTime - state.arrivalTime) : (state.arrivalTime - options.dateTime));
+      dijkstraState.incrementWeight(state.weight);
       MaxWalkState newState=(MaxWalkState)dijkstraState.makeState();
       startPoints.add(newState);
     }
@@ -78,12 +78,17 @@
  else {
         state=new RaptorState(options.arriveBy);
       }
+      state.weight=targetState.getWeight();
       state.walkDistance=targetState.getWalkDistance();
       state.arrivalTime=(int)targetState.getTime();
       state.walkPath=targetState;
-      for (      RaptorState oldState : getTargetStates()) {
+      for (Iterator<RaptorState> it=getTargetStates().iterator(); it.hasNext(); ) {
+        RaptorState oldState=it.next();
         if (oldState.eDominates(state)) {
           continue TARGET;
+        }
+ else         if (state.eDominates(oldState)) {
+          it.remove();
         }
       }
       addTargetState(state);
@@ -138,6 +143,7 @@
  else {
       newState=new RaptorState(options.arriveBy);
     }
+    newState.weight=state.getWeight();
     newState.nBoardings=nBoardings;
     newState.walkDistance=state.getWalkDistance();
     newState.arrivalTime=(int)state.getTime();

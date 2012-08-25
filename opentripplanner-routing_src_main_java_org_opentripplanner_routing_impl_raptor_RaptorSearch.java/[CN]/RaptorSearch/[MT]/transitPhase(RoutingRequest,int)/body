@@ -48,13 +48,16 @@
           int boardTime=route.getBoardTime(boardState.tripTimes,stopNo);
           newState.arrivalTime=(int)sd.time(boardTime);
           newState.arrivalTime-=options.getBoardSlack();
+          newState.weight+=newState.parent.arrivalTime - newState.arrivalTime;
         }
  else {
           if (!route.boards[0][boardState.patternIndex].getPattern().canAlight(stopNo))           continue;
           int alightTime=route.getAlightTime(boardState.tripTimes,stopNo);
           newState.arrivalTime=(int)sd.time(alightTime);
           newState.arrivalTime+=options.getAlightSlack();
+          newState.weight+=newState.arrivalTime - newState.parent.arrivalTime;
         }
+        newState.weight+=boardState.weight;
         newState.boardStop=boardState.boardStop;
         newState.boardStopSequence=boardState.boardStopSequence;
         newState.route=route;
@@ -109,6 +112,7 @@
           }
           if (boardSpec == null)           continue;
           RaptorState boardState=new RaptorState(oldState);
+          boardState.weight=options.getBoardCost(route.mode);
           boardState.nBoardings=nBoardings;
           boardState.boardStop=stop;
           boardState.boardStopSequence=stopNo;
@@ -118,6 +122,11 @@
           boardState.serviceDay=boardSpec.serviceDay;
           boardState.route=route;
           boardState.walkDistance=oldState.walkDistance;
+          for (          RaptorState state : boardStates) {
+            if (state.eDominates(boardState)) {
+              continue TRYBOARD;
+            }
+          }
           for (          RaptorState state : newStates) {
             if (state.eDominates(boardState)) {
               continue TRYBOARD;
