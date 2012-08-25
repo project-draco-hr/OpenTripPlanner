@@ -3,7 +3,7 @@
     return Collections.emptyList();
   }
   seen.add(vertex);
-  int index=vertex.getGroupIndex();
+  int index=regionForVertex[vertex.getIndex()];
   if (index >= 0) {
     return Arrays.asList(index);
   }
