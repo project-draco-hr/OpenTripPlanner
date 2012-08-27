@@ -13,7 +13,13 @@
     }
   }
   MaxTransitRegions regions=new MaxTransitRegions();
-  HashMap<Vertex,T2<Integer,Double>>[] stopToStopWalkTimes=computeStopToStopWalkTimes(vertices,MIN_SPEED,MAX_DISTANCE);
+  HashMap<Vertex,List<RaptorRoute>> routesForVertex=new HashMap<Vertex,List<RaptorRoute>>();
+  for (  RaptorRoute route : data.routes) {
+    for (    RaptorStop stop : route.stops) {
+      MapUtils.addToMapList(routesForVertex,stop.stopVertex,route);
+    }
+  }
+  HashMap<Vertex,T2<Integer,Double>>[] stopToStopWalkTimes=computeStopToStopWalkTimes(vertices,MIN_SPEED,MAX_DISTANCE,routesForVertex);
   regions.minSpeed=MIN_SPEED;
   regions.maxDistance=MAX_DISTANCE;
   final int NDAYS=5;

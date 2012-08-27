@@ -5,7 +5,7 @@
     stopProfile.put(v,new StopProfile(v,true));
     visitedLastRound.add(v);
   }
-  for (int round=0; round < 7; ++round) {
+  for (int round=0; round < MAX_TRANSFERS; ++round) {
     log.debug("round " + round + " from "+ visitedLastRound.size());
     HashSet<Vertex> visitedThisRound=new HashSet<Vertex>();
     HashSet<StopProfile> newlyBoarded=new HashSet<StopProfile>();

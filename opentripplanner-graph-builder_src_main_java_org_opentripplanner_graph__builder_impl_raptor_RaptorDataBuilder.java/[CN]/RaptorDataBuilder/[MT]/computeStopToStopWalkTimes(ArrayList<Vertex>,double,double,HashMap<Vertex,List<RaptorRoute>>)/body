@@ -7,6 +7,7 @@
   walkOptions.setMaxWalkDistance(maxDistance);
   GenericDijkstra dijkstra=new GenericDijkstra(walkOptions);
   for (  Vertex destination : vertices) {
+    List<RaptorRoute> destinationRoutes=routesForVertex.get(destination);
     final HashMap<Vertex,T2<Integer,Double>> timesByDestination=new HashMap<Vertex,T2<Integer,Double>>();
     times[destination.getIndex()]=timesByDestination;
     State initialState=new MaxWalkState(destination,walkOptions);
@@ -14,6 +15,11 @@
     for (    State state : spt.getAllStates()) {
       Vertex vertex=state.getVertex();
       if (vertex instanceof TransitStop) {
+        final List<RaptorRoute> vertexRoutes=routesForVertex.get(vertex);
+        if (vertexRoutes == null) {
+          continue;
+        }
+        if (isSubsetOf(vertexRoutes,destinationRoutes))         continue;
         T2<Integer,Double> timeAndDistance=new T2<Integer,Double>((int)state.getElapsedTime(),state.getWalkDistance());
         timesByDestination.put(vertex,timeAndDistance);
       }
