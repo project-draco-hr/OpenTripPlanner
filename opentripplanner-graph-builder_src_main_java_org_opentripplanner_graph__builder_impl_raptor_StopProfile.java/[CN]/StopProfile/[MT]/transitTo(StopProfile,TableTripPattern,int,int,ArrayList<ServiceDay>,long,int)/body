@@ -19,7 +19,7 @@
       CostsAtTime costsAtDestination;
       if (destination.atDestination) {
         costsAtDestination=new CostsAtTime(arrivalTime);
-        costsAtDestination.forceAdd(0,0.0);
+        costsAtDestination.forceAdd(-1,0,0.0);
       }
  else {
         int arrivalTimeInsertionPoint=Collections.binarySearch(destination.profile,arrivalTime,comparator);
@@ -38,9 +38,10 @@
       if (originIndex == profile.size()) {
         CostsAtTime toInsert=new CostsAtTime(departureTime);
         for (        DurationAndDistance atDestination : costsAtDestination.costs) {
+          if (atDestination.round != round - 1)           continue;
           int walkDuration=atDestination.duration + duration;
           double walkDistance=atDestination.distance;
-          toInsert.forceAdd(walkDuration,walkDistance);
+          toInsert.forceAdd(round,walkDuration,walkDistance);
           anyBetter=true;
         }
         profile.add(toInsert);
@@ -48,13 +49,13 @@
  else {
         CostsAtTime costsAtNextTime=profile.get(originIndex);
         if (costsAtNextTime.time >= departureTime) {
-          if (!addIfNotDominated(costsAtDestination,departureTime,originIndex,duration,0)) {
+          if (!addIfNotDominated(costsAtDestination,departureTime,originIndex,duration,0,round)) {
             continue;
           }
           anyBetter=true;
         }
       }
-      if (originIndex > 0)       dominatePreviousDepartures(originIndex);
+      if (originIndex > 0)       dominatePreviousDepartures(originIndex,round);
     }
   }
   return anyBetter;

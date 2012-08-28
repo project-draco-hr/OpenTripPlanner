@@ -4,7 +4,7 @@
     double walkDistance=distance + atDestination.distance;
     if (walkDistance > 3218)     continue;
     int walkDuration=duration + atDestination.duration;
-    toInsert.forceAdd(walkDuration,walkDistance);
+    toInsert.forceAdd(round,walkDuration,walkDistance);
   }
   for (Iterator<DurationAndDistance> costsIt=toInsert.costs.iterator(); costsIt.hasNext(); ) {
     DurationAndDistance costs=costsIt.next();
@@ -30,7 +30,7 @@
   if (costsAtNextTime.time - timeAtOrigin == 0) {
     boolean better=false;
     for (    DurationAndDistance costs : toInsert.costs) {
-      better|=costsAtNextTime.add(costs.duration,costs.distance);
+      better|=costsAtNextTime.add(round,costs.duration,costs.distance);
     }
     return better;
   }
