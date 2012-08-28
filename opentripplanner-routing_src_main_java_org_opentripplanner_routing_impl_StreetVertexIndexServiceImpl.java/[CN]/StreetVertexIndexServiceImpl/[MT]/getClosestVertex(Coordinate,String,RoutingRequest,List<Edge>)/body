@@ -16,9 +16,6 @@
       closest.getExtra().add(e);
       e=new FreeEdge(v,closest);
       closest.getExtra().add(e);
-      if (v instanceof TurnVertex && ((TurnVertex)v).isWheelchairAccessible()) {
-        closest.setWheelchairAccessible(true);
-      }
     }
     return closest;
   }

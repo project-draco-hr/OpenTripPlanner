@@ -1,9 +1,0 @@
-{
-  Vertex here=state.getVertex();
-  State existing=states.get(here);
-  if (existing == null || state.getWeight() < existing.getWeight()) {
-    states.put(here,(ReachState)state);
-    return true;
-  }
- else   return false;
-}

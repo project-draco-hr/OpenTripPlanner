@@ -113,12 +113,12 @@
         return;
       }
       showGraph.highlightEdge(selected);
-      if (selected instanceof TurnEdge || selected instanceof PlainStreetEdge) {
+      if (selected instanceof StreetEdge) {
         List<Vertex> vertices=new ArrayList<Vertex>();
         List<Edge> edges=new ArrayList<Edge>();
         Vertex tov=selected.getToVertex();
         for (        Edge og : tov.getOutgoing()) {
-          if (og instanceof TurnEdge || og instanceof PlainStreetEdge) {
+          if (og instanceof StreetEdge) {
             edges.add(og);
             vertices.add(og.getToVertex());
             break;
@@ -126,7 +126,7 @@
         }
         Vertex fromv=selected.getFromVertex();
         for (        Edge ic : fromv.getIncoming()) {
-          if (ic instanceof TurnEdge || ic instanceof PlainStreetEdge) {
+          if (ic instanceof StreetEdge) {
             edges.add(ic);
             vertices.add(ic.getFromVertex());
             break;

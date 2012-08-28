@@ -1,10 +1,11 @@
 {
-  HashSet<Edge> turns=new HashSet<Edge>(left.getOutgoing());
-  turns.addAll(leftBack.getOutgoing());
+  HashSet<Edge> turns=new HashSet<Edge>();
+  turns.add(left);
+  turns.add(leftBack);
   Set<Alert> alert=new HashSet<Alert>();
   alert.add(Alert.createSimpleAlerts("This is the alert"));
-  left.setNotes(alert);
-  leftBack.setNotes(alert);
+  left.setNote(alert);
+  leftBack.setNote(alert);
   StreetLocation start=StreetLocation.createStreetLocation(graph,"start","start",cast(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()));
   RoutingRequest req=new RoutingRequest();
   req.setMaxWalkDistance(Double.MAX_VALUE);
@@ -17,35 +18,19 @@
       break;
     }
   }
-  for (  Edge e : traversedOne.getVertex().getOutgoing()) {
-    if (!(e instanceof TurnEdge))     continue;
-    currentState=e.traverse(traversedOne);
-    if (currentState != null) {
-      traversedOne=currentState;
-      break;
-    }
-  }
   assertEquals(alert,traversedOne.getBackAlerts());
   assertNotSame(left,traversedOne.getBackEdge().getFromVertex());
   assertNotSame(leftBack,traversedOne.getBackEdge().getFromVertex());
   Set<Alert> wheelchairAlert=new HashSet<Alert>();
   wheelchairAlert.add(Alert.createSimpleAlerts("This is the wheelchair alert"));
-  left.setNotes(null);
-  leftBack.setNotes(null);
-  left.setWheelchairNotes(wheelchairAlert);
-  leftBack.setWheelchairNotes(wheelchairAlert);
+  left.setNote(null);
+  leftBack.setNote(null);
+  left.setWheelchairNote(wheelchairAlert);
+  leftBack.setWheelchairNote(wheelchairAlert);
   req.setWheelchairAccessible(true);
   start=StreetLocation.createStreetLocation(graph,"start","start",cast(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()));
   traversedOne=new State((Vertex)start,req);
   for (  Edge e : start.getOutgoing()) {
-    currentState=e.traverse(traversedOne);
-    if (currentState != null) {
-      traversedOne=currentState;
-      break;
-    }
-  }
-  for (  Edge e : traversedOne.getVertex().getOutgoing()) {
-    if (e instanceof FreeEdge)     continue;
     currentState=e.traverse(traversedOne);
     if (currentState != null) {
       traversedOne=currentState;

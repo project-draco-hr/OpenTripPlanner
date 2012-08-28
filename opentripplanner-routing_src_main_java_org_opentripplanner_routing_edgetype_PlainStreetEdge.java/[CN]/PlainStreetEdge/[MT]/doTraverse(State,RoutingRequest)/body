@@ -20,7 +20,7 @@ case SAFE:
     break;
 case GREENWAYS:
   weight=elevationProfileSegment.getBicycleSafetyEffectiveLength() / speed;
-if (elevationProfileSegment.getBicycleSafetyEffectiveLength() / length <= TurnVertex.GREENWAY_SAFETY_FACTOR) {
+if (elevationProfileSegment.getBicycleSafetyEffectiveLength() / length <= GREENWAY_SAFETY_FACTOR) {
   weight*=0.66;
 }
 break;

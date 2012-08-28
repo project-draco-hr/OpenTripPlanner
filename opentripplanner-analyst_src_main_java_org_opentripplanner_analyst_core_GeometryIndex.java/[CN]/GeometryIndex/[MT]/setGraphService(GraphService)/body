@@ -3,12 +3,14 @@
   if (graph == null)   return;
   pedestrianIndex=new STRtree();
   index=new STRtree();
-  for (  TurnVertex tv : IterableLibrary.filter(graph.getVertices(),TurnVertex.class)) {
-    Geometry geom=tv.getGeometry();
-    if (tv.getPermission().allows(StreetTraversalPermission.PEDESTRIAN)) {
-      pedestrianIndex.insert(geom.getEnvelopeInternal(),tv);
+  for (  StreetVertex vertex : IterableLibrary.filter(graph.getVertices(),StreetVertex.class)) {
+    for (    StreetEdge e : IterableLibrary.filter(vertex.getOutgoing(),StreetEdge.class)) {
+      Geometry geom=e.getGeometry();
+      if (e.getPermission().allows(StreetTraversalPermission.PEDESTRIAN)) {
+        pedestrianIndex.insert(geom.getEnvelopeInternal(),e);
+      }
+      index.insert(geom.getEnvelopeInternal(),e);
     }
-    index.insert(geom.getEnvelopeInternal(),tv);
   }
   pedestrianIndex.build();
   index.build();

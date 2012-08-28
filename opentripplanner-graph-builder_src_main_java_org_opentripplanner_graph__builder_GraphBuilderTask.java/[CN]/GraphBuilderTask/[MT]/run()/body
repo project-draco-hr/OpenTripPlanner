@@ -32,11 +32,6 @@
   }
   HashMap<Class<?>,Object> extra=new HashMap<Class<?>,Object>();
   for (  GraphBuilder load : _graphBuilders)   load.buildGraph(graph,extra);
-  if (_modeList != null) {
-    ContractionHierarchySet chs=new ContractionHierarchySet(graph,_modeList,_contractionFactor);
-    chs.build();
-    graph.setHierarchies(chs);
-  }
   GraphBuilderAnnotation.logSummary(graph.getBuilderAnnotations());
   try {
     graph.save(graphFile);

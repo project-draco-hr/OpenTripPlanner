@@ -77,9 +77,6 @@
         if (edge instanceof PlainStreetEdge) {
           double angleDiff=getAbsoluteAngleDiff(thisAngle,lastAngle);
           for (          Edge alternative : backState.getVertex().getOutgoingStreetEdges()) {
-            if (alternative instanceof TinyTurnEdge) {
-              alternative=alternative.getToVertex().getOutgoingStreetEdges().get(0);
-            }
             if (alternative.getName().equals(streetName)) {
               continue;
             }
@@ -90,8 +87,6 @@
               break;
             }
           }
-        }
- else         if (edge instanceof TinyTurnEdge) {
         }
  else {
           double angleDiff=getAbsoluteAngleDiff(lastAngle,thisAngle);

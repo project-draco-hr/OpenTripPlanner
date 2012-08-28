@@ -1,6 +1,9 @@
 {
   if (s0.isSolution())   solutions.add(s0);
-  for (  Edge edge : getTurns(s0.vertex,reverse)) {
+  for (  Edge edge : getOutgoing(s0.vertex,reverse)) {
+    if (s0.back != null && (reverse ? edge.getFromVertex() : edge.getToVertex()) == s0.back.vertex) {
+      continue;
+    }
     State s1=s0.traverse(edge);
     if (s1.isCandidate())     depthFirst(s1);
   }

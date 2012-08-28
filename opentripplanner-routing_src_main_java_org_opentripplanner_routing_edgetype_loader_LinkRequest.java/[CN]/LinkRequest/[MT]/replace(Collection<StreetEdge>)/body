@@ -26,16 +26,7 @@
       continue;
     }
     if (e instanceof StreetEdge)     forwardEdge=(StreetEdge)e;
-    if (e instanceof TurnEdge) {
-      final TurnEdge turnEdge=(TurnEdge)e;
-      TinyTurnEdge newTurn=new TinyTurnEdge(newEnd,toVertex,turnEdge);
-      addEdges(newTurn);
-      newTurn.setRestrictedModes(turnEdge.getRestrictedModes());
-      newTurn.setTurnCost(turnEdge.turnCost);
-    }
- else {
-      addEdges(new FreeEdge(newEnd,toVertex));
-    }
+    addEdges(new FreeEdge(newEnd,toVertex));
   }
   StreetVertex newStart=new IntersectionVertex(linker.graph,"replace " + startVertex.getLabel(),startVertex.getX(),startVertex.getY(),startVertex.getName());
   StreetEdge backwardEdge=null;
@@ -45,16 +36,7 @@
       continue;
     }
     if (e instanceof StreetEdge)     backwardEdge=(StreetEdge)e;
-    if (e instanceof TurnEdge) {
-      final TurnEdge turnEdge=(TurnEdge)e;
-      TinyTurnEdge newTurn=new TinyTurnEdge(newStart,toVertex,turnEdge);
-      addEdges(newTurn);
-      newTurn.setRestrictedModes(turnEdge.getRestrictedModes());
-      newTurn.setTurnCost(turnEdge.turnCost);
-    }
- else {
-      addEdges(new FreeEdge(newStart,toVertex));
-    }
+    addEdges(new FreeEdge(newStart,toVertex));
   }
   PlainStreetEdge forward=new PlainStreetEdge(startVertex,newEnd,forwardEdge.getGeometry(),startVertex.getName(),forwardEdge.getLength(),forwardEdge.getPermission(),false);
   PlainStreetEdge backward=new PlainStreetEdge(endVertex,newStart,backwardEdge.getGeometry(),endVertex.getName(),backwardEdge.getLength(),backwardEdge.getPermission(),true);

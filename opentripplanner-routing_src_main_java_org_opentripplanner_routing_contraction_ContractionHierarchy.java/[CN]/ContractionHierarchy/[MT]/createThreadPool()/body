@@ -1,6 +1,0 @@
-{
-  int nThreads=Runtime.getRuntime().availableProcessors();
-  _log.debug("number of threads: " + nThreads);
-  ArrayBlockingQueue<Runnable> taskQueue=new ArrayBlockingQueue<Runnable>(1000);
-  threadPool=new ThreadPoolExecutor(nThreads,nThreads,10,TimeUnit.SECONDS,taskQueue);
-}
