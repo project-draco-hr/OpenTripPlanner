@@ -1,7 +1,6 @@
 {
   boolean wheelchairAccessible=false;
   StreetLocation location=new StreetLocation(graph,label,nearestPoint,name);
-  location.setDistanceToNearestTransitStop(Double.MAX_VALUE);
   for (  StreetEdge street : edges) {
     Vertex fromv=street.getFromVertex();
     Vertex tov=street.getToVertex();
