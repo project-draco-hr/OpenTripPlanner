@@ -3,6 +3,7 @@
   final int boardSlack=nBoardings == 1 ? options.getBoardSlack() : (options.getTransferSlack() - options.getAlightSlack());
   ShortestPathTree spt;
   GenericDijkstra dijkstra=new GenericDijkstra(walkOptions);
+  dijkstra.setShortestPathTreeFactory(bounder);
   List<State> transitStopStates=new ArrayList<State>();
   if (nBoardings == 0) {
     if (bounder.getTargetDistance(options.rctx.origin) < options.getMaxWalkDistance())     dijkstra.setHeuristic(bounder);
@@ -57,7 +58,6 @@
     }
     System.out.println("walk starts: " + startPoints.size() + " / "+ visitedEver.size());
     dijkstra.setPriorityQueueFactory(new PrefilledPriorityQueueFactory(startPoints.subList(1,startPoints.size())));
-    dijkstra.setShortestPathTreeFactory(bounder);
     bounder.addSptStates(startPoints.subList(1,startPoints.size()));
     bounder.prepareForSearch();
     dijkstra.setSearchTerminationStrategy(bounder);
