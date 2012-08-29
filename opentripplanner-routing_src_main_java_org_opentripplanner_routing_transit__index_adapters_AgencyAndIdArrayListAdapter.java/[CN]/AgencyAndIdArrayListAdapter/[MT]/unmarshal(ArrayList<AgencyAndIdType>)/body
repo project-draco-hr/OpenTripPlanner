@@ -1,0 +1,8 @@
+{
+  if (arg == null) {
+    return null;
+  }
+  ArrayList<AgencyAndId> result=new ArrayList<AgencyAndId>();
+  for (  AgencyAndIdType a : arg)   result.add(new AgencyAndId(a.agency,a.id));
+  return result;
+}
