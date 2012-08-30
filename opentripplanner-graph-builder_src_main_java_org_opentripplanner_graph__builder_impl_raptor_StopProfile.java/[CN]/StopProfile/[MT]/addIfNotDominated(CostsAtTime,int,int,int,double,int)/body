@@ -4,7 +4,7 @@
     double walkDistance=distance + atDestination.distance;
     if (walkDistance > 3218)     continue;
     int walkDuration=duration + atDestination.duration;
-    toInsert.forceAdd(round,walkDuration,walkDistance);
+    toInsert.add(round,walkDuration,walkDistance);
   }
   for (Iterator<DurationAndDistance> costsIt=toInsert.costs.iterator(); costsIt.hasNext(); ) {
     DurationAndDistance costs=costsIt.next();
@@ -23,7 +23,7 @@
       ++index;
     }
   }
-  if (toInsert.costs.isEmpty()) {
+  if (toInsert.isEmpty()) {
     return false;
   }
   CostsAtTime costsAtNextTime=profile.get(originIndex);
