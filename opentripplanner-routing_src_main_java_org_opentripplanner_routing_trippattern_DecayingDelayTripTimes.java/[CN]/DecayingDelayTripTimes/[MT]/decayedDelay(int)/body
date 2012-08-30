@@ -2,7 +2,7 @@
   if (delay == 0)   return 0;
   double decay;
   if (linear) {
-    decay=1 - dt / lambda * 0.5;
+    decay=1 - dt * lambda * 0.5;
     if (decay < 0)     decay=0;
   }
  else {
