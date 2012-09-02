@@ -2,8 +2,8 @@
   Edge en=state.getBackEdge();
   leg.route=en.getName();
   Trip trip=state.getBackTrip();
+  leg.headsign=state.getBackDirection();
   if (trip != null) {
-    leg.headsign=state.getBackDirection();
     if (leg.headsign == null)     leg.headsign=trip.getTripHeadsign();
     leg.tripId=trip.getId().getId();
     leg.agencyId=trip.getId().getAgencyId();
