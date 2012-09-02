@@ -6,7 +6,8 @@
   if (steps) {
     length*=2;
   }
-  PlainStreetEdge street=edgeFactory.createEdge(_nodes.get(startNode),_nodes.get(endNode),way,start,end,geometry,name,length,permissions,back);
+  float carSpeed=wayPropertySet.getCarSpeedForWay(way);
+  PlainStreetEdge street=edgeFactory.createEdge(_nodes.get(startNode),_nodes.get(endNode),way,start,end,geometry,name,length,permissions,back,carSpeed);
   street.setId(id);
   String highway=way.getTag("highway");
   if ("crossing".equals(highway) && !way.isTag("bicycle","designated")) {
@@ -29,6 +30,9 @@
     street.setWheelchairAccessible(false);
   }
   street.setSlopeOverride(wayPropertySet.getSlopeOverride(way));
+  if (carSpeed < 0.04) {
+    _log.warn(GraphBuilderAnnotation.register(graph,Variety.STREET_CAR_SPEED_ZERO,street));
+  }
   if (customNamer != null) {
     customNamer.nameWithEdge(way,street);
   }

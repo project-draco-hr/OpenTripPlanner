@@ -1,0 +1,21 @@
+{
+  super(v1,v2);
+  this.geometry=geometry;
+  this.length=length;
+  this.elevationProfileSegment=new ElevationProfileSegment(length);
+  this.name=name;
+  this.permission=permission;
+  this.back=back;
+  this.carSpeed=carSpeed;
+  if (geometry != null) {
+    for (    Coordinate c : geometry.getCoordinates()) {
+      if (Double.isNaN(c.x)) {
+        System.out.println("DOOM");
+      }
+    }
+    double angleR=DirectionUtils.getLastAngle(geometry);
+    outAngle=((int)(180 * angleR / Math.PI) + 180 + 360) % 360;
+    angleR=DirectionUtils.getFirstAngle(geometry);
+    inAngle=((int)(180 * angleR / Math.PI) + 180 + 360) % 360;
+  }
+}
