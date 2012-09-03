@@ -1,0 +1,25 @@
+{
+  String[] parsedOn=hour_on.split(";");
+  String[] parsedOff=hour_off.split(";");
+  if (parsedOn.length != parsedOff.length)   return null;
+  int[][] onOff=new int[parsedOn.length][];
+  for (int i=0; i < parsedOn.length; i++) {
+    onOff[i]=new int[]{parseHour(parsedOn[i]),parseHour(parsedOff[i])};
+  }
+  boolean active=false;
+  RepeatingTimePeriod ret=new RepeatingTimePeriod();
+  for (  String today : new String[]{"monday","tuesday","wednesday","thursday","friday","saturday","sunday","monday","tuesday","wednesday","thursday","friday","saturday","sunday"}) {
+    if (day_on.toLowerCase().equals(today))     active=true;
+    if (active) {
+      if (today == "monday")       ret.setMonday(onOff);
+ else       if (today == "tuesday")       ret.setTuesday(onOff);
+ else       if (today == "wednesday")       ret.setWednesday(onOff);
+ else       if (today == "thursday")       ret.setThursday(onOff);
+ else       if (today == "friday")       ret.setFriday(onOff);
+ else       if (today == "saturday")       ret.setSaturday(onOff);
+ else       if (today == "sunday")       ret.setSunday(onOff);
+    }
+    if (day_off.toLowerCase().equals(today))     active=false;
+  }
+  return ret;
+}

@@ -1,0 +1,9 @@
+{
+  String[] parsed=hour.split(":");
+  int ret=Integer.parseInt(parsed[0]) * 3600;
+  if (parsed.length >= 2) {
+    ret+=Integer.parseInt(parsed[1]) * 60;
+  }
+  ret-=12 * 3600;
+  return ret;
+}
