@@ -6,7 +6,7 @@
   if (steps) {
     length*=2;
   }
-  float carSpeed=wayPropertySet.getCarSpeedForWay(way);
+  float carSpeed=wayPropertySet.getCarSpeedForWay(way,back);
   PlainStreetEdge street=edgeFactory.createEdge(_nodes.get(startNode),_nodes.get(endNode),way,start,end,geometry,name,length,permissions,back,carSpeed);
   street.setId(id);
   String highway=way.getTag("highway");

@@ -6,7 +6,7 @@
     List<Vertex> startingVertices=new ArrayList<Vertex>();
     Set<Edge> edges=new HashSet<Edge>();
     OSMWithTags areaEntity=area.parent;
-    float carSpeed=wayPropertySet.getCarSpeedForWay(areaEntity);
+    float carSpeed=wayPropertySet.getCarSpeedForWay(areaEntity,false);
     StreetTraversalPermission areaPermissions=getPermissionsForEntity(areaEntity,StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
     if (areaPermissions == StreetTraversalPermission.NONE)     continue;
     setWayName(areaEntity);
