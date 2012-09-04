@@ -3,12 +3,10 @@
   if (restrictionTags != null) {
     for (    TurnRestrictionTag tag : restrictionTags) {
       if (tag.via == startNode) {
-        TurnRestriction restriction=turnRestrictionsByTag.get(tag);
-        restriction.from=backStreet;
+        tag.possibleFrom.add(backStreet);
       }
  else       if (tag.via == endNode) {
-        TurnRestriction restriction=turnRestrictionsByTag.get(tag);
-        restriction.from=street;
+        tag.possibleFrom.add(street);
       }
     }
   }
@@ -16,12 +14,10 @@
   if (restrictionTags != null) {
     for (    TurnRestrictionTag tag : restrictionTags) {
       if (tag.via == startNode) {
-        TurnRestriction restriction=turnRestrictionsByTag.get(tag);
-        restriction.to=street;
+        tag.possibleTo.add(street);
       }
  else       if (tag.via == endNode) {
-        TurnRestriction restriction=turnRestrictionsByTag.get(tag);
-        restriction.to=backStreet;
+        tag.possibleTo.add(backStreet);
       }
     }
   }
