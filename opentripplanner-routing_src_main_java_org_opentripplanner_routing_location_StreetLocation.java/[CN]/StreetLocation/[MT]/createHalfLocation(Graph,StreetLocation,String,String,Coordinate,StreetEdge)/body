@@ -19,6 +19,9 @@
   newRight.setNoThruTraffic(street.isNoThruTraffic());
   newRight.setWheelchairNote(street.getWheelchairNotes());
   newRight.setNote(street.getNotes());
+  for (  TurnRestriction turnRestriction : street.getTurnRestrictions()) {
+    newRight.addTurnRestriction(turnRestriction);
+  }
   base.extra.add(newLeft);
   base.extra.add(newRight);
 }
