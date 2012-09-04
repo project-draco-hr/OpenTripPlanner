@@ -2,7 +2,7 @@
   float speed=-1;
   float currentSpeed;
   if (way.hasTag("maxspeed:motorcar"))   speed=getMetersSecondFromSpeed(way.getTag("maxspeed:motorcar"));
-  if (speed == -1 && !back && way.hasTag("maxspeed:forward"))   speed=getMetersSecondFromSpeed(way.getTag("maxspeed:motorcar"));
+  if (speed == -1 && !back && way.hasTag("maxspeed:forward"))   speed=getMetersSecondFromSpeed(way.getTag("maxspeed:forward"));
   if (speed == -1 && back && way.hasTag("maxspeed:reverse"))   speed=getMetersSecondFromSpeed(way.getTag("maxspeed:reverse"));
   if (speed == -1 && way.hasTag("maxspeed:lanes")) {
     for (    String lane : way.getTag("maxspeed:lanes").split("|")) {
