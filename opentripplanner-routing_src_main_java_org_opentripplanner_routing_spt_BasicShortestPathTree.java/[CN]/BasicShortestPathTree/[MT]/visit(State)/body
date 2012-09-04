@@ -1,3 +1,6 @@
 {
-  return (s == states.get(s.getVertex()));
+  final State existing=states.get(s.getVertex());
+  final Edge backEdge=existing.getBackEdge();
+  if ((backEdge instanceof PlainStreetEdge) && (!((PlainStreetEdge)backEdge).getTurnRestrictions().isEmpty()))   return true;
+  return (s == existing);
 }

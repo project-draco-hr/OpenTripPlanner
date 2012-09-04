@@ -1,5 +1,9 @@
 {
   TraverseMode traverseMode=s0.getNonTransitMode(options);
+  Edge backEdge=s0.getBackEdge();
+  if (backEdge != null && backEdge.getFromVertex() == tov) {
+    return null;
+  }
   if (!canTraverse(options,traverseMode)) {
     if (traverseMode == TraverseMode.BICYCLE) {
       return doTraverse(s0,options.getWalkingOptions());
@@ -80,7 +84,6 @@ return null;
 }
 break;
 }
-Edge backEdge=s0.getBackEdge();
 PlainStreetEdge backPSE;
 if (backEdge != null && backEdge instanceof PlainStreetEdge) {
 backPSE=(PlainStreetEdge)backEdge;
