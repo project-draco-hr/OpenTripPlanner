@@ -1,7 +1,7 @@
 {
   TraverseMode traverseMode=s0.getNonTransitMode(options);
   Edge backEdge=s0.getBackEdge();
-  if (backEdge != null && backEdge.getFromVertex() == tov) {
+  if (backEdge != null && (options.arriveBy ? (backEdge.getToVertex() == fromv) : (backEdge.getFromVertex() == tov))) {
     return null;
   }
   if (!canTraverse(options,traverseMode)) {
