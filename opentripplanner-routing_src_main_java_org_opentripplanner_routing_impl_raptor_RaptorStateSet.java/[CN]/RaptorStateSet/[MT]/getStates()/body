@@ -1,0 +1,9 @@
+{
+  HashMap<Vertex,List<RaptorState>> out=new HashMap<Vertex,List<RaptorState>>();
+  for (int stopNo=0; stopNo < statesByStop.length; ++stopNo) {
+    List<RaptorState> states=statesByStop[stopNo];
+    if (states == null || states.size() == 0)     continue;
+    out.put(states.get(0).stop.stopVertex,states);
+  }
+  return out;
+}

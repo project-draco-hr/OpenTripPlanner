@@ -1,12 +1,11 @@
 {
-  TraverseMode traverseMode=s0.getNonTransitMode(options);
   Edge backEdge=s0.getBackEdge();
   if (backEdge != null && (options.arriveBy ? (backEdge.getToVertex() == fromv) : (backEdge.getFromVertex() == tov))) {
     return null;
   }
   if (!canTraverse(options,traverseMode)) {
     if (traverseMode == TraverseMode.BICYCLE) {
-      return doTraverse(s0,options.getWalkingOptions());
+      return doTraverse(s0,options.getWalkingOptions(),TraverseMode.WALK);
     }
     return null;
   }
