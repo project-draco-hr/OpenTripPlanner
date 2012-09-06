@@ -1,7 +1,14 @@
 {
   for (  TurnRestriction restriction : turnRestrictions) {
-    if (restriction.to == e && restriction.modes.contains(mode)) {
-      return restriction.type == TurnRestrictionType.ONLY_TURN;
+    if (restriction.type == TurnRestrictionType.ONLY_TURN) {
+      if (restriction.to != e && restriction.modes.contains(mode)) {
+        return false;
+      }
+    }
+ else {
+      if (restriction.to == e && restriction.modes.contains(mode)) {
+        return false;
+      }
     }
   }
   return true;
