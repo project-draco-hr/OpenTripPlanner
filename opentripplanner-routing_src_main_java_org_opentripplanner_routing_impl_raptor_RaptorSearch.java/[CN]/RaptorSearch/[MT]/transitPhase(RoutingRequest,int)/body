@@ -43,19 +43,26 @@
       CONTINUE:       for (      RaptorState boardState : boardStates) {
         RaptorState newState=new RaptorState(boardState.parent);
         ServiceDay sd=boardState.serviceDay;
+        int waitTime;
         if (options.isArriveBy()) {
           if (!route.alights[0][boardState.patternIndex].getPattern().canBoard(stopNo))           continue;
           int boardTime=route.getBoardTime(boardState.tripTimes,stopNo);
           newState.arrivalTime=(int)sd.time(boardTime);
           newState.arrivalTime-=options.getBoardSlack();
-          newState.weight+=newState.parent.arrivalTime - newState.arrivalTime;
+          waitTime=newState.parent.arrivalTime - newState.arrivalTime;
         }
  else {
           if (!route.boards[0][boardState.patternIndex].getPattern().canAlight(stopNo))           continue;
           int alightTime=route.getAlightTime(boardState.tripTimes,stopNo);
           newState.arrivalTime=(int)sd.time(alightTime);
           newState.arrivalTime+=options.getAlightSlack();
-          newState.weight+=newState.arrivalTime - newState.parent.arrivalTime;
+          waitTime=newState.arrivalTime - newState.parent.arrivalTime;
+        }
+        if (nBoardings == 1) {
+          newState.initialWaitTime=waitTime;
+        }
+ else {
+          newState.weight+=waitTime;
         }
         newState.weight+=boardState.weight;
         newState.boardStop=boardState.boardStop;

@@ -42,6 +42,7 @@
         continue;
       }
       StateEditor dijkstraState=new MaxWalkState.MaxWalkStateEditor(walkOptions,stopVertex);
+      dijkstraState.setInitialWaitTime(state.initialWaitTime);
       dijkstraState.setStartTime(options.dateTime);
       dijkstraState.setNumBoardings(state.nBoardings);
       dijkstraState.setWalkDistance(state.walkDistance);
