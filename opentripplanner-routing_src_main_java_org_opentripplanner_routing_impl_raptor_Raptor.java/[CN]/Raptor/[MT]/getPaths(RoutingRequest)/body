@@ -40,7 +40,7 @@
     for (int i=0; i < options.getMaxTransfers() + 2; ++i) {
       round(data,options,walkOptions,search,i);
       long elapsed=System.currentTimeMillis() - searchBeginTime;
-      if (elapsed > multiPathTimeout && multiPathTimeout > 0 && search.getTargetStates().size() > 0)       break RETRY;
+      if (elapsed > multiPathTimeout * 1000 && multiPathTimeout > 0 && search.getTargetStates().size() > 0)       break RETRY;
       if (search.getTargetStates().size() >= options.getNumItineraries()) {
         int oldBest=bestElapsedTime;
         for (        RaptorState state : search.getTargetStates()) {
