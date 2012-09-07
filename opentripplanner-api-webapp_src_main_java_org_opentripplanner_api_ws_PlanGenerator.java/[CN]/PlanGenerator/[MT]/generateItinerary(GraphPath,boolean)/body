@@ -2,29 +2,29 @@
   Graph graph=path.getRoutingContext().graph;
   TransitIndexService transitIndex=graph.getService(TransitIndexService.class);
   Itinerary itinerary=makeEmptyItinerary(path);
-  EdgeNarrative postponedAlerts=null;
+  Set<Alert> postponedAlerts=null;
   Leg leg=null;
   CoordinateArrayListSequence coordinates=new CoordinateArrayListSequence();
   double previousElevation=Double.MAX_VALUE;
   int startWalk=-1;
   int i=-1;
+  boolean foldingElevatorLegIntoCycleLeg=false;
   PlanGenState pgstate=PlanGenState.START;
   String nextName=null;
   for (  State state : path.states) {
     i+=1;
     Edge backEdge=state.getBackEdge();
-    EdgeNarrative backEdgeNarrative=state.getBackEdgeNarrative();
     if (backEdge == null) {
       continue;
     }
-    TraverseMode mode=backEdgeNarrative.getMode();
+    TraverseMode mode=state.getBackMode();
     if (mode != null) {
       long dt=state.getAbsTimeDeltaSec();
       if (mode == TraverseMode.BOARDING || mode == TraverseMode.ALIGHTING || mode == TraverseMode.STL) {
         itinerary.waitingTime+=dt;
       }
  else       if (mode.isOnStreetNonTransit()) {
-        itinerary.walkDistance+=backEdgeNarrative.getDistance();
+        itinerary.walkDistance+=backEdge.getDistance();
         itinerary.walkTime+=dt;
       }
  else       if (mode.isTransit()) {
@@ -33,10 +33,10 @@
     }
     if (backEdge instanceof FreeEdge) {
       if (backEdge instanceof PreBoardEdge) {
-        postponedAlerts=backEdgeNarrative;
+        postponedAlerts=state.getBackAlerts();
       }
  else       if (backEdge instanceof PreAlightEdge) {
-        addNotesToLeg(itinerary.legs.get(itinerary.legs.size() - 1),backEdgeNarrative);
+        addNotesToLeg(itinerary.legs.get(itinerary.legs.size() - 1),state.getBackAlerts());
       }
       continue;
     }
@@ -108,7 +108,7 @@ if (mode == TraverseMode.WALK) {
   leg=makeLeg(itinerary,state);
   itinerary.transfers++;
 }
- else if (backEdgeNarrative instanceof LegSwitchingEdge) {
+ else if (backEdge instanceof LegSwitchingEdge) {
   nextName=state.getBackState().getBackState().getBackState().getVertex().getName();
   finalizeLeg(leg,state,path.states,startWalk,i - 1,coordinates);
   leg=null;
@@ -121,6 +121,19 @@ break;
 case BICYCLE:
 if (leg == null) {
 leg=makeLeg(itinerary,state);
+}
+if (state.getBackEdge() instanceof ElevatorBoardEdge) {
+int j=i + 1;
+while (path.states.get(j).getBackEdge() instanceof ElevatorEdge) j++;
+if (path.states.get(j).getBackMode() == TraverseMode.BICYCLE) foldingElevatorLegIntoCycleLeg=true;
+}
+if (foldingElevatorLegIntoCycleLeg) {
+if (state.getBackEdge() instanceof ElevatorEdge) {
+break;
+}
+ else {
+foldingElevatorLegIntoCycleLeg=false;
+}
 }
 if (mode == TraverseMode.BICYCLE) {
 }
@@ -135,7 +148,7 @@ finalizeLeg(leg,state,path.states,startWalk,i,coordinates);
 leg=null;
 pgstate=PlanGenState.PRETRANSIT;
 }
- else if (backEdgeNarrative instanceof LegSwitchingEdge) {
+ else if (backEdge instanceof LegSwitchingEdge) {
 finalizeLeg(leg,state,path.states,startWalk,i - 1,coordinates);
 leg=null;
 pgstate=PlanGenState.START;
@@ -155,7 +168,7 @@ finalizeLeg(leg,state,path.states,startWalk,i,coordinates);
 leg=null;
 pgstate=PlanGenState.PRETRANSIT;
 }
- else if (backEdgeNarrative instanceof LegSwitchingEdge) {
+ else if (backEdge instanceof LegSwitchingEdge) {
 finalizeLeg(leg,state,path.states,startWalk,i - 1,coordinates);
 leg=null;
 pgstate=PlanGenState.START;
@@ -186,7 +199,7 @@ LOG.error("Unexpected state (in PRETRANSIT): " + mode);
 }
 break;
 case TRANSIT:
-String route=backEdgeNarrative.getName();
+String route=backEdge.getName();
 if (mode == TraverseMode.ALIGHTING) {
 if (showIntermediateStops && leg.stop != null && leg.stop.size() > 0) {
 if (leg.stop.isEmpty()) {
@@ -223,8 +236,8 @@ LOG.error("Unexpected state (in TRANSIT): " + mode);
 break;
 }
 if (leg != null) {
-leg.distance+=backEdgeNarrative.getDistance();
-Geometry edgeGeometry=backEdgeNarrative.getGeometry();
+leg.distance+=backEdge.getDistance();
+Geometry edgeGeometry=backEdge.getGeometry();
 if (edgeGeometry != null) {
 Coordinate[] edgeCoordinates=edgeGeometry.getCoordinates();
 if (coordinates.size() > 0 && coordinates.getCoordinate(coordinates.size() - 1).equals(edgeCoordinates[0])) {
@@ -238,7 +251,7 @@ if (postponedAlerts != null) {
 addNotesToLeg(leg,postponedAlerts);
 postponedAlerts=null;
 }
-addNotesToLeg(leg,backEdgeNarrative);
+addNotesToLeg(leg,state.getBackAlerts());
 }
 }
 if (leg != null) {

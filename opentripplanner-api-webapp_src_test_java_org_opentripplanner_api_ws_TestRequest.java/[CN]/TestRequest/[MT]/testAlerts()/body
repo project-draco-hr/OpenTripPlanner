@@ -1,5 +1,5 @@
 {
-  Planner planner=new TestPlanner("portland","114789 back","114237");
+  Planner planner=new TestPlanner("portland","SE 47TH AVE at SE ASH ST","NE 47TH AVE at NE COUCH ST");
   Response response=planner.getItineraries();
   Itinerary itinerary=response.getPlan().itinerary.get(0);
   Leg leg=itinerary.legs.get(0);

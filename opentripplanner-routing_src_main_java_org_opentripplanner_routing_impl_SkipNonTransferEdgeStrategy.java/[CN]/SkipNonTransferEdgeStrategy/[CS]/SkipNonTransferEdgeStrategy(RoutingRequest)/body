@@ -1,0 +1,6 @@
+{
+  Graph graph=request.rctx.graph;
+  transitLocalStreets=graph.getService(TransitLocalStreetService.class);
+  finalTarget=request.rctx.target.getCoordinate();
+  maxWalkDistance=request.getMaxWalkDistance();
+}

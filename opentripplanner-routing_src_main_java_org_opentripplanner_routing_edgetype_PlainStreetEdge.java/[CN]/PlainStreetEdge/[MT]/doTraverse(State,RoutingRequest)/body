@@ -1,5 +1,9 @@
 {
   TraverseMode traverseMode=s0.getNonTransitMode(options);
+  Edge backEdge=s0.getBackEdge();
+  if (backEdge != null && (options.arriveBy ? (backEdge.getToVertex() == fromv) : (backEdge.getFromVertex() == tov))) {
+    return null;
+  }
   if (!canTraverse(options,traverseMode)) {
     if (traverseMode == TraverseMode.BICYCLE) {
       return doTraverse(s0,options.getWalkingOptions());
@@ -20,7 +24,7 @@ case SAFE:
     break;
 case GREENWAYS:
   weight=elevationProfileSegment.getBicycleSafetyEffectiveLength() / speed;
-if (elevationProfileSegment.getBicycleSafetyEffectiveLength() / length <= TurnVertex.GREENWAY_SAFETY_FACTOR) {
+if (elevationProfileSegment.getBicycleSafetyEffectiveLength() / length <= GREENWAY_SAFETY_FACTOR) {
   weight*=0.66;
 }
 break;
@@ -50,11 +54,11 @@ weight*=options.stairsReluctance;
  else {
 weight*=options.walkReluctance;
 }
-FixedModeEdge en=new FixedModeEdge(this,s0.getNonTransitMode(options));
+StateEditor s1=s0.edit(this);
+s1.setBackMode(s0.getNonTransitMode(options));
 if (wheelchairNotes != null && options.wheelchairAccessible) {
-en.addNotes(wheelchairNotes);
+s1.addAlerts(wheelchairNotes);
 }
-StateEditor s1=s0.edit(this,en);
 switch (s0.getNoThruTrafficState()) {
 case INIT:
 if (isNoThruTraffic()) {
@@ -80,9 +84,34 @@ return null;
 }
 break;
 }
+PlainStreetEdge backPSE;
+if (backEdge != null && backEdge instanceof PlainStreetEdge) {
+backPSE=(PlainStreetEdge)backEdge;
+int outAngle=0;
+int inAngle=0;
+if (options.arriveBy) {
+if (!canTurnOnto(backPSE,s0,traverseMode)) return null;
+outAngle=backPSE.getOutAngle();
+inAngle=getInAngle();
+}
+ else {
+if (!backPSE.canTurnOnto(this,s0,traverseMode)) return null;
+outAngle=getOutAngle();
+inAngle=backPSE.getInAngle();
+}
+int turnCost=Math.abs(outAngle - inAngle);
+if (turnCost > 180) {
+turnCost=360 - turnCost;
+}
+final double realTurnCost=(turnCost / 20.0) / options.getSpeed(traverseMode);
+s1.incrementWalkDistance(realTurnCost / 100);
+weight+=realTurnCost;
+time+=Math.ceil(realTurnCost);
+}
 s1.incrementWalkDistance(length);
 s1.incrementTimeInSeconds((int)Math.ceil(time));
 s1.incrementWeight(weight);
 if (s1.weHaveWalkedTooFar(options)) return null;
+s1.addAlerts(getNotes());
 return s1.makeState();
 }

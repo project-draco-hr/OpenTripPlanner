@@ -6,7 +6,7 @@
  else   vertexLabel="link for " + v;
   Coordinate coordinate=v.getCoordinate();
   CandidateEdgeBundle edges=linker.index.getClosestEdges(coordinate,linker.options,null,nearbyRouteEdges);
-  if (edges == null || edges.size() < 2) {
+  if (edges == null || edges.size() < 1) {
     _log.debug("found too few edges: {} {}",v.getName(),v.getCoordinate());
     return null;
   }

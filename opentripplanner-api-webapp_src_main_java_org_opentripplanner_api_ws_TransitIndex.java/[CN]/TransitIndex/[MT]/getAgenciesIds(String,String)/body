@@ -1,0 +1,13 @@
+{
+  Graph graph=getGraph(routerId);
+  ArrayList<String> agencyList=new ArrayList<String>();
+  if (agency == null || agency.equals("")) {
+    for (    String a : graph.getAgencyIds()) {
+      agencyList.add(a);
+    }
+  }
+ else {
+    agencyList.add(agency);
+  }
+  return agencyList;
+}

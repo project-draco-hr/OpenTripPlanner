@@ -1,6 +1,6 @@
 {
   Vertex sv=s.getVertex();
-  double euclidianDistance=distanceLibrary.fastDistance(sv.getCoordinate(),target.getCoordinate());
+  double euclidianDistance=distanceLibrary.fastDistance(sv.getY(),sv.getX(),targetY,targetX);
   if (useTransit) {
     double speed=options.getSpeedUpperBound();
     if (s.isAlightedLocal()) {

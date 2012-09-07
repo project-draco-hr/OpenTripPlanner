@@ -1,0 +1,11 @@
+{
+  ArrayList<State> allStates=new ArrayList<State>();
+  for (  List<State> stateSet : stateSets.values()) {
+    allStates.addAll(stateSet);
+  }
+  for (  List<State> stateSet : stateSetArray) {
+    if (stateSet == null)     continue;
+    allStates.addAll(stateSet);
+  }
+  return allStates;
+}

@@ -3,7 +3,7 @@
   NetworkLinker nl=new NetworkLinker(graph);
   nl.createLinkage();
   int numVerticesAfter=graph.getVertices().size();
-  assertEquals(6,numVerticesAfter - numVerticesBefore);
+  assertEquals(4,numVerticesAfter - numVerticesBefore);
   Collection<Edge> outgoing=station1.getOutgoing();
   assertTrue(outgoing.size() == 2);
   Edge edge=outgoing.iterator().next();

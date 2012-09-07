@@ -2,8 +2,10 @@
   index=new HashGrid(50,2000,2000);
   Graph graph=graphService.getGraph();
   LOG.debug("Rasterizing streets into index...");
-  for (  TurnVertex tv : IterableLibrary.filter(graph.getVertices(),TurnVertex.class)) {
-    index.rasterize(tv.getGeometry(),tv);
+  for (  StreetVertex vertex : IterableLibrary.filter(graph.getVertices(),StreetVertex.class)) {
+    for (    Edge e : vertex.getOutgoing()) {
+      index.rasterize(e.getGeometry(),e);
+    }
   }
   LOG.debug("Done rasterizing streets into index.");
 }

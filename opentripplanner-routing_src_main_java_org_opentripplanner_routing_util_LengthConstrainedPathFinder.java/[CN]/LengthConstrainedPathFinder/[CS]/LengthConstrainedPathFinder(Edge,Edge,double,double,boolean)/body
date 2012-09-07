@@ -1,3 +1,10 @@
 {
-  this((TurnVertex)(startEdge.getFromVertex()),(TurnVertex)(targetEdge.getFromVertex()),targetLength,epsilon,calculateBounds);
+  this.startEdge=startVertex;
+  this.targetEdge=targetVertex;
+  reverse=targetLength < 0;
+  targetLength=Math.abs(targetLength);
+  this.targetLength=targetLength;
+  if (epsilon < 0)   throw new InvalidParameterException();
+ else   this.epsilon=epsilon;
+  this.bounds=calculateBounds ? findBounds() : null;
 }

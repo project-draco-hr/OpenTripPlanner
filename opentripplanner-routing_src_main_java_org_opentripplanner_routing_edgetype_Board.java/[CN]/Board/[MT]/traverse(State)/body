@@ -10,6 +10,7 @@
     s1.setLastAlightedTime(state0.getTime());
     s1.setPreviousStop(fromv);
     TransitUtils.handleBoardAlightType(s1,pickupType);
+    s1.setBackMode(getMode());
     return s1.makeState();
   }
  else {
@@ -50,6 +51,7 @@
     s1.setTripId(trip.getId());
     s1.setZone(zone);
     s1.setRoute(trip.getRoute().getId());
+    s1.setBackMode(getMode());
     return s1.makeState();
   }
 }

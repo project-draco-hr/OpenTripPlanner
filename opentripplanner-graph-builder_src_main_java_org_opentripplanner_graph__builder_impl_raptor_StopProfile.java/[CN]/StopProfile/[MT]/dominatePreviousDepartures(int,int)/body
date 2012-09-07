@@ -1,0 +1,59 @@
+{
+  CostsAtTime inserted=profile.get(originIndex);
+  CostsAtTime costsAtDeparture=new CostsAtTime(inserted.time);
+  for (  DurationAndDistance d : inserted.costs) {
+    costsAtDeparture.forceAdd(d);
+  }
+  originIndex-=1;
+  int timeAtOrigin=inserted.time;
+  int index=originIndex;
+  while (index >= 0) {
+    boolean shouldContinue=false;
+    CostsAtTime costsAtPrevTime=profile.get(index);
+    int waitTime=timeAtOrigin - costsAtPrevTime.time;
+    ArrayList<DurationAndDistance> toAdd=new ArrayList<DurationAndDistance>();
+    ArrayList<DurationAndDistance> duplicates=new ArrayList<DurationAndDistance>();
+    for (Iterator<DurationAndDistance> costsIt=costsAtDeparture.costs.iterator(); costsIt.hasNext(); ) {
+      DurationAndDistance costs=costsIt.next();
+      int duration=costs.duration + waitTime;
+      boolean add=false;
+      for (Iterator<DurationAndDistance> it=costsAtPrevTime.costs.iterator(); it.hasNext(); ) {
+        DurationAndDistance prevCost=it.next();
+        if (prevCost.duration == duration && prevCost.distance == costs.distance) {
+          add=false;
+          duplicates.add(prevCost);
+          break;
+        }
+ else         if (prevCost.duration >= duration && prevCost.distance >= costs.distance * 1.05) {
+          add=true;
+          it.remove();
+        }
+ else         if (prevCost.duration > duration || prevCost.distance > costs.distance * 1.05 && (prevCost.duration != duration || prevCost.distance != costs.distance)) {
+          add=true;
+        }
+ else {
+          add=false;
+          break;
+        }
+      }
+      if (add) {
+        shouldContinue=true;
+        toAdd.add(new DurationAndDistance(round,duration,costs.distance));
+      }
+    }
+    if (duplicates.size() == costsAtPrevTime.size() || costsAtPrevTime.isEmpty()) {
+      profile.remove(index);
+    }
+ else {
+      for (      DurationAndDistance newCosts : toAdd) {
+        costsAtPrevTime.forceAdd(newCosts);
+      }
+    }
+    if (shouldContinue && !costsAtDeparture.isEmpty()) {
+      index--;
+    }
+ else {
+      break;
+    }
+  }
+}

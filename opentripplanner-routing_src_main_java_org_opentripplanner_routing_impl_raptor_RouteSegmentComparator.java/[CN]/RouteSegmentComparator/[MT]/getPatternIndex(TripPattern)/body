@@ -1,0 +1,8 @@
+{
+  Integer patternIndex=patternOrder.get(pattern);
+  if (patternIndex == null) {
+    patternIndex=maxPattern++;
+    patternOrder.put(pattern,patternIndex);
+  }
+  return patternIndex;
+}

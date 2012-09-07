@@ -1,0 +1,16 @@
+{
+  int vertexIndex=vertex.getIndex();
+  if (vertexIndex < distance.length) {
+    if (distance[vertexIndex] > 0.0) {
+      return distance[vertexIndex];
+    }
+ else {
+      double d=distanceLibrary.fastDistance(realTargetCoordinate.y,realTargetCoordinate.x,vertex.getY(),vertex.getX());
+      distance[vertexIndex]=d;
+      return d;
+    }
+  }
+ else {
+    return distanceLibrary.fastDistance(realTargetCoordinate.y,realTargetCoordinate.x,vertex.getY(),vertex.getX());
+  }
+}

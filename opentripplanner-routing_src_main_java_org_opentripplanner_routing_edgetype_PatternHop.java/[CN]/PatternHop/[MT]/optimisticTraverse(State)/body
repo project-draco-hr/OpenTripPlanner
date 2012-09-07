@@ -2,6 +2,7 @@
   int runningTime=getPattern().getBestRunningTime(stopIndex);
   StateEditor s1=state0.edit(this);
   s1.incrementTimeInSeconds(runningTime);
+  s1.setBackMode(getMode());
   s1.incrementWeight(runningTime);
   return s1.makeState();
 }

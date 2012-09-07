@@ -1,0 +1,22 @@
+{
+  int bestArrivalTime=Integer.MAX_VALUE;
+  request.arriveBy=false;
+  for (  Edge preboard : stopVertex.getOutgoing()) {
+    if (preboard instanceof PreBoardEdge) {
+      Vertex departure=preboard.getToVertex();
+      for (      Edge board : departure.getOutgoing()) {
+        if (board instanceof TransitBoardAlight) {
+          State state=new State(board.getFromVertex(),departureTime,request);
+          State result=board.traverse(state);
+          if (result == null)           continue;
+          int time=(int)result.getTime();
+          if (time < bestArrivalTime) {
+            bestArrivalTime=time;
+          }
+        }
+      }
+    }
+  }
+  request.arriveBy=true;
+  return bestArrivalTime;
+}

@@ -7,64 +7,29 @@
   provider.setPath(file);
   loader.setProvider(provider);
   loader.buildGraph(gg,extra);
-  Vertex v2=gg.getVertex("way 25660216 from 1");
-  Vertex v2back=gg.getVertex("way 25660216 from 1 back");
-  Vertex v3=gg.getVertex("way 25691274 from 0");
-  Vertex v3back=gg.getVertex("way 25691274 from 0 back");
-  Vertex v4=gg.getVertex("way 25691274 from 3");
-  Vertex v4back=gg.getVertex("way 25691274 from 3 back");
+  Vertex v1=gg.getVertex("osm node 280592578");
+  Vertex v2=gg.getVertex("osm node 288969929");
+  Vertex v3=gg.getVertex("osm node 280107802");
+  Vertex v4=gg.getVertex("osm node 288970952");
+  assertNotNull(v1);
   assertNotNull(v2);
-  assertNotNull(v2back);
   assertNotNull(v3);
-  assertNotNull(v3back);
   assertNotNull(v4);
-  assertNotNull(v4back);
-  assertTrue("name of v2 must be like \"Kamiennog\u00F3rska\"; was " + v2.getName(),v2.getName().contains("Kamiennog\u00F3rska"));
-  assertTrue("name of v3 must be like \"Mariana Smoluchowskiego\"; was " + v3.getName(),v3.getName().contains("Mariana Smoluchowskiego"));
-  boolean v3EdgeExists=false;
-  boolean v4EdgeExists=false;
-  boolean v4BackEdgeExists=false;
+  Edge e1=null, e2=null, e3=null;
   for (  Edge e : v2.getOutgoing()) {
-    if (e instanceof TurnEdge) {
-      TurnEdge t=(TurnEdge)e;
-      Vertex tov=t.getToVertex();
-      if (tov == v3 || tov == v3back) {
-        assertTrue("Turn cost wrong; expected ~90, was: " + t.turnCost,Math.abs(t.turnCost - 90) < 3);
-        v3EdgeExists=true;
-      }
+    if (e.getToVertex() == v1) {
+      e1=e;
+    }
+ else     if (e.getToVertex() == v3) {
+      e2=e;
+    }
+ else     if (e.getToVertex() == v4) {
+      e3=e;
     }
   }
-  for (  Edge e : v2back.getOutgoing()) {
-    if (e instanceof TurnEdge) {
-      TurnEdge t=(TurnEdge)e;
-      Vertex tov=t.getToVertex();
-      if (tov == v3 || tov == v3back) {
-        assertTrue(Math.abs(t.turnCost - 90) < 5);
-        v3EdgeExists=true;
-      }
-    }
-  }
-  for (  Edge e : v3.getOutgoing()) {
-    if (e instanceof TurnEdge) {
-      TurnEdge t=(TurnEdge)e;
-      Vertex tov=t.getToVertex();
-      if (tov == v4) {
-        assertTrue("Turn cost too big: " + t.turnCost,t.turnCost < 5);
-        v4EdgeExists=true;
-      }
-    }
-  }
-  for (  Edge e : v4back.getOutgoing()) {
-    if (e instanceof TurnEdge) {
-      TurnEdge t=(TurnEdge)e;
-      Vertex tov=t.getToVertex();
-      if (tov == v3back) {
-        assertTrue("Turn cost too big: " + t.turnCost,t.turnCost < 5);
-        v4BackEdgeExists=true;
-      }
-    }
-  }
-  assertTrue("There is no edge from v2 to v3",v3EdgeExists);
-  assertTrue("There is no edge from v3 to v4",v4EdgeExists);
-  assertTrue("There is no edge from v4back to v3back",v4BackEdgeExists);
+  assertNotNull(e1);
+  assertNotNull(e2);
+  assertNotNull(e3);
+  assertTrue("name of e1 must be like \"Kamiennog\u00F3rska\"; was " + e1.getName(),e1.getName().contains("Kamiennog\u00F3rska"));
+  assertTrue("name of e2 must be like \"Mariana Smoluchowskiego\"; was " + e2.getName(),e2.getName().contains("Mariana Smoluchowskiego"));
 }

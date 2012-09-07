@@ -1,5 +1,5 @@
 {
-  Iterator<Integer> departureTimeIterator=pattern.getDepartureTimes(stopIndex);
+  Iterator<Integer> departureTimeIterator=pattern.getScheduledDepartureTimes(stopIndex);
   while (departureTimeIterator.hasNext()) {
     int dt=departureTimeIterator.next();
     Calendar c=new GregorianCalendar();

@@ -1,0 +1,6 @@
+{
+  Geometry geom=geometryCollectionFromVertices(graph).buffer(.04,6);
+  DouglasPeuckerSimplifier simplifier=new DouglasPeuckerSimplifier(geom);
+  simplifier.setDistanceTolerance(0.00001);
+  return simplifier.getResultGeometry();
+}

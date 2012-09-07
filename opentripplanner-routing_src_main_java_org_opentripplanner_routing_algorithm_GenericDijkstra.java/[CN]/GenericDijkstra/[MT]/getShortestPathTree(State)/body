@@ -1,4 +1,8 @@
 {
+  Vertex target=null;
+  if (options.rctx != null) {
+    target=initialState.getOptions().rctx.target;
+  }
   ShortestPathTree spt=createShortestPathTree(options);
   OTPPriorityQueue<State> queue=createPriorityQueue();
   spt.add(initialState);
@@ -6,6 +10,9 @@
   while (!queue.empty()) {
     State u=queue.extract_min();
     Vertex u_vertex=u.getVertex();
+    if (!spt.getStates(u_vertex).contains(u)) {
+      continue;
+    }
     if (_verbose) {
       System.out.println("min," + u.getWeight());
       System.out.println(u_vertex);
@@ -17,7 +24,10 @@
         if (_skipTraverseResultStrategy != null && _skipTraverseResultStrategy.shouldSkipTraversalResult(initialState.getVertex(),null,u,v,spt,options))         continue;
         if (_verbose)         System.out.printf("  w = %f + %f = %f %s",u.getWeight(),v.getWeightDelta(),v.getWeight(),v.getVertex());
         if (v.exceedsWeightLimit(options.maxWeight))         continue;
-        if (spt.add(v))         queue.insert(v,v.getWeight());
+        if (spt.add(v)) {
+          double estimate=heuristic.computeForwardWeight(v,target);
+          queue.insert(v,v.getWeight() + estimate);
+        }
       }
     }
     spt.postVisit(u);

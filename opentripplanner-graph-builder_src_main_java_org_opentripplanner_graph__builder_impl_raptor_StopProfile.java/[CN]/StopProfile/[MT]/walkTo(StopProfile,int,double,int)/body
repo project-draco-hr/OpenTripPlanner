@@ -1,0 +1,36 @@
+{
+  if (profile.size() > 1000) {
+  }
+  boolean anyBetter=false;
+  Iterator<CostsAtTime> destinationIt=destination.profile.iterator();
+  while (destinationIt.hasNext()) {
+    CostsAtTime nextDestination=destinationIt.next();
+    int timeAtOrigin=nextDestination.time - duration;
+    int originIndex=Collections.binarySearch(profile,timeAtOrigin,comparator);
+    if (originIndex < 0) {
+      originIndex=-originIndex - 1;
+    }
+    if (originIndex == profile.size()) {
+      CostsAtTime toInsert=new CostsAtTime(timeAtOrigin);
+      for (      DurationAndDistance atDestination : nextDestination.costs) {
+        if (atDestination.round != round - 1)         continue;
+        int walkDuration=atDestination.duration + duration;
+        double walkDistance=atDestination.distance + distance;
+        if (walkDistance > 3218)         continue;
+        toInsert.forceAdd(round,walkDuration,walkDistance);
+      }
+      profile.add(toInsert);
+    }
+ else {
+      CostsAtTime costsAtNextTime=profile.get(originIndex);
+      if (costsAtNextTime.time >= timeAtOrigin) {
+        if (!addIfNotDominated(nextDestination,timeAtOrigin,originIndex,duration,distance,round)) {
+          continue;
+        }
+      }
+    }
+    anyBetter=true;
+    if (originIndex > 0)     dominatePreviousDepartures(originIndex,round);
+  }
+  return anyBetter;
+}

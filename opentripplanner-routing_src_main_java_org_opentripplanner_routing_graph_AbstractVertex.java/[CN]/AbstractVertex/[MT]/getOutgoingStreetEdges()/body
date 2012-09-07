@@ -1,7 +1,7 @@
 {
   List<Edge> result=new ArrayList<Edge>();
   for (  Edge out : this.getOutgoing()) {
-    if (!(out instanceof TurnEdge || out instanceof OutEdge || out instanceof PlainStreetEdge)) {
+    if (!(out instanceof StreetEdge)) {
       continue;
     }
     result.add((StreetEdge)out);

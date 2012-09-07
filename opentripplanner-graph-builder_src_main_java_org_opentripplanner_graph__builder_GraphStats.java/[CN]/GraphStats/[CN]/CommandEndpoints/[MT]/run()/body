@@ -2,7 +2,7 @@
   LOG.info(String.format("Producing %d random endpoints within radius %2.2fm around %s.",n,radius,useStops ? "stops" : "streets"));
   List<Vertex> vertices=new ArrayList<Vertex>();
   GeodeticCalculator gc=new GeodeticCalculator();
-  Class<?> klasse=useStops ? TransitStop.class : TurnVertex.class;
+  Class<?> klasse=useStops ? TransitStop.class : StreetVertex.class;
   for (  Vertex v : graph.getVertices())   if (klasse.isInstance(v))   vertices.add(v);
   Random random=new Random();
   if (seed != null)   random.setSeed(seed);
@@ -13,8 +13,8 @@
     int i=0;
     for (    Vertex v : vertices) {
       Coordinate c;
-      if (v instanceof TurnVertex) {
-        LineString ls=((TurnVertex)v).geometry;
+      if (v instanceof StreetVertex) {
+        LineString ls=((StreetVertex)v).getOutgoing().iterator().next().getGeometry();
         int numPoints=ls.getNumPoints();
         LocationIndexedLine lil=new LocationIndexedLine(ls);
         int seg=random.nextInt(numPoints);

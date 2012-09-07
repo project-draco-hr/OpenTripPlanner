@@ -1,0 +1,13 @@
+{
+  for (Iterator<DurationAndDistance> it=costs.iterator(); it.hasNext(); ) {
+    DurationAndDistance existing=it.next();
+    if (existing.duration <= duration && existing.distance <= distance * 1.05) {
+      return false;
+    }
+ else     if (existing.duration >= duration && existing.distance * 1.05 >= distance) {
+      it.remove();
+    }
+  }
+  costs.add(new DurationAndDistance(round,duration,distance));
+  return true;
+}

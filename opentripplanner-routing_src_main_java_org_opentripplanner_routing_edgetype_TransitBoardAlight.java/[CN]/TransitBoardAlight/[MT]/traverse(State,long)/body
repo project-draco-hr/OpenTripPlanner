@@ -8,8 +8,7 @@
     if (state0.getBackEdge() instanceof TransitBoardAlight) {
       return null;
     }
-    EdgeNarrative en=new TransitNarrative(state0.getTripTimes().getTrip(),this);
-    StateEditor s1=state0.edit(this,en);
+    StateEditor s1=state0.edit(this);
     if (boarding)     type=getPattern().getBoardType(stopIndex);
  else     type=getPattern().getAlightType(stopIndex + 1);
     if (TransitUtils.handleBoardAlightType(s1,type)) {
@@ -39,6 +38,7 @@
         }
       }
     }
+    s1.setBackMode(getMode());
     return s1.makeState();
   }
  else {
@@ -54,6 +54,7 @@
     int bestWait=-1;
     TripTimes bestTripTimes=null;
     int serviceId=getPattern().getServiceId();
+    ServiceDay serviceDay=null;
     for (    ServiceDay sd : rctx.serviceDays) {
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
       if (sd.serviceIdRunning(serviceId)) {
@@ -65,6 +66,7 @@
           if (wait < 0)           _log.error("negative wait time on board");
           if (bestWait < 0 || wait < bestWait) {
             bestWait=wait;
+            serviceDay=sd;
             bestTripTimes=tripTimes;
           }
         }
@@ -96,13 +98,14 @@
         preferences_penalty+=options.useUnpreferredRoutesPenalty;
       }
     }
-    EdgeNarrative en=new TransitNarrative(trip,this);
-    StateEditor s1=state0.edit(this,en);
+    StateEditor s1=state0.edit(this);
+    s1.setBackMode(getMode());
     if (boarding)     type=getPattern().getBoardType(stopIndex);
  else     type=getPattern().getAlightType(stopIndex + 1);
     if (TransitUtils.handleBoardAlightType(s1,type)) {
       return null;
     }
+    s1.setServiceDay(serviceDay);
     s1.setTripTimes(bestTripTimes);
     s1.incrementTimeInSeconds(bestWait);
     s1.incrementNumBoardings();

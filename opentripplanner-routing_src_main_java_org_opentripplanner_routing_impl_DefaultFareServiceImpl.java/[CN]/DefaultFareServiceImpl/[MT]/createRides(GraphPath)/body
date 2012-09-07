@@ -18,7 +18,7 @@
     ride.endZone=ride.lastStop.getZoneId();
     ride.zones.add(ride.endZone);
     ride.endTime=state.getTime();
-    ride.classifier=edge.getMode();
+    ride.classifier=state.getBackMode();
   }
   return rides;
 }

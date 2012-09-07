@@ -1,0 +1,82 @@
+{
+  HashMap<Vertex,StopProfile> stopProfile=new HashMap<Vertex,StopProfile>();
+  HashSet<Vertex> visitedLastRound=new HashSet<Vertex>();
+  for (  Vertex v : destinations) {
+    stopProfile.put(v,new StopProfile(v,true));
+    visitedLastRound.add(v);
+  }
+  for (int round=0; round < MAX_TRANSFERS; ++round) {
+    log.debug("round " + round + " from "+ visitedLastRound.size());
+    HashSet<Vertex> visitedThisRound=new HashSet<Vertex>();
+    HashSet<StopProfile> newlyBoarded=new HashSet<StopProfile>();
+    for (    RaptorRoute route : data.routes) {
+      boolean started=false;
+      List<RouteAlight> alightings=new ArrayList<RouteAlight>();
+      for (int stopNo=route.getNStops() - 1; stopNo >= 0; --stopNo) {
+        RaptorStop stop=route.stops[stopNo];
+        TransitStop stopVertex=stop.stopVertex;
+        if (!started && !visitedLastRound.contains(stopVertex))         continue;
+        started=true;
+        StopProfile proflie=stopProfile.get(stopVertex);
+        if (proflie == null) {
+          proflie=new StopProfile(stopVertex);
+          stopProfile.put(stopVertex,proflie);
+        }
+        for (        RouteAlight alight : alightings) {
+          if (proflie.transitTo(alight.destinationProfiel,route,stopNo,alight.stopNo,serviceDays,startTime,round)) {
+            visitedThisRound.add(stopVertex);
+            newlyBoarded.add(proflie);
+          }
+        }
+        if (visitedLastRound.contains(stopVertex)) {
+          final RouteAlight routeAlight=new RouteAlight();
+          routeAlight.stopNo=stopNo;
+          routeAlight.destinationProfiel=proflie;
+          alightings.add(routeAlight);
+        }
+      }
+    }
+    for (    StopProfile profile : newlyBoarded) {
+      Vertex vertex=profile.vertex;
+      HashMap<Vertex,T2<Integer,Double>> nearbyStops=stopToStopWalk[vertex.getIndex()];
+      if (nearbyStops == null)       continue;
+      for (      Map.Entry<Vertex,T2<Integer,Double>> nearbyStop : nearbyStops.entrySet()) {
+        Vertex nearbyVertex=nearbyStop.getKey();
+        if (nearbyVertex == vertex)         continue;
+        T2<Integer,Double> timeAndDistance=nearbyStop.getValue();
+        int time=timeAndDistance.getFirst();
+        double distance=timeAndDistance.getSecond();
+        StopProfile nearbyProfile=stopProfile.get(nearbyVertex);
+        if (nearbyProfile == null) {
+          nearbyProfile=new StopProfile(nearbyVertex);
+          stopProfile.put(nearbyVertex,nearbyProfile);
+        }
+        if (nearbyProfile.walkTo(profile,time,distance,round)) {
+          visitedThisRound.add(vertex);
+        }
+      }
+    }
+    visitedLastRound=visitedThisRound;
+  }
+  int[] timeForRegion=new int[nRegions];
+  for (  RaptorStop stop : data.stops) {
+    TransitStop vertex=stop.stopVertex;
+    int region=vertex.getGroupIndex();
+    if (region < 0) {
+      log.warn("Missing region for " + vertex);
+      continue;
+    }
+    if (region == destinationRegion)     continue;
+    StopProfile profile=stopProfile.get(vertex);
+    if (profile == null) {
+      timeForRegion[region]=Integer.MAX_VALUE;
+    }
+ else {
+      int duration=profile.getMaxDuration(0,86400 + 3600);
+      if (duration > timeForRegion[region]) {
+        timeForRegion[region]=duration;
+      }
+    }
+  }
+  return timeForRegion;
+}

@@ -1,0 +1,14 @@
+{
+  this.options=options;
+  if (realTarget != options.rctx.target) {
+    this.realTarget=options.rctx.target;
+    this.realTargetCoordinate=realTarget.getCoordinate();
+    this.distanceToNearestTransitStop=realTarget.getDistanceToNearestTransitStop();
+    bounders=new ArrayList<State>();
+    Arrays.fill(distance,-1);
+  }
+  spt=new ArrayMultiShortestPathTree(options);
+  transitLocalStreets=options.rctx.graph.getService(TransitLocalStreetService.class);
+  speedUpperBound=options.getSpeedUpperBound();
+  this.speedWeight=options.getWalkReluctance() / speedUpperBound;
+}

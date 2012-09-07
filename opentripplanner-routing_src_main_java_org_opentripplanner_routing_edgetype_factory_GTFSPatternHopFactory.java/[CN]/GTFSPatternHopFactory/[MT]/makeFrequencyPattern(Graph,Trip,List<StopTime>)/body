@@ -53,7 +53,11 @@
     FrequencyHop hop=new FrequencyHop(psv0depart,psv1arrive,s0,s1,i,pattern);
     createdEdges.add(hop);
     hop.setGeometry(getHopGeometry(graph,trip.getShapeId(),st0,st1,psv0depart,psv1arrive));
-    pattern.addHop(i,departureTime,runningTime,arrivalTime,dwellTime,st0.getStopHeadsign());
+    String headsign=st0.getStopHeadsign();
+    if (headsign == null) {
+      headsign=trip.getTripHeadsign();
+    }
+    pattern.addHop(i,departureTime,runningTime,arrivalTime,dwellTime,headsign);
     TransitStopDepart stopDepart=context.stopDepartNodes.get(s0);
     TransitStopArrive stopArrive=context.stopArriveNodes.get(s1);
     final int serviceId=getServiceId(trip);

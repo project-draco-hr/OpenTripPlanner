@@ -1,5 +1,6 @@
 {
   HashSet<Vertex> transitShortestPathVertices=new HashSet<Vertex>();
+  graph.renumberVerticesAndEdges();
   RoutingRequest walk=new RoutingRequest(TraverseMode.WALK);
   RoutingRequest wheelchair=new RoutingRequest(TraverseMode.WALK);
   wheelchair.wheelchairAccessible=true;
@@ -12,6 +13,8 @@
   RoutingRequest[] requests=new RoutingRequest[]{walk,wheelchair,bikeflat,bikesafe,bikequick};
   int i=0;
   final Collection<Vertex> allVertices=graph.getVertices();
+  HashMap<Vertex,HashMap<Vertex,int[]>> paths=new HashMap<Vertex,HashMap<Vertex,int[]>>();
+  HashMap<Vertex,HashMap<Vertex,T2<Double,Integer>>> costs=new HashMap<Vertex,HashMap<Vertex,T2<Double,Integer>>>();
   for (  Vertex v : allVertices) {
     ++i;
     if (i % 1000 == 0) {
@@ -22,20 +25,38 @@
     }
     for (    RoutingRequest req : requests) {
       req.setRoutingContext(graph,v,null);
-      req.setMaxWalkDistance(5000);
+      req.setMaxWalkDistance(3000);
       GenericDijkstra dijkstra=new GenericDijkstra(req);
       State origin=new MaxWalkState(v,req);
       ShortestPathTree spt=dijkstra.getShortestPathTree(origin);
+      HashMap<Vertex,int[]> map=null;
+      HashMap<Vertex,T2<Double,Integer>> cost=null;
+      if (req == walk && saveShortestPaths) {
+        map=new HashMap<Vertex,int[]>();
+        cost=new HashMap<Vertex,T2<Double,Integer>>();
+        paths.put(v,map);
+        costs.put(v,cost);
+      }
+      int[] path=new int[1000];
       for (      State s : spt.getAllStates()) {
-        if (s.getVertex() instanceof TransitStop) {
+        Vertex destStopVertex=s.getVertex();
+        if (destStopVertex instanceof TransitStop) {
+          int pathIndex=0;
+          if (req == walk && saveShortestPaths) {
+            cost.put(destStopVertex,new T2<Double,Integer>(s.getWalkDistance(),(int)s.getElapsedTime()));
+          }
           while (s != null) {
             transitShortestPathVertices.add(s.getVertex());
+            path[pathIndex++]=s.getVertex().getIndex();
             s=s.getBackState();
+          }
+          if (req == walk && saveShortestPaths) {
+            map.put(destStopVertex,Arrays.copyOf(path,pathIndex));
           }
         }
       }
     }
   }
-  TransitLocalStreetService service=new TransitLocalStreetService(transitShortestPathVertices);
+  TransitLocalStreetService service=new TransitLocalStreetService(transitShortestPathVertices,paths,costs);
   graph.putService(TransitLocalStreetService.class,service);
 }

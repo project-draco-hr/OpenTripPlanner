@@ -1,3 +1,41 @@
 {
-  this(parent,e,(EdgeNarrative)e);
+  child=parent.clone();
+  child.backState=parent;
+  child.backEdge=e;
+  child.next=null;
+  if (e == null) {
+    child.backState=null;
+    child.hops=0;
+    child.vertex=parent.vertex;
+    child.stateData=child.stateData.clone();
+  }
+ else {
+    child.hops=parent.hops + 1;
+    if (e.getFromVertex().equals(e.getToVertex()) && parent.vertex.equals(e.getFromVertex())) {
+      traversingBackward=parent.getOptions().isArriveBy();
+      child.vertex=e.getToVertex();
+    }
+ else     if (parent.vertex.equals(e.getFromVertex())) {
+      traversingBackward=false;
+      child.vertex=e.getToVertex();
+    }
+ else     if (parent.vertex.equals(e.getToVertex())) {
+      traversingBackward=true;
+      child.vertex=e.getFromVertex();
+    }
+ else {
+      LOG.warn("Edge is not connected to parent state: {}",e);
+      LOG.warn("   from   vertex: {}",e.getFromVertex());
+      LOG.warn("   to     vertex: {}",e.getToVertex());
+      LOG.warn("   parent vertex: {}",parent.vertex);
+      defectiveTraversal=true;
+    }
+    if (traversingBackward != parent.getOptions().isArriveBy()) {
+      LOG.error("Actual traversal direction does not match traversal direction in TraverseOptions.");
+      defectiveTraversal=true;
+    }
+    if (parent.stateData.noThruTrafficState == NoThruTrafficState.INIT && !(e instanceof FreeEdge)) {
+      setNoThruTrafficState(NoThruTrafficState.BETWEEN_ISLANDS);
+    }
+  }
 }

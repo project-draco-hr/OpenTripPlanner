@@ -1,0 +1,41 @@
+{
+  CostsAtTime toInsert=new CostsAtTime(timeAtOrigin);
+  for (  DurationAndDistance atDestination : destinationCosts.costs) {
+    double walkDistance=distance + atDestination.distance;
+    if (walkDistance > 3218)     continue;
+    int walkDuration=duration + atDestination.duration;
+    toInsert.add(round,walkDuration,walkDistance);
+  }
+  for (Iterator<DurationAndDistance> costsIt=toInsert.costs.iterator(); costsIt.hasNext(); ) {
+    DurationAndDistance costs=costsIt.next();
+    int index=originIndex;
+    FORWARDSEARCH:     while (index < profile.size()) {
+      CostsAtTime costsAtNextTime=profile.get(index);
+      int waitTime=costsAtNextTime.time - timeAtOrigin;
+      for (      DurationAndDistance nextCosts : costsAtNextTime.costs) {
+        if (costs.distance * 1.05 >= nextCosts.distance) {
+          if (costs.duration - waitTime >= nextCosts.duration) {
+            costsIt.remove();
+            break FORWARDSEARCH;
+          }
+        }
+      }
+      ++index;
+    }
+  }
+  if (toInsert.isEmpty()) {
+    return false;
+  }
+  CostsAtTime costsAtNextTime=profile.get(originIndex);
+  if (costsAtNextTime.time - timeAtOrigin == 0) {
+    boolean better=false;
+    for (    DurationAndDistance costs : toInsert.costs) {
+      better|=costsAtNextTime.add(round,costs.duration,costs.distance);
+    }
+    return better;
+  }
+ else {
+    profile.add(originIndex,toInsert);
+    return true;
+  }
+}

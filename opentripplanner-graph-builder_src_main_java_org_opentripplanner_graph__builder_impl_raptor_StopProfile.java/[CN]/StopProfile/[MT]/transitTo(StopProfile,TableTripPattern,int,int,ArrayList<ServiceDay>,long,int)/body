@@ -1,0 +1,62 @@
+{
+  final int nTrips=pattern.getTrips().size();
+  ArrayList<ServiceDay> runningList=new ArrayList<ServiceDay>();
+  for (  ServiceDay day : days) {
+    if (day.serviceIdRunning(pattern.getServiceId()))     runningList.add(day);
+  }
+  ServiceDay[] runningDays=runningList.toArray(new ServiceDay[0]);
+  boolean anyBetter=false;
+  for (int trip=0; trip < nTrips; ++trip) {
+    int departureSecondsSinceMidnight=pattern.getDepartureTime(originStopIndex,trip);
+    int arrivalSecondsSinceMidnight=pattern.getArrivalTime(destinationStopIndex - 1,trip);
+    final int duration=arrivalSecondsSinceMidnight - departureSecondsSinceMidnight;
+    for (    ServiceDay day : runningDays) {
+      int arrivalTime=(int)(day.time(arrivalSecondsSinceMidnight) - startTime);
+      int departureTime=arrivalTime - duration;
+      if (departureTime > 86400 * 2) {
+        continue;
+      }
+      CostsAtTime costsAtDestination;
+      if (destination.atDestination) {
+        costsAtDestination=new CostsAtTime(arrivalTime);
+        costsAtDestination.forceAdd(-1,0,0.0);
+      }
+ else {
+        int arrivalTimeInsertionPoint=Collections.binarySearch(destination.profile,arrivalTime,comparator);
+        if (arrivalTimeInsertionPoint < 0) {
+          arrivalTimeInsertionPoint=-arrivalTimeInsertionPoint - 1;
+        }
+        if (arrivalTimeInsertionPoint == destination.profile.size()) {
+          continue;
+        }
+        costsAtDestination=destination.profile.get(arrivalTimeInsertionPoint);
+      }
+      int originIndex=Collections.binarySearch(profile,departureTime,comparator);
+      if (originIndex < 0) {
+        originIndex=-originIndex - 1;
+      }
+      if (originIndex == profile.size()) {
+        CostsAtTime toInsert=new CostsAtTime(departureTime);
+        for (        DurationAndDistance atDestination : costsAtDestination.costs) {
+          if (atDestination.round != round - 1)           continue;
+          int walkDuration=atDestination.duration + duration;
+          double walkDistance=atDestination.distance;
+          toInsert.forceAdd(round,walkDuration,walkDistance);
+          anyBetter=true;
+        }
+        profile.add(toInsert);
+      }
+ else {
+        CostsAtTime costsAtNextTime=profile.get(originIndex);
+        if (costsAtNextTime.time >= departureTime) {
+          if (!addIfNotDominated(costsAtDestination,departureTime,originIndex,duration,0,round)) {
+            continue;
+          }
+          anyBetter=true;
+        }
+      }
+      if (originIndex > 0)       dominatePreviousDepartures(originIndex,round);
+    }
+  }
+  return anyBetter;
+}

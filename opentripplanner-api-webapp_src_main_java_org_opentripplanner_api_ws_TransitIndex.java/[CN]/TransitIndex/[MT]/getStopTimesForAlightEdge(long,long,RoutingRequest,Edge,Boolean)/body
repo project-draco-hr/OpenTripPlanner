@@ -11,7 +11,7 @@
     if (time < startTime)     break;
     StopTime stopTime=new StopTime();
     stopTime.time=time;
-    stopTime.trip=new TripType(result.getBackEdgeNarrative().getTrip(),extended);
+    stopTime.trip=new TripType(result.getBackTrip(),extended);
     out.add(stopTime);
     time-=1;
   }
