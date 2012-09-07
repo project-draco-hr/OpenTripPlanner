@@ -8,7 +8,7 @@
       factory.setPath(path);
       GridCoverage2D regionCoverage=Interpolator2D.create(factory.getGridCoverage(),new InterpolationBilinear());
       if (coverage == null) {
-        coverage=new UnifiedGridCoverage("unified",regionCoverage);
+        coverage=new UnifiedGridCoverage("unified",regionCoverage,datums);
       }
  else {
         coverage.add(regionCoverage);
