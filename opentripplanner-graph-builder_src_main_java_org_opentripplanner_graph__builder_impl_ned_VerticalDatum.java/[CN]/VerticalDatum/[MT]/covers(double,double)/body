@@ -1,0 +1,18 @@
+{
+  double lowerLeftAdjusted=lowerLeftLongitude;
+  if (lowerLeftLongitude + deltaLongitude > 180) {
+    if (longitude < lowerLeftLongitude) {
+      lowerLeftAdjusted-=360;
+      if (longitude < lowerLeftLongitude) {
+        return false;
+      }
+    }
+  }
+  if (longitude > lowerLeftAdjusted + deltaLongitude || longitude < lowerLeftAdjusted) {
+    return false;
+  }
+  if (latitude < lowerLeftLatitude || latitude > lowerLeftLatitude + deltaLatitude) {
+    return false;
+  }
+  return true;
+}

@@ -1,0 +1,26 @@
+{
+  double lowerLeftAdjusted=lowerLeftLongitude;
+  if (lowerLeftLongitude + deltaLongitude > 180) {
+    if (longitude < lowerLeftLongitude) {
+      lowerLeftAdjusted-=360;
+      if (longitude < lowerLeftLongitude) {
+        throw new RuntimeException("longitude out of range");
+      }
+    }
+  }
+  if (longitude > lowerLeftAdjusted + deltaLongitude || longitude < lowerLeftAdjusted) {
+    throw new RuntimeException("longitude out of range");
+  }
+  if (latitude < lowerLeftLatitude || latitude > lowerLeftLatitude + deltaLatitude) {
+    throw new RuntimeException("latitude out of range");
+  }
+  double longitudeNormalized=(longitude - lowerLeftAdjusted) / deltaLongitude;
+  double latitudeNormalized=(latitude - lowerLeftLatitude) / deltaLatitude;
+  int rows=datum.length;
+  int columns=datum[0].length;
+  int x1=(int)Math.floor(longitudeNormalized * columns);
+  int y1=(int)Math.floor(latitudeNormalized * rows);
+  double gridXFraction=longitudeNormalized * columns - x1;
+  double gridYFraction=latitudeNormalized * rows - y1;
+  return datum[y1][x1] * gridXFraction * gridYFraction + datum[y1][x1 + 1] * (1 - gridXFraction) * gridYFraction + datum[y1 + 1][x1] * gridXFraction * (1 - gridYFraction) + datum[y1 + 1][x1 + 1] * (1 - gridXFraction) * (1 - gridYFraction);
+}

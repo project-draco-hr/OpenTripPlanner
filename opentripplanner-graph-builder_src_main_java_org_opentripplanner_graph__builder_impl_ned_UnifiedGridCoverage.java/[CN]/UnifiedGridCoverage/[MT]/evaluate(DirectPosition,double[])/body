@@ -3,8 +3,17 @@
     GeneralEnvelope env=((GeneralEnvelope)region.getEnvelope());
     if (env.contains(point)) {
       double[] result;
+      double x=point.getOrdinate(0);
+      double y=point.getOrdinate(1);
       try {
         result=region.evaluate(point,values);
+        for (        VerticalDatum datum : datums) {
+          if (datum.covers(x,y)) {
+            result[0]+=datum.interpolatedHeight(x,y);
+            return result;
+          }
+        }
+        log.error("Failed to convert elevation at " + y + ", "+ x+ " from NAVD88 to NAD83");
       }
  catch (      PointOutsideCoverageException e) {
         continue;
