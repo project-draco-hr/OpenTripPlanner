@@ -1,4 +1,10 @@
 {
   cloneStateDataAsNeeded();
   child.stateData.usingRentedBike=bikeRenting;
+  if (bikeRenting) {
+    child.stateData.nonTransitMode=TraverseMode.BICYCLE;
+  }
+ else {
+    child.stateData.nonTransitMode=TraverseMode.WALK;
+  }
 }

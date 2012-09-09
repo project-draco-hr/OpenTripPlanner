@@ -1,12 +1,11 @@
 {
-  TraverseMode traverseMode=s0.getNonTransitMode(options);
   Edge backEdge=s0.getBackEdge();
   if (backEdge != null && (options.arriveBy ? (backEdge.getToVertex() == fromv) : (backEdge.getFromVertex() == tov))) {
     return null;
   }
   if (!canTraverse(options,traverseMode)) {
     if (traverseMode == TraverseMode.BICYCLE) {
-      return doTraverse(s0,options.getWalkingOptions());
+      return doTraverse(s0,options.getWalkingOptions(),TraverseMode.WALK);
     }
     return null;
   }
@@ -16,7 +15,7 @@
   if (options.wheelchairAccessible) {
     weight=elevationProfileSegment.getSlopeSpeedEffectiveLength() / speed;
   }
- else   if (s0.getNonTransitMode(options).equals(TraverseMode.BICYCLE)) {
+ else   if (traverseMode.equals(TraverseMode.BICYCLE)) {
     time=elevationProfileSegment.getSlopeSpeedEffectiveLength() / speed;
 switch (options.optimize) {
 case SAFE:
@@ -55,7 +54,7 @@ weight*=options.stairsReluctance;
 weight*=options.walkReluctance;
 }
 StateEditor s1=s0.edit(this);
-s1.setBackMode(s0.getNonTransitMode(options));
+s1.setBackMode(traverseMode);
 if (wheelchairNotes != null && options.wheelchairAccessible) {
 s1.addAlerts(wheelchairNotes);
 }
@@ -106,10 +105,18 @@ turnCost=360 - turnCost;
 final double realTurnCost=(turnCost / 20.0) / options.getSpeed(traverseMode);
 s1.incrementWalkDistance(realTurnCost / 100);
 weight+=realTurnCost;
-time+=Math.ceil(realTurnCost);
+long turnTime=(long)realTurnCost;
+if (turnTime != realTurnCost) {
+turnTime++;
+}
+time+=turnTime;
 }
 s1.incrementWalkDistance(length);
-s1.incrementTimeInSeconds((int)Math.ceil(time));
+int timeLong=(int)time;
+if (timeLong != time) {
+timeLong++;
+}
+s1.incrementTimeInSeconds(timeLong);
 s1.incrementWeight(weight);
 if (s1.weHaveWalkedTooFar(options)) return null;
 s1.addAlerts(getNotes());

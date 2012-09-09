@@ -7,14 +7,8 @@
       GeotiffGridCoverageFactoryImpl factory=new GeotiffGridCoverageFactoryImpl();
       factory.setPath(path);
       GridCoverage2D regionCoverage=Interpolator2D.create(factory.getGridCoverage(),new InterpolationBilinear());
-      CoverageProcessor processor=CoverageProcessor.getInstance();
-      ParameterValueGroup param=processor.getOperation("Resample").getParameters();
-      param.parameter("Source").setValue(regionCoverage);
-      CoordinateReferenceSystem wgs84=DefaultGeographicCRS.WGS84;
-      param.parameter("CoordinateReferenceSystem").setValue(wgs84);
-      regionCoverage=(GridCoverage2D)processor.doOperation(param);
       if (coverage == null) {
-        coverage=new UnifiedGridCoverage("unified",regionCoverage);
+        coverage=new UnifiedGridCoverage("unified",regionCoverage,datums);
       }
  else {
         coverage.add(regionCoverage);
