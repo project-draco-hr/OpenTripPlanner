@@ -17,7 +17,7 @@
     ScheduledTripTimes scheduledTimes=existingTimes.getScheduledTripTimes();
     TripTimes newTimes;
     if (block.isCancellation()) {
-      newTimes=new CancelledTripTimes(scheduledTimes);
+      newTimes=new CanceledTripTimes(scheduledTimes);
     }
  else {
       newTimes=new UpdatedTripTimes(scheduledTimes,block,stopIndex);
