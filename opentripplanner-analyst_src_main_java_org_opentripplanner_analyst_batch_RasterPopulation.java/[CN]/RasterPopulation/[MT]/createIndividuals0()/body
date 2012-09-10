@@ -22,7 +22,7 @@
         double lat=targetPos.getOrdinate(1);
         if (coverage != null)         coverage.evaluate(coord,val);
         String label=row + "_" + col;
-        Individual individual=individualFactory.build(label,lon,lat,val[band]);
+        Individual individual=new Individual(label,lon,lat,val[band]);
         this.addIndividual(individual);
       }
  catch (      Exception e) {
