@@ -1,7 +1,0 @@
-{
-  Timetable timetable;
-  TimetableResolver snapshot=options.rctx.timetableSnapshot;
-  if (snapshot != null)   timetable=snapshot.resolve(this);
- else   timetable=scheduledTimetable;
-  return timetable.getNextTrip(stopIndex,afterTime,haveBicycle,options);
-}
