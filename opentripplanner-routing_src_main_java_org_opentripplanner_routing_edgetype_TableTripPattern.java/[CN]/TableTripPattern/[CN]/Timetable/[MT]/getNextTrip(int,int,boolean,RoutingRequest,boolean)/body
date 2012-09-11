@@ -1,0 +1,43 @@
+{
+  int mask=boarding ? MASK_PICKUP : MASK_DROPOFF;
+  int shift=boarding ? SHIFT_PICKUP : SHIFT_DROPOFF;
+  int stopOffset=boarding ? 0 : 1;
+  if ((perStopFlags[stopIndex + stopOffset] & mask) >> shift == NO_PICKUP) {
+    return null;
+  }
+  if (options.wheelchairAccessible && (perStopFlags[stopIndex + stopOffset] & FLAG_WHEELCHAIR_ACCESSIBLE) == 0) {
+    return null;
+  }
+  TripTimes[][] tableIndex=boarding ? departuresIndex : arrivalsIndex;
+  if (tableIndex != null) {
+    TripTimes[] index=tableIndex[stopIndex];
+    int tripIndex;
+    if (boarding)     tripIndex=TripTimes.binarySearchDepartures(index,stopIndex,time);
+ else     tripIndex=TripTimes.binarySearchArrivals(index,stopIndex,time);
+    int increment=boarding ? 1 : -1;
+    int terminate=boarding ? index.length : -1;
+    while (tripIndex != terminate) {
+      TripTimes tt=index[tripIndex];
+      Trip t=tt.getTrip();
+      if (tripAcceptable(t,haveBicycle,options)) {
+        return tt;
+      }
+      tripIndex+=increment;
+    }
+    return null;
+  }
+  TripTimes bestTrip=null;
+  int bestTime=Integer.MAX_VALUE;
+  if (!boarding)   time=-time;
+  for (int i=0; i < trips.size(); i++) {
+    TripTimes currTrip=tripTimes.get(i);
+    int currTime;
+    if (boarding)     currTime=currTrip.getDepartureTime(stopIndex);
+ else     currTime=-(currTrip.getArrivalTime(stopIndex));
+    if (currTime >= time && currTime < bestTime && tripAcceptable(currTrip.getTrip(),haveBicycle,options)) {
+      bestTrip=currTrip;
+      bestTime=currTime;
+    }
+  }
+  return bestTrip;
+}
