@@ -1,8 +1,20 @@
 {
   Collection<RaptorRoute> routesToVisit=new HashSet<RaptorRoute>();
-  for (  RaptorStop stop : visitedLastRound) {
-    for (    RaptorRoute route : data.routesForStop[stop.index]) {
-      routesToVisit.add(route);
+  if (data.routesForStop == null) {
+    Collection<RaptorRoute> routes=data.routes;
+    for (    RaptorStop stop : visitedLastRound) {
+      for (      RaptorRoute route : data.routesForStop[stop.index]) {
+        if (routes.contains(route)) {
+          routesToVisit.add(route);
+        }
+      }
+    }
+  }
+ else {
+    for (    RaptorStop stop : visitedLastRound) {
+      for (      RaptorRoute route : data.routesForStop[stop.index]) {
+        routesToVisit.add(route);
+      }
     }
   }
   HashSet<RaptorStop> visitedThisRound=new HashSet<RaptorStop>();
@@ -34,6 +46,9 @@
       RaptorStop stop=route.stops[stopNo];
       if (!started && !visitedLastRound.contains(stop))       continue;
       started=true;
+      if (!data.raptorStopsForStopId.containsKey(stop.stopVertex.getStopId())) {
+        continue;
+      }
       List<RaptorState> states=statesByStop[stop.index];
       List<RaptorState> newStates=new ArrayList<RaptorState>();
       if (states == null) {
@@ -41,7 +56,7 @@
         statesByStop[stop.index]=states;
       }
       CONTINUE:       for (      RaptorState boardState : boardStates) {
-        RaptorState newState=new RaptorState(boardState.parent);
+        RaptorState newState=new RaptorState(boardState.getParent());
         ServiceDay sd=boardState.serviceDay;
         int waitTime;
         if (options.isArriveBy()) {
@@ -49,14 +64,14 @@
           int boardTime=route.getBoardTime(boardState.tripTimes,stopNo);
           newState.arrivalTime=(int)sd.time(boardTime);
           newState.arrivalTime-=options.getBoardSlack();
-          waitTime=newState.parent.arrivalTime - newState.arrivalTime;
+          waitTime=newState.getParent().arrivalTime - newState.arrivalTime;
         }
  else {
           if (!route.boards[0][boardState.patternIndex].getPattern().canAlight(stopNo))           continue;
           int alightTime=route.getAlightTime(boardState.tripTimes,stopNo);
           newState.arrivalTime=(int)sd.time(alightTime);
           newState.arrivalTime+=options.getAlightSlack();
-          waitTime=newState.arrivalTime - newState.parent.arrivalTime;
+          waitTime=newState.arrivalTime - newState.getParent().arrivalTime;
         }
         if (nBoardings == 1) {
           newState.initialWaitTime=waitTime;
@@ -109,7 +124,7 @@
         }
         TRYBOARD:         for (        RaptorState oldState : states) {
           if (oldState.nBoardings != nBoardings - 1)           continue;
-          if (oldState.route == route)           continue;
+          if (oldState.getRoute() == route)           continue;
           RaptorBoardSpec boardSpec;
           if (options.isArriveBy()) {
             boardSpec=route.getTripIndexReverse(options,oldState.arrivalTime - boardSlack,stopNo);

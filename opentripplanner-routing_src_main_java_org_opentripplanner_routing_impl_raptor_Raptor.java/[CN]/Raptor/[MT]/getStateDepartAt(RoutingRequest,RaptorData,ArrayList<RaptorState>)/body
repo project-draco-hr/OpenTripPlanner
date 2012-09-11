@@ -18,7 +18,7 @@
           state=e.traverse(state);
         }
       }
-      TransitBoardAlight board=cur.route.boards[cur.boardStopSequence][cur.patternIndex];
+      TransitBoardAlight board=cur.getRoute().boards[cur.boardStopSequence][cur.patternIndex];
       State oldState=state;
       state=board.traverse(state);
       if (state == null) {

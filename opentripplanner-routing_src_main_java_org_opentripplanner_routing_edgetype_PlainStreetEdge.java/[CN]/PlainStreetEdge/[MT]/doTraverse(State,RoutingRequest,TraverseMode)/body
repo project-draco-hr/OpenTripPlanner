@@ -58,31 +58,6 @@ s1.setBackMode(traverseMode);
 if (wheelchairNotes != null && options.wheelchairAccessible) {
 s1.addAlerts(wheelchairNotes);
 }
-switch (s0.getNoThruTrafficState()) {
-case INIT:
-if (isNoThruTraffic()) {
-s1.setNoThruTrafficState(NoThruTrafficState.IN_INITIAL_ISLAND);
-}
- else {
-s1.setNoThruTrafficState(NoThruTrafficState.BETWEEN_ISLANDS);
-}
-break;
-case IN_INITIAL_ISLAND:
-if (!isNoThruTraffic()) {
-s1.setNoThruTrafficState(NoThruTrafficState.BETWEEN_ISLANDS);
-}
-break;
-case BETWEEN_ISLANDS:
-if (isNoThruTraffic()) {
-s1.setNoThruTrafficState(NoThruTrafficState.IN_FINAL_ISLAND);
-}
-break;
-case IN_FINAL_ISLAND:
-if (!isNoThruTraffic()) {
-return null;
-}
-break;
-}
 PlainStreetEdge backPSE;
 if (backEdge != null && backEdge instanceof PlainStreetEdge) {
 backPSE=(PlainStreetEdge)backEdge;

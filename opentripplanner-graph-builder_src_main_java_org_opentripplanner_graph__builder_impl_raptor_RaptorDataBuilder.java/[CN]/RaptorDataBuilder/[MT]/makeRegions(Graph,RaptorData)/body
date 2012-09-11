@@ -8,16 +8,17 @@
   ArrayList<ArrayList<Vertex>> verticesForRegion=new ArrayList<ArrayList<Vertex>>();
   int[] regionsForVertex=new int[AbstractVertex.getMaxIndex()];
   Arrays.fill(regionsForVertex,-1);
-  int nRegions=split(verticesForRegion,regionsForVertex,vertices,0,true,MAX_REGION_SIZE);
+  int nRegions=split(verticesForRegion,regionsForVertex,vertices,0,true,vertices.size() / N_REGIONS);
   RegionData regions=new RegionData(regionsForVertex);
   regions.minTime=new int[nRegions][nRegions];
-  int regionIndex=0;
-  for (  ArrayList<Vertex> region : verticesForRegion) {
-    if (regionIndex % 5 == 0) {
-      log.debug("Building regions: " + regionIndex + " / "+ verticesForRegion.size());
+  regions.routes=new HashSet[nRegions][nRegions];
+  regions.stops=new HashSet[nRegions][nRegions];
+  for (int fromRegion=0; fromRegion < nRegions; ++fromRegion) {
+    for (int toRegion=0; toRegion < nRegions; ++toRegion) {
+      regions.routes[fromRegion][toRegion]=new HashSet<RaptorRoute>();
+      regions.stops[fromRegion][toRegion]=new HashSet<RaptorStop>();
     }
-    findMinTime(graph,data,regions,regionIndex,region);
-    regionIndex+=1;
   }
+  regions.verticesForRegion=verticesForRegion;
   return regions;
 }

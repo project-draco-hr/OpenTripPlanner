@@ -2,8 +2,7 @@
   final Graph graph=graphService.getGraph(options.getRouterId());
   if (options.rctx == null) {
     options.setRoutingContext(graph);
-    options.rctx.pathParsers=new PathParser[1];
-    options.rctx.pathParsers[0]=new BasicPathParser();
+    options.rctx.pathParsers=new PathParser[]{new BasicPathParser(),new NoThruTrafficPathParser()};
   }
   if (!options.getModes().isTransit()) {
     return sptService.getShortestPathTree(options).getPaths();
@@ -34,14 +33,16 @@
     }
     search.maxTimeDayIndex=day;
   }
+  options.setMaxTransfers(6);
+  int rushAheadRound=rushAhead(data,options,walkOptions,search);
   long searchBeginTime=System.currentTimeMillis();
   int bestElapsedTime=Integer.MAX_VALUE;
   RETRY:   do {
-    for (int i=0; i < options.getMaxTransfers() + 2; ++i) {
-      round(data,options,walkOptions,search,i);
+    for (int round=0; round < options.getMaxTransfers() + 2; ++round) {
+      round(data,options,walkOptions,search,round);
       long elapsed=System.currentTimeMillis() - searchBeginTime;
       if (elapsed > multiPathTimeout * 1000 && multiPathTimeout > 0 && search.getTargetStates().size() > 0)       break RETRY;
-      if (search.getTargetStates().size() >= options.getNumItineraries()) {
+      if (search.getTargetStates().size() >= options.getNumItineraries() && round >= rushAheadRound) {
         int oldBest=bestElapsedTime;
         for (        RaptorState state : search.getTargetStates()) {
           final int elapsedTime=(int)Math.abs(state.arrivalTime - options.dateTime);
@@ -60,6 +61,7 @@
     search.reset(options);
   }
  while (options.getMaxWalkDistance() < initialWalk * MAX_WALK_MULTIPLE && initialWalk < Double.MAX_VALUE);
+  collectRoutesUsed(data,options,search.getTargetStates());
   List<RaptorState> targetStates=search.getTargetStates();
   if (targetStates.isEmpty()) {
     log.info("RAPTOR found no paths (try retrying?)");
@@ -71,7 +73,7 @@
     RaptorState cur=targetState;
     while (cur != null) {
       states.add(cur);
-      cur=cur.parent;
+      cur=cur.getParent();
     }
     State state=getState(options,data,states);
     paths.add(new GraphPath(state,true));

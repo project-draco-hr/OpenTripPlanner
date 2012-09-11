@@ -34,8 +34,5 @@
       LOG.error("Actual traversal direction does not match traversal direction in TraverseOptions.");
       defectiveTraversal=true;
     }
-    if (parent.stateData.noThruTrafficState == NoThruTrafficState.INIT && !(e instanceof FreeEdge)) {
-      setNoThruTrafficState(NoThruTrafficState.BETWEEN_ISLANDS);
-    }
   }
 }
