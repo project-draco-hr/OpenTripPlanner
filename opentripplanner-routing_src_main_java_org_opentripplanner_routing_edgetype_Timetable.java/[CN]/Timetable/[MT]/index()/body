@@ -15,11 +15,9 @@
  else     arrivalsMatchDepartures=false;
   }
   if (departuresFifo) {
-    LOG.debug("Compressing FIFO Timetable index.");
     departuresIndex=Arrays.copyOf(departuresIndex,1);
   }
   if (arrivalsMatchDepartures) {
-    LOG.debug("Reusing departures index where arrivals index is identical.");
     arrivalsIndex=departuresIndex;
   }
 }
