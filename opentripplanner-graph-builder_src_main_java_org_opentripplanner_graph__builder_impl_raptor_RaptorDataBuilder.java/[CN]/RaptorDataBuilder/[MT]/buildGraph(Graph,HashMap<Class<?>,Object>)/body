@@ -58,5 +58,5 @@
   data.stops=Arrays.copyOfRange(data.stops,0,data.raptorStopsForStopId.size());
   nTotalStops=data.stops.length;
   graph.putService(RaptorDataService.class,new RaptorDataService(data));
-  data.regionData=makeRegions(graph,data);
+  data.regionData=makeRegionsBySubdivision(graph,data);
 }
