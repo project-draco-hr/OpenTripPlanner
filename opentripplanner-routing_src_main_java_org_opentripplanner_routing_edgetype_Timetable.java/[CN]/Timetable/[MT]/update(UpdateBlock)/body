@@ -8,7 +8,7 @@
  else {
       LOG.trace("tripId {} found at index {} (in scheduled timetable)",block.tripId,tripIndex);
     }
-    int stopIndex=block.findUpdateStopIndex(TableTripPattern.this);
+    int stopIndex=block.findUpdateStopIndex(pattern);
     if (stopIndex == UpdateBlock.MATCH_FAILED) {
       LOG.warn("Unable to match update block to stopIds.");
       return false;

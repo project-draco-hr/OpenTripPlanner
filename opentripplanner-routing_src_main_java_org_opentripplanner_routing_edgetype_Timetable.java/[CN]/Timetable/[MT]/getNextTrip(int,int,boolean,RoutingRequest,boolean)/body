@@ -1,11 +1,11 @@
 {
-  int mask=boarding ? MASK_PICKUP : MASK_DROPOFF;
+  int mask=boarding ? TableTripPattern.MASK_PICKUP : MASK_DROPOFF;
   int shift=boarding ? SHIFT_PICKUP : SHIFT_DROPOFF;
   int stopOffset=boarding ? 0 : 1;
-  if ((perStopFlags[stopIndex + stopOffset] & mask) >> shift == NO_PICKUP) {
+  if ((pattern.perStopFlags[stopIndex + stopOffset] & mask) >> shift == NO_PICKUP) {
     return null;
   }
-  if (options.wheelchairAccessible && (perStopFlags[stopIndex + stopOffset] & FLAG_WHEELCHAIR_ACCESSIBLE) == 0) {
+  if (options.wheelchairAccessible && (pattern.perStopFlags[stopIndex + stopOffset] & FLAG_WHEELCHAIR_ACCESSIBLE) == 0) {
     return null;
   }
   TripTimes[][] tableIndex=boarding ? departuresIndex : arrivalsIndex;
@@ -31,7 +31,7 @@
   TripTimes bestTrip=null;
   int bestTime=Integer.MAX_VALUE;
   if (!boarding)   time=-time;
-  for (int i=0; i < trips.size(); i++) {
+  for (int i=0; i < tripTimes.size(); i++) {
     TripTimes currTrip=tripTimes.get(i);
     int currTime;
     if (boarding)     currTime=currTrip.getDepartureTime(stopIndex);
