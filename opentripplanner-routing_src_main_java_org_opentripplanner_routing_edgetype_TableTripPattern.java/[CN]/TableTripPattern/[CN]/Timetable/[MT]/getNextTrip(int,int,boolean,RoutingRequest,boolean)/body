@@ -10,14 +10,16 @@
   }
   TripTimes[][] tableIndex=boarding ? departuresIndex : arrivalsIndex;
   if (tableIndex != null) {
-    TripTimes[] index=tableIndex[stopIndex];
+    TripTimes[] sorted;
+    if (tableIndex.length == 1)     sorted=departuresIndex[0];
+ else     sorted=tableIndex[stopIndex];
     int tripIndex;
-    if (boarding)     tripIndex=TripTimes.binarySearchDepartures(index,stopIndex,time);
- else     tripIndex=TripTimes.binarySearchArrivals(index,stopIndex,time);
+    if (boarding)     tripIndex=TripTimes.binarySearchDepartures(sorted,stopIndex,time);
+ else     tripIndex=TripTimes.binarySearchArrivals(sorted,stopIndex,time);
     int increment=boarding ? 1 : -1;
-    int terminate=boarding ? index.length : -1;
+    int terminate=boarding ? sorted.length : -1;
     while (tripIndex != terminate) {
-      TripTimes tt=index[tripIndex];
+      TripTimes tt=sorted[tripIndex];
       Trip t=tt.getTrip();
       if (tripAcceptable(t,haveBicycle,options)) {
         return tt;
