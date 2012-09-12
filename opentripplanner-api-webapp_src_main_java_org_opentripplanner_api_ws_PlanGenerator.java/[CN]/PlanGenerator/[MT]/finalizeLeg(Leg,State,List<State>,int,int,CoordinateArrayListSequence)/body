@@ -5,6 +5,6 @@
   leg.endTime=makeCalendar(state.getBackState());
   Geometry geometry=GeometryUtils.getGeometryFactory().createLineString(coordinates);
   leg.legGeometry=PolylineEncoder.createEncodings(geometry);
-  leg.to=makePlace(state,true);
+  leg.to=makePlace(state,state.getBackEdge().getName(),true);
   coordinates.clear();
 }
