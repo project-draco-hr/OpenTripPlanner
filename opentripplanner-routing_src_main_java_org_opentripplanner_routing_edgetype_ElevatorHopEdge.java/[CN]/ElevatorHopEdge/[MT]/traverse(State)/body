@@ -3,7 +3,7 @@
   if (options.wheelchairAccessible && !wheelchairAccessible) {
     return null;
   }
-  TraverseMode mode=s0.getNonTransitMode(options);
+  TraverseMode mode=s0.getNonTransitMode();
   if (mode == TraverseMode.WALK && !permission.allows(StreetTraversalPermission.PEDESTRIAN)) {
     return null;
   }

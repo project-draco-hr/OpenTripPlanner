@@ -64,12 +64,12 @@ backPSE=(PlainStreetEdge)backEdge;
 int outAngle=0;
 int inAngle=0;
 if (options.arriveBy) {
-if (!canTurnOnto(backPSE,s0,traverseMode)) return null;
+if (!canTurnOnto(backPSE,traverseMode)) return null;
 outAngle=backPSE.getOutAngle();
 inAngle=getInAngle();
 }
  else {
-if (!backPSE.canTurnOnto(this,s0,traverseMode)) return null;
+if (!backPSE.canTurnOnto(this,traverseMode)) return null;
 outAngle=getOutAngle();
 inAngle=backPSE.getInAngle();
 }
@@ -94,6 +94,6 @@ timeLong++;
 s1.incrementTimeInSeconds(timeLong);
 s1.incrementWeight(weight);
 if (s1.weHaveWalkedTooFar(options)) return null;
-s1.addAlerts(getNotes());
+s1.addAlerts(notes);
 return s1.makeState();
 }

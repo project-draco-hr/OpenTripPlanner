@@ -5,12 +5,10 @@
   child.next=null;
   if (e == null) {
     child.backState=null;
-    child.hops=0;
     child.vertex=parent.vertex;
     child.stateData=child.stateData.clone();
   }
  else {
-    child.hops=parent.hops + 1;
     if (e.getFromVertex().equals(e.getToVertex()) && parent.vertex.equals(e.getFromVertex())) {
       traversingBackward=parent.getOptions().isArriveBy();
       child.vertex=e.getToVertex();

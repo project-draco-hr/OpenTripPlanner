@@ -17,7 +17,7 @@
     if (options.bannedTrips.contains(getTrip().getId())) {
       return null;
     }
-    TraverseMode mode=state0.getNonTransitMode(options);
+    TraverseMode mode=state0.getNonTransitMode();
     if (!options.getModes().contains(hop.getMode())) {
       return null;
     }
