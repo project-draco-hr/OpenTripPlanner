@@ -14,16 +14,18 @@
       }
     }
  else {
-      for (      Edge e : state.getVertex().getIncoming()) {
-        if (e instanceof PreAlightEdge) {
-          state=e.traverse(state);
+      if (cur.getParent() == null || !cur.getParent().interlining) {
+        for (        Edge e : state.getVertex().getIncoming()) {
+          if (e instanceof PreAlightEdge) {
+            state=e.traverse(state);
+          }
         }
-      }
-      TransitBoardAlight alight=cur.getRoute().alights[cur.boardStopSequence - 1][cur.patternIndex];
-      State oldState=state;
-      state=alight.traverse(state);
-      if (state == null) {
-        state=alight.traverse(oldState);
+        TransitBoardAlight alight=cur.getRoute().alights[cur.boardStopSequence - 1][cur.patternIndex];
+        State oldState=state;
+        state=alight.traverse(state);
+        if (state == null) {
+          state=alight.traverse(oldState);
+        }
       }
       HOP:       while (true) {
         for (        Edge e : state.getVertex().getIncoming()) {
@@ -32,6 +34,17 @@
           }
  else           if (e instanceof PatternHop) {
             state=e.traverse(state);
+            if (cur.interlining) {
+              for (              Edge e2 : state.getVertex().getIncoming()) {
+                RaptorState next=states.get(i - 1);
+                if (e2 instanceof PatternInterlineDwell) {
+                  if (((TransitVertex)e2.getFromVertex()).getStop() == next.boardStop.stopVertex.getStop()) {
+                    state=e2.traverse(state);
+                    break HOP;
+                  }
+                }
+              }
+            }
             for (            Edge e2 : state.getVertex().getIncoming()) {
               if (e2 instanceof TransitBoardAlight) {
                 for (                Edge e3 : e2.getFromVertex().getIncoming()) {
