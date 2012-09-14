@@ -1,6 +1,11 @@
 {
-  if (mode == TraverseMode.WALK)   return walkSpeed;
-  if (mode == TraverseMode.BICYCLE)   return bikeSpeed;
-  if (mode == TraverseMode.CAR)   return carSpeed;
-  throw new IllegalArgumentException("getSpeed(): Invalid mode " + mode);
+switch (mode) {
+case WALK:
+    return walkSpeed;
+case BICYCLE:
+  return bikeSpeed;
+case CAR:
+return carSpeed;
+}
+throw new IllegalArgumentException("getSpeed(): Invalid mode " + mode);
 }
