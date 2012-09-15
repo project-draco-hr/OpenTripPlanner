@@ -59,8 +59,7 @@
       startPoints.add(newState);
     }
     if (startPoints.size() == 0) {
-      log.debug("warning: no walk in round " + nBoardings);
-      return;
+      return false;
     }
     System.out.println("walk starts: " + startPoints.size() + " / "+ visitedEver.size());
     dijkstra.setPriorityQueueFactory(new PrefilledPriorityQueueFactory(startPoints.subList(1,startPoints.size())));
@@ -169,4 +168,5 @@
     visitedEver.add(stop);
     states.add(newState);
   }
+  return true;
 }

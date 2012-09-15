@@ -23,12 +23,14 @@
         continue TARGETSTATE;
       }
     }
-    while (state != null) {
-      if (state.route != null)       routes.add(state.route);
-      if (state.stop != null) {
-        stops.add(state.stop);
+synchronized (data) {
+      while (state != null) {
+        if (state.route != null)         routes.add(state.route);
+        if (state.stop != null) {
+          stops.add(state.stop);
+        }
+        state=state.getParent();
       }
-      state=state.getParent();
     }
   }
 }

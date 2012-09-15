@@ -37,14 +37,13 @@
     }
     search.maxTimeDayIndex=day;
   }
-  options.setMaxTransfers(6);
-  int rushAheadRound=rushAhead(data,options,walkOptions,search);
+  int rushAheadRound=preliminaryRaptorSearch(data,options,walkOptions,search);
   long searchBeginTime=System.currentTimeMillis();
   int bestElapsedTime=Integer.MAX_VALUE;
   int foundSoFar=0;
   RETRY:   do {
     for (int round=0; round < options.getMaxTransfers() + 2; ++round) {
-      round(data,options,walkOptions,search,round);
+      if (!round(data,options,walkOptions,search,round))       break;
       long elapsed=System.currentTimeMillis() - searchBeginTime;
       if (elapsed > multiPathTimeout * 1000 && multiPathTimeout > 0 && search.getTargetStates().size() > 0)       break RETRY;
       if (search.getTargetStates().size() >= options.getNumItineraries() && round >= rushAheadRound) {
@@ -59,7 +58,7 @@
         if (improvement < 600)         break RETRY;
       }
     }
-    if (foundSoFar > search.getTargetStates().size()) {
+    if (foundSoFar < search.getTargetStates().size()) {
       foundSoFar=search.getTargetStates().size();
     }
  else     if (foundSoFar > 0) {
