@@ -34,7 +34,9 @@
               for (              Edge e2 : state.getVertex().getOutgoing()) {
                 RaptorState next=states.get(i - 1);
                 if (e2 instanceof PatternInterlineDwell) {
-                  if (((TransitVertex)e2.getToVertex()).getStop() == next.boardStop.stopVertex.getStop()) {
+                  Stop toStop=((TransitVertex)e2.getToVertex()).getStop();
+                  Stop expectedStop=next.boardStop.stopVertex.getStop();
+                  if (toStop.equals(expectedStop)) {
                     State newState=e2.traverse(state);
                     if (newState == null)                     continue;
                     if (newState.getTripId() != next.tripId)                     continue;
