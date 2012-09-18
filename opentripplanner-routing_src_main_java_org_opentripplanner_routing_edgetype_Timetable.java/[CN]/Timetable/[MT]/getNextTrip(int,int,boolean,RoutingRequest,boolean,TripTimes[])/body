@@ -10,7 +10,7 @@
       idxLo=idxHi=TripTimes.binarySearchDepartures(sorted,stopIndex,time);
       for (; idxHi < sorted.length; idxHi++) {
         TripTimes tt=sorted[idxHi];
-        if (tripAcceptable(tt.getTrip(),haveBicycle,options)) {
+        if (tt.tripAcceptable(options,haveBicycle)) {
           bestTrip=tt;
           break;
         }
@@ -20,7 +20,7 @@
       idxLo=idxHi=TripTimes.binarySearchArrivals(sorted,stopIndex,time);
       for (; idxLo >= 0; idxLo--) {
         TripTimes tt=sorted[idxLo];
-        if (tripAcceptable(tt.getTrip(),haveBicycle,options)) {
+        if (tt.tripAcceptable(options,haveBicycle)) {
           bestTrip=tt;
           break;
         }
@@ -33,7 +33,7 @@
     for (    TripTimes tt : tripTimes) {
       if (boarding) {
         int depTime=tt.getDepartureTime(stopIndex);
-        if (depTime >= time && depTime < bestTime && tripAcceptable(tt.getTrip(),haveBicycle,options)) {
+        if (depTime >= time && depTime < bestTime && tt.tripAcceptable(options,haveBicycle)) {
           bestTrip=tt;
           bestTime=depTime;
           idxLo=idxHi=idx;
@@ -41,7 +41,7 @@
       }
  else {
         int arvTime=tt.getArrivalTime(stopIndex);
-        if (arvTime <= time && arvTime > bestTime && tripAcceptable(tt.getTrip(),haveBicycle,options)) {
+        if (arvTime <= time && arvTime > bestTime && tt.tripAcceptable(options,haveBicycle)) {
           bestTrip=tt;
           bestTime=arvTime;
           idxLo=idxHi=idx;
@@ -59,7 +59,7 @@
         idxHi+=1;
         if (idxHi < tripTimes.size()) {
           TripTimes tt=tripTimes.get(idxHi);
-          if (tripAcceptable(tt.getTrip(),haveBicycle,options)) {
+          if (tt.tripAcceptable(options,haveBicycle)) {
             nFound+=1;
             adjacentTimes[nFound]=tt;
             if (nFound == adjacentTimes.length) {
@@ -70,7 +70,7 @@
         idxLo-=1;
         if (idxLo >= 0) {
           TripTimes tt=tripTimes.get(idxLo);
-          if (tripAcceptable(tt.getTrip(),haveBicycle,options)) {
+          if (tt.tripAcceptable(options,haveBicycle)) {
             nFound+=1;
             adjacentTimes[nFound]=tt;
             if (nFound == adjacentTimes.length) {
