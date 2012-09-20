@@ -9,7 +9,12 @@
     Set<Alert> wheelchairNote=getWheelchairNotes(way);
     StreetTraversalPermission permissions=getPermissionsForEntity(way,wayData.getPermission());
     if (permissions == StreetTraversalPermission.NONE)     continue;
-    List<Long> nodes=way.getNodeRefs();
+    ArrayList<Long> nodes=new ArrayList<Long>(way.getNodeRefs().size());
+    long last=-1;
+    for (    long node : way.getNodeRefs()) {
+      if (node != last)       nodes.add(node);
+      last=node;
+    }
     IntersectionVertex startEndpoint=null, endEndpoint=null;
     ArrayList<Coordinate> segmentCoordinates=new ArrayList<Coordinate>();
     getLevelsForWay(way);
@@ -42,7 +47,7 @@
         }
       }
       distance+=distanceLibrary.distance(segmentStartOSMNode.getLat(),segmentStartOSMNode.getLon(),osmEndNode.getLat(),osmEndNode.getLon());
-      if (intersectionNodes.containsKey(endNode) || i == nodes.size() - 2) {
+      if (intersectionNodes.containsKey(endNode) || i == nodes.size() - 2 || (i < nodes.size() - 2 && nodes.subList(0,nodes.size() - 2).contains(nodes.get(i + 2)))) {
         segmentCoordinates.add(getCoordinate(osmEndNode));
         ele=osmEndNode.getTag("ele");
         if (ele != null) {
