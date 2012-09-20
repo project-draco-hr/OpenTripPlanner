@@ -2,9 +2,10 @@
   TripTimes bestTrip=null;
   int idxLo=-1, idxHi=Integer.MAX_VALUE;
   TripTimes[][] tableIndex=boarding ? departuresIndex : arrivalsIndex;
+  List<TripTimes> ordered=tripTimes;
   if (tableIndex != null) {
     TripTimes[] sorted;
-    if (tableIndex.length == 1)     sorted=departuresIndex[0];
+    if (tableIndex.length == 1)     sorted=tableIndex[0];
  else     sorted=tableIndex[stopIndex];
     if (boarding) {
       idxLo=idxHi=TripTimes.binarySearchDepartures(sorted,stopIndex,time);
@@ -26,6 +27,7 @@
         }
       }
     }
+    ordered=Arrays.asList(sorted);
   }
  else {
     int bestTime=boarding ? Integer.MAX_VALUE : Integer.MIN_VALUE;
@@ -55,10 +57,10 @@
     if (bestTrip != null) {
       adjacentTimes[0]=bestTrip;
       nFound+=1;
-      while (idxLo >= 0 || idxHi < tripTimes.size()) {
+      while (idxLo >= 0 || idxHi < ordered.size()) {
         idxHi+=1;
-        if (idxHi < tripTimes.size()) {
-          TripTimes tt=tripTimes.get(idxHi);
+        if (idxHi < ordered.size()) {
+          TripTimes tt=ordered.get(idxHi);
           if (tt.tripAcceptable(options,haveBicycle)) {
             adjacentTimes[nFound]=tt;
             nFound+=1;
@@ -69,7 +71,7 @@
         }
         idxLo-=1;
         if (idxLo >= 0) {
-          TripTimes tt=tripTimes.get(idxLo);
+          TripTimes tt=ordered.get(idxLo);
           if (tt.tripAcceptable(options,haveBicycle)) {
             adjacentTimes[nFound]=tt;
             nFound+=1;
