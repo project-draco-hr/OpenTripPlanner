@@ -1,3 +1,16 @@
 {
-  return "at " + stop + " boarded at "+ boardStop+ " on "+ route+ " time "+ new Date(((long)arrivalTime) * 1000)+ " walkDistance "+ walkDistance;
+  if (stop == null) {
+    String routes="";
+    RaptorState cur=this;
+    while (cur != null) {
+      if (cur.route != null) {
+        routes+=cur.route + ", ";
+      }
+      cur=cur.parent;
+    }
+    return "(" + routes + ")";
+  }
+ else {
+    return "at " + stop + " boarded at "+ boardStop+ " on "+ route+ " time "+ new Date(((long)arrivalTime) * 1000)+ " walkDistance "+ walkDistance;
+  }
 }
