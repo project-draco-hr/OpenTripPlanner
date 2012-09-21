@@ -9,11 +9,11 @@
   }
   RaptorData data=graph.getService(RaptorDataService.class).getData();
   double initialWalk=options.getMaxWalkDistance() * 1.1;
-  double minWalk=options.rctx.origin.getDistanceToNearestTransitStop() + options.rctx.target.getDistanceToNearestTransitStop();
-  if (initialWalk < minWalk) {
-    initialWalk=minWalk;
-  }
   options.setMaxWalkDistance(initialWalk);
+  double minWalk=options.rctx.origin.getDistanceToNearestTransitStop() + options.rctx.target.getDistanceToNearestTransitStop();
+  if (options.getMaxWalkDistance() < minWalk) {
+    options.setMaxWalkDistance(minWalk);
+  }
   RoutingRequest walkOptions=options.clone();
   walkOptions.rctx.pathParsers=new PathParser[0];
   TraverseModeSet modes=options.getModes().clone();
@@ -39,6 +39,7 @@
   }
   int rushAheadRound=preliminaryRaptorSearch(data,options,walkOptions,search);
   long searchBeginTime=System.currentTimeMillis();
+  double expectedWorstTime=1.5 * distanceLibrary.distance(options.rctx.origin.getCoordinate(),options.rctx.target.getCoordinate()) / options.getWalkSpeed();
   int bestElapsedTime=Integer.MAX_VALUE;
   int foundSoFar=0;
   RETRY:   do {
@@ -67,7 +68,7 @@
           }
         }
         int improvement=oldBest - bestElapsedTime;
-        if (improvement < 600)         break RETRY;
+        if (improvement < 600 && bestElapsedTime < expectedWorstTime)         break RETRY;
       }
     }
     if (foundSoFar < search.getTargetStates().size()) {
