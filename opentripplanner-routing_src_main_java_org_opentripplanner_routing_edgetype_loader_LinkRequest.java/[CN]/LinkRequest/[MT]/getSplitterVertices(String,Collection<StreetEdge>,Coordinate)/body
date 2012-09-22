@@ -8,12 +8,12 @@
     replacement=new LinkedList<P2<PlainStreetEdge>>();
     Iterator<StreetEdge> iter=edges.iterator();
     StreetEdge first=iter.next();
-    StreetEdge second;
-    if (iter.hasNext()) {
-      second=iter.next();
-    }
- else {
-      second=null;
+    StreetEdge second=null;
+    while (iter.hasNext()) {
+      StreetEdge edge=iter.next();
+      if (edge.getFromVertex() == first.getToVertex() && edge.getToVertex() == first.getFromVertex()) {
+        second=edge;
+      }
     }
     PlainStreetEdge secondClone;
     if (second == null) {
