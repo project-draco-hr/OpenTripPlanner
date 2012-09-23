@@ -63,23 +63,16 @@ s1.addAlerts(wheelchairNotes);
 PlainStreetEdge backPSE;
 if (backEdge != null && backEdge instanceof PlainStreetEdge) {
 backPSE=(PlainStreetEdge)backEdge;
-int outAngle=0;
-int inAngle=0;
+float backSpeed=(float)(traverseMode == TraverseMode.CAR ? backPSE.getCarSpeed() : options.getSpeed(traverseMode));
+final double realTurnCost;
 if (options.arriveBy) {
 if (!canTurnOnto(backPSE,s0,traverseMode)) return null;
-outAngle=backPSE.getOutAngle();
-inAngle=getInAngle();
+realTurnCost=((IntersectionVertex)tov).computeTraversalCost(this,backPSE,traverseMode,options,(float)speed,backSpeed);
 }
  else {
 if (!backPSE.canTurnOnto(this,s0,traverseMode)) return null;
-outAngle=getOutAngle();
-inAngle=backPSE.getInAngle();
+realTurnCost=((IntersectionVertex)fromv).computeTraversalCost(backPSE,this,traverseMode,options,backSpeed,(float)speed);
 }
-int turnCost=Math.abs(outAngle - inAngle);
-if (turnCost > 180) {
-turnCost=360 - turnCost;
-}
-final double realTurnCost=(turnCost / 20.0) / speed;
 if (traverseMode != TraverseMode.CAR) s1.incrementWalkDistance(realTurnCost / 100);
 weight+=realTurnCost;
 long turnTime=(long)realTurnCost;

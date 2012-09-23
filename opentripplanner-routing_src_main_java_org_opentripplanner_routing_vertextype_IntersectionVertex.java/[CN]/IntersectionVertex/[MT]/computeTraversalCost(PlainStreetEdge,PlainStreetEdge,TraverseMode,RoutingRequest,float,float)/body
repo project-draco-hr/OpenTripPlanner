@@ -1,0 +1,51 @@
+{
+  int outAngle=to.getOutAngle();
+  int inAngle=from.getInAngle();
+  if (this.freeFlowing)   return 0;
+  if (fromSpeed > 25 && toSpeed > 25 && Math.abs(fromSpeed - toSpeed) < 7)   return 0;
+  if (mode != TraverseMode.CAR) {
+    int turnCost=Math.abs(outAngle - inAngle);
+    if (turnCost > 180) {
+      turnCost=360 - turnCost;
+    }
+    return (turnCost / 20.0) / toSpeed;
+  }
+ else {
+    if (outAngle < inAngle)     outAngle+=360;
+    int turnAngle=outAngle - inAngle;
+    double turnCost=0;
+    float probabilityStopToTurn=0;
+    if (!options.driveOnRight)     turnAngle=360 - turnAngle;
+    if (this.trafficLight) {
+      if (turnAngle < 135) {
+        turnCost+=15;
+        probabilityStopToTurn=.66666667F;
+      }
+ else       if (turnAngle < 225) {
+        turnCost+=26.2666666667;
+        probabilityStopToTurn=.66666667F;
+      }
+ else {
+        turnCost+=41.666666667;
+        probabilityStopToTurn=.8333333333f;
+      }
+    }
+ else {
+      if (turnAngle < 135) {
+        turnCost+=10;
+        probabilityStopToTurn=1;
+      }
+ else       if (turnAngle < 225) {
+        turnCost+=12;
+        probabilityStopToTurn=0.75f;
+      }
+ else {
+        turnCost+=15;
+        probabilityStopToTurn=1;
+      }
+    }
+    turnCost+=(fromSpeed / options.carDecelerationSpeed) * probabilityStopToTurn;
+    turnCost+=(toSpeed / options.carAccelerationSpeed) * probabilityStopToTurn;
+    return turnCost;
+  }
+}
