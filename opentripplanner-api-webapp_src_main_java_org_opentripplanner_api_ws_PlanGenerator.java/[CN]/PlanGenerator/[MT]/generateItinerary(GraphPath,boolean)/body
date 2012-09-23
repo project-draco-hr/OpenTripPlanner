@@ -214,7 +214,7 @@ pgstate=PlanGenState.START;
  else if (mode.toString().equals(leg.mode)) {
 if (showIntermediateStops) {
 if (!(backEdge instanceof DwellEdge)) {
-Place stop=makePlace(state.getBackState(),backEdge.getName(),true);
+Place stop=makePlace(state.getBackState(),state.getBackState().getVertex().getName(),true);
 leg.stop.add(stop);
 }
  else if (leg.stop.size() > 0) {

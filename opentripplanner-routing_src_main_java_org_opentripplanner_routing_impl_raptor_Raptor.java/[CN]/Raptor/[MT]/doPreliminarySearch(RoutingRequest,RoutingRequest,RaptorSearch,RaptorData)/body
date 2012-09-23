@@ -1,0 +1,24 @@
+{
+  RaptorSearch rushSearch=new RaptorSearch(trimmedData,options);
+  int bestElapsedTime=Integer.MAX_VALUE;
+  int round;
+  for (round=0; round < options.getMaxTransfers() + 2; round++) {
+    if (!round(trimmedData,options,walkOptions,rushSearch,round))     break;
+    if (rushSearch.getTargetStates().size() > 0) {
+      int oldBest=bestElapsedTime;
+      for (      RaptorState state : rushSearch.getTargetStates()) {
+        final int elapsedTime=(int)Math.abs(state.arrivalTime - options.dateTime);
+        if (elapsedTime < bestElapsedTime) {
+          bestElapsedTime=elapsedTime;
+        }
+      }
+      int improvement=oldBest - bestElapsedTime;
+      if (improvement < 600)       break;
+    }
+  }
+  for (  RaptorState state : rushSearch.getTargetStates()) {
+    search.bounder.addBounder(state.walkPath);
+    search.addTargetState(state);
+  }
+  return round;
+}

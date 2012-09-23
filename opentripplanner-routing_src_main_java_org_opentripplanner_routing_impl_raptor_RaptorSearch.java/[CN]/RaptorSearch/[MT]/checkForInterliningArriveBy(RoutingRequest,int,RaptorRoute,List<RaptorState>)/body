@@ -1,0 +1,47 @@
+{
+  int firstStop=route.getNStops() - 1;
+  boolean started=false;
+  final List<RaptorState> states=statesByStop[route.stops[firstStop].index];
+  if (states == null)   return false;
+  INTERLINE:   for (  RaptorState oldState : states) {
+    if (oldState.nBoardings != nBoardings - 1) {
+      continue;
+    }
+    if (oldState.route == null) {
+      continue;
+    }
+    if (oldState.route.stops[0] != oldState.stop) {
+      continue;
+    }
+    RaptorInterlineData interline=oldState.route.interlinesIn.get(oldState.tripId);
+    if (interline == null || interline.fromRoute != route) {
+      continue;
+    }
+    RaptorState stayOn=oldState.clone();
+    stayOn.arrivalTime+=options.getBoardSlack();
+    stayOn.interlining=true;
+    RaptorState boardState=new RaptorState(stayOn);
+    boardState.weight=-options.getBoardSlack() - options.getAlightSlack();
+    boardState.nBoardings=boardState.nBoardings=nBoardings - 1;
+    boardState.boardStop=route.stops[firstStop];
+    boardState.boardStopSequence=firstStop;
+    TransitBoardAlight alight=route.alights[firstStop - 1][interline.fromPatternIndex];
+    TableTripPattern pattern=alight.getPattern();
+    boardState.tripTimes=pattern.getTripTimes(interline.fromTripIndex);
+    final ServiceDay serviceDay=oldState.serviceDay;
+    boardState.arrivalTime=(int)serviceDay.time(boardState.tripTimes.getArrivalTime(firstStop - 1));
+    boardState.patternIndex=interline.fromPatternIndex;
+    boardState.tripId=interline.fromTripId;
+    boardState.serviceDay=serviceDay;
+    boardState.route=route;
+    boardState.walkDistance=oldState.walkDistance;
+    for (    RaptorState state : boardStates) {
+      if (state.eDominates(boardState)) {
+        continue INTERLINE;
+      }
+    }
+    boardStates.add(boardState);
+    started=true;
+  }
+  return started;
+}

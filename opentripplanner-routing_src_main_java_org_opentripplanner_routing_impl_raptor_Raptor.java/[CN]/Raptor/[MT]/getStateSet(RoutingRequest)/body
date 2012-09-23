@@ -17,7 +17,7 @@
   walkOptions.setModes(modes);
   RaptorSearch search=new RaptorSearch(data,options);
   for (int i=0; i < options.getMaxTransfers() + 2; ++i) {
-    round(data,options,walkOptions,search,i);
+    if (!round(data,options,walkOptions,search,i))     break;
   }
   RaptorStateSet result=new RaptorStateSet();
   result.statesByStop=search.statesByStop;

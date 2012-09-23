@@ -1,9 +1,0 @@
-{
-  this.taboo=taboo;
-  this.hopLimit=hopLimit;
-  spt=new BasicShortestPathTree(options);
-  queue=new BinHeap<State>(50);
-  State init=new State(origin,options);
-  spt.add(init);
-  queue.insert(init,init.getWeight());
-}
