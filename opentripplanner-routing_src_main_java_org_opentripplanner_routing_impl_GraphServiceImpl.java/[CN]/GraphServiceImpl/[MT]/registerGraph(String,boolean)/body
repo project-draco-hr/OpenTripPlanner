@@ -1,0 +1,12 @@
+{
+  if (preEvict)   evictGraph(graphId);
+  Graph graph=this.loadGraph(graphId);
+  if (graph != null) {
+synchronized (graphs) {
+      graphs.put(graphId,graph);
+    }
+    levels.put(graphId,loadLevel);
+    return true;
+  }
+  return false;
+}

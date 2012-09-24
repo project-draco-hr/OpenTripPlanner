@@ -1,0 +1,31 @@
+{
+  if (resourceLoader instanceof ResourcePatternResolver) {
+    ResourcePatternResolver resolver=(ResourcePatternResolver)resourceLoader;
+    LOG.info("Scanning for graphs to register under {}",resourceBase);
+    String resourcePattern=resourceBase.concat("/*/Graph.obj");
+    Resource[] resources;
+    try {
+      resources=resolver.getResources(resourcePattern);
+    }
+ catch (    IOException ioe) {
+      LOG.debug("IO exception while searching for graphs, aborting.");
+      ioe.printStackTrace();
+      return;
+    }
+    for (    Resource resource : resources) {
+      try {
+        String resourceName=resource.getURI().toString();
+        LOG.info("found graph at {}",resourceName);
+        InputStream is;
+        is=resource.getInputStream();
+        Graph graph=Graph.load(is,LoadLevel.FULL);
+        graphs.put(resourceName,graph);
+        levels.put(resourceName,LoadLevel.FULL);
+      }
+ catch (      Exception ex) {
+        LOG.debug("Exception while loading graph, skipping.");
+        ex.printStackTrace();
+      }
+    }
+  }
+}
