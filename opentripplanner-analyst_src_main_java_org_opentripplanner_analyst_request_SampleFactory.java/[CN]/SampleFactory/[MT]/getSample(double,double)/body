@@ -1,8 +1,8 @@
 {
   Coordinate c=new Coordinate(lon,lat);
   Envelope env=new Envelope(c);
-  double xscale=Math.cos(c.y);
-  env.expandBy(searchRadiusLat * xscale,searchRadiusLat);
+  double xscale=Math.cos(c.y * Math.PI / 180);
+  env.expandBy(searchRadiusLat / xscale,searchRadiusLat);
   @SuppressWarnings("unchecked") List<Edge> edges=(List<Edge>)index.queryPedestrian(env);
   return findClosest(edges,c,xscale);
 }

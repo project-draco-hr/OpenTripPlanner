@@ -1,13 +1,13 @@
 {
   Candidate c=new Candidate();
-  Candidate best0=new Candidate();
-  Candidate best1=new Candidate();
+  Candidate best=new Candidate();
   for (  Edge edge : edges) {
     c.edge=edge;
     LineString ls=(LineString)(edge.getGeometry());
     CoordinateSequence coordSeq=ls.getCoordinateSequence();
     int numCoords=coordSeq.size();
     for (int seg=0; seg < numCoords - 1; seg++) {
+      c.seg=seg;
       double x0=coordSeq.getX(seg);
       double y0=coordSeq.getY(seg);
       double x1=coordSeq.getX(seg + 1);
@@ -18,35 +18,22 @@
       double dx=c.x - pt.x;
       double dy=c.y - pt.y;
       c.dist2=dx * dx + dy * dy;
-      if (c.dist2 < best1.dist2) {
-        if (c.dist2 < best0.dist2) {
-          best1.setFrom(best0);
-          best0.setFrom(c);
-        }
- else {
-          best1.setFrom(c);
-        }
+      if (c.dist2 < best.dist2) {
+        best.setFrom(c);
       }
     }
   }
-  Sample s=null;
-  if (best0.edge != null) {
-    Vertex v0=best0.edge.getFromVertex();
-    double d0=best0.distanceTo(pt);
-    if (d0 > searchRadiusM)     return null;
-    d0+=best0.distanceAlong();
+  if (best.edge != null) {
+    Vertex v0=best.edge.getFromVertex();
+    Vertex v1=best.edge.getToVertex();
+    double d=best.distanceTo(pt);
+    if (d > searchRadiusM)     return null;
+    double d0=d + best.distanceAlong();
     int t0=(int)(d0 / 1.33);
-    Vertex v1=null;
-    int t1=0;
-    if (best1.edge != null) {
-      double d1=best1.distanceTo(pt);
-      if (d1 < searchRadiusM) {
-        v1=best1.edge.getFromVertex();
-        d1+=best1.distanceAlong();
-        t1=(int)(d1 / 1.33);
-      }
-    }
-    s=new Sample(v0,t0,v1,t1);
+    double d1=d + best.distanceToEnd();
+    int t1=(int)(d1 / 1.33);
+    Sample s=new Sample(v0,t0,v1,t1);
+    return s;
   }
-  return s;
+  return null;
 }
