@@ -5,7 +5,7 @@
   }
   LOG.debug("loading serialized graph for graphId {}",graphId);
   String resourceLocation=String.format("%s/%s/Graph.obj",resourceBase,graphId);
-  LOG.debug("graph file should be at {}",resourceLocation);
+  LOG.debug("graph file for routerId {} is at {}",graphId,resourceLocation);
   Resource graphResource;
   InputStream is;
   try {
@@ -17,6 +17,7 @@
     ex.printStackTrace();
     return null;
   }
+  LOG.debug("graph input stream successfully opened. now loading.");
   try {
     return Graph.load(is,loadLevel);
   }

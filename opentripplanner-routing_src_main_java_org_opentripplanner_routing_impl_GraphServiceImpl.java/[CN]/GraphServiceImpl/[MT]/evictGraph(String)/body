@@ -1,4 +1,5 @@
 {
+  LOG.debug("evicting graph {}",graphId);
 synchronized (graphs) {
     Graph existing=graphs.remove(graphId);
     return existing != null;
