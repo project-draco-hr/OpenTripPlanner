@@ -1,7 +1,7 @@
 {
   RoutingContext rctx=state0.getContext();
   RoutingRequest options=state0.getOptions();
-  TraverseMode mode=state0.getNonTransitMode(options);
+  TraverseMode mode=state0.getNonTransitMode();
   boolean offTransit=(boarding && options.isArriveBy()) || (!boarding && !options.isArriveBy());
   if (offTransit) {
     int type;

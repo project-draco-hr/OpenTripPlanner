@@ -1,6 +1,6 @@
 {
   RoutingRequest options=s0.getOptions();
-  if (!s0.getNonTransitMode(options).equals(TraverseMode.WALK))   return null;
+  if (!s0.getNonTransitMode().equals(TraverseMode.WALK))   return null;
   if (!options.getModes().contains(TraverseMode.BICYCLE))   return null;
   BikeRentalStationVertex dropoff=(BikeRentalStationVertex)tov;
   if (options.isUseBikeRentalAvailabilityInformation() && dropoff.getBikesAvailable() == 0) {
@@ -11,7 +11,7 @@
   s1.incrementTimeInSeconds(options.isArriveBy() ? options.bikeRentalDropoffTime : options.bikeRentalPickupTime);
   s1.setBikeRenting(true);
   s1.setBikeRentalNetwork(network);
-  s1.setBackMode(s0.getNonTransitMode(options));
+  s1.setBackMode(s0.getNonTransitMode());
   State s1b=s1.makeState();
   return s1b;
 }

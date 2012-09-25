@@ -26,8 +26,7 @@
           continue;
         }
         for (        PlainStreetEdge to : restrictionTag.possibleTo) {
-          if (to == null) {
-            _log.warn("to-edge is null in turn restriction " + restrictionTag);
+          if (from == null || to == null) {
             continue;
           }
           int angleDiff=from.getOutAngle() - to.getInAngle();

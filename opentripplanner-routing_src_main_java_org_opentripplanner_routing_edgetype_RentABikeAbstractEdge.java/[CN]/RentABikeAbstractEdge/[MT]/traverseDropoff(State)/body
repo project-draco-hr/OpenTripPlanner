@@ -9,7 +9,7 @@
   s1e.incrementWeight(options.isArriveBy() ? options.bikeRentalPickupCost : options.bikeRentalDropoffCost);
   s1e.incrementTimeInSeconds(options.isArriveBy() ? options.bikeRentalPickupTime : options.bikeRentalDropoffTime);
   s1e.setBikeRenting(false);
-  s1e.setBackMode(s0.getNonTransitMode(options));
+  s1e.setBackMode(TraverseMode.WALK);
   State s1=s1e.makeState();
   return s1;
 }

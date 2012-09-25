@@ -1,0 +1,38 @@
+{
+  List<Integer> startRegions=getRegionsForVertex(data.regionData,options.rctx.fromVertex);
+  int startRegion;
+  startRegion=startRegions.get(0);
+  List<Integer> endRegions=getRegionsForVertex(data.regionData,options.rctx.toVertex);
+  int endRegion;
+  endRegion=endRegions.get(0);
+  RaptorData trimmedData=new RaptorData();
+  trimmedData.raptorStopsForStopId=new HashMap<AgencyAndId,RaptorStop>();
+  HashSet<RaptorStop> stops=data.regionData.stops[startRegion][endRegion];
+  for (  RaptorStop stop : stops) {
+    trimmedData.raptorStopsForStopId.put(stop.stopVertex.getStopId(),stop);
+  }
+  trimmedData.regionData=data.regionData;
+  trimmedData.routes=data.regionData.routes[startRegion][endRegion];
+  trimmedData.stops=data.stops;
+  trimmedData.routesForStop=data.routesForStop;
+  double walkDistance=options.getMaxWalkDistance();
+  if (walkDistance > 4000) {
+    options.setMaxWalkDistance(4000);
+    walkOptions.setMaxWalkDistance(4000);
+  }
+  int round;
+  if (trimmedData.routes.size() > 0) {
+    log.debug("Doing preliminary search on limited route set (" + trimmedData.routes.size() + ", "+ stops.size()+ ")");
+    round=doPreliminarySearch(options,walkOptions,search,trimmedData);
+  }
+ else {
+    round=0;
+  }
+  if (search.getTargetStates().size() == 0 && walkDistance > 5000) {
+    log.debug("Doing preliminary search at limited distance");
+    round=doPreliminarySearch(options,walkOptions,search,data);
+  }
+  options.setMaxWalkDistance(walkDistance);
+  walkOptions.setMaxWalkDistance(walkDistance);
+  return round;
+}

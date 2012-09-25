@@ -1,0 +1,43 @@
+{
+  Random random=new Random();
+  final HashSet<RaptorRoute>[] routes=regions.routes[regionIndex];
+  for (int j=0; j < routes.length; ++j) {
+    routes[j]=new HashSet<RaptorRoute>();
+  }
+  final HashSet<RaptorStop>[] stops=regions.stops[regionIndex];
+  for (int j=0; j < stops.length; ++j) {
+    stops[j]=new HashSet<RaptorStop>();
+  }
+  Raptor raptor=new Raptor();
+  int N_TRIPS=5;
+  for (int i=0; i < N_TRIPS; ++i) {
+    RoutingRequest options=new RoutingRequest();
+    graph.streetIndex=new StreetVertexIndexServiceImpl(graph);
+    int vertexNo=random.nextInt(region.size());
+    options.setRoutingContext(graph,region.get(vertexNo),null);
+    options.dateTime=(int)System.currentTimeMillis() / 1000 + random.nextInt(7 * 86400);
+    options.rctx.serviceDays=new ArrayList<ServiceDay>();
+    options.rctx.serviceDays.add(ServiceDay.universalService(graph));
+    options.setMaxWalkDistance(MAX_DISTANCE);
+    options.setMaxTransfers(6);
+    RaptorStateSet states=raptor.getStateSet(options);
+    for (    Entry<Vertex,List<RaptorState>> entry : states.getStates().entrySet()) {
+      Vertex v=entry.getKey();
+      int toRegion=regions.getRegionForVertex(v);
+      if (toRegion == -1) {
+        continue;
+      }
+      List<RaptorState> statesAtStop=entry.getValue();
+      for (      RaptorState state : statesAtStop) {
+        while (state != null) {
+          RaptorRoute route=state.getRoute();
+          if (route != null)           routes[toRegion].add(route);
+          if (state.stop != null) {
+            stops[toRegion].add(state.stop);
+          }
+          state=state.getParent();
+        }
+      }
+    }
+  }
+}

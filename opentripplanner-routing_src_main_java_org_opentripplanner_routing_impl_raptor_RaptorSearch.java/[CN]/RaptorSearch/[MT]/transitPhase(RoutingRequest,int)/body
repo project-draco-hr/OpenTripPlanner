@@ -1,8 +1,20 @@
 {
   Collection<RaptorRoute> routesToVisit=new HashSet<RaptorRoute>();
-  for (  RaptorStop stop : visitedLastRound) {
-    for (    RaptorRoute route : data.routesForStop[stop.index]) {
-      routesToVisit.add(route);
+  if (data.routesForStop == null) {
+    Collection<RaptorRoute> routes=data.routes;
+    for (    RaptorStop stop : visitedLastRound) {
+      for (      RaptorRoute route : data.routesForStop[stop.index]) {
+        if (routes.contains(route)) {
+          routesToVisit.add(route);
+        }
+      }
+    }
+  }
+ else {
+    for (    RaptorStop stop : visitedLastRound) {
+      for (      RaptorRoute route : data.routesForStop[stop.index]) {
+        routesToVisit.add(route);
+      }
     }
   }
   HashSet<RaptorStop> visitedThisRound=new HashSet<RaptorStop>();
@@ -16,24 +28,29 @@
   }
   for (  RaptorRoute route : routesToVisit) {
     List<RaptorState> boardStates=new ArrayList<RaptorState>();
-    boolean started=false;
+    boolean started;
     int firstStop, lastStop, direction, lastBoardStop;
     if (options.isArriveBy()) {
       firstStop=route.getNStops() - 1;
       lastStop=-1;
       direction=-1;
       lastBoardStop=0;
+      started=checkForInterliningArriveBy(options,nBoardings,route,boardStates);
     }
  else {
       firstStop=0;
       lastStop=route.getNStops();
       direction=1;
       lastBoardStop=lastStop - 1;
+      started=checkForInterliningDepartAt(options,nBoardings,route,boardStates);
     }
     for (int stopNo=firstStop; stopNo != lastStop; stopNo+=direction) {
       RaptorStop stop=route.stops[stopNo];
       if (!started && !visitedLastRound.contains(stop))       continue;
       started=true;
+      if (!data.raptorStopsForStopId.containsKey(stop.stopVertex.getStopId())) {
+        continue;
+      }
       List<RaptorState> states=statesByStop[stop.index];
       List<RaptorState> newStates=new ArrayList<RaptorState>();
       if (states == null) {
@@ -41,29 +58,27 @@
         statesByStop[stop.index]=states;
       }
       CONTINUE:       for (      RaptorState boardState : boardStates) {
-        RaptorState newState=new RaptorState(boardState.parent);
+        if (boardState.boardStop == stop) {
+          continue;
+        }
+        RaptorState newState=new RaptorState(boardState.getParent());
         ServiceDay sd=boardState.serviceDay;
-        int waitTime;
+        int travelTime;
         if (options.isArriveBy()) {
           if (!route.alights[0][boardState.patternIndex].getPattern().canBoard(stopNo))           continue;
           int boardTime=route.getBoardTime(boardState.tripTimes,stopNo);
           newState.arrivalTime=(int)sd.time(boardTime);
           newState.arrivalTime-=options.getBoardSlack();
-          waitTime=newState.parent.arrivalTime - newState.arrivalTime;
+          travelTime=newState.getParent().arrivalTime - newState.arrivalTime;
         }
  else {
           if (!route.boards[0][boardState.patternIndex].getPattern().canAlight(stopNo))           continue;
           int alightTime=route.getAlightTime(boardState.tripTimes,stopNo);
           newState.arrivalTime=(int)sd.time(alightTime);
           newState.arrivalTime+=options.getAlightSlack();
-          waitTime=newState.arrivalTime - newState.parent.arrivalTime;
+          travelTime=newState.arrivalTime - newState.getParent().arrivalTime;
         }
-        if (nBoardings == 1) {
-          newState.initialWaitTime=waitTime;
-        }
- else {
-          newState.weight+=waitTime;
-        }
+        newState.weight+=travelTime;
         newState.weight+=boardState.weight;
         newState.boardStop=boardState.boardStop;
         newState.boardStopSequence=boardState.boardStopSequence;
@@ -72,7 +87,9 @@
         newState.tripTimes=boardState.tripTimes;
         newState.nBoardings=boardState.nBoardings;
         newState.walkDistance=boardState.walkDistance;
+        newState.tripId=boardState.tripId;
         newState.stop=stop;
+        newState.serviceDay=boardState.serviceDay;
         for (        RaptorState oldState : states) {
           if (oldState.eDominates(newState)) {
             continue CONTINUE;
@@ -109,17 +126,27 @@
         }
         TRYBOARD:         for (        RaptorState oldState : states) {
           if (oldState.nBoardings != nBoardings - 1)           continue;
-          if (oldState.route == route)           continue;
+          if (oldState.getRoute() == route)           continue;
           RaptorBoardSpec boardSpec;
+          int waitTime;
           if (options.isArriveBy()) {
-            boardSpec=route.getTripIndexReverse(options,oldState.arrivalTime - boardSlack,stopNo);
+            int arrivalTime=oldState.arrivalTime - boardSlack;
+            boardSpec=route.getTripIndexReverse(options,arrivalTime,stopNo);
+            if (boardSpec == null)             continue;
+            waitTime=oldState.arrivalTime - boardSpec.departureTime;
           }
  else {
-            boardSpec=route.getTripIndex(options,oldState.arrivalTime + boardSlack,stopNo);
+            int arrivalTime=oldState.arrivalTime + boardSlack;
+            boardSpec=route.getTripIndex(options,arrivalTime,stopNo);
+            if (boardSpec == null)             continue;
+            waitTime=boardSpec.departureTime - oldState.arrivalTime;
           }
-          if (boardSpec == null)           continue;
           RaptorState boardState=new RaptorState(oldState);
-          boardState.weight=options.getBoardCost(route.mode);
+          if (nBoardings == 1) {
+            boardState.initialWaitTime=waitTime;
+            waitTime=0;
+          }
+          boardState.weight=options.getBoardCost(route.mode) + waitTime;
           boardState.nBoardings=nBoardings;
           boardState.boardStop=stop;
           boardState.boardStopSequence=stopNo;
@@ -129,6 +156,7 @@
           boardState.serviceDay=boardSpec.serviceDay;
           boardState.route=route;
           boardState.walkDistance=oldState.walkDistance;
+          boardState.tripId=boardSpec.tripId;
           for (          RaptorState state : boardStates) {
             if (state.eDominates(boardState)) {
               continue TRYBOARD;

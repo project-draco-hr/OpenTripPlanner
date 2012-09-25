@@ -1,4 +1,5 @@
 {
+  if (realTarget == null)   return false;
   final Vertex vertex=current.getVertex();
   int vertexIndex=vertex.getIndex();
   if (vertexIndex < distance.length) {
@@ -22,12 +23,12 @@
   if (targetDistance > remainingWalk) {
     minWalk=this.distanceToNearestTransitStop + vertex.getDistanceToNearestTransitStop();
     minTime=options.isArriveBy() ? traverseOptions.getAlightSlack() : traverseOptions.getBoardSlack();
-    if (current.getBackEdge() instanceof StreetEdge && !transitLocalStreets.transferrable(vertex)) {
+    if (current.getBackEdge() instanceof StreetEdge && transitLocalStreets != null && !transitLocalStreets.transferrable(vertex)) {
       return true;
     }
   }
  else {
-    if (targetDistance < distanceToNearestTransitStop || !transitLocalStreets.transferrable(vertex))     minWalk=targetDistance;
+    if (targetDistance < distanceToNearestTransitStop || transitLocalStreets == null || !transitLocalStreets.transferrable(vertex))     minWalk=targetDistance;
  else     minWalk=distanceToNearestTransitStop;
   }
   if (minWalk > remainingWalk)   return true;
@@ -38,15 +39,15 @@
   int i=0;
   boolean prevBounded=!bounders.isEmpty();
   for (  State bounder : bounders) {
-    int prevTime=previousArrivalTime.get(i++);
     if (current.getWeight() + minTime + walkTime * (options.getWalkReluctance() - 1) > bounder.getWeight() * WORST_WEIGHT_DIFFERENCE_FACTOR) {
       return true;
     }
+    int prevTime=previousArrivalTime.get(i++);
     if (optimisticDistance * 1.1 > bounder.getWalkDistance() && current.getNumBoardings() >= bounder.getNumBoardings()) {
       if (current.getElapsedTime() + minTime > bounder.getElapsedTime()) {
         return true;
       }
- else       if (options.arriveBy ? (current.getTime() + minTime <= prevTime) : ((current.getTime() - minTime) >= prevTime)) {
+ else       if (prevTime > 0 && (options.arriveBy ? (current.getTime() - minTime >= prevTime) : ((current.getTime() + minTime) <= prevTime))) {
         prevBounded=false;
       }
     }

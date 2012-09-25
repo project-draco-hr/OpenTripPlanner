@@ -1,6 +1,7 @@
 {
   for (Iterator<State> it=bounders.iterator(); it.hasNext(); ) {
     State old=it.next();
+    if (old.getNumBoardings() == bounder.getNumBoardings() && old.getTime() == bounder.getTime() && old.getWalkDistance() == bounder.getWalkDistance())     return;
     if (bounder.dominates(old)) {
       it.remove();
       removedBoundingStates.add(old);
@@ -12,6 +13,10 @@
   }
   bounders.add(bounder);
   RaptorState state=(RaptorState)bounder.getExtension("raptorParent");
+  if (state == null) {
+    previousArrivalTime.add(-1);
+    return;
+  }
   RaptorStop stop=state.stop;
   if (options.isArriveBy()) {
     final int nextDepartTime=getNextDepartTime(options,(state.arrivalTime - options.getBoardSlack()) - 2,stop.stopVertex);

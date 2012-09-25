@@ -1,6 +1,6 @@
 {
   long wayIndex=0;
-  for (  OSMWay way : _ways.values()) {
+  WAY:   for (  OSMWay way : _ways.values()) {
     if (wayIndex % 10000 == 0)     _log.debug("ways=" + wayIndex + "/"+ _ways.size());
     wayIndex++;
     WayProperties wayData=wayPropertySet.getDataForWay(way);
@@ -9,7 +9,31 @@
     Set<Alert> wheelchairNote=getWheelchairNotes(way);
     StreetTraversalPermission permissions=getPermissionsForEntity(way,wayData.getPermission());
     if (permissions == StreetTraversalPermission.NONE)     continue;
-    List<Long> nodes=way.getNodeRefs();
+    ArrayList<Long> nodes=new ArrayList<Long>(way.getNodeRefs().size());
+    long last=-1;
+    double lastLat=-1, lastLon=-1;
+    String lastLevel=null;
+    for (    long nodeId : way.getNodeRefs()) {
+      OSMNode node=_nodes.get(nodeId);
+      if (node == null)       continue WAY;
+      boolean levelsDiffer=false;
+      String level=node.getTag("level");
+      if (lastLevel == null) {
+        if (level != null) {
+          levelsDiffer=true;
+        }
+      }
+ else {
+        if (!lastLevel.equals(level)) {
+          levelsDiffer=true;
+        }
+      }
+      if (nodeId != last && (node.getLat() != lastLat || node.getLon() != lastLon || levelsDiffer))       nodes.add(nodeId);
+      last=nodeId;
+      lastLon=node.getLon();
+      lastLat=node.getLat();
+      lastLevel=level;
+    }
     IntersectionVertex startEndpoint=null, endEndpoint=null;
     ArrayList<Coordinate> segmentCoordinates=new ArrayList<Coordinate>();
     getLevelsForWay(way);
@@ -42,7 +66,7 @@
         }
       }
       distance+=distanceLibrary.distance(segmentStartOSMNode.getLat(),segmentStartOSMNode.getLon(),osmEndNode.getLat(),osmEndNode.getLon());
-      if (intersectionNodes.containsKey(endNode) || i == nodes.size() - 2) {
+      if (intersectionNodes.containsKey(endNode) || i == nodes.size() - 2 || (i < nodes.size() - 2 && nodes.subList(0,nodes.size() - 2).contains(nodes.get(i + 2)))) {
         segmentCoordinates.add(getCoordinate(osmEndNode));
         ele=osmEndNode.getTag("ele");
         if (ele != null) {

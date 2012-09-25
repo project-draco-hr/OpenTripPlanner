@@ -1,0 +1,25 @@
+{
+  final Graph graph;
+  if (options.rctx == null) {
+    graph=graphService.getGraph(options.getRouterId());
+    options.setRoutingContext(graph);
+    options.rctx.pathParsers=new PathParser[]{new BasicPathParser(),new NoThruTrafficPathParser()};
+  }
+ else {
+    graph=options.rctx.graph;
+  }
+  RaptorData data=graph.getService(RaptorDataService.class).getData();
+  options.setMaxWalkDistance(options.getMaxWalkDistance() * 1.1);
+  RoutingRequest walkOptions=options.clone();
+  walkOptions.rctx.pathParsers=new PathParser[0];
+  TraverseModeSet modes=options.getModes().clone();
+  modes.setTransit(false);
+  walkOptions.setModes(modes);
+  RaptorSearch search=new RaptorSearch(data,options);
+  for (int i=0; i < options.getMaxTransfers() + 2; ++i) {
+    if (!round(data,options,walkOptions,search,i))     break;
+  }
+  RaptorStateSet result=new RaptorStateSet();
+  result.statesByStop=search.statesByStop;
+  return result;
+}

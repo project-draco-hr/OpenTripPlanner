@@ -87,6 +87,9 @@
               }
             }
           }
+          if (e instanceof PatternInterlineDwell) {
+            variant.addInterline((PatternInterlineDwell)e);
+          }
           if ((e instanceof TransitBoardAlight && !((TransitBoardAlight)e).isBoarding()) || e instanceof Alight) {
             segment.alight=e;
           }

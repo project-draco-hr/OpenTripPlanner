@@ -1,0 +1,19 @@
+{
+  seen.add(vertex);
+  HashSet<Integer> regions=new HashSet<Integer>();
+  int region=vertex.getGroupIndex();
+  if (region >= 0) {
+    regions.add(region);
+  }
+ else {
+    for (    Edge e : vertex.getOutgoing()) {
+      final Vertex tov=e.getToVertex();
+      if (!seen.contains(tov))       regions.addAll(getRegionsForVertex(regionData,tov,seen,depth + 1));
+    }
+    for (    Edge e : vertex.getIncoming()) {
+      final Vertex fromv=e.getFromVertex();
+      if (!seen.contains(fromv))       regions.addAll(getRegionsForVertex(regionData,fromv,seen,depth + 1));
+    }
+  }
+  return regions;
+}

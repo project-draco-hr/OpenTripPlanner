@@ -1,12 +1,15 @@
 {
-  final double distanceToNearestTransitStop=options.rctx.target.getDistanceToNearestTransitStop();
+  double distanceToNearestTransitStop=0;
+  if (options.rctx.target != null) {
+    distanceToNearestTransitStop=options.rctx.target.getDistanceToNearestTransitStop();
+  }
   final int boardSlack=nBoardings == 1 ? options.getBoardSlack() : (options.getTransferSlack() - options.getAlightSlack());
   ShortestPathTree spt;
   GenericDijkstra dijkstra=new GenericDijkstra(walkOptions);
   dijkstra.setShortestPathTreeFactory(bounder);
   List<State> transitStopStates=new ArrayList<State>();
   if (nBoardings == 0) {
-    if (bounder.getTargetDistance(options.rctx.origin) < options.getMaxWalkDistance())     dijkstra.setHeuristic(bounder);
+    if (options.rctx.target != null && bounder.getTargetDistance(options.rctx.origin) < options.getMaxWalkDistance())     dijkstra.setHeuristic(bounder);
     MaxWalkState start=new MaxWalkState(options.rctx.origin,walkOptions);
     spt=dijkstra.getShortestPathTree(start);
     for (    State state : spt.getAllStates()) {
@@ -33,13 +36,15 @@
     final List<MaxWalkState> startPoints=new ArrayList<MaxWalkState>();
     for (    RaptorState state : createdStates) {
       Vertex stopVertex=state.stop.stopVertex;
-      double minWalk=distanceToNearestTransitStop;
-      double targetDistance=bounder.getTargetDistance(stopVertex);
-      if (targetDistance + state.walkDistance > options.getMaxWalkDistance()) {
-        if (state.stop.stopVertex.isLocal())         continue;
-      }
-      if (minWalk + state.walkDistance > options.getMaxWalkDistance()) {
-        continue;
+      if (options.rctx.target != null) {
+        double minWalk=distanceToNearestTransitStop;
+        double targetDistance=bounder.getTargetDistance(stopVertex);
+        if (targetDistance + state.walkDistance > options.getMaxWalkDistance()) {
+          if (state.stop.stopVertex.isLocal())           continue;
+        }
+        if (minWalk + state.walkDistance > options.getMaxWalkDistance()) {
+          continue;
+        }
       }
       StateEditor dijkstraState=new MaxWalkState.MaxWalkStateEditor(walkOptions,stopVertex);
       dijkstraState.setInitialWaitTime(state.initialWaitTime);
@@ -54,20 +59,22 @@
       startPoints.add(newState);
     }
     if (startPoints.size() == 0) {
-      System.out.println("warning: no walk in round " + nBoardings);
-      return;
+      return false;
     }
     System.out.println("walk starts: " + startPoints.size() + " / "+ visitedEver.size());
     dijkstra.setPriorityQueueFactory(new PrefilledPriorityQueueFactory(startPoints.subList(1,startPoints.size())));
     bounder.addSptStates(startPoints.subList(1,startPoints.size()));
     bounder.prepareForSearch();
     dijkstra.setSearchTerminationStrategy(bounder);
-    dijkstra.setSkipTraverseResultStrategy(bounder);
-    dijkstra.setHeuristic(bounder);
+    if (options.rctx.target != null) {
+      dijkstra.setSkipTraverseResultStrategy(bounder);
+      dijkstra.setHeuristic(bounder);
+    }
     spt=dijkstra.getShortestPathTree(startPoints.get(0));
     transitStopStates=bounder.getTransitStopsVisited();
   }
-  final List<? extends State> targetStates=spt.getStates(walkOptions.rctx.target);
+  List<? extends State> targetStates=null;
+  if (walkOptions.rctx.target != null)   targetStates=spt.getStates(walkOptions.rctx.target);
   if (targetStates != null) {
     TARGET:     for (    State targetState : targetStates) {
       RaptorState parent=(RaptorState)targetState.getExtension("raptorParent");
@@ -105,29 +112,31 @@
     if (stop == null) {
       continue;
     }
-    double minWalk=distanceToNearestTransitStop;
-    double targetDistance=bounder.getTargetDistance(vertex);
-    final double remainingWalk=options.maxWalkDistance - state.getWalkDistance();
-    if (maxTimeDayIndex > 0 && remainingWalk < 3218) {
-      double minTime=(targetDistance - minWalk) / Raptor.MAX_TRANSIT_SPEED + minWalk / options.getSpeedUpperBound();
-      if (targetDistance > remainingWalk)       minTime+=boardSlack;
-      int maxTimeForVertex=0;
-      int region=vertex.getGroupIndex();
-      final int elapsedTime=(int)state.getElapsedTime();
-      for (      StopNearTarget stopNearTarget : stopsNearTarget.values()) {
-        int destinationRegion=stopNearTarget.stop.stopVertex.getGroupIndex();
-        final int maxTimeFromThisRegion=data.maxTransitRegions.maxTransit[maxTimeDayIndex][destinationRegion][region];
-        int maxTime=elapsedTime + maxTimeFromThisRegion + stopNearTarget.time;
-        if (maxTime > maxTimeForVertex) {
-          maxTimeForVertex=maxTime;
+    if (options.rctx.target != null) {
+      double minWalk=distanceToNearestTransitStop;
+      double targetDistance=bounder.getTargetDistance(vertex);
+      final double remainingWalk=options.maxWalkDistance - state.getWalkDistance();
+      if (maxTimeDayIndex > 0 && remainingWalk < 3218) {
+        double minTime=(targetDistance - minWalk) / Raptor.MAX_TRANSIT_SPEED + minWalk / options.getSpeedUpperBound();
+        if (targetDistance > remainingWalk)         minTime+=boardSlack;
+        int maxTimeForVertex=0;
+        int region=vertex.getGroupIndex();
+        final int elapsedTime=(int)state.getElapsedTime();
+        for (        StopNearTarget stopNearTarget : stopsNearTarget.values()) {
+          int destinationRegion=stopNearTarget.stop.stopVertex.getGroupIndex();
+          final int maxTimeFromThisRegion=data.maxTransitRegions.maxTransit[maxTimeDayIndex][destinationRegion][region];
+          int maxTime=elapsedTime + maxTimeFromThisRegion + stopNearTarget.time;
+          if (maxTime > maxTimeForVertex) {
+            maxTimeForVertex=maxTime;
+          }
         }
-      }
-      if (maxTimeForVertex < maxTime) {
-        maxTime=maxTimeForVertex;
-      }
+        if (maxTimeForVertex < maxTime) {
+          maxTime=maxTimeForVertex;
+        }
  else {
-        if (elapsedTime + minTime > maxTime * 1.5) {
-          continue;
+          if (elapsedTime + minTime > maxTime * 1.5) {
+            continue;
+          }
         }
       }
     }
@@ -159,4 +168,5 @@
     visitedEver.add(stop);
     states.add(newState);
   }
+  return true;
 }
