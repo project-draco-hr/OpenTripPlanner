@@ -52,39 +52,5 @@
       ++idx;
     }
   }
-  if (adjacentTimes != null && adjacentTimes.length >= 1) {
-    int nFound=0;
-    if (bestTrip != null) {
-      adjacentTimes[0]=bestTrip;
-      nFound+=1;
-      while (idxLo >= 0 || idxHi < ordered.size()) {
-        idxHi+=1;
-        if (idxHi < ordered.size()) {
-          TripTimes tt=ordered.get(idxHi);
-          if (tt.tripAcceptable(options,haveBicycle)) {
-            adjacentTimes[nFound]=tt;
-            nFound+=1;
-            if (nFound == adjacentTimes.length) {
-              break;
-            }
-          }
-        }
-        idxLo-=1;
-        if (idxLo >= 0) {
-          TripTimes tt=ordered.get(idxLo);
-          if (tt.tripAcceptable(options,haveBicycle)) {
-            adjacentTimes[nFound]=tt;
-            nFound+=1;
-            if (nFound == adjacentTimes.length) {
-              break;
-            }
-          }
-        }
-      }
-      for (; nFound < adjacentTimes.length; nFound++) {
-        adjacentTimes[nFound]=null;
-      }
-    }
-  }
   return bestTrip;
 }
