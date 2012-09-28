@@ -8,8 +8,7 @@
     }
     long currentTime=state0.getTime();
     int bestWait=-1;
-    int bestPatternIndex=-1;
-    TraverseMode mode=state0.getNonTransitMode(options);
+    TraverseMode mode=state0.getNonTransitMode();
     if (options.bannedTrips.contains(trip.getId())) {
       return null;
     }
@@ -52,13 +51,11 @@
         preferences_penalty+=options.useUnpreferredRoutesPenalty;
       }
     }
-    EdgeNarrative en=new TransitNarrative(trip,this);
-    StateEditor s1=state0.edit(this,en);
+    StateEditor s1=state0.edit(this);
     int type=pattern.getBoardType(stopIndex);
     if (TransitUtils.handleBoardAlightType(s1,type)) {
       return null;
     }
-    s1.setTrip(bestPatternIndex);
     s1.incrementTimeInSeconds(bestWait);
     s1.incrementNumBoardings();
     s1.setTripId(trip.getId());
@@ -73,14 +70,14 @@
     }
     s1.incrementWeight(preferences_penalty);
     s1.incrementWeight(wait_cost + options.getBoardCost(mode));
+    s1.setBackMode(TraverseMode.ALIGHTING);
     return s1.makeState();
   }
  else {
     if (state0.getBackEdge() instanceof FrequencyAlight) {
       return null;
     }
-    EdgeNarrative en=new TransitNarrative(trip,this);
-    StateEditor s1=state0.edit(this,en);
+    StateEditor s1=state0.edit(this);
     int type=pattern.getBoardType(stopIndex);
     if (TransitUtils.handleBoardAlightType(s1,type)) {
       return null;
@@ -88,6 +85,7 @@
     s1.setTripId(null);
     s1.setLastAlightedTime(state0.getTime());
     s1.setPreviousStop(fromv);
+    s1.setBackMode(TraverseMode.ALIGHTING);
     return s1.makeState();
   }
 }

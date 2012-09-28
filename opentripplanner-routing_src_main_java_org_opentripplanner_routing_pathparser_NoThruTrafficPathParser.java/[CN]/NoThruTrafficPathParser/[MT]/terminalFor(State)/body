@@ -1,0 +1,13 @@
+{
+  if (state.getBackEdge() instanceof PlainStreetEdge) {
+    if (((PlainStreetEdge)state.getBackEdge()).isNoThruTraffic()) {
+      return NOTRAFFIC;
+    }
+ else {
+      return REGULAR;
+    }
+  }
+ else {
+    return TRANSIT;
+  }
+}

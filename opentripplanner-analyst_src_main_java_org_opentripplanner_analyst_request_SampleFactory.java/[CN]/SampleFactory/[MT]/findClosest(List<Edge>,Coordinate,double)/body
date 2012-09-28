@@ -1,0 +1,39 @@
+{
+  Candidate c=new Candidate();
+  Candidate best=new Candidate();
+  for (  Edge edge : edges) {
+    c.edge=edge;
+    LineString ls=(LineString)(edge.getGeometry());
+    CoordinateSequence coordSeq=ls.getCoordinateSequence();
+    int numCoords=coordSeq.size();
+    for (int seg=0; seg < numCoords - 1; seg++) {
+      c.seg=seg;
+      double x0=coordSeq.getX(seg);
+      double y0=coordSeq.getY(seg);
+      double x1=coordSeq.getX(seg + 1);
+      double y1=coordSeq.getY(seg + 1);
+      c.frac=segmentFraction(x0,y0,x1,y1,pt.x,pt.y,xscale);
+      c.x=x0 + c.frac * (x1 - x0);
+      c.y=y0 + c.frac * (y1 - y0);
+      double dx=c.x - pt.x;
+      double dy=c.y - pt.y;
+      c.dist2=dx * dx + dy * dy;
+      if (c.dist2 < best.dist2) {
+        best.setFrom(c);
+      }
+    }
+  }
+  if (best.edge != null) {
+    Vertex v0=best.edge.getFromVertex();
+    Vertex v1=best.edge.getToVertex();
+    double d=best.distanceTo(pt);
+    if (d > searchRadiusM)     return null;
+    double d0=d + best.distanceAlong();
+    int t0=(int)(d0 / 1.33);
+    double d1=d + best.distanceToEnd();
+    int t1=(int)(d1 / 1.33);
+    Sample s=new Sample(v0,t0,v1,t1);
+    return s;
+  }
+  return null;
+}

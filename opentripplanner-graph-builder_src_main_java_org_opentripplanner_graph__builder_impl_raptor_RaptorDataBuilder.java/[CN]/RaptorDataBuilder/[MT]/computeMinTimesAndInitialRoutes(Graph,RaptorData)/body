@@ -1,0 +1,13 @@
+{
+  final RegionData regions=data.regionData;
+  ArrayList<ArrayList<Vertex>> verticesForRegion=regions.verticesForRegion;
+  int regionIndex=0;
+  for (  ArrayList<Vertex> region : verticesForRegion) {
+    if (regionIndex % 5 == 0) {
+      log.debug("Building regions: " + regionIndex + " / "+ verticesForRegion.size());
+    }
+    findMinTime(graph,data,regions,regionIndex,region);
+    findRoutes(graph,data,regions,regionIndex,region);
+    regionIndex+=1;
+  }
+}

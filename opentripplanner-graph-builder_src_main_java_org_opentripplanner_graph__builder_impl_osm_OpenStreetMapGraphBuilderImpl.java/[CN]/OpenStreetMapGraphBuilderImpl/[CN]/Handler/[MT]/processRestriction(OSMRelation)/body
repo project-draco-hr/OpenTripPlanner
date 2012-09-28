@@ -29,37 +29,36 @@
       }
     }
   }
-  modes=TraverseMode.internSet(modes);
   TurnRestrictionTag tag;
   if (relation.isTag("restriction","no_right_turn")) {
-    tag=new TurnRestrictionTag(via,TurnRestrictionType.NO_TURN);
+    tag=new TurnRestrictionTag(via,TurnRestrictionType.NO_TURN,Direction.RIGHT);
   }
  else   if (relation.isTag("restriction","no_left_turn")) {
-    tag=new TurnRestrictionTag(via,TurnRestrictionType.NO_TURN);
+    tag=new TurnRestrictionTag(via,TurnRestrictionType.NO_TURN,Direction.LEFT);
   }
  else   if (relation.isTag("restriction","no_straight_on")) {
-    tag=new TurnRestrictionTag(via,TurnRestrictionType.NO_TURN);
+    tag=new TurnRestrictionTag(via,TurnRestrictionType.NO_TURN,Direction.STRAIGHT);
   }
  else   if (relation.isTag("restriction","no_u_turn")) {
-    tag=new TurnRestrictionTag(via,TurnRestrictionType.NO_TURN);
+    tag=new TurnRestrictionTag(via,TurnRestrictionType.NO_TURN,Direction.U);
   }
  else   if (relation.isTag("restriction","only_straight_on")) {
-    tag=new TurnRestrictionTag(via,TurnRestrictionType.ONLY_TURN);
+    tag=new TurnRestrictionTag(via,TurnRestrictionType.ONLY_TURN,Direction.STRAIGHT);
   }
  else   if (relation.isTag("restriction","only_right_turn")) {
-    tag=new TurnRestrictionTag(via,TurnRestrictionType.ONLY_TURN);
+    tag=new TurnRestrictionTag(via,TurnRestrictionType.ONLY_TURN,Direction.RIGHT);
   }
  else   if (relation.isTag("restriction","only_left_turn")) {
-    tag=new TurnRestrictionTag(via,TurnRestrictionType.ONLY_TURN);
+    tag=new TurnRestrictionTag(via,TurnRestrictionType.ONLY_TURN,Direction.LEFT);
+  }
+ else   if (relation.isTag("restriction","only_u_turn")) {
+    tag=new TurnRestrictionTag(via,TurnRestrictionType.ONLY_TURN,Direction.U);
   }
  else {
     _log.warn(GraphBuilderAnnotation.register(graph,Variety.TURN_RESTRICTION_UNKNOWN,relation.getTag("restriction")));
     return;
   }
-  TurnRestriction restriction=new TurnRestriction();
-  restriction.type=tag.type;
-  restriction.modes=modes;
-  turnRestrictionsByTag.put(tag,restriction);
+  tag.modes=new TraverseModeSet(modes);
   MapUtils.addToMapList(turnRestrictionsByFromWay,from,tag);
   MapUtils.addToMapList(turnRestrictionsByToWay,to,tag);
 }

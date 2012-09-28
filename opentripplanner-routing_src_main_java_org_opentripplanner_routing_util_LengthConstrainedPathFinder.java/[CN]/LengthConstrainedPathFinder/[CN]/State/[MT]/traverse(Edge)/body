@@ -1,3 +1,3 @@
 {
-  return new State(edge.getToVertex(),this.minLength + edge.getDistance(),this);
+  return new State(reverse ? edge.getFromVertex() : edge.getToVertex(),this.minLength + edge.getDistance(),this);
 }

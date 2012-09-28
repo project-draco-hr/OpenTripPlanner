@@ -1,0 +1,5 @@
+{
+  int nEvicted=graphService.evictAll();
+  String message=String.format("%d graphs evicted.",nEvicted);
+  return Response.status(200).entity(message).build();
+}

@@ -1,0 +1,24 @@
+{
+  ArrayList<Vertex> vertices=new ArrayList<Vertex>();
+  for (  Vertex v : graph.getVertices()) {
+    if (!(v instanceof OnboardVertex)) {
+      vertices.add(v);
+    }
+  }
+  ArrayList<ArrayList<Vertex>> verticesForRegion=new ArrayList<ArrayList<Vertex>>();
+  int[] regionsForVertex=new int[AbstractVertex.getMaxIndex()];
+  Arrays.fill(regionsForVertex,-1);
+  int nRegions=split(verticesForRegion,regionsForVertex,vertices,0,true,vertices.size() / N_REGIONS);
+  RegionData regions=new RegionData(regionsForVertex);
+  regions.minTime=new int[nRegions][nRegions];
+  regions.routes=new HashSet[nRegions][nRegions];
+  regions.stops=new HashSet[nRegions][nRegions];
+  for (int fromRegion=0; fromRegion < nRegions; ++fromRegion) {
+    for (int toRegion=0; toRegion < nRegions; ++toRegion) {
+      regions.routes[fromRegion][toRegion]=new HashSet<RaptorRoute>();
+      regions.stops[fromRegion][toRegion]=new HashSet<RaptorStop>();
+    }
+  }
+  regions.verticesForRegion=verticesForRegion;
+  return regions;
+}

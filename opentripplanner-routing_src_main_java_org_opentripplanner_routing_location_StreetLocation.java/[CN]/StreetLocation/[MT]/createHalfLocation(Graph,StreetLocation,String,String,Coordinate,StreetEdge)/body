@@ -1,0 +1,27 @@
+{
+  StreetVertex tov=(StreetVertex)street.getToVertex();
+  StreetVertex fromv=(StreetVertex)street.getFromVertex();
+  Geometry geometry=street.getGeometry();
+  P2<LineString> geometries=getGeometry(street,nearestPoint);
+  double totalGeomLength=geometry.getLength();
+  double lengthRatioIn=geometries.getFirst().getLength() / totalGeomLength;
+  double lengthIn=street.getLength() * lengthRatioIn;
+  double lengthOut=street.getLength() * (1 - lengthRatioIn);
+  PlainStreetEdge newLeft=new PlainStreetEdge(fromv,base,geometries.getFirst(),name,lengthIn,street.getPermission(),false);
+  PlainStreetEdge newRight=new PlainStreetEdge(base,tov,geometries.getSecond(),name,lengthOut,street.getPermission(),false);
+  newLeft.setElevationProfile(street.getElevationProfile(0,lengthIn),false);
+  newLeft.setNoThruTraffic(street.isNoThruTraffic());
+  newLeft.setStreetClass(street.getStreetClass());
+  newLeft.setWheelchairNote(street.getWheelchairNotes());
+  newLeft.setNote(street.getNotes());
+  newRight.setElevationProfile(street.getElevationProfile(lengthIn,lengthIn + lengthOut),false);
+  newRight.setStreetClass(street.getStreetClass());
+  newRight.setNoThruTraffic(street.isNoThruTraffic());
+  newRight.setWheelchairNote(street.getWheelchairNotes());
+  newRight.setNote(street.getNotes());
+  for (  TurnRestriction turnRestriction : street.getTurnRestrictions()) {
+    newRight.addTurnRestriction(turnRestriction);
+  }
+  base.extra.add(newLeft);
+  base.extra.add(newRight);
+}

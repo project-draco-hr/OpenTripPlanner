@@ -1,0 +1,36 @@
+{
+  List<Integer> startRegions=getRegionsForVertex(data.regionData,options.rctx.fromVertex);
+  int startRegion;
+  if (startRegions.size() == 1) {
+    startRegion=startRegions.get(0);
+  }
+ else {
+    return;
+  }
+  List<Integer> endRegions=getRegionsForVertex(data.regionData,options.rctx.toVertex);
+  int endRegion;
+  if (endRegions.size() == 1) {
+    endRegion=endRegions.get(0);
+  }
+ else {
+    return;
+  }
+  HashSet<RaptorRoute> routes=data.regionData.routes[startRegion][endRegion];
+  HashSet<RaptorStop> stops=data.regionData.stops[startRegion][endRegion];
+  TARGETSTATE:   for (  RaptorState state : targetStates) {
+    for (    RaptorState dom : targetStates) {
+      if (dom.nBoardings <= state.nBoardings && dom.arrivalTime < state.arrivalTime) {
+        continue TARGETSTATE;
+      }
+    }
+synchronized (data) {
+      while (state != null) {
+        if (state.route != null)         routes.add(state.route);
+        if (state.stop != null) {
+          stops.add(state.stop);
+        }
+        state=state.getParent();
+      }
+    }
+  }
+}

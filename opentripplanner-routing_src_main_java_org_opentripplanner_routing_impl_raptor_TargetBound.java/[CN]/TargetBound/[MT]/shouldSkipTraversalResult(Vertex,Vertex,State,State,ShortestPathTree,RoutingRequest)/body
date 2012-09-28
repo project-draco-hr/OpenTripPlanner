@@ -1,0 +1,62 @@
+{
+  if (realTarget == null)   return false;
+  final Vertex vertex=current.getVertex();
+  int vertexIndex=vertex.getIndex();
+  if (vertexIndex < distance.length) {
+    if (distance[vertexIndex] > 0.0) {
+      targetDistance=distance[vertexIndex];
+    }
+ else {
+      targetDistance=distanceLibrary.fastDistance(realTargetCoordinate.y,realTargetCoordinate.x,vertex.getY(),vertex.getX());
+      distance[vertexIndex]=targetDistance;
+      if (vertex instanceof TransitStop && targetDistance < bestTargetDistance) {
+        bestTargetDistance=targetDistance;
+      }
+    }
+  }
+ else {
+    targetDistance=distanceLibrary.fastDistance(realTargetCoordinate.y,realTargetCoordinate.x,vertex.getY(),vertex.getX());
+  }
+  final double remainingWalk=traverseOptions.maxWalkDistance - current.getWalkDistance();
+  final double minWalk;
+  double minTime=0;
+  if (targetDistance > remainingWalk) {
+    minWalk=this.distanceToNearestTransitStop + vertex.getDistanceToNearestTransitStop();
+    minTime=options.isArriveBy() ? traverseOptions.getAlightSlack() : traverseOptions.getBoardSlack();
+    if (current.getBackEdge() instanceof StreetEdge && transitLocalStreets != null && !transitLocalStreets.transferrable(vertex)) {
+      return true;
+    }
+  }
+ else {
+    if (targetDistance < distanceToNearestTransitStop || transitLocalStreets == null || !transitLocalStreets.transferrable(vertex))     minWalk=targetDistance;
+ else     minWalk=distanceToNearestTransitStop;
+  }
+  if (minWalk > remainingWalk)   return true;
+  final double optimisticDistance=current.getWalkDistance() + minWalk;
+  final double walkTime=minWalk / speedUpperBound;
+  minTime+=(targetDistance - minWalk) / Raptor.MAX_TRANSIT_SPEED + walkTime;
+  double stateTime=current.getOptimizedElapsedTime() + minTime;
+  int i=0;
+  boolean prevBounded=!bounders.isEmpty();
+  for (  State bounder : bounders) {
+    if (current.getWeight() + minTime + walkTime * (options.getWalkReluctance() - 1) > bounder.getWeight() * WORST_WEIGHT_DIFFERENCE_FACTOR) {
+      return true;
+    }
+    int prevTime=previousArrivalTime.get(i++);
+    if (optimisticDistance * 1.1 > bounder.getWalkDistance() && current.getNumBoardings() >= bounder.getNumBoardings()) {
+      if (current.getElapsedTime() + minTime > bounder.getElapsedTime()) {
+        return true;
+      }
+ else       if (prevTime > 0 && (options.arriveBy ? (current.getTime() - minTime >= prevTime) : ((current.getTime() + minTime) <= prevTime))) {
+        prevBounded=false;
+      }
+    }
+ else {
+      prevBounded=false;
+    }
+    if (bounder.getOptimizedElapsedTime() * timeBoundFactor < stateTime) {
+      return true;
+    }
+  }
+  return prevBounded;
+}

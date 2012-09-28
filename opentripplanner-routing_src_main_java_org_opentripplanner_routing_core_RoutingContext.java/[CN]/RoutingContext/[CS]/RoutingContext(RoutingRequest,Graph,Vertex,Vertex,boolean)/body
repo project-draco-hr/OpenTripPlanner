@@ -27,6 +27,8 @@
   target=opt.arriveBy ? fromVertex : toVertex;
   calendarService=graph.getCalendarService();
   transferTable=graph.getTransferTable();
+  if (graph.timetableSnapshotSource != null)   timetableSnapshot=graph.timetableSnapshotSource.getSnapshot();
+ else   timetableSnapshot=null;
   setServiceDays();
   if (opt.batch)   remainingWeightHeuristic=new TrivialRemainingWeightHeuristic();
  else   remainingWeightHeuristic=heuristicFactory.getInstanceForSearch(opt);

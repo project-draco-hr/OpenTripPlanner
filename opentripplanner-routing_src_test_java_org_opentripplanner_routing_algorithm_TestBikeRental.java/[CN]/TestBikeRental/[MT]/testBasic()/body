@@ -11,12 +11,6 @@
   ShortestPathTree tree=aStar.getShortestPathTree(options);
   GraphPath path=tree.getPath(v3,false);
   assertNull(path);
-  options=new RoutingRequest(new TraverseModeSet("BICYCLE,TRANSIT"));
-  options.freezeTraverseMode();
-  options.setRoutingContext(graph,v1,v3);
-  tree=aStar.getShortestPathTree(options);
-  path=tree.getPath(v3,false);
-  assertNull(path);
   options=new RoutingRequest(new TraverseModeSet("WALK,BICYCLE,TRANSIT"));
   options.freezeTraverseMode();
   options.setRoutingContext(graph,v1,v3);

@@ -10,14 +10,58 @@
   buildBasicGraph();
   buildAreas();
   buildElevatorEdges(graph);
-  Map<Edge,TurnRestriction> turnRestrictions=new HashMap<Edge,TurnRestriction>();
-  for (  TurnRestriction restriction : turnRestrictionsByTag.values()) {
-    turnRestrictions.put(restriction.from,restriction);
-  }
-  if (customNamer != null) {
-    customNamer.postprocess(graph);
-  }
-  generateElevationProfiles(graph);
-  applyBikeSafetyFactor(graph);
-  StreetUtils.makeEdgeBased(graph,endpoints,turnRestrictions);
+  for (  List<TurnRestrictionTag> restrictions : turnRestrictionsByFromWay.values()) {
+    for (    TurnRestrictionTag restrictionTag : restrictions) {
+      if (restrictionTag.possibleFrom.isEmpty()) {
+        _log.warn("No from edge found for restriction " + restrictionTag);
+        continue;
+      }
+      if (restrictionTag.possibleTo.isEmpty()) {
+        _log.warn("No to edge found for restriction " + restrictionTag);
+        continue;
+      }
+      for (      PlainStreetEdge from : restrictionTag.possibleFrom) {
+        if (from == null) {
+          _log.warn("from-edge is null in turn restriction " + restrictionTag);
+          continue;
+        }
+        for (        PlainStreetEdge to : restrictionTag.possibleTo) {
+          if (from == null || to == null) {
+            continue;
+          }
+          int angleDiff=from.getOutAngle() - to.getInAngle();
+          if (angleDiff < 0) {
+            angleDiff+=360;
+          }
+switch (restrictionTag.direction) {
+case LEFT:
+            if (angleDiff >= 160) {
+              continue;
+            }
+          break;
+case RIGHT:
+        if (angleDiff <= 200)         continue;
+      break;
+case U:
+    if ((angleDiff <= 150 || angleDiff > 210))     continue;
+  break;
+case STRAIGHT:
+if (Math.abs(angleDiff) >= 30) continue;
+break;
+}
+TurnRestriction restriction=new TurnRestriction();
+restriction.from=from;
+restriction.to=to;
+restriction.type=restrictionTag.type;
+restriction.modes=restrictionTag.modes;
+from.addTurnRestriction(restriction);
+}
+}
+}
+}
+if (customNamer != null) {
+customNamer.postprocess(graph);
+}
+generateElevationProfiles(graph);
+applyBikeSafetyFactor(graph);
 }

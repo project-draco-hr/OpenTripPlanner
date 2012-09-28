@@ -1,0 +1,16 @@
+{
+  for (  Update u : updates)   if (u == null || !u.tripId.equals(this.tripId))   return false;
+  boolean increasing=true;
+  boolean sequential=true;
+  boolean timesCoherent=true;
+  Update prev_u=null;
+  for (  Update u : updates) {
+    if (prev_u != null) {
+      if (u.stopSeq <= prev_u.stopSeq)       increasing=false;
+      if (u.stopSeq - prev_u.stopSeq != 1)       sequential=false;
+      if (u.arrive < prev_u.depart)       timesCoherent=false;
+    }
+    prev_u=u;
+  }
+  return increasing && timesCoherent;
+}

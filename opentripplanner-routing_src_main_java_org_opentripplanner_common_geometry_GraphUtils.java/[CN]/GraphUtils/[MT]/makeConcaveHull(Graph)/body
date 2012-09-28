@@ -1,12 +1,5 @@
 {
-  GeometryFactory gf=GeometryUtils.getGeometryFactory();
-  Collection<Vertex> vertices=graph.getVertices();
-  Geometry[] points=new Geometry[vertices.size()];
-  int i=0;
-  for (  Vertex v : vertices) {
-    points[i++]=gf.createPoint(v.getCoordinate());
-  }
-  GeometryCollection geometries=new GeometryCollection(points,gf);
+  GeometryCollection geometries=geometryCollectionFromVertices(graph);
   ConcaveHull hull=new ConcaveHull(geometries,0.01);
   return hull.getConcaveHull();
 }

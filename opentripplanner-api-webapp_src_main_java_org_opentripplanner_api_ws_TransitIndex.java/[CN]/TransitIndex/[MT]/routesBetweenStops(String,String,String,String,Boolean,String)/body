@@ -1,0 +1,10 @@
+{
+  RouteList response=new RouteList();
+  RouteList routeList=(RouteList)this.getRoutesForStop(startAgency,startStopId,extended,routerId);
+  for (  RouteType route : routeList.routes) {
+    for (    String agency : getAgenciesIds(null,routerId)) {
+      if (ifRouteBetweenStops(route,agency,routerId,startStopId,endStopId,endAgency))       response.routes.add(route);
+    }
+  }
+  return response;
+}

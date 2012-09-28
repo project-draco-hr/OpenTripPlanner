@@ -1,0 +1,115 @@
+{
+  RaptorData data=new RaptorData();
+  TransitIndexService transitIndex=graph.getService(TransitIndexService.class);
+  int nTotalStops=0;
+  for (  Vertex v : graph.getVertices()) {
+    if (v instanceof TransitStop) {
+      nTotalStops++;
+    }
+  }
+  data.routesForStop=new List[nTotalStops];
+  data.stops=new RaptorStop[nTotalStops];
+  for (  String agency : transitIndex.getAllAgencies()) {
+    HashMap<AgencyAndId,RaptorRoute> raptorRouteForTrip=new HashMap<AgencyAndId,RaptorRoute>();
+    ArrayList<PatternInterlineDwell> interlines=new ArrayList<PatternInterlineDwell>();
+    for (    RouteVariant variant : transitIndex.getVariantsForAgency(agency)) {
+      ArrayList<Stop> variantStops=variant.getStops();
+      final int nStops=variantStops.size();
+      int nPatterns=variant.getSegments().size() / nStops;
+      RaptorRoute route=new RaptorRoute(nStops,nPatterns);
+      route.mode=((PatternHop)variant.getSegments().get(0).hopOut).getMode();
+      data.routes.add(route);
+      interlines.addAll(variant.getInterlines());
+      for (int i=0; i < nStops; ++i) {
+        final Stop stop=variantStops.get(i);
+        RaptorStop raptorStop=makeRaptorStop(data,stop);
+        route.stops[i]=raptorStop;
+        if (data.routesForStop[raptorStop.index] == null)         data.routesForStop[raptorStop.index]=new ArrayList<RaptorRoute>();
+        data.routesForStop[raptorStop.index].add(route);
+      }
+      List<RouteSegment> segments=variant.getSegments();
+      Collections.sort(segments,new RouteSegmentComparator());
+      int stop=0;
+      int pattern=0;
+      for (      RouteSegment segment : segments) {
+        if (stop == 0) {
+          for (          Trip trip : ((TransitBoardAlight)segment.board).getPattern().getTrips()) {
+            raptorRouteForTrip.put(trip.getId(),route);
+          }
+        }
+        if (stop != nStops - 1) {
+          for (          Edge e : segment.board.getFromVertex().getIncoming()) {
+            if (e instanceof PreBoardEdge) {
+              route.stops[stop].stopVertex=(TransitStop)e.getFromVertex();
+            }
+          }
+          route.boards[stop][pattern]=(TransitBoardAlight)segment.board;
+        }
+        if (stop != 0) {
+          for (          Edge e : segment.alight.getToVertex().getOutgoing()) {
+            if (e instanceof PreAlightEdge) {
+              route.stops[stop].stopVertex=(TransitStop)e.getToVertex();
+            }
+          }
+          route.alights[stop - 1][pattern]=(TransitBoardAlight)segment.alight;
+        }
+        if (++pattern == nPatterns) {
+          pattern=0;
+          stop++;
+        }
+      }
+      if (stop != nStops || pattern != 0) {
+        throw new RuntimeException("Wrong number of segments");
+      }
+    }
+    for (    PatternInterlineDwell interline : interlines) {
+      for (      Map.Entry<AgencyAndId,InterlineDwellData> entry : interline.getTripIdToInterlineDwellData().entrySet()) {
+        InterlineDwellData dwellData=entry.getValue();
+        AgencyAndId fromTripId=entry.getKey();
+        AgencyAndId toTripId=dwellData.trip;
+        RaptorInterlineData interlineData=new RaptorInterlineData();
+        interlineData.fromTripId=fromTripId;
+        interlineData.toTripId=toTripId;
+        interlineData.fromRoute=raptorRouteForTrip.get(fromTripId);
+        interlineData.toRoute=raptorRouteForTrip.get(toTripId);
+        final int fromNStops=interlineData.fromRoute.getNStops();
+        for (int i=0; i < interlineData.fromRoute.alights[0].length; ++i) {
+          TransitBoardAlight alight=interlineData.fromRoute.alights[fromNStops - 2][i];
+          if (alight.getFromVertex() == interline.getFromVertex()) {
+            interlineData.fromPatternIndex=i;
+            List<Trip> trips=alight.getPattern().getTrips();
+            for (int tripIndex=0; tripIndex < trips.size(); ++tripIndex) {
+              Trip trip=trips.get(tripIndex);
+              if (trip.getId().equals(fromTripId)) {
+                interlineData.fromTripIndex=tripIndex;
+                break;
+              }
+            }
+            break;
+          }
+        }
+        for (int i=0; i < interlineData.toRoute.boards[0].length; ++i) {
+          TransitBoardAlight board=interlineData.toRoute.boards[0][i];
+          if (board.getToVertex() == interline.getToVertex()) {
+            interlineData.toPatternIndex=i;
+            List<Trip> trips=board.getPattern().getTrips();
+            for (int tripIndex=0; tripIndex < trips.size(); ++tripIndex) {
+              Trip trip=trips.get(tripIndex);
+              if (trip.getId().equals(toTripId)) {
+                interlineData.toTripIndex=tripIndex;
+                break;
+              }
+            }
+            break;
+          }
+        }
+        interlineData.fromRoute.interlinesOut.put(fromTripId,interlineData);
+        interlineData.toRoute.interlinesIn.put(toTripId,interlineData);
+      }
+    }
+  }
+  data.stops=Arrays.copyOfRange(data.stops,0,data.raptorStopsForStopId.size());
+  nTotalStops=data.stops.length;
+  graph.putService(RaptorDataService.class,new RaptorDataService(data));
+  data.regionData=makeRegionsBySubdivision(graph,data);
+}

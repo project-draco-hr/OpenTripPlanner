@@ -1,0 +1,19 @@
+{
+  if (seen.contains(vertex)) {
+    return Collections.emptyList();
+  }
+  seen.add(vertex);
+  int index=regionForVertex[vertex.getIndex()];
+  if (index >= 0) {
+    return Arrays.asList(index);
+  }
+  ArrayList<Integer> regions=new ArrayList<Integer>();
+  for (  Edge e : vertex.getOutgoing()) {
+    Vertex tov=e.getToVertex();
+    for (    int region : getRegionsForVertex(tov,seen)) {
+      if (regions.contains(region))       continue;
+      regions.add(region);
+    }
+  }
+  return regions;
+}

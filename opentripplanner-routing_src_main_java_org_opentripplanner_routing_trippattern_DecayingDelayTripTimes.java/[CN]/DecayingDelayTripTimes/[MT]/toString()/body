@@ -1,0 +1,23 @@
+{
+  val sb=new StringBuilder();
+  sb.append(String.format("%s DecayingDelayTripTimes delay=%d stop=%d halfLife=%03.1f\n",linear ? "Linear" : "Exponential",delay,currentStop,1 / lambda));
+  for (int i=0; i < getNumHops(); i++) {
+    int td=super.getDepartureTime(i);
+    int ed=td - t0;
+    int ta=super.getArrivalTime(i);
+    int ea=ta - t0;
+    int dd=0;
+    int da=0;
+    if (i >= currentStop) {
+      dd=decayedDelay(ed);
+      da=decayedDelay(ea);
+    }
+    String s=String.format("(%d)%5d  %5d",i,dd,da);
+    sb.append(s);
+  }
+  sb.append('\n');
+  sb.append(dumpTimes());
+  sb.append("\nbased on: ");
+  sb.append(super.toString());
+  return sb.toString();
+}

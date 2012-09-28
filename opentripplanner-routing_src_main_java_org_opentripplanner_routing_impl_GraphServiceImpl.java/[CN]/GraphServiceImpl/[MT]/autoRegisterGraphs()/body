@@ -1,0 +1,13 @@
+{
+  LOG.info("routerId scanning : {}",scanGraphIds);
+  if (scanGraphIds) {
+    scanRegister();
+  }
+  if (!graphs.containsKey(defaultRouterId)) {
+    LOG.info("Attempting to load graph for default routerId '{}'.",defaultRouterId);
+    registerGraph(defaultRouterId,true);
+  }
+  if (this.getGraphIds().isEmpty()) {
+    LOG.warn("No graphs have been registered or loaded. " + "You must use the API to register one or more graphs before routing.");
+  }
+}

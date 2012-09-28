@@ -6,17 +6,17 @@
  else   vertexLabel="link for " + v;
   Coordinate coordinate=v.getCoordinate();
   CandidateEdgeBundle edges=linker.index.getClosestEdges(coordinate,linker.options,null,nearbyRouteEdges);
-  if (edges == null || edges.size() < 2) {
+  if (edges == null || edges.size() < 1) {
     _log.debug("found too few edges: {} {}",v.getName(),v.getCoordinate());
     return null;
   }
   if (edges.endwise()) {
-    return linker.index.getIntersectionAt(edges.endwiseVertex.getCoordinate());
+    return Arrays.asList(linker.index.getIntersectionAt(edges.endwiseVertex.getCoordinate()));
   }
  else {
-    List<StreetVertex> atIntersection=linker.index.getIntersectionAt(coordinate);
+    StreetVertex atIntersection=linker.index.getIntersectionAt(coordinate);
     if (atIntersection != null) {
-      if (edges.getScore() > distanceLibrary.distance(atIntersection.get(0).getCoordinate(),coordinate))       return atIntersection;
+      if (edges.getScore() > distanceLibrary.distance(atIntersection.getCoordinate(),coordinate))       return Arrays.asList(atIntersection);
     }
     return getSplitterVertices(vertexLabel,edges.toEdgeList(),coordinate);
   }

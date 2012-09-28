@@ -9,13 +9,15 @@
   Vertex stop_a=graph.getVertex("agency_A");
   Vertex stop_e=graph.getVertex("agency_E_arrive");
   ShortestPathTree spt;
-  GraphPath path;
+  GraphPath path, unoptimizedPath;
   options.dateTime=TestUtils.dateInSeconds("America/New_York",2009,8,7,0,0,0);
   options.setRoutingContext(graph,stop_a,stop_e);
   spt=aStar.getShortestPathTree(options);
   path=spt.getPath(stop_e,true);
+  unoptimizedPath=spt.getPath(stop_e,false);
   assertNotNull(path);
   HashSet<Alert> expectedNotes=new HashSet<Alert>();
   expectedNotes.add(note1);
-  assertEquals(expectedNotes,path.states.get(1).getBackEdgeNarrative().getNotes());
+  assertEquals(expectedNotes,path.states.get(1).getBackAlerts());
+  assertEquals(expectedNotes,unoptimizedPath.states.get(1).getBackAlerts());
 }

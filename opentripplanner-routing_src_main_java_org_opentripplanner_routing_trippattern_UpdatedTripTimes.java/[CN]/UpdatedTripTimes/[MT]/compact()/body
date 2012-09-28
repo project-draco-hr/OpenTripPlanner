@@ -1,0 +1,10 @@
+{
+  if (arrivals == null)   return false;
+  for (int i=0; i < arrivals.length; i++) {
+    if (arrivals[i] != departures[i]) {
+      return false;
+    }
+  }
+  arrivals=null;
+  return true;
+}

@@ -5,11 +5,11 @@
   if (options.isUseBikeRentalAvailabilityInformation() && pickup.getSpacesAvailable() == 0) {
     return null;
   }
-  EdgeNarrative en=new FixedModeEdge(this,s0.getNonTransitMode(options));
-  StateEditor s1e=s0.edit(this,en);
+  StateEditor s1e=s0.edit(this);
   s1e.incrementWeight(options.isArriveBy() ? options.bikeRentalPickupCost : options.bikeRentalDropoffCost);
   s1e.incrementTimeInSeconds(options.isArriveBy() ? options.bikeRentalPickupTime : options.bikeRentalDropoffTime);
   s1e.setBikeRenting(false);
+  s1e.setBackMode(TraverseMode.WALK);
   State s1=s1e.makeState();
   return s1;
 }

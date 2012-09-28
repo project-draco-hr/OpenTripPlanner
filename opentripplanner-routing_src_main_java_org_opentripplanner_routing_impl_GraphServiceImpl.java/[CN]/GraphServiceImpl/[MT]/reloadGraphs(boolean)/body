@@ -1,0 +1,10 @@
+{
+  boolean allSucceeded=true;
+synchronized (graphs) {
+    for (    String graphId : this.getGraphIds()) {
+      boolean success=registerGraph(graphId,preEvict);
+      allSucceeded&=success;
+    }
+  }
+  return allSucceeded;
+}

@@ -1,0 +1,29 @@
+{
+  log.debug("Finding stop-to-stop walk times");
+  @SuppressWarnings("unchecked") HashMap<Vertex,T2<Integer,Double>>[] times=new HashMap[AbstractVertex.getMaxIndex()];
+  RoutingRequest walkOptions=new RoutingRequest(TraverseMode.WALK);
+  walkOptions.setWalkSpeed(minSpeed);
+  walkOptions.setArriveBy(true);
+  walkOptions.setMaxWalkDistance(maxDistance);
+  GenericDijkstra dijkstra=new GenericDijkstra(walkOptions);
+  for (  Vertex destination : vertices) {
+    List<RaptorRoute> destinationRoutes=routesForVertex.get(destination);
+    final HashMap<Vertex,T2<Integer,Double>> timesByDestination=new HashMap<Vertex,T2<Integer,Double>>();
+    times[destination.getIndex()]=timesByDestination;
+    State initialState=new MaxWalkState(destination,walkOptions);
+    ShortestPathTree spt=dijkstra.getShortestPathTree(initialState);
+    for (    State state : spt.getAllStates()) {
+      Vertex vertex=state.getVertex();
+      if (vertex instanceof TransitStop) {
+        final List<RaptorRoute> vertexRoutes=routesForVertex.get(vertex);
+        if (vertexRoutes == null) {
+          continue;
+        }
+        if (isSubsetOf(vertexRoutes,destinationRoutes))         continue;
+        T2<Integer,Double> timeAndDistance=new T2<Integer,Double>((int)state.getElapsedTime(),state.getWalkDistance());
+        timesByDestination.put(vertex,timeAndDistance);
+      }
+    }
+  }
+  return times;
+}

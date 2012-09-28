@@ -1,0 +1,43 @@
+{
+  HashSet<Edge> turns=new HashSet<Edge>();
+  turns.add(left);
+  turns.add(leftBack);
+  Set<Alert> alert=new HashSet<Alert>();
+  alert.add(Alert.createSimpleAlerts("This is the alert"));
+  left.setNote(alert);
+  leftBack.setNote(alert);
+  StreetLocation start=StreetLocation.createStreetLocation(graph,"start","start",cast(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()));
+  RoutingRequest req=new RoutingRequest();
+  req.setMaxWalkDistance(Double.MAX_VALUE);
+  State traversedOne=new State((Vertex)start,req);
+  State currentState;
+  for (  Edge e : start.getOutgoing()) {
+    currentState=e.traverse(traversedOne);
+    if (currentState != null) {
+      traversedOne=currentState;
+      break;
+    }
+  }
+  assertEquals(alert,traversedOne.getBackAlerts());
+  assertNotSame(left,traversedOne.getBackEdge().getFromVertex());
+  assertNotSame(leftBack,traversedOne.getBackEdge().getFromVertex());
+  Set<Alert> wheelchairAlert=new HashSet<Alert>();
+  wheelchairAlert.add(Alert.createSimpleAlerts("This is the wheelchair alert"));
+  left.setNote(null);
+  leftBack.setNote(null);
+  left.setWheelchairNote(wheelchairAlert);
+  leftBack.setWheelchairNote(wheelchairAlert);
+  req.setWheelchairAccessible(true);
+  start=StreetLocation.createStreetLocation(graph,"start","start",cast(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()));
+  traversedOne=new State((Vertex)start,req);
+  for (  Edge e : start.getOutgoing()) {
+    currentState=e.traverse(traversedOne);
+    if (currentState != null) {
+      traversedOne=currentState;
+      break;
+    }
+  }
+  assertEquals(wheelchairAlert,traversedOne.getBackAlerts());
+  assertNotSame(left,traversedOne.getBackEdge().getFromVertex());
+  assertNotSame(leftBack,traversedOne.getBackEdge().getFromVertex());
+}

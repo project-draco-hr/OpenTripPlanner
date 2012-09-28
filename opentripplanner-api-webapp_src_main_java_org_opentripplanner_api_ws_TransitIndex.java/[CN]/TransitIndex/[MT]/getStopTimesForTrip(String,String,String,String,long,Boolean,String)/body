@@ -1,0 +1,51 @@
+{
+  time/=1000;
+  AgencyAndId firstStop=null;
+  if (stopId != null) {
+    firstStop=new AgencyAndId(stopAgency,stopId);
+  }
+  AgencyAndId trip=new AgencyAndId(tripAgency,tripId);
+  TransitIndexService transitIndexService=getGraph(routerId).getService(TransitIndexService.class);
+  if (transitIndexService == null) {
+    return new TransitError("No transit index found.  Add TransitIndexBuilder to your graph builder configuration and rebuild your graph.");
+  }
+  RouteVariant variant=transitIndexService.getVariantForTrip(trip);
+  RoutingRequest options=makeTraverseOptions(time,routerId);
+  StopTimeList result=new StopTimeList();
+  result.stopTimes=new ArrayList<StopTime>();
+  State state=null;
+  RouteSegment start=null;
+  for (  RouteSegment segment : variant.getSegments()) {
+    if (segment.stop.equals(firstStop)) {
+      State s0=new State(segment.board.getFromVertex(),options);
+      state=segment.board.traverse(s0);
+      if (state == null)       continue;
+      if (state.getBackTrip().getId().equals(trip)) {
+        start=segment;
+        StopTime st=new StopTime();
+        st.time=state.getTime();
+        for (        org.onebusaway.gtfs.model.Stop stop : variant.getStops())         if (stop.getId().equals(segment.stop)) {
+          st.stop=new StopType(stop,extended);
+        }
+        result.stopTimes.add(st);
+        break;
+      }
+    }
+  }
+  if (start == null) {
+    return null;
+  }
+  for (  RouteSegment segment : variant.segmentsAfter(start)) {
+    State s0=new State(segment.hopIn.getFromVertex(),state.getTime(),options);
+    state=segment.hopIn.traverse(s0);
+    StopTime st=new StopTime();
+    st.time=state.getTime();
+    for (    org.onebusaway.gtfs.model.Stop stop : variant.getStops())     if (stop.getId().equals(segment.stop))     if (stop.getId().equals(segment.stop)) {
+      if (extended != null && extended.equals(true)) {
+        st.stop=new StopType(stop,extended);
+      }
+    }
+    result.stopTimes.add(st);
+  }
+  return result;
+}

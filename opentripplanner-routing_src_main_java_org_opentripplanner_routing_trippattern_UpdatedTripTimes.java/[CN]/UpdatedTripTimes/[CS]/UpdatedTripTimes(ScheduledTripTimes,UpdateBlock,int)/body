@@ -1,0 +1,14 @@
+{
+  super(sched);
+  this.offset=offset;
+  int nUpdates=block.updates.size();
+  this.arrivals=new int[nUpdates];
+  this.departures=new int[nUpdates];
+  int ui=0;
+  for (  Update update : block.updates) {
+    arrivals[ui]=update.arrive;
+    departures[ui]=update.depart;
+    ui+=1;
+  }
+  this.compact();
+}

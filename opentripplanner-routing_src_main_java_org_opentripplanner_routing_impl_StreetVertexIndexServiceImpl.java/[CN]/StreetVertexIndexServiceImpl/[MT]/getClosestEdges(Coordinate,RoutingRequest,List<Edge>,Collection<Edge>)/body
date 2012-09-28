@@ -20,7 +20,7 @@
       nearbyEdges=new JoinedList<StreetEdge>(nearbyEdges,extraStreets);
     }
     for (    StreetEdge e : nearbyEdges) {
-      if (e == null || e instanceof OutEdge || e.getFromVertex() == null)       continue;
+      if (e == null || e.getFromVertex() == null)       continue;
       if (options != null && (!(e.canTraverse(options) || e.canTraverse(walkingOptions))))       continue;
       double preferrence=1;
       if (routeEdges != null && routeEdges.contains(e)) {

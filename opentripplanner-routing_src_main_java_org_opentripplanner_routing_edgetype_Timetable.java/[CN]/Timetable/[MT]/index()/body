@@ -1,0 +1,25 @@
+{
+  int nHops=pattern.stops.length - 1;
+  arrivalsIndex=new TripTimes[nHops][];
+  departuresIndex=new TripTimes[nHops][];
+  boolean departuresFifo=true;
+  boolean arrivalsMatchDepartures=true;
+  for (int hop=0; hop < nHops; hop++) {
+    arrivalsIndex[hop]=tripTimes.toArray(new TripTimes[tripTimes.size()]);
+    departuresIndex[hop]=tripTimes.toArray(new TripTimes[tripTimes.size()]);
+    Arrays.sort(arrivalsIndex[hop],new TripTimes.ArrivalsComparator(hop));
+    Arrays.sort(departuresIndex[hop],new TripTimes.DeparturesComparator(hop));
+    if (hop > 0) {
+      if (Arrays.equals(departuresIndex[hop],departuresIndex[hop - 1]))       departuresIndex[hop]=departuresIndex[hop - 1];
+ else       departuresFifo=false;
+    }
+    if (Arrays.equals(departuresIndex[hop],arrivalsIndex[hop]))     arrivalsIndex[hop]=departuresIndex[hop];
+ else     arrivalsMatchDepartures=false;
+  }
+  if (departuresFifo) {
+    departuresIndex=Arrays.copyOf(departuresIndex,1);
+  }
+  if (arrivalsMatchDepartures) {
+    arrivalsIndex=departuresIndex;
+  }
+}

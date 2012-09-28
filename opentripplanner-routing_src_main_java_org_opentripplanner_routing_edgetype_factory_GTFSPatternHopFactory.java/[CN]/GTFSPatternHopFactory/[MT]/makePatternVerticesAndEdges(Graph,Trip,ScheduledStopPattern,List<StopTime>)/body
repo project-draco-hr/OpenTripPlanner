@@ -1,0 +1,29 @@
+{
+  TableTripPattern tripPattern=new TableTripPattern(trip,stopPattern,getServiceId(trip));
+  getTripPatternIndex(tripPattern);
+  TraverseMode mode=GtfsLibrary.getTraverseMode(trip.getRoute());
+  PatternArriveVertex psv0arrive, psv1arrive=null;
+  PatternDepartVertex psv0depart;
+  for (int hopIndex=0; hopIndex < stopTimes.size() - 1; hopIndex++) {
+    StopTime st0=stopTimes.get(hopIndex);
+    Stop s0=st0.getStop();
+    StopTime st1=stopTimes.get(hopIndex + 1);
+    Stop s1=st1.getStop();
+    psv0depart=new PatternDepartVertex(graph,tripPattern,st0);
+    context.patternDepartNodes.put(new T2<Stop,Trip>(s0,trip),psv0depart);
+    if (hopIndex != 0) {
+      psv0arrive=psv1arrive;
+      PatternDwell dwell=new PatternDwell(psv0arrive,psv0depart,hopIndex,tripPattern);
+      if (st0.getArrivalTime() == st0.getDepartureTime())       potentiallyUselessDwells.add(dwell);
+    }
+    psv1arrive=new PatternArriveVertex(graph,tripPattern,st1);
+    context.patternArriveNodes.put(new T2<Stop,Trip>(st1.getStop(),trip),psv1arrive);
+    PatternHop hop=new PatternHop(psv0depart,psv1arrive,s0,s1,hopIndex);
+    hop.setGeometry(getHopGeometry(graph,trip.getShapeId(),st0,st1,psv0depart,psv1arrive));
+    TransitStopDepart stopDepart=context.stopDepartNodes.get(s0);
+    TransitStopArrive stopArrive=context.stopArriveNodes.get(s1);
+    new TransitBoardAlight(stopDepart,psv0depart,hopIndex,mode);
+    new TransitBoardAlight(psv1arrive,stopArrive,hopIndex,mode);
+  }
+  return tripPattern;
+}

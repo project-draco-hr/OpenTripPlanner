@@ -1,0 +1,11 @@
+{
+  List<State> states=getStates(dest);
+  if (states == null)   return null;
+  State ret=null;
+  for (  State s : states) {
+    if ((ret == null || s.betterThan(ret)) && s.isFinal() && s.allPathParsersAccept()) {
+      ret=s;
+    }
+  }
+  return ret;
+}

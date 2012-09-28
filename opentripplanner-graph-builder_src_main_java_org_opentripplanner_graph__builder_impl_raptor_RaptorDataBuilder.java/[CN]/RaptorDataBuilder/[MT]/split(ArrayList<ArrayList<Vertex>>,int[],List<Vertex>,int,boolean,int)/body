@@ -1,0 +1,44 @@
+{
+  if (vertices.size() <= regionSize) {
+    final ArrayList<Vertex> region=new ArrayList<Vertex>();
+    vertexForRegion.add(region);
+    for (    Vertex vertex : vertices) {
+      if (regionsForVertex == null) {
+        vertex.setGroupIndex(index);
+      }
+ else {
+        regionsForVertex[vertex.getIndex()]=index;
+        vertex.setGroupIndex(index);
+      }
+      region.add(vertex);
+    }
+    return index + 1;
+  }
+  Comparator<Vertex> comparator=horiz ? new HorizontalVertexComparator() : new VerticalVertexComparator();
+  Collections.sort(vertices,comparator);
+  int mid=vertices.size() / 2;
+  Coordinate last=vertices.get(mid - 1).getCoordinate();
+  for (; mid < vertices.size(); ++mid) {
+    if (!vertices.get(mid).getCoordinate().equals(last)) {
+      break;
+    }
+  }
+  if (mid > vertices.size() * 3 / 4) {
+    final ArrayList<Vertex> region=new ArrayList<Vertex>();
+    vertexForRegion.add(region);
+    for (    Vertex vertex : vertices) {
+      if (regionsForVertex == null) {
+        vertex.setGroupIndex(index);
+      }
+ else {
+        regionsForVertex[vertex.getIndex()]=index;
+        vertex.setGroupIndex(index);
+      }
+      region.add(vertex);
+    }
+    return index + 1;
+  }
+  index=split(vertexForRegion,regionsForVertex,vertices.subList(0,mid),index,!horiz,regionSize);
+  index=split(vertexForRegion,regionsForVertex,vertices.subList(mid,vertices.size()),index,!horiz,regionSize);
+  return index;
+}

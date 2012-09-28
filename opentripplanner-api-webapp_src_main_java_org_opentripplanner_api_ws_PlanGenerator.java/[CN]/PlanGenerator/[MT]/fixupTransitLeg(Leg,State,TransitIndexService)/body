@@ -1,9 +1,10 @@
 {
-  EdgeNarrative en=state.getBackEdgeNarrative();
+  Edge en=state.getBackEdge();
   leg.route=en.getName();
-  Trip trip=en.getTrip();
+  Trip trip=state.getBackTrip();
+  leg.headsign=state.getBackDirection();
   if (trip != null) {
-    leg.headsign=trip.getTripHeadsign();
+    if (leg.headsign == null)     leg.headsign=trip.getTripHeadsign();
     leg.tripId=trip.getId().getId();
     leg.agencyId=trip.getId().getAgencyId();
     leg.tripShortName=trip.getTripShortName();
@@ -18,6 +19,6 @@
       leg.agencyUrl=agency.getUrl();
     }
   }
-  leg.mode=en.getMode().toString();
+  leg.mode=state.getBackMode().toString();
   leg.startTime=makeCalendar(state.getBackState());
 }

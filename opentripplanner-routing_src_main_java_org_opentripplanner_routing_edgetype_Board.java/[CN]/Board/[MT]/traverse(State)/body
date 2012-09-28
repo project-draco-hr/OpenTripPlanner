@@ -10,13 +10,14 @@
     s1.setLastAlightedTime(state0.getTime());
     s1.setPreviousStop(fromv);
     TransitUtils.handleBoardAlightType(s1,pickupType);
+    s1.setBackMode(getMode());
     return s1.makeState();
   }
  else {
     if (options.bannedTrips.contains(getTrip().getId())) {
       return null;
     }
-    TraverseMode mode=state0.getNonTransitMode(options);
+    TraverseMode mode=state0.getNonTransitMode();
     if (!options.getModes().contains(hop.getMode())) {
       return null;
     }
@@ -50,6 +51,7 @@
     s1.setTripId(trip.getId());
     s1.setZone(zone);
     s1.setRoute(trip.getRoute().getId());
+    s1.setBackMode(getMode());
     return s1.makeState();
   }
 }

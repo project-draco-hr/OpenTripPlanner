@@ -4,5 +4,7 @@
   this.maxSpeed=getMaxSpeed(options);
   Graph graph=options.rctx.graph;
   localStreetService=graph.getService(TransitLocalStreetService.class);
-  return distanceLibrary.fastDistance(s.getVertex().getCoordinate(),target.getCoordinate()) / maxSpeed;
+  targetX=target.getX();
+  targetY=target.getY();
+  return distanceLibrary.fastDistance(s.getVertex().getY(),s.getVertex().getX(),targetY,targetX) / maxSpeed;
 }

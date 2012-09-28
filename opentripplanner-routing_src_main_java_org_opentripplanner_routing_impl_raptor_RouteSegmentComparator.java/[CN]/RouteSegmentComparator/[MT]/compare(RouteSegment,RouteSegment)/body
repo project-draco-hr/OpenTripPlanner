@@ -1,0 +1,23 @@
+{
+  TransitBoardAlight board0=(TransitBoardAlight)arg0.board;
+  TransitBoardAlight board1=(TransitBoardAlight)arg1.board;
+  if (board0 == null) {
+    if (board1 == null) {
+      TransitBoardAlight alight0=(TransitBoardAlight)arg0.alight;
+      TransitBoardAlight alight1=(TransitBoardAlight)arg1.alight;
+      if (alight0.getStopIndex() != alight1.getStopIndex()) {
+        System.out.println("DOOM");
+      }
+      return getPatternIndex(alight0.getPattern()) - getPatternIndex(alight1.getPattern());
+    }
+    return 1;
+  }
+  if (board1 == null) {
+    return -1;
+  }
+  int stopComp=board0.getStopIndex() - board1.getStopIndex();
+  if (stopComp == 0) {
+    return getPatternIndex(board0.getPattern()) - getPatternIndex(board1.getPattern());
+  }
+  return stopComp;
+}

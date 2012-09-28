@@ -1,0 +1,13 @@
+{
+  List<UpdateBlock> ret=new ArrayList<UpdateBlock>();
+  Collections.sort(mixedUpdates);
+  UpdateBlock block=null;
+  for (  Update u : mixedUpdates) {
+    if (block == null || !block.tripId.equals(u.tripId) || block.timestamp != u.timestamp) {
+      block=new UpdateBlock(u.tripId,u.timestamp);
+      ret.add(block);
+    }
+    block.updates.add(u);
+  }
+  return ret;
+}

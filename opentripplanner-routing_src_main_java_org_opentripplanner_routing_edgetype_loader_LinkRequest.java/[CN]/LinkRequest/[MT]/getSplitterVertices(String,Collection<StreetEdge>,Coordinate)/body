@@ -1,15 +1,28 @@
 {
-  if (edges.size() < 2) {
+  if (edges.size() < 1) {
     return null;
   }
   HashSet<StreetEdge> edgeSet=new HashSet<StreetEdge>(edges);
   LinkedList<P2<PlainStreetEdge>> replacement=linker.replacements.get(edgeSet);
   if (replacement == null) {
     replacement=new LinkedList<P2<PlainStreetEdge>>();
-    P2<PlainStreetEdge> newEdges=replace(edges);
-    if (newEdges == null) {
-      return null;
+    Iterator<StreetEdge> iter=edges.iterator();
+    StreetEdge first=iter.next();
+    StreetEdge second=null;
+    while (iter.hasNext()) {
+      StreetEdge edge=iter.next();
+      if (edge.getFromVertex() == first.getToVertex() && edge.getToVertex() == first.getFromVertex()) {
+        second=edge;
+      }
     }
+    PlainStreetEdge secondClone;
+    if (second == null) {
+      secondClone=null;
+    }
+ else {
+      secondClone=((PlainStreetEdge)second).clone();
+    }
+    P2<PlainStreetEdge> newEdges=new P2<PlainStreetEdge>(((PlainStreetEdge)first).clone(),secondClone);
     replacement.add(newEdges);
     linker.replacements.put(edgeSet,replacement);
   }

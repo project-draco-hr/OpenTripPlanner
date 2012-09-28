@@ -2,10 +2,17 @@
   Leg leg=new Leg();
   itinerary.addLeg(leg);
   leg.startTime=makeCalendar(s.getBackState());
-  EdgeNarrative en=s.getBackEdgeNarrative();
   leg.distance=0.0;
-  leg.from=makePlace(s.getBackState(),false);
-  leg.mode=en.getMode().toString();
+  String name;
+  Edge backEdge=s.getBackEdge();
+  if (backEdge instanceof StreetEdge) {
+    name=backEdge.getName();
+  }
+ else {
+    name=s.getVertex().getName();
+  }
+  leg.from=makePlace(s.getBackState(),name,false);
+  leg.mode=s.getBackMode().toString();
   if (s.isBikeRenting()) {
     leg.rentedBike=true;
   }

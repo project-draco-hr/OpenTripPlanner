@@ -1,8 +1,8 @@
 {
-  int trip=state0.getTrip();
-  int dwellTime=pattern.getDwellTime(stopIndex,trip);
-  EdgeNarrative en=new TransitNarrative(pattern.getTrip(trip),pattern.getHeadsign(stopIndex,trip),this);
-  StateEditor s1=state0.edit(this,en);
+  TripTimes tripTimes=state0.getTripTimes();
+  int dwellTime=tripTimes.getDwellTime(stopIndex);
+  StateEditor s1=state0.edit(this);
+  s1.setBackMode(getMode());
   s1.incrementTimeInSeconds(dwellTime);
   s1.incrementWeight(dwellTime);
   return s1.makeState();

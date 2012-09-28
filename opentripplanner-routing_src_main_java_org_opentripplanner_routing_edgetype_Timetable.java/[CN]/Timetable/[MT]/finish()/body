@@ -1,0 +1,34 @@
+{
+  int nHops=pattern.stops.length - 1;
+  int nTrips=tripTimes.size();
+  bestRunningTimes=new int[nHops];
+  boolean nullArrivals=false;
+  if (!nullArrivals) {
+    bestDwellTimes=new int[nHops];
+    for (int h=1; h < nHops; ++h) {
+      bestDwellTimes[h]=Integer.MAX_VALUE;
+      for (int t=0; t < nTrips; ++t) {
+        int dt=this.getDwellTime(h,t);
+        if (bestDwellTimes[h] > dt) {
+          bestDwellTimes[h]=dt;
+        }
+      }
+    }
+  }
+  for (int h=0; h < nHops; ++h) {
+    bestRunningTimes[h]=Integer.MAX_VALUE;
+    for (int t=0; t < nTrips; ++t) {
+      int rt=this.getRunningTime(h,t);
+      if (bestRunningTimes[h] > rt) {
+        bestRunningTimes[h]=rt;
+      }
+    }
+  }
+  if (nTrips > INDEX_THRESHOLD) {
+    index();
+  }
+ else {
+    arrivalsIndex=null;
+    departuresIndex=null;
+  }
+}

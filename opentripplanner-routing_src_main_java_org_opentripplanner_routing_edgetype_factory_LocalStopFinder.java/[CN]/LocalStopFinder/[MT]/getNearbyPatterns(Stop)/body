@@ -1,7 +1,7 @@
 {
   Coordinate c=new Coordinate(stop.getLon(),stop.getLat());
   List<Vertex> localTransitStops=indexService.getLocalTransitStops(c,LOCAL_STOP_SEARCH_RADIUS);
-  HashSet<TripPattern> neighborhood=new HashSet<TripPattern>();
+  HashSet<TableTripPattern> neighborhood=new HashSet<TableTripPattern>();
   for (  Vertex v : localTransitStops) {
     if (v instanceof TransitStop) {
       if (((TransitStop)v).isEntrance()) {
@@ -12,8 +12,8 @@
       }
       for (      Edge e : v.getOutgoing()) {
         for (        Edge e2 : e.getToVertex().getOutgoing()) {
-          if (e2 instanceof PatternBoard) {
-            neighborhood.add(((PatternBoard)e2).getPattern());
+          if (e2 instanceof TransitBoardAlight && ((TransitBoardAlight)e2).isBoarding()) {
+            neighborhood.add(((TransitBoardAlight)e2).getPattern());
           }
         }
       }

@@ -7,7 +7,7 @@
       return null;
     }
     if (!options.getModes().contains(hop.getMode()))     return null;
-    TraverseMode mode=s0.getNonTransitMode(options);
+    TraverseMode mode=s0.getNonTransitMode();
     if (mode.equals(TraverseMode.BICYCLE) && !hop.getBikesAllowed())     return null;
     long current_time=s0.getTime();
     int serviceId=hop.getServiceId();
@@ -33,6 +33,7 @@
     s1.setTripId(trip.getId());
     s1.setZone(zone);
     s1.setRoute(trip.getRoute().getId());
+    s1.setBackMode(getMode());
     return s1.makeState();
   }
  else {
@@ -41,6 +42,7 @@
     s1.setTripId(null);
     s1.setLastAlightedTime(s0.getTime());
     s1.setPreviousStop(tov);
+    s1.setBackMode(getMode());
     return s1.makeState();
   }
 }

@@ -1,37 +1,26 @@
 {
   boolean wheelchairAccessible=false;
   StreetLocation location=new StreetLocation(graph,label,nearestPoint,name);
-  location.setDistanceToNearestTransitStop(Double.MAX_VALUE);
-  HashMap<Geometry,P2<TurnVertex>> cache=new HashMap<Geometry,P2<TurnVertex>>();
   for (  StreetEdge street : edges) {
     Vertex fromv=street.getFromVertex();
     Vertex tov=street.getToVertex();
-    if (street instanceof PlainStreetEdge) {
-      wheelchairAccessible|=((PlainStreetEdge)street).isWheelchairAccessible();
-    }
- else {
-      wheelchairAccessible|=((TurnVertex)fromv).isWheelchairAccessible();
-    }
-    boolean seen=cache.containsKey(street.getGeometry());
+    wheelchairAccessible|=((StreetEdge)street).isWheelchairAccessible();
     Vertex edgeLocation;
     if (distanceLibrary.distance(nearestPoint,fromv.getCoordinate()) < 0.0001) {
       edgeLocation=fromv;
+      new FreeEdge(location,edgeLocation);
+      new FreeEdge(edgeLocation,location);
     }
  else     if (distanceLibrary.distance(nearestPoint,tov.getCoordinate()) < 0.0001) {
       edgeLocation=tov;
+      new FreeEdge(location,edgeLocation);
+      new FreeEdge(edgeLocation,location);
     }
  else {
-      edgeLocation=createHalfLocation(graph,location,label + " to " + tov.getLabel(),name,nearestPoint,street,cache);
-    }
-    if (!seen) {
-      FreeEdge l1in=new FreeEdge(location,edgeLocation);
-      FreeEdge l1out=new FreeEdge(edgeLocation,location);
-      location.extra.add(l1in);
-      location.extra.add(l1out);
-    }
-    double distance=fromv.getDistanceToNearestTransitStop();
-    if (distance < location.getDistanceToNearestTransitStop()) {
-      location.setDistanceToNearestTransitStop(distance);
+      edgeLocation=location;
+      createHalfLocation(graph,location,label + " to " + tov.getLabel(),name,nearestPoint,street);
+      double distanceToNearestTransitStop=Math.min(tov.getDistanceToNearestTransitStop(),fromv.getDistanceToNearestTransitStop());
+      edgeLocation.setDistanceToNearestTransitStop(distanceToNearestTransitStop);
     }
   }
   location.setWheelchairAccessible(wheelchairAccessible);

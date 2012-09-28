@@ -3,12 +3,11 @@
   this.vertex=vertex;
   this.backState=null;
   this.backEdge=null;
-  this.backEdgeNarrative=null;
-  this.hops=0;
-  this.stateData=new StateData();
+  this.stateData=new StateData(options);
   this.stateData.opt=options;
   this.stateData.startTime=time;
   this.stateData.usingRentedBike=false;
+  this.walkDistance=0;
   this.time=time;
   if (options.rctx != null) {
     this.pathParserStates=new int[options.rctx.pathParsers.length];

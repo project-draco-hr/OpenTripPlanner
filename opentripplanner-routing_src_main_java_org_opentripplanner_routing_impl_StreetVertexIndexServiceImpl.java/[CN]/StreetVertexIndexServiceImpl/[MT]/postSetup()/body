@@ -18,7 +18,7 @@
       Envelope env=new Envelope(v.getCoordinate());
       transitStopTree.insert(env,v);
     }
-    if (v instanceof TurnVertex || v instanceof IntersectionVertex) {
+    if (v instanceof IntersectionVertex) {
       Envelope env=new Envelope(v.getCoordinate());
       intersectionTree.insert(env,v);
     }

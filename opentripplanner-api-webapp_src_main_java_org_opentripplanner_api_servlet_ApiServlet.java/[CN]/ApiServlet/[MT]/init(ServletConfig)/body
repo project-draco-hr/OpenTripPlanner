@@ -4,4 +4,5 @@
   WebApplicationContext webApplicationContext=WebApplicationContextUtils.getWebApplicationContext(servletContext);
   AutowireCapableBeanFactory autowireCapableBeanFactory=webApplicationContext.getAutowireCapableBeanFactory();
   autowireCapableBeanFactory.autowireBean(this);
+  if (updater != null)   updater.start();
 }

@@ -6,4 +6,25 @@
   this.name=name;
   this.permission=permission;
   this.back=back;
+  if (geometry != null) {
+    try {
+      for (      Coordinate c : geometry.getCoordinates()) {
+        if (Double.isNaN(c.x)) {
+          System.out.println("X DOOM");
+        }
+        if (Double.isNaN(c.y)) {
+          System.out.println("Y DOOM");
+        }
+      }
+      double angleR=DirectionUtils.getLastAngle(geometry);
+      outAngle=((int)(180 * angleR / Math.PI) + 180 + 360) % 360;
+      angleR=DirectionUtils.getFirstAngle(geometry);
+      inAngle=((int)(180 * angleR / Math.PI) + 180 + 360) % 360;
+    }
+ catch (    IllegalArgumentException iae) {
+      LOG.error("exception while determining street edge angles. setting to zero. there is probably something wrong with this street segment's geometry.");
+      inAngle=0;
+      outAngle=0;
+    }
+  }
 }
