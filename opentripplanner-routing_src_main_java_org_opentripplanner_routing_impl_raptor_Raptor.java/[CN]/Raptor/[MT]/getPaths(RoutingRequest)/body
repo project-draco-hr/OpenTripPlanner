@@ -7,7 +7,12 @@
   if (!options.getModes().isTransit()) {
     return sptService.getShortestPathTree(options).getPaths();
   }
-  RaptorData data=graph.getService(RaptorDataService.class).getData();
+  RaptorDataService service=graph.getService(RaptorDataService.class);
+  if (service == null) {
+    log.warn("No raptor data.  Rebuild with RaptorDataBuilder");
+    return Collections.emptyList();
+  }
+  RaptorData data=service.getData();
   double initialWalk=options.getMaxWalkDistance() * 1.1;
   options.setMaxWalkDistance(initialWalk);
   double minWalk=options.rctx.origin.getDistanceToNearestTransitStop() + options.rctx.target.getDistanceToNearestTransitStop();
