@@ -7,5 +7,6 @@
     JsonNode obj=mapper.readTree(line);
     plans.add(getJsonObjectAsPlan(obj));
   }
+  reader.close();
   return plans;
 }
