@@ -4,9 +4,9 @@
   for (  StreetEdge se : IterableLibrary.filter(graph.getTemporaryEdges(),StreetEdge.class))   extraStreets.add(se);
   Envelope envelope=new Envelope(coordinate);
   Point p=GeometryUtils.getGeometryFactory().createPoint(coordinate);
-  RoutingRequest walkingOptions=null;
-  if (options != null) {
-    walkingOptions=options.getWalkingOptions();
+  RoutingRequest walkingRequest=null;
+  if (request != null) {
+    walkingRequest=request.getWalkingOptions();
   }
   double envelopeGrowthAmount=0.001;
   double radius=0;
@@ -21,19 +21,35 @@
     }
     for (    StreetEdge e : nearbyEdges) {
       if (e == null || e.getFromVertex() == null)       continue;
-      if (options != null && (!(e.canTraverse(options) || e.canTraverse(walkingOptions))))       continue;
-      double preferrence=1;
-      if (routeEdges != null && routeEdges.contains(e)) {
-        preferrence=3.0;
+      if (request != null && (!(e.canTraverse(request) || e.canTraverse(walkingRequest))))       continue;
+switch (restriction) {
+case 0:
+        break;
+case 1:
+      if (!e.getPermission().allows(StreetTraversalPermission.CAR)) {
+        continue;
       }
-      CandidateEdge ce=new CandidateEdge(e,p,preferrence);
-      if (ce.distance < radius)       candidateEdges.add(ce);
+    break;
+case 2:
+  if (!e.getPermission().allows(StreetTraversalPermission.CAR)) {
+    if ((e.getStreetClass() & StreetEdge.CLASS_PLATFORM) == 0) {
+      continue;
     }
   }
-  Collection<CandidateEdgeBundle> bundles=candidateEdges.binByDistanceAndAngle();
-  CandidateEdgeBundle best=null;
-  for (  CandidateEdgeBundle bundle : bundles) {
-    if (best == null || bundle.best.score < best.best.score)     best=bundle;
-  }
-  return best;
+break;
+}
+double preferrence=1;
+if (routeEdges != null && routeEdges.contains(e)) {
+preferrence=3.0;
+}
+CandidateEdge ce=new CandidateEdge(e,p,preferrence);
+if (ce.distance < radius) candidateEdges.add(ce);
+}
+}
+Collection<CandidateEdgeBundle> bundles=candidateEdges.binByDistanceAndAngle();
+CandidateEdgeBundle best=null;
+for (CandidateEdgeBundle bundle : bundles) {
+if (best == null || bundle.best.score < best.best.score) best=bundle;
+}
+return best;
 }

@@ -14,7 +14,7 @@
     score*=1.5;
   }
   score/=preference;
-  if (e.getName().contains("platform")) {
+  if ((e.getStreetClass() & StreetEdge.CLASS_PLATFORM) != 0) {
     score/=PLATFORM_PREFERENCE;
   }
   if (e.getName().contains("sidewalk") || !e.getPermission().allows(StreetTraversalPermission.CAR)) {
