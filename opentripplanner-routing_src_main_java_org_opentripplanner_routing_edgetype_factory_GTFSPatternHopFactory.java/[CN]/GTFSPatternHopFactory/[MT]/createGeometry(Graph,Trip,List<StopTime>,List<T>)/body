@@ -1,0 +1,71 @@
+{
+  AgencyAndId shapeId=trip.getShapeId();
+  if (shapeId == null || shapeId.getId() == null || shapeId.getId().equals(""))   return;
+  StopTime st0=stopTimes.get(0);
+  boolean hasShapeDist=st0.isShapeDistTraveledSet();
+  if (hasShapeDist) {
+    for (int i=0; i < hops.size(); ++i) {
+      Edge hop=hops.get(i);
+      st0=stopTimes.get(i);
+      StopTime st1=stopTimes.get(i + 1);
+      ((HopEdge)hop).setGeometry(getHopGeometryViaShapeDistTraveled(graph,shapeId,st0,st1,hop.getFromVertex(),hop.getToVertex()));
+    }
+    return;
+  }
+  LineString shape=getLineStringForShapeId(shapeId);
+  ArrayList<IndexedLineSegment> segments=new ArrayList<IndexedLineSegment>();
+  for (int i=0; i < shape.getNumPoints() - 1; ++i) {
+    segments.add(new IndexedLineSegment(i,shape.getCoordinateN(i),shape.getCoordinateN(i + 1)));
+  }
+  List<List<IndexedLineSegment>> possibleSegmentsForStop=new ArrayList<List<IndexedLineSegment>>();
+  for (int i=0; i < stopTimes.size(); ++i) {
+    Stop stop=stopTimes.get(i).getStop();
+    Coordinate coord=new Coordinate(stop.getLon(),stop.getLat());
+    List<IndexedLineSegment> stopSegments=new ArrayList<IndexedLineSegment>();
+    for (    IndexedLineSegment segment : segments) {
+      double distance=segment.distance(coord);
+      if (distance < MAX_STOP_TO_SHAPE_DISTANCE) {
+        stopSegments.add(segment);
+      }
+    }
+    Collections.sort(stopSegments,new IndexedLineSegmentComparator(coord));
+    possibleSegmentsForStop.add(stopSegments);
+  }
+  List<LinearLocation> locations=getStopLocations(possibleSegmentsForStop,stopTimes,0,-1);
+  Iterator<LinearLocation> locationIt=locations.iterator();
+  LinearLocation endLocation=locationIt.next();
+  double distanceSoFar=0;
+  int last=0;
+  for (int i=0; i < hops.size(); ++i) {
+    Edge hop=hops.get(i);
+    LinearLocation startLocation=endLocation;
+    endLocation=locationIt.next();
+    for (int j=last; j < startLocation.getSegmentIndex(); ++j) {
+      Coordinate from=shape.getCoordinateN(j);
+      Coordinate to=shape.getCoordinateN(j + 1);
+      double xd=from.x - to.x;
+      double yd=from.y - to.y;
+      distanceSoFar+=Math.sqrt(xd * xd + yd * yd);
+    }
+    last=startLocation.getSegmentIndex();
+    double startIndex=distanceSoFar + startLocation.getSegmentFraction() * startLocation.getSegmentLength(shape);
+    for (int j=last; j < endLocation.getSegmentIndex(); ++j) {
+      Coordinate from=shape.getCoordinateN(j);
+      Coordinate to=shape.getCoordinateN(j + 1);
+      double xd=from.x - to.x;
+      double yd=from.y - to.y;
+      distanceSoFar+=Math.sqrt(xd * xd + yd * yd);
+    }
+    last=startLocation.getSegmentIndex();
+    double endIndex=distanceSoFar + endLocation.getSegmentFraction() * endLocation.getSegmentLength(shape);
+    ShapeSegmentKey key=new ShapeSegmentKey(shapeId,startIndex,endIndex);
+    LineString geometry=_geometriesByShapeSegmentKey.get(key);
+    if (geometry == null) {
+      LocationIndexedLine locationIndexed=new LocationIndexedLine(shape);
+      geometry=(LineString)locationIndexed.extractLine(startLocation,endLocation);
+      CoordinateSequence sequence=new PackedCoordinateSequence.Double(geometry.getCoordinates(),2);
+      geometry=_geometryFactory.createLineString(sequence);
+    }
+    ((HopEdge)hop).setGeometry(geometry);
+  }
+}

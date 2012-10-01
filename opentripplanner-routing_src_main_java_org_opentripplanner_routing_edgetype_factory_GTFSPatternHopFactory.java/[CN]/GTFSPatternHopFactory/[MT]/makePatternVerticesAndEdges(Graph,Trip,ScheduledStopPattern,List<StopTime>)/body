@@ -2,6 +2,7 @@
   TableTripPattern tripPattern=new TableTripPattern(trip,stopPattern,getServiceId(trip));
   getTripPatternIndex(tripPattern);
   TraverseMode mode=GtfsLibrary.getTraverseMode(trip.getRoute());
+  ArrayList<PatternHop> hops=new ArrayList<PatternHop>();
   PatternArriveVertex psv0arrive, psv1arrive=null;
   PatternDepartVertex psv0depart;
   for (int hopIndex=0; hopIndex < stopTimes.size() - 1; hopIndex++) {
@@ -19,11 +20,11 @@
     psv1arrive=new PatternArriveVertex(graph,tripPattern,st1);
     context.patternArriveNodes.put(new T2<Stop,Trip>(st1.getStop(),trip),psv1arrive);
     PatternHop hop=new PatternHop(psv0depart,psv1arrive,s0,s1,hopIndex);
-    hop.setGeometry(getHopGeometry(graph,trip.getShapeId(),st0,st1,psv0depart,psv1arrive));
+    hops.add(hop);
     TransitStopDepart stopDepart=context.stopDepartNodes.get(s0);
     TransitStopArrive stopArrive=context.stopArriveNodes.get(s1);
     new TransitBoardAlight(stopDepart,psv0depart,hopIndex,mode);
     new TransitBoardAlight(psv1arrive,stopArrive,hopIndex,mode);
   }
-  return tripPattern;
+  return new T2<TableTripPattern,List<PatternHop>>(tripPattern,hops);
 }

@@ -1,0 +1,5 @@
+{
+  double distanceFromStart=distanceLibrary.distance(start,coord);
+  double alongTrackDistance=Math.acos(Math.cos(distanceFromStart / RADIUS) / Math.cos(crossTrackError(coord) / RADIUS)) * RADIUS;
+  return alongTrackDistance;
+}

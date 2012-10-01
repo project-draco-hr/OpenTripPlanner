@@ -1,0 +1,12 @@
+{
+  double atd=alongTrackDistance(coord);
+  if (atd < 0) {
+    return 0;
+  }
+ else   if (atd > lineLength) {
+    return 1;
+  }
+ else {
+    return atd / lineLength;
+  }
+}

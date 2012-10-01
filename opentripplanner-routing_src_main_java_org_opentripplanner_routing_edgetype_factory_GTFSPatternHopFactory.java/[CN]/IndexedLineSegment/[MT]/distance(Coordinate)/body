@@ -1,0 +1,12 @@
+{
+  double atd=alongTrackDistance(coord);
+  if (atd < 0) {
+    return distanceLibrary.distance(coord,start);
+  }
+ else   if (atd > lineLength) {
+    return distanceLibrary.distance(coord,end);
+  }
+ else {
+    return Math.abs(crossTrackError(coord));
+  }
+}

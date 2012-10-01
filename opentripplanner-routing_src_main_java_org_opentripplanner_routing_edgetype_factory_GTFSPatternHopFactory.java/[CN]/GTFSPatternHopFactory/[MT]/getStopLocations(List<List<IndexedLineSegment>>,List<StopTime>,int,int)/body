@@ -1,0 +1,20 @@
+{
+  if (index == stopTimes.size()) {
+    return new LinkedList<LinearLocation>();
+  }
+  StopTime st=stopTimes.get(index);
+  Stop stop=st.getStop();
+  Coordinate stopCoord=new Coordinate(stop.getLon(),stop.getLat());
+  for (  IndexedLineSegment segment : possibleSegmentsForStop.get(index)) {
+    if (segment.index <= prevSegmentIndex) {
+      continue;
+    }
+    List<LinearLocation> locations=getStopLocations(possibleSegmentsForStop,stopTimes,index + 1,segment.index);
+    if (locations != null) {
+      LinearLocation location=new LinearLocation(0,segment.index,segment.fraction(stopCoord));
+      locations.add(0,location);
+      return locations;
+    }
+  }
+  return null;
+}
