@@ -1,12 +1,13 @@
 {
-  double atd=alongTrackDistance(coord);
+  double cte=crossTrackError(coord);
+  double atd=alongTrackDistance(coord,cte);
   if (atd < 0) {
-    return distanceLibrary.distance(coord,start);
+    return distanceLibrary.fastDistance(coord,start);
   }
  else   if (atd > lineLength) {
-    return distanceLibrary.distance(coord,end);
+    return distanceLibrary.fastDistance(coord,end);
   }
  else {
-    return Math.abs(crossTrackError(coord));
+    return FastMath.abs(cte);
   }
 }

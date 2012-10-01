@@ -1,6 +1,6 @@
 {
-  double distanceFromStart=distanceLibrary.distance(start,coord);
+  double distanceFromStart=distanceLibrary.fastDistance(start,coord);
   double bearingToCoord=bearing(start,coord);
   double bearingToEnd=bearing(start,end);
-  return Math.asin(Math.sin(distanceFromStart / RADIUS) * Math.sin(bearingToCoord - bearingToEnd)) * RADIUS;
+  return FastMath.asin(FastMath.sin(distanceFromStart / RADIUS) * FastMath.sin(bearingToCoord - bearingToEnd)) * RADIUS;
 }
