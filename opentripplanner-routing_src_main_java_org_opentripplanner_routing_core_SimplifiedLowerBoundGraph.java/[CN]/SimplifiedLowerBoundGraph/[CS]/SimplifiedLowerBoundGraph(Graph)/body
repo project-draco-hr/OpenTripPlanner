@@ -17,7 +17,7 @@
         Vertex v=e.getToVertex();
         int to_gindex=v.getGroupIndex();
         if (to_gindex == from_gindex)         continue;
-        if (e instanceof PatternHop || e instanceof Hop)         putIfBetter(distEdges,from_gindex,to_gindex,e.timeLowerBound(dummyOptions));
+        if (e instanceof PatternHop)         putIfBetter(distEdges,from_gindex,to_gindex,e.timeLowerBound(dummyOptions));
  else         putIfBetter(distEdges,from_gindex,to_gindex,e.getDistance());
       }
     }
