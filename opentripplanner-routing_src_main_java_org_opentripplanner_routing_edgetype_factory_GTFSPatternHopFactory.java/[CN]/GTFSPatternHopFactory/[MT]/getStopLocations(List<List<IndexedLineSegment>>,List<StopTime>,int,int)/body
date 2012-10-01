@@ -6,7 +6,7 @@
   Stop stop=st.getStop();
   Coordinate stopCoord=new Coordinate(stop.getLon(),stop.getLat());
   for (  IndexedLineSegment segment : possibleSegmentsForStop.get(index)) {
-    if (segment.index <= prevSegmentIndex) {
+    if (segment.index < prevSegmentIndex) {
       continue;
     }
     List<LinearLocation> locations=getStopLocations(possibleSegmentsForStop,stopTimes,index + 1,segment.index);
