@@ -20,7 +20,7 @@
       if (s.isEverBoarded()) {
         boardCost+=options.transferPenalty;
         if (localStreetService != null) {
-          if (s.getOptions().getMaxWalkDistance() - s.getWalkDistance() < distanceLibrary.fastDistance(sv.getCoordinate(),target.getCoordinate()) && !localStreetService.transferrable(sv)) {
+          if (options.getMaxWalkDistance() - s.getWalkDistance() < euclidianDistance && sv instanceof IntersectionVertex && !localStreetService.transferrable(sv)) {
             return Double.POSITIVE_INFINITY;
           }
         }
