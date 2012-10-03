@@ -1,0 +1,5 @@
+{
+  double distanceFromEnd=distanceLibrary.fastDistance(end,coord);
+  double alongTrackDistance=FastMath.acos(FastMath.cos(distanceFromEnd / RADIUS) / FastMath.cos(inverseCrossTrackError / RADIUS)) * RADIUS;
+  return alongTrackDistance;
+}
