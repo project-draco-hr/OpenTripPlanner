@@ -14,7 +14,7 @@
   StreetLocation end=(StreetLocation)finder.getClosestVertex(new Coordinate(-74.0,40.008),null,biking);
   assertNotNull(end);
   extras=end.getExtra();
-  assertEquals(2,extras.size());
+  assertEquals(4,extras.size());
   StreetLocation location=(StreetLocation)finder.getClosestVertex(new Coordinate(-74.004999,40.00999),null,new RoutingRequest());
   assertTrue(location.isWheelchairAccessible());
   boolean found=false;

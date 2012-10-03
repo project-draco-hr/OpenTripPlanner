@@ -22,34 +22,25 @@
     for (    StreetEdge e : nearbyEdges) {
       if (e == null || e.getFromVertex() == null)       continue;
       if (request != null && (!(e.canTraverse(request) || e.canTraverse(walkingRequest))))       continue;
-switch (restriction) {
-case 0:
-        break;
-case 1:
-      if (!e.getPermission().allows(StreetTraversalPermission.CAR)) {
-        continue;
+      if (possibleTransitLinksOnly) {
+        if (!e.getPermission().allows(StreetTraversalPermission.CAR)) {
+          if ((e.getStreetClass() & StreetEdge.CLASS_PLATFORM) == 0) {
+            continue;
+          }
+        }
       }
-    break;
-case 2:
-  if (!e.getPermission().allows(StreetTraversalPermission.CAR)) {
-    if ((e.getStreetClass() & StreetEdge.CLASS_PLATFORM) == 0) {
-      continue;
+      double preferrence=1;
+      if (routeEdges != null && routeEdges.contains(e)) {
+        preferrence=3.0;
+      }
+      CandidateEdge ce=new CandidateEdge(e,p,preferrence);
+      if (ce.distance < radius)       candidateEdges.add(ce);
     }
   }
-break;
-}
-double preferrence=1;
-if (routeEdges != null && routeEdges.contains(e)) {
-preferrence=3.0;
-}
-CandidateEdge ce=new CandidateEdge(e,p,preferrence);
-if (ce.distance < radius) candidateEdges.add(ce);
-}
-}
-Collection<CandidateEdgeBundle> bundles=candidateEdges.binByDistanceAndAngle();
-CandidateEdgeBundle best=null;
-for (CandidateEdgeBundle bundle : bundles) {
-if (best == null || bundle.best.score < best.best.score) best=bundle;
-}
-return best;
+  Collection<CandidateEdgeBundle> bundles=candidateEdges.binByDistanceAndAngle();
+  CandidateEdgeBundle best=null;
+  for (  CandidateEdgeBundle bundle : bundles) {
+    if (best == null || bundle.best.score < best.best.score)     best=bundle;
+  }
+  return best;
 }

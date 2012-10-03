@@ -17,8 +17,11 @@
   if ((e.getStreetClass() & StreetEdge.CLASS_PLATFORM) != 0) {
     score/=PLATFORM_PREFERENCE;
   }
-  if (e.getName().contains("sidewalk") || !e.getPermission().allows(StreetTraversalPermission.CAR)) {
+  if (e.getName().contains("sidewalk")) {
     score/=SIDEWALK_PREFERENCE;
+  }
+  if (e.getPermission().allows(StreetTraversalPermission.CAR)) {
+    score-=CAR_PREFERENCE;
   }
   score+=edge.getLength() / 1000000;
   double xd=nearestPointOnEdge.x - p.getX();
