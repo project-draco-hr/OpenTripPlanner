@@ -5,7 +5,7 @@
   cache=new HashMap<String,SimpleFeature>();
   try {
     FeatureCollection<SimpleFeatureType,SimpleFeature> features=joinedSource.getFeatures();
-    Iterator<SimpleFeature> it=features.iterator();
+    FeatureIterator<SimpleFeature> it=features.features();
     while (it.hasNext()) {
       SimpleFeature feature=it.next();
       String joinedKeyValue=toHashableString(feature.getAttribute(joinedKey));
@@ -16,7 +16,7 @@
         log.warn("Feature " + feature.getID() + " has null value for its joinedKey ("+ joinedKey+ ")");
       }
     }
-    features.close(it);
+    it.close();
   }
  catch (  IOException e) {
     throw new RuntimeException("Could not cache values for joined shapefile",e);
