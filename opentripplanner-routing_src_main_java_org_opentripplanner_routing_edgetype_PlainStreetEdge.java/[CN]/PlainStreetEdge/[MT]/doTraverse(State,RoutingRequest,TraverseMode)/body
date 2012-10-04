@@ -45,6 +45,9 @@ weight=length / speed;
 }
 }
  else {
+if (options.isWalkingBike()) {
+time=elevationProfileSegment.getSlopeSpeedEffectiveLength() / speed;
+}
 weight=time;
 }
 if (isStairs()) {
@@ -90,9 +93,6 @@ s1.incrementWalkDistance(length);
 int timeLong=(int)time;
 if (timeLong != time) {
 timeLong++;
-}
-if (traverseMode == TraverseMode.WALK && s0.getBackMode() == TraverseMode.BICYCLE) {
-timeLong+=120;
 }
 s1.incrementTimeInSeconds(timeLong);
 s1.incrementWeight(weight);
