@@ -24,7 +24,7 @@
   if (way.isTag("cycleway","dismount") || "dismount".equals(bicycle)) {
     permissions=permissions.remove(StreetTraversalPermission.BICYCLE);
     if (forceBikes) {
-      _log.warn(GraphBuilderAnnotation.register(graph,Variety.CONFLICTING_BIKE_TAGS,way.getId()));
+      _log.warn(graph.addBuilderAnnotation(new ConflictingBikeTags(way.getId())));
     }
   }
   P2<StreetTraversalPermission> permissionPair=getPermissions(permissions,way);

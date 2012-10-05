@@ -6,14 +6,14 @@
   if (geometry != null)   return geometry;
   double[] distances=getDistanceForShapeId(shapeId);
   if (distances == null) {
-    _log.warn(GraphBuilderAnnotation.register(graph,Variety.BOGUS_SHAPE_GEOMETRY,shapeId));
+    _log.warn(graph.addBuilderAnnotation(new BogusShapeGeometry(shapeId)));
     return null;
   }
  else {
     LinearLocation startIndex=getSegmentFraction(distances,startDistance);
     LinearLocation endIndex=getSegmentFraction(distances,endDistance);
     if (equals(startIndex,endIndex)) {
-      GraphBuilderAnnotation.register(graph,Variety.BOGUS_SHAPE_DIST_TRAVELED,st1);
+      graph.addBuilderAnnotation(new BogusShapeDistanceTraveled(st1));
       return createSimpleGeometry(st0.getStop(),st1.getStop());
     }
     LineString line=getLineStringForShapeId(shapeId);

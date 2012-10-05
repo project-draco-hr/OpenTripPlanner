@@ -22,7 +22,7 @@
       coords[i++]=new Coordinate(d,p.ele);
     }
     if (edge.setElevationProfile(new PackedCoordinateSequence.Double(coords),true)) {
-      _log.warn(GraphBuilderAnnotation.register(graph,Variety.ELEVATION_FLATTENED,edge));
+      _log.warn(graph.addBuilderAnnotation(new ElevationFlattened(edge)));
     }
   }
 }

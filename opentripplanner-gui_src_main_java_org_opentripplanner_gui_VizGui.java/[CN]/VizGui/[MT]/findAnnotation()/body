@@ -1,12 +1,2 @@
 {
-  Object[] options=GraphBuilderAnnotation.Variety.values();
-  GraphBuilderAnnotation.Variety variety=(GraphBuilderAnnotation.Variety)JOptionPane.showInputDialog(null,"Select the type of annotation to find","Select annotation",JOptionPane.QUESTION_MESSAGE,null,options,GraphBuilderAnnotation.Variety.STOP_UNLINKED);
-  if (variety == null)   return;
-  annotationMatchesModel.clear();
-  for (  GraphBuilderAnnotation anno : graph.getBuilderAnnotations()) {
-    if (anno.getVariety() == variety) {
-      annotationMatchesModel.addElement(new SelectableGraphBuilderAnnotation(anno.getVariety(),anno.getReferencedObjects().toArray()));
-    }
-  }
-  System.out.println("Found " + annotationMatchesModel.getSize() + " annotations of type "+ variety);
 }

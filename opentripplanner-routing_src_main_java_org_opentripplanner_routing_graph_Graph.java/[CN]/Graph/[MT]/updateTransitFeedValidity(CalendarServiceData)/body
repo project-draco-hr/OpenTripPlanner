@@ -17,7 +17,7 @@
   }
   for (  String agency : agencies) {
     if (!agenciesWithFutureDates.contains(agency)) {
-      LOG.warn(GraphBuilderAnnotation.register(this,Variety.NO_FUTURE_DATES,agency));
+      LOG.warn(this.addBuilderAnnotation(new NoFutureDates(agency)));
     }
   }
 }

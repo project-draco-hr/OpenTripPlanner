@@ -1,0 +1,10 @@
+{
+  String ret;
+  if (repaired) {
+    ret="We have corrected for this by using the parent station.";
+  }
+ else {
+    ret="We could not correct for this.";
+  }
+  return String.format(FMT.concat(ret),st);
+}

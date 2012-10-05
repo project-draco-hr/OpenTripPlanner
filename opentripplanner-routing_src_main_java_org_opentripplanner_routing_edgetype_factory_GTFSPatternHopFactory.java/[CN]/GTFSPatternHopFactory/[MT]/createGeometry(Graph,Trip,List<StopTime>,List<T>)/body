@@ -82,7 +82,7 @@
       StopTime st1=stopTimes.get(i + 1);
       LineString geometry=createSimpleGeometry(st0.getStop(),st1.getStop());
       hops.get(i).setGeometry(geometry);
-      _log.warn(GraphBuilderAnnotation.register(graph,Variety.BOGUS_SHAPE_GEOMETRY_CAUGHT,shapeId,st0,st1));
+      _log.warn(graph.addBuilderAnnotation(new BogusShapeGeometryCaught(shapeId,st0,st1)));
     }
     return;
   }
