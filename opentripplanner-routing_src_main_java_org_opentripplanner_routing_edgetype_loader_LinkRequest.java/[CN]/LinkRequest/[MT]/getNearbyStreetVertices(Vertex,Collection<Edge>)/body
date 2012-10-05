@@ -11,7 +11,9 @@
     return null;
   }
   if (edges.endwise()) {
-    return Arrays.asList(linker.index.getIntersectionAt(edges.endwiseVertex.getCoordinate()));
+    List<StreetVertex> list=Arrays.asList(edges.endwiseVertex);
+    linker.splitVertices.put(v,list);
+    return list;
   }
  else {
     StreetVertex atIntersection=linker.index.getIntersectionAt(coordinate);

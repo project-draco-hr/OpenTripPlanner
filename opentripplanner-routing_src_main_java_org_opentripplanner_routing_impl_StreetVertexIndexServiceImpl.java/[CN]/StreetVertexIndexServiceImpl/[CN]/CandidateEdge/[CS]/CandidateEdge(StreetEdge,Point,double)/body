@@ -6,8 +6,8 @@
   GeometryLocation edgeLocation=op.nearestLocations()[1];
   nearestPointOnEdge=edgeLocation.getCoordinate();
   Coordinate[] edgeCoords=edgeGeom.getCoordinates();
-  if (nearestPointOnEdge.equals(edgeCoords[0]))   endwiseVertex=edge.getFromVertex();
- else   if (nearestPointOnEdge.equals(edgeCoords[edgeCoords.length - 1]))   endwiseVertex=edge.getToVertex();
+  if (nearestPointOnEdge.equals(edgeCoords[0]))   endwiseVertex=(StreetVertex)edge.getFromVertex();
+ else   if (nearestPointOnEdge.equals(edgeCoords[edgeCoords.length - 1]))   endwiseVertex=(StreetVertex)edge.getToVertex();
  else   endwiseVertex=null;
   score=distance;
   if (endwise()) {
