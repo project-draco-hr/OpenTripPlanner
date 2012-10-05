@@ -11,6 +11,7 @@
   out.writeObject(this);
   out.writeObject(edges);
   LOG.debug("Writing debug data...");
+  out.writeObject(this.graphBuilderAnnotations);
   out.writeObject(this.vertexById);
   out.writeObject(this.edgeById);
   out.writeObject(this.idForEdge);
