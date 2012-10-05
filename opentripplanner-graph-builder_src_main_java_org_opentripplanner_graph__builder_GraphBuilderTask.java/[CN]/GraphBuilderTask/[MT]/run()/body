@@ -30,7 +30,6 @@
   for (  GraphBuilder builder : _graphBuilders) {
     builder.checkInputs();
   }
-  graph.enableGraphBuilderAnnotations(saveGraphBuilderAnnotations);
   HashMap<Class<?>,Object> extra=new HashMap<Class<?>,Object>();
   for (  GraphBuilder load : _graphBuilders)   load.buildGraph(graph,extra);
   graph.summarizeBuilderAnnotations();

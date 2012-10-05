@@ -10,10 +10,15 @@
   LOG.debug("Writing edges...");
   out.writeObject(this);
   out.writeObject(edges);
-  LOG.debug("Writing debug data...");
-  out.writeObject(this.graphBuilderAnnotations);
-  out.writeObject(this.vertexById);
-  out.writeObject(this.edgeById);
-  out.writeObject(this.idForEdge);
+  if (debugData) {
+    LOG.debug("Writing debug data...");
+    out.writeObject(this.graphBuilderAnnotations);
+    out.writeObject(this.vertexById);
+    out.writeObject(this.edgeById);
+    out.writeObject(this.idForEdge);
+  }
+ else {
+    LOG.debug("Skipping debug data.");
+  }
   LOG.info("Graph written.");
 }
