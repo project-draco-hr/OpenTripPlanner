@@ -5,11 +5,11 @@
   ServiceDate sd=new ServiceDate(calendar);
   Date d=sd.getAsDate(timeZone);
   this.midnight=d.getTime() / 1000;
-  serviceIdsRunning=new int[cs.getServiceIds().size() / 32 + 1];
+  serviceIdsRunning=new BitSet(cs.getServiceIds().size());
   ServiceIdToNumberService service=graph.getService(ServiceIdToNumberService.class);
   for (  AgencyAndId serviceId : cs.getServiceIdsOnDate(sd)) {
     int n=service.getNumber(serviceId);
     if (n < 0)     continue;
-    serviceIdsRunning[n / 32]|=(1 << (n % 32));
+    serviceIdsRunning.set(n);
   }
 }
