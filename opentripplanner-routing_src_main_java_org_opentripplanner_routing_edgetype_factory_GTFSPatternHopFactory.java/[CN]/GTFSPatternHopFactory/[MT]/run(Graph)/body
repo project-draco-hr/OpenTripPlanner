@@ -22,6 +22,9 @@
   TRIP:   for (  Trip trip : trips) {
     tripCount++;
     if (tripCount % 100000 == 0)     _log.debug("trips=" + tripCount + "/"+ trips.size());
+    if (!_calendarService.getServiceIds().contains(trip.getServiceId())) {
+      _log.warn(graph.addBuilderAnnotation(new TripUndefinedService(trip)));
+    }
     List<StopTime> stopTimes=getNonduplicateStopTimesForTrip(trip);
     filterStopTimes(stopTimes,graph);
     interpolateStopTimes(stopTimes);
