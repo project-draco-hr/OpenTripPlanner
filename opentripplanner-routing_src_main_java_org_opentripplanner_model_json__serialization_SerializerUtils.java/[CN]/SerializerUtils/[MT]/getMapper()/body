@@ -4,7 +4,6 @@
   AnnotationIntrospector secondary=new JaxbAnnotationIntrospector();
   AnnotationIntrospector pair=new AnnotationIntrospector.Pair(primary,secondary);
   mapper.setAnnotationIntrospector(pair);
-  mapper.configure(SerializationConfig.Feature.USE_ANNOTATIONS,true);
-  mapper.getSerializationConfig().withSerializationInclusion(Inclusion.NON_NULL);
+  mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
   return mapper;
 }
