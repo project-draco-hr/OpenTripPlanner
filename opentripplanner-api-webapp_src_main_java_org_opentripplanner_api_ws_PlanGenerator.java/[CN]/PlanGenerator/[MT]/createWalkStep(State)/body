@@ -8,5 +8,6 @@
   step.elevation=encodeElevationProfile(s.getBackEdge(),0);
   step.bogusName=en.hasBogusName();
   step.addAlerts(s.getBackAlerts());
+  step.angle=DirectionUtils.getFirstAngle(s.getBackEdge().getGeometry());
   return step;
 }
