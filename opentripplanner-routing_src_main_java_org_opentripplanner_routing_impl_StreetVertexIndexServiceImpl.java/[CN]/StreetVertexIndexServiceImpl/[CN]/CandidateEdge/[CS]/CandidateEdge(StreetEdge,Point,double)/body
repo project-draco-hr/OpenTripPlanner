@@ -20,7 +20,7 @@
   if (e.getName().contains("sidewalk")) {
     score/=SIDEWALK_PREFERENCE;
   }
-  if (e.getPermission().allows(StreetTraversalPermission.CAR)) {
+  if (e.getPermission().allows(StreetTraversalPermission.CAR) || (e.getStreetClass() & StreetEdge.CLASS_PLATFORM) != 0) {
     score-=CAR_PREFERENCE;
   }
   score+=edge.getLength() / 1000000;
