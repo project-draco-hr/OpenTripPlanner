@@ -124,7 +124,7 @@
         }
       }
     }
-    if (createdNewStep && !disableZagRemovalForThisStep) {
+    if (createdNewStep && !disableZagRemovalForThisStep && currState.getBackMode() == backState.getBackMode()) {
       int last=steps.size() - 1;
       if (last >= 2) {
         WalkStep threeBack=steps.get(last - 2);

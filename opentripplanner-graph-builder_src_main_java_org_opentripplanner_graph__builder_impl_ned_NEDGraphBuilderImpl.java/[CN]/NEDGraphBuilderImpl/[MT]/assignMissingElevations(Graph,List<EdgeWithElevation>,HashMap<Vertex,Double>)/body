@@ -1,7 +1,7 @@
 {
   log.debug("Assigning missing elevations");
   BinHeap<ElevationRepairState> pq=new BinHeap<ElevationRepairState>();
-  HashMap<Vertex,Double> elevations=new HashMap<Vertex,Double>();
+  @SuppressWarnings("unchecked") HashMap<Vertex,Double> elevations=(HashMap<Vertex,Double>)knownElevations.clone();
   HashSet<Vertex> closed=new HashSet<Vertex>();
   for (  EdgeWithElevation e : edgesWithElevation) {
     PackedCoordinateSequence profile=e.getElevationProfile();
@@ -19,7 +19,6 @@
     }
   }
   while (!pq.empty()) {
-    double key=pq.peek_min_key();
     ElevationRepairState state=pq.extract_min();
     if (closed.contains(state.vertex))     continue;
     closed.add(state.vertex);

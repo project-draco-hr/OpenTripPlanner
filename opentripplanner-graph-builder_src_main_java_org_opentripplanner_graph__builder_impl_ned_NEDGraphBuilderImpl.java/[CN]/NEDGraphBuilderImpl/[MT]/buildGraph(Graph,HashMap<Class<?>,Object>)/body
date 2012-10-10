@@ -18,5 +18,6 @@
       }
     }
   }
-  assignMissingElevations(graph,edgesWithElevation);
+  @SuppressWarnings("unchecked") HashMap<Vertex,Double> extraElevation=(HashMap<Vertex,Double>)extra.get(ElevationPoint.class);
+  assignMissingElevations(graph,edgesWithElevation,extraElevation);
 }
