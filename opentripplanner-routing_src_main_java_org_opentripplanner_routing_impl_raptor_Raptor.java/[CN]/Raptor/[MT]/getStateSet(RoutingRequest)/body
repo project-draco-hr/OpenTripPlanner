@@ -9,7 +9,7 @@
     graph=options.rctx.graph;
   }
   RaptorData data=graph.getService(RaptorDataService.class).getData();
-  options.setMaxWalkDistance(options.getMaxWalkDistance() * 1.1);
+  options.setMaxWalkDistance(options.getMaxWalkDistance() * WALK_EPSILON);
   RoutingRequest walkOptions=options.clone();
   walkOptions.rctx.pathParsers=new PathParser[0];
   TraverseModeSet modes=options.getModes().clone();
