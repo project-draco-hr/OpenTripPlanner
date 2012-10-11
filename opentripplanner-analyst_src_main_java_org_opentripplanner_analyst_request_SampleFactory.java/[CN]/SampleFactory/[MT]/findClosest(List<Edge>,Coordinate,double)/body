@@ -12,7 +12,7 @@
       double y0=coordSeq.getY(seg);
       double x1=coordSeq.getX(seg + 1);
       double y1=coordSeq.getY(seg + 1);
-      c.frac=segmentFraction(x0,y0,x1,y1,pt.x,pt.y,xscale);
+      c.frac=GeometryUtils.segmentFraction(x0,y0,x1,y1,pt.x,pt.y,xscale);
       c.x=x0 + c.frac * (x1 - x0);
       c.y=y0 + c.frac * (y1 - y0);
       double dx=c.x - pt.x;

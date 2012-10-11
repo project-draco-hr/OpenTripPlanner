@@ -3,7 +3,6 @@
   if (extraEdges != null)   for (  StreetEdge se : IterableLibrary.filter(extraEdges,StreetEdge.class))   extraStreets.add(se);
   for (  StreetEdge se : IterableLibrary.filter(graph.getTemporaryEdges(),StreetEdge.class))   extraStreets.add(se);
   Envelope envelope=new Envelope(coordinate);
-  Point p=GeometryUtils.getGeometryFactory().createPoint(coordinate);
   RoutingRequest walkingRequest=null;
   if (request != null) {
     walkingRequest=request.getWalkingOptions();
@@ -33,7 +32,7 @@
       if (routeEdges != null && routeEdges.contains(e)) {
         preferrence=3.0;
       }
-      CandidateEdge ce=new CandidateEdge(e,p,preferrence);
+      CandidateEdge ce=new CandidateEdge(e,coordinate,preferrence);
       if (ce.distance < radius)       candidateEdges.add(ce);
     }
   }
