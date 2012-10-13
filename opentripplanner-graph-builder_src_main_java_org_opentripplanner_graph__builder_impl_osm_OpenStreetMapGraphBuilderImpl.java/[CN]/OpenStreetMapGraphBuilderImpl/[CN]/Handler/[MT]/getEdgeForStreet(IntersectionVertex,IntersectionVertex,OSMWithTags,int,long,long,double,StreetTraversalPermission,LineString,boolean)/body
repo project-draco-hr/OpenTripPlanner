@@ -22,9 +22,7 @@
  else {
     cls=StreetEdge.CLASS_OTHERPATH;
   }
-  if ("platform".equals(highway) || "platform".equals(way.getTag("railway")) || "platform".equals(way.getTag("public_transport"))) {
-    cls|=StreetEdge.CLASS_PLATFORM;
-  }
+  cls|=getPlatformClass(way);
   street.setStreetClass(cls);
   if (!way.hasTag("name")) {
     street.setBogusName(true);

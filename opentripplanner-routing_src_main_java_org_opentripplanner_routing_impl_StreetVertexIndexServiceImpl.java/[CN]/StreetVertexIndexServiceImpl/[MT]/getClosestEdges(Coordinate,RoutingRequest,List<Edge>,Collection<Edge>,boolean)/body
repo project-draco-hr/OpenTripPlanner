@@ -23,7 +23,7 @@
       if (request != null && (!(e.canTraverse(request) || e.canTraverse(walkingRequest))))       continue;
       if (possibleTransitLinksOnly) {
         if (!e.getPermission().allows(StreetTraversalPermission.CAR)) {
-          if ((e.getStreetClass() & StreetEdge.CLASS_PLATFORM) == 0) {
+          if ((e.getStreetClass() & StreetEdge.ANY_PLATFORM_MASK) == 0) {
             continue;
           }
         }
@@ -32,7 +32,11 @@
       if (routeEdges != null && routeEdges.contains(e)) {
         preferrence=3.0;
       }
-      CandidateEdge ce=new CandidateEdge(e,coordinate,preferrence);
+      TraverseModeSet modes=new TraverseModeSet("");
+      if (request != null) {
+        modes=request.getModes();
+      }
+      CandidateEdge ce=new CandidateEdge(e,coordinate,preferrence,modes);
       if (ce.distance < radius)       candidateEdges.add(ce);
     }
   }

@@ -1,4 +1,11 @@
 {
+  int platform=0;
+  if (mode.contains(TraverseMode.TRAINISH)) {
+    platform|=StreetEdge.CLASS_TRAIN_PLATFORM;
+  }
+  if (mode.contains(TraverseMode.BUSISH)) {
+    platform|=StreetEdge.CLASS_OTHER_PLATFORM;
+  }
   edge=e;
   LineString edgeGeom=edge.getGeometry();
   CoordinateSequence coordSeq=edgeGeom.getCoordinateSequence();
@@ -36,13 +43,13 @@
     score*=1.5;
   }
   score/=preference;
-  if ((e.getStreetClass() & StreetEdge.CLASS_PLATFORM) != 0) {
+  if ((e.getStreetClass() & platform) != 0) {
     score/=PLATFORM_PREFERENCE;
   }
   if (e.getName().contains("sidewalk")) {
     score/=SIDEWALK_PREFERENCE;
   }
-  if (e.getPermission().allows(StreetTraversalPermission.CAR) || (e.getStreetClass() & StreetEdge.CLASS_PLATFORM) != 0) {
+  if (e.getPermission().allows(StreetTraversalPermission.CAR) || (e.getStreetClass() & platform) != 0) {
     score-=CAR_PREFERENCE;
   }
   score+=edge.getLength() / 1000000;
