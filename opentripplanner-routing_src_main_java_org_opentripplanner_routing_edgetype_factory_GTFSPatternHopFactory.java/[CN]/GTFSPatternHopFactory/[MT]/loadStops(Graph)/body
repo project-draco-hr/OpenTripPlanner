@@ -8,9 +8,9 @@
     stopVertex.setStreetToStopTime(defaultStreetToStopTime);
     context.stopNodes.put(stop,stopVertex);
     if (stop.getLocationType() != 2) {
-      TransitStopArrive arrive=new TransitStopArrive(graph,stop);
+      TransitStopArrive arrive=new TransitStopArrive(graph,stop,stopVertex);
       context.stopArriveNodes.put(stop,arrive);
-      TransitStopDepart depart=new TransitStopDepart(graph,stop);
+      TransitStopDepart depart=new TransitStopDepart(graph,stop,stopVertex);
       context.stopDepartNodes.put(stop,depart);
       new PreAlightEdge(arrive,stopVertex);
       new PreBoardEdge(stopVertex,depart);

@@ -45,6 +45,7 @@
         _log.warn(graph.addBuilderAnnotation(new StopAtEntrance(st1,true)));
       }
     }
+    stopArrive.getStopVertex().addMode(mode);
     new TransitBoardAlight(stopDepart,psv0depart,hopIndex,mode);
     new TransitBoardAlight(psv1arrive,stopArrive,hopIndex,mode);
   }
