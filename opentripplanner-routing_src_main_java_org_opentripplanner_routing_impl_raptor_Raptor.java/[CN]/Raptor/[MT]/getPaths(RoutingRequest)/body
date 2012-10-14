@@ -7,8 +7,17 @@
   if (!options.getModes().isTransit()) {
     return sptService.getShortestPathTree(options).getPaths();
   }
-  RaptorData data=graph.getService(RaptorDataService.class).getData();
-  double initialWalk=options.getMaxWalkDistance() * 1.1;
+  double distance=distanceLibrary.distance(options.rctx.origin.getCoordinate(),options.rctx.target.getCoordinate());
+  if (distance < shortPathCutoff) {
+    return shortPathService.getPaths(options);
+  }
+  RaptorDataService service=graph.getService(RaptorDataService.class);
+  if (service == null) {
+    log.warn("No raptor data.  Rebuild with RaptorDataBuilder");
+    return Collections.emptyList();
+  }
+  RaptorData data=service.getData();
+  double initialWalk=options.getMaxWalkDistance() * WALK_EPSILON;
   options.setMaxWalkDistance(initialWalk);
   double minWalk=options.rctx.origin.getDistanceToNearestTransitStop() + options.rctx.target.getDistanceToNearestTransitStop();
   if (options.getMaxWalkDistance() < minWalk) {
@@ -90,6 +99,7 @@
     log.info("RAPTOR found no paths (try retrying?)");
   }
   Collections.sort(targetStates);
+  if (targetStates.size() > options.getNumItineraries())   targetStates=targetStates.subList(0,options.getNumItineraries());
   List<GraphPath> paths=new ArrayList<GraphPath>();
   for (  RaptorState targetState : targetStates) {
     ArrayList<RaptorState> states=new ArrayList<RaptorState>();

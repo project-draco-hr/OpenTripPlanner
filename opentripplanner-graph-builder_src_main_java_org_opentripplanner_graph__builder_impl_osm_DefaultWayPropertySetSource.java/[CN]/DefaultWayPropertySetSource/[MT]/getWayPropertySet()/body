@@ -248,6 +248,7 @@
   createNames(props,"amenity=bicycle_rental;name=*","Bicycle rental {name}");
   createNames(props,"amenity=bicycle_rental","Bicycle rental station");
   props.setSlopeOverride(new OSMSpecifier("bridge=*"),true);
+  props.setSlopeOverride(new OSMSpecifier("embankment=*"),true);
   props.setSlopeOverride(new OSMSpecifier("tunnel=*"),true);
   return props;
 }

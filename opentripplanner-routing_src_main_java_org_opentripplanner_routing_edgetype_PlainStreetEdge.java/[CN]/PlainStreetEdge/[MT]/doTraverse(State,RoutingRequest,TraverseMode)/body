@@ -47,6 +47,9 @@ weight=length / speed;
 }
 }
  else {
+if (options.isWalkingBike()) {
+time=elevationProfileSegment.getSlopeSpeedEffectiveLength() / speed;
+}
 weight=time;
 }
 if (isStairs()) {

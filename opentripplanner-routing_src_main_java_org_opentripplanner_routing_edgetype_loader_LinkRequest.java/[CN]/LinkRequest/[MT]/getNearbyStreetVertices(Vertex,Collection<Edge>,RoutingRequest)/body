@@ -1,0 +1,25 @@
+{
+  Collection<StreetVertex> existing=linker.splitVertices.get(v);
+  if (existing != null)   return existing;
+  String vertexLabel;
+  if (v instanceof TransitVertex)   vertexLabel="link for " + ((TransitVertex)v).getStopId();
+ else   vertexLabel="link for " + v;
+  Coordinate coordinate=v.getCoordinate();
+  CandidateEdgeBundle edges=linker.index.getClosestEdges(coordinate,options,null,nearbyRouteEdges,true);
+  if (edges == null || edges.size() < 1) {
+    _log.debug("found too few edges: {} {}",v.getName(),v.getCoordinate());
+    return null;
+  }
+  if (edges.endwise()) {
+    List<StreetVertex> list=Arrays.asList(edges.endwiseVertex);
+    linker.splitVertices.put(v,list);
+    return list;
+  }
+ else {
+    StreetVertex atIntersection=linker.index.getIntersectionAt(coordinate);
+    if (atIntersection != null) {
+      if (edges.getScore() > distanceLibrary.distance(atIntersection.getCoordinate(),coordinate))       return Arrays.asList(atIntersection);
+    }
+    return getSplitterVertices(vertexLabel,edges.toEdgeList(),coordinate);
+  }
+}

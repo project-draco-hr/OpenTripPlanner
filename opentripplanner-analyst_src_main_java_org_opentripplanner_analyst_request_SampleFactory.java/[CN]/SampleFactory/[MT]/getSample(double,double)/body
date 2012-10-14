@@ -1,41 +1,8 @@
 {
   Coordinate c=new Coordinate(lon,lat);
-  Point p=GeometryUtils.getGeometryFactory().createPoint(c);
-  Edge e0=null;
-  Edge e1=null;
-  DistanceOp o0=null;
-  DistanceOp o1=null;
-  double d0=Double.MAX_VALUE;
-  double d1=Double.MAX_VALUE;
   Envelope env=new Envelope(c);
-  env.expandBy(searchRadiusLon,searchRadiusLat);
+  double xscale=Math.cos(c.y * Math.PI / 180);
+  env.expandBy(searchRadiusLat / xscale,searchRadiusLat);
   @SuppressWarnings("unchecked") List<Edge> edges=(List<Edge>)index.queryPedestrian(env);
-  for (  Edge v : edges) {
-    Geometry g=v.getGeometry();
-    DistanceOp o=new DistanceOp(p,g);
-    double d=o.distance();
-    if (d > searchRadiusLon)     continue;
-    if (d < d1) {
-      if (d < d0) {
-        e1=e0;
-        o1=o0;
-        d1=d0;
-        e0=v;
-        o0=o;
-        d0=d;
-      }
- else {
-        e1=v;
-        o1=o;
-        d1=d;
-      }
-    }
-  }
-  if (e0 != null) {
-    int t0=timeToEdge(e0,o0);
-    int t1=timeToEdge(e1,o1);
-    Sample s=new Sample(e0.getFromVertex(),t0,e0.getToVertex(),t1);
-    return s;
-  }
-  return null;
+  return findClosest(edges,c,xscale);
 }

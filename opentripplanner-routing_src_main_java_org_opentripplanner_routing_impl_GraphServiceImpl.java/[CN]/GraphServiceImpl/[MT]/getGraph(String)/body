@@ -3,49 +3,13 @@
     routerId=defaultRouterId;
     LOG.debug("routerId not specified, set to default of '{}'",routerId);
   }
-  Graph graph;
-  String resourceName;
-  if (routerId.indexOf("../") != -1) {
-    LOG.warn("attempt to navigate up the directory hierarchy using a routerId");
-    return null;
-  }
+synchronized (graphs) {
+    if (!graphs.containsKey(routerId)) {
+      LOG.error("no graph registered with the routerId '{}'",routerId);
+      return null;
+    }
  else {
-    resourceName=resourcePattern.replace("{}",routerId);
-  }
-  LOG.debug("graph for routerId '{}' is at {}",routerId,resourceName);
-  graph=graphs.get(resourceName);
-  LoadLevel level=levels.get(resourceName);
-  if (level != loadLevel) {
-    graph=null;
-  }
-  if (graph == null) {
-    LOG.debug("this graph was not yet loaded");
-    InputStream is;
-    try {
-      Resource resource=resourceLoader.getResource(resourceName.concat("/Graph.obj"));
-      is=resource.getInputStream();
-    }
- catch (    Exception e) {
-      LOG.warn("graph file not found or not openable at {}",resourceName);
-      if (routerId.equals(defaultRouterId)) {
-        LOG.warn("graph for default routerId {} does not exist or cannot be opened at {}",routerId,resourceName);
-        e.printStackTrace();
-        return null;
-      }
-      return getGraph(null);
-    }
-    try {
-      graph=Graph.load(is,loadLevel);
-      graphs.put(resourceName,graph);
-      levels.put(resourceName,loadLevel);
-    }
- catch (    Exception ex) {
-      LOG.error("Exception while loading graph from {}.",resourceName);
-      throw new RuntimeException("error loading graph from " + resourceName,ex);
+      return graphs.get(routerId);
     }
   }
- else {
-    LOG.debug("returning cached graph {} for routerId '{}'",graph,routerId);
-  }
-  return graph;
 }

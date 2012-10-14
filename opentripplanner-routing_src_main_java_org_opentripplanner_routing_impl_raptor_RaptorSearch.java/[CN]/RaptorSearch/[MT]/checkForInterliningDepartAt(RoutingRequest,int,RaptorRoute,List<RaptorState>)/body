@@ -21,7 +21,7 @@
     stayOn.arrivalTime-=options.getAlightSlack();
     stayOn.interlining=true;
     RaptorState boardState=new RaptorState(stayOn);
-    boardState.weight=-options.getBoardSlack() - options.getAlightSlack();
+    boardState.weight-=options.getBoardSlack() - options.getAlightSlack();
     boardState.nBoardings=nBoardings - 1;
     boardState.boardStop=route.stops[firstStop];
     boardState.boardStopSequence=firstStop;

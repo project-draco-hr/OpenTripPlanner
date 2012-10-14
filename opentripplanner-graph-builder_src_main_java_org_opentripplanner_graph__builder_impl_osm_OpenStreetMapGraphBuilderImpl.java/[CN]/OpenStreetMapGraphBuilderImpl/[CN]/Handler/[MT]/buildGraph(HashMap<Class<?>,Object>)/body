@@ -21,6 +21,10 @@
         continue;
       }
       for (      PlainStreetEdge from : restrictionTag.possibleFrom) {
+        if (from == null) {
+          _log.warn("from-edge is null in turn restriction " + restrictionTag);
+          continue;
+        }
         for (        PlainStreetEdge to : restrictionTag.possibleTo) {
           if (from == null || to == null) {
             continue;
@@ -42,7 +46,7 @@ case U:
     if ((angleDiff <= 150 || angleDiff > 210))     continue;
   break;
 case STRAIGHT:
-if (Math.abs(angleDiff) >= 30) continue;
+if (angleDiff >= 30 && angleDiff < 330) continue;
 break;
 }
 TurnRestriction restriction=new TurnRestriction();
@@ -59,6 +63,6 @@ from.addTurnRestriction(restriction);
 if (customNamer != null) {
 customNamer.postprocess(graph);
 }
-generateElevationProfiles(graph);
+extra.put(ElevationPoint.class,elevationData);
 applyBikeSafetyFactor(graph);
 }

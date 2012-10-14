@@ -1,0 +1,5 @@
+{
+  String s=row.get("TripStopStatus");
+  if (s.equals("DRIVING"))   return Update.Status.PREDICTION;
+ else   return Update.Status.valueOf(s);
+}

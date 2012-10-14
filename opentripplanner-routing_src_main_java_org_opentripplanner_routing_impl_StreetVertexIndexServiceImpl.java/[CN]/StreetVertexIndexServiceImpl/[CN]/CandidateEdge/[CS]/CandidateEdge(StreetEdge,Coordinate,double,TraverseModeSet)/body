@@ -1,0 +1,70 @@
+{
+  int platform=0;
+  if (mode.contains(TraverseMode.TRAINISH)) {
+    platform|=StreetEdge.CLASS_TRAIN_PLATFORM;
+  }
+  if (mode.contains(TraverseMode.BUSISH)) {
+    platform|=StreetEdge.CLASS_OTHER_PLATFORM;
+  }
+  edge=e;
+  LineString edgeGeom=edge.getGeometry();
+  CoordinateSequence coordSeq=edgeGeom.getCoordinateSequence();
+  int numCoords=coordSeq.size();
+  int bestSeg=0;
+  double bestDist2=Double.POSITIVE_INFINITY;
+  double bestFrac=0;
+  nearestPointOnEdge=new Coordinate();
+  double xscale=Math.cos(p.y * Math.PI / 180);
+  for (int seg=0; seg < numCoords - 1; seg++) {
+    double x0=coordSeq.getX(seg);
+    double y0=coordSeq.getY(seg);
+    double x1=coordSeq.getX(seg + 1);
+    double y1=coordSeq.getY(seg + 1);
+    double frac=GeometryUtils.segmentFraction(x0,y0,x1,y1,p.x,p.y,xscale);
+    double x=x0 + frac * (x1 - x0);
+    double y=y0 + frac * (y1 - y0);
+    double dx=x - p.x;
+    double dy=y - p.y;
+    double dist2=dx * dx * xscale + dy * dy;
+    if (dist2 < bestDist2) {
+      nearestPointOnEdge.x=x;
+      nearestPointOnEdge.y=y;
+      bestFrac=frac;
+      bestSeg=seg;
+      bestDist2=dist2;
+    }
+  }
+  distance=Math.sqrt(bestDist2);
+  if (bestSeg == 0 && bestFrac == 0)   endwiseVertex=(StreetVertex)edge.getFromVertex();
+ else   if (bestSeg == numCoords - 1 && bestFrac == 1)   endwiseVertex=(StreetVertex)edge.getToVertex();
+ else   endwiseVertex=null;
+  score=distance;
+  if (endwise()) {
+    score*=1.5;
+  }
+  score/=preference;
+  if ((e.getStreetClass() & platform) != 0) {
+    score/=PLATFORM_PREFERENCE;
+  }
+  if (e.getName().contains("sidewalk")) {
+    score/=SIDEWALK_PREFERENCE;
+  }
+  if (e.getPermission().allows(StreetTraversalPermission.CAR) || (e.getStreetClass() & platform) != 0) {
+    score-=CAR_PREFERENCE;
+  }
+  score+=edge.getLength() / 1000000;
+  double xd=nearestPointOnEdge.x - p.x;
+  double yd=nearestPointOnEdge.y - p.y;
+  directionToEdge=Math.atan2(yd,xd);
+  int edgeSegmentIndex=bestSeg;
+  Coordinate c0=coordSeq.getCoordinate(edgeSegmentIndex);
+  Coordinate c1=coordSeq.getCoordinate(edgeSegmentIndex + 1);
+  xd=c1.x - c1.y;
+  yd=c1.y - c0.y;
+  directionOfEdge=Math.atan2(yd,xd);
+  double absDiff=Math.abs(directionToEdge - directionOfEdge);
+  directionDifference=Math.min(2 * Math.PI - absDiff,absDiff);
+  if (Double.isNaN(directionToEdge) || Double.isNaN(directionOfEdge) || Double.isNaN(directionDifference)) {
+    _log.warn("direction to/of edge is NaN (0 length?): {}",edge);
+  }
+}

@@ -9,7 +9,10 @@
       }
     }
   }
-  Collection<StreetVertex> nearbyStreetVertices=getNearbyStreetVertices(v,nearbyEdges);
+  TraverseModeSet modes=v.getModes().clone();
+  modes.setMode(TraverseMode.WALK,true);
+  RoutingRequest request=new RoutingRequest(modes);
+  Collection<StreetVertex> nearbyStreetVertices=getNearbyStreetVertices(v,nearbyEdges,request);
   if (nearbyStreetVertices == null) {
     result=false;
   }

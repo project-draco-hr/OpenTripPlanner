@@ -51,8 +51,8 @@
     islands.add(subgraph);
   }
   for (  HashSet<Vertex> island : islands) {
-    if (island.size() < 20) {
-      _log.warn(GraphBuilderAnnotation.register(graph,Variety.GRAPH_CONNECTIVITY,island.iterator().next(),island));
+    if (island.size() < 40) {
+      _log.warn(graph.addBuilderAnnotation(new GraphConnectivity(island.iterator().next())));
       depedestrianizeOrRemove(graph,island);
     }
   }

@@ -1,13 +1,9 @@
 {
   boolean found=false;
   for (  GraphBuilderAnnotation annotation : graph.getBuilderAnnotations()) {
-    if (annotation.getVariety().equals(Variety.NEGATIVE_HOP_TIME)) {
-      Collection<Object> objects=annotation.getReferencedObjects();
-      assertTrue(objects.size() == 2);
-      Iterator<Object> iter=objects.iterator();
-      StopTime st0=(StopTime)iter.next();
-      StopTime st1=(StopTime)iter.next();
-      assertTrue(st0.getDepartureTime() > st1.getArrivalTime());
+    if (annotation instanceof NegativeHopTime) {
+      NegativeHopTime nht=(NegativeHopTime)annotation;
+      assertTrue(nht.st0.getDepartureTime() > nht.st1.getArrivalTime());
       found=true;
     }
   }

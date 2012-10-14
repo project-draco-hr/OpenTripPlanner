@@ -1,0 +1,28 @@
+{
+  String tripHeadsign=trip.getTripHeadsign();
+  boolean useStopHeadsigns=false;
+  if (tripHeadsign == null) {
+    useStopHeadsigns=true;
+  }
+ else {
+    for (    StopTime st : stopTimes) {
+      if (!(tripHeadsign.equals(st.getStopHeadsign()))) {
+        useStopHeadsigns=true;
+        break;
+      }
+    }
+  }
+  if (!useStopHeadsigns) {
+    return null;
+  }
+  boolean allNull=true;
+  int i=0;
+  String[] hs=new String[stopTimes.size()];
+  for (  StopTime st : stopTimes) {
+    String headsign=st.getStopHeadsign();
+    hs[i++]=headsign;
+    if (headsign != null)     allNull=false;
+  }
+  if (allNull)   return null;
+ else   return hs;
+}

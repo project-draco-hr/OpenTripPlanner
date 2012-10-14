@@ -1,8 +1,9 @@
 {
+  if (rentingBike != other.rentingBike)   return false;
   if (arriveBy) {
-    return nBoardings <= other.nBoardings && walkDistance <= other.walkDistance * 1.1 && arrivalTime >= other.arrivalTime;
+    return nBoardings <= other.nBoardings && walkDistance <= other.walkDistance * Raptor.WALK_EPSILON && arrivalTime >= other.arrivalTime;
   }
  else {
-    return nBoardings <= other.nBoardings && walkDistance <= other.walkDistance * 1.1 && arrivalTime <= other.arrivalTime;
+    return nBoardings <= other.nBoardings && walkDistance <= other.walkDistance * Raptor.WALK_EPSILON && arrivalTime <= other.arrivalTime;
   }
 }

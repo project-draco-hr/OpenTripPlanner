@@ -1,0 +1,8 @@
+{
+  double deltaLon=(c2.x - c1.x) * FastMath.PI / 180;
+  double lat1Radians=c1.y * FastMath.PI / 180;
+  double lat2Radians=c2.y * FastMath.PI / 180;
+  double y=FastMath.sin(deltaLon) * FastMath.cos(lat2Radians);
+  double x=FastMath.cos(lat1Radians) * FastMath.sin(lat2Radians) - FastMath.sin(lat1Radians) * FastMath.cos(lat2Radians) * FastMath.cos(deltaLon);
+  return FastMath.atan2(y,x);
+}

@@ -1,7 +1,16 @@
 {
   boolean wheelchairAccessible=false;
   StreetLocation location=new StreetLocation(graph,label,nearestPoint,name);
+  List<StreetEdge> allEdges=new ArrayList<StreetEdge>();
   for (  StreetEdge street : edges) {
+    allEdges.add(street);
+    if (street instanceof AreaEdge) {
+      for (      StreetEdge e : ((AreaEdge)street).getArea().getEdges()) {
+        allEdges.add(e);
+      }
+    }
+  }
+  for (  StreetEdge street : allEdges) {
     Vertex fromv=street.getFromVertex();
     Vertex tov=street.getToVertex();
     wheelchairAccessible|=((StreetEdge)street).isWheelchairAccessible();
@@ -24,6 +33,6 @@
     }
   }
   location.setWheelchairAccessible(wheelchairAccessible);
-  location.setSourceEdges(edges);
+  location.setSourceEdges(allEdges);
   return location;
 }

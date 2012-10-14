@@ -1,0 +1,19 @@
+{
+  boolean increasing=true;
+  int nHops=getNumHops();
+  int prevArr=-1;
+  for (int hop=0; hop < nHops; hop++) {
+    int dep=getDepartureTime(hop);
+    int arr=getArrivalTime(hop);
+    if (arr < dep) {
+      LOG.error("Negative hop time in TripTimes at index {}.",hop);
+      increasing=false;
+    }
+    if (prevArr > dep) {
+      LOG.error("Negative dwell time in TripTimes at index {}.",hop);
+      increasing=false;
+    }
+    prevArr=arr;
+  }
+  return increasing;
+}

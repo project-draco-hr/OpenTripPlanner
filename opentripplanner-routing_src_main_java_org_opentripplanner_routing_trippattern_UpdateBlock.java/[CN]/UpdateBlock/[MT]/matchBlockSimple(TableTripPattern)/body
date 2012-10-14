@@ -1,0 +1,17 @@
+{
+  List<Stop> patternStops=pattern.getStops();
+  int high=patternStops.size() - updates.size();
+  PATTERN:   for (int pi=0; pi <= high; pi++) {
+    LOG.trace("---{}",pi);
+    for (int ui=0; ui < updates.size(); ui++) {
+      Stop ps=patternStops.get(pi + ui);
+      Update u=updates.get(ui);
+      LOG.trace("{} == {}",ps.getId().getId(),u.stopId);
+      if (!ps.getId().getId().equals(u.stopId)) {
+        continue PATTERN;
+      }
+    }
+    return pi;
+  }
+  return MATCH_FAILED;
+}

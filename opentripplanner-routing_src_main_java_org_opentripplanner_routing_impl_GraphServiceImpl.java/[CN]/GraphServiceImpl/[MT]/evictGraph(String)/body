@@ -1,0 +1,7 @@
+{
+  LOG.debug("evicting graph {}",routerId);
+synchronized (graphs) {
+    Graph existing=graphs.remove(routerId);
+    return existing != null;
+  }
+}

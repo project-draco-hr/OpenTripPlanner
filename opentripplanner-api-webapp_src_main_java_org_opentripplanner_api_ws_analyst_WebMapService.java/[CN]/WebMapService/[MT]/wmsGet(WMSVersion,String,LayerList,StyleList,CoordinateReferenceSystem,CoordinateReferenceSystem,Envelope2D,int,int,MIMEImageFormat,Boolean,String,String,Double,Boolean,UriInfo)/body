@@ -1,0 +1,34 @@
+{
+  if (request.equals("getCapabilities"))   return getCapabilitiesResponse();
+  if (version == new WMSVersion("1.3.0") && crs != null)   srs=crs;
+  if (reproject) {
+    LOG.info("reprojecting envelope from WGS84 to {}",srs);
+    ReferencedEnvelope renv=new ReferencedEnvelope(bbox,DefaultGeographicCRS.WGS84);
+    LOG.debug("WGS84 = {}",renv);
+    bbox=new Envelope2D(renv.transform(srs,false));
+    LOG.debug("reprojected envelope is {}",bbox);
+  }
+  if (resolution != null) {
+    width=(int)Math.ceil(bbox.width / resolution);
+    height=(int)Math.ceil(bbox.height / resolution);
+    LOG.debug("resolution set to {}");
+    LOG.debug("resulting raster dimensions are {}w x {}h",width,height);
+  }
+  RoutingRequest reqA=this.buildRequest(0);
+  RoutingRequest reqB=this.buildRequest(1);
+  LOG.debug("params {}",uriInfo.getQueryParameters());
+  LOG.debug("layers = {}",layers);
+  LOG.debug("styles = {}",styles);
+  LOG.debug("version = {}",version);
+  LOG.debug("srs = {}",srs.getName());
+  LOG.debug("bbox = {}",bbox);
+  LOG.debug("search time = {}",reqA.getDateTime());
+  TileRequest tileRequest=new TileRequest(bbox,width,height);
+  Layer layer=layers.get(0);
+  Style style=styles.get(0);
+  RenderRequest renderRequest=new RenderRequest(format,layer,style,transparent);
+  if (layer != Layer.DIFFERENCE) {
+    reqB=null;
+  }
+  return renderer.getResponse(tileRequest,reqA,reqB,renderRequest);
+}

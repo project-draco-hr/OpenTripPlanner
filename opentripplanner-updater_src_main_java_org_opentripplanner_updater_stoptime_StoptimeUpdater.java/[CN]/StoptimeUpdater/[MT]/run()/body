@@ -1,34 +1,41 @@
 {
-  TimetableSnapshot buffer=snapshot;
+  int appliedBlockCount=0;
   while (true) {
-    UpdateList updates=updateStreamer.getUpdates();
-    if (updates == null)     continue;
-    for (    UpdateList ul : updates.splitByTrip()) {
-      LOG.trace(ul.toString());
-      if (!ul.isSane()) {
-        LOG.trace("incoherent stoptime UpdateList");
+    List<Update> updates=updateStreamer.getUpdates();
+    if (updates == null) {
+      LOG.debug("updates is null");
+      continue;
+    }
+    List<UpdateBlock> blocks=UpdateBlock.splitByTrip(updates);
+    LOG.debug("message contains {} trip update blocks",blocks.size());
+    int uIndex=0;
+    for (    UpdateBlock block : blocks) {
+      uIndex+=1;
+      LOG.debug("update block #{} ({} updates) :",uIndex,block.updates.size());
+      LOG.trace("{}",block.toString());
+      block.filter(true,true,true);
+      if (!block.isCoherent()) {
+        LOG.warn("Incoherent UpdateBlock, skipping.");
         continue;
       }
-      TableTripPattern pattern=patternIndex.get(ul.tripId);
+      if (block.updates.size() < 1) {
+        LOG.debug("UpdateBlock contains no updates after filtering, skipping.");
+        continue;
+      }
+      TableTripPattern pattern=patternIndex.get(block.tripId);
       if (pattern == null) {
-        LOG.trace("pattern not found {}",ul.tripId);
+        LOG.debug("No pattern found for tripId {}, skipping UpdateBlock.",block.tripId);
         continue;
       }
-      if (buffer == snapshot) {
-        buffer=snapshot.mutableCopy();
-      }
-      Timetable tt=buffer.modify(pattern);
-      tt.update(ul);
-    }
-    if (buffer != snapshot) {
-      long now=System.currentTimeMillis();
-      if (now - lastSnapshotTime > maxSnapshotFrequency) {
-        LOG.debug("committing {}",buffer.toString());
-        buffer.commit();
-        snapshot=buffer;
-        graph.timetableSnapshot=snapshot;
-        lastSnapshotTime=now;
+      boolean applied=buffer.update(pattern,block);
+      if (applied) {
+        appliedBlockCount+=1;
+        if (appliedBlockCount % logFrequency == 0) {
+          LOG.info("applied {} stoptime update blocks.",appliedBlockCount);
+        }
+        getSnapshot();
       }
     }
+    LOG.debug("end of update message");
   }
 }

@@ -1,0 +1,10 @@
+{
+  boolean allSucceeded=true;
+synchronized (graphs) {
+    for (    String routerId : this.getRouterIds()) {
+      boolean success=registerGraph(routerId,preEvict);
+      allSucceeded&=success;
+    }
+  }
+  return allSucceeded;
+}

@@ -1,0 +1,5 @@
+{
+  boolean existed=graphService.evictGraph(routerId);
+  if (existed)   return Response.status(200).entity("graph evicted.").build();
+ else   return Response.status(404).entity("graph did not exist.").build();
+}

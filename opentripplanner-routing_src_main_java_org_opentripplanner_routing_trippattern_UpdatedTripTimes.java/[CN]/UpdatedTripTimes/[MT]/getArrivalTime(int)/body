@@ -1,0 +1,8 @@
+{
+  int stop=hop + 1;
+  int update=stop - offset;
+  if (update < 0)   return TripTimes.PASSED;
+  if (update >= departures.length)   return super.getArrivalTime(hop);
+  if (arrivals == null)   return departures[update];
+  return arrivals[update];
+}

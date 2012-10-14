@@ -12,20 +12,33 @@
     ArrayList<Long> nodes=new ArrayList<Long>(way.getNodeRefs().size());
     long last=-1;
     double lastLat=-1, lastLon=-1;
+    String lastLevel=null;
     for (    long nodeId : way.getNodeRefs()) {
       OSMNode node=_nodes.get(nodeId);
       if (node == null)       continue WAY;
-      if (nodeId != last && (node.getLat() != lastLat || node.getLon() != lastLon))       nodes.add(nodeId);
+      boolean levelsDiffer=false;
+      String level=node.getTag("level");
+      if (lastLevel == null) {
+        if (level != null) {
+          levelsDiffer=true;
+        }
+      }
+ else {
+        if (!lastLevel.equals(level)) {
+          levelsDiffer=true;
+        }
+      }
+      if (nodeId != last && (node.getLat() != lastLat || node.getLon() != lastLon || levelsDiffer))       nodes.add(nodeId);
       last=nodeId;
       lastLon=node.getLon();
       lastLat=node.getLat();
+      lastLevel=level;
     }
     IntersectionVertex startEndpoint=null, endEndpoint=null;
     ArrayList<Coordinate> segmentCoordinates=new ArrayList<Coordinate>();
     getLevelsForWay(way);
     Long startNode=null;
     OSMNode osmStartNode=null;
-    List<ElevationPoint> elevationPoints=new ArrayList<ElevationPoint>();
     double distance=0;
     for (int i=0; i < nodes.size() - 1; i++) {
       OSMNode segmentStartOSMNode=_nodes.get(nodes.get(i));
@@ -36,7 +49,6 @@
       if (osmStartNode == null) {
         startNode=nodes.get(i);
         osmStartNode=segmentStartOSMNode;
-        elevationPoints.clear();
       }
       OSMNode osmEndNode=_nodes.get(endNode);
       if (osmStartNode == null || osmEndNode == null)       continue;
@@ -44,23 +56,9 @@
       if (segmentCoordinates.size() == 0) {
         segmentCoordinates.add(getCoordinate(osmStartNode));
       }
-      String ele=segmentStartOSMNode.getTag("ele");
-      if (ele != null) {
-        Double elevation=ElevationUtils.parseEleTag(ele);
-        if (elevation != null) {
-          elevationPoints.add(new ElevationPoint(distance,elevation));
-        }
-      }
       distance+=distanceLibrary.distance(segmentStartOSMNode.getLat(),segmentStartOSMNode.getLon(),osmEndNode.getLat(),osmEndNode.getLon());
-      if (intersectionNodes.containsKey(endNode) || i == nodes.size() - 2 || (i < nodes.size() - 2 && nodes.subList(0,nodes.size() - 2).contains(nodes.get(i + 2)))) {
+      if (intersectionNodes.containsKey(endNode) || i == nodes.size() - 2 || nodes.subList(0,i).contains(nodes.get(i)) || osmEndNode.hasTag("ele")) {
         segmentCoordinates.add(getCoordinate(osmEndNode));
-        ele=osmEndNode.getTag("ele");
-        if (ele != null) {
-          Double elevation=ElevationUtils.parseEleTag(ele);
-          if (elevation != null) {
-            elevationPoints.add(new ElevationPoint(distance,elevation));
-          }
-        }
         geometry=GeometryUtils.getGeometryFactory().createLineString(segmentCoordinates.toArray(new Coordinate[0]));
         segmentCoordinates.clear();
       }
@@ -70,11 +68,25 @@
       }
       if (startEndpoint == null) {
         startEndpoint=getVertexForOsmNode(osmStartNode,way);
+        String ele=segmentStartOSMNode.getTag("ele");
+        if (ele != null) {
+          Double elevation=ElevationUtils.parseEleTag(ele);
+          if (elevation != null) {
+            elevationData.put(startEndpoint,elevation);
+          }
+        }
       }
  else {
         startEndpoint=endEndpoint;
       }
       endEndpoint=getVertexForOsmNode(osmEndNode,way);
+      String ele=osmEndNode.getTag("ele");
+      if (ele != null) {
+        Double elevation=ElevationUtils.parseEleTag(ele);
+        if (elevation != null) {
+          elevationData.put(endEndpoint,elevation);
+        }
+      }
       P2<PlainStreetEdge> streets=getEdgesForStreet(startEndpoint,endEndpoint,way,i,osmStartNode.getId(),osmEndNode.getId(),permissions,geometry);
       PlainStreetEdge street=streets.getFirst();
       if (street != null) {
@@ -104,7 +116,6 @@
           backStreet.setWheelchairNote(wheelchairNote);
         }
       }
-      storeExtraElevationData(elevationPoints,street,backStreet,distance);
       applyEdgesToTurnRestrictions(way,startNode,endNode,street,backStreet);
       startNode=endNode;
       osmStartNode=_nodes.get(startNode);

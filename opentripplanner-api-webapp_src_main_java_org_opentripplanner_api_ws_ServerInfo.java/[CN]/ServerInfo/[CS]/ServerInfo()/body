@@ -1,0 +1,18 @@
+{
+  try {
+    InputStream fis=new FileInputStream("/proc/cpuinfo");
+    BufferedReader br=new BufferedReader(new InputStreamReader(fis,Charset.forName("UTF-8")));
+    String line;
+    while ((line=br.readLine()) != null) {
+      if (line.startsWith("model name")) {
+        cpuName=line.split(": ")[1];
+        nCores+=1;
+      }
+    }
+    fis.close();
+  }
+ catch (  Exception e) {
+    cpuName="unknown";
+    nCores=0;
+  }
+}

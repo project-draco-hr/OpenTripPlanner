@@ -1,8 +1,0 @@
-{
-  ArrayList<String> out=new ArrayList<String>();
-  String base=resourcePattern.replace("{}","");
-  for (  String id : graphs.keySet()) {
-    out.add(id.replaceFirst(base,"").replace("/Graph.obj",""));
-  }
-  return out;
-}

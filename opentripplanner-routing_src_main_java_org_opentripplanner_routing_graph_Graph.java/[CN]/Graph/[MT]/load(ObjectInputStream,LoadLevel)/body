@@ -1,7 +1,7 @@
 {
   try {
     Graph graph=(Graph)in.readObject();
-    LOG.debug("Basic graph info and annotations read.");
+    LOG.debug("Basic graph info read.");
     if (graph.graphVersionMismatch())     throw new RuntimeException("Graph version mismatch detected.");
     if (level == LoadLevel.BASIC)     return graph;
     LOG.debug("Loading edges...");
@@ -17,10 +17,16 @@
     graph.streetIndex=new StreetVertexIndexServiceImpl(graph);
     LOG.debug("street index built.");
     if (level == LoadLevel.FULL)     return graph;
-    graph.vertexById=(List<Vertex>)in.readObject();
-    graph.edgeById=(Map<Integer,Edge>)in.readObject();
-    graph.idForEdge=(Map<Edge,Integer>)in.readObject();
-    LOG.debug("Debug info read.");
+    if (graph.debugData) {
+      graph.graphBuilderAnnotations=(List<GraphBuilderAnnotation>)in.readObject();
+      graph.vertexById=(List<Vertex>)in.readObject();
+      graph.edgeById=(Map<Integer,Edge>)in.readObject();
+      graph.idForEdge=(Map<Edge,Integer>)in.readObject();
+      LOG.debug("Debug info read.");
+    }
+ else {
+      LOG.warn("Graph file does not contain debug data.");
+    }
     return graph;
   }
  catch (  InvalidClassException ex) {

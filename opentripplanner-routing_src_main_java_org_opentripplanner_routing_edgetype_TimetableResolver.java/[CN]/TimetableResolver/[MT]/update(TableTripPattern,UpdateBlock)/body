@@ -1,0 +1,12 @@
+{
+synchronized (this) {
+    if (dirty == null)     throw new ConcurrentModificationException("This TimetableResolver is read-only.");
+    Timetable tt=resolve(pattern);
+    if (!dirty.contains(tt)) {
+      tt=tt.copy();
+      timetables.put(pattern,tt);
+      dirty.add(tt);
+    }
+    return tt.update(block);
+  }
+}

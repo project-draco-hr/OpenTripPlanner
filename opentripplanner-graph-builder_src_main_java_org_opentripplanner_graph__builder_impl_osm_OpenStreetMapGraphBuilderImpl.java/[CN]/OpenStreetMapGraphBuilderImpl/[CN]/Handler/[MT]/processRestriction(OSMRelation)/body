@@ -13,7 +13,7 @@
     }
   }
   if (from == -1 || to == -1 || via == -1) {
-    _log.warn(GraphBuilderAnnotation.register(graph,Variety.TURN_RESTRICTION_BAD,relation.getId()));
+    _log.warn(graph.addBuilderAnnotation(new TurnRestrictionBad(relation.getId())));
     return;
   }
   Set<TraverseMode> modes=EnumSet.of(TraverseMode.BICYCLE,TraverseMode.CAR);
@@ -25,7 +25,7 @@
       }
  else       if (m.equals("bicycle")) {
         modes.remove(TraverseMode.BICYCLE);
-        _log.warn(GraphBuilderAnnotation.register(graph,Variety.TURN_RESTRICTION_EXCEPTION,via,from));
+        _log.warn(graph.addBuilderAnnotation(new TurnRestrictionException(via,from)));
       }
     }
   }
@@ -55,7 +55,7 @@
     tag=new TurnRestrictionTag(via,TurnRestrictionType.ONLY_TURN,Direction.U);
   }
  else {
-    _log.warn(GraphBuilderAnnotation.register(graph,Variety.TURN_RESTRICTION_UNKNOWN,relation.getTag("restriction")));
+    _log.warn(graph.addBuilderAnnotation(new TurnRestrictionUnknown(relation.getTag("restriction"))));
     return;
   }
   tag.modes=new TraverseModeSet(modes);

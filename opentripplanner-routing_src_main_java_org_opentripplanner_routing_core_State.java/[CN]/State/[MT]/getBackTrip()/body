@@ -1,6 +1,6 @@
 {
-  if (backEdge instanceof TimeDependentTrip) {
-    return ((TimeDependentTrip)backEdge).getTrip(stateData.tripTimes.index);
+  if (backEdge instanceof PatternEdge) {
+    return stateData.tripTimes.getTrip();
   }
  else {
     return backEdge.getTrip();

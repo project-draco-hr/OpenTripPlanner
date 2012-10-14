@@ -1,0 +1,29 @@
+{
+  if (!routerIdLegal(routerId)) {
+    LOG.error("routerId '{}' contains characters other than alphanumeric, underscore, and dash.",routerId);
+    return null;
+  }
+  LOG.debug("loading serialized graph for routerId {}",routerId);
+  String resourceLocation=String.format("%s/%s/Graph.obj",resourceBase,routerId);
+  LOG.debug("graph file for routerId '{}' is at {}",routerId,resourceLocation);
+  Resource graphResource;
+  InputStream is;
+  try {
+    graphResource=resourceLoader.getResource(resourceLocation);
+    is=graphResource.getInputStream();
+  }
+ catch (  IOException ex) {
+    LOG.warn("Graph file not found or not openable for routerId '{}' under {}",routerId,resourceBase);
+    ex.printStackTrace();
+    return null;
+  }
+  LOG.debug("graph input stream successfully opened. now loading.");
+  try {
+    return Graph.load(is,loadLevel);
+  }
+ catch (  Exception ex) {
+    LOG.error("Exception while loading graph from {}.",graphResource);
+    ex.printStackTrace();
+    return null;
+  }
+}
