@@ -1,0 +1,22 @@
+{
+  Graphics2D g2d=image.createGraphics();
+  g2d.setFont(new Font("Sans",Font.PLAIN,25));
+  FontMetrics fm=g2d.getFontMetrics();
+  int dy=fm.getHeight();
+  int xsize=0;
+  for (  String s : strings) {
+    int w=fm.stringWidth(s);
+    if (w > xsize)     xsize=w;
+  }
+  int y=5;
+  int x=5;
+  y+=dy;
+  for (  String s : strings) {
+    g2d.setPaint(Color.black);
+    g2d.drawString(s,x + 1,y + 1);
+    g2d.setPaint(Color.white);
+    g2d.drawString(s,x,y);
+    y+=dy;
+  }
+  g2d.dispose();
+}

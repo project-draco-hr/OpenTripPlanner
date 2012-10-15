@@ -15,6 +15,12 @@ case TRAVELTIME:
 default :
 image=tile.generateImage(sptA,renderRequest);
 }
+if (renderRequest.timestamp) {
+DateFormat df=DateFormat.getDateTimeInstance();
+df.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+String ds=df.format(new Date(sptRequestA.dateTime * 1000));
+shadowWrite(image,ds,sptRequestA.from);
+}
 if (renderRequest.format.toString().equals("image/geotiff")) {
 GridCoverage2D gc=tile.getGridCoverage2D(image);
 return generateStreamingGeotiffResponse(gc);
