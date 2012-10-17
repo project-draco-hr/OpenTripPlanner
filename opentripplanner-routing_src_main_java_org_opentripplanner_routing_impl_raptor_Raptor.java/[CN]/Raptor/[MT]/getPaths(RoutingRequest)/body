@@ -92,7 +92,7 @@
         break;
       }
       options=options.clone();
-      if (search.getTargetStates().size() > 0) {
+      if (search.getTargetStates().size() > 0 && bestElapsedTime < expectedWorstTime) {
         break RETRY;
       }
  else {
