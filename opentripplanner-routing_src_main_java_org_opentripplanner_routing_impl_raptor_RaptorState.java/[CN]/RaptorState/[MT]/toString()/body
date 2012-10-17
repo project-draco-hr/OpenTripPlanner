@@ -8,7 +8,7 @@
       }
       cur=cur.parent;
     }
-    return "(" + routes + ")";
+    return "(" + routes + ") at "+ new Date(((long)arrivalTime) * 1000);
   }
  else {
     return "at " + stop + " boarded at "+ boardStop+ " on "+ route+ " time "+ new Date(((long)arrivalTime) * 1000)+ " walkDistance "+ walkDistance;
