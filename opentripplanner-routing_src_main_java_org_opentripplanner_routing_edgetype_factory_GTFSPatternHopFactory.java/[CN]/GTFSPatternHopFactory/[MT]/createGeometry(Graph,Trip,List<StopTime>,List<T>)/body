@@ -44,7 +44,7 @@
         continue;
       }
       double distance=segment.distance(coord);
-      if (distance < MAX_STOP_TO_SHAPE_DISTANCE) {
+      if (distance < maxStopToShapeSnapDistance) {
         stopSegments.add(segment);
         maxSegmentIndex=index;
         if (minSegmentIndexForThisStop == -1)         minSegmentIndexForThisStop=index;

@@ -15,10 +15,10 @@
   Coordinate geometryEndCoord=coordinates[coordinates.length - 1];
   Coordinate startCoord=new Coordinate(s0.getLon(),s0.getLat());
   Coordinate endCoord=new Coordinate(s1.getLon(),s1.getLat());
-  if (distanceLibrary.fastDistance(startCoord,geometryStartCoord) > MAX_STOP_TO_SHAPE_DISTANCE) {
+  if (distanceLibrary.fastDistance(startCoord,geometryStartCoord) > maxStopToShapeSnapDistance) {
     return false;
   }
- else   if (distanceLibrary.fastDistance(endCoord,geometryEndCoord) > MAX_STOP_TO_SHAPE_DISTANCE) {
+ else   if (distanceLibrary.fastDistance(endCoord,geometryEndCoord) > maxStopToShapeSnapDistance) {
     return false;
   }
   return true;
