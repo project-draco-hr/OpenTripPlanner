@@ -1,0 +1,23 @@
+{
+  double[] results=new double[population.size()];
+  int i=0;
+  for (  Individual indiv : population) {
+    int extreme=minimize ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+    int bestResult=extreme;
+    Sample s=indiv.sample;
+    State s0=spt.getState(s.v0);
+    State s1=spt.getState(s.v1);
+    if (s0 != null)     bestResult=evaluate(s0,s.t0);
+    if (s1 != null) {
+      int r=evaluate(s1,s.t1);
+      if (minimize) {
+        if (r < bestResult)         bestResult=r;
+      }
+ else {
+        if (r > bestResult)         bestResult=r;
+      }
+    }
+    results[i]=(bestResult == extreme) ? Integer.MAX_VALUE : bestResult;
+  }
+  return new ResultSet(population,results);
+}
