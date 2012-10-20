@@ -85,7 +85,7 @@
         state.rentingBike=targetState.isBikeRenting();
       }
  else {
-        state=new RaptorState(options.arriveBy);
+        state=new RaptorState(options);
       }
       state.weight=targetState.getWeight();
       state.walkDistance=targetState.getWalkDistance();
@@ -101,7 +101,7 @@
         }
       }
       addTargetState(state);
-      log.debug("Found target at: " + state);
+      log.debug("Found target at: " + state + " on "+ state.getTrips());
     }
   }
   for (  State state : bounder.removedBoundingStates) {
@@ -152,7 +152,7 @@
       newState=new RaptorState(parent);
     }
  else {
-      newState=new RaptorState(options.arriveBy);
+      newState=new RaptorState(options);
     }
     newState.weight=state.getWeight();
     newState.nBoardings=nBoardings;

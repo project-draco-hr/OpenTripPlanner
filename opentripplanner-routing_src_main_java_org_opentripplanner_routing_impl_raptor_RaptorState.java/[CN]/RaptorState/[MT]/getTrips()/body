@@ -1,0 +1,9 @@
+{
+  ArrayList<AgencyAndId> out=new ArrayList<AgencyAndId>();
+  RaptorState cur=this;
+  while (cur != null) {
+    if (cur.tripId != null)     out.add(cur.tripId);
+    cur=cur.parent;
+  }
+  return out;
+}

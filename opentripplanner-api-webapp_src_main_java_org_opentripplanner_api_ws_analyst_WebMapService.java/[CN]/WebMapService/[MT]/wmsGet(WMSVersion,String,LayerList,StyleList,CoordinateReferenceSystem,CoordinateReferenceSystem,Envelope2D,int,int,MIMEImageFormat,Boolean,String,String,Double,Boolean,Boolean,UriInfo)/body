@@ -11,7 +11,7 @@
   if (resolution != null) {
     width=(int)Math.ceil(bbox.width / resolution);
     height=(int)Math.ceil(bbox.height / resolution);
-    LOG.debug("resolution set to {}");
+    LOG.debug("resolution (pixel size) set to {} map units",resolution);
     LOG.debug("resulting raster dimensions are {}w x {}h",width,height);
   }
   RoutingRequest reqA=this.buildRequest(0);
@@ -26,7 +26,7 @@
   TileRequest tileRequest=new TileRequest(bbox,width,height);
   Layer layer=layers.get(0);
   Style style=styles.get(0);
-  RenderRequest renderRequest=new RenderRequest(format,layer,style,transparent);
+  RenderRequest renderRequest=new RenderRequest(format,layer,style,transparent,timestamp);
   if (layer != Layer.DIFFERENCE) {
     reqB=null;
   }
