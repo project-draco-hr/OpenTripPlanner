@@ -6,6 +6,7 @@
     State s0=new State(e.getFromVertex(),time,options);
     result=e.traverse(s0);
     if (result == null)     break;
+    System.out.println("boarding at " + time + " on "+ result.getBackTrip());
     time=result.getTime();
     if (time > endTime)     break;
     StopTime stopTime=new StopTime();

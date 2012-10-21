@@ -10,9 +10,20 @@
         }
       }
       List<String> uniqueNames=new ArrayList<String>(uniqueNameSet);
-      if (uniqueNames.size() > 1)       name=String.format("corner of %s and %s",uniqueNames.get(0),uniqueNames.get(1));
+      Locale locale;
+      if (options == null) {
+        locale=new Locale("en");
+      }
+ else {
+        locale=options.getLocale();
+      }
+      ResourceBundle resources=ResourceBundle.getBundle("internals",locale);
+      String fmt=resources.getString("corner");
+      if (uniqueNames.size() > 1) {
+        name=String.format(fmt,uniqueNames.get(0),uniqueNames.get(1));
+      }
  else       if (uniqueNames.size() == 1)       name=uniqueNames.get(0);
- else       name="unnamed street";
+ else       name=resources.getString("unnamedStreet");
     }
     StreetLocation closest=new StreetLocation(graph,"corner " + Math.random(),coordinate,name);
     FreeEdge e=new FreeEdge(closest,intersection);
