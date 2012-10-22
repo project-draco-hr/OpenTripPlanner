@@ -79,39 +79,16 @@
       }
  else {
         boolean shouldGenerateContinue=false;
-        if (edge instanceof PlainStreetEdge) {
-          double angleDiff=getAbsoluteAngleDiff(thisAngle,lastAngle);
-          for (          Edge alternative : backState.getVertex().getOutgoingStreetEdges()) {
-            if (alternative.getName().equals(streetName)) {
-              continue;
-            }
-            double altAngle=DirectionUtils.getFirstAngle(alternative.getGeometry());
-            double altAngleDiff=getAbsoluteAngleDiff(altAngle,lastAngle);
-            if (angleDiff > Math.PI / 4 || altAngleDiff - angleDiff < Math.PI / 16) {
-              shouldGenerateContinue=true;
-              break;
-            }
+        double angleDiff=getAbsoluteAngleDiff(thisAngle,lastAngle);
+        for (        Edge alternative : backState.getVertex().getOutgoingStreetEdges()) {
+          if (alternative.getName().equals(streetName)) {
+            continue;
           }
-        }
- else {
-          double angleDiff=getAbsoluteAngleDiff(lastAngle,thisAngle);
-          State twoStatesBack=backState.getBackState();
-          Vertex backVertex=twoStatesBack.getVertex();
-          for (          Edge alternative : backVertex.getOutgoingStreetEdges()) {
-            List<Edge> alternatives=alternative.getToVertex().getOutgoingStreetEdges();
-            if (alternatives.size() == 0) {
-              continue;
-            }
-            alternative=alternatives.get(0);
-            if (alternative.getName().equals(streetName)) {
-              continue;
-            }
-            double altAngle=DirectionUtils.getFirstAngle(alternative.getGeometry());
-            double altAngleDiff=getAbsoluteAngleDiff(altAngle,lastAngle);
-            if (angleDiff > Math.PI / 4 || altAngleDiff - angleDiff < Math.PI / 16) {
-              shouldGenerateContinue=true;
-              break;
-            }
+          double altAngle=DirectionUtils.getFirstAngle(alternative.getGeometry());
+          double altAngleDiff=getAbsoluteAngleDiff(altAngle,lastAngle);
+          if (angleDiff > Math.PI / 4 || altAngleDiff - angleDiff < Math.PI / 16) {
+            shouldGenerateContinue=true;
+            break;
           }
         }
         if (shouldGenerateContinue) {
