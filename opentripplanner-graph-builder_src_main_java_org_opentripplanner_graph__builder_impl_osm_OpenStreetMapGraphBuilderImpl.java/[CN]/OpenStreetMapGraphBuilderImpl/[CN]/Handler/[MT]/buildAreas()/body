@@ -106,7 +106,7 @@
             double length=distanceLibrary.distance(startEndpoint.getCoordinate(),endEndpoint.getCoordinate());
             AreaEdge street=edgeFactory.createAreaEdge(nodeI,nodeJ,areaEntity,startEndpoint,endEndpoint,geometry,name,length,areaPermissions,i > j,carSpeed,edgeList);
             int cls=StreetEdge.CLASS_OTHERPATH;
-            cls|=getPlatformClass(areaEntity);
+            cls|=getStreetClasses(areaEntity);
             street.setStreetClass(cls);
             street.setId(id);
             edges.add(street);

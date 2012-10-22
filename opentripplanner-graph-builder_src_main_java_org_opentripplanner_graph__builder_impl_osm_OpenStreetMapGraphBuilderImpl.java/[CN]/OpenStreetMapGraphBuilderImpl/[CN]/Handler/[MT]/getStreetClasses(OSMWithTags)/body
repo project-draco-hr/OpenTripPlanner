@@ -1,0 +1,8 @@
+{
+  int link=0;
+  String highway=way.getTag("highway");
+  if (highway != null && highway.endsWith(("_link"))) {
+    link=StreetEdge.CLASS_LINK;
+  }
+  return getPlatformClass(way) | link;
+}
