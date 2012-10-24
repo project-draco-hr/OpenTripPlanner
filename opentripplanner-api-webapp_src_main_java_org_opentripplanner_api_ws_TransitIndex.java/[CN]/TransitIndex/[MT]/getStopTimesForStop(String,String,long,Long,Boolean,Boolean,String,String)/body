@@ -23,7 +23,7 @@
   for (  String stopAgencyId : getAgenciesIds(stopAgency,routerId)) {
     AgencyAndId stop=new AgencyAndId(stopAgencyId,stopId);
     Edge preBoardEdge=transitIndexService.getPreBoardEdge(stop);
-    if (preBoardEdge == null)     break;
+    if (preBoardEdge == null)     continue;
     Vertex boarding=preBoardEdge.getToVertex();
     RoutingRequest options=makeTraverseOptions(startTime,routerId);
     HashMap<Long,Edge> seen=new HashMap();
