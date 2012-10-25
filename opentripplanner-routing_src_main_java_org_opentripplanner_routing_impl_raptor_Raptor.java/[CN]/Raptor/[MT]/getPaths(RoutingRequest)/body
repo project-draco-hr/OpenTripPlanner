@@ -92,6 +92,7 @@
         break;
       }
       options=options.clone();
+      walkOptions=walkOptions.clone();
       if (search.getTargetStates().size() > 0 && bestElapsedTime < expectedWorstTime) {
         break RETRY;
       }
@@ -105,6 +106,7 @@
     }
  while (options.getMaxWalkDistance() < initialWalk * MAX_WALK_MULTIPLE && initialWalk < Double.MAX_VALUE);
     options=options.clone();
+    walkOptions=walkOptions.clone();
     for (    RaptorState state : search.getTargetStates()) {
       for (      AgencyAndId trip : state.getTrips()) {
         options.bannedTrips.add(trip);
@@ -112,6 +114,7 @@
     }
     if (search.getTargetStates().size() == 0)     break;
     options.setMaxWalkDistance(firstWalkDistance);
+    walkOptions.setMaxWalkDistance(firstWalkDistance);
     targetStates.addAll(search.getTargetStates());
     search=new RaptorSearch(data,options);
   }
