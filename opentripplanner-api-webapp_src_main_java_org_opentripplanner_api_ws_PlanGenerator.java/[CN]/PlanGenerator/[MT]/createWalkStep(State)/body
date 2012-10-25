@@ -9,5 +9,8 @@
   step.bogusName=en.hasBogusName();
   step.addAlerts(s.getBackAlerts());
   step.angle=DirectionUtils.getFirstAngle(s.getBackEdge().getGeometry());
+  if (s.getBackEdge() instanceof AreaEdge) {
+    step.area=true;
+  }
   return step;
 }
