@@ -39,7 +39,6 @@
     getLevelsForWay(way);
     Long startNode=null;
     OSMNode osmStartNode=null;
-    double distance=0;
     for (int i=0; i < nodes.size() - 1; i++) {
       OSMNode segmentStartOSMNode=_nodes.get(nodes.get(i));
       if (segmentStartOSMNode == null) {
@@ -56,7 +55,6 @@
       if (segmentCoordinates.size() == 0) {
         segmentCoordinates.add(getCoordinate(osmStartNode));
       }
-      distance+=distanceLibrary.distance(segmentStartOSMNode.getLat(),segmentStartOSMNode.getLon(),osmEndNode.getLat(),osmEndNode.getLon());
       if (intersectionNodes.containsKey(endNode) || i == nodes.size() - 2 || nodes.subList(0,i).contains(nodes.get(i)) || osmEndNode.hasTag("ele")) {
         segmentCoordinates.add(getCoordinate(osmEndNode));
         geometry=GeometryUtils.getGeometryFactory().createLineString(segmentCoordinates.toArray(new Coordinate[0]));
