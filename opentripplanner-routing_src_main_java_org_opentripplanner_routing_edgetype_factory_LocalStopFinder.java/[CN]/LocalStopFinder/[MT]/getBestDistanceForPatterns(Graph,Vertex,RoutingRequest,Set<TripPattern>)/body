@@ -5,7 +5,7 @@
   State initial=new State(origin,options);
   spt.add(initial);
   queue.insert(initial,0);
-  HashMap<TableTripPattern,Double> patternCosts=new HashMap<TableTripPattern,Double>();
+  HashMap<TripPattern,Double> patternCosts=new HashMap<TripPattern,Double>();
   int patternsSeen=0;
   while (!queue.empty()) {
     State u=queue.extract_min();
@@ -16,26 +16,21 @@
       Vertex departureVertex=null;
       for (      Edge e : fromv.getOutgoing()) {
         departureVertex=e.getToVertex();
-        break;
-      }
-      if (departureVertex == null) {
-        _log.debug("Stop without departure vertex.");
-        continue;
-      }
-      for (      Edge e : departureVertex.getOutgoing()) {
-        if (e instanceof TransitBoardAlight && ((TransitBoardAlight)e).isBoarding()) {
-          TableTripPattern pattern=((TransitBoardAlight)e).getPattern();
-          if (nearbyPatterns.contains(pattern)) {
-            Double cost=patternCosts.get(pattern);
-            if (cost == null) {
-              patternCosts.put(pattern,u.getWeight());
-              patternsSeen++;
-              if (patternsSeen == nearbyPatterns.size()) {
-                return patternCosts;
+        for (        Edge e2 : departureVertex.getOutgoing()) {
+          if ((e2 instanceof TransitBoardAlight && ((TransitBoardAlight)e2).isBoarding()) || e2 instanceof FrequencyBoard) {
+            TripPattern pattern=((PatternEdge)e2).getPattern();
+            if (nearbyPatterns.contains(pattern)) {
+              Double cost=patternCosts.get(pattern);
+              if (cost == null) {
+                patternCosts.put(pattern,u.getWeight());
+                patternsSeen++;
+                if (patternsSeen == nearbyPatterns.size()) {
+                  return patternCosts;
+                }
               }
-            }
- else             if (cost > u.getWeight()) {
-              patternCosts.put(pattern,u.getWeight());
+ else               if (cost > u.getWeight()) {
+                patternCosts.put(pattern,u.getWeight());
+              }
             }
           }
         }
