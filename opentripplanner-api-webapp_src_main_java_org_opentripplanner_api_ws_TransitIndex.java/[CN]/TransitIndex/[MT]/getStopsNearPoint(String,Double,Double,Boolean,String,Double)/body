@@ -1,7 +1,11 @@
 {
+  Double searchRadius=(radius == null) ? STOP_SEARCH_RADIUS : radius;
   Graph graph=getGraph(routerId);
+  if (Double.isNaN(searchRadius) || searchRadius <= 0) {
+    searchRadius=STOP_SEARCH_RADIUS;
+  }
   StreetVertexIndexService streetVertexIndexService=graph.streetIndex;
-  List<TransitStop> stops=streetVertexIndexService.getNearbyTransitStops(new Coordinate(lon,lat),STOP_SEARCH_RADIUS);
+  List<TransitStop> stops=streetVertexIndexService.getNearbyTransitStops(new Coordinate(lon,lat),searchRadius);
   TransitIndexService transitIndexService=graph.getService(TransitIndexService.class);
   if (transitIndexService == null) {
     return new TransitError("No transit index found.  Add TransitIndexBuilder to your graph builder configuration and rebuild your graph.");

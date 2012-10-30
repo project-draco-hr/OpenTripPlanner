@@ -28,7 +28,6 @@
     RoutingRequest options=makeTraverseOptions(startTime,routerId);
     HashMap<Long,Edge> seen=new HashMap();
     OUTER:     for (    Edge e : boarding.getOutgoing()) {
-      System.out.println("HERE: " + e);
       for (      StopTime st : getStopTimesForBoardEdge(startTime,endTime,options,e,extended)) {
         st.phase="departure";
         if (extended != null && extended.equals(true)) {
