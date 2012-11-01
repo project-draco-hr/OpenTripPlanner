@@ -38,7 +38,7 @@
   if (bestSeg == 0 && bestFrac == 0)   endwiseVertex=(StreetVertex)edge.getFromVertex();
  else   if (bestSeg == numCoords - 2 && bestFrac == 1)   endwiseVertex=(StreetVertex)edge.getToVertex();
  else   endwiseVertex=null;
-  score=distance;
+  score=distance * SphericalDistanceLibrary.RADIUS_OF_EARTH_IN_KM * 1000 / 360.0;
   if (endwise()) {
     score*=1.5;
   }
