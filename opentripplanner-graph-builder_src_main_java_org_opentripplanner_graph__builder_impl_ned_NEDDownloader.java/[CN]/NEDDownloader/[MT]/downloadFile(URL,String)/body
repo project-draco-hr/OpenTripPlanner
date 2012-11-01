@@ -3,7 +3,7 @@
     String key=getKey(url);
     log.debug("Starting download " + key);
     File path=getPathToNEDArchive(key);
-    URL downloadUrl=new URL("http://igskmncnwb010.cr.usgs.gov/axis2/services/DownloadService/getData?downloadID=" + token);
+    URL downloadUrl=new URL("http://extract.cr.usgs.gov/axis2/services/DownloadService/getData?downloadID=" + token);
     URLConnection connection=downloadUrl.openConnection();
     HttpURLConnection httpconnection=(HttpURLConnection)connection;
     InputStream istream=connection.getInputStream();
@@ -26,7 +26,7 @@
     throw new RuntimeException("Error getting data from USGS Download Server while downloading",e);
   }
   try {
-    URL cleanupURL=new URL("http://igskmncnwb010.cr.usgs.gov/axis2/services/DownloadService/setDownloadComplete?downloadID=" + token);
+    URL cleanupURL=new URL("http://extract.cr.usgs.gov/axis2/services/DownloadService/setDownloadComplete?downloadID=" + token);
     cleanupURL.openStream().close();
   }
  catch (  Exception e) {

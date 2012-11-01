@@ -2,7 +2,7 @@
   List<URL> urls=new ArrayList<URL>();
   List<String> payloads=getValidateElements();
   log.debug("Getting urls from request validation service");
-  String RTendpointURL="http://igskmncnwb010.cr.usgs.gov/requestValidationService/services/RequestValidationService";
+  String RTendpointURL="http://extract.cr.usgs.gov/requestValidationService/services/RequestValidationService";
   try {
     for (    String payload : payloads) {
       sleep(2000);
@@ -26,7 +26,6 @@
         Node node=nodes.item(i);
         String urlString=node.getTextContent().trim();
         log.debug("Adding NED URL:" + urlString);
-        urlString=urlString.replaceFirst("http://extract.","http://igskmncnwb010.");
         urlString=urlString.replaceAll(" ","+");
         URL url=new URL(urlString);
         urls.add(url);
