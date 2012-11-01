@@ -1,0 +1,7 @@
+{
+  HashMap<Integer,Set<T>> out=new HashMap<Integer,Set<T>>();
+  for (  Map.Entry<T,Integer> entry : setMapping.entrySet()) {
+    MapUtils.addToMapSet(out,compact(entry.getValue()),entry.getKey());
+  }
+  return new ArrayList<Set<T>>(out.values());
+}
