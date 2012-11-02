@@ -1,14 +1,14 @@
 {
-  ArrayList<Point> vertices=new ArrayList<Point>();
+  ArrayList<VLPoint> vertices=new ArrayList<VLPoint>();
   nodes=new ArrayList<OSMNode>(osmNodes.size());
   for (  long nodeId : osmNodes) {
     OSMNode node=_nodes.get(nodeId);
     if (nodes.contains(node)) {
       continue;
     }
-    Point point=new Point(node.getLon(),node.getLat());
+    VLPoint point=new VLPoint(node.getLon(),node.getLat());
     nodes.add(node);
     vertices.add(point);
   }
-  geometry=new Polygon(vertices);
+  geometry=new VLPolygon(vertices);
 }

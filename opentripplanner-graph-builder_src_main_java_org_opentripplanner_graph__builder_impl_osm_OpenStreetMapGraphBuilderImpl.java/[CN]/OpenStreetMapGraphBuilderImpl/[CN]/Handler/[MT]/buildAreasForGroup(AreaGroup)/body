@@ -1,0 +1,83 @@
+{
+  Set<OSMNode> startingNodes=new HashSet<OSMNode>();
+  Set<Vertex> startingVertices=new HashSet<Vertex>();
+  Set<Edge> edges=new HashSet<Edge>();
+  for (  Ring ring : group.outermostRings) {
+    AreaEdgeList edgeList=new AreaEdgeList();
+    ArrayList<VLPoint> visibilityPoints=new ArrayList<VLPoint>();
+    ArrayList<OSMNode> visibilityNodes=new ArrayList<OSMNode>();
+    HashSet<P2<OSMNode>> alreadyAddedEdges=new HashSet<P2<OSMNode>>();
+    for (    Area area : group.areas) {
+      if (!ring.toJtsPolygon().contains(area.toJTSMultiPolygon())) {
+        continue;
+      }
+      for (      Ring outerRing : area.outermostRings) {
+        for (int i=0; i < outerRing.nodes.size(); ++i) {
+          OSMNode node=outerRing.nodes.get(i);
+          createEdgesForRingSegment(edges,edgeList,area,outerRing,i,alreadyAddedEdges);
+          addtoVisibilityAndStartSets(startingNodes,visibilityPoints,visibilityNodes,node);
+        }
+        for (        Ring innerRing : outerRing.holes) {
+          for (int j=0; j < innerRing.nodes.size(); ++j) {
+            OSMNode node=innerRing.nodes.get(j);
+            createEdgesForRingSegment(edges,edgeList,area,innerRing,j,alreadyAddedEdges);
+            addtoVisibilityAndStartSets(startingNodes,visibilityPoints,visibilityNodes,node);
+          }
+        }
+      }
+    }
+    List<OSMNode> nodes=new ArrayList<OSMNode>();
+    List<VLPoint> vertices=new ArrayList<VLPoint>();
+    accumulateRingNodes(ring,nodes,vertices);
+    VLPolygon polygon=makeStandardizedVLPolygon(vertices,nodes,false);
+    accumulateVisibilityPoints(ring.nodes,polygon,visibilityPoints,visibilityNodes,false);
+    ArrayList<VLPolygon> polygons=new ArrayList<VLPolygon>();
+    polygons.add(polygon);
+    for (    Ring innerRing : ring.holes) {
+      ArrayList<OSMNode> holeNodes=new ArrayList<OSMNode>();
+      vertices=new ArrayList<VLPoint>();
+      accumulateRingNodes(innerRing,holeNodes,vertices);
+      VLPolygon hole=makeStandardizedVLPolygon(vertices,holeNodes,true);
+      accumulateVisibilityPoints(innerRing.nodes,hole,visibilityPoints,visibilityNodes,true);
+      nodes.addAll(holeNodes);
+      polygons.add(hole);
+    }
+    Environment areaEnv=new Environment(polygons);
+    if (visibilityPoints.size() > MAX_AREA_NODES) {
+      _log.warn("Area " + group.getSomeOSMObject() + " is too complicated ("+ visibilityPoints.size()+ " > "+ MAX_AREA_NODES);
+      continue;
+    }
+    if (!areaEnv.is_valid(VISIBILITY_EPSILON)) {
+      _log.warn("Area " + group.getSomeOSMObject() + " is not epsilon-valid (epsilon = "+ VISIBILITY_EPSILON+ ")");
+      continue;
+    }
+    edgeList.setOriginalEdges(ring.toJtsPolygon());
+    createNamedAreas(edgeList,ring,group.areas);
+    OSMWithTags areaEntity=group.getSomeOSMObject();
+    for (int i=0; i < visibilityNodes.size(); ++i) {
+      OSMNode nodeI=visibilityNodes.get(i);
+      VisibilityPolygon visibilityPolygon=new VisibilityPolygon(visibilityPoints.get(i),areaEnv,VISIBILITY_EPSILON);
+      Polygon poly=toJTSPolygon(visibilityPolygon);
+      for (int j=0; j < visibilityNodes.size(); ++j) {
+        OSMNode nodeJ=visibilityNodes.get(j);
+        P2<OSMNode> nodePair=new P2<OSMNode>(nodeI,nodeJ);
+        if (alreadyAddedEdges.contains(nodePair))         continue;
+        IntersectionVertex startEndpoint=getVertexForOsmNode(nodeI,areaEntity);
+        IntersectionVertex endEndpoint=getVertexForOsmNode(nodeJ,areaEntity);
+        Coordinate[] coordinates=new Coordinate[]{startEndpoint.getCoordinate(),endEndpoint.getCoordinate()};
+        GeometryFactory geometryFactory=GeometryUtils.getGeometryFactory();
+        LineString line=geometryFactory.createLineString(coordinates);
+        if (poly.contains(line)) {
+          createSegments(nodeI,nodeJ,startEndpoint,endEndpoint,group.areas,edgeList,edges);
+          if (startingNodes.contains(nodeI)) {
+            startingVertices.add(startEndpoint);
+          }
+          if (startingNodes.contains(nodeJ)) {
+            startingVertices.add(endEndpoint);
+          }
+        }
+      }
+    }
+  }
+  pruneAreaEdges(startingVertices,edges);
+}

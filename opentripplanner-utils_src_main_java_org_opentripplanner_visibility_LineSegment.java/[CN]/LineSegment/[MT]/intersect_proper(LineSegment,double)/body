@@ -1,9 +1,9 @@
 {
   if (size() == 0 || line_segment2.size() == 0)   return false;
-  Point a=new Point(first());
-  Point b=new Point(second());
-  Point c=new Point(line_segment2.first());
-  Point d=new Point(line_segment2.second());
+  VLPoint a=new VLPoint(first());
+  VLPoint b=new VLPoint(second());
+  VLPoint c=new VLPoint(line_segment2.first());
+  VLPoint d=new VLPoint(line_segment2.second());
   double running_min, distance_temp;
   running_min=a.distance(line_segment2);
   distance_temp=b.distance(line_segment2);

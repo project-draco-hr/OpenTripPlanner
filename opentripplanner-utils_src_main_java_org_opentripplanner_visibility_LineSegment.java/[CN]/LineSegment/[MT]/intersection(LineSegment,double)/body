@@ -2,10 +2,10 @@
   LineSegment line_segment_temp=new LineSegment();
   if (size() == 0 || line_segment2.size() == 0)   return line_segment_temp;
   if (!intersect(line_segment2,epsilon))   return line_segment_temp;
-  Point a=new Point(first());
-  Point b=new Point(second());
-  Point c=new Point(line_segment2.first());
-  Point d=new Point(line_segment2.second());
+  VLPoint a=new VLPoint(first());
+  VLPoint b=new VLPoint(second());
+  VLPoint c=new VLPoint(line_segment2.first());
+  VLPoint d=new VLPoint(line_segment2.second());
   if (intersect_proper(line_segment2,epsilon)) {
     double D=a.x * (d.y - c.y) + b.x * (c.y - d.y) + d.x * (b.y - a.y) + c.x * (a.y - b.y);
     double s=(a.x * (d.y - c.y) + c.x * (a.y - d.y) + d.x * (c.y - a.y)) / D;

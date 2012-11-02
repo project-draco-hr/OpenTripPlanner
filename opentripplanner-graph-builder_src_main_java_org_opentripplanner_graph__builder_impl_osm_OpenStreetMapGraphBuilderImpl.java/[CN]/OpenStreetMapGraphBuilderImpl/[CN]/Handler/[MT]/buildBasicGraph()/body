@@ -5,8 +5,6 @@
     wayIndex++;
     WayProperties wayData=wayPropertySet.getDataForWay(way);
     setWayName(way);
-    Set<Alert> note=wayPropertySet.getNoteForWay(way);
-    Set<Alert> wheelchairNote=getWheelchairNotes(way);
     StreetTraversalPermission permissions=getPermissionsForEntity(way,wayData.getPermission());
     if (permissions == StreetTraversalPermission.NONE)     continue;
     ArrayList<Long> nodes=new ArrayList<Long>(way.getNodeRefs().size());
@@ -87,33 +85,8 @@
       }
       P2<PlainStreetEdge> streets=getEdgesForStreet(startEndpoint,endEndpoint,way,i,osmStartNode.getId(),osmEndNode.getId(),permissions,geometry);
       PlainStreetEdge street=streets.getFirst();
-      if (street != null) {
-        double safety=wayData.getSafetyFeatures().getFirst();
-        street.setBicycleSafetyEffectiveLength(street.getLength() * safety);
-        if (safety < bestBikeSafety) {
-          bestBikeSafety=safety;
-        }
-        if (note != null) {
-          street.setNote(note);
-        }
-        if (wheelchairNote != null) {
-          street.setWheelchairNote(wheelchairNote);
-        }
-      }
       PlainStreetEdge backStreet=streets.getSecond();
-      if (backStreet != null) {
-        double safety=wayData.getSafetyFeatures().getSecond();
-        if (safety < bestBikeSafety) {
-          bestBikeSafety=safety;
-        }
-        backStreet.setBicycleSafetyEffectiveLength(backStreet.getLength() * safety);
-        if (note != null) {
-          backStreet.setNote(note);
-        }
-        if (wheelchairNote != null) {
-          backStreet.setWheelchairNote(wheelchairNote);
-        }
-      }
+      applyWayProperties(street,backStreet,wayData,way);
       applyEdgesToTurnRestrictions(way,startNode,endNode,street,backStreet);
       startNode=endNode;
       osmStartNode=_nodes.get(startNode);

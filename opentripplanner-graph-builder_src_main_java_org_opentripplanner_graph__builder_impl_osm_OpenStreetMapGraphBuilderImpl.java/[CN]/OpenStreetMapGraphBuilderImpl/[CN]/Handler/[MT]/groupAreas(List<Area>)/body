@@ -1,0 +1,40 @@
+{
+  DisjointSet<Area> groups=new DisjointSet<Area>();
+  HashMap<OSMNode,List<Area>> areasForNode=new HashMap<OSMNode,List<Area>>();
+  for (  Area area : areas) {
+    for (    Ring ring : area.outermostRings) {
+      for (      Ring inner : ring.holes) {
+        for (        OSMNode node : inner.nodes) {
+          MapUtils.addToMapList(areasForNode,node,area);
+        }
+      }
+      for (      OSMNode node : ring.nodes) {
+        MapUtils.addToMapList(areasForNode,node,area);
+      }
+    }
+  }
+  for (  List<Area> nodeAreas : areasForNode.values()) {
+    for (    Area area1 : nodeAreas) {
+      OSMLevel level1=wayLevels.get(area1.parent);
+      for (      Area area2 : nodeAreas) {
+        OSMLevel level2=wayLevels.get(area2.parent);
+        if ((level1 == null && level2 == null) || (level1 != null && level1.equals(level2))) {
+          groups.union(area1,area2);
+        }
+      }
+    }
+  }
+  List<AreaGroup> out=new ArrayList<AreaGroup>();
+  for (  Set<Area> areaSet : groups.sets()) {
+    try {
+      out.add(new AreaGroup(areaSet));
+    }
+ catch (    AreaGroup.RingConstructionException e) {
+      for (      Area area : areaSet) {
+        _log.debug("Failed to create merged area for " + area + ".  This area might not be at fault; it might be one of the other areas in this list.");
+        out.add(new AreaGroup(Arrays.asList(area)));
+      }
+    }
+  }
+  return out;
+}

@@ -1,0 +1,24 @@
+{
+  List<OSMNode> shell=new ArrayList<OSMNode>();
+  for (  Coordinate coord : polygon.getExteriorRing().getCoordinates()) {
+    OSMNode node=nodeMap.get(coord);
+    if (node == null) {
+      throw new RingConstructionException();
+    }
+    shell.add(node);
+  }
+  Ring ring=new Ring(shell,true);
+  for (int i=0; i < polygon.getNumInteriorRing(); ++i) {
+    LineString interior=polygon.getInteriorRingN(i);
+    List<OSMNode> hole=new ArrayList<OSMNode>();
+    for (    Coordinate coord : interior.getCoordinates()) {
+      OSMNode node=nodeMap.get(coord);
+      if (node == null) {
+        throw new RingConstructionException();
+      }
+      hole.add(node);
+    }
+    ring.holes.add(new Ring(hole,true));
+  }
+  return ring;
+}

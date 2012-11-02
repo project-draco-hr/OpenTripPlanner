@@ -1,0 +1,10 @@
+{
+  Coordinate[] coords=new Coordinate[geometry.n() + 1];
+  int i=0;
+  for (  VLPoint point : geometry.vertices) {
+    coords[i++]=new Coordinate(point.x,point.y);
+  }
+  VLPoint first=geometry.vertices.get(0);
+  coords[i++]=new Coordinate(first.x,first.y);
+  return coords;
+}

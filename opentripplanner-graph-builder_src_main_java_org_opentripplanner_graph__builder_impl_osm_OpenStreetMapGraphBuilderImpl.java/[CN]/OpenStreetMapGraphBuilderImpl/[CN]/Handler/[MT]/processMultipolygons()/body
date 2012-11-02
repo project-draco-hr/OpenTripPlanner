@@ -33,6 +33,8 @@
     _processedAreas.add(relation);
     Area area;
     try {
+      StreetTraversalPermission areaPermissions=getPermissionsForEntity(relation,StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
+      if (areaPermissions == StreetTraversalPermission.NONE)       continue;
       area=new Area(relation,outerWays,innerWays);
     }
  catch (    Area.AreaConstructionException e) {

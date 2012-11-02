@@ -1,0 +1,13 @@
+{
+  VLPoint running_projection=polyline_temp.get(0);
+  double running_min=distance(running_projection);
+  VLPoint point_temp;
+  for (int i=0; i <= polyline_temp.size() - 1; i++) {
+    point_temp=projection_onto(new LineSegment(polyline_temp.get(i),polyline_temp.get(i + 1)));
+    if (distance(point_temp) < running_min) {
+      running_projection=point_temp;
+      running_min=distance(running_projection);
+    }
+  }
+  return running_projection;
+}

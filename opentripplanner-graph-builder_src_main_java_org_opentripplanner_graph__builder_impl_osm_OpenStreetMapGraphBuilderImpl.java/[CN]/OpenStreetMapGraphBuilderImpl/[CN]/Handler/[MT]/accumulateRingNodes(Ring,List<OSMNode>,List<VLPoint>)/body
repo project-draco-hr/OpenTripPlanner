@@ -1,0 +1,10 @@
+{
+  for (  OSMNode node : ring.nodes) {
+    if (nodes.contains(node)) {
+      continue;
+    }
+    VLPoint point=new VLPoint(node.getLon(),node.getLat());
+    nodes.add(node);
+    vertices.add(point);
+  }
+}
