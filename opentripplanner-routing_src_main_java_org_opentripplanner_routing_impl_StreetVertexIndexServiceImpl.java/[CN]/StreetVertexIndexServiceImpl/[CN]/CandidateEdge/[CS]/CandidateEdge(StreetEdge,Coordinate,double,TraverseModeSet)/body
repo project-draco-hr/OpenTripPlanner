@@ -23,9 +23,9 @@
     double frac=GeometryUtils.segmentFraction(x0,y0,x1,y1,p.x,p.y,xscale);
     double x=x0 + frac * (x1 - x0);
     double y=y0 + frac * (y1 - y0);
-    double dx=x - p.x;
+    double dx=(x - p.x) * xscale;
     double dy=y - p.y;
-    double dist2=dx * dx * xscale + dy * dy;
+    double dist2=dx * dx + dy * dy;
     if (dist2 < bestDist2) {
       nearestPointOnEdge.x=x;
       nearestPointOnEdge.y=y;
@@ -35,8 +35,8 @@
     }
   }
   distance=Math.sqrt(bestDist2);
-  if (bestSeg == 0 && bestFrac == 0)   endwiseVertex=(StreetVertex)edge.getFromVertex();
- else   if (bestSeg == numCoords - 2 && bestFrac == 1)   endwiseVertex=(StreetVertex)edge.getToVertex();
+  if (bestSeg == 0 && Math.abs(bestFrac) < 0.000001)   endwiseVertex=(StreetVertex)edge.getFromVertex();
+ else   if (bestSeg == numCoords - 2 && Math.abs(bestFrac - 1.0) < 0.000001)   endwiseVertex=(StreetVertex)edge.getToVertex();
  else   endwiseVertex=null;
   score=distance * SphericalDistanceLibrary.RADIUS_OF_EARTH_IN_KM * 1000 / 360.0;
   if (endwise()) {
