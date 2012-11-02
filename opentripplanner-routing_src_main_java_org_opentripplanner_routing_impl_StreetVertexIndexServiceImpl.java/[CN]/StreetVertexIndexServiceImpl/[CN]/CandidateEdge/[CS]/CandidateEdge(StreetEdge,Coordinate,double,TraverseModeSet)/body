@@ -39,9 +39,6 @@
  else   if (bestSeg == numCoords - 2 && Math.abs(bestFrac - 1.0) < 0.000001)   endwiseVertex=(StreetVertex)edge.getToVertex();
  else   endwiseVertex=null;
   score=distance * SphericalDistanceLibrary.RADIUS_OF_EARTH_IN_KM * 1000 / 360.0;
-  if (endwise()) {
-    score*=1.5;
-  }
   score/=preference;
   if ((e.getStreetClass() & platform) != 0) {
     score/=PLATFORM_PREFERENCE;
