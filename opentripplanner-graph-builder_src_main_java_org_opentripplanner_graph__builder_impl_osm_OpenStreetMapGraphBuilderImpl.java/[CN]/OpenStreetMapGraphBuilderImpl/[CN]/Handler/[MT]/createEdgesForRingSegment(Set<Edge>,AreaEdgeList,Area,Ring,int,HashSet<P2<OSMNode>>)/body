@@ -1,0 +1,12 @@
+{
+  OSMNode node=ring.nodes.get(i);
+  OSMNode nextNode=ring.nodes.get((i + 1) % ring.nodes.size());
+  P2<OSMNode> nodePair=new P2<OSMNode>(node,nextNode);
+  if (alreadyAddedEdges.contains(nodePair)) {
+    return;
+  }
+  alreadyAddedEdges.add(nodePair);
+  IntersectionVertex startEndpoint=getVertexForOsmNode(node,area.parent);
+  IntersectionVertex endEndpoint=getVertexForOsmNode(nextNode,area.parent);
+  createSegments(node,nextNode,startEndpoint,endEndpoint,Arrays.asList(area),edgeList,edges);
+}

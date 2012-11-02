@@ -1,0 +1,10 @@
+{
+  Coordinate[] coordinates=new Coordinate[visibilityPolygon.n() + 1];
+  for (int p=0; p < coordinates.length; ++p) {
+    VLPoint vlPoint=visibilityPolygon.get(p);
+    coordinates[p]=new Coordinate(vlPoint.x,vlPoint.y);
+  }
+  LinearRing shell=GeometryUtils.getGeometryFactory().createLinearRing(coordinates);
+  Polygon poly=GeometryUtils.getGeometryFactory().createPolygon(shell,new LinearRing[0]);
+  return poly;
+}

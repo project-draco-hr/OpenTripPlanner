@@ -1,0 +1,15 @@
+{
+  GeometryFactory geometryFactory=GeometryUtils.getGeometryFactory();
+  if (edges.size() == 0) {
+    throw new RuntimeException("Can't add a vertex to an empty area");
+  }
+  @SuppressWarnings("unchecked") HashSet<IntersectionVertex> verticesCopy=(HashSet<IntersectionVertex>)vertices.clone();
+  VERTEX:   for (  IntersectionVertex v : verticesCopy) {
+    LineString newGeometry=geometryFactory.createLineString(new Coordinate[]{newVertex.getCoordinate(),v.getCoordinate()});
+    if (!originalEdges.union(originalEdges.getBoundary()).contains(newGeometry)) {
+      continue VERTEX;
+    }
+    createSegments(newVertex,v,areas,graph);
+  }
+  vertices.add(newVertex);
+}

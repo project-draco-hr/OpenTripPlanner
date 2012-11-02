@@ -1,0 +1,14 @@
+{
+  if (jtsPolygon != null) {
+    return jtsPolygon;
+  }
+  GeometryFactory factory=GeometryUtils.getGeometryFactory();
+  LinearRing shell=factory.createLinearRing(toCoordinates(geometry));
+  LinearRing[] lrholes=new LinearRing[holes.size()];
+  int i=0;
+  for (  Ring ring : holes) {
+    lrholes[i++]=factory.createLinearRing(toCoordinates(ring.geometry));
+  }
+  jtsPolygon=factory.createPolygon(shell,lrholes);
+  return jtsPolygon;
+}

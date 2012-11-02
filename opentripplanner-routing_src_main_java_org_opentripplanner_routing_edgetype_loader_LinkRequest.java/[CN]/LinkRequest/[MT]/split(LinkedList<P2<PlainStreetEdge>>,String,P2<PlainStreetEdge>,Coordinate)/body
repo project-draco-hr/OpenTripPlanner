@@ -37,9 +37,12 @@
   }
   double lengthIn=e1.getLength() * lengthRatioIn;
   double lengthOut=e1.getLength() * (1 - lengthRatioIn);
-  StreetVertex e1midpoint=new IntersectionVertex(linker.graph,"split 1 at " + label,midCoord.x,midCoord.y,name);
+  IntersectionVertex e1midpoint=new IntersectionVertex(linker.graph,"split 1 at " + label,midCoord.x,midCoord.y,name);
   PlainStreetEdge forward1=new PlainStreetEdge(e1v1,e1midpoint,toMidpoint,name,lengthIn,e1.getPermission(),false);
   PlainStreetEdge forward2=new PlainStreetEdge(e1midpoint,e1v2,forwardGeometryPair.getSecond(),name,lengthOut,e1.getPermission(),true);
+  if (e1 instanceof AreaEdge) {
+    ((AreaEdge)e1).getArea().addVertex(e1midpoint,linker.graph);
+  }
   addEdges(forward1,forward2);
   PlainStreetEdge backward1=null;
   PlainStreetEdge backward2=null;
@@ -48,6 +51,9 @@
     e2midpoint=new IntersectionVertex(linker.graph,"split 2 at " + label,midCoord.x,midCoord.y,name);
     backward1=new PlainStreetEdge(e2v1,e2midpoint,backGeometryPair.getFirst(),name,lengthOut,e2.getPermission(),false);
     backward2=new PlainStreetEdge(e2midpoint,e2v2,backGeometryPair.getSecond(),name,lengthIn,e2.getPermission(),true);
+    if (e2 instanceof AreaEdge) {
+      ((AreaEdge)e2).getArea().addVertex(e2midpoint,linker.graph);
+    }
     double backwardBseLengthIn=e2.getBicycleSafetyEffectiveLength() * lengthRatioIn;
     double backwardBseLengthOut=e2.getBicycleSafetyEffectiveLength() * (1 - lengthRatioIn);
     backward1.setBicycleSafetyEffectiveLength(backwardBseLengthIn);
@@ -73,14 +79,12 @@
   }
   linker.graph.removeTemporaryEdge(e1);
   edgesAdded.remove(e1);
-  e1.detach();
   if (e2 != null) {
     linker.graph.removeTemporaryEdge(e2);
     edgesAdded.remove(e2);
-    e2.detach();
-    return Arrays.asList(e1midpoint,e2midpoint);
+    return Arrays.asList((StreetVertex)e1midpoint,e2midpoint);
   }
  else {
-    return Arrays.asList(e1midpoint);
+    return Arrays.asList((StreetVertex)e1midpoint);
   }
 }

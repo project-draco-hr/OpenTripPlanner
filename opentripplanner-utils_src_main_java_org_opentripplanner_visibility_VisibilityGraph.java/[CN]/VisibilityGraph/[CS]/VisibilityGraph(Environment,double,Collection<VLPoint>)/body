@@ -1,0 +1,20 @@
+{
+  n=environment.n();
+  vertex_counts=new ArrayList<Integer>(environment.h());
+  for (int i=0; i < environment.h(); i++)   vertex_counts.add(environment.get(i).n());
+  adjacency_matrix=new boolean[n][n];
+  for (int k1=0; k1 < n; k1++) {
+    VLPoint point1=environment.kth_point(k1);
+    if (origins != null && !origins.contains(point1))     continue;
+    VLPolygon polygon_temp=new VisibilityPolygon(point1,environment,epsilon);
+    for (int k2=0; k2 < n; k2++) {
+      if (k1 == k2)       adjacency_matrix[k1][k1]=true;
+ else {
+        VLPoint point2=environment.kth_point(k2);
+        if (origins == null || origins.contains(point2)) {
+          adjacency_matrix[k1][k2]=adjacency_matrix[k2][k1]=point2.in(polygon_temp,epsilon);
+        }
+      }
+    }
+  }
+}

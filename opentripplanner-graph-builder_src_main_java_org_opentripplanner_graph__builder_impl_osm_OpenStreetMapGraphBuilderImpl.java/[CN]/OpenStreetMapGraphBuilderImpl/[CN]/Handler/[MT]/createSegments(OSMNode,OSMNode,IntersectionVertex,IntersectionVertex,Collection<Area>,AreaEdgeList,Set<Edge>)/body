@@ -1,0 +1,73 @@
+{
+  List<Area> intersects=new ArrayList<Area>();
+  Coordinate[] coordinates=new Coordinate[]{startEndpoint.getCoordinate(),endEndpoint.getCoordinate()};
+  GeometryFactory geometryFactory=GeometryUtils.getGeometryFactory();
+  LineString line=geometryFactory.createLineString(coordinates);
+  for (  Area area : areas) {
+    MultiPolygon polygon=area.toJTSMultiPolygon();
+    Geometry intersection=polygon.intersection(line);
+    if (intersection.getLength() > 0.000001) {
+      intersects.add(area);
+    }
+  }
+  if (intersects.size() == 1) {
+    Area area=intersects.get(0);
+    OSMWithTags areaEntity=area.parent;
+    StreetTraversalPermission areaPermissions=getPermissionsForEntity(areaEntity,StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
+    float carSpeed=wayPropertySet.getCarSpeedForWay(areaEntity,false);
+    double length=distanceLibrary.distance(startEndpoint.getCoordinate(),endEndpoint.getCoordinate());
+    int cls=StreetEdge.CLASS_OTHERPATH;
+    cls|=getStreetClasses(areaEntity);
+    String id="way (area) " + areaEntity.getId() + " from "+ startEndpoint.getLabel()+ " to "+ endEndpoint.getLabel();
+    id=unique(id);
+    String name=getNameForWay(areaEntity,id);
+    AreaEdge street=edgeFactory.createAreaEdge(fromNode,toNode,areaEntity,startEndpoint,endEndpoint,line,name,length,areaPermissions,false,carSpeed,edgeList);
+    street.setId(id);
+    street.setStreetClass(cls);
+    edges.add(street);
+    id="way (area) " + areaEntity.getId() + " from "+ endEndpoint.getLabel()+ " to "+ startEndpoint.getLabel();
+    id=unique(id);
+    name=getNameForWay(areaEntity,id);
+    AreaEdge backStreet=edgeFactory.createAreaEdge(toNode,fromNode,areaEntity,endEndpoint,startEndpoint,(LineString)line.reverse(),name,length,areaPermissions,true,carSpeed,edgeList);
+    backStreet.setId(id);
+    backStreet.setStreetClass(cls);
+    edges.add(backStreet);
+    WayProperties wayData=wayPropertySet.getDataForWay(areaEntity);
+    applyWayProperties(street,backStreet,wayData,areaEntity);
+  }
+ else {
+    Coordinate startCoordinate=startEndpoint.getCoordinate();
+    Point startPoint=geometryFactory.createPoint(startCoordinate);
+    for (    Area area : intersects) {
+      MultiPolygon polygon=area.toJTSMultiPolygon();
+      if (!(polygon.intersects(startPoint) || polygon.getBoundary().intersects(startPoint)))       continue;
+      Geometry lineParts=line.intersection(polygon);
+      if (lineParts.getLength() > 0.000001) {
+        Coordinate edgeCoordinate=null;
+        if (lineParts instanceof MultiLineString) {
+          MultiLineString mls=(MultiLineString)lineParts;
+          for (int i=0; i < mls.getNumGeometries(); ++i) {
+            LineString segment=(LineString)mls.getGeometryN(i);
+            if (segment.contains(startPoint) || segment.getBoundary().contains(startPoint)) {
+              edgeCoordinate=segment.getEndPoint().getCoordinate();
+            }
+          }
+        }
+ else         if (lineParts instanceof LineString) {
+          edgeCoordinate=((LineString)lineParts).getEndPoint().getCoordinate();
+        }
+ else {
+          continue;
+        }
+        IntersectionVertex newEndpoint=areaBoundaryVertexForCoordinate.get(edgeCoordinate);
+        if (newEndpoint == null) {
+          newEndpoint=new IntersectionVertex(graph,"area splitter at " + edgeCoordinate,edgeCoordinate.x,edgeCoordinate.y);
+          areaBoundaryVertexForCoordinate.put(edgeCoordinate,newEndpoint);
+        }
+        createSegments(fromNode,toNode,startEndpoint,newEndpoint,Arrays.asList(area),edgeList,edges);
+        createSegments(fromNode,toNode,newEndpoint,endEndpoint,intersects,edgeList,edges);
+        break;
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  int point_count=vertices.size();
+  if (point_count > 1) {
+    ArrayList<VLPoint> vertices_temp=new ArrayList<VLPoint>(point_count);
+    ArrayList<OSMNode> nodes_temp=new ArrayList<OSMNode>(point_count);
+    int index_of_smallest=0;
+    for (int i=1; i < point_count; i++)     if (vertices.get(i).compareTo(vertices.get(index_of_smallest)) < 0)     index_of_smallest=i;
+    if (index_of_smallest == 0)     return;
+    for (int i=index_of_smallest; i < point_count; i++) {
+      vertices_temp.add(vertices.get(i));
+      nodes_temp.add(nodes.get(i));
+    }
+    for (int i=0; i < index_of_smallest; i++) {
+      vertices_temp.add(vertices.get(i));
+      nodes_temp.add(nodes.get(i));
+    }
+    for (int i=0; i < point_count; ++i) {
+      vertices.set(i,vertices_temp.get(i));
+      nodes.set(i,nodes_temp.get(i));
+    }
+  }
+}

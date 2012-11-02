@@ -1,0 +1,15 @@
+{
+  int n=polygon.vertices.size();
+  for (int i=0; i < n; ++i) {
+    OSMNode curNode=nodes.get(i);
+    VLPoint cur=polygon.vertices.get(i);
+    VLPoint prev=polygon.vertices.get((i + n - 1) % n);
+    VLPoint next=polygon.vertices.get((i + 1) % n);
+    if (hole || (cur.x - prev.x) * (next.y - cur.y) - (cur.y - prev.y) * (next.x - cur.x) > 0) {
+      if (!visibilityNodes.contains(curNode)) {
+        visibilityPoints.add(cur);
+        visibilityNodes.add(curNode);
+      }
+    }
+  }
+}

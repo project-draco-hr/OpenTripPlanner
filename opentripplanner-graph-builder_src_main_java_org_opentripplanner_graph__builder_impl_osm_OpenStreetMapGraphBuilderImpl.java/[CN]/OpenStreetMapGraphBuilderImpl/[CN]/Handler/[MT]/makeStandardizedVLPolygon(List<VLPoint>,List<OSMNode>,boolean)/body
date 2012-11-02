@@ -1,0 +1,11 @@
+{
+  VLPolygon polygon=new VLPolygon(vertices);
+  if ((reversed && polygon.area() > 0) || (!reversed && polygon.area() < 0)) {
+    polygon.reverse();
+    reversePolygonOfOSMNodes(nodes);
+  }
+  if (!polygon.is_in_standard_form()) {
+    standardize(polygon.vertices,nodes);
+  }
+  return polygon;
+}

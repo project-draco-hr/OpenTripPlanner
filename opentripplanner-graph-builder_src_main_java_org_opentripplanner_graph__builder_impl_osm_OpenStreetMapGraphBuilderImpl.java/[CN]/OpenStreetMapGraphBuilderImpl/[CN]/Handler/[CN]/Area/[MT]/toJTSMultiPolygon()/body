@@ -1,0 +1,10 @@
+{
+  if (jtsMultiPolygon == null) {
+    List<Polygon> polygons=new ArrayList<Polygon>();
+    for (    Ring ring : outermostRings) {
+      polygons.add(ring.toJtsPolygon());
+    }
+    jtsMultiPolygon=GeometryUtils.getGeometryFactory().createMultiPolygon(polygons.toArray(new Polygon[0]));
+  }
+  return jtsMultiPolygon;
+}
