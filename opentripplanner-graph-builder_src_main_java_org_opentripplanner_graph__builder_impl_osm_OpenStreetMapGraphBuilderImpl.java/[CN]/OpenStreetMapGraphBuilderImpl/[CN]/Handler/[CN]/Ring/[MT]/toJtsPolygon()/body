@@ -4,10 +4,23 @@
   }
   GeometryFactory factory=GeometryUtils.getGeometryFactory();
   LinearRing shell=factory.createLinearRing(toCoordinates(geometry));
-  LinearRing[] lrholes=new LinearRing[holes.size()];
-  int i=0;
+  List<Polygon> polygonHoles=new ArrayList<Polygon>();
   for (  Ring ring : holes) {
-    lrholes[i++]=factory.createLinearRing(toCoordinates(ring.geometry));
+    LinearRing linearRing=factory.createLinearRing(toCoordinates(ring.geometry));
+    Polygon polygon=factory.createPolygon(linearRing,new LinearRing[0]);
+    for (Iterator<Polygon> it=polygonHoles.iterator(); it.hasNext(); ) {
+      Polygon otherHole=it.next();
+      if (otherHole.relate(polygon,"F***1****")) {
+        polygon=(Polygon)polygon.union(otherHole);
+        it.remove();
+      }
+    }
+    polygonHoles.add(polygon);
+  }
+  LinearRing[] lrholes=new LinearRing[polygonHoles.size()];
+  int i=0;
+  for (  Polygon hole : polygonHoles) {
+    lrholes[i++]=(LinearRing)hole.getBoundary();
   }
   jtsPolygon=factory.createPolygon(shell,lrholes);
   return jtsPolygon;

@@ -2,26 +2,27 @@
   if (ways.size() == 0) {
     return Collections.emptyList();
   }
+  List<List<Long>> closedRings=new ArrayList<List<Long>>();
   HashMap<Long,List<OSMWay>> waysByEndpoint=new HashMap<Long,List<OSMWay>>();
   for (  OSMWay way : ways) {
     List<Long> refs=way.getNodeRefs();
-    MapUtils.addToMapList(waysByEndpoint,refs.get(0),way);
-    MapUtils.addToMapList(waysByEndpoint,refs.get(refs.size() - 1),way);
+    long start=refs.get(0);
+    long end=refs.get(refs.size() - 1);
+    if (start == end) {
+      ArrayList<Long> ring=new ArrayList<Long>(refs);
+      closedRings.add(ring);
+    }
+ else {
+      MapUtils.addToMapList(waysByEndpoint,start,way);
+      MapUtils.addToMapList(waysByEndpoint,end,way);
+    }
   }
-  List<List<Long>> closedRings=new ArrayList<List<Long>>();
   List<Long> toRemove=new ArrayList<Long>();
   for (  Map.Entry<Long,List<OSMWay>> entry : waysByEndpoint.entrySet()) {
     Long key=entry.getKey();
     List<OSMWay> list=entry.getValue();
     if (list.size() % 2 == 1) {
       return null;
-    }
-    OSMWay way1=list.get(0);
-    OSMWay way2=list.get(1);
-    if (list.size() == 2 && way1 == way2) {
-      ArrayList<Long> ring=new ArrayList<Long>(way1.getNodeRefs());
-      closedRings.add(ring);
-      toRemove.add(key);
     }
   }
   for (  Long key : toRemove) {

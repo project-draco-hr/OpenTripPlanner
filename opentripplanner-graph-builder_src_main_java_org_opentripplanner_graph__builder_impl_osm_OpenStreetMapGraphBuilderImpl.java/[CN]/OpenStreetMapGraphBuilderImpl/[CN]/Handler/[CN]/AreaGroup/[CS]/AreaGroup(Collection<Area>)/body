@@ -16,7 +16,7 @@
     }
   }
   GeometryFactory geometryFactory=GeometryUtils.getGeometryFactory();
-  Geometry u=geometryFactory.createGeometryCollection(allRings.toArray(new Geometry[allRings.size()]));
+  Geometry u=geometryFactory.createMultiPolygon(allRings.toArray(new Polygon[allRings.size()]));
   u=u.union();
   if (u instanceof GeometryCollection) {
     GeometryCollection mp=(GeometryCollection)u;
