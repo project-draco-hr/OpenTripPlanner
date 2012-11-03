@@ -28,6 +28,9 @@ case Calendar.SUNDAY:
 times=sunday;
 break;
 }
+if (times == null) {
+return false;
+}
 int timeOfDay=cal.get(Calendar.HOUR_OF_DAY) * 3600 + cal.get(Calendar.MINUTE) * 60 + cal.get(Calendar.SECOND) - 12 * 3600;
 for (int[] range : times) {
 if (timeOfDay >= range[0] && timeOfDay <= range[1]) return true;
