@@ -10,6 +10,9 @@
       intersects.add(area);
     }
   }
+  if (intersects.size() == 0) {
+    return;
+  }
   if (intersects.size() == 1) {
     Area area=intersects.get(0);
     OSMWithTags areaEntity=area.parent;
@@ -46,10 +49,19 @@
         Coordinate edgeCoordinate=null;
         if (lineParts instanceof MultiLineString) {
           MultiLineString mls=(MultiLineString)lineParts;
+          boolean found=false;
           for (int i=0; i < mls.getNumGeometries(); ++i) {
             LineString segment=(LineString)mls.getGeometryN(i);
-            if (segment.contains(startPoint) || segment.getBoundary().contains(startPoint)) {
+            if (found) {
               edgeCoordinate=segment.getEndPoint().getCoordinate();
+              break;
+            }
+            if (segment.contains(startPoint) || segment.getBoundary().contains(startPoint)) {
+              found=true;
+              if (segment.getLength() > 0.000001) {
+                edgeCoordinate=segment.getEndPoint().getCoordinate();
+                break;
+              }
             }
           }
         }

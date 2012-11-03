@@ -5,6 +5,9 @@
       polygons.add(ring.toJtsPolygon());
     }
     jtsMultiPolygon=GeometryUtils.getGeometryFactory().createMultiPolygon(polygons.toArray(new Polygon[0]));
+    if (!jtsMultiPolygon.isValid()) {
+      throw new AreaConstructionException();
+    }
   }
   return jtsMultiPolygon;
 }
