@@ -2,63 +2,46 @@
   origins.setup();
   destinations.setup();
   linkIntoGraph(destinations);
-  int nOrigins=origins.getIndividuals().size();
+  LOG.debug("Number of threads: {}",nThreads);
+  ExecutorService threadPool=Executors.newFixedThreadPool(nThreads);
+  CompletionService<Void> ecs=new ExecutorCompletionService<Void>(threadPool);
   if (aggregator != null) {
-    ResultSet aggregates=new ResultSet(origins);
-    int i=0;
-    for (    Individual oi : origins) {
-      LOG.debug("individual {}: {}",i,oi);
-      if (i % 100 == 0)       LOG.info("individual {}/{}",i,nOrigins);
-      RoutingRequest req=buildRequest(oi);
-      if (req != null) {
-        ShortestPathTree spt=sptService.getShortestPathTree(req);
-        ResultSet result=ResultSet.forTravelTimes(destinations,spt);
-        aggregates.results[i]=aggregator.computeAggregate(result);
-        req.cleanup();
-      }
-      i+=1;
-    }
-    aggregates.writeAppropriateFormat(outputPath);
+    mode=Mode.AGGREGATE;
+    aggregateResultSet=new ResultSet(origins);
   }
  else   if (accumulator != null) {
-    ResultSet accumulated=new ResultSet(destinations);
-    int i=0;
-    for (    Individual oi : origins) {
-      LOG.debug("individual {}: {}",i,oi);
-      if (i % 100 == 0)       LOG.info("individual {}/{}",i,nOrigins);
-      RoutingRequest req=buildRequest(oi);
-      if (req != null) {
-        ShortestPathTree spt=sptService.getShortestPathTree(req);
-        ResultSet times=ResultSet.forTravelTimes(destinations,spt);
-        accumulator.accumulate(oi.input,times,accumulated);
-        req.cleanup();
-      }
-      i+=1;
-    }
-    accumulator.finish();
-    accumulated.writeAppropriateFormat(outputPath);
+    mode=Mode.ACCUMULATE;
+    aggregateResultSet=new ResultSet(destinations);
   }
  else {
-    if (nOrigins > 1 && !outputPath.contains("{}")) {
+    mode=Mode.BASIC;
+    aggregateResultSet=null;
+    if (!outputPath.contains("{}")) {
       LOG.error("output filename must contain origin placeholder.");
-      return;
-    }
-    int i=0;
-    for (    Individual oi : origins) {
-      RoutingRequest req=buildRequest(oi);
-      if (req != null) {
-        ShortestPathTree spt=sptService.getShortestPathTree(req);
-        ResultSet result=ResultSet.forTravelTimes(destinations,spt);
-        if (nOrigins == 1) {
-          result.writeAppropriateFormat(outputPath);
-        }
- else {
-          String subName=outputPath.replace("{}",String.format("%d_%s",i,oi.label));
-          result.writeAppropriateFormat(subName);
-        }
-        req.cleanup();
-        i+=1;
-      }
+      System.exit(-1);
     }
   }
+  startTime=System.currentTimeMillis();
+  int nTasks=0;
+  for (  Individual oi : origins) {
+    ecs.submit(new BatchAnalystTask(nTasks,oi),null);
+    ++nTasks;
+  }
+  LOG.debug("created {} tasks.",nTasks);
+  int nCompleted=0;
+  try {
+    while (nCompleted < nTasks) {
+      ecs.take();
+      ++nCompleted;
+      LOG.debug("got result {}/{}",nCompleted,nTasks);
+      projectRunTime(nCompleted,nTasks);
+    }
+  }
+ catch (  InterruptedException e) {
+    LOG.warn("run was interrupted after {} tasks",nCompleted);
+  }
+  threadPool.shutdown();
+  if (accumulator != null)   accumulator.finish();
+  if (aggregateResultSet != null)   aggregateResultSet.writeAppropriateFormat(outputPath);
+  LOG.info("DONE.");
 }

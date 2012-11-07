@@ -1,0 +1,22 @@
+{
+  LOG.debug("calling origin : {}",oi);
+  RoutingRequest req=buildRequest(oi);
+  if (req != null) {
+    ShortestPathTree spt=sptService.getShortestPathTree(req);
+    ResultSet results=ResultSet.forTravelTimes(destinations,spt);
+    req.cleanup();
+switch (mode) {
+case AGGREGATE:
+synchronized (aggregateResultSet) {
+        accumulator.accumulate(oi.input,results,aggregateResultSet);
+      }
+    break;
+case ACCUMULATE:
+  aggregateResultSet.results[i]=aggregator.computeAggregate(results);
+break;
+default :
+String subName=outputPath.replace("{}",String.format("%d_%s",i,oi.label));
+results.writeAppropriateFormat(subName);
+}
+}
+}
