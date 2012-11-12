@@ -1,6 +1,10 @@
 {
   Graph graph=graphService.getGraph();
-  if (graph == null)   return;
+  if (graph == null) {
+    String message="Could not retrieve default Graph from GraphService. Check its configuration.";
+    LOG.error(message);
+    throw new IllegalStateException(message);
+  }
   pedestrianIndex=new STRtree();
   index=new STRtree();
   for (  StreetVertex vertex : IterableLibrary.filter(graph.getVertices(),StreetVertex.class)) {
