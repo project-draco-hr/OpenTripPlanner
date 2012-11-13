@@ -2,7 +2,7 @@
   origins.setup();
   destinations.setup();
   linkIntoGraph(destinations);
-  LOG.debug("Number of threads: {}",nThreads);
+  LOG.info("Number of threads: {}",nThreads);
   ExecutorService threadPool=Executors.newFixedThreadPool(nThreads);
   CompletionService<Void> ecs=new ExecutorCompletionService<Void>(threadPool);
   if (aggregator != null) {
@@ -27,7 +27,7 @@
     ecs.submit(new BatchAnalystTask(nTasks,oi),null);
     ++nTasks;
   }
-  LOG.debug("created {} tasks.",nTasks);
+  LOG.info("created {} tasks.",nTasks);
   int nCompleted=0;
   try {
     while (nCompleted < nTasks) {

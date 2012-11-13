@@ -1,6 +1,10 @@
 {
   long currentTime=System.currentTimeMillis();
-  double runTimeMin=(currentTime - startTime) / 1000.0 / 60.0;
-  double projectedMin=(total - current) * (runTimeMin / current);
-  LOG.debug("===== running {} min remaining {} min (projected)",(int)runTimeMin,(int)projectedMin);
+  if (currentTime > lastLogTime + logThrottleSeconds * 1000) {
+    lastLogTime=currentTime;
+    double runTimeMin=(currentTime - startTime) / 1000.0 / 60.0;
+    double projectedMin=(total - current) * (runTimeMin / current);
+    LOG.info("received {} results out of {}",current,total);
+    LOG.info("running {} min, {} min remaining (projected)",(int)runTimeMin,(int)projectedMin);
+  }
 }
