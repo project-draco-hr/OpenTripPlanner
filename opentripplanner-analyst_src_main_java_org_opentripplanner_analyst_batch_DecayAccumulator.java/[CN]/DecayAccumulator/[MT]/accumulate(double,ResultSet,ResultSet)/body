@@ -1,0 +1,15 @@
+{
+  if (current.population != accumulated.population) {
+    LOG.error("population mismatch.");
+    return;
+  }
+  int n=accumulated.population.size();
+  for (int i=0; i < n; i++) {
+    double t=current.results[i];
+    if (t > 0) {
+      double decay=Math.exp(-lambda * t);
+      double decayed=amount * decay;
+      accumulated.results[i]+=decayed;
+    }
+  }
+}
