@@ -31,20 +31,22 @@
   int nCompleted=0;
   try {
     while (nCompleted < nTasks) {
-      ecs.take().get();
-      ++nCompleted;
-      LOG.debug("got result {}/{}",nCompleted,nTasks);
-      projectRunTime(nCompleted,nTasks);
-      if (checkpoint()) {
-        LOG.info("checkpoint written.");
+      try {
+        ecs.take().get();
+        LOG.debug("got result {}/{}",nCompleted,nTasks);
+        if (checkpoint()) {
+          LOG.info("checkpoint written.");
+        }
       }
+ catch (      ExecutionException e) {
+        LOG.error("exception in thread task: {}",e);
+      }
+      ++nCompleted;
+      projectRunTime(nCompleted,nTasks);
     }
   }
  catch (  InterruptedException e) {
     LOG.warn("run was interrupted after {} tasks",nCompleted);
-  }
-catch (  ExecutionException e) {
-    LOG.error("exception in thread task: {}",e);
   }
   threadPool.shutdown();
   if (accumulator != null)   accumulator.finish();
