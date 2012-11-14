@@ -35,14 +35,16 @@
       ++nCompleted;
       LOG.debug("got result {}/{}",nCompleted,nTasks);
       projectRunTime(nCompleted,nTasks);
+      if (checkpoint()) {
+        LOG.info("checkpoint written.");
+      }
     }
   }
  catch (  InterruptedException e) {
     LOG.warn("run was interrupted after {} tasks",nCompleted);
   }
 catch (  ExecutionException e) {
-    LOG.error("Exception in thread task: {}",e);
-    System.exit(-1);
+    LOG.error("exception in thread task: {}",e);
   }
   threadPool.shutdown();
   if (accumulator != null)   accumulator.finish();
