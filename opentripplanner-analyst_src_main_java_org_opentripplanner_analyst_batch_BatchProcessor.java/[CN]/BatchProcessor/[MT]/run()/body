@@ -31,7 +31,7 @@
   int nCompleted=0;
   try {
     while (nCompleted < nTasks) {
-      ecs.take();
+      ecs.take().get();
       ++nCompleted;
       LOG.debug("got result {}/{}",nCompleted,nTasks);
       projectRunTime(nCompleted,nTasks);
@@ -39,6 +39,10 @@
   }
  catch (  InterruptedException e) {
     LOG.warn("run was interrupted after {} tasks",nCompleted);
+  }
+catch (  ExecutionException e) {
+    LOG.error("Exception in thread task: {}",e);
+    System.exit(-1);
   }
   threadPool.shutdown();
   if (accumulator != null)   accumulator.finish();
