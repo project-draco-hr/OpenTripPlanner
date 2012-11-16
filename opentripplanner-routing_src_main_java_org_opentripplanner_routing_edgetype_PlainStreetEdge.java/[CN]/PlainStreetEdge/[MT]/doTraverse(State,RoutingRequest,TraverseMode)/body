@@ -68,18 +68,15 @@ if (backEdge != null && backEdge instanceof PlainStreetEdge) {
 backPSE=(PlainStreetEdge)backEdge;
 float backSpeed=(float)(traverseMode == TraverseMode.CAR ? backPSE.getCarSpeed() : options.getSpeed(traverseMode));
 final double realTurnCost;
-if (fromv instanceof IntersectionVertex) {
-if (options.arriveBy) {
+if (options.arriveBy && tov instanceof IntersectionVertex) {
 if (!canTurnOnto(backPSE,s0,traverseMode)) return null;
 realTurnCost=((IntersectionVertex)tov).computeTraversalCost(this,backPSE,traverseMode,options,(float)speed,backSpeed);
 }
- else {
+ else if (fromv instanceof IntersectionVertex) {
 if (!backPSE.canTurnOnto(this,s0,traverseMode)) return null;
 realTurnCost=((IntersectionVertex)fromv).computeTraversalCost(backPSE,this,traverseMode,options,backSpeed,(float)speed);
 }
-}
  else {
-LOG.warn("PlainStreetEdge originating from non-IntersectionVertex: {}, " + "setting turn cost to 0",fromv);
 realTurnCost=0;
 }
 if (traverseMode != TraverseMode.CAR) s1.incrementWalkDistance(realTurnCost / 100);
