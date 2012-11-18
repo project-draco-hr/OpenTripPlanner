@@ -5,18 +5,20 @@
     LOG.error(message);
     throw new IllegalStateException(message);
   }
-  pedestrianIndex=new STRtree();
-  index=new STRtree();
+  Map<ReversibleLineStringWrapper,StreetEdge> edges=Maps.newHashMap();
   for (  StreetVertex vertex : IterableLibrary.filter(graph.getVertices(),StreetVertex.class)) {
     for (    StreetEdge e : IterableLibrary.filter(vertex.getOutgoing(),StreetEdge.class)) {
-      Geometry geom=e.getGeometry();
+      LineString geom=e.getGeometry();
       if (e.getPermission().allows(StreetTraversalPermission.PEDESTRIAN)) {
-        pedestrianIndex.insert(geom.getEnvelopeInternal(),e);
+        edges.put(new ReversibleLineStringWrapper(geom),e);
       }
-      index.insert(geom.getEnvelopeInternal(),e);
     }
   }
+  pedestrianIndex=new STRtree();
+  for (  StreetEdge e : edges.values()) {
+    LineString geom=e.getGeometry();
+    pedestrianIndex.insert(geom.getEnvelopeInternal(),e);
+  }
   pedestrianIndex.build();
-  index.build();
   LOG.debug("spatial index size: {}",pedestrianIndex.size());
 }
