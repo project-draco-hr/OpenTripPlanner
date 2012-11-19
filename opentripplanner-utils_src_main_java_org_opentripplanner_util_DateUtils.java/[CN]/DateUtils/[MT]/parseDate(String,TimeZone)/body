@@ -11,7 +11,12 @@
         SimpleDateFormat sdf=new SimpleDateFormat(df);
         sdf.setTimeZone(tz);
         retVal=DateUtils.parseDate(sdf,newString);
-        if (retVal != null && retVal.getYear() + 1900 >= 2000)         break;
+        if (retVal != null) {
+          Calendar cal=new GregorianCalendar(tz);
+          cal.setTime(retVal);
+          int year=cal.get(Calendar.YEAR);
+          if (year >= 2000)           break;
+        }
       }
     }
   }
