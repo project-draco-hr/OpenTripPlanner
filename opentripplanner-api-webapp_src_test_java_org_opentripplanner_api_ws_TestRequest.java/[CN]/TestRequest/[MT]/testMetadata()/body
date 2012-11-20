@@ -1,6 +1,8 @@
 {
   Metadata metadata=new Metadata();
-  metadata.graphService=Context.getInstance().graphService;
+  MetadataService metadataService=new MetadataService();
+  metadata.setMetadataService(metadataService);
+  metadataService.setGraphService(Context.getInstance().graphService);
   GraphMetadata data1=metadata.getMetadata(null);
   assertTrue("centerLatitude is not 40.005; got " + data1.getCenterLatitude(),Math.abs(40.005 - data1.getCenterLatitude()) < 0.000001);
   GraphMetadata data2=metadata.getMetadata("portland");
