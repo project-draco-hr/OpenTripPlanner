@@ -1,7 +1,7 @@
 {
   boolean wheelchairAccessible=false;
   StreetLocation location=new StreetLocation(graph,label,nearestPoint,name);
-  List<StreetEdge> allEdges=new ArrayList<StreetEdge>();
+  Set<StreetEdge> allEdges=new HashSet<StreetEdge>();
   for (  StreetEdge street : edges) {
     allEdges.add(street);
     if (street instanceof AreaEdge) {
