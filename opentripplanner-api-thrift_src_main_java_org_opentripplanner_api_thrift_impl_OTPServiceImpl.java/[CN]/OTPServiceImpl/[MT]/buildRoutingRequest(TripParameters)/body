@@ -1,0 +1,14 @@
+{
+  RoutingRequest options=new RoutingRequest();
+  for (  TravelMode m : tripParams.getAllowed_modes()) {
+    TraverseMode tm=getTraverseMode(m);
+    if (tm != null)     options.addMode(tm);
+  }
+  Location origin=tripParams.getOrigin();
+  Location destination=tripParams.getDestination();
+  options.setFrom(latLngToString(origin.getLat_lng()));
+  options.setTo(latLngToString(destination.getLat_lng()));
+  Graph g=graphService.getGraph();
+  options.setRoutingContext(g);
+  return options;
+}
