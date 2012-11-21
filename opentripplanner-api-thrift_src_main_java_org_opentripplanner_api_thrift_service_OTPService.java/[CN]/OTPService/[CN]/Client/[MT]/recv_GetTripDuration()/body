@@ -1,0 +1,8 @@
+{
+  GetTripDuration_result result=new GetTripDuration_result();
+  receiveBase(result,"GetTripDuration");
+  if (result.isSetSuccess()) {
+    return result.success;
+  }
+  throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT,"GetTripDuration failed: unknown result");
+}

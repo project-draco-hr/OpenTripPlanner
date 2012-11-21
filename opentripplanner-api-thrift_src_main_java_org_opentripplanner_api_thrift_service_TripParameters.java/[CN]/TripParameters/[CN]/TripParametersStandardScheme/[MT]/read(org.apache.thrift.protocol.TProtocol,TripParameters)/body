@@ -1,0 +1,55 @@
+{
+  org.apache.thrift.protocol.TField schemeField;
+  iprot.readStructBegin();
+  while (true) {
+    schemeField=iprot.readFieldBegin();
+    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
+      break;
+    }
+switch (schemeField.id) {
+case 1:
+      if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+        struct.origin=new Location();
+        struct.origin.read(iprot);
+        struct.setOriginIsSet(true);
+      }
+ else {
+        org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+      }
+    break;
+case 2:
+  if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+    struct.destination=new Location();
+    struct.destination.read(iprot);
+    struct.setDestinationIsSet(true);
+  }
+ else {
+    org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+  }
+break;
+case 3:
+if (schemeField.type == org.apache.thrift.protocol.TType.SET) {
+{
+  org.apache.thrift.protocol.TSet _set0=iprot.readSetBegin();
+  struct.allowed_modes=new HashSet<TravelMode>(2 * _set0.size);
+  for (int _i1=0; _i1 < _set0.size; ++_i1) {
+    TravelMode _elem2;
+    _elem2=TravelMode.findByValue(iprot.readI32());
+    struct.allowed_modes.add(_elem2);
+  }
+  iprot.readSetEnd();
+}
+struct.setAllowed_modesIsSet(true);
+}
+ else {
+org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+}
+break;
+default :
+org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+}
+iprot.readFieldEnd();
+}
+iprot.readStructEnd();
+struct.validate();
+}

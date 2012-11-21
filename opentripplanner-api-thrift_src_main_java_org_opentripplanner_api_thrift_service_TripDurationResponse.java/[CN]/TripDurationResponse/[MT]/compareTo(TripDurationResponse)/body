@@ -1,0 +1,18 @@
+{
+  if (!getClass().equals(other.getClass())) {
+    return getClass().getName().compareTo(other.getClass().getName());
+  }
+  int lastComparison=0;
+  TripDurationResponse typedOther=(TripDurationResponse)other;
+  lastComparison=Boolean.valueOf(isSetExpected_trip_duration()).compareTo(typedOther.isSetExpected_trip_duration());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetExpected_trip_duration()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.expected_trip_duration,typedOther.expected_trip_duration);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  return 0;
+}

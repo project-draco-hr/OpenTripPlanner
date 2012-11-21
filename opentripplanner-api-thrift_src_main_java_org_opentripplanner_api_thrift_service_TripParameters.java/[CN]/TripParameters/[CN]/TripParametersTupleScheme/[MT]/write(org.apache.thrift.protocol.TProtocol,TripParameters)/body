@@ -1,0 +1,18 @@
+{
+  TTupleProtocol oprot=(TTupleProtocol)prot;
+  struct.origin.write(oprot);
+  struct.destination.write(oprot);
+  BitSet optionals=new BitSet();
+  if (struct.isSetAllowed_modes()) {
+    optionals.set(0);
+  }
+  oprot.writeBitSet(optionals,1);
+  if (struct.isSetAllowed_modes()) {
+{
+      oprot.writeI32(struct.allowed_modes.size());
+      for (      TravelMode _iter4 : struct.allowed_modes) {
+        oprot.writeI32(_iter4.getValue());
+      }
+    }
+  }
+}

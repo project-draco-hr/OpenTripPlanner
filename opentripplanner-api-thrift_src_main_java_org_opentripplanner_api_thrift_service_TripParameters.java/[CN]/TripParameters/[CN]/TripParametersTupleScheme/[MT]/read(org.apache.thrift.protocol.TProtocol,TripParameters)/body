@@ -1,0 +1,22 @@
+{
+  TTupleProtocol iprot=(TTupleProtocol)prot;
+  struct.origin=new Location();
+  struct.origin.read(iprot);
+  struct.setOriginIsSet(true);
+  struct.destination=new Location();
+  struct.destination.read(iprot);
+  struct.setDestinationIsSet(true);
+  BitSet incoming=iprot.readBitSet(1);
+  if (incoming.get(0)) {
+{
+      org.apache.thrift.protocol.TSet _set5=new org.apache.thrift.protocol.TSet(org.apache.thrift.protocol.TType.I32,iprot.readI32());
+      struct.allowed_modes=new HashSet<TravelMode>(2 * _set5.size);
+      for (int _i6=0; _i6 < _set5.size; ++_i6) {
+        TravelMode _elem7;
+        _elem7=TravelMode.findByValue(iprot.readI32());
+        struct.allowed_modes.add(_elem7);
+      }
+    }
+    struct.setAllowed_modesIsSet(true);
+  }
+}

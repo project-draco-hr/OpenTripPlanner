@@ -1,0 +1,10 @@
+{
+  if (that == null)   return false;
+  boolean this_present_trip=true && this.isSetTrip();
+  boolean that_present_trip=true && that.isSetTrip();
+  if (this_present_trip || that_present_trip) {
+    if (!(this_present_trip && that_present_trip))     return false;
+    if (!this.trip.equals(that.trip))     return false;
+  }
+  return true;
+}

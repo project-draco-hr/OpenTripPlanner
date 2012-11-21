@@ -1,0 +1,28 @@
+{
+switch (field) {
+case ORIGIN:
+    if (value == null) {
+      unsetOrigin();
+    }
+ else {
+      setOrigin((Location)value);
+    }
+  break;
+case DESTINATION:
+if (value == null) {
+  unsetDestination();
+}
+ else {
+  setDestination((Location)value);
+}
+break;
+case ALLOWED_MODES:
+if (value == null) {
+unsetAllowed_modes();
+}
+ else {
+setAllowed_modes((Set<TravelMode>)value);
+}
+break;
+}
+}

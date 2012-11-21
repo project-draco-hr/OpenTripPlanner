@@ -1,0 +1,38 @@
+{
+  if (!getClass().equals(other.getClass())) {
+    return getClass().getName().compareTo(other.getClass().getName());
+  }
+  int lastComparison=0;
+  TripParameters typedOther=(TripParameters)other;
+  lastComparison=Boolean.valueOf(isSetOrigin()).compareTo(typedOther.isSetOrigin());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetOrigin()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.origin,typedOther.origin);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  lastComparison=Boolean.valueOf(isSetDestination()).compareTo(typedOther.isSetDestination());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetDestination()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.destination,typedOther.destination);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  lastComparison=Boolean.valueOf(isSetAllowed_modes()).compareTo(typedOther.isSetAllowed_modes());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetAllowed_modes()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.allowed_modes,typedOther.allowed_modes);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  return 0;
+}

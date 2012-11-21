@@ -1,0 +1,18 @@
+{
+  if (!getClass().equals(other.getClass())) {
+    return getClass().getName().compareTo(other.getClass().getName());
+  }
+  int lastComparison=0;
+  TripDurationRequest typedOther=(TripDurationRequest)other;
+  lastComparison=Boolean.valueOf(isSetTrip()).compareTo(typedOther.isSetTrip());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetTrip()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.trip,typedOther.trip);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  return 0;
+}
