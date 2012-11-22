@@ -4,8 +4,14 @@
   if (struct.isSetSuccess()) {
     optionals.set(0);
   }
-  oprot.writeBitSet(optionals,1);
+  if (struct.isSetPath_err()) {
+    optionals.set(1);
+  }
+  oprot.writeBitSet(optionals,2);
   if (struct.isSetSuccess()) {
     struct.success.write(oprot);
+  }
+  if (struct.isSetPath_err()) {
+    struct.path_err.write(oprot);
   }
 }

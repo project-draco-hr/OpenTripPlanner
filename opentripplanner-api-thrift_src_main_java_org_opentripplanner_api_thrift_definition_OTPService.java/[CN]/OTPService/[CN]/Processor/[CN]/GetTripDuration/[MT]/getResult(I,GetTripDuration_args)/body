@@ -1,5 +1,10 @@
 {
   GetTripDuration_result result=new GetTripDuration_result();
-  result.success=iface.GetTripDuration(args.req);
+  try {
+    result.success=iface.GetTripDuration(args.req);
+  }
+ catch (  NoPathFoundError path_err) {
+    result.path_err=path_err;
+  }
   return result;
 }

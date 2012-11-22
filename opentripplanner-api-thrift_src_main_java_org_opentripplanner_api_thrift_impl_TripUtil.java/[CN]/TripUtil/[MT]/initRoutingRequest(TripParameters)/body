@@ -8,7 +8,5 @@
   Location destination=tripParams.getDestination();
   options.setFrom(latLngToString(origin.getLat_lng()));
   options.setTo(latLngToString(destination.getLat_lng()));
-  Graph g=graphService.getGraph();
-  options.setRoutingContext(g);
   return options;
 }

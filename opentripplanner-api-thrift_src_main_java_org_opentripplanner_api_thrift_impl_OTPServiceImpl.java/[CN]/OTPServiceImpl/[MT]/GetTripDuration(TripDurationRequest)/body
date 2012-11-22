@@ -1,14 +1,16 @@
 {
   TripDurationResponse res=new TripDurationResponse();
   TripParameters trip=req.getTrip();
-  RoutingRequest options=buildRoutingRequest(trip);
+  RoutingRequest options=TripUtil.initRoutingRequest(trip);
+  options.setRoutingContext(graphService.getGraph());
   List<GraphPath> paths=pathService.getPaths(options);
   if (paths.size() > 0) {
     GraphPath p=paths.get(0);
     res.setExpected_trip_duration(p.getDuration());
   }
  else {
-    res.setExpected_trip_duration(0);
+    LOG.warn("Found no path for trip");
+    throw new NoPathFoundError("No path found for your trip.");
   }
   return res;
 }

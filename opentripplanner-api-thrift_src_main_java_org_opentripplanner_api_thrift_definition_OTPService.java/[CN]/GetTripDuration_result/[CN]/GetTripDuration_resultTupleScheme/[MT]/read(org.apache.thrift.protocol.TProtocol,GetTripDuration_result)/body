@@ -1,9 +1,14 @@
 {
   TTupleProtocol iprot=(TTupleProtocol)prot;
-  BitSet incoming=iprot.readBitSet(1);
+  BitSet incoming=iprot.readBitSet(2);
   if (incoming.get(0)) {
     struct.success=new TripDurationResponse();
     struct.success.read(iprot);
     struct.setSuccessIsSet(true);
+  }
+  if (incoming.get(1)) {
+    struct.path_err=new NoPathFoundError();
+    struct.path_err.read(iprot);
+    struct.setPath_errIsSet(true);
   }
 }
