@@ -17,11 +17,19 @@
     }
     polygonHoles.add(polygon);
   }
-  LinearRing[] lrholes=new LinearRing[polygonHoles.size()];
-  int i=0;
+  ArrayList<LinearRing> lrholelist=new ArrayList<LinearRing>(polygonHoles.size());
   for (  Polygon hole : polygonHoles) {
-    lrholes[i++]=(LinearRing)hole.getBoundary();
+    Geometry boundary=hole.getBoundary();
+    if (boundary instanceof LinearRing) {
+      lrholelist.add((LinearRing)boundary);
+    }
+ else {
+      LineString line=hole.getExteriorRing();
+      LinearRing ring=factory.createLinearRing(line.getCoordinates());
+      lrholelist.add(ring);
+    }
   }
+  LinearRing[] lrholes=lrholelist.toArray(new LinearRing[lrholelist.size()]);
   jtsPolygon=factory.createPolygon(shell,lrholes);
   return jtsPolygon;
 }

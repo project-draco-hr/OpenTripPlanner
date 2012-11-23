@@ -62,6 +62,6 @@
   double absDiff=Math.abs(directionToEdge - directionOfEdge);
   directionDifference=Math.min(2 * Math.PI - absDiff,absDiff);
   if (Double.isNaN(directionToEdge) || Double.isNaN(directionOfEdge) || Double.isNaN(directionDifference)) {
-    _log.warn("direction to/of edge is NaN (0 length?): {}",edge);
+    StreetVertexIndexServiceImpl._log.warn("direction to/of edge is NaN (0 length?): {}",edge);
   }
 }
