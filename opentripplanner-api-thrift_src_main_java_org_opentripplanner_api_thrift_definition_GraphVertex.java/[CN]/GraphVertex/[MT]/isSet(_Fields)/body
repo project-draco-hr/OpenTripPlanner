@@ -1,0 +1,18 @@
+{
+  if (field == null) {
+    throw new IllegalArgumentException();
+  }
+switch (field) {
+case LABEL:
+    return isSetLabel();
+case LOCATION:
+  return isSetLocation();
+case NAME:
+return isSetName();
+case IN_DEGREE:
+return isSetIn_degree();
+case OUT_DEGREE:
+return isSetOut_degree();
+}
+throw new IllegalStateException();
+}

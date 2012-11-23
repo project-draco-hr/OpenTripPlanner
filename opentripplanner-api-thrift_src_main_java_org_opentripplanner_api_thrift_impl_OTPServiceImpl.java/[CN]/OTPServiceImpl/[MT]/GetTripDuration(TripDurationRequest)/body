@@ -2,6 +2,7 @@
   TripDurationResponse res=new TripDurationResponse();
   TripParameters trip=req.getTrip();
   RoutingRequest options=TripUtil.initRoutingRequest(trip);
+  options.setNumItineraries(1);
   options.setRoutingContext(graphService.getGraph());
   List<GraphPath> paths=pathService.getPaths(options);
   if (paths.size() > 0) {

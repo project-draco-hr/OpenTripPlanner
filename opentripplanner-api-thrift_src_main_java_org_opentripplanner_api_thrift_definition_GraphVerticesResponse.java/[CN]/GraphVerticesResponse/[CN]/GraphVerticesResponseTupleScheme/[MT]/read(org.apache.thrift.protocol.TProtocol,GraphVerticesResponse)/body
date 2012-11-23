@@ -1,0 +1,14 @@
+{
+  TTupleProtocol iprot=(TTupleProtocol)prot;
+{
+    org.apache.thrift.protocol.TList _list13=new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT,iprot.readI32());
+    struct.vertices=new ArrayList<GraphVertex>(_list13.size);
+    for (int _i14=0; _i14 < _list13.size; ++_i14) {
+      GraphVertex _elem15;
+      _elem15=new GraphVertex();
+      _elem15.read(iprot);
+      struct.vertices.add(_elem15);
+    }
+  }
+  struct.setVerticesIsSet(true);
+}

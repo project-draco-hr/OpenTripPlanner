@@ -1,2 +1,13 @@
 {
+  try {
+    OTPService.Processor<OTPServiceImpl> processor=new OTPService.Processor<OTPServiceImpl>(handler);
+    TNonblockingServerTransport serverTransport=new TNonblockingServerSocket(port);
+    THsHaServer.Args args=new THsHaServer.Args(serverTransport).processor(processor);
+    TServer server=new THsHaServer(args);
+    LOG.info("Starting the OTPService on port {}",port);
+    server.serve();
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+  }
 }

@@ -1,0 +1,15 @@
+{
+  __isset_bit_vector.clear();
+  __isset_bit_vector.or(other.__isset_bit_vector);
+  if (other.isSetLabel()) {
+    this.label=other.label;
+  }
+  if (other.isSetLocation()) {
+    this.location=new Location(other.location);
+  }
+  if (other.isSetName()) {
+    this.name=other.name;
+  }
+  this.in_degree=other.in_degree;
+  this.out_degree=other.out_degree;
+}

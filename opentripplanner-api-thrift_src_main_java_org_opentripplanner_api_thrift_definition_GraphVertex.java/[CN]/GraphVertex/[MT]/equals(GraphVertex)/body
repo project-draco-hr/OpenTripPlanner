@@ -1,0 +1,34 @@
+{
+  if (that == null)   return false;
+  boolean this_present_label=true && this.isSetLabel();
+  boolean that_present_label=true && that.isSetLabel();
+  if (this_present_label || that_present_label) {
+    if (!(this_present_label && that_present_label))     return false;
+    if (!this.label.equals(that.label))     return false;
+  }
+  boolean this_present_location=true && this.isSetLocation();
+  boolean that_present_location=true && that.isSetLocation();
+  if (this_present_location || that_present_location) {
+    if (!(this_present_location && that_present_location))     return false;
+    if (!this.location.equals(that.location))     return false;
+  }
+  boolean this_present_name=true && this.isSetName();
+  boolean that_present_name=true && that.isSetName();
+  if (this_present_name || that_present_name) {
+    if (!(this_present_name && that_present_name))     return false;
+    if (!this.name.equals(that.name))     return false;
+  }
+  boolean this_present_in_degree=true && this.isSetIn_degree();
+  boolean that_present_in_degree=true && that.isSetIn_degree();
+  if (this_present_in_degree || that_present_in_degree) {
+    if (!(this_present_in_degree && that_present_in_degree))     return false;
+    if (this.in_degree != that.in_degree)     return false;
+  }
+  boolean this_present_out_degree=true && this.isSetOut_degree();
+  boolean that_present_out_degree=true && that.isSetOut_degree();
+  if (this_present_out_degree || that_present_out_degree) {
+    if (!(this_present_out_degree && that_present_out_degree))     return false;
+    if (this.out_degree != that.out_degree)     return false;
+  }
+  return true;
+}

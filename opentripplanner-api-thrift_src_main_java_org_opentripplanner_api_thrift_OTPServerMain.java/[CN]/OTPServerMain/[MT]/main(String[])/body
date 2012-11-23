@@ -7,6 +7,6 @@
   paths.add("classpath:org/opentripplanner/api_thrift/application-context.xml");
   for (  String arg : args)   paths.add(arg);
   ApplicationContext context=createContext(paths,new HashMap<String,BeanDefinition>());
-  GraphBuilderTask task=(GraphBuilderTask)context.getBean("graphBuilderTask");
+  OTPServerTask task=(OTPServerTask)context.getBean("otpServerTask");
   task.run();
 }

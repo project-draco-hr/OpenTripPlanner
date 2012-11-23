@@ -1,0 +1,9 @@
+{
+  TTupleProtocol oprot=(TTupleProtocol)prot;
+{
+    oprot.writeI32(struct.vertices.size());
+    for (    GraphVertex _iter12 : struct.vertices) {
+      _iter12.write(oprot);
+    }
+  }
+}

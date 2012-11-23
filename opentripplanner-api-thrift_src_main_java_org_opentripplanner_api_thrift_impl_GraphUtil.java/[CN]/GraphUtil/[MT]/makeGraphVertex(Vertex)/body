@@ -1,0 +1,10 @@
+{
+  GraphVertex gv=new GraphVertex();
+  gv.setLabel(v.getLabel());
+  Location loc=LocationUtil.makeLocation(v.getCoordinate());
+  gv.setLocation(loc);
+  gv.setName(v.getName());
+  gv.setIn_degree(v.getDegreeIn());
+  gv.setOut_degree(v.getDegreeOut());
+  return gv;
+}
