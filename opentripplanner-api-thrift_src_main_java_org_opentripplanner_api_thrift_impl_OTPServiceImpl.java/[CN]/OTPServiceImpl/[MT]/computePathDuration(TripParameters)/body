@@ -4,12 +4,12 @@
   options.setRoutingContext(graphService.getGraph());
   options.setRouterId("");
   List<GraphPath> paths=pathService.getPaths(options);
-  if (paths.size() > 0) {
-    GraphPath p=paths.get(0);
-    return p.getDuration();
-  }
- else {
+  if (paths == null || paths.size() == 0) {
     LOG.warn("Found no path for trip");
     throw new NoPathFoundError("No path found for your trip.");
+  }
+ else {
+    GraphPath p=paths.get(0);
+    return p.getDuration();
   }
 }
