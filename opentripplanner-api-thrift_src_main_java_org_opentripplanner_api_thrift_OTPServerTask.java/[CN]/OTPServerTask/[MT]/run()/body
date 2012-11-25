@@ -1,6 +1,11 @@
 {
   try {
-    OTPService.Processor<OTPServiceImpl> processor=new OTPService.Processor<OTPServiceImpl>(handler);
+    LOG.info("Run called, port {}",port);
+    if (otpServiceImpl == null) {
+      LOG.warn("otpServiceImpl is null, bailing");
+      return;
+    }
+    OTPService.Processor<OTPServiceImpl> processor=new OTPService.Processor<OTPServiceImpl>(otpServiceImpl);
     TServerTransport serverTransport=new TServerSocket(port);
     TSimpleServer.Args args=new TSimpleServer.Args(serverTransport).processor(processor);
     TServer server=new TSimpleServer(args);
