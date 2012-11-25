@@ -8,7 +8,9 @@ def Main():
     client = Connect(options.host, options.port)
     assert client, 'Failed to connect'
     req = OTPService.GraphVerticesRequest()
+    start_t = time.time()
     res = client.GetVertices(req)
-    for v in res.vertices:
-        print v.label
+    total_t = (time.time() - start_t)
+    print ('GraphVertices.Request took %.6f seconds' % total_t)
+    print ('\tReturned %d vertices' % len(res.vertices))
     return

@@ -9,15 +9,17 @@
     sb.append(this.label);
   }
   first=false;
-  if (!first)   sb.append(", ");
-  sb.append("location:");
-  if (this.location == null) {
-    sb.append("null");
-  }
+  if (isSetLocation()) {
+    if (!first)     sb.append(", ");
+    sb.append("location:");
+    if (this.location == null) {
+      sb.append("null");
+    }
  else {
-    sb.append(this.location);
+      sb.append(this.location);
+    }
+    first=false;
   }
-  first=false;
   if (isSetName()) {
     if (!first)     sb.append(", ");
     sb.append("name:");

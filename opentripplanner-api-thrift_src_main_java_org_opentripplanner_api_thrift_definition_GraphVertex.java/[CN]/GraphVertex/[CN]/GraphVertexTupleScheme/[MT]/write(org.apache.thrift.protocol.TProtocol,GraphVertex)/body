@@ -1,18 +1,23 @@
 {
   TTupleProtocol oprot=(TTupleProtocol)prot;
   oprot.writeString(struct.label);
-  struct.location.write(oprot);
   BitSet optionals=new BitSet();
-  if (struct.isSetName()) {
+  if (struct.isSetLocation()) {
     optionals.set(0);
   }
-  if (struct.isSetIn_degree()) {
+  if (struct.isSetName()) {
     optionals.set(1);
   }
-  if (struct.isSetOut_degree()) {
+  if (struct.isSetIn_degree()) {
     optionals.set(2);
   }
-  oprot.writeBitSet(optionals,3);
+  if (struct.isSetOut_degree()) {
+    optionals.set(3);
+  }
+  oprot.writeBitSet(optionals,4);
+  if (struct.isSetLocation()) {
+    struct.location.write(oprot);
+  }
   if (struct.isSetName()) {
     oprot.writeString(struct.name);
   }

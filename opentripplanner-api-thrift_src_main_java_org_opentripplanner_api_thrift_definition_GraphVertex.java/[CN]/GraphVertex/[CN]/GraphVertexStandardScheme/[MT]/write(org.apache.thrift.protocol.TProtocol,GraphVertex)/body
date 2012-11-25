@@ -7,9 +7,11 @@
     oprot.writeFieldEnd();
   }
   if (struct.location != null) {
-    oprot.writeFieldBegin(LOCATION_FIELD_DESC);
-    struct.location.write(oprot);
-    oprot.writeFieldEnd();
+    if (struct.isSetLocation()) {
+      oprot.writeFieldBegin(LOCATION_FIELD_DESC);
+      struct.location.write(oprot);
+      oprot.writeFieldEnd();
+    }
   }
   if (struct.name != null) {
     if (struct.isSetName()) {

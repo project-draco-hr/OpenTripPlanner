@@ -2,6 +2,7 @@
   RoutingRequest options=TripUtil.initRoutingRequest(trip);
   options.setNumItineraries(1);
   options.setRoutingContext(graphService.getGraph());
+  options.setRouterId("");
   List<GraphPath> paths=pathService.getPaths(options);
   if (paths.size() > 0) {
     GraphPath p=paths.get(0);
