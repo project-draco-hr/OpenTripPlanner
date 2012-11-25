@@ -2,6 +2,6 @@
   LOG.info("Received GetVerticesRequest");
   GraphVerticesResponse res=new GraphVerticesResponse();
   Graph g=graphService.getGraph();
-  res.setVertices(GraphUtil.getGraphVertices(g));
+  res.setVertices(GraphUtil.makeGraphVertices(g));
   return res;
 }
