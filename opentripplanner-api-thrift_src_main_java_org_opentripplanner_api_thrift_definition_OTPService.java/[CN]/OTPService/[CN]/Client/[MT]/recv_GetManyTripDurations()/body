@@ -1,0 +1,8 @@
+{
+  GetManyTripDurations_result result=new GetManyTripDurations_result();
+  receiveBase(result,"GetManyTripDurations");
+  if (result.isSetSuccess()) {
+    return result.success;
+  }
+  throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT,"GetManyTripDurations failed: unknown result");
+}
