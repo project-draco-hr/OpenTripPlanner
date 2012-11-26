@@ -1,0 +1,24 @@
+{
+  try {
+    InputStream data=HttpUtils.getData(url);
+    if (data == null) {
+      log.warn("Failed to get data from url " + url);
+      return false;
+    }
+    parseJSON(data);
+    data.close();
+  }
+ catch (  IllegalArgumentException e) {
+    log.warn("Error parsing bike rental feed from " + url,e);
+    return false;
+  }
+catch (  JsonProcessingException e) {
+    log.warn("Error parsing bike rental feed from " + url + "(bad JSON of some sort)",e);
+    return false;
+  }
+catch (  IOException e) {
+    log.warn("Error reading bike rental feed from " + url,e);
+    return false;
+  }
+  return true;
+}
