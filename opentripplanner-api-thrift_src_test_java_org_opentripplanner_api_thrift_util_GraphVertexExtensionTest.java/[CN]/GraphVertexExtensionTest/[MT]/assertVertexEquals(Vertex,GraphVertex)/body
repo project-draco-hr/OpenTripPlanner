@@ -1,0 +1,10 @@
+{
+  assertEquals(gv.getLabel(),v.getLabel());
+  assertEquals(gv.getName(),v.getName());
+  assertEquals(gv.getIn_degree(),v.getDegreeIn());
+  assertEquals(gv.getOut_degree(),v.getDegreeOut());
+  Location loc=gv.getLocation();
+  LatLng ll=loc.getLat_lng();
+  assertEquals(ll.getLat(),v.getY());
+  assertEquals(ll.getLng(),v.getX());
+}

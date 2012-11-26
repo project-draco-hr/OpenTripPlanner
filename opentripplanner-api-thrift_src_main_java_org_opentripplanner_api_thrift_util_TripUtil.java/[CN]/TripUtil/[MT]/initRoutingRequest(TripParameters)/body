@@ -1,11 +1,9 @@
 {
   RoutingRequest options=new RoutingRequest();
   if (tripParams.isSetAllowed_modes()) {
-    options.clearModes();
-    for (    TravelMode m : tripParams.getAllowed_modes()) {
-      TraverseMode tm=getTraverseMode(m);
-      if (tm != null)       options.addMode(tm);
-    }
+    Set<TravelMode> allowedModes=tripParams.getAllowed_modes();
+    TravelModeSet travelModeSet=new TravelModeSet(allowedModes);
+    options.setModes(travelModeSet.toTraverseModeSet());
   }
   Location origin=tripParams.getOrigin();
   Location destination=tripParams.getDestination();

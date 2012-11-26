@@ -1,0 +1,10 @@
+{
+  Set<TravelMode> modes=new HashSet<TravelMode>(3);
+  modes.add(TravelMode.WALK);
+  modes.add(TravelMode.ANY_TRAIN);
+  TravelModeSet modeSet=new TravelModeSet(modes);
+  TraverseModeSet traverseModes=modeSet.toTraverseModeSet();
+  assertTrue(traverseModes.getWalk());
+  assertTrue(traverseModes.getTrainish());
+  assertFalse(traverseModes.getBicycle());
+}

@@ -1,0 +1,10 @@
+{
+  setLabel(v.getLabel());
+  Coordinate coord=v.getCoordinate();
+  if (coord != null) {
+    setLocation(LocationUtil.makeLocation(coord));
+  }
+  setName(v.getName());
+  setIn_degree(v.getDegreeIn());
+  setOut_degree(v.getDegreeOut());
+}
