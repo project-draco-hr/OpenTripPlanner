@@ -1,0 +1,11 @@
+{
+  List<Vertex> vs=new ArrayList<Vertex>(3);
+  vs.add(vertex("fake1",47.666863,-122.382106));
+  vs.add(vertex("fake2",47.666854,-122.382103));
+  vs.add(vertex("fake3",47.666891,-122.382112));
+  List<GraphVertex> gvs=GraphUtil.makeGraphVertices(_graph);
+  assertEquals(vs.size(),gvs.size());
+  for (int i=0; i < gvs.size(); ++i) {
+    assertVertexEquals(vs.get(i),gvs.get(i));
+  }
+}

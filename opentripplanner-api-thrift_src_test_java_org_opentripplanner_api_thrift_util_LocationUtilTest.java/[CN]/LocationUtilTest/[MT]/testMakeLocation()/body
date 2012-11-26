@@ -1,0 +1,10 @@
+{
+  Coordinate c=new Coordinate(1.2,2.3);
+  Location loc=LocationUtil.makeLocation(c);
+  LatLng ll=loc.getLat_lng();
+  assertCoordEquals(c,ll);
+  c=new Coordinate(1.2,2.3,19.5);
+  loc=LocationUtil.makeLocation(c);
+  ll=loc.getLat_lng();
+  assertCoordEquals(c,ll);
+}

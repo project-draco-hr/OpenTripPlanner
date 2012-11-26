@@ -1,0 +1,19 @@
+{
+  TripParameters tp=new TripParameters();
+  tp.addToAllowed_modes(TravelMode.WALK);
+  tp.addToAllowed_modes(TravelMode.CAR);
+  LatLng originLatLng=new LatLng(1.0,2.0);
+  Location origin=new Location(originLatLng);
+  LatLng destLatLng=new LatLng(3.0,2.0);
+  Location dest=new Location(destLatLng);
+  tp.setOrigin(origin);
+  tp.setDestination(dest);
+  RoutingRequest rr=TripUtil.initRoutingRequest(tp);
+  assertEquals(TripUtil.latLngToString(originLatLng),rr.getFrom());
+  assertEquals(TripUtil.latLngToString(destLatLng),rr.getTo());
+  for (  TravelMode tm : tp.getAllowed_modes()) {
+    TraverseModeSet modeSet=rr.getModes();
+    TraverseMode traverseMode=TripUtil.getTraverseMode(tm);
+    assertTrue(modeSet.contains(traverseMode));
+  }
+}
