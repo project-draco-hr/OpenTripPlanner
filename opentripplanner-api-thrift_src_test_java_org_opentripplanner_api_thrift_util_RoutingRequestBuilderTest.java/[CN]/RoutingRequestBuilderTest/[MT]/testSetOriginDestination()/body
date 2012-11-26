@@ -1,0 +1,7 @@
+{
+  LatLng origin=new LatLng(1.0,2.5);
+  LatLng dest=new LatLng(-3.0,9.7);
+  RoutingRequest rr=(new RoutingRequestBuilder()).setOrigin(origin).setDestination(dest).build();
+  assertEquals("1.0000000,2.5000000",rr.getFrom());
+  assertEquals("-3.0000000,9.7000000",rr.getTo());
+}

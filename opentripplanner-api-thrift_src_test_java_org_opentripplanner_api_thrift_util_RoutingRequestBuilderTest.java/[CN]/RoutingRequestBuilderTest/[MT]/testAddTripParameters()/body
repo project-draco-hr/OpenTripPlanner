@@ -8,7 +8,7 @@
   Location dest=new Location(destLatLng);
   tp.setOrigin(origin);
   tp.setDestination(dest);
-  RoutingRequest rr=TripUtil.initRoutingRequest(tp);
+  RoutingRequest rr=(new RoutingRequestBuilder()).addTripParameters(tp).build();
   assertEquals("1.0000000,2.5000000",rr.getFrom());
   assertEquals("-3.0000000,9.7000000",rr.getTo());
   for (  TravelMode tm : tp.getAllowed_modes()) {
