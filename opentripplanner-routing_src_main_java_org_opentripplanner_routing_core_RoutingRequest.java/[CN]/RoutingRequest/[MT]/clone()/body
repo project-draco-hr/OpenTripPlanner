@@ -2,7 +2,7 @@
   try {
     RoutingRequest clone=(RoutingRequest)super.clone();
     clone.bannedRoutes=(HashSet<RouteSpec>)bannedRoutes.clone();
-    clone.bannedTrips=(HashSet<AgencyAndId>)bannedTrips.clone();
+    clone.bannedTrips=(HashMap<AgencyAndId,BannedStopSet>)bannedTrips.clone();
     if (this.walkingOptions != this)     clone.walkingOptions=this.walkingOptions.clone();
  else     clone.walkingOptions=clone;
     return clone;
