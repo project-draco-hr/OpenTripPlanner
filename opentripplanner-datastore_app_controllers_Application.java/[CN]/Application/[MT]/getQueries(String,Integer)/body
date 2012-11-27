@@ -1,0 +1,9 @@
+{
+  List<OTPQuery> queries;
+  if (limit == null)   queries=OTPQuery.find("userName",userName).fetch();
+ else {
+    queries=OTPQuery.find("userName = '" + userName + "' order by timeStamp desc").fetch(limit);
+    System.out.println("fetched w/ limit = " + limit);
+  }
+  renderJSON(queries);
+}
