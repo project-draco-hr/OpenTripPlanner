@@ -1,6 +1,6 @@
 {
   final Vertex vertex=current.getVertex();
-  if (vertex instanceof TransitStop) {
+  if (vertex instanceof TransitStop || vertex instanceof TransitStopDepart || vertex instanceof TransitStopArrive) {
     transitStopsVisited.add(current);
   }
   if (vertex == realTarget) {

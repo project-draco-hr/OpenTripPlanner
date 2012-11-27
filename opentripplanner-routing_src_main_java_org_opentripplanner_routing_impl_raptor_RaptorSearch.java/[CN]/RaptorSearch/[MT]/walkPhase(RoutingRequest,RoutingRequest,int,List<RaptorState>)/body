@@ -13,7 +13,7 @@
     MaxWalkState start=new MaxWalkState(options.rctx.origin,walkOptions);
     spt=dijkstra.getShortestPathTree(start);
     for (    State state : spt.getAllStates()) {
-      if (state.getVertex() instanceof TransitStop)       transitStopStates.add(state);
+      if (state.getVertex() instanceof TransitStop || state.getVertex() instanceof TransitStopArrive || state.getVertex() instanceof TransitStopDepart)       transitStopStates.add(state);
     }
     if (maxTimeDayIndex > 0) {
       RoutingRequest reversedWalkOptions=walkOptions.clone();
@@ -35,7 +35,10 @@
  else {
     final List<MaxWalkState> startPoints=new ArrayList<MaxWalkState>();
     for (    RaptorState state : createdStates) {
-      Vertex stopVertex=state.stop.stopVertex;
+      Vertex stopVertex=options.isArriveBy() ? state.stop.departVertex : state.stop.arriveVertex;
+      if (stopVertex == null) {
+        stopVertex=state.stop.stopVertex;
+      }
       if (options.rctx.target != null) {
         double minWalk=distanceToNearestTransitStop;
         double targetDistance=bounder.getTargetDistance(stopVertex);
@@ -109,7 +112,7 @@
   }
   SPTSTATE:   for (  State state : transitStopStates) {
     final Vertex vertex=state.getVertex();
-    RaptorStop stop=data.raptorStopsForStopId.get(((TransitStop)vertex).getStopId());
+    RaptorStop stop=data.raptorStopsForStopId.get(((OffboardVertex)vertex).getStopId());
     if (stop == null) {
       continue;
     }
