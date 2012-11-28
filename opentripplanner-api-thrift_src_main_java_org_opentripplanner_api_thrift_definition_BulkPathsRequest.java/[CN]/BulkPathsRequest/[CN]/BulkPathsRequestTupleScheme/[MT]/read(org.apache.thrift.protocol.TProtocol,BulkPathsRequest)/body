@@ -1,0 +1,17 @@
+{
+  TTupleProtocol iprot=(TTupleProtocol)prot;
+{
+    org.apache.thrift.protocol.TList _list37=new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT,iprot.readI32());
+    struct.trips=new ArrayList<TripParameters>(_list37.size);
+    for (int _i38=0; _i38 < _list37.size; ++_i38) {
+      TripParameters _elem39;
+      _elem39=new TripParameters();
+      _elem39.read(iprot);
+      struct.trips.add(_elem39);
+    }
+  }
+  struct.setTripsIsSet(true);
+  struct.options=new PathOptions();
+  struct.options.read(iprot);
+  struct.setOptionsIsSet(true);
+}

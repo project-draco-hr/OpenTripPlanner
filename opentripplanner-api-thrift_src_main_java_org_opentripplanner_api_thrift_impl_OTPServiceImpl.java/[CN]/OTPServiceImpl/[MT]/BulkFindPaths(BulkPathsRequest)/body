@@ -1,0 +1,10 @@
+{
+  PathOptions pathOptions=req.getOptions();
+  BulkPathsResponse res=new BulkPathsResponse();
+  for (  TripParameters trip : req.getTrips()) {
+    List<GraphPath> computedPaths=computePaths(trip,pathOptions);
+    TripPathsExtension tripPaths=new TripPathsExtension(trip,computedPaths);
+    res.addToPaths(tripPaths);
+  }
+  return res;
+}

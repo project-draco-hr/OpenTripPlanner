@@ -1,0 +1,16 @@
+{
+  if (that == null)   return false;
+  boolean this_present_head=true && this.isSetHead();
+  boolean that_present_head=true && that.isSetHead();
+  if (this_present_head || that_present_head) {
+    if (!(this_present_head && that_present_head))     return false;
+    if (!this.head.equals(that.head))     return false;
+  }
+  boolean this_present_tail=true && this.isSetTail();
+  boolean that_present_tail=true && that.isSetTail();
+  if (this_present_tail || that_present_tail) {
+    if (!(this_present_tail && that_present_tail))     return false;
+    if (!this.tail.equals(that.tail))     return false;
+  }
+  return true;
+}

@@ -30,12 +30,12 @@ break;
 case 3:
 if (schemeField.type == org.apache.thrift.protocol.TType.SET) {
 {
-  org.apache.thrift.protocol.TSet _set0=iprot.readSetBegin();
-  struct.allowed_modes=new HashSet<TravelMode>(2 * _set0.size);
-  for (int _i1=0; _i1 < _set0.size; ++_i1) {
-    TravelMode _elem2;
-    _elem2=TravelMode.findByValue(iprot.readI32());
-    struct.allowed_modes.add(_elem2);
+  org.apache.thrift.protocol.TSet _set16=iprot.readSetBegin();
+  struct.allowed_modes=new HashSet<TravelMode>(2 * _set16.size);
+  for (int _i17=0; _i17 < _set16.size; ++_i17) {
+    TravelMode _elem18;
+    _elem18=TravelMode.findByValue(iprot.readI32());
+    struct.allowed_modes.add(_elem18);
   }
   iprot.readSetEnd();
 }

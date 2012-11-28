@@ -1,0 +1,22 @@
+{
+  struct.validate();
+  oprot.writeStructBegin(STRUCT_DESC);
+  if (struct.trips != null) {
+    oprot.writeFieldBegin(TRIPS_FIELD_DESC);
+{
+      oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT,struct.trips.size()));
+      for (      TripParameters _iter35 : struct.trips) {
+        _iter35.write(oprot);
+      }
+      oprot.writeListEnd();
+    }
+    oprot.writeFieldEnd();
+  }
+  if (struct.options != null) {
+    oprot.writeFieldBegin(OPTIONS_FIELD_DESC);
+    struct.options.write(oprot);
+    oprot.writeFieldEnd();
+  }
+  oprot.writeFieldStop();
+  oprot.writeStructEnd();
+}

@@ -1,0 +1,38 @@
+{
+  if (!getClass().equals(other.getClass())) {
+    return getClass().getName().compareTo(other.getClass().getName());
+  }
+  int lastComparison=0;
+  TripPaths typedOther=(TripPaths)other;
+  lastComparison=Boolean.valueOf(isSetTrip()).compareTo(typedOther.isSetTrip());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetTrip()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.trip,typedOther.trip);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  lastComparison=Boolean.valueOf(isSetPaths()).compareTo(typedOther.isSetPaths());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetPaths()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.paths,typedOther.paths);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  lastComparison=Boolean.valueOf(isSetNo_paths_found()).compareTo(typedOther.isSetNo_paths_found());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetNo_paths_found()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.no_paths_found,typedOther.no_paths_found);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  return 0;
+}

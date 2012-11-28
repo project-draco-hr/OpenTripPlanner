@@ -1,0 +1,18 @@
+{
+  StringBuilder sb=new StringBuilder("TravelState(");
+  boolean first=true;
+  sb.append("arrival_time:");
+  sb.append(this.arrival_time);
+  first=false;
+  if (!first)   sb.append(", ");
+  sb.append("vertex:");
+  if (this.vertex == null) {
+    sb.append("null");
+  }
+ else {
+    sb.append(this.vertex);
+  }
+  first=false;
+  sb.append(")");
+  return sb.toString();
+}

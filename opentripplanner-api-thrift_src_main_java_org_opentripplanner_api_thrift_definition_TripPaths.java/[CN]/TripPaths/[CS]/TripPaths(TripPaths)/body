@@ -1,0 +1,15 @@
+{
+  __isset_bit_vector.clear();
+  __isset_bit_vector.or(other.__isset_bit_vector);
+  if (other.isSetTrip()) {
+    this.trip=new TripParameters(other.trip);
+  }
+  if (other.isSetPaths()) {
+    List<Path> __this__paths=new ArrayList<Path>();
+    for (    Path other_element : other.paths) {
+      __this__paths.add(new Path(other_element));
+    }
+    this.paths=__this__paths;
+  }
+  this.no_paths_found=other.no_paths_found;
+}

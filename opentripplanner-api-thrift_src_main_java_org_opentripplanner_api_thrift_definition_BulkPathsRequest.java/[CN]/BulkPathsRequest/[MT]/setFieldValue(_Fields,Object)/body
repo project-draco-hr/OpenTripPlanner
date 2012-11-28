@@ -1,0 +1,20 @@
+{
+switch (field) {
+case TRIPS:
+    if (value == null) {
+      unsetTrips();
+    }
+ else {
+      setTrips((List<TripParameters>)value);
+    }
+  break;
+case OPTIONS:
+if (value == null) {
+  unsetOptions();
+}
+ else {
+  setOptions((PathOptions)value);
+}
+break;
+}
+}

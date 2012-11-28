@@ -1,0 +1,10 @@
+{
+  if (that == null)   return false;
+  boolean this_present_paths=true && this.isSetPaths();
+  boolean that_present_paths=true && that.isSetPaths();
+  if (this_present_paths || that_present_paths) {
+    if (!(this_present_paths && that_present_paths))     return false;
+    if (!this.paths.equals(that.paths))     return false;
+  }
+  return true;
+}

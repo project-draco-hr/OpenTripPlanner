@@ -1,0 +1,58 @@
+{
+  if (!getClass().equals(other.getClass())) {
+    return getClass().getName().compareTo(other.getClass().getName());
+  }
+  int lastComparison=0;
+  Path typedOther=(Path)other;
+  lastComparison=Boolean.valueOf(isSetDuration()).compareTo(typedOther.isSetDuration());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetDuration()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.duration,typedOther.duration);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  lastComparison=Boolean.valueOf(isSetStart_time()).compareTo(typedOther.isSetStart_time());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetStart_time()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.start_time,typedOther.start_time);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  lastComparison=Boolean.valueOf(isSetEnd_time()).compareTo(typedOther.isSetEnd_time());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetEnd_time()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.end_time,typedOther.end_time);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  lastComparison=Boolean.valueOf(isSetStates()).compareTo(typedOther.isSetStates());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetStates()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.states,typedOther.states);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  lastComparison=Boolean.valueOf(isSetEdges()).compareTo(typedOther.isSetEdges());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetEdges()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.edges,typedOther.edges);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  return 0;
+}

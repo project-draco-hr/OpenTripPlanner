@@ -1,0 +1,5 @@
+{
+  RoutingRequest options=(new RoutingRequestBuilder(trip)).setGraph(graphService.getGraph()).setNumItineraries(pathOptions.getNum_paths()).build();
+  options.setRouterId("");
+  return pathService.getPaths(options);
+}

@@ -1,0 +1,16 @@
+{
+  if (that == null)   return false;
+  boolean this_present_trips=true && this.isSetTrips();
+  boolean that_present_trips=true && that.isSetTrips();
+  if (this_present_trips || that_present_trips) {
+    if (!(this_present_trips && that_present_trips))     return false;
+    if (!this.trips.equals(that.trips))     return false;
+  }
+  boolean this_present_options=true && this.isSetOptions();
+  boolean that_present_options=true && that.isSetOptions();
+  if (this_present_options || that_present_options) {
+    if (!(this_present_options && that_present_options))     return false;
+    if (!this.options.equals(that.options))     return false;
+  }
+  return true;
+}

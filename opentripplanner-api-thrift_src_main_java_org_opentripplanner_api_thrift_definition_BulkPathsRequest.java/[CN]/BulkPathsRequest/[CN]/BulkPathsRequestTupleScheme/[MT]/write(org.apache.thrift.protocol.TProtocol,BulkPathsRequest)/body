@@ -1,0 +1,10 @@
+{
+  TTupleProtocol oprot=(TTupleProtocol)prot;
+{
+    oprot.writeI32(struct.trips.size());
+    for (    TripParameters _iter36 : struct.trips) {
+      _iter36.write(oprot);
+    }
+  }
+  struct.options.write(oprot);
+}

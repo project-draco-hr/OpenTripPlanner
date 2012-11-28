@@ -1,0 +1,20 @@
+{
+switch (field) {
+case SUCCESS:
+    if (value == null) {
+      unsetSuccess();
+    }
+ else {
+      setSuccess((FindPathsResponse)value);
+    }
+  break;
+case PATH_ERR:
+if (value == null) {
+  unsetPath_err();
+}
+ else {
+  setPath_err((NoPathFoundError)value);
+}
+break;
+}
+}

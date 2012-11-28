@@ -1,0 +1,55 @@
+{
+  org.apache.thrift.protocol.TField schemeField;
+  iprot.readStructBegin();
+  while (true) {
+    schemeField=iprot.readFieldBegin();
+    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
+      break;
+    }
+switch (schemeField.id) {
+case 1:
+      if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+        struct.trip=new TripParameters();
+        struct.trip.read(iprot);
+        struct.setTripIsSet(true);
+      }
+ else {
+        org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+      }
+    break;
+case 2:
+  if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+{
+      org.apache.thrift.protocol.TList _list24=iprot.readListBegin();
+      struct.paths=new ArrayList<Path>(_list24.size);
+      for (int _i25=0; _i25 < _list24.size; ++_i25) {
+        Path _elem26;
+        _elem26=new Path();
+        _elem26.read(iprot);
+        struct.paths.add(_elem26);
+      }
+      iprot.readListEnd();
+    }
+    struct.setPathsIsSet(true);
+  }
+ else {
+    org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+  }
+break;
+case 3:
+if (schemeField.type == org.apache.thrift.protocol.TType.BOOL) {
+struct.no_paths_found=iprot.readBool();
+struct.setNo_paths_foundIsSet(true);
+}
+ else {
+org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+}
+break;
+default :
+org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+}
+iprot.readFieldEnd();
+}
+iprot.readStructEnd();
+struct.validate();
+}

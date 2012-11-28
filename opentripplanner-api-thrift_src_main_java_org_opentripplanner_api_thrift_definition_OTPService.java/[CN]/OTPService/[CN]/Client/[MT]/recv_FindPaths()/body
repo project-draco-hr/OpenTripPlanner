@@ -1,0 +1,11 @@
+{
+  FindPaths_result result=new FindPaths_result();
+  receiveBase(result,"FindPaths");
+  if (result.isSetSuccess()) {
+    return result.success;
+  }
+  if (result.path_err != null) {
+    throw result.path_err;
+  }
+  throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT,"FindPaths failed: unknown result");
+}

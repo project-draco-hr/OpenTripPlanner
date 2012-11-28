@@ -1,0 +1,11 @@
+{
+switch (field) {
+case TRIP:
+    return getTrip();
+case PATHS:
+  return getPaths();
+case NO_PATHS_FOUND:
+return Boolean.valueOf(isNo_paths_found());
+}
+throw new IllegalStateException();
+}

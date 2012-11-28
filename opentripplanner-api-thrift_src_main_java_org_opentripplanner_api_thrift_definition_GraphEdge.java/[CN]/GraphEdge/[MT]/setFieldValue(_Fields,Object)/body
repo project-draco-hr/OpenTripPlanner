@@ -1,0 +1,20 @@
+{
+switch (field) {
+case HEAD:
+    if (value == null) {
+      unsetHead();
+    }
+ else {
+      setHead((GraphVertex)value);
+    }
+  break;
+case TAIL:
+if (value == null) {
+  unsetTail();
+}
+ else {
+  setTail((GraphVertex)value);
+}
+break;
+}
+}

@@ -1,9 +1,7 @@
 {
-  RoutingRequest options=(new RoutingRequestBuilder(trip)).setGraph(graphService.getGraph()).setNumItineraries(1).build();
-  options.setRouterId("");
-  List<GraphPath> paths=pathService.getPaths(options);
+  List<GraphPath> paths=this.computePaths(trip,new PathOptions());
   if (paths == null || paths.size() == 0) {
-    LOG.warn("Found no path for trip");
+    LOG.warn("Found no path for trip: {}",trip);
     throw new NoPathFoundError("No path found for your trip.");
   }
  else {
