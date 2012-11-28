@@ -1,4 +1,5 @@
 {
+  LOG.debug("GetManyTripDurations called");
   BulkTripDurationResponse res=new BulkTripDurationResponse();
   List<Integer> expectedTimes=new ArrayList<Integer>(req.getTripsSize());
   for (  TripParameters trip : req.getTrips()) {

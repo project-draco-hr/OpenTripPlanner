@@ -1,5 +1,5 @@
 {
-  Vertex v=vertex("fake",75.0239,-45.139023);
+  SimpleVertex v=new SimpleVertex(_graph,"fake",75.0239,-45.139023);
   GraphVertexExtension graphVert=new GraphVertexExtension(v);
-  assertVertexEquals(v,graphVert);
+  assertTrue(v.equals(graphVert));
 }
