@@ -3,10 +3,10 @@
     Vertex fromVertex=context.stopNodes.get(pathway.getFromStop());
     Vertex toVertex=context.stopNodes.get(pathway.getToStop());
     if (pathway.isWheelchairTraversalTimeSet()) {
-      new PathwayEdge(fromVertex,toVertex,pathway.getTraversalTime());
+      new PathwayEdge(fromVertex,toVertex,pathway.getTraversalTime(),pathway.getWheelchairTraversalTime());
     }
  else {
-      new PathwayEdge(fromVertex,toVertex,pathway.getTraversalTime(),pathway.getWheelchairTraversalTime());
+      new PathwayEdge(fromVertex,toVertex,pathway.getTraversalTime());
     }
   }
 }
