@@ -1,0 +1,15 @@
+{
+  StreetVertexIndexService index=new StreetVertexIndexServiceImpl(graph);
+  for (  TransitStop ts : IterableLibrary.filter(graph.getVertices(),TransitStop.class)) {
+    Coordinate c=ts.getCoordinate();
+    LOG.trace("linking stop {}",ts);
+    int n=0;
+    for (    TransitStop other : index.getNearbyTransitStops(c,250)) {
+      int distance=(int)distanceLibrary.distance(c,other.getCoordinate());
+      LOG.trace("  to stop: {} ({}m)",other,distance);
+      new SimpleTransfer(ts,other,distance);
+      n+=1;
+    }
+    LOG.trace("linked to {} others.",n);
+  }
+}
