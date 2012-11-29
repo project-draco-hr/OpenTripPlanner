@@ -10,12 +10,17 @@
   }
   options.setMaxTransfers(Integer.MAX_VALUE);
   options.setMaxWalkDistance(Double.MAX_VALUE);
+  options.setWalkBoardCost(60 * 20);
+  options.setBikeBoardCost(60 * 25);
+  options.setTransferSlack(60 * 4);
+  options.setBoardSlack(60 * 2);
+  options.setAlightSlack(60 * 2);
   ThreadedBidirectionalHeuristic heuristic=new ThreadedBidirectionalHeuristic(options.rctx.graph);
   options.rctx.remainingWeightHeuristic=heuristic;
   long searchBeginTime=System.currentTimeMillis();
   LOG.debug("BEGIN SEARCH");
   ShortestPathTree spt=sptService.getShortestPathTree(options,timeout);
-  LOG.debug("END SUBSEARCH ({} msec)",System.currentTimeMillis() - searchBeginTime);
+  LOG.debug("END SEARCH ({} msec)",System.currentTimeMillis() - searchBeginTime);
   heuristic.abort();
   if (spt == null) {
     LOG.warn("SPT was null.");
@@ -30,6 +35,5 @@
     LOG.warn("Paths was 0-length.");
     return null;
   }
-  Collections.sort(paths,new PathComparator(options.isArriveBy()));
   return paths;
 }
