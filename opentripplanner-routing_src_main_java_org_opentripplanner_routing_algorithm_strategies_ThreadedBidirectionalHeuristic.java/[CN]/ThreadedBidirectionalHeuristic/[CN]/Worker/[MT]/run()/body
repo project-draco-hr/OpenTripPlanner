@@ -1,6 +1,5 @@
 {
   LOG.debug("recalc");
-  cutoff=options.maxWeight;
   BinHeap<Vertex> q=new BinHeap<Vertex>();
   long t0=System.currentTimeMillis();
   if (target instanceof StreetLocation) {
@@ -25,10 +24,13 @@
     q.insert(target,0);
   }
   while (!q.empty()) {
+    if (aborted) {
+      LOG.debug("aborted threaded heuristic calculation.");
+      break;
+    }
     double uw=q.peek_min_key();
     Vertex u=q.extract_min();
     maxFound=uw;
-    if (uw > cutoff)     break;
     if (u == origin) {
       LOG.debug("hit origin.");
     }
