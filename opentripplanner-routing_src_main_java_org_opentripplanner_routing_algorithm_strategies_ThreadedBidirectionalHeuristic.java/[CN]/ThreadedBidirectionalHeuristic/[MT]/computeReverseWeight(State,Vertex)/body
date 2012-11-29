@@ -1,11 +1,10 @@
 {
   final Vertex v=s.getVertex();
-  if (v instanceof StreetLocation)   return 0;
-  if (s.getWeight() < 10 * 60)   return 0;
   int index=v.getIndex();
   if (index < weights.length) {
     double h=weights[index];
-    return Double.isInfinite(h) ? maxFound : h;
+    if (v instanceof StreetVertex)     return h;
+ else     return Double.isInfinite(h) ? maxFound : h;
   }
  else   return 0;
 }

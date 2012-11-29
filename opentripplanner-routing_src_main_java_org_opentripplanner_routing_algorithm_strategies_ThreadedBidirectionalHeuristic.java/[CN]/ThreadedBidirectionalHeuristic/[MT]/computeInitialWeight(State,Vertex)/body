@@ -3,13 +3,7 @@
     LOG.debug("reusing existing heuristic");
   }
  else {
-synchronized (this) {
-      int nVertices=AbstractVertex.getMaxIndex();
-      weights=new double[nVertices];
-      Arrays.fill(weights,Double.POSITIVE_INFINITY);
-      this.target=target;
-      LOG.debug("spawning heuristic computation thread");
-    }
+    this.target=target;
     new Thread(new Worker(s)).start();
   }
   return 0;

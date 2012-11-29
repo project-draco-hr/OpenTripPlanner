@@ -1,28 +1,6 @@
 {
-  LOG.debug("recalc");
-  BinHeap<Vertex> q=new BinHeap<Vertex>();
+  LOG.debug("start SSSP");
   long t0=System.currentTimeMillis();
-  if (target instanceof StreetLocation) {
-    for (    Edge de : ((StreetLocation)target).getExtra()) {
-      Vertex gv;
-      if (options.isArriveBy()) {
-        gv=de.getToVertex();
-      }
- else {
-        gv=de.getFromVertex();
-      }
-      int gvi=gv.getIndex();
-      if (gv == target)       continue;
-      if (gvi >= weights.length)       continue;
-      weights[gvi]=0;
-      q.insert(gv,0);
-    }
-  }
- else {
-    int i=target.getIndex();
-    weights[i]=0;
-    q.insert(target,0);
-  }
   while (!q.empty()) {
     if (aborted) {
       LOG.debug("aborted threaded heuristic calculation.");
@@ -36,10 +14,8 @@
     }
     int ui=u.getIndex();
     if (uw > weights[ui])     continue;
-    Iterable<Edge> edges;
-    if (options.isArriveBy())     edges=u.getOutgoing();
- else     edges=u.getIncoming();
-    for (    Edge e : edges) {
+    for (    Edge e : options.isArriveBy() ? u.getOutgoing() : u.getIncoming()) {
+      if (e instanceof StreetTransitLink)       continue;
       Vertex v=options.isArriveBy() ? e.getToVertex() : e.getFromVertex();
       double ew=e.weightLowerBound(options);
       if (ew < 0) {
