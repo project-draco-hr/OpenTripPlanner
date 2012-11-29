@@ -1,0 +1,6 @@
+{
+  long t=this.getTimeSeconds() + 30 * 60;
+  RoutingRequest rr=(new RoutingRequestBuilder()).setArriveBy(t).build();
+  assertEquals(t,rr.dateTime);
+  assertTrue(rr.arriveBy);
+}
