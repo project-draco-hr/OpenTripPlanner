@@ -3,10 +3,22 @@
   struct.origin.write(oprot);
   struct.destination.write(oprot);
   BitSet optionals=new BitSet();
-  if (struct.isSetAllowed_modes()) {
+  if (struct.isSetStart_time()) {
     optionals.set(0);
   }
-  oprot.writeBitSet(optionals,1);
+  if (struct.isSetArrive_by()) {
+    optionals.set(1);
+  }
+  if (struct.isSetAllowed_modes()) {
+    optionals.set(2);
+  }
+  oprot.writeBitSet(optionals,3);
+  if (struct.isSetStart_time()) {
+    oprot.writeI64(struct.start_time);
+  }
+  if (struct.isSetArrive_by()) {
+    oprot.writeI64(struct.arrive_by);
+  }
   if (struct.isSetAllowed_modes()) {
 {
       oprot.writeI32(struct.allowed_modes.size());

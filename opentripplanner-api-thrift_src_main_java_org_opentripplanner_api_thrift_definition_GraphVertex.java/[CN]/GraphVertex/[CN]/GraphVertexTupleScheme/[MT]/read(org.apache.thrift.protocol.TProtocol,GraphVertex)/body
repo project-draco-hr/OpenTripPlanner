@@ -4,9 +4,9 @@
   struct.setLabelIsSet(true);
   BitSet incoming=iprot.readBitSet(4);
   if (incoming.get(0)) {
-    struct.location=new Location();
-    struct.location.read(iprot);
-    struct.setLocationIsSet(true);
+    struct.lat_lng=new LatLng();
+    struct.lat_lng.read(iprot);
+    struct.setLat_lngIsSet(true);
   }
   if (incoming.get(1)) {
     struct.name=iprot.readString();

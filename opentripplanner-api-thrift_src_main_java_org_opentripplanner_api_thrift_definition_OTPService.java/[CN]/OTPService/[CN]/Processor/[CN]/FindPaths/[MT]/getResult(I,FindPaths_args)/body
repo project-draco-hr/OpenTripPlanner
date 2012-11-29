@@ -1,10 +1,5 @@
 {
   FindPaths_result result=new FindPaths_result();
-  try {
-    result.success=iface.FindPaths(args.req);
-  }
- catch (  NoPathFoundError path_err) {
-    result.path_err=path_err;
-  }
+  result.success=iface.FindPaths(args.req);
   return result;
 }

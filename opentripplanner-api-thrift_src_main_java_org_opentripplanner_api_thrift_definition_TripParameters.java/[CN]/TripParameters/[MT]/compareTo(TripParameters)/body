@@ -24,6 +24,26 @@
       return lastComparison;
     }
   }
+  lastComparison=Boolean.valueOf(isSetStart_time()).compareTo(typedOther.isSetStart_time());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetStart_time()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.start_time,typedOther.start_time);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  lastComparison=Boolean.valueOf(isSetArrive_by()).compareTo(typedOther.isSetArrive_by());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetArrive_by()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.arrive_by,typedOther.arrive_by);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
   lastComparison=Boolean.valueOf(isSetAllowed_modes()).compareTo(typedOther.isSetAllowed_modes());
   if (lastComparison != 0) {
     return lastComparison;

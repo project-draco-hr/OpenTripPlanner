@@ -16,6 +16,22 @@ if (value == null) {
   setDestination((Location)value);
 }
 break;
+case START_TIME:
+if (value == null) {
+unsetStart_time();
+}
+ else {
+setStart_time((Long)value);
+}
+break;
+case ARRIVE_BY:
+if (value == null) {
+unsetArrive_by();
+}
+ else {
+setArrive_by((Long)value);
+}
+break;
 case ALLOWED_MODES:
 if (value == null) {
 unsetAllowed_modes();

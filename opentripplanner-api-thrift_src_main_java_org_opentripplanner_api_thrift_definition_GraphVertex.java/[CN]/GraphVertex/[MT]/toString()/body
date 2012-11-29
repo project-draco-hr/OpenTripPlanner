@@ -9,14 +9,14 @@
     sb.append(this.label);
   }
   first=false;
-  if (isSetLocation()) {
+  if (isSetLat_lng()) {
     if (!first)     sb.append(", ");
-    sb.append("location:");
-    if (this.location == null) {
+    sb.append("lat_lng:");
+    if (this.lat_lng == null) {
       sb.append("null");
     }
  else {
-      sb.append(this.location);
+      sb.append(this.lat_lng);
     }
     first=false;
   }

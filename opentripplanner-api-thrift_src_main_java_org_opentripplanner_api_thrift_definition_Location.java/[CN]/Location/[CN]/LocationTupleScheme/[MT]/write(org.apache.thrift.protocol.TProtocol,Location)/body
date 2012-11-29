@@ -1,4 +1,11 @@
 {
   TTupleProtocol oprot=(TTupleProtocol)prot;
-  struct.lat_lng.write(oprot);
+  BitSet optionals=new BitSet();
+  if (struct.isSetLat_lng()) {
+    optionals.set(0);
+  }
+  oprot.writeBitSet(optionals,1);
+  if (struct.isSetLat_lng()) {
+    struct.lat_lng.write(oprot);
+  }
 }

@@ -18,6 +18,18 @@
     sb.append(this.destination);
   }
   first=false;
+  if (isSetStart_time()) {
+    if (!first)     sb.append(", ");
+    sb.append("start_time:");
+    sb.append(this.start_time);
+    first=false;
+  }
+  if (isSetArrive_by()) {
+    if (!first)     sb.append(", ");
+    sb.append("arrive_by:");
+    sb.append(this.arrive_by);
+    first=false;
+  }
   if (isSetAllowed_modes()) {
     if (!first)     sb.append(", ");
     sb.append("allowed_modes:");

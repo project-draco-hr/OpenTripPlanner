@@ -18,9 +18,9 @@ case 1:
     break;
 case 2:
   if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-    struct.location=new Location();
-    struct.location.read(iprot);
-    struct.setLocationIsSet(true);
+    struct.lat_lng=new LatLng();
+    struct.lat_lng.read(iprot);
+    struct.setLat_lngIsSet(true);
   }
  else {
     org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);

@@ -6,10 +6,10 @@
     oprot.writeString(struct.label);
     oprot.writeFieldEnd();
   }
-  if (struct.location != null) {
-    if (struct.isSetLocation()) {
-      oprot.writeFieldBegin(LOCATION_FIELD_DESC);
-      struct.location.write(oprot);
+  if (struct.lat_lng != null) {
+    if (struct.isSetLat_lng()) {
+      oprot.writeFieldBegin(LAT_LNG_FIELD_DESC);
+      struct.lat_lng.write(oprot);
       oprot.writeFieldEnd();
     }
   }

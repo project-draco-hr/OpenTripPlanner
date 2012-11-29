@@ -2,7 +2,7 @@
   TTupleProtocol oprot=(TTupleProtocol)prot;
   oprot.writeString(struct.label);
   BitSet optionals=new BitSet();
-  if (struct.isSetLocation()) {
+  if (struct.isSetLat_lng()) {
     optionals.set(0);
   }
   if (struct.isSetName()) {
@@ -15,8 +15,8 @@
     optionals.set(3);
   }
   oprot.writeBitSet(optionals,4);
-  if (struct.isSetLocation()) {
-    struct.location.write(oprot);
+  if (struct.isSetLat_lng()) {
+    struct.lat_lng.write(oprot);
   }
   if (struct.isSetName()) {
     oprot.writeString(struct.name);

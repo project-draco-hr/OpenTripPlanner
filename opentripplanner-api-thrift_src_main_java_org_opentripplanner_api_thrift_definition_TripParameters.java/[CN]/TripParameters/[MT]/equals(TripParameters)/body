@@ -12,6 +12,18 @@
     if (!(this_present_destination && that_present_destination))     return false;
     if (!this.destination.equals(that.destination))     return false;
   }
+  boolean this_present_start_time=true && this.isSetStart_time();
+  boolean that_present_start_time=true && that.isSetStart_time();
+  if (this_present_start_time || that_present_start_time) {
+    if (!(this_present_start_time && that_present_start_time))     return false;
+    if (this.start_time != that.start_time)     return false;
+  }
+  boolean this_present_arrive_by=true && this.isSetArrive_by();
+  boolean that_present_arrive_by=true && that.isSetArrive_by();
+  if (this_present_arrive_by || that_present_arrive_by) {
+    if (!(this_present_arrive_by && that_present_arrive_by))     return false;
+    if (this.arrive_by != that.arrive_by)     return false;
+  }
   boolean this_present_allowed_modes=true && this.isSetAllowed_modes();
   boolean that_present_allowed_modes=true && that.isSetAllowed_modes();
   if (this_present_allowed_modes || that_present_allowed_modes) {
