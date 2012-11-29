@@ -11,7 +11,10 @@
     }
   }
   struct.setTripsIsSet(true);
-  struct.options=new PathOptions();
-  struct.options.read(iprot);
-  struct.setOptionsIsSet(true);
+  BitSet incoming=iprot.readBitSet(1);
+  if (incoming.get(0)) {
+    struct.options=new PathOptions();
+    struct.options.read(iprot);
+    struct.setOptionsIsSet(true);
+  }
 }

@@ -13,9 +13,11 @@
     oprot.writeFieldEnd();
   }
   if (struct.options != null) {
-    oprot.writeFieldBegin(OPTIONS_FIELD_DESC);
-    struct.options.write(oprot);
-    oprot.writeFieldEnd();
+    if (struct.isSetOptions()) {
+      oprot.writeFieldBegin(OPTIONS_FIELD_DESC);
+      struct.options.write(oprot);
+      oprot.writeFieldEnd();
+    }
   }
   oprot.writeFieldStop();
   oprot.writeStructEnd();

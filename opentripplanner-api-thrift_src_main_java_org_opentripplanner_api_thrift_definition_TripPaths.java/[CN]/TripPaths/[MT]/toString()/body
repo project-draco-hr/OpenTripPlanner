@@ -9,15 +9,17 @@
     sb.append(this.trip);
   }
   first=false;
-  if (!first)   sb.append(", ");
-  sb.append("paths:");
-  if (this.paths == null) {
-    sb.append("null");
-  }
+  if (isSetPaths()) {
+    if (!first)     sb.append(", ");
+    sb.append("paths:");
+    if (this.paths == null) {
+      sb.append("null");
+    }
  else {
-    sb.append(this.paths);
+      sb.append(this.paths);
+    }
+    first=false;
   }
-  first=false;
   if (isSetNo_paths_found()) {
     if (!first)     sb.append(", ");
     sb.append("no_paths_found:");

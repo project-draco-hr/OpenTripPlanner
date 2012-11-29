@@ -9,15 +9,17 @@
     sb.append(this.trips);
   }
   first=false;
-  if (!first)   sb.append(", ");
-  sb.append("options:");
-  if (this.options == null) {
-    sb.append("null");
-  }
+  if (isSetOptions()) {
+    if (!first)     sb.append(", ");
+    sb.append("options:");
+    if (this.options == null) {
+      sb.append("null");
+    }
  else {
-    sb.append(this.options);
+      sb.append(this.options);
+    }
+    first=false;
   }
-  first=false;
   sb.append(")");
   return sb.toString();
 }

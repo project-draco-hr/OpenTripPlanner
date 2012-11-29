@@ -1,0 +1,20 @@
+{
+switch (field) {
+case LOCATION:
+    if (value == null) {
+      unsetLocation();
+    }
+ else {
+      setLocation((Location)value);
+    }
+  break;
+case ALLOWED_MODES:
+if (value == null) {
+  unsetAllowed_modes();
+}
+ else {
+  setAllowed_modes((Set<TravelMode>)value);
+}
+break;
+}
+}

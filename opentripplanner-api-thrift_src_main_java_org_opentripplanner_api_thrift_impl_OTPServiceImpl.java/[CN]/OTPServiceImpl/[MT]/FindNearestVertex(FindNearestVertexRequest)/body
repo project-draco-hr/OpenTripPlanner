@@ -1,0 +1,14 @@
+{
+  LOG.info("FindNearestVertex called");
+  RoutingRequestBuilder rrb=new RoutingRequestBuilder();
+  if (req.isSetAllowed_modes()) {
+    rrb.setTravelModes(req.getAllowed_modes());
+  }
+  RoutingRequest rr=rrb.build();
+  StreetVertexIndexService streetVertexIndex=getStreetIndex();
+  Coordinate c=new LatLngExtension(req.getLocation().getLat_lng()).toCoordinate();
+  Vertex closest=streetVertexIndex.getClosestVertex(c,null,rr);
+  FindNearestVertexResponse res=new FindNearestVertexResponse();
+  res.setNearest_vertex(new GraphVertexExtension(closest));
+  return res;
+}

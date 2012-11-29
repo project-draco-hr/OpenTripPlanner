@@ -7,15 +7,17 @@
     oprot.writeFieldEnd();
   }
   if (struct.paths != null) {
-    oprot.writeFieldBegin(PATHS_FIELD_DESC);
+    if (struct.isSetPaths()) {
+      oprot.writeFieldBegin(PATHS_FIELD_DESC);
 {
-      oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT,struct.paths.size()));
-      for (      Path _iter27 : struct.paths) {
-        _iter27.write(oprot);
+        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT,struct.paths.size()));
+        for (        Path _iter27 : struct.paths) {
+          _iter27.write(oprot);
+        }
+        oprot.writeListEnd();
       }
-      oprot.writeListEnd();
+      oprot.writeFieldEnd();
     }
-    oprot.writeFieldEnd();
   }
   if (struct.isSetNo_paths_found()) {
     oprot.writeFieldBegin(NO_PATHS_FOUND_FIELD_DESC);

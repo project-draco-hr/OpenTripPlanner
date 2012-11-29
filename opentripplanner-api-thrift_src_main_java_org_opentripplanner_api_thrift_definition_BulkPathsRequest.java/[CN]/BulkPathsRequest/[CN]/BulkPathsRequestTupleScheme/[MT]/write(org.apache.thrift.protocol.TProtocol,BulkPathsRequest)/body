@@ -6,5 +6,12 @@
       _iter36.write(oprot);
     }
   }
-  struct.options.write(oprot);
+  BitSet optionals=new BitSet();
+  if (struct.isSetOptions()) {
+    optionals.set(0);
+  }
+  oprot.writeBitSet(optionals,1);
+  if (struct.isSetOptions()) {
+    struct.options.write(oprot);
+  }
 }
