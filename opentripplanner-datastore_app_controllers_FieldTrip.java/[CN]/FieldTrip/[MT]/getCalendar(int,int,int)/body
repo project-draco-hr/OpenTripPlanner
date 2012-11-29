@@ -1,5 +1,5 @@
 {
   List<FieldTrip> fieldTrips;
-  fieldTrips=ScheduledFieldTrip.find("year(departure) == ? and month(departure) == ? and day(departure) == ? " + "order by departure",year,month,day).fetch();
+  fieldTrips=ScheduledFieldTrip.find("year(departure) = ? and month(departure) = ? and day(departure) = ? " + "order by departure",year,month,day).fetch();
   renderJSON(fieldTrips);
 }
