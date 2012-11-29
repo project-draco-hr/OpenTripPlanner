@@ -1,0 +1,24 @@
+{
+  if (banned == null) {
+    return null;
+  }
+  HashMap<AgencyAndId,BannedStopSet> bannedTripMap=new HashMap<AgencyAndId,BannedStopSet>();
+  String[] tripStrings=banned.split(",");
+  for (  String tripString : tripStrings) {
+    String[] parts=tripString.split(":");
+    String tripIdString=parts[0];
+    AgencyAndId tripId=AgencyAndId.convertFromString(tripIdString);
+    BannedStopSet bannedStops;
+    if (parts.length == 1) {
+      bannedStops=BannedStopSet.ALL;
+    }
+ else {
+      bannedStops=new BannedStopSet();
+      for (int i=1; i < parts.length; ++i) {
+        bannedStops.add(Integer.parseInt(parts[i]));
+      }
+    }
+    bannedTripMap.put(tripId,bannedStops);
+  }
+  return bannedTripMap;
+}

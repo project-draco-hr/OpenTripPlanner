@@ -24,7 +24,7 @@
     long currentTime=state0.getTime();
     int bestWait=-1;
     TraverseMode mode=state0.getNonTransitMode();
-    if (options.bannedTrips.contains(trip.getId())) {
+    if (options.bannedTrips.containsKey(trip.getId())) {
       return null;
     }
     for (    ServiceDay sd : rctx.serviceDays) {

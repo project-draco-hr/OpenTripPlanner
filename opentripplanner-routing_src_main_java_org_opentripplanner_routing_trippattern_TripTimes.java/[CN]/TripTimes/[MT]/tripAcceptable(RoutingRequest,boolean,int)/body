@@ -1,6 +1,11 @@
 {
   Trip trip=this.getTrip();
-  if (options.bannedTrips.contains(trip.getId()))   return false;
+  BannedStopSet banned=options.bannedTrips.get(trip.getId());
+  if (banned != null) {
+    if (banned.contains(stopIndex) || banned == BannedStopSet.ALL) {
+      return false;
+    }
+  }
   if (options.wheelchairAccessible && trip.getWheelchairAccessible() != 1)   return false;
   if (bicycle)   if ((trip.getTripBikesAllowed() != 2) && (trip.getRoute().getBikesAllowed() != 2 || trip.getTripBikesAllowed() == 1))   return false;
   return true;

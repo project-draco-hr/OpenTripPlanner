@@ -41,6 +41,7 @@
           for (          Edge e : segment.board.getFromVertex().getIncoming()) {
             if (e instanceof PreBoardEdge) {
               route.stops[stop].stopVertex=(TransitStop)e.getFromVertex();
+              route.stops[stop].departVertex=(TransitStopDepart)e.getToVertex();
             }
           }
           route.boards[stop][pattern]=(TransitBoardAlight)segment.board;
@@ -49,6 +50,7 @@
           for (          Edge e : segment.alight.getToVertex().getOutgoing()) {
             if (e instanceof PreAlightEdge) {
               route.stops[stop].stopVertex=(TransitStop)e.getToVertex();
+              route.stops[stop].arriveVertex=(TransitStopArrive)e.getFromVertex();
             }
           }
           route.alights[stop - 1][pattern]=(TransitBoardAlight)segment.alight;

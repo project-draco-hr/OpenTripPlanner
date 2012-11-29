@@ -11,8 +11,9 @@
   if (dwellData == null) {
     return null;
   }
-  if (options.bannedTrips.contains(dwellData.trip)) {
-    return null;
+  BannedStopSet banned=options.bannedTrips.get(dwellData.trip);
+  if (banned != null) {
+    if (banned.contains(0))     return null;
   }
   StateEditor s1=state0.edit(this);
   TableTripPattern pattern=((OnboardVertex)s1.getVertex()).getTripPattern();

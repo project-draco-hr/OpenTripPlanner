@@ -11,6 +11,10 @@
   }
   if (v instanceof TransitVertex) {
     TransitVertex transitVertex=(TransitVertex)v;
+    Edge backEdge=state.getBackEdge();
+    if (backEdge instanceof OnBoardForwardEdge) {
+      place.stopIndex=((OnBoardForwardEdge)backEdge).getStopIndex() + 1;
+    }
     place.stopId=transitVertex.getStopId();
     place.stopCode=transitVertex.getStopCode();
     place.zoneId=state.getZone();

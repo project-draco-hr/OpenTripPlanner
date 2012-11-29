@@ -7,11 +7,7 @@
       GraphPath path=new GraphPath(cur.walkPath,false);
       for (ListIterator<Edge> it=path.edges.listIterator(path.edges.size()); it.hasPrevious(); ) {
         Edge e=it.previous();
-        State oldState=state;
         state=e.traverse(state);
-        if (state == null) {
-          e.traverse(oldState);
-        }
       }
     }
  else {
@@ -22,11 +18,7 @@
           }
         }
         TransitBoardAlight alight=cur.getRoute().alights[cur.boardStopSequence - 1][cur.patternIndex];
-        State oldState=state;
         state=alight.traverse(state);
-        if (state == null) {
-          state=alight.traverse(oldState);
-        }
       }
       HOP:       while (true) {
         for (        Edge e : state.getVertex().getIncoming()) {

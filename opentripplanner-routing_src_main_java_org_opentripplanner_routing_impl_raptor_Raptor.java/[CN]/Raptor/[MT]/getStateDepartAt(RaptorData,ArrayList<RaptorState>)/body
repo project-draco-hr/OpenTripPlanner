@@ -4,16 +4,22 @@
     RaptorState cur=states.get(i);
     if (cur.walkPath != null) {
       GraphPath path=new GraphPath(cur.walkPath,false);
+      Edge edge0=path.edges.getFirst();
+      if (edge0.getFromVertex() != state.getVertex()) {
+        state=state.getBackState();
+      }
       for (      Edge e : path.edges) {
-        State oldState=state;
         state=e.traverse(state);
-        if (state == null) {
-          e.traverse(oldState);
-        }
       }
     }
  else {
       if (cur.getParent() == null || !cur.getParent().interlining) {
+        for (        Edge e : state.getVertex().getOutgoing()) {
+          if (e instanceof PreAlightEdge) {
+            state=e.traverse(state);
+            break;
+          }
+        }
         for (        Edge e : state.getVertex().getOutgoing()) {
           if (e instanceof PreBoardEdge) {
             state=e.traverse(state);

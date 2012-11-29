@@ -69,6 +69,10 @@
   request.setPreferredRoutes(get(preferredRoutes,n,request.getPreferredRouteStr()));
   request.setUnpreferredRoutes(get(unpreferredRoutes,n,request.getUnpreferredRouteStr()));
   request.setBannedRoutes(get(bannedRoutes,n,request.getBannedRouteStr()));
+  HashMap<AgencyAndId,BannedStopSet> bannedTripMap=makeBannedTripMap(get(bannedTrips,n,null));
+  if (bannedTripMap != null) {
+    request.setBannedTrips(bannedTripMap);
+  }
   if (opt == OptimizeType.TRANSFERS) {
     opt=OptimizeType.QUICK;
     request.setTransferPenalty(get(transferPenalty,n,0) + 1800);
