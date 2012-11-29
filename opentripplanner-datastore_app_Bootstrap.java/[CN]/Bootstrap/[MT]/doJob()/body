@@ -1,10 +1,5 @@
 {
-  User.em().createQuery("DELETE FROM User u").executeUpdate();
   if (User.count() == 0) {
     Fixtures.loadModels("initial-data.yml");
-    System.out.println("HERE");
-  }
- else {
-    System.out.println("There are users");
   }
 }
