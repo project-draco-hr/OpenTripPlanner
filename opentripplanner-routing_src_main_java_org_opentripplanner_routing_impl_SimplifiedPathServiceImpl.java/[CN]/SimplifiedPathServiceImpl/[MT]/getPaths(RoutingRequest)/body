@@ -1,0 +1,35 @@
+{
+  List<GraphPath> paths=Lists.newArrayList();
+  if (options == null) {
+    LOG.error("PathService was passed a null routing request.");
+    return null;
+  }
+  if (options.rctx == null) {
+    options.setRoutingContext(graphService.getGraph(options.getRouterId()));
+    options.rctx.pathParsers=new PathParser[]{};
+  }
+  options.setMaxTransfers(Integer.MAX_VALUE);
+  options.setMaxWalkDistance(Double.MAX_VALUE);
+  ThreadedBidirectionalHeuristic heuristic=new ThreadedBidirectionalHeuristic(options.rctx.graph);
+  options.rctx.remainingWeightHeuristic=heuristic;
+  long searchBeginTime=System.currentTimeMillis();
+  LOG.debug("BEGIN SEARCH");
+  ShortestPathTree spt=sptService.getShortestPathTree(options,timeout);
+  LOG.debug("END SUBSEARCH ({} msec)",System.currentTimeMillis() - searchBeginTime);
+  heuristic.abort();
+  if (spt == null) {
+    LOG.warn("SPT was null.");
+    return null;
+  }
+  paths=spt.getPaths();
+  if (paths == null) {
+    LOG.warn("Paths was null.");
+    return null;
+  }
+  if (paths.size() == 0) {
+    LOG.warn("Paths was 0-length.");
+    return null;
+  }
+  Collections.sort(paths,new PathComparator(options.isArriveBy()));
+  return paths;
+}
