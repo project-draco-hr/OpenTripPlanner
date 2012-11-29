@@ -1,0 +1,10 @@
+{
+  try {
+    save();
+    return this;
+  }
+ catch (  PersistenceException e) {
+    Trip trip=Trip.find("agencyId = ? and tripId = ?",agencyId,tripId).first();
+    return trip;
+  }
+}
