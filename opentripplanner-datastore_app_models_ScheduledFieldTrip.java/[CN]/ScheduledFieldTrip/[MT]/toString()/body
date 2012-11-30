@@ -1,0 +1,7 @@
+{
+  GregorianCalendar calendar=new GregorianCalendar();
+  calendar.setTime(departure);
+  String timeString=String.format("%d:%02d %s",calendar.get(Calendar.HOUR),calendar.get(Calendar.MINUTE),calendar.get(Calendar.AM_PM));
+  String scheduled=isScheduled() ? "scheduled" : "unscheduled";
+  return timeString + " " + description+ " ("+ passengers+ " passengers) "+ scheduled;
+}
