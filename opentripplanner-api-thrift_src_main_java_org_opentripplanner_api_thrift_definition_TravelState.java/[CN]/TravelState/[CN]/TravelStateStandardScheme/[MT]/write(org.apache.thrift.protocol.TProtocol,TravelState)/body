@@ -1,0 +1,14 @@
+{
+  struct.validate();
+  oprot.writeStructBegin(STRUCT_DESC);
+  oprot.writeFieldBegin(ARRIVAL_TIME_FIELD_DESC);
+  oprot.writeI64(struct.arrival_time);
+  oprot.writeFieldEnd();
+  if (struct.vertex != null) {
+    oprot.writeFieldBegin(VERTEX_FIELD_DESC);
+    struct.vertex.write(oprot);
+    oprot.writeFieldEnd();
+  }
+  oprot.writeFieldStop();
+  oprot.writeStructEnd();
+}

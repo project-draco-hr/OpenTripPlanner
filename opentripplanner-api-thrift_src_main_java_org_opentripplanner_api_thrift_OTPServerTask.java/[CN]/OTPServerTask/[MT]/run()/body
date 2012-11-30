@@ -1,0 +1,19 @@
+{
+  LOG.info("Run called, port {}",port);
+  if (otpServiceImpl == null) {
+    LOG.warn("otpServiceImpl is null, bailing");
+    return;
+  }
+  try {
+    OTPService.Processor<OTPServiceImpl> processor=new OTPService.Processor<OTPServiceImpl>(otpServiceImpl);
+    TServerTransport serverTransport;
+    serverTransport=new TServerSocket(port);
+    TSimpleServer.Args args=new TSimpleServer.Args(serverTransport).processor(processor);
+    TServer server=new TSimpleServer(args);
+    LOG.info("Starting the OTPService on port {}",port);
+    server.serve();
+  }
+ catch (  TTransportException e) {
+    e.printStackTrace();
+  }
+}

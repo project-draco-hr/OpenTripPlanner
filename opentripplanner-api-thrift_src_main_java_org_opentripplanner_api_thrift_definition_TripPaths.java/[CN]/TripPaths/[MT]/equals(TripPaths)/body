@@ -1,0 +1,22 @@
+{
+  if (that == null)   return false;
+  boolean this_present_trip=true && this.isSetTrip();
+  boolean that_present_trip=true && that.isSetTrip();
+  if (this_present_trip || that_present_trip) {
+    if (!(this_present_trip && that_present_trip))     return false;
+    if (!this.trip.equals(that.trip))     return false;
+  }
+  boolean this_present_paths=true && this.isSetPaths();
+  boolean that_present_paths=true && that.isSetPaths();
+  if (this_present_paths || that_present_paths) {
+    if (!(this_present_paths && that_present_paths))     return false;
+    if (!this.paths.equals(that.paths))     return false;
+  }
+  boolean this_present_no_paths_found=true && this.isSetNo_paths_found();
+  boolean that_present_no_paths_found=true && that.isSetNo_paths_found();
+  if (this_present_no_paths_found || that_present_no_paths_found) {
+    if (!(this_present_no_paths_found && that_present_no_paths_found))     return false;
+    if (this.no_paths_found != that.no_paths_found)     return false;
+  }
+  return true;
+}

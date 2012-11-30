@@ -1,7 +1,13 @@
 {
   ArrayList<StreetEdge> extraStreets=new ArrayList<StreetEdge>();
-  if (extraEdges != null)   for (  StreetEdge se : IterableLibrary.filter(extraEdges,StreetEdge.class))   extraStreets.add(se);
-  for (  StreetEdge se : IterableLibrary.filter(graph.getTemporaryEdges(),StreetEdge.class))   extraStreets.add(se);
+  if (extraEdges != null) {
+    for (    StreetEdge se : IterableLibrary.filter(extraEdges,StreetEdge.class)) {
+      extraStreets.add(se);
+    }
+  }
+  for (  StreetEdge se : IterableLibrary.filter(graph.getTemporaryEdges(),StreetEdge.class)) {
+    extraStreets.add(se);
+  }
   Envelope envelope=new Envelope(coordinate);
   RoutingRequest walkingRequest=null;
   if (request != null) {

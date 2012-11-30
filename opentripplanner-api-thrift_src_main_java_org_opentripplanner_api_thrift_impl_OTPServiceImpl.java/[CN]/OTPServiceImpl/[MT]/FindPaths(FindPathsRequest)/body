@@ -1,0 +1,11 @@
+{
+  LOG.info("FindPaths called");
+  TripParameters trip=req.getTrip();
+  TripPaths outPaths=new TripPaths();
+  outPaths.setTrip(trip);
+  List<GraphPath> computedPaths=computePaths(trip,req.getOptions());
+  TripPathsExtension tripPaths=new TripPathsExtension(trip,computedPaths);
+  FindPathsResponse res=new FindPathsResponse();
+  res.setPaths(tripPaths);
+  return res;
+}

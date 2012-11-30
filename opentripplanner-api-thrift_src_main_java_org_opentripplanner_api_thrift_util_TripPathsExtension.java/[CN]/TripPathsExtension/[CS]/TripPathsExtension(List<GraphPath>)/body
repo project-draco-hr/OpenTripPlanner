@@ -1,0 +1,11 @@
+{
+  super();
+  if (paths == null || paths.size() == 0) {
+    setNo_paths_found(true);
+  }
+ else {
+    for (    GraphPath path : paths) {
+      addToPaths(new PathExtension(path));
+    }
+  }
+}

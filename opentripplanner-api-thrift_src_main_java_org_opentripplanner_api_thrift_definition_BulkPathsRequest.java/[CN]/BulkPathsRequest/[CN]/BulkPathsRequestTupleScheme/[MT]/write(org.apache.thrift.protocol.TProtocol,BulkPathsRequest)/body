@@ -1,0 +1,17 @@
+{
+  TTupleProtocol oprot=(TTupleProtocol)prot;
+{
+    oprot.writeI32(struct.trips.size());
+    for (    org.opentripplanner.api.thrift.definition.TripParameters _iter4 : struct.trips) {
+      _iter4.write(oprot);
+    }
+  }
+  BitSet optionals=new BitSet();
+  if (struct.isSetOptions()) {
+    optionals.set(0);
+  }
+  oprot.writeBitSet(optionals,1);
+  if (struct.isSetOptions()) {
+    struct.options.write(oprot);
+  }
+}

@@ -1,0 +1,17 @@
+{
+  StringBuilder sb=new StringBuilder("PathOptions(");
+  boolean first=true;
+  if (isSetNum_paths()) {
+    sb.append("num_paths:");
+    sb.append(this.num_paths);
+    first=false;
+  }
+  if (isSetReturn_detailed_path()) {
+    if (!first)     sb.append(", ");
+    sb.append("return_detailed_path:");
+    sb.append(this.return_detailed_path);
+    first=false;
+  }
+  sb.append(")");
+  return sb.toString();
+}

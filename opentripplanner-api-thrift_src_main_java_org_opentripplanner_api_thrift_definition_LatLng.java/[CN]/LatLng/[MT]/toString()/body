@@ -1,0 +1,13 @@
+{
+  StringBuilder sb=new StringBuilder("LatLng(");
+  boolean first=true;
+  sb.append("lat:");
+  sb.append(this.lat);
+  first=false;
+  if (!first)   sb.append(", ");
+  sb.append("lng:");
+  sb.append(this.lng);
+  first=false;
+  sb.append(")");
+  return sb.toString();
+}

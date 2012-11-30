@@ -1,0 +1,23 @@
+{
+  TTupleProtocol iprot=(TTupleProtocol)prot;
+  struct.label=iprot.readString();
+  struct.setLabelIsSet(true);
+  BitSet incoming=iprot.readBitSet(4);
+  if (incoming.get(0)) {
+    struct.lat_lng=new org.opentripplanner.api.thrift.definition.LatLng();
+    struct.lat_lng.read(iprot);
+    struct.setLat_lngIsSet(true);
+  }
+  if (incoming.get(1)) {
+    struct.name=iprot.readString();
+    struct.setNameIsSet(true);
+  }
+  if (incoming.get(2)) {
+    struct.in_degree=iprot.readI32();
+    struct.setIn_degreeIsSet(true);
+  }
+  if (incoming.get(3)) {
+    struct.out_degree=iprot.readI32();
+    struct.setOut_degreeIsSet(true);
+  }
+}

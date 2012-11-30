@@ -1,0 +1,44 @@
+{
+switch (field) {
+case LABEL:
+    if (value == null) {
+      unsetLabel();
+    }
+ else {
+      setLabel((String)value);
+    }
+  break;
+case LAT_LNG:
+if (value == null) {
+  unsetLat_lng();
+}
+ else {
+  setLat_lng((org.opentripplanner.api.thrift.definition.LatLng)value);
+}
+break;
+case NAME:
+if (value == null) {
+unsetName();
+}
+ else {
+setName((String)value);
+}
+break;
+case IN_DEGREE:
+if (value == null) {
+unsetIn_degree();
+}
+ else {
+setIn_degree((Integer)value);
+}
+break;
+case OUT_DEGREE:
+if (value == null) {
+unsetOut_degree();
+}
+ else {
+setOut_degree((Integer)value);
+}
+break;
+}
+}

@@ -1,0 +1,16 @@
+{
+  if (that == null)   return false;
+  boolean this_present_num_paths=true && this.isSetNum_paths();
+  boolean that_present_num_paths=true && that.isSetNum_paths();
+  if (this_present_num_paths || that_present_num_paths) {
+    if (!(this_present_num_paths && that_present_num_paths))     return false;
+    if (this.num_paths != that.num_paths)     return false;
+  }
+  boolean this_present_return_detailed_path=true && this.isSetReturn_detailed_path();
+  boolean that_present_return_detailed_path=true && that.isSetReturn_detailed_path();
+  if (this_present_return_detailed_path || that_present_return_detailed_path) {
+    if (!(this_present_return_detailed_path && that_present_return_detailed_path))     return false;
+    if (this.return_detailed_path != that.return_detailed_path)     return false;
+  }
+  return true;
+}

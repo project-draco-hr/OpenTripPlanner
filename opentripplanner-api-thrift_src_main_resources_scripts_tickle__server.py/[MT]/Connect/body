@@ -1,0 +1,10 @@
+def Connect(host, port):
+    try:
+        transport = TSocket.TSocket(host, port=port)
+        transport = TTransport.TBufferedTransport(transport)
+        protocol = TBinaryProtocol.TBinaryProtocolAccelerated(transport)
+        client = OTPService.Client(protocol)
+        transport.open()
+        return client
+    except Thrift.TException as tx:
+        print ('%s' % tx.message)

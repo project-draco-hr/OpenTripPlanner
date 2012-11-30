@@ -1,0 +1,16 @@
+{
+  if (that == null)   return false;
+  boolean this_present_lat=true;
+  boolean that_present_lat=true;
+  if (this_present_lat || that_present_lat) {
+    if (!(this_present_lat && that_present_lat))     return false;
+    if (this.lat != that.lat)     return false;
+  }
+  boolean this_present_lng=true;
+  boolean that_present_lng=true;
+  if (this_present_lng || that_present_lng) {
+    if (!(this_present_lng && that_present_lng))     return false;
+    if (this.lng != that.lng)     return false;
+  }
+  return true;
+}

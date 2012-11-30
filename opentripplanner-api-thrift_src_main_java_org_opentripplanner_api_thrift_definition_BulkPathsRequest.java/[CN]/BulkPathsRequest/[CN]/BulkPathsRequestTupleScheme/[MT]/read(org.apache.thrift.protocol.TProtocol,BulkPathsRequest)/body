@@ -1,0 +1,20 @@
+{
+  TTupleProtocol iprot=(TTupleProtocol)prot;
+{
+    org.apache.thrift.protocol.TList _list5=new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT,iprot.readI32());
+    struct.trips=new ArrayList<org.opentripplanner.api.thrift.definition.TripParameters>(_list5.size);
+    for (int _i6=0; _i6 < _list5.size; ++_i6) {
+      org.opentripplanner.api.thrift.definition.TripParameters _elem7;
+      _elem7=new org.opentripplanner.api.thrift.definition.TripParameters();
+      _elem7.read(iprot);
+      struct.trips.add(_elem7);
+    }
+  }
+  struct.setTripsIsSet(true);
+  BitSet incoming=iprot.readBitSet(1);
+  if (incoming.get(0)) {
+    struct.options=new org.opentripplanner.api.thrift.definition.PathOptions();
+    struct.options.read(iprot);
+    struct.setOptionsIsSet(true);
+  }
+}

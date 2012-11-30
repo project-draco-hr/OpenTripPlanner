@@ -1,0 +1,8 @@
+{
+  GetVertices_result result=new GetVertices_result();
+  receiveBase(result,"GetVertices");
+  if (result.isSetSuccess()) {
+    return result.success;
+  }
+  throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT,"GetVertices failed: unknown result");
+}

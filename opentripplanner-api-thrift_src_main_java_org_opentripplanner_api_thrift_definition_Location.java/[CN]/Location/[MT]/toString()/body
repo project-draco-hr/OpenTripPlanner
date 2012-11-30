@@ -1,0 +1,16 @@
+{
+  StringBuilder sb=new StringBuilder("Location(");
+  boolean first=true;
+  if (isSetLat_lng()) {
+    sb.append("lat_lng:");
+    if (this.lat_lng == null) {
+      sb.append("null");
+    }
+ else {
+      sb.append(this.lat_lng);
+    }
+    first=false;
+  }
+  sb.append(")");
+  return sb.toString();
+}

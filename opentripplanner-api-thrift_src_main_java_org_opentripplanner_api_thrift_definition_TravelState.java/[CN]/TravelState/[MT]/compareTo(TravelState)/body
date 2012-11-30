@@ -1,0 +1,28 @@
+{
+  if (!getClass().equals(other.getClass())) {
+    return getClass().getName().compareTo(other.getClass().getName());
+  }
+  int lastComparison=0;
+  TravelState typedOther=(TravelState)other;
+  lastComparison=Boolean.valueOf(isSetArrival_time()).compareTo(typedOther.isSetArrival_time());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetArrival_time()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.arrival_time,typedOther.arrival_time);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  lastComparison=Boolean.valueOf(isSetVertex()).compareTo(typedOther.isSetVertex());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetVertex()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.vertex,typedOther.vertex);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  return 0;
+}

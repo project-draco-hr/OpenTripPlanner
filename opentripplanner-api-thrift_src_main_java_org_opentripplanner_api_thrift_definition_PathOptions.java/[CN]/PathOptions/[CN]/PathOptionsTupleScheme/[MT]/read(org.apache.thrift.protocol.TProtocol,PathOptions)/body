@@ -1,0 +1,12 @@
+{
+  TTupleProtocol iprot=(TTupleProtocol)prot;
+  BitSet incoming=iprot.readBitSet(2);
+  if (incoming.get(0)) {
+    struct.num_paths=iprot.readI32();
+    struct.setNum_pathsIsSet(true);
+  }
+  if (incoming.get(1)) {
+    struct.return_detailed_path=iprot.readBool();
+    struct.setReturn_detailed_pathIsSet(true);
+  }
+}

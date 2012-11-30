@@ -1,0 +1,9 @@
+{
+  TTupleProtocol oprot=(TTupleProtocol)prot;
+{
+    oprot.writeI32(struct.vertices.size());
+    for (    org.opentripplanner.api.thrift.definition.GraphVertex _iter28 : struct.vertices) {
+      _iter28.write(oprot);
+    }
+  }
+}

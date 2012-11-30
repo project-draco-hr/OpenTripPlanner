@@ -1,0 +1,8 @@
+{
+  FindNearestVertex_result result=new FindNearestVertex_result();
+  receiveBase(result,"FindNearestVertex");
+  if (result.isSetSuccess()) {
+    return result.success;
+  }
+  throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT,"FindNearestVertex failed: unknown result");
+}

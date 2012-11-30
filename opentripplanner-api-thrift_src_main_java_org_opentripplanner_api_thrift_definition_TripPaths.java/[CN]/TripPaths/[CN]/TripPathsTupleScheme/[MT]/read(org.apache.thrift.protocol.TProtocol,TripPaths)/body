@@ -1,0 +1,24 @@
+{
+  TTupleProtocol iprot=(TTupleProtocol)prot;
+  struct.trip=new TripParameters();
+  struct.trip.read(iprot);
+  struct.setTripIsSet(true);
+  BitSet incoming=iprot.readBitSet(2);
+  if (incoming.get(0)) {
+{
+      org.apache.thrift.protocol.TList _list29=new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT,iprot.readI32());
+      struct.paths=new ArrayList<Path>(_list29.size);
+      for (int _i30=0; _i30 < _list29.size; ++_i30) {
+        Path _elem31;
+        _elem31=new Path();
+        _elem31.read(iprot);
+        struct.paths.add(_elem31);
+      }
+    }
+    struct.setPathsIsSet(true);
+  }
+  if (incoming.get(1)) {
+    struct.no_paths_found=iprot.readBool();
+    struct.setNo_paths_foundIsSet(true);
+  }
+}

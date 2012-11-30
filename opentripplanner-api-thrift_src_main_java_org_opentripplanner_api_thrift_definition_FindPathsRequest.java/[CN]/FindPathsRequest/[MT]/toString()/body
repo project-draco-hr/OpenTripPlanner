@@ -1,0 +1,23 @@
+{
+  StringBuilder sb=new StringBuilder("FindPathsRequest(");
+  boolean first=true;
+  sb.append("trip:");
+  if (this.trip == null) {
+    sb.append("null");
+  }
+ else {
+    sb.append(this.trip);
+  }
+  first=false;
+  if (!first)   sb.append(", ");
+  sb.append("options:");
+  if (this.options == null) {
+    sb.append("null");
+  }
+ else {
+    sb.append(this.options);
+  }
+  first=false;
+  sb.append(")");
+  return sb.toString();
+}

@@ -1,0 +1,15 @@
+{
+switch (field) {
+case LABEL:
+    return getLabel();
+case LAT_LNG:
+  return getLat_lng();
+case NAME:
+return getName();
+case IN_DEGREE:
+return Integer.valueOf(getIn_degree());
+case OUT_DEGREE:
+return Integer.valueOf(getOut_degree());
+}
+throw new IllegalStateException();
+}

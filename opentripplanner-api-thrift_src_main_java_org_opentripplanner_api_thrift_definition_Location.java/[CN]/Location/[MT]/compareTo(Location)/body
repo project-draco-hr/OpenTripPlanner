@@ -1,0 +1,18 @@
+{
+  if (!getClass().equals(other.getClass())) {
+    return getClass().getName().compareTo(other.getClass().getName());
+  }
+  int lastComparison=0;
+  Location typedOther=(Location)other;
+  lastComparison=Boolean.valueOf(isSetLat_lng()).compareTo(typedOther.isSetLat_lng());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetLat_lng()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.lat_lng,typedOther.lat_lng);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  return 0;
+}

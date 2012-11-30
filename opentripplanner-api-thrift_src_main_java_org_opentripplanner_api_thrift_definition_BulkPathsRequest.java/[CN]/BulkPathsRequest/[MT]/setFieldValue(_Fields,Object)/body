@@ -1,0 +1,20 @@
+{
+switch (field) {
+case TRIPS:
+    if (value == null) {
+      unsetTrips();
+    }
+ else {
+      setTrips((List<org.opentripplanner.api.thrift.definition.TripParameters>)value);
+    }
+  break;
+case OPTIONS:
+if (value == null) {
+  unsetOptions();
+}
+ else {
+  setOptions((org.opentripplanner.api.thrift.definition.PathOptions)value);
+}
+break;
+}
+}

@@ -1,0 +1,16 @@
+{
+  struct.validate();
+  oprot.writeStructBegin(STRUCT_DESC);
+  if (struct.isSetNum_paths()) {
+    oprot.writeFieldBegin(NUM_PATHS_FIELD_DESC);
+    oprot.writeI32(struct.num_paths);
+    oprot.writeFieldEnd();
+  }
+  if (struct.isSetReturn_detailed_path()) {
+    oprot.writeFieldBegin(RETURN_DETAILED_PATH_FIELD_DESC);
+    oprot.writeBool(struct.return_detailed_path);
+    oprot.writeFieldEnd();
+  }
+  oprot.writeFieldStop();
+  oprot.writeStructEnd();
+}

@@ -1,0 +1,8 @@
+{
+  BulkFindPaths_result result=new BulkFindPaths_result();
+  receiveBase(result,"BulkFindPaths");
+  if (result.isSetSuccess()) {
+    return result.success;
+  }
+  throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT,"BulkFindPaths failed: unknown result");
+}

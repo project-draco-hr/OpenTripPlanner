@@ -1,0 +1,17 @@
+{
+  struct.validate();
+  oprot.writeStructBegin(STRUCT_DESC);
+  if (struct.paths != null) {
+    oprot.writeFieldBegin(PATHS_FIELD_DESC);
+{
+      oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT,struct.paths.size()));
+      for (      org.opentripplanner.api.thrift.definition.TripPaths _iter11 : struct.paths) {
+        _iter11.write(oprot);
+      }
+      oprot.writeListEnd();
+    }
+    oprot.writeFieldEnd();
+  }
+  oprot.writeFieldStop();
+  oprot.writeStructEnd();
+}

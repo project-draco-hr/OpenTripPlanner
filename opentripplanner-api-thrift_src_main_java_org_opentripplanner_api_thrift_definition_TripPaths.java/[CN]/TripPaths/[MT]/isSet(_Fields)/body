@@ -1,0 +1,14 @@
+{
+  if (field == null) {
+    throw new IllegalArgumentException();
+  }
+switch (field) {
+case TRIP:
+    return isSetTrip();
+case PATHS:
+  return isSetPaths();
+case NO_PATHS_FOUND:
+return isSetNo_paths_found();
+}
+throw new IllegalStateException();
+}

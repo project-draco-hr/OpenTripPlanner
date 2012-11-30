@@ -1,0 +1,82 @@
+{
+  org.apache.thrift.protocol.TField schemeField;
+  iprot.readStructBegin();
+  while (true) {
+    schemeField=iprot.readFieldBegin();
+    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
+      break;
+    }
+switch (schemeField.id) {
+case 1:
+      if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+        struct.duration=iprot.readI32();
+        struct.setDurationIsSet(true);
+      }
+ else {
+        org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+      }
+    break;
+case 2:
+  if (schemeField.type == org.apache.thrift.protocol.TType.I64) {
+    struct.start_time=iprot.readI64();
+    struct.setStart_timeIsSet(true);
+  }
+ else {
+    org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+  }
+break;
+case 3:
+if (schemeField.type == org.apache.thrift.protocol.TType.I64) {
+struct.end_time=iprot.readI64();
+struct.setEnd_timeIsSet(true);
+}
+ else {
+org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+}
+break;
+case 4:
+if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+{
+org.apache.thrift.protocol.TList _list0=iprot.readListBegin();
+struct.states=new ArrayList<TravelState>(_list0.size);
+for (int _i1=0; _i1 < _list0.size; ++_i1) {
+TravelState _elem2;
+_elem2=new TravelState();
+_elem2.read(iprot);
+struct.states.add(_elem2);
+}
+iprot.readListEnd();
+}
+struct.setStatesIsSet(true);
+}
+ else {
+org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+}
+break;
+case 5:
+if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+{
+org.apache.thrift.protocol.TList _list3=iprot.readListBegin();
+struct.edges=new ArrayList<org.opentripplanner.api.thrift.definition.GraphEdge>(_list3.size);
+for (int _i4=0; _i4 < _list3.size; ++_i4) {
+org.opentripplanner.api.thrift.definition.GraphEdge _elem5;
+_elem5=new org.opentripplanner.api.thrift.definition.GraphEdge();
+_elem5.read(iprot);
+struct.edges.add(_elem5);
+}
+iprot.readListEnd();
+}
+struct.setEdgesIsSet(true);
+}
+ else {
+org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+}
+break;
+default :
+org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+}
+iprot.readFieldEnd();
+}
+iprot.readStructEnd();
+struct.validate();
+}
