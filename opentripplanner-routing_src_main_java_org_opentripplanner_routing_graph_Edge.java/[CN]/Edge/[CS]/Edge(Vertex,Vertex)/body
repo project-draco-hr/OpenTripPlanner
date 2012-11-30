@@ -5,6 +5,7 @@
   }
   this.fromv=v1;
   this.tov=v2;
+  this.id=idGenerator.getId(this);
   fromv.addOutgoing(this);
   tov.addIncoming(this);
 }
