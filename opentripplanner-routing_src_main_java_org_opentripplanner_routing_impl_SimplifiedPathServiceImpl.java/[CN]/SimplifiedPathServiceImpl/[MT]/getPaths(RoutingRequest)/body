@@ -7,14 +7,8 @@
     options.setRoutingContext(graphService.getGraph(options.getRouterId()));
     options.rctx.pathParsers=new PathParser[]{new Parser()};
   }
-  options.setMaxTransfers(Integer.MAX_VALUE);
   options.setMaxWalkDistance(Double.MAX_VALUE);
-  options.setWalkBoardCost(60 * 20);
-  options.setBikeBoardCost(60 * 20);
-  options.setWalkReluctance(1.25);
-  options.setTransferSlack(60 * 4);
-  options.setBoardSlack(60 * 2);
-  options.setAlightSlack(60 * 2);
+  LOG.debug("rreq={}",options);
   ThreadedBidirectionalHeuristic heuristic=new ThreadedBidirectionalHeuristic(options.rctx.graph);
   options.rctx.remainingWeightHeuristic=heuristic;
   long searchBeginTime=System.currentTimeMillis();
