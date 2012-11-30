@@ -1,3 +1,6 @@
 {
-  return getClass().getName() + "(" + fromv+ " -> "+ tov+ ")";
+  if (id != null) {
+    return String.format("%s:%s (%s -> %s)",getClass().getName(),id,fromv,tov);
+  }
+  return String.format("%s (%s -> %s)",getClass().getName(),fromv,tov);
 }

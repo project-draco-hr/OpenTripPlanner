@@ -1,7 +1,3 @@
 {
-  if (v1 == null || v2 == null)   throw new IllegalStateException(this.getClass() + " constructed with null vertex : " + v1+ " "+ v2);
-  this.fromv=v1;
-  this.tov=v2;
-  fromv.addOutgoing(this);
-  tov.addIncoming(this);
+  this(v1,v2,null);
 }
