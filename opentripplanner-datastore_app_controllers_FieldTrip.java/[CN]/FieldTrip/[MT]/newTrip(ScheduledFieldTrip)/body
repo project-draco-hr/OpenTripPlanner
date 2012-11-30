@@ -1,4 +1,9 @@
 {
+  trip.id=null;
+  User user=getUser();
+  if (!user.canScheduleFieldTrips()) {
+    trip.groupItineraries.clear();
+  }
   trip.save();
   Long id=trip.id;
   render(id);
