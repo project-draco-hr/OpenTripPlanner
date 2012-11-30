@@ -1,5 +1,5 @@
 {
-  List<FieldTrip> fieldTrips;
+  List<ScheduledFieldTrip> fieldTrips;
   fieldTrips=ScheduledFieldTrip.find("year(serviceDay) = ? and month(serviceDay) = ? and day(serviceDay) = ? " + "order by departure",year,month,day).fetch();
   DateFormatSymbols dfs=new DateFormatSymbols();
   String[] months=dfs.getMonths();
