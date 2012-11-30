@@ -1,0 +1,8 @@
+{
+  ScheduledFieldTrip fieldTrip=ScheduledFieldTrip.findById(fieldTripId);
+  itinerary.fieldTrip=fieldTrip;
+  fieldTrip.groupItineraries.add(itinerary);
+  itinerary.save();
+  Long id=itinerary.id;
+  renderJSON(id);
+}
