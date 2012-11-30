@@ -5,7 +5,7 @@ case TRIPS:
       unsetTrips();
     }
  else {
-      setTrips((List<TripParameters>)value);
+      setTrips((List<org.opentripplanner.api.thrift.definition.TripParameters>)value);
     }
   break;
 case OPTIONS:
@@ -13,7 +13,7 @@ if (value == null) {
   unsetOptions();
 }
  else {
-  setOptions((PathOptions)value);
+  setOptions((org.opentripplanner.api.thrift.definition.PathOptions)value);
 }
 break;
 }

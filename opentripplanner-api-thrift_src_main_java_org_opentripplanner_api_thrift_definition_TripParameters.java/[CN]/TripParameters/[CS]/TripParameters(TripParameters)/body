@@ -2,10 +2,10 @@
   __isset_bit_vector.clear();
   __isset_bit_vector.or(other.__isset_bit_vector);
   if (other.isSetOrigin()) {
-    this.origin=new Location(other.origin);
+    this.origin=other.origin;
   }
   if (other.isSetDestination()) {
-    this.destination=new Location(other.destination);
+    this.destination=other.destination;
   }
   this.start_time=other.start_time;
   this.arrive_by=other.arrive_by;

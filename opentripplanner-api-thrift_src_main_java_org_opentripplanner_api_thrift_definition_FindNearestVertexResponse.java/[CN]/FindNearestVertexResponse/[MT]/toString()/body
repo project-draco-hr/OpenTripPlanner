@@ -1,14 +1,16 @@
 {
   StringBuilder sb=new StringBuilder("FindNearestVertexResponse(");
   boolean first=true;
-  sb.append("nearest_vertex:");
-  if (this.nearest_vertex == null) {
-    sb.append("null");
-  }
+  if (isSetNearest_vertex()) {
+    sb.append("nearest_vertex:");
+    if (this.nearest_vertex == null) {
+      sb.append("null");
+    }
  else {
-    sb.append(this.nearest_vertex);
+      sb.append(this.nearest_vertex);
+    }
+    first=false;
   }
-  first=false;
   sb.append(")");
   return sb.toString();
 }

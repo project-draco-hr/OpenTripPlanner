@@ -10,13 +10,13 @@ switch (schemeField.id) {
 case 1:
       if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
 {
-          org.apache.thrift.protocol.TList _list40=iprot.readListBegin();
-          struct.paths=new ArrayList<TripPaths>(_list40.size);
-          for (int _i41=0; _i41 < _list40.size; ++_i41) {
-            TripPaths _elem42;
-            _elem42=new TripPaths();
-            _elem42.read(iprot);
-            struct.paths.add(_elem42);
+          org.apache.thrift.protocol.TList _list8=iprot.readListBegin();
+          struct.paths=new ArrayList<org.opentripplanner.api.thrift.definition.TripPaths>(_list8.size);
+          for (int _i9=0; _i9 < _list8.size; ++_i9) {
+            org.opentripplanner.api.thrift.definition.TripPaths _elem10;
+            _elem10=new org.opentripplanner.api.thrift.definition.TripPaths();
+            _elem10.read(iprot);
+            struct.paths.add(_elem10);
           }
           iprot.readListEnd();
         }

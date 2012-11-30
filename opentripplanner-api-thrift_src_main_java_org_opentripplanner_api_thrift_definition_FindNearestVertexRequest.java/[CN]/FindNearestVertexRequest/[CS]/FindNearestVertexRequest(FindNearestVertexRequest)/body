@@ -1,10 +1,10 @@
 {
   if (other.isSetLocation()) {
-    this.location=new Location(other.location);
+    this.location=other.location;
   }
   if (other.isSetAllowed_modes()) {
-    Set<TravelMode> __this__allowed_modes=new HashSet<TravelMode>();
-    for (    TravelMode other_element : other.allowed_modes) {
+    Set<org.opentripplanner.api.thrift.definition.TravelMode> __this__allowed_modes=new HashSet<org.opentripplanner.api.thrift.definition.TravelMode>();
+    for (    org.opentripplanner.api.thrift.definition.TravelMode other_element : other.allowed_modes) {
       __this__allowed_modes.add(other_element);
     }
     this.allowed_modes=__this__allowed_modes;

@@ -9,7 +9,7 @@
 switch (schemeField.id) {
 case 1:
       if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-        struct.location=new Location();
+        struct.location=new org.opentripplanner.api.thrift.definition.Location();
         struct.location.read(iprot);
         struct.setLocationIsSet(true);
       }
@@ -20,12 +20,12 @@ case 1:
 case 2:
   if (schemeField.type == org.apache.thrift.protocol.TType.SET) {
 {
-      org.apache.thrift.protocol.TSet _set48=iprot.readSetBegin();
-      struct.allowed_modes=new HashSet<TravelMode>(2 * _set48.size);
-      for (int _i49=0; _i49 < _set48.size; ++_i49) {
-        TravelMode _elem50;
-        _elem50=TravelMode.findByValue(iprot.readI32());
-        struct.allowed_modes.add(_elem50);
+      org.apache.thrift.protocol.TSet _set16=iprot.readSetBegin();
+      struct.allowed_modes=new HashSet<org.opentripplanner.api.thrift.definition.TravelMode>(2 * _set16.size);
+      for (int _i17=0; _i17 < _set16.size; ++_i17) {
+        org.opentripplanner.api.thrift.definition.TravelMode _elem18;
+        _elem18=org.opentripplanner.api.thrift.definition.TravelMode.findByValue(iprot.readI32());
+        struct.allowed_modes.add(_elem18);
       }
       iprot.readSetEnd();
     }

@@ -5,7 +5,7 @@ case ORIGIN:
       unsetOrigin();
     }
  else {
-      setOrigin((Location)value);
+      setOrigin((org.opentripplanner.api.thrift.definition.Location)value);
     }
   break;
 case DESTINATION:
@@ -13,7 +13,7 @@ if (value == null) {
   unsetDestination();
 }
  else {
-  setDestination((Location)value);
+  setDestination((org.opentripplanner.api.thrift.definition.Location)value);
 }
 break;
 case START_TIME:

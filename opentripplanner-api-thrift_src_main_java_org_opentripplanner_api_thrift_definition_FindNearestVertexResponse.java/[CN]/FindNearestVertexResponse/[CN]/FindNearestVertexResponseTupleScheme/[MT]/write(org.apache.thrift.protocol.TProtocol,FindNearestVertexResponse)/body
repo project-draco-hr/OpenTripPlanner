@@ -1,4 +1,11 @@
 {
   TTupleProtocol oprot=(TTupleProtocol)prot;
-  struct.nearest_vertex.write(oprot);
+  BitSet optionals=new BitSet();
+  if (struct.isSetNearest_vertex()) {
+    optionals.set(0);
+  }
+  oprot.writeBitSet(optionals,1);
+  if (struct.isSetNearest_vertex()) {
+    struct.nearest_vertex.write(oprot);
+  }
 }

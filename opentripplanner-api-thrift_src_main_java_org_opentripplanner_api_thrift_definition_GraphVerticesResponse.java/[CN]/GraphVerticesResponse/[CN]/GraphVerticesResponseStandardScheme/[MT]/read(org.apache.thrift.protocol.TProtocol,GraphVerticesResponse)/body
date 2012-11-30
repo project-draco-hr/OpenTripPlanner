@@ -10,13 +10,13 @@ switch (schemeField.id) {
 case 1:
       if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
 {
-          org.apache.thrift.protocol.TList _list56=iprot.readListBegin();
-          struct.vertices=new ArrayList<GraphVertex>(_list56.size);
-          for (int _i57=0; _i57 < _list56.size; ++_i57) {
-            GraphVertex _elem58;
-            _elem58=new GraphVertex();
-            _elem58.read(iprot);
-            struct.vertices.add(_elem58);
+          org.apache.thrift.protocol.TList _list24=iprot.readListBegin();
+          struct.vertices=new ArrayList<org.opentripplanner.api.thrift.definition.GraphVertex>(_list24.size);
+          for (int _i25=0; _i25 < _list24.size; ++_i25) {
+            org.opentripplanner.api.thrift.definition.GraphVertex _elem26;
+            _elem26=new org.opentripplanner.api.thrift.definition.GraphVertex();
+            _elem26.read(iprot);
+            struct.vertices.add(_elem26);
           }
           iprot.readListEnd();
         }

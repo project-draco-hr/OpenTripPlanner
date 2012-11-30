@@ -57,10 +57,10 @@ case 5:
 if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
 {
 org.apache.thrift.protocol.TList _list3=iprot.readListBegin();
-struct.edges=new ArrayList<GraphEdge>(_list3.size);
+struct.edges=new ArrayList<org.opentripplanner.api.thrift.definition.GraphEdge>(_list3.size);
 for (int _i4=0; _i4 < _list3.size; ++_i4) {
-GraphEdge _elem5;
-_elem5=new GraphEdge();
+org.opentripplanner.api.thrift.definition.GraphEdge _elem5;
+_elem5=new org.opentripplanner.api.thrift.definition.GraphEdge();
 _elem5.read(iprot);
 struct.edges.add(_elem5);
 }

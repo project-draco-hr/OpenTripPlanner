@@ -23,10 +23,10 @@
   if (incoming.get(1)) {
 {
       org.apache.thrift.protocol.TList _list13=new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT,iprot.readI32());
-      struct.edges=new ArrayList<GraphEdge>(_list13.size);
+      struct.edges=new ArrayList<org.opentripplanner.api.thrift.definition.GraphEdge>(_list13.size);
       for (int _i14=0; _i14 < _list13.size; ++_i14) {
-        GraphEdge _elem15;
-        _elem15=new GraphEdge();
+        org.opentripplanner.api.thrift.definition.GraphEdge _elem15;
+        _elem15=new org.opentripplanner.api.thrift.definition.GraphEdge();
         _elem15.read(iprot);
         struct.edges.add(_elem15);
       }

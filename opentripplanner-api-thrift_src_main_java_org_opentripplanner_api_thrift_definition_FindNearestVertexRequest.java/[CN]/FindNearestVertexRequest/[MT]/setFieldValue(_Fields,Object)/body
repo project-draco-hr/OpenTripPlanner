@@ -5,7 +5,7 @@ case LOCATION:
       unsetLocation();
     }
  else {
-      setLocation((Location)value);
+      setLocation((org.opentripplanner.api.thrift.definition.Location)value);
     }
   break;
 case ALLOWED_MODES:
@@ -13,7 +13,7 @@ if (value == null) {
   unsetAllowed_modes();
 }
  else {
-  setAllowed_modes((Set<TravelMode>)value);
+  setAllowed_modes((Set<org.opentripplanner.api.thrift.definition.TravelMode>)value);
 }
 break;
 }

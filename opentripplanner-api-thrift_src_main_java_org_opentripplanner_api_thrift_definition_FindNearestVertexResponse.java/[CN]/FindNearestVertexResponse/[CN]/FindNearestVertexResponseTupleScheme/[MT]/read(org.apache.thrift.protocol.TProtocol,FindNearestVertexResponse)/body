@@ -1,6 +1,9 @@
 {
   TTupleProtocol iprot=(TTupleProtocol)prot;
-  struct.nearest_vertex=new GraphVertex();
-  struct.nearest_vertex.read(iprot);
-  struct.setNearest_vertexIsSet(true);
+  BitSet incoming=iprot.readBitSet(1);
+  if (incoming.get(0)) {
+    struct.nearest_vertex=new org.opentripplanner.api.thrift.definition.GraphVertex();
+    struct.nearest_vertex.read(iprot);
+    struct.setNearest_vertexIsSet(true);
+  }
 }
