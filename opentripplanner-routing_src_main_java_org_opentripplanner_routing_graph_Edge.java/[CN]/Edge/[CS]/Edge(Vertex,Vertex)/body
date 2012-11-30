@@ -1,3 +1,10 @@
 {
-  this(v1,v2,null);
+  if (v1 == null || v2 == null) {
+    String err=String.format("%s constructed with null vertex : %s %s",this.getClass(),v1,v2);
+    throw new IllegalStateException(err);
+  }
+  this.fromv=v1;
+  this.tov=v2;
+  fromv.addOutgoing(this);
+  tov.addIncoming(this);
 }

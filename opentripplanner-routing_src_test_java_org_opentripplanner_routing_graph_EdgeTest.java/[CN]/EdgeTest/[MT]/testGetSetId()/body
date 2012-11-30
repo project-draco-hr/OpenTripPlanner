@@ -1,7 +1,7 @@
 {
   Edge e=makeSimpleEdge();
-  assertNull(e.getId());
-  String id="fake_id";
+  assertEquals(-1,e.getId());
+  int id=1;
   e.setId(id);
   assertEquals(id,e.getId());
 }
