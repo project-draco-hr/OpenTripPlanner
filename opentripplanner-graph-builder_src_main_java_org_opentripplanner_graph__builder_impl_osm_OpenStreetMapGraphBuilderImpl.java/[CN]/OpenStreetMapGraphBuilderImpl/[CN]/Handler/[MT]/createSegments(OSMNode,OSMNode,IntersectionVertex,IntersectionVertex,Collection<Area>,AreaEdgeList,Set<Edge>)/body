@@ -25,14 +25,12 @@
     label=unique(label);
     String name=getNameForWay(areaEntity,label);
     AreaEdge street=edgeFactory.createAreaEdge(fromNode,toNode,areaEntity,startEndpoint,endEndpoint,line,name,length,areaPermissions,false,carSpeed,edgeList);
-    street.setLabel(label);
     street.setStreetClass(cls);
     edges.add(street);
     label="way (area) " + areaEntity.getId() + " from "+ endEndpoint.getLabel()+ " to "+ startEndpoint.getLabel();
     label=unique(label);
     name=getNameForWay(areaEntity,label);
     AreaEdge backStreet=edgeFactory.createAreaEdge(toNode,fromNode,areaEntity,endEndpoint,startEndpoint,(LineString)line.reverse(),name,length,areaPermissions,true,carSpeed,edgeList);
-    backStreet.setLabel(label);
     backStreet.setStreetClass(cls);
     edges.add(backStreet);
     WayProperties wayData=wayPropertySet.getDataForWay(areaEntity);

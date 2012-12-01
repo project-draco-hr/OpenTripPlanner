@@ -8,7 +8,6 @@
   }
   float carSpeed=wayPropertySet.getCarSpeedForWay(way,back);
   PlainStreetEdge street=edgeFactory.createEdge(_nodes.get(startNode),_nodes.get(endNode),way,start,end,geometry,name,length,permissions,back,carSpeed);
-  street.setLabel(label);
   String highway=way.getTag("highway");
   int cls;
   if ("crossing".equals(highway) && !way.isTag("bicycle","designated")) {
