@@ -4,17 +4,10 @@
     vertexById.set(v.getIndex(),v);
   }
   this.edgeById=new HashMap<Integer,Edge>();
-  this.idForEdge=new HashMap<Edge,Integer>();
-  int i=0;
   for (  Vertex v : this.vertexById) {
     if (v == null)     continue;
-    int j=0;
     for (    Edge e : v.getOutgoing()) {
-      int eid=(i * 100) + j;
-      this.edgeById.put(eid,e);
-      this.idForEdge.put(e,eid);
-      ++j;
+      this.edgeById.put(e.getId(),e);
     }
-    ++i;
   }
 }

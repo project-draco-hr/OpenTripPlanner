@@ -1,14 +1,13 @@
 {
-  String id="way " + way.getId() + " from "+ index;
-  id=unique(id);
-  String name=getNameForWay(way,id);
+  String label="way " + way.getId() + " from "+ index;
+  label=unique(label);
+  String name=getNameForWay(way,label);
   boolean steps="steps".equals(way.getTag("highway"));
   if (steps) {
     length*=2;
   }
   float carSpeed=wayPropertySet.getCarSpeedForWay(way,back);
   PlainStreetEdge street=edgeFactory.createEdge(_nodes.get(startNode),_nodes.get(endNode),way,start,end,geometry,name,length,permissions,back,carSpeed);
-  street.setId(id);
   String highway=way.getTag("highway");
   int cls;
   if ("crossing".equals(highway) && !way.isTag("bicycle","designated")) {

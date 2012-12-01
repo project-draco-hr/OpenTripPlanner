@@ -1,0 +1,6 @@
+{
+  UniqueIdGenerator<String> gen=new IncrementingIdGenerator<String>();
+  assertEquals(0,gen.getId(""));
+  assertEquals(1,gen.getId("fake"));
+  assertEquals(2,gen.getId("foo"));
+}

@@ -1,7 +1,11 @@
 {
-  if (v1 == null || v2 == null)   throw new IllegalStateException(this.getClass() + " constructed with null vertex : " + v1+ " "+ v2);
+  if (v1 == null || v2 == null) {
+    String err=String.format("%s constructed with null vertex : %s %s",this.getClass(),v1,v2);
+    throw new IllegalStateException(err);
+  }
   this.fromv=v1;
   this.tov=v2;
+  this.id=idGenerator.getId(this);
   fromv.addOutgoing(this);
   tov.addIncoming(this);
 }
