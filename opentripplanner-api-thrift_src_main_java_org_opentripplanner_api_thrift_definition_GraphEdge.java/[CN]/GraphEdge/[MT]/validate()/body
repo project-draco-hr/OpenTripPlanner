@@ -1,4 +1,7 @@
 {
+  if (!isSetId()) {
+    throw new org.apache.thrift.protocol.TProtocolException("Required field 'id' is unset! Struct:" + toString());
+  }
   if (!isSetHead()) {
     throw new org.apache.thrift.protocol.TProtocolException("Required field 'head' is unset! Struct:" + toString());
   }

@@ -17,16 +17,25 @@ case 1:
       }
     break;
 case 2:
-  if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-    struct.lat_lng=new org.opentripplanner.api.thrift.definition.LatLng();
-    struct.lat_lng.read(iprot);
-    struct.setLat_lngIsSet(true);
+  if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+    struct.id=iprot.readI32();
+    struct.setIdIsSet(true);
   }
  else {
     org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
   }
 break;
 case 3:
+if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+struct.lat_lng=new org.opentripplanner.api.thrift.definition.LatLng();
+struct.lat_lng.read(iprot);
+struct.setLat_lngIsSet(true);
+}
+ else {
+org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+}
+break;
+case 4:
 if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
 struct.name=iprot.readString();
 struct.setNameIsSet(true);
@@ -35,7 +44,7 @@ struct.setNameIsSet(true);
 org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
 }
 break;
-case 4:
+case 5:
 if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
 struct.in_degree=iprot.readI32();
 struct.setIn_degreeIsSet(true);
@@ -44,7 +53,7 @@ struct.setIn_degreeIsSet(true);
 org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
 }
 break;
-case 5:
+case 6:
 if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
 struct.out_degree=iprot.readI32();
 struct.setOut_degreeIsSet(true);

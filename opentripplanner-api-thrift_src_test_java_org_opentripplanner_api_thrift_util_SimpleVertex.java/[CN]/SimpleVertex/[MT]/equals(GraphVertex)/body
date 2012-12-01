@@ -1,5 +1,5 @@
 {
-  boolean b=(gv.getLabel() == getLabel() && gv.getName() == getName() && gv.getIn_degree() == getDegreeIn() && gv.getOut_degree() == getDegreeOut());
+  boolean b=(gv.getId() == getIndex() && gv.getLabel() == getLabel() && gv.getName() == getName() && gv.getIn_degree() == getDegreeIn() && gv.getOut_degree() == getDegreeOut());
   if (!b)   return false;
   LatLng ll=gv.getLat_lng();
   b=(ll.getLat() == getY() && ll.getLng() == getX());

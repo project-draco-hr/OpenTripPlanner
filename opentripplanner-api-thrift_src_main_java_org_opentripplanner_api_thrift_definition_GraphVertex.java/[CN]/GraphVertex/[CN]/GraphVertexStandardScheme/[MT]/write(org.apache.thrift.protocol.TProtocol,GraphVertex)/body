@@ -6,6 +6,9 @@
     oprot.writeString(struct.label);
     oprot.writeFieldEnd();
   }
+  oprot.writeFieldBegin(ID_FIELD_DESC);
+  oprot.writeI32(struct.id);
+  oprot.writeFieldEnd();
   if (struct.lat_lng != null) {
     if (struct.isSetLat_lng()) {
       oprot.writeFieldBegin(LAT_LNG_FIELD_DESC);

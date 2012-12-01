@@ -3,10 +3,14 @@
     throw new IllegalArgumentException();
   }
 switch (field) {
+case ID:
+    return isSetId();
 case HEAD:
-    return isSetHead();
+  return isSetHead();
 case TAIL:
-  return isSetTail();
+return isSetTail();
+case NAME:
+return isSetName();
 }
 throw new IllegalStateException();
 }

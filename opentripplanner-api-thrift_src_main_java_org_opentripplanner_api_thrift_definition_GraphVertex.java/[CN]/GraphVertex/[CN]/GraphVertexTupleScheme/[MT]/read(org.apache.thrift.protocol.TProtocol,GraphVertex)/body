@@ -2,6 +2,8 @@
   TTupleProtocol iprot=(TTupleProtocol)prot;
   struct.label=iprot.readString();
   struct.setLabelIsSet(true);
+  struct.id=iprot.readI32();
+  struct.setIdIsSet(true);
   BitSet incoming=iprot.readBitSet(4);
   if (incoming.get(0)) {
     struct.lat_lng=new org.opentripplanner.api.thrift.definition.LatLng();

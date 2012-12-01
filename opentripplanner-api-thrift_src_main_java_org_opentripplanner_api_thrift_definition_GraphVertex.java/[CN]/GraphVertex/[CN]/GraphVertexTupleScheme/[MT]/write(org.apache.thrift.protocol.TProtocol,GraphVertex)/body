@@ -1,6 +1,7 @@
 {
   TTupleProtocol oprot=(TTupleProtocol)prot;
   oprot.writeString(struct.label);
+  oprot.writeI32(struct.id);
   BitSet optionals=new BitSet();
   if (struct.isSetLat_lng()) {
     optionals.set(0);
