@@ -1,0 +1,27 @@
+{
+  StringBuilder sb=new StringBuilder("EdgeMatch(");
+  boolean first=true;
+  sb.append("edge:");
+  if (this.edge == null) {
+    sb.append("null");
+  }
+ else {
+    sb.append(this.edge);
+  }
+  first=false;
+  if (!first)   sb.append(", ");
+  sb.append("closest_point:");
+  if (this.closest_point == null) {
+    sb.append("null");
+  }
+ else {
+    sb.append(this.closest_point);
+  }
+  first=false;
+  if (!first)   sb.append(", ");
+  sb.append("score:");
+  sb.append(this.score);
+  first=false;
+  sb.append(")");
+  return sb.toString();
+}

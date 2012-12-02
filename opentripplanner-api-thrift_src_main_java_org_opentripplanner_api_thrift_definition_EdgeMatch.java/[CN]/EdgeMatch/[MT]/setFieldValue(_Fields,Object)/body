@@ -1,0 +1,28 @@
+{
+switch (field) {
+case EDGE:
+    if (value == null) {
+      unsetEdge();
+    }
+ else {
+      setEdge((GraphEdge)value);
+    }
+  break;
+case CLOSEST_POINT:
+if (value == null) {
+  unsetClosest_point();
+}
+ else {
+  setClosest_point((org.opentripplanner.api.thrift.definition.LatLng)value);
+}
+break;
+case SCORE:
+if (value == null) {
+unsetScore();
+}
+ else {
+setScore((Double)value);
+}
+break;
+}
+}

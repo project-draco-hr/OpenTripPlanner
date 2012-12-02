@@ -1,0 +1,18 @@
+{
+  LOG.info("FindNearestEdges called");
+  RoutingRequestBuilder rrb=new RoutingRequestBuilder();
+  if (req.isSetAllowed_modes()) {
+    rrb.setTravelModes(req.getAllowed_modes());
+  }
+  RoutingRequest rr=rrb.build();
+  StreetVertexIndexService streetVertexIndex=getStreetIndex();
+  Coordinate c=new LatLngExtension(req.getLocation().getLat_lng()).toCoordinate();
+  FindNearestEdgesResponse res=new FindNearestEdgesResponse();
+  CandidateEdgeBundle edges=streetVertexIndex.getClosestEdges(c,rr,null,null,false);
+  int maxEdges=req.getMax_edges();
+  for (  CandidateEdge e : edges) {
+    if (res.getNearest_edgesSize() >= maxEdges)     break;
+    res.addToNearest_edges(new EdgeMatchExtension(e));
+  }
+  return res;
+}
