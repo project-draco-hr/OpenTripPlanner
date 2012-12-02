@@ -9,6 +9,10 @@
     sb.append(this.label);
   }
   first=false;
+  if (!first)   sb.append(", ");
+  sb.append("id:");
+  sb.append(this.id);
+  first=false;
   if (isSetLat_lng()) {
     if (!first)     sb.append(", ");
     sb.append("lat_lng:");

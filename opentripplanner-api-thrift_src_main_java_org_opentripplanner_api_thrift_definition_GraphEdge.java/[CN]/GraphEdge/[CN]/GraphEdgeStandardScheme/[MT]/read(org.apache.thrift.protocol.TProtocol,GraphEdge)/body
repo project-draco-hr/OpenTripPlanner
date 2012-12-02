@@ -8,10 +8,9 @@
     }
 switch (schemeField.id) {
 case 1:
-      if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-        struct.head=new GraphVertex();
-        struct.head.read(iprot);
-        struct.setHeadIsSet(true);
+      if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+        struct.id=iprot.readI32();
+        struct.setIdIsSet(true);
       }
  else {
         org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
@@ -19,13 +18,32 @@ case 1:
     break;
 case 2:
   if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-    struct.tail=new GraphVertex();
-    struct.tail.read(iprot);
-    struct.setTailIsSet(true);
+    struct.head=new GraphVertex();
+    struct.head.read(iprot);
+    struct.setHeadIsSet(true);
   }
  else {
     org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
   }
+break;
+case 3:
+if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+struct.tail=new GraphVertex();
+struct.tail.read(iprot);
+struct.setTailIsSet(true);
+}
+ else {
+org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+}
+break;
+case 4:
+if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+struct.name=iprot.readString();
+struct.setNameIsSet(true);
+}
+ else {
+org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+}
 break;
 default :
 org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);

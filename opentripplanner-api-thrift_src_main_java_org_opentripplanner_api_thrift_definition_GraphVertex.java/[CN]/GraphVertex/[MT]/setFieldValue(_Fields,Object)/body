@@ -8,12 +8,20 @@ case LABEL:
       setLabel((String)value);
     }
   break;
-case LAT_LNG:
+case ID:
 if (value == null) {
-  unsetLat_lng();
+  unsetId();
 }
  else {
-  setLat_lng((org.opentripplanner.api.thrift.definition.LatLng)value);
+  setId((Integer)value);
+}
+break;
+case LAT_LNG:
+if (value == null) {
+unsetLat_lng();
+}
+ else {
+setLat_lng((org.opentripplanner.api.thrift.definition.LatLng)value);
 }
 break;
 case NAME:

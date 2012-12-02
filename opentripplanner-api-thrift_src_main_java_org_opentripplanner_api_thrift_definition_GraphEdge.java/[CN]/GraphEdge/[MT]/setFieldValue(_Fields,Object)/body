@@ -1,19 +1,35 @@
 {
 switch (field) {
-case HEAD:
+case ID:
     if (value == null) {
-      unsetHead();
+      unsetId();
     }
  else {
-      setHead((GraphVertex)value);
+      setId((Integer)value);
     }
   break;
-case TAIL:
+case HEAD:
 if (value == null) {
-  unsetTail();
+  unsetHead();
 }
  else {
-  setTail((GraphVertex)value);
+  setHead((GraphVertex)value);
+}
+break;
+case TAIL:
+if (value == null) {
+unsetTail();
+}
+ else {
+setTail((GraphVertex)value);
+}
+break;
+case NAME:
+if (value == null) {
+unsetName();
+}
+ else {
+setName((String)value);
 }
 break;
 }

@@ -28,7 +28,7 @@
       if (e == null || e.getFromVertex() == null)       continue;
       if (request != null && (!(e.canTraverse(request) || e.canTraverse(walkingRequest))))       continue;
       double preferrence=1;
-      if (routeEdges != null && routeEdges.contains(e)) {
+      if (preferredEdges != null && preferredEdges.contains(e)) {
         preferrence=3.0;
       }
       TraverseModeSet modes=new TraverseModeSet("");

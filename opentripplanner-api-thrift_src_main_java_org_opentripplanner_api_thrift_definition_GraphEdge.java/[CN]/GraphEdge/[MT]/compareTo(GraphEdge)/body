@@ -4,6 +4,16 @@
   }
   int lastComparison=0;
   GraphEdge typedOther=(GraphEdge)other;
+  lastComparison=Boolean.valueOf(isSetId()).compareTo(typedOther.isSetId());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetId()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.id,typedOther.id);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
   lastComparison=Boolean.valueOf(isSetHead()).compareTo(typedOther.isSetHead());
   if (lastComparison != 0) {
     return lastComparison;
@@ -20,6 +30,16 @@
   }
   if (isSetTail()) {
     lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.tail,typedOther.tail);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  lastComparison=Boolean.valueOf(isSetName()).compareTo(typedOther.isSetName());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetName()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.name,typedOther.name);
     if (lastComparison != 0) {
       return lastComparison;
     }

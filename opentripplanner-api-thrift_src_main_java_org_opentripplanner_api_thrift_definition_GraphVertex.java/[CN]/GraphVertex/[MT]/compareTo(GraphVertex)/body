@@ -14,6 +14,16 @@
       return lastComparison;
     }
   }
+  lastComparison=Boolean.valueOf(isSetId()).compareTo(typedOther.isSetId());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetId()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.id,typedOther.id);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
   lastComparison=Boolean.valueOf(isSetLat_lng()).compareTo(typedOther.isSetLat_lng());
   if (lastComparison != 0) {
     return lastComparison;
