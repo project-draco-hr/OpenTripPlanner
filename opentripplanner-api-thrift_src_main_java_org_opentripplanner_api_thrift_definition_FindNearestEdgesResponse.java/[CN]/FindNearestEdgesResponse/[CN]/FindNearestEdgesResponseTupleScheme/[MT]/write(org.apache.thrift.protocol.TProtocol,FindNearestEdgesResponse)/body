@@ -1,0 +1,9 @@
+{
+  TTupleProtocol oprot=(TTupleProtocol)prot;
+{
+    oprot.writeI32(struct.nearest_edges.size());
+    for (    org.opentripplanner.api.thrift.definition.EdgeMatch _iter36 : struct.nearest_edges) {
+      _iter36.write(oprot);
+    }
+  }
+}

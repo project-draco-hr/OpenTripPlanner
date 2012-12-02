@@ -1,0 +1,8 @@
+{
+  FindNearestEdges_result result=new FindNearestEdges_result();
+  receiveBase(result,"FindNearestEdges");
+  if (result.isSetSuccess()) {
+    return result.success;
+  }
+  throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT,"FindNearestEdges failed: unknown result");
+}

@@ -1,0 +1,11 @@
+{
+  TTupleProtocol iprot=(TTupleProtocol)prot;
+  struct.edge=new GraphEdge();
+  struct.edge.read(iprot);
+  struct.setEdgeIsSet(true);
+  struct.closest_point=new org.opentripplanner.api.thrift.definition.LatLng();
+  struct.closest_point.read(iprot);
+  struct.setClosest_pointIsSet(true);
+  struct.score=iprot.readDouble();
+  struct.setScoreIsSet(true);
+}
