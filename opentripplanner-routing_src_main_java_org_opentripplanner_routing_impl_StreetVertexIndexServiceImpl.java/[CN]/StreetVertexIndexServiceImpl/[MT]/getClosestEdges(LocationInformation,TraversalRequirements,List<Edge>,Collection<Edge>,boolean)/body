@@ -1,6 +1,7 @@
 {
   Coordinate coordinate=location.getCurrentLocation().getCoordinate();
   Envelope envelope=new Envelope(coordinate);
+  boolean hasWalkingReqs=reqs.hasWalkingRequirements();
   TraversalRequirements walkingReqs=reqs.getWalkingRequirements();
   ArrayList<StreetEdge> extraStreets=new ArrayList<StreetEdge>();
   if (extraEdges != null) {
@@ -26,8 +27,10 @@
       if (e == null || e.getFromVertex() == null) {
         continue;
       }
-      if (!reqs.canBeTraversed(e) && !walkingReqs.canBeTraversed(e)) {
-        continue;
+      if (!reqs.canBeTraversed(e)) {
+        if (hasWalkingReqs && !walkingReqs.canBeTraversed(e)) {
+          continue;
+        }
       }
       double preferrence=1;
       if (preferredEdges != null && preferredEdges.contains(e)) {
