@@ -4,9 +4,9 @@
     return;
   }
   initFromRoutingRequest(this,options);
-  RoutingRequest walkOptions=options.getWalkingOptions();
-  if (walkOptions != null) {
+  RoutingRequest bikeWalkOptions=options.getBikeWalkingOptions();
+  if (bikeWalkOptions != null) {
     bikeWalkingRequirements=new TraversalRequirements();
-    initFromRoutingRequest(bikeWalkingRequirements,walkOptions);
+    initFromRoutingRequest(bikeWalkingRequirements,bikeWalkOptions);
   }
 }

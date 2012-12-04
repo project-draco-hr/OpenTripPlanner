@@ -3,8 +3,8 @@
     RoutingRequest clone=(RoutingRequest)super.clone();
     clone.bannedRoutes=(HashSet<RouteSpec>)bannedRoutes.clone();
     clone.bannedTrips=(HashMap<AgencyAndId,BannedStopSet>)bannedTrips.clone();
-    if (this.walkingOptions != this)     clone.walkingOptions=this.walkingOptions.clone();
- else     clone.walkingOptions=clone;
+    if (this.bikeWalkingOptions != this)     clone.bikeWalkingOptions=this.bikeWalkingOptions.clone();
+ else     clone.bikeWalkingOptions=clone;
     return clone;
   }
  catch (  CloneNotSupportedException e) {
