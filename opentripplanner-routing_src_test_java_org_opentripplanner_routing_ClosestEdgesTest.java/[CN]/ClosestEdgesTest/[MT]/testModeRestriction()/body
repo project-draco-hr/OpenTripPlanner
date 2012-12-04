@@ -1,0 +1,23 @@
+{
+  Coordinate c=new Coordinate(-74.005000001,40.01);
+  LocationObservation loc=new LocationObservation(c);
+  TraversalRequirements reqs=new TraversalRequirements();
+  checkClosestEdgeModes(loc,reqs,1);
+  TraverseModeSet modes=new TraverseModeSet();
+  modes.setWalk(true);
+  reqs.setModes(modes);
+  checkClosestEdgeModes(loc,reqs,1);
+  modes=new TraverseModeSet();
+  modes.setBicycle(true);
+  reqs.setModes(modes);
+  checkClosestEdgeModes(loc,reqs,2);
+  modes=new TraverseModeSet();
+  modes.setCar(true);
+  reqs.setModes(modes);
+  checkClosestEdgeModes(loc,reqs,2);
+  modes=new TraverseModeSet();
+  modes.setCar(true);
+  modes.setBicycle(true);
+  reqs.setModes(modes);
+  checkClosestEdgeModes(loc,reqs,2);
+}

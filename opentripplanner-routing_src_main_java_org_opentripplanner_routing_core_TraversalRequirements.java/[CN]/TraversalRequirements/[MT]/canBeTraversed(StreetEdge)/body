@@ -1,19 +1,8 @@
 {
-  if (wheelchairAccessible) {
-    if (!e.isWheelchairAccessible()) {
-      return false;
-    }
-    if (e.getElevationProfileSegment().getMaxSlope() > maxWheelchairSlope) {
-      return false;
-    }
-  }
-  if (modes.getWalk() && e.getPermission().allows(StreetTraversalPermission.PEDESTRIAN)) {
+  if (canBeTraversedInternal(e)) {
     return true;
   }
-  if (modes.getBicycle() && e.getPermission().allows(StreetTraversalPermission.BICYCLE)) {
-    return true;
-  }
-  if (modes.getCar() && e.getPermission().allows(StreetTraversalPermission.CAR)) {
+ else   if (hasBikeWalkingRequirements() && bikeWalkingRequirements.canBeTraversedInternal(e)) {
     return true;
   }
   return false;

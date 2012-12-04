@@ -1,0 +1,9 @@
+{
+  Coordinate c=new Coordinate(-74.005000001,40.01);
+  LocationObservation loc=new LocationObservation.Builder().setCoordinate(c).setHeading(top.getAzimuth()).build();
+  TraversalRequirements reqs=new TraversalRequirements();
+  TraverseModeSet modes=new TraverseModeSet();
+  modes.setCar(true);
+  reqs.setModes(modes);
+  checkClosestEdgeModes(loc,reqs,2);
+}

@@ -1,16 +1,9 @@
 {
   Coordinate coordinate=location.getCoordinate();
   Envelope envelope=new Envelope(coordinate);
-  boolean hasWalkingReqs=reqs.hasWalkingRequirements();
-  TraversalRequirements walkingReqs=reqs.getWalkingRequirements();
-  ArrayList<StreetEdge> extraStreets=new ArrayList<StreetEdge>();
+  Iterable<StreetEdge> extraStreets=IterableLibrary.filter(graph.getTemporaryEdges(),StreetEdge.class);
   if (extraEdges != null) {
-    for (    StreetEdge se : IterableLibrary.filter(extraEdges,StreetEdge.class)) {
-      extraStreets.add(se);
-    }
-  }
-  for (  StreetEdge se : IterableLibrary.filter(graph.getTemporaryEdges(),StreetEdge.class)) {
-    extraStreets.add(se);
+    extraStreets=Iterables.concat(IterableLibrary.filter(extraEdges,StreetEdge.class),extraStreets);
   }
   double envelopeGrowthAmount=0.001;
   double radius=0;
@@ -18,19 +11,19 @@
   while (candidateEdges.size() == 0) {
     envelope.expandBy(envelopeGrowthAmount);
     radius+=envelopeGrowthAmount;
-    if (radius > MAX_DISTANCE_FROM_STREET)     return candidateEdges;
-    List<StreetEdge> nearbyEdges=edgeTree.query(envelope);
+    if (radius > MAX_DISTANCE_FROM_STREET) {
+      return candidateEdges;
+    }
+    Iterable<StreetEdge> nearbyEdges=edgeTree.query(envelope);
     if (nearbyEdges != null) {
-      nearbyEdges=new JoinedList<StreetEdge>(nearbyEdges,extraStreets);
+      nearbyEdges=Iterables.concat(nearbyEdges,extraStreets);
     }
     for (    StreetEdge e : nearbyEdges) {
       if (e == null || e.getFromVertex() == null) {
         continue;
       }
       if (!reqs.canBeTraversed(e)) {
-        if (hasWalkingReqs && !walkingReqs.canBeTraversed(e)) {
-          continue;
-        }
+        continue;
       }
       double preferrence=1;
       if (preferredEdges != null && preferredEdges.contains(e)) {
