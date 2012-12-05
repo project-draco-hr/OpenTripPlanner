@@ -8,15 +8,11 @@
   distance=calcNearestPoint(p);
   endwiseVertex=calcEndwiseVertex();
   score=calcScore();
-  double xd=nearestPointOnEdge.x - p.x;
-  double yd=nearestPointOnEdge.y - p.y;
-  directionToEdge=Math.atan2(yd,xd);
   int edgeSegmentIndex=nearestSegmentIndex;
   Coordinate c0=edgeCoords.getCoordinate(edgeSegmentIndex);
   Coordinate c1=edgeCoords.getCoordinate(edgeSegmentIndex + 1);
-  xd=c1.x - c1.y;
-  yd=c1.y - c0.y;
-  directionOfEdge=Math.atan2(yd,xd);
+  directionOfEdge=DirectionUtils.getAzimuth(c0,c1);
+  directionToEdge=DirectionUtils.getAzimuth(nearestPointOnEdge,p);
   double absDiff=Math.abs(directionToEdge - directionOfEdge);
   directionDifference=Math.min(2 * Math.PI - absDiff,absDiff);
   if (Double.isNaN(directionToEdge) || Double.isNaN(directionOfEdge) || Double.isNaN(directionDifference)) {
