@@ -3,7 +3,7 @@
   struct.location=new org.opentripplanner.api.thrift.definition.Location();
   struct.location.read(iprot);
   struct.setLocationIsSet(true);
-  BitSet incoming=iprot.readBitSet(2);
+  BitSet incoming=iprot.readBitSet(3);
   if (incoming.get(0)) {
 {
       org.apache.thrift.protocol.TSet _set29=new org.apache.thrift.protocol.TSet(org.apache.thrift.protocol.TType.I32,iprot.readI32());
@@ -17,6 +17,10 @@
     struct.setAllowed_modesIsSet(true);
   }
   if (incoming.get(1)) {
+    struct.heading=iprot.readDouble();
+    struct.setHeadingIsSet(true);
+  }
+  if (incoming.get(2)) {
     struct.max_edges=iprot.readI32();
     struct.setMax_edgesIsSet(true);
   }

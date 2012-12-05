@@ -2,11 +2,12 @@
   LOG.info("FindNearestEdges called");
   TraversalRequirements requirements=new TraversalRequirements();
   requirements.setModes(new TravelModeSet(req.getAllowed_modes()).toTraverseModeSet());
-  StreetVertexIndexService streetVertexIndex=getStreetIndex();
   Coordinate c=new LatLngExtension(req.getLocation().getLat_lng()).toCoordinate();
-  LocationObservation loc=new LocationObservation(c);
+  LocationObservation.Builder builder=new LocationObservation.Builder().setCoordinate(c);
+  if (req.isSetHeading())   builder.setHeading(req.getHeading());
+  StreetVertexIndexService streetVertexIndex=getStreetIndex();
+  CandidateEdgeBundle edges=streetVertexIndex.getClosestEdges(builder.build(),requirements);
   FindNearestEdgesResponse res=new FindNearestEdgesResponse();
-  CandidateEdgeBundle edges=streetVertexIndex.getClosestEdges(loc,requirements);
   int maxEdges=req.getMax_edges();
   for (  CandidateEdge e : edges) {
     if (res.getNearest_edgesSize() >= maxEdges)     break;
