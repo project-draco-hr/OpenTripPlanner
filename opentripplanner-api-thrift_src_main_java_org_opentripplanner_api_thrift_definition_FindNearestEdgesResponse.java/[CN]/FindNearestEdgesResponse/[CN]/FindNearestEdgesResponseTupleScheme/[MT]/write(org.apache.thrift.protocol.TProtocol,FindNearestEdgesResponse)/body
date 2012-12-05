@@ -1,9 +1,16 @@
 {
   TTupleProtocol oprot=(TTupleProtocol)prot;
+  BitSet optionals=new BitSet();
+  if (struct.isSetNearest_edges()) {
+    optionals.set(0);
+  }
+  oprot.writeBitSet(optionals,1);
+  if (struct.isSetNearest_edges()) {
 {
-    oprot.writeI32(struct.nearest_edges.size());
-    for (    org.opentripplanner.api.thrift.definition.EdgeMatch _iter36 : struct.nearest_edges) {
-      _iter36.write(oprot);
+      oprot.writeI32(struct.nearest_edges.size());
+      for (      org.opentripplanner.api.thrift.definition.EdgeMatch _iter36 : struct.nearest_edges) {
+        _iter36.write(oprot);
+      }
     }
   }
 }
