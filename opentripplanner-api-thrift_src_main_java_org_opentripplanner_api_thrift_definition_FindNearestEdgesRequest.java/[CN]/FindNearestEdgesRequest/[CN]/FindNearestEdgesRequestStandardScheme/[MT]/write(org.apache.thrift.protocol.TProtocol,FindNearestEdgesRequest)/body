@@ -19,6 +19,11 @@
       oprot.writeFieldEnd();
     }
   }
+  if (struct.isSetHeading()) {
+    oprot.writeFieldBegin(HEADING_FIELD_DESC);
+    oprot.writeDouble(struct.heading);
+    oprot.writeFieldEnd();
+  }
   if (struct.isSetMax_edges()) {
     oprot.writeFieldBegin(MAX_EDGES_FIELD_DESC);
     oprot.writeI32(struct.max_edges);

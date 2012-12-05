@@ -24,6 +24,16 @@
       return lastComparison;
     }
   }
+  lastComparison=Boolean.valueOf(isSetHeading()).compareTo(typedOther.isSetHeading());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetHeading()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.heading,typedOther.heading);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
   lastComparison=Boolean.valueOf(isSetMax_edges()).compareTo(typedOther.isSetMax_edges());
   if (lastComparison != 0) {
     return lastComparison;
