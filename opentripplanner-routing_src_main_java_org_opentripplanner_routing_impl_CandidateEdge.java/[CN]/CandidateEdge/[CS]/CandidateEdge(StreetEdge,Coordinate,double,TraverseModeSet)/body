@@ -1,21 +1,3 @@
 {
-  preference=pref;
-  edge=e;
-  edgeCoords=e.getGeometry().getCoordinateSequence();
-  numEdgeCoords=edgeCoords.size();
-  nearestPointOnEdge=new Coordinate();
-  platform=calcPlatform(mode);
-  distance=calcNearestPoint(p);
-  endwiseVertex=calcEndwiseVertex();
-  score=calcScore();
-  int edgeSegmentIndex=nearestSegmentIndex;
-  Coordinate c0=edgeCoords.getCoordinate(edgeSegmentIndex);
-  Coordinate c1=edgeCoords.getCoordinate(edgeSegmentIndex + 1);
-  directionOfEdge=DirectionUtils.getAzimuth(c0,c1);
-  directionToEdge=DirectionUtils.getAzimuth(nearestPointOnEdge,p);
-  double absDiff=Math.abs(directionToEdge - directionOfEdge);
-  directionDifference=Math.min(2 * Math.PI - absDiff,absDiff);
-  if (Double.isNaN(directionToEdge) || Double.isNaN(directionOfEdge) || Double.isNaN(directionDifference)) {
-    StreetVertexIndexServiceImpl._log.warn("direction to/of edge is NaN (0 length?): {}",edge);
-  }
+  this(e,new LocationObservation(p),pref,mode);
 }

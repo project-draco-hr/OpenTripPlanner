@@ -11,6 +11,9 @@
   if (edge.getPermission().allows(StreetTraversalPermission.CAR) || (edge.getStreetClass() & platform) != 0) {
     myScore-=CAR_PREFERENCE;
   }
+  if (heading != null) {
+    myScore+=(directionDifference / MAX_DIRECTION_DIFFERENCE);
+  }
   myScore+=edge.getLength() / 1000000;
   return myScore;
 }
