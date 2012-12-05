@@ -1,0 +1,10 @@
+{
+  int out=0;
+  if (mode.getTrainish()) {
+    out|=StreetEdge.CLASS_TRAIN_PLATFORM;
+  }
+  if (mode.getBusish()) {
+    out|=StreetEdge.CLASS_OTHER_PLATFORM;
+  }
+  return out;
+}

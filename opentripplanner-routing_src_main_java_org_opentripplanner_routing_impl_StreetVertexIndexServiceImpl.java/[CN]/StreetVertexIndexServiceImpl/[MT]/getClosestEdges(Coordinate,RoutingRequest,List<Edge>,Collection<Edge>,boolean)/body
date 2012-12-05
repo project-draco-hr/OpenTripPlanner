@@ -1,53 +1,5 @@
 {
-  ArrayList<StreetEdge> extraStreets=new ArrayList<StreetEdge>();
-  if (extraEdges != null) {
-    for (    StreetEdge se : IterableLibrary.filter(extraEdges,StreetEdge.class)) {
-      extraStreets.add(se);
-    }
-  }
-  for (  StreetEdge se : IterableLibrary.filter(graph.getTemporaryEdges(),StreetEdge.class)) {
-    extraStreets.add(se);
-  }
-  Envelope envelope=new Envelope(coordinate);
-  RoutingRequest walkingRequest=null;
-  if (request != null) {
-    walkingRequest=request.getWalkingOptions();
-  }
-  double envelopeGrowthAmount=0.001;
-  double radius=0;
-  CandidateEdgeBundle candidateEdges=new CandidateEdgeBundle();
-  while (candidateEdges.size() == 0) {
-    envelope.expandBy(envelopeGrowthAmount);
-    radius+=envelopeGrowthAmount;
-    if (radius > MAX_DISTANCE_FROM_STREET)     return candidateEdges;
-    List<StreetEdge> nearbyEdges=edgeTree.query(envelope);
-    if (nearbyEdges != null) {
-      nearbyEdges=new JoinedList<StreetEdge>(nearbyEdges,extraStreets);
-    }
-    for (    StreetEdge e : nearbyEdges) {
-      if (e == null || e.getFromVertex() == null)       continue;
-      if (request != null && (!(e.canTraverse(request) || e.canTraverse(walkingRequest))))       continue;
-      double preferrence=1;
-      if (preferredEdges != null && preferredEdges.contains(e)) {
-        preferrence=3.0;
-      }
-      TraverseModeSet modes=new TraverseModeSet("");
-      if (request != null) {
-        modes=request.getModes();
-      }
-      CandidateEdge ce=new CandidateEdge(e,coordinate,preferrence,modes);
-      if (ce.distance < radius)       candidateEdges.add(ce);
-    }
-  }
-  Collection<CandidateEdgeBundle> bundles=candidateEdges.binByDistanceAndAngle();
-  CandidateEdgeBundle best=null;
-  for (  CandidateEdgeBundle bundle : bundles) {
-    if (best == null || bundle.best.score < best.best.score) {
-      if (possibleTransitLinksOnly) {
-        if (!(bundle.allowsCars() || bundle.isPlatform()))         continue;
-      }
-      best=bundle;
-    }
-  }
-  return best;
+  LocationObservation loc=new LocationObservation(coordinate);
+  TraversalRequirements reqs=new TraversalRequirements(request);
+  return getClosestEdges(loc,reqs,extraEdges,preferredEdges,possibleTransitLinksOnly);
 }

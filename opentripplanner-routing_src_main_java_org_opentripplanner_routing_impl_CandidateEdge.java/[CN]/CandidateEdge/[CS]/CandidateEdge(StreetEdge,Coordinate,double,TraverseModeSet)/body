@@ -1,11 +1,6 @@
 {
-  int platform=0;
-  if (mode.contains(TraverseMode.TRAINISH)) {
-    platform|=StreetEdge.CLASS_TRAIN_PLATFORM;
-  }
-  if (mode.contains(TraverseMode.BUSISH)) {
-    platform|=StreetEdge.CLASS_OTHER_PLATFORM;
-  }
+  preference=pref;
+  platform=calcPlatform(mode);
   edge=e;
   LineString edgeGeom=edge.getGeometry();
   CoordinateSequence coordSeq=edgeGeom.getCoordinateSequence();
@@ -44,18 +39,7 @@
  else {
     endwiseVertex=null;
   }
-  score=distance * SphericalDistanceLibrary.RADIUS_OF_EARTH_IN_KM * 1000 / 360.0;
-  score/=preference;
-  if ((e.getStreetClass() & platform) != 0) {
-    score/=PLATFORM_PREFERENCE;
-  }
-  if (e.getName().contains("sidewalk")) {
-    score/=SIDEWALK_PREFERENCE;
-  }
-  if (e.getPermission().allows(StreetTraversalPermission.CAR) || (e.getStreetClass() & platform) != 0) {
-    score-=CAR_PREFERENCE;
-  }
-  score+=edge.getLength() / 1000000;
+  score=calcScore();
   double xd=nearestPointOnEdge.x - p.x;
   double yd=nearestPointOnEdge.y - p.y;
   directionToEdge=Math.atan2(yd,xd);

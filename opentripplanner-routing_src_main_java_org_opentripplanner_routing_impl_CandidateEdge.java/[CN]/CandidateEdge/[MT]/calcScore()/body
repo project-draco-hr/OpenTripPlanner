@@ -1,0 +1,16 @@
+{
+  double myScore=0;
+  myScore=distance * SphericalDistanceLibrary.RADIUS_OF_EARTH_IN_M / 360.0;
+  myScore/=preference;
+  if ((edge.getStreetClass() & platform) != 0) {
+    myScore/=PLATFORM_PREFERENCE;
+  }
+  if (edge.getName().contains("sidewalk")) {
+    myScore/=SIDEWALK_PREFERENCE;
+  }
+  if (edge.getPermission().allows(StreetTraversalPermission.CAR) || (edge.getStreetClass() & platform) != 0) {
+    myScore-=CAR_PREFERENCE;
+  }
+  myScore+=edge.getLength() / 1000000;
+  return myScore;
+}
