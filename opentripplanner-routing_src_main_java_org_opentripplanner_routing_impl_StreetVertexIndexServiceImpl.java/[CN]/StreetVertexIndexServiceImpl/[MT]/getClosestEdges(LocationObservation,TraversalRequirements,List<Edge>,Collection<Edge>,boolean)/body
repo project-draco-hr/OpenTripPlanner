@@ -30,8 +30,8 @@
         preferrence=3.0;
       }
       TraverseModeSet modes=reqs.getModes();
-      CandidateEdge ce=new CandidateEdge(e,coordinate,preferrence,modes);
-      if (ce.distance < radius) {
+      CandidateEdge ce=new CandidateEdge(e,location,preferrence,modes);
+      if (ce.getDistance() < radius) {
         candidateEdges.add(ce);
       }
     }

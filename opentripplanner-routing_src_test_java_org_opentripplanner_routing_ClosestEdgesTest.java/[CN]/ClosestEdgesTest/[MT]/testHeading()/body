@@ -1,9 +1,15 @@
 {
   Coordinate c=new Coordinate(-74.005000001,40.01);
-  LocationObservation loc=new LocationObservation.Builder().setCoordinate(c).setHeading(top.getAzimuth()).build();
   TraversalRequirements reqs=new TraversalRequirements();
   TraverseModeSet modes=new TraverseModeSet();
   modes.setCar(true);
   reqs.setModes(modes);
-  checkClosestEdgeModes(loc,reqs,2);
+  for (double degreeOff=0.0; degreeOff < 15.0; degreeOff+=3.0) {
+    LocationObservation.Builder builder=new LocationObservation.Builder().setCoordinate(c);
+    builder.setHeading(top.getAzimuth() + degreeOff);
+    System.out.println(degreeOff);
+    checkBest(reqs,builder.build(),top,2);
+    builder.setHeading(top.getAzimuth() - degreeOff);
+    checkBest(reqs,builder.build(),top,2);
+  }
 }
