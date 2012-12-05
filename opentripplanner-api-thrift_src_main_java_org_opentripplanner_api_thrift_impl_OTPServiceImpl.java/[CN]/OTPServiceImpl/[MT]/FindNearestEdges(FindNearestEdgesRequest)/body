@@ -1,14 +1,12 @@
 {
   LOG.info("FindNearestEdges called");
-  RoutingRequestBuilder rrb=new RoutingRequestBuilder();
-  if (req.isSetAllowed_modes()) {
-    rrb.setTravelModes(req.getAllowed_modes());
-  }
-  RoutingRequest rr=rrb.build();
+  TraversalRequirements requirements=new TraversalRequirements();
+  requirements.setModes(new TravelModeSet(req.getAllowed_modes()).toTraverseModeSet());
   StreetVertexIndexService streetVertexIndex=getStreetIndex();
   Coordinate c=new LatLngExtension(req.getLocation().getLat_lng()).toCoordinate();
+  LocationObservation loc=new LocationObservation(c);
   FindNearestEdgesResponse res=new FindNearestEdgesResponse();
-  CandidateEdgeBundle edges=streetVertexIndex.getClosestEdges(c,rr,null,null,false);
+  CandidateEdgeBundle edges=streetVertexIndex.getClosestEdges(loc,requirements);
   int maxEdges=req.getMax_edges();
   for (  CandidateEdge e : edges) {
     if (res.getNearest_edgesSize() >= maxEdges)     break;
