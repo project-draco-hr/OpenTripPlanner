@@ -1,0 +1,30 @@
+{
+  LineString edgeGeom=edge.getGeometry();
+  CoordinateSequence coordSeq=edgeGeom.getCoordinateSequence();
+  int bestSeg=0;
+  double bestDist2=Double.POSITIVE_INFINITY;
+  double bestFrac=0;
+  double xscale=Math.cos(p.y * Math.PI / 180);
+  for (int seg=0; seg < numEdgeCoords - 1; seg++) {
+    double x0=coordSeq.getX(seg);
+    double y0=coordSeq.getY(seg);
+    double x1=coordSeq.getX(seg + 1);
+    double y1=coordSeq.getY(seg + 1);
+    double frac=GeometryUtils.segmentFraction(x0,y0,x1,y1,p.x,p.y,xscale);
+    double x=x0 + frac * (x1 - x0);
+    double y=y0 + frac * (y1 - y0);
+    double dx=(x - p.x) * xscale;
+    double dy=y - p.y;
+    double dist2=dx * dx + dy * dy;
+    if (dist2 < bestDist2) {
+      nearestPointOnEdge.x=x;
+      nearestPointOnEdge.y=y;
+      bestFrac=frac;
+      bestSeg=seg;
+      bestDist2=dist2;
+    }
+  }
+  nearestSegmentIndex=bestSeg;
+  nearestSegmentFraction=bestFrac;
+  return Math.sqrt(bestDist2);
+}
