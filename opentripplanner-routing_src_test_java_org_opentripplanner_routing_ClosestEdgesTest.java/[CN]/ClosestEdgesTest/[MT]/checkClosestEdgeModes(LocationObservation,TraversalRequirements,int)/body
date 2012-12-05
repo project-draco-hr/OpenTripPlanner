@@ -2,6 +2,6 @@
   CandidateEdgeBundle edges=finder.getClosestEdges(loc,reqs);
   assertTrue(minResults <= edges.size());
   for (  CandidateEdge e : edges) {
-    assertTrue(reqs.canBeTraversed(e.edge));
+    assertTrue(reqs.canBeTraversed(e.getEdge()));
   }
 }

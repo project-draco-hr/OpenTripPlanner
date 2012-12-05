@@ -1,0 +1,7 @@
+{
+  Coordinate c=new Coordinate(-74.005,40.005);
+  LocationObservation loc=new LocationObservation(c);
+  TraversalRequirements reqs=new TraversalRequirements();
+  CandidateEdgeBundle edges=finder.getClosestEdges(loc,reqs);
+  assertEquals(2,edges.size());
+}

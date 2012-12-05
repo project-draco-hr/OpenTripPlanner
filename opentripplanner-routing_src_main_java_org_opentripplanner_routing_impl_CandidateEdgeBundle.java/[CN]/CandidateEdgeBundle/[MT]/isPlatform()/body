@@ -1,6 +1,6 @@
 {
   for (  CandidateEdge ce : CandidateEdgeBundle.this) {
-    StreetEdge e=ce.edge;
+    StreetEdge e=ce.getEdge();
     if ((e.getStreetClass() & StreetEdge.ANY_PLATFORM_MASK) != 0) {
       return true;
     }

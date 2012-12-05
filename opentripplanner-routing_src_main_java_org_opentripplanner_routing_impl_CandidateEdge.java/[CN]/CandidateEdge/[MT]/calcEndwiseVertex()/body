@@ -1,0 +1,10 @@
+{
+  StreetVertex retV=null;
+  if (nearestSegmentIndex == 0 && Math.abs(nearestSegmentFraction) < 0.000001) {
+    retV=(StreetVertex)edge.getFromVertex();
+  }
+ else   if (nearestSegmentIndex == numEdgeCoords - 2 && Math.abs(nearestSegmentFraction - 1.0) < 0.000001) {
+    retV=(StreetVertex)edge.getToVertex();
+  }
+  return retV;
+}
