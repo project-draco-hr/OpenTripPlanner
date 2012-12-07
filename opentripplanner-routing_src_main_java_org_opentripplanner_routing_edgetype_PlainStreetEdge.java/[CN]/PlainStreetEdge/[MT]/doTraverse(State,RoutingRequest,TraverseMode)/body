@@ -51,6 +51,11 @@ if (options.isWalkingBike()) {
 time=elevationProfileSegment.getSlopeSpeedEffectiveLength() / speed;
 }
 weight=time;
+if (traverseMode.equals(TraverseMode.WALK)) {
+double costs=ElevationUtils.getWalkCostsForSlope(length,elevationProfileSegment.getMaxSlope());
+weight=costs * (1.3333 / speed);
+time=weight;
+}
 }
 if (isStairs()) {
 weight*=options.stairsReluctance;
