@@ -44,8 +44,10 @@
         probabilityStopToTurn=1;
       }
     }
-    turnCost+=(fromSpeed / options.carDecelerationSpeed) * probabilityStopToTurn;
-    turnCost+=(toSpeed / options.carAccelerationSpeed) * probabilityStopToTurn;
+    double decelerationTime=fromSpeed / options.carDecelerationSpeed;
+    turnCost+=decelerationTime * 0.5 * probabilityStopToTurn;
+    double accelerationTime=(toSpeed / options.carAccelerationSpeed);
+    turnCost+=accelerationTime * 0.5 * probabilityStopToTurn;
     return turnCost;
   }
 }
