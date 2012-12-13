@@ -3,6 +3,7 @@
     trips.add(trip.getId());
     if (direction == null) {
       direction=trip.getDirectionId();
+      tripHeadsigns.add(trip.getTripHeadsign());
     }
  else {
       if (!direction.equals(trip.getDirectionId())) {
