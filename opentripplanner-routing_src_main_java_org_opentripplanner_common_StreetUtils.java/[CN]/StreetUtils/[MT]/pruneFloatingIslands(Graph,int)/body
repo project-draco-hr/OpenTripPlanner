@@ -50,9 +50,10 @@
     }
     islands.add(subgraph);
   }
+  _log.debug(islands.size() + " sub graphs found");
   for (  HashSet<Vertex> island : islands) {
-    if (island.size() < 40) {
-      _log.warn(graph.addBuilderAnnotation(new GraphConnectivity(island.iterator().next())));
+    if (island.size() < maxIslandSize) {
+      _log.warn(graph.addBuilderAnnotation(new GraphConnectivity(island.iterator().next(),island.size())));
       depedestrianizeOrRemove(graph,island);
     }
   }
