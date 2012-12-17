@@ -1,0 +1,8 @@
+{
+  Vertex currentVertex=current.getVertex();
+  if (unreachedTargets.contains(currentVertex)) {
+    unreachedTargets.remove(currentVertex);
+    reachedTargets.add(currentVertex);
+  }
+  return unreachedTargets.size() != 0;
+}

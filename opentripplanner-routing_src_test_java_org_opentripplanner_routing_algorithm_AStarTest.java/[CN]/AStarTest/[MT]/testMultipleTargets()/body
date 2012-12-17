@@ -1,0 +1,17 @@
+{
+  RoutingRequest options=new RoutingRequest();
+  options.setWalkSpeed(1.0);
+  options.setBatch(true);
+  options.setRoutingContext(_graph,_graph.getVertex("56th_24th"),_graph.getVertex("leary_20th"));
+  Set<Vertex> targets=new HashSet<Vertex>();
+  targets.add(_graph.getVertex("shilshole_22nd"));
+  targets.add(_graph.getVertex("market_russell"));
+  targets.add(_graph.getVertex("56th_20th"));
+  targets.add(_graph.getVertex("leary_20th"));
+  SearchTerminationStrategy strategy=new MultiTargetTerminationStrategy(targets);
+  ShortestPathTree tree=new GenericAStar().getShortestPathTree(options,-1,strategy);
+  for (  Vertex v : targets) {
+    GraphPath path=tree.getPath(v,false);
+    assertNotNull("No path found for target " + v.getLabel(),path);
+  }
+}
