@@ -6,10 +6,10 @@
   }
   try {
     OTPService.Processor<OTPServiceImpl> processor=new OTPService.Processor<OTPServiceImpl>(otpServiceImpl);
-    TServerTransport serverTransport;
-    serverTransport=new TServerSocket(port);
-    TSimpleServer.Args args=new TSimpleServer.Args(serverTransport).processor(processor);
-    TServer server=new TSimpleServer(args);
+    TServerTransport serverTransport=new TServerSocket(port);
+    TProtocolFactory protocolFactory=new TBinaryProtocol.Factory(true,true);
+    TThreadPoolServer.Args args=new TThreadPoolServer.Args(serverTransport).processor(processor).protocolFactory(protocolFactory);
+    TServer server=new TThreadPoolServer(args);
     LOG.info("Starting the OTPService on port {}",port);
     server.serve();
   }
