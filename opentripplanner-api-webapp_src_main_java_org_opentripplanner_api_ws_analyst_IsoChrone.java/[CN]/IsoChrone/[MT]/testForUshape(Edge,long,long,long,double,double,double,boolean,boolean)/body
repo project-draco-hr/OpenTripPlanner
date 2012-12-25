@@ -20,8 +20,9 @@
     }
  else {
       if (performSpeedTest) {
+        long dt=Math.abs(toTime - fromTime);
         double lineDist=edge.getDistance();
-        double distanceToWalkInTimeMissing=distanceToMoveInRemainingTime(maxTime,fromTime,(toTime - fromTime),userSpeed,edge,hasCar);
+        double distanceToWalkInTimeMissing=distanceToMoveInRemainingTime(maxTime,fromTime,dt,userSpeed,edge,hasCar,false);
         double approxWalkableDistanceInTime=distanceToWalkInTimeMissing * distanceTolerance;
         if ((approxWalkableDistanceInTime < lineDist)) {
           return true;

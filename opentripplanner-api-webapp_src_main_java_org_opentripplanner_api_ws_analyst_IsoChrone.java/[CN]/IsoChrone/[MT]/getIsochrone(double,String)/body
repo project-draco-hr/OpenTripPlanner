@@ -1,5 +1,6 @@
 {
   this.debugGeoms=new ArrayList();
+  this.tooFastTraversedEdgeGeoms=new ArrayList();
   RoutingRequest sptRequestA=buildRequest(0);
   String from=sptRequestA.getFrom();
   int pos=1;
@@ -221,6 +222,13 @@
     }
  else     if (output.equals("DEBUGEDGES")) {
       ArrayList<LineString> withinTimeEdges=this.getLinesAndSubEdgesWithinMaxTime(maxTime,allConnectingEdges,sptA,angleLimitForUShapeDetection,distanceToleranceForUShapeDetection,maxUserSpeed,usesCar,doSpeedTest);
+      if (this.showTooFastEdgesAsDebugGeomsANDnotUShapes) {
+        LOG.debug("displaying edges that are traversed too fast");
+        this.debugGeoms=this.tooFastTraversedEdgeGeoms;
+      }
+ else {
+        LOG.debug("displaying detected u-shaped roads/crescents");
+      }
       LineString edges[]=new LineString[this.debugGeoms.size()];
       int k=0;
       for (Iterator iterator=debugGeoms.iterator(); iterator.hasNext(); ) {

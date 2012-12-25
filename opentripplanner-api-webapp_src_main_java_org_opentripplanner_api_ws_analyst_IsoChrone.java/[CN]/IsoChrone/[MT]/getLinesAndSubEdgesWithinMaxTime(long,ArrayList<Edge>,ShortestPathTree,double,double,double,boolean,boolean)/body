@@ -15,6 +15,7 @@
     if ((sFrom != null) && (sTo != null)) {
       long fromTime=sFrom.getElapsedTime();
       long toTime=sTo.getElapsedTime();
+      long dt=Math.abs(toTime - fromTime);
       Geometry edgeGeom=edge.getGeometry();
       if ((edgeGeom != null) && (edgeGeom instanceof LineString)) {
         LineString ls=(LineString)edgeGeom;
@@ -36,12 +37,12 @@
             LineString inputLS=ls;
             double fraction=1.0;
             if (fromTime < toTime) {
-              double distanceToWalkInTimeMissing=distanceToMoveInRemainingTime(maxTime,fromTime,(toTime - fromTime),userSpeed,edge,hasCar);
+              double distanceToWalkInTimeMissing=distanceToMoveInRemainingTime(maxTime,fromTime,dt,userSpeed,edge,hasCar,uShapeOrLonger);
               fraction=(double)distanceToWalkInTimeMissing / (double)lineDist;
             }
  else {
               inputLS=(LineString)ls.reverse();
-              double distanceToWalkInTimeMissing=distanceToMoveInRemainingTime(maxTime,toTime,(fromTime - toTime),userSpeed,edge,hasCar);
+              double distanceToWalkInTimeMissing=distanceToMoveInRemainingTime(maxTime,toTime,dt,userSpeed,edge,hasCar,uShapeOrLonger);
               fraction=(double)distanceToWalkInTimeMissing / (double)lineDist;
             }
             LineString subLine=this.getSubLineString(inputLS,fraction);

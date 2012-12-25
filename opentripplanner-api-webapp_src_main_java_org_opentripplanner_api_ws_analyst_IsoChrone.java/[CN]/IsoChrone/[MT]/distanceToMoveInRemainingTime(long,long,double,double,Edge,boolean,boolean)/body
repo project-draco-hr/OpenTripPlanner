@@ -1,5 +1,5 @@
 {
-  boolean hasTooFastCar=false;
+  boolean isTooFast=false;
   String msg="";
   double originalTravelSpeed=edge.getDistance() / traverseTime;
   if (originalTravelSpeed < userSpeed) {
@@ -15,9 +15,13 @@
     double vdiff=Math.abs(originalTravelSpeed - userSpeed);
     double vDiffPercent=vdiff / (userSpeed / 100.0);
     if (vDiffPercent > 20) {
-      hasTooFastCar=true;
-      msg="v_traversed is much faster than (allowed) v_user [m/s] >>> v_traversed=" + (int)Math.floor(originalTravelSpeed) + ", v_maxUser="+ (int)Math.floor(userSpeed);
-      if (!usesCar) {
+      isTooFast=true;
+      msg="v_traversed is much faster than (allowed) v_user, edgeName: " + edge.getName() + ", >>> (in m/s): v_traversed="+ (int)Math.floor(originalTravelSpeed)+ ", v_maxUser="+ (int)Math.floor(userSpeed);
+      if (hasUshape) {
+        msg=msg + ", known u-shape, ";
+      }
+      if ((usesCar == false) && (hasUshape == false)) {
+        this.tooFastTraversedEdgeGeoms.add(edge.getGeometry());
         LOG.debug(msg);
       }
     }
@@ -26,8 +30,9 @@
     if (edge instanceof PlainStreetEdge) {
       PlainStreetEdge pe=(PlainStreetEdge)edge;
       userSpeed=pe.getCarSpeed();
-      if (hasTooFastCar) {
-        LOG.debug(msg + "; setting v_PlainStreetEdge=" + (int)Math.floor(userSpeed)+ " [m/s]");
+      if ((isTooFast == true) && (originalTravelSpeed > userSpeed) && (hasUshape == false)) {
+        this.tooFastTraversedEdgeGeoms.add(edge.getGeometry());
+        LOG.debug(msg + "; setting v_PlainStreetEdge=" + (int)Math.floor(userSpeed));
       }
     }
   }
