@@ -1,0 +1,241 @@
+{
+  this.debugGeoms=new ArrayList();
+  RoutingRequest sptRequestA=buildRequest(0);
+  String from=sptRequestA.getFrom();
+  int pos=1;
+  float lat=0;
+  float lon=0;
+  for (  String s : from.split(",")) {
+    if (s.isEmpty()) {
+      Response.status(Status.BAD_REQUEST).entity("no position").build();
+      return null;
+    }
+    try {
+      float num=Float.parseFloat(s);
+      if (pos == 1) {
+        lat=num;
+      }
+      if (pos == 2) {
+        lon=num;
+      }
+    }
+ catch (    Exception e) {
+      throw new WebApplicationException(Response.status(Status.BAD_REQUEST).entity("Could not parse position string to number. Require numerical lat & long coords.").build());
+    }
+    pos++;
+  }
+  GeometryFactory gf=new GeometryFactory();
+  Coordinate dropPoint=new Coordinate(lon,lat);
+  int walkInMin=(int)Math.floor(walkmins);
+  double walkInSec=walkmins * 60;
+  LOG.debug("given travel time: " + walkInMin + " mins + "+ (walkInSec - (60 * walkInMin))+ " sec");
+  if (walkInMin < 30) {
+    sptRequestA.worstTime=sptRequestA.dateTime + (30 * 60);
+  }
+ else {
+    sptRequestA.worstTime=sptRequestA.dateTime + Math.round(walkInMin * 1.3 * 60);
+  }
+  TraverseModeSet modes=sptRequestA.modes;
+  LOG.debug("mode(s): " + modes);
+  if ((modes.contains(TraverseMode.TRANSIT)) || (modes.contains(TraverseMode.BUSISH)) || (modes.contains(TraverseMode.TRAINISH))) {
+    shedCalcMethodSwitchTimeInSec=60 * 20;
+  }
+ else   if (modes.contains(TraverseMode.CAR)) {
+    shedCalcMethodSwitchTimeInSec=60 * 10;
+  }
+ else   if (modes.contains(TraverseMode.BICYCLE)) {
+    shedCalcMethodSwitchTimeInSec=60 * 10;
+  }
+ else {
+    shedCalcMethodSwitchTimeInSec=60 * 20;
+  }
+  this.usesCar=false;
+  int numberOfModes=modes.getModes().size();
+  if (numberOfModes == 1) {
+    if (modes.getWalk()) {
+      this.maxUserSpeed=sptRequestA.getWalkSpeed();
+    }
+ else     if (modes.getBicycle()) {
+      this.maxUserSpeed=sptRequestA.getBikeSpeed();
+    }
+ else     if (modes.getCar()) {
+      this.maxUserSpeed=sptRequestA.getCarSpeed();
+      this.usesCar=true;
+    }
+  }
+ else {
+    this.maxUserSpeed=sptRequestA.getWalkSpeed();
+  }
+  if (doSpeedTest) {
+    LOG.debug("performing angle and speed based test to detect u-shapes");
+  }
+ else {
+    LOG.debug("performing only angle based test to detect u-shapes");
+  }
+  try {
+    sptRequestA.setRoutingContext(graphService.getGraph());
+  }
+ catch (  Exception e) {
+    LOG.debug("cannot set RoutingContext: " + e.toString());
+    LOG.debug("cannot set RoutingContext: setting mode=WALK");
+    sptRequestA.setMode(TraverseMode.WALK);
+    sptRequestA.setRoutingContext(graphService.getGraph());
+  }
+  ShortestPathTree sptA=sptService.getShortestPathTree(sptRequestA);
+  StreetLocation origin=(StreetLocation)sptRequestA.rctx.fromVertex;
+  sptRequestA.cleanup();
+  Coordinate pathToStreetCoords[]=new Coordinate[2];
+  pathToStreetCoords[0]=dropPoint;
+  pathToStreetCoords[1]=origin.getCoordinate();
+  LineString pathToStreet=gf.createLineString(pathToStreetCoords);
+  double distanceToRoad=this.distanceLibrary.distance(origin.getY(),origin.getX(),dropPoint.y,dropPoint.x);
+  long offRoadTimeCorrection=(long)(distanceToRoad / this.offRoadWalkspeed);
+  Set<Coordinate> visitedCoords=new HashSet<Coordinate>();
+  ArrayList<Edge> allConnectingEdges=new ArrayList<Edge>();
+  Coordinate coords[]=null;
+  long maxTime=(long)walkInSec - offRoadTimeCorrection;
+  if (maxTime <= 0) {
+    noRoadNearBy=true;
+    long timeToWalk=(long)walkInSec;
+    long timeBetweenStates=offRoadTimeCorrection;
+    long timeMissing=timeToWalk;
+    double fraction=(double)timeMissing / (double)timeBetweenStates;
+    pathToStreet=getSubLineString(pathToStreet,fraction);
+    LOG.debug("no street found within giving travel time (for off-road walkspeed: {} m/sec)",this.offRoadWalkspeed);
+  }
+ else {
+    noRoadNearBy=false;
+    Map<ReversibleLineStringWrapper,Edge> connectingEdgesMap=Maps.newHashMap();
+    for (    State state : sptA.getAllStates()) {
+      long et=state.getElapsedTime();
+      if (et <= maxTime) {
+        if (visitedCoords.contains(state.getVertex().getCoordinate())) {
+          continue;
+        }
+ else {
+          visitedCoords.add(state.getVertex().getCoordinate());
+        }
+        Collection<Edge> vertexEdgesIn=state.getVertex().getIncoming();
+        for (Iterator<Edge> iterator=vertexEdgesIn.iterator(); iterator.hasNext(); ) {
+          Edge edge=(Edge)iterator.next();
+          Geometry edgeGeom=edge.getGeometry();
+          if (edgeGeom != null) {
+            if (edgeGeom instanceof LineString) {
+              connectingEdgesMap.put(new ReversibleLineStringWrapper((LineString)edgeGeom),edge);
+            }
+          }
+        }
+        Collection<Edge> vertexEdgesOut=state.getVertex().getOutgoing();
+        for (Iterator<Edge> iterator=vertexEdgesOut.iterator(); iterator.hasNext(); ) {
+          Edge edge=(Edge)iterator.next();
+          Geometry edgeGeom=edge.getGeometry();
+          if (edgeGeom != null) {
+            if (edgeGeom instanceof LineString) {
+              connectingEdgesMap.put(new ReversibleLineStringWrapper((LineString)edgeGeom),edge);
+            }
+          }
+        }
+      }
+    }
+    coords=new Coordinate[visitedCoords.size()];
+    int i=0;
+    for (    Coordinate c : visitedCoords)     coords[i++]=c;
+    allConnectingEdges.clear();
+    for (    Edge tedge : connectingEdgesMap.values())     allConnectingEdges.add(tedge);
+  }
+  StringWriter sw=new StringWriter();
+  GeoJSONBuilder json=new GeoJSONBuilder(sw);
+  try {
+    if (output.equals(IsoChrone.RESULT_TYPE_POINTS)) {
+      if (noRoadNearBy) {
+        Geometry circleShape=createCirle(dropPoint,pathToStreet);
+        coords=circleShape.getCoordinates();
+      }
+      LOG.debug("write multipoint geom with {} points",coords.length);
+      json.writeGeom(gf.createMultiPoint(coords));
+      LOG.debug("done");
+    }
+ else     if (output.equals(IsoChrone.RESULT_TYPE_SHED)) {
+      Geometry geomsArray[]=null;
+      if (noRoadNearBy) {
+        Geometry circleShape=createCirle(dropPoint,pathToStreet);
+        json.writeGeom(circleShape);
+      }
+ else {
+        if (maxTime > shedCalcMethodSwitchTimeInSec) {
+          LOG.debug("create point-based shed (not from edges)");
+          geomsArray=new Geometry[coords.length];
+          for (int j=0; j < geomsArray.length; j++) {
+            geomsArray[j]=gf.createPoint(coords[j]);
+          }
+        }
+ else {
+          LOG.debug("create edge-based shed (not from points)");
+          Map<ReversibleLineStringWrapper,LineString> walkShedEdges=Maps.newHashMap();
+          walkShedEdges.put(new ReversibleLineStringWrapper(pathToStreet),pathToStreet);
+          ArrayList<LineString> withinTimeEdges=this.getLinesAndSubEdgesWithinMaxTime(maxTime,allConnectingEdges,sptA,angleLimitForUShapeDetection,distanceToleranceForUShapeDetection,maxUserSpeed,usesCar,doSpeedTest);
+          for (          LineString ls : withinTimeEdges) {
+            walkShedEdges.put(new ReversibleLineStringWrapper(ls),ls);
+          }
+          geomsArray=new Geometry[walkShedEdges.size()];
+          int k=0;
+          for (          LineString ls : walkShedEdges.values())           geomsArray[k++]=ls;
+        }
+        GeometryCollection gc=gf.createGeometryCollection(geomsArray);
+        Geometry outputHull=null;
+        LOG.debug("create concave hull from {} geoms with edge length limit of about {} m (distance on meridian)",geomsArray.length,concaveHullAlpha * 111132);
+        try {
+          ConcaveHull hull=new ConcaveHull(gc,concaveHullAlpha);
+          outputHull=hull.getConcaveHull();
+        }
+ catch (        Exception e) {
+          outputHull=gc.convexHull();
+          LOG.debug("Could not generate ConcaveHull for WalkShed, using ConvexHull instead.");
+        }
+        LOG.debug("write shed geom");
+        json.writeGeom(outputHull);
+        LOG.debug("done");
+      }
+    }
+ else     if (output.equals(IsoChrone.RESULT_TYPE_EDGES)) {
+      if (noRoadNearBy) {
+        json.writeGeom(pathToStreet);
+      }
+ else {
+        Map<ReversibleLineStringWrapper,LineString> walkShedEdges=Maps.newHashMap();
+        walkShedEdges.put(new ReversibleLineStringWrapper(pathToStreet),pathToStreet);
+        ArrayList<LineString> withinTimeEdges=this.getLinesAndSubEdgesWithinMaxTime(maxTime,allConnectingEdges,sptA,angleLimitForUShapeDetection,distanceToleranceForUShapeDetection,maxUserSpeed,usesCar,doSpeedTest);
+        for (        LineString ls : withinTimeEdges) {
+          walkShedEdges.put(new ReversibleLineStringWrapper(ls),ls);
+        }
+        Geometry mls=null;
+        LineString edges[]=new LineString[walkShedEdges.size()];
+        int k=0;
+        for (        LineString ls : walkShedEdges.values())         edges[k++]=ls;
+        LOG.debug("create multilinestring from {} geoms",edges.length);
+        mls=gf.createMultiLineString(edges);
+        LOG.debug("write geom");
+        json.writeGeom(mls);
+        LOG.debug("done");
+      }
+    }
+ else     if (output.equals("DEBUGEDGES")) {
+      ArrayList<LineString> withinTimeEdges=this.getLinesAndSubEdgesWithinMaxTime(maxTime,allConnectingEdges,sptA,angleLimitForUShapeDetection,distanceToleranceForUShapeDetection,maxUserSpeed,usesCar,doSpeedTest);
+      LineString edges[]=new LineString[this.debugGeoms.size()];
+      int k=0;
+      for (Iterator iterator=debugGeoms.iterator(); iterator.hasNext(); ) {
+        LineString ls=(LineString)iterator.next();
+        edges[k]=ls;
+        k++;
+      }
+      Geometry mls=gf.createMultiLineString(edges);
+      LOG.debug("write debug geom");
+      json.writeGeom(mls);
+      LOG.debug("done");
+    }
+  }
+ catch (  org.codehaus.jettison.json.JSONException e) {
+    e.printStackTrace();
+  }
+  return sw.toString();
+}

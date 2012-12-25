@@ -1,0 +1,37 @@
+{
+  boolean hasTooFastCar=false;
+  String msg="";
+  double originalTravelSpeed=edge.getDistance() / traverseTime;
+  if (originalTravelSpeed < userSpeed) {
+    if (edge instanceof PlainStreetEdge) {
+      PlainStreetEdge pe=(PlainStreetEdge)edge;
+      double maxSlope=pe.getElevationProfileSegment().getMaxSlope();
+      if (maxSlope > 0.06) {
+        userSpeed=originalTravelSpeed;
+      }
+    }
+  }
+ else {
+    double vdiff=Math.abs(originalTravelSpeed - userSpeed);
+    double vDiffPercent=vdiff / (userSpeed / 100.0);
+    if (vDiffPercent > 20) {
+      hasTooFastCar=true;
+      msg="v_traversed is much faster than (allowed) v_user [m/s] >>> v_traversed=" + (int)Math.floor(originalTravelSpeed) + ", v_maxUser="+ (int)Math.floor(userSpeed);
+      if (!usesCar) {
+        LOG.debug(msg);
+      }
+    }
+  }
+  if (usesCar) {
+    if (edge instanceof PlainStreetEdge) {
+      PlainStreetEdge pe=(PlainStreetEdge)edge;
+      userSpeed=pe.getCarSpeed();
+      if (hasTooFastCar) {
+        LOG.debug(msg + "; setting v_PlainStreetEdge=" + (int)Math.floor(userSpeed)+ " [m/s]");
+      }
+    }
+  }
+  long timeMissing=maxTime - fromTime;
+  double distanceToWalkInTimeMissing=timeMissing * userSpeed;
+  return distanceToWalkInTimeMissing;
+}
