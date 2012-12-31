@@ -7,7 +7,9 @@
   double initialWeight=heuristic.computeInitialWeight(initialState,rctx.target);
   spt.add(initialState);
   OTPPriorityQueueFactory qFactory=BinHeap.FACTORY;
-  OTPPriorityQueue<State> pq=qFactory.create(rctx.graph.getVertices().size());
+  int initialSize=rctx.graph.getVertices().size();
+  initialSize=(int)Math.ceil(2 * (Math.sqrt((double)initialSize + 1)));
+  OTPPriorityQueue<State> pq=qFactory.create(initialSize);
   pq.insert(initialState,initialWeight);
   int nVisited=0;
   while (!pq.empty()) {
@@ -21,7 +23,9 @@
       return null;
     }
     State u=pq.extract_min();
-    if (!spt.visit(u))     continue;
+    if (!spt.visit(u)) {
+      continue;
+    }
     if (traverseVisitor != null) {
       traverseVisitor.visitVertex(u);
     }
@@ -42,7 +46,9 @@
         if (traverseVisitor != null) {
           traverseVisitor.visitEdge(edge,v);
         }
-        if (_skipTraversalResultStrategy != null && _skipTraversalResultStrategy.shouldSkipTraversalResult(rctx.origin,rctx.target,u,v,spt,options))         continue;
+        if (_skipTraversalResultStrategy != null && _skipTraversalResultStrategy.shouldSkipTraversalResult(rctx.origin,rctx.target,u,v,spt,options)) {
+          continue;
+        }
         double remaining_w=computeRemainingWeight(heuristic,v,rctx.target,options);
         if (remaining_w < 0 || Double.isInfinite(remaining_w)) {
           continue;
