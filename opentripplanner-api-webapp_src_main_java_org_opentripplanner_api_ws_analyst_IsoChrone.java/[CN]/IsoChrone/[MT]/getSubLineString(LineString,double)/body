@@ -1,0 +1,6 @@
+{
+  if (fraction >= 1)   return ls;
+  LengthIndexedLine linRefLine=new LengthIndexedLine(ls);
+  LineString subLine=(LineString)linRefLine.extractLine(0,fraction * ls.getLength());
+  return subLine;
+}

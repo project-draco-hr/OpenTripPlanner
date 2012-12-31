@@ -1,0 +1,7 @@
+{
+  double length=pathToStreet.getLength();
+  GeometryFactory gf=new GeometryFactory();
+  Point dp=gf.createPoint(dropPoint);
+  Geometry buffer=dp.buffer(length);
+  return buffer;
+}

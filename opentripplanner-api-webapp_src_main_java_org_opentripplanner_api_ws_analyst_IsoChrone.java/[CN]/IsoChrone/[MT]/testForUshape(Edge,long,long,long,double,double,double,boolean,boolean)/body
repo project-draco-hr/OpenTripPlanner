@@ -1,0 +1,34 @@
+{
+  LineString ls=(LineString)edge.getGeometry();
+  if (ls.getNumPoints() <= 3) {
+    return false;
+  }
+ else {
+    double diffTo90Azimuths=360;
+    if (edge instanceof PlainStreetEdge) {
+      double firstSegmentAngle=DirectionUtils.getFirstAngle(edge.getGeometry());
+      if (firstSegmentAngle < 0)       firstSegmentAngle=firstSegmentAngle + Math.PI;
+      double firstToLastSegmentAngle=getFirstToLastSegmentAngle(edge.getGeometry());
+      if (firstToLastSegmentAngle < 0)       firstToLastSegmentAngle=firstToLastSegmentAngle + Math.PI;
+      double diffAzimuths=Math.abs(firstToLastSegmentAngle - firstSegmentAngle);
+      diffTo90Azimuths=Math.abs(diffAzimuths - (Math.PI / 2.0));
+    }
+ else {
+    }
+    if (diffTo90Azimuths < angleLimit) {
+      return true;
+    }
+ else {
+      if (performSpeedTest) {
+        long dt=Math.abs(toTime - fromTime);
+        double lineDist=edge.getDistance();
+        double distanceToWalkInTimeMissing=distanceToMoveInRemainingTime(maxTime,fromTime,dt,userSpeed,edge,hasCar,false);
+        double approxWalkableDistanceInTime=distanceToWalkInTimeMissing * distanceTolerance;
+        if ((approxWalkableDistanceInTime < lineDist)) {
+          return true;
+        }
+      }
+      return false;
+    }
+  }
+}

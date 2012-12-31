@@ -1,0 +1,20 @@
+{
+  long dt=Math.abs(toTime - fromTime);
+  double distanceToMoveInTimeMissing=distanceToMoveInRemainingTime(maxTime,fromTime,dt,userSpeed,edge,hasCar,true);
+  double lineDist=edge.getDistance();
+  double fraction=(double)distanceToMoveInTimeMissing / (double)lineDist;
+  LineString subLine=null;
+  if (fraction < 1.0) {
+    subLine=this.getSubLineString(ls,fraction);
+    walkShedEdges.add(subLine);
+    LineString reversedLine=(LineString)ls.reverse();
+    double distanceToMoveInTimeMissing2=distanceToMoveInRemainingTime(maxTime,toTime,dt,userSpeed,edge,hasCar,true);
+    double fraction2=(double)distanceToMoveInTimeMissing2 / (double)lineDist;
+    LineString secondsubLine=this.getSubLineString(reversedLine,fraction2);
+    ;
+    walkShedEdges.add(secondsubLine);
+  }
+ else {
+    walkShedEdges.add(ls);
+  }
+}
