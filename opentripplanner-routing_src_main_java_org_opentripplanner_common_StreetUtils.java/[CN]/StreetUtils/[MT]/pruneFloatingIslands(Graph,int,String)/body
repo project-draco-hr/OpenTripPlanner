@@ -1,5 +1,10 @@
 {
   _log.debug("pruning");
+  Logger islandLog=null;
+  if (islandLogName != null) {
+    islandLog=LoggerFactory.getLogger(islandLogName);
+    islandLog.info(String.format("%s\t%s\t%s","id","size","wkt"));
+  }
   Map<Vertex,HashSet<Vertex>> subgraphs=new HashMap<Vertex,HashSet<Vertex>>();
   Map<Vertex,ArrayList<Vertex>> neighborsForVertex=new HashMap<Vertex,ArrayList<Vertex>>();
   RoutingRequest options=new RoutingRequest(new TraverseModeSet(TraverseMode.WALK,TraverseMode.TRANSIT));
@@ -50,8 +55,11 @@
     }
     islands.add(subgraph);
   }
-  _log.debug(islands.size() + " sub graphs found");
+  _log.info(islands.size() + " sub graphs found");
   for (  HashSet<Vertex> island : islands) {
+    if (islandLog != null) {
+      WriteNodesInSubGraph(island,islandLog);
+    }
     if (island.size() < maxIslandSize) {
       _log.warn(graph.addBuilderAnnotation(new GraphConnectivity(island.iterator().next(),island.size())));
       depedestrianizeOrRemove(graph,island);
