@@ -7,7 +7,9 @@
   }
  else {
     final Edge backEdge=existing.getBackEdge();
-    if (backEdge != state.getBackEdge() && ((backEdge instanceof PlainStreetEdge) && (!((PlainStreetEdge)backEdge).getTurnRestrictions().isEmpty())))     return true;
+    if (backEdge != state.getBackEdge() && ((backEdge instanceof PlainStreetEdge) && (!((PlainStreetEdge)backEdge).getTurnRestrictions().isEmpty()))) {
+      return true;
+    }
     return false;
   }
 }
