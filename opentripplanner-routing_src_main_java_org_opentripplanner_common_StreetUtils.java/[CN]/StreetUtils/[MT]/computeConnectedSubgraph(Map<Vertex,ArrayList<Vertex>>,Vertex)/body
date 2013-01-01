@@ -1,12 +1,12 @@
 {
-  HashSet<Vertex> subgraph=new HashSet<Vertex>();
+  Subgraph subgraph=new Subgraph();
   Queue<Vertex> q=new LinkedList<Vertex>();
   q.add(startVertex);
   while (!q.isEmpty()) {
     Vertex vertex=q.poll();
     for (    Vertex neighbor : neighborsForVertex.get(vertex)) {
       if (!subgraph.contains(neighbor)) {
-        subgraph.add(neighbor);
+        subgraph.addVertex(neighbor);
         q.add(neighbor);
       }
     }

@@ -3,6 +3,14 @@
   ArrayList<Vertex> vertices=new ArrayList<Vertex>();
   vertices.addAll(graph.getVertices());
   for (  TransitStop ts : IterableLibrary.filter(vertices,TransitStop.class)) {
+    boolean alreadyLinked=false;
+    for (    Edge e : ts.getOutgoing()) {
+      if (e instanceof StreetTransitLink) {
+        alreadyLinked=true;
+        break;
+      }
+    }
+    if (alreadyLinked)     continue;
     if (ts.isEntrance() || !ts.hasEntrances()) {
       boolean wheelchairAccessible=ts.hasWheelchairEntrance();
       if (!networkLinkerLibrary.connectVertexToStreets(ts,wheelchairAccessible).getResult()) {

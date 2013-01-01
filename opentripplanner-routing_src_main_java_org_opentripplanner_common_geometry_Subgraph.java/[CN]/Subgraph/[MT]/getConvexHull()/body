@@ -1,0 +1,8 @@
+{
+  if (addNewVertex) {
+    convexHull=new ConvexHull(vertexCoord.toArray(new Coordinate[vertexCoord.size()]),new GeometryFactory());
+    convexHullAsGeom=convexHull.getConvexHull();
+    addNewVertex=false;
+  }
+  return convexHullAsGeom;
+}
