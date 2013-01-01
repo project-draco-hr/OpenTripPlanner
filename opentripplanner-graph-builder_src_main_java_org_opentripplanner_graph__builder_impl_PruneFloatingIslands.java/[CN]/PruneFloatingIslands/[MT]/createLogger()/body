@@ -1,0 +1,13 @@
+{
+  if (islandLogFile.isEmpty())   return null;
+  try {
+    PatternLayout layout=new PatternLayout("%m\n");
+    FileAppender appender=new RollingFileAppender(layout,islandLogFile,false);
+    Logger.getLogger("islands").addAppender(appender);
+  }
+ catch (  IOException ioe) {
+    _log.warn("could not create file appender for " + islandLogFile + " duo to: "+ ioe.getMessage());
+    return null;
+  }
+  return "islands";
+}
