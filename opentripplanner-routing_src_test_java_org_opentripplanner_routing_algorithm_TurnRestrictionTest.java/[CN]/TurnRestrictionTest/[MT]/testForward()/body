@@ -1,13 +1,9 @@
 {
-  Vertex origin=_graph.getVertex("maple_1st");
-  Vertex destination=_graph.getVertex("broad_3rd");
-  assertNotNull(origin);
-  assertNotNull(destination);
   RoutingRequest options=new RoutingRequest();
   options.setWalkSpeed(1.0);
-  options.setRoutingContext(_graph,origin,destination);
+  options.setRoutingContext(_graph,topRight,bottomLeft);
   ShortestPathTree tree=new GenericAStar().getShortestPathTree(options);
-  GraphPath path=tree.getPath(destination,false);
+  GraphPath path=tree.getPath(bottomLeft,false);
   assertNotNull(path);
   List<State> states=path.states;
   assertEquals(5,states.size());
