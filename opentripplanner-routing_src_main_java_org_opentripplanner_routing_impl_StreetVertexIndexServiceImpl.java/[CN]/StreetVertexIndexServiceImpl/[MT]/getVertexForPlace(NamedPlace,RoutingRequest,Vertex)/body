@@ -1,5 +1,7 @@
 {
-  if (place == null || place.place == null)   return null;
+  if (place == null || place.place == null) {
+    return null;
+  }
   Matcher matcher=_latLonPattern.matcher(place.place);
   if (matcher.matches()) {
     double lat=Double.parseDouble(matcher.group(1));

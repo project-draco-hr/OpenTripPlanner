@@ -1,0 +1,10 @@
+{
+  int index=_random.nextInt(vertices.size());
+  Vertex v=vertices.get(index);
+  double lat=v.getY() + _random.nextGaussian() * _latNoise;
+  double lon=v.getX() + _random.nextGaussian() * _lonNoise;
+  ObjectNode obj=mapper.createObjectNode();
+  obj.put("lat",lat);
+  obj.put("lon",lon);
+  return obj;
+}
