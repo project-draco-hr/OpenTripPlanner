@@ -14,7 +14,7 @@
     Vertex v=s.getVertex();
     int vi=v.getIndex();
     if (!fromTarget)     w=0;
-    if (weights[vi] > w)     weights[vi]=w;
+    if (vi < weights.length)     if (weights[vi] > w)     weights[vi]=w;
     if (v instanceof TransitStop) {
       stopStates.add(s);
       continue;
