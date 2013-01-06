@@ -1,0 +1,16 @@
+{
+  Logger stopsLog=LoggerFactory.getLogger(LoggerAppenderProvider.createCsvFile4LoggerCat(logFile,"stops"));
+  stopsLog.info(String.format("%s,%s,%s","lon","lat","types"));
+  for (  TransitStop ts : IterableLibrary.filter(graph.getVertices(),TransitStop.class)) {
+    StringBuilder types=new StringBuilder();
+    for (    IStopTester stopTester : stopTesters) {
+      if (stopTester.fulfillDemands(ts,graph)) {
+        if (types.length() > 0)         types.append(",");
+        types.append(stopTester.getType());
+      }
+    }
+    if (types.length() > 0) {
+      stopsLog.info(String.format("%f,%f,%s",ts.getCoordinate().x,ts.getCoordinate().y,types.toString()));
+    }
+  }
+}

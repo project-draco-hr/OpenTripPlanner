@@ -1,6 +1,6 @@
 {
   if (graph.getService(StreetVertexIndexService.class) == null) {
   }
-  StreetUtils.pruneFloatingIslands(graph,maxIslandSize,islandWithStopMaxSize,createLogger());
+  StreetUtils.pruneFloatingIslands(graph,maxIslandSize,islandWithStopMaxSize,LoggerAppenderProvider.createCsvFile4LoggerCat(islandLogFile,"islands"));
   transitToStreetNetwork.buildGraph(graph,extra);
 }
