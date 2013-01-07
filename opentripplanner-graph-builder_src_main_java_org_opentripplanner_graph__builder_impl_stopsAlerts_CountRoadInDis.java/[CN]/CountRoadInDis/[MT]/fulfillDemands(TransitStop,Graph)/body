@@ -1,0 +1,36 @@
+{
+  if (graph.streetIndex == null) {
+    graph.streetIndex=new StreetVertexIndexServiceImpl(graph);
+    _log.debug("street index built.");
+  }
+  StreetVertexIndexService streetIndexService=graph.streetIndex;
+  DistanceLibrary distanceLibrary;
+  if (streetIndexService instanceof StreetVertexIndexServiceImpl) {
+    distanceLibrary=((StreetVertexIndexServiceImpl)streetIndexService).getDistanceLibrary();
+  }
+ else {
+    distanceLibrary=SphericalDistanceLibrary.getInstance();
+  }
+  Envelope env=new Envelope(ts.getCoordinate());
+  double rInMeters;
+  if (distanceLibrary instanceof SphericalDistanceLibrary) {
+    rInMeters=((SphericalDistanceLibrary)distanceLibrary).RADIUS_OF_EARTH_IN_M;
+  }
+ else {
+    rInMeters=6371.01 * 1000;
+  }
+  double degForOneMeter=(Math.PI / (180 * rInMeters));
+  double disInDeg=degForOneMeter * distance;
+  env.expandBy(disInDeg);
+  Collection<StreetEdge> streetEdges=streetIndexService.getEdgesForEnvelope(env);
+  int counter=0;
+  for (  StreetEdge streetEdge : streetEdges) {
+    double dis=DistanceOp.distance(streetEdge.getGeometry(),geometryFactory.createPoint(ts.getCoordinate()));
+    double disMeters=(dis * Math.PI / 180) * rInMeters;
+    if (disMeters <= distance && streetEdge.getPermission().allows(allowedPermission)) {
+      counter++;
+    }
+  }
+  if (counter >= numberOfStreets)   return true;
+  return false;
+}
