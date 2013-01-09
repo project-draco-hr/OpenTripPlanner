@@ -1,10 +1,14 @@
 {
+  System.out.println("trip gi=" + trip.groupItineraries);
   trip.id=null;
+  trip.serviceDay=trip.departure;
   User user=getUser();
   if (!user.canScheduleFieldTrips()) {
     trip.groupItineraries.clear();
+    System.out.println("trip gi2=" + trip.groupItineraries);
   }
   trip.save();
+  System.out.println("trip gi3=" + trip.groupItineraries);
   Long id=trip.id;
   renderJSON(id);
 }

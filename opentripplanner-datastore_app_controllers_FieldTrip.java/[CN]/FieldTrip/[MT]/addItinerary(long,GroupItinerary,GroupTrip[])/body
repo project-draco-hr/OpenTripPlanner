@@ -4,5 +4,11 @@
   fieldTrip.groupItineraries.add(itinerary);
   itinerary.save();
   Long id=itinerary.id;
+  itinerary.trips=new ArrayList<GroupTrip>();
+  for (  GroupTrip gtrip : trips) {
+    gtrip.groupItinerary=itinerary;
+    itinerary.trips.add(gtrip);
+    gtrip.save();
+  }
   renderJSON(id);
 }
