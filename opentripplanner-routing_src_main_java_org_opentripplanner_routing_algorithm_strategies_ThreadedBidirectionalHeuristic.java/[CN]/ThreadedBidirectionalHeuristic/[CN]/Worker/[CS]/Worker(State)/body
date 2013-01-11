@@ -4,6 +4,7 @@
   LOG.debug("initializing heuristic computation thread");
   int nVertices=AbstractVertex.getMaxIndex();
   weights=new double[nVertices];
+  maxIdx=nVertices - 1;
   Arrays.fill(weights,Double.POSITIVE_INFINITY);
   LOG.debug("street searches");
   this.q=new BinHeap<Vertex>();

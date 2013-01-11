@@ -17,13 +17,14 @@
     for (    Edge e : options.isArriveBy() ? u.getOutgoing() : u.getIncoming()) {
       if (e instanceof StreetTransitLink)       continue;
       Vertex v=options.isArriveBy() ? e.getToVertex() : e.getFromVertex();
+      int vi=v.getIndex();
+      if (vi > maxIdx)       continue;
       double ew=e.weightLowerBound(options);
       if (ew < 0) {
         LOG.error("negative edge weight {} qt {}",ew,e);
         continue;
       }
       double vw=uw + ew;
-      int vi=v.getIndex();
       if (weights[vi] > vw) {
         weights[vi]=vw;
         q.insert(v,vw);
