@@ -3,6 +3,7 @@
   StreetVertex intersection=getIntersectionAt(coordinate,MAX_CORNER_DISTANCE);
   if (intersection != null) {
     if (name == null) {
+      _log.debug("found intersection {}. not splitting.",intersection);
       Set<String> uniqueNameSet=new HashSet<String>();
       for (      Edge e : intersection.getOutgoing()) {
         if (e instanceof StreetEdge) {

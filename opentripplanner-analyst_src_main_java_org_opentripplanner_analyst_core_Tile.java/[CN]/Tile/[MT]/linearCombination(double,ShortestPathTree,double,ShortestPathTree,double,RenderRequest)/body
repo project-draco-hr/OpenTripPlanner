@@ -3,16 +3,17 @@
   BufferedImage image=getEmptyImage(renderRequest.style);
   byte[] imagePixelData=((DataBufferByte)image.getRaster().getDataBuffer()).getData();
   int i=0;
-  final byte TRANSPARENT=(byte)255;
   for (  Sample s : getSamples()) {
-    byte pixel;
+    byte pixel=UNREACHABLE;
     if (s != null) {
-      double t=(k1 * s.eval(spt1) + k2 * s.eval(spt2)) / 60 + intercept;
-      if (t < 0 || t > 255)       t=TRANSPARENT;
-      pixel=(byte)t;
-    }
- else {
-      pixel=TRANSPARENT;
+      long t1=s.eval(spt1);
+      long t2=s.eval(spt2);
+      if (t1 != Long.MAX_VALUE && t2 != Long.MAX_VALUE) {
+        double t=(k1 * t1 + k2 * t2) / 60 + intercept;
+        if (t < -120)         t=-120;
+ else         if (t > 120)         t=120;
+        pixel=(byte)t;
+      }
     }
     imagePixelData[i]=pixel;
     i++;

@@ -1,0 +1,23 @@
+{
+  byte[][] vals=new byte[4][256];
+  int[] br0=null;
+  for (  int[] br1 : breaks) {
+    if (br0 != null) {
+      int i0=br0[0];
+      int i1=br1[0];
+      int steps=i1 - i0;
+      for (int channel=0; channel < 4; ++channel) {
+        int v0=br0[channel + 1];
+        int v1=br1[channel + 1];
+        float delta=(v1 - v0) / (float)steps;
+        for (int i=0; i < steps; i++) {
+          int v=v0 + (int)(delta * i);
+          int byte_i=0x000000FF & (i0 + i);
+          vals[channel][byte_i]=(byte)v;
+        }
+      }
+    }
+    br0=br1;
+  }
+  return new IndexColorModel(8,256,vals[0],vals[1],vals[2],vals[3]);
+}

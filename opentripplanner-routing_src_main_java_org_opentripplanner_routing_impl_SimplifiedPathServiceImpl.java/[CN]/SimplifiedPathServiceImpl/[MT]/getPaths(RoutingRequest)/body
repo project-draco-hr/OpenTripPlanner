@@ -1,0 +1,28 @@
+{
+  if (options == null) {
+    LOG.error("PathService was passed a null routing request.");
+    return null;
+  }
+  if (options.rctx == null) {
+    options.setRoutingContext(graphService.getGraph(options.getRouterId()));
+    options.rctx.pathParsers=new PathParser[]{new Parser()};
+  }
+  options.setMaxWalkDistance(Double.MAX_VALUE);
+  LOG.debug("rreq={}",options);
+  RemainingWeightHeuristic heuristic;
+  if (options.modes.isTransit())   heuristic=new ThreadedBidirectionalHeuristic(options.rctx.graph);
+ else {
+    heuristic=new DefaultRemainingWeightHeuristic();
+  }
+  options.rctx.remainingWeightHeuristic=heuristic;
+  long searchBeginTime=System.currentTimeMillis();
+  LOG.debug("BEGIN SEARCH");
+  ShortestPathTree spt=sptService.getShortestPathTree(options,timeout);
+  LOG.debug("END SEARCH ({} msec)",System.currentTimeMillis() - searchBeginTime);
+  if (heuristic instanceof ThreadedBidirectionalHeuristic)   ((ThreadedBidirectionalHeuristic)heuristic).abort();
+  if (spt == null) {
+    LOG.warn("SPT was null.");
+    return null;
+  }
+  return spt.getPaths();
+}

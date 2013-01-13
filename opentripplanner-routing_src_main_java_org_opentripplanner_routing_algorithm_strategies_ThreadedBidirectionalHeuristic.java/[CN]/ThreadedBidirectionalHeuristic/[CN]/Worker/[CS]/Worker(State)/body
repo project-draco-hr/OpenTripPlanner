@@ -1,0 +1,14 @@
+{
+  this.options=s.getOptions();
+  this.origin=s.getVertex();
+  LOG.debug("initializing heuristic computation thread");
+  int nVertices=AbstractVertex.getMaxIndex();
+  weights=new double[nVertices];
+  Arrays.fill(weights,Double.POSITIVE_INFINITY);
+  LOG.debug("street searches");
+  this.q=new BinHeap<Vertex>();
+  streetSearch(options,false);
+  for (  State stopState : streetSearch(options,true)) {
+    q.insert(stopState.getVertex(),stopState.getWeight());
+  }
+}

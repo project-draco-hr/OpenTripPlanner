@@ -1,0 +1,14 @@
+{
+  Vertex v=state.getVertex();
+  Edge e=state.getBackEdge();
+  if (e == null || e instanceof StreetEdge)   return STREET;
+  if (e instanceof StreetTransitLink)   return LINK;
+  if (e instanceof SimpleTransfer)   return XFER;
+  if (v instanceof OnboardVertex)   return RIDE;
+  if (v instanceof OffboardVertex)   return STATION;
+  if (v instanceof StreetVertex)   return STREET;
+ else {
+    LOG.debug("failed to tokenize path. vertex {} edge {}",v,e);
+    throw new RuntimeException("failed to tokenize path");
+  }
+}
