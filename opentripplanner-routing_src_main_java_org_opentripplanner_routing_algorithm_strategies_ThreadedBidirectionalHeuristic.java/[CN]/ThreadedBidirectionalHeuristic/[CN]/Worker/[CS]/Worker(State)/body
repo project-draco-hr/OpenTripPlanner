@@ -7,8 +7,8 @@
   Arrays.fill(weights,Double.POSITIVE_INFINITY);
   closed=new BitSet(nVertices);
   LOG.debug("street searches");
-  this.q=new BinHeap<Vertex>();
   streetSearch(options,false);
+  q=new BinHeap<Vertex>();
   for (  State stopState : streetSearch(options,true)) {
     q.insert(stopState.getVertex(),stopState.getWeight());
   }
