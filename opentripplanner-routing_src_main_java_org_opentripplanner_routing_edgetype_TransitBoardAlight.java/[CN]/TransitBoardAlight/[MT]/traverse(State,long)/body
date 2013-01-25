@@ -75,6 +75,11 @@
       return null;
     }
     Trip trip=bestTripTimes.getTrip();
+    if (options.bannedAgencies != null) {
+      if (options.bannedAgencies.contains(trip.getId().getAgencyId())) {
+        return null;
+      }
+    }
     if (options.bannedRoutes != null) {
       Route route=trip.getRoute();
       RouteSpec spec=new RouteSpec(route.getId().getAgencyId(),GtfsLibrary.getRouteName(route));
