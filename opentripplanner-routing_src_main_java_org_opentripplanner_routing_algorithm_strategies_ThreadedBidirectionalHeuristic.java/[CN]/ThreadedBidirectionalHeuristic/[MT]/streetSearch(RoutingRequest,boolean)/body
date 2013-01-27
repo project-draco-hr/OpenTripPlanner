@@ -9,16 +9,16 @@
   State initState=new State(initVertex,rr);
   pq.insert(initState,0);
   while (!pq.empty()) {
-    double w=pq.peek_min_key();
     State s=pq.extract_min();
+    double w=s.getWeight();
     Vertex v=s.getVertex();
     int vi=v.getIndex();
-    if (!fromTarget)     w=0;
-    if (vi < weights.length)     if (weights[vi] > w)     weights[vi]=w;
     if (v instanceof TransitStop) {
       stopStates.add(s);
       continue;
     }
+    if (!fromTarget)     w=0;
+    if (vi < weights.length)     if (weights[vi] > w)     weights[vi]=w;
     for (    Edge e : rr.arriveBy ? v.getIncoming() : v.getOutgoing()) {
       State s1=e.traverse(s);
       if (s1 == null)       continue;

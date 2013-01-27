@@ -8,22 +8,16 @@
     }
     double uw=q.peek_min_key();
     Vertex u=q.extract_min();
-    maxFound=uw;
-    if (u == origin) {
-      LOG.debug("hit origin.");
-    }
     int ui=u.getIndex();
+    closed.set(ui);
     if (uw > weights[ui])     continue;
+    maxFound=uw;
     for (    Edge e : options.isArriveBy() ? u.getOutgoing() : u.getIncoming()) {
       if (e instanceof StreetTransitLink)       continue;
       Vertex v=options.isArriveBy() ? e.getToVertex() : e.getFromVertex();
       int vi=v.getIndex();
       if (vi < weights.length) {
         double ew=e.weightLowerBound(options);
-        if (ew < 0) {
-          LOG.error("negative edge weight {} qt {}",ew,e);
-          continue;
-        }
         double vw=uw + ew;
         if (weights[vi] > vw) {
           weights[vi]=vw;
