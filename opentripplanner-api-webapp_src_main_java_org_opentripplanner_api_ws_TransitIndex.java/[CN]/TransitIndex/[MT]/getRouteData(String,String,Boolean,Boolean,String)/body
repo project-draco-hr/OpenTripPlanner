@@ -12,6 +12,12 @@
     response.id=routeId;
     response.variants=variants;
     response.directions=new ArrayList<String>(transitIndexService.getDirectionsForRoute(routeId));
+    response.route=new RouteType();
+    for (    RouteVariant variant : transitIndexService.getVariantsForRoute(routeId)) {
+      Route route=variant.getRoute();
+      response.route=new RouteType(route,extended);
+      break;
+    }
     if (references != null && references.equals(true)) {
       response.stops=new ArrayList<StopType>();
       for (      org.onebusaway.gtfs.model.Stop stop : transitIndexService.getStopsForRoute(routeId))       response.stops.add(new StopType(stop,extended));
