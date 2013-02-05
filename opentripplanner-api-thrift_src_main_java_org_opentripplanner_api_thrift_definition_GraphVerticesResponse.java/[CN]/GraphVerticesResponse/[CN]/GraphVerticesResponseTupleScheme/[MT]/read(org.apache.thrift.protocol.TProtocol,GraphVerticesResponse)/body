@@ -11,4 +11,9 @@
     }
   }
   struct.setVerticesIsSet(true);
+  BitSet incoming=iprot.readBitSet(1);
+  if (incoming.get(0)) {
+    struct.compute_time_millis=iprot.readI64();
+    struct.setCompute_time_millisIsSet(true);
+  }
 }

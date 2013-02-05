@@ -2,6 +2,8 @@
 switch (field) {
 case NEAREST_EDGES:
     return getNearest_edges();
+case COMPUTE_TIME_MILLIS:
+  return Long.valueOf(getCompute_time_millis());
 }
 throw new IllegalStateException();
 }

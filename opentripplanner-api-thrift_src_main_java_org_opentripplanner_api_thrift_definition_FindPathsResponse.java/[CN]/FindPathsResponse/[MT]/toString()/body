@@ -9,6 +9,12 @@
     sb.append(this.paths);
   }
   first=false;
+  if (isSetCompute_time_millis()) {
+    if (!first)     sb.append(", ");
+    sb.append("compute_time_millis:");
+    sb.append(this.compute_time_millis);
+    first=false;
+  }
   sb.append(")");
   return sb.toString();
 }

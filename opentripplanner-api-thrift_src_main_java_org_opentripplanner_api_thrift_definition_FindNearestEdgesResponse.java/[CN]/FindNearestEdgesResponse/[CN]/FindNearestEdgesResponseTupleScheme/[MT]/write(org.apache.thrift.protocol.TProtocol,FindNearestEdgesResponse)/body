@@ -4,7 +4,10 @@
   if (struct.isSetNearest_edges()) {
     optionals.set(0);
   }
-  oprot.writeBitSet(optionals,1);
+  if (struct.isSetCompute_time_millis()) {
+    optionals.set(1);
+  }
+  oprot.writeBitSet(optionals,2);
   if (struct.isSetNearest_edges()) {
 {
       oprot.writeI32(struct.nearest_edges.size());
@@ -12,5 +15,8 @@
         _iter36.write(oprot);
       }
     }
+  }
+  if (struct.isSetCompute_time_millis()) {
+    oprot.writeI64(struct.compute_time_millis);
   }
 }

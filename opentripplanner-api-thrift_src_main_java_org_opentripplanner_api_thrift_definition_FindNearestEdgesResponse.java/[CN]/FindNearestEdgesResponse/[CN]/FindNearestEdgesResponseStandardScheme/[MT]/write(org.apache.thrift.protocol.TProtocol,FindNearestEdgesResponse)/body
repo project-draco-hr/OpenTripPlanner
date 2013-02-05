@@ -14,6 +14,11 @@
       oprot.writeFieldEnd();
     }
   }
+  if (struct.isSetCompute_time_millis()) {
+    oprot.writeFieldBegin(COMPUTE_TIME_MILLIS_FIELD_DESC);
+    oprot.writeI64(struct.compute_time_millis);
+    oprot.writeFieldEnd();
+  }
   oprot.writeFieldStop();
   oprot.writeStructEnd();
 }

@@ -1,4 +1,6 @@
 {
+  __isset_bit_vector.clear();
+  __isset_bit_vector.or(other.__isset_bit_vector);
   if (other.isSetNearest_edges()) {
     List<org.opentripplanner.api.thrift.definition.EdgeMatch> __this__nearest_edges=new ArrayList<org.opentripplanner.api.thrift.definition.EdgeMatch>();
     for (    org.opentripplanner.api.thrift.definition.EdgeMatch other_element : other.nearest_edges) {
@@ -6,4 +8,5 @@
     }
     this.nearest_edges=__this__nearest_edges;
   }
+  this.compute_time_millis=other.compute_time_millis;
 }

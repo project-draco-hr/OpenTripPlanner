@@ -1,5 +1,6 @@
 {
   LOG.info("BulkFindPaths called");
+  long startTime=System.currentTimeMillis();
   PathOptions pathOptions=req.getOptions();
   BulkPathsResponse res=new BulkPathsResponse();
   for (  TripParameters trip : req.getTrips()) {
@@ -7,5 +8,6 @@
     TripPathsExtension tripPaths=new TripPathsExtension(trip,computedPaths);
     res.addToPaths(tripPaths);
   }
+  res.setCompute_time_millis(System.currentTimeMillis() - startTime);
   return res;
 }
