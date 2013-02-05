@@ -1,4 +1,6 @@
 {
+  __isset_bit_vector.clear();
+  __isset_bit_vector.or(other.__isset_bit_vector);
   if (other.isSetVertices()) {
     List<org.opentripplanner.api.thrift.definition.GraphVertex> __this__vertices=new ArrayList<org.opentripplanner.api.thrift.definition.GraphVertex>();
     for (    org.opentripplanner.api.thrift.definition.GraphVertex other_element : other.vertices) {
@@ -6,4 +8,5 @@
     }
     this.vertices=__this__vertices;
   }
+  this.compute_time_millis=other.compute_time_millis;
 }

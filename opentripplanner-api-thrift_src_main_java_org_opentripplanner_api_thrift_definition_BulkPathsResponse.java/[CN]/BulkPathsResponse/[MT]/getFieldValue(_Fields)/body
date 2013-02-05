@@ -2,6 +2,8 @@
 switch (field) {
 case PATHS:
     return getPaths();
+case COMPUTE_TIME_MILLIS:
+  return Long.valueOf(getCompute_time_millis());
 }
 throw new IllegalStateException();
 }

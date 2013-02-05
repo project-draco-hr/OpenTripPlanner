@@ -6,4 +6,12 @@
       _iter12.write(oprot);
     }
   }
+  BitSet optionals=new BitSet();
+  if (struct.isSetCompute_time_millis()) {
+    optionals.set(0);
+  }
+  oprot.writeBitSet(optionals,1);
+  if (struct.isSetCompute_time_millis()) {
+    oprot.writeI64(struct.compute_time_millis);
+  }
 }

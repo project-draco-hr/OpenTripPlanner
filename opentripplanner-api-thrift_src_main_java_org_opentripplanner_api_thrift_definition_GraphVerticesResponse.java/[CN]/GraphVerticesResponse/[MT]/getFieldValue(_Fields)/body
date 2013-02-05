@@ -2,6 +2,8 @@
 switch (field) {
 case VERTICES:
     return getVertices();
+case COMPUTE_TIME_MILLIS:
+  return Long.valueOf(getCompute_time_millis());
 }
 throw new IllegalStateException();
 }

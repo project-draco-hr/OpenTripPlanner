@@ -3,4 +3,9 @@
   struct.paths=new org.opentripplanner.api.thrift.definition.TripPaths();
   struct.paths.read(iprot);
   struct.setPathsIsSet(true);
+  BitSet incoming=iprot.readBitSet(1);
+  if (incoming.get(0)) {
+    struct.compute_time_millis=iprot.readI64();
+    struct.setCompute_time_millisIsSet(true);
+  }
 }
