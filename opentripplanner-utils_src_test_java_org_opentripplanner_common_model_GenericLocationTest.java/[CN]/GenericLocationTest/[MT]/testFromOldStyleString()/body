@@ -1,0 +1,11 @@
+{
+  GenericLocation loc=GenericLocation.fromOldStyleString("name::12345");
+  assertEquals("name",loc.getName());
+  assertEquals("12345",loc.getPlace());
+  NamedPlace np=loc.getNamedPlace();
+  assertEquals("name",np.name);
+  assertEquals("12345",np.place);
+  assertNull(loc.getLat());
+  assertNull(loc.getLng());
+  assertNull(loc.getCoordinate());
+}
