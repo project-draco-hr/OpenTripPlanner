@@ -1,0 +1,12 @@
+{
+  this.name=name;
+  this.place=place;
+  if (place == null) {
+    return;
+  }
+  Matcher matcher=_latLonPattern.matcher(place);
+  if (matcher.matches()) {
+    this.lat=Double.parseDouble(matcher.group(1));
+    this.lng=Double.parseDouble(matcher.group(4));
+  }
+}

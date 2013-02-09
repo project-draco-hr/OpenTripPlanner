@@ -1,0 +1,16 @@
+{
+  Coordinate c=loc.getCoordinate();
+  if (c != null) {
+    if (other instanceof StreetLocation) {
+      return getClosestVertex(c,loc.getName(),options,((StreetLocation)other).getExtra());
+    }
+ else {
+      return getClosestVertex(c,loc.getName(),options);
+    }
+  }
+  String place=loc.getPlace();
+  if (place == null) {
+    return null;
+  }
+  return graph.getVertex(place);
+}

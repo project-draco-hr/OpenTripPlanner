@@ -1,13 +1,6 @@
 {
-  this.intermediatePlaces=new ArrayList<NamedPlace>(intermediates.size());
+  this.intermediatePlaces=new ArrayList<GenericLocation>(intermediates.size());
   for (  String place : intermediates) {
-    String name=place;
-    if (place.contains("::")) {
-      String[] parts=place.split("::");
-      name=parts[0];
-      place=parts[1];
-    }
-    NamedPlace intermediate=new NamedPlace(name,place);
-    intermediatePlaces.add(intermediate);
+    intermediatePlaces.add(GenericLocation.fromOldStyleString(place));
   }
 }

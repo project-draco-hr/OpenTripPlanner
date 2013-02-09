@@ -12,8 +12,12 @@
   tp.setOrigin(origin);
   tp.setDestination(dest);
   RoutingRequest rr=(new RoutingRequestBuilder()).addTripParameters(tp).build();
-  assertEquals("1.0000000,2.5000000",rr.getFrom());
-  assertEquals("-3.0000000,9.7000000",rr.getTo());
+  GenericLocation from=rr.getFrom();
+  Coordinate expectedFromCoord=new Coordinate(2.5,1.0);
+  assertEquals(expectedFromCoord,from.getCoordinate());
+  GenericLocation to=rr.getTo();
+  Coordinate expectedToCoord=new Coordinate(9.7,-3.0);
+  assertEquals(expectedToCoord,to.getCoordinate());
   assertEquals(tp.getStart_time(),rr.dateTime);
   assertFalse(rr.arriveBy);
 }
