@@ -1,0 +1,11 @@
+{
+  GenericLocation loc=new GenericLocation();
+  assertEquals("",loc.getName());
+  assertEquals("",loc.getPlace());
+  NamedPlace np=loc.getNamedPlace();
+  assertEquals("",np.name);
+  assertEquals("",np.place);
+  assertNull(loc.getLat());
+  assertNull(loc.getLng());
+  assertNull(loc.getCoordinate());
+}

@@ -2,6 +2,10 @@
   LatLng origin=new LatLng(1.0,2.5);
   LatLng dest=new LatLng(-3.0,9.7);
   RoutingRequest rr=(new RoutingRequestBuilder()).setOrigin(origin).setDestination(dest).build();
-  assertEquals("1.0000000,2.5000000",rr.getFrom());
-  assertEquals("-3.0000000,9.7000000",rr.getTo());
+  GenericLocation from=rr.getFrom();
+  Coordinate expectedFromCoord=new Coordinate(2.5,1.0);
+  assertEquals(expectedFromCoord,from.getCoordinate());
+  GenericLocation to=rr.getTo();
+  Coordinate expectedToCoord=new Coordinate(9.7,-3.0);
+  assertEquals(expectedToCoord,to.getCoordinate());
 }
