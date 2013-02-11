@@ -7,7 +7,6 @@
     options.setRoutingContext(graphService.getGraph(options.getRouterId()));
     options.rctx.pathParsers=new PathParser[]{new Parser()};
   }
-  options.setMaxWalkDistance(Double.MAX_VALUE);
   LOG.debug("rreq={}",options);
   RemainingWeightHeuristic heuristic;
   if (options.modes.isTransit())   heuristic=new ThreadedBidirectionalHeuristic(options.rctx.graph);
