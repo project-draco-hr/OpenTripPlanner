@@ -6,8 +6,8 @@
  else     if (url != null) {
       DownloadableGtfsInputSource isrc=new DownloadableGtfsInputSource();
       isrc.setUrl(url);
-      isrc.setCacheDirectory(new File(cacheDirectory));
-      isrc.setUseCached(useCached);
+      if (cacheDirectory != null)       isrc.setCacheDirectory(cacheDirectory);
+      if (useCached != null)       isrc.setUseCached(useCached);
       csvInputSource=isrc;
     }
   }

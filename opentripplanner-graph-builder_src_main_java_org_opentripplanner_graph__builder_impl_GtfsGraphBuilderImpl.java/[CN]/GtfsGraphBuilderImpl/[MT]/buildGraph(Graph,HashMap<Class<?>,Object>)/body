@@ -5,6 +5,8 @@
     int bundleIndex=0;
     for (    GtfsBundle gtfsBundle : _gtfsBundles.getBundles()) {
       bundleIndex+=1;
+      if (cacheDirectory != null && gtfsBundle.getCacheDirectory() == null)       gtfsBundle.setCacheDirectory(cacheDirectory);
+      if (useCached != null && gtfsBundle.getUseCached() == null)       gtfsBundle.setUseCached(useCached);
       GtfsMutableRelationalDao dao=new GtfsRelationalDaoImpl();
       GtfsContext context=GtfsLibrary.createContext(dao,service);
       GTFSPatternHopFactory hf=new GTFSPatternHopFactory(context);
