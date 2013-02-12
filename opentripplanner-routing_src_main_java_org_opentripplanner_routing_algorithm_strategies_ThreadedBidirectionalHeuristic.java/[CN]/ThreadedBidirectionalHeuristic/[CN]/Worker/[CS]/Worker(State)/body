@@ -12,4 +12,5 @@
   for (  State stopState : streetSearch(options,true)) {
     q.insert(stopState.getVertex(),stopState.getWeight());
   }
+  options.setMaxWalkDistance(Double.MAX_VALUE);
 }
