@@ -7,7 +7,7 @@
     }
     String fileName=cacheFile + "_gtfs.zip";
     File gtfsFile=new File(tmpDir,fileName);
-    if (gtfsFile.exists()) {
+    if (useCached && gtfsFile.exists()) {
       _log.info("using already downloaded gtfs file: path=" + gtfsFile);
       return gtfsFile;
     }
