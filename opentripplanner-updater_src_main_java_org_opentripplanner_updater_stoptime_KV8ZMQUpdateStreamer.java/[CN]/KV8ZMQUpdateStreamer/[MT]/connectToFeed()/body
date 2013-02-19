@@ -1,0 +1,22 @@
+{
+  subscriber.connect(address);
+  subscriber.subscribe(feed.getBytes());
+  if (messageLogFile != null) {
+    try {
+      logWriter=new FileWriter(messageLogFile);
+    }
+ catch (    IOException e) {
+      LOG.warn("problem opening message log file: {}",e);
+      logWriter=null;
+    }
+  }
+  if (fakeInput != null) {
+    try {
+      fakeInputReader=new FileReader(fakeInput);
+    }
+ catch (    IOException e) {
+      LOG.warn("problem opening fake input file: {}",e);
+      fakeInputReader=null;
+    }
+  }
+}
