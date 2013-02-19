@@ -1,0 +1,16 @@
+{
+  TTupleProtocol iprot=(TTupleProtocol)prot;
+  struct.id=iprot.readI32();
+  struct.setIdIsSet(true);
+  struct.head=new GraphVertex();
+  struct.head.read(iprot);
+  struct.setHeadIsSet(true);
+  struct.tail=new GraphVertex();
+  struct.tail.read(iprot);
+  struct.setTailIsSet(true);
+  BitSet incoming=iprot.readBitSet(1);
+  if (incoming.get(0)) {
+    struct.name=iprot.readString();
+    struct.setNameIsSet(true);
+  }
+}

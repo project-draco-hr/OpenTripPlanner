@@ -1,0 +1,25 @@
+{
+  Polygon containingArea=ring.toJtsPolygon();
+  for (  Area area : areas) {
+    Geometry intersection=containingArea.intersection(area.toJTSMultiPolygon());
+    if (intersection.getArea() == 0) {
+      continue;
+    }
+    NamedArea namedArea=new NamedArea();
+    OSMWithTags areaEntity=area.parent;
+    int cls=StreetEdge.CLASS_OTHERPATH;
+    cls|=getStreetClasses(areaEntity);
+    namedArea.setStreetClass(cls);
+    String id="way (area) " + areaEntity.getId() + " (splitter linking)";
+    id=unique(id);
+    String name=getNameForWay(areaEntity,id);
+    namedArea.setName(name);
+    WayProperties wayData=wayPropertySet.getDataForWay(areaEntity);
+    Double safety=wayData.getSafetyFeatures().getFirst();
+    namedArea.setBicycleSafetyMultiplier(safety);
+    namedArea.setOriginalEdges(intersection);
+    StreetTraversalPermission permission=getPermissionsForEntity(areaEntity,StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
+    namedArea.setPermission(permission);
+    edgeList.addArea(namedArea);
+  }
+}

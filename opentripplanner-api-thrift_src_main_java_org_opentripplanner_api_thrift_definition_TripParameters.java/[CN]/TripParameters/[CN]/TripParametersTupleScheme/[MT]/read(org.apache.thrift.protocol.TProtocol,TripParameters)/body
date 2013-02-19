@@ -1,0 +1,30 @@
+{
+  TTupleProtocol iprot=(TTupleProtocol)prot;
+  struct.origin=new org.opentripplanner.api.thrift.definition.Location();
+  struct.origin.read(iprot);
+  struct.setOriginIsSet(true);
+  struct.destination=new org.opentripplanner.api.thrift.definition.Location();
+  struct.destination.read(iprot);
+  struct.setDestinationIsSet(true);
+  BitSet incoming=iprot.readBitSet(3);
+  if (incoming.get(0)) {
+    struct.start_time=iprot.readI64();
+    struct.setStart_timeIsSet(true);
+  }
+  if (incoming.get(1)) {
+    struct.arrive_by=iprot.readI64();
+    struct.setArrive_byIsSet(true);
+  }
+  if (incoming.get(2)) {
+{
+      org.apache.thrift.protocol.TSet _set21=new org.apache.thrift.protocol.TSet(org.apache.thrift.protocol.TType.I32,iprot.readI32());
+      struct.allowed_modes=new HashSet<TravelMode>(2 * _set21.size);
+      for (int _i22=0; _i22 < _set21.size; ++_i22) {
+        TravelMode _elem23;
+        _elem23=TravelMode.findByValue(iprot.readI32());
+        struct.allowed_modes.add(_elem23);
+      }
+    }
+    struct.setAllowed_modesIsSet(true);
+  }
+}

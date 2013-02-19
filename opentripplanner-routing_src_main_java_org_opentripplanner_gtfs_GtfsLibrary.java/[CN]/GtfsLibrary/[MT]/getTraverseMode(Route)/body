@@ -1,5 +1,45 @@
 {
-switch (route.getType()) {
+  int routeType=route.getType();
+  if (routeType >= 100 && routeType < 200) {
+    return TraverseMode.RAIL;
+  }
+ else   if (routeType >= 200 && routeType < 300) {
+    return TraverseMode.BUS;
+  }
+ else   if (routeType >= 300 && routeType < 500) {
+    return TraverseMode.RAIL;
+  }
+ else   if (routeType >= 500 && routeType < 700) {
+    return TraverseMode.SUBWAY;
+  }
+ else   if (routeType >= 700 && routeType < 900) {
+    return TraverseMode.BUS;
+  }
+ else   if (routeType >= 900 && routeType < 1000) {
+    return TraverseMode.TRAM;
+  }
+ else   if (routeType >= 1000 && routeType < 1100) {
+    return TraverseMode.FERRY;
+  }
+ else   if (routeType >= 1100 && routeType < 1200) {
+    throw new IllegalArgumentException("Air transport not supported" + routeType);
+  }
+ else   if (routeType >= 1200 && routeType < 1300) {
+    return TraverseMode.FERRY;
+  }
+ else   if (routeType >= 1300 && routeType < 1400) {
+    return TraverseMode.GONDOLA;
+  }
+ else   if (routeType >= 1400 && routeType < 1500) {
+    return TraverseMode.FUNICULAR;
+  }
+ else   if (routeType >= 1500 && routeType < 1600) {
+    throw new IllegalArgumentException("Taxi service not supported" + routeType);
+  }
+ else   if (routeType >= 1600 && routeType < 1700) {
+    return TraverseMode.CAR;
+  }
+switch (routeType) {
 case 0:
     return TraverseMode.TRAM;
 case 1:
@@ -17,6 +57,6 @@ return TraverseMode.GONDOLA;
 case 7:
 return TraverseMode.FUNICULAR;
 default :
-throw new IllegalArgumentException("unknown gtfs route type " + route.getType());
+throw new IllegalArgumentException("unknown gtfs route type " + routeType);
 }
 }

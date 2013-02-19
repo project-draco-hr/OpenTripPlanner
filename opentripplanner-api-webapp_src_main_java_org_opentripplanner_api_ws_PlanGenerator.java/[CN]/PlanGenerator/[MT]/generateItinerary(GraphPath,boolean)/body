@@ -24,7 +24,6 @@
         itinerary.waitingTime+=dt;
       }
  else       if (mode.isOnStreetNonTransit()) {
-        itinerary.walkDistance+=backEdge.getDistance();
         itinerary.walkTime+=dt;
       }
  else       if (mode.isTransit()) {
@@ -78,7 +77,7 @@ case START:
         coordinates=new CoordinateArrayListSequence();
         coordinates.add(state.getBackState().getVertex().getCoordinate());
         coordinates.add(state.getVertex().getCoordinate());
-        finalizeLeg(leg,state,path.states,i,i,coordinates);
+        finalizeLeg(leg,state,path.states,i,i,coordinates,itinerary);
         coordinates.clear();
       }
  else {
@@ -92,25 +91,25 @@ case WALK:
 if (mode == TraverseMode.WALK) {
 }
  else if (mode == TraverseMode.BICYCLE) {
-  finalizeLeg(leg,state,path.states,startWalk,i,coordinates);
+  finalizeLeg(leg,state,path.states,startWalk,i,coordinates,itinerary);
   startWalk=i;
   leg=makeLeg(itinerary,state);
   pgstate=PlanGenState.BICYCLE;
 }
  else if (mode == TraverseMode.STL) {
-  finalizeLeg(leg,state,path.states,startWalk,i,coordinates);
+  finalizeLeg(leg,state,path.states,startWalk,i,coordinates,itinerary);
   leg=null;
   pgstate=PlanGenState.PRETRANSIT;
 }
  else if (mode == TraverseMode.BOARDING) {
   pgstate=PlanGenState.PRETRANSIT;
-  finalizeLeg(leg,state,path.states,startWalk,i,coordinates);
+  finalizeLeg(leg,state,path.states,startWalk,i,coordinates,itinerary);
   leg=makeLeg(itinerary,state);
   itinerary.transfers++;
 }
  else if (backEdge instanceof LegSwitchingEdge) {
   nextName=state.getBackState().getBackState().getBackState().getVertex().getName();
-  finalizeLeg(leg,state,path.states,startWalk,i - 1,coordinates);
+  finalizeLeg(leg,state,path.states,startWalk,i - 1,coordinates,itinerary);
   leg=null;
   pgstate=PlanGenState.START;
 }
@@ -138,18 +137,19 @@ foldingElevatorLegIntoCycleLeg=false;
 if (mode == TraverseMode.BICYCLE) {
 }
  else if (mode == TraverseMode.WALK) {
-finalizeLeg(leg,state,path.states,startWalk,i,coordinates);
+finalizeLeg(leg,state,path.states,startWalk,i,coordinates,itinerary);
 leg=makeLeg(itinerary,state);
 startWalk=i;
 pgstate=PlanGenState.WALK;
 }
  else if (mode == TraverseMode.STL) {
-finalizeLeg(leg,state,path.states,startWalk,i,coordinates);
+finalizeLeg(leg,state,path.states,startWalk,i,coordinates,itinerary);
+startWalk=i;
 leg=null;
 pgstate=PlanGenState.PRETRANSIT;
 }
  else if (backEdge instanceof LegSwitchingEdge) {
-finalizeLeg(leg,state,path.states,startWalk,i - 1,coordinates);
+finalizeLeg(leg,state,path.states,startWalk,i - 1,coordinates,itinerary);
 leg=null;
 pgstate=PlanGenState.START;
 }
@@ -164,12 +164,12 @@ leg=makeLeg(itinerary,state);
 if (mode == TraverseMode.CAR) {
 }
  else if (mode == TraverseMode.STL) {
-finalizeLeg(leg,state,path.states,startWalk,i,coordinates);
+finalizeLeg(leg,state,path.states,startWalk,i,coordinates,itinerary);
 leg=null;
 pgstate=PlanGenState.PRETRANSIT;
 }
  else if (backEdge instanceof LegSwitchingEdge) {
-finalizeLeg(leg,state,path.states,startWalk,i - 1,coordinates);
+finalizeLeg(leg,state,path.states,startWalk,i - 1,coordinates,itinerary);
 leg=null;
 pgstate=PlanGenState.START;
 }
@@ -184,6 +184,7 @@ LOG.error("leg unexpectedly not null (boarding loop)");
 }
  else {
 leg=makeLeg(itinerary,state);
+leg.from.stopIndex=((OnBoardForwardEdge)backEdge).getStopIndex();
 leg.stop=new ArrayList<Place>();
 itinerary.transfers++;
 leg.boardRule=(String)state.getExtension("boardAlightRule");
@@ -207,7 +208,7 @@ leg.stop=null;
 }
 }
 leg.alightRule=(String)state.getExtension("boardAlightRule");
-finalizeLeg(leg,state,null,-1,-1,coordinates);
+finalizeLeg(leg,state,null,-1,-1,coordinates,itinerary);
 leg=null;
 pgstate=PlanGenState.START;
 }
@@ -222,7 +223,7 @@ leg.stop.get(leg.stop.size() - 1).departure=makeCalendar(state);
 }
 }
 if (!route.equals(leg.route)) {
-finalizeLeg(leg,state,null,-1,-1,coordinates);
+finalizeLeg(leg,state,null,-1,-1,coordinates,itinerary);
 leg=makeLeg(itinerary,state);
 leg.stop=new ArrayList<Place>();
 fixupTransitLeg(leg,state,transitIndex);
@@ -255,7 +256,7 @@ addNotesToLeg(leg,state.getBackAlerts());
 }
 }
 if (leg != null) {
-finalizeLeg(leg,path.states.getLast(),path.states,startWalk,i,coordinates);
+finalizeLeg(leg,path.states.getLast(),path.states,startWalk,i,coordinates,itinerary);
 }
 itinerary.removeBogusLegs();
 itinerary.fixupDates(graph.getService(CalendarServiceData.class));

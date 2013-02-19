@@ -18,7 +18,7 @@
       for (      Agency agency : reader.getAgencies()) {
         GtfsBundle existing=agenciesSeen.get(agency);
         if (existing != null) {
-          _log.warn(GraphBuilderAnnotation.register(graph,Variety.AGENCY_NAME_COLLISION,agency,existing.toString()));
+          _log.warn(graph.addBuilderAnnotation(new AgencyNameCollision(agency,existing.toString())));
         }
  else {
           agenciesSeen.put(agency,gtfsBundle);

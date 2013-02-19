@@ -1,0 +1,18 @@
+{
+  if (field == null) {
+    throw new IllegalArgumentException();
+  }
+switch (field) {
+case DURATION:
+    return isSetDuration();
+case START_TIME:
+  return isSetStart_time();
+case END_TIME:
+return isSetEnd_time();
+case STATES:
+return isSetStates();
+case EDGES:
+return isSetEdges();
+}
+throw new IllegalStateException();
+}

@@ -1,0 +1,21 @@
+{
+  __isset_bit_vector.clear();
+  __isset_bit_vector.or(other.__isset_bit_vector);
+  this.duration=other.duration;
+  this.start_time=other.start_time;
+  this.end_time=other.end_time;
+  if (other.isSetStates()) {
+    List<TravelState> __this__states=new ArrayList<TravelState>();
+    for (    TravelState other_element : other.states) {
+      __this__states.add(new TravelState(other_element));
+    }
+    this.states=__this__states;
+  }
+  if (other.isSetEdges()) {
+    List<org.opentripplanner.api.thrift.definition.GraphEdge> __this__edges=new ArrayList<org.opentripplanner.api.thrift.definition.GraphEdge>();
+    for (    org.opentripplanner.api.thrift.definition.GraphEdge other_element : other.edges) {
+      __this__edges.add(other_element);
+    }
+    this.edges=__this__edges;
+  }
+}

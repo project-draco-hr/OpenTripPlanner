@@ -2,7 +2,7 @@
   for (int i=0; i < vLabels.length - 1; i++) {
     Vertex vA=_graph.getVertex(vLabels[i]);
     Vertex vB=_graph.getVertex(vLabels[i + 1]);
-    new SimpleEdge(vA,vB);
-    new SimpleEdge(vB,vA);
+    new SimpleConcreteEdge(vA,vB);
+    new SimpleConcreteEdge(vB,vA);
   }
 }

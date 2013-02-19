@@ -1,0 +1,13 @@
+{
+  VLPoint running_projection=projection_onto_boundary_of(environment_temp.outer_boundary);
+  double running_min=distance(running_projection);
+  VLPoint point_temp;
+  for (int i=0; i < environment_temp.h(); i++) {
+    point_temp=projection_onto_boundary_of(environment_temp.holes.get(i));
+    if (distance(point_temp) < running_min) {
+      running_projection=point_temp;
+      running_min=distance(running_projection);
+    }
+  }
+  return running_projection;
+}

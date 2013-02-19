@@ -22,26 +22,41 @@
   TRIP:   for (  Trip trip : trips) {
     tripCount++;
     if (tripCount % 100000 == 0)     _log.debug("trips=" + tripCount + "/"+ trips.size());
+    if (!_calendarService.getServiceIds().contains(trip.getServiceId())) {
+      _log.warn(graph.addBuilderAnnotation(new TripUndefinedService(trip)));
+    }
     List<StopTime> stopTimes=getNonduplicateStopTimesForTrip(trip);
     filterStopTimes(stopTimes,graph);
     interpolateStopTimes(stopTimes);
     if (stopTimes.size() < 2) {
-      _log.warn(GraphBuilderAnnotation.register(graph,Variety.TRIP_DEGENERATE,trip));
+      _log.warn(graph.addBuilderAnnotation(new TripDegenerate(trip)));
       continue TRIP;
     }
     List<Frequency> frequencies=tripFrequencies.get(trip);
     if (frequencies != null) {
+      Collections.sort(frequencies,new Comparator<Frequency>(){
+        @Override public int compare(        Frequency o1,        Frequency o2){
+          return o1.getStartTime() - o2.getStartTime();
+        }
+      }
+);
       Frequency frequency=frequencies.get(0);
       if (frequencies.size() > 1 || frequency.getStartTime() != stopTimes.get(0).getDepartureTime() || frequency.getEndTime() - frequency.getStartTime() > frequency.getHeadwaySecs()) {
-        FrequencyBasedTripPattern frequencyPattern=makeFrequencyPattern(graph,trip,stopTimes);
+        T2<FrequencyBasedTripPattern,List<FrequencyHop>> patternAndHops=makeFrequencyPattern(graph,trip,stopTimes);
+        List<FrequencyHop> hops=patternAndHops.getSecond();
+        FrequencyBasedTripPattern frequencyPattern=patternAndHops.getFirst();
         if (frequencyPattern != null)         frequencyPattern.createRanges(frequencies);
+        createGeometry(graph,trip,stopTimes,hops);
         continue TRIP;
       }
     }
     ScheduledStopPattern stopPattern=ScheduledStopPattern.fromTrip(trip,stopTimes);
     TableTripPattern tripPattern=patterns.get(stopPattern);
     if (tripPattern == null) {
-      tripPattern=makePatternVerticesAndEdges(graph,trip,stopPattern,stopTimes);
+      T2<TableTripPattern,List<PatternHop>> patternAndHops=makePatternVerticesAndEdges(graph,trip,stopPattern,stopTimes);
+      List<PatternHop> hops=patternAndHops.getSecond();
+      createGeometry(graph,trip,stopTimes,hops);
+      tripPattern=patternAndHops.getFirst();
       patterns.put(stopPattern,tripPattern);
     }
     tripPattern.addTrip(trip,stopTimes);

@@ -1,0 +1,9 @@
+{
+  if (verticalDistance == 0) {
+    return 0;
+  }
+  double costs=0;
+  double h=maxSlope * verticalDistance;
+  costs=(walkParA * verticalDistance) + (walkParC * (h * h) / verticalDistance);
+  return costs;
+}

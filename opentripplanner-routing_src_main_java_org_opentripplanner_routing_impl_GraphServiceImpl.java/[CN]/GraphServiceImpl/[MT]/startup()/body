@@ -1,0 +1,19 @@
+{
+  if (autoRegister != null && !autoRegister.isEmpty()) {
+    LOG.info("attempting to automatically register routerIds {}",autoRegister);
+    LOG.info("graph files will be sought in paths relative to {}",resourceBase);
+    for (    String routerId : autoRegister) {
+      this.registerGraph(routerId,true);
+    }
+  }
+ else {
+    LOG.info("no list of routerIds was provided for automatic registration.");
+  }
+  if (attemptRegisterDefault && !graphs.containsKey(defaultRouterId)) {
+    LOG.info("Attempting to load graph for default routerId '{}'.",defaultRouterId);
+    registerGraph(defaultRouterId,true);
+  }
+  if (this.getRouterIds().isEmpty()) {
+    LOG.warn("No graphs have been loaded/registered. " + "You must use the routers API to register one or more graphs before routing.");
+  }
+}

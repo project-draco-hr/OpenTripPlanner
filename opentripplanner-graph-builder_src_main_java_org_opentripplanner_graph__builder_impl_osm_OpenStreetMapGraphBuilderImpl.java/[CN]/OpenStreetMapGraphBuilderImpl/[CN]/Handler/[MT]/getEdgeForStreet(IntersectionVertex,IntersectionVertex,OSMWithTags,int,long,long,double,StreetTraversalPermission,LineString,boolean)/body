@@ -1,34 +1,42 @@
 {
-  String id="way " + way.getId() + " from "+ index;
-  id=unique(id);
-  String name=getNameForWay(way,id);
+  String label="way " + way.getId() + " from "+ index;
+  label=unique(label);
+  String name=getNameForWay(way,label);
   boolean steps="steps".equals(way.getTag("highway"));
   if (steps) {
     length*=2;
   }
-  PlainStreetEdge street=edgeFactory.createEdge(_nodes.get(startNode),_nodes.get(endNode),way,start,end,geometry,name,length,permissions,back);
-  street.setId(id);
+  float carSpeed=wayPropertySet.getCarSpeedForWay(way,back);
+  PlainStreetEdge street=edgeFactory.createEdge(_nodes.get(startNode),_nodes.get(endNode),way,start,end,geometry,name,length,permissions,back,carSpeed);
   String highway=way.getTag("highway");
+  int cls;
   if ("crossing".equals(highway) && !way.isTag("bicycle","designated")) {
-    street.setStreetClass(StreetEdge.CLASS_CROSSING);
+    cls=StreetEdge.CLASS_CROSSING;
   }
  else   if ("footway".equals(highway) && way.isTag("footway","crossing") && !way.isTag("bicycle","designated")) {
-    street.setStreetClass(StreetEdge.CLASS_CROSSING);
+    cls=StreetEdge.CLASS_CROSSING;
   }
  else   if ("residential".equals(highway) || "tertiary".equals(highway) || "secondary".equals(highway)|| "secondary_link".equals(highway)|| "primary".equals(highway)|| "primary_link".equals(highway)|| "trunk".equals(highway)|| "trunk_link".equals(highway)) {
-    street.setStreetClass(StreetEdge.CLASS_STREET);
+    cls=StreetEdge.CLASS_STREET;
   }
  else {
-    street.setStreetClass(StreetEdge.CLASS_OTHERPATH);
+    cls=StreetEdge.CLASS_OTHERPATH;
   }
-  if (!way.hasTag("name")) {
-    street.setBogusName(true);
+  cls|=getStreetClasses(way);
+  street.setStreetClass(cls);
+  if (!way.hasTag("name") && !way.hasTag("ref")) {
+    street.setHasBogusName(true);
   }
   street.setStairs(steps);
+  if (way.isTagTrue("toll") || way.isTagTrue("toll:motorcar"))   street.setToll(true);
+ else   street.setToll(false);
   if (way.isTagFalse("wheelchair") || (steps && !way.isTagTrue("wheelchair"))) {
     street.setWheelchairAccessible(false);
   }
   street.setSlopeOverride(wayPropertySet.getSlopeOverride(way));
+  if (carSpeed < 0.04) {
+    _log.warn(graph.addBuilderAnnotation(new StreetCarSpeedZero(way.getId())));
+  }
   if (customNamer != null) {
     customNamer.nameWithEdge(way,street);
   }

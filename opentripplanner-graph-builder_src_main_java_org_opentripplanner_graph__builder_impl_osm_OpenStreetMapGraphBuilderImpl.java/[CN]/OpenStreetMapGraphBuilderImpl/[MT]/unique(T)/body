@@ -1,8 +1,6 @@
 {
-  Object v=_uniques.get(value);
-  if (v == null) {
-    _uniques.put(value,value);
-    v=value;
+  if (!_uniques.contains(value)) {
+    _uniques.add(value);
   }
-  return (T)v;
+  return (T)value;
 }

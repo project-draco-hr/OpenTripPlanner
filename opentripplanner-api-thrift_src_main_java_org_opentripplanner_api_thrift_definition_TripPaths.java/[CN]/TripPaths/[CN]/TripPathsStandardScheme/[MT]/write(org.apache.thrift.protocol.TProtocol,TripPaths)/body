@@ -1,0 +1,29 @@
+{
+  struct.validate();
+  oprot.writeStructBegin(STRUCT_DESC);
+  if (struct.trip != null) {
+    oprot.writeFieldBegin(TRIP_FIELD_DESC);
+    struct.trip.write(oprot);
+    oprot.writeFieldEnd();
+  }
+  if (struct.paths != null) {
+    if (struct.isSetPaths()) {
+      oprot.writeFieldBegin(PATHS_FIELD_DESC);
+{
+        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT,struct.paths.size()));
+        for (        Path _iter27 : struct.paths) {
+          _iter27.write(oprot);
+        }
+        oprot.writeListEnd();
+      }
+      oprot.writeFieldEnd();
+    }
+  }
+  if (struct.isSetNo_paths_found()) {
+    oprot.writeFieldBegin(NO_PATHS_FOUND_FIELD_DESC);
+    oprot.writeBool(struct.no_paths_found);
+    oprot.writeFieldEnd();
+  }
+  oprot.writeFieldStop();
+  oprot.writeStructEnd();
+}

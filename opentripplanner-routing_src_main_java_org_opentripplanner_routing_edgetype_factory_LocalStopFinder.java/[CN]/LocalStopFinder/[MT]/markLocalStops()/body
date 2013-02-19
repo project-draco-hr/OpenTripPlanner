@@ -12,7 +12,7 @@
     }
     for (    Edge e : gv.getOutgoing()) {
       if (e instanceof TransitBoardAlight && ((TransitBoardAlight)e).isBoarding()) {
-        TableTripPattern pattern=((TransitBoardAlight)e).getPattern();
+        TripPattern pattern=((TransitBoardAlight)e).getPattern();
         patterns.add(pattern);
       }
       if (e instanceof FrequencyBoard) {
@@ -21,21 +21,21 @@
       }
     }
   }
-  neighborhoods=new HashMap<Stop,HashMap<TableTripPattern,P2<Double>>>();
+  neighborhoods=new HashMap<Stop,HashMap<TripPattern,P2<Double>>>();
   walkingOptions=new RoutingRequest(new TraverseModeSet(TraverseMode.WALK));
   bikingOptions=new RoutingRequest(new TraverseModeSet(TraverseMode.BICYCLE));
   bikingOptions.optimize=OptimizeType.SAFE;
   int nonLocal=0;
   for (  TripPattern pattern : patterns) {
     List<Stop> stops=getStops(pattern);
-    HashMap<TableTripPattern,P2<Double>> previousDistances=null;
-    HashMap<TableTripPattern,P2<Double>> distances=null;
+    HashMap<TripPattern,P2<Double>> previousDistances=null;
+    HashMap<TripPattern,P2<Double>> distances=null;
     for (int i=0; i < stops.size() - 1; ++i) {
       Stop stop=stops.get(i);
       TransitStop transitStop=getVertexForStop(stop);
       previousDistances=distances;
       distances=getNeighborhood(stop);
-      HashMap<TableTripPattern,P2<Double>> nextDistances=null;
+      HashMap<TripPattern,P2<Double>> nextDistances=null;
       Stop nextStop=stops.get(i + 1);
       nextDistances=getNeighborhood(nextStop);
       if (previousDistances == null) {
@@ -47,8 +47,8 @@
       }
  else {
         boolean local=true;
-        for (        Entry<TableTripPattern,P2<Double>> entry : distances.entrySet()) {
-          TableTripPattern key=entry.getKey();
+        for (        Entry<TripPattern,P2<Double>> entry : distances.entrySet()) {
+          TripPattern key=entry.getKey();
           if (key == pattern) {
             continue;
           }
@@ -59,16 +59,16 @@
             local=false;
           }
  else           if (previousDistance == null) {
-            if (nextDistance == null || nextDistance.getFirst() > distance.getFirst() || nextDistance.getSecond() > distance.getSecond()) {
+            if (nextDistance == null || nextDistance.getFirst() + MAX_SUBOPTIMAL_DISTANCE >= distance.getFirst() || nextDistance.getSecond() + MAX_SUBOPTIMAL_DISTANCE >= distance.getSecond()) {
               local=false;
               break;
             }
           }
- else           if (distance.getFirst() + MAX_SUBOPTIMAL_DISTANCE < previousDistance.getFirst() && (nextDistance == null || nextDistance.getFirst() > distance.getFirst())) {
+ else           if (distance.getFirst() <= previousDistance.getFirst() + MAX_SUBOPTIMAL_DISTANCE && (nextDistance == null || nextDistance.getFirst() + MAX_SUBOPTIMAL_DISTANCE >= distance.getFirst())) {
             local=false;
             break;
           }
- else           if (distance.getSecond() + MAX_SUBOPTIMAL_DISTANCE < previousDistance.getSecond() && (nextDistance == null || nextDistance.getSecond() > distance.getSecond())) {
+ else           if (distance.getSecond() <= previousDistance.getSecond() + MAX_SUBOPTIMAL_DISTANCE && (nextDistance == null || nextDistance.getSecond() + MAX_SUBOPTIMAL_DISTANCE >= distance.getSecond())) {
             local=false;
             break;
           }

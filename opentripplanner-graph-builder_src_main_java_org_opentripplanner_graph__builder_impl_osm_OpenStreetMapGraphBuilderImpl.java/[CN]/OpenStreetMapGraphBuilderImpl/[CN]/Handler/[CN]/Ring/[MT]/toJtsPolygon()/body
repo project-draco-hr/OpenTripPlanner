@@ -1,0 +1,35 @@
+{
+  if (jtsPolygon != null) {
+    return jtsPolygon;
+  }
+  GeometryFactory factory=GeometryUtils.getGeometryFactory();
+  LinearRing shell=factory.createLinearRing(toCoordinates(geometry));
+  List<Polygon> polygonHoles=new ArrayList<Polygon>();
+  for (  Ring ring : holes) {
+    LinearRing linearRing=factory.createLinearRing(toCoordinates(ring.geometry));
+    Polygon polygon=factory.createPolygon(linearRing,new LinearRing[0]);
+    for (Iterator<Polygon> it=polygonHoles.iterator(); it.hasNext(); ) {
+      Polygon otherHole=it.next();
+      if (otherHole.relate(polygon,"F***1****")) {
+        polygon=(Polygon)polygon.union(otherHole);
+        it.remove();
+      }
+    }
+    polygonHoles.add(polygon);
+  }
+  ArrayList<LinearRing> lrholelist=new ArrayList<LinearRing>(polygonHoles.size());
+  for (  Polygon hole : polygonHoles) {
+    Geometry boundary=hole.getBoundary();
+    if (boundary instanceof LinearRing) {
+      lrholelist.add((LinearRing)boundary);
+    }
+ else {
+      LineString line=hole.getExteriorRing();
+      LinearRing ring=factory.createLinearRing(line.getCoordinates());
+      lrholelist.add(ring);
+    }
+  }
+  LinearRing[] lrholes=lrholelist.toArray(new LinearRing[lrholelist.size()]);
+  jtsPolygon=factory.createPolygon(shell,lrholes);
+  return jtsPolygon;
+}

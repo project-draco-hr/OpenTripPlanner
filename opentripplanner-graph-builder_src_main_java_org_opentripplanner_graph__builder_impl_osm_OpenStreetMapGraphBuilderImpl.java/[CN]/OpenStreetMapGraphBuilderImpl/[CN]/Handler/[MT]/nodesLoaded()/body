@@ -10,6 +10,8 @@
       }
     }
     try {
+      StreetTraversalPermission areaPermissions=getPermissionsForEntity(way,StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
+      if (areaPermissions == StreetTraversalPermission.NONE)       continue;
       _areas.add(new Area(way,Arrays.asList(way),Collections.<OSMWay>emptyList()));
     }
  catch (    Area.AreaConstructionException e) {

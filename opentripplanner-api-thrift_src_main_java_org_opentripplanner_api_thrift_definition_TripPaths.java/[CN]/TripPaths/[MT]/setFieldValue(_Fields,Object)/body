@@ -1,0 +1,28 @@
+{
+switch (field) {
+case TRIP:
+    if (value == null) {
+      unsetTrip();
+    }
+ else {
+      setTrip((TripParameters)value);
+    }
+  break;
+case PATHS:
+if (value == null) {
+  unsetPaths();
+}
+ else {
+  setPaths((List<Path>)value);
+}
+break;
+case NO_PATHS_FOUND:
+if (value == null) {
+unsetNo_paths_found();
+}
+ else {
+setNo_paths_found((Boolean)value);
+}
+break;
+}
+}

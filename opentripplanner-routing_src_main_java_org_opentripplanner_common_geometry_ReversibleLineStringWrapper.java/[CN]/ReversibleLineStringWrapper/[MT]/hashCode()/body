@@ -1,0 +1,7 @@
+{
+  CoordinateSequence cs=ls.getCoordinateSequence();
+  int maxIdx=cs.size() - 1;
+  int x=(int)(cs.getX(0) * 1000000) + (int)(cs.getX(maxIdx) * 1000000);
+  int y=(int)(cs.getY(0) * 1000000) + (int)(cs.getY(maxIdx) * 1000000);
+  return x + y * 101149 + maxIdx * 7883;
+}

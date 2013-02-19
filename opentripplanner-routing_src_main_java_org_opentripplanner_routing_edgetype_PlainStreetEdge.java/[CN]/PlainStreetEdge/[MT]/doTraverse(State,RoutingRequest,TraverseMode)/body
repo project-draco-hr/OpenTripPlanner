@@ -5,11 +5,11 @@
   }
   if (!canTraverse(options,traverseMode)) {
     if (traverseMode == TraverseMode.BICYCLE) {
-      return doTraverse(s0,options.getWalkingOptions(),TraverseMode.WALK);
+      return doTraverse(s0,options.getBikeWalkingOptions(),TraverseMode.WALK);
     }
     return null;
   }
-  double speed=options.getSpeed(traverseMode);
+  double speed=calculateSpeed(options,traverseMode);
   double time=length / speed;
   double weight;
   if (options.wheelchairAccessible) {
@@ -45,7 +45,15 @@ weight=length / speed;
 }
 }
  else {
+if (options.isWalkingBike()) {
+time=elevationProfileSegment.getSlopeSpeedEffectiveLength() / speed;
+}
 weight=time;
+if (traverseMode.equals(TraverseMode.WALK)) {
+double costs=ElevationUtils.getWalkCostsForSlope(length,elevationProfileSegment.getMaxSlope());
+weight=costs * (1.3333 / speed);
+time=weight;
+}
 }
 if (isStairs()) {
 weight*=options.stairsReluctance;
@@ -61,24 +69,26 @@ s1.addAlerts(wheelchairNotes);
 PlainStreetEdge backPSE;
 if (backEdge != null && backEdge instanceof PlainStreetEdge) {
 backPSE=(PlainStreetEdge)backEdge;
-int outAngle=0;
-int inAngle=0;
-if (options.arriveBy) {
-if (!canTurnOnto(backPSE,traverseMode)) return null;
-outAngle=backPSE.getOutAngle();
-inAngle=getInAngle();
+double backSpeed=backPSE.calculateSpeed(options,traverseMode);
+final double realTurnCost;
+if (options.arriveBy && tov instanceof IntersectionVertex) {
+if (!canTurnOnto(backPSE,s0,traverseMode)) {
+return null;
+}
+realTurnCost=((IntersectionVertex)tov).computeTraversalCost(this,backPSE,traverseMode,options,(float)speed,(float)backSpeed);
+}
+ else if (fromv instanceof IntersectionVertex) {
+if (!backPSE.canTurnOnto(this,s0,traverseMode)) {
+return null;
+}
+realTurnCost=((IntersectionVertex)fromv).computeTraversalCost(backPSE,this,traverseMode,options,(float)backSpeed,(float)speed);
 }
  else {
-if (!backPSE.canTurnOnto(this,traverseMode)) return null;
-outAngle=getOutAngle();
-inAngle=backPSE.getInAngle();
+realTurnCost=0;
 }
-int turnCost=Math.abs(outAngle - inAngle);
-if (turnCost > 180) {
-turnCost=360 - turnCost;
-}
-final double realTurnCost=(turnCost / 20.0) / speed;
+if (traverseMode != TraverseMode.CAR) {
 s1.incrementWalkDistance(realTurnCost / 100);
+}
 weight+=realTurnCost;
 long turnTime=(long)realTurnCost;
 if (turnTime != realTurnCost) {
@@ -92,8 +102,16 @@ if (timeLong != time) {
 timeLong++;
 }
 s1.incrementTimeInSeconds(timeLong);
+if (traverseMode != TraverseMode.CAR) {
+s1.incrementWalkDistance(length);
+}
 s1.incrementWeight(weight);
-if (s1.weHaveWalkedTooFar(options)) return null;
+if (s1.weHaveWalkedTooFar(options)) {
+return null;
+}
 s1.addAlerts(notes);
+if (this.toll && traverseMode == TraverseMode.CAR) {
+s1.addAlert(Alert.createSimpleAlerts("Toll road"));
+}
 return s1.makeState();
 }

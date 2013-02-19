@@ -69,6 +69,11 @@
   request.setPreferredRoutes(get(preferredRoutes,n,request.getPreferredRouteStr()));
   request.setUnpreferredRoutes(get(unpreferredRoutes,n,request.getUnpreferredRouteStr()));
   request.setBannedRoutes(get(bannedRoutes,n,request.getBannedRouteStr()));
+  request.setBannedAgencies(get(bannedAgencies,n,request.getBannedAgenciesStr()));
+  HashMap<AgencyAndId,BannedStopSet> bannedTripMap=makeBannedTripMap(get(bannedTrips,n,null));
+  if (bannedTripMap != null) {
+    request.setBannedTrips(bannedTripMap);
+  }
   if (opt == OptimizeType.TRANSFERS) {
     opt=OptimizeType.QUICK;
     request.setTransferPenalty(get(transferPenalty,n,0) + 1800);
@@ -100,5 +105,23 @@
   }
   request.setClampInitialWait(get(clampInitialWait,n,request.getClampInitialWait()));
   request.setReverseOptimizeOnTheFly(get(reverseOptimizeOnTheFly,n,request.isReverseOptimizeOnTheFly()));
-  return request;
+  String localeSpec=get(locale,n,"en");
+  String[] localeSpecParts=localeSpec.split("_");
+  Locale locale;
+switch (localeSpecParts.length) {
+case 1:
+    locale=new Locale(localeSpecParts[0]);
+  break;
+case 2:
+locale=new Locale(localeSpecParts[0]);
+break;
+case 3:
+locale=new Locale(localeSpecParts[0]);
+break;
+default :
+LOG.debug("Bogus locale " + localeSpec + ", defaulting to en");
+locale=new Locale("en");
+}
+request.setLocale(locale);
+return request;
 }

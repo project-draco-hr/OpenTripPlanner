@@ -1,0 +1,16 @@
+{
+  if (that == null)   return false;
+  boolean this_present_vertices=true && this.isSetVertices();
+  boolean that_present_vertices=true && that.isSetVertices();
+  if (this_present_vertices || that_present_vertices) {
+    if (!(this_present_vertices && that_present_vertices))     return false;
+    if (!this.vertices.equals(that.vertices))     return false;
+  }
+  boolean this_present_compute_time_millis=true && this.isSetCompute_time_millis();
+  boolean that_present_compute_time_millis=true && that.isSetCompute_time_millis();
+  if (this_present_compute_time_millis || that_present_compute_time_millis) {
+    if (!(this_present_compute_time_millis && that_present_compute_time_millis))     return false;
+    if (this.compute_time_millis != that.compute_time_millis)     return false;
+  }
+  return true;
+}

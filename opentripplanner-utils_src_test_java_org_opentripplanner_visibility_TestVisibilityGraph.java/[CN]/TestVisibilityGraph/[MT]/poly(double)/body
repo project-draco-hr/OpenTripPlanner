@@ -1,8 +1,8 @@
 {
-  ArrayList<Point> points=new ArrayList<Point>();
+  ArrayList<VLPoint> points=new ArrayList<VLPoint>();
   for (int i=0; i < coords.length; i+=2) {
-    Point point=new Point(coords[i],coords[i + 1]);
+    VLPoint point=new VLPoint(coords[i],coords[i + 1]);
     points.add(point);
   }
-  return new Polygon(points);
+  return new VLPolygon(points);
 }

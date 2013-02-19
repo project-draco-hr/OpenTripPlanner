@@ -1,0 +1,14 @@
+{
+  if (field == null) {
+    throw new IllegalArgumentException();
+  }
+switch (field) {
+case EDGE:
+    return isSetEdge();
+case CLOSEST_POINT:
+  return isSetClosest_point();
+case SCORE:
+return isSetScore();
+}
+throw new IllegalStateException();
+}

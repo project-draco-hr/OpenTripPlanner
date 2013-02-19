@@ -3,11 +3,18 @@
   ArrayList<Vertex> vertices=new ArrayList<Vertex>();
   vertices.addAll(graph.getVertices());
   for (  TransitStop ts : IterableLibrary.filter(vertices,TransitStop.class)) {
+    boolean alreadyLinked=false;
+    for (    Edge e : ts.getOutgoing()) {
+      if (e instanceof StreetTransitLink) {
+        alreadyLinked=true;
+        break;
+      }
+    }
+    if (alreadyLinked)     continue;
     if (ts.isEntrance() || !ts.hasEntrances()) {
       boolean wheelchairAccessible=ts.hasWheelchairEntrance();
       if (!networkLinkerLibrary.connectVertexToStreets(ts,wheelchairAccessible).getResult()) {
-        _log.warn(GraphBuilderAnnotation.register(graph,Variety.STOP_UNLINKED,ts));
-        networkLinkerLibrary.connectVertexToStreets(ts,wheelchairAccessible);
+        _log.warn(graph.addBuilderAnnotation(new StopUnlinked(ts)));
       }
     }
   }
@@ -17,12 +24,27 @@
       edge.getToVertex().removeIncoming(edge);
     }
   }
+  for (  LinkedList<P2<PlainStreetEdge>> toAdd : networkLinkerLibrary.replacements.values()) {
+    for (    P2<PlainStreetEdge> edges : toAdd) {
+      PlainStreetEdge edge1=edges.getFirst();
+      if (edge1.getToVertex().getLabel().startsWith("split ") || edge1.getFromVertex().getLabel().startsWith("split ")) {
+        continue;
+      }
+      edge1.getFromVertex().addOutgoing(edge1);
+      edge1.getToVertex().addIncoming(edge1);
+      PlainStreetEdge edge2=edges.getSecond();
+      if (edge2 != null) {
+        edge2.getFromVertex().addOutgoing(edge2);
+        edge2.getToVertex().addIncoming(edge2);
+      }
+    }
+  }
   networkLinkerLibrary.markLocalStops();
   FindMaxWalkDistances.find(graph);
   _log.debug("Linking bike rental stations...");
   for (  BikeRentalStationVertex brsv : IterableLibrary.filter(vertices,BikeRentalStationVertex.class)) {
     if (!networkLinkerLibrary.connectVertexToStreets(brsv).getResult()) {
-      _log.warn(GraphBuilderAnnotation.register(graph,Variety.BIKE_RENTAL_STATION_UNLINKED,brsv));
+      _log.warn(graph.addBuilderAnnotation(new BikeRentalStationUnlinked(brsv)));
     }
   }
 }

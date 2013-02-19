@@ -1,0 +1,22 @@
+{
+  if (that == null)   return false;
+  boolean this_present_edge=true && this.isSetEdge();
+  boolean that_present_edge=true && that.isSetEdge();
+  if (this_present_edge || that_present_edge) {
+    if (!(this_present_edge && that_present_edge))     return false;
+    if (!this.edge.equals(that.edge))     return false;
+  }
+  boolean this_present_closest_point=true && this.isSetClosest_point();
+  boolean that_present_closest_point=true && that.isSetClosest_point();
+  if (this_present_closest_point || that_present_closest_point) {
+    if (!(this_present_closest_point && that_present_closest_point))     return false;
+    if (!this.closest_point.equals(that.closest_point))     return false;
+  }
+  boolean this_present_score=true;
+  boolean that_present_score=true;
+  if (this_present_score || that_present_score) {
+    if (!(this_present_score && that_present_score))     return false;
+    if (this.score != that.score)     return false;
+  }
+  return true;
+}

@@ -1,0 +1,7 @@
+{
+  SimpleVertex head=new SimpleVertex(_graph,"head",75.0239,-45.139023);
+  SimpleVertex tail=new SimpleVertex(_graph,"tail",75.0239,-45.139023);
+  StreetEdge e=new PlainStreetEdge(head,tail,null,"fake",1.0,StreetTraversalPermission.BICYCLE_AND_CAR,false);
+  GraphEdgeExtension graphEdge=new GraphEdgeExtension(e);
+  assertEdgeEquals(e,graphEdge);
+}

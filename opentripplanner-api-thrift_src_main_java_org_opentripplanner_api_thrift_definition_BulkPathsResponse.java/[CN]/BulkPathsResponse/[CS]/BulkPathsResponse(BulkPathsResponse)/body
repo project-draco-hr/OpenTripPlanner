@@ -1,0 +1,12 @@
+{
+  __isset_bit_vector.clear();
+  __isset_bit_vector.or(other.__isset_bit_vector);
+  if (other.isSetPaths()) {
+    List<org.opentripplanner.api.thrift.definition.TripPaths> __this__paths=new ArrayList<org.opentripplanner.api.thrift.definition.TripPaths>();
+    for (    org.opentripplanner.api.thrift.definition.TripPaths other_element : other.paths) {
+      __this__paths.add(other_element);
+    }
+    this.paths=__this__paths;
+  }
+  this.compute_time_millis=other.compute_time_millis;
+}

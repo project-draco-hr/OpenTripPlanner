@@ -1,0 +1,38 @@
+{
+  struct.validate();
+  oprot.writeStructBegin(STRUCT_DESC);
+  if (struct.label != null) {
+    oprot.writeFieldBegin(LABEL_FIELD_DESC);
+    oprot.writeString(struct.label);
+    oprot.writeFieldEnd();
+  }
+  oprot.writeFieldBegin(ID_FIELD_DESC);
+  oprot.writeI32(struct.id);
+  oprot.writeFieldEnd();
+  if (struct.lat_lng != null) {
+    if (struct.isSetLat_lng()) {
+      oprot.writeFieldBegin(LAT_LNG_FIELD_DESC);
+      struct.lat_lng.write(oprot);
+      oprot.writeFieldEnd();
+    }
+  }
+  if (struct.name != null) {
+    if (struct.isSetName()) {
+      oprot.writeFieldBegin(NAME_FIELD_DESC);
+      oprot.writeString(struct.name);
+      oprot.writeFieldEnd();
+    }
+  }
+  if (struct.isSetIn_degree()) {
+    oprot.writeFieldBegin(IN_DEGREE_FIELD_DESC);
+    oprot.writeI32(struct.in_degree);
+    oprot.writeFieldEnd();
+  }
+  if (struct.isSetOut_degree()) {
+    oprot.writeFieldBegin(OUT_DEGREE_FIELD_DESC);
+    oprot.writeI32(struct.out_degree);
+    oprot.writeFieldEnd();
+  }
+  oprot.writeFieldStop();
+  oprot.writeStructEnd();
+}

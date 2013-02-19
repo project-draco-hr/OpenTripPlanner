@@ -1,0 +1,19 @@
+{
+  LOG.info("FindNearestEdges called");
+  long startTime=System.currentTimeMillis();
+  TraversalRequirements requirements=new TraversalRequirements();
+  requirements.setModes(new TravelModeSet(req.getAllowed_modes()).toTraverseModeSet());
+  Coordinate c=new LatLngExtension(req.getLocation().getLat_lng()).toCoordinate();
+  LocationObservation.Builder builder=new LocationObservation.Builder().setCoordinate(c);
+  if (req.isSetHeading())   builder.setHeading(req.getHeading());
+  StreetVertexIndexService streetVertexIndex=getStreetIndex();
+  CandidateEdgeBundle edges=streetVertexIndex.getClosestEdges(builder.build(),requirements);
+  FindNearestEdgesResponse res=new FindNearestEdgesResponse();
+  int maxEdges=req.getMax_edges();
+  for (  CandidateEdge e : edges) {
+    if (res.getNearest_edgesSize() >= maxEdges)     break;
+    res.addToNearest_edges(new EdgeMatchExtension(e));
+  }
+  res.setCompute_time_millis(System.currentTimeMillis() - startTime);
+  return res;
+}

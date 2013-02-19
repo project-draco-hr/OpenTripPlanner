@@ -1,0 +1,50 @@
+{
+  Coordinate coordinate=location.getCoordinate();
+  Envelope envelope=new Envelope(coordinate);
+  Iterable<StreetEdge> extraStreets=IterableLibrary.filter(graph.getTemporaryEdges(),StreetEdge.class);
+  if (extraEdges != null) {
+    extraStreets=Iterables.concat(IterableLibrary.filter(extraEdges,StreetEdge.class),extraStreets);
+  }
+  double envelopeGrowthAmount=0.001;
+  double radius=0;
+  CandidateEdgeBundle candidateEdges=new CandidateEdgeBundle();
+  while (candidateEdges.size() == 0) {
+    envelope.expandBy(envelopeGrowthAmount);
+    radius+=envelopeGrowthAmount;
+    if (radius > MAX_DISTANCE_FROM_STREET) {
+      return candidateEdges;
+    }
+    Iterable<StreetEdge> nearbyEdges=edgeTree.query(envelope);
+    if (nearbyEdges != null) {
+      nearbyEdges=Iterables.concat(nearbyEdges,extraStreets);
+    }
+    for (    StreetEdge e : nearbyEdges) {
+      if (e == null || e.getFromVertex() == null) {
+        continue;
+      }
+      if (!reqs.canBeTraversed(e)) {
+        continue;
+      }
+      double preferrence=1;
+      if (preferredEdges != null && preferredEdges.contains(e)) {
+        preferrence=3.0;
+      }
+      TraverseModeSet modes=reqs.getModes();
+      CandidateEdge ce=new CandidateEdge(e,location,preferrence,modes);
+      if (ce.getDistance() < radius) {
+        candidateEdges.add(ce);
+      }
+    }
+  }
+  Collection<CandidateEdgeBundle> bundles=candidateEdges.binByDistanceAndAngle();
+  CandidateEdgeBundle best=null;
+  for (  CandidateEdgeBundle bundle : bundles) {
+    if (best == null || bundle.best.score < best.best.score) {
+      if (possibleTransitLinksOnly) {
+        if (!(bundle.allowsCars() || bundle.isPlatform()))         continue;
+      }
+      best=bundle;
+    }
+  }
+  return best;
+}

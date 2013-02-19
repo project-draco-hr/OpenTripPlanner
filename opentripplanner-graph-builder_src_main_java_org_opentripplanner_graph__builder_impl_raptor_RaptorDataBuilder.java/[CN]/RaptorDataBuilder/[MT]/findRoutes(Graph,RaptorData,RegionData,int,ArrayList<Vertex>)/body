@@ -17,7 +17,7 @@
     options.setRoutingContext(graph,region.get(vertexNo),null);
     options.dateTime=(int)System.currentTimeMillis() / 1000 + random.nextInt(7 * 86400);
     options.rctx.serviceDays=new ArrayList<ServiceDay>();
-    options.rctx.serviceDays.add(ServiceDay.universalService(graph));
+    options.rctx.serviceDays.add(new ServiceDay.UniversalService(graph));
     options.setMaxWalkDistance(MAX_DISTANCE);
     options.setMaxTransfers(6);
     RaptorStateSet states=raptor.getStateSet(options);

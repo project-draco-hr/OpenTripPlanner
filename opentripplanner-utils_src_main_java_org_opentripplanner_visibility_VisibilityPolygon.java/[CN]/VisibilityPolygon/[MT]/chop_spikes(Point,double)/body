@@ -1,7 +1,0 @@
-{
-  HashSet<Point> spike_tips=new HashSet<Point>();
-  ArrayList<Point> vertices_temp=new ArrayList<Point>();
-  for (int i=0; i < vertices.size(); i++)   if (get(i + 2).distance(new LineSegment(get(i),get(i + 1))) <= epsilon || get(i).distance(new LineSegment(get(i + 1),get(i + 2))) <= epsilon)   spike_tips.add(get(i + 1));
-  for (int i=0; i < vertices.size(); i++)   if (!spike_tips.contains(vertices.get(i)))   vertices_temp.add(vertices.get(i));
-  vertices=vertices_temp;
-}

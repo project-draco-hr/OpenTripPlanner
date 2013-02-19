@@ -1,0 +1,29 @@
+{
+  TTupleProtocol oprot=(TTupleProtocol)prot;
+  struct.location.write(oprot);
+  BitSet optionals=new BitSet();
+  if (struct.isSetAllowed_modes()) {
+    optionals.set(0);
+  }
+  if (struct.isSetHeading()) {
+    optionals.set(1);
+  }
+  if (struct.isSetMax_edges()) {
+    optionals.set(2);
+  }
+  oprot.writeBitSet(optionals,3);
+  if (struct.isSetAllowed_modes()) {
+{
+      oprot.writeI32(struct.allowed_modes.size());
+      for (      org.opentripplanner.api.thrift.definition.TravelMode _iter28 : struct.allowed_modes) {
+        oprot.writeI32(_iter28.getValue());
+      }
+    }
+  }
+  if (struct.isSetHeading()) {
+    oprot.writeDouble(struct.heading);
+  }
+  if (struct.isSetMax_edges()) {
+    oprot.writeI32(struct.max_edges);
+  }
+}

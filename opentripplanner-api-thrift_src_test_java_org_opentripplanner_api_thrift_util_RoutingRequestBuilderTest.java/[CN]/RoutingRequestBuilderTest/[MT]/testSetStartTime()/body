@@ -1,0 +1,6 @@
+{
+  long now=this.getTimeSeconds();
+  RoutingRequest rr=(new RoutingRequestBuilder()).setStartTime(now).build();
+  assertEquals(now,rr.dateTime);
+  assertFalse(rr.arriveBy);
+}

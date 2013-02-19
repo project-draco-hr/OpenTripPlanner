@@ -1,0 +1,19 @@
+{
+  __isset_bit_vector.clear();
+  __isset_bit_vector.or(other.__isset_bit_vector);
+  if (other.isSetOrigin()) {
+    this.origin=other.origin;
+  }
+  if (other.isSetDestination()) {
+    this.destination=other.destination;
+  }
+  this.start_time=other.start_time;
+  this.arrive_by=other.arrive_by;
+  if (other.isSetAllowed_modes()) {
+    Set<TravelMode> __this__allowed_modes=new HashSet<TravelMode>();
+    for (    TravelMode other_element : other.allowed_modes) {
+      __this__allowed_modes.add(other_element);
+    }
+    this.allowed_modes=__this__allowed_modes;
+  }
+}

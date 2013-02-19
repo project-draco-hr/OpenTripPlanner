@@ -1,8 +1,17 @@
 {
-  _log.info(GraphBuilderAnnotation.register(graph,Variety.GRAPHWIDE,"Multiplying all bike safety values by " + (1 / bestBikeSafety)));
+  _log.info(graph.addBuilderAnnotation(new Graphwide("Multiplying all bike safety values by " + (1 / bestBikeSafety))));
   HashSet<Edge> seenEdges=new HashSet<Edge>();
+  HashSet<AreaEdgeList> seenAreas=new HashSet<AreaEdgeList>();
   for (  Vertex vertex : graph.getVertices()) {
     for (    Edge e : vertex.getOutgoing()) {
+      if (e instanceof AreaEdge) {
+        AreaEdgeList areaEdgeList=((AreaEdge)e).getArea();
+        if (seenAreas.contains(areaEdgeList))         continue;
+        seenAreas.add(areaEdgeList);
+        for (        NamedArea area : areaEdgeList.getAreas()) {
+          area.setBicycleSafetyMultiplier(area.getBicycleSafetyMultiplier() / bestBikeSafety);
+        }
+      }
       if (!(e instanceof PlainStreetEdge)) {
         continue;
       }

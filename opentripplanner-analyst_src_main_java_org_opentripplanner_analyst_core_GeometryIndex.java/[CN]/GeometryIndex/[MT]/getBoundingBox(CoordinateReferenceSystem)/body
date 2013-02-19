@@ -1,6 +1,6 @@
 {
   try {
-    Envelope bounds=(Envelope)index.getRoot().getBounds();
+    Envelope bounds=(Envelope)pedestrianIndex.getRoot().getBounds();
     ReferencedEnvelope refEnv=new ReferencedEnvelope(bounds,CRS.decode("EPSG:4326",true));
     return refEnv.toBounds(crs);
   }

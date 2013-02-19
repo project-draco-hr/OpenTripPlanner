@@ -1,0 +1,36 @@
+{
+  TTupleProtocol iprot=(TTupleProtocol)prot;
+  struct.duration=iprot.readI32();
+  struct.setDurationIsSet(true);
+  struct.start_time=iprot.readI64();
+  struct.setStart_timeIsSet(true);
+  struct.end_time=iprot.readI64();
+  struct.setEnd_timeIsSet(true);
+  BitSet incoming=iprot.readBitSet(2);
+  if (incoming.get(0)) {
+{
+      org.apache.thrift.protocol.TList _list10=new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT,iprot.readI32());
+      struct.states=new ArrayList<TravelState>(_list10.size);
+      for (int _i11=0; _i11 < _list10.size; ++_i11) {
+        TravelState _elem12;
+        _elem12=new TravelState();
+        _elem12.read(iprot);
+        struct.states.add(_elem12);
+      }
+    }
+    struct.setStatesIsSet(true);
+  }
+  if (incoming.get(1)) {
+{
+      org.apache.thrift.protocol.TList _list13=new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT,iprot.readI32());
+      struct.edges=new ArrayList<org.opentripplanner.api.thrift.definition.GraphEdge>(_list13.size);
+      for (int _i14=0; _i14 < _list13.size; ++_i14) {
+        org.opentripplanner.api.thrift.definition.GraphEdge _elem15;
+        _elem15=new org.opentripplanner.api.thrift.definition.GraphEdge();
+        _elem15.read(iprot);
+        struct.edges.add(_elem15);
+      }
+    }
+    struct.setEdgesIsSet(true);
+  }
+}

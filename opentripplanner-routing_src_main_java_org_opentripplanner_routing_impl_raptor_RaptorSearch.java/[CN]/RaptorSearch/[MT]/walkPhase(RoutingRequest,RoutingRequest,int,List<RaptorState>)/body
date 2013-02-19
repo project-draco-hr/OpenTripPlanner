@@ -13,7 +13,7 @@
     MaxWalkState start=new MaxWalkState(options.rctx.origin,walkOptions);
     spt=dijkstra.getShortestPathTree(start);
     for (    State state : spt.getAllStates()) {
-      if (state.getVertex() instanceof TransitStop)       transitStopStates.add(state);
+      if (state.getVertex() instanceof TransitStop || state.getVertex() instanceof TransitStopArrive || state.getVertex() instanceof TransitStopDepart)       transitStopStates.add(state);
     }
     if (maxTimeDayIndex > 0) {
       RoutingRequest reversedWalkOptions=walkOptions.clone();
@@ -35,7 +35,10 @@
  else {
     final List<MaxWalkState> startPoints=new ArrayList<MaxWalkState>();
     for (    RaptorState state : createdStates) {
-      Vertex stopVertex=state.stop.stopVertex;
+      Vertex stopVertex=options.isArriveBy() ? state.stop.departVertex : state.stop.arriveVertex;
+      if (stopVertex == null) {
+        stopVertex=state.stop.stopVertex;
+      }
       if (options.rctx.target != null) {
         double minWalk=distanceToNearestTransitStop;
         double targetDistance=bounder.getTargetDistance(stopVertex);
@@ -82,9 +85,10 @@
       if (parent != null) {
         state=new RaptorState(parent);
         state.nBoardings=parent.nBoardings;
+        state.rentingBike=targetState.isBikeRenting();
       }
  else {
-        state=new RaptorState(options.arriveBy);
+        state=new RaptorState(options);
       }
       state.weight=targetState.getWeight();
       state.walkDistance=targetState.getWalkDistance();
@@ -100,7 +104,7 @@
         }
       }
       addTargetState(state);
-      log.debug("Found target at: " + state);
+      log.debug("Found target at: " + state + " on "+ state.getTrips());
     }
   }
   for (  State state : bounder.removedBoundingStates) {
@@ -108,7 +112,7 @@
   }
   SPTSTATE:   for (  State state : transitStopStates) {
     final Vertex vertex=state.getVertex();
-    RaptorStop stop=data.raptorStopsForStopId.get(((TransitStop)vertex).getStopId());
+    RaptorStop stop=data.raptorStopsForStopId.get(((OffboardVertex)vertex).getStopId());
     if (stop == null) {
       continue;
     }
@@ -151,7 +155,7 @@
       newState=new RaptorState(parent);
     }
  else {
-      newState=new RaptorState(options.arriveBy);
+      newState=new RaptorState(options);
     }
     newState.weight=state.getWeight();
     newState.nBoardings=nBoardings;
@@ -159,6 +163,7 @@
     newState.arrivalTime=(int)state.getTime();
     newState.walkPath=state;
     newState.stop=stop;
+    newState.rentingBike=state.isBikeRenting();
     for (    RaptorState oldState : states) {
       if (oldState.eDominates(newState)) {
         continue SPTSTATE;

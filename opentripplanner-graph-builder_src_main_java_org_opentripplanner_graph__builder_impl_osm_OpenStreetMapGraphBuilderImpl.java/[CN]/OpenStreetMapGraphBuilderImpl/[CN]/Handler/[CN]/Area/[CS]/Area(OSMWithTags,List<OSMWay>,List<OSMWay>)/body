@@ -1,5 +1,6 @@
 {
   this.parent=parent;
+  setWayName(parent);
   List<List<Long>> innerRingNodes=constructRings(innerRingWays);
   List<List<Long>> outerRingNodes=constructRings(outerRingWays);
   if (innerRingNodes == null || outerRingNodes == null) {
@@ -28,4 +29,5 @@
       }
     }
   }
+  toJTSMultiPolygon();
 }

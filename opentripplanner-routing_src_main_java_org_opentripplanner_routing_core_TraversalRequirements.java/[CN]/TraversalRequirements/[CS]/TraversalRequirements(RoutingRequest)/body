@@ -1,0 +1,12 @@
+{
+  this();
+  if (options == null) {
+    return;
+  }
+  initFromRoutingRequest(this,options);
+  RoutingRequest bikeWalkOptions=options.getBikeWalkingOptions();
+  if (bikeWalkOptions != null) {
+    bikeWalkingRequirements=new TraversalRequirements();
+    initFromRoutingRequest(bikeWalkingRequirements,bikeWalkOptions);
+  }
+}

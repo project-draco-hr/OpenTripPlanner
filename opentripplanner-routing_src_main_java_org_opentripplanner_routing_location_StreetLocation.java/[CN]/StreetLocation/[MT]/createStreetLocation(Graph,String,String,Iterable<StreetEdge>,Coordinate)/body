@@ -6,12 +6,12 @@
     Vertex tov=street.getToVertex();
     wheelchairAccessible|=((StreetEdge)street).isWheelchairAccessible();
     Vertex edgeLocation;
-    if (distanceLibrary.distance(nearestPoint,fromv.getCoordinate()) < 0.0001) {
+    if (distanceLibrary.distance(nearestPoint,fromv.getCoordinate()) < 1) {
       edgeLocation=fromv;
       new FreeEdge(location,edgeLocation);
       new FreeEdge(edgeLocation,location);
     }
- else     if (distanceLibrary.distance(nearestPoint,tov.getCoordinate()) < 0.0001) {
+ else     if (distanceLibrary.distance(nearestPoint,tov.getCoordinate()) < 1) {
       edgeLocation=tov;
       new FreeEdge(location,edgeLocation);
       new FreeEdge(edgeLocation,location);
@@ -24,6 +24,5 @@
     }
   }
   location.setWheelchairAccessible(wheelchairAccessible);
-  location.setSourceEdges(edges);
   return location;
 }

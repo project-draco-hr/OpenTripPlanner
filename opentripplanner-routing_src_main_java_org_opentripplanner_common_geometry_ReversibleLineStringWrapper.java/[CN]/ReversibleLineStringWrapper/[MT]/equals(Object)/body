@@ -1,0 +1,8 @@
+{
+  if (!(other instanceof ReversibleLineStringWrapper))   return false;
+  ReversibleLineStringWrapper that=(ReversibleLineStringWrapper)other;
+  CoordinateSequence cs0=this.ls.getCoordinateSequence();
+  CoordinateSequence cs1=that.ls.getCoordinateSequence();
+  if (cs0.equals(cs1))   return true;
+  return matchesBackward(cs0,cs1);
+}

@@ -1,0 +1,24 @@
+{
+  struct.validate();
+  oprot.writeStructBegin(STRUCT_DESC);
+  if (struct.nearest_edges != null) {
+    if (struct.isSetNearest_edges()) {
+      oprot.writeFieldBegin(NEAREST_EDGES_FIELD_DESC);
+{
+        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT,struct.nearest_edges.size()));
+        for (        org.opentripplanner.api.thrift.definition.EdgeMatch _iter35 : struct.nearest_edges) {
+          _iter35.write(oprot);
+        }
+        oprot.writeListEnd();
+      }
+      oprot.writeFieldEnd();
+    }
+  }
+  if (struct.isSetCompute_time_millis()) {
+    oprot.writeFieldBegin(COMPUTE_TIME_MILLIS_FIELD_DESC);
+    oprot.writeI64(struct.compute_time_millis);
+    oprot.writeFieldEnd();
+  }
+  oprot.writeFieldStop();
+  oprot.writeStructEnd();
+}

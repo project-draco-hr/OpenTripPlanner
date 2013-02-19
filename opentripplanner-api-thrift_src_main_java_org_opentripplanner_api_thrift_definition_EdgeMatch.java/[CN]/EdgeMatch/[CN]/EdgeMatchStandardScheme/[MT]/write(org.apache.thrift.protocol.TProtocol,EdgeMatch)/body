@@ -1,0 +1,19 @@
+{
+  struct.validate();
+  oprot.writeStructBegin(STRUCT_DESC);
+  if (struct.edge != null) {
+    oprot.writeFieldBegin(EDGE_FIELD_DESC);
+    struct.edge.write(oprot);
+    oprot.writeFieldEnd();
+  }
+  if (struct.closest_point != null) {
+    oprot.writeFieldBegin(CLOSEST_POINT_FIELD_DESC);
+    struct.closest_point.write(oprot);
+    oprot.writeFieldEnd();
+  }
+  oprot.writeFieldBegin(SCORE_FIELD_DESC);
+  oprot.writeDouble(struct.score);
+  oprot.writeFieldEnd();
+  oprot.writeFieldStop();
+  oprot.writeStructEnd();
+}

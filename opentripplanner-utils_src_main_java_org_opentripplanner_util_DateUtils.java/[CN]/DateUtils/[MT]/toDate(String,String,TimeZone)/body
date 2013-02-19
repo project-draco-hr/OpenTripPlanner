@@ -4,20 +4,37 @@
   Date retVal=new Date();
   if (date != null) {
     Date d=parseDate(date,tz);
-    Integer s=null;
-    if (time != null)     s=secPastMid(time);
-    if (s == null || s < 0)     s=secPastMid();
-    if (d != null && s != null)     retVal=new Date(d.getTime() + s * 1000);
+    if (d == null) {
+      return null;
+    }
+    Calendar cal=new GregorianCalendar(tz);
+    cal.setTime(d);
+    boolean timed=false;
+    if (time != null) {
+      int[] hms=parseTime(time);
+      if (hms != null) {
+        cal.set(Calendar.HOUR_OF_DAY,hms[0]);
+        cal.set(Calendar.MINUTE,hms[1]);
+        cal.set(Calendar.SECOND,hms[2]);
+        timed=true;
+      }
+    }
+    if (!timed) {
+      Calendar today=new GregorianCalendar();
+      cal.set(Calendar.HOUR_OF_DAY,today.get(Calendar.HOUR_OF_DAY));
+      cal.set(Calendar.MINUTE,today.get(Calendar.MINUTE));
+      cal.set(Calendar.SECOND,today.get(Calendar.SECOND));
+    }
+    retVal=cal.getTime();
   }
  else   if (time != null) {
-    Integer s=secPastMid(time);
-    if (s != null && s > 0) {
+    int[] hms=parseTime(time);
+    if (hms != null) {
       Calendar cal=new GregorianCalendar(tz);
-      cal.set(Calendar.HOUR_OF_DAY,0);
-      cal.set(Calendar.MINUTE,0);
-      cal.set(Calendar.SECOND,0);
-      cal.set(Calendar.MILLISECOND,0);
-      retVal=new Date(cal.getTimeInMillis() + s * 1000);
+      cal.set(Calendar.HOUR_OF_DAY,hms[0]);
+      cal.set(Calendar.MINUTE,hms[1]);
+      cal.set(Calendar.SECOND,hms[2]);
+      retVal=cal.getTime();
     }
   }
   LOG.debug("resulting date is {}",retVal);

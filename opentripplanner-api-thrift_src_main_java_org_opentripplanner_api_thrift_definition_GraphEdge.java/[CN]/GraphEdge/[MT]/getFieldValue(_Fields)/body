@@ -1,0 +1,13 @@
+{
+switch (field) {
+case ID:
+    return Integer.valueOf(getId());
+case HEAD:
+  return getHead();
+case TAIL:
+return getTail();
+case NAME:
+return getName();
+}
+throw new IllegalStateException();
+}

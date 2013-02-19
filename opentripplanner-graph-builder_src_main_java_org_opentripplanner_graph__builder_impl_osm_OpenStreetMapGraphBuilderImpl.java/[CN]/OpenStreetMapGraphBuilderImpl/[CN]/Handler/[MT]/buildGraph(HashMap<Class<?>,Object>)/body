@@ -46,7 +46,7 @@ case U:
     if ((angleDiff <= 150 || angleDiff > 210))     continue;
   break;
 case STRAIGHT:
-if (Math.abs(angleDiff) >= 30) continue;
+if (angleDiff >= 30 && angleDiff < 330) continue;
 break;
 }
 TurnRestriction restriction=new TurnRestriction();
@@ -54,6 +54,7 @@ restriction.from=from;
 restriction.to=to;
 restriction.type=restrictionTag.type;
 restriction.modes=restrictionTag.modes;
+restriction.time=restrictionTag.time;
 from.addTurnRestriction(restriction);
 }
 }
@@ -62,6 +63,6 @@ from.addTurnRestriction(restriction);
 if (customNamer != null) {
 customNamer.postprocess(graph);
 }
-generateElevationProfiles(graph);
+extra.put(ElevationPoint.class,elevationData);
 applyBikeSafetyFactor(graph);
 }

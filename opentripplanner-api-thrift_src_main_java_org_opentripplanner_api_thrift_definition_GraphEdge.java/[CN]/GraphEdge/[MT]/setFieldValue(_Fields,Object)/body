@@ -1,0 +1,36 @@
+{
+switch (field) {
+case ID:
+    if (value == null) {
+      unsetId();
+    }
+ else {
+      setId((Integer)value);
+    }
+  break;
+case HEAD:
+if (value == null) {
+  unsetHead();
+}
+ else {
+  setHead((GraphVertex)value);
+}
+break;
+case TAIL:
+if (value == null) {
+unsetTail();
+}
+ else {
+setTail((GraphVertex)value);
+}
+break;
+case NAME:
+if (value == null) {
+unsetName();
+}
+ else {
+setName((String)value);
+}
+break;
+}
+}

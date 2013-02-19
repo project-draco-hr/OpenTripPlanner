@@ -1,0 +1,44 @@
+{
+switch (field) {
+case DURATION:
+    if (value == null) {
+      unsetDuration();
+    }
+ else {
+      setDuration((Integer)value);
+    }
+  break;
+case START_TIME:
+if (value == null) {
+  unsetStart_time();
+}
+ else {
+  setStart_time((Long)value);
+}
+break;
+case END_TIME:
+if (value == null) {
+unsetEnd_time();
+}
+ else {
+setEnd_time((Long)value);
+}
+break;
+case STATES:
+if (value == null) {
+unsetStates();
+}
+ else {
+setStates((List<TravelState>)value);
+}
+break;
+case EDGES:
+if (value == null) {
+unsetEdges();
+}
+ else {
+setEdges((List<org.opentripplanner.api.thrift.definition.GraphEdge>)value);
+}
+break;
+}
+}

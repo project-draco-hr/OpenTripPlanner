@@ -1,7 +1,9 @@
 {
   RoutingRequest req=prototypeRoutingRequest.clone();
   req.setDateTime(date,time,timeZone);
-  req.worstTime=req.dateTime + 3600;
+  if (searchCutoffSeconds > 0) {
+    req.worstTime=req.dateTime + (req.arriveBy ? -searchCutoffSeconds : searchCutoffSeconds);
+  }
   String latLon=String.format("%f,%f",i.lat,i.lon);
   req.batch=true;
   if (req.arriveBy)   req.setTo(latLon);

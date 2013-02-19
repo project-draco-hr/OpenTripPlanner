@@ -1,8 +1,8 @@
 {
   boolean allSucceeded=true;
 synchronized (graphs) {
-    for (    String graphId : this.getGraphIds()) {
-      boolean success=registerGraph(graphId,preEvict);
+    for (    String routerId : this.getRouterIds()) {
+      boolean success=registerGraph(routerId,preEvict);
       allSucceeded&=success;
     }
   }

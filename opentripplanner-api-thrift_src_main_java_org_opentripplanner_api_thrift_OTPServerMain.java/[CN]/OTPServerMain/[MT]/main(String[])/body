@@ -1,0 +1,12 @@
+{
+  if (args.length == 0) {
+    System.err.println("usage: config.xml");
+    System.exit(-1);
+  }
+  List<String> paths=new ArrayList<String>();
+  paths.add("classpath:org/opentripplanner/api_thrift/application-context.xml");
+  for (  String arg : args)   paths.add(arg);
+  ApplicationContext context=createContext(paths,new HashMap<String,BeanDefinition>());
+  OTPServerTask task=(OTPServerTask)context.getBean("otpServerTask");
+  task.run();
+}

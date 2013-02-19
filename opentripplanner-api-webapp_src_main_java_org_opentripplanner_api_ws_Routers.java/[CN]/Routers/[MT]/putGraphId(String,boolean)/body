@@ -1,0 +1,10 @@
+{
+  if (preEvict) {
+    LOG.debug("pre-evicting graph");
+    graphService.evictGraph(routerId);
+  }
+  LOG.debug("attempting to load graph from server's local filsystem.");
+  boolean success=graphService.registerGraph(routerId,preEvict);
+  if (success)   return Response.status(201).entity("graph registered.").build();
+ else   return Response.status(404).entity("graph not found or other error.").build();
+}

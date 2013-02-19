@@ -1,0 +1,13 @@
+{
+  if (fileName.isEmpty())   return null;
+  try {
+    PatternLayout layout=new PatternLayout("%m\n");
+    FileAppender appender=new RollingFileAppender(layout,fileName,false);
+    Logger.getLogger(categoryName).addAppender(appender);
+  }
+ catch (  IOException ioe) {
+    _log.warn("could not create file appender for " + fileName + " duo to: "+ ioe.getMessage());
+    return null;
+  }
+  return categoryName;
+}

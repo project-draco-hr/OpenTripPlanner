@@ -1,0 +1,19 @@
+{
+  List<Edge> outgoingStreets=ts.getOutgoingStreetEdges();
+  boolean hasStreetLink=false;
+  for (  Edge e : ts.getIncoming()) {
+    if (e instanceof StreetTransitLink) {
+      hasStreetLink=true;
+      break;
+    }
+  }
+  if (!hasStreetLink) {
+    for (    Edge e : ts.getOutgoing()) {
+      if (e instanceof StreetTransitLink) {
+        hasStreetLink=true;
+        break;
+      }
+    }
+  }
+  return !(hasStreetLink || (outgoingStreets.size() > 0));
+}

@@ -1,0 +1,17 @@
+{
+  double cte=crossTrackError(coord);
+  double distanceToStart=distanceLibrary.fastDistance(coord,start);
+  double distanceToEnd=distanceLibrary.fastDistance(coord,end);
+  if (cte < distanceToStart && cte < distanceToEnd) {
+    double atd=alongTrackDistance(coord,cte);
+    return atd / lineLength;
+  }
+ else {
+    if (distanceToStart < distanceToEnd) {
+      return 0;
+    }
+ else {
+      return 1;
+    }
+  }
+}

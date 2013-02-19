@@ -1,0 +1,30 @@
+{
+  LOG.debug("start SSSP");
+  long t0=System.currentTimeMillis();
+  while (!q.empty()) {
+    if (aborted) {
+      LOG.debug("aborted threaded heuristic calculation.");
+      break;
+    }
+    double uw=q.peek_min_key();
+    Vertex u=q.extract_min();
+    int ui=u.getIndex();
+    closed.set(ui);
+    if (uw > weights[ui])     continue;
+    maxFound=uw;
+    for (    Edge e : options.isArriveBy() ? u.getOutgoing() : u.getIncoming()) {
+      if (e instanceof StreetTransitLink)       continue;
+      Vertex v=options.isArriveBy() ? e.getToVertex() : e.getFromVertex();
+      int vi=v.getIndex();
+      if (vi < weights.length) {
+        double ew=e.weightLowerBound(options);
+        double vw=uw + ew;
+        if (weights[vi] > vw) {
+          weights[vi]=vw;
+          q.insert(v,vw);
+        }
+      }
+    }
+  }
+  LOG.info("End SSSP ({} msec)",System.currentTimeMillis() - t0);
+}

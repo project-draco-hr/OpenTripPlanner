@@ -1,0 +1,10 @@
+{
+  if (_nodesWithNeighbors.contains(node.getId()) || multipleAreasContain(node.getId())) {
+    startingNodes.add(node);
+    VLPoint point=new VLPoint(node.getLon(),node.getLat());
+    if (!visibilityPoints.contains(point)) {
+      visibilityPoints.add(point);
+      visibilityNodes.add(node);
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  TTupleProtocol oprot=(TTupleProtocol)prot;
+  struct.trip.write(oprot);
+  BitSet optionals=new BitSet();
+  if (struct.isSetPaths()) {
+    optionals.set(0);
+  }
+  if (struct.isSetNo_paths_found()) {
+    optionals.set(1);
+  }
+  oprot.writeBitSet(optionals,2);
+  if (struct.isSetPaths()) {
+{
+      oprot.writeI32(struct.paths.size());
+      for (      Path _iter28 : struct.paths) {
+        _iter28.write(oprot);
+      }
+    }
+  }
+  if (struct.isSetNo_paths_found()) {
+    oprot.writeBool(struct.no_paths_found);
+  }
+}

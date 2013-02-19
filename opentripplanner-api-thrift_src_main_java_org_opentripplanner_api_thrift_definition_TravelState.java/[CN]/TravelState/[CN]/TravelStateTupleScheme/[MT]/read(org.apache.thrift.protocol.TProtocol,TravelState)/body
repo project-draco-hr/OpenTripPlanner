@@ -1,0 +1,8 @@
+{
+  TTupleProtocol iprot=(TTupleProtocol)prot;
+  struct.arrival_time=iprot.readI64();
+  struct.setArrival_timeIsSet(true);
+  struct.vertex=new org.opentripplanner.api.thrift.definition.GraphVertex();
+  struct.vertex.read(iprot);
+  struct.setVertexIsSet(true);
+}

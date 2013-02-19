@@ -1,5 +1,5 @@
 {
-  if (!(way.hasTag("highway") || way.isTag("railway","platform")))   return false;
+  if (!isOsmEntityHighway(way))   return false;
   String highway=way.getTag("highway");
   if (highway != null && (highway.equals("conveyer") || highway.equals("proposed") || highway.equals("raceway")))   return false;
   String access=way.getTag("access");

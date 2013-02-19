@@ -7,9 +7,11 @@
   assertEquals(set.size(set.find("sparrows")),1);
   set.union("sparrows","robins");
   assertEquals(set.size(set.find("robins")),2);
+  assertTrue(set.sets().size() == 2);
   assertTrue(set.find("dogs") != set.find("robins"));
   assertEquals(set.find("sparrows"),set.find("robins"));
   set.union("sparrows","dogs");
   assertEquals(set.find("dogs"),set.find("robins"));
   assertEquals(set.size(set.find("cats")),4);
+  assertTrue(set.sets().size() == 1);
 }

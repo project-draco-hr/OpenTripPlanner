@@ -1,0 +1,9 @@
+{
+  ObjectMapper mapper=new ObjectMapper();
+  AnnotationIntrospector primary=new JacksonAnnotationIntrospector();
+  AnnotationIntrospector secondary=new JaxbAnnotationIntrospector();
+  AnnotationIntrospector pair=new AnnotationIntrospector.Pair(primary,secondary);
+  mapper.setAnnotationIntrospector(pair);
+  mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+  return mapper;
+}

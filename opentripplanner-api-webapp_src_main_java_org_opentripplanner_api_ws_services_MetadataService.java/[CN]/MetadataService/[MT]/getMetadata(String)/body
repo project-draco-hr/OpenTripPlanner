@@ -1,0 +1,8 @@
+{
+  GraphMetadata data=metadata.get(routerId);
+  if (data == null) {
+    data=new GraphMetadata(graphService.getGraph(routerId));
+    metadata.put(routerId,data);
+  }
+  return data;
+}

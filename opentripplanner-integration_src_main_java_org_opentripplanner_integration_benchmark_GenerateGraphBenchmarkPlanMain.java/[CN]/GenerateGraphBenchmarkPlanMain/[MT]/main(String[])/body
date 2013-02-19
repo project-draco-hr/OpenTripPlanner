@@ -1,0 +1,32 @@
+{
+  Options options=new Options();
+  options.addOption(ARG_TIME,true,"time to plan trip");
+  options.addOption(ARG_SAMPLES,true,"number of samples to generate");
+  options.addOption(ARG_LAT_NOISE,true,"lat noise");
+  options.addOption(ARG_LON_NOISE,true,"lon noise");
+  Parser parser=new GnuParser();
+  CommandLine cli=parser.parse(options,args);
+  args=cli.getArgs();
+  if (args.length != 2) {
+    System.err.println("usage: input_graph output_file");
+    System.exit(-1);
+  }
+  GenerateGraphBenchmarkPlanMain task=new GenerateGraphBenchmarkPlanMain();
+  task.setInputPath(new File(args[0]));
+  task.setOutputPath(new File(args[1]));
+  if (cli.hasOption(ARG_TIME)) {
+    Date time=DateLibrary.getIso8601StringAsDate(cli.getOptionValue(ARG_TIME));
+    task.setTime(time);
+  }
+  if (cli.hasOption(ARG_SAMPLES)) {
+    int samples=Integer.parseInt(cli.getOptionValue(ARG_SAMPLES));
+    task.setSamples(samples);
+  }
+  if (cli.hasOption(ARG_LAT_NOISE)) {
+    task.setLatNoise(Double.parseDouble(cli.getOptionValue(ARG_LAT_NOISE)));
+  }
+  if (cli.hasOption(ARG_LON_NOISE)) {
+    task.setLatNoise(Double.parseDouble(cli.getOptionValue(ARG_LON_NOISE)));
+  }
+  task.run();
+}

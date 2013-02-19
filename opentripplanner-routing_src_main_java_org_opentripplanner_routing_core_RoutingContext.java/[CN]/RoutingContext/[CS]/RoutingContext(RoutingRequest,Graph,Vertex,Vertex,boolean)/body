@@ -2,11 +2,21 @@
   this.opt=traverseOptions;
   this.graph=graph;
   if (findPlaces) {
-    fromVertex=graph.streetIndex.getVertexForPlace(opt.getFromPlace(),opt);
-    toVertex=graph.streetIndex.getVertexForPlace(opt.getToPlace(),opt,fromVertex);
+    if (!opt.batch || opt.arriveBy) {
+      toVertex=graph.streetIndex.getVertexForLocation(opt.getTo(),opt);
+    }
+ else {
+      toVertex=null;
+    }
+    if (!opt.batch || !opt.arriveBy) {
+      fromVertex=graph.streetIndex.getVertexForLocation(opt.getFrom(),opt,toVertex);
+    }
+ else {
+      fromVertex=null;
+    }
     if (opt.intermediatePlaces != null) {
-      for (      NamedPlace intermediate : opt.intermediatePlaces) {
-        Vertex vertex=graph.streetIndex.getVertexForPlace(intermediate,opt);
+      for (      GenericLocation intermediate : opt.intermediatePlaces) {
+        Vertex vertex=graph.streetIndex.getVertexForLocation(intermediate,opt);
         intermediateVertices.add(vertex);
       }
     }

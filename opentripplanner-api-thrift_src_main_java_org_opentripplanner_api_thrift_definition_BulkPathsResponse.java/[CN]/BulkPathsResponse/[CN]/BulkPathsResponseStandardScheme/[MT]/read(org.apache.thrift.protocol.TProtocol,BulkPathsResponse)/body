@@ -1,0 +1,45 @@
+{
+  org.apache.thrift.protocol.TField schemeField;
+  iprot.readStructBegin();
+  while (true) {
+    schemeField=iprot.readFieldBegin();
+    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
+      break;
+    }
+switch (schemeField.id) {
+case 1:
+      if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+{
+          org.apache.thrift.protocol.TList _list8=iprot.readListBegin();
+          struct.paths=new ArrayList<org.opentripplanner.api.thrift.definition.TripPaths>(_list8.size);
+          for (int _i9=0; _i9 < _list8.size; ++_i9) {
+            org.opentripplanner.api.thrift.definition.TripPaths _elem10;
+            _elem10=new org.opentripplanner.api.thrift.definition.TripPaths();
+            _elem10.read(iprot);
+            struct.paths.add(_elem10);
+          }
+          iprot.readListEnd();
+        }
+        struct.setPathsIsSet(true);
+      }
+ else {
+        org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+      }
+    break;
+case 10:
+  if (schemeField.type == org.apache.thrift.protocol.TType.I64) {
+    struct.compute_time_millis=iprot.readI64();
+    struct.setCompute_time_millisIsSet(true);
+  }
+ else {
+    org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+  }
+break;
+default :
+org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+}
+iprot.readFieldEnd();
+}
+iprot.readStructEnd();
+struct.validate();
+}

@@ -1,0 +1,15 @@
+{
+switch (field) {
+case DURATION:
+    return Integer.valueOf(getDuration());
+case START_TIME:
+  return Long.valueOf(getStart_time());
+case END_TIME:
+return Long.valueOf(getEnd_time());
+case STATES:
+return getStates();
+case EDGES:
+return getEdges();
+}
+throw new IllegalStateException();
+}

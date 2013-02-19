@@ -2,12 +2,6 @@
   if (s0.getOptions().wheelchairAccessible && !wheelchairAccessible) {
     return null;
   }
-  Edge backEdge=s0.getBackEdge();
-  Edge bbackEdge=s0.getBackState() != null ? s0.getBackState().getBackEdge() : null;
-  Edge bbbackEdge=s0.getBackState() != null && s0.getBackState().getBackState() != null ? s0.getBackState().getBackState().getBackEdge() : null;
-  if (backEdge instanceof StreetTransitLink)   return null;
-  if (backEdge instanceof FreeEdge && bbackEdge instanceof StreetTransitLink)   return null;
-  if (backEdge instanceof FreeEdge && bbackEdge instanceof FreeEdge && bbbackEdge instanceof StreetTransitLink)   return null;
   StateEditor s1=s0.edit(this);
   s1.incrementTimeInSeconds(transitStop.getStreetToStopTime() + 1);
   s1.incrementWeight(STL_TRAVERSE_COST + transitStop.getStreetToStopTime());

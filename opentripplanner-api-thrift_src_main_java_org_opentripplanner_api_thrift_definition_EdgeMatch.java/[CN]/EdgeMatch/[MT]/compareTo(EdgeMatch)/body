@@ -1,0 +1,38 @@
+{
+  if (!getClass().equals(other.getClass())) {
+    return getClass().getName().compareTo(other.getClass().getName());
+  }
+  int lastComparison=0;
+  EdgeMatch typedOther=(EdgeMatch)other;
+  lastComparison=Boolean.valueOf(isSetEdge()).compareTo(typedOther.isSetEdge());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetEdge()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.edge,typedOther.edge);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  lastComparison=Boolean.valueOf(isSetClosest_point()).compareTo(typedOther.isSetClosest_point());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetClosest_point()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.closest_point,typedOther.closest_point);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  lastComparison=Boolean.valueOf(isSetScore()).compareTo(typedOther.isSetScore());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetScore()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.score,typedOther.score);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  return 0;
+}

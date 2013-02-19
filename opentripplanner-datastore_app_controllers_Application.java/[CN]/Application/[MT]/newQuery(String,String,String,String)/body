@@ -1,0 +1,6 @@
+{
+  OTPQuery query=new OTPQuery(userName,queryParams,fromPlace,toPlace);
+  query.save();
+  Long id=query.id;
+  render(userName,id);
+}

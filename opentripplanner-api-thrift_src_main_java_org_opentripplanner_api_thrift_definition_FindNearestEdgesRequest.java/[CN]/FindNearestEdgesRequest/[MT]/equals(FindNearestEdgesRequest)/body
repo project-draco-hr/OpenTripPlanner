@@ -1,0 +1,28 @@
+{
+  if (that == null)   return false;
+  boolean this_present_location=true && this.isSetLocation();
+  boolean that_present_location=true && that.isSetLocation();
+  if (this_present_location || that_present_location) {
+    if (!(this_present_location && that_present_location))     return false;
+    if (!this.location.equals(that.location))     return false;
+  }
+  boolean this_present_allowed_modes=true && this.isSetAllowed_modes();
+  boolean that_present_allowed_modes=true && that.isSetAllowed_modes();
+  if (this_present_allowed_modes || that_present_allowed_modes) {
+    if (!(this_present_allowed_modes && that_present_allowed_modes))     return false;
+    if (!this.allowed_modes.equals(that.allowed_modes))     return false;
+  }
+  boolean this_present_heading=true && this.isSetHeading();
+  boolean that_present_heading=true && that.isSetHeading();
+  if (this_present_heading || that_present_heading) {
+    if (!(this_present_heading && that_present_heading))     return false;
+    if (this.heading != that.heading)     return false;
+  }
+  boolean this_present_max_edges=true && this.isSetMax_edges();
+  boolean that_present_max_edges=true && that.isSetMax_edges();
+  if (this_present_max_edges || that_present_max_edges) {
+    if (!(this_present_max_edges && that_present_max_edges))     return false;
+    if (this.max_edges != that.max_edges)     return false;
+  }
+  return true;
+}

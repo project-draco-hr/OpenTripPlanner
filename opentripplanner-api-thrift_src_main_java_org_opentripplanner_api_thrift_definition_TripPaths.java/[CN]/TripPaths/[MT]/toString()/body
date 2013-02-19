@@ -1,0 +1,31 @@
+{
+  StringBuilder sb=new StringBuilder("TripPaths(");
+  boolean first=true;
+  sb.append("trip:");
+  if (this.trip == null) {
+    sb.append("null");
+  }
+ else {
+    sb.append(this.trip);
+  }
+  first=false;
+  if (isSetPaths()) {
+    if (!first)     sb.append(", ");
+    sb.append("paths:");
+    if (this.paths == null) {
+      sb.append("null");
+    }
+ else {
+      sb.append(this.paths);
+    }
+    first=false;
+  }
+  if (isSetNo_paths_found()) {
+    if (!first)     sb.append(", ");
+    sb.append("no_paths_found:");
+    sb.append(this.no_paths_found);
+    first=false;
+  }
+  sb.append(")");
+  return sb.toString();
+}

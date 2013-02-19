@@ -1,0 +1,26 @@
+{
+  struct.validate();
+  oprot.writeStructBegin(STRUCT_DESC);
+  oprot.writeFieldBegin(ID_FIELD_DESC);
+  oprot.writeI32(struct.id);
+  oprot.writeFieldEnd();
+  if (struct.head != null) {
+    oprot.writeFieldBegin(HEAD_FIELD_DESC);
+    struct.head.write(oprot);
+    oprot.writeFieldEnd();
+  }
+  if (struct.tail != null) {
+    oprot.writeFieldBegin(TAIL_FIELD_DESC);
+    struct.tail.write(oprot);
+    oprot.writeFieldEnd();
+  }
+  if (struct.name != null) {
+    if (struct.isSetName()) {
+      oprot.writeFieldBegin(NAME_FIELD_DESC);
+      oprot.writeString(struct.name);
+      oprot.writeFieldEnd();
+    }
+  }
+  oprot.writeFieldStop();
+  oprot.writeStructEnd();
+}

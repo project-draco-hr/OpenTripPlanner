@@ -1,0 +1,12 @@
+{
+  struct.validate();
+  oprot.writeStructBegin(STRUCT_DESC);
+  oprot.writeFieldBegin(LAT_FIELD_DESC);
+  oprot.writeDouble(struct.lat);
+  oprot.writeFieldEnd();
+  oprot.writeFieldBegin(LNG_FIELD_DESC);
+  oprot.writeDouble(struct.lng);
+  oprot.writeFieldEnd();
+  oprot.writeFieldStop();
+  oprot.writeStructEnd();
+}

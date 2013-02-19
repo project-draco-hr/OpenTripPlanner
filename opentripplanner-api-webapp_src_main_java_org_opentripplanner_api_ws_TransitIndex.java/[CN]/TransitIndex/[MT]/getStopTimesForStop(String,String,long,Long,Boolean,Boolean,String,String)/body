@@ -23,10 +23,11 @@
   for (  String stopAgencyId : getAgenciesIds(stopAgency,routerId)) {
     AgencyAndId stop=new AgencyAndId(stopAgencyId,stopId);
     Edge preBoardEdge=transitIndexService.getPreBoardEdge(stop);
-    if (preBoardEdge == null)     break;
+    if (preBoardEdge == null)     continue;
     Vertex boarding=preBoardEdge.getToVertex();
     RoutingRequest options=makeTraverseOptions(startTime,routerId);
-    for (    Edge e : boarding.getOutgoing()) {
+    HashMap<Long,Edge> seen=new HashMap();
+    OUTER:     for (    Edge e : boarding.getOutgoing()) {
       for (      StopTime st : getStopTimesForBoardEdge(startTime,endTime,options,e,extended)) {
         st.phase="departure";
         if (extended != null && extended.equals(true)) {
@@ -36,21 +37,12 @@
         }
  else         result.stopTimes.add(st);
         trips.add(st.trip);
-      }
-    }
-    Edge preAlightEdge=transitIndexService.getPreAlightEdge(stop);
-    Vertex alighting=preAlightEdge.getFromVertex();
-    for (    Edge e : alighting.getIncoming()) {
-      for (      StopTime st : getStopTimesForAlightEdge(startTime,endTime,options,e,extended)) {
-        if (!trips.contains(st.trip)) {
-          st.phase="arrival";
-          if (extended != null && extended.equals(true)) {
-            if (routeId != null && !routeId.equals("") && !st.trip.getRoute().getId().getId().equals(routeId))             continue;
-            if (references != null && references.equals(true))             result.routes.add(st.trip.getRoute());
-            result.stopTimes.add(st);
-          }
- else           result.stopTimes.add(st);
+        if (seen.containsKey(st.time)) {
+          Edge old=seen.get(st.time);
+          System.out.println("DUP: " + old);
+          getStopTimesForBoardEdge(startTime,endTime,options,e,extended);
         }
+        seen.put(st.time,e);
       }
     }
   }

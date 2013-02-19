@@ -1,0 +1,21 @@
+{
+  Matcher m=maxSpeedPattern.matcher(speed);
+  if (!m.matches())   return -1;
+  float originalUnits;
+  try {
+    originalUnits=(float)Double.parseDouble(m.group(1));
+  }
+ catch (  NumberFormatException e) {
+    _log.warn("Could not parse max speed {}",m.group(1));
+    return -1;
+  }
+  String units=m.group(2);
+  if (units == null || units.equals(""))   units="kmh";
+  units=units.intern();
+  float metersSecond;
+  if (units == "kmh" || units == "km/h" || units == "kmph" || units == "kph")   metersSecond=0.277778f * originalUnits;
+ else   if (units == "mph")   metersSecond=0.446944f * originalUnits;
+ else   if (units == "knots")   metersSecond=0.514444f * originalUnits;
+ else   return -1;
+  return metersSecond;
+}

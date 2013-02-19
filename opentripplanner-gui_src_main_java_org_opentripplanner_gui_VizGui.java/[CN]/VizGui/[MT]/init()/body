@@ -365,9 +365,9 @@ catch (          IllegalAccessException e1) {
   annotationMatches.addListSelectionListener(new ListSelectionListener(){
     public void valueChanged(    ListSelectionEvent e){
       JList theList=(JList)e.getSource();
-      SelectableGraphBuilderAnnotation anno=(SelectableGraphBuilderAnnotation)theList.getSelectedValue();
+      GraphBuilderAnnotation anno=(GraphBuilderAnnotation)theList.getSelectedValue();
       if (anno == null)       return;
-      anno.select(showGraph);
+      showGraph.drawAnotation(anno);
     }
   }
 );

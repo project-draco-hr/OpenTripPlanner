@@ -1,0 +1,27 @@
+{
+  ArrayList<BikeRentalStation> out=new ArrayList<BikeRentalStation>();
+  String rentalString=convertStreamToString(dataStream);
+  ObjectMapper mapper=new ObjectMapper();
+  JsonNode rootNode=mapper.readTree(rentalString);
+  if (!jsonParsePath.equals("")) {
+    String delimiter="/";
+    String[] parseElement=jsonParsePath.split(delimiter);
+    for (int i=0; i < parseElement.length; i++) {
+      rootNode=rootNode.path(parseElement[i]);
+    }
+    if (rootNode.isMissingNode()) {
+      throw new IllegalArgumentException("Could not find jSON elements " + jsonParsePath);
+    }
+  }
+  for (int i=0; i < rootNode.size(); i++) {
+    JsonNode node=rootNode.get(i);
+    if (node == null) {
+      continue;
+    }
+    BikeRentalStation brstation=makeStation(node);
+    if (brstation != null)     out.add(brstation);
+  }
+synchronized (this) {
+    stations=out;
+  }
+}

@@ -1,0 +1,28 @@
+{
+  if (!getClass().equals(other.getClass())) {
+    return getClass().getName().compareTo(other.getClass().getName());
+  }
+  int lastComparison=0;
+  FindNearestVertexResponse typedOther=(FindNearestVertexResponse)other;
+  lastComparison=Boolean.valueOf(isSetNearest_vertex()).compareTo(typedOther.isSetNearest_vertex());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetNearest_vertex()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.nearest_vertex,typedOther.nearest_vertex);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  lastComparison=Boolean.valueOf(isSetCompute_time_millis()).compareTo(typedOther.isSetCompute_time_millis());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetCompute_time_millis()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.compute_time_millis,typedOther.compute_time_millis);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  return 0;
+}

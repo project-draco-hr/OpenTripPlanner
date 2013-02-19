@@ -11,7 +11,7 @@
       level=OSMLevel.fromString(levelName,OSMLevel.Source.LAYER_TAG,noZeroLevels);
     }
     if (level == null || (!level.reliable)) {
-      _log.warn(GraphBuilderAnnotation.register(graph,Variety.LEVEL_AMBIGUOUS,levelName,"OSM way " + way.getId()));
+      _log.warn(graph.addBuilderAnnotation(new LevelAmbiguous(levelName,way.getId())));
       level=OSMLevel.DEFAULT;
     }
     wayLevels.put(way,level);

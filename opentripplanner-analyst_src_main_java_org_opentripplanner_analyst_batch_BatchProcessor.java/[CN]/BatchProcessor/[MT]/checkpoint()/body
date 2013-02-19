@@ -1,0 +1,10 @@
+{
+  if (checkpointIntervalMinutes < 0 || aggregateResultSet == null)   return false;
+  long currentTime=System.currentTimeMillis();
+  if (currentTime > lastCheckpointTime + checkpointIntervalMinutes * 60 * 1000) {
+    lastCheckpointTime=currentTime;
+    aggregateResultSet.writeAppropriateFormat(outputPath);
+    return true;
+  }
+  return false;
+}

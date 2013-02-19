@@ -1,0 +1,22 @@
+{
+  StringBuilder sb=new StringBuilder("FindNearestEdgesResponse(");
+  boolean first=true;
+  if (isSetNearest_edges()) {
+    sb.append("nearest_edges:");
+    if (this.nearest_edges == null) {
+      sb.append("null");
+    }
+ else {
+      sb.append(this.nearest_edges);
+    }
+    first=false;
+  }
+  if (isSetCompute_time_millis()) {
+    if (!first)     sb.append(", ");
+    sb.append("compute_time_millis:");
+    sb.append(this.compute_time_millis);
+    first=false;
+  }
+  sb.append(")");
+  return sb.toString();
+}

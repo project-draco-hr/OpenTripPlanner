@@ -1,0 +1,9 @@
+{
+  TravelModeSet modeSet=new TravelModeSet();
+  modeSet.add(TravelMode.WALK);
+  modeSet.add(TravelMode.ANY_TRAIN);
+  TraverseModeSet traverseModes=modeSet.toTraverseModeSet();
+  assertTrue(traverseModes.getWalk());
+  assertTrue(traverseModes.getTrainish());
+  assertFalse(traverseModes.getBicycle());
+}

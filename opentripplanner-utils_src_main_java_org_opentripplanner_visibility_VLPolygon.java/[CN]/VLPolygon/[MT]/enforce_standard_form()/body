@@ -1,0 +1,12 @@
+{
+  int point_count=vertices.size();
+  if (point_count > 1) {
+    ArrayList<VLPoint> vertices_temp=new ArrayList<VLPoint>(point_count);
+    int index_of_smallest=0;
+    int i;
+    for (i=1; i < point_count; i++)     if (vertices.get(i).compareTo(vertices.get(index_of_smallest)) < 0)     index_of_smallest=i;
+    for (i=index_of_smallest; i < point_count; i++)     vertices_temp.add(vertices.get(i));
+    for (i=0; i < index_of_smallest; i++)     vertices_temp.add(vertices.get(i));
+    vertices=vertices_temp;
+  }
+}

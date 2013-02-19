@@ -21,7 +21,7 @@
     }
     int dwellTime=st0.getDepartureTime() - st0.getArrivalTime();
     if (dwellTime < 0) {
-      _log.warn(GraphBuilderAnnotation.register(graph,Variety.NEGATIVE_DWELL_TIME,st0));
+      _log.warn(graph.addBuilderAnnotation(new NegativeDwellTime(st0)));
       if (st0.getArrivalTime() > 23 * HOUR && st0.getDepartureTime() < 1 * HOUR) {
         midnightCrossed=true;
         st0.setDepartureTime(st0.getDepartureTime() + 24 * HOUR);
@@ -32,7 +32,7 @@
     }
     int runningTime=st1.getArrivalTime() - st0.getDepartureTime();
     if (runningTime < 0) {
-      _log.warn(GraphBuilderAnnotation.register(graph,Variety.NEGATIVE_HOP_TIME,new StopTime(st0),new StopTime(st1)));
+      _log.warn(graph.addBuilderAnnotation(new NegativeHopTime(new StopTime(st0),new StopTime(st1))));
       midnightCrossed=true;
       if (st0.getDepartureTime() > 23 * HOUR && st1.getArrivalTime() < 1 * HOUR) {
         st1.setArrivalTime(st1.getArrivalTime() + 24 * HOUR);
@@ -41,18 +41,18 @@
         st1.setArrivalTime(st0.getDepartureTime());
       }
     }
-    double hopDistance=distanceLibrary.fastDistance(st0.getStop().getLat(),st0.getStop().getLon(),st1.getStop().getLon(),st1.getStop().getLat());
+    double hopDistance=distanceLibrary.fastDistance(st0.getStop().getLat(),st0.getStop().getLon(),st1.getStop().getLat(),st1.getStop().getLon());
     double hopSpeed=hopDistance / runningTime;
     if (st0.getArrivalTime() == st1.getArrivalTime() || st0.getDepartureTime() == st1.getDepartureTime()) {
       _log.trace("{} {}",st0,st1);
-      _log.trace(GraphBuilderAnnotation.register(graph,Variety.HOP_ZERO_TIME,hopDistance,st1.getTrip().getRoute(),st1.getTrip().getId(),st1.getStopSequence()));
+      _log.trace(graph.addBuilderAnnotation(new HopZeroTime((float)hopDistance,st1.getTrip(),st1.getStopSequence())));
       st1bogus=true;
     }
  else     if (hopSpeed > 45) {
-      _log.trace(GraphBuilderAnnotation.register(graph,Variety.HOP_SPEED_FAST,hopSpeed,hopDistance,st0.getTrip().getRoute(),st0.getTrip().getId(),st0.getStopSequence()));
+      _log.trace(graph.addBuilderAnnotation(new HopSpeedFast((float)hopSpeed,(float)hopDistance,st0.getTrip(),st0.getStopSequence())));
     }
  else     if (hopSpeed < 0.1) {
-      _log.trace(GraphBuilderAnnotation.register(graph,Variety.HOP_SPEED_SLOW,hopSpeed,hopDistance,st0.getTrip().getRoute(),st0.getTrip().getId(),st0.getStopSequence()));
+      _log.trace(graph.addBuilderAnnotation(new HopSpeedSlow((float)hopSpeed,(float)hopDistance,st0.getTrip(),st0.getStopSequence())));
     }
     if (!st1bogus)     st0=st1;
   }

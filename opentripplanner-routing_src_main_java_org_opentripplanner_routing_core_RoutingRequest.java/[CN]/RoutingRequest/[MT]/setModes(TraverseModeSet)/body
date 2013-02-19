@@ -1,21 +1,23 @@
 {
   this.modes=modes;
   if (modes.getBicycle()) {
-    walkingOptions=new RoutingRequest();
-    walkingOptions.setArriveBy(this.isArriveBy());
-    walkingOptions.maxWalkDistance=maxWalkDistance;
-    walkingOptions.walkSpeed*=0.3;
-    walkingOptions.optimize=optimize;
-    walkingOptions.modes=modes.clone();
-    walkingOptions.modes.setBicycle(false);
-    walkingOptions.modes.setWalk(true);
+    bikeWalkingOptions=new RoutingRequest();
+    bikeWalkingOptions.setArriveBy(this.isArriveBy());
+    bikeWalkingOptions.maxWalkDistance=maxWalkDistance;
+    bikeWalkingOptions.walkSpeed*=0.8;
+    bikeWalkingOptions.walkReluctance*=2.7;
+    bikeWalkingOptions.optimize=optimize;
+    bikeWalkingOptions.modes=modes.clone();
+    bikeWalkingOptions.modes.setBicycle(false);
+    bikeWalkingOptions.modes.setWalk(true);
+    bikeWalkingOptions.walkingBike=true;
   }
  else   if (modes.getCar()) {
-    walkingOptions=new RoutingRequest();
-    walkingOptions.setArriveBy(this.isArriveBy());
-    walkingOptions.maxWalkDistance=maxWalkDistance;
-    walkingOptions.modes=modes.clone();
-    walkingOptions.modes.setBicycle(false);
-    walkingOptions.modes.setWalk(true);
+    bikeWalkingOptions=new RoutingRequest();
+    bikeWalkingOptions.setArriveBy(this.isArriveBy());
+    bikeWalkingOptions.maxWalkDistance=maxWalkDistance;
+    bikeWalkingOptions.modes=modes.clone();
+    bikeWalkingOptions.modes.setBicycle(false);
+    bikeWalkingOptions.modes.setWalk(true);
   }
 }

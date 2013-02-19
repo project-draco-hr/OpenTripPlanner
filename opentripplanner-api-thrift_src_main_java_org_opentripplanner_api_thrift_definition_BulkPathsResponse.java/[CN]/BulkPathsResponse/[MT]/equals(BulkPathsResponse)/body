@@ -1,0 +1,16 @@
+{
+  if (that == null)   return false;
+  boolean this_present_paths=true && this.isSetPaths();
+  boolean that_present_paths=true && that.isSetPaths();
+  if (this_present_paths || that_present_paths) {
+    if (!(this_present_paths && that_present_paths))     return false;
+    if (!this.paths.equals(that.paths))     return false;
+  }
+  boolean this_present_compute_time_millis=true && this.isSetCompute_time_millis();
+  boolean that_present_compute_time_millis=true && that.isSetCompute_time_millis();
+  if (this_present_compute_time_millis || that_present_compute_time_millis) {
+    if (!(this_present_compute_time_millis && that_present_compute_time_millis))     return false;
+    if (this.compute_time_millis != that.compute_time_millis)     return false;
+  }
+  return true;
+}

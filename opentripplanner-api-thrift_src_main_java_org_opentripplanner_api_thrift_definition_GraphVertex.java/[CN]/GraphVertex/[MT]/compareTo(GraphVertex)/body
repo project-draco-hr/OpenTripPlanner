@@ -1,0 +1,68 @@
+{
+  if (!getClass().equals(other.getClass())) {
+    return getClass().getName().compareTo(other.getClass().getName());
+  }
+  int lastComparison=0;
+  GraphVertex typedOther=(GraphVertex)other;
+  lastComparison=Boolean.valueOf(isSetLabel()).compareTo(typedOther.isSetLabel());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetLabel()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.label,typedOther.label);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  lastComparison=Boolean.valueOf(isSetId()).compareTo(typedOther.isSetId());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetId()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.id,typedOther.id);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  lastComparison=Boolean.valueOf(isSetLat_lng()).compareTo(typedOther.isSetLat_lng());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetLat_lng()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.lat_lng,typedOther.lat_lng);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  lastComparison=Boolean.valueOf(isSetName()).compareTo(typedOther.isSetName());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetName()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.name,typedOther.name);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  lastComparison=Boolean.valueOf(isSetIn_degree()).compareTo(typedOther.isSetIn_degree());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetIn_degree()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.in_degree,typedOther.in_degree);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  lastComparison=Boolean.valueOf(isSetOut_degree()).compareTo(typedOther.isSetOut_degree());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetOut_degree()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.out_degree,typedOther.out_degree);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  return 0;
+}

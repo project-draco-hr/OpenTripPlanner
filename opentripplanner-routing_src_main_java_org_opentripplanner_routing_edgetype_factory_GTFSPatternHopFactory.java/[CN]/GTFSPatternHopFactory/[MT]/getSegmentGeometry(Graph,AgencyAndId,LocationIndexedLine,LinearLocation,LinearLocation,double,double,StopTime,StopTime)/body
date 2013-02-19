@@ -6,7 +6,7 @@
     CoordinateSequence sequence=new PackedCoordinateSequence.Double(geometry.getCoordinates(),2);
     geometry=_geometryFactory.createLineString(sequence);
     if (!isValid(geometry,st0.getStop(),st1.getStop())) {
-      _log.warn(GraphBuilderAnnotation.register(graph,Variety.BOGUS_SHAPE_GEOMETRY_CAUGHT,shapeId,st0,st1));
+      _log.warn(graph.addBuilderAnnotation(new BogusShapeGeometryCaught(shapeId,st0,st1)));
       geometry=createSimpleGeometry(st0.getStop(),st1.getStop());
     }
     _geometriesByShapeSegmentKey.put(key,(LineString)geometry);

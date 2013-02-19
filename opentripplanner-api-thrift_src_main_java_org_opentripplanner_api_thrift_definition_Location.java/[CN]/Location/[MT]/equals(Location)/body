@@ -1,0 +1,10 @@
+{
+  if (that == null)   return false;
+  boolean this_present_lat_lng=true && this.isSetLat_lng();
+  boolean that_present_lat_lng=true && that.isSetLat_lng();
+  if (this_present_lat_lng || that_present_lat_lng) {
+    if (!(this_present_lat_lng && that_present_lat_lng))     return false;
+    if (!this.lat_lng.equals(that.lat_lng))     return false;
+  }
+  return true;
+}

@@ -1,0 +1,14 @@
+{
+  super();
+  setDuration(path.getDuration());
+  setStart_time(path.getStartTime());
+  setEnd_time(path.getEndTime());
+  if (includePathDetails) {
+    for (    State state : path.states) {
+      addToStates(new TravelStateExtension(state));
+    }
+    for (    Edge e : path.edges) {
+      addToEdges(new GraphEdgeExtension(e));
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  __isset_bit_vector.clear();
+  __isset_bit_vector.or(other.__isset_bit_vector);
+  if (other.isSetLabel()) {
+    this.label=other.label;
+  }
+  this.id=other.id;
+  if (other.isSetLat_lng()) {
+    this.lat_lng=other.lat_lng;
+  }
+  if (other.isSetName()) {
+    this.name=other.name;
+  }
+  this.in_degree=other.in_degree;
+  this.out_degree=other.out_degree;
+}

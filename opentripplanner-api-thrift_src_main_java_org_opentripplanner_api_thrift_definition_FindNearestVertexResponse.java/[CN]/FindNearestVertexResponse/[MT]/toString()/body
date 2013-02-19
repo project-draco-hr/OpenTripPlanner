@@ -1,0 +1,22 @@
+{
+  StringBuilder sb=new StringBuilder("FindNearestVertexResponse(");
+  boolean first=true;
+  if (isSetNearest_vertex()) {
+    sb.append("nearest_vertex:");
+    if (this.nearest_vertex == null) {
+      sb.append("null");
+    }
+ else {
+      sb.append(this.nearest_vertex);
+    }
+    first=false;
+  }
+  if (isSetCompute_time_millis()) {
+    if (!first)     sb.append(", ");
+    sb.append("compute_time_millis:");
+    sb.append(this.compute_time_millis);
+    first=false;
+  }
+  sb.append(")");
+  return sb.toString();
+}

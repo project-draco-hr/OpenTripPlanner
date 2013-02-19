@@ -1,0 +1,18 @@
+{
+  graph=new Graph();
+  tl=new IntersectionVertex(graph,"tl",-74.01,40.01);
+  tr=new IntersectionVertex(graph,"tr",-74.0,40.01);
+  bl=new IntersectionVertex(graph,"bl",-74.01,40.0);
+  br=new IntersectionVertex(graph,"br",-74.00,40.0);
+  top=new PlainStreetEdge(tl,tr,GeometryUtils.makeLineString(-74.01,40.01,-74.0,40.01),"top",1500,StreetTraversalPermission.CAR,false);
+  bottom=new PlainStreetEdge(br,bl,GeometryUtils.makeLineString(-74.01,40.0,-74.0,40.0),"bottom",1500,StreetTraversalPermission.BICYCLE_AND_CAR,false);
+  left=new PlainStreetEdge(bl,tl,GeometryUtils.makeLineString(-74.01,40.0,-74.01,40.01),"left",1500,StreetTraversalPermission.BICYCLE_AND_CAR,false);
+  right=new PlainStreetEdge(br,tr,GeometryUtils.makeLineString(-74.0,40.0,-74.0,40.01),"right",1500,StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,false);
+  StreetEdge topBack=new PlainStreetEdge(tr,tl,(LineString)top.getGeometry().reverse(),"topBack",1500,StreetTraversalPermission.CAR,true);
+  StreetEdge bottomBack=new PlainStreetEdge(br,bl,(LineString)bottom.getGeometry().reverse(),"bottomBack",1500,StreetTraversalPermission.BICYCLE_AND_CAR,true);
+  StreetEdge leftBack=new PlainStreetEdge(tl,bl,(LineString)left.getGeometry().reverse(),"leftBack",1500,StreetTraversalPermission.BICYCLE_AND_CAR,true);
+  StreetEdge rightBack=new PlainStreetEdge(tr,br,(LineString)right.getGeometry().reverse(),"rightBack",1500,StreetTraversalPermission.CAR,true);
+  StreetVertexIndexServiceImpl myFinder=new StreetVertexIndexServiceImpl(graph);
+  myFinder.setup();
+  finder=myFinder;
+}

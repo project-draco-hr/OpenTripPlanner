@@ -1,0 +1,16 @@
+{
+  if (that == null)   return false;
+  boolean this_present_nearest_edges=true && this.isSetNearest_edges();
+  boolean that_present_nearest_edges=true && that.isSetNearest_edges();
+  if (this_present_nearest_edges || that_present_nearest_edges) {
+    if (!(this_present_nearest_edges && that_present_nearest_edges))     return false;
+    if (!this.nearest_edges.equals(that.nearest_edges))     return false;
+  }
+  boolean this_present_compute_time_millis=true && this.isSetCompute_time_millis();
+  boolean that_present_compute_time_millis=true && that.isSetCompute_time_millis();
+  if (this_present_compute_time_millis || that_present_compute_time_millis) {
+    if (!(this_present_compute_time_millis && that_present_compute_time_millis))     return false;
+    if (this.compute_time_millis != that.compute_time_millis)     return false;
+  }
+  return true;
+}

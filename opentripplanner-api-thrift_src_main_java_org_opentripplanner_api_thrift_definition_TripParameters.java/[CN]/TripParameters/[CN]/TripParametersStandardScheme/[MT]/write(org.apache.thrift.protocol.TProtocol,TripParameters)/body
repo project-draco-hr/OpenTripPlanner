@@ -1,0 +1,39 @@
+{
+  struct.validate();
+  oprot.writeStructBegin(STRUCT_DESC);
+  if (struct.origin != null) {
+    oprot.writeFieldBegin(ORIGIN_FIELD_DESC);
+    struct.origin.write(oprot);
+    oprot.writeFieldEnd();
+  }
+  if (struct.destination != null) {
+    oprot.writeFieldBegin(DESTINATION_FIELD_DESC);
+    struct.destination.write(oprot);
+    oprot.writeFieldEnd();
+  }
+  if (struct.isSetStart_time()) {
+    oprot.writeFieldBegin(START_TIME_FIELD_DESC);
+    oprot.writeI64(struct.start_time);
+    oprot.writeFieldEnd();
+  }
+  if (struct.isSetArrive_by()) {
+    oprot.writeFieldBegin(ARRIVE_BY_FIELD_DESC);
+    oprot.writeI64(struct.arrive_by);
+    oprot.writeFieldEnd();
+  }
+  if (struct.allowed_modes != null) {
+    if (struct.isSetAllowed_modes()) {
+      oprot.writeFieldBegin(ALLOWED_MODES_FIELD_DESC);
+{
+        oprot.writeSetBegin(new org.apache.thrift.protocol.TSet(org.apache.thrift.protocol.TType.I32,struct.allowed_modes.size()));
+        for (        TravelMode _iter19 : struct.allowed_modes) {
+          oprot.writeI32(_iter19.getValue());
+        }
+        oprot.writeSetEnd();
+      }
+      oprot.writeFieldEnd();
+    }
+  }
+  oprot.writeFieldStop();
+  oprot.writeStructEnd();
+}

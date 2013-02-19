@@ -1,0 +1,8 @@
+{
+  if (arg == null) {
+    jgen.writeNull();
+  }
+  Coordinate[] lineCoords=arg.getCoordinates();
+  List<Coordinate> coords=Arrays.asList(lineCoords);
+  jgen.writeObject(PolylineEncoder.createEncodings(coords));
+}

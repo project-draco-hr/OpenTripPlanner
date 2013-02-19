@@ -1,0 +1,21 @@
+{
+  Envelope env=new Envelope();
+  Edge e=anno.getReferencedEdge();
+  if (e != null) {
+    this.enqueueHighlightedEdge(e);
+    env.expandToInclude(e.getFromVertex().getCoordinate());
+    env.expandToInclude(e.getToVertex().getCoordinate());
+  }
+  ArrayList<Vertex> vertices=new ArrayList<Vertex>();
+  Vertex v=anno.getReferencedVertex();
+  if (v != null) {
+    env.expandToInclude(v.getCoordinate());
+    vertices.add(v);
+  }
+  if (e == null && v == null)   return;
+  env.expandBy(0.02);
+  this.clearHighlights();
+  this.setHighlightedVertices(vertices);
+  this.zoomToEnvelope(env);
+  this.draw();
+}

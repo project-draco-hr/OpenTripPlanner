@@ -1,0 +1,13 @@
+{
+  super();
+  setId(v.getIndex());
+  setLabel(v.getLabel());
+  Coordinate coord=v.getCoordinate();
+  if (coord != null) {
+    LatLngExtension ll=new LatLngExtension(coord);
+    setLat_lng(ll);
+  }
+  setName(v.getName());
+  setIn_degree(v.getDegreeIn());
+  setOut_degree(v.getDegreeOut());
+}

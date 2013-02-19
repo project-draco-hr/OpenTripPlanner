@@ -1,0 +1,16 @@
+{
+  if (that == null)   return false;
+  boolean this_present_arrival_time=true;
+  boolean that_present_arrival_time=true;
+  if (this_present_arrival_time || that_present_arrival_time) {
+    if (!(this_present_arrival_time && that_present_arrival_time))     return false;
+    if (this.arrival_time != that.arrival_time)     return false;
+  }
+  boolean this_present_vertex=true && this.isSetVertex();
+  boolean that_present_vertex=true && that.isSetVertex();
+  if (this_present_vertex || that_present_vertex) {
+    if (!(this_present_vertex && that_present_vertex))     return false;
+    if (!this.vertex.equals(that.vertex))     return false;
+  }
+  return true;
+}

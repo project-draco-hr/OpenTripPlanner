@@ -1,0 +1,9 @@
+{
+  for (  CandidateEdge ce : CandidateEdgeBundle.this) {
+    StreetEdge e=ce.getEdge();
+    if (e.getPermission().allows(StreetTraversalPermission.CAR)) {
+      return true;
+    }
+  }
+  return false;
+}

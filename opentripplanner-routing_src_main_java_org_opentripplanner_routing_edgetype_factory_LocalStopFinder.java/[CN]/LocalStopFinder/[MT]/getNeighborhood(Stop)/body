@@ -1,12 +1,12 @@
 {
   TransitStop transitStop=getVertexForStop(stop);
-  HashMap<TableTripPattern,P2<Double>> neighborhood=neighborhoods.get(stop);
+  HashMap<TripPattern,P2<Double>> neighborhood=neighborhoods.get(stop);
   if (neighborhood == null) {
-    Set<TableTripPattern> nearbyPatterns=getNearbyPatterns(stop);
-    HashMap<TableTripPattern,Double> walkNeighborhood=getBestDistanceForPatterns(graph,transitStop,walkingOptions,nearbyPatterns);
-    HashMap<TableTripPattern,Double> bikeNeighborhood=getBestDistanceForPatterns(graph,transitStop,bikingOptions,nearbyPatterns);
-    neighborhood=new HashMap<TableTripPattern,P2<Double>>();
-    for (    TableTripPattern p : nearbyPatterns) {
+    Set<TripPattern> nearbyPatterns=getNearbyPatterns(stop);
+    HashMap<TripPattern,Double> walkNeighborhood=getBestDistanceForPatterns(graph,transitStop,walkingOptions,nearbyPatterns);
+    HashMap<TripPattern,Double> bikeNeighborhood=getBestDistanceForPatterns(graph,transitStop,bikingOptions,nearbyPatterns);
+    neighborhood=new HashMap<TripPattern,P2<Double>>();
+    for (    TripPattern p : nearbyPatterns) {
       Double walkDistance=walkNeighborhood.get(p);
       if (walkDistance == null) {
         continue;

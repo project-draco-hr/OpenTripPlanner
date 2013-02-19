@@ -1,0 +1,52 @@
+{
+  StringBuilder sb=new StringBuilder("GraphVertex(");
+  boolean first=true;
+  sb.append("label:");
+  if (this.label == null) {
+    sb.append("null");
+  }
+ else {
+    sb.append(this.label);
+  }
+  first=false;
+  if (!first)   sb.append(", ");
+  sb.append("id:");
+  sb.append(this.id);
+  first=false;
+  if (isSetLat_lng()) {
+    if (!first)     sb.append(", ");
+    sb.append("lat_lng:");
+    if (this.lat_lng == null) {
+      sb.append("null");
+    }
+ else {
+      sb.append(this.lat_lng);
+    }
+    first=false;
+  }
+  if (isSetName()) {
+    if (!first)     sb.append(", ");
+    sb.append("name:");
+    if (this.name == null) {
+      sb.append("null");
+    }
+ else {
+      sb.append(this.name);
+    }
+    first=false;
+  }
+  if (isSetIn_degree()) {
+    if (!first)     sb.append(", ");
+    sb.append("in_degree:");
+    sb.append(this.in_degree);
+    first=false;
+  }
+  if (isSetOut_degree()) {
+    if (!first)     sb.append(", ");
+    sb.append("out_degree:");
+    sb.append(this.out_degree);
+    first=false;
+  }
+  sb.append(")");
+  return sb.toString();
+}

@@ -1,0 +1,9 @@
+{
+  ArrayList<VLPoint> vertices=new ArrayList<VLPoint>();
+  nodes=osmNodes;
+  for (  OSMNode node : osmNodes) {
+    VLPoint point=new VLPoint(node.getLon(),node.getLat());
+    vertices.add(point);
+  }
+  geometry=new VLPolygon(vertices);
+}

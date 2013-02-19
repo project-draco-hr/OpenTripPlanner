@@ -1,0 +1,24 @@
+{
+  double startDistance=st0.getShapeDistTraveled();
+  double endDistance=st1.getShapeDistTraveled();
+  ShapeSegmentKey key=new ShapeSegmentKey(shapeId,startDistance,endDistance);
+  LineString geometry=_geometriesByShapeSegmentKey.get(key);
+  if (geometry != null)   return geometry;
+  double[] distances=getDistanceForShapeId(shapeId);
+  if (distances == null) {
+    _log.warn(graph.addBuilderAnnotation(new BogusShapeGeometry(shapeId)));
+    return null;
+  }
+ else {
+    LinearLocation startIndex=getSegmentFraction(distances,startDistance);
+    LinearLocation endIndex=getSegmentFraction(distances,endDistance);
+    if (equals(startIndex,endIndex)) {
+      graph.addBuilderAnnotation(new BogusShapeDistanceTraveled(st1));
+      return createSimpleGeometry(st0.getStop(),st1.getStop());
+    }
+    LineString line=getLineStringForShapeId(shapeId);
+    LocationIndexedLine lol=new LocationIndexedLine(line);
+    geometry=getSegmentGeometry(graph,shapeId,lol,startIndex,endIndex,startDistance,endDistance,st0,st1);
+    return geometry;
+  }
+}

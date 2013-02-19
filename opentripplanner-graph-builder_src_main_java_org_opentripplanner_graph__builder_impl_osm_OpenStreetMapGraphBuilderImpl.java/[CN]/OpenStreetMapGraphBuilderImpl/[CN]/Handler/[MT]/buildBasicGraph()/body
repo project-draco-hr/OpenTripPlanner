@@ -5,8 +5,6 @@
     wayIndex++;
     WayProperties wayData=wayPropertySet.getDataForWay(way);
     setWayName(way);
-    Set<Alert> note=wayPropertySet.getNoteForWay(way);
-    Set<Alert> wheelchairNote=getWheelchairNotes(way);
     StreetTraversalPermission permissions=getPermissionsForEntity(way,wayData.getPermission());
     if (permissions == StreetTraversalPermission.NONE)     continue;
     ArrayList<Long> nodes=new ArrayList<Long>(way.getNodeRefs().size());
@@ -39,8 +37,6 @@
     getLevelsForWay(way);
     Long startNode=null;
     OSMNode osmStartNode=null;
-    List<ElevationPoint> elevationPoints=new ArrayList<ElevationPoint>();
-    double distance=0;
     for (int i=0; i < nodes.size() - 1; i++) {
       OSMNode segmentStartOSMNode=_nodes.get(nodes.get(i));
       if (segmentStartOSMNode == null) {
@@ -50,7 +46,6 @@
       if (osmStartNode == null) {
         startNode=nodes.get(i);
         osmStartNode=segmentStartOSMNode;
-        elevationPoints.clear();
       }
       OSMNode osmEndNode=_nodes.get(endNode);
       if (osmStartNode == null || osmEndNode == null)       continue;
@@ -58,23 +53,8 @@
       if (segmentCoordinates.size() == 0) {
         segmentCoordinates.add(getCoordinate(osmStartNode));
       }
-      String ele=segmentStartOSMNode.getTag("ele");
-      if (ele != null) {
-        Double elevation=ElevationUtils.parseEleTag(ele);
-        if (elevation != null) {
-          elevationPoints.add(new ElevationPoint(distance,elevation));
-        }
-      }
-      distance+=distanceLibrary.distance(segmentStartOSMNode.getLat(),segmentStartOSMNode.getLon(),osmEndNode.getLat(),osmEndNode.getLon());
-      if (intersectionNodes.containsKey(endNode) || i == nodes.size() - 2 || (i < nodes.size() - 2 && nodes.subList(0,nodes.size() - 2).contains(nodes.get(i + 2)))) {
+      if (intersectionNodes.containsKey(endNode) || i == nodes.size() - 2 || nodes.subList(0,i).contains(nodes.get(i)) || osmEndNode.hasTag("ele")) {
         segmentCoordinates.add(getCoordinate(osmEndNode));
-        ele=osmEndNode.getTag("ele");
-        if (ele != null) {
-          Double elevation=ElevationUtils.parseEleTag(ele);
-          if (elevation != null) {
-            elevationPoints.add(new ElevationPoint(distance,elevation));
-          }
-        }
         geometry=GeometryUtils.getGeometryFactory().createLineString(segmentCoordinates.toArray(new Coordinate[0]));
         segmentCoordinates.clear();
       }
@@ -84,41 +64,29 @@
       }
       if (startEndpoint == null) {
         startEndpoint=getVertexForOsmNode(osmStartNode,way);
+        String ele=segmentStartOSMNode.getTag("ele");
+        if (ele != null) {
+          Double elevation=ElevationUtils.parseEleTag(ele);
+          if (elevation != null) {
+            elevationData.put(startEndpoint,elevation);
+          }
+        }
       }
  else {
         startEndpoint=endEndpoint;
       }
       endEndpoint=getVertexForOsmNode(osmEndNode,way);
+      String ele=osmEndNode.getTag("ele");
+      if (ele != null) {
+        Double elevation=ElevationUtils.parseEleTag(ele);
+        if (elevation != null) {
+          elevationData.put(endEndpoint,elevation);
+        }
+      }
       P2<PlainStreetEdge> streets=getEdgesForStreet(startEndpoint,endEndpoint,way,i,osmStartNode.getId(),osmEndNode.getId(),permissions,geometry);
       PlainStreetEdge street=streets.getFirst();
-      if (street != null) {
-        double safety=wayData.getSafetyFeatures().getFirst();
-        street.setBicycleSafetyEffectiveLength(street.getLength() * safety);
-        if (safety < bestBikeSafety) {
-          bestBikeSafety=safety;
-        }
-        if (note != null) {
-          street.setNote(note);
-        }
-        if (wheelchairNote != null) {
-          street.setWheelchairNote(wheelchairNote);
-        }
-      }
       PlainStreetEdge backStreet=streets.getSecond();
-      if (backStreet != null) {
-        double safety=wayData.getSafetyFeatures().getSecond();
-        if (safety < bestBikeSafety) {
-          bestBikeSafety=safety;
-        }
-        backStreet.setBicycleSafetyEffectiveLength(backStreet.getLength() * safety);
-        if (note != null) {
-          backStreet.setNote(note);
-        }
-        if (wheelchairNote != null) {
-          backStreet.setWheelchairNote(wheelchairNote);
-        }
-      }
-      storeExtraElevationData(elevationPoints,street,backStreet,distance);
+      applyWayProperties(street,backStreet,wayData,way);
       applyEdgesToTurnRestrictions(way,startNode,endNode,street,backStreet);
       startNode=endNode;
       osmStartNode=_nodes.get(startNode);

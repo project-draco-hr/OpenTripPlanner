@@ -16,6 +16,8 @@
   trimmedData.stops=data.stops;
   trimmedData.routesForStop=data.routesForStop;
   double walkDistance=options.getMaxWalkDistance();
+  options=options.clone();
+  walkOptions=walkOptions.clone();
   if (walkDistance > 4000) {
     options.setMaxWalkDistance(4000);
     walkOptions.setMaxWalkDistance(4000);
@@ -32,7 +34,5 @@
     log.debug("Doing preliminary search at limited distance");
     round=doPreliminarySearch(options,walkOptions,search,data);
   }
-  options.setMaxWalkDistance(walkDistance);
-  walkOptions.setMaxWalkDistance(walkDistance);
   return round;
 }
