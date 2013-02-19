@@ -1,0 +1,18 @@
+{
+  long preferences_penalty=0;
+  if (preferredRoutes != null && preferredRoutes.size() > 0) {
+    Route route=trip.getRoute();
+    RouteSpec spec=new RouteSpec(route.getId().getAgencyId(),GtfsLibrary.getRouteName(route));
+    if (!preferredRoutes.contains(spec)) {
+      preferences_penalty+=useAnotherThanPreferredRoutesPenalty;
+    }
+  }
+  if (unpreferredRoutes != null && unpreferredRoutes.size() > 0) {
+    Route route=trip.getRoute();
+    RouteSpec spec=new RouteSpec(route.getId().getAgencyId(),GtfsLibrary.getRouteName(route));
+    if (unpreferredRoutes.contains(spec)) {
+      preferences_penalty+=useUnpreferredRoutesPenalty;
+    }
+  }
+  return preferences_penalty;
+}
