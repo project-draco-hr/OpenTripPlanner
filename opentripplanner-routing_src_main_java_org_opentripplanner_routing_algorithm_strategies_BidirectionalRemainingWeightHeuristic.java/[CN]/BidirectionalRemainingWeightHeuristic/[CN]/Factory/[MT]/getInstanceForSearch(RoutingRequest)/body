@@ -1,0 +1,10 @@
+{
+  if (opt.getModes().isTransit()) {
+    LOG.debug("Transit itinerary requested.");
+    return new BidirectionalRemainingWeightHeuristic(opt.rctx.graph);
+  }
+ else {
+    LOG.debug("Non-transit itinerary requested.");
+    return new DefaultRemainingWeightHeuristic();
+  }
+}
