@@ -1,18 +1,17 @@
 {
   long preferences_penalty=0;
-  if (preferredRoutes != null && preferredRoutes.size() > 0) {
-    Route route=trip.getRoute();
-    RouteSpec spec=new RouteSpec(route.getId().getAgencyId(),GtfsLibrary.getRouteName(route));
-    if (!preferredRoutes.contains(spec)) {
-      preferences_penalty+=useAnotherThanPreferredRoutesPenalty;
-    }
+  Route route=trip.getRoute();
+  String agencyID=route.getId().getAgencyId();
+  RouteSpec spec=new RouteSpec(agencyID,GtfsLibrary.getRouteName(route));
+  boolean isPreferedRoute=preferredRoutes != null && preferredRoutes.contains(spec);
+  boolean isPreferedAgency=preferredAgencies != null && preferredAgencies.contains(agencyID);
+  if (!isPreferedRoute && !isPreferedAgency) {
+    preferences_penalty+=useAnotherThanPreferredRoutesPenalty;
   }
-  if (unpreferredRoutes != null && unpreferredRoutes.size() > 0) {
-    Route route=trip.getRoute();
-    RouteSpec spec=new RouteSpec(route.getId().getAgencyId(),GtfsLibrary.getRouteName(route));
-    if (unpreferredRoutes.contains(spec)) {
-      preferences_penalty+=useUnpreferredRoutesPenalty;
-    }
+  boolean isUnpreferedRoute=unpreferredRoutes != null && unpreferredRoutes.contains(spec);
+  boolean isUnpreferedAgency=unpreferredAgencies != null && unpreferredAgencies.contains(agencyID);
+  if (isUnpreferedRoute && isUnpreferedAgency) {
+    preferences_penalty+=useUnpreferredRoutesPenalty;
   }
   return preferences_penalty;
 }
