@@ -1,0 +1,12 @@
+{
+  StreetTraversalPermission perm1=StreetTraversalPermission.ALL;
+  assertFalse(perm1.allows(StreetTraversalPermission.CROSSHATCHED));
+  assertTrue(perm1.allows(StreetTraversalPermission.CAR));
+  assertTrue(perm1.allows(StreetTraversalPermission.CUSTOM_MOTOR_VEHICLE));
+  assertTrue(perm1.allows(StreetTraversalPermission.BICYCLE));
+  assertTrue(perm1.allows(StreetTraversalPermission.PEDESTRIAN));
+  assertTrue(perm1.allows(StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE));
+  StreetTraversalPermission perm=StreetTraversalPermission.ALL_DRIVING;
+  assertTrue(perm.allows(StreetTraversalPermission.CUSTOM_MOTOR_VEHICLE));
+  assertFalse(perm.allows(StreetTraversalPermission.BICYCLE));
+}
