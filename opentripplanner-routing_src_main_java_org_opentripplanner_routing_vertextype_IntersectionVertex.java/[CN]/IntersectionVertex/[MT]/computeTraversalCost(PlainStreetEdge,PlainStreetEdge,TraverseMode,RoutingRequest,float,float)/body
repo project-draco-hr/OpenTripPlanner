@@ -1,9 +1,13 @@
 {
   int outAngle=to.getOutAngle();
   int inAngle=from.getInAngle();
-  if (this.freeFlowing)   return 0;
-  if (fromSpeed > 25 && toSpeed > 25 && Math.abs(fromSpeed - toSpeed) < 7)   return 0;
-  if (mode != TraverseMode.CAR) {
+  if (this.freeFlowing) {
+    return 0;
+  }
+  if (fromSpeed > 25 && toSpeed > 25 && Math.abs(fromSpeed - toSpeed) < 7) {
+    return 0;
+  }
+  if (!mode.isDriving()) {
     int turnCost=Math.abs(outAngle - inAngle);
     if (turnCost > 180) {
       turnCost=360 - turnCost;
