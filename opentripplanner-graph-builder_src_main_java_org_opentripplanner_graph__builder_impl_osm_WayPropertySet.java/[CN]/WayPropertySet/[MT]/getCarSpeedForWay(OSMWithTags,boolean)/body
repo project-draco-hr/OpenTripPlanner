@@ -11,10 +11,10 @@
     }
   }
   if (way.hasTag("maxspeed") && speed == null)   speed=getMetersSecondFromSpeed(way.getTag("maxspeed"));
-  if (speed != null && Math.abs(speed) < 0.0001)   _log.warn("Zero automobile speed detected at {} based on OSM tags; ignoring",this);
+  if (speed != null && speed < 0.0001)   _log.warn("Zero or negative automobile speed detected at {} based on OSM maxspeed tags;" + " ignoring these tags",this);
   if (speed != null)   return speed;
   int bestScore=0;
-  float bestSpeed=-1;
+  Float bestSpeed=null;
   int score;
   for (  SpeedPicker picker : speedPickers) {
     OSMSpecifier specifier=picker.getSpecifier();
@@ -24,6 +24,6 @@
       bestSpeed=picker.getSpeed();
     }
   }
-  if (bestSpeed != -1)   return bestSpeed;
+  if (bestSpeed != null)   return bestSpeed;
  else   return this.defaultSpeed;
 }
