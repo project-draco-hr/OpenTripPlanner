@@ -8,9 +8,6 @@
     LOG.debug("Inferred that IntersectionVertex {} is free-flowing",getIndex());
     return 0;
   }
-  if (fromSpeed > 25 && toSpeed > 25 && Math.abs(fromSpeed - toSpeed) < 7) {
-    return 0;
-  }
   if (!mode.isDriving()) {
     int turnCost=Math.abs(outAngle - inAngle);
     if (turnCost > 180) {
