@@ -1,16 +1,18 @@
 {
-  float speed=-1;
-  float currentSpeed;
+  Float speed=null;
+  Float currentSpeed;
   if (way.hasTag("maxspeed:motorcar"))   speed=getMetersSecondFromSpeed(way.getTag("maxspeed:motorcar"));
-  if (speed == -1 && !back && way.hasTag("maxspeed:forward"))   speed=getMetersSecondFromSpeed(way.getTag("maxspeed:forward"));
-  if (speed == -1 && back && way.hasTag("maxspeed:reverse"))   speed=getMetersSecondFromSpeed(way.getTag("maxspeed:reverse"));
-  if (speed == -1 && way.hasTag("maxspeed:lanes")) {
-    for (    String lane : way.getTag("maxspeed:lanes").split("|")) {
+  if (speed == null && !back && way.hasTag("maxspeed:forward"))   speed=getMetersSecondFromSpeed(way.getTag("maxspeed:forward"));
+  if (speed == null && back && way.hasTag("maxspeed:reverse"))   speed=getMetersSecondFromSpeed(way.getTag("maxspeed:reverse"));
+  if (speed == null && way.hasTag("maxspeed:lanes")) {
+    for (    String lane : way.getTag("maxspeed:lanes").split("\\|")) {
       currentSpeed=getMetersSecondFromSpeed(lane);
-      if (currentSpeed > speed)       speed=currentSpeed;
+      if (currentSpeed != null && (speed == null || currentSpeed > speed))       speed=currentSpeed;
     }
   }
-  if (way.hasTag("maxspeed") && speed == -1)   speed=getMetersSecondFromSpeed(way.getTag("maxspeed"));
+  if (way.hasTag("maxspeed") && speed == null)   speed=getMetersSecondFromSpeed(way.getTag("maxspeed"));
+  if (speed != null && Math.abs(speed) < 0.0001)   _log.warn("Zero automobile speed detected at {} based on OSM tags; ignoring",this);
+  if (speed != null)   return speed;
   int bestScore=0;
   float bestSpeed=-1;
   int score;
