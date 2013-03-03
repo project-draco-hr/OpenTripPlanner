@@ -44,10 +44,10 @@
             addModeFromTrip(trip2);
             variantsByTrip.put(trip2.getId(),variant);
           }
-          variant.addTripHeadsign(trip.getTripHeadsign(),pattern.getTrips().size(),trip.getServiceId().getId());
+          variant.addTrip(trip,pattern.getTrips().size());
         }
  else {
-          variant.addTripHeadsign(trip.getTripHeadsign(),1,trip.getServiceId().getId());
+          variant.addTrip(trip,1);
         }
       }
  else {
