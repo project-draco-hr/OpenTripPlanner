@@ -1,7 +1,6 @@
 {
   RouteVariant variant=variantsByTrip.get(trip.getId());
   if (variant != null) {
-    variant.addTrip(trip);
     return variant;
   }
   AgencyAndId routeId=trip.getRoute().getId();
@@ -48,6 +47,5 @@
     agencyVariants.add(variant);
   }
   variantsByTrip.put(trip.getId(),variant);
-  variant.addTrip(trip);
   return variant;
 }

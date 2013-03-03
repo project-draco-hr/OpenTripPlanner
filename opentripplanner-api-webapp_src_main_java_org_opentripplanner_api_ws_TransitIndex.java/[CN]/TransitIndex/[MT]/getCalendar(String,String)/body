@@ -1,0 +1,16 @@
+{
+  TransitIndexService transitIndexService=getGraph(routerId).getService(TransitIndexService.class);
+  if (transitIndexService == null) {
+    return new TransitError("No transit index found.  Add TransitIndexBuilder to your graph builder configuration and rebuild your graph.");
+  }
+  CalendarData response=new CalendarData();
+  response.calendarList=new ArrayList<ServiceCalendarType>();
+  response.calendarDatesList=new ArrayList<ServiceCalendarDateType>();
+  for (  String agencyId : getAgenciesIds(agency,routerId)) {
+    List<ServiceCalendar> scList=transitIndexService.getCalendarsByAgency(agencyId);
+    List<ServiceCalendarDate> scdList=transitIndexService.getCalendarDatesByAgency(agencyId);
+    if (scList != null)     for (    ServiceCalendar sc : scList)     response.calendarList.add(new ServiceCalendarType(sc));
+    if (scdList != null)     for (    ServiceCalendarDate scd : scdList)     response.calendarDatesList.add(new ServiceCalendarDateType(scd));
+  }
+  return response;
+}
