@@ -1,10 +1,11 @@
 {
   int outAngle=to.getOutAngle();
   int inAngle=from.getInAngle();
-  if (this.freeFlowing) {
+  if (freeFlowing) {
     return 0;
   }
-  if (fromSpeed > 25 && toSpeed > 25 && Math.abs(fromSpeed - toSpeed) < 7) {
+  if (inferredFreeFlowing()) {
+    LOG.debug("Inferred that IntersectionVertex {} is free-flowing",getIndex());
     return 0;
   }
   if (!mode.isDriving()) {
