@@ -1,0 +1,9 @@
+{
+  LOG.info("GetEdges called");
+  long startTime=System.currentTimeMillis();
+  GraphEdgesResponse res=new GraphEdgesResponse();
+  Graph g=graphService.getGraph();
+  res.setEdges(makeGraphEdges(g));
+  res.setCompute_time_millis(System.currentTimeMillis() - startTime);
+  return res;
+}

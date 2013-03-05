@@ -1,0 +1,8 @@
+{
+  Collection<Edge> edges=g.getEdges();
+  List<GraphEdge> l=new ArrayList<GraphEdge>(edges.size());
+  for (  Edge e : edges) {
+    l.add(new GraphEdgeExtension(e));
+  }
+  return l;
+}

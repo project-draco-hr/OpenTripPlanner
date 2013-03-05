@@ -1,0 +1,8 @@
+{
+  GetEdges_result result=new GetEdges_result();
+  receiveBase(result,"GetEdges");
+  if (result.isSetSuccess()) {
+    return result.success;
+  }
+  throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT,"GetEdges failed: unknown result");
+}
