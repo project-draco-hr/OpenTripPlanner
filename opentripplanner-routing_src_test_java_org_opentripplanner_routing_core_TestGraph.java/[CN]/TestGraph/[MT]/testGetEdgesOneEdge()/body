@@ -1,0 +1,9 @@
+{
+  Graph g=new Graph();
+  Vertex a=new IntersectionVertex(g,"A",5,5);
+  Vertex b=new IntersectionVertex(g,"B",6,6);
+  FreeEdge ee=new FreeEdge(a,b);
+  List<Edge> edges=new ArrayList<Edge>(g.getEdges());
+  assertEquals(1,edges.size());
+  assertEquals(ee,edges.get(0));
+}
