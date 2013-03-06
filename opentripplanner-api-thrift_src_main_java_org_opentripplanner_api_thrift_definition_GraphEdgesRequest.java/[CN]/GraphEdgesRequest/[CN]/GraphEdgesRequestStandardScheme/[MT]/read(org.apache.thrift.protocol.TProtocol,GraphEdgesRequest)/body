@@ -7,10 +7,37 @@
       break;
     }
 switch (schemeField.id) {
-default :
-      org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+case 1:
+      if (schemeField.type == org.apache.thrift.protocol.TType.BOOL) {
+        struct.street_edges_only=iprot.readBool();
+        struct.setStreet_edges_onlyIsSet(true);
+      }
+ else {
+        org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+      }
+    break;
+case 2:
+  if (schemeField.type == org.apache.thrift.protocol.TType.SET) {
+{
+      org.apache.thrift.protocol.TSet _set48=iprot.readSetBegin();
+      struct.can_be_traversed_by=new HashSet<org.opentripplanner.api.thrift.definition.TravelMode>(2 * _set48.size);
+      for (int _i49=0; _i49 < _set48.size; ++_i49) {
+        org.opentripplanner.api.thrift.definition.TravelMode _elem50;
+        _elem50=org.opentripplanner.api.thrift.definition.TravelMode.findByValue(iprot.readI32());
+        struct.can_be_traversed_by.add(_elem50);
+      }
+      iprot.readSetEnd();
+    }
+    struct.setCan_be_traversed_byIsSet(true);
   }
-  iprot.readFieldEnd();
+ else {
+    org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+  }
+break;
+default :
+org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+}
+iprot.readFieldEnd();
 }
 iprot.readStructEnd();
 struct.validate();

@@ -1,0 +1,25 @@
+{
+  Collection<Edge> edges;
+  if (!req.isSetStreet_edges_only()) {
+    edges=g.getEdges();
+  }
+ else {
+    Collection<StreetEdge> ses=g.getStreetEdges();
+    TraverseModeSet allowedModes=TraverseModeSet.allModes();
+    if (req.isSetCan_be_traversed_by()) {
+      allowedModes=new TravelModeSet(req.getCan_be_traversed_by()).toTraverseModeSet();
+    }
+    Set<Edge> traversableStreetEdges=new HashSet<Edge>();
+    for (    StreetEdge se : ses) {
+      if (se.canTraverse(allowedModes)) {
+        traversableStreetEdges.add(se);
+      }
+    }
+    edges=traversableStreetEdges;
+  }
+  List<GraphEdge> l=new ArrayList<GraphEdge>(edges.size());
+  for (  Edge e : edges) {
+    l.add(new GraphEdgeExtension(e));
+  }
+  return l;
+}
