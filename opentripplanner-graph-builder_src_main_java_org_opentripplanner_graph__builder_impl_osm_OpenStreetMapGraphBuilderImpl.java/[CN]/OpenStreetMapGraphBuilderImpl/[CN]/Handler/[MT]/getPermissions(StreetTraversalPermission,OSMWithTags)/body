@@ -2,10 +2,10 @@
   StreetTraversalPermission permissionsFront=permissions;
   StreetTraversalPermission permissionsBack=permissions;
   if (way.isTagTrue("oneway") || "roundabout".equals(way.getTag("junction"))) {
-    permissionsBack=permissionsBack.remove(StreetTraversalPermission.BICYCLE_AND_CAR);
+    permissionsBack=permissionsBack.remove(StreetTraversalPermission.BICYCLE_AND_DRIVING);
   }
   if (way.isTag("oneway","-1")) {
-    permissionsFront=permissionsFront.remove(StreetTraversalPermission.BICYCLE_AND_CAR);
+    permissionsFront=permissionsFront.remove(StreetTraversalPermission.BICYCLE_AND_DRIVING);
   }
   String oneWayBicycle=way.getTag("oneway:bicycle");
   if (OSMWithTags.isTrue(oneWayBicycle) || way.isTagFalse("bicycle:backwards")) {
