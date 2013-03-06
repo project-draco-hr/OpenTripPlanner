@@ -1,0 +1,11 @@
+{
+  PlainStreetEdge e=edge(v1,v2,1.0,StreetTraversalPermission.ALL);
+  TraverseModeSet modes=TraverseModeSet.allModes();
+  assertTrue(e.canTraverse(modes));
+  modes=new TraverseModeSet(TraverseMode.BICYCLE,TraverseMode.WALK);
+  assertTrue(e.canTraverse(modes));
+  e=edge(v1,v2,1.0,StreetTraversalPermission.ALL_DRIVING);
+  assertFalse(e.canTraverse(modes));
+  modes=new TraverseModeSet(TraverseMode.CAR,TraverseMode.WALK);
+  assertTrue(e.canTraverse(modes));
+}
