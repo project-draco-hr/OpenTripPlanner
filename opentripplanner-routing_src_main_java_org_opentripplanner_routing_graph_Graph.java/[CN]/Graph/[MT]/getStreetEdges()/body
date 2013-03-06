@@ -1,0 +1,13 @@
+{
+  Collection<Vertex> vertices=this.getVertices();
+  Set<StreetEdge> edges=new HashSet<StreetEdge>();
+  for (  Vertex v : vertices) {
+    for (    StreetEdge se : filter(v.getIncoming(),StreetEdge.class)) {
+      edges.add(se);
+    }
+    for (    StreetEdge se : filter(v.getOutgoing(),StreetEdge.class)) {
+      edges.add(se);
+    }
+  }
+  return edges;
+}
