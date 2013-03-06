@@ -1,4 +1,16 @@
 {
   if (that == null)   return false;
+  boolean this_present_street_edges_only=true && this.isSetStreet_edges_only();
+  boolean that_present_street_edges_only=true && that.isSetStreet_edges_only();
+  if (this_present_street_edges_only || that_present_street_edges_only) {
+    if (!(this_present_street_edges_only && that_present_street_edges_only))     return false;
+    if (this.street_edges_only != that.street_edges_only)     return false;
+  }
+  boolean this_present_can_be_traversed_by=true && this.isSetCan_be_traversed_by();
+  boolean that_present_can_be_traversed_by=true && that.isSetCan_be_traversed_by();
+  if (this_present_can_be_traversed_by || that_present_can_be_traversed_by) {
+    if (!(this_present_can_be_traversed_by && that_present_can_be_traversed_by))     return false;
+    if (!this.can_be_traversed_by.equals(that.can_be_traversed_by))     return false;
+  }
   return true;
 }
