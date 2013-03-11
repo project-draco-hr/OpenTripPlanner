@@ -1,0 +1,8 @@
+{
+  OSMNode node=new OSMNode();
+  assertFalse(node.isMultiLevel());
+  node.addTag("highway","var");
+  assertFalse(node.isMultiLevel());
+  node.addTag("highway","elevator");
+  assertTrue(node.isMultiLevel());
+}
