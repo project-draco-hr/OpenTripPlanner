@@ -1,0 +1,18 @@
+{
+  Graph gg=new Graph();
+  OpenStreetMapGraphBuilderImpl loader=new OpenStreetMapGraphBuilderImpl();
+  loader.setDefaultWayPropertySetSource(new DefaultWayPropertySetSource());
+  FileBasedOpenStreetMapProviderImpl provider=new FileBasedOpenStreetMapProviderImpl();
+  File file=new File(getClass().getResource("NYC_small.osm.gz").getFile());
+  provider.setPath(file);
+  loader.setProvider(provider);
+  loader.buildGraph(gg,extra);
+  for (  StreetEdge se : gg.getStreetEdges()) {
+    StreetTraversalPermission perm=se.getPermission();
+    assertEquals(perm.allows(StreetTraversalPermission.CAR),perm.allows(StreetTraversalPermission.CUSTOM_MOTOR_VEHICLE));
+    for (    TurnRestriction tr : se.getTurnRestrictions()) {
+      TraverseModeSet modes=tr.modes;
+      assertEquals(modes.getCar(),modes.getCustomMotorVehicle());
+    }
+  }
+}
