@@ -7,7 +7,7 @@
     int capacity=Integer.MAX_VALUE;
     if (node.hasTag("capacity")) {
       try {
-        capacity=Integer.parseInt(node.getTag("capacity"));
+        capacity=node.getCapacity();
       }
  catch (      NumberFormatException e) {
         _log.warn("Capacity for osm node " + node.getId() + " ("+ creativeName+ ") is not a number: "+ node.getTag("capacity"));

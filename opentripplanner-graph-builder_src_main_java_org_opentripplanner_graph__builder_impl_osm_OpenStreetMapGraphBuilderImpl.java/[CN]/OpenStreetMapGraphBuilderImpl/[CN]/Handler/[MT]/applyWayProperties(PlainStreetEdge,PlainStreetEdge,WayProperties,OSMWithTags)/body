@@ -1,8 +1,7 @@
 {
   Set<Alert> note=wayPropertySet.getNoteForWay(way);
   Set<Alert> wheelchairNote=getWheelchairNotes(way);
-  String access=way.getTag("access");
-  boolean noThruTraffic="destination".equals(access) || "private".equals(access) || "customers".equals(access)|| "delivery".equals(access)|| "forestry".equals(access)|| "agricultural".equals(access);
+  boolean noThruTraffic=way.isThroughTrafficExplicitlyDisallowed();
   if (street != null) {
     double safety=wayData.getSafetyFeatures().getFirst();
     street.setBicycleSafetyEffectiveLength(street.getLength() * safety);

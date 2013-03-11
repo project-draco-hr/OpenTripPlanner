@@ -2,20 +2,11 @@
   if (!isOsmEntityHighway(way))   return false;
   String highway=way.getTag("highway");
   if (highway != null && (highway.equals("conveyer") || highway.equals("proposed") || highway.equals("raceway")))   return false;
-  String access=way.getTag("access");
-  if (access != null) {
-    if ("no".equals(access) || "license".equals(access)) {
-      if (way.doesTagAllowAccess("motorcar")) {
-        return true;
-      }
-      if (way.doesTagAllowAccess("bicycle")) {
-        return true;
-      }
-      if (way.doesTagAllowAccess("foot")) {
-        return true;
-      }
-      return false;
+  if (way.isGeneralAccessDenied()) {
+    if (way.isMotorcarExplicitlyAllowed() || way.isBicycleExplicitlyAllowed() || way.isPedestrianExplicitlyAllowed()) {
+      return true;
     }
+    return false;
   }
   return true;
 }
