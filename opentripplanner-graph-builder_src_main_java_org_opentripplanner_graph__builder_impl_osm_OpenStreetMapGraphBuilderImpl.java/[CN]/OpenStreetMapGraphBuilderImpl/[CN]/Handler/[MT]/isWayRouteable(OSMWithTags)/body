@@ -3,10 +3,7 @@
   String highway=way.getTag("highway");
   if (highway != null && (highway.equals("conveyer") || highway.equals("proposed") || highway.equals("raceway")))   return false;
   if (way.isGeneralAccessDenied()) {
-    if (way.isMotorcarExplicitlyAllowed() || way.isBicycleExplicitlyAllowed() || way.isPedestrianExplicitlyAllowed()) {
-      return true;
-    }
-    return false;
+    return (way.isMotorcarExplicitlyAllowed() || way.isBicycleExplicitlyAllowed() || way.isPedestrianExplicitlyAllowed());
   }
   return true;
 }
