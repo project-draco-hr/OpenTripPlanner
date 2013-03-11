@@ -1,29 +1,26 @@
 {
   StreetTraversalPermission permissionsFront=permissions;
   StreetTraversalPermission permissionsBack=permissions;
-  if (way.isTagTrue("oneway") || "roundabout".equals(way.getTag("junction"))) {
+  if (way.isOneWayForwardDriving() || way.isRoundabout()) {
     permissionsBack=permissionsBack.remove(StreetTraversalPermission.BICYCLE_AND_DRIVING);
   }
-  if (way.isTag("oneway","-1")) {
+  if (way.isOneWayReverseDriving()) {
     permissionsFront=permissionsFront.remove(StreetTraversalPermission.BICYCLE_AND_DRIVING);
   }
-  String oneWayBicycle=way.getTag("oneway:bicycle");
-  if (OSMWithTags.isTrue(oneWayBicycle) || way.isTagFalse("bicycle:backwards")) {
+  if (way.isOneWayForwardBicycle()) {
     permissionsBack=permissionsBack.remove(StreetTraversalPermission.BICYCLE);
   }
-  if ("-1".equals(oneWayBicycle)) {
+  if (way.isOneWayReverseBicycle()) {
     permissionsFront=permissionsFront.remove(StreetTraversalPermission.BICYCLE);
   }
+  String oneWayBicycle=way.getTag("oneway:bicycle");
   if (OSMWithTags.isFalse(oneWayBicycle) || way.isTagTrue("bicycle:backwards")) {
     if (permissions.allows(StreetTraversalPermission.BICYCLE)) {
       permissionsFront=permissionsFront.add(StreetTraversalPermission.BICYCLE);
       permissionsBack=permissionsBack.add(StreetTraversalPermission.BICYCLE);
     }
   }
-  String cycleway=way.getTag("cycleway");
-  String cyclewayLeft=way.getTag("cycleway:left");
-  String cyclewayRight=way.getTag("cycleway:right");
-  if ((cycleway != null && cycleway.startsWith("opposite")) || (cyclewayLeft != null && cyclewayLeft.startsWith("opposite")) || (cyclewayRight != null && cyclewayRight.startsWith("opposite"))) {
+  if (way.isOpposableCycleway()) {
     permissionsBack=permissionsBack.add(StreetTraversalPermission.BICYCLE);
   }
   return new P2<StreetTraversalPermission>(permissionsFront,permissionsBack);

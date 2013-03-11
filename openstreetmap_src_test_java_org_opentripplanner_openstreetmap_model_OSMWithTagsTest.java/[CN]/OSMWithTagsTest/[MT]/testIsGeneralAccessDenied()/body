@@ -1,0 +1,10 @@
+{
+  OSMWithTags o=new OSMWithTags();
+  assertFalse(o.isGeneralAccessDenied());
+  o.addTag("access","something");
+  assertFalse(o.isGeneralAccessDenied());
+  o.addTag("access","license");
+  assertTrue(o.isGeneralAccessDenied());
+  o.addTag("access","no");
+  assertTrue(o.isGeneralAccessDenied());
+}

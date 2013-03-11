@@ -1,0 +1,6 @@
+{
+  String cycleway=getTag("cycleway");
+  String cyclewayLeft=getTag("cycleway:left");
+  String cyclewayRight=getTag("cycleway:right");
+  return (cycleway != null && cycleway.startsWith("opposite")) || (cyclewayLeft != null && cyclewayLeft.startsWith("opposite")) || (cyclewayRight != null && cyclewayRight.startsWith("opposite"));
+}

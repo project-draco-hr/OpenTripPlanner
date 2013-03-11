@@ -2,7 +2,7 @@
   String label="way " + way.getId() + " from "+ index;
   label=unique(label);
   String name=getNameForWay(way,label);
-  boolean steps="steps".equals(way.getTag("highway"));
+  boolean steps=way.isSteps();
   if (steps) {
     length*=2;
   }

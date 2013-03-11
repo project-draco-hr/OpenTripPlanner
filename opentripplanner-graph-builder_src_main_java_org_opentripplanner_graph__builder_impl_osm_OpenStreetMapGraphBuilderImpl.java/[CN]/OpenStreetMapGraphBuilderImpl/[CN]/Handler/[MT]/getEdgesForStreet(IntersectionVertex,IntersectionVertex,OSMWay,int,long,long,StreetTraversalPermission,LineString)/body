@@ -1,0 +1,22 @@
+{
+  if (permissions.allowsNothing()) {
+    return new P2<PlainStreetEdge>(null,null);
+  }
+  LineString backGeometry=(LineString)geometry.reverse();
+  PlainStreetEdge street=null, backStreet=null;
+  double length=this.getGeometryLengthMeters(geometry);
+  P2<StreetTraversalPermission> permissionPair=getPermissions(permissions,way);
+  StreetTraversalPermission permissionsFront=permissionPair.getFirst();
+  StreetTraversalPermission permissionsBack=permissionPair.getSecond();
+  if (permissionsFront.allowsAnything()) {
+    street=getEdgeForStreet(start,end,way,index,startNode,endNode,length,permissionsFront,geometry,false);
+  }
+  if (permissionsBack.allowsAnything()) {
+    backStreet=getEdgeForStreet(end,start,way,index,endNode,startNode,length,permissionsBack,backGeometry,true);
+  }
+  if (way.isRoundabout()) {
+    if (street != null)     street.setRoundabout(true);
+    if (backStreet != null)     backStreet.setRoundabout(true);
+  }
+  return new P2<PlainStreetEdge>(street,backStreet);
+}
