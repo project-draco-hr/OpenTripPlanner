@@ -1,0 +1,6 @@
+{
+  OSMWay way=new OSMWay();
+  assertFalse(way.isBicycleDismountForced());
+  way.addTag("bicycle","dismount");
+  assertTrue(way.isBicycleDismountForced());
+}

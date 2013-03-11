@@ -1,0 +1,8 @@
+{
+  OSMWay way=new OSMWay();
+  assertFalse(way.isSteps());
+  way.addTag("highway","primary");
+  assertFalse(way.isSteps());
+  way.addTag("highway","steps");
+  assertTrue(way.isSteps());
+}

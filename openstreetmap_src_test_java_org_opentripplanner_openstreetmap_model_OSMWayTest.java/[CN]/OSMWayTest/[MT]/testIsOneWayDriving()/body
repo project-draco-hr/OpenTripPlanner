@@ -1,0 +1,14 @@
+{
+  OSMWay way=new OSMWay();
+  assertFalse(way.isOneWayForwardDriving());
+  assertFalse(way.isOneWayReverseDriving());
+  way.addTag("oneway","notatagvalue");
+  assertFalse(way.isOneWayForwardDriving());
+  assertFalse(way.isOneWayReverseDriving());
+  way.addTag("oneway","1");
+  assertTrue(way.isOneWayForwardDriving());
+  assertFalse(way.isOneWayReverseDriving());
+  way.addTag("oneway","-1");
+  assertFalse(way.isOneWayForwardDriving());
+  assertTrue(way.isOneWayReverseDriving());
+}
