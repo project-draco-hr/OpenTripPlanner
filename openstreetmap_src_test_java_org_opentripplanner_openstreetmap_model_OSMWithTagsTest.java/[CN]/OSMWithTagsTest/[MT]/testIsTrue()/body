@@ -1,0 +1,11 @@
+{
+  assertTrue(OSMWithTags.isTrue("yes"));
+  assertTrue(OSMWithTags.isTrue("1"));
+  assertTrue(OSMWithTags.isTrue("true"));
+  assertFalse(OSMWithTags.isTrue("no"));
+  assertFalse(OSMWithTags.isTrue("0"));
+  assertFalse(OSMWithTags.isTrue("false"));
+  assertFalse(OSMWithTags.isTrue("foo"));
+  assertFalse(OSMWithTags.isTrue("bar"));
+  assertFalse(OSMWithTags.isTrue("baz"));
+}

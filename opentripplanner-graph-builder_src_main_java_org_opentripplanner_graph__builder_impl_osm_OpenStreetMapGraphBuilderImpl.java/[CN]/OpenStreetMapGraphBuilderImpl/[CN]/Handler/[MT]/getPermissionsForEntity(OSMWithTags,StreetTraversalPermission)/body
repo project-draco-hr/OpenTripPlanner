@@ -1,65 +1,40 @@
 {
-  Map<String,String> tags=entity.getTags();
   StreetTraversalPermission permission=null;
-  String highway=tags.get("highway");
-  String cycleway=tags.get("cycleway");
-  String access=tags.get("access");
-  String motorcar=tags.get("motorcar");
-  String bicycle=tags.get("bicycle");
-  String foot=tags.get("foot");
-  if (access != null) {
-    if ("no".equals(access) || "license".equals(access)) {
-      permission=StreetTraversalPermission.NONE;
-      if (entity.doesTagAllowAccess("motorcar")) {
-        permission=permission.add(StreetTraversalPermission.ALL_DRIVING);
-      }
-      if (entity.doesTagAllowAccess("bicycle")) {
-        permission=permission.add(StreetTraversalPermission.BICYCLE);
-      }
-      if (entity.doesTagAllowAccess("foot")) {
-        permission=permission.add(StreetTraversalPermission.PEDESTRIAN);
-      }
-    }
- else {
-      permission=def;
-    }
-  }
- else   if (motorcar != null || bicycle != null || foot != null) {
-    permission=def;
-  }
-  if (motorcar != null) {
-    if ("no".equals(motorcar) || "license".equals(motorcar)) {
-      permission=permission.remove(StreetTraversalPermission.ALL_DRIVING);
-    }
- else {
+  if (entity.isGeneralAccessDenied()) {
+    permission=StreetTraversalPermission.NONE;
+    if (entity.isMotorcarExplicitlyAllowed()) {
       permission=permission.add(StreetTraversalPermission.ALL_DRIVING);
     }
-  }
-  if (bicycle != null) {
-    if ("no".equals(bicycle) || "license".equals(bicycle)) {
-      permission=permission.remove(StreetTraversalPermission.BICYCLE);
-    }
- else {
+    if (entity.isBicycleExplicitlyAllowed()) {
       permission=permission.add(StreetTraversalPermission.BICYCLE);
     }
-  }
-  if (foot != null) {
-    if ("no".equals(foot) || "license".equals(foot)) {
-      permission=permission.remove(StreetTraversalPermission.PEDESTRIAN);
-    }
- else {
+    if (entity.isPedestrianExplicitlyAllowed()) {
       permission=permission.add(StreetTraversalPermission.PEDESTRIAN);
     }
   }
-  if (highway != null) {
-    if ("construction".equals(highway)) {
-      permission=StreetTraversalPermission.NONE;
-    }
-  }
  else {
-    if ("construction".equals(cycleway)) {
-      permission=StreetTraversalPermission.NONE;
-    }
+    permission=def;
+  }
+  if (entity.isMotorcarExplicitlyDenied()) {
+    permission=permission.remove(StreetTraversalPermission.ALL_DRIVING);
+  }
+ else   if (entity.hasTag("motorcar")) {
+    permission=permission.add(StreetTraversalPermission.ALL_DRIVING);
+  }
+  if (entity.isBicycleExplicitlyDenied()) {
+    permission=permission.remove(StreetTraversalPermission.BICYCLE);
+  }
+ else   if (entity.hasTag("bicycle")) {
+    permission=permission.add(StreetTraversalPermission.BICYCLE);
+  }
+  if (entity.isPedestrianExplicitlyDenied()) {
+    permission=permission.remove(StreetTraversalPermission.PEDESTRIAN);
+  }
+ else   if (entity.hasTag("foot")) {
+    permission=permission.add(StreetTraversalPermission.PEDESTRIAN);
+  }
+  if (entity.isUnderConstruction()) {
+    permission=StreetTraversalPermission.NONE;
   }
   if (permission == null)   return def;
   return permission;

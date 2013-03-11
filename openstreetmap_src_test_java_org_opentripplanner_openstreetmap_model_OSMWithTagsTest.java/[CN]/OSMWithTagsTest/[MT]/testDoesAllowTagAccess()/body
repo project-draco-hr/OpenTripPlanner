@@ -1,0 +1,10 @@
+{
+  OSMWithTags o=new OSMWithTags();
+  assertFalse(o.doesTagAllowAccess("foo"));
+  o.addTag("foo","bar");
+  assertFalse(o.doesTagAllowAccess("foo"));
+  o.addTag("foo","designated");
+  assertTrue(o.doesTagAllowAccess("foo"));
+  o.addTag("foo","official");
+  assertTrue(o.doesTagAllowAccess("foo"));
+}

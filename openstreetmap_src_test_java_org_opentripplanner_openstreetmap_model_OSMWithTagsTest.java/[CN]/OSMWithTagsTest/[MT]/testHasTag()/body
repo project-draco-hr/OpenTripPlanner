@@ -1,0 +1,8 @@
+{
+  OSMWithTags o=new OSMWithTags();
+  assertFalse(o.hasTag("foo"));
+  assertFalse(o.hasTag("FOO"));
+  o.addTag("foo","bar");
+  assertTrue(o.hasTag("foo"));
+  assertTrue(o.hasTag("FOO"));
+}
