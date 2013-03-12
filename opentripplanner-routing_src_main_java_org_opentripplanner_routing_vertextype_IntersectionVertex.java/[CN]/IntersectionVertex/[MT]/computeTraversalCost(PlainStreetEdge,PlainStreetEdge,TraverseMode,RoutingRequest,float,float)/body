@@ -5,6 +5,7 @@
     return 0;
   }
   if (inferredFreeFlowing()) {
+    LOG.debug("Inferred that IntersectionVertex {} is free-flowing",getIndex());
     return 0;
   }
   if (!mode.isDriving()) {
