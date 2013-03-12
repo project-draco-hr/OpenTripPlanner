@@ -7,7 +7,6 @@
     LOG.debug("Loading edges...");
     List<Edge> edges=(ArrayList<Edge>)in.readObject();
     graph.vertices=new HashMap<String,Vertex>();
-    ;
     for (    Edge e : edges) {
       graph.vertices.put(e.getFromVertex().getLabel(),e.getFromVertex());
       graph.vertices.put(e.getToVertex().getLabel(),e.getToVertex());
