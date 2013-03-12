@@ -1,0 +1,12 @@
+{
+  OSMWithTags o=new OSMWithTags();
+  assertFalse(o.isThroughTrafficExplicitlyDisallowed());
+  o.addTag("access","something");
+  assertFalse(o.isThroughTrafficExplicitlyDisallowed());
+  o.addTag("access","destination");
+  assertTrue(o.isThroughTrafficExplicitlyDisallowed());
+  o.addTag("access","forestry");
+  assertTrue(o.isThroughTrafficExplicitlyDisallowed());
+  o.addTag("access","private");
+  assertTrue(o.isThroughTrafficExplicitlyDisallowed());
+}
