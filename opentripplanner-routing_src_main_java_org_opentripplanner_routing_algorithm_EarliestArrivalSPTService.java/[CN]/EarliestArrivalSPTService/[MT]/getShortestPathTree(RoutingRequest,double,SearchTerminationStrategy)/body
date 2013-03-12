@@ -1,17 +1,13 @@
 {
-  RoutingContext rctx=options.getRoutingContext();
-  long abortTime=DateUtils.absoluteTimeout(relTimeout);
   ShortestPathTree spt=new EarliestArrivalShortestPathTree(options);
   State initialState=new State(options);
   spt.add(initialState);
-  OTPPriorityQueueFactory qFactory=BinHeap.FACTORY;
-  int initialSize=rctx.graph.getVertices().size();
-  initialSize=(int)Math.ceil(2 * (Math.sqrt((double)initialSize + 1)));
-  OTPPriorityQueue<State> pq=qFactory.create(initialSize);
+  OTPPriorityQueue<State> pq=new BinHeap<State>();
   pq.insert(initialState,0);
   while (!pq.empty()) {
     State u=pq.extract_min();
     Vertex u_vertex=u.getVertex();
+    if (!spt.visit(u))     continue;
     Collection<Edge> edges=options.isArriveBy() ? u_vertex.getIncoming() : u_vertex.getOutgoing();
     for (    Edge edge : edges) {
       for (State v=edge.traverse(u); v != null; v=v.getNextResult()) {
@@ -19,7 +15,7 @@
           continue;
         }
         if (spt.add(v)) {
-          pq.insert(v,v.getElapsedTime());
+          pq.insert(v,v.getActiveTime());
         }
       }
     }
