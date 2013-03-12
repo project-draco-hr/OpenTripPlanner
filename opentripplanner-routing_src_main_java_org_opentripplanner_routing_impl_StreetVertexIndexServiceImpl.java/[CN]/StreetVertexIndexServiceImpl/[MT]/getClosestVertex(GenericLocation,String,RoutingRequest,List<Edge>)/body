@@ -1,6 +1,7 @@
 {
-  _log.debug("Looking for/making a vertex near {}",coordinate);
-  StreetVertex intersection=getIntersectionAt(coordinate,MAX_CORNER_DISTANCE);
+  _log.debug("Looking for/making a vertex near {}",location);
+  Coordinate coord=location.getCoordinate();
+  StreetVertex intersection=getIntersectionAt(coord,MAX_CORNER_DISTANCE);
   if (intersection != null) {
     if (name == null) {
       _log.debug("found intersection {}. not splitting.",intersection);
@@ -30,7 +31,7 @@
         name=resources.getString("unnamedStreet");
       }
     }
-    StreetLocation closest=new StreetLocation(graph,"corner " + Math.random(),coordinate,name);
+    StreetLocation closest=new StreetLocation(graph,"corner " + Math.random(),coord,name);
     FreeEdge e=new FreeEdge(closest,intersection);
     closest.getExtra().add(e);
     e=new FreeEdge(intersection,closest);
@@ -40,8 +41,8 @@
   double closestStopDistance=Double.POSITIVE_INFINITY;
   Vertex closestStop=null;
   if (options != null && options.getModes().isTransit()) {
-    for (    Vertex v : getLocalTransitStops(coordinate,1000)) {
-      double d=distanceLibrary.distance(v.getCoordinate(),coordinate);
+    for (    Vertex v : getLocalTransitStops(coord,1000)) {
+      double d=distanceLibrary.distance(v.getCoordinate(),coord);
       if (d < closestStopDistance) {
         closestStopDistance=d;
         closestStop=v;
@@ -50,19 +51,19 @@
   }
   _log.debug(" best stop: {} distance: {}",closestStop,closestStopDistance);
   StreetLocation closestStreet=null;
-  CandidateEdgeBundle bundle=getClosestEdges(coordinate,options,extraEdges,null,false);
+  CandidateEdgeBundle bundle=getClosestEdges(coord,options,extraEdges,null,false);
   CandidateEdge candidate=bundle.best;
   double closestStreetDistance=Double.POSITIVE_INFINITY;
   if (candidate != null) {
     StreetEdge bestStreet=candidate.edge;
     Coordinate nearestPoint=candidate.nearestPointOnEdge;
-    closestStreetDistance=distanceLibrary.distance(coordinate,nearestPoint);
+    closestStreetDistance=distanceLibrary.distance(coord,nearestPoint);
     _log.debug("best street: {} dist: {}",bestStreet.toString(),closestStreetDistance);
     if (name == null) {
       name=bestStreet.getName();
     }
-    String closestName=String.format("%s_%s",bestStreet.getName(),coordinate.toString());
-    closestStreet=StreetLocation.createStreetLocation(graph,closestName,name,bundle.toEdgeList(),nearestPoint,coordinate);
+    String closestName=String.format("%s_%s",bestStreet.getName(),location.toString());
+    closestStreet=StreetLocation.createStreetLocation(graph,closestName,name,bundle.toEdgeList(),nearestPoint,coord);
   }
   if (closestStreet == null) {
     _log.debug("returning only transit stop (no street found)");
