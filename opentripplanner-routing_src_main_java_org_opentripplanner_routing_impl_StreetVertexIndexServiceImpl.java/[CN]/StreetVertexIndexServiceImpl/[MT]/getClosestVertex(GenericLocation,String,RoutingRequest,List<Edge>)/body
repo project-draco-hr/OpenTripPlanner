@@ -51,7 +51,7 @@
   }
   _log.debug(" best stop: {} distance: {}",closestStop,closestStopDistance);
   StreetLocation closestStreet=null;
-  CandidateEdgeBundle bundle=getClosestEdges(coord,options,extraEdges,null,false);
+  CandidateEdgeBundle bundle=getClosestEdges(location,options,extraEdges,null,false);
   CandidateEdge candidate=bundle.best;
   double closestStreetDistance=Double.POSITIVE_INFINITY;
   if (candidate != null) {
