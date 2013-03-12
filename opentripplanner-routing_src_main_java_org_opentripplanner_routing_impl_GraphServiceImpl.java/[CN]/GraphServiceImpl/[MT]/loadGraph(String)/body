@@ -28,7 +28,7 @@
   }
   LOG.debug("graph input stream successfully opened. now loading.");
   try {
-    return Graph.load(is,loadLevel);
+    return Graph.load(new ObjectInputStream(is),loadLevel,indexFactory);
   }
  catch (  Exception ex) {
     LOG.error("Exception while loading graph from {}.",graphResource);
