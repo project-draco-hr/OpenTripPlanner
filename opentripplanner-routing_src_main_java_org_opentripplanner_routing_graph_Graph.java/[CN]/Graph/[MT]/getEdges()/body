@@ -1,8 +1,6 @@
 {
-  Collection<Vertex> vertices=this.getVertices();
   Set<Edge> edges=new HashSet<Edge>();
-  for (  Vertex v : vertices) {
-    edges.addAll(v.getIncoming());
+  for (  Vertex v : this.getVertices()) {
     edges.addAll(v.getOutgoing());
   }
   return edges;

@@ -15,11 +15,13 @@
     LOG.info("Main graph read. |V|={} |E|={}",graph.countVertices(),graph.countEdges());
     graph.streetIndex=indexFactory.newIndex(graph);
     LOG.debug("street index built.");
-    if (level == LoadLevel.FULL)     return graph;
+    LOG.debug("Rebuilding edge and vertex indices");
+    graph.rebuildVertexAndEdgeIndices();
+    if (level == LoadLevel.FULL) {
+      return graph;
+    }
     if (graph.debugData) {
       graph.graphBuilderAnnotations=(List<GraphBuilderAnnotation>)in.readObject();
-      graph.vertexById=(List<Vertex>)in.readObject();
-      graph.edgeById=(Map<Integer,Edge>)in.readObject();
       LOG.debug("Debug info read.");
     }
  else {
