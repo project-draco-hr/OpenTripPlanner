@@ -5,6 +5,8 @@
   NamedPlace np=loc.getNamedPlace();
   assertEquals("name",np.name);
   assertEquals("12345",np.place);
+  assertFalse(loc.hasCoordinate());
+  assertFalse(loc.hasHeading());
   assertNull(loc.getLat());
   assertNull(loc.getLng());
   assertNull(loc.getCoordinate());
