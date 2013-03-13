@@ -6,7 +6,7 @@
     if (v.getDegreeOut() + v.getDegreeIn() == 0)     LOG.debug("vertex {} has no edges, it will not survive serialization.",v);
   }
   LOG.debug("Assigning vertex/edge ID numbers...");
-  this.renumberVerticesAndEdges();
+  this.rebuildVertexAndEdgeIndices();
   LOG.debug("Writing edges...");
   out.writeObject(this);
   out.writeObject(edges);

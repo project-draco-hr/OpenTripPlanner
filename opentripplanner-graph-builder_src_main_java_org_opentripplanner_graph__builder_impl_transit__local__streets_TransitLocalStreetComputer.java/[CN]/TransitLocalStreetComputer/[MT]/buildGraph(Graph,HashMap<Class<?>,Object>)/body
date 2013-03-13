@@ -1,6 +1,6 @@
 {
   HashSet<Vertex> transitShortestPathVertices=new HashSet<Vertex>();
-  graph.renumberVerticesAndEdges();
+  graph.rebuildVertexAndEdgeIndices();
   RoutingRequest walk=new RoutingRequest(TraverseMode.WALK);
   RoutingRequest wheelchair=new RoutingRequest(TraverseMode.WALK);
   wheelchair.wheelchairAccessible=true;
