@@ -1,3 +1,5 @@
 {
-  if (vertices.remove(v.getLabel()) != v)   LOG.error("attempting to remove vertex that is not in graph (or mapping value was null): {}",v);
+  if (vertices.remove(v.getLabel()) != v) {
+    LOG.error("attempting to remove vertex that is not in graph (or mapping value was null): {}",v);
+  }
 }

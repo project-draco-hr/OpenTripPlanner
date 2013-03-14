@@ -2,10 +2,10 @@
   Coordinate c=loc.getCoordinate();
   if (c != null) {
     if (other instanceof StreetLocation) {
-      return getClosestVertex(c,loc.getName(),options,((StreetLocation)other).getExtra());
+      return getClosestVertex(loc,loc.getName(),options,((StreetLocation)other).getExtra());
     }
  else {
-      return getClosestVertex(c,loc.getName(),options);
+      return getClosestVertex(loc,loc.getName(),options);
     }
   }
   String place=loc.getPlace();
