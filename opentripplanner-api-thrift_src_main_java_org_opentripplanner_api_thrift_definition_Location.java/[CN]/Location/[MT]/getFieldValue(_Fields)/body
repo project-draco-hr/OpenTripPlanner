@@ -2,6 +2,8 @@
 switch (field) {
 case LAT_LNG:
     return getLat_lng();
+case HEADING:
+  return Double.valueOf(getHeading());
 }
 throw new IllegalStateException();
 }

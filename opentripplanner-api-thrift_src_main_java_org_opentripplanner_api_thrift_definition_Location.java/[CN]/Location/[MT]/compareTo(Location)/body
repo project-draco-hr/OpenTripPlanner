@@ -14,5 +14,15 @@
       return lastComparison;
     }
   }
+  lastComparison=Boolean.valueOf(isSetHeading()).compareTo(typedOther.isSetHeading());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetHeading()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.heading,typedOther.heading);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
   return 0;
 }

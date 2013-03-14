@@ -1,0 +1,7 @@
+{
+  GenericLocation genericLoc=makeGenericLocation(loc.getLat_lng());
+  if (loc.isSetHeading()) {
+    genericLoc.setHeading(loc.getHeading());
+  }
+  return genericLoc;
+}
