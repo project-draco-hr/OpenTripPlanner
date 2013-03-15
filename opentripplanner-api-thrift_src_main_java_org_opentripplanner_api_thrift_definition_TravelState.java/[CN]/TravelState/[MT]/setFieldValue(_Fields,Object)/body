@@ -16,5 +16,13 @@ if (value == null) {
   setVertex((org.opentripplanner.api.thrift.definition.GraphVertex)value);
 }
 break;
+case BACK_EDGE:
+if (value == null) {
+unsetBack_edge();
+}
+ else {
+setBack_edge((org.opentripplanner.api.thrift.definition.GraphEdge)value);
+}
+break;
 }
 }

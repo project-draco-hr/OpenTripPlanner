@@ -12,5 +12,11 @@
     if (!(this_present_vertex && that_present_vertex))     return false;
     if (!this.vertex.equals(that.vertex))     return false;
   }
+  boolean this_present_back_edge=true && this.isSetBack_edge();
+  boolean that_present_back_edge=true && that.isSetBack_edge();
+  if (this_present_back_edge || that_present_back_edge) {
+    if (!(this_present_back_edge && that_present_back_edge))     return false;
+    if (!this.back_edge.equals(that.back_edge))     return false;
+  }
   return true;
 }
