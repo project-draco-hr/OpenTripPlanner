@@ -4,7 +4,7 @@
   if (searchCutoffSeconds > 0) {
     req.worstTime=req.dateTime + (req.arriveBy ? -searchCutoffSeconds : searchCutoffSeconds);
   }
-  String latLon=String.format("%f,%f",i.lat,i.lon);
+  GenericLocation latLon=new GenericLocation(i.lat,i.lon);
   req.batch=true;
   if (req.arriveBy)   req.setTo(latLon);
  else   req.setFrom(latLon);

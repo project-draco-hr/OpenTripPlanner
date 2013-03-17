@@ -1,0 +1,17 @@
+{
+  TTupleProtocol oprot=(TTupleProtocol)prot;
+{
+    oprot.writeI32(struct.edges.size());
+    for (    org.opentripplanner.api.thrift.definition.GraphEdge _iter60 : struct.edges) {
+      _iter60.write(oprot);
+    }
+  }
+  BitSet optionals=new BitSet();
+  if (struct.isSetCompute_time_millis()) {
+    optionals.set(0);
+  }
+  oprot.writeBitSet(optionals,1);
+  if (struct.isSetCompute_time_millis()) {
+    oprot.writeI64(struct.compute_time_millis);
+  }
+}

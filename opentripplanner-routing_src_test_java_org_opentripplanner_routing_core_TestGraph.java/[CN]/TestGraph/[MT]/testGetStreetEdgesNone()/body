@@ -1,0 +1,13 @@
+{
+  Graph g=new Graph();
+  Vertex a=new IntersectionVertex(g,"A",5,5);
+  Vertex b=new IntersectionVertex(g,"B",6,6);
+  Vertex c=new IntersectionVertex(g,"C",3,2);
+  Set<Edge> allEdges=new HashSet<Edge>(4);
+  allEdges.add(new FreeEdge(a,b));
+  allEdges.add(new FreeEdge(b,c));
+  allEdges.add(new FreeEdge(c,b));
+  allEdges.add(new FreeEdge(c,a));
+  Set<StreetEdge> edges=new HashSet<StreetEdge>(g.getStreetEdges());
+  assertEquals(0,edges.size());
+}

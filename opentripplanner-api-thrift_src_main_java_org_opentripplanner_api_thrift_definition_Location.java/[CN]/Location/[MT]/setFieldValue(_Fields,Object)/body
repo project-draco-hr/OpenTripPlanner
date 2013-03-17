@@ -8,5 +8,13 @@ case LAT_LNG:
       setLat_lng((LatLng)value);
     }
   break;
+case HEADING:
+if (value == null) {
+  unsetHeading();
+}
+ else {
+  setHeading((Double)value);
+}
+break;
 }
 }

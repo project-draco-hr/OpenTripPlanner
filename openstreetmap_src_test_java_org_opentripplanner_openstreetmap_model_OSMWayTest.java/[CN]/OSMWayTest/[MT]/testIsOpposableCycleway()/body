@@ -1,0 +1,13 @@
+{
+  OSMWay way=new OSMWay();
+  assertFalse(way.isOpposableCycleway());
+  way.addTag("cycleway","notatagvalue");
+  assertFalse(way.isOpposableCycleway());
+  way.addTag("cycleway","oppo");
+  assertFalse(way.isOpposableCycleway());
+  way.addTag("cycleway","opposite");
+  assertTrue(way.isOpposableCycleway());
+  way.addTag("cycleway","nope");
+  way.addTag("cycleway:left","opposite_side");
+  assertTrue(way.isOpposableCycleway());
+}

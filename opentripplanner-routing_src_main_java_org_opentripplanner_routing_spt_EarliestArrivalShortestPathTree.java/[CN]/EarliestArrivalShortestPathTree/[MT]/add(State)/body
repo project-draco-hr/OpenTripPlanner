@@ -1,0 +1,11 @@
+{
+  Vertex here=state.getVertex();
+  State existing=states.get(here);
+  if (existing == null || earlier(state,existing)) {
+    states.put(here,state);
+    return true;
+  }
+ else {
+    return false;
+  }
+}

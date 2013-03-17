@@ -7,14 +7,5 @@
       return false;
     }
   }
-  if (mode == TraverseMode.WALK && permission.allows(StreetTraversalPermission.PEDESTRIAN)) {
-    return true;
-  }
-  if (mode == TraverseMode.BICYCLE && permission.allows(StreetTraversalPermission.BICYCLE)) {
-    return true;
-  }
-  if (mode == TraverseMode.CAR && permission.allows(StreetTraversalPermission.CAR)) {
-    return true;
-  }
-  return false;
+  return permission.allows(mode);
 }

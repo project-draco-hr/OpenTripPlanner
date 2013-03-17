@@ -1,0 +1,8 @@
+{
+  GenericLocation loc=new GenericLocation(1.0,2.0);
+  Coordinate expectedCoord=new Coordinate(2.0,1.0);
+  assertEquals(expectedCoord,loc.getCoordinate());
+  assertEquals("1.0,2.0",loc.toString());
+  assertTrue(loc.hasCoordinate());
+  assertFalse(loc.hasHeading());
+}

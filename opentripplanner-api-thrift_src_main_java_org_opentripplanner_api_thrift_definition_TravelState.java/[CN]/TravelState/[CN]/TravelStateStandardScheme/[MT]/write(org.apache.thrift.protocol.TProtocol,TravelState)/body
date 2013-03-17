@@ -9,6 +9,13 @@
     struct.vertex.write(oprot);
     oprot.writeFieldEnd();
   }
+  if (struct.back_edge != null) {
+    if (struct.isSetBack_edge()) {
+      oprot.writeFieldBegin(BACK_EDGE_FIELD_DESC);
+      struct.back_edge.write(oprot);
+      oprot.writeFieldEnd();
+    }
+  }
   oprot.writeFieldStop();
   oprot.writeStructEnd();
 }

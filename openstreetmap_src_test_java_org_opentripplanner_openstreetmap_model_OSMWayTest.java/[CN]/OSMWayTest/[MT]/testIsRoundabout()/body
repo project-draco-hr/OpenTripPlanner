@@ -1,0 +1,8 @@
+{
+  OSMWay way=new OSMWay();
+  assertFalse(way.isRoundabout());
+  way.addTag("junction","dovetail");
+  assertFalse(way.isRoundabout());
+  way.addTag("junction","roundabout");
+  assertTrue(way.isRoundabout());
+}

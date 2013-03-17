@@ -1,0 +1,20 @@
+{
+switch (field) {
+case STREET_EDGES_ONLY:
+    if (value == null) {
+      unsetStreet_edges_only();
+    }
+ else {
+      setStreet_edges_only((Boolean)value);
+    }
+  break;
+case CAN_BE_TRAVERSED_BY:
+if (value == null) {
+  unsetCan_be_traversed_by();
+}
+ else {
+  setCan_be_traversed_by((Set<org.opentripplanner.api.thrift.definition.TravelMode>)value);
+}
+break;
+}
+}

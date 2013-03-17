@@ -1,0 +1,11 @@
+{
+  this.trips.add(new TripsModelInfo(trip.getTripHeadsign(),number,trip.getServiceId().getId(),trip.getId()));
+  if (direction == null) {
+    direction=trip.getDirectionId();
+  }
+ else {
+    if (!direction.equals(trip.getDirectionId())) {
+      direction=MULTIDIRECTION;
+    }
+  }
+}

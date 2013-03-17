@@ -1,0 +1,12 @@
+{
+  __isset_bit_vector.clear();
+  __isset_bit_vector.or(other.__isset_bit_vector);
+  if (other.isSetEdges()) {
+    List<org.opentripplanner.api.thrift.definition.GraphEdge> __this__edges=new ArrayList<org.opentripplanner.api.thrift.definition.GraphEdge>();
+    for (    org.opentripplanner.api.thrift.definition.GraphEdge other_element : other.edges) {
+      __this__edges.add(other_element);
+    }
+    this.edges=__this__edges;
+  }
+  this.compute_time_millis=other.compute_time_millis;
+}

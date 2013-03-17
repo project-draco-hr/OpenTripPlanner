@@ -1,6 +1,6 @@
 {
   _log.warn("Pruning isolated islands ...");
-  StreetUtils.pruneFloatingIslands(graph,maxIslandSize,islandWithStopMaxSize,LoggerAppenderProvider.createCsvFile4LoggerCat(islandLogFile,"islands"));
+  StreetUtils.pruneFloatingIslands(graph,islandWithoutStopsMaxSize,islandWithStopsMaxSize,LoggerAppenderProvider.createCsvFile4LoggerCat(islandLogFile,"islands"));
   if (transitToStreetNetwork == null) {
     _log.warn("Could not reconnect stop, TransitToStreetNetworkGraphBuilder was not provided");
   }

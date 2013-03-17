@@ -1,0 +1,22 @@
+{
+  TTupleProtocol oprot=(TTupleProtocol)prot;
+  BitSet optionals=new BitSet();
+  if (struct.isSetStreet_edges_only()) {
+    optionals.set(0);
+  }
+  if (struct.isSetCan_be_traversed_by()) {
+    optionals.set(1);
+  }
+  oprot.writeBitSet(optionals,2);
+  if (struct.isSetStreet_edges_only()) {
+    oprot.writeBool(struct.street_edges_only);
+  }
+  if (struct.isSetCan_be_traversed_by()) {
+{
+      oprot.writeI32(struct.can_be_traversed_by.size());
+      for (      org.opentripplanner.api.thrift.definition.TravelMode _iter52 : struct.can_be_traversed_by) {
+        oprot.writeI32(_iter52.getValue());
+      }
+    }
+  }
+}

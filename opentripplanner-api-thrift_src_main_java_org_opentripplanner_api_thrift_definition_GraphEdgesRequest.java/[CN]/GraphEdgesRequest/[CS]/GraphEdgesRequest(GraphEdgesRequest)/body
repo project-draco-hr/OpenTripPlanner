@@ -1,0 +1,12 @@
+{
+  __isset_bit_vector.clear();
+  __isset_bit_vector.or(other.__isset_bit_vector);
+  this.street_edges_only=other.street_edges_only;
+  if (other.isSetCan_be_traversed_by()) {
+    Set<org.opentripplanner.api.thrift.definition.TravelMode> __this__can_be_traversed_by=new HashSet<org.opentripplanner.api.thrift.definition.TravelMode>();
+    for (    org.opentripplanner.api.thrift.definition.TravelMode other_element : other.can_be_traversed_by) {
+      __this__can_be_traversed_by.add(other_element);
+    }
+    this.can_be_traversed_by=__this__can_be_traversed_by;
+  }
+}

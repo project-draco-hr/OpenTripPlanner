@@ -7,7 +7,7 @@
     endTime/=1000;
   }
   if (endTime - startTime > MAX_STOP_TIME_QUERY_INTERVAL) {
-    return new TransitError("Max stop time query interval is " + (endTime - startTime));
+    return new TransitError("Max stop time query interval is " + (endTime - startTime) + " > "+ MAX_STOP_TIME_QUERY_INTERVAL);
   }
   TransitIndexService transitIndexService=getGraph(routerId).getService(TransitIndexService.class);
   if (transitIndexService == null) {
@@ -43,6 +43,21 @@
           getStopTimesForBoardEdge(startTime,endTime,options,e,extended);
         }
         seen.put(st.time,e);
+      }
+    }
+    Edge preAlightEdge=transitIndexService.getPreAlightEdge(stop);
+    Vertex alighting=preAlightEdge.getFromVertex();
+    for (    Edge e : alighting.getIncoming()) {
+      for (      StopTime st : getStopTimesForAlightEdge(startTime,endTime,options,e,extended)) {
+        if (!trips.contains(st.trip)) {
+          st.phase="arrival";
+          if (extended != null && extended.equals(true)) {
+            if (references != null && references.equals(true))             result.routes.add(st.trip.getRoute());
+            if (routeId != null && !routeId.equals("") && !st.trip.getRoute().getId().getId().equals(routeId))             continue;
+            result.stopTimes.add(st);
+          }
+ else           result.stopTimes.add(st);
+        }
       }
     }
   }

@@ -1,35 +1,3 @@
 {
-  try {
-    Graph graph=(Graph)in.readObject();
-    LOG.debug("Basic graph info read.");
-    if (graph.graphVersionMismatch())     throw new RuntimeException("Graph version mismatch detected.");
-    if (level == LoadLevel.BASIC)     return graph;
-    LOG.debug("Loading edges...");
-    List<Edge> edges=(ArrayList<Edge>)in.readObject();
-    graph.vertices=new HashMap<String,Vertex>();
-    ;
-    for (    Edge e : edges) {
-      graph.vertices.put(e.getFromVertex().getLabel(),e.getFromVertex());
-      graph.vertices.put(e.getToVertex().getLabel(),e.getToVertex());
-    }
-    for (    Vertex v : graph.getVertices())     v.compact();
-    LOG.info("Main graph read. |V|={} |E|={}",graph.countVertices(),graph.countEdges());
-    graph.streetIndex=new StreetVertexIndexServiceImpl(graph);
-    LOG.debug("street index built.");
-    if (level == LoadLevel.FULL)     return graph;
-    if (graph.debugData) {
-      graph.graphBuilderAnnotations=(List<GraphBuilderAnnotation>)in.readObject();
-      graph.vertexById=(List<Vertex>)in.readObject();
-      graph.edgeById=(Map<Integer,Edge>)in.readObject();
-      LOG.debug("Debug info read.");
-    }
- else {
-      LOG.warn("Graph file does not contain debug data.");
-    }
-    return graph;
-  }
- catch (  InvalidClassException ex) {
-    LOG.error("Stored graph is incompatible with this version of OTP, please rebuild it.");
-    throw new IllegalStateException("Stored Graph version error",ex);
-  }
+  return load(in,level,new DefaultStreetVertexIndexFactory());
 }

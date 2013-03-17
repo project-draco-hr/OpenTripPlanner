@@ -1,0 +1,14 @@
+{
+  Graph g=new Graph();
+  Vertex a=new IntersectionVertex(g,"A",5,5);
+  Vertex b=new IntersectionVertex(g,"B",6,6);
+  Vertex c=new IntersectionVertex(g,"C",3,2);
+  Set<Edge> expectedEdges=new HashSet<Edge>(4);
+  expectedEdges.add(new FreeEdge(a,b));
+  expectedEdges.add(new FreeEdge(b,c));
+  expectedEdges.add(new FreeEdge(c,b));
+  expectedEdges.add(new FreeEdge(c,a));
+  Set<Edge> edges=new HashSet<Edge>(g.getEdges());
+  assertEquals(4,edges.size());
+  assertEquals(expectedEdges,edges);
+}

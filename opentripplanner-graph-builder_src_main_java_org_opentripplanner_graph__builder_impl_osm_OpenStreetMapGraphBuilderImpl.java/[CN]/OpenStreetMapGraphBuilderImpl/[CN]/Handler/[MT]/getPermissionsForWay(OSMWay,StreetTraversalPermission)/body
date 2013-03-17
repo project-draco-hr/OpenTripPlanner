@@ -1,0 +1,21 @@
+{
+  StreetTraversalPermission permissions=getPermissionsForEntity(way,def);
+  if (way.isPedestrianExplicitlyAllowed()) {
+    permissions=permissions.add(StreetTraversalPermission.PEDESTRIAN);
+  }
+ else   if (way.isPedestrianExplicitlyDenied()) {
+    permissions=permissions.remove(StreetTraversalPermission.PEDESTRIAN);
+  }
+  boolean forceBikes=false;
+  if (way.isBicycleExplicitlyAllowed()) {
+    permissions=permissions.add(StreetTraversalPermission.BICYCLE);
+    forceBikes=true;
+  }
+  if (way.isBicycleDismountForced()) {
+    permissions=permissions.remove(StreetTraversalPermission.BICYCLE);
+    if (forceBikes) {
+      _log.warn(graph.addBuilderAnnotation(new ConflictingBikeTags(way.getId())));
+    }
+  }
+  return permissions;
+}

@@ -1,0 +1,28 @@
+{
+  if (!getClass().equals(other.getClass())) {
+    return getClass().getName().compareTo(other.getClass().getName());
+  }
+  int lastComparison=0;
+  GraphEdgesRequest typedOther=(GraphEdgesRequest)other;
+  lastComparison=Boolean.valueOf(isSetStreet_edges_only()).compareTo(typedOther.isSetStreet_edges_only());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetStreet_edges_only()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.street_edges_only,typedOther.street_edges_only);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  lastComparison=Boolean.valueOf(isSetCan_be_traversed_by()).compareTo(typedOther.isSetCan_be_traversed_by());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetCan_be_traversed_by()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.can_be_traversed_by,typedOther.can_be_traversed_by);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  return 0;
+}

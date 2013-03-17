@@ -13,6 +13,17 @@
     sb.append(this.vertex);
   }
   first=false;
+  if (isSetBack_edge()) {
+    if (!first)     sb.append(", ");
+    sb.append("back_edge:");
+    if (this.back_edge == null) {
+      sb.append("null");
+    }
+ else {
+      sb.append(this.back_edge);
+    }
+    first=false;
+  }
   sb.append(")");
   return sb.toString();
 }

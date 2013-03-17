@@ -3,11 +3,10 @@
   long startTime=System.currentTimeMillis();
   TraversalRequirements requirements=new TraversalRequirements();
   requirements.setModes(new TravelModeSet(req.getAllowed_modes()).toTraverseModeSet());
-  Coordinate c=new LatLngExtension(req.getLocation().getLat_lng()).toCoordinate();
-  LocationObservation.Builder builder=new LocationObservation.Builder().setCoordinate(c);
-  if (req.isSetHeading())   builder.setHeading(req.getHeading());
+  GenericLocation loc=new LatLngExtension(req.getLocation().getLat_lng()).toGenericLocation();
+  if (req.isSetHeading())   loc.setHeading(req.getHeading());
   StreetVertexIndexService streetVertexIndex=getStreetIndex();
-  CandidateEdgeBundle edges=streetVertexIndex.getClosestEdges(builder.build(),requirements);
+  CandidateEdgeBundle edges=streetVertexIndex.getClosestEdges(loc,requirements);
   FindNearestEdgesResponse res=new FindNearestEdgesResponse();
   int maxEdges=req.getMax_edges();
   for (  CandidateEdge e : edges) {

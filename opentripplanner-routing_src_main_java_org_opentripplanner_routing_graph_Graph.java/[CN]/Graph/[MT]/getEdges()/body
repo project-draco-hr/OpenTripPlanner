@@ -1,0 +1,7 @@
+{
+  Set<Edge> edges=new HashSet<Edge>();
+  for (  Vertex v : this.getVertices()) {
+    edges.addAll(v.getOutgoing());
+  }
+  return edges;
+}

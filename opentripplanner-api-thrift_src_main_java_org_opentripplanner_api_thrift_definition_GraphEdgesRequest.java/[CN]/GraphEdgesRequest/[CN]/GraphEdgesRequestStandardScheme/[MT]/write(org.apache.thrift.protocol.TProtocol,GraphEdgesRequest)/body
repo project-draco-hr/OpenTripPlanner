@@ -1,0 +1,24 @@
+{
+  struct.validate();
+  oprot.writeStructBegin(STRUCT_DESC);
+  if (struct.isSetStreet_edges_only()) {
+    oprot.writeFieldBegin(STREET_EDGES_ONLY_FIELD_DESC);
+    oprot.writeBool(struct.street_edges_only);
+    oprot.writeFieldEnd();
+  }
+  if (struct.can_be_traversed_by != null) {
+    if (struct.isSetCan_be_traversed_by()) {
+      oprot.writeFieldBegin(CAN_BE_TRAVERSED_BY_FIELD_DESC);
+{
+        oprot.writeSetBegin(new org.apache.thrift.protocol.TSet(org.apache.thrift.protocol.TType.I32,struct.can_be_traversed_by.size()));
+        for (        org.opentripplanner.api.thrift.definition.TravelMode _iter51 : struct.can_be_traversed_by) {
+          oprot.writeI32(_iter51.getValue());
+        }
+        oprot.writeSetEnd();
+      }
+      oprot.writeFieldEnd();
+    }
+  }
+  oprot.writeFieldStop();
+  oprot.writeStructEnd();
+}

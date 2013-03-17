@@ -1,8 +1,8 @@
 {
   RoutingRequest request=prototypeRoutingRequest.clone();
   request.setRouterId(get(routerId,n,request.getRouterId()));
-  request.setFrom(get(fromPlace,n,request.getFromPlace().getRepresentation()));
-  request.setTo(get(toPlace,n,request.getToPlace().getRepresentation()));
+  request.setFromString(get(fromPlace,n,request.getFromPlace().getRepresentation()));
+  request.setToString(get(toPlace,n,request.getToPlace().getRepresentation()));
 {
     String d=get(date,n,null);
     String t=get(time,n,null);
@@ -62,7 +62,7 @@
   request.setArriveBy(get(arriveBy,n,false));
   request.setShowIntermediateStops(get(showIntermediateStops,n,request.isShowIntermediateStops()));
   if (intermediatePlaces != null && intermediatePlaces.size() > 0 && !intermediatePlaces.get(0).equals("")) {
-    request.setIntermediatePlaces(intermediatePlaces);
+    request.setIntermediatePlacesFromStrings(intermediatePlaces);
   }
   if (intermediatePlacesOrdered == null)   intermediatePlacesOrdered=request.isIntermediatePlacesOrdered();
   request.setIntermediatePlacesOrdered(intermediatePlacesOrdered);

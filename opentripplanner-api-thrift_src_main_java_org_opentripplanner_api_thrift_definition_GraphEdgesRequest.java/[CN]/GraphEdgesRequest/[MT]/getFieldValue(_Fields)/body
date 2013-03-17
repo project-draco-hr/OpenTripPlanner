@@ -1,0 +1,9 @@
+{
+switch (field) {
+case STREET_EDGES_ONLY:
+    return Boolean.valueOf(isStreet_edges_only());
+case CAN_BE_TRAVERSED_BY:
+  return getCan_be_traversed_by();
+}
+throw new IllegalStateException();
+}

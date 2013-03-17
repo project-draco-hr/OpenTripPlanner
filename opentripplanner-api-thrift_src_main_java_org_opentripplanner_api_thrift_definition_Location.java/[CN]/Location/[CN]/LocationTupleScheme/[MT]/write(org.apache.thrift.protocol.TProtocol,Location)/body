@@ -4,8 +4,14 @@
   if (struct.isSetLat_lng()) {
     optionals.set(0);
   }
-  oprot.writeBitSet(optionals,1);
+  if (struct.isSetHeading()) {
+    optionals.set(1);
+  }
+  oprot.writeBitSet(optionals,2);
   if (struct.isSetLat_lng()) {
     struct.lat_lng.write(oprot);
+  }
+  if (struct.isSetHeading()) {
+    oprot.writeDouble(struct.heading);
   }
 }

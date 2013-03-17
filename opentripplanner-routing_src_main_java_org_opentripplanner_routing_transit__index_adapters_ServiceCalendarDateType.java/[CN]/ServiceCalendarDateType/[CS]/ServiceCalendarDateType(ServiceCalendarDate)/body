@@ -1,0 +1,15 @@
+{
+  this.serviceId=arg.getServiceId();
+  this.date=arg.getDate().getAsDate().getTime();
+  this.exceptionType=arg.getExceptionType();
+switch (this.exceptionType) {
+case 1:
+    this.exception="Remove";
+  break;
+case 2:
+this.exception="Add";
+break;
+default :
+this.exception="";
+}
+}

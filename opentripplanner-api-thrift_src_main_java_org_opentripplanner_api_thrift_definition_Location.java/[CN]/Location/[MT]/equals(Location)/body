@@ -6,5 +6,11 @@
     if (!(this_present_lat_lng && that_present_lat_lng))     return false;
     if (!this.lat_lng.equals(that.lat_lng))     return false;
   }
+  boolean this_present_heading=true && this.isSetHeading();
+  boolean that_present_heading=true && that.isSetHeading();
+  if (this_present_heading || that_present_heading) {
+    if (!(this_present_heading && that_present_heading))     return false;
+    if (this.heading != that.heading)     return false;
+  }
   return true;
 }

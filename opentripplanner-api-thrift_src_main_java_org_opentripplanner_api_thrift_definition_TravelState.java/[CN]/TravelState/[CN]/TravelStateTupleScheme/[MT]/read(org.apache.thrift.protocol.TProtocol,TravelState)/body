@@ -5,4 +5,10 @@
   struct.vertex=new org.opentripplanner.api.thrift.definition.GraphVertex();
   struct.vertex.read(iprot);
   struct.setVertexIsSet(true);
+  BitSet incoming=iprot.readBitSet(1);
+  if (incoming.get(0)) {
+    struct.back_edge=new org.opentripplanner.api.thrift.definition.GraphEdge();
+    struct.back_edge.read(iprot);
+    struct.setBack_edgeIsSet(true);
+  }
 }

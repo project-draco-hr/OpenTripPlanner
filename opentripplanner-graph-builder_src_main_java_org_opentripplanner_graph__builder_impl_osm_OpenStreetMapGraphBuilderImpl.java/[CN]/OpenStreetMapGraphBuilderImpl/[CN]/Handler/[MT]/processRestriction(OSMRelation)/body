@@ -16,15 +16,15 @@
     _log.warn(graph.addBuilderAnnotation(new TurnRestrictionBad(relation.getId())));
     return;
   }
-  Set<TraverseMode> modes=EnumSet.of(TraverseMode.BICYCLE,TraverseMode.CAR);
+  TraverseModeSet modes=new TraverseModeSet(TraverseMode.BICYCLE,TraverseMode.CAR,TraverseMode.CUSTOM_MOTOR_VEHICLE);
   String exceptModes=relation.getTag("except");
   if (exceptModes != null) {
     for (    String m : exceptModes.split(";")) {
       if (m.equals("motorcar")) {
-        modes.remove(TraverseMode.CAR);
+        modes.setDriving(false);
       }
  else       if (m.equals("bicycle")) {
-        modes.remove(TraverseMode.BICYCLE);
+        modes.setBicycle(false);
         _log.warn(graph.addBuilderAnnotation(new TurnRestrictionException(via,from)));
       }
     }
@@ -58,7 +58,7 @@
     _log.warn(graph.addBuilderAnnotation(new TurnRestrictionUnknown(relation.getTag("restriction"))));
     return;
   }
-  tag.modes=new TraverseModeSet(modes);
+  tag.modes=modes.clone();
   if (relation.hasTag("day_on") && relation.hasTag("day_off") && relation.hasTag("hour_on")&& relation.hasTag("hour_off")) {
     try {
       tag.time=RepeatingTimePeriod.parseFromOsmTurnRestriction(relation.getTag("day_on"),relation.getTag("day_off"),relation.getTag("hour_on"),relation.getTag("hour_off"));

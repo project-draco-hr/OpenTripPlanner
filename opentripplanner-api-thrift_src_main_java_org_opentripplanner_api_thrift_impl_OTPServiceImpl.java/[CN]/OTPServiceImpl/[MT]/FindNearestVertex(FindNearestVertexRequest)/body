@@ -7,8 +7,8 @@
   }
   RoutingRequest rr=rrb.build();
   StreetVertexIndexService streetVertexIndex=getStreetIndex();
-  Coordinate c=new LatLngExtension(req.getLocation().getLat_lng()).toCoordinate();
-  Vertex closest=streetVertexIndex.getClosestVertex(c,null,rr);
+  GenericLocation gl=new LatLngExtension(req.getLocation().getLat_lng()).toGenericLocation();
+  Vertex closest=streetVertexIndex.getVertexForLocation(gl,rr);
   FindNearestVertexResponse res=new FindNearestVertexResponse();
   res.setNearest_vertex(new GraphVertexExtension(closest));
   res.setCompute_time_millis(System.currentTimeMillis() - startTime);

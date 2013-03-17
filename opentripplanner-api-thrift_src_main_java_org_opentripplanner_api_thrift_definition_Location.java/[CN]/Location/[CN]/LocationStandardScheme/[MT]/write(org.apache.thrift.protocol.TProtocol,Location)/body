@@ -8,6 +8,11 @@
       oprot.writeFieldEnd();
     }
   }
+  if (struct.isSetHeading()) {
+    oprot.writeFieldBegin(HEADING_FIELD_DESC);
+    oprot.writeDouble(struct.heading);
+    oprot.writeFieldEnd();
+  }
   oprot.writeFieldStop();
   oprot.writeStructEnd();
 }

@@ -11,6 +11,12 @@
     }
     first=false;
   }
+  if (isSetHeading()) {
+    if (!first)     sb.append(", ");
+    sb.append("heading:");
+    sb.append(this.heading);
+    first=false;
+  }
   sb.append(")");
   return sb.toString();
 }

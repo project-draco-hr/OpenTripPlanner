@@ -2,4 +2,12 @@
   TTupleProtocol oprot=(TTupleProtocol)prot;
   oprot.writeI64(struct.arrival_time);
   struct.vertex.write(oprot);
+  BitSet optionals=new BitSet();
+  if (struct.isSetBack_edge()) {
+    optionals.set(0);
+  }
+  oprot.writeBitSet(optionals,1);
+  if (struct.isSetBack_edge()) {
+    struct.back_edge.write(oprot);
+  }
 }

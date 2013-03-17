@@ -1,0 +1,27 @@
+{
+  StreetTraversalPermission permissionsFront=permissions;
+  StreetTraversalPermission permissionsBack=permissions;
+  if (way.isOneWayForwardDriving() || way.isRoundabout()) {
+    permissionsBack=permissionsBack.remove(StreetTraversalPermission.BICYCLE_AND_DRIVING);
+  }
+  if (way.isOneWayReverseDriving()) {
+    permissionsFront=permissionsFront.remove(StreetTraversalPermission.BICYCLE_AND_DRIVING);
+  }
+  if (way.isOneWayForwardBicycle()) {
+    permissionsBack=permissionsBack.remove(StreetTraversalPermission.BICYCLE);
+  }
+  if (way.isOneWayReverseBicycle()) {
+    permissionsFront=permissionsFront.remove(StreetTraversalPermission.BICYCLE);
+  }
+  String oneWayBicycle=way.getTag("oneway:bicycle");
+  if (OSMWithTags.isFalse(oneWayBicycle) || way.isTagTrue("bicycle:backwards")) {
+    if (permissions.allows(StreetTraversalPermission.BICYCLE)) {
+      permissionsFront=permissionsFront.add(StreetTraversalPermission.BICYCLE);
+      permissionsBack=permissionsBack.add(StreetTraversalPermission.BICYCLE);
+    }
+  }
+  if (way.isOpposableCycleway()) {
+    permissionsBack=permissionsBack.add(StreetTraversalPermission.BICYCLE);
+  }
+  return new P2<StreetTraversalPermission>(permissionsFront,permissionsBack);
+}

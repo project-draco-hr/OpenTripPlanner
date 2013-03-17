@@ -1,0 +1,28 @@
+{
+  options=options.clone();
+  options.setMaxTransfers(Integer.MAX_VALUE);
+  options.setMaxWalkDistance(Double.MAX_VALUE);
+  if (options.getClampInitialWait() < 0)   options.setClampInitialWait(60 * 30);
+  ShortestPathTree spt=new EarliestArrivalShortestPathTree(options);
+  State initialState=new State(options);
+  spt.add(initialState);
+  OTPPriorityQueue<State> pq=new BinHeap<State>();
+  pq.insert(initialState,0);
+  while (!pq.empty()) {
+    State u=pq.extract_min();
+    Vertex u_vertex=u.getVertex();
+    if (!spt.visit(u))     continue;
+    Collection<Edge> edges=options.isArriveBy() ? u_vertex.getIncoming() : u_vertex.getOutgoing();
+    for (    Edge edge : edges) {
+      for (State v=edge.traverse(u); v != null; v=v.getNextResult()) {
+        if (isWorstTimeExceeded(v,options)) {
+          continue;
+        }
+        if (spt.add(v)) {
+          pq.insert(v,v.getActiveTime());
+        }
+      }
+    }
+  }
+  return spt;
+}

@@ -1,0 +1,22 @@
+{
+  StringBuilder sb=new StringBuilder("GraphEdgesRequest(");
+  boolean first=true;
+  if (isSetStreet_edges_only()) {
+    sb.append("street_edges_only:");
+    sb.append(this.street_edges_only);
+    first=false;
+  }
+  if (isSetCan_be_traversed_by()) {
+    if (!first)     sb.append(", ");
+    sb.append("can_be_traversed_by:");
+    if (this.can_be_traversed_by == null) {
+      sb.append("null");
+    }
+ else {
+      sb.append(this.can_be_traversed_by);
+    }
+    first=false;
+  }
+  sb.append(")");
+  return sb.toString();
+}

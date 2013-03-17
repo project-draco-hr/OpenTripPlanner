@@ -1,0 +1,15 @@
+{
+  RoutingRequest options=new RoutingRequest(TraverseMode.CUSTOM_MOTOR_VEHICLE);
+  options.setCarSpeed(1.0);
+  options.setRoutingContext(_graph,topRight,bottomLeft);
+  ShortestPathTree tree=new GenericAStar().getShortestPathTree(options);
+  GraphPath path=tree.getPath(bottomLeft,false);
+  assertNotNull(path);
+  List<State> states=path.states;
+  assertEquals(5,states.size());
+  assertEquals("maple_1st",states.get(0).getVertex().getLabel());
+  assertEquals("main_1st",states.get(1).getVertex().getLabel());
+  assertEquals("broad_1st",states.get(2).getVertex().getLabel());
+  assertEquals("broad_2nd",states.get(3).getVertex().getLabel());
+  assertEquals("broad_3rd",states.get(4).getVertex().getLabel());
+}
