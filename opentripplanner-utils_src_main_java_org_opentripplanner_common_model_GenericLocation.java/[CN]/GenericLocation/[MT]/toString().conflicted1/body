@@ -1,0 +1,11 @@
+{
+  if (this.place != null && !this.place.isEmpty()) {
+    if (this.name == null || this.name.isEmpty()) {
+      return this.place;
+    }
+ else {
+      return String.format("%s::%s",this.name,this.place);
+    }
+  }
+  return String.format("%s,%s",this.lat,this.lng);
+}
