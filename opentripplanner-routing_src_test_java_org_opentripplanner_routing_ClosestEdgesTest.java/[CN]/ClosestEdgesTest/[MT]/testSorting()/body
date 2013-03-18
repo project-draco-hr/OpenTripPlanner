@@ -1,0 +1,17 @@
+{
+  Coordinate c=new Coordinate(-74.005000001,40.01);
+  TraversalRequirements reqs=new TraversalRequirements();
+  TraverseModeSet modes=new TraverseModeSet();
+  modes.setCar(true);
+  reqs.setModes(modes);
+  GenericLocation loc=new GenericLocation(c);
+  loc.setHeading(top.getAzimuth());
+  CandidateEdgeBundle candidates=finder.getClosestEdges(loc,reqs);
+  Collections.sort(candidates,new CandidateEdge.CandidateEdgeScoreComparator());
+  double lastScore=candidates.best.getScore();
+  for (  CandidateEdge ce : candidates) {
+    assertTrue(ce.getScore() >= lastScore);
+    lastScore=ce.getScore();
+  }
+  assertEquals(candidates.best.getScore(),candidates.get(0).getScore(),0.0);
+}
