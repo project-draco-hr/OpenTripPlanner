@@ -1,3 +1,4 @@
 {
+  if (stationNetworks.contains("*") || rentedNetworks.contains("*"))   return true;
   return !Sets.intersection(stationNetworks,rentedNetworks).isEmpty();
 }
