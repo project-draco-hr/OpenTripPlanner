@@ -1,12 +1,15 @@
 {
-  LOG.info("FindNearestEdges called");
+  LOG.info("FindNearestEdges called with query {}",req.getLocation());
   long startTime=System.currentTimeMillis();
   TraversalRequirements requirements=new TraversalRequirements();
   requirements.setModes(new TravelModeSet(req.getAllowed_modes()).toTraverseModeSet());
-  GenericLocation loc=new LatLngExtension(req.getLocation().getLat_lng()).toGenericLocation();
-  if (req.isSetHeading())   loc.setHeading(req.getHeading());
+  Location queryLoc=req.getLocation();
+  GenericLocation loc=new LatLngExtension(queryLoc.getLat_lng()).toGenericLocation();
+  if (queryLoc.isSetHeading())   loc.setHeading(queryLoc.getHeading());
   StreetVertexIndexService streetVertexIndex=getStreetIndex();
   CandidateEdgeBundle edges=streetVertexIndex.getClosestEdges(loc,requirements);
+  CandidateEdgeScoreComparator comp=new CandidateEdgeScoreComparator();
+  Collections.sort(edges,comp);
   FindNearestEdgesResponse res=new FindNearestEdgesResponse();
   int maxEdges=req.getMax_edges();
   for (  CandidateEdge e : edges) {
