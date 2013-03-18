@@ -1,7 +1,7 @@
 {
   try {
     String retval=getResourceBundle().getString(key);
-    _log.info(String.format("Localized '%s' using '%s'",key,retval));
+    _log.debug(String.format("Localized '%s' using '%s'",key,retval));
     return retval;
   }
  catch (  MissingResourceException e) {
