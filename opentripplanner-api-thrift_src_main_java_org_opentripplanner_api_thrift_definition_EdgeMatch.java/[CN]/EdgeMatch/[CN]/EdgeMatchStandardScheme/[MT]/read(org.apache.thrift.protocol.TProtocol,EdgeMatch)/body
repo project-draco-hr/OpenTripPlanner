@@ -36,6 +36,24 @@ struct.setScoreIsSet(true);
 org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
 }
 break;
+case 4:
+if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
+struct.distance_from_query=iprot.readDouble();
+struct.setDistance_from_queryIsSet(true);
+}
+ else {
+org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+}
+break;
+case 5:
+if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
+struct.heading_at_closest_point=iprot.readDouble();
+struct.setHeading_at_closest_pointIsSet(true);
+}
+ else {
+org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+}
+break;
 default :
 org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
 }

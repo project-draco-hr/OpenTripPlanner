@@ -18,5 +18,17 @@
     if (!(this_present_score && that_present_score))     return false;
     if (this.score != that.score)     return false;
   }
+  boolean this_present_distance_from_query=true && this.isSetDistance_from_query();
+  boolean that_present_distance_from_query=true && that.isSetDistance_from_query();
+  if (this_present_distance_from_query || that_present_distance_from_query) {
+    if (!(this_present_distance_from_query && that_present_distance_from_query))     return false;
+    if (this.distance_from_query != that.distance_from_query)     return false;
+  }
+  boolean this_present_heading_at_closest_point=true && this.isSetHeading_at_closest_point();
+  boolean that_present_heading_at_closest_point=true && that.isSetHeading_at_closest_point();
+  if (this_present_heading_at_closest_point || that_present_heading_at_closest_point) {
+    if (!(this_present_heading_at_closest_point && that_present_heading_at_closest_point))     return false;
+    if (this.heading_at_closest_point != that.heading_at_closest_point)     return false;
+  }
   return true;
 }

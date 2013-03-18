@@ -3,4 +3,18 @@
   struct.edge.write(oprot);
   struct.closest_point.write(oprot);
   oprot.writeDouble(struct.score);
+  BitSet optionals=new BitSet();
+  if (struct.isSetDistance_from_query()) {
+    optionals.set(0);
+  }
+  if (struct.isSetHeading_at_closest_point()) {
+    optionals.set(1);
+  }
+  oprot.writeBitSet(optionals,2);
+  if (struct.isSetDistance_from_query()) {
+    oprot.writeDouble(struct.distance_from_query);
+  }
+  if (struct.isSetHeading_at_closest_point()) {
+    oprot.writeDouble(struct.heading_at_closest_point);
+  }
 }

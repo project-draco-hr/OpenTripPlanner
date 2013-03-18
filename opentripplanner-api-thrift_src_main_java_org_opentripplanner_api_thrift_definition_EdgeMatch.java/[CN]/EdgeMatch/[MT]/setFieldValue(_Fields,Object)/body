@@ -24,5 +24,21 @@ unsetScore();
 setScore((Double)value);
 }
 break;
+case DISTANCE_FROM_QUERY:
+if (value == null) {
+unsetDistance_from_query();
+}
+ else {
+setDistance_from_query((Double)value);
+}
+break;
+case HEADING_AT_CLOSEST_POINT:
+if (value == null) {
+unsetHeading_at_closest_point();
+}
+ else {
+setHeading_at_closest_point((Double)value);
+}
+break;
 }
 }

@@ -6,6 +6,10 @@ case CLOSEST_POINT:
   return getClosest_point();
 case SCORE:
 return Double.valueOf(getScore());
+case DISTANCE_FROM_QUERY:
+return Double.valueOf(getDistance_from_query());
+case HEADING_AT_CLOSEST_POINT:
+return Double.valueOf(getHeading_at_closest_point());
 }
 throw new IllegalStateException();
 }

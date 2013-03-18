@@ -22,6 +22,18 @@
   sb.append("score:");
   sb.append(this.score);
   first=false;
+  if (isSetDistance_from_query()) {
+    if (!first)     sb.append(", ");
+    sb.append("distance_from_query:");
+    sb.append(this.distance_from_query);
+    first=false;
+  }
+  if (isSetHeading_at_closest_point()) {
+    if (!first)     sb.append(", ");
+    sb.append("heading_at_closest_point:");
+    sb.append(this.heading_at_closest_point);
+    first=false;
+  }
   sb.append(")");
   return sb.toString();
 }

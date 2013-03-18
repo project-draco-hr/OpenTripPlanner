@@ -34,5 +34,25 @@
       return lastComparison;
     }
   }
+  lastComparison=Boolean.valueOf(isSetDistance_from_query()).compareTo(typedOther.isSetDistance_from_query());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetDistance_from_query()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.distance_from_query,typedOther.distance_from_query);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  lastComparison=Boolean.valueOf(isSetHeading_at_closest_point()).compareTo(typedOther.isSetHeading_at_closest_point());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetHeading_at_closest_point()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.heading_at_closest_point,typedOther.heading_at_closest_point);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
   return 0;
 }

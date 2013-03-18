@@ -14,6 +14,16 @@
   oprot.writeFieldBegin(SCORE_FIELD_DESC);
   oprot.writeDouble(struct.score);
   oprot.writeFieldEnd();
+  if (struct.isSetDistance_from_query()) {
+    oprot.writeFieldBegin(DISTANCE_FROM_QUERY_FIELD_DESC);
+    oprot.writeDouble(struct.distance_from_query);
+    oprot.writeFieldEnd();
+  }
+  if (struct.isSetHeading_at_closest_point()) {
+    oprot.writeFieldBegin(HEADING_AT_CLOSEST_POINT_FIELD_DESC);
+    oprot.writeDouble(struct.heading_at_closest_point);
+    oprot.writeFieldEnd();
+  }
   oprot.writeFieldStop();
   oprot.writeStructEnd();
 }

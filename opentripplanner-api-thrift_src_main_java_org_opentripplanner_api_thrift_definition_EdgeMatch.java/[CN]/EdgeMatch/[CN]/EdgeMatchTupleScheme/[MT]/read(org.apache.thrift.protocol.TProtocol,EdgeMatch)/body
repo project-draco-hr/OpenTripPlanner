@@ -8,4 +8,13 @@
   struct.setClosest_pointIsSet(true);
   struct.score=iprot.readDouble();
   struct.setScoreIsSet(true);
+  BitSet incoming=iprot.readBitSet(2);
+  if (incoming.get(0)) {
+    struct.distance_from_query=iprot.readDouble();
+    struct.setDistance_from_queryIsSet(true);
+  }
+  if (incoming.get(1)) {
+    struct.heading_at_closest_point=iprot.readDouble();
+    struct.setHeading_at_closest_pointIsSet(true);
+  }
 }
