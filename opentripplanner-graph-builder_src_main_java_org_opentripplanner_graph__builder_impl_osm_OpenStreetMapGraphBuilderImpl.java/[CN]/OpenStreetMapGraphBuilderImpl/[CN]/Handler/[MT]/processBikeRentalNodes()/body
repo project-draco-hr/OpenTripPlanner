@@ -1,6 +1,8 @@
 {
   _log.debug("Processing bike rental nodes...");
   int n=0;
+  BikeRentalStationService bikeRentalService=new BikeRentalStationService();
+  graph.putService(BikeRentalStationService.class,bikeRentalService);
   for (  OSMNode node : _bikeRentalNodes) {
     n++;
     String creativeName=wayPropertySet.getCreativeNameForWay(node);
@@ -22,9 +24,17 @@
       _log.warn("Bike rental station at osm node " + node.getId() + " ("+ creativeName+ ") with no network; including as compatible-with-all.");
       networkSet.add("*");
     }
-    BikeRentalStationVertex station=new BikeRentalStationVertex(graph,"" + node.getId(),"bike rental " + node.getId(),node.getLon(),node.getLat(),creativeName,capacity);
-    new RentABikeOnEdge(station,station,networkSet);
-    new RentABikeOffEdge(station,station,networkSet);
+    BikeRentalStation station=new BikeRentalStation();
+    station.id="" + node.getId();
+    station.name=creativeName;
+    station.x=node.getLon();
+    station.y=node.getLat();
+    station.spacesAvailable=capacity / 2;
+    station.bikesAvailable=capacity / 2;
+    bikeRentalService.addStation(station);
+    BikeRentalStationVertex stationVertex=new BikeRentalStationVertex(graph,station);
+    new RentABikeOnEdge(stationVertex,stationVertex,networkSet);
+    new RentABikeOffEdge(stationVertex,stationVertex,networkSet);
   }
   _log.debug("Created " + n + " bike rental stations.");
 }
