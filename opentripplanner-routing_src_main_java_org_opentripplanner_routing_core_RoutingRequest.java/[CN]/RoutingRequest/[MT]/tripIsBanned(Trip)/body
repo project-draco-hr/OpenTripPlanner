@@ -1,0 +1,15 @@
+{
+  if (bannedAgencies != null) {
+    if (bannedAgencies.contains(trip.getId().getAgencyId())) {
+      return true;
+    }
+  }
+  if (bannedRoutes != null) {
+    Route route=trip.getRoute();
+    RouteSpec spec=new RouteSpec(route.getId().getAgencyId(),GtfsLibrary.getRouteName(route));
+    if (bannedRoutes.contains(spec)) {
+      return true;
+    }
+  }
+  return false;
+}

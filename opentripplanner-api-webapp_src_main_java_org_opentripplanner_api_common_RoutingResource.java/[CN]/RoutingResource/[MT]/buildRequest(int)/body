@@ -67,7 +67,9 @@
   if (intermediatePlacesOrdered == null)   intermediatePlacesOrdered=request.isIntermediatePlacesOrdered();
   request.setIntermediatePlacesOrdered(intermediatePlacesOrdered);
   request.setPreferredRoutes(get(preferredRoutes,n,request.getPreferredRouteStr()));
+  request.setPreferredAgencies(get(preferredAgencies,n,request.getPreferredAgenciesStr()));
   request.setUnpreferredRoutes(get(unpreferredRoutes,n,request.getUnpreferredRouteStr()));
+  request.setUnpreferredAgencies(get(unpreferredAgencies,n,request.getUnpreferredAgenciesStr()));
   request.setBannedRoutes(get(bannedRoutes,n,request.getBannedRouteStr()));
   request.setBannedAgencies(get(bannedAgencies,n,request.getBannedAgenciesStr()));
   HashMap<AgencyAndId,BannedStopSet> bannedTripMap=makeBannedTripMap(get(bannedTrips,n,null));
