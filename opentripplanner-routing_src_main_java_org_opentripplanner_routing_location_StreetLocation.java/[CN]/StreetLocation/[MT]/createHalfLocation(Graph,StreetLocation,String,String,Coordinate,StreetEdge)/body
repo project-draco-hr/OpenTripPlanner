@@ -19,7 +19,9 @@
   newRight.setNoThruTraffic(street.isNoThruTraffic());
   newRight.setWheelchairNote(street.getWheelchairNotes());
   newRight.setNote(street.getNotes());
+  LOG.debug("Copying {} TurnRestrictions",street.getTurnRestrictions().size());
   for (  TurnRestriction turnRestriction : street.getTurnRestrictions()) {
+    LOG.debug("Adding TurnRestriction {}",turnRestriction);
     newRight.addTurnRestriction(turnRestriction);
   }
   base.extra.add(newLeft);
