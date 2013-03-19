@@ -7,7 +7,13 @@
   provider.setPath(file);
   loader.setProvider(provider);
   loader.buildGraph(gg,extra);
+  Set<P2<Integer>> edgeEndpoints=new HashSet<P2<Integer>>();
   for (  StreetEdge se : gg.getStreetEdges()) {
+    P2<Integer> endpoints=new P2<Integer>(se.getFromVertex().getIndex(),se.getToVertex().getIndex());
+    if (edgeEndpoints.contains(endpoints)) {
+      assertFalse(true);
+    }
+    edgeEndpoints.add(endpoints);
     StreetTraversalPermission perm=se.getPermission();
     assertEquals(perm.allows(StreetTraversalPermission.CAR),perm.allows(StreetTraversalPermission.CUSTOM_MOTOR_VEHICLE));
     for (    TurnRestriction tr : se.getTurnRestrictions()) {
