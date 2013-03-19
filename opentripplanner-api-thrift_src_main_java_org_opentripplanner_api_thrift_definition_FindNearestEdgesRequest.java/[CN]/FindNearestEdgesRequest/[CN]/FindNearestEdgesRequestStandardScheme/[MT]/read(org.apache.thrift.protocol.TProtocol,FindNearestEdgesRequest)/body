@@ -35,15 +35,6 @@ case 2:
     org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
   }
 break;
-case 3:
-if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
-struct.heading=iprot.readDouble();
-struct.setHeadingIsSet(true);
-}
- else {
-org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
-}
-break;
 case 10:
 if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
 struct.max_edges=iprot.readI32();
