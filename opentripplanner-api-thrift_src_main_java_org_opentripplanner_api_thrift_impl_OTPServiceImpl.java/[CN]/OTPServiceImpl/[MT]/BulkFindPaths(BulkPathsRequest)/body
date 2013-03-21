@@ -4,8 +4,7 @@
   PathOptions pathOptions=req.getOptions();
   BulkPathsResponse res=new BulkPathsResponse();
   for (  TripParameters trip : req.getTrips()) {
-    List<GraphPath> computedPaths=computePaths(trip,pathOptions);
-    TripPathsExtension tripPaths=new TripPathsExtension(trip,computedPaths);
+    TripPaths tripPaths=computePaths(trip,pathOptions);
     res.addToPaths(tripPaths);
   }
   res.setCompute_time_millis(System.currentTimeMillis() - startTime);

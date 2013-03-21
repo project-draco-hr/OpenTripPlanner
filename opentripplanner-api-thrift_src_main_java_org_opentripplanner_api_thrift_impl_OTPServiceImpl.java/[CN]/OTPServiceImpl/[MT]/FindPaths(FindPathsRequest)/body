@@ -4,8 +4,7 @@
   TripParameters trip=req.getTrip();
   TripPaths outPaths=new TripPaths();
   outPaths.setTrip(trip);
-  List<GraphPath> computedPaths=computePaths(trip,req.getOptions());
-  TripPathsExtension tripPaths=new TripPathsExtension(trip,computedPaths);
+  TripPaths tripPaths=computePaths(trip,req.getOptions());
   FindPathsResponse res=new FindPathsResponse();
   res.setPaths(tripPaths);
   res.setCompute_time_millis(System.currentTimeMillis() - startTime);
