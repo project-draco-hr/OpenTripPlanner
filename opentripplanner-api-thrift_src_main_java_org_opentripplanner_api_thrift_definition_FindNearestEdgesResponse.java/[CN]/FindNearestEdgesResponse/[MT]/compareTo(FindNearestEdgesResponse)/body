@@ -4,12 +4,12 @@
   }
   int lastComparison=0;
   FindNearestEdgesResponse typedOther=(FindNearestEdgesResponse)other;
-  lastComparison=Boolean.valueOf(isSetNearest_edges()).compareTo(typedOther.isSetNearest_edges());
+  lastComparison=Boolean.valueOf(isSetResult()).compareTo(typedOther.isSetResult());
   if (lastComparison != 0) {
     return lastComparison;
   }
-  if (isSetNearest_edges()) {
-    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.nearest_edges,typedOther.nearest_edges);
+  if (isSetResult()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.result,typedOther.result);
     if (lastComparison != 0) {
       return lastComparison;
     }

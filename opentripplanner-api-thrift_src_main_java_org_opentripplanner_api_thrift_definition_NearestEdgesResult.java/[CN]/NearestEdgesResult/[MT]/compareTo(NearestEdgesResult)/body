@@ -1,0 +1,18 @@
+{
+  if (!getClass().equals(other.getClass())) {
+    return getClass().getName().compareTo(other.getClass().getName());
+  }
+  int lastComparison=0;
+  NearestEdgesResult typedOther=(NearestEdgesResult)other;
+  lastComparison=Boolean.valueOf(isSetNearest_edges()).compareTo(typedOther.isSetNearest_edges());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetNearest_edges()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.nearest_edges,typedOther.nearest_edges);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  return 0;
+}

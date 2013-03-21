@@ -1,0 +1,23 @@
+{
+  TTupleProtocol iprot=(TTupleProtocol)prot;
+  struct.location=new org.opentripplanner.api.thrift.definition.Location();
+  struct.location.read(iprot);
+  struct.setLocationIsSet(true);
+  BitSet incoming=iprot.readBitSet(2);
+  if (incoming.get(0)) {
+{
+      org.apache.thrift.protocol.TSet _set13=new org.apache.thrift.protocol.TSet(org.apache.thrift.protocol.TType.I32,iprot.readI32());
+      struct.allowed_modes=new HashSet<org.opentripplanner.api.thrift.definition.TravelMode>(2 * _set13.size);
+      for (int _i14=0; _i14 < _set13.size; ++_i14) {
+        org.opentripplanner.api.thrift.definition.TravelMode _elem15;
+        _elem15=org.opentripplanner.api.thrift.definition.TravelMode.findByValue(iprot.readI32());
+        struct.allowed_modes.add(_elem15);
+      }
+    }
+    struct.setAllowed_modesIsSet(true);
+  }
+  if (incoming.get(1)) {
+    struct.max_edges=iprot.readI32();
+    struct.setMax_edgesIsSet(true);
+  }
+}

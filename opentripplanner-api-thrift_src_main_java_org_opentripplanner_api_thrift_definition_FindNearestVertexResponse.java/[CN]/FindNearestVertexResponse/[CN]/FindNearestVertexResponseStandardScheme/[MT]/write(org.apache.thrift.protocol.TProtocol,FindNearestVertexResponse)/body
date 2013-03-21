@@ -1,12 +1,10 @@
 {
   struct.validate();
   oprot.writeStructBegin(STRUCT_DESC);
-  if (struct.nearest_vertex != null) {
-    if (struct.isSetNearest_vertex()) {
-      oprot.writeFieldBegin(NEAREST_VERTEX_FIELD_DESC);
-      struct.nearest_vertex.write(oprot);
-      oprot.writeFieldEnd();
-    }
+  if (struct.result != null) {
+    oprot.writeFieldBegin(RESULT_FIELD_DESC);
+    struct.result.write(oprot);
+    oprot.writeFieldEnd();
   }
   if (struct.isSetCompute_time_millis()) {
     oprot.writeFieldBegin(COMPUTE_TIME_MILLIS_FIELD_DESC);

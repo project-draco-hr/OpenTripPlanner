@@ -1,20 +1,12 @@
 {
 switch (field) {
-case LOCATION:
+case QUERY:
     if (value == null) {
-      unsetLocation();
+      unsetQuery();
     }
  else {
-      setLocation((org.opentripplanner.api.thrift.definition.Location)value);
+      setQuery((org.opentripplanner.api.thrift.definition.VertexQuery)value);
     }
   break;
-case ALLOWED_MODES:
-if (value == null) {
-  unsetAllowed_modes();
-}
- else {
-  setAllowed_modes((Set<org.opentripplanner.api.thrift.definition.TravelMode>)value);
-}
-break;
 }
 }

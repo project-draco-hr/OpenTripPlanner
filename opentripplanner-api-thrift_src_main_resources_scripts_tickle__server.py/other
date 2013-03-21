@@ -1,14 +1,16 @@
-from optparse import OptionParser
-from thrift import Thrift
-from thrift.transport import TSocket
-from thrift.transport import TTransport
-from thrift.protocol import TBinaryProtocol
 from opentripplanner.api.thrift.definition import OTPService
 from opentripplanner.api.thrift.definition.location.ttypes import Location
+from opentripplanner.api.thrift.definition.query.ttypes import NearestEdgesQuery
+from opentripplanner.api.thrift.definition.query.ttypes import VertexQuery
 from opentripplanner.api.thrift.definition.trip.ttypes import PathOptions
 from opentripplanner.api.thrift.definition.trip.ttypes import TravelMode
 from opentripplanner.api.thrift.definition.trip.ttypes import TripParameters
-import time
+from optparse import OptionParser
+from thrift import Thrift
+from thrift.protocol import TBinaryProtocol
+from thrift.transport import TSocket
+from thrift.transport import TTransport
 import random
+import time
 if (__name__ == '__main__'):
     Main()

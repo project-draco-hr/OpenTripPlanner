@@ -1,16 +1,11 @@
 {
   TTupleProtocol oprot=(TTupleProtocol)prot;
+  struct.result.write(oprot);
   BitSet optionals=new BitSet();
-  if (struct.isSetNearest_vertex()) {
+  if (struct.isSetCompute_time_millis()) {
     optionals.set(0);
   }
-  if (struct.isSetCompute_time_millis()) {
-    optionals.set(1);
-  }
-  oprot.writeBitSet(optionals,2);
-  if (struct.isSetNearest_vertex()) {
-    struct.nearest_vertex.write(oprot);
-  }
+  oprot.writeBitSet(optionals,1);
   if (struct.isSetCompute_time_millis()) {
     oprot.writeI64(struct.compute_time_millis);
   }

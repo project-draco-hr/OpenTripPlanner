@@ -1,0 +1,19 @@
+{
+  struct.validate();
+  oprot.writeStructBegin(STRUCT_DESC);
+  if (struct.nearest_edges != null) {
+    if (struct.isSetNearest_edges()) {
+      oprot.writeFieldBegin(NEAREST_EDGES_FIELD_DESC);
+{
+        oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT,struct.nearest_edges.size()));
+        for (        EdgeMatch _iter19 : struct.nearest_edges) {
+          _iter19.write(oprot);
+        }
+        oprot.writeListEnd();
+      }
+      oprot.writeFieldEnd();
+    }
+  }
+  oprot.writeFieldStop();
+  oprot.writeStructEnd();
+}

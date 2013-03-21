@@ -1,11 +1,11 @@
 {
 switch (field) {
-case NEAREST_EDGES:
+case RESULT:
     if (value == null) {
-      unsetNearest_edges();
+      unsetResult();
     }
  else {
-      setNearest_edges((List<org.opentripplanner.api.thrift.definition.EdgeMatch>)value);
+      setResult((org.opentripplanner.api.thrift.definition.NearestEdgesResult)value);
     }
   break;
 case COMPUTE_TIME_MILLIS:

@@ -1,0 +1,45 @@
+{
+  org.apache.thrift.protocol.TField schemeField;
+  iprot.readStructBegin();
+  while (true) {
+    schemeField=iprot.readFieldBegin();
+    if (schemeField.type == org.apache.thrift.protocol.TType.STOP) {
+      break;
+    }
+switch (schemeField.id) {
+case 1:
+      if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+        struct.location=new org.opentripplanner.api.thrift.definition.Location();
+        struct.location.read(iprot);
+        struct.setLocationIsSet(true);
+      }
+ else {
+        org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+      }
+    break;
+case 2:
+  if (schemeField.type == org.apache.thrift.protocol.TType.SET) {
+{
+      org.apache.thrift.protocol.TSet _set0=iprot.readSetBegin();
+      struct.allowed_modes=new HashSet<org.opentripplanner.api.thrift.definition.TravelMode>(2 * _set0.size);
+      for (int _i1=0; _i1 < _set0.size; ++_i1) {
+        org.opentripplanner.api.thrift.definition.TravelMode _elem2;
+        _elem2=org.opentripplanner.api.thrift.definition.TravelMode.findByValue(iprot.readI32());
+        struct.allowed_modes.add(_elem2);
+      }
+      iprot.readSetEnd();
+    }
+    struct.setAllowed_modesIsSet(true);
+  }
+ else {
+    org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+  }
+break;
+default :
+org.apache.thrift.protocol.TProtocolUtil.skip(iprot,schemeField.type);
+}
+iprot.readFieldEnd();
+}
+iprot.readStructEnd();
+struct.validate();
+}

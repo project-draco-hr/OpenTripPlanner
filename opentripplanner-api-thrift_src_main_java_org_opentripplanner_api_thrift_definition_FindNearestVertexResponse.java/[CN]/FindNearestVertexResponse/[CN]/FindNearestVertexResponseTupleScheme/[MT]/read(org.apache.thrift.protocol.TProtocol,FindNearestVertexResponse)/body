@@ -1,12 +1,10 @@
 {
   TTupleProtocol iprot=(TTupleProtocol)prot;
-  BitSet incoming=iprot.readBitSet(2);
+  struct.result=new org.opentripplanner.api.thrift.definition.VertexResult();
+  struct.result.read(iprot);
+  struct.setResultIsSet(true);
+  BitSet incoming=iprot.readBitSet(1);
   if (incoming.get(0)) {
-    struct.nearest_vertex=new org.opentripplanner.api.thrift.definition.GraphVertex();
-    struct.nearest_vertex.read(iprot);
-    struct.setNearest_vertexIsSet(true);
-  }
-  if (incoming.get(1)) {
     struct.compute_time_millis=iprot.readI64();
     struct.setCompute_time_millisIsSet(true);
   }

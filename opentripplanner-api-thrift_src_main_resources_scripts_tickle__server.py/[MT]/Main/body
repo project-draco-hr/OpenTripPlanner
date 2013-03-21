@@ -31,22 +31,25 @@ def Main():
     dest_ll = dest.lat_lng
     origin_loc = Location(lat_lng=origin_ll)
     dest_loc = Location(lat_lng=dest_ll)
-    req = OTPService.FindNearestVertexRequest(location=origin_loc)
+    req = OTPService.FindNearestVertexRequest(query=VertexQuery(location=origin_loc))
     start_t = time.time()
     res = client.FindNearestVertex(req)
     total_t = (time.time() - start_t)
+    result = res.result
     reported_compute_time = (float(res.compute_time_millis) / 1000.0)
     print ('FindNearestVertexRequest took %.6f seconds' % total_t)
     print ('Server computation time %.6f seconds' % reported_compute_time)
-    print 'Nearest vertex: ', res.nearest_vertex
-    req = OTPService.FindNearestEdgesRequest(location=origin_loc, allowed_modes=set([TravelMode.CAR]))
+    print 'Nearest vertex: ', result.nearest_vertex
+    q = NearestEdgesQuery(location=origin_loc, allowed_modes=set([TravelMode.CAR]))
+    req = OTPService.FindNearestEdgesRequest(query=q)
     start_t = time.time()
     res = client.FindNearestEdges(req)
     total_t = (time.time() - start_t)
+    result = res.result
     reported_compute_time = (float(res.compute_time_millis) / 1000.0)
     print ('FindNearestEdgesRequest took %.6f seconds' % total_t)
     print ('Server computation time %.6f seconds' % reported_compute_time)
-    print 'Nearest edges: ', res.nearest_edges
+    print 'Nearest edges: ', result.nearest_edges
     trip_params = TripParameters(origin=origin_loc, destination=dest_loc, allowed_modes=set([TravelMode.WALK]))
     path_opts = PathOptions(num_paths=1, return_detailed_path=True)
     req = OTPService.FindPathsRequest(trip=trip_params, options=path_opts)
@@ -65,8 +68,8 @@ def Main():
         print 'Found path', res.paths[0]
         print ('Trip expected to take %d seconds' % expected_duration)
     random.seed(12345)
-    origins = random.sample(vertices, 100)
-    dests = random.sample(vertices, 100)
+    origins = random.sample(vertices, 10)
+    dests = random.sample(vertices, 10)
     trip_params = []
     for (origin, dest) in zip(origins, dests):
         origin_loc = Location(lat_lng=origin.lat_lng)

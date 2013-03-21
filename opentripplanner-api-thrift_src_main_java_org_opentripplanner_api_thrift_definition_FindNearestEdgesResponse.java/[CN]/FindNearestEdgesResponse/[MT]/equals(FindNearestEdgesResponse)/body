@@ -1,10 +1,10 @@
 {
   if (that == null)   return false;
-  boolean this_present_nearest_edges=true && this.isSetNearest_edges();
-  boolean that_present_nearest_edges=true && that.isSetNearest_edges();
-  if (this_present_nearest_edges || that_present_nearest_edges) {
-    if (!(this_present_nearest_edges && that_present_nearest_edges))     return false;
-    if (!this.nearest_edges.equals(that.nearest_edges))     return false;
+  boolean this_present_result=true && this.isSetResult();
+  boolean that_present_result=true && that.isSetResult();
+  if (this_present_result || that_present_result) {
+    if (!(this_present_result && that_present_result))     return false;
+    if (!this.result.equals(that.result))     return false;
   }
   boolean this_present_compute_time_millis=true && this.isSetCompute_time_millis();
   boolean that_present_compute_time_millis=true && that.isSetCompute_time_millis();

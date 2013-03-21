@@ -1,0 +1,29 @@
+{
+  struct.validate();
+  oprot.writeStructBegin(STRUCT_DESC);
+  if (struct.location != null) {
+    oprot.writeFieldBegin(LOCATION_FIELD_DESC);
+    struct.location.write(oprot);
+    oprot.writeFieldEnd();
+  }
+  if (struct.allowed_modes != null) {
+    if (struct.isSetAllowed_modes()) {
+      oprot.writeFieldBegin(ALLOWED_MODES_FIELD_DESC);
+{
+        oprot.writeSetBegin(new org.apache.thrift.protocol.TSet(org.apache.thrift.protocol.TType.I32,struct.allowed_modes.size()));
+        for (        org.opentripplanner.api.thrift.definition.TravelMode _iter11 : struct.allowed_modes) {
+          oprot.writeI32(_iter11.getValue());
+        }
+        oprot.writeSetEnd();
+      }
+      oprot.writeFieldEnd();
+    }
+  }
+  if (struct.isSetMax_edges()) {
+    oprot.writeFieldBegin(MAX_EDGES_FIELD_DESC);
+    oprot.writeI32(struct.max_edges);
+    oprot.writeFieldEnd();
+  }
+  oprot.writeFieldStop();
+  oprot.writeStructEnd();
+}

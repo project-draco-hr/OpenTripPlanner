@@ -1,0 +1,16 @@
+{
+  StringBuilder sb=new StringBuilder("NearestEdgesResult(");
+  boolean first=true;
+  if (isSetNearest_edges()) {
+    sb.append("nearest_edges:");
+    if (this.nearest_edges == null) {
+      sb.append("null");
+    }
+ else {
+      sb.append(this.nearest_edges);
+    }
+    first=false;
+  }
+  sb.append(")");
+  return sb.toString();
+}

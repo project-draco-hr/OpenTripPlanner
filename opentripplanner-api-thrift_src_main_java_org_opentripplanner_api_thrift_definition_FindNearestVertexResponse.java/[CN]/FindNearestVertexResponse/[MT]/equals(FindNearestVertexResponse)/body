@@ -1,10 +1,10 @@
 {
   if (that == null)   return false;
-  boolean this_present_nearest_vertex=true && this.isSetNearest_vertex();
-  boolean that_present_nearest_vertex=true && that.isSetNearest_vertex();
-  if (this_present_nearest_vertex || that_present_nearest_vertex) {
-    if (!(this_present_nearest_vertex && that_present_nearest_vertex))     return false;
-    if (!this.nearest_vertex.equals(that.nearest_vertex))     return false;
+  boolean this_present_result=true && this.isSetResult();
+  boolean that_present_result=true && that.isSetResult();
+  if (this_present_result || that_present_result) {
+    if (!(this_present_result && that_present_result))     return false;
+    if (!this.result.equals(that.result))     return false;
   }
   boolean this_present_compute_time_millis=true && this.isSetCompute_time_millis();
   boolean that_present_compute_time_millis=true && that.isSetCompute_time_millis();

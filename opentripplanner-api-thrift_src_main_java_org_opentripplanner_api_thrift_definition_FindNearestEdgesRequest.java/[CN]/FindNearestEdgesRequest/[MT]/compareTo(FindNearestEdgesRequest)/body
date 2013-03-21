@@ -4,32 +4,12 @@
   }
   int lastComparison=0;
   FindNearestEdgesRequest typedOther=(FindNearestEdgesRequest)other;
-  lastComparison=Boolean.valueOf(isSetLocation()).compareTo(typedOther.isSetLocation());
+  lastComparison=Boolean.valueOf(isSetQuery()).compareTo(typedOther.isSetQuery());
   if (lastComparison != 0) {
     return lastComparison;
   }
-  if (isSetLocation()) {
-    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.location,typedOther.location);
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-  }
-  lastComparison=Boolean.valueOf(isSetAllowed_modes()).compareTo(typedOther.isSetAllowed_modes());
-  if (lastComparison != 0) {
-    return lastComparison;
-  }
-  if (isSetAllowed_modes()) {
-    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.allowed_modes,typedOther.allowed_modes);
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-  }
-  lastComparison=Boolean.valueOf(isSetMax_edges()).compareTo(typedOther.isSetMax_edges());
-  if (lastComparison != 0) {
-    return lastComparison;
-  }
-  if (isSetMax_edges()) {
-    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.max_edges,typedOther.max_edges);
+  if (isSetQuery()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.query,typedOther.query);
     if (lastComparison != 0) {
       return lastComparison;
     }
