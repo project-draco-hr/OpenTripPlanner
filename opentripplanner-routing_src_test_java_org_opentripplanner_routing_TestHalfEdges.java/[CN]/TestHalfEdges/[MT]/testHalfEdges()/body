@@ -1,4 +1,6 @@
 {
+  int nVertices=graph.getVertices().size();
+  int nEdges=graph.getEdges().size();
   RoutingRequest options=new RoutingRequest();
   HashSet<Edge> turns=new HashSet<Edge>();
   turns.add(left);
@@ -41,6 +43,9 @@
     assertNotSame(s.getVertex(),graph.getVertex("bottom"));
     assertNotSame(s.getVertex(),graph.getVertex("bottomBack"));
   }
+  options.cleanup();
+  assertEquals(nVertices,graph.getVertices().size());
+  assertEquals(nEdges,graph.getEdges().size());
   options=new RoutingRequest(new TraverseModeSet(TraverseMode.BICYCLE));
   start=StreetLocation.createStreetLocation(graph,"start1","start1",cast(turns,StreetEdge.class),new LinearLocation(0,0.95).getCoordinate(top.getGeometry()));
   end=StreetLocation.createStreetLocation(graph,"end1","end1",cast(turns,StreetEdge.class),new LinearLocation(0,0.95).getCoordinate(bottom.getGeometry()));
@@ -52,6 +57,9 @@
     assertNotSame(s.getVertex(),graph.getVertex("left"));
     assertNotSame(s.getVertex(),graph.getVertex("leftBack"));
   }
+  options.cleanup();
+  assertEquals(nVertices,graph.getVertices().size());
+  assertEquals(nEdges,graph.getEdges().size());
   start=StreetLocation.createStreetLocation(graph,"start2","start2",cast(turns,StreetEdge.class),new LinearLocation(0,0.55).getCoordinate(top.getGeometry()));
   end=StreetLocation.createStreetLocation(graph,"end2","end2",cast(turns,StreetEdge.class),new LinearLocation(0,0.55).getCoordinate(bottom.getGeometry()));
   options.setRoutingContext(graph,start,end);
@@ -62,4 +70,7 @@
     assertNotSame(s.getVertex(),graph.getVertex("right"));
     assertNotSame(s.getVertex(),graph.getVertex("rightBack"));
   }
+  options.cleanup();
+  assertEquals(nVertices,graph.getVertices().size());
+  assertEquals(nEdges,graph.getEdges().size());
 }
