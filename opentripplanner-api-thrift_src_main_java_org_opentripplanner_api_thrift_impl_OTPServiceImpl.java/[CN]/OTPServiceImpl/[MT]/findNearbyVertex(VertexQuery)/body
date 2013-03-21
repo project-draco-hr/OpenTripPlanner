@@ -1,0 +1,14 @@
+{
+  RoutingRequestBuilder rrb=new RoutingRequestBuilder();
+  if (q.isSetAllowed_modes()) {
+    rrb.setTravelModes(q.getAllowed_modes());
+  }
+  RoutingRequest rr=rrb.build();
+  StreetVertexIndexService streetVertexIndex=getStreetIndex();
+  GenericLocation gl=new LatLngExtension(q.getLocation().getLat_lng()).toGenericLocation();
+  Vertex closest=streetVertexIndex.getVertexForLocation(gl,rr);
+  VertexResult result=new VertexResult();
+  result.setNearest_vertex(new GraphVertexExtension(closest));
+  rr.cleanup();
+  return result;
+}

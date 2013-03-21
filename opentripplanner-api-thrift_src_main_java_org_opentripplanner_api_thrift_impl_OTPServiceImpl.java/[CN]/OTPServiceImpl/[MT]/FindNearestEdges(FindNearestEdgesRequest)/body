@@ -1,22 +1,8 @@
 {
   LOG.info("FindNearestEdges called");
   long startTime=System.currentTimeMillis();
-  TraversalRequirements requirements=new TraversalRequirements();
   NearestEdgesQuery q=req.getQuery();
-  requirements.setModes(new TravelModeSet(q.getAllowed_modes()).toTraverseModeSet());
-  Location queryLoc=q.getLocation();
-  GenericLocation loc=new LatLngExtension(queryLoc.getLat_lng()).toGenericLocation();
-  if (queryLoc.isSetHeading())   loc.setHeading(queryLoc.getHeading());
-  StreetVertexIndexService streetVertexIndex=getStreetIndex();
-  CandidateEdgeBundle edges=streetVertexIndex.getClosestEdges(loc,requirements);
-  CandidateEdgeScoreComparator comp=new CandidateEdgeScoreComparator();
-  Collections.sort(edges,comp);
-  NearestEdgesResult result=new NearestEdgesResult();
-  int maxEdges=q.getMax_edges();
-  for (  CandidateEdge e : edges) {
-    if (result.getNearest_edgesSize() >= maxEdges)     break;
-    result.addToNearest_edges(new EdgeMatchExtension(e));
-  }
+  NearestEdgesResult result=findNearestEdges(q);
   FindNearestEdgesResponse res=new FindNearestEdgesResponse();
   res.setResult(result);
   res.setCompute_time_millis(System.currentTimeMillis() - startTime);

@@ -1,17 +1,8 @@
 {
   LOG.info("FindNearestVertex called");
   long startTime=System.currentTimeMillis();
-  RoutingRequestBuilder rrb=new RoutingRequestBuilder();
   VertexQuery q=req.getQuery();
-  if (q.isSetAllowed_modes()) {
-    rrb.setTravelModes(q.getAllowed_modes());
-  }
-  RoutingRequest rr=rrb.build();
-  StreetVertexIndexService streetVertexIndex=getStreetIndex();
-  GenericLocation gl=new LatLngExtension(q.getLocation().getLat_lng()).toGenericLocation();
-  Vertex closest=streetVertexIndex.getVertexForLocation(gl,rr);
-  VertexResult result=new VertexResult();
-  result.setNearest_vertex(new GraphVertexExtension(closest));
+  VertexResult result=findNearbyVertex(q);
   FindNearestVertexResponse res=new FindNearestVertexResponse();
   res.setResult(result);
   res.setCompute_time_millis(System.currentTimeMillis() - startTime);
