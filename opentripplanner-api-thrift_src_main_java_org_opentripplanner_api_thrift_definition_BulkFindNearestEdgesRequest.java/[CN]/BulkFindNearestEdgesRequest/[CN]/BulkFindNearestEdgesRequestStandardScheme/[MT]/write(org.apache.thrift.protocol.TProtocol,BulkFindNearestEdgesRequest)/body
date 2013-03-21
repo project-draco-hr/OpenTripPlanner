@@ -1,0 +1,17 @@
+{
+  struct.validate();
+  oprot.writeStructBegin(STRUCT_DESC);
+  if (struct.queries != null) {
+    oprot.writeFieldBegin(QUERIES_FIELD_DESC);
+{
+      oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT,struct.queries.size()));
+      for (      org.opentripplanner.api.thrift.definition.NearestEdgesQuery _iter35 : struct.queries) {
+        _iter35.write(oprot);
+      }
+      oprot.writeListEnd();
+    }
+    oprot.writeFieldEnd();
+  }
+  oprot.writeFieldStop();
+  oprot.writeStructEnd();
+}

@@ -1,0 +1,10 @@
+{
+  if (that == null)   return false;
+  boolean this_present_queries=true && this.isSetQueries();
+  boolean that_present_queries=true && that.isSetQueries();
+  if (this_present_queries || that_present_queries) {
+    if (!(this_present_queries && that_present_queries))     return false;
+    if (!this.queries.equals(that.queries))     return false;
+  }
+  return true;
+}

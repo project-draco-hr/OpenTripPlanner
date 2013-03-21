@@ -1,0 +1,8 @@
+{
+  BulkFindNearestEdges_result result=new BulkFindNearestEdges_result();
+  receiveBase(result,"BulkFindNearestEdges");
+  if (result.isSetSuccess()) {
+    return result.success;
+  }
+  throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT,"BulkFindNearestEdges failed: unknown result");
+}

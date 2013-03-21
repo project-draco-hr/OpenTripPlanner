@@ -1,0 +1,9 @@
+{
+  TTupleProtocol oprot=(TTupleProtocol)prot;
+{
+    oprot.writeI32(struct.queries.size());
+    for (    org.opentripplanner.api.thrift.definition.VertexQuery _iter20 : struct.queries) {
+      _iter20.write(oprot);
+    }
+  }
+}

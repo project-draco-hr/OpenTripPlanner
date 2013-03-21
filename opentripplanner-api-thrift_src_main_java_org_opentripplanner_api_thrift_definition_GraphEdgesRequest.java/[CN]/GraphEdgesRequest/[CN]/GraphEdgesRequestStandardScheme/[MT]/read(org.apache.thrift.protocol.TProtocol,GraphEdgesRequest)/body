@@ -19,12 +19,12 @@ case 1:
 case 2:
   if (schemeField.type == org.apache.thrift.protocol.TType.SET) {
 {
-      org.apache.thrift.protocol.TSet _set24=iprot.readSetBegin();
-      struct.can_be_traversed_by=new HashSet<org.opentripplanner.api.thrift.definition.TravelMode>(2 * _set24.size);
-      for (int _i25=0; _i25 < _set24.size; ++_i25) {
-        org.opentripplanner.api.thrift.definition.TravelMode _elem26;
-        _elem26=org.opentripplanner.api.thrift.definition.TravelMode.findByValue(iprot.readI32());
-        struct.can_be_traversed_by.add(_elem26);
+      org.apache.thrift.protocol.TSet _set56=iprot.readSetBegin();
+      struct.can_be_traversed_by=new HashSet<org.opentripplanner.api.thrift.definition.TravelMode>(2 * _set56.size);
+      for (int _i57=0; _i57 < _set56.size; ++_i57) {
+        org.opentripplanner.api.thrift.definition.TravelMode _elem58;
+        _elem58=org.opentripplanner.api.thrift.definition.TravelMode.findByValue(iprot.readI32());
+        struct.can_be_traversed_by.add(_elem58);
       }
       iprot.readSetEnd();
     }

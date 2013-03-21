@@ -1,0 +1,20 @@
+{
+switch (field) {
+case RESULTS:
+    if (value == null) {
+      unsetResults();
+    }
+ else {
+      setResults((List<org.opentripplanner.api.thrift.definition.NearestEdgesResult>)value);
+    }
+  break;
+case COMPUTE_TIME_MILLIS:
+if (value == null) {
+  unsetCompute_time_millis();
+}
+ else {
+  setCompute_time_millis((Long)value);
+}
+break;
+}
+}

@@ -1,0 +1,18 @@
+{
+  if (!getClass().equals(other.getClass())) {
+    return getClass().getName().compareTo(other.getClass().getName());
+  }
+  int lastComparison=0;
+  BulkFindNearestVertexRequest typedOther=(BulkFindNearestVertexRequest)other;
+  lastComparison=Boolean.valueOf(isSetQueries()).compareTo(typedOther.isSetQueries());
+  if (lastComparison != 0) {
+    return lastComparison;
+  }
+  if (isSetQueries()) {
+    lastComparison=org.apache.thrift.TBaseHelper.compareTo(this.queries,typedOther.queries);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+  }
+  return 0;
+}
