@@ -1,3 +1,11 @@
 {
-  return null;
+  LOG.info("BulkFindNearestEdges called");
+  long startTime=System.currentTimeMillis();
+  BulkFindNearestEdgesResponse res=new BulkFindNearestEdgesResponse();
+  for (  NearestEdgesQuery q : req.getQueries()) {
+    NearestEdgesResult result=findNearestEdges(q);
+    res.addToResults(result);
+  }
+  res.setCompute_time_millis(System.currentTimeMillis() - startTime);
+  return res;
 }
