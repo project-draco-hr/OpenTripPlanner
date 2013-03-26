@@ -2,7 +2,7 @@
   long preferences_penalty=0;
   Route route=trip.getRoute();
   String agencyID=route.getId().getAgencyId();
-  RouteSpec spec=new RouteSpec(agencyID,GtfsLibrary.getRouteName(route));
+  RouteSpec spec=new RouteSpec(agencyID,GtfsLibrary.getRouteName(route),route.getId().getId());
   if ((preferredRoutes != null && !preferredRoutes.isEmpty()) || (preferredAgencies != null && !preferredAgencies.isEmpty())) {
     boolean isPreferedRoute=preferredRoutes != null && preferredRoutes.contains(spec);
     boolean isPreferedAgency=preferredAgencies != null && preferredAgencies.contains(agencyID);

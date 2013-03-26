@@ -1,7 +1,9 @@
 {
   if (other instanceof RouteSpec) {
     RouteSpec otherRs=(RouteSpec)other;
-    return otherRs.agency.equals(agency) && otherRs.routeName.equals(routeName);
+    boolean routeNameDiffers=routeName != null && otherRs.routeName != null && !routeName.equals(otherRs.routeName);
+    boolean routeIdDiffers=routeId != null && otherRs.routeId != null && !routeId.equals(otherRs.routeId);
+    return otherRs.agency.equals(agency) && !routeNameDiffers && !routeIdDiffers&& ObjectUtils.nullSafeEquals(routeName,otherRs.routeName) || ObjectUtils.nullSafeEquals(routeId,otherRs.routeId);
   }
   return false;
 }
