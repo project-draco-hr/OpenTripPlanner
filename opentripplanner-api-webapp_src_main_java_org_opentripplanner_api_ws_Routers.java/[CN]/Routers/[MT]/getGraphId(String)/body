@@ -1,5 +1,5 @@
 {
-  Graph graph=graphService.getGraph(routerId);
-  if (graph == null)   return Response.status(Status.NOT_FOUND).entity("graph id not registered.").build();
- else   return Response.status(Status.OK).entity(graph.toString()).build();
+  RouterInfo routerInfo=getRouterInfo(routerId);
+  if (routerInfo == null)   throw new WebApplicationException(Responses.notFound().entity("Graph id '" + routerId + "' not registered.").type("text/plain").build());
+  return routerInfo;
 }
