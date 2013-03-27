@@ -1,0 +1,14 @@
+{
+  Graph graph=graphService.getGraph(routerId);
+  if (graph == null)   return null;
+  RouterInfo routerInfo=new RouterInfo();
+  routerInfo.routerId=routerId;
+  HullService service=graph.getService(HullService.class);
+  if (service == null) {
+    Geometry hull=GraphUtils.makeConvexHull(graph);
+    service=new StoredHullService(hull);
+    graph.putService(HullService.class,service);
+  }
+  routerInfo.polygon=service.getHull();
+  return routerInfo;
+}

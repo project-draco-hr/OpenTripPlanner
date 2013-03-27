@@ -1,0 +1,11 @@
+{
+  if (agency == null) {
+    throw new IllegalArgumentException("Agency must not be null");
+  }
+  if (routeName == null && routeId == null) {
+    throw new IllegalArgumentException("Route name and Id must not be both null");
+  }
+  this.agency=agency;
+  this.routeName=routeName;
+  this.routeId=routeId;
+}

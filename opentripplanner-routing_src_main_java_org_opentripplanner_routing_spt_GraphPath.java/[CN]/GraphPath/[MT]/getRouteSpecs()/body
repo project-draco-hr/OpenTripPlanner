@@ -6,7 +6,7 @@
     Trip trip=s.getBackTrip();
     if (trip != null) {
       String routeName=GtfsLibrary.getRouteName(trip.getRoute());
-      RouteSpec spec=new RouteSpec(trip.getId().getAgencyId(),routeName);
+      RouteSpec spec=new RouteSpec(trip.getId().getAgencyId(),routeName,trip.getRoute().getId().getId());
       ret.add(spec);
     }
   }
