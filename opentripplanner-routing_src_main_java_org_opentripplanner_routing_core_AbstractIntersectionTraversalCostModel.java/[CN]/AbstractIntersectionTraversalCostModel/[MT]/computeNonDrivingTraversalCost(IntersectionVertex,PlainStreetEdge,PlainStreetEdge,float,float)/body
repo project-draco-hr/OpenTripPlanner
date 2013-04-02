@@ -1,0 +1,9 @@
+{
+  int outAngle=to.getOutAngle();
+  int inAngle=from.getInAngle();
+  int turnCost=Math.abs(outAngle - inAngle);
+  if (turnCost > 180) {
+    turnCost=360 - turnCost;
+  }
+  return (this.nonDrivingTurnCostFactor * turnCost) / toSpeed;
+}
