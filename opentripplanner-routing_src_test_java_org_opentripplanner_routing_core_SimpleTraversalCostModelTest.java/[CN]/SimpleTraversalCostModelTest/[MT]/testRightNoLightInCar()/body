@@ -1,0 +1,18 @@
+{
+  Coordinate a=new Coordinate(40.750167,-73.990989);
+  Coordinate b=new Coordinate(40.749094,-73.988049);
+  Coordinate c=new Coordinate(40.748509,-73.988693);
+  IntersectionVertex u=vertex("from_v",a,false);
+  IntersectionVertex v=vertex("intersection",b,false);
+  IntersectionVertex w=vertex("to_v",c,false);
+  PlainStreetEdge fromEdge=edge(u,v,1.0,false);
+  PlainStreetEdge toEdge=edge(v,w,1.0,false);
+  int turnAngle=costModel.calculateTurnAngle(fromEdge,toEdge,options);
+  assertTrue(costModel.isRightTurn(turnAngle));
+  assertFalse(costModel.isLeftTurn(turnAngle));
+  float fromSpeed=1.0f;
+  float toSpeed=1.0f;
+  TraverseMode mode=TraverseMode.CAR;
+  double traversalCost=costModel.computeTraversalCost(v,fromEdge,toEdge,mode,options,fromSpeed,toSpeed);
+  assertEquals(10.5,traversalCost,0.0);
+}
