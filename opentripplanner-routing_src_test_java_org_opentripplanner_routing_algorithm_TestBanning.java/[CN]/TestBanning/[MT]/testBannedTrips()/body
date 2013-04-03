@@ -24,7 +24,7 @@
       if (usedTripIds.size() == 0)       break;
       List<AgencyAndId> usedTripIdsList=new ArrayList<AgencyAndId>(usedTripIds);
       AgencyAndId tripToBan=usedTripIdsList.get(rand.nextInt(usedTripIds.size()));
-      options.bannedTrips.put(tripToBan,BannedStopSet.ALL);
+      options.banTrip(tripToBan);
     }
     options.bannedTrips.clear();
   }
