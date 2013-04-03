@@ -1,0 +1,50 @@
+{
+  Graph graph=ConstantsForTests.getInstance().getPortlandGraph();
+  Random rand=new Random(seed);
+  for (int i=0; i < 20; i++) {
+    RoutingRequest options=new RoutingRequest();
+    options.dateTime=TestUtils.dateInSeconds("America/Los_Angeles",2009,11,1,12,34,25);
+    Vertex start=null;
+    Vertex end=null;
+    while (start == null)     start=graph.getVertex("TriMet_" + rand.nextInt(10000));
+    while (end == null)     end=graph.getVertex("TriMet_" + rand.nextInt(10000));
+    options.setRoutingContext(graph,start,end);
+    ShortestPathTree spt=null;
+    int n=rand.nextInt(5) + 3;
+    for (int j=0; j < n; j++) {
+      spt=aStar.getShortestPathTree(options);
+      GraphPath path=spt.getPath(end,true);
+      if (path == null || spt == null)       break;
+      Set<T2<AgencyAndId,BannedStopSet>> usedTripDefs=new HashSet<T2<AgencyAndId,BannedStopSet>>();
+      for (      State s : path.states) {
+        if (s.getBackEdge() instanceof TransitBoardAlight) {
+          TransitBoardAlight tbae=(TransitBoardAlight)s.getBackEdge();
+          int boardingStopIndex=tbae.getStopIndex();
+          AgencyAndId tripId=s.getTripId();
+          BannedStopSet stopSet;
+          if (partial) {
+            stopSet=new BannedStopSet();
+            stopSet.add(boardingStopIndex);
+          }
+ else {
+            stopSet=BannedStopSet.ALL;
+          }
+          if (tripId != null)           usedTripDefs.add(new T2<AgencyAndId,BannedStopSet>(tripId,stopSet));
+        }
+      }
+      for (      T2<AgencyAndId,BannedStopSet> usedTripDef : usedTripDefs) {
+        BannedStopSet bannedStopSet=options.bannedTrips.get(usedTripDef.getFirst());
+        if (bannedStopSet != null) {
+          for (          Integer stopIndex : usedTripDef.getSecond()) {
+            assertFalse(bannedStopSet.contains(stopIndex));
+          }
+        }
+      }
+      if (usedTripDefs.size() == 0)       break;
+      List<T2<AgencyAndId,BannedStopSet>> usedTripDefsList=new ArrayList<T2<AgencyAndId,BannedStopSet>>(usedTripDefs);
+      T2<AgencyAndId,BannedStopSet> tripDefToBan=usedTripDefsList.get(rand.nextInt(usedTripDefs.size()));
+      options.bannedTrips.put(tripDefToBan.getFirst(),tripDefToBan.getSecond());
+    }
+    options.bannedTrips.clear();
+  }
+}
