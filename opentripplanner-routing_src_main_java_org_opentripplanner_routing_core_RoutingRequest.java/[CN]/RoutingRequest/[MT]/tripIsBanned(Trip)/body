@@ -6,8 +6,7 @@
   }
   if (bannedRoutes != null) {
     Route route=trip.getRoute();
-    RouteSpec spec=new RouteSpec(route.getId().getAgencyId(),GtfsLibrary.getRouteName(route),route.getId().getId());
-    if (bannedRoutes.contains(spec)) {
+    if (bannedRoutes.matches(route)) {
       return true;
     }
   }
