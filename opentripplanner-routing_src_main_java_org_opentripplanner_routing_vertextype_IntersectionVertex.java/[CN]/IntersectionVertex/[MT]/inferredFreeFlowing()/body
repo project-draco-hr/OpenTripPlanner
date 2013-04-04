@@ -1,3 +1,6 @@
 {
+  if (this.freeFlowing) {
+    return true;
+  }
   return getDegreeIn() == 1 && getDegreeOut() == 1 && !this.trafficLight;
 }

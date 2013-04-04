@@ -5,12 +5,12 @@
   IntersectionVertex u=vertex("from_v",a,false);
   IntersectionVertex v=vertex("intersection",b,false);
   IntersectionVertex w=vertex("to_v",c,false);
+  v.setFreeFlowing(true);
   PlainStreetEdge fromEdge=edge(u,v,1.0,false);
   PlainStreetEdge toEdge=edge(v,w,1.0,false);
-  PlainStreetEdge extraEdge=edge(v,u,1.0,false);
   float fromSpeed=1.0f;
   float toSpeed=1.0f;
   TraverseMode mode=TraverseMode.CAR;
   double traversalCost=costModel.computeTraversalCost(v,fromEdge,toEdge,mode,options,fromSpeed,toSpeed);
-  assertEquals(12.375,traversalCost,0.0);
+  assertEquals(0.0,traversalCost,0.0);
 }

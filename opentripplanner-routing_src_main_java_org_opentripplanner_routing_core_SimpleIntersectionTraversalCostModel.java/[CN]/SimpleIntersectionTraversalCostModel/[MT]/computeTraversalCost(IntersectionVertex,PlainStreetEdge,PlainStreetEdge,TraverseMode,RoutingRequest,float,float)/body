@@ -1,4 +1,7 @@
 {
+  if (v.inferredFreeFlowing()) {
+    return 0;
+  }
   if (!mode.isDriving()) {
     return computeNonDrivingTraversalCost(v,from,to,fromSpeed,toSpeed);
   }

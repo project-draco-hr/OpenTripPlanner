@@ -7,6 +7,7 @@
   IntersectionVertex w=vertex("to_v",c,false);
   PlainStreetEdge fromEdge=edge(u,v,1.0,false);
   PlainStreetEdge toEdge=edge(v,w,1.0,false);
+  PlainStreetEdge extraEdge=edge(v,u,1.0,false);
   int turnAngle=costModel.calculateTurnAngle(fromEdge,toEdge,options);
   assertTrue(costModel.isRightTurn(turnAngle));
   assertFalse(costModel.isLeftTurn(turnAngle));
