@@ -14,7 +14,7 @@
   }
   boolean isUnpreferedRoute=unpreferredRoutes != null && unpreferredRoutes.matches(route);
   boolean isUnpreferedAgency=unpreferredAgencies != null && unpreferredAgencies.contains(agencyID);
-  if (isUnpreferedRoute && isUnpreferedAgency) {
+  if (isUnpreferedRoute || isUnpreferedAgency) {
     preferences_penalty+=useUnpreferredRoutesPenalty;
   }
   return preferences_penalty;
