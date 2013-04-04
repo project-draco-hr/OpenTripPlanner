@@ -1,8 +1,7 @@
 {
   RoutingRequest options=new RoutingRequest(modes);
-  options.bannedRoutes=new HashSet<RouteSpec>();
   if (bannedRoutes.length() > 0) {
-    options.bannedRoutes.addAll(RouteSpec.listFromString(bannedRoutes));
+    options.setBannedRoutes(bannedRoutes);
   }
   Graph graph=graphService.getGraph(routerId);
   long dateTime=DateUtils.toDate(date,time,graph.getTimeZone()).getTime();
