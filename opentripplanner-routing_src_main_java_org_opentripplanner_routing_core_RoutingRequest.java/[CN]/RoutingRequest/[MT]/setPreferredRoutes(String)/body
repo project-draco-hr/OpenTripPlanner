@@ -1,3 +1,4 @@
 {
-  if (s != null && !s.equals(""))   preferredRoutes=new HashSet<RouteSpec>(RouteSpec.listFromString(s));
+  if (s != null && !s.equals(""))   preferredRoutes=RouteMatcher.parse(s);
+ else   preferredRoutes=RouteMatcher.emptyMatcher();
 }

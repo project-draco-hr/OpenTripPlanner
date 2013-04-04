@@ -1,0 +1,29 @@
+{
+  if (routeSpecList == null)   return emptyMatcher();
+  RouteMatcher retval=new RouteMatcher();
+  for (  String element : routeSpecList.split(",")) {
+    String[] routeSpec=element.split("_",3);
+    if (routeSpec.length != 2 && routeSpec.length != 3) {
+      throw new IllegalArgumentException("Wrong route spec format: " + element);
+    }
+    String agencyId=routeSpec[0];
+    if (agencyId.length() == 0)     agencyId=null;
+    String routeName=routeSpec[1];
+    if (routeName.length() == 0)     routeName=null;
+    String routeId=routeSpec.length > 2 ? routeSpec[2] : null;
+    if (routeId != null && routeId.length() == 0)     routeId=null;
+    if (agencyId != null && routeId != null && routeName == null) {
+      retval.agencyAndRouteIds.add(new AgencyAndId(agencyId,routeId));
+    }
+ else     if (agencyId != null && routeName != null && routeId == null) {
+      retval.agencyIdAndRouteNames.add(new T2<String,String>(agencyId,routeName));
+    }
+ else     if (agencyId == null && routeName != null && routeId == null) {
+      retval.routeNames.add(routeName);
+    }
+ else {
+      throw new IllegalArgumentException("Wrong route spec format: " + element);
+    }
+  }
+  return retval;
+}

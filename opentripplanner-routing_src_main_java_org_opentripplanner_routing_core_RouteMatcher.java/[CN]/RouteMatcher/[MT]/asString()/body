@@ -1,0 +1,19 @@
+{
+  StringBuilder builder=new StringBuilder();
+  for (  AgencyAndId agencyAndId : agencyAndRouteIds) {
+    builder.append(agencyAndId.getAgencyId() + "__" + agencyAndId.getId());
+    builder.append(",");
+  }
+  for (  T2<String,String> agencyIdAndRouteName : agencyIdAndRouteNames) {
+    builder.append(agencyIdAndRouteName.getFirst() + "_" + agencyIdAndRouteName.getSecond());
+    builder.append(",");
+  }
+  for (  String routeName : routeNames) {
+    builder.append("_" + routeName);
+    builder.append(",");
+  }
+  if (builder.length() > 0) {
+    builder.setLength(builder.length() - 1);
+  }
+  return builder.toString();
+}
