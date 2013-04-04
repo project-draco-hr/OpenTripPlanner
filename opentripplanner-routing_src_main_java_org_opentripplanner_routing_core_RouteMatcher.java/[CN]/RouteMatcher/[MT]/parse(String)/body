@@ -1,7 +1,10 @@
 {
   if (routeSpecList == null)   return emptyMatcher();
   RouteMatcher retval=new RouteMatcher();
+  int n=0;
   for (  String element : routeSpecList.split(",")) {
+    if (element.length() == 0)     continue;
+    n++;
     String[] routeSpec=element.split("_",3);
     if (routeSpec.length != 2 && routeSpec.length != 3) {
       throw new IllegalArgumentException("Wrong route spec format: " + element);
@@ -25,5 +28,6 @@
       throw new IllegalArgumentException("Wrong route spec format: " + element);
     }
   }
+  if (n == 0)   return emptyMatcher();
   return retval;
 }
