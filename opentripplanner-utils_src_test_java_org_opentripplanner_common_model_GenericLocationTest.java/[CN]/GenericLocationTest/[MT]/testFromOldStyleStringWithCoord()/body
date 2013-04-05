@@ -5,6 +5,8 @@
   NamedPlace np=loc.getNamedPlace();
   assertEquals("name",np.name);
   assertEquals("1.0,2.5",np.place);
+  assertTrue(loc.hasName());
+  assertTrue(loc.hasPlace());
   assertTrue(loc.hasCoordinate());
   assertFalse(loc.hasHeading());
   assertEquals(new Double(1.0),loc.getLat());

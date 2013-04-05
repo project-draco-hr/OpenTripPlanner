@@ -1,0 +1,12 @@
+{
+  int angleOutOfIntersection=to.getInAngle();
+  int angleIntoIntersection=from.getOutAngle();
+  if (angleOutOfIntersection < angleIntoIntersection) {
+    angleOutOfIntersection+=360;
+  }
+  int turnAngle=angleOutOfIntersection - angleIntoIntersection;
+  if (!options.driveOnRight) {
+    turnAngle=360 - turnAngle;
+  }
+  return turnAngle;
+}
