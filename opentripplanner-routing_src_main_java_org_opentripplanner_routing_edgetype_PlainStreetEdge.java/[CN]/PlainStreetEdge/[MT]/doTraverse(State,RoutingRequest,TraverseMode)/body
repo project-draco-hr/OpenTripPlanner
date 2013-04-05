@@ -88,30 +88,25 @@ realTurnCost=options.getIntersectionTraversalCostModel().computeTraversalCost(tr
  else {
 realTurnCost=0;
 }
-if (traverseMode != TraverseMode.CAR) {
+if (!traverseMode.isDriving()) {
 s1.incrementWalkDistance(realTurnCost / 100);
 }
-weight+=realTurnCost;
-long turnTime=(long)realTurnCost;
-if (turnTime != realTurnCost) {
-turnTime++;
-}
+long turnTime=(long)Math.ceil(realTurnCost);
 time+=turnTime;
+weight+=realTurnCost;
 }
-int timeLong=(int)time;
-if (timeLong != time) {
-timeLong++;
-}
+int timeLong=(int)Math.ceil(time);
 s1.incrementTimeInSeconds(timeLong);
-if (traverseMode != TraverseMode.CAR) {
+s1.incrementWeight(weight);
+if (!traverseMode.isDriving()) {
 s1.incrementWalkDistance(length);
 }
-s1.incrementWeight(weight);
 if (s1.weHaveWalkedTooFar(options)) {
+LOG.debug("Too much walking. Bailing.");
 return null;
 }
 s1.addAlerts(notes);
-if (this.toll && traverseMode == TraverseMode.CAR) {
+if (this.isToll() && traverseMode.isDriving()) {
 s1.addAlert(Alert.createSimpleAlerts("Toll road"));
 }
 return s1.makeState();
