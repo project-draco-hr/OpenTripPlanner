@@ -93,7 +93,7 @@ s1.incrementWalkDistance(realTurnCost / 100);
 }
 long turnTime=(long)Math.ceil(realTurnCost);
 time+=turnTime;
-weight+=realTurnCost;
+weight+=options.turnReluctance * realTurnCost;
 }
 int timeLong=(int)Math.ceil(time);
 s1.incrementTimeInSeconds(timeLong);
