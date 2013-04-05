@@ -46,4 +46,8 @@
   way.addTag("highway","motorway");
   assertTrue(within(kmhAsMs(100),wps.getCarSpeedForWay(way,false),epsilon));
   assertTrue(within(kmhAsMs(100),wps.getCarSpeedForWay(way,true),epsilon));
+  way=new OSMWithTags();
+  way.addTag("maxspeed","0");
+  assertTrue(within(kmhAsMs(25),wps.getCarSpeedForWay(way,false),epsilon));
+  assertTrue(within(kmhAsMs(25),wps.getCarSpeedForWay(way,true),epsilon));
 }
