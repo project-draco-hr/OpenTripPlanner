@@ -5,12 +5,12 @@
     path=path.getParentFile();
   }
   try {
-    graph=Graph.load(new File(graphName),Graph.LoadLevel.DEBUG);
+    ObjectInputStream oiStream=new ObjectInputStream(new FileInputStream(new File(graphName)));
+    graph=Graph.load(oiStream,Graph.LoadLevel.DEBUG,this.indexFactory);
   }
  catch (  Exception e) {
     e.printStackTrace();
   }
-  indexService=graph.streetIndex;
   pathservice.setGraphService(graphservice);
   pathservice.setSptService(sptService);
   setTitle("VizGui: " + graphName);
