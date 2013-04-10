@@ -3,6 +3,8 @@
   options.setMaxTransfers(Integer.MAX_VALUE);
   options.setMaxWalkDistance(Double.MAX_VALUE);
   if (options.getClampInitialWait() < 0)   options.setClampInitialWait(60 * 30);
+  final long maxt=(60 * 60 * 2) + options.getClampInitialWait();
+  options.worstTime=options.dateTime + (options.arriveBy ? -maxt : maxt);
   ShortestPathTree spt=new EarliestArrivalShortestPathTree(options);
   State initialState=new State(options);
   spt.add(initialState);

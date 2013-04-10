@@ -26,16 +26,18 @@
       vertex.setSpacesAvailable(station.spacesAvailable);
     }
   }
-  List<BikeRentalStationVertex> toRemove=new ArrayList<BikeRentalStationVertex>();
+  List<BikeRentalStation> toRemove=new ArrayList<BikeRentalStation>();
   for (  Entry<BikeRentalStation,BikeRentalStationVertex> entry : verticesByStation.entrySet()) {
     BikeRentalStation station=entry.getKey();
     if (stationSet.contains(station))     continue;
     BikeRentalStationVertex vertex=entry.getValue();
     if (graph.containsVertex(vertex)) {
       graph.removeVertexAndEdges(vertex);
-      toRemove.add(vertex);
     }
+    toRemove.add(station);
     service.removeStation(station);
   }
-  verticesByStation.keySet().removeAll(toRemove);
+  for (  BikeRentalStation station : toRemove) {
+    verticesByStation.remove(station);
+  }
 }
