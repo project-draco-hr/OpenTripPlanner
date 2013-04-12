@@ -1,13 +1,3 @@
 {
-  ShortestPathTree spt=null;
-  if (_shortestPathTreeFactory != null)   spt=_shortestPathTreeFactory.create(opts);
-  if (spt == null) {
-    if (opts.getModes().isTransit() || opts.getModes().getWalk() && opts.getModes().getBicycle()) {
-      spt=new MultiShortestPathTree(opts);
-    }
- else {
-      spt=new BasicShortestPathTree(opts);
-    }
-  }
-  return spt;
+  return _shortestPathTreeFactory.create(opts);
 }

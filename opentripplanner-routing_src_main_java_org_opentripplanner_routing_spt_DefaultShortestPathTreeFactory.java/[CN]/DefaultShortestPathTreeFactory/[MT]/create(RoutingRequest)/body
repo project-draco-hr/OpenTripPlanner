@@ -1,0 +1,10 @@
+{
+  ShortestPathTree spt=null;
+  if (options.getModes().isTransit() || options.getModes().getWalk() && options.getModes().getBicycle()) {
+    spt=new MultiShortestPathTree(options);
+  }
+ else {
+    spt=new BasicShortestPathTree(options);
+  }
+  return spt;
+}
