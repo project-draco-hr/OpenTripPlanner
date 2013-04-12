@@ -11,6 +11,7 @@
  catch (  Exception e) {
     e.printStackTrace();
   }
+  sptService.setShortestPathTreeFactory(sptFactory);
   pathservice.setGraphService(graphservice);
   pathservice.setSptService(sptService);
   setTitle("VizGui: " + graphName);

@@ -349,6 +349,19 @@ catch (          IllegalAccessException e1) {
   }
 );
   buttonPanel.add(annotationButton);
+  JButton snapButton=new JButton("Snap location");
+  snapButton.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+      String locString=(String)JOptionPane.showInputDialog(frame,"Location string","");
+      GenericLocation loc=GenericLocation.fromOldStyleString(locString);
+      RoutingRequest rr=new RoutingRequest();
+      Vertex v=graph.streetIndex.getVertexForLocation(loc,rr);
+      showGraph.highlightVertex(v);
+      List<Edge> l=new ArrayList<Edge>();
+    }
+  }
+);
+  buttonPanel.add(snapButton);
   JPanel rightPanel=new JPanel();
   rightPanel.setLayout(new BorderLayout());
   pane.add(rightPanel,BorderLayout.LINE_END);
