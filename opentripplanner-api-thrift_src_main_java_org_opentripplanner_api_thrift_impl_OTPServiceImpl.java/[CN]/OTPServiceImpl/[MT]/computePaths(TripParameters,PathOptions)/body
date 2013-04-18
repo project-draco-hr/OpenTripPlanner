@@ -2,6 +2,9 @@
   RoutingRequest options=(new RoutingRequestBuilder(prototypeRoutingRequest)).addTripParameters(trip).setGraph(graphService.getGraph()).setNumItineraries(pathOptions.getNum_paths()).build();
   options.setRouterId("");
   List<GraphPath> paths=pathService.getPaths(options);
+  if (paths == null || paths.size() == 0) {
+    LOG.warn("Found 0 paths for trip {}",trip);
+  }
   TripPathsExtension tripPaths=new TripPathsExtension(trip,paths);
   options.cleanup();
   return tripPaths;
