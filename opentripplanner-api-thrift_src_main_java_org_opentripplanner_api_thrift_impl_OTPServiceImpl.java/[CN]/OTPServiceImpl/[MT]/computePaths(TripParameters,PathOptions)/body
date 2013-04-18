@@ -4,6 +4,8 @@
   List<GraphPath> paths=pathService.getPaths(options);
   if (paths == null || paths.size() == 0) {
     LOG.warn("Found 0 paths for trip {}",trip);
+    LOG.warn("Origin {}",options.getFrom());
+    LOG.warn("Destination {}",options.getTo());
   }
   TripPathsExtension tripPaths=new TripPathsExtension(trip,paths);
   options.cleanup();
