@@ -1,0 +1,10 @@
+{
+  GraphServiceImpl graphService=new GraphServiceImpl();
+  graphService.registerGraph("",graph);
+  SimplifiedPathServiceImpl pathService=new SimplifiedPathServiceImpl();
+  pathService.setGraphService(graphService);
+  pathService.setSptService(new GenericAStar());
+  serviceImpl=new OTPServiceImpl();
+  serviceImpl.setGraphService(graphService);
+  serviceImpl.setPathService(pathService);
+}

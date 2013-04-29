@@ -1,0 +1,15 @@
+{
+  GraphEdgesRequest req=new GraphEdgesRequest();
+  req.validate();
+  req.setStreet_edges_only(true);
+  GraphEdgesResponse res=serviceImpl.GetEdges(req);
+  Set<Integer> expectedEdgeIds=new HashSet<Integer>();
+  for (  Edge e : graph.getStreetEdges()) {
+    expectedEdgeIds.add(e.getId());
+  }
+  Set<Integer> actualEdgeIds=new HashSet<Integer>(res.getEdgesSize());
+  for (  GraphEdge ge : res.getEdges()) {
+    actualEdgeIds.add(ge.getId());
+  }
+  assertTrue(expectedEdgeIds.equals(actualEdgeIds));
+}

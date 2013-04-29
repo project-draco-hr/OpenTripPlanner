@@ -1,0 +1,19 @@
+{
+  PathOptions opts=new PathOptions();
+  opts.setNum_paths(1);
+  opts.setReturn_detailed_path(true);
+  TripParameters trip=new TripParameters();
+  trip.addToAllowed_modes(TravelMode.CAR);
+  P2<Location> pair=pickOriginAndDest();
+  trip.setOrigin(pair.getFirst());
+  trip.setDestination(pair.getSecond());
+  FindPathsRequest req=new FindPathsRequest();
+  req.setOptions(opts);
+  req.setTrip(trip);
+  req.validate();
+  FindPathsResponse res=serviceImpl.FindPaths(req);
+  TripPaths paths=res.getPaths();
+  assertEquals(1,paths.getPathsSize());
+  Path p=paths.getPaths().get(0);
+  checkPath(p);
+}

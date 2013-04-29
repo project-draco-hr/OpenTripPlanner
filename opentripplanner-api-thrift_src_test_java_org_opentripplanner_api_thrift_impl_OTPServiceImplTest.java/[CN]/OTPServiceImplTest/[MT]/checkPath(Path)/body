@@ -1,0 +1,8 @@
+{
+  int duration=p.getDuration();
+  int nStates=p.getStatesSize();
+  long startTime=p.getStates().get(0).getArrival_time();
+  long endTime=p.getStates().get(nStates - 1).getArrival_time();
+  int computedDuration=(int)(endTime - startTime);
+  assertEquals(duration,computedDuration);
+}
