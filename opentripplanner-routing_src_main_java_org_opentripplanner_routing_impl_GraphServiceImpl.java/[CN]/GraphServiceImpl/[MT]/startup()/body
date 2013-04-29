@@ -13,6 +13,10 @@
     LOG.info("Attempting to load graph for default routerId '{}'.",defaultRouterId);
     registerGraph(defaultRouterId,true);
   }
+  if (autoDiscover) {
+    LOG.info("Auto discovering graphs under {}",resourceBase);
+    autoDiscoverGraphs();
+  }
   if (this.getRouterIds().isEmpty()) {
     LOG.warn("No graphs have been loaded/registered. " + "You must use the routers API to register one or more graphs before routing.");
   }
