@@ -25,6 +25,14 @@
     fromVertex=from;
     toVertex=to;
   }
+  if (fromVertex instanceof StreetLocation && toVertex instanceof StreetLocation) {
+    StreetVertex fromStreetVertex=(StreetVertex)fromVertex;
+    StreetVertex toStreetVertex=(StreetVertex)toVertex;
+    Set<PlainStreetEdge> overlap=overlappingPlainStreetEdges(fromStreetVertex,toStreetVertex);
+    for (    PlainStreetEdge pse : overlap) {
+      makePartialEdgeAlong(pse,fromStreetVertex,toStreetVertex);
+    }
+  }
   if (opt.getStartingTransitStopId() != null) {
     TransitIndexService tis=graph.getService(TransitIndexService.class);
     if (tis == null) {

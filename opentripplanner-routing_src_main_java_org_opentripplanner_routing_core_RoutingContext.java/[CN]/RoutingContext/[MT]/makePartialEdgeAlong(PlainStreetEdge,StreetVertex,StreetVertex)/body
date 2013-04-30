@@ -1,0 +1,18 @@
+{
+  DistanceLibrary dLib=SphericalDistanceLibrary.getInstance();
+  Vertex head=e.getFromVertex();
+  double uDist=dLib.fastDistance(head.getCoordinate(),u.getCoordinate());
+  double vDist=dLib.fastDistance(head.getCoordinate(),v.getCoordinate());
+  StreetVertex first=u;
+  StreetVertex second=v;
+  if (vDist < uDist) {
+    first=v;
+    second=u;
+  }
+  Geometry parentGeom=e.getGeometry();
+  LineString myGeom=GeometryUtils.getInteriorSegment(parentGeom,first.getCoordinate(),second.getCoordinate());
+  double lengthRatio=myGeom.getLength() / parentGeom.getLength();
+  double length=e.getLength() * lengthRatio;
+  String name=first.getLabel() + " to " + second.getLabel();
+  return new PartialPlainStreetEdge(e,first,second,myGeom,name,length);
+}

@@ -12,9 +12,9 @@
     e2v1=(StreetVertex)e2.getFromVertex();
     e2v2=(StreetVertex)e2.getToVertex();
     LineString backGeometry=e2.getGeometry();
-    backGeometryPair=StreetLocation.splitGeometryAtPoint(backGeometry,coordinate);
+    backGeometryPair=GeometryUtils.splitGeometryAtPoint(backGeometry,coordinate);
   }
-  P2<LineString> forwardGeometryPair=StreetLocation.splitGeometryAtPoint(forwardGeometry,coordinate);
+  P2<LineString> forwardGeometryPair=GeometryUtils.splitGeometryAtPoint(forwardGeometry,coordinate);
   LineString toMidpoint=forwardGeometryPair.getFirst();
   Coordinate midCoord=toMidpoint.getEndPoint().getCoordinate();
   double totalGeomLength=forwardGeometry.getLength();

@@ -1,0 +1,5 @@
+{
+  P2<LineString> splitGeom=GeometryUtils.splitGeometryAtPoint(geomerty,first);
+  splitGeom=GeometryUtils.splitGeometryAtPoint(splitGeom.getSecond(),second);
+  return splitGeom.getFirst();
+}

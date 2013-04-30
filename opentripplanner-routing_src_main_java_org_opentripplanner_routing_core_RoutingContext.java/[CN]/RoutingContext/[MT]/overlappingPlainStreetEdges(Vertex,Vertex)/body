@@ -1,0 +1,21 @@
+{
+  Set<Integer> vIds=new HashSet<Integer>();
+  Set<Integer> uIds=new HashSet<Integer>();
+  for (  Edge e : Iterables.concat(v.getIncoming(),v.getOutgoing())) {
+    vIds.add(e.getId());
+  }
+  for (  Edge e : Iterables.concat(u.getIncoming(),u.getOutgoing())) {
+    uIds.add(e.getId());
+  }
+  uIds.retainAll(vIds);
+  Set<Integer> overlappingIds=uIds;
+  Set<PlainStreetEdge> overlap=new HashSet<PlainStreetEdge>();
+  for (  Integer id : overlappingIds) {
+    Edge e=graph.getEdgeById(id);
+    if (e == null || !(e instanceof PlainStreetEdge)) {
+      continue;
+    }
+    overlap.add((PlainStreetEdge)e);
+  }
+  return overlap;
+}

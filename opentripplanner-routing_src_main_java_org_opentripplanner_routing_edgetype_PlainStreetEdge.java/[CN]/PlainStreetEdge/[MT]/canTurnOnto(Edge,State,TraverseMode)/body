@@ -1,12 +1,12 @@
 {
   for (  TurnRestriction restriction : turnRestrictions) {
     if (restriction.type == TurnRestrictionType.ONLY_TURN) {
-      if (restriction.to != e && restriction.modes.contains(mode) && restriction.active(state.getTime())) {
+      if (!e.isEquivalentTo(restriction.to) && restriction.modes.contains(mode) && restriction.active(state.getTime())) {
         return false;
       }
     }
  else {
-      if (restriction.to == e && restriction.modes.contains(mode) && restriction.active(state.getTime())) {
+      if (e.isEquivalentTo(restriction.to) && restriction.modes.contains(mode) && restriction.active(state.getTime())) {
         return false;
       }
     }
