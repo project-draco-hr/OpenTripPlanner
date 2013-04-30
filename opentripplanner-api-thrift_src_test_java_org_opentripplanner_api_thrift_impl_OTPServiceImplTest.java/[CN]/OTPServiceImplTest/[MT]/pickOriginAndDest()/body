@@ -1,0 +1,6 @@
+{
+  List<Vertex> vList=new ArrayList<Vertex>(graph.getVertices());
+  Collections.shuffle(vList,rand);
+  P2<Location> pair=new P2<Location>(getLocationForVertex(vList.get(0)),getLocationForVertex(vList.get(1)));
+  return pair;
+}

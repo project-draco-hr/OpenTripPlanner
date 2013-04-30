@@ -1,0 +1,17 @@
+{
+  for (  Vertex v : graph.getVertices()) {
+    FindNearestVertexRequest req=new FindNearestVertexRequest();
+    VertexQuery q=new VertexQuery();
+    q.setLocation(getLocationForVertex(v));
+    req.setQuery(q);
+    FindNearestVertexResponse res=serviceImpl.FindNearestVertex(req);
+    GraphVertex gv=res.getResult().getNearest_vertex();
+    int expectedId=v.getIndex();
+    int actualId=gv.getId();
+    if (expectedId != actualId) {
+      LatLng ll=gv.getLat_lng();
+      Coordinate outCoord=new Coordinate(ll.getLng(),ll.getLat());
+      assertTrue(v.getCoordinate().distance(outCoord) < 0.00001);
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  PathOptions opts=new PathOptions();
+  opts.setNum_paths(1);
+  opts.setReturn_detailed_path(true);
+  BulkPathsRequest req=new BulkPathsRequest();
+  req.setOptions(opts);
+  for (int i=0; i < 4; ++i) {
+    TripParameters trip=new TripParameters();
+    trip.addToAllowed_modes(TravelMode.CAR);
+    P2<Location> pair=pickOriginAndDest();
+    trip.setOrigin(pair.getFirst());
+    trip.setDestination(pair.getSecond());
+    req.addToTrips(trip);
+  }
+  req.validate();
+  BulkPathsResponse res=serviceImpl.BulkFindPaths(req);
+  for (  TripPaths paths : res.getPaths()) {
+    assertEquals(1,paths.getPathsSize());
+    Path p=paths.getPaths().get(0);
+    checkPath(p);
+  }
+}

@@ -1,0 +1,14 @@
+{
+  GraphVerticesRequest req=new GraphVerticesRequest();
+  req.validate();
+  GraphVerticesResponse res=serviceImpl.GetVertices(req);
+  Set<Integer> expectedVertexIds=new HashSet<Integer>();
+  for (  Vertex v : graph.getVertices()) {
+    expectedVertexIds.add(v.getIndex());
+  }
+  Set<Integer> actualVertexIds=new HashSet<Integer>(res.getVerticesSize());
+  for (  GraphVertex gv : res.getVertices()) {
+    actualVertexIds.add(gv.getId());
+  }
+  assertTrue(expectedVertexIds.equals(actualVertexIds));
+}

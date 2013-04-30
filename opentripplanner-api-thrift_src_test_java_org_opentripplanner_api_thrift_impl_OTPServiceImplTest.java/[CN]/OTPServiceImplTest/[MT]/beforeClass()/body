@@ -1,0 +1,12 @@
+{
+  extra=new HashMap<Class<?>,Object>();
+  graph=new Graph();
+  OpenStreetMapGraphBuilderImpl loader=new OpenStreetMapGraphBuilderImpl();
+  loader.setDefaultWayPropertySetSource(new DefaultWayPropertySetSource());
+  FileBasedOpenStreetMapProviderImpl provider=new FileBasedOpenStreetMapProviderImpl();
+  File file=new File(OTPServiceImplTest.class.getResource("NYC_small.osm.gz").getFile());
+  provider.setPath(file);
+  loader.setProvider(provider);
+  loader.buildGraph(graph,extra);
+  graph.streetIndex=(new DefaultStreetVertexIndexFactory()).newIndex(graph);
+}
