@@ -4,11 +4,11 @@
   TraverseMode mode=state0.getNonTransitMode();
   boolean offTransit=(boarding && options.isArriveBy()) || (!boarding && !options.isArriveBy());
   if (offTransit) {
-    int type;
     if (state0.getBackEdge() instanceof TransitBoardAlight) {
       return null;
     }
     StateEditor s1=state0.edit(this);
+    int type;
     if (boarding)     type=getPattern().getBoardType(stopIndex);
  else     type=getPattern().getAlightType(stopIndex + 1);
     if (TransitUtils.handleBoardAlightType(s1,type)) {
@@ -42,8 +42,6 @@
     return s1.makeState();
   }
  else {
-    int wait, type;
-    TripTimes tripTimes;
     if (state0.getLastPattern() == this.getPattern()) {
       return null;
     }
@@ -54,14 +52,15 @@
     int bestWait=-1;
     TripTimes bestTripTimes=null;
     int serviceId=getPattern().getServiceId();
+    TripTimes tripTimes;
     ServiceDay serviceDay=null;
     for (    ServiceDay sd : rctx.serviceDays) {
+      int wait;
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
       if (sd.serviceIdRunning(serviceId)) {
         tripTimes=getPattern().getNextTrip(stopIndex,secondsSinceMidnight,mode == TraverseMode.BICYCLE,options,boarding);
         if (tripTimes != null) {
-          if (boarding)           wait=(int)(sd.time(tripTimes.getDepartureTime(stopIndex)) - current_time);
- else           wait=(int)(current_time - sd.time(tripTimes.getArrivalTime(stopIndex)));
+          wait=boarding ? (int)(sd.time(tripTimes.getDepartureTime(stopIndex)) - current_time) : (int)(current_time - sd.time(tripTimes.getArrivalTime(stopIndex)));
           if (wait < 0)           _log.error("negative wait time on board");
           if (bestWait < 0 || wait < bestWait) {
             bestWait=wait;
@@ -79,6 +78,7 @@
     long preferences_penalty=options.preferencesPenaltyForTrip(trip);
     StateEditor s1=state0.edit(this);
     s1.setBackMode(getMode());
+    int type;
     if (boarding)     type=getPattern().getBoardType(stopIndex);
  else     type=getPattern().getAlightType(stopIndex + 1);
     if (TransitUtils.handleBoardAlightType(s1,type)) {
