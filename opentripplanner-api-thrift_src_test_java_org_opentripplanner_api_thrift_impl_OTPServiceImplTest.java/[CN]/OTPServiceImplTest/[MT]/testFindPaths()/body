@@ -16,4 +16,25 @@
   assertEquals(1,paths.getPathsSize());
   Path p=paths.getPaths().get(0);
   checkPath(p);
+  int expectedTotalDuration=p.getDuration();
+  int subPathDurations=0;
+  for (int i=1; i < p.getStatesSize(); ++i) {
+    TravelState firstState=p.getStates().get(i - 1);
+    TravelState secondState=p.getStates().get(i);
+    Location startLoc=getLocationForTravelState(firstState);
+    Location endLoc=getLocationForTravelState(secondState);
+    trip.setOrigin(startLoc);
+    trip.setDestination(endLoc);
+    req=new FindPathsRequest();
+    req.setOptions(opts);
+    req.setTrip(trip);
+    req.validate();
+    res=serviceImpl.FindPaths(req);
+    paths=res.getPaths();
+    assertEquals(1,paths.getPathsSize());
+    Path subPath=paths.getPaths().get(0);
+    checkPath(subPath);
+    subPathDurations+=subPath.getDuration();
+  }
+  assertTrue(subPathDurations <= expectedTotalDuration);
 }
