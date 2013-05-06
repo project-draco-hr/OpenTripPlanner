@@ -1,0 +1,16 @@
+{
+  boolean wheelchairAccessible=false;
+  StreetLocation location=new StreetLocation(graph,label,nearestPoint,name);
+  for (  StreetEdge street : edges) {
+    Vertex fromv=street.getFromVertex();
+    Vertex tov=street.getToVertex();
+    wheelchairAccessible|=((StreetEdge)street).isWheelchairAccessible();
+    Vertex edgeLocation;
+    edgeLocation=location;
+    createHalfLocation(graph,location,label + " to " + tov.getLabel(),name,nearestPoint,street);
+    double distanceToNearestTransitStop=Math.min(tov.getDistanceToNearestTransitStop(),fromv.getDistanceToNearestTransitStop());
+    edgeLocation.setDistanceToNearestTransitStop(distanceToNearestTransitStop);
+  }
+  location.setWheelchairAccessible(wheelchairAccessible);
+  return location;
+}

@@ -1,7 +1,9 @@
 {
   Edge backEdge=s0.getBackEdge();
-  if (backEdge != null && (options.arriveBy ? (backEdge.getToVertex() == fromv) : (backEdge.getFromVertex() == tov))) {
-    return null;
+  if (backEdge != null) {
+    if (this.isReverseOf(backEdge) || backEdge.isReverseOf(this)) {
+      return null;
+    }
   }
   if (!canTraverse(options,traverseMode)) {
     if (traverseMode == TraverseMode.BICYCLE) {
@@ -86,6 +88,7 @@ IntersectionVertex traversedVertex=((IntersectionVertex)fromv);
 realTurnCost=options.getIntersectionTraversalCostModel().computeTraversalCost(traversedVertex,backPSE,this,traverseMode,options,(float)backSpeed,(float)speed);
 }
  else {
+LOG.info("Not computing turn cost for edge {}",this);
 realTurnCost=0;
 }
 if (!traverseMode.isDriving()) {

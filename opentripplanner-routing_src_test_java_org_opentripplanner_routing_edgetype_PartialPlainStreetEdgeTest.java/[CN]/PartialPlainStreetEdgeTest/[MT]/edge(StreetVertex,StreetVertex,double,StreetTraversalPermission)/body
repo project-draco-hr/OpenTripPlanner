@@ -1,0 +1,10 @@
+{
+  String labelA=vA.getLabel();
+  String labelB=vB.getLabel();
+  String name=String.format("%s_%s",labelA,labelB);
+  Coordinate[] coords=new Coordinate[2];
+  coords[0]=vA.getCoordinate();
+  coords[1]=vB.getCoordinate();
+  LineString geom=GeometryUtils.getGeometryFactory().createLineString(coords);
+  return new PlainStreetEdge(vA,vB,geom,name,length,perm,false,5.0f);
+}
