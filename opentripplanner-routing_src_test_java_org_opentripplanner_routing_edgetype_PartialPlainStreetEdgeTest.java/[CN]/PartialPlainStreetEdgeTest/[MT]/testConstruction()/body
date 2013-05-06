@@ -4,6 +4,8 @@
   assertTrue(pEdge.isEquivalentTo(e1));
   assertTrue(pEdge.isPartial());
   assertTrue(pEdge.isBack());
+  assertFalse(pEdge.isReverseOf(e1));
+  assertTrue(pEdge.isReverseOf(e2));
   assertEquals(e1.getId(),pEdge.getId());
   assertEquals(perm,pEdge.getPermission());
   assertEquals(e1.getCarSpeed(),pEdge.getCarSpeed(),0.0);
@@ -11,6 +13,8 @@
   assertTrue(pEdge.isEquivalentTo(e1));
   assertTrue(pEdge.isPartial());
   assertFalse(pEdge.isBack());
+  assertFalse(pEdge.isReverseOf(e1));
+  assertTrue(pEdge.isReverseOf(e2));
   assertEquals(e1.getId(),pEdge.getId());
   assertEquals(e1.getPermission(),pEdge.getPermission());
   assertEquals(e1.getCarSpeed(),pEdge.getCarSpeed(),0.0);
