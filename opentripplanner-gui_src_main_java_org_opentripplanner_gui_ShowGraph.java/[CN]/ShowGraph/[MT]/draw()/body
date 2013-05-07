@@ -67,6 +67,12 @@
       if (drawTransitStopVertices && v instanceof TransitStop) {
         drawVertex(v,5);
       }
+ else       if (v instanceof IntersectionVertex) {
+        IntersectionVertex iv=(IntersectionVertex)v;
+        if (iv.isTrafficLight()) {
+          drawVertex(v,7);
+        }
+      }
     }
     noFill();
     stroke(200,200,000,16);
