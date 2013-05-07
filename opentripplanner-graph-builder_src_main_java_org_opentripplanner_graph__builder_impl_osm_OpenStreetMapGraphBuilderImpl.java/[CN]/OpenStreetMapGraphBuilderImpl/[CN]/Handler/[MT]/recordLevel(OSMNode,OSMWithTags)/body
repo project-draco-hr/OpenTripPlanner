@@ -11,7 +11,7 @@
   }
   if (!vertices.containsKey(level)) {
     Coordinate coordinate=getCoordinate(node);
-    String label="osm node " + nodeId + " at level "+ level.shortName;
+    String label=this.getLevelNodeLabel(node,level);
     IntersectionVertex vertex=new IntersectionVertex(graph,label,coordinate.x,coordinate.y,label);
     vertices.put(level,vertex);
     endpoints.add(vertex);

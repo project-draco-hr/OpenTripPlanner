@@ -7,7 +7,7 @@
   iv=intersectionNodes.get(nid);
   if (iv == null) {
     Coordinate coordinate=getCoordinate(node);
-    String label="osm node " + nid;
+    String label=getNodeLabel(node);
     String highway=node.getTag("highway");
     if ("motorway_junction".equals(highway)) {
       String ref=node.getTag("ref");
