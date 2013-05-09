@@ -28,8 +28,9 @@
     if (mandatoryWalkDistance + s.getWalkDistance() > options.getMaxWalkDistance()) {
       return -1;
     }
-    double distance=(euclideanDistance - mandatoryWalkDistance) / maxSpeed + mandatoryWalkDistance * options.walkReluctance / streetSpeed + boardCost;
-    return Math.min(distance,options.walkReluctance * euclideanDistance / streetSpeed);
+    double transitCost=(euclideanDistance - mandatoryWalkDistance) / maxSpeed + boardCost;
+    double transitStreetCost=mandatoryWalkDistance * options.walkReluctance / streetSpeed;
+    return Math.min(transitCost + transitStreetCost,options.walkReluctance * euclideanDistance / streetSpeed);
   }
  else {
     return options.walkReluctance * euclideanDistance / maxSpeed;
