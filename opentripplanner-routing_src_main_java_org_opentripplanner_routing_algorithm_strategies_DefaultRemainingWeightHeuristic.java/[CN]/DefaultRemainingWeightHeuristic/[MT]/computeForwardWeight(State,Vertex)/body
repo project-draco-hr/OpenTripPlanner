@@ -16,12 +16,12 @@
       }
  else {
         boardCost=options.getBoardCostLowerBound();
-      }
-      if (s.isEverBoarded()) {
-        boardCost+=options.transferPenalty;
-        if (localStreetService != null) {
-          if (options.getMaxWalkDistance() - s.getWalkDistance() < euclideanDistance && sv instanceof IntersectionVertex && !localStreetService.transferrable(sv)) {
-            return Double.POSITIVE_INFINITY;
+        if (s.isEverBoarded()) {
+          boardCost+=options.transferPenalty;
+          if (localStreetService != null) {
+            if (options.getMaxWalkDistance() - s.getWalkDistance() < euclideanDistance && sv instanceof IntersectionVertex && !localStreetService.transferrable(sv)) {
+              return Double.POSITIVE_INFINITY;
+            }
           }
         }
       }
