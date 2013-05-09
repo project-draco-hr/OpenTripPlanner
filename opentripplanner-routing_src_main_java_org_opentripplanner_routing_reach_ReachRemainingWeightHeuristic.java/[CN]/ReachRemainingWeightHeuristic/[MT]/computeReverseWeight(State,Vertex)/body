@@ -1,7 +1,7 @@
 {
   Vertex sv=s.getVertex();
   double euclidianDistance=distanceLibrary.fastDistance(sv.getCoordinate(),target.getCoordinate());
-  double speed=options.getRoadSpeedUpperBound();
+  double speed=options.getStreetSpeedUpperBound();
   if (useTransit) {
     if (s.isAlightedLocal()) {
       if (euclidianDistance + s.getWalkDistance() > options.getMaxWalkDistance()) {

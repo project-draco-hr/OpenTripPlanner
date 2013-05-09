@@ -9,6 +9,6 @@
   }
   spt=new ArrayMultiShortestPathTree(options);
   transitLocalStreets=options.rctx.graph.getService(TransitLocalStreetService.class);
-  speedUpperBound=options.getRoadSpeedUpperBound();
+  speedUpperBound=options.getStreetSpeedUpperBound();
   this.speedWeight=options.getWalkReluctance() / speedUpperBound;
 }

@@ -6,7 +6,7 @@
     this.distanceToNearestTransitStop=realTarget.getDistanceToNearestTransitStop();
     bounders=new ArrayList<State>();
     transitLocalStreets=options.rctx.graph.getService(TransitLocalStreetService.class);
-    speedUpperBound=options.getRoadSpeedUpperBound();
+    speedUpperBound=options.getStreetSpeedUpperBound();
     this.speedWeight=options.getWalkReluctance() / speedUpperBound;
     this.transferTimeInWalkDistance=options.getTransferSlack() / options.getWalkSpeed();
   }
