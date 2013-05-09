@@ -2,7 +2,7 @@
   Vertex sv=s.getVertex();
   double euclidianDistance=distanceLibrary.fastDistance(sv.getCoordinate(),target.getCoordinate());
   double remainingwalkDistance=options.getMaxWalkDistance() - s.getWalkDistance();
-  double speed=options.getSpeedUpperBound();
+  double speed=options.getRoadSpeedUpperBound();
   Edge backEdge=s.getBackEdge();
   EdgeWithReach edgeWithReach=null;
   if (useReach && backEdge instanceof EdgeWithReach) {
