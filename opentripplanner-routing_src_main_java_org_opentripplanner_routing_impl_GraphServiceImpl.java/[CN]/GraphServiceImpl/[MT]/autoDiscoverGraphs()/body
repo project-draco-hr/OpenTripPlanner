@@ -3,11 +3,16 @@ synchronized (resourceBase) {
     Resource base=resourceLoader.getResource(resourceBase);
     try {
       File baseFile=base.getFile();
+      File rootGraphFile=new File(baseFile,GRAPH_FILENAME);
+      if (rootGraphFile.exists() && rootGraphFile.canRead() && !graphs.containsKey("")) {
+        LOG.info("Auto-discovered (root) {}, trying to load.",rootGraphFile);
+        registerGraph("",true);
+      }
       for (      String sub : baseFile.list()) {
         File subFile=new File(baseFile,sub);
         if (subFile.isDirectory()) {
           File graphFile=new File(subFile,GRAPH_FILENAME);
-          if (graphFile.exists() && graphFile.canRead()) {
+          if (graphFile.exists() && graphFile.canRead() && !graphs.containsKey(sub)) {
             LOG.info("Auto-discovered {}, trying to load.",graphFile);
             registerGraph(sub,true);
           }
@@ -18,7 +23,7 @@ synchronized (resourceBase) {
       LOG.error("Graph auto-discovering has been set, but {} is not a file resource, so I'm bailing-out.",resourceBase);
       return;
     }
-    if (defaultRouterId.equals("") && !getRouterIds().isEmpty()) {
+    if (defaultRouterId.isEmpty() && !getRouterIds().isEmpty() && !getRouterIds().contains("")) {
       defaultRouterId=getRouterIds().iterator().next();
       if (getRouterIds().size() > 1)       LOG.warn("Default routerId not set, taking arbitrary one {}",defaultRouterId);
  else       LOG.info("Setting default routerId to {}",defaultRouterId);
