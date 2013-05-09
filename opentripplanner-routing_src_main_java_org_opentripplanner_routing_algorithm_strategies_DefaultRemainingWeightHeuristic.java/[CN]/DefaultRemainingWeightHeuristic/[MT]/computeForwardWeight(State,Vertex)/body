@@ -3,43 +3,33 @@
   double euclideanDistance=distanceLibrary.fastDistance(sv.getY(),sv.getX(),targetY,targetX);
   if (useTransit) {
     double streetSpeed=options.getStreetSpeedUpperBound();
-    if (s.isAlightedLocal()) {
+    if (s.isAlightedLocal() || euclideanDistance < target.getDistanceToNearestTransitStop()) {
       if (euclideanDistance + s.getWalkDistance() > options.getMaxWalkDistance()) {
         return -1;
       }
       return options.walkReluctance * euclideanDistance / streetSpeed;
     }
+    int boardCost;
+    if (s.isOnboard()) {
+      boardCost=0;
+    }
  else {
-      int boardCost;
-      if (s.isOnboard()) {
-        boardCost=0;
-      }
- else {
-        boardCost=options.getBoardCostLowerBound();
-        if (s.isEverBoarded()) {
-          boardCost+=options.transferPenalty;
-          if (localStreetService != null) {
-            if (options.getMaxWalkDistance() - s.getWalkDistance() < euclideanDistance && sv instanceof IntersectionVertex && !localStreetService.transferrable(sv)) {
-              return Double.POSITIVE_INFINITY;
-            }
+      boardCost=options.getBoardCostLowerBound();
+      if (s.isEverBoarded()) {
+        boardCost+=options.transferPenalty;
+        if (localStreetService != null) {
+          if (options.getMaxWalkDistance() - s.getWalkDistance() < euclideanDistance && sv instanceof IntersectionVertex && !localStreetService.transferrable(sv)) {
+            return Double.POSITIVE_INFINITY;
           }
         }
       }
-      if (euclideanDistance < target.getDistanceToNearestTransitStop()) {
-        if (euclideanDistance + s.getWalkDistance() > options.getMaxWalkDistance()) {
-          return -1;
-        }
-        return options.walkReluctance * euclideanDistance / streetSpeed;
-      }
- else {
-        double mandatoryWalkDistance=target.getDistanceToNearestTransitStop() + sv.getDistanceToNearestTransitStop();
-        if (mandatoryWalkDistance + s.getWalkDistance() > options.getMaxWalkDistance()) {
-          return -1;
-        }
-        double distance=(euclideanDistance - mandatoryWalkDistance) / maxSpeed + mandatoryWalkDistance * options.walkReluctance / streetSpeed + boardCost;
-        return Math.min(distance,options.walkReluctance * euclideanDistance / streetSpeed);
-      }
     }
+    double mandatoryWalkDistance=target.getDistanceToNearestTransitStop() + sv.getDistanceToNearestTransitStop();
+    if (mandatoryWalkDistance + s.getWalkDistance() > options.getMaxWalkDistance()) {
+      return -1;
+    }
+    double distance=(euclideanDistance - mandatoryWalkDistance) / maxSpeed + mandatoryWalkDistance * options.walkReluctance / streetSpeed + boardCost;
+    return Math.min(distance,options.walkReluctance * euclideanDistance / streetSpeed);
   }
  else {
     return options.walkReluctance * euclideanDistance / maxSpeed;
