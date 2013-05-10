@@ -1,5 +1,5 @@
 {
-  if (!isOsmEntityHighway(way))   return false;
+  if (!isOsmEntityRoutable(way))   return false;
   String highway=way.getTag("highway");
   if (highway != null && (highway.equals("conveyer") || highway.equals("proposed") || highway.equals("raceway")))   return false;
   if (way.isGeneralAccessDenied()) {

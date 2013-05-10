@@ -1,6 +1,6 @@
 {
   if (_relations.containsKey(relation.getId()))   return;
-  if (relation.isTag("type","multipolygon") && isOsmEntityHighway(relation)) {
+  if (relation.isTag("type","multipolygon") && isOsmEntityRoutable(relation)) {
     if (!isWayRouteable(relation)) {
       return;
     }
@@ -9,7 +9,7 @@
     }
     getLevelsForWay(relation);
   }
- else   if (!(relation.isTag("type","restriction")) && !(relation.isTag("type","route") && relation.isTag("route","road")) && !(relation.isTag("type","multipolygon") && isOsmEntityHighway(relation))&& !(relation.isTag("type","level_map"))) {
+ else   if (!(relation.isTag("type","restriction")) && !(relation.isTag("type","route") && relation.isTag("route","road")) && !(relation.isTag("type","multipolygon") && isOsmEntityRoutable(relation))&& !(relation.isTag("type","level_map"))) {
     return;
   }
   _relations.put(relation.getId(),relation);
