@@ -4,7 +4,7 @@
   if (_areaWayIds.contains(wayId)) {
     _areaWaysById.put(wayId,way);
   }
-  if (!isWayRouteable(way)) {
+  if (!isWayRoutable(way)) {
     return;
   }
   if (way.isTag("area","yes") && way.getNodeRefs().size() > 2) {
