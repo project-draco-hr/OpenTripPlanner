@@ -25,9 +25,6 @@
       }
     }
     double mandatoryWalkDistance=target.getDistanceToNearestTransitStop() + sv.getDistanceToNearestTransitStop();
-    if (mandatoryWalkDistance + s.getWalkDistance() > options.getMaxWalkDistance()) {
-      return -1;
-    }
     double transitCost=(euclideanDistance - mandatoryWalkDistance) / maxSpeed + boardCost;
     double transitStreetCost=mandatoryWalkDistance * options.walkReluctance / streetSpeed;
     return Math.min(transitCost + transitStreetCost,options.walkReluctance * euclideanDistance / streetSpeed);
