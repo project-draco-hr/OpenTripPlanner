@@ -3,4 +3,5 @@
   System.out.println(this.toString());
   for (  State s : states)   System.out.println(s + " via " + s.getBackEdge());
   System.out.println(" --- END GRAPHPATH DUMP ---");
+  System.out.println("Total meters walked in this graphpath: " + states.getLast().getWalkDistance());
 }
