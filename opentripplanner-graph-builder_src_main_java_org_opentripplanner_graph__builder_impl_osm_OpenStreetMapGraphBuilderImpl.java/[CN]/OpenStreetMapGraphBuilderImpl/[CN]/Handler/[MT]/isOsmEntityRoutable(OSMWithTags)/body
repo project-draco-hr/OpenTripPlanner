@@ -1,3 +1,7 @@
 {
-  return osmEntity.hasTag("highway") || osmEntity.isTag("public_transport","platform") || osmEntity.isTag("railway","platform");
+  if (osmEntity.hasTag("highway"))   return true;
+  if (osmEntity.isTag("public_transport","platform") || osmEntity.isTag("railway","platform")) {
+    return !("tourism".equals(osmEntity.getTag("usage")));
+  }
+  return false;
 }
