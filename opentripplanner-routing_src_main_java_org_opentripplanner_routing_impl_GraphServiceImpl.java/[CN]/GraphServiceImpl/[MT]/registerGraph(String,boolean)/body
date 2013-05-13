@@ -1,6 +1,6 @@
 {
   if (preEvict)   evictGraph(routerId);
-  LOG.info("registering routerId {}",routerId);
+  LOG.info("registering routerId '{}'",routerId);
   Graph graph=this.loadGraph(routerId);
   if (graph != null) {
 synchronized (graphs) {
@@ -9,6 +9,6 @@ synchronized (graphs) {
     levels.put(routerId,loadLevel);
     return true;
   }
-  LOG.info("routerId {} was not registered (graph was null).",routerId);
+  LOG.info("routerId '{}' was not registered (graph was null).",routerId);
   return false;
 }
