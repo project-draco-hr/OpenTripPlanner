@@ -1,0 +1,27 @@
+{
+  final URI base_uri=UriBuilder.fromUri(URI).port(PORT).build();
+  System.out.println("Loading Spring context...");
+  GenericApplicationContext gctx=new GenericApplicationContext();
+  XmlBeanDefinitionReader xmlReader=new XmlBeanDefinitionReader(gctx);
+  String[] contexts={"data-sources.xml","org/opentripplanner/api/security-application-context.xml"};
+  for (  String contextFile : contexts) {
+    xmlReader.loadBeanDefinitions(new ClassPathResource(contextFile));
+  }
+  gctx.refresh();
+  gctx.registerShutdownHook();
+  System.out.println("Starting grizzly...");
+  ResourceConfig rc=new PackagesResourceConfig("org.opentripplanner");
+  IoCComponentProviderFactory ioc_factory=new SpringComponentProviderFactory(rc,gctx);
+  HttpServer httpServer=GrizzlyServerFactory.createHttpServer(base_uri,rc,ioc_factory);
+  httpServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler("./"),"/cp/");
+  try {
+    httpServer.start();
+    System.out.println("Grizzly server running at " + base_uri);
+    System.out.println("WADL at " + base_uri + "application.wadl");
+    System.out.println("Test with " + base_uri + "metadata");
+    Thread.currentThread().join();
+  }
+ catch (  InterruptedException ie) {
+    httpServer.stop();
+  }
+}
