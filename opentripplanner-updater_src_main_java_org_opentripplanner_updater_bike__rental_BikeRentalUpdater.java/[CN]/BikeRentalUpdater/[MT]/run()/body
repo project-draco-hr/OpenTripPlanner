@@ -1,4 +1,7 @@
 {
+  if (!setup()) {
+    return;
+  }
   _log.debug("Updating bike rental stations from " + source);
   if (!source.update()) {
     _log.debug("No updates");

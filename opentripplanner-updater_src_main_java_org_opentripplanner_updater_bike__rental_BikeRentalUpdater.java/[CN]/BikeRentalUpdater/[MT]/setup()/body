@@ -1,14 +1,20 @@
 {
-  if (routerId != null) {
-    graph=graphService.getGraph(routerId);
+  graph=graphService.getGraph(routerId);
+  if (graph == null && setup) {
+    _log.error("Can't get graph for router ID {}, disabling updater.",routerId);
+    networkLinkerLibrary=null;
+    service=null;
+    setup=false;
   }
- else {
-    graph=graphService.getGraph();
+  if (graph != null && !setup) {
+    _log.info("Setting up updater for router ID {}.",routerId);
+    networkLinkerLibrary=new NetworkLinkerLibrary(graph,Collections.<Class<?>,Object>emptyMap());
+    service=graph.getService(BikeRentalStationService.class);
+    if (service == null) {
+      service=new BikeRentalStationService();
+      graph.putService(BikeRentalStationService.class,service);
+    }
+    setup=true;
   }
-  networkLinkerLibrary=new NetworkLinkerLibrary(graph,Collections.<Class<?>,Object>emptyMap());
-  service=graph.getService(BikeRentalStationService.class);
-  if (service == null) {
-    service=new BikeRentalStationService();
-    graph.putService(BikeRentalStationService.class,service);
-  }
+  return setup;
 }
