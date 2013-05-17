@@ -2,12 +2,18 @@
   RoutingRequest options=new RoutingRequest();
   options.setMode(TraverseMode.CAR);
   options.setRoutingContext(_graph,v1,v2);
-  PartialPlainStreetEdge pEdge=new PartialPlainStreetEdge(e1,v1,v2,e1.getGeometry(),"partial e1",e1.getLength());
+  PartialPlainStreetEdge pEdge1=new PartialPlainStreetEdge(e1,v1,v2,e1.getGeometry(),"partial e1",e1.getLength());
+  PartialPlainStreetEdge pEdge2=new PartialPlainStreetEdge(e2,v2,v3,e2.getGeometry(),"partial e2",e2.getLength());
   State s0=new State(options);
   State s1=e1.traverse(s0);
   State partialS0=new State(options);
-  State partialS1=pEdge.traverse(partialS0);
+  State partialS1=pEdge1.traverse(partialS0);
   assertEquals(s1.getTime(),partialS1.getTime());
   assertEquals(s1.getElapsedTime(),partialS1.getElapsedTime());
   assertEquals(s1.getWeight(),partialS1.getWeight(),0.0);
+  State s2=e2.traverse(s1);
+  State partialS2=pEdge2.traverse(partialS1);
+  assertEquals(s2.getTime(),partialS2.getTime());
+  assertEquals(s2.getElapsedTime(),partialS2.getElapsedTime());
+  assertEquals(s2.getWeight(),partialS2.getWeight(),0.0);
 }

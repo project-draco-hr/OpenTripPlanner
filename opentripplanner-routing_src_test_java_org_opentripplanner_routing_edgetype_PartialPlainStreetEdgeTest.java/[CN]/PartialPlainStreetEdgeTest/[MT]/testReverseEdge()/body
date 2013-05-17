@@ -1,14 +1,14 @@
 {
   PartialPlainStreetEdge pEdge1=new PartialPlainStreetEdge(e1,v1,v2,e1.getGeometry(),"partial e1",e1.getLength());
-  PartialPlainStreetEdge pEdge2=new PartialPlainStreetEdge(e2,v2,v1,e2.getGeometry(),"partial e2",e2.getLength());
+  PartialPlainStreetEdge pEdge2=new PartialPlainStreetEdge(e1Reverse,v2,v1,e1Reverse.getGeometry(),"partial e2",e1Reverse.getLength());
   assertFalse(e1.isReverseOf(pEdge1));
   assertFalse(pEdge1.isReverseOf(e1));
-  assertFalse(e2.isReverseOf(pEdge2));
-  assertFalse(pEdge2.isReverseOf(e2));
+  assertFalse(e1Reverse.isReverseOf(pEdge2));
+  assertFalse(pEdge2.isReverseOf(e1Reverse));
   assertTrue(e1.isReverseOf(pEdge2));
-  assertTrue(e2.isReverseOf(pEdge1));
-  assertTrue(e2.isReverseOf(e1));
-  assertTrue(e1.isReverseOf(e2));
+  assertTrue(e1Reverse.isReverseOf(pEdge1));
+  assertTrue(e1Reverse.isReverseOf(e1));
+  assertTrue(e1.isReverseOf(e1Reverse));
   assertTrue(pEdge1.isReverseOf(pEdge2));
   assertTrue(pEdge2.isReverseOf(pEdge1));
 }
