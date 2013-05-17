@@ -1,0 +1,37 @@
+{
+  _graph=new Graph();
+  StreetVertex maple1=vertex("maple_1st",2.0,2.0);
+  StreetVertex maple2=vertex("maple_2nd",1.0,2.0);
+  StreetVertex maple3=vertex("maple_3rd",0.0,2.0);
+  StreetVertex main1=vertex("main_1st",2.0,1.0);
+  StreetVertex main2=vertex("main_2nd",1.0,1.0);
+  StreetVertex main3=vertex("main_3rd",0.0,1.0);
+  StreetVertex broad1=vertex("broad_1st",2.0,0.0);
+  StreetVertex broad2=vertex("broad_2nd",1.0,0.0);
+  StreetVertex broad3=vertex("broad_3rd",0.0,0.0);
+  PlainStreetEdge maple1_2=edge(maple1,maple2,100.0,false);
+  PlainStreetEdge maple2_3=edge(maple2,maple3,100.0,false);
+  PlainStreetEdge main1_2=edge(main1,main2,100.0,false);
+  PlainStreetEdge main2_3=edge(main2,main3,100.0,false);
+  broad1_2=edge(broad1,broad2,100.0,false);
+  PlainStreetEdge broad2_3=edge(broad2,broad3,100.0,false);
+  maple_main1=edge(maple1,main1,50.0,false);
+  PlainStreetEdge main_broad1=edge(main1,broad1,100.0,false);
+  PlainStreetEdge maple_main2=edge(maple2,main2,50.0,false);
+  PlainStreetEdge main_broad2=edge(main2,broad2,50.0,false);
+  PlainStreetEdge maple_main3=edge(maple3,main3,100.0,false);
+  PlainStreetEdge main_broad3=edge(main3,broad3,100.0,false);
+  DisallowTurn(maple_main1,main1_2);
+  DisallowTurn(maple_main2,main2_3);
+  DisallowTurn(main_broad2,broad2_3);
+  topRight=maple1;
+  bottomLeft=broad3;
+  proto=new RoutingRequest();
+  proto.setCarSpeed(1.0);
+  proto.setWalkSpeed(1.0);
+  proto.setBikeSpeed(1.0);
+  proto.setTurnReluctance(1.0);
+  proto.setWalkReluctance(1.0);
+  proto.setStairsReluctance(1.0);
+  proto.setTraversalCostModel(new ConstantIntersectionTraversalCostModel(0.0));
+}

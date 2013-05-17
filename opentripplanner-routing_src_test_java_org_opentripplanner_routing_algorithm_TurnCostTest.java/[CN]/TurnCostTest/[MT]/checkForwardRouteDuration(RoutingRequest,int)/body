@@ -1,0 +1,7 @@
+{
+  ShortestPathTree tree=new GenericAStar().getShortestPathTree(options);
+  GraphPath path=tree.getPath(bottomLeft,false);
+  assertNotNull(path);
+  assertEquals(expectedDuration,path.getDuration());
+  return path;
+}
