@@ -1,0 +1,72 @@
+{
+  LOG.debug("Auto discovering graphs under {}",decorated.getResourceBase());
+  Collection<String> graphOnDisk=new HashSet<String>();
+  Collection<String> graphToLoad=new HashSet<String>();
+  long validEndTime=System.currentTimeMillis() - loadDelaySec * 1000;
+  Resource base=decorated.getResource(decorated.getResourceBase());
+  try {
+    File baseFile=base.getFile();
+    File rootGraphFile=new File(baseFile,GraphServiceFileImpl.GRAPH_FILENAME);
+    if (rootGraphFile.exists() && rootGraphFile.canRead()) {
+      graphOnDisk.add("");
+      long lastModified=rootGraphFile.lastModified();
+      if (lastModified > lastAutoScan && lastModified <= validEndTime) {
+        LOG.debug("Graph to (re)load: {}, lastModified={}",rootGraphFile,lastModified);
+        graphToLoad.add("");
+      }
+    }
+    for (    String sub : baseFile.list()) {
+      File subFile=new File(baseFile,sub);
+      if (subFile.isDirectory()) {
+        File graphFile=new File(subFile,GraphServiceFileImpl.GRAPH_FILENAME);
+        if (graphFile.exists() && graphFile.canRead()) {
+          graphOnDisk.add(sub);
+          long lastModified=graphFile.lastModified();
+          if (lastModified > lastAutoScan && lastModified <= validEndTime) {
+            LOG.debug("Graph to (re)load: {}, lastModified={}",graphFile,lastModified);
+            graphToLoad.add(sub);
+          }
+        }
+      }
+    }
+  }
+ catch (  IOException e) {
+    LOG.error("Graph auto-discovering has been set, but {} is not a file resource, so I'm bailing-out.",decorated.getResourceBase());
+  }
+ finally {
+    lastAutoScan=validEndTime;
+  }
+  StringBuffer onDiskSb=new StringBuffer();
+  for (  String routerId : graphOnDisk)   onDiskSb.append("[").append(routerId).append("]");
+  StringBuffer toLoadSb=new StringBuffer();
+  for (  String routerId : graphToLoad)   toLoadSb.append("[").append(routerId).append("]");
+  LOG.debug("Found routers: {} - Must reload: {}",onDiskSb.toString(),toLoadSb.toString());
+  for (  String routerId : graphToLoad) {
+    decorated.registerGraph(routerId,false);
+  }
+  for (  String routerId : getRouterIds()) {
+    if (!graphOnDisk.contains(routerId)) {
+      LOG.warn("Auto-evicting routerId '{}', not present on disk anymore.",routerId);
+      decorated.evictGraph(routerId);
+    }
+  }
+  if (!getRouterIds().contains(decorated.getDefaultRouterId())) {
+    LOG.warn("Default routerId '{}' not available!",decorated.getDefaultRouterId());
+    if (!getRouterIds().isEmpty()) {
+      String defRouterId=null;
+      if (getRouterIds().contains("")) {
+        defRouterId="";
+        LOG.info("Setting default routerId to root graph ''");
+      }
+ else {
+        defRouterId=getRouterIds().iterator().next();
+        if (getRouterIds().size() > 1)         LOG.warn("Setting default routerId to arbitrary one '{}'",defRouterId);
+ else         LOG.info("Setting default routerId to '{}'",defRouterId);
+      }
+      decorated.setDefaultRouterId(defRouterId);
+    }
+  }
+  if (this.getRouterIds().isEmpty()) {
+    LOG.warn("No graphs have been loaded/registered. " + "You must place one or more graphs before routing.");
+  }
+}

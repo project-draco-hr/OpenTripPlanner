@@ -1,0 +1,15 @@
+{
+  if (routerId == null || routerId.isEmpty()) {
+    routerId=defaultRouterId;
+    LOG.debug("routerId not specified, set to default of '{}'",routerId);
+  }
+synchronized (graphs) {
+    if (!graphs.containsKey(routerId)) {
+      LOG.error("no graph registered with the routerId '{}'",routerId);
+      return null;
+    }
+ else {
+      return graphs.get(routerId);
+    }
+  }
+}
