@@ -1,17 +1,3 @@
 {
-  this.weight=0;
-  this.vertex=vertex;
-  this.backState=null;
-  this.backEdge=null;
-  this.stateData=new StateData(options);
-  this.stateData.opt=options;
-  this.stateData.startTime=time;
-  this.stateData.usingRentedBike=false;
-  this.walkDistance=0;
-  this.time=time;
-  if (options.rctx != null) {
-    this.pathParserStates=new int[options.rctx.pathParsers.length];
-    Arrays.fill(this.pathParserStates,AutomatonState.START);
-  }
-  stateData.routeSequence=new AgencyAndId[0];
+  this(vertex,null,time,options);
 }
