@@ -4,6 +4,9 @@
   if (this.hasHeading()) {
     sb.append(" heading=").append(this.heading);
   }
+  if (this.hasEdgeId()) {
+    sb.append(" edgeId=").append(this.edgeId);
+  }
   sb.append(">");
   return sb.toString();
 }
