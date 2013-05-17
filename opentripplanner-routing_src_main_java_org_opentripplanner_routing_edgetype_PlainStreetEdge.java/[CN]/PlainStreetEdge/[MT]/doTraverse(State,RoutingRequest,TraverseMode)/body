@@ -88,7 +88,7 @@ IntersectionVertex traversedVertex=((IntersectionVertex)fromv);
 realTurnCost=options.getIntersectionTraversalCostModel().computeTraversalCost(traversedVertex,backPSE,this,traverseMode,options,(float)backSpeed,(float)speed);
 }
  else {
-LOG.info("Not computing turn cost for edge {}",this);
+LOG.debug("Not computing turn cost for edge {}",this);
 realTurnCost=0;
 }
 if (!traverseMode.isDriving()) {
