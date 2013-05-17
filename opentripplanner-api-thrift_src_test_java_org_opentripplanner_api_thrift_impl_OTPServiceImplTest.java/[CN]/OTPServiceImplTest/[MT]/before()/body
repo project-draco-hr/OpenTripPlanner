@@ -5,7 +5,12 @@
   SimplifiedPathServiceImpl pathService=new SimplifiedPathServiceImpl();
   pathService.setGraphService(graphService);
   pathService.setSptService(new GenericAStar());
+  RoutingRequest prototype=new RoutingRequest();
+  prototype.setTurnReluctance(1.0);
+  prototype.setWalkReluctance(1.0);
+  prototype.setStairsReluctance(1.0);
   serviceImpl=new OTPServiceImpl();
+  serviceImpl.setPrototypeRoutingRequest(prototype);
   serviceImpl.setGraphService(graphService);
   serviceImpl.setPathService(pathService);
 }
