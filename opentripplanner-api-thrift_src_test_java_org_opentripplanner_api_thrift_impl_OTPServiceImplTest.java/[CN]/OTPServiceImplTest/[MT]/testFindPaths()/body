@@ -13,7 +13,7 @@
   req.validate();
   FindPathsResponse res=serviceImpl.FindPaths(req);
   TripPaths paths=res.getPaths();
-  while (paths.getPaths().isEmpty()) {
+  while (paths == null || paths.getPaths().isEmpty()) {
     pair=pickOriginAndDest();
     trip.setOrigin(pair.getFirst());
     trip.setDestination(pair.getSecond());
