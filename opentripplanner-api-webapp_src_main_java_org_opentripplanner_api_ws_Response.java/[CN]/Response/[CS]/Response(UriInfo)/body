@@ -1,0 +1,9 @@
+{
+  this.requestParameters=new HashMap<String,String>();
+  if (info == null) {
+    return;
+  }
+  for (  Entry<String,List<String>> e : info.getQueryParameters().entrySet()) {
+    requestParameters.put(e.getKey(),e.getValue().get(0));
+  }
+}
