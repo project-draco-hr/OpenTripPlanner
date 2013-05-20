@@ -60,7 +60,7 @@
     Coordinate nearestPoint=candidate.nearestPointOnEdge;
     closestStreetDistance=distanceLibrary.distance(coord,nearestPoint);
     _log.debug("best street: {} dist: {}",bestStreet.toString(),closestStreetDistance);
-    if (calculatedName == null) {
+    if (calculatedName == null || "".equals(calculatedName)) {
       calculatedName=bestStreet.getName();
     }
     String closestName=String.format("%s_%s",bestStreet.getName(),location.toString());
