@@ -8,7 +8,7 @@
     State state=new State(alight.getToVertex(),arrivalTime,request);
     State result=alight.traverse(state);
     if (result == null)     continue;
-    int time=(int)result.getTime();
+    int time=(int)result.getTimeSeconds();
     if (time > spec.departureTime) {
       spec.departureTime=time;
       spec.tripTimes=result.getTripTimes();

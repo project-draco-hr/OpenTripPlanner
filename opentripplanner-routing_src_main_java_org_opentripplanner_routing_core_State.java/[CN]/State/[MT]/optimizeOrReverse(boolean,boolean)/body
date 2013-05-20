@@ -11,7 +11,7 @@
     edge=orig.getBackEdge();
     if (optimize) {
       if (edge instanceof TransitBoardAlight && forward && orig.getNumBoardings() == 1 && ((((TransitBoardAlight)edge).isBoarding() && !stateData.opt.isArriveBy()) || (!((TransitBoardAlight)edge).isBoarding() && stateData.opt.isArriveBy()))) {
-        ret=((TransitBoardAlight)edge).traverse(ret,orig.getBackState().getTime());
+        ret=((TransitBoardAlight)edge).traverse(ret,orig.getBackState().getTimeSeconds());
         newInitialWaitTime=ret.stateData.initialWaitTime;
       }
  else       ret=edge.traverse(ret);
@@ -42,7 +42,7 @@
     if (getElapsedTime() != reversed.getElapsedTime())     LOG.warn("Optimization changed time: before " + this.getElapsedTime() + " after "+ reversed.getElapsedTime());
     if (getActiveTime() <= reversed.getActiveTime())     LOG.warn("Optimization did not decrease active time: before " + this.getActiveTime() + " after "+ reversed.getActiveTime()+ ", boardings: "+ this.getNumBoardings());
     if (reversed.getWeight() < this.getBackState().getWeight())     LOG.warn("Weight has been reduced enough to make it run backwards, now:" + reversed.getWeight() + " backState "+ getBackState().getWeight()+ ", "+ "number of boardings: "+ getNumBoardings());
-    if (getTime() != reversed.getTime())     LOG.warn("Times do not match");
+    if (getTimeSeconds() != reversed.getTimeSeconds())     LOG.warn("Times do not match");
     if (Math.abs(getWeight() - reversed.getWeight()) > 1 && newInitialWaitTime == stateData.initialWaitTime)     LOG.warn("Weight is changed (before: " + getWeight() + ", after: "+ reversed.getWeight()+ "), initial wait times "+ "constant at "+ newInitialWaitTime);
     if (newInitialWaitTime != reversed.stateData.initialWaitTime)     LOG.warn("Initial wait time not propagated: is " + reversed.stateData.initialWaitTime + ", should be "+ newInitialWaitTime);
     reversed.initializeFieldsFrom(this);

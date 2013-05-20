@@ -18,7 +18,7 @@
       return null;
     }
     if (s0.getNumBoardings() > options.maxTransfers)     return null;
-    long t0=s0.getTime();
+    long t0=s0.getTimeSeconds();
     long slack;
     if (s0.isEverBoarded()) {
       slack=options.getTransferSlack() - options.getAlightSlack();

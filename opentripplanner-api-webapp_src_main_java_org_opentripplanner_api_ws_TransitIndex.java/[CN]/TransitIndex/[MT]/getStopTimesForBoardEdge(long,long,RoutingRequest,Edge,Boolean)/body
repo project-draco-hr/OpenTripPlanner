@@ -6,7 +6,7 @@
     State s0=new State(e.getFromVertex(),time,options);
     result=e.traverse(s0);
     if (result == null)     break;
-    time=result.getTime();
+    time=result.getTimeSeconds();
     if (time > endTime)     break;
     StopTime stopTime=new StopTime();
     stopTime.time=time;

@@ -15,11 +15,11 @@
       return null;
     }
     s1.setTripId(null);
-    s1.setLastAlightedTime(state0.getTime());
+    s1.setLastAlightedTime(state0.getTimeSeconds());
     s1.setPreviousStop(fromv);
     s1.setLastPattern(this.getPattern());
     if (arrivalTimeAtStop > 0) {
-      int wait=(int)Math.abs(state0.getTime() - arrivalTimeAtStop);
+      int wait=(int)Math.abs(state0.getTimeSeconds() - arrivalTimeAtStop);
       s1.incrementTimeInSeconds(wait);
       s1.incrementWeight(wait * options.waitAtBeginningFactor);
       s1.setInitialWaitTime(wait);
@@ -48,7 +48,7 @@
     if (!options.getModes().get(modeMask)) {
       return null;
     }
-    long current_time=state0.getTime();
+    long current_time=state0.getTimeSeconds();
     int bestWait=-1;
     TripTimes bestTripTimes=null;
     int serviceId=getPattern().getServiceId();

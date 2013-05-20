@@ -22,8 +22,8 @@
   State partialS2A=partialE2First.traverse(partialS1);
   State partialS2B=partialE2Second.traverse(partialS2A);
   State partialS3=e3.traverse(partialS2B);
-  assertEquals(s0.getTime(),partialS0.getTime());
-  assertTrue(Math.abs(s3.getTime() - partialS3.getTime()) <= 1);
+  assertEquals(s0.getTimeSeconds(),partialS0.getTimeSeconds());
+  assertTrue(Math.abs(s3.getTimeSeconds() - partialS3.getTimeSeconds()) <= 1);
   assertTrue(Math.abs(s3.getElapsedTime() - partialS3.getElapsedTime()) <= 1);
   assertTrue(Math.abs(s3.getWeight() - partialS3.getWeight()) <= 1);
   options.setTraversalCostModel(new DummyCostModel(0.0));
@@ -36,12 +36,12 @@
   State partialS2ANoCost=partialE2First.traverse(partialS1NoCost);
   State partialS2BNoCost=partialE2Second.traverse(partialS2ANoCost);
   State partialS3NoCost=e3.traverse(partialS2BNoCost);
-  assertTrue(Math.abs(s3NoCost.getTime() - partialS3NoCost.getTime()) <= 1);
+  assertTrue(Math.abs(s3NoCost.getTimeSeconds() - partialS3NoCost.getTimeSeconds()) <= 1);
   assertTrue(Math.abs(s3NoCost.getElapsedTime() - partialS3NoCost.getElapsedTime()) <= 1);
   assertTrue(Math.abs(s3NoCost.getWeight() - partialS3NoCost.getWeight()) <= 1);
   double expectedDifference=2 * 10 * 60.0;
-  double durationDiff=s3.getTime() - s3NoCost.getTime();
-  double partialDurationDiff=partialS3.getTime() - partialS3NoCost.getTime();
+  double durationDiff=s3.getTimeSeconds() - s3NoCost.getTimeSeconds();
+  double partialDurationDiff=partialS3.getTimeSeconds() - partialS3NoCost.getTimeSeconds();
   assertTrue(Math.abs(durationDiff - expectedDifference) <= 1);
   assertTrue(Math.abs(partialDurationDiff - expectedDifference) <= 1);
   double weightDiff=s3.getWeight() - s3NoCost.getWeight();

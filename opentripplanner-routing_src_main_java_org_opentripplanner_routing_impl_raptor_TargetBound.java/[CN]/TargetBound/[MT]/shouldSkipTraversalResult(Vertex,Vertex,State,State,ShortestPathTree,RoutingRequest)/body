@@ -49,7 +49,7 @@
       if (current.getElapsedTime() + minTime >= bounder.getElapsedTime()) {
         return true;
       }
- else       if (prevTime > 0 && (options.arriveBy ? (current.getTime() - minTime >= prevTime) : ((current.getTime() + minTime) <= prevTime))) {
+ else       if (prevTime > 0 && (options.arriveBy ? (current.getTimeSeconds() - minTime >= prevTime) : ((current.getTimeSeconds() + minTime) <= prevTime))) {
         prevBounded=false;
       }
     }

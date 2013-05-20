@@ -1,12 +1,12 @@
 {
   for (Iterator<State> it=bounders.iterator(); it.hasNext(); ) {
     State old=it.next();
-    if (old.getNumBoardings() == bounder.getNumBoardings() && old.getTime() == bounder.getTime() && old.getWalkDistance() == bounder.getWalkDistance())     return;
+    if (old.getNumBoardings() == bounder.getNumBoardings() && old.getTimeSeconds() == bounder.getTimeSeconds() && old.getWalkDistance() == bounder.getWalkDistance())     return;
     if (bounder.dominates(old)) {
       it.remove();
       removedBoundingStates.add(old);
     }
- else     if (bounder.getNumBoardings() <= old.getNumBoardings() && options.arriveBy ? (bounder.getTime() - WORST_TIME_DIFFERENCE > old.getTime()) : (bounder.getTime() + WORST_TIME_DIFFERENCE < old.getTime())) {
+ else     if (bounder.getNumBoardings() <= old.getNumBoardings() && options.arriveBy ? (bounder.getTimeSeconds() - WORST_TIME_DIFFERENCE > old.getTimeSeconds()) : (bounder.getTimeSeconds() + WORST_TIME_DIFFERENCE < old.getTimeSeconds())) {
       it.remove();
       removedBoundingStates.add(old);
     }

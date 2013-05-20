@@ -53,7 +53,7 @@
  else         if (shortName.startsWith("X") || shortName.startsWith("BxM") || shortName.startsWith("QM")|| shortName.startsWith("BM")) {
           newRide.classifier=EXPRESS_BUS;
         }
-        newRide.startTime=state.getTime();
+        newRide.startTime=state.getTimeSeconds();
       }
       newRide.lastStop=((HopEdge)backEdge).getStartStop();
     }

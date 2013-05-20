@@ -9,7 +9,7 @@
           State state=new State(board.getFromVertex(),departureTime,request);
           State result=board.traverse(state);
           if (result == null)           continue;
-          int time=(int)result.getTime();
+          int time=(int)result.getTimeSeconds();
           if (time < bestArrivalTime) {
             bestArrivalTime=time;
           }
