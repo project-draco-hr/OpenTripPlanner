@@ -3,5 +3,9 @@
   GraphPath path=tree.getPath(bottomLeft,false);
   assertNotNull(path);
   assertEquals(expectedDuration,path.getDuration());
+  assertEquals(expectedDuration,(int)path.getWeight());
+  for (  State s : path.states) {
+    assertEquals(s.getElapsedTimeSeconds(),(int)s.getWeight());
+  }
   return path;
 }

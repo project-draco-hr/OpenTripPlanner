@@ -3,7 +3,6 @@
   options.setMode(TraverseMode.CAR);
   options.setRoutingContext(_graph,topRight,bottomLeft);
   GraphPath path=checkForwardRouteDuration(options,350);
-  path.dump();
   List<State> states=path.states;
   assertEquals(5,states.size());
   assertEquals("maple_1st",states.get(0).getVertex().getLabel());
