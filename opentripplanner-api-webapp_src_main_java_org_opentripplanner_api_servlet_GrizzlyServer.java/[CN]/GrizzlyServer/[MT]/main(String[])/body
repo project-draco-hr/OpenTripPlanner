@@ -3,7 +3,7 @@
   System.out.println("Loading Spring context...");
   GenericApplicationContext gctx=new GenericApplicationContext();
   XmlBeanDefinitionReader xmlReader=new XmlBeanDefinitionReader(gctx);
-  String[] contexts={"data-sources.xml","org/opentripplanner/api/security-application-context.xml"};
+  String[] contexts={"data-sources.xml"};
   for (  String contextFile : contexts) {
     xmlReader.loadBeanDefinitions(new ClassPathResource(contextFile));
   }
