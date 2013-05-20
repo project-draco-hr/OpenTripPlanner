@@ -5,10 +5,10 @@
   this.backState=null;
   this.stateData=new StateData(options);
   this.stateData.opt=options;
-  this.stateData.startTime=time;
+  this.stateData.startTime=timeSeconds;
   this.stateData.usingRentedBike=false;
   this.walkDistance=0;
-  this.time=time;
+  this.time=timeSeconds * 1000;
   if (options.rctx != null) {
     this.pathParserStates=new int[options.rctx.pathParsers.length];
     Arrays.fill(this.pathParserStates,AutomatonState.START);

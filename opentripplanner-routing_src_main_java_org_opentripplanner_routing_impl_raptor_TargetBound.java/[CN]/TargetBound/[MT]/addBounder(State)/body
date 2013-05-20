@@ -20,10 +20,10 @@
   RaptorStop stop=state.stop;
   if (options.isArriveBy()) {
     final int nextDepartTime=getNextDepartTime(options,(state.arrivalTime - options.getBoardSlack()) - 2,stop.stopVertex);
-    previousArrivalTime.add((int)((nextDepartTime - options.getAlightSlack()) - bounder.getElapsedTime()));
+    previousArrivalTime.add((int)((nextDepartTime - options.getAlightSlack()) - bounder.getElapsedTimeSeconds()));
   }
  else {
     final int previousArriveTime=getPreviousArriveTime(options,state.arrivalTime - options.getAlightSlack() + 2,stop.stopVertex);
-    previousArrivalTime.add((int)(previousArriveTime + options.getAlightSlack() + bounder.getElapsedTime()));
+    previousArrivalTime.add((int)(previousArriveTime + options.getAlightSlack() + bounder.getElapsedTimeSeconds()));
   }
 }

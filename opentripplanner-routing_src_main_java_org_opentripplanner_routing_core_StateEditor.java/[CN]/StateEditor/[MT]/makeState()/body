@@ -6,7 +6,7 @@
   }
   if (child.backState != null) {
     child.checkNegativeWeight();
-    if (traversingBackward ? (child.getTimeDeltaSec() > 0) : (child.getTimeDeltaSec() < 0)) {
+    if (traversingBackward ? (child.getTimeDeltaSeconds() > 0) : (child.getTimeDeltaSeconds() < 0)) {
       LOG.trace("Time was incremented the wrong direction during state editing. {}",child.backEdge);
       return null;
     }

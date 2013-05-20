@@ -2,10 +2,10 @@
   long clampInitialWait=stateData.opt.clampInitialWait;
   long initialWait=stateData.initialWaitTime;
   if (clampInitialWait >= 0 && initialWait > clampInitialWait)   initialWait=clampInitialWait;
-  long activeTime=getElapsedTime() - initialWait;
+  long activeTime=getElapsedTimeSeconds() - initialWait;
   if (activeTime < 0) {
     LOG.warn("initial wait was greater than elapsed time.");
-    activeTime=getElapsedTime();
+    activeTime=getElapsedTimeSeconds();
   }
   return activeTime;
 }

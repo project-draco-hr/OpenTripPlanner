@@ -25,7 +25,7 @@
  else {
       StateEditor editor=ret.edit(edge);
       editor.setFromState(orig);
-      editor.incrementTimeInSeconds(orig.getAbsTimeDeltaSec());
+      editor.incrementTimeInSeconds(orig.getAbsTimeDeltaSeconds());
       editor.incrementWeight(orig.getWeightDelta());
       editor.incrementWalkDistance(orig.getWalkDistanceDelta());
       editor.setBackMode(orig.getBackMode());
@@ -39,7 +39,7 @@
   if (forward) {
     State reversed=ret.reverse();
     if (getWeight() <= reversed.getWeight())     LOG.warn("Optimization did not decrease weight: before " + this.getWeight() + " after "+ reversed.getWeight());
-    if (getElapsedTime() != reversed.getElapsedTime())     LOG.warn("Optimization changed time: before " + this.getElapsedTime() + " after "+ reversed.getElapsedTime());
+    if (getElapsedTimeSeconds() != reversed.getElapsedTimeSeconds())     LOG.warn("Optimization changed time: before " + this.getElapsedTimeSeconds() + " after "+ reversed.getElapsedTimeSeconds());
     if (getActiveTime() <= reversed.getActiveTime())     LOG.warn("Optimization did not decrease active time: before " + this.getActiveTime() + " after "+ reversed.getActiveTime()+ ", boardings: "+ this.getNumBoardings());
     if (reversed.getWeight() < this.getBackState().getWeight())     LOG.warn("Weight has been reduced enough to make it run backwards, now:" + reversed.getWeight() + " backState "+ getBackState().getWeight()+ ", "+ "number of boardings: "+ getNumBoardings());
     if (getTimeSeconds() != reversed.getTimeSeconds())     LOG.warn("Times do not match");

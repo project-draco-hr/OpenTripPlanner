@@ -15,14 +15,14 @@
       return null;
     }
     s1.setTripId(null);
-    s1.setLastAlightedTime(state0.getTimeSeconds());
+    s1.setLastAlightedTimeSeconds(state0.getTimeSeconds());
     s1.setPreviousStop(fromv);
     s1.setLastPattern(this.getPattern());
     if (arrivalTimeAtStop > 0) {
       int wait=(int)Math.abs(state0.getTimeSeconds() - arrivalTimeAtStop);
       s1.incrementTimeInSeconds(wait);
       s1.incrementWeight(wait * options.waitAtBeginningFactor);
-      s1.setInitialWaitTime(wait);
+      s1.setInitialWaitTimeSeconds(wait);
     }
     if (options.isReverseOptimizing())     s1.incrementWeight(options.getBoardCost(mode));
     if (options.isReverseOptimizeOnTheFly()) {
@@ -94,7 +94,7 @@
     double wait_cost=bestWait;
     if (state0.getNumBoardings() == 0 && !options.isReverseOptimizing()) {
       wait_cost*=options.waitAtBeginningFactor;
-      s1.setInitialWaitTime(bestWait);
+      s1.setInitialWaitTimeSeconds(bestWait);
     }
  else {
       wait_cost*=options.waitReluctance;
