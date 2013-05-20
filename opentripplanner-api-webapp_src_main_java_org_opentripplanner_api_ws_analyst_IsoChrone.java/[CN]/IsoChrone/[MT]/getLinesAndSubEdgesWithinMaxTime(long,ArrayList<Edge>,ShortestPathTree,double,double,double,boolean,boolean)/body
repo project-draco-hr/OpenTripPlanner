@@ -13,8 +13,8 @@
     State sFrom=spt.getState(edge.getFromVertex());
     State sTo=spt.getState(edge.getToVertex());
     if ((sFrom != null) && (sTo != null)) {
-      long fromTime=sFrom.getElapsedTime();
-      long toTime=sTo.getElapsedTime();
+      long fromTime=sFrom.getElapsedTimeSeconds();
+      long toTime=sTo.getElapsedTimeSeconds();
       long dt=Math.abs(toTime - fromTime);
       Geometry edgeGeom=edge.getGeometry();
       if ((edgeGeom != null) && (edgeGeom instanceof LineString)) {

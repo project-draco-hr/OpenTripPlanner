@@ -108,7 +108,7 @@
     noRoadNearBy=false;
     Map<ReversibleLineStringWrapper,Edge> connectingEdgesMap=Maps.newHashMap();
     for (    State state : sptA.getAllStates()) {
-      long et=state.getElapsedTime();
+      long et=state.getElapsedTimeSeconds();
       if (et <= maxTime) {
         if (visitedCoords.contains(state.getVertex().getCoordinate())) {
           continue;
