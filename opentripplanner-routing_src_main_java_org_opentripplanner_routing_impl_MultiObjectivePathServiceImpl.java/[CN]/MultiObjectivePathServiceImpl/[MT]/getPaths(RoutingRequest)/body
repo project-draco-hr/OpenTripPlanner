@@ -28,7 +28,7 @@
     cutoff+=options.getMaxWalkDistance() * options.walkReluctance;
     options.maxWeight=cutoff;
     State origin=new State(options);
-    heuristic.computeInitialWeight(origin,targetVertex);
+    heuristic.initialize(origin,targetVertex);
     options.maxWeight=cutoff + 30 * 60 * options.waitReluctance;
     HashMap<Vertex,List<State>> states=new HashMap<Vertex,List<State>>();
     pq.reset();

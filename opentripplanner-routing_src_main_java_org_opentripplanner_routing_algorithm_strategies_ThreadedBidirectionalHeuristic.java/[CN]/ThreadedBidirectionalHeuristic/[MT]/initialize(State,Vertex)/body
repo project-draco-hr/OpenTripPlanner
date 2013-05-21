@@ -1,0 +1,9 @@
+{
+  if (target == this.target) {
+    LOG.debug("reusing existing heuristic");
+  }
+ else {
+    this.target=target;
+    new Thread(new Worker(s)).start();
+  }
+}
