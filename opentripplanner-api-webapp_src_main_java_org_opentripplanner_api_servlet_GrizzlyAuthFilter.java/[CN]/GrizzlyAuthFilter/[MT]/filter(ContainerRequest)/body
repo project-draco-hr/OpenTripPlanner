@@ -1,7 +1,7 @@
 {
   String method=containerRequest.getMethod();
   String path=containerRequest.getPath(true);
-  if (method.equals("GET") && path.endsWith("metadata"))   return containerRequest;
+  if (method.equals("GET"))   return containerRequest;
   String auth=containerRequest.getHeaderValue("authorization");
   if (auth == null)   throw unauthorized;
   if (auth.startsWith("Basic ") || auth.startsWith("Basic ")) {

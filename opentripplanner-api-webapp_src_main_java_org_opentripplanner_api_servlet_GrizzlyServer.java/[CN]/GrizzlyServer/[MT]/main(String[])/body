@@ -1,24 +1,28 @@
 {
-  final URI base_uri=UriBuilder.fromUri(URI).port(PORT).build();
   System.out.println("Loading Spring context...");
-  GenericApplicationContext gctx=new GenericApplicationContext();
-  XmlBeanDefinitionReader xmlReader=new XmlBeanDefinitionReader(gctx);
+  GenericApplicationContext actx=new GenericApplicationContext();
+  XmlBeanDefinitionReader xmlReader=new XmlBeanDefinitionReader(actx);
   String[] contexts={"data-sources.xml"};
   for (  String contextFile : contexts) {
     xmlReader.loadBeanDefinitions(new ClassPathResource(contextFile));
   }
-  gctx.refresh();
-  gctx.registerShutdownHook();
+  actx.refresh();
+  actx.registerShutdownHook();
   System.out.println("Starting grizzly...");
+  HttpServer httpServer=new HttpServer();
+  NetworkListener networkListener=new NetworkListener("sample-listener","localhost",PORT);
+  ThreadPoolConfig threadPoolConfig=ThreadPoolConfig.defaultConfig().setCorePoolSize(2).setMaxPoolSize(4);
+  networkListener.getTransport().setWorkerThreadPoolConfig(threadPoolConfig);
+  httpServer.addListener(networkListener);
   ResourceConfig rc=new PackagesResourceConfig("org.opentripplanner");
   rc.getProperties().put(ResourceConfig.PROPERTY_CONTAINER_REQUEST_FILTERS,new String[]{GrizzlyAuthFilter.class.getName()});
-  IoCComponentProviderFactory ioc_factory=new SpringComponentProviderFactory(rc,gctx);
-  HttpServer httpServer=GrizzlyServerFactory.createHttpServer(base_uri,rc,ioc_factory);
+  IoCComponentProviderFactory ioc_factory=new SpringComponentProviderFactory(rc,actx);
+  HttpHandler handler=ContainerFactory.createContainer(HttpHandler.class,rc,ioc_factory);
+  httpServer.getServerConfiguration().addHttpHandler(handler,"/ws/");
   httpServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler("./"),"/cp/");
   try {
-    System.out.println("Grizzly server running at " + base_uri);
-    System.out.println("WADL at " + base_uri + "application.wadl");
-    System.out.println("Test with " + base_uri + "metadata");
+    httpServer.start();
+    System.out.println("Grizzly server running.");
     Thread.currentThread().join();
   }
  catch (  InterruptedException ie) {
