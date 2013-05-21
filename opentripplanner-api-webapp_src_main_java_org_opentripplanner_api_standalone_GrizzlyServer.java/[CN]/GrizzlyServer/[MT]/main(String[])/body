@@ -1,31 +1,25 @@
 {
-  System.out.println("Loading Spring context...");
-  GenericApplicationContext actx=new GenericApplicationContext();
-  XmlBeanDefinitionReader xmlReader=new XmlBeanDefinitionReader(actx);
-  String[] contexts={"data-sources.xml"};
-  for (  String contextFile : contexts) {
-    xmlReader.loadBeanDefinitions(new ClassPathResource(contextFile));
-  }
-  actx.refresh();
-  actx.registerShutdownHook();
-  System.out.println("Starting grizzly...");
+  LOG.info("Starting OTP Grizzly server...");
   HttpServer httpServer=new HttpServer();
   NetworkListener networkListener=new NetworkListener("sample-listener","localhost",PORT);
   ThreadPoolConfig threadPoolConfig=ThreadPoolConfig.defaultConfig().setCorePoolSize(2).setMaxPoolSize(4);
   networkListener.getTransport().setWorkerThreadPoolConfig(threadPoolConfig);
   httpServer.addListener(networkListener);
   ResourceConfig rc=new PackagesResourceConfig("org.opentripplanner");
-  rc.getProperties().put(ResourceConfig.PROPERTY_CONTAINER_REQUEST_FILTERS,new String[]{GrizzlyAuthFilter.class.getName()});
-  IoCComponentProviderFactory ioc_factory=new SpringComponentProviderFactory(rc,actx);
+  rc.getProperties().put(ResourceConfig.PROPERTY_CONTAINER_REQUEST_FILTERS,new String[]{JerseyAuthFilter.class.getName()});
+  IoCComponentProviderFactory ioc_factory=createInjector(args);
   HttpHandler handler=ContainerFactory.createContainer(HttpHandler.class,rc,ioc_factory);
   httpServer.getServerConfiguration().addHttpHandler(handler,"/ws/");
   httpServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler("./"),"/cp/");
   try {
     httpServer.start();
-    System.out.println("Grizzly server running.");
+    LOG.info("Grizzly server running.");
     Thread.currentThread().join();
   }
- catch (  InterruptedException ie) {
+ catch (  BindException be) {
+    LOG.error("Cannot bind to port {}. Is it already in use?",PORT);
+  }
+catch (  InterruptedException ie) {
     httpServer.stop();
   }
 }
