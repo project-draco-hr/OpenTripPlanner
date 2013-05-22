@@ -1,16 +1,23 @@
 {
-  Logger stopsLog=LoggerFactory.getLogger(LoggerAppenderProvider.createCsvFile4LoggerCat(logFile,"stops"));
-  stopsLog.info(String.format("%s,%s,%s,%s","stopId","lon","lat","types"));
-  for (  TransitStop ts : IterableLibrary.filter(graph.getVertices(),TransitStop.class)) {
-    StringBuilder types=new StringBuilder();
-    for (    IStopTester stopTester : stopTesters) {
-      if (stopTester.fulfillDemands(ts,graph)) {
-        if (types.length() > 0)         types.append(";");
-        types.append(stopTester.getType());
+  try {
+    PrintWriter pw=new PrintWriter(new File(logFile));
+    pw.printf("%s,%s,%s,%s","stopId","lon","lat","types");
+    for (    TransitStop ts : IterableLibrary.filter(graph.getVertices(),TransitStop.class)) {
+      StringBuilder types=new StringBuilder();
+      for (      IStopTester stopTester : stopTesters) {
+        if (stopTester.fulfillDemands(ts,graph)) {
+          if (types.length() > 0)           types.append(";");
+          types.append(stopTester.getType());
+        }
+      }
+      if (types.length() > 0) {
+        pw.printf("%s,%f,%f,%s",ts.getStopId(),ts.getCoordinate().x,ts.getCoordinate().y,types.toString());
       }
     }
-    if (types.length() > 0) {
-      stopsLog.info(String.format("%s,%f,%f,%s",ts.getStopId(),ts.getCoordinate().x,ts.getCoordinate().y,types.toString()));
-    }
+    pw.close();
+  }
+ catch (  FileNotFoundException e) {
+    LOG.error("Failed to write StopsAlerts log file due to {}",e);
+    e.printStackTrace();
   }
 }
