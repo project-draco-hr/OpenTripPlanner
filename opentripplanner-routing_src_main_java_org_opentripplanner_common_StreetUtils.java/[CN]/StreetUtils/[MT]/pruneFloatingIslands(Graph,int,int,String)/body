@@ -1,9 +1,15 @@
 {
   _log.debug("pruning");
-  Logger islandLog=null;
-  if (islandLogName != null) {
-    islandLog=LoggerFactory.getLogger(islandLogName);
-    islandLog.info(String.format("%s\t%s\t%s\t%s\t%s","id","stopCount","streetCount","wkt","hadRemoved"));
+  PrintWriter islandLog=null;
+  try {
+    islandLog=new PrintWriter(new File(islandLogName));
+  }
+ catch (  Exception e) {
+    _log.error("Failed to write islands log file due to {}",e);
+    e.printStackTrace();
+  }
+  if (islandLog != null) {
+    islandLog.printf("%s\t%s\t%s\t%s\t%s","id","stopCount","streetCount","wkt","hadRemoved");
   }
   Map<Vertex,Subgraph> subgraphs=new HashMap<Vertex,Subgraph>();
   Map<Vertex,ArrayList<Vertex>> neighborsForVertex=new HashMap<Vertex,ArrayList<Vertex>>();

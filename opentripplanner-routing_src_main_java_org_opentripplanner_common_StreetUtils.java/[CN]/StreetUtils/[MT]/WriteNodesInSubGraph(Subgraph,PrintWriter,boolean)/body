@@ -3,6 +3,6 @@
   if (!convexHullGeom.getGeometryType().equalsIgnoreCase("POLYGON")) {
     convexHullGeom=convexHullGeom.buffer(0.0001,5);
   }
-  islandLog.info(String.format("%d\t%d\t%d\t%s\t%b",islandCounter,subgraph.stopSize(),subgraph.streetSize(),convexHullGeom,hadRemoved));
+  islandLog.printf("%d\t%d\t%d\t%s\t%b",islandCounter,subgraph.stopSize(),subgraph.streetSize(),convexHullGeom,hadRemoved);
   islandCounter++;
 }
