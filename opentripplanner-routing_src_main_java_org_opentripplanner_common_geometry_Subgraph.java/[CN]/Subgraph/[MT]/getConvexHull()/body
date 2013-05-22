@@ -1,7 +1,12 @@
 {
   if (addNewVertex) {
-    convexHull=new ConvexHull(vertexCoord.toArray(new Coordinate[vertexCoord.size()]),new GeometryFactory());
-    convexHullAsGeom=convexHull.getConvexHull();
+    convexHull=new ConvexHull(vertexCoords.toArray(new Coordinate[0]),gf);
+    try {
+      convexHullAsGeom=convexHull.getConvexHull();
+    }
+ catch (    IllegalArgumentException iae) {
+      convexHullAsGeom=gf.createPoint(vertexCoords.get(0));
+    }
     addNewVertex=false;
   }
   return convexHullAsGeom;
