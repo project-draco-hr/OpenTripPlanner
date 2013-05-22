@@ -1,0 +1,15 @@
+{
+  System.out.println("x=" + x + ", y="+ y);
+  FeatureIterator<Feature> iterator=collection.features();
+  while (iterator.hasNext()) {
+    SimpleFeature feature=(SimpleFeature)iterator.next();
+    Geometry geom=(Geometry)feature.getDefaultGeometry();
+    GeometryFactory geometryFactory=JTSFactoryFinder.getGeometryFactory();
+    Coordinate coord=new Coordinate(x,y);
+    Point point=geometryFactory.createPoint(coord);
+    if (geom.contains(point)) {
+      return feature.getAttribute(this.nameField).toString();
+    }
+  }
+  return null;
+}
