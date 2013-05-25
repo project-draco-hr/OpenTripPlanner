@@ -1,5 +1,5 @@
 {
-  _log.debug("Processing bike rental nodes...");
+  _log.info("Processing bike rental nodes...");
   int n=0;
   BikeRentalStationService bikeRentalService=new BikeRentalStationService();
   graph.putService(BikeRentalStationService.class,bikeRentalService);
@@ -37,5 +37,5 @@
     new RentABikeOnEdge(stationVertex,stationVertex,networkSet);
     new RentABikeOffEdge(stationVertex,stationVertex,networkSet);
   }
-  _log.debug("Created " + n + " bike rental stations.");
+  _log.info("Created " + n + " bike rental stations.");
 }
