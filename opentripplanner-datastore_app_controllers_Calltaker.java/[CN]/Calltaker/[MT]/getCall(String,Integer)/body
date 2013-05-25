@@ -1,0 +1,10 @@
+{
+  System.out.println("getCall");
+  List<Call> calls;
+  if (limit == null)   calls=Call.find("userName = '" + userName + "' order by startTime").fetch();
+ else {
+    calls=Call.find("userName = '" + userName + "' order by startTime").fetch(limit);
+    System.out.println("fetched w/ limit = " + limit);
+  }
+  renderJSON(calls);
+}

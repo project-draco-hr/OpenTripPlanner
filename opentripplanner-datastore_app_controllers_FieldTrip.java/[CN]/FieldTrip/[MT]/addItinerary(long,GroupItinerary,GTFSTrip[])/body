@@ -1,0 +1,14 @@
+{
+  ScheduledFieldTrip fieldTrip=ScheduledFieldTrip.findById(fieldTripId);
+  itinerary.fieldTrip=fieldTrip;
+  fieldTrip.groupItineraries.add(itinerary);
+  itinerary.save();
+  Long id=itinerary.id;
+  itinerary.trips=new ArrayList<GTFSTrip>();
+  for (  GTFSTrip gtrip : trips) {
+    gtrip.groupItinerary=itinerary;
+    itinerary.trips.add(gtrip);
+    gtrip.save();
+  }
+  renderJSON(id);
+}

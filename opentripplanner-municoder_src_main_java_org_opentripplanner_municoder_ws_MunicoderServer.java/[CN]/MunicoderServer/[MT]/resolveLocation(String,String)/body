@@ -1,0 +1,12 @@
+{
+  if (location == null) {
+    error("no location to resolve");
+  }
+  String arr[]=location.split(",");
+  String result=boundaryResolver.resolve(Double.parseDouble(arr[1]),Double.parseDouble(arr[0]));
+  result=(result == null) ? "{}" : "{ \"name\" : \"" + result + "\" }";
+  if (callback != null) {
+    return callback + "(" + result+ ");";
+  }
+  return result;
+}
