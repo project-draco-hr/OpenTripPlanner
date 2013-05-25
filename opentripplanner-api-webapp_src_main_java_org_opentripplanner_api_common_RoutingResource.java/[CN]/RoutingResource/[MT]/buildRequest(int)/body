@@ -67,6 +67,7 @@
   if (intermediatePlacesOrdered == null)   intermediatePlacesOrdered=request.isIntermediatePlacesOrdered();
   request.setIntermediatePlacesOrdered(intermediatePlacesOrdered);
   request.setPreferredRoutes(get(preferredRoutes,n,request.getPreferredRouteStr()));
+  request.setOtherThanPreferredRoutesPenalty(get(otherThanPreferredRoutesPenalty,n,request.getOtherThanPreferredRoutesPenalty()));
   request.setPreferredAgencies(get(preferredAgencies,n,request.getPreferredAgenciesStr()));
   request.setUnpreferredRoutes(get(unpreferredRoutes,n,request.getUnpreferredRouteStr()));
   request.setUnpreferredAgencies(get(unpreferredAgencies,n,request.getUnpreferredAgenciesStr()));
