@@ -1,0 +1,11 @@
+{
+  try {
+    Constructor<?> ctor=klass.getDeclaredConstructor();
+    ctor.setAccessible(true);
+    bind(klass,ctor.newInstance());
+  }
+ catch (  Exception e) {
+    LOG.error("Unable to invoke 0-arg constructor on {}",klass);
+    e.printStackTrace();
+  }
+}

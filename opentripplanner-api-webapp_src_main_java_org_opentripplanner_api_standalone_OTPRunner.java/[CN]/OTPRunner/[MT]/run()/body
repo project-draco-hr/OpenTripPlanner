@@ -1,0 +1,5 @@
+{
+  LOG.info("Starting OTP server on port {} using graphs at {}",port,graphDirectory);
+  GrizzlyServer server=new GrizzlyServer();
+  server.start(new String[]{graphDirectory,defaultRouterId,String.valueOf(port)});
+}

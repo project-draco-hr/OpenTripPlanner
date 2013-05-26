@@ -1,0 +1,17 @@
+{
+  for (  Object instance : bindingOrder) {
+    for (    Method method : instance.getClass().getDeclaredMethods()) {
+      if (method.isAnnotationPresent(PostConstruct.class)) {
+        try {
+          LOG.info("Calling post-construct {}",method);
+          method.setAccessible(true);
+          method.invoke(instance);
+        }
+ catch (        Exception ex) {
+          LOG.error("Failed to invoke post-construct: {}",ex.toString());
+          ex.printStackTrace();
+        }
+      }
+    }
+  }
+}
