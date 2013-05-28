@@ -1,8 +1,7 @@
 {
 synchronized (resourceBase) {
-    Resource base=resourceLoader.getResource(resourceBase);
     try {
-      File baseFile=base.getFile();
+      File baseFile=new File(resourceBase);
       File rootGraphFile=new File(baseFile,GRAPH_FILENAME);
       if (rootGraphFile.exists() && rootGraphFile.canRead() && !graphs.containsKey("")) {
         LOG.info("Auto-discovered (root) {}, trying to load.",rootGraphFile);
@@ -19,7 +18,7 @@ synchronized (resourceBase) {
         }
       }
     }
- catch (    IOException e) {
+ catch (    Exception e) {
       LOG.error("Graph auto-discovering has been set, but {} is not a file resource, so I'm bailing-out.",resourceBase);
       return;
     }

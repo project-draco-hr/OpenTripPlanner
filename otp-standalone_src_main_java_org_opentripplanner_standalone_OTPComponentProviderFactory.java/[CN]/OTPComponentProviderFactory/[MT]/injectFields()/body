@@ -1,0 +1,26 @@
+{
+  LOG.info("Performing field injection on all bound instances.");
+  for (  Object instance : bindingOrder) {
+    LOG.debug("Performing field injection on class {}",instance.getClass());
+    for (    Field field : instance.getClass().getDeclaredFields()) {
+      LOG.debug("Considering field {} for injection",field.getName());
+      if (field.isAnnotationPresent(Inject.class) || field.isAnnotationPresent(Autowired.class)) {
+        Object obj=bindings.get(field.getType());
+        LOG.debug("Injecting field {} on instance of {}",field.getName(),instance.getClass());
+        if (obj != null) {
+          try {
+            field.setAccessible(true);
+            field.set(instance,obj);
+          }
+ catch (          Exception ex) {
+            LOG.error("Failed to perform field injection: {}",ex.toString());
+            ex.printStackTrace();
+          }
+        }
+ else {
+          LOG.error("Found no binding for {}",field.getType());
+        }
+      }
+    }
+  }
+}
