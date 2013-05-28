@@ -1,5 +1,5 @@
 {
-  _log.debug("Finding local stops");
+  LOG.debug("Finding local stops");
   patterns=new HashSet<TripPattern>();
   transitStops=new HashMap<AgencyAndId,TransitStop>();
   int total=0;
@@ -88,5 +88,5 @@
     }
     transitStop.setLocal(false);
   }
-  _log.debug("Local stops: " + (total - nonLocal) + " / "+ total);
+  LOG.debug("Local stops: " + (total - nonLocal) + " / "+ total);
 }

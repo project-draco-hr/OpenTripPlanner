@@ -13,7 +13,7 @@
     }
   }
   if (from == -1 || to == -1 || via == -1) {
-    _log.warn(graph.addBuilderAnnotation(new TurnRestrictionBad(relation.getId())));
+    LOG.warn(graph.addBuilderAnnotation(new TurnRestrictionBad(relation.getId())));
     return;
   }
   TraverseModeSet modes=new TraverseModeSet(TraverseMode.BICYCLE,TraverseMode.CAR,TraverseMode.CUSTOM_MOTOR_VEHICLE);
@@ -25,7 +25,7 @@
       }
  else       if (m.equals("bicycle")) {
         modes.setBicycle(false);
-        _log.debug(graph.addBuilderAnnotation(new TurnRestrictionException(via,from)));
+        LOG.debug(graph.addBuilderAnnotation(new TurnRestrictionException(via,from)));
       }
     }
   }
@@ -55,7 +55,7 @@
     tag=new TurnRestrictionTag(via,TurnRestrictionType.ONLY_TURN,Direction.U);
   }
  else {
-    _log.warn(graph.addBuilderAnnotation(new TurnRestrictionUnknown(relation.getTag("restriction"))));
+    LOG.warn(graph.addBuilderAnnotation(new TurnRestrictionUnknown(relation.getTag("restriction"))));
     return;
   }
   tag.modes=modes.clone();
@@ -64,7 +64,7 @@
       tag.time=RepeatingTimePeriod.parseFromOsmTurnRestriction(relation.getTag("day_on"),relation.getTag("day_off"),relation.getTag("hour_on"),relation.getTag("hour_off"));
     }
  catch (    NumberFormatException e) {
-      _log.info("Unparseable turn restriction: " + relation.getId());
+      LOG.info("Unparseable turn restriction: " + relation.getId());
     }
   }
   MapUtils.addToMapList(turnRestrictionsByFromWay,from,tag);

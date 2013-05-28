@@ -1,5 +1,5 @@
 {
-  _log.debug("Processing relations...");
+  LOG.debug("Processing relations...");
   for (  OSMRelation relation : _relations.values()) {
     if (relation.isTag("type","restriction")) {
       processRestriction(relation);

@@ -1,11 +1,11 @@
 {
   try {
     String retval=getResourceBundle().getString(key);
-    _log.debug(String.format("Localized '%s' using '%s'",key,retval));
+    LOG.debug(String.format("Localized '%s' using '%s'",key,retval));
     return retval;
   }
  catch (  MissingResourceException e) {
-    _log.warn("Missing translation for key: " + key);
+    LOG.warn("Missing translation for key: " + key);
     return key;
   }
 }

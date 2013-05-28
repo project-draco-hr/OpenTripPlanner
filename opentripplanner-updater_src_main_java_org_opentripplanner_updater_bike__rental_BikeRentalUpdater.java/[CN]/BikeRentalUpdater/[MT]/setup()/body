@@ -1,13 +1,13 @@
 {
   graph=graphService.getGraph(routerId);
   if (graph == null && setup) {
-    _log.error("Can't get graph for router ID {}, disabling updater.",routerId);
+    LOG.error("Can't get graph for router ID {}, disabling updater.",routerId);
     networkLinkerLibrary=null;
     service=null;
     setup=false;
   }
   if (graph != null && !setup) {
-    _log.info("Setting up updater for router ID {}.",routerId);
+    LOG.info("Setting up updater for router ID {}.",routerId);
     networkLinkerLibrary=new NetworkLinkerLibrary(graph,Collections.<Class<?>,Object>emptyMap());
     service=graph.getService(BikeRentalStationService.class);
     if (service == null) {

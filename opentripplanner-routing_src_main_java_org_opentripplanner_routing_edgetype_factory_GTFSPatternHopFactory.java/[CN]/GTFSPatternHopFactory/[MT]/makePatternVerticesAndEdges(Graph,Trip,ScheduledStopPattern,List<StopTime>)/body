@@ -26,11 +26,11 @@
       s0=_dao.getStopForId(new AgencyAndId(s0.getId().getAgencyId(),s0.getParentStation()));
       stopDepart=context.stopDepartNodes.get(s0);
       if (stopDepart == null) {
-        _log.warn(graph.addBuilderAnnotation(new StopAtEntrance(st0,false)));
+        LOG.warn(graph.addBuilderAnnotation(new StopAtEntrance(st0,false)));
         continue;
       }
  else {
-        _log.warn(graph.addBuilderAnnotation(new StopAtEntrance(st0,true)));
+        LOG.warn(graph.addBuilderAnnotation(new StopAtEntrance(st0,true)));
       }
     }
     TransitStopArrive stopArrive=context.stopArriveNodes.get(s1);
@@ -38,11 +38,11 @@
       s1=_dao.getStopForId(new AgencyAndId(s1.getId().getAgencyId(),s1.getParentStation()));
       stopArrive=context.stopArriveNodes.get(s1);
       if (stopArrive == null) {
-        _log.warn(graph.addBuilderAnnotation(new StopAtEntrance(st1,false)));
+        LOG.warn(graph.addBuilderAnnotation(new StopAtEntrance(st1,false)));
         continue;
       }
  else {
-        _log.warn(graph.addBuilderAnnotation(new StopAtEntrance(st1,true)));
+        LOG.warn(graph.addBuilderAnnotation(new StopAtEntrance(st1,true)));
       }
     }
     stopArrive.getStopVertex().addMode(mode);

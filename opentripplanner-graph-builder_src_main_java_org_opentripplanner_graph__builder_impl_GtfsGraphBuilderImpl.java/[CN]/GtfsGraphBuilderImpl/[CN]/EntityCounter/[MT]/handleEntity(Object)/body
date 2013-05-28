@@ -1,9 +1,9 @@
 {
   int count=incrementCount(bean.getClass());
-  if (count % 1000000 == 0)   if (_log.isDebugEnabled()) {
+  if (count % 1000000 == 0)   if (LOG.isDebugEnabled()) {
     String name=bean.getClass().getName();
     int index=name.lastIndexOf('.');
     if (index != -1)     name=name.substring(index + 1);
-    _log.debug("loading " + name + ": "+ count);
+    LOG.debug("loading " + name + ": "+ count);
   }
 }

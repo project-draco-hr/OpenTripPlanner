@@ -1,7 +1,7 @@
 {
   long wayIndex=0;
   WAY:   for (  OSMWay way : _ways.values()) {
-    if (wayIndex % 10000 == 0)     _log.debug("ways=" + wayIndex + "/"+ _ways.size());
+    if (wayIndex % 10000 == 0)     LOG.debug("ways=" + wayIndex + "/"+ _ways.size());
     wayIndex++;
     WayProperties wayData=wayPropertySet.getDataForWay(way);
     setWayName(way);

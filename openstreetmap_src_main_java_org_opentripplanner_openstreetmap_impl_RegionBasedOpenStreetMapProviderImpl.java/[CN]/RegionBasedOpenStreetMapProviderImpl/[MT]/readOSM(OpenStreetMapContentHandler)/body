@@ -7,7 +7,7 @@
     for (    Envelope region : _regionsSource.getRegions()) {
       getDownloader().visitRegion(region,downloadHandler);
       if (regionIndex % 1000 == 0) {
-        _log.debug("regions=" + regionIndex);
+        LOG.debug("regions=" + regionIndex);
       }
       regionIndex++;
     }

@@ -19,7 +19,7 @@
         int startTime=pattern.getPreviousArrivalTime(stopIndex,secondsSinceMidnight,options.wheelchairAccessible,mode == TraverseMode.BICYCLE,true);
         if (startTime >= 0) {
           int wait=(int)(currentTime - sd.time(startTime));
-          if (wait < 0)           _log.error("negative wait time on alight");
+          if (wait < 0)           LOG.error("negative wait time on alight");
           if (bestWait < 0 || wait < bestWait) {
             bestWait=wait;
           }

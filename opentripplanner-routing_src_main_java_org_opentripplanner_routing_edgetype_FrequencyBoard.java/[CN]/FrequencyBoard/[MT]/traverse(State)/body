@@ -34,7 +34,7 @@
         int startTime=pattern.getNextDepartureTime(stopIndex,secondsSinceMidnight,options.wheelchairAccessible,mode == TraverseMode.BICYCLE,true);
         if (startTime >= 0) {
           int wait=(int)(sd.time(startTime) - currentTime);
-          if (wait < 0)           _log.error("negative wait time on board");
+          if (wait < 0)           LOG.error("negative wait time on board");
           if (bestWait < 0 || wait < bestWait) {
             bestWait=wait;
           }

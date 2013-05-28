@@ -23,7 +23,7 @@
     int dwellTime=st0.getDepartureTime() - st0.getArrivalTime();
     int runningTime=arrivalTime - departureTime;
     if (runningTime < 0) {
-      _log.warn(graph.addBuilderAnnotation(new NegativeHopTime(st0,st1)));
+      LOG.warn(graph.addBuilderAnnotation(new NegativeHopTime(st0,st1)));
       for (      Edge e : createdEdges) {
         e.getFromVertex().removeOutgoing(e);
         e.getToVertex().removeIncoming(e);

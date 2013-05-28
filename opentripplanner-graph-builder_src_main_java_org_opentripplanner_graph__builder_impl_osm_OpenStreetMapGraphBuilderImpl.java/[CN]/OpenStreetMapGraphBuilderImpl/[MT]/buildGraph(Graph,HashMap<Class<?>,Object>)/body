@@ -1,9 +1,9 @@
 {
   Handler handler=new Handler(graph);
   for (  OpenStreetMapProvider provider : _providers) {
-    _log.info("Gathering OSM from provider: " + provider);
+    LOG.info("Gathering OSM from provider: " + provider);
     provider.readOSM(handler);
   }
-  _log.info("Building street graph from OSM");
+  LOG.info("Building street graph from OSM");
   handler.buildGraph(extra);
 }

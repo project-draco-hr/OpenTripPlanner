@@ -11,7 +11,7 @@
   long lastRideEndTime=firstRide.endTime;
   for (  Ride ride : rides) {
     if (!ride.firstStop.getId().getAgencyId().equals(feedId)) {
-      _log.debug("skipped multi-feed ride sequence {}",rides);
+      LOG.debug("skipped multi-feed ride sequence {}",rides);
       return Float.POSITIVE_INFINITY;
     }
     lastRideStartTime=ride.startTime;
@@ -46,7 +46,7 @@
       }
     }
   }
-  _log.debug("{} best for {}",bestAttribute,rides);
-  if (bestFare == Float.POSITIVE_INFINITY)   _log.warn("No fare for a ride sequence: {}",rides);
+  LOG.debug("{} best for {}",bestAttribute,rides);
+  if (bestFare == Float.POSITIVE_INFINITY)   LOG.warn("No fare for a ride sequence: {}",rides);
   return bestFare;
 }

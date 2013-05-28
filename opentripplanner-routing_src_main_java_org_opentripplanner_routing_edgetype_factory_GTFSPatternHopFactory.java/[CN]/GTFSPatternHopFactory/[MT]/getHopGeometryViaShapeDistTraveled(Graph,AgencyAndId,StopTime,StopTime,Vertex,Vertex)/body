@@ -6,7 +6,7 @@
   if (geometry != null)   return geometry;
   double[] distances=getDistanceForShapeId(shapeId);
   if (distances == null) {
-    _log.warn(graph.addBuilderAnnotation(new BogusShapeGeometry(shapeId)));
+    LOG.warn(graph.addBuilderAnnotation(new BogusShapeGeometry(shapeId)));
     return null;
   }
  else {

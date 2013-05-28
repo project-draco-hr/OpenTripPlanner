@@ -2,9 +2,9 @@
   String configPath="src/main/resources/graph-builder.xml";
   String fromProperty=System.getProperty(GRAPH_BUILDER_CONFIG_PATH);
   if (fromProperty != null) {
-    _log.info("reading graph builder config path from property " + GRAPH_BUILDER_CONFIG_PATH);
+    LOG.info("reading graph builder config path from property " + GRAPH_BUILDER_CONFIG_PATH);
     configPath=fromProperty;
   }
-  _log.info("graph builder config path: " + configPath);
+  LOG.info("graph builder config path: " + configPath);
   GraphBuilderMain.main(new String[]{configPath});
 }

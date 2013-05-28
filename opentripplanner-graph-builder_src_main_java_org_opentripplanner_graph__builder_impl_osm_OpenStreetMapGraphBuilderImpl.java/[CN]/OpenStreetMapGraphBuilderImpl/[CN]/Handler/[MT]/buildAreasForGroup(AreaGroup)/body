@@ -44,11 +44,11 @@
     }
     Environment areaEnv=new Environment(polygons);
     if (visibilityPoints.size() > MAX_AREA_NODES) {
-      _log.warn("Area " + group.getSomeOSMObject() + " is too complicated ("+ visibilityPoints.size()+ " > "+ MAX_AREA_NODES);
+      LOG.warn("Area " + group.getSomeOSMObject() + " is too complicated ("+ visibilityPoints.size()+ " > "+ MAX_AREA_NODES);
       continue;
     }
     if (!areaEnv.is_valid(VISIBILITY_EPSILON)) {
-      _log.warn("Area " + group.getSomeOSMObject() + " is not epsilon-valid (epsilon = "+ VISIBILITY_EPSILON+ ")");
+      LOG.warn("Area " + group.getSomeOSMObject() + " is not epsilon-valid (epsilon = "+ VISIBILITY_EPSILON+ ")");
       continue;
     }
     edgeList.setOriginalEdges(ring.toJtsPolygon());

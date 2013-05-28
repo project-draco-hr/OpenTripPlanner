@@ -35,7 +35,7 @@
   }
   street.setSlopeOverride(wayPropertySet.getSlopeOverride(way));
   if (carSpeed < 0.04) {
-    _log.warn(graph.addBuilderAnnotation(new StreetCarSpeedZero(way.getId())));
+    LOG.warn(graph.addBuilderAnnotation(new StreetCarSpeedZero(way.getId())));
   }
   if (customNamer != null) {
     customNamer.nameWithEdge(way,street);
