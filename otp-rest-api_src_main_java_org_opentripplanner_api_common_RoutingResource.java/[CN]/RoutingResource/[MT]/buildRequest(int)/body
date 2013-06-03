@@ -77,6 +77,10 @@
   if (bannedTripMap != null) {
     request.setBannedTrips(bannedTripMap);
   }
+  HashSet<AgencyAndId> bannedStopSet=makeBannedStopSet(get(bannedStops,n,null));
+  if (bannedStopSet != null) {
+    request.setBannedStops(bannedStopSet);
+  }
   if (opt == OptimizeType.TRANSFERS) {
     opt=OptimizeType.QUICK;
     request.setTransferPenalty(get(transferPenalty,n,0) + 1800);

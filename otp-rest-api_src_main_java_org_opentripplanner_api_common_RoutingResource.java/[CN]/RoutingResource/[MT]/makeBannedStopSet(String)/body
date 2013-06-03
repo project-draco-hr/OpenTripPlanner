@@ -1,0 +1,16 @@
+{
+  if (banned == null) {
+    return null;
+  }
+  HashSet<AgencyAndId> bannedStopSet=new HashSet<AgencyAndId>();
+  String[] stopStrings=banned.split(",");
+  for (  String stopString : stopStrings) {
+    try {
+      AgencyAndId stopId=AgencyAndId.convertFromString(stopString);
+      bannedStopSet.add(stopId);
+    }
+ catch (    IllegalArgumentException e) {
+    }
+  }
+  return bannedStopSet;
+}
