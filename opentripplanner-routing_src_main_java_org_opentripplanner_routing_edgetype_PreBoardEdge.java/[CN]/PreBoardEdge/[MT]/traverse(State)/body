@@ -1,5 +1,10 @@
 {
   RoutingRequest options=s0.getOptions();
+  if (!options.getBannedStops().isEmpty() && fromv instanceof TransitStop) {
+    if (options.getBannedStops().contains(((TransitStop)fromv).getStopId())) {
+      return null;
+    }
+  }
   if (options.isArriveBy()) {
     StateEditor s1=s0.edit(this);
     TransitStop fromVertex=(TransitStop)getFromVertex();
