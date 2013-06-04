@@ -13,7 +13,7 @@
   IoCComponentProviderFactory ioc_factory=OTPConfigurator.fromCommandLineArguments(args);
   HttpHandler handler=ContainerFactory.createContainer(HttpHandler.class,rc,ioc_factory);
   httpServer.getServerConfiguration().addHttpHandler(handler,"/opentripplanner-api-webapp/");
-  final String clientPath="../opentripplanner-webapp/target/opentripplanner-webapp/";
+  final String clientPath="../opentripplanner-webapp/src/main/webapp/";
   httpServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler(clientPath),"/");
   try {
     httpServer.start();
