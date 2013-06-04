@@ -17,6 +17,17 @@
     if (backEdge == null) {
       continue;
     }
+    if (backEdge instanceof PatternHop) {
+      TripTimes tt=state.getTripTimes();
+      int hop=((PatternHop)backEdge).stopIndex;
+      if (!tt.isScheduled()) {
+        leg.realTime=true;
+        leg.delay=tt.getDepartureDelay(hop);
+      }
+ else {
+        leg.realTime=false;
+      }
+    }
     TraverseMode mode=state.getBackMode();
     if (mode != null) {
       long dt=state.getAbsTimeDeltaSeconds();
