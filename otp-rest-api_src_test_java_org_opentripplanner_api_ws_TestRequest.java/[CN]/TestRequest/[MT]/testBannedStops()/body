@@ -1,18 +1,6 @@
 {
   TestPlanner planner=new TestPlanner("portland","NE 57TH AVE at NE GLISAN ST #2","NE 30TH AVE at NE GLISAN ST");
   planner.setBannedStops(Arrays.asList("TriMet_2106,TriMet_2107"));
-  RoutingRequest options=null;
-  try {
-    options=planner.buildRequest();
-    assertTrue(options.getBannedStops().contains(new AgencyAndId("TriMet","2106")));
-    assertTrue(options.getBannedStops().contains(new AgencyAndId("TriMet","2107")));
-    assertTrue(options.getBannedStops().size() == 2);
-  }
-  finally {
-    if (options != null) {
-      options.cleanup();
-    }
-  }
   Response response=planner.getItineraries();
   Itinerary itinerary=response.getPlan().itinerary.get(0);
   Leg leg=itinerary.legs.get(1);
