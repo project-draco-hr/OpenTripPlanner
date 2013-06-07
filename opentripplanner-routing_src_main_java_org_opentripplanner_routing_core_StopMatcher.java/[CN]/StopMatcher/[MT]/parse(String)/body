@@ -1,0 +1,22 @@
+{
+  if (stopList == null)   return emptyMatcher();
+  StopMatcher retval=new StopMatcher();
+  int n=0;
+  for (  String stopString : stopList.split(",")) {
+    if (stopString.isEmpty()) {
+      continue;
+    }
+    n++;
+    try {
+      AgencyAndId stopId=AgencyAndId.convertFromString(stopString);
+      retval.agencyAndStopIds.add(stopId);
+    }
+ catch (    IllegalArgumentException e) {
+      throw new IllegalArgumentException("Wrong stop spec format: " + stopString);
+    }
+  }
+  if (n == 0) {
+    return emptyMatcher();
+  }
+  return retval;
+}

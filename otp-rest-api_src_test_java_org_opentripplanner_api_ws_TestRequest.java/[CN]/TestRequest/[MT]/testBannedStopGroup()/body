@@ -1,0 +1,43 @@
+{
+  StopMatcher stopMatcher=StopMatcher.parse("TriMet_2106,TriMet_65-tc");
+  Stop stop65_tc=null;
+  Stop stop12921=null;
+  Stop stop13132=null;
+  Stop stop2106=null;
+  Stop stop2107=null;
+{
+    Graph graph=Context.getInstance().graph;
+    for (    Vertex v : graph.getVertices()) {
+      if (v instanceof TransitStop) {
+        Stop stop=((TransitStop)v).getStop();
+        if (stop.getId().getAgencyId().equals("TriMet")) {
+          if (stop.getId().getId().equals("65-tc")) {
+            stop65_tc=stop;
+          }
+ else           if (stop.getId().getId().equals("12921")) {
+            stop12921=stop;
+          }
+ else           if (stop.getId().getId().equals("13132")) {
+            stop13132=stop;
+          }
+ else           if (stop.getId().getId().equals("2106")) {
+            stop2106=stop;
+          }
+ else           if (stop.getId().getId().equals("2107")) {
+            stop2107=stop;
+          }
+        }
+      }
+    }
+  }
+  assertNotNull(stop65_tc);
+  assertNotNull(stop12921);
+  assertNotNull(stop13132);
+  assertNotNull(stop2106);
+  assertNotNull(stop2107);
+  assertTrue(stopMatcher.matches(stop65_tc));
+  assertTrue(stopMatcher.matches(stop12921));
+  assertTrue(stopMatcher.matches(stop13132));
+  assertTrue(stopMatcher.matches(stop2106));
+  assertFalse(stopMatcher.matches(stop2107));
+}

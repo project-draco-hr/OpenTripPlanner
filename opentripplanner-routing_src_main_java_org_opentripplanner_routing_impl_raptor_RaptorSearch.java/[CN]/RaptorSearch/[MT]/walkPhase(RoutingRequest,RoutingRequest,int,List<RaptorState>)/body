@@ -28,6 +28,9 @@
         if (stop == null) {
           continue;
         }
+        if (options.getBannedStops().matches(stop.stopVertex.getStop())) {
+          continue;
+        }
         addStopNearTarget(stop,state.getWalkDistance(),(int)state.getElapsedTimeSeconds());
       }
     }
@@ -114,6 +117,9 @@
     final Vertex vertex=state.getVertex();
     RaptorStop stop=data.raptorStopsForStopId.get(((OffboardVertex)vertex).getStopId());
     if (stop == null) {
+      continue;
+    }
+    if (options.getBannedStops().matches(stop.stopVertex.getStop())) {
       continue;
     }
     if (options.rctx.target != null) {

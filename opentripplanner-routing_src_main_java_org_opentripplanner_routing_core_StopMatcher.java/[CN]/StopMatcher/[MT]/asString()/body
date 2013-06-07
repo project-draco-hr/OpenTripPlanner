@@ -1,0 +1,11 @@
+{
+  StringBuilder builder=new StringBuilder();
+  for (  AgencyAndId agencyAndId : agencyAndStopIds) {
+    builder.append(agencyAndId.toString());
+    builder.append(",");
+  }
+  if (builder.length() > 0) {
+    builder.setLength(builder.length() - 1);
+  }
+  return builder.toString();
+}
