@@ -4,8 +4,8 @@
     bikeWalkingOptions=new RoutingRequest();
     bikeWalkingOptions.setArriveBy(this.isArriveBy());
     bikeWalkingOptions.maxWalkDistance=maxWalkDistance;
-    bikeWalkingOptions.walkSpeed*=0.8;
-    bikeWalkingOptions.walkReluctance*=2.7;
+    bikeWalkingOptions.walkSpeed=walkSpeed * 0.8;
+    bikeWalkingOptions.walkReluctance=walkReluctance * 2.7;
     bikeWalkingOptions.optimize=optimize;
     bikeWalkingOptions.modes=modes.clone();
     bikeWalkingOptions.modes.setBicycle(false);

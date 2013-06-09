@@ -1,5 +1,8 @@
 {
-  if (traverseMode.isDriving()) {
+  if (traverseMode == null) {
+    return Double.NaN;
+  }
+ else   if (traverseMode.isDriving()) {
     return calculateCarSpeed(options);
   }
   return options.getSpeed(traverseMode);

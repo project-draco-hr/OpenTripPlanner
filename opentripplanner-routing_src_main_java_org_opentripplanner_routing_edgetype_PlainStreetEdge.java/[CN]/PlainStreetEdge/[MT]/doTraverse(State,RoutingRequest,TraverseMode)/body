@@ -1,10 +1,15 @@
 {
+  boolean walkingBike=options.isWalkingBike();
+  boolean backWalkingBike=s0.isBackWalkingBike();
+  TraverseMode backMode=s0.getBackMode();
   Edge backEdge=s0.getBackEdge();
   if (backEdge != null) {
     if (this.isReverseOf(backEdge) || backEdge.isReverseOf(this)) {
       return null;
     }
   }
+  backWalkingBike&=TraverseMode.WALK.equals(backMode);
+  walkingBike&=TraverseMode.WALK.equals(traverseMode);
   if (!canTraverse(options,traverseMode)) {
     if (traverseMode == TraverseMode.BICYCLE) {
       return doTraverse(s0,options.getBikeWalkingOptions(),TraverseMode.WALK);
@@ -47,7 +52,7 @@ weight=length / speed;
 }
 }
  else {
-if (options.isWalkingBike()) {
+if (walkingBike) {
 time=elevationProfileSegment.getSlopeSpeedEffectiveLength() / speed;
 }
 weight=time;
@@ -66,20 +71,22 @@ weight*=options.walkReluctance;
 }
 StateEditor s1=s0.edit(this);
 s1.setBackMode(traverseMode);
+s1.setBackWalkingBike(walkingBike);
 if (wheelchairNotes != null && options.wheelchairAccessible) {
 s1.addAlerts(wheelchairNotes);
 }
 PlainStreetEdge backPSE;
 if (backEdge != null && backEdge instanceof PlainStreetEdge) {
 backPSE=(PlainStreetEdge)backEdge;
-double backSpeed=backPSE.calculateSpeed(options,traverseMode);
+RoutingRequest backOptions=backWalkingBike ? options.bikeWalkingOptions : options;
+double backSpeed=backPSE.calculateSpeed(backOptions,backMode);
 final double realTurnCost;
 if (options.arriveBy && tov instanceof IntersectionVertex) {
-if (!canTurnOnto(backPSE,s0,traverseMode)) {
+if (!canTurnOnto(backPSE,s0,backMode)) {
 return null;
 }
 IntersectionVertex traversedVertex=((IntersectionVertex)tov);
-realTurnCost=options.getIntersectionTraversalCostModel().computeTraversalCost(traversedVertex,this,backPSE,traverseMode,options,(float)speed,(float)backSpeed);
+realTurnCost=backOptions.getIntersectionTraversalCostModel().computeTraversalCost(traversedVertex,this,backPSE,backMode,backOptions,(float)speed,(float)backSpeed);
 }
  else if (fromv instanceof IntersectionVertex) {
 if (!backPSE.canTurnOnto(this,s0,traverseMode)) {
