@@ -1,7 +1,9 @@
 {
   _graph=new Graph();
+  v0=vertex("maple_0th",0.0,0.0);
   v1=vertex("maple_1st",2.0,2.0);
   v2=vertex("maple_2nd",1.0,2.0);
+  v1.setTrafficLight(true);
   proto=new RoutingRequest();
   proto.setCarSpeed(15.0f);
   proto.setWalkSpeed(1.0);
@@ -9,4 +11,5 @@
   proto.setWalkReluctance(1.0);
   proto.setStairsReluctance(1.0);
   proto.setTurnReluctance(1.0);
+  proto.setModes(TraverseModeSet.allModes());
 }
