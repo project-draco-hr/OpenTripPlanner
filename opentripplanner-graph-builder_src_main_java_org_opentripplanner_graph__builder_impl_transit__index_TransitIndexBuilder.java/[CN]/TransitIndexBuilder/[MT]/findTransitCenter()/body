@@ -1,5 +1,5 @@
 {
-  _log.debug("Finding transit center via k-means");
+  LOG.debug("Finding transit center via k-means");
   final int N=30;
   final int ITERATIONS=50;
   Map<Stop,Integer> stopWeight=new HashMap<Stop,Integer>();
@@ -87,6 +87,6 @@
       centers[c].weight=coord_count[c];
     }
   }
-  _log.debug("found transit center");
+  LOG.debug("found transit center");
   return Collections.max(Arrays.asList(centers)).coord;
 }

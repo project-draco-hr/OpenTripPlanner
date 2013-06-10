@@ -5,8 +5,16 @@
     return;
   }
   Matcher matcher=_latLonPattern.matcher(place);
-  if (matcher.matches()) {
+  if (matcher.find()) {
     this.lat=Double.parseDouble(matcher.group(1));
     this.lng=Double.parseDouble(matcher.group(4));
+  }
+  matcher=_headingPattern.matcher(place);
+  if (matcher.find()) {
+    this.heading=Double.parseDouble(matcher.group(1));
+  }
+  matcher=_edgeIdPattern.matcher(place);
+  if (matcher.find()) {
+    this.edgeId=Integer.parseInt(matcher.group(1));
   }
 }

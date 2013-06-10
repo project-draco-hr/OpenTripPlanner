@@ -2,9 +2,9 @@
   File path=getPathToMapTile(key);
   if (needsUpdate(path)) {
     Envelope r=new Envelope(lon - _overlap,lon + _lonXStep + _overlap,lat - _overlap,lat + _latYStep + _overlap);
-    _log.debug("downloading osm tile: " + key + " from path "+ path+ " e "+ path.exists());
+    LOG.debug("downloading osm tile: " + key + " from path "+ path+ " e "+ path.exists());
     URL url=constructUrl(r);
-    _log.warn("downloading from " + url.toString());
+    LOG.warn("downloading from " + url.toString());
     InputStream in=url.openStream();
     FileOutputStream out=new FileOutputStream(path);
     try {
@@ -21,7 +21,7 @@
     }
  catch (    RuntimeException e) {
       out.close();
-      _log.info("Removing half-written file " + path);
+      LOG.info("Removing half-written file " + path);
       path.delete();
       throw e;
     }

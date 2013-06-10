@@ -1,0 +1,19 @@
+{
+  RetryingPathServiceImpl pathService=new RetryingPathServiceImpl();
+  pathService.setFirstPathTimeout(10.0);
+  pathService.setMultiPathTimeout(1.0);
+  OTPComponentProviderFactory cpf=new OTPComponentProviderFactory();
+  cpf.bind(RoutingRequest.class);
+  cpf.bind(PlanGenerator.class);
+  cpf.bind(MetadataService.class);
+  cpf.bind(GraphService.class,makeGraphService(args));
+  cpf.bind(SPTService.class,new GenericAStar());
+  cpf.bind(PathService.class,pathService);
+  cpf.bind(RemainingWeightHeuristicFactory.class,new DefaultRemainingWeightHeuristicFactoryImpl());
+  cpf.bind(SPTCache.class,new SPTCache());
+  cpf.bind(TileCache.class,new TileCache());
+  cpf.bind(GeometryIndex.class,new GeometryIndex());
+  cpf.bind(SampleFactory.class,new SampleFactory());
+  cpf.doneBinding();
+  return cpf;
+}

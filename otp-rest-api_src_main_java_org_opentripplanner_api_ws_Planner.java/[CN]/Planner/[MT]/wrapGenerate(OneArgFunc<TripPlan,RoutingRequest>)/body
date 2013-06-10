@@ -1,0 +1,18 @@
+{
+  Response response=new Response(uriInfo);
+  RoutingRequest request=null;
+  try {
+    request=super.buildRequest();
+    TripPlan plan=func.call(request);
+    response.setPlan(plan);
+  }
+ catch (  Exception e) {
+    PlannerError error=new PlannerError(e);
+    e.printStackTrace();
+    response.setError(error);
+  }
+ finally {
+    if (request != null)     request.cleanup();
+  }
+  return response;
+}

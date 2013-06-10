@@ -1,0 +1,5 @@
+{
+  ScheduledFieldTrip fieldTrip=ScheduledFieldTrip.findById(id);
+  Gson gson=new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+  renderJSON(gson.toJson(fieldTrip));
+}

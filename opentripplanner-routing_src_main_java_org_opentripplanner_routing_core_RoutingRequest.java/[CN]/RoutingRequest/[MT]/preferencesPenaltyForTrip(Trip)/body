@@ -6,7 +6,7 @@
     boolean isPreferedRoute=preferredRoutes != null && preferredRoutes.matches(route);
     boolean isPreferedAgency=preferredAgencies != null && preferredAgencies.contains(agencyID);
     if (!isPreferedRoute && !isPreferedAgency) {
-      preferences_penalty+=useAnotherThanPreferredRoutesPenalty;
+      preferences_penalty+=otherThanPreferredRoutesPenalty;
     }
  else {
       preferences_penalty=0;

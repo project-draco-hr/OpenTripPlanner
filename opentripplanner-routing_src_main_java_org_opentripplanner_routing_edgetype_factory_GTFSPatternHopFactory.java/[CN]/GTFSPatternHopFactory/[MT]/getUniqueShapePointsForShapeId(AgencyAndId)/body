@@ -5,7 +5,7 @@
   for (  ShapePoint sp : points) {
     if (last == null || last.getSequence() != sp.getSequence()) {
       if (last != null && last.getLat() == sp.getLat() && last.getLon() == sp.getLon()) {
-        _log.trace("pair of identical shape points (skipping): {} {}",last,sp);
+        LOG.trace("pair of identical shape points (skipping): {} {}",last,sp);
       }
  else {
         filtered.add(sp);

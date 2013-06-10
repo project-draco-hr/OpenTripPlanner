@@ -12,7 +12,7 @@
       return null;
     }
     s1.setTripId(null);
-    s1.setLastAlightedTime(state0.getTime());
+    s1.setLastAlightedTimeSeconds(state0.getTimeSeconds());
     s1.setBackMode(TraverseMode.BOARDING);
     s1.setPreviousStop(fromv);
     return s1.makeState();
@@ -21,7 +21,7 @@
     if (!options.getModes().get(modeMask)) {
       return null;
     }
-    long currentTime=state0.getTime();
+    long currentTime=state0.getTimeSeconds();
     int bestWait=-1;
     TraverseMode mode=state0.getNonTransitMode();
     if (options.bannedTrips.containsKey(trip.getId())) {
@@ -34,7 +34,7 @@
         int startTime=pattern.getNextDepartureTime(stopIndex,secondsSinceMidnight,options.wheelchairAccessible,mode == TraverseMode.BICYCLE,true);
         if (startTime >= 0) {
           int wait=(int)(sd.time(startTime) - currentTime);
-          if (wait < 0)           _log.error("negative wait time on board");
+          if (wait < 0)           LOG.error("negative wait time on board");
           if (bestWait < 0 || wait < bestWait) {
             bestWait=wait;
           }

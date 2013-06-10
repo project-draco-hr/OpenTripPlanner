@@ -1,5 +1,5 @@
 {
-  _log.debug("Processing bike rental nodes...");
+  LOG.info("Processing bike rental nodes...");
   int n=0;
   BikeRentalStationService bikeRentalService=new BikeRentalStationService();
   graph.putService(BikeRentalStationService.class,bikeRentalService);
@@ -12,7 +12,7 @@
         capacity=node.getCapacity();
       }
  catch (      NumberFormatException e) {
-        _log.warn("Capacity for osm node " + node.getId() + " ("+ creativeName+ ") is not a number: "+ node.getTag("capacity"));
+        LOG.warn("Capacity for osm node " + node.getId() + " ("+ creativeName+ ") is not a number: "+ node.getTag("capacity"));
       }
     }
     String networks=node.getTag("network");
@@ -21,7 +21,7 @@
     if (networks != null)     networkSet.addAll(Arrays.asList(networks.split(";")));
     if (operators != null)     networkSet.addAll(Arrays.asList(operators.split(";")));
     if (networkSet.isEmpty()) {
-      _log.warn("Bike rental station at osm node " + node.getId() + " ("+ creativeName+ ") with no network; including as compatible-with-all.");
+      LOG.warn("Bike rental station at osm node " + node.getId() + " ("+ creativeName+ ") with no network; including as compatible-with-all.");
       networkSet.add("*");
     }
     BikeRentalStation station=new BikeRentalStation();
@@ -37,5 +37,5 @@
     new RentABikeOnEdge(stationVertex,stationVertex,networkSet);
     new RentABikeOffEdge(stationVertex,stationVertex,networkSet);
   }
-  _log.debug("Created " + n + " bike rental stations.");
+  LOG.info("Created " + n + " bike rental stations.");
 }

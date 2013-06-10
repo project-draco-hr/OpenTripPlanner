@@ -13,16 +13,16 @@
   for (  List<TurnRestrictionTag> restrictions : turnRestrictionsByFromWay.values()) {
     for (    TurnRestrictionTag restrictionTag : restrictions) {
       if (restrictionTag.possibleFrom.isEmpty()) {
-        _log.warn("No from edge found for restriction " + restrictionTag);
+        LOG.warn("No from edge found for " + restrictionTag);
         continue;
       }
       if (restrictionTag.possibleTo.isEmpty()) {
-        _log.warn("No to edge found for restriction " + restrictionTag);
+        LOG.warn("No to edge found for " + restrictionTag);
         continue;
       }
       for (      PlainStreetEdge from : restrictionTag.possibleFrom) {
         if (from == null) {
-          _log.warn("from-edge is null in turn restriction " + restrictionTag);
+          LOG.warn("from-edge is null in turn " + restrictionTag);
           continue;
         }
         for (        PlainStreetEdge to : restrictionTag.possibleTo) {

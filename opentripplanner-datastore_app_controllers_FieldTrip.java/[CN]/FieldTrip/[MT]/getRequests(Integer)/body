@@ -1,0 +1,10 @@
+{
+  List<FieldTripRequest> requests;
+  String sql="";
+  if (limit == null)   requests=FieldTripRequest.find(sql).fetch();
+ else {
+    requests=FieldTripRequest.find(sql).fetch(limit);
+  }
+  Gson gson=new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+  renderJSON(gson.toJson(requests));
+}

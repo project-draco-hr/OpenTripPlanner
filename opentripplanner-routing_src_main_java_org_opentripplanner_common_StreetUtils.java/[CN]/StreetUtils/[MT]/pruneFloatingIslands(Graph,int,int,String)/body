@@ -1,9 +1,17 @@
 {
-  _log.debug("pruning");
-  Logger islandLog=null;
-  if (islandLogName != null) {
-    islandLog=LoggerFactory.getLogger(islandLogName);
-    islandLog.info(String.format("%s\t%s\t%s\t%s\t%s","id","stopCount","streetCount","wkt","hadRemoved"));
+  LOG.debug("pruning");
+  PrintWriter islandLog=null;
+  if (islandLogName != null && !islandLogName.isEmpty()) {
+    try {
+      islandLog=new PrintWriter(new File(islandLogName));
+    }
+ catch (    Exception e) {
+      LOG.error("Failed to write islands log file due to {}",e.toString());
+      e.printStackTrace();
+    }
+  }
+  if (islandLog != null) {
+    islandLog.printf("%s\t%s\t%s\t%s\t%s\n","id","stopCount","streetCount","wkt","hadRemoved");
   }
   Map<Vertex,Subgraph> subgraphs=new HashMap<Vertex,Subgraph>();
   Map<Vertex,ArrayList<Vertex>> neighborsForVertex=new HashMap<Vertex,ArrayList<Vertex>>();
@@ -58,7 +66,7 @@
       islands.add(subgraph);
     }
   }
-  _log.info(islands.size() + " sub graphs found");
+  LOG.info(islands.size() + " sub graphs found");
   for (  Subgraph island : islands) {
     boolean hadRemoved=false;
     if (island.stopSize() > 0) {
@@ -78,6 +86,6 @@
     }
   }
   if (graph.removeEdgelessVertices() > 0) {
-    _log.warn("Removed edgeless vertices after pruning islands.");
+    LOG.warn("Removed edgeless vertices after pruning islands");
   }
 }

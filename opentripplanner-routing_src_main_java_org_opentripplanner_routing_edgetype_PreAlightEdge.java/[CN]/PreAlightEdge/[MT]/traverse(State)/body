@@ -1,6 +1,11 @@
 {
   RoutingContext rctx=s0.getContext();
   RoutingRequest options=s0.getOptions();
+  if (!options.getBannedStops().isEmpty() && tov instanceof TransitStop) {
+    if (options.getBannedStops().matches(((TransitStop)tov).getStop())) {
+      return null;
+    }
+  }
   if (options.isArriveBy()) {
     if (!options.getModes().isTransit())     return null;
     if (s0.isAlightedLocal()) {
@@ -11,7 +16,7 @@
       return null;
     }
     if (s0.getNumBoardings() > options.maxTransfers)     return null;
-    long t0=s0.getTime();
+    long t0=s0.getTimeSeconds();
     long slack;
     if (s0.isEverBoarded()) {
       slack=options.getTransferSlack() - options.getBoardSlack();
@@ -21,7 +26,7 @@
     }
     long alight_before=t0 - slack;
     int transfer_penalty=0;
-    if (s0.getLastAlightedTime() != 0) {
+    if (s0.getLastAlightedTimeSeconds() != 0) {
       TransferTable transferTable=rctx.transferTable;
       if (transferTable.hasPreferredTransfers()) {
         transfer_penalty=options.nonpreferredTransferPenalty;
@@ -30,7 +35,7 @@
       if (transfer_time == TransferTable.UNKNOWN_TRANSFER) {
       }
  else       if (transfer_time >= 0) {
-        long table_alight_before=s0.getLastAlightedTime() - transfer_time;
+        long table_alight_before=s0.getLastAlightedTimeSeconds() - transfer_time;
         if (table_alight_before < alight_before)         alight_before=table_alight_before;
       }
  else       if (transfer_time == TransferTable.FORBIDDEN_TRANSFER) {
@@ -52,7 +57,7 @@
       transfer_penalty+=options.transferPenalty;
     }
     StateEditor s1=s0.edit(this);
-    s1.setTime(alight_before);
+    s1.setTimeSeconds(alight_before);
     s1.setEverBoarded(true);
     long wait_cost=t0 - alight_before;
     s1.incrementWeight(wait_cost + transfer_penalty);

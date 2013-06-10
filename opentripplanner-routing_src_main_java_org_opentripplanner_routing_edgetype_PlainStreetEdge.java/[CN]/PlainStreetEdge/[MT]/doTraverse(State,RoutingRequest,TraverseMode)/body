@@ -53,7 +53,8 @@ time=elevationProfileSegment.getSlopeSpeedEffectiveLength() / speed;
 weight=time;
 if (traverseMode.equals(TraverseMode.WALK)) {
 double costs=ElevationUtils.getWalkCostsForSlope(length,elevationProfileSegment.getMaxSlope());
-weight=costs * (1.3333 / speed);
+double elevationUtilsSpeed=4.0 / 3.0;
+weight=costs * (elevationUtilsSpeed / speed);
 time=weight;
 }
 }
@@ -88,7 +89,7 @@ IntersectionVertex traversedVertex=((IntersectionVertex)fromv);
 realTurnCost=options.getIntersectionTraversalCostModel().computeTraversalCost(traversedVertex,backPSE,this,traverseMode,options,(float)backSpeed,(float)speed);
 }
  else {
-LOG.info("Not computing turn cost for edge {}",this);
+LOG.debug("Not computing turn cost for edge {}",this);
 realTurnCost=0;
 }
 if (!traverseMode.isDriving()) {

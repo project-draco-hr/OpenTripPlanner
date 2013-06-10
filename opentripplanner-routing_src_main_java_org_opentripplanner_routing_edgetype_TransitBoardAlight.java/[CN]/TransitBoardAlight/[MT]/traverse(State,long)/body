@@ -15,14 +15,14 @@
       return null;
     }
     s1.setTripId(null);
-    s1.setLastAlightedTime(state0.getTime());
-    s1.setPreviousStop(fromv);
+    s1.setLastAlightedTimeSeconds(state0.getTimeSeconds());
+    s1.setPreviousStop(boarding ? fromv : tov);
     s1.setLastPattern(this.getPattern());
     if (arrivalTimeAtStop > 0) {
-      int wait=(int)Math.abs(state0.getTime() - arrivalTimeAtStop);
+      int wait=(int)Math.abs(state0.getTimeSeconds() - arrivalTimeAtStop);
       s1.incrementTimeInSeconds(wait);
       s1.incrementWeight(wait * options.waitAtBeginningFactor);
-      s1.setInitialWaitTime(wait);
+      s1.setInitialWaitTimeSeconds(wait);
     }
     if (options.isReverseOptimizing())     s1.incrementWeight(options.getBoardCost(mode));
     if (options.isReverseOptimizeOnTheFly()) {
@@ -48,7 +48,7 @@
     if (!options.getModes().get(modeMask)) {
       return null;
     }
-    long current_time=state0.getTime();
+    long current_time=state0.getTimeSeconds();
     int bestWait=-1;
     TripTimes bestTripTimes=null;
     int serviceId=getPattern().getServiceId();
@@ -61,7 +61,7 @@
         tripTimes=getPattern().getNextTrip(stopIndex,secondsSinceMidnight,mode == TraverseMode.BICYCLE,options,boarding);
         if (tripTimes != null) {
           wait=boarding ? (int)(sd.time(tripTimes.getDepartureTime(stopIndex)) - current_time) : (int)(current_time - sd.time(tripTimes.getArrivalTime(stopIndex)));
-          if (wait < 0)           _log.error("negative wait time on board");
+          if (wait < 0)           LOG.error("negative wait time on board");
           if (bestWait < 0 || wait < bestWait) {
             bestWait=wait;
             serviceDay=sd;
@@ -94,7 +94,7 @@
     double wait_cost=bestWait;
     if (state0.getNumBoardings() == 0 && !options.isReverseOptimizing()) {
       wait_cost*=options.waitAtBeginningFactor;
-      s1.setInitialWaitTime(bestWait);
+      s1.setInitialWaitTimeSeconds(bestWait);
     }
  else {
       wait_cost*=options.waitReluctance;
@@ -104,7 +104,7 @@
  else     s1.incrementWeight(wait_cost + options.getBoardCost(mode));
     if (options.isReverseOptimizeOnTheFly() && !options.isReverseOptimizing() && state0.getNumBoardings() > 0 && state0.getLastNextArrivalDelta() <= bestWait && state0.getLastNextArrivalDelta() > -1) {
       State optimized=s1.makeState().optimizeOrReverse(true,true);
-      if (optimized == null)       _log.error("Null optimized state. This shouldn't happen");
+      if (optimized == null)       LOG.error("Null optimized state. This shouldn't happen");
       return optimized;
     }
     return s1.makeState();

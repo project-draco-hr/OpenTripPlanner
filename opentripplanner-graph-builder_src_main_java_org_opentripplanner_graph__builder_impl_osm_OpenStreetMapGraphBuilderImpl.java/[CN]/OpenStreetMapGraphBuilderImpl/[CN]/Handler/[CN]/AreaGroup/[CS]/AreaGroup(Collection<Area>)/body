@@ -23,7 +23,7 @@
     for (int i=0; i < mp.getNumGeometries(); ++i) {
       Geometry poly=mp.getGeometryN(i);
       if (!(poly instanceof Polygon)) {
-        _log.warn("Unexpected non-polygon when merging areas: " + poly);
+        LOG.warn("Unexpected non-polygon when merging areas: " + poly);
         continue;
       }
       outermostRings.add(toRing((Polygon)poly,nodeMap));
@@ -33,6 +33,6 @@
     outermostRings.add(toRing((Polygon)u,nodeMap));
   }
  else {
-    _log.warn("Unexpected non-polygon when merging areas: " + u);
+    LOG.warn("Unexpected non-polygon when merging areas: " + u);
   }
 }

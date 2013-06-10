@@ -4,7 +4,7 @@
     for (int j=0; j < rides.size() - i; j++) {
       float cost=calculateCost(rides.subList(j,j + i + 1));
       if (cost < 0) {
-        _log.error("negative cost for a ride sequence");
+        LOG.error("negative cost for a ride sequence");
         cost=Float.POSITIVE_INFINITY;
       }
       resultTable[j][j + i]=cost;

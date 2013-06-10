@@ -1,0 +1,13 @@
+{
+  if (cachedPassword != null) {
+    return cachedPassword.equals(password);
+  }
+  if (password == null) {
+    return false;
+  }
+  if (SCryptUtil.check(password,cryptedPassword)) {
+    cachedPassword=password;
+    return true;
+  }
+  return false;
+}

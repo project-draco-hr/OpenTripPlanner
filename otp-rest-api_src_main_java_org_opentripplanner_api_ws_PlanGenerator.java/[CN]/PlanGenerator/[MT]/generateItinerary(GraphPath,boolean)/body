@@ -1,0 +1,265 @@
+{
+  Graph graph=path.getRoutingContext().graph;
+  TransitIndexService transitIndex=graph.getService(TransitIndexService.class);
+  Itinerary itinerary=makeEmptyItinerary(path);
+  Set<Alert> postponedAlerts=null;
+  Leg leg=null;
+  CoordinateArrayListSequence coordinates=new CoordinateArrayListSequence();
+  double previousElevation=Double.MAX_VALUE;
+  int startWalk=-1;
+  int i=-1;
+  boolean foldingElevatorLegIntoCycleLeg=false;
+  PlanGenState pgstate=PlanGenState.START;
+  String nextName=null;
+  for (  State state : path.states) {
+    i+=1;
+    Edge backEdge=state.getBackEdge();
+    if (backEdge == null) {
+      continue;
+    }
+    TraverseMode mode=state.getBackMode();
+    if (mode != null) {
+      long dt=state.getAbsTimeDeltaSeconds();
+      if (mode == TraverseMode.BOARDING || mode == TraverseMode.ALIGHTING || mode == TraverseMode.STL) {
+        itinerary.waitingTime+=dt;
+      }
+ else       if (mode.isOnStreetNonTransit()) {
+        itinerary.walkTime+=dt;
+      }
+ else       if (mode.isTransit()) {
+        itinerary.transitTime+=dt;
+      }
+    }
+    if (backEdge instanceof FreeEdge) {
+      if (backEdge instanceof PreBoardEdge) {
+        postponedAlerts=state.getBackAlerts();
+      }
+ else       if (backEdge instanceof PreAlightEdge) {
+        addNotesToLeg(itinerary.legs.get(itinerary.legs.size() - 1),state.getBackAlerts());
+      }
+      continue;
+    }
+    if (backEdge instanceof EdgeWithElevation) {
+      PackedCoordinateSequence profile=((EdgeWithElevation)backEdge).getElevationProfile();
+      previousElevation=applyElevation(profile,itinerary,previousElevation);
+    }
+switch (pgstate) {
+case START:
+      if (mode == TraverseMode.WALK) {
+        pgstate=PlanGenState.WALK;
+        leg=makeLeg(itinerary,state);
+        leg.from.orig=nextName;
+        startWalk=i;
+      }
+ else       if (mode == TraverseMode.BICYCLE) {
+        pgstate=PlanGenState.BICYCLE;
+        leg=makeLeg(itinerary,state);
+        leg.from.orig=nextName;
+        startWalk=i;
+      }
+ else       if (mode == TraverseMode.CAR) {
+        pgstate=PlanGenState.CAR;
+        leg=makeLeg(itinerary,state);
+        leg.from.orig=nextName;
+        startWalk=i;
+      }
+ else       if (mode == TraverseMode.BOARDING) {
+        pgstate=PlanGenState.PRETRANSIT;
+        leg=makeLeg(itinerary,state);
+        leg.from.orig=nextName;
+        itinerary.transfers++;
+        startWalk=-1;
+      }
+ else       if (mode == TraverseMode.STL) {
+      }
+ else       if (mode == TraverseMode.TRANSFER) {
+        leg=makeLeg(itinerary,state);
+        coordinates=new CoordinateArrayListSequence();
+        coordinates.add(state.getBackState().getVertex().getCoordinate());
+        coordinates.add(state.getVertex().getCoordinate());
+        finalizeLeg(leg,state,path.states,i,i,coordinates,itinerary);
+        coordinates.clear();
+      }
+ else {
+        LOG.error("Unexpected state (in START): " + mode);
+      }
+    break;
+case WALK:
+  if (leg == null) {
+    leg=makeLeg(itinerary,state);
+  }
+if (mode == TraverseMode.WALK) {
+}
+ else if (mode == TraverseMode.BICYCLE) {
+  finalizeLeg(leg,state,path.states,startWalk,i,coordinates,itinerary);
+  startWalk=i;
+  leg=makeLeg(itinerary,state);
+  pgstate=PlanGenState.BICYCLE;
+}
+ else if (mode == TraverseMode.STL) {
+  finalizeLeg(leg,state,path.states,startWalk,i,coordinates,itinerary);
+  leg=null;
+  pgstate=PlanGenState.PRETRANSIT;
+}
+ else if (mode == TraverseMode.BOARDING) {
+  pgstate=PlanGenState.PRETRANSIT;
+  finalizeLeg(leg,state,path.states,startWalk,i,coordinates,itinerary);
+  leg=makeLeg(itinerary,state);
+  itinerary.transfers++;
+}
+ else if (backEdge instanceof LegSwitchingEdge) {
+  nextName=state.getBackState().getBackState().getBackState().getVertex().getName();
+  finalizeLeg(leg,state,path.states,startWalk,i - 1,coordinates,itinerary);
+  leg=null;
+  pgstate=PlanGenState.START;
+}
+ else {
+  LOG.error("Unexpected state (in WALK): " + mode);
+}
+break;
+case BICYCLE:
+if (leg == null) {
+leg=makeLeg(itinerary,state);
+}
+if (state.getBackEdge() instanceof ElevatorBoardEdge) {
+int j=i + 1;
+while (path.states.get(j).getBackEdge() instanceof ElevatorEdge) j++;
+if (path.states.get(j).getBackMode() == TraverseMode.BICYCLE) foldingElevatorLegIntoCycleLeg=true;
+}
+if (foldingElevatorLegIntoCycleLeg) {
+if (state.getBackEdge() instanceof ElevatorEdge) {
+break;
+}
+ else {
+foldingElevatorLegIntoCycleLeg=false;
+}
+}
+if (mode == TraverseMode.BICYCLE) {
+}
+ else if (mode == TraverseMode.WALK) {
+finalizeLeg(leg,state,path.states,startWalk,i,coordinates,itinerary);
+leg=makeLeg(itinerary,state);
+startWalk=i;
+pgstate=PlanGenState.WALK;
+}
+ else if (mode == TraverseMode.STL) {
+finalizeLeg(leg,state,path.states,startWalk,i,coordinates,itinerary);
+startWalk=i;
+leg=null;
+pgstate=PlanGenState.PRETRANSIT;
+}
+ else if (backEdge instanceof LegSwitchingEdge) {
+finalizeLeg(leg,state,path.states,startWalk,i - 1,coordinates,itinerary);
+leg=null;
+pgstate=PlanGenState.START;
+}
+ else {
+LOG.error("Unexpected state (in BICYCLE): " + mode);
+}
+break;
+case CAR:
+if (leg == null) {
+leg=makeLeg(itinerary,state);
+}
+if (mode == TraverseMode.CAR) {
+}
+ else if (mode == TraverseMode.STL) {
+finalizeLeg(leg,state,path.states,startWalk,i,coordinates,itinerary);
+leg=null;
+pgstate=PlanGenState.PRETRANSIT;
+}
+ else if (backEdge instanceof LegSwitchingEdge) {
+finalizeLeg(leg,state,path.states,startWalk,i - 1,coordinates,itinerary);
+leg=null;
+pgstate=PlanGenState.START;
+}
+ else {
+LOG.error("Unexpected state (in CAR): " + mode);
+}
+break;
+case PRETRANSIT:
+if (mode == TraverseMode.BOARDING) {
+if (leg != null) {
+LOG.error("leg unexpectedly not null (boarding loop)");
+}
+ else {
+leg=makeLeg(itinerary,state);
+leg.from.stopIndex=((OnBoardForwardEdge)backEdge).getStopIndex();
+leg.stop=new ArrayList<Place>();
+itinerary.transfers++;
+leg.boardRule=(String)state.getExtension("boardAlightRule");
+}
+}
+ else if (backEdge instanceof HopEdge) {
+pgstate=PlanGenState.TRANSIT;
+fixupTransitLeg(leg,state,transitIndex);
+leg.stop=new ArrayList<Place>();
+}
+ else {
+LOG.error("Unexpected state (in PRETRANSIT): " + mode);
+}
+break;
+case TRANSIT:
+String route=backEdge.getName();
+if (mode == TraverseMode.ALIGHTING) {
+if (showIntermediateStops && leg.stop != null && leg.stop.size() > 0) {
+if (leg.stop.isEmpty()) {
+leg.stop=null;
+}
+}
+leg.alightRule=(String)state.getExtension("boardAlightRule");
+finalizeLeg(leg,state,null,-1,-1,coordinates,itinerary);
+leg=null;
+pgstate=PlanGenState.START;
+}
+ else if (mode.toString().equals(leg.mode)) {
+if (showIntermediateStops) {
+if (!(backEdge instanceof DwellEdge)) {
+Place stop=makePlace(state.getBackState(),state.getBackState().getVertex().getName(),true);
+leg.stop.add(stop);
+}
+ else if (leg.stop.size() > 0) {
+leg.stop.get(leg.stop.size() - 1).departure=makeCalendar(state);
+}
+}
+if (!route.equals(leg.route)) {
+finalizeLeg(leg,state,null,-1,-1,coordinates,itinerary);
+leg=makeLeg(itinerary,state);
+leg.stop=new ArrayList<Place>();
+fixupTransitLeg(leg,state,transitIndex);
+leg.startTime=makeCalendar(state);
+leg.interlineWithPreviousLeg=true;
+}
+}
+ else {
+LOG.error("Unexpected state (in TRANSIT): " + mode);
+}
+break;
+}
+if (leg != null) {
+leg.distance+=backEdge.getDistance();
+Geometry edgeGeometry=backEdge.getGeometry();
+if (edgeGeometry != null) {
+Coordinate[] edgeCoordinates=edgeGeometry.getCoordinates();
+if (coordinates.size() > 0 && coordinates.getCoordinate(coordinates.size() - 1).equals(edgeCoordinates[0])) {
+coordinates.extend(edgeCoordinates,1);
+}
+ else {
+coordinates.extend(edgeCoordinates);
+}
+}
+if (postponedAlerts != null) {
+addNotesToLeg(leg,postponedAlerts);
+postponedAlerts=null;
+}
+addNotesToLeg(leg,state.getBackAlerts());
+}
+}
+if (leg != null) {
+finalizeLeg(leg,path.states.getLast(),path.states,startWalk,i,coordinates,itinerary);
+}
+itinerary.removeBogusLegs();
+itinerary.fixupDates(graph.getService(CalendarServiceData.class));
+if (itinerary.legs.size() == 0) throw new TrivialPathException();
+return itinerary;
+}

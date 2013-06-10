@@ -1,0 +1,17 @@
+{
+  if (this.isEmpty()) {
+    return false;
+  }
+ else   if (stop != null) {
+    if (matches(stop.getId())) {
+      return true;
+    }
+ else     if (stop.getParentStation() != null && !stop.getParentStation().isEmpty()) {
+      AgencyAndId parentId=new AgencyAndId(stop.getId().getAgencyId(),stop.getParentStation());
+      if (matches(parentId)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

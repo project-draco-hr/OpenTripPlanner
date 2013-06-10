@@ -7,7 +7,7 @@
   loadPathways(graph);
   loadAgencies(graph);
   clearCachedData();
-  _log.debug("building hops from trips");
+  LOG.debug("building hops from trips");
   Collection<Trip> trips=_dao.getAllTrips();
   int tripCount=0;
   HashMap<Trip,List<Frequency>> tripFrequencies=new HashMap<Trip,List<Frequency>>();
@@ -21,15 +21,15 @@
   }
   TRIP:   for (  Trip trip : trips) {
     tripCount++;
-    if (tripCount % 100000 == 0)     _log.debug("trips=" + tripCount + "/"+ trips.size());
+    if (tripCount % 100000 == 0)     LOG.debug("trips=" + tripCount + "/"+ trips.size());
     if (!_calendarService.getServiceIds().contains(trip.getServiceId())) {
-      _log.warn(graph.addBuilderAnnotation(new TripUndefinedService(trip)));
+      LOG.warn(graph.addBuilderAnnotation(new TripUndefinedService(trip)));
     }
     List<StopTime> stopTimes=getNonduplicateStopTimesForTrip(trip);
     filterStopTimes(stopTimes,graph);
     interpolateStopTimes(stopTimes);
     if (stopTimes.size() < 2) {
-      _log.warn(graph.addBuilderAnnotation(new TripDegenerate(trip)));
+      LOG.warn(graph.addBuilderAnnotation(new TripDegenerate(trip)));
       continue TRIP;
     }
     List<Frequency> frequencies=tripFrequencies.get(trip);

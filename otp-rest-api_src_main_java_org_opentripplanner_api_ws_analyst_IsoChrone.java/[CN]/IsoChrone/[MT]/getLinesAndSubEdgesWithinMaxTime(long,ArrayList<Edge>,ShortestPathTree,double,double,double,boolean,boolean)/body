@@ -1,0 +1,71 @@
+{
+  LOG.debug("maximal userSpeed set to: " + userSpeed + " m/sec ");
+  if (hasCar) {
+    LOG.debug("travel mode is set to CAR, hence the given speed may be adjusted for each edge");
+  }
+  ArrayList<LineString> walkShedEdges=new ArrayList<LineString>();
+  ArrayList<LineString> otherEdges=new ArrayList<LineString>();
+  ArrayList<LineString> borderEdges=new ArrayList<LineString>();
+  ArrayList<LineString> uShapes=new ArrayList<LineString>();
+  int countEdgesOutside=0;
+  for (Iterator iterator=allConnectingStateEdges.iterator(); iterator.hasNext(); ) {
+    Edge edge=(Edge)iterator.next();
+    State sFrom=spt.getState(edge.getFromVertex());
+    State sTo=spt.getState(edge.getToVertex());
+    if ((sFrom != null) && (sTo != null)) {
+      long fromTime=sFrom.getElapsedTimeSeconds();
+      long toTime=sTo.getElapsedTimeSeconds();
+      long dt=Math.abs(toTime - fromTime);
+      Geometry edgeGeom=edge.getGeometry();
+      if ((edgeGeom != null) && (edgeGeom instanceof LineString)) {
+        LineString ls=(LineString)edgeGeom;
+        boolean uShapeOrLonger=testForUshape(edge,maxTime,fromTime,toTime,angleLimit,distanceTolerance,userSpeed,hasCar,performSpeedTest);
+        if (uShapeOrLonger) {
+          uShapes.add(ls);
+        }
+        if ((fromTime < maxTime) && (toTime < maxTime)) {
+          if (uShapeOrLonger) {
+            treatAndAddUshapeWithinTimeLimits(maxTime,userSpeed,walkShedEdges,edge,fromTime,toTime,ls,hasCar);
+          }
+ else {
+            walkShedEdges.add(ls);
+          }
+        }
+ else {
+          if ((fromTime < maxTime) || (toTime < maxTime)) {
+            double lineDist=edge.getDistance();
+            LineString inputLS=ls;
+            double fraction=1.0;
+            if (fromTime < toTime) {
+              double distanceToWalkInTimeMissing=distanceToMoveInRemainingTime(maxTime,fromTime,dt,userSpeed,edge,hasCar,uShapeOrLonger);
+              fraction=(double)distanceToWalkInTimeMissing / (double)lineDist;
+            }
+ else {
+              inputLS=(LineString)ls.reverse();
+              double distanceToWalkInTimeMissing=distanceToMoveInRemainingTime(maxTime,toTime,dt,userSpeed,edge,hasCar,uShapeOrLonger);
+              fraction=(double)distanceToWalkInTimeMissing / (double)lineDist;
+            }
+            LineString subLine=this.getSubLineString(inputLS,fraction);
+            borderEdges.add(subLine);
+          }
+ else {
+            countEdgesOutside++;
+          }
+        }
+      }
+ else {
+        LOG.debug("edge not instance of LineString");
+      }
+    }
+ else {
+      Geometry edgeGeom=edge.getGeometry();
+      if ((edgeGeom != null) && (edgeGeom instanceof LineString)) {
+        otherEdges.add((LineString)edgeGeom);
+      }
+    }
+  }
+  walkShedEdges.addAll(borderEdges);
+  this.debugGeoms.addAll(uShapes);
+  LOG.debug("number of detected u-shapes/crescents: " + uShapes.size());
+  return walkShedEdges;
+}

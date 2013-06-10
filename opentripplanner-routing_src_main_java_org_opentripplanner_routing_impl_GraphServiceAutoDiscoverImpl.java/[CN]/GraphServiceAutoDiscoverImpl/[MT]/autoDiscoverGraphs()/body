@@ -3,9 +3,18 @@
   Collection<String> graphOnDisk=new HashSet<String>();
   Collection<String> graphToLoad=new HashSet<String>();
   long validEndTime=System.currentTimeMillis() - loadDelaySec * 1000;
-  Resource base=decorated.getResource(decorated.getResourceBase());
   try {
-    File baseFile=base.getFile();
+    String resourceBase=decorated.getResourceBase();
+    File baseFile=null;
+    if (resourceBase.startsWith("file:")) {
+      baseFile=new File(resourceBase.substring(5));
+    }
+ else     if (resourceBase.startsWith("classpath:")) {
+      throw new UnsupportedOperationException();
+    }
+ else {
+      baseFile=new File(resourceBase);
+    }
     File rootGraphFile=new File(baseFile,GraphServiceFileImpl.GRAPH_FILENAME);
     if (rootGraphFile.exists() && rootGraphFile.canRead()) {
       graphOnDisk.add("");
@@ -14,6 +23,9 @@
         LOG.debug("Graph to (re)load: {}, lastModified={}",rootGraphFile,lastModified);
         graphToLoad.add("");
       }
+    }
+    if (!baseFile.isDirectory()) {
+      throw new IOException("Resource base " + baseFile + " is not a directory, can't auto-discover.");
     }
     for (    String sub : baseFile.list()) {
       File subFile=new File(baseFile,sub);
@@ -31,7 +43,7 @@
     }
   }
  catch (  IOException e) {
-    LOG.error("Graph auto-discovering has been set, but {} is not a file resource, so I'm bailing-out.",decorated.getResourceBase());
+    LOG.error("Can't scan " + decorated.getResourceBase(),e);
   }
  finally {
     lastAutoScan=validEndTime;

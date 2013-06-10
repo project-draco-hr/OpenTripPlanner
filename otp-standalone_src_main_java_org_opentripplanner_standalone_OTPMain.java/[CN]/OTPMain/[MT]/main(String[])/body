@@ -1,0 +1,9 @@
+{
+  OTPMain main=new OTPMain();
+  JCommander jc=new JCommander(main,args);
+  if (main.help) {
+    jc.usage();
+    System.exit(0);
+  }
+  main.run();
+}

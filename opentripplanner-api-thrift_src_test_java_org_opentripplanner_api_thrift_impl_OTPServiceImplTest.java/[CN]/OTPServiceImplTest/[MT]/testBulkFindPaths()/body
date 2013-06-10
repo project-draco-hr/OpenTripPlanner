@@ -15,8 +15,11 @@
   req.validate();
   BulkPathsResponse res=serviceImpl.BulkFindPaths(req);
   for (  TripPaths paths : res.getPaths()) {
-    assertEquals(1,paths.getPathsSize());
-    Path p=paths.getPaths().get(0);
-    checkPath(p);
+    int expectedPathsSize=paths.isNo_paths_found() ? 0 : 1;
+    assertEquals(expectedPathsSize,paths.getPathsSize());
+    if (!paths.isSetNo_paths_found()) {
+      Path p=paths.getPaths().get(0);
+      checkPath(p);
+    }
   }
 }

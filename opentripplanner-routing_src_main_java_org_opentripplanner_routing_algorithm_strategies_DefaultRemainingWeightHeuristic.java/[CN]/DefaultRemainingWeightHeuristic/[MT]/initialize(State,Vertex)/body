@@ -1,0 +1,9 @@
+{
+  this.options=s.getOptions();
+  this.useTransit=options.getModes().isTransit();
+  this.maxSpeed=getMaxSpeed(options);
+  Graph graph=options.rctx.graph;
+  localStreetService=graph.getService(TransitLocalStreetService.class);
+  targetX=target.getX();
+  targetY=target.getY();
+}

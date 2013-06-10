@@ -11,7 +11,7 @@
     }
   }
   if (way.hasTag("maxspeed") && speed == null)   speed=getMetersSecondFromSpeed(way.getTag("maxspeed"));
-  if (speed != null && speed < 0.0001)   _log.warn("Zero or negative automobile speed detected at {} based on OSM " + "maxspeed tags; ignoring these tags",this);
+  if (speed != null && speed < 0.0001)   LOG.warn("Zero or negative automobile speed detected at {} based on OSM " + "maxspeed tags; ignoring these tags",this);
   if (speed != null)   return speed;
   int bestScore=0;
   Float bestSpeed=null;

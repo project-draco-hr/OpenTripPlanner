@@ -4,13 +4,13 @@
   ShortestPathTree spt=createShortestPathTree(options);
   final RemainingWeightHeuristic heuristic=options.batch ? new TrivialRemainingWeightHeuristic() : rctx.remainingWeightHeuristic;
   State initialState=new State(options);
-  double initialWeight=heuristic.computeInitialWeight(initialState,rctx.target);
+  heuristic.initialize(initialState,rctx.target);
   spt.add(initialState);
   OTPPriorityQueueFactory qFactory=BinHeap.FACTORY;
   int initialSize=rctx.graph.getVertices().size();
   initialSize=(int)Math.ceil(2 * (Math.sqrt((double)initialSize + 1)));
   OTPPriorityQueue<State> pq=qFactory.create(initialSize);
-  pq.insert(initialState,initialWeight);
+  pq.insert(initialState,0);
   int nVisited=0;
   while (!pq.empty()) {
     if (_verbose) {
@@ -62,7 +62,7 @@
           if (_verbose)           System.out.println("         too expensive to reach, not enqueued. estimated weight = " + estimate);
         }
  else         if (isWorstTimeExceeded(v,options)) {
-          if (_verbose)           System.out.println("         too much time to reach, not enqueued. time = " + v.getTime());
+          if (_verbose)           System.out.println("         too much time to reach, not enqueued. time = " + v.getTimeSeconds());
         }
  else {
           if (spt.add(v)) {

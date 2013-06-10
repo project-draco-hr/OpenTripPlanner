@@ -1,0 +1,21 @@
+{
+  try {
+    containerRequest.setUris(containerRequest.getBaseUri(),new URI(containerRequest.getRequestUri().toString().replace("/ws/","/")));
+  }
+ catch (  URISyntaxException e) {
+    e.printStackTrace();
+  }
+  String method=containerRequest.getMethod();
+  if (method.equals("GET"))   return containerRequest;
+  String auth=containerRequest.getHeaderValue("authorization");
+  if (auth == null)   throw unauthorized;
+  if (auth.startsWith("Basic ") || auth.startsWith("Basic ")) {
+    auth=auth.replaceFirst("[Bb]asic ","");
+    String userColonPass=Base64.base64Decode(auth);
+    if (!userColonPass.equals("admin:admin"))     throw unauthorized;
+  }
+ else {
+    throw unauthorized;
+  }
+  return containerRequest;
+}

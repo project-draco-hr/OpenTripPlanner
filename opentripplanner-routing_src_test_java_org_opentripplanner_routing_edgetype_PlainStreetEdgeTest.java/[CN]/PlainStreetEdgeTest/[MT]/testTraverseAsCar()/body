@@ -1,0 +1,13 @@
+{
+  PlainStreetEdge e1=edge(v1,v2,100.0,StreetTraversalPermission.ALL);
+  e1.setCarSpeed(10.0f);
+  RoutingRequest options=proto.clone();
+  options.setMode(TraverseMode.CAR);
+  options.setRoutingContext(_graph,v1,v2);
+  State s0=new State(options);
+  State s1=e1.traverse(s0);
+  double expectedWeight=e1.getLength() / e1.getCarSpeed();
+  long expectedDuration=(long)Math.ceil(expectedWeight);
+  assertEquals(expectedDuration,s1.getElapsedTimeSeconds(),0.0);
+  assertEquals(expectedWeight,s1.getWeight(),0.0);
+}

@@ -6,7 +6,7 @@
     originalUnits=(float)Double.parseDouble(m.group(1));
   }
  catch (  NumberFormatException e) {
-    _log.warn("Could not parse max speed {}",m.group(1));
+    LOG.warn("Could not parse max speed {}",m.group(1));
     return null;
   }
   String units=m.group(2);

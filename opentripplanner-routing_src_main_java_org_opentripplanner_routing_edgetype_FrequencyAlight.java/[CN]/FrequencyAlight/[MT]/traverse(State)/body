@@ -6,7 +6,7 @@
     if (!options.getModes().get(modeMask)) {
       return null;
     }
-    long currentTime=state0.getTime();
+    long currentTime=state0.getTimeSeconds();
     int bestWait=-1;
     TraverseMode mode=state0.getNonTransitMode();
     if (options.bannedTrips.containsKey(trip.getId())) {
@@ -19,7 +19,7 @@
         int startTime=pattern.getPreviousArrivalTime(stopIndex,secondsSinceMidnight,options.wheelchairAccessible,mode == TraverseMode.BICYCLE,true);
         if (startTime >= 0) {
           int wait=(int)(currentTime - sd.time(startTime));
-          if (wait < 0)           _log.error("negative wait time on alight");
+          if (wait < 0)           LOG.error("negative wait time on alight");
           if (bestWait < 0 || wait < bestWait) {
             bestWait=wait;
           }
@@ -63,7 +63,7 @@
       return null;
     }
     s1.setTripId(null);
-    s1.setLastAlightedTime(state0.getTime());
+    s1.setLastAlightedTimeSeconds(state0.getTimeSeconds());
     s1.setPreviousStop(fromv);
     s1.setBackMode(TraverseMode.ALIGHTING);
     return s1.makeState();

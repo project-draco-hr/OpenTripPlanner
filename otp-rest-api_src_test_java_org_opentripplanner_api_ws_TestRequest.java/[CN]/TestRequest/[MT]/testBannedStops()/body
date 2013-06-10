@@ -1,0 +1,9 @@
+{
+  TestPlanner planner=new TestPlanner("portland","NE 57TH AVE at NE GLISAN ST #2","NE 30TH AVE at NE GLISAN ST");
+  planner.setBannedStops(Arrays.asList("TriMet_2106,TriMet_2107"));
+  Response response=planner.getItineraries();
+  Itinerary itinerary=response.getPlan().itinerary.get(0);
+  Leg leg=itinerary.legs.get(1);
+  assertFalse(leg.to.stopId.getId().equals("2107"));
+  assertTrue(leg.to.stopId.getId().equals("2109"));
+}

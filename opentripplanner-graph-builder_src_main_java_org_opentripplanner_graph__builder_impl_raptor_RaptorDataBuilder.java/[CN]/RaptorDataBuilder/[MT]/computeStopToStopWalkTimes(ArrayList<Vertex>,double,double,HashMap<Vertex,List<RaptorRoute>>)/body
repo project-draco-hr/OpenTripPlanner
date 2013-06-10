@@ -20,7 +20,7 @@
           continue;
         }
         if (isSubsetOf(vertexRoutes,destinationRoutes))         continue;
-        T2<Integer,Double> timeAndDistance=new T2<Integer,Double>((int)state.getElapsedTime(),state.getWalkDistance());
+        T2<Integer,Double> timeAndDistance=new T2<Integer,Double>((int)state.getElapsedTimeSeconds(),state.getWalkDistance());
         timesByDestination.put(vertex,timeAndDistance);
       }
     }

@@ -11,7 +11,7 @@
         listener.handleMapTile(key,y,x,path);
       }
  catch (      IllegalStateException e) {
-        _log.debug("trying to re-download");
+        LOG.debug("trying to re-download");
         path.delete();
         path=getPathToUpToDateMapTile(y,x,key);
         listener.handleMapTile(key,y,x,path);

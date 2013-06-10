@@ -1,0 +1,56 @@
+{
+  assertNotNull(start);
+  assertNotNull(end);
+  RoutingRequest prototypeOptions=new RoutingRequest();
+  prototypeOptions.setStairsReluctance(1.0);
+  prototypeOptions.setWalkReluctance(1.0);
+  prototypeOptions.setTurnReluctance(1.0);
+  prototypeOptions.setCarSpeed(1.0);
+  prototypeOptions.setWalkSpeed(1.0);
+  prototypeOptions.setBikeSpeed(1.0);
+  prototypeOptions.setTraversalCostModel(new ConstantIntersectionTraversalCostModel(10.0));
+  if (traverseModes != null) {
+    prototypeOptions.setModes(traverseModes);
+  }
+  RoutingRequest options=prototypeOptions.clone();
+  options.setRoutingContext(_graph,start,end);
+  GenericAStar aStar=new GenericAStar();
+  if (sptFactory != null) {
+    aStar.setShortestPathTreeFactory(sptFactory);
+  }
+  ShortestPathTree tree=aStar.getShortestPathTree(options);
+  GraphPath path=tree.getPath(end,false);
+  options.cleanup();
+  assertNotNull(path);
+  double startEndWeight=path.getWeight();
+  int startEndDuration=path.getDuration();
+  assertTrue(startEndWeight > 0);
+  assertEquals(startEndWeight,(double)startEndDuration,1.0 * path.edges.size());
+  boolean violated=false;
+  for (  Vertex intermediate : _graph.getVertices()) {
+    if (intermediate == start || intermediate == end) {
+      continue;
+    }
+    GraphPath startIntermediatePath=getPath(aStar,prototypeOptions,null,start,intermediate);
+    if (startIntermediatePath == null) {
+      continue;
+    }
+    Edge back=startIntermediatePath.states.getLast().getBackEdge();
+    GraphPath intermediateEndPath=getPath(aStar,prototypeOptions,back,intermediate,end);
+    if (intermediateEndPath == null) {
+      continue;
+    }
+    double startIntermediateWeight=startIntermediatePath.getWeight();
+    int startIntermediateDuration=startIntermediatePath.getDuration();
+    double intermediateEndWeight=intermediateEndPath.getWeight();
+    int intermediateEndDuration=intermediateEndPath.getDuration();
+    assertEquals(startIntermediateWeight,(double)startIntermediateDuration,1.0 * startIntermediatePath.edges.size());
+    assertEquals(intermediateEndWeight,(double)intermediateEndDuration,1.0 * intermediateEndPath.edges.size());
+    double diff=startIntermediateWeight + intermediateEndWeight - startEndWeight;
+    if (diff < -0.01) {
+      System.out.println("Triangle inequality violated - diff = " + diff);
+      violated=true;
+    }
+  }
+  assertFalse(violated);
+}

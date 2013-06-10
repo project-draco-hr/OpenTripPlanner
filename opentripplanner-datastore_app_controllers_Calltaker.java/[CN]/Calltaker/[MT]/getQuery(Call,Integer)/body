@@ -1,0 +1,8 @@
+{
+  List<TripQuery> queries;
+  if (limit == null)   queries=TripQuery.find("call.id = '" + call.id + "' order by timeStamp").fetch();
+ else {
+    queries=TripQuery.find("call.id = '" + call.id + "' order by timeStamp").fetch(limit);
+  }
+  renderJSON(queries);
+}

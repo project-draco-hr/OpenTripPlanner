@@ -1,8 +1,8 @@
 {
-  if (addNewVertex) {
-    convexHull=new ConvexHull(vertexCoord.toArray(new Coordinate[vertexCoord.size()]),new GeometryFactory());
-    convexHullAsGeom=convexHull.getConvexHull();
-    addNewVertex=false;
+  if (newVertexAdded) {
+    MultiPoint mp=gf.createMultiPoint(vertexCoords.toArray(new Coordinate[0]));
+    newVertexAdded=false;
+    mp.convexHull();
   }
   return convexHullAsGeom;
 }

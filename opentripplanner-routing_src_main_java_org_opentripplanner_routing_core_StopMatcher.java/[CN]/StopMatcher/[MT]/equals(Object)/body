@@ -1,0 +1,10 @@
+{
+  if (another == null || !(another instanceof StopMatcher)) {
+    return false;
+  }
+  if (another == this) {
+    return true;
+  }
+  StopMatcher anotherMatcher=(StopMatcher)another;
+  return agencyAndStopIds.equals(anotherMatcher.agencyAndStopIds);
+}

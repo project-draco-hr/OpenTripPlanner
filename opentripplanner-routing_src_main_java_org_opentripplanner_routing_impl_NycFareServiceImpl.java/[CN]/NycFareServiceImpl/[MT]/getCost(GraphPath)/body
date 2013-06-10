@@ -53,7 +53,7 @@
  else         if (shortName.startsWith("X") || shortName.startsWith("BxM") || shortName.startsWith("QM")|| shortName.startsWith("BM")) {
           newRide.classifier=EXPRESS_BUS;
         }
-        newRide.startTime=state.getTime();
+        newRide.startTime=state.getTimeSeconds();
       }
       newRide.lastStop=((HopEdge)backEdge).getStartStop();
     }
@@ -187,7 +187,7 @@ canarsieFreeTransfer=true;
 state=NycFareState.SUBWAY_POST_TRANSFER;
 }
  else if (ride.classifier.equals(SIR)) {
-_log.warn("Should not transfer from SIR to SIR");
+LOG.warn("Should not transfer from SIR to SIR");
 }
  else if (ride.classifier.equals(LOCAL_BUS)) {
 if (!SIR_BONUS_ROUTES.contains(ride.route)) {
@@ -210,7 +210,7 @@ totalFare+=ORDINARY_FARE;
 state=NycFareState.SUBWAY_PRE_TRANSFER;
 }
  else if (ride.classifier.equals(SIR)) {
-_log.warn("Should not transfer from SIR to SIR");
+LOG.warn("Should not transfer from SIR to SIR");
 }
  else if (ride.classifier.equals(LOCAL_BUS)) {
 if (!ride.route.getId().startsWith("S")) {

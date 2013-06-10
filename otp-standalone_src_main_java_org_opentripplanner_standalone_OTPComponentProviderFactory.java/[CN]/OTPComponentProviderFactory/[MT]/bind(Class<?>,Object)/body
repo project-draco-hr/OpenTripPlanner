@@ -1,0 +1,14 @@
+{
+  if (locked) {
+    LOG.error("Attempt to add a binding to a completed set of bindings.");
+  }
+ else {
+    if (key.isInstance(value)) {
+      bindings.put(key,value);
+      bindingOrder.add(value);
+    }
+ else {
+      LOG.error("Type mismatch in binding: " + key + " "+ value);
+    }
+  }
+}

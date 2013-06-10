@@ -1,0 +1,9 @@
+{
+  try {
+    containerRequest.setUris(containerRequest.getBaseUri(),new URI(containerRequest.getRequestUri().toString().replace("/ws/","/")));
+  }
+ catch (  URISyntaxException e) {
+    e.printStackTrace();
+  }
+  return containerRequest;
+}

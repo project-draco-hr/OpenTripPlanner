@@ -9,12 +9,12 @@
     File gtfsFile=new File(tmpDir,fileName);
     if (gtfsFile.exists()) {
       if (useCached) {
-        _log.info("using already downloaded gtfs file: path=" + gtfsFile);
+        LOG.info("using already downloaded gtfs file: path=" + gtfsFile);
         return gtfsFile;
       }
-      _log.info("useCached=false; GTFS will be re-downloaded." + gtfsFile);
+      LOG.info("useCached=false; GTFS will be re-downloaded." + gtfsFile);
     }
-    _log.info("downloading gtfs: url=" + _url + " path="+ gtfsFile);
+    LOG.info("downloading gtfs: url=" + _url + " path="+ gtfsFile);
     BufferedInputStream in=new BufferedInputStream(_url.openStream());
     BufferedOutputStream out=new BufferedOutputStream(new FileOutputStream(gtfsFile));
     try {
@@ -23,7 +23,7 @@
  catch (    RuntimeException e) {
       out.close();
       if (!gtfsFile.delete()) {
-        _log.error("Failed to delete incomplete file " + gtfsFile);
+        LOG.error("Failed to delete incomplete file " + gtfsFile);
       }
       throw e;
     }
