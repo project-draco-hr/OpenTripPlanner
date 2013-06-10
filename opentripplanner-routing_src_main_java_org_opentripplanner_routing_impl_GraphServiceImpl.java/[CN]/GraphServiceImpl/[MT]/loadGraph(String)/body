@@ -15,20 +15,15 @@
   sb.append("Graph.obj");
   String resourceLocation=sb.toString();
   LOG.debug("graph file for routerId '{}' is at {}",routerId,resourceLocation);
+  Resource graphResource;
   InputStream is;
   try {
-    if (resourceLocation.startsWith("file:")) {
-      is=new FileInputStream(new File(resourceLocation.substring(5)));
-    }
- else     if (resourceLocation.startsWith("classpath:")) {
-      throw new UnsupportedOperationException();
-    }
- else {
-      is=new FileInputStream(new File(resourceLocation));
-    }
+    graphResource=resourceLoader.getResource(resourceLocation);
+    is=graphResource.getInputStream();
   }
- catch (  FileNotFoundException e) {
-    LOG.error("File not found at {}.",resourceLocation);
+ catch (  IOException ex) {
+    LOG.warn("Graph file not found or not openable for routerId '{}' under {}",routerId,resourceBase);
+    ex.printStackTrace();
     return null;
   }
   LOG.debug("graph input stream successfully opened.");
@@ -37,7 +32,7 @@
     return Graph.load(new ObjectInputStream(is),loadLevel,indexFactory);
   }
  catch (  Exception ex) {
-    LOG.error("Exception while loading graph from {}.",resourceLocation);
+    LOG.error("Exception while loading graph from {}.",graphResource);
     ex.printStackTrace();
     return null;
   }
