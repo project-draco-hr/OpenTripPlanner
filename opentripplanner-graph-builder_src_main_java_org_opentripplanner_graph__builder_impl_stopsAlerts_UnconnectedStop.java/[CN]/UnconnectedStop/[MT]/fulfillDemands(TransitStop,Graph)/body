@@ -2,7 +2,7 @@
   List<Edge> outgoingStreets=ts.getOutgoingStreetEdges();
   boolean hasStreetLink=false;
   for (  Edge e : ts.getIncoming()) {
-    if (e instanceof StreetTransitLink) {
+    if (e instanceof StreetTransitLink || e instanceof PathwayEdge) {
       hasStreetLink=true;
       break;
     }
