@@ -4,25 +4,24 @@
     return null;
   }
   LOG.debug("loading serialized graph for routerId {}",routerId);
-  StringBuilder sb=new StringBuilder(resourceBase);
-  if (!(resourceBase.endsWith("/") || resourceBase.endsWith(File.pathSeparator))) {
-    sb.append("/");
+  StringBuilder sb=new StringBuilder(basePath);
+  if (!(basePath.endsWith(File.separator))) {
+    sb.append(File.separator);
   }
   if (routerId.length() > 0) {
     sb.append(routerId);
-    sb.append("/");
+    sb.append(File.separator);
   }
   sb.append("Graph.obj");
-  String resourceLocation=sb.toString();
-  LOG.debug("graph file for routerId '{}' is at {}",routerId,resourceLocation);
-  Resource graphResource;
+  String graphFileName=sb.toString();
+  LOG.debug("graph file for routerId '{}' is at {}",routerId,graphFileName);
   InputStream is;
   try {
-    graphResource=resourceLoader.getResource(resourceLocation);
-    is=graphResource.getInputStream();
+    File graphFile=new File(graphFileName);
+    is=new FileInputStream(graphFile);
   }
  catch (  IOException ex) {
-    LOG.warn("Graph file not found or not openable for routerId '{}' under {}",routerId,resourceBase);
+    LOG.warn("Graph file not found or not openable for routerId '{}' under {}",routerId,graphFileName);
     ex.printStackTrace();
     return null;
   }
@@ -32,7 +31,7 @@
     return Graph.load(new ObjectInputStream(is),loadLevel,indexFactory);
   }
  catch (  Exception ex) {
-    LOG.error("Exception while loading graph from {}.",graphResource);
+    LOG.error("Exception while loading graph from {}.",graphFileName);
     ex.printStackTrace();
     return null;
   }

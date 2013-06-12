@@ -1,41 +1,33 @@
 {
-  LOG.debug("Auto discovering graphs under {}",decorated.getResourceBase());
+  LOG.debug("Auto discovering graphs under {}",decorated.getBasePath());
   Collection<String> graphOnDisk=new HashSet<String>();
   Collection<String> graphToLoad=new HashSet<String>();
   long validEndTime=System.currentTimeMillis() - loadDelaySec * 1000;
-  Resource base=decorated.getResource(decorated.getResourceBase());
-  try {
-    File baseFile=base.getFile();
-    File rootGraphFile=new File(baseFile,GraphServiceFileImpl.GRAPH_FILENAME);
-    if (rootGraphFile.exists() && rootGraphFile.canRead()) {
-      graphOnDisk.add("");
-      long lastModified=rootGraphFile.lastModified();
-      if (lastModified > lastAutoScan && lastModified <= validEndTime) {
-        LOG.debug("Graph to (re)load: {}, lastModified={}",rootGraphFile,lastModified);
-        graphToLoad.add("");
-      }
+  File baseFile=new File(decorated.getBasePath());
+  File rootGraphFile=new File(baseFile,GraphServiceFileImpl.GRAPH_FILENAME);
+  if (rootGraphFile.exists() && rootGraphFile.canRead()) {
+    graphOnDisk.add("");
+    long lastModified=rootGraphFile.lastModified();
+    if (lastModified > lastAutoScan && lastModified <= validEndTime) {
+      LOG.debug("Graph to (re)load: {}, lastModified={}",rootGraphFile,lastModified);
+      graphToLoad.add("");
     }
-    for (    String sub : baseFile.list()) {
-      File subFile=new File(baseFile,sub);
-      if (subFile.isDirectory()) {
-        File graphFile=new File(subFile,GraphServiceFileImpl.GRAPH_FILENAME);
-        if (graphFile.exists() && graphFile.canRead()) {
-          graphOnDisk.add(sub);
-          long lastModified=graphFile.lastModified();
-          if (lastModified > lastAutoScan && lastModified <= validEndTime) {
-            LOG.debug("Graph to (re)load: {}, lastModified={}",graphFile,lastModified);
-            graphToLoad.add(sub);
-          }
+  }
+  for (  String sub : baseFile.list()) {
+    File subFile=new File(baseFile,sub);
+    if (subFile.isDirectory()) {
+      File graphFile=new File(subFile,GraphServiceFileImpl.GRAPH_FILENAME);
+      if (graphFile.exists() && graphFile.canRead()) {
+        graphOnDisk.add(sub);
+        long lastModified=graphFile.lastModified();
+        if (lastModified > lastAutoScan && lastModified <= validEndTime) {
+          LOG.debug("Graph to (re)load: {}, lastModified={}",graphFile,lastModified);
+          graphToLoad.add(sub);
         }
       }
     }
   }
- catch (  IOException e) {
-    LOG.error("Graph auto-discovering has been set, but {} is not a file resource, so I'm bailing-out.",decorated.getResourceBase());
-  }
- finally {
-    lastAutoScan=validEndTime;
-  }
+  lastAutoScan=validEndTime;
   StringBuffer onDiskSb=new StringBuffer();
   for (  String routerId : graphOnDisk)   onDiskSb.append("[").append(routerId).append("]");
   StringBuffer toLoadSb=new StringBuffer();

@@ -1,7 +1,7 @@
 {
   if (autoRegister != null && !autoRegister.isEmpty()) {
     LOG.info("attempting to automatically register routerIds {}",autoRegister);
-    LOG.info("graph files will be sought in paths relative to {}",decorated.getResourceBase());
+    LOG.info("graph files will be sought in paths relative to {}",decorated.getBasePath());
     for (    String routerId : autoRegister) {
       registerGraph(routerId,true);
     }
