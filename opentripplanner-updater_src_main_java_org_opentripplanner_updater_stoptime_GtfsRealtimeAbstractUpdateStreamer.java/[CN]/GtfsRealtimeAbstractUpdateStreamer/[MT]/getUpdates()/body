@@ -1,0 +1,51 @@
+{
+  FeedMessage feed=getFeedMessage();
+  if (feed == null)   return null;
+  FeedHeader header=feed.getHeader();
+  long timestamp=header.getTimestamp();
+  List<Update> updates=new ArrayList<Update>();
+  for (  FeedEntity entity : feed.getEntityList()) {
+    if (!entity.hasTripUpdate()) {
+      continue;
+    }
+    TripUpdate tripUpdate=entity.getTripUpdate();
+    TripDescriptor descriptor=tripUpdate.getTrip();
+    String trip=descriptor.getTripId();
+    AgencyAndId tripId=new AgencyAndId(defaultAgencyId,trip);
+    long midnight=(new Date().getTime() / 1000) - (new Date().getTime() / 1000) % (24 * 60 * 60);
+    if (descriptor.hasStartDate()) {
+      try {
+        Date date=ymdParser.parse(descriptor.getStartDate());
+        midnight=date.getTime() / 1000;
+      }
+ catch (      ParseException e) {
+        LOG.warn("Failed to parse startDate in gtfs-rt feed: ",e);
+      }
+    }
+    TripDescriptor.ScheduleRelationship sr;
+    if (tripUpdate.getTrip().hasScheduleRelationship()) {
+      sr=tripUpdate.getTrip().getScheduleRelationship();
+    }
+ else {
+      sr=TripDescriptor.ScheduleRelationship.SCHEDULED;
+    }
+switch (sr) {
+case SCHEDULED:
+      updates.addAll(GtfsRealtimeUpdate.getUpdatesForScheduledTrip(tripId,tripUpdate,timestamp,midnight));
+    break;
+case CANCELED:
+  updates.addAll(getUpdateForCanceledTrip(tripId,timestamp));
+break;
+case ADDED:
+LOG.warn("ScheduleRelationship.ADDED trips are currently not handled.");
+break;
+case REPLACEMENT:
+LOG.warn("ScheduleRelationship.REPLACEMENT trips are currently not handled.");
+break;
+case UNSCHEDULED:
+LOG.warn("ScheduleRelationship.UNSCHEDULED trips are currently not handled.");
+break;
+}
+}
+return updates;
+}

@@ -1,0 +1,10 @@
+{
+  List<GtfsRealtimeUpdate> updates=new LinkedList<GtfsRealtimeUpdate>();
+  RouteVariant variant=graphService.getGraph().getService(TransitIndexService.class).getVariantForTrip(tripId);
+  int stopSequence=0;
+  for (  Stop stop : variant.getStops()) {
+    updates.add(GtfsRealtimeUpdate.getUpdateForCanceledTrip(tripId,stop,stopSequence,timestamp));
+    stopSequence++;
+  }
+  return updates;
+}

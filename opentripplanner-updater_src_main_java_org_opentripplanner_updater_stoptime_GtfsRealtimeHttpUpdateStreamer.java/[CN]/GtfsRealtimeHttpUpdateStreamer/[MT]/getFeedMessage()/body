@@ -1,0 +1,11 @@
+{
+  FeedMessage feed=null;
+  try {
+    InputStream is=HttpUtils.getData(url);
+    feed=GtfsRealtime.FeedMessage.parseFrom(is);
+  }
+ catch (  IOException e) {
+    LOG.warn("Failed to parse gtfs-rt feed from " + url + ":",e);
+  }
+  return feed;
+}

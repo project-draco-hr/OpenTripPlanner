@@ -1,0 +1,24 @@
+{
+  List<GtfsRealtimeUpdate> updates=new LinkedList<GtfsRealtimeUpdate>();
+  for (  StopTimeUpdate stopTimeUpdate : tripUpdate.getStopTimeUpdateList()) {
+    if (stopTimeUpdate.hasScheduleRelationship() && StopTimeUpdate.ScheduleRelationship.NO_DATA == stopTimeUpdate.getScheduleRelationship()) {
+      GtfsRealtimeUpdate u=new GtfsRealtimeUpdate(tripId,stopTimeUpdate.getStopId(),stopTimeUpdate.getStopSequence(),0,0,Update.Status.PLANNED,timestamp);
+      updates.add(u);
+      continue;
+    }
+    long now=new Date().getTime() / 1000;
+    long arrivalTime=stopTimeUpdate.getArrival().getTime();
+    long departureTime=stopTimeUpdate.getDeparture().getTime();
+    Update.Status status=Update.Status.PREDICTION;
+    if (stopTimeUpdate.hasScheduleRelationship() && StopTimeUpdate.ScheduleRelationship.SKIPPED == stopTimeUpdate.getScheduleRelationship()) {
+      status=Update.Status.CANCEL;
+    }
+ else {
+      arrivalTime=arrivalTime - today;
+      departureTime=departureTime - today;
+    }
+    GtfsRealtimeUpdate u=new GtfsRealtimeUpdate(tripId,stopTimeUpdate.getStopId(),stopTimeUpdate.getStopSequence(),(int)arrivalTime,(int)departureTime,status,timestamp);
+    updates.add(u);
+  }
+  return updates;
+}
