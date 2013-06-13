@@ -1,0 +1,27 @@
+{
+  Trip trip=new Trip();
+  trip.setId(tripId);
+  List<StopTime> stopTimes=new LinkedList<StopTime>();
+  for (int i=0; i < stops.length; ++i) {
+    StopTime stopTime=new StopTime();
+    Stop stop=new Stop();
+    stop.setId(stops[i]);
+    stopTime.setStop(stop);
+    stopTime.setArrivalTime(i * 60);
+    stopTime.setDepartureTime(i * 60);
+    stopTimes.add(stopTime);
+  }
+  originalTripTimesA=new ScheduledTripTimes(trip,stopTimes);
+  stopTimes=new LinkedList<StopTime>();
+  for (int i=0; i < stops.length; ++i) {
+    StopTime stopTime=new StopTime();
+    Stop stop=new Stop();
+    stop.setId(stops[i]);
+    stopTime.setStop(stop);
+    stopTime.setStopSequence(i);
+    stopTime.setArrivalTime(i * 60);
+    stopTime.setDepartureTime(i * 60 + (i > 3 && i < 6 ? i * 10 : 0));
+    stopTimes.add(stopTime);
+  }
+  new ScheduledTripTimes(trip,stopTimes);
+}

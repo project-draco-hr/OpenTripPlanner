@@ -1,0 +1,20 @@
+{
+  AgencyAndId stopId=new AgencyAndId(defaultAgencyId,stopTimeUpdate.getStopId());
+  if (stopTimeUpdate.hasScheduleRelationship() && StopTimeUpdate.ScheduleRelationship.NO_DATA == stopTimeUpdate.getScheduleRelationship()) {
+    Update u=new Update(tripId,stopTimeUpdate.getStopId(),stopTimeUpdate.getStopSequence(),0,0,Update.Status.PLANNED,timestamp,serviceDate);
+    updates.add(u);
+  }
+  long today=serviceDate.getAsDate(TimeZone.getTimeZone("GMT")).getTime() / 1000;
+  long arrivalTime=stopTimeUpdate.getArrival().getTime();
+  long departureTime=stopTimeUpdate.getDeparture().getTime();
+  Update.Status status=Update.Status.PREDICTION;
+  if (stopTimeUpdate.hasScheduleRelationship() && StopTimeUpdate.ScheduleRelationship.SKIPPED == stopTimeUpdate.getScheduleRelationship()) {
+    status=Update.Status.CANCEL;
+  }
+ else {
+    arrivalTime=arrivalTime - today;
+    departureTime=departureTime - today;
+  }
+  Update u=new Update(tripId,stopTimeUpdate.getStopId(),stopTimeUpdate.getStopSequence(),(int)arrivalTime,(int)departureTime,status,timestamp,serviceDate);
+  return u;
+}

@@ -1,33 +1,32 @@
 {
   int appliedBlockCount=0;
   while (true) {
-    List<Update> updates=updateStreamer.getUpdates();
-    if (updates == null) {
+    List<TripUpdate> tripUpdates=updateStreamer.getUpdates();
+    if (tripUpdates == null) {
       LOG.debug("updates is null");
       continue;
     }
-    List<UpdateBlock> blocks=UpdateBlock.splitByTrip(updates);
-    LOG.debug("message contains {} trip update blocks",blocks.size());
+    LOG.debug("message contains {} trip update blocks",tripUpdates.size());
     int uIndex=0;
-    for (    UpdateBlock block : blocks) {
+    for (    TripUpdate tripUpdate : tripUpdates) {
       uIndex+=1;
-      LOG.debug("update block #{} ({} updates) :",uIndex,block.updates.size());
-      LOG.trace("{}",block.toString());
-      block.filter(true,true,true);
-      if (!block.isCoherent()) {
+      LOG.debug("update block #{} ({} updates) :",uIndex,tripUpdate.getUpdates().size());
+      LOG.trace("{}",tripUpdate.toString());
+      tripUpdate.filter(true,true,true);
+      if (!tripUpdate.isCoherent()) {
         LOG.warn("Incoherent UpdateBlock, skipping.");
         continue;
       }
-      if (block.updates.size() < 1) {
+      if (tripUpdate.getUpdates().size() < 1) {
         LOG.debug("UpdateBlock contains no updates after filtering, skipping.");
         continue;
       }
-      TableTripPattern pattern=transitIndexService.getTripPatternForTrip(block.tripId);
+      TableTripPattern pattern=transitIndexService.getTripPatternForTrip(tripUpdate.getTripId());
       if (pattern == null) {
-        LOG.debug("No pattern found for tripId {}, skipping UpdateBlock.",block.tripId);
+        LOG.debug("No pattern found for tripId {}, skipping UpdateBlock.",tripUpdate.getTripId());
         continue;
       }
-      boolean applied=buffer.update(pattern,block);
+      boolean applied=buffer.update(pattern,tripUpdate);
       if (applied) {
         appliedBlockCount+=1;
         if (appliedBlockCount % logFrequency == 0) {

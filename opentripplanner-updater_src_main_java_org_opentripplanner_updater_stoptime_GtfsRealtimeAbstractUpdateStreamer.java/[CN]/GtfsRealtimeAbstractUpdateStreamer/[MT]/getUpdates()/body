@@ -1,40 +1,40 @@
 {
-  FeedMessage feed=getFeedMessage();
+  GtfsRealtime.FeedMessage feed=getFeedMessage();
   if (feed == null)   return null;
-  FeedHeader header=feed.getHeader();
+  GtfsRealtime.FeedHeader header=feed.getHeader();
   long timestamp=header.getTimestamp();
-  List<Update> updates=new ArrayList<Update>();
-  for (  FeedEntity entity : feed.getEntityList()) {
+  List<org.opentripplanner.routing.trippattern.TripUpdate> updates=new ArrayList<org.opentripplanner.routing.trippattern.TripUpdate>();
+  for (  GtfsRealtime.FeedEntity entity : feed.getEntityList()) {
     if (!entity.hasTripUpdate()) {
       continue;
     }
-    TripUpdate tripUpdate=entity.getTripUpdate();
-    TripDescriptor descriptor=tripUpdate.getTrip();
+    GtfsRealtime.TripUpdate tripUpdate=entity.getTripUpdate();
+    GtfsRealtime.TripDescriptor descriptor=tripUpdate.getTrip();
     String trip=descriptor.getTripId();
     AgencyAndId tripId=new AgencyAndId(defaultAgencyId,trip);
-    long midnight=(new Date().getTime() / 1000) - (new Date().getTime() / 1000) % (24 * 60 * 60);
+    ServiceDate serviceDate=new ServiceDate();
     if (descriptor.hasStartDate()) {
       try {
         Date date=ymdParser.parse(descriptor.getStartDate());
-        midnight=date.getTime() / 1000;
+        serviceDate=new ServiceDate(date);
       }
  catch (      ParseException e) {
         LOG.warn("Failed to parse startDate in gtfs-rt feed: ",e);
       }
     }
-    TripDescriptor.ScheduleRelationship sr;
+    GtfsRealtime.TripDescriptor.ScheduleRelationship sr;
     if (tripUpdate.getTrip().hasScheduleRelationship()) {
       sr=tripUpdate.getTrip().getScheduleRelationship();
     }
  else {
-      sr=TripDescriptor.ScheduleRelationship.SCHEDULED;
+      sr=GtfsRealtime.TripDescriptor.ScheduleRelationship.SCHEDULED;
     }
 switch (sr) {
 case SCHEDULED:
-      updates.addAll(GtfsRealtimeUpdate.getUpdatesForScheduledTrip(tripId,tripUpdate,timestamp,midnight));
+      updates.add(getUpdateForScheduledTrip(tripId,tripUpdate,timestamp,serviceDate));
     break;
 case CANCELED:
-  updates.addAll(getUpdateForCanceledTrip(tripId,timestamp));
+  updates.add(getUpdateForCanceledTrip(tripId,timestamp,serviceDate));
 break;
 case ADDED:
 LOG.warn("ScheduleRelationship.ADDED trips are currently not handled.");

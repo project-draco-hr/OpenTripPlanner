@@ -1,0 +1,37 @@
+{
+  List<Stop> patternStops=pattern.getStops();
+  int nStops=patternStops.size();
+  int[] scores=new int[nStops];
+  for (int pi=0; pi < nStops; pi++) {
+    LOG.trace("---{}",pi);
+    int score=0;
+    int si=pi;
+    for (int ui=0; ui < updates.size(); ui++) {
+      if (si >= nStops) {
+        break;
+      }
+      Stop ps=patternStops.get(si);
+      Update u=updates.get(ui);
+      LOG.trace("{} == {}",ps.getId(),u.stopId);
+      if (!ps.getId().getId().equals(u.stopId)) {
+        continue;
+      }
+      si+=1;
+      score+=1;
+    }
+    scores[pi]=score;
+  }
+  int bestScore=Integer.MIN_VALUE;
+  int bestStop=-1;
+  LOG.debug("fuzzy matching scores: {}",scores);
+  for (int i=0; i < nStops; i++) {
+    if (scores[i] >= bestScore) {
+      bestScore=scores[i];
+      bestStop=i;
+    }
+  }
+  if (bestScore == 0) {
+    return MATCH_FAILED;
+  }
+  return bestStop;
+}

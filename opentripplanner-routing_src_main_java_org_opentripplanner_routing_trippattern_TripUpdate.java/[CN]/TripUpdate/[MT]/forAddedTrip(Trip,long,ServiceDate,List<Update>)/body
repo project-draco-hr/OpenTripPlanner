@@ -1,0 +1,5 @@
+{
+  if (trip == null || trip.getId() == null || trip.getRoute() == null)   throw new IllegalArgumentException("A trip with a valid tripId and route must be supplied.");
+  if (stopTimes == null || stopTimes.size() < 2)   throw new IllegalArgumentException("At least two stop times need to be supplied.");
+  return new TripUpdate(trip.getId(),timestamp,serviceDate,Status.ADDED,stopTimes,trip);
+}

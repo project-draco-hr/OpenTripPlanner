@@ -5,7 +5,7 @@
     if (row.get("JourneyStopType").equals("INFOPOINT"))     continue;
     int arrival=secondsSinceMidnight(row.get("ExpectedArrivalTime"));
     int departure=secondsSinceMidnight(row.get("ExpectedDepartureTime"));
-    KV8Update u=new KV8Update(kv8TripId(row),kv8StopId(row),Integer.parseInt(row.get("UserStopOrderNumber")),arrival,departure,kv8Status(row),kv8Timestamp(row));
+    KV8Update u=new KV8Update(kv8TripId(row),kv8StopId(row),Integer.parseInt(row.get("UserStopOrderNumber")),arrival,departure,kv8Status(row),kv8Timestamp(row),new ServiceDate());
     ret.add(u);
   }
   return ret;

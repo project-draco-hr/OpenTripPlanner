@@ -1,0 +1,19 @@
+{
+  List<TripUpdate> ret=new ArrayList<TripUpdate>();
+  Collections.sort(mixedUpdates);
+  List<Update> blockUpdates=new LinkedList<Update>();
+  blockUpdates.add(mixedUpdates.remove(0));
+  for (  Update u : mixedUpdates) {
+    Update l=blockUpdates.get(0);
+    if (!l.tripId.equals(u.tripId) || l.timestamp != u.timestamp || l.serviceDate != u.serviceDate) {
+      TripUpdate tripUpdate=TripUpdate.forUpdatedTrip(l.tripId,l.timestamp,l.serviceDate,blockUpdates);
+      ret.add(tripUpdate);
+      blockUpdates=new LinkedList<Update>();
+    }
+    blockUpdates.add(u);
+  }
+  Update l=blockUpdates.get(0);
+  TripUpdate tripUpdate=TripUpdate.forUpdatedTrip(l.tripId,l.timestamp,l.serviceDate,blockUpdates);
+  ret.add(tripUpdate);
+  return ret;
+}
