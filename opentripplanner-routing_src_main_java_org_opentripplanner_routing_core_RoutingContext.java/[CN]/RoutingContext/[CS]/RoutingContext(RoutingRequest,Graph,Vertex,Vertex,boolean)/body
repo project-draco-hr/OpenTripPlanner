@@ -1,6 +1,10 @@
 {
   this.opt=routingRequest;
   this.graph=graph;
+  if (graph.timetableSnapshotSource != null)   timetableSnapshot=graph.timetableSnapshotSource.getSnapshot();
+ else   timetableSnapshot=null;
+  calendarService=graph.getCalendarService();
+  setServiceDays();
   Edge fromBackEdge=null;
   Edge toBackEdge=null;
   if (findPlaces) {
@@ -13,7 +17,12 @@
  else {
       toVertex=null;
     }
-    if (!opt.batch || !opt.arriveBy) {
+    if (opt.getStartingTransitTripId() != null && !opt.arriveBy) {
+      OnBoardDepartService onBoardDepartService=graph.getService(OnBoardDepartService.class);
+      if (onBoardDepartService == null)       throw new UnsupportedOperationException("Missing OnBoardDepartService");
+      fromVertex=onBoardDepartService.setupDepartOnBoard(this);
+    }
+ else     if (!opt.batch || !opt.arriveBy) {
       fromVertex=graph.streetIndex.getVertexForLocation(opt.getFrom(),opt,toVertex);
       if (opt.getFrom().hasEdgeId()) {
         fromBackEdge=graph.getEdgeById(opt.getFrom().getEdgeId());
@@ -52,11 +61,7 @@
   origin=opt.arriveBy ? toVertex : fromVertex;
   originBackEdge=opt.arriveBy ? toBackEdge : fromBackEdge;
   target=opt.arriveBy ? fromVertex : toVertex;
-  calendarService=graph.getCalendarService();
   transferTable=graph.getTransferTable();
-  if (graph.timetableSnapshotSource != null)   timetableSnapshot=graph.timetableSnapshotSource.getSnapshot();
- else   timetableSnapshot=null;
-  setServiceDays();
   if (opt.batch)   remainingWeightHeuristic=new TrivialRemainingWeightHeuristic();
  else   remainingWeightHeuristic=heuristicFactory.getInstanceForSearch(opt);
   if (this.origin != null) {
