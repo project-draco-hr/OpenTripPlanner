@@ -1,6 +1,10 @@
 {
   this.rctx=s.getContext();
   this.back=s.getOptions().isArriveBy();
+  if (s.getOptions().getStartingTransitTripId() != null) {
+    LOG.debug("Disable reverse-optimize for on-board depart");
+    optimize=false;
+  }
   State lastState;
   walkDistance=s.getWalkDistance();
   if (back) {

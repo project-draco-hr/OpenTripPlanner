@@ -35,7 +35,7 @@
         postponedAlerts=state.getBackAlerts();
       }
  else       if (backEdge instanceof PreAlightEdge) {
-        addNotesToLeg(itinerary.legs.get(itinerary.legs.size() - 1),state.getBackAlerts());
+        if (itinerary.legs.size() > 0)         addNotesToLeg(itinerary.legs.get(itinerary.legs.size() - 1),state.getBackAlerts());
       }
       continue;
     }
@@ -79,6 +79,15 @@ case START:
         coordinates.add(state.getVertex().getCoordinate());
         finalizeLeg(leg,state,path.states,i,i,coordinates,itinerary);
         coordinates.clear();
+      }
+ else       if (mode.isTransit()) {
+        pgstate=PlanGenState.TRANSIT;
+        leg=makeLeg(itinerary,state);
+        leg.stop=new ArrayList<Place>();
+        leg.from.name=null;
+        itinerary.transfers++;
+        startWalk=-1;
+        fixupTransitLeg(leg,state,transitIndex);
       }
  else {
         LOG.error("Unexpected state (in START): " + mode);
