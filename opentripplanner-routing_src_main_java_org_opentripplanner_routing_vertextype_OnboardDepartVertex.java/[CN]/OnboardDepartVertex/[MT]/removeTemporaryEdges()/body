@@ -1,0 +1,8 @@
+{
+  int nRemoved=0;
+  for (  Edge e : getOutgoing()) {
+    if (e.detach() != 0)     nRemoved+=1;
+  }
+  if (!getIncoming().isEmpty())   throw new AssertionError("Can't have incoming edge on a OnboardDepartVertex");
+  return nRemoved;
+}

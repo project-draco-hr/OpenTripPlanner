@@ -1,0 +1,17 @@
+{
+  RoutingRequest options=state0.getOptions();
+  if (options.isReverseOptimizing() || options.isReverseOptimizeOnTheFly()) {
+    throw new UnsupportedOperationException("Cannot (yet) reverse-optimize depart-on-board mode.");
+  }
+  StateEditor s1=state0.edit(this);
+  s1.setServiceDay(serviceDay);
+  s1.setTripTimes(tripTimes);
+  s1.setTripId(trip.getId());
+  s1.setZone(endStop.getZoneId());
+  s1.setRoute(trip.getRoute().getId());
+  int remainingTime=Math.round((1.0f - positionInHop) * tripTimes.getRunningTime(stopIndex));
+  s1.incrementTimeInSeconds(remainingTime);
+  s1.incrementWeight(remainingTime);
+  s1.setBackMode(getMode());
+  return s1.makeState();
+}
