@@ -1,0 +1,22 @@
+{
+  for (  PatternHop hop : IterableLibrary.filter(graph.getEdges(),PatternHop.class)) {
+    PatternStopVertex from=(PatternStopVertex)hop.getFromVertex();
+    TableTripPattern tripPattern=from.getTripPattern();
+    for (    Trip trip : tripPattern.getTrips()) {
+      List<PatternHop> hops=patternHopsByTrip.get(trip.getId());
+      if (hops == null) {
+        hops=new ArrayList<PatternHop>(tripPattern.getStops().size());
+        patternHopsByTrip.put(trip.getId(),hops);
+      }
+      hops.add(hop);
+    }
+  }
+  for (  List<PatternHop> hops : patternHopsByTrip.values()) {
+    Collections.sort(hops,new Comparator<PatternHop>(){
+      @Override public int compare(      PatternHop hop1,      PatternHop hop2){
+        return hop1.stopIndex - hop2.stopIndex;
+      }
+    }
+);
+  }
+}
