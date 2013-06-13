@@ -1,0 +1,15 @@
+{
+  DistanceLibrary dlib=new SphericalDistanceLibrary();
+  runOneTestPointToLineStringFastDistance(dlib,0,0,45,0,44.9,0,45.1,0);
+  runOneTestPointToLineStringFastDistance(dlib,0,0,45,0,45,-0.1,45,0.1);
+  runOneTestPointToLineStringFastDistance(dlib,7862,7863,45,0.1,44.9,0,45.1,0);
+  runOneTestPointToLineStringFastDistance(dlib,11119,11120,45.1,0.0,45,-0.1,45,0.1);
+  runOneTestPointToLineStringFastDistance(dlib,11119,11120,0,0.1,-0.1,0,0.1,0);
+  runOneTestPointToLineStringFastDistance(dlib,11119,11120,0.1,0.0,0,-0.1,0,0.1);
+  runOneTestPointToLineStringFastDistance(dlib,0,0,45.1,0.1,44.9,-0.1,45.1,0.1);
+  runOneTestPointToLineStringFastDistance(dlib,12854,12855,44.9,0.1,44.9,-0.1,45.1,0.1);
+  runOneTestPointToLineStringFastDistance(dlib,1361,1362,44.99,0.01,45,-0.1,45,0,45.1,0);
+  runOneTestPointToLineStringFastDistance(dlib,1111,1112,44.99,-0.05,45,-0.1,45,0,45.1,0);
+  runOneTestPointToLineStringFastDistance(dlib,786,787,45.01,-0.01,45,-0.1,45,0,45.1,0);
+  runOneTestPointToLineStringFastDistance(dlib,785,786,45.05,-0.01,45,-0.1,45,0,45.1,0);
+}
