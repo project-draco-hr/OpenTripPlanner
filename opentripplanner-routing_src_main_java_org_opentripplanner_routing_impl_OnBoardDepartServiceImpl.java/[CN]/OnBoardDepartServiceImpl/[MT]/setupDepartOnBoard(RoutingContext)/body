@@ -1,0 +1,64 @@
+{
+  RoutingRequest opt=ctx.opt;
+  AgencyAndId tripId=opt.getStartingTransitTripId();
+  TransitIndexService transitIndexService=ctx.graph.getService(TransitIndexService.class);
+  List<PatternHop> hops=transitIndexService.getPatternHopsForTrip(tripId);
+  if (hops == null) {
+    throw new IllegalArgumentException("Unknown/invalid trip ID: " + tripId);
+  }
+  Double lon=opt.getFrom().getLng();
+  Double lat=opt.getFrom().getLat();
+  Coordinate point=lon == null || lat == null ? null : new Coordinate(lon,lat);
+  if (point == null) {
+    throw new UnsupportedOperationException("Unsupported on-board depart without initial location.");
+  }
+  PatternHop bestHop=null;
+  double minDist=Double.MAX_VALUE;
+  for (  PatternHop hop : hops) {
+    LineString line=hop.getGeometry();
+    double dist=distanceLibrary.fastDistance(point,line);
+    if (dist < minDist) {
+      minDist=dist;
+      bestHop=hop;
+    }
+  }
+  if (minDist > 1000)   LOG.warn("On-board depart: origin point suspiciously away from nearest trip shape ({} meters)",minDist);
+ else   LOG.info("On-board depart: origin point {} meters away from hop shape",minDist);
+  P2<LineString> geomPair=GeometryUtils.splitGeometryAtPoint(bestHop.getGeometry(),point);
+  LineString geomRemaining=geomPair.getSecond();
+  double total=bestHop.getGeometry().getLength();
+  double remaining=geomRemaining.getLength();
+  float fractionCovered=total > 0.0 ? (float)(remaining / total) : 0.0f;
+  PatternStopVertex nextStop=(PatternStopVertex)bestHop.getToVertex();
+  int stopIndex=bestHop.getStopIndex();
+  TableTripPattern pattern=nextStop.getTripPattern();
+  TripTimes tripTimes=null;
+  if (ctx.timetableSnapshot == null) {
+    tripTimes=pattern.getTripTimes(pattern.getTripIndex(tripId));
+  }
+ else {
+    Timetable timeTable=ctx.timetableSnapshot.resolve(pattern);
+    tripTimes=timeTable.getTripTimes(timeTable.getTripIndex(tripId));
+  }
+  int depTime=tripTimes.getDepartureTime(stopIndex);
+  int arrTime=tripTimes.getArrivalTime(stopIndex);
+  int estTime=Math.round(depTime * fractionCovered + arrTime * (1 - fractionCovered));
+  ServiceDay bestServiceDay=null;
+  int minDelta=Integer.MAX_VALUE;
+  int actDelta=0;
+  for (  ServiceDay serviceDay : ctx.serviceDays) {
+    int time=serviceDay.secondsSinceMidnight(opt.dateTime);
+    int deltaTime=Math.abs(time - estTime);
+    if (deltaTime < minDelta) {
+      minDelta=deltaTime;
+      actDelta=time - estTime;
+      bestServiceDay=serviceDay;
+    }
+  }
+  if (minDelta > 60000)   LOG.warn("On-board depart: delta between scheduled/real-time and actual time suspiciously large: {} seconds.",actDelta);
+ else   LOG.info("On-board depart: delta between scheduled/real-time and actual time is {} seconds.",actDelta);
+  OnboardDepartVertex onboardDepart=new OnboardDepartVertex("on_board_depart",lon,lat);
+  OnBoardDepartPatternHop startHop=new OnBoardDepartPatternHop(onboardDepart,nextStop,tripTimes,bestServiceDay,stopIndex,fractionCovered);
+  startHop.setGeometry(geomRemaining);
+  return onboardDepart;
+}
