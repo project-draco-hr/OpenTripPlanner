@@ -1,20 +1,28 @@
 {
+  if (!validateTripDescriptor(tripUpdate.getTrip())) {
+    return null;
+  }
+  if (!tripUpdate.getTrip().hasRouteId()) {
+    LOG.warn("A routeId must be provided for added/unscheduled trips.");
+    return null;
+  }
   Trip trip=new Trip();
   trip.setId(tripId);
   Route route=new Route();
   AgencyAndId routeId=new AgencyAndId(defaultAgencyId,tripUpdate.getTrip().getRouteId());
   route.setId(routeId);
   trip.setRoute(route);
-  long today=serviceDate.getAsDate(TimeZone.getTimeZone("GMT")).getTime() / 1000;
   List<Update> updates=new LinkedList<Update>();
-  for (  StopTimeUpdate stopTimeUpdate : tripUpdate.getStopTimeUpdateList()) {
-    AgencyAndId stopId=new AgencyAndId(defaultAgencyId,stopTimeUpdate.getStopId());
-    long arrivalTime=stopTimeUpdate.getArrival().getTime();
-    long departureTime=stopTimeUpdate.getDeparture().getTime();
-    arrivalTime=arrivalTime - today;
-    departureTime=departureTime - today;
-    Update u=new Update(tripId,stopId,stopTimeUpdate.getStopSequence(),(int)arrivalTime,(int)departureTime,Update.Status.PREDICTION,timestamp,serviceDate);
+  for (  GtfsRealtime.TripUpdate.StopTimeUpdate stopTimeUpdate : tripUpdate.getStopTimeUpdateList()) {
+    Update u=getStopTimeUpdateForTrip(tripId,timestamp,serviceDate,stopTimeUpdate);
+    if (u == null) {
+      return null;
+    }
     updates.add(u);
+  }
+  if (updates.size() < 2) {
+    LOG.warn("At least two stop times must be provided for an added trip.");
+    return null;
   }
   return TripUpdate.forAddedTrip(trip,timestamp,serviceDate,updates);
 }

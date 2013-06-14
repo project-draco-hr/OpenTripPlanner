@@ -1,8 +1,17 @@
 {
+  if (!validateTripDescriptor(tripUpdate.getTrip())) {
+    return null;
+  }
   List<Update> updates=new LinkedList<Update>();
-  for (  StopTimeUpdate stopTimeUpdate : tripUpdate.getStopTimeUpdateList()) {
+  for (  GtfsRealtime.TripUpdate.StopTimeUpdate stopTimeUpdate : tripUpdate.getStopTimeUpdateList()) {
     Update u=getStopTimeUpdateForTrip(tripId,timestamp,serviceDate,stopTimeUpdate);
+    if (u == null) {
+      return null;
+    }
     updates.add(u);
+  }
+  if (updates.isEmpty()) {
+    return null;
   }
   return TripUpdate.forUpdatedTrip(tripId,timestamp,serviceDate,updates);
 }
