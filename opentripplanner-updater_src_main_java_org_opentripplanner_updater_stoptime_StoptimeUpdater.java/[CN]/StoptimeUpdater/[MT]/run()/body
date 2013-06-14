@@ -1,25 +1,23 @@
 {
-  int appliedBlockCount=0;
-  while (true) {
-    List<TripUpdate> tripUpdates=updateStreamer.getUpdates();
-    if (tripUpdates == null) {
-      LOG.debug("tripUpdates is null");
-      continue;
-    }
-    LOG.debug("message contains {} trip update blocks",tripUpdates.size());
-    int uIndex=0;
-    for (    TripUpdate tripUpdate : tripUpdates) {
-      uIndex+=1;
-      LOG.debug("trip update block #{} ({} updates) :",uIndex,tripUpdate.getUpdates().size());
-      LOG.trace("{}",tripUpdate.toString());
-      boolean applied=false;
+  List<TripUpdate> tripUpdates=updateStreamer.getUpdates();
+  if (tripUpdates == null) {
+    LOG.debug("updates is null");
+    return;
+  }
+  LOG.debug("message contains {} trip update blocks",tripUpdates.size());
+  int uIndex=0;
+  for (  TripUpdate tripUpdate : tripUpdates) {
+    uIndex+=1;
+    LOG.debug("trip update block #{} ({} updates) :",uIndex,tripUpdate.getUpdates().size());
+    LOG.trace("{}",tripUpdate.toString());
+    boolean applied=false;
 switch (tripUpdate.getStatus()) {
 case ADDED:
-        applied=handleAddedTrip(tripUpdate);
-      break;
+      applied=handleAddedTrip(tripUpdate);
+    break;
 case CANCELED:
-    applied=handleCanceledTrip(tripUpdate);
-  break;
+  applied=handleCanceledTrip(tripUpdate);
+break;
 case MODIFIED:
 applied=handleModifiedTrip(tripUpdate);
 break;
@@ -44,6 +42,5 @@ getSnapshot(modified);
 }
  else {
 getSnapshot();
-}
 }
 }
