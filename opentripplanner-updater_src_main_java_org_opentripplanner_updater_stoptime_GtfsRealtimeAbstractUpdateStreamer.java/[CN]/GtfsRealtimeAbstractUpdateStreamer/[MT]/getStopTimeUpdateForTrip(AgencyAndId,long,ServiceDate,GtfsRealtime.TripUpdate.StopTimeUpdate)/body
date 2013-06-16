@@ -29,8 +29,8 @@
         arrivalTime=arrivalTime - today;
       }
  else       if (event.hasDelay()) {
-        LOG.warn("Providing only a delay is not supported yet: \n{}",stopTimeUpdate);
-        return null;
+        Update u=new Update(tripId,stopId,stopSequence,event.getDelay(),Update.Status.PREDICTION,timestamp,serviceDate);
+        return u;
       }
     }
     if (stopTimeUpdate.hasDeparture()) {
@@ -40,8 +40,8 @@
         departureTime=departureTime - today;
       }
  else       if (event.hasDelay()) {
-        LOG.warn("Providing only a delay is not supported yet: \n{}",stopTimeUpdate);
-        return null;
+        Update u=new Update(tripId,stopId,stopSequence,event.getDelay(),Update.Status.PREDICTION,timestamp,serviceDate);
+        return u;
       }
     }
     if (arrivalTime < 0 && departureTime < 0) {
