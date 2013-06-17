@@ -1,0 +1,4 @@
+{
+  Administrator admin=Administrator.find("byUsername",username).first();
+  return admin != null && admin.password.equals(password);
+}

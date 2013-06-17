@@ -1,0 +1,9 @@
+{
+  String sessionId=params.get("sessionId");
+  Session session=Session.find("bySessionId",sessionId).first();
+  if (session == null) {
+    forbidden();
+  }
+  System.out.println("retrieved session for user: " + session.user);
+  return session.user;
+}

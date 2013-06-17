@@ -1,5 +1,7 @@
 {
-  call.userName=params.get("userName");
+  TrinetUser user=checkLogin();
+  call.user=user;
   call.save();
+  System.out.println("saved call for " + call.user);
   renderJSON(call.id);
 }

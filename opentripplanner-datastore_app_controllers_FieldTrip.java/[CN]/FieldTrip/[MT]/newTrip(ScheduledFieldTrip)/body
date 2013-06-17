@@ -1,10 +1,6 @@
 {
   trip.id=null;
   trip.serviceDay=trip.departure;
-  User user=getUser();
-  if (!user.canScheduleFieldTrips()) {
-    trip.groupItineraries.clear();
-  }
   trip.save();
   Long id=trip.id;
   renderJSON(id);
