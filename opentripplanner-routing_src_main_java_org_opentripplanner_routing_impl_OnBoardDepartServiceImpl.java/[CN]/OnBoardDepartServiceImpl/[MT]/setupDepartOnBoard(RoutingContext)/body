@@ -16,7 +16,7 @@
   double minDist=Double.MAX_VALUE;
   for (  PatternHop hop : hops) {
     LineString line=hop.getGeometry();
-    double dist=distanceLibrary.fastDistance(point,line);
+    double dist=SphericalDistanceLibrary.getInstance().fastDistance(point,line);
     if (dist < minDist) {
       minDist=dist;
       bestHop=hop;
