@@ -2,6 +2,7 @@
   RoutingRequest rr=s0.getOptions();
   double walkspeed=rr.getWalkSpeed();
   StateEditor se=s0.edit(this);
+  se.setBackMode(s0.getNonTransitMode());
   int time=(int)(distance / walkspeed);
   se.incrementTimeInSeconds(time);
   se.incrementWeight(time * rr.walkReluctance);
