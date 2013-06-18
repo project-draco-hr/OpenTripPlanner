@@ -3,6 +3,7 @@
   if (options.isReverseOptimizing() || options.isReverseOptimizeOnTheFly()) {
     throw new UnsupportedOperationException("Cannot (yet) reverse-optimize depart-on-board mode.");
   }
+  if (options.isArriveBy())   return null;
   StateEditor s1=state0.edit(this);
   s1.setServiceDay(serviceDay);
   s1.setTripTimes(tripTimes);
