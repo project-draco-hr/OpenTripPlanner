@@ -1,0 +1,17 @@
+{
+  int transferTime=UNKNOWN_TRANSFER;
+  int maxFoundSpecificity=SpecificTransfer.MIN_SPECIFICITY - 1;
+  for (  SpecificTransfer specificTransfer : specificTransfers) {
+    int specificity=specificTransfer.getSpecificity();
+    if (specificity > maxFoundSpecificity) {
+      if (specificTransfer.matches(fromTrip,toTrip)) {
+        transferTime=specificTransfer.getTransferTime();
+        maxFoundSpecificity=specificity;
+        if (maxFoundSpecificity == SpecificTransfer.MAX_SPECIFICITY) {
+          break;
+        }
+      }
+    }
+  }
+  return transferTime;
+}
