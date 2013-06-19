@@ -4,6 +4,10 @@
   for (  Transfer t : transfers) {
     Stop fromStop=t.getFromStop();
     Stop toStop=t.getToStop();
+    Route fromRoute=t.getFromRoute();
+    Route toRoute=t.getToRoute();
+    Trip fromTrip=t.getFromTrip();
+    Trip toTrip=t.getToTrip();
     Vertex fromVertex=context.stopArriveNodes.get(fromStop);
     Vertex toVertex=context.stopDepartNodes.get(toStop);
 switch (t.getTransferType()) {
@@ -11,14 +15,14 @@ case 1:
       new TimedTransferEdge(fromVertex,toVertex);
     break;
 case 2:
-  transferTable.setTransferTime(fromVertex,toVertex,t.getMinTransferTime());
+  transferTable.addTransferTime(fromStop,toStop,fromRoute,toRoute,fromTrip,toTrip,t.getMinTransferTime());
 break;
 case 3:
-transferTable.setTransferTime(fromVertex,toVertex,TransferTable.FORBIDDEN_TRANSFER);
+transferTable.addTransferTime(fromStop,toStop,fromRoute,toRoute,fromTrip,toTrip,StopTransfer.FORBIDDEN_TRANSFER);
 break;
 case 0:
 default :
-transferTable.setTransferTime(fromVertex,toVertex,TransferTable.PREFERRED_TRANSFER);
+transferTable.addTransferTime(fromStop,toStop,fromRoute,toRoute,fromTrip,toTrip,StopTransfer.PREFERRED_TRANSFER);
 break;
 }
 }

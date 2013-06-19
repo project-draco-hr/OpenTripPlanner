@@ -1,0 +1,33 @@
+{
+  checkNotNull(fromStop);
+  checkNotNull(toStop);
+  if (transferTime == StopTransfer.PREFERRED_TRANSFER) {
+    preferredTransfers=true;
+  }
+  P2<Stop> stopPair=new P2<Stop>(fromStop,toStop);
+  StopTransfer stopTransfer=table.get(stopPair);
+  if (stopTransfer == null) {
+    stopTransfer=new StopTransfer();
+    table.put(stopPair,stopTransfer);
+  }
+  assert(stopTransfer != null);
+  SpecificTransfer specificTransfer;
+  AgencyAndId fromRouteId=null;
+  if (fromRoute != null) {
+    fromRouteId=fromRoute.getId();
+  }
+  AgencyAndId toRouteId=null;
+  if (toRoute != null) {
+    toRouteId=toRoute.getId();
+  }
+  AgencyAndId fromTripId=null;
+  if (fromTrip != null) {
+    fromTripId=fromTrip.getId();
+  }
+  AgencyAndId toTripId=null;
+  if (toTrip != null) {
+    toTripId=toTrip.getId();
+  }
+  specificTransfer=new SpecificTransfer(fromRouteId,toRouteId,fromTripId,toTripId,transferTime);
+  stopTransfer.addSpecificTransfer(specificTransfer);
+}

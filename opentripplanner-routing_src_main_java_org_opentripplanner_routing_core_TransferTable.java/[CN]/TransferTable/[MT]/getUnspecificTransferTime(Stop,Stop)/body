@@ -1,0 +1,8 @@
+{
+  int transferTime=StopTransfer.UNKNOWN_TRANSFER;
+  StopTransfer stopTransfer=table.get(new P2<Stop>(fromStop,toStop));
+  if (stopTransfer != null) {
+    transferTime=stopTransfer.getUnspecificTransferTime();
+  }
+  return transferTime;
+}
