@@ -1,7 +1,7 @@
 {
   ArrayList<Transfer> transfers=new ArrayList<Transfer>(table.size());
-  for (  Entry<P2<Stop>,StopTransfer> entry : table.entrySet()) {
-    P2<Stop> p2=entry.getKey();
+  for (  Entry<P2<AgencyAndId>,StopTransfer> entry : table.entrySet()) {
+    P2<AgencyAndId> p2=entry.getKey();
     int transferTime=entry.getValue().getUnspecificTransferTime();
     if (transferTime != StopTransfer.UNKNOWN_TRANSFER) {
       transfers.add(new Transfer(p2.getFirst(),p2.getSecond(),transferTime));
