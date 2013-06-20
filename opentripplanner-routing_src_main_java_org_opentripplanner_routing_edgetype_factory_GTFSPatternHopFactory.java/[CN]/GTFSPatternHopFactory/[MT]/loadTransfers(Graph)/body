@@ -12,10 +12,22 @@
     Vertex toVertex=context.stopDepartNodes.get(toStop);
 switch (t.getTransferType()) {
 case 1:
-      new TimedTransferEdge(fromVertex,toVertex);
-    break;
+      boolean hasTimedTransferEdge=false;
+    for (    Edge outgoingEdge : fromVertex.getOutgoing()) {
+      if (outgoingEdge instanceof TimedTransferEdge) {
+        if (outgoingEdge.getToVertex() == toVertex) {
+          hasTimedTransferEdge=true;
+          break;
+        }
+      }
+    }
+  if (!hasTimedTransferEdge) {
+    new TimedTransferEdge(fromVertex,toVertex);
+  }
+transferTable.addTransferTime(fromStop,toStop,fromRoute,toRoute,fromTrip,toTrip,StopTransfer.TIMED_TRANSFER);
+break;
 case 2:
-  transferTable.addTransferTime(fromStop,toStop,fromRoute,toRoute,fromTrip,toTrip,t.getMinTransferTime());
+transferTable.addTransferTime(fromStop,toStop,fromRoute,toRoute,fromTrip,toTrip,t.getMinTransferTime());
 break;
 case 3:
 transferTable.addTransferTime(fromStop,toStop,fromRoute,toRoute,fromTrip,toTrip,StopTransfer.FORBIDDEN_TRANSFER);
