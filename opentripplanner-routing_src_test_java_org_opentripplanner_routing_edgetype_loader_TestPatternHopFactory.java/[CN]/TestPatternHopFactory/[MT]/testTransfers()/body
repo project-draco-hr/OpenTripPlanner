@@ -1,7 +1,7 @@
 {
   TransferTable transferTable=graph.getTransferTable();
   assertTrue(transferTable.hasPreferredTransfers());
-  assertTrue(transferTable.getUnspecificTransferTime(((TransitStopArrive)graph.getVertex("agency_K_arrive")).getStop(),((TransitStopDepart)graph.getVertex("agency_N_depart")).getStop()) == StopTransfer.PREFERRED_TRANSFER);
+  assertTrue(transferTable.getFirstSpecificTransferTime(((TransitStopArrive)graph.getVertex("agency_K_arrive")).getStop(),((TransitStopDepart)graph.getVertex("agency_N_depart")).getStop()) == StopTransfer.PREFERRED_TRANSFER);
   Vertex e_arrive=graph.getVertex("agency_E_arrive");
   Vertex f_depart=graph.getVertex("agency_F_depart");
   Edge edge=new SimpleEdge(e_arrive,f_depart,10000,10000);

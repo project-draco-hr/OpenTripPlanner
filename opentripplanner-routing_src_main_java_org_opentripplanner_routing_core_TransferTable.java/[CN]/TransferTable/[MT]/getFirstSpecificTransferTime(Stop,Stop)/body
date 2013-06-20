@@ -2,7 +2,7 @@
   int transferTime=StopTransfer.UNKNOWN_TRANSFER;
   StopTransfer stopTransfer=table.get(new P2<AgencyAndId>(fromStop.getId(),toStop.getId()));
   if (stopTransfer != null) {
-    transferTime=stopTransfer.getUnspecificTransferTime();
+    transferTime=stopTransfer.getFirstSpecificTransferTime();
   }
   return transferTime;
 }
