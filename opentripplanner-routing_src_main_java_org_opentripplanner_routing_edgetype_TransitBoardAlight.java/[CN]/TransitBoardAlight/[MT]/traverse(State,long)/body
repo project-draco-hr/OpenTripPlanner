@@ -16,7 +16,7 @@
     }
     s1.setTripId(null);
     s1.setLastAlightedTimeSeconds(state0.getTimeSeconds());
-    s1.setPreviousStop(boarding ? fromv : tov);
+    s1.setPreviousStop(boarding ? ((PatternStopVertex)tov).getStop() : ((PatternStopVertex)fromv).getStop());
     s1.setLastPattern(this.getPattern());
     if (arrivalTimeAtStop > 0) {
       int wait=(int)Math.abs(state0.getTimeSeconds() - arrivalTimeAtStop);

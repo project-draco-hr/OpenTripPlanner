@@ -14,7 +14,7 @@
     s1.setTripId(null);
     s1.setLastAlightedTimeSeconds(state0.getTimeSeconds());
     s1.setBackMode(TraverseMode.BOARDING);
-    s1.setPreviousStop(fromv);
+    s1.setPreviousStop(((TransitVertex)fromv).getStop());
     return s1.makeState();
   }
  else {
