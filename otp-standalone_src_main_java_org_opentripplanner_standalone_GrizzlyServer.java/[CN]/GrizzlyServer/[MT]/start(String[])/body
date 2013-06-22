@@ -13,8 +13,8 @@
   IoCComponentProviderFactory ioc_factory=OTPConfigurator.fromCommandLineArguments(args);
   HttpHandler handler=ContainerFactory.createContainer(HttpHandler.class,rc,ioc_factory);
   httpServer.getServerConfiguration().addHttpHandler(handler,"/opentripplanner-api-webapp/");
-  final String clientPath="../opentripplanner-leaflet-client/src/main/webapp/";
-  httpServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler(clientPath),"/");
+  staticContentDirectory="../opentripplanner-leaflet-client/src/main/webapp/";
+  httpServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler(staticContentDirectory),"/");
   try {
     httpServer.start();
     LOG.info("Grizzly server running.");
