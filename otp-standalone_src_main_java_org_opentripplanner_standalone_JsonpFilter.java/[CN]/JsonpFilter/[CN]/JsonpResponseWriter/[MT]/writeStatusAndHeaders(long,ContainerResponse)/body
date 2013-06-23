@@ -1,0 +1,7 @@
+{
+  OutputStream os=writer.writeStatusAndHeaders(contentLength,response);
+  os.write(callback.getBytes());
+  os.write('(');
+  this.os=os;
+  return os;
+}
