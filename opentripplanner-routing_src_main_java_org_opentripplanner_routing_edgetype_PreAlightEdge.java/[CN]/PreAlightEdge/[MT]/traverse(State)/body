@@ -1,5 +1,4 @@
 {
-  RoutingContext rctx=s0.getContext();
   RoutingRequest options=s0.getOptions();
   if (!options.getBannedStops().isEmpty() && tov instanceof TransitStop) {
     if (options.getBannedStops().matches(((TransitStop)tov).getStop())) {
