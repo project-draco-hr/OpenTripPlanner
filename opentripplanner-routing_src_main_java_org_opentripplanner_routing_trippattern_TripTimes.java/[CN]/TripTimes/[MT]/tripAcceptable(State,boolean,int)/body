@@ -20,6 +20,11 @@
  else     if (transferTime == StopTransfer.FORBIDDEN_TRANSFER) {
       return false;
     }
+    if (state0.getBackEdge() instanceof TimedTransferEdge) {
+      if (transferTime != StopTransfer.TIMED_TRANSFER) {
+        return false;
+      }
+    }
   }
   return true;
 }

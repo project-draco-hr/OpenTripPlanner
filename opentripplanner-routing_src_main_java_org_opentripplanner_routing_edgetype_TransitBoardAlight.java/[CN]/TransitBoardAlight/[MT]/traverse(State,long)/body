@@ -76,6 +76,17 @@
     Trip trip=bestTripTimes.getTrip();
     if (options.tripIsBanned(trip))     return null;
     long preferences_penalty=options.preferencesPenaltyForTrip(trip);
+    int transferPenalty=0;
+    if (state0.getNumBoardings() > 0) {
+      TransferTable transferTable=options.getRoutingContext().transferTable;
+      if (transferTable.hasPreferredTransfers()) {
+        transferPenalty=options.nonpreferredTransferPenalty;
+      }
+      int transferTime=transferTable.getTransferTime(state0.getPreviousStop(),state0.getCurrentStop(),state0.getPreviousTrip(),trip);
+      if (transferTime == StopTransfer.PREFERRED_TRANSFER) {
+        transferPenalty=0;
+      }
+    }
     StateEditor s1=state0.edit(this);
     s1.setBackMode(getMode());
     int type;
@@ -101,6 +112,7 @@
       wait_cost*=options.waitReluctance;
     }
     s1.incrementWeight(preferences_penalty);
+    s1.incrementWeight(transferPenalty);
     if (options.isReverseOptimizing())     s1.incrementWeight(wait_cost);
  else     s1.incrementWeight(wait_cost + options.getBoardCost(mode));
     if (options.isReverseOptimizeOnTheFly() && !options.isReverseOptimizing() && state0.getNumBoardings() > 0 && state0.getLastNextArrivalDelta() <= bestWait && state0.getLastNextArrivalDelta() > -1) {
