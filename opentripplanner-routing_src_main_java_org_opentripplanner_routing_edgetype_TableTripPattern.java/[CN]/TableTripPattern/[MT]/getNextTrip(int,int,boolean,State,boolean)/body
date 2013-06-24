@@ -1,4 +1,5 @@
 {
+  RoutingRequest options=state0.getOptions();
   Timetable timetable=scheduledTimetable;
   TimetableResolver snapshot=options.rctx.timetableSnapshot;
   if (snapshot != null)   timetable=snapshot.resolve(this);
@@ -11,5 +12,5 @@
   if (options.wheelchairAccessible && (perStopFlags[stopIndex + stopOffset] & FLAG_WHEELCHAIR_ACCESSIBLE) == 0) {
     return null;
   }
-  return timetable.getNextTrip(stopIndex,time,haveBicycle,options,boarding);
+  return timetable.getNextTrip(stopIndex,time,haveBicycle,state0,boarding);
 }
