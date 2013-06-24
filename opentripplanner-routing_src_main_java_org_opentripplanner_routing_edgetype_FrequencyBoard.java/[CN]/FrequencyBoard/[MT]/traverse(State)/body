@@ -22,6 +22,33 @@
       return null;
     }
     long currentTime=state0.getTimeSeconds();
+    int transferPenalty=0;
+    if (state0.getNumBoardings() > 0) {
+      TransferTable transferTable=options.getRoutingContext().transferTable;
+      if (transferTable.hasPreferredTransfers()) {
+        transferPenalty=options.nonpreferredTransferPenalty;
+      }
+      int transferTime=transferTable.getTransferTime(state0.getPreviousStop(),state0.getCurrentStop(),state0.getPreviousTrip(),trip);
+      if (transferTime == StopTransfer.UNKNOWN_TRANSFER) {
+      }
+ else       if (transferTime > 0) {
+        long tableBoardAfter=state0.getLastAlightedTimeSeconds() + transferTime;
+        if (tableBoardAfter > currentTime) {
+          currentTime=tableBoardAfter;
+        }
+      }
+ else       if (transferTime == StopTransfer.FORBIDDEN_TRANSFER) {
+        return null;
+      }
+ else       if (transferTime == StopTransfer.PREFERRED_TRANSFER) {
+        transferPenalty=0;
+      }
+      if (state0.getBackEdge() instanceof TimedTransferEdge) {
+        if (transferTime != StopTransfer.TIMED_TRANSFER) {
+          return null;
+        }
+      }
+    }
     int bestWait=-1;
     TraverseMode mode=state0.getNonTransitMode();
     if (options.bannedTrips.containsKey(trip.getId())) {
@@ -66,6 +93,7 @@
       wait_cost*=options.waitReluctance;
     }
     s1.incrementWeight(preferences_penalty);
+    s1.incrementWeight(transferPenalty);
     s1.incrementWeight(wait_cost + options.getBoardCost(mode));
     return s1.makeState();
   }
