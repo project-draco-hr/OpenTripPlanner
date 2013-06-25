@@ -1,0 +1,10 @@
+{
+  int transferPenalty=0;
+  if (hasPreferredTransfers()) {
+    transferPenalty=nonpreferredTransferPenalty;
+  }
+  if (transferTime == StopTransfer.PREFERRED_TRANSFER || transferTime == StopTransfer.TIMED_TRANSFER) {
+    transferPenalty=0;
+  }
+  return transferPenalty;
+}

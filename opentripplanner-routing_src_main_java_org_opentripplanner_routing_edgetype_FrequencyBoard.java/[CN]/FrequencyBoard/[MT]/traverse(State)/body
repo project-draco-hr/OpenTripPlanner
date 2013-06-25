@@ -25,13 +25,8 @@
     int transferPenalty=0;
     if (state0.getNumBoardings() > 0) {
       TransferTable transferTable=options.getRoutingContext().transferTable;
-      if (transferTable.hasPreferredTransfers()) {
-        transferPenalty=options.nonpreferredTransferPenalty;
-      }
       int transferTime=transferTable.getTransferTime(state0.getPreviousStop(),state0.getCurrentStop(),state0.getPreviousTrip(),trip);
-      if (transferTime == StopTransfer.UNKNOWN_TRANSFER) {
-      }
- else       if (transferTime > 0) {
+      if (transferTime > 0) {
         long tableBoardAfter=state0.getLastAlightedTimeSeconds() + transferTime;
         if (tableBoardAfter > currentTime) {
           currentTime=tableBoardAfter;
@@ -40,9 +35,7 @@
  else       if (transferTime == StopTransfer.FORBIDDEN_TRANSFER) {
         return null;
       }
- else       if (transferTime == StopTransfer.PREFERRED_TRANSFER) {
-        transferPenalty=0;
-      }
+      transferPenalty=transferTable.determineTransferPenalty(transferTime,options.nonpreferredTransferPenalty);
       if (state0.getBackEdge() instanceof TimedTransferEdge) {
         if (transferTime != StopTransfer.TIMED_TRANSFER) {
           return null;
