@@ -25,6 +25,11 @@
  else {
     name=state.getVertex().getName();
   }
+  if (backEdge instanceof PatternHop) {
+    TripTimes tt=state.getTripTimes();
+    int hop=((PatternHop)backEdge).stopIndex;
+    leg.arrivalDelay=tt.getArrivalDelay(hop);
+  }
   leg.to=makePlace(state,name,true);
   coordinates.clear();
 }
