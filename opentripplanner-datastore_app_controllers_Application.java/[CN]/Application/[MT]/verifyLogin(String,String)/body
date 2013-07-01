@@ -1,0 +1,12 @@
+{
+  System.out.println("\n** verifyLogin ** " + redirect + " \n");
+  System.out.println("headers: " + request.headers);
+  String username=request.headers.get("x-remote-user").value();
+  TrinetUser user=TrinetUser.find("byUsername",username).first();
+  Session userSession=new Session(session,user);
+  userSession.save();
+  System.out.println("initialized session " + session + " for user "+ username);
+  String redirectUrl=redirect + "?sessionId=" + session;
+  System.out.println("redirecting to: " + redirectUrl);
+  redirect(redirectUrl);
+}

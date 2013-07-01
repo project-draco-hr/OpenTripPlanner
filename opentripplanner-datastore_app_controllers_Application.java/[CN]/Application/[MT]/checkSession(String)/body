@@ -1,0 +1,9 @@
+{
+  Session userSession=Session.find("bySessionId",sessionId).first();
+  Map<String,String> resp=new HashMap<String,String>();
+  resp.put("sessionId",sessionId);
+  if (session != null) {
+    resp.put("username",userSession.user.username);
+  }
+  renderJSON(resp);
+}
