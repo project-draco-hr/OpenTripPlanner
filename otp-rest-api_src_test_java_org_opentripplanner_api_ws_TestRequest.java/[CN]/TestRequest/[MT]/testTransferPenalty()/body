@@ -1,0 +1,6 @@
+{
+  TestPlanner planner=new TestPlanner("portland","45.5264892578125,-122.60479259490967","45.511622,-122.645564");
+  planner.setNonpreferredTransferPenalty(Arrays.asList(0));
+  checkLegsWithTransferPenalty(planner,0,7,false);
+  checkLegsWithTransferPenalty(planner,1800,7,true);
+}
