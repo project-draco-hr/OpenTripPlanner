@@ -1,0 +1,10 @@
+{
+  checkNotNull(fromStopId);
+  checkNotNull(toStopId);
+  int transferTime=StopTransfer.UNKNOWN_TRANSFER;
+  StopTransfer stopTransfer=table.get(new P2<AgencyAndId>(fromStopId,toStopId));
+  if (stopTransfer != null) {
+    transferTime=stopTransfer.getTransferTime(fromTrip,toTrip);
+  }
+  return transferTime;
+}

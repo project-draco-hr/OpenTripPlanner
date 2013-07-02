@@ -1,0 +1,16 @@
+{
+  checkNotNull(fromStop);
+  checkNotNull(toStop);
+  if (transferTime == StopTransfer.PREFERRED_TRANSFER || transferTime == StopTransfer.TIMED_TRANSFER) {
+    preferredTransfers=true;
+  }
+  P2<AgencyAndId> stopIdPair=new P2<AgencyAndId>(fromStop.getId(),toStop.getId());
+  StopTransfer stopTransfer=table.get(stopIdPair);
+  if (stopTransfer == null) {
+    stopTransfer=new StopTransfer();
+    table.put(stopIdPair,stopTransfer);
+  }
+  assert(stopTransfer != null);
+  SpecificTransfer specificTransfer=new SpecificTransfer(fromRoute,toRoute,fromTrip,toTrip,transferTime);
+  stopTransfer.addSpecificTransfer(specificTransfer);
+}

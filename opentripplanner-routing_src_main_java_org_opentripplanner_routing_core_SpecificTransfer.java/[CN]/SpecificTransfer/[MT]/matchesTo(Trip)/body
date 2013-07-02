@@ -1,0 +1,19 @@
+{
+  checkNotNull(trip);
+  boolean match=false;
+  int specificity=getToSpecificity();
+  if (specificity == 0) {
+    match=true;
+  }
+ else   if (specificity == 1) {
+    if (trip.getRoute().getId().equals(toRouteId)) {
+      match=true;
+    }
+  }
+ else   if (specificity == 2) {
+    if (trip.getId().equals(toTripId)) {
+      match=true;
+    }
+  }
+  return match;
+}

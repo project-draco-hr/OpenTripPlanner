@@ -1,0 +1,10 @@
+{
+  int specificity=0;
+  if (fromTripId != null) {
+    specificity=2;
+  }
+ else   if (fromRouteId != null) {
+    specificity=1;
+  }
+  return specificity;
+}

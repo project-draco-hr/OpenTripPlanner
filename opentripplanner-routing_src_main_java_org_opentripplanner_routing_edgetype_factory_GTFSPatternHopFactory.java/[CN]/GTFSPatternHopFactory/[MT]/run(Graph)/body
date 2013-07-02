@@ -93,7 +93,7 @@
         interlineDwells.put(dwellKey,dwell);
       }
       int dwellTime=st1.getDepartureTime() - st0.getArrivalTime();
-      dwell.addTrip(fromTrip.getId(),toTrip.getId(),dwellTime,fromInterlineTrip.getPatternIndex(),toInterlineTrip.getPatternIndex());
+      dwell.addTrip(fromTrip,toTrip,dwellTime,fromInterlineTrip.getPatternIndex(),toInterlineTrip.getPatternIndex());
     }
   }
   loadTransfers(graph);

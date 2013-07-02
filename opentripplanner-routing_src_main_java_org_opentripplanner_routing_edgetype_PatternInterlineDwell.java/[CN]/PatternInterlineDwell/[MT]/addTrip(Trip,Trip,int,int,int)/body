@@ -1,0 +1,11 @@
+{
+  if (dwellTime < 0) {
+    dwellTime=0;
+    LOG.warn("Negative dwell time for trip " + trip.getId().getAgencyId() + " "+ trip.getId().getId()+ "(forcing to zero)");
+  }
+  tripIdToInterlineDwellData.put(trip.getId(),new InterlineDwellData(dwellTime,newPatternIndex,reverseTrip));
+  reverseTripIdToInterlineDwellData.put(reverseTrip.getId(),new InterlineDwellData(dwellTime,oldPatternIndex,trip));
+  if (dwellTime < bestDwellTime) {
+    bestDwellTime=dwellTime;
+  }
+}
