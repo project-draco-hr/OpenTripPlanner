@@ -7,6 +7,26 @@
       return null;
     }
     long currentTime=state0.getTimeSeconds();
+    int transferPenalty=0;
+    if (state0.getNumBoardings() > 0) {
+      TransferTable transferTable=options.getRoutingContext().transferTable;
+      int transferTime=transferTable.getTransferTime(state0.getPreviousStop(),state0.getCurrentStop(),state0.getPreviousTrip(),trip);
+      if (transferTime > 0) {
+        long tableAlightBefore=state0.getLastAlightedTimeSeconds() - transferTime;
+        if (tableAlightBefore < currentTime) {
+          currentTime=tableAlightBefore;
+        }
+      }
+ else       if (transferTime == StopTransfer.FORBIDDEN_TRANSFER) {
+        return null;
+      }
+      transferPenalty=transferTable.determineTransferPenalty(transferTime,options.nonpreferredTransferPenalty);
+      if (state0.getBackEdge() instanceof TimedTransferEdge) {
+        if (transferTime != StopTransfer.TIMED_TRANSFER) {
+          return null;
+        }
+      }
+    }
     int bestWait=-1;
     TraverseMode mode=state0.getNonTransitMode();
     if (options.bannedTrips.containsKey(trip.getId())) {
@@ -39,6 +59,7 @@
     s1.incrementTimeInSeconds(bestWait);
     s1.incrementNumBoardings();
     s1.setTripId(trip.getId());
+    s1.setPreviousTrip(trip);
     s1.setZone(pattern.getZone(stopIndex));
     s1.setRoute(trip.getRoute().getId());
     long wait_cost=bestWait;
@@ -49,6 +70,7 @@
       wait_cost*=options.waitReluctance;
     }
     s1.incrementWeight(preferences_penalty);
+    s1.incrementWeight(transferPenalty);
     s1.incrementWeight(wait_cost + options.getBoardCost(mode));
     s1.setBackMode(TraverseMode.ALIGHTING);
     return s1.makeState();
@@ -64,7 +86,7 @@
     }
     s1.setTripId(null);
     s1.setLastAlightedTimeSeconds(state0.getTimeSeconds());
-    s1.setPreviousStop(fromv);
+    s1.setPreviousStop(((TransitVertex)fromv).getStop());
     s1.setBackMode(TraverseMode.ALIGHTING);
     return s1.makeState();
   }

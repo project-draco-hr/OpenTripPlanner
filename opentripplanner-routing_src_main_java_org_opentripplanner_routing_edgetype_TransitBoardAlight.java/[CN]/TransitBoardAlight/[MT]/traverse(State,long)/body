@@ -16,7 +16,7 @@
     }
     s1.setTripId(null);
     s1.setLastAlightedTimeSeconds(state0.getTimeSeconds());
-    s1.setPreviousStop(boarding ? fromv : tov);
+    s1.setPreviousStop(boarding ? ((PatternStopVertex)tov).getStop() : ((PatternStopVertex)fromv).getStop());
     s1.setLastPattern(this.getPattern());
     if (arrivalTimeAtStop > 0) {
       int wait=(int)Math.abs(state0.getTimeSeconds() - arrivalTimeAtStop);
@@ -58,7 +58,7 @@
       int wait;
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
       if (sd.serviceIdRunning(serviceId)) {
-        tripTimes=getPattern().getNextTrip(stopIndex,secondsSinceMidnight,mode == TraverseMode.BICYCLE,options,boarding);
+        tripTimes=getPattern().getNextTrip(stopIndex,secondsSinceMidnight,mode == TraverseMode.BICYCLE,state0,boarding);
         if (tripTimes != null) {
           wait=boarding ? (int)(sd.time(tripTimes.getDepartureTime(stopIndex)) - current_time) : (int)(current_time - sd.time(tripTimes.getArrivalTime(stopIndex)));
           if (wait < 0)           LOG.error("negative wait time on board");
@@ -76,6 +76,12 @@
     Trip trip=bestTripTimes.getTrip();
     if (options.tripIsBanned(trip))     return null;
     long preferences_penalty=options.preferencesPenaltyForTrip(trip);
+    int transferPenalty=0;
+    if (state0.getNumBoardings() > 0) {
+      TransferTable transferTable=options.getRoutingContext().transferTable;
+      int transferTime=transferTable.getTransferTime(state0.getPreviousStop(),state0.getCurrentStop(),state0.getPreviousTrip(),trip);
+      transferPenalty=transferTable.determineTransferPenalty(transferTime,options.nonpreferredTransferPenalty);
+    }
     StateEditor s1=state0.edit(this);
     s1.setBackMode(getMode());
     int type;
@@ -89,6 +95,7 @@
     s1.incrementTimeInSeconds(bestWait);
     s1.incrementNumBoardings();
     s1.setTripId(trip.getId());
+    s1.setPreviousTrip(trip);
     s1.setZone(getPattern().getZone(stopIndex));
     s1.setRoute(trip.getRoute().getId());
     double wait_cost=bestWait;
@@ -100,6 +107,7 @@
       wait_cost*=options.waitReluctance;
     }
     s1.incrementWeight(preferences_penalty);
+    s1.incrementWeight(transferPenalty);
     if (options.isReverseOptimizing())     s1.incrementWeight(wait_cost);
  else     s1.incrementWeight(wait_cost + options.getBoardCost(mode));
     if (options.isReverseOptimizeOnTheFly() && !options.isReverseOptimizing() && state0.getNumBoardings() > 0 && state0.getLastNextArrivalDelta() <= bestWait && state0.getLastNextArrivalDelta() > -1) {

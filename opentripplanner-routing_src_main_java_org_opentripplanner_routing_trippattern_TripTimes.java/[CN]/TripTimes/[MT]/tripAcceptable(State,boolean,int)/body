@@ -1,0 +1,30 @@
+{
+  RoutingRequest options=state0.getOptions();
+  Trip trip=this.getTrip();
+  BannedStopSet banned=options.bannedTrips.get(trip.getId());
+  if (banned != null) {
+    if (banned.contains(stopIndex)) {
+      return false;
+    }
+  }
+  if (options.wheelchairAccessible && trip.getWheelchairAccessible() != 1)   return false;
+  if (bicycle)   if ((trip.getTripBikesAllowed() != 2) && (trip.getRoute().getBikesAllowed() != 2 || trip.getTripBikesAllowed() == 1))   return false;
+  if (state0.getNumBoardings() > 0) {
+    TransferTable transferTable=options.getRoutingContext().transferTable;
+    int transferTime=transferTable.getTransferTime(state0.getPreviousStop(),state0.getCurrentStop(),state0.getPreviousTrip(),trip);
+    if (transferTime > 0) {
+      if (state0.getLastAlightedTimeSeconds() + transferTime > getDepartureTime(stopIndex)) {
+        return false;
+      }
+    }
+ else     if (transferTime == StopTransfer.FORBIDDEN_TRANSFER) {
+      return false;
+    }
+    if (state0.getBackEdge() instanceof TimedTransferEdge) {
+      if (transferTime != StopTransfer.TIMED_TRANSFER) {
+        return false;
+      }
+    }
+  }
+  return true;
+}

@@ -1,5 +1,4 @@
 {
-  GraphServiceImpl gsi=(GraphServiceImpl)graphService;
-  gsi.reloadGraphs(preEvict);
+  graphService.reloadGraphs(preEvict);
   return Response.status(Status.OK).build();
 }

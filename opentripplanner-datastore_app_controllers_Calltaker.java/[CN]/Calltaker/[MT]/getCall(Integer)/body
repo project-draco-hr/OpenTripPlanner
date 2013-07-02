@@ -1,0 +1,11 @@
+{
+  TrinetUser user=checkLogin();
+  System.out.println("getCall for " + user);
+  List<Call> calls;
+  if (limit == null)   calls=Call.find("byUser order by startTime",user).fetch();
+ else {
+    calls=Call.find("byUser",user).fetch(limit);
+    System.out.println("fetched w/ limit = " + limit);
+  }
+  renderJSON(calls);
+}

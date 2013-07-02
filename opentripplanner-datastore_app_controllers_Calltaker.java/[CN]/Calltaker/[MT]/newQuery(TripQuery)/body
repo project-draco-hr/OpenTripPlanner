@@ -1,6 +1,5 @@
 {
-  System.out.println("nQ request params: " + request.params.allSimple());
-  query.userName=params.get("userName");
+  TrinetUser user=checkLogin();
   query.save();
   renderJSON(query.id);
 }

@@ -1,7 +1,6 @@
 {
-  if (maxWalkDistance == 0)   return;
-  this.maxWalkDistance=maxWalkDistance;
-  if (bikeWalkingOptions != null && bikeWalkingOptions != this) {
-    this.bikeWalkingOptions.setMaxWalkDistance(maxWalkDistance);
+  if (maxWalkDistance > 0) {
+    this.maxWalkDistance=maxWalkDistance;
+    bikeWalkingOptions.maxWalkDistance=maxWalkDistance;
   }
 }

@@ -4,31 +4,36 @@
     return null;
   }
   LOG.debug("loading serialized graph for routerId {}",routerId);
-  StringBuilder sb=new StringBuilder(resourceBase);
-  if (!(resourceBase.endsWith("/") || resourceBase.endsWith(File.pathSeparator))) {
-    sb.append("/");
+  StringBuilder sb=new StringBuilder(basePath);
+  if (!(basePath.endsWith(File.separator))) {
+    sb.append(File.separator);
   }
   if (routerId.length() > 0) {
     sb.append(routerId);
-    sb.append("/");
+    sb.append(File.separator);
   }
   sb.append("Graph.obj");
-  String resourceLocation=sb.toString();
-  LOG.debug("graph file for routerId '{}' is at {}",routerId,resourceLocation);
-  InputStream is;
-  try {
-    if (resourceLocation.startsWith("file:")) {
-      is=new FileInputStream(new File(resourceLocation.substring(5)));
-    }
- else     if (resourceLocation.startsWith("classpath:")) {
-      throw new UnsupportedOperationException();
-    }
+  String graphFileName=sb.toString();
+  LOG.debug("graph file for routerId '{}' is at {}",routerId,graphFileName);
+  InputStream is=null;
+  final String CLASSPATH_PREFIX="classpath:/";
+  if (graphFileName.startsWith(CLASSPATH_PREFIX)) {
+    String resourceName=graphFileName.substring(CLASSPATH_PREFIX.length());
+    LOG.debug("loading graph on classpath at {}",resourceName);
+    is=Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceName);
+  }
  else {
-      is=new FileInputStream(new File(resourceLocation));
+    try {
+      File graphFile=new File(graphFileName);
+      is=new FileInputStream(graphFile);
+    }
+ catch (    IOException ex) {
+      is=null;
+      ex.printStackTrace();
     }
   }
- catch (  FileNotFoundException e) {
-    LOG.error("File not found at {}.",resourceLocation);
+  if (is == null) {
+    LOG.warn("Graph file not found or not openable for routerId '{}' under {}",routerId,graphFileName);
     return null;
   }
   LOG.debug("graph input stream successfully opened.");
@@ -37,7 +42,7 @@
     return Graph.load(new ObjectInputStream(is),loadLevel,indexFactory);
   }
  catch (  Exception ex) {
-    LOG.error("Exception while loading graph from {}.",resourceLocation);
+    LOG.error("Exception while loading graph from {}.",graphFileName);
     ex.printStackTrace();
     return null;
   }

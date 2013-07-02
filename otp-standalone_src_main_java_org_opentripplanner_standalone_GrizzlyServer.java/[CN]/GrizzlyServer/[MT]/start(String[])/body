@@ -10,11 +10,12 @@
   httpServer.addListener(networkListener);
   ResourceConfig rc=new PackagesResourceConfig("org.opentripplanner");
   rc.getProperties().put(ResourceConfig.PROPERTY_CONTAINER_REQUEST_FILTERS,new String[]{AuthFilter.class.getName(),RewriteFilter.class.getName()});
+  rc.getProperties().put(ResourceConfig.PROPERTY_CONTAINER_RESPONSE_FILTERS,new String[]{JsonpFilter.class.getName()});
   IoCComponentProviderFactory ioc_factory=OTPConfigurator.fromCommandLineArguments(args);
   HttpHandler handler=ContainerFactory.createContainer(HttpHandler.class,rc,ioc_factory);
   httpServer.getServerConfiguration().addHttpHandler(handler,"/opentripplanner-api-webapp/");
-  final String clientPath="../opentripplanner-webapp/src/main/webapp/";
-  httpServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler(clientPath),"/");
+  staticContentDirectory="../opentripplanner-leaflet-client/src/main/webapp/";
+  httpServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler(staticContentDirectory),"/");
   try {
     httpServer.start();
     LOG.info("Grizzly server running.");

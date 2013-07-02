@@ -1,0 +1,9 @@
+{
+  FieldTripRequest ftRequest=FieldTripRequest.findById(requestId);
+  ScheduledFieldTrip trip=ScheduledFieldTrip.findById(tripId);
+  ftRequest.outboundTrip=trip;
+  trip.request=ftRequest;
+  trip.save();
+  ftRequest.save();
+  render();
+}

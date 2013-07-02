@@ -11,14 +11,15 @@
   if (dwellData == null) {
     return null;
   }
-  BannedStopSet banned=options.bannedTrips.get(dwellData.trip);
+  BannedStopSet banned=options.bannedTrips.get(dwellData.trip.getId());
   if (banned != null) {
     if (banned.contains(0))     return null;
   }
   StateEditor s1=state0.edit(this);
   TableTripPattern pattern=((OnboardVertex)s1.getVertex()).getTripPattern();
   s1.incrementTimeInSeconds(dwellData.dwellTime);
-  s1.setTripId(dwellData.trip);
+  s1.setTripId(dwellData.trip.getId());
+  s1.setPreviousTrip(dwellData.trip);
   s1.setTripTimes(pattern.getTripTimes(dwellData.patternIndex));
   s1.incrementWeight(dwellData.dwellTime);
   s1.setBackMode(getMode());
