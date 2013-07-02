@@ -1,0 +1,32 @@
+{
+  TestPlanner planner=new TestPlanner("portland","45.5264892578125,-122.60479259490967","45.511622,-122.645564");
+  TransferTable table=new TransferTable();
+  Graph graph=Context.getInstance().graph;
+  when(graph.getTransferTable()).thenReturn(table);
+  Response response=planner.getItineraries();
+  Itinerary itinerary=response.getPlan().itinerary.get(0);
+  assertEquals("190W1280",itinerary.legs.get(1).tripId);
+  assertEquals("751W1330",itinerary.legs.get(3).tripId);
+  Stop fromStop=new Stop();
+  fromStop.setId(new AgencyAndId("TriMet","2111"));
+  Stop toStop=new Stop();
+  toStop.setId(new AgencyAndId("TriMet","7452"));
+  Route fromRoute=new Route();
+  fromRoute.setId(new AgencyAndId("TriMet","19"));
+  Route toRoute=new Route();
+  toRoute.setId(new AgencyAndId("TriMet","75"));
+  Trip fromTrip=new Trip();
+  fromTrip.setId(new AgencyAndId("TriMet","190W1280"));
+  fromTrip.setRoute(fromRoute);
+  Trip toTrip=new Trip();
+  toTrip.setId(new AgencyAndId("TriMet","751W1330"));
+  toTrip.setRoute(toRoute);
+  assertEquals(StopTransfer.UNKNOWN_TRANSFER,table.getTransferTime(fromStop,toStop,fromTrip,toTrip));
+  table.addTransferTime(fromStop,toStop,null,null,fromTrip,toTrip,StopTransfer.FORBIDDEN_TRANSFER);
+  assertEquals(StopTransfer.FORBIDDEN_TRANSFER,table.getTransferTime(fromStop,toStop,fromTrip,toTrip));
+  response=planner.getItineraries();
+  itinerary=response.getPlan().itinerary.get(0);
+  assertFalse("190W1280".equals(itinerary.legs.get(1).tripId) && "751W1330".equals(itinerary.legs.get(3).tripId));
+  reset(graph);
+  assertEquals(StopTransfer.PREFERRED_TRANSFER,graph.getTransferTable().getTransferTime(fromStop,toStop,fromTrip,toTrip));
+}
