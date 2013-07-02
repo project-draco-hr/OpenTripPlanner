@@ -1,9 +1,0 @@
-{
-  Query query=JPA.em().createQuery("select sum(passengers) from GroupItinerary where fieldTrip_Id = ?");
-  query.setParameter(1,this.id);
-  Object result=query.getSingleResult();
-  if (result == null) {
-    return false;
-  }
-  return passengers == (Integer)result;
-}
