@@ -18,11 +18,13 @@
   initTransit();
   initBikeRental();
   graph.streetIndex=new StreetVertexIndexServiceImpl(graph);
-  try {
-    graph.save(File.createTempFile("graph",".obj"));
-  }
- catch (  IOException e) {
-    throw new RuntimeException(e);
+  if (DEBUG_OUTPUT) {
+    try {
+      graph.save(File.createTempFile("graph",".obj"));
+    }
+ catch (    IOException e) {
+      throw new RuntimeException(e);
+    }
   }
   pathService.setSptService(new GenericAStar());
   pathService.setGraphService(graphService);
