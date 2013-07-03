@@ -2,7 +2,6 @@
   TripTimes bestTrip=null;
   int index;
   TripTimes[][] tableIndex=boarding ? departuresIndex : arrivalsIndex;
-  List<TripTimes> ordered=tripTimes;
   if (tableIndex != null) {
     TripTimes[] sorted;
     if (tableIndex.length == 1)     sorted=tableIndex[0];
@@ -27,7 +26,6 @@
         }
       }
     }
-    ordered=Arrays.asList(sorted);
   }
  else {
     int bestTime=boarding ? Integer.MAX_VALUE : Integer.MIN_VALUE;
