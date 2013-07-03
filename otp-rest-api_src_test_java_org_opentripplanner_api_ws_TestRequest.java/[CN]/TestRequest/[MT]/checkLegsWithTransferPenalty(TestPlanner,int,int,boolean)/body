@@ -1,0 +1,11 @@
+{
+  planner.setTransferPenalty(Arrays.asList(transferPenalty));
+  Response response=planner.getItineraries();
+  Itinerary itinerary=response.getPlan().itinerary.get(0);
+  if (smaller) {
+    assertTrue(itinerary.legs.size() < expectedLegs);
+  }
+ else {
+    assertEquals(expectedLegs,itinerary.legs.size());
+  }
+}
