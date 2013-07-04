@@ -12,5 +12,5 @@
   if (options.wheelchairAccessible && (perStopFlags[stopIndex + stopOffset] & FLAG_WHEELCHAIR_ACCESSIBLE) == 0) {
     return null;
   }
-  return timetable.getNextTrip(stopIndex,time,haveBicycle,state0,boarding);
+  return timetable.getNextTrip(stopIndex,time,haveBicycle,sd,state0,boarding);
 }

@@ -13,7 +13,7 @@
     TransferTable transferTable=options.getRoutingContext().transferTable;
     int transferTime=transferTable.getTransferTime(state0.getPreviousStop(),state0.getCurrentStop(),state0.getPreviousTrip(),trip);
     if (transferTime > 0) {
-      if (state0.getLastAlightedTimeSeconds() + transferTime > getDepartureTime(stopIndex)) {
+      if (sd.secondsSinceMidnight(state0.getLastAlightedTimeSeconds()) + transferTime > getDepartureTime(stopIndex)) {
         return false;
       }
     }
