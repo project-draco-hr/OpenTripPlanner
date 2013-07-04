@@ -1,14 +1,6 @@
 {
   graph=graphService.getGraph();
-  patternIndex=new HashMap<AgencyAndId,TableTripPattern>();
-  for (  TransitStopDepart tsd : filter(graph.getVertices(),TransitStopDepart.class)) {
-    for (    TransitBoardAlight tba : filter(tsd.getOutgoing(),TransitBoardAlight.class)) {
-      if (!tba.isBoarding())       continue;
-      TableTripPattern pattern=tba.getPattern();
-      for (      Trip trip : pattern.getTrips()) {
-        patternIndex.put(trip.getId(),pattern);
-      }
-    }
-  }
   graph.timetableSnapshotSource=this;
+  transitIndexService=graph.getService(TransitIndexService.class);
+  if (transitIndexService == null)   throw new RuntimeException("Real-time update need a TransitIndexService. Please setup one during graph building.");
 }

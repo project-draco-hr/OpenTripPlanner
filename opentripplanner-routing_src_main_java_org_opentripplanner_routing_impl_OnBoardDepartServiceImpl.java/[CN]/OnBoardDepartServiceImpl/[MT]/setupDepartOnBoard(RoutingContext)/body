@@ -2,10 +2,11 @@
   RoutingRequest opt=ctx.opt;
   AgencyAndId tripId=opt.getStartingTransitTripId();
   TransitIndexService transitIndexService=ctx.graph.getService(TransitIndexService.class);
-  List<PatternHop> hops=transitIndexService.getPatternHopsForTrip(tripId);
-  if (hops == null) {
+  TableTripPattern tripPattern=transitIndexService.getTripPatternForTrip(tripId);
+  if (tripPattern == null) {
     throw new IllegalArgumentException("Unknown/invalid trip ID: " + tripId);
   }
+  List<PatternHop> hops=tripPattern.getPatternHops();
   Double lon=opt.getFrom().getLng();
   Double lat=opt.getFrom().getLat();
   Coordinate point=lon == null || lat == null ? null : new Coordinate(lon,lat);
