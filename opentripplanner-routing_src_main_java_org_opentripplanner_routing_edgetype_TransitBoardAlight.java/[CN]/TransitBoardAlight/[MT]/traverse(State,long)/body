@@ -58,7 +58,7 @@
       int wait;
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
       if (sd.serviceIdRunning(serviceId)) {
-        tripTimes=getPattern().getNextTrip(stopIndex,secondsSinceMidnight,mode == TraverseMode.BICYCLE,state0,boarding);
+        tripTimes=getPattern().getNextTrip(stopIndex,secondsSinceMidnight,mode == TraverseMode.BICYCLE,sd,state0,boarding);
         if (tripTimes != null) {
           wait=boarding ? (int)(sd.time(tripTimes.getDepartureTime(stopIndex)) - current_time) : (int)(current_time - sd.time(tripTimes.getArrivalTime(stopIndex)));
           if (wait < 0)           LOG.error("negative wait time on board");
