@@ -31,6 +31,10 @@
   assertEquals(StopTransfer.PREFERRED_TRANSFER,table.getTransferTime(fromStop,toStop,fromTrip,toTrip2,true));
   assertEquals(StopTransfer.PREFERRED_TRANSFER,table.getTransferTime(fromStop,toStopParent,fromTrip,toTrip,true));
   assertEquals(StopTransfer.PREFERRED_TRANSFER,table.getTransferTime(fromStop,toStopParent,fromTrip,toTrip2,true));
+  assertEquals(StopTransfer.PREFERRED_TRANSFER,table.getTransferTime(fromStop,toStop,fromTrip,toTrip,true));
+  assertEquals(StopTransfer.UNKNOWN_TRANSFER,table.getTransferTime(fromStop,toStop,fromTrip,toTrip,false));
+  assertEquals(StopTransfer.UNKNOWN_TRANSFER,table.getTransferTime(toStop,fromStop,toTrip,fromTrip,true));
+  assertEquals(StopTransfer.PREFERRED_TRANSFER,table.getTransferTime(toStop,fromStop,toTrip,fromTrip,false));
   table.addTransferTime(fromStop,toStop,null,toRoute,null,null,StopTransfer.FORBIDDEN_TRANSFER);
   assertEquals(StopTransfer.FORBIDDEN_TRANSFER,table.getTransferTime(fromStop,toStop,fromTrip,toTrip,true));
   assertEquals(StopTransfer.PREFERRED_TRANSFER,table.getTransferTime(fromStop,toStop,fromTrip,toTrip2,true));
