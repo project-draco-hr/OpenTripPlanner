@@ -1,0 +1,10 @@
+{
+  PatternStopVertex stopVertex;
+  if (boarding) {
+    stopVertex=(PatternStopVertex)tov;
+  }
+ else {
+    stopVertex=(PatternStopVertex)fromv;
+  }
+  return stopVertex.getStop();
+}

@@ -12,11 +12,11 @@
   itinerary=response.getPlan().itinerary.get(0);
   assertFalse("190W1280".equals(itinerary.legs.get(1).tripId) && "751W1330".equals(itinerary.legs.get(3).tripId));
   @SuppressWarnings("deprecation") TableTripPattern pattern=((PatternStopVertex)graph.getVertex("TriMet_7452_TriMet_751W1090_79_A")).getTripPattern();
-  applyUpdateToTripPattern(pattern,"751W1330","7452",78,41227,41228,Update.Status.PREDICTION,0);
+  applyUpdateToTripPattern(pattern,"751W1330","7452",78,41228,41228,Update.Status.PREDICTION,0);
   response=planner.getItineraries();
   itinerary=response.getPlan().itinerary.get(0);
   assertEquals("190W1280",itinerary.legs.get(1).tripId);
   assertEquals("751W1330",itinerary.legs.get(3).tripId);
-  applyUpdateToTripPattern(pattern,"751W1330","7452",78,41224,41225,Update.Status.PREDICTION,0);
+  applyUpdateToTripPattern(pattern,"751W1330","7452",78,41225,41225,Update.Status.PREDICTION,0);
   reset(graph);
 }
