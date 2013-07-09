@@ -15,6 +15,7 @@
   TripPlan plan=new TripPlan(from,to,request.getDateTime());
   for (  GraphPath path : paths) {
     Itinerary itinerary=generateItinerary(path,request.isShowIntermediateStops());
+    itinerary=adjustItinerary(request,itinerary);
     plan.addItinerary(itinerary);
   }
   return plan;

@@ -1,4 +1,5 @@
 {
+  RoutingRequest originalOptions=options.clone();
   List<GraphPath> paths=null;
   boolean tooSloped=false;
   try {
@@ -17,7 +18,7 @@
     LOG.info("Path not found: " + options.getFrom() + " : "+ options.getTo());
     throw new PathNotFoundException();
   }
-  TripPlan plan=generatePlan(paths,options);
+  TripPlan plan=generatePlan(paths,originalOptions);
   if (plan != null) {
     for (    Itinerary i : plan.itinerary) {
       i.tooSloped=tooSloped;
