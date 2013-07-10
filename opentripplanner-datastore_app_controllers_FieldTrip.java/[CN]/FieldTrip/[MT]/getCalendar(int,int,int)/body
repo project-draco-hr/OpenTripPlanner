@@ -1,4 +1,8 @@
 {
+  Calendar cal=Calendar.getInstance();
+  if (year == 0)   year=cal.get(Calendar.YEAR);
+  if (month == 0)   month=cal.get(Calendar.MONTH) + 1;
+  if (day == 0)   day=cal.get(Calendar.DAY_OF_MONTH);
   List<ScheduledFieldTrip> fieldTrips;
   fieldTrips=ScheduledFieldTrip.find("year(serviceDay) = ? and month(serviceDay) = ? and day(serviceDay) = ? " + "order by departure",year,month,day).fetch();
   DateFormatSymbols dfs=new DateFormatSymbols();
