@@ -1,7 +1,11 @@
 {
+  FieldTripRequest ftRequest=FieldTripRequest.findById(requestId);
   trip.id=null;
+  trip.request=ftRequest;
   trip.serviceDay=trip.departure;
   trip.save();
+  ftRequest.trips.add(trip);
+  ftRequest.save();
   System.out.println("saved ScheduledFieldTrip, id=" + trip.id);
   Long id=trip.id;
   renderJSON(id);
