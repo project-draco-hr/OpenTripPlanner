@@ -1,0 +1,16 @@
+{
+  ShortestPathTree spt=aStar.getShortestPathTree(options);
+  GraphPath path=spt.getPath(options.rctx.target,false);
+  List<Trip> trips=new ArrayList<Trip>();
+  if (path != null) {
+    for (    State s : path.states) {
+      if (s.getBackMode() != null && s.getBackMode().isTransit()) {
+        Trip trip=s.getBackTrip();
+        if (trip != null && !trips.contains(trip)) {
+          trips.add(trip);
+        }
+      }
+    }
+  }
+  return trips;
+}
