@@ -1,8 +1,11 @@
 {
+  TrinetUser user=checkLogin();
+  checkAccess(user);
   FieldTripRequest ftRequest=FieldTripRequest.findById(requestId);
   trip.id=null;
   trip.request=ftRequest;
   trip.serviceDay=trip.departure;
+  trip.createdBy=user.username;
   trip.save();
   ftRequest.trips.add(trip);
   ftRequest.save();
