@@ -6,8 +6,10 @@
   RoutingRequest options=new RoutingRequest();
   options.dateTime=TestUtils.dateInSeconds("America/New_York",2009,7,11,11,11,0);
   options.setRoutingContext(graph,origin,destination);
+  GraphPath path;
   List<Trip> trips;
-  trips=planJourney(options);
+  path=planJourney(options);
+  trips=extractTrips(path);
   assertEquals("8.1",trips.get(0).getId().getId());
   assertEquals("4.2",trips.get(1).getId().getId());
   Stop stopK=new Stop();
@@ -15,7 +17,8 @@
   Stop stopF=new Stop();
   stopF.setId(new AgencyAndId("agency","F"));
   table.addTransferTime(stopK,stopF,null,null,null,null,StopTransfer.FORBIDDEN_TRANSFER);
-  trips=planJourney(options);
+  path=planJourney(options);
+  trips=extractTrips(path);
   assertEquals(0,trips.size());
   reset(graph);
 }

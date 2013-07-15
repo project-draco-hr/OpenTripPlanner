@@ -1,0 +1,43 @@
+{
+  TransferTable table=new TransferTable();
+  when(graph.getTransferTable()).thenReturn(table);
+  @SuppressWarnings("deprecation") Vertex origin=graph.getVertex("agency_O");
+  @SuppressWarnings("deprecation") Vertex destination=graph.getVertex("agency_V");
+  RoutingRequest options=new RoutingRequest();
+  options.dateTime=TestUtils.dateInSeconds("America/New_York",2009,7,11,13,11,0);
+  options.setRoutingContext(graph,origin,destination);
+  GraphPath path;
+  List<Trip> trips;
+  path=planJourney(options);
+  trips=extractTrips(path);
+  assertEquals("10.5",trips.get(0).getId().getId());
+  assertEquals("15.1",trips.get(1).getId().getId());
+  long time=-1;
+  for (  State s : path.states) {
+    if (s.getBackEdge() instanceof FrequencyBoard) {
+      time=s.getTimeSeconds();
+      break;
+    }
+  }
+  assertTrue(time >= 0);
+  Stop stopP=new Stop();
+  stopP.setId(new AgencyAndId("agency","P"));
+  Stop stopU=new Stop();
+  stopU.setId(new AgencyAndId("agency","U"));
+  table.addTransferTime(stopP,stopU,null,null,null,null,3675);
+  path=planJourney(options);
+  trips=extractTrips(path);
+  assertEquals("10.5",trips.get(0).getId().getId());
+  assertEquals("15.1",trips.get(1).getId().getId());
+  long newTime=-1;
+  for (  State s : path.states) {
+    if (s.getBackEdge() instanceof FrequencyBoard) {
+      newTime=s.getTimeSeconds();
+      break;
+    }
+  }
+  assertTrue(newTime >= 0);
+  assertTrue(newTime > time);
+  assertEquals(3600,newTime - time);
+  reset(graph);
+}
