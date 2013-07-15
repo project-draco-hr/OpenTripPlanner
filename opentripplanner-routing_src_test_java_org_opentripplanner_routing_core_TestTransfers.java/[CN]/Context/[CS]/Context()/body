@@ -1,4 +1,5 @@
 {
+  aStar=new GenericAStar();
   GtfsContext context=GtfsLibrary.readGtfs(new File(ConstantsForTests.FAKE_GTFS));
   graph=spy(new Graph());
   GTFSPatternHopFactory factory=new GTFSPatternHopFactory(context);
