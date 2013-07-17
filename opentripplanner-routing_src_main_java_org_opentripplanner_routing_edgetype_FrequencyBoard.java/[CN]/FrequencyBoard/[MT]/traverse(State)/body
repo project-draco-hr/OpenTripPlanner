@@ -25,7 +25,8 @@
     int transferPenalty=0;
     if (state0.getNumBoardings() > 0) {
       TransferTable transferTable=options.getRoutingContext().transferTable;
-      int transferTime=transferTable.getTransferTime(state0.getPreviousStop(),state0.getCurrentStop(),state0.getPreviousTrip(),trip);
+      Stop currentStop=((TransitVertex)fromv).getStop();
+      int transferTime=transferTable.getTransferTime(state0.getPreviousStop(),currentStop,state0.getPreviousTrip(),trip,true);
       if (transferTime > 0) {
         long tableBoardAfter=state0.getLastAlightedTimeSeconds() + transferTime;
         if (tableBoardAfter > currentTime) {

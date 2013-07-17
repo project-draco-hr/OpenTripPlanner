@@ -11,10 +11,17 @@
   if (bicycle)   if ((trip.getTripBikesAllowed() != 2) && (trip.getRoute().getBikesAllowed() != 2 || trip.getTripBikesAllowed() == 1))   return false;
   if (state0.getNumBoardings() > 0) {
     TransferTable transferTable=options.getRoutingContext().transferTable;
-    int transferTime=transferTable.getTransferTime(state0.getPreviousStop(),state0.getCurrentStop(),state0.getPreviousTrip(),trip);
+    int transferTime=transferTable.getTransferTime(state0.getPreviousStop(),currentStop,state0.getPreviousTrip(),trip,boarding);
     if (transferTime > 0) {
-      if (sd.secondsSinceMidnight(state0.getLastAlightedTimeSeconds()) + transferTime > getDepartureTime(stopIndex)) {
-        return false;
+      if (boarding) {
+        if (sd.secondsSinceMidnight(state0.getLastAlightedTimeSeconds()) + transferTime > getDepartureTime(stopIndex)) {
+          return false;
+        }
+      }
+ else {
+        if (sd.secondsSinceMidnight(state0.getLastAlightedTimeSeconds()) - transferTime < getArrivalTime(stopIndex)) {
+          return false;
+        }
       }
     }
  else     if (transferTime == StopTransfer.FORBIDDEN_TRANSFER) {

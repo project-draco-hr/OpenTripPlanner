@@ -14,5 +14,5 @@
   toTrip.setId(new AgencyAndId("TriMet",toTripId));
   toTrip.setRoute(toRoute);
   table.addTransferTime(fromStop,toStop,null,null,fromTrip,toTrip,transferTime);
-  assertEquals(transferTime,table.getTransferTime(fromStop,toStop,fromTrip,toTrip));
+  assertEquals(transferTime,table.getTransferTime(fromStop,toStop,fromTrip,toTrip,true));
 }

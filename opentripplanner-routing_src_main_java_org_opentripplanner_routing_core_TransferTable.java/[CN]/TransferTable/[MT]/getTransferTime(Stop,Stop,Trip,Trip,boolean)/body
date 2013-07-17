@@ -1,6 +1,14 @@
 {
   checkNotNull(fromStop);
   checkNotNull(toStop);
+  if (!forwardInTime) {
+    Stop tempStop=fromStop;
+    fromStop=toStop;
+    toStop=tempStop;
+    Trip tempTrip=fromTrip;
+    fromTrip=toTrip;
+    toTrip=tempTrip;
+  }
   int transferTime=getTransferTime(fromStop.getId(),toStop.getId(),fromTrip,toTrip);
   if (transferTime == StopTransfer.UNKNOWN_TRANSFER) {
     AgencyAndId fromStopParentId=null;
