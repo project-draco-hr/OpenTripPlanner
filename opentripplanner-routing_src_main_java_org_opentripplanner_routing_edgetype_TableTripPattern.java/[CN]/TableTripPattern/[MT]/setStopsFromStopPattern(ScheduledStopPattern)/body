@@ -1,9 +1,8 @@
 {
-  this.stops=new Stop[stopPattern.stops.size()];
-  perStopFlags=new int[stops.length];
+  patternHops=new PatternHop[stopPattern.stops.size() - 1];
+  perStopFlags=new int[stopPattern.stops.size()];
   int i=0;
   for (  Stop stop : stopPattern.stops) {
-    this.stops[i]=stop;
     if (stop.getWheelchairBoarding() == 1) {
       perStopFlags[i]|=FLAG_WHEELCHAIR_ACCESSIBLE;
     }
