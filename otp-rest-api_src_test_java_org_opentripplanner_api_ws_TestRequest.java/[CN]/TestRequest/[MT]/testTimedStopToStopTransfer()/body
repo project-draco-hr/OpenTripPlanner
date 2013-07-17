@@ -7,7 +7,7 @@
   Itinerary itinerary=response.getPlan().itinerary.get(0);
   assertEquals("751W1320",itinerary.legs.get(1).tripId);
   assertEquals("91W1350",itinerary.legs.get(3).tripId);
-  addTripToTripTransferTimeToTable(table,"7528","9756","75","12","750W1300","120W1320",StopTransfer.TIMED_TRANSFER);
+  addStopToStopTransferTimeToTable(table,"7528","9756",StopTransfer.TIMED_TRANSFER);
   @SuppressWarnings("deprecation") Vertex fromVertex=graph.getVertex("TriMet_7528_arrive");
   @SuppressWarnings("deprecation") Vertex toVertex=graph.getVertex("TriMet_9756_depart");
   TimedTransferEdge timedTransferEdge=new TimedTransferEdge(fromVertex,toVertex);
@@ -21,6 +21,14 @@
   itinerary=response.getPlan().itinerary.get(0);
   assertEquals("750W1300",itinerary.legs.get(1).tripId);
   assertEquals("120W1320",itinerary.legs.get(2).tripId);
+  applyUpdateToTripPattern(pattern,"120W1320","9756",21,41579,41579,Update.Status.PREDICTION,0);
+  response=planner.getItineraries();
+  itinerary=response.getPlan().itinerary.get(0);
+  int secondBusLeg=2;
+  if (itinerary.legs.get(2).mode == "WALK") {
+    secondBusLeg=3;
+  }
+  assertFalse("190W1280".equals(itinerary.legs.get(1).tripId) && "751W1330".equals(itinerary.legs.get(secondBusLeg).tripId));
   applyUpdateToTripPattern(pattern,"120W1320","9756",21,41820,41820,Update.Status.PREDICTION,0);
   timedTransferEdge.detach();
   reset(graph);
