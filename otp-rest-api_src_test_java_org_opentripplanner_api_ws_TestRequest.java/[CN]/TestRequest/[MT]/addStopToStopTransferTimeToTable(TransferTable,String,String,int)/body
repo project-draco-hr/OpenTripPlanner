@@ -1,0 +1,18 @@
+{
+  Stop fromStop=new Stop();
+  fromStop.setId(new AgencyAndId("TriMet",fromStopId));
+  Stop toStop=new Stop();
+  toStop.setId(new AgencyAndId("TriMet",toStopId));
+  Route fromRoute=new Route();
+  fromRoute.setId(new AgencyAndId("TriMet","dummy"));
+  Route toRoute=new Route();
+  toRoute.setId(new AgencyAndId("TriMet","dummy"));
+  Trip fromTrip=new Trip();
+  fromTrip.setId(new AgencyAndId("TriMet","dummy"));
+  fromTrip.setRoute(fromRoute);
+  Trip toTrip=new Trip();
+  toTrip.setId(new AgencyAndId("TriMet","dummy"));
+  toTrip.setRoute(toRoute);
+  table.addTransferTime(fromStop,toStop,null,null,null,null,transferTime);
+  assertEquals(transferTime,table.getTransferTime(fromStop,toStop,fromTrip,toTrip,true));
+}

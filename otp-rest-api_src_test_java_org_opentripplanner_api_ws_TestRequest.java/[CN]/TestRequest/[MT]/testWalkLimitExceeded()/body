@@ -1,0 +1,12 @@
+{
+  TestPlanner planner=new TestPlanner("portland","45.501115,-122.738214","45.469487,-122.500343");
+  Response response=planner.getItineraries();
+  Itinerary itinerary=response.getPlan().itinerary.get(0);
+  assertTrue(itinerary.walkDistance > planner.getMaxWalkDistance().get(0));
+  assertTrue(itinerary.walkLimitExceeded);
+  planner=new TestPlanner("portland","45.445631,-122.845388","45.459961,-122.752347");
+  response=planner.getItineraries();
+  itinerary=response.getPlan().itinerary.get(0);
+  assertTrue(itinerary.walkDistance <= planner.getMaxWalkDistance().get(0));
+  assertFalse(itinerary.walkLimitExceeded);
+}

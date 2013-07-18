@@ -1,0 +1,15 @@
+{
+  System.out.println("addFeedback reqId=" + requestId);
+  FieldTripRequest req=FieldTripRequest.findById(requestId);
+  if (req != null) {
+    feedback.id=null;
+    feedback.request=req;
+    feedback.save();
+    req.feedback.add(feedback);
+    req.save();
+    render(feedback);
+  }
+ else {
+    badRequest();
+  }
+}

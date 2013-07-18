@@ -10,7 +10,8 @@
     int transferPenalty=0;
     if (state0.getNumBoardings() > 0) {
       TransferTable transferTable=options.getRoutingContext().transferTable;
-      int transferTime=transferTable.getTransferTime(state0.getPreviousStop(),state0.getCurrentStop(),state0.getPreviousTrip(),trip);
+      Stop currentStop=((TransitVertex)tov).getStop();
+      int transferTime=transferTable.getTransferTime(state0.getPreviousStop(),currentStop,state0.getPreviousTrip(),trip,false);
       if (transferTime > 0) {
         long tableAlightBefore=state0.getLastAlightedTimeSeconds() - transferTime;
         if (tableAlightBefore < currentTime) {
@@ -38,7 +39,7 @@
       if (sd.serviceIdRunning(serviceId)) {
         int startTime=pattern.getPreviousArrivalTime(stopIndex,secondsSinceMidnight,options.wheelchairAccessible,mode == TraverseMode.BICYCLE,true);
         if (startTime >= 0) {
-          int wait=(int)(currentTime - sd.time(startTime));
+          int wait=(int)(state0.getTimeSeconds() - sd.time(startTime));
           if (wait < 0)           LOG.error("negative wait time on alight");
           if (bestWait < 0 || wait < bestWait) {
             bestWait=wait;

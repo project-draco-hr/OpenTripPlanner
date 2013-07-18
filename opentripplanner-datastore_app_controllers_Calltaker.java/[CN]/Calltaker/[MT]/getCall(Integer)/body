@@ -1,5 +1,6 @@
 {
   TrinetUser user=checkLogin();
+  checkAccess(user);
   System.out.println("getCall for " + user);
   List<Call> calls;
   if (limit == null)   calls=Call.find("byUser order by startTime",user).fetch();

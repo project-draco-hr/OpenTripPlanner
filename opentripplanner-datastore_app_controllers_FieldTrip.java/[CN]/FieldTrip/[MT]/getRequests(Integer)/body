@@ -1,6 +1,8 @@
 {
+  TrinetUser user=checkLogin();
+  checkAccess(user);
   List<FieldTripRequest> requests;
-  String sql="";
+  String sql="order by timeStamp desc";
   if (limit == null)   requests=FieldTripRequest.find(sql).fetch();
  else {
     requests=FieldTripRequest.find(sql).fetch(limit);
