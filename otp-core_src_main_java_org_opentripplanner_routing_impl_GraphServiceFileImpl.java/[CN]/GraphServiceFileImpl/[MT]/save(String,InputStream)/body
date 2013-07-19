@@ -1,0 +1,32 @@
+{
+  String baseFileName=createBaseFileName(routerId);
+  String graphFileName=baseFileName + GRAPH_FILENAME;
+  try {
+    File sourceFile=new File(graphFileName);
+    File directory=new File(sourceFile.getParentFile().getPath());
+    if (!directory.exists()) {
+      directory.mkdir();
+    }
+    sourceFile=new File(graphFileName);
+    File destFile=null;
+    if (sourceFile.exists()) {
+      destFile=new File(graphFileName + ".bak");
+      if (destFile.exists()) {
+        destFile.delete();
+      }
+      sourceFile.renameTo(destFile);
+    }
+    FileOutputStream os=new FileOutputStream(graphFileName);
+    copyStreams(is,os);
+    sourceFile=new File(graphFileName + ".bak");
+    if (sourceFile.exists()) {
+      sourceFile.delete();
+    }
+  }
+ catch (  Exception ex) {
+    LOG.error("Exception while storing graph to {}.",graphFileName);
+    ex.printStackTrace();
+    return false;
+  }
+  return true;
+}

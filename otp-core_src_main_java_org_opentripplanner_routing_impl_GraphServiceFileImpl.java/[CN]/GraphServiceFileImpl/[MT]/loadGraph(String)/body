@@ -4,16 +4,9 @@
     return null;
   }
   LOG.debug("loading serialized graph for routerId {}",routerId);
-  StringBuilder sb=new StringBuilder(basePath);
-  if (!(basePath.endsWith(File.separator))) {
-    sb.append(File.separator);
-  }
-  if (routerId.length() > 0) {
-    sb.append(routerId);
-    sb.append(File.separator);
-  }
-  String graphFileName=sb.toString() + GRAPH_FILENAME;
-  String configFileName=sb.toString() + CONFIG_FILENAME;
+  String baseFileName=createBaseFileName(routerId);
+  String graphFileName=baseFileName + GRAPH_FILENAME;
+  String configFileName=baseFileName + CONFIG_FILENAME;
   LOG.debug("graph file for routerId '{}' is at {}",routerId,graphFileName);
   InputStream is=null;
   final String CLASSPATH_PREFIX="classpath:/";
