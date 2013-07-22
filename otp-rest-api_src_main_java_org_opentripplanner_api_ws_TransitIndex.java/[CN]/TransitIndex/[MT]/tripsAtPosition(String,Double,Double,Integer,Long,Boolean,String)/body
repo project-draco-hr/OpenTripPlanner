@@ -1,7 +1,6 @@
 {
   if (timeSec == null)   timeSec=System.currentTimeMillis() / 1000;
-  if (maxDistanceMeter == null)   maxDistanceMeter=500.0;
-  if (maxDeltaTimeSec == null)   maxDeltaTimeSec=60 * 60;
+  if (maxReturnedValues == null)   maxReturnedValues=10;
   Graph graph=getGraph(routerId);
   TransitIndexService transitIndexService=graph.getService(TransitIndexService.class);
   if (transitIndexService == null) {
@@ -13,7 +12,7 @@
   List<ServiceDay> serviceDays=getServiceDays(graph,timeSec,routeId.getAgencyId());
   TripList response=new TripList();
   for (  RouteVariant variant : variants) {
-    response.tripMatches.addAll(matchTripsForVariant(variant,position,timeSec,serviceDays,maxDistanceMeter,maxDeltaTimeSec));
+    response.tripMatches.addAll(matchTripsForVariant(variant,position,timeSec,serviceDays));
   }
   Collections.sort(response.tripMatches,new Comparator<TripMatch>(){
     @Override public int compare(    TripMatch o1,    TripMatch o2){
@@ -21,5 +20,6 @@
     }
   }
 );
+  if (response.tripMatches.size() > maxReturnedValues)   response.tripMatches=response.tripMatches.subList(0,maxReturnedValues);
   return response;
 }
