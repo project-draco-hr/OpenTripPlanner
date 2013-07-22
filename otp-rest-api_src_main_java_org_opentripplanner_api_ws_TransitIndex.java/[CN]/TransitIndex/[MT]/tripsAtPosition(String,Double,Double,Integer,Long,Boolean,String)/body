@@ -1,6 +1,7 @@
 {
   if (timeSec == null)   timeSec=System.currentTimeMillis() / 1000;
   if (maxReturnedValues == null)   maxReturnedValues=10;
+  if (extended == null)   extended=false;
   Graph graph=getGraph(routerId);
   TransitIndexService transitIndexService=graph.getService(TransitIndexService.class);
   if (transitIndexService == null) {
@@ -12,7 +13,7 @@
   List<ServiceDay> serviceDays=getServiceDays(graph,timeSec,routeId.getAgencyId());
   TripList response=new TripList();
   for (  RouteVariant variant : variants) {
-    response.tripMatches.addAll(matchTripsForVariant(variant,position,timeSec,serviceDays));
+    response.tripMatches.addAll(matchTripsForVariant(variant,position,timeSec,serviceDays,extended));
   }
   Collections.sort(response.tripMatches,new Comparator<TripMatch>(){
     @Override public int compare(    TripMatch o1,    TripMatch o2){
