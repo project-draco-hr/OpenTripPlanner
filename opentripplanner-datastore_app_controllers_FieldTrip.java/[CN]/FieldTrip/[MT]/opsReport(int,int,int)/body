@@ -1,0 +1,11 @@
+{
+  Calendar cal=Calendar.getInstance();
+  if (year == 0)   year=cal.get(Calendar.YEAR);
+  if (month == 0)   month=cal.get(Calendar.MONTH) + 1;
+  if (day == 0)   day=cal.get(Calendar.DAY_OF_MONTH);
+  List<GTFSTrip> gtfsTrips=GTFSTrip.find("year(groupItinerary.fieldTrip.serviceDay) = ? and month(groupItinerary.fieldTrip.serviceDay) = ? and day(groupItinerary.fieldTrip.serviceDay) = ? " + "order by depart",year,month,day).fetch();
+  DateFormatSymbols dfs=new DateFormatSymbols();
+  String[] months=dfs.getMonths();
+  String monthName=months[month - 1];
+  render(gtfsTrips,year,month,monthName,day);
+}
