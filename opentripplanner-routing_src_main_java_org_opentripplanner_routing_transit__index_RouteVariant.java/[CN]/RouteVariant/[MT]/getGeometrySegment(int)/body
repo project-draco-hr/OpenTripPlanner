@@ -1,0 +1,7 @@
+{
+  RouteSegment segment=exemplarSegments.get(index);
+  if (segment.hopOut != null) {
+    return GeometryUtils.getGeometryFactory().createLineString(segment.getGeometry().getCoordinates());
+  }
+  return null;
+}

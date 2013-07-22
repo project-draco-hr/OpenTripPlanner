@@ -1,0 +1,36 @@
+{
+  final int ONE_DAY=24 * 60 * 60;
+  double dXmin=Double.MAX_VALUE;
+  double dTmin=Double.MAX_VALUE;
+  double dLmin=Double.MAX_VALUE;
+  int nHops=tripTimes.getNumHops();
+  for (  ServiceDay sd : serviceDays) {
+    if (!sd.serviceIdRunning(serviceId))     continue;
+    for (int hop=0; hop < nHops - 1; hop++) {
+      double dL=distToShape.get(hop);
+      double fraction=fracOfShape.get(hop);
+      double shapeLen=shapeLength.get(hop);
+      int depTime=tripTimes.getDepartureTime(hop);
+      int hopTime=tripTimes.getArrivalTime(hop) - depTime;
+      double speedMs=hopTime < 30 ? shapeLen / 30 : shapeLen / hopTime;
+      double dT=Math.abs(sd.time(depTime + (int)Math.round(hopTime * fraction)) - timeSec);
+      double dX=dT * speedMs + dL;
+      if (dX < dXmin) {
+        dXmin=dX;
+        dTmin=dT;
+        dLmin=dL;
+      }
+    }
+  }
+  if (dXmin < Double.MAX_VALUE && dTmin < ONE_DAY) {
+    TripMatch tripMatch=new TripMatch();
+    tripMatch.trip=new TripType(trip,extended);
+    tripMatch.matchDistanceMeter=dLmin;
+    tripMatch.matchTimeSeconds=dTmin;
+    tripMatch.matchFactor=dXmin;
+    return tripMatch;
+  }
+ else {
+    return null;
+  }
+}

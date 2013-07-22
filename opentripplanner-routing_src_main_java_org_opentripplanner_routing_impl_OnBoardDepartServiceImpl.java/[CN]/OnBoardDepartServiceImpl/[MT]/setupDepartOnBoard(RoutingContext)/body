@@ -1,4 +1,5 @@
 {
+  DistanceLibrary distanceLibrary=SphericalDistanceLibrary.getInstance();
   RoutingRequest opt=ctx.opt;
   AgencyAndId tripId=opt.getStartingTransitTripId();
   TransitIndexService transitIndexService=ctx.graph.getService(TransitIndexService.class);
@@ -17,7 +18,7 @@
   double minDist=Double.MAX_VALUE;
   for (  PatternHop hop : hops) {
     LineString line=hop.getGeometry();
-    double dist=SphericalDistanceLibrary.getInstance().fastDistance(point,line);
+    double dist=distanceLibrary.fastDistance(point,line);
     if (dist < minDist) {
       minDist=dist;
       bestHop=hop;
@@ -27,9 +28,9 @@
  else   LOG.info("On-board depart: origin point {} meters away from hop shape",minDist);
   P2<LineString> geomPair=GeometryUtils.splitGeometryAtPoint(bestHop.getGeometry(),point);
   LineString geomRemaining=geomPair.getSecond();
-  double total=bestHop.getGeometry().getLength();
-  double remaining=geomRemaining.getLength();
-  float fractionCovered=total > 0.0 ? (float)(remaining / total) : 0.0f;
+  double total=distanceLibrary.fastLength(bestHop.getGeometry());
+  double remaining=distanceLibrary.fastLength(geomRemaining);
+  float fractionCovered=total > 0.0 ? (float)(1.0f - remaining / total) : 0.0f;
   PatternStopVertex nextStop=(PatternStopVertex)bestHop.getToVertex();
   int stopIndex=bestHop.getStopIndex();
   TableTripPattern pattern=nextStop.getTripPattern();
