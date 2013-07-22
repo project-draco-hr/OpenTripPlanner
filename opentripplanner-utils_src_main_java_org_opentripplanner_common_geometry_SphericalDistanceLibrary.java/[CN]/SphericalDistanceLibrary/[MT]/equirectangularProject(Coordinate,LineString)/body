@@ -1,0 +1,9 @@
+{
+  double cosLat=FastMath.cos(Math.toRadians(projectionCenter.y));
+  Coordinate[] coords=lineString.getCoordinates();
+  Coordinate[] coords2=new Coordinate[coords.length];
+  for (int i=0; i < coords.length; i++) {
+    coords2[i]=new Coordinate(Math.toRadians(coords[i].x) * cosLat,Math.toRadians(coords[i].y));
+  }
+  return GeometryUtils.getGeometryFactory().createLineString(coords2);
+}
