@@ -1,0 +1,10 @@
+{
+  ZipOutputStream zip=new ZipOutputStream(outStream);
+  for (  File f : directory.listFiles()) {
+    zip.putNextEntry(new ZipEntry(f.getName()));
+    Files.copy(f,zip);
+    zip.closeEntry();
+    zip.flush();
+  }
+  zip.close();
+}
