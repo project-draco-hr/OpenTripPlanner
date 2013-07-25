@@ -1,91 +1,16 @@
 {
-  com.google.protobuf.UnknownFieldSet.Builder unknownFields=com.google.protobuf.UnknownFieldSet.newBuilder(this.getUnknownFields());
-  while (true) {
-    int tag=input.readTag();
-switch (tag) {
-case 0:
-      this.setUnknownFields(unknownFields.build());
-    onChanged();
-  return this;
-default :
-{
-  if (!parseUnknownField(input,unknownFields,extensionRegistry,tag)) {
-    this.setUnknownFields(unknownFields.build());
-    onChanged();
-    return this;
+  com.google.transit.realtime.GtfsRealtime.Alert parsedMessage=null;
+  try {
+    parsedMessage=PARSER.parsePartialFrom(input,extensionRegistry);
   }
-  break;
-}
-case 10:
-{
-com.google.transit.realtime.GtfsRealtime.TimeRange.Builder subBuilder=com.google.transit.realtime.GtfsRealtime.TimeRange.newBuilder();
-input.readMessage(subBuilder,extensionRegistry);
-addActivePeriod(subBuilder.buildPartial());
-break;
-}
-case 42:
-{
-com.google.transit.realtime.GtfsRealtime.EntitySelector.Builder subBuilder=com.google.transit.realtime.GtfsRealtime.EntitySelector.newBuilder();
-input.readMessage(subBuilder,extensionRegistry);
-addInformedEntity(subBuilder.buildPartial());
-break;
-}
-case 48:
-{
-int rawValue=input.readEnum();
-com.google.transit.realtime.GtfsRealtime.Alert.Cause value=com.google.transit.realtime.GtfsRealtime.Alert.Cause.valueOf(rawValue);
-if (value == null) {
-unknownFields.mergeVarintField(6,rawValue);
-}
- else {
-bitField0_|=0x00000004;
-cause_=value;
-}
-break;
-}
-case 56:
-{
-int rawValue=input.readEnum();
-com.google.transit.realtime.GtfsRealtime.Alert.Effect value=com.google.transit.realtime.GtfsRealtime.Alert.Effect.valueOf(rawValue);
-if (value == null) {
-unknownFields.mergeVarintField(7,rawValue);
-}
- else {
-bitField0_|=0x00000008;
-effect_=value;
-}
-break;
-}
-case 66:
-{
-com.google.transit.realtime.GtfsRealtime.TranslatedString.Builder subBuilder=com.google.transit.realtime.GtfsRealtime.TranslatedString.newBuilder();
-if (hasUrl()) {
-subBuilder.mergeFrom(getUrl());
-}
-input.readMessage(subBuilder,extensionRegistry);
-setUrl(subBuilder.buildPartial());
-break;
-}
-case 82:
-{
-com.google.transit.realtime.GtfsRealtime.TranslatedString.Builder subBuilder=com.google.transit.realtime.GtfsRealtime.TranslatedString.newBuilder();
-if (hasHeaderText()) {
-subBuilder.mergeFrom(getHeaderText());
-}
-input.readMessage(subBuilder,extensionRegistry);
-setHeaderText(subBuilder.buildPartial());
-break;
-}
-case 90:
-{
-com.google.transit.realtime.GtfsRealtime.TranslatedString.Builder subBuilder=com.google.transit.realtime.GtfsRealtime.TranslatedString.newBuilder();
-if (hasDescriptionText()) {
-subBuilder.mergeFrom(getDescriptionText());
-}
-input.readMessage(subBuilder,extensionRegistry);
-setDescriptionText(subBuilder.buildPartial());
-break;
-}
-}
-}
+ catch (  com.google.protobuf.InvalidProtocolBufferException e) {
+    parsedMessage=(com.google.transit.realtime.GtfsRealtime.Alert)e.getUnfinishedMessage();
+    throw e;
+  }
+ finally {
+    if (parsedMessage != null) {
+      mergeFrom(parsedMessage);
+    }
+  }
+  return this;
 }

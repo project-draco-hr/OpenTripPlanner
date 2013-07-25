@@ -1,5 +1,6 @@
 {
   getSerializedSize();
+  com.google.protobuf.GeneratedMessage.ExtendableMessage<com.google.transit.realtime.GtfsRealtime.TripUpdate>.ExtensionWriter extensionWriter=newExtensionWriter();
   if (((bitField0_ & 0x00000001) == 0x00000001)) {
     output.writeMessage(1,trip_);
   }
@@ -9,5 +10,9 @@
   if (((bitField0_ & 0x00000002) == 0x00000002)) {
     output.writeMessage(3,vehicle_);
   }
+  if (((bitField0_ & 0x00000004) == 0x00000004)) {
+    output.writeUInt64(4,timestamp_);
+  }
+  extensionWriter.writeUntil(2000,output);
   getUnknownFields().writeTo(output);
 }

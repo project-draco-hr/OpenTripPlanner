@@ -1,10 +1,14 @@
 {
   if (other == com.google.transit.realtime.GtfsRealtime.EntitySelector.getDefaultInstance())   return this;
   if (other.hasAgencyId()) {
-    setAgencyId(other.getAgencyId());
+    bitField0_|=0x00000001;
+    agencyId_=other.agencyId_;
+    onChanged();
   }
   if (other.hasRouteId()) {
-    setRouteId(other.getRouteId());
+    bitField0_|=0x00000002;
+    routeId_=other.routeId_;
+    onChanged();
   }
   if (other.hasRouteType()) {
     setRouteType(other.getRouteType());
@@ -13,8 +17,11 @@
     mergeTrip(other.getTrip());
   }
   if (other.hasStopId()) {
-    setStopId(other.getStopId());
+    bitField0_|=0x00000010;
+    stopId_=other.stopId_;
+    onChanged();
   }
+  this.mergeExtensionFields(other);
   this.mergeUnknownFields(other.getUnknownFields());
   return this;
 }

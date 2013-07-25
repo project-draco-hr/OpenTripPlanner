@@ -1,3 +1,11 @@
 {
+  if (hasTrip()) {
+    if (!getTrip().isInitialized()) {
+      return false;
+    }
+  }
+  if (!extensionsAreInitialized()) {
+    return false;
+  }
   return true;
 }

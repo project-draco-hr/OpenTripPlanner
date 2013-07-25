@@ -1,5 +1,6 @@
 {
   getSerializedSize();
+  com.google.protobuf.GeneratedMessage.ExtendableMessage<com.google.transit.realtime.GtfsRealtime.VehiclePosition>.ExtensionWriter extensionWriter=newExtensionWriter();
   if (((bitField0_ & 0x00000001) == 0x00000001)) {
     output.writeMessage(1,trip_);
   }
@@ -24,5 +25,6 @@
   if (((bitField0_ & 0x00000002) == 0x00000002)) {
     output.writeMessage(8,vehicle_);
   }
+  extensionWriter.writeUntil(2000,output);
   getUnknownFields().writeTo(output);
 }

@@ -1,7 +1,9 @@
 {
   if (other == com.google.transit.realtime.GtfsRealtime.FeedHeader.getDefaultInstance())   return this;
   if (other.hasGtfsRealtimeVersion()) {
-    setGtfsRealtimeVersion(other.getGtfsRealtimeVersion());
+    bitField0_|=0x00000001;
+    gtfsRealtimeVersion_=other.gtfsRealtimeVersion_;
+    onChanged();
   }
   if (other.hasIncrementality()) {
     setIncrementality(other.getIncrementality());
@@ -9,6 +11,7 @@
   if (other.hasTimestamp()) {
     setTimestamp(other.getTimestamp());
   }
+  this.mergeExtensionFields(other);
   this.mergeUnknownFields(other.getUnknownFields());
   return this;
 }

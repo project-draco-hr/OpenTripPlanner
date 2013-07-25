@@ -5,6 +5,26 @@
     memoizedIsInitialized=0;
     return false;
   }
+  if (!getTrip().isInitialized()) {
+    memoizedIsInitialized=0;
+    return false;
+  }
+  if (hasVehicle()) {
+    if (!getVehicle().isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  for (int i=0; i < getStopTimeUpdateCount(); i++) {
+    if (!getStopTimeUpdate(i).isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  if (!extensionsAreInitialized()) {
+    memoizedIsInitialized=0;
+    return false;
+  }
   memoizedIsInitialized=1;
   return true;
 }
