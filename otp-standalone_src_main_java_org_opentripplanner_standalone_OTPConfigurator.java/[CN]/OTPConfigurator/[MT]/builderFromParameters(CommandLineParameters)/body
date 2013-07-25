@@ -58,6 +58,12 @@ graphBuilder.addGraphBuilder(new TransitToStreetNetworkGraphBuilderImpl());
 graphBuilder.addGraphBuilder(new StreetlessStopLinker());
 }
 }
+if (params.elevation) {
+File cacheDirectory=new File(params.cacheDirectory,"ned");
+NEDGridCoverageFactory ngcf=new NEDGridCoverageFactoryImpl(cacheDirectory);
+GraphBuilder nedBuilder=new NEDGraphBuilderImpl(ngcf);
+graphBuilder.addGraphBuilder(nedBuilder);
+}
 graphBuilder.setSerializeGraph(!params.inMemory);
 return graphBuilder;
 }
