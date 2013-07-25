@@ -37,13 +37,13 @@ case CANCELED:
   updates.add(getUpdateForCanceledTrip(tripId,timestamp,serviceDate));
 break;
 case ADDED:
-LOG.warn("ScheduleRelationship.ADDED trips are currently not handled.");
-break;
-case REPLACEMENT:
-LOG.warn("ScheduleRelationship.REPLACEMENT trips are currently not handled.");
+updates.add(getUpdateForAddedTrip(tripId,tripUpdate,timestamp,serviceDate));
 break;
 case UNSCHEDULED:
 LOG.warn("ScheduleRelationship.UNSCHEDULED trips are currently not handled.");
+break;
+case REPLACEMENT:
+LOG.warn("ScheduleRelationship.REPLACEMENT trips are currently not handled.");
 break;
 }
 }

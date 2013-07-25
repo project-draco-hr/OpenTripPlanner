@@ -12,29 +12,31 @@
       uIndex+=1;
       LOG.debug("trip update block #{} ({} updates) :",uIndex,tripUpdate.getUpdates().size());
       LOG.trace("{}",tripUpdate.toString());
-      tripUpdate.filter(true,true,true);
-      if (!tripUpdate.isCoherent()) {
-        LOG.warn("Incoherent TripUpdate, skipping.");
-        continue;
-      }
-      if (tripUpdate.getUpdates().size() < 1) {
-        LOG.debug("trip update contains no updates after filtering, skipping.");
-        continue;
-      }
-      TableTripPattern pattern=transitIndexService.getTripPatternForTrip(tripUpdate.getTripId());
-      if (pattern == null) {
-        LOG.debug("No pattern found for tripId {}, skipping trip update.",tripUpdate.getTripId());
-        continue;
-      }
-      boolean applied=buffer.update(pattern,tripUpdate);
-      if (applied) {
-        appliedBlockCount+=1;
-        if (appliedBlockCount % logFrequency == 0) {
-          LOG.info("applied {} stoptime update blocks.",appliedBlockCount);
-        }
-        getSnapshot();
-      }
-    }
-    LOG.debug("end of update message");
-  }
+      boolean applied=false;
+switch (tripUpdate.getStatus()) {
+case ADDED:
+        applied=handleAddedTrip(tripUpdate);
+      break;
+case CANCELED:
+    applied=handleCanceledTrip(tripUpdate);
+  break;
+case MODIFIED:
+applied=handleModifiedTrip(tripUpdate);
+break;
+case REMOVED:
+applied=handleRemovedTrip(tripUpdate);
+break;
+}
+if (applied) {
+appliedBlockCount++;
+}
+ else {
+LOG.warn("Failed to apply Tripupdate: " + tripUpdate);
+}
+if (appliedBlockCount % logFrequency == 0) {
+LOG.info("applied {} stoptime update blocks.",appliedBlockCount);
+}
+}
+LOG.debug("end of update message");
+}
 }

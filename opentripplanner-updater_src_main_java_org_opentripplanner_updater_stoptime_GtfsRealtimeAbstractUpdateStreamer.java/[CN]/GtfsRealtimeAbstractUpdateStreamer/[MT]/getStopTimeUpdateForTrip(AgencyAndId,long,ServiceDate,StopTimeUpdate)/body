@@ -1,8 +1,8 @@
 {
   AgencyAndId stopId=new AgencyAndId(defaultAgencyId,stopTimeUpdate.getStopId());
   if (stopTimeUpdate.hasScheduleRelationship() && StopTimeUpdate.ScheduleRelationship.NO_DATA == stopTimeUpdate.getScheduleRelationship()) {
-    Update u=new Update(tripId,stopTimeUpdate.getStopId(),stopTimeUpdate.getStopSequence(),0,0,Update.Status.PLANNED,timestamp,serviceDate);
-    updates.add(u);
+    Update u=new Update(tripId,stopId,stopTimeUpdate.getStopSequence(),0,0,Update.Status.PLANNED,timestamp,serviceDate);
+    return u;
   }
   long today=serviceDate.getAsDate(TimeZone.getTimeZone("GMT")).getTime() / 1000;
   long arrivalTime=stopTimeUpdate.getArrival().getTime();
@@ -15,6 +15,6 @@
     arrivalTime=arrivalTime - today;
     departureTime=departureTime - today;
   }
-  Update u=new Update(tripId,stopTimeUpdate.getStopId(),stopTimeUpdate.getStopSequence(),(int)arrivalTime,(int)departureTime,status,timestamp,serviceDate);
+  Update u=new Update(tripId,stopId,stopTimeUpdate.getStopSequence(),(int)arrivalTime,(int)departureTime,status,timestamp,serviceDate);
   return u;
 }

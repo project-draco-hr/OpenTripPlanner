@@ -1,0 +1,21 @@
+{
+  tripUpdate.filter(true,true,true);
+  if (!tripUpdate.isCoherent()) {
+    LOG.warn("Incoherent UpdateBlock, skipping.");
+    return false;
+  }
+  if (tripUpdate.getUpdates().size() < 1) {
+    LOG.debug("UpdateBlock contains no updates after filtering, skipping.");
+    return false;
+  }
+  TableTripPattern pattern=getPatternForTrip(tripUpdate.getTripId());
+  if (pattern == null) {
+    LOG.debug("No pattern found for tripId {}, skipping UpdateBlock.",tripUpdate.getTripId());
+    return false;
+  }
+  boolean applied=buffer.update(pattern,tripUpdate);
+  if (applied) {
+    getSnapshot();
+  }
+  return applied;
+}

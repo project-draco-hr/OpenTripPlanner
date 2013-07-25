@@ -7,6 +7,8 @@
   this.tableTripPatternsByTrip.putAll(tableTripPatternsByTrip);
   MapUtils.mergeInUnique(this.directionsForRoute,directionsByRoute);
   MapUtils.mergeInUnique(this.stopsForRoute,stopsByRoute);
+  this.routes.putAll(routes);
+  this.stops.putAll(stops);
   for (  TraverseMode mode : modes) {
     if (!this.modes.contains(mode)) {
       this.modes.add(mode);

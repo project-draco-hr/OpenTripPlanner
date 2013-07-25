@@ -77,6 +77,12 @@
     @Override public TableTripPattern getTripPatternForTrip(    AgencyAndId tripId){
       return null;
     }
+    @Override public Map<AgencyAndId,Stop> getAllStops(){
+      return null;
+    }
+    @Override public Map<AgencyAndId,Route> getAllRoutes(){
+      return null;
+    }
   }
 ;
   graph.putService(TransitIndexService.class,index);

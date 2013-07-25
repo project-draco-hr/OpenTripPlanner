@@ -1,7 +1,7 @@
 {
   List<Update> updates=new LinkedList<Update>();
   for (  StopTimeUpdate stopTimeUpdate : tripUpdate.getStopTimeUpdateList()) {
-    Update u=getStopTimeUpdateForTrip(tripId,timestamp,serviceDate,updates,stopTimeUpdate);
+    Update u=getStopTimeUpdateForTrip(tripId,timestamp,serviceDate,stopTimeUpdate);
     updates.add(u);
   }
   return TripUpdate.forUpdatedTrip(tripId,timestamp,serviceDate,updates);
