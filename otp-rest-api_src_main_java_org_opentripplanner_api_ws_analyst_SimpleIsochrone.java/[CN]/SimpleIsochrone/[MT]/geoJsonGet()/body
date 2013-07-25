@@ -1,18 +1,7 @@
 {
-  Map<Integer,Geometry> contours=makeContours();
-  StringWriter stringWriter=new StringWriter();
-  stringWriter.write("{\"type\": \"FeatureCollection\", \"features\": [\n");
-  List<Integer> thresholds=new ArrayList<Integer>(contours.keySet());
-  Collections.sort(thresholds);
-  Collections.reverse(thresholds);
-  for (  Integer threshold : thresholds) {
-    Geometry contour=contours.get(threshold);
-    stringWriter.write("{\"type\":\"Feature\",\"geometry\":");
-    GeoJSONBuilder json=new GeoJSONBuilder(stringWriter);
-    json.writeGeom(contour);
-    stringWriter.write(",\n\"properties\":{\"minutes\":\"" + threshold + "\"}\n");
-    stringWriter.write("},\n");
-  }
-  stringWriter.write("]}\n");
-  return stringWriter.toString();
+  SimpleFeatureCollection contourFeatures=makeContourFeatures();
+  StringWriter writer=new StringWriter();
+  FeatureJSON fj=new FeatureJSON();
+  fj.writeFeatureCollection(contourFeatures,writer);
+  return Response.ok().entity(writer.toString()).build();
 }

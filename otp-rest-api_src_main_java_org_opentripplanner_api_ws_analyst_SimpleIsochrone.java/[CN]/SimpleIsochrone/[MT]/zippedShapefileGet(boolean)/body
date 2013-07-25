@@ -1,30 +1,13 @@
 {
-  Map<Integer,Geometry> contours=makeContours();
-  SimpleFeatureTypeBuilder tbuilder=new SimpleFeatureTypeBuilder();
-  tbuilder.setName("Contour");
-  tbuilder.add("Geometry",MultiPolygon.class);
-  tbuilder.add("Time",Integer.class);
-  if (resultsProjected)   tbuilder.setCRS(crs);
- else   tbuilder.setCRS(DefaultGeographicCRS.WGS84);
-  SimpleFeatureType schema=tbuilder.buildFeatureType();
+  SimpleFeatureCollection contourFeatures=makeContourFeatures();
   final File shapeDir=Files.createTempDir();
   shapeDir.deleteOnExit();
   File shapeFile=new File(shapeDir,shpName + ".shp");
   LOG.debug("writing out shapefile {}",shapeFile);
   ShapefileDataStore outStore=new ShapefileDataStore(shapeFile.toURI().toURL());
-  outStore.createSchema(schema);
-  FeatureWriter<SimpleFeatureType,SimpleFeature> fw=outStore.getFeatureWriter("Contour",Transaction.AUTO_COMMIT);
-  List<Integer> thresholds=new ArrayList<Integer>(contours.keySet());
-  Collections.sort(thresholds);
-  Collections.reverse(thresholds);
-  for (  Integer threshold : thresholds) {
-    Geometry contour=contours.get(threshold);
-    SimpleFeature feature=fw.next();
-    feature.setAttributes(new Object[]{contour,threshold});
-    fw.write();
-  }
-  fw.close();
-  LOG.info("Wrote {}",shapeFile);
+  outStore.createSchema(contourSchema);
+  SimpleFeatureStore featureStore=(SimpleFeatureStore)outStore.getFeatureSource();
+  featureStore.addFeatures(contourFeatures);
   StreamingOutput output=new DirectoryZipper(shapeDir);
   if (stream) {
     return Response.ok().entity(output).build();

@@ -1,0 +1,14 @@
+{
+  Map<Vertex,Double> points=makePoints();
+  DefaultFeatureCollection featureCollection=new DefaultFeatureCollection(null,pointSchema);
+  SimpleFeatureBuilder fbuilder=new SimpleFeatureBuilder(pointSchema);
+  GeometryFactory gf=new GeometryFactory();
+  for (  Map.Entry<Vertex,Double> entry : points.entrySet()) {
+    Vertex vertex=entry.getKey();
+    Double travelTime=entry.getValue();
+    fbuilder.add(gf.createPoint(vertex.getCoordinate()));
+    fbuilder.add(travelTime);
+    featureCollection.add(fbuilder.buildFeature(null));
+  }
+  return featureCollection;
+}

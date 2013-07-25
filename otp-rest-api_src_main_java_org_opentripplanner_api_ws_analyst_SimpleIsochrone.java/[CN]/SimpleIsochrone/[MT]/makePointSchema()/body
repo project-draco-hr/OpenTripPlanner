@@ -1,0 +1,8 @@
+{
+  SimpleFeatureTypeBuilder tbuilder=new SimpleFeatureTypeBuilder();
+  tbuilder.setName("points");
+  tbuilder.setCRS(DefaultGeographicCRS.WGS84);
+  tbuilder.add("Geometry",Point.class);
+  tbuilder.add("Time",Integer.class);
+  return tbuilder.buildFeatureType();
+}
