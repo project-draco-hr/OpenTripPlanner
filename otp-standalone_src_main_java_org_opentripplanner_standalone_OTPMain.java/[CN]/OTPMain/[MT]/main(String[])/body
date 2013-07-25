@@ -10,7 +10,7 @@
     params.infer();
   }
  catch (  ParameterException pex) {
-    LOG.error("Invalid parameter {}",pex.getMessage());
+    LOG.error("Parameter error: {}",pex.getMessage());
     System.exit(1);
   }
   OTPConfigurator configurator=new OTPConfigurator(params);

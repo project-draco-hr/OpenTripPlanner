@@ -11,11 +11,13 @@
   cpf.bind(SPTService.class,new GenericAStar());
   cpf.bind(PathService.class,pathService);
   cpf.bind(RemainingWeightHeuristicFactory.class,new DefaultRemainingWeightHeuristicFactoryImpl());
-  cpf.bind(Renderer.class);
-  cpf.bind(SPTCache.class);
-  cpf.bind(TileCache.class);
-  cpf.bind(GeometryIndex.class);
-  cpf.bind(SampleFactory.class);
+  if (params.analyst) {
+    cpf.bind(Renderer.class);
+    cpf.bind(SPTCache.class);
+    cpf.bind(TileCache.class);
+    cpf.bind(GeometryIndex.class);
+    cpf.bind(SampleFactory.class);
+  }
   cpf.doneBinding();
   return cpf;
 }
