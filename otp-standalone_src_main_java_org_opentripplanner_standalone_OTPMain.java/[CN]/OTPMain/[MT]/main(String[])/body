@@ -13,13 +13,13 @@
     LOG.error("Invalid parameter {}",pex.getMessage());
     System.exit(1);
   }
-  GraphBuilderTask graphBuilder=OTPConfigurator.builderFromParameters(params);
-  Graph graph=null;
+  OTPConfigurator configurator=new OTPConfigurator(params);
+  GraphBuilderTask graphBuilder=configurator.builderFromParameters();
   if (graphBuilder != null) {
     graphBuilder.run();
-    graph=graphBuilder.getGraph();
+    configurator.setGraph(graphBuilder.getGraph());
   }
-  GrizzlyServer grizzlyServer=OTPConfigurator.serverFromParameters(params,graph);
+  GrizzlyServer grizzlyServer=configurator.serverFromParameters();
   if (grizzlyServer != null) {
     while (true) {
       try {

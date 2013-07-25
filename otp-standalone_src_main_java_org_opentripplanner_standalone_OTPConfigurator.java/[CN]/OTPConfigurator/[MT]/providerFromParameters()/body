@@ -4,7 +4,7 @@
   pathService.setFirstPathTimeout(10.0);
   pathService.setMultiPathTimeout(1.0);
   OTPComponentProviderFactory cpf=new OTPComponentProviderFactory();
-  cpf.bind(GraphService.class,makeGraphService(params,graph));
+  cpf.bind(GraphService.class,makeGraphService());
   cpf.bind(RoutingRequest.class);
   cpf.bind(PlanGenerator.class);
   cpf.bind(MetadataService.class);
