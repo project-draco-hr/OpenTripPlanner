@@ -33,10 +33,19 @@
   HashMap<Class<?>,Object> extra=new HashMap<Class<?>,Object>();
   for (  GraphBuilder load : _graphBuilders)   load.buildGraph(graph,extra);
   graph.summarizeBuilderAnnotations();
-  try {
-    graph.save(graphFile);
+  if (serializeGraph) {
+    try {
+      graph.save(graphFile);
+    }
+ catch (    Exception ex) {
+      throw new IllegalStateException(ex);
+    }
   }
- catch (  Exception ex) {
-    throw new IllegalStateException(ex);
+ else {
+    LOG.info("Not saving graph to disk, as requested.");
+    LOG.info("Building street index.");
+    graph.streetIndex=new StreetVertexIndexServiceImpl(graph);
+    LOG.info("Building edge and vertex indices.");
+    graph.rebuildVertexAndEdgeIndices();
   }
 }
