@@ -1,10 +1,22 @@
 {
 synchronized (this) {
     if (dirty == null)     throw new ConcurrentModificationException("This TimetableResolver is read-only.");
-    Timetable tt=resolve(pattern);
+    Timetable tt=resolve(pattern,tripUpdate.getServiceDate());
     if (!dirty.contains(tt)) {
-      tt=tt.copy();
-      timetables.put(pattern,tt);
+      Timetable old=tt;
+      tt=tt.copy(tripUpdate.getServiceDate());
+      SortedSet<Timetable> sortedTimetables=timetables.get(pattern);
+      if (sortedTimetables == null) {
+        sortedTimetables=new TreeSet<Timetable>(new SortedTimetableComparator());
+      }
+ else {
+        SortedSet<Timetable> temp=new TreeSet<Timetable>(new SortedTimetableComparator());
+        temp.addAll(sortedTimetables);
+        sortedTimetables=temp;
+      }
+      if (old.getServiceDate() != null)       sortedTimetables.remove(old);
+      sortedTimetables.add(tt);
+      timetables.put(pattern,sortedTimetables);
       dirty.add(tt);
     }
     return tt.update(tripUpdate);

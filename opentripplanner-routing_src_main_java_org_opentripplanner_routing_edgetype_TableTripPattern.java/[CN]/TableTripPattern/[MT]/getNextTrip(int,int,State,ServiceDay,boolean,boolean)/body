@@ -2,7 +2,7 @@
   RoutingRequest options=state0.getOptions();
   Timetable timetable=scheduledTimetable;
   TimetableResolver snapshot=options.rctx.timetableSnapshot;
-  if (snapshot != null)   timetable=snapshot.resolve(this);
+  if (snapshot != null)   timetable=snapshot.resolve(this,sd.getServiceDate());
   int mask=boarding ? MASK_PICKUP : MASK_DROPOFF;
   int shift=boarding ? SHIFT_PICKUP : SHIFT_DROPOFF;
   if ((perStopFlags[stopIndex] & mask) >> shift == NO_PICKUP) {

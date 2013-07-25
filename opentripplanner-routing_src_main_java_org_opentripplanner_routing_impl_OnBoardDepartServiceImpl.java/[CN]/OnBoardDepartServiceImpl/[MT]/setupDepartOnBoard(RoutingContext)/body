@@ -34,21 +34,18 @@
   PatternStopVertex nextStop=(PatternStopVertex)bestHop.getToVertex();
   int stopIndex=bestHop.getStopIndex();
   TableTripPattern pattern=nextStop.getTripPattern();
-  TripTimes tripTimes=null;
-  if (ctx.timetableSnapshot == null) {
-    tripTimes=pattern.getTripTimes(pattern.getTripIndex(tripId));
-  }
- else {
-    Timetable timeTable=ctx.timetableSnapshot.resolve(pattern);
-    tripTimes=timeTable.getTripTimes(timeTable.getTripIndex(tripId));
-  }
-  int depTime=tripTimes.getDepartureTime(stopIndex);
-  int arrTime=tripTimes.getArrivalTime(stopIndex);
-  int estTime=Math.round(depTime * fractionCovered + arrTime * (1 - fractionCovered));
+  TripTimes tripTimes=pattern.getTripTimes(pattern.getTripIndex(tripId));
   ServiceDay bestServiceDay=null;
   int minDelta=Integer.MAX_VALUE;
   int actDelta=0;
   for (  ServiceDay serviceDay : ctx.serviceDays) {
+    if (ctx.timetableSnapshot != null) {
+      Timetable timeTable=ctx.timetableSnapshot.resolve(pattern,serviceDay.getServiceDate());
+      tripTimes=timeTable.getTripTimes(timeTable.getTripIndex(tripId));
+    }
+    int depTime=tripTimes.getDepartureTime(stopIndex);
+    int arrTime=tripTimes.getArrivalTime(stopIndex);
+    int estTime=Math.round(depTime * fractionCovered + arrTime * (1 - fractionCovered));
     int time=serviceDay.secondsSinceMidnight(opt.dateTime);
     int deltaTime=Math.abs(time - estTime);
     if (deltaTime < minDelta) {

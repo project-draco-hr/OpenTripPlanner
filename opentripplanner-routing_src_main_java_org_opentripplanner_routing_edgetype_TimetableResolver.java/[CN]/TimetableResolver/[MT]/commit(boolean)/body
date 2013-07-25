@@ -1,0 +1,12 @@
+{
+  TimetableResolver ret=new TimetableResolver();
+synchronized (this) {
+    if (dirty == null)     throw new ConcurrentModificationException("This TimetableResolver is read-only.");
+    if (!force && !this.isDirty())     return null;
+    for (    Timetable tt : dirty)     tt.finish();
+    ret.timetables=(HashMap<TableTripPattern,SortedSet<Timetable>>)this.timetables.clone();
+    this.dirty.clear();
+  }
+  ret.dirty=null;
+  return ret;
+}
