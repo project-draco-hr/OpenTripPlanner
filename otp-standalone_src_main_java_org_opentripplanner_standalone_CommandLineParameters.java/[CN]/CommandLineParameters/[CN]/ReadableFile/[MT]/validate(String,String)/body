@@ -1,0 +1,11 @@
+{
+  File file=new File(value);
+  if (!file.isFile()) {
+    String msg=String.format("Parameter '%s': '%s' is not a file.",name,value);
+    throw new ParameterException(msg);
+  }
+  if (!file.canRead()) {
+    String msg=String.format("Parameter '%s': file '%s' is not readable.",name,value);
+    throw new ParameterException(msg);
+  }
+}
