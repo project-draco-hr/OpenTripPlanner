@@ -1,17 +1,34 @@
 {
-  OTPMain main=new OTPMain();
-  JCommander jc=new JCommander(main,args);
-  if (main.help) {
-    jc.usage();
-    System.exit(0);
-  }
-  while (true) {
-    try {
-      main.run();
-      return;
+  CommandLineParameters params=new CommandLineParameters();
+  try {
+    JCommander jc=new JCommander(params,args);
+    if (params.help) {
+      jc.usage();
+      System.exit(0);
     }
- catch (    Throwable throwable) {
-      LOG.error("An uncaught " + throwable.getClass().getSimpleName() + " occurred inside OTP. Restarting server.",throwable);
+    params.infer();
+  }
+ catch (  ParameterException pex) {
+    LOG.error("Invalid parameter {}",pex.getMessage());
+    System.exit(1);
+  }
+  GraphBuilderTask graphBuilder=OTPConfigurator.builderFromParameters(params);
+  Graph graph=null;
+  if (graphBuilder != null) {
+    graphBuilder.run();
+    graph=graphBuilder.getGraph();
+  }
+  GrizzlyServer grizzlyServer=OTPConfigurator.serverFromParameters(params,graph);
+  if (grizzlyServer != null) {
+    while (true) {
+      try {
+        grizzlyServer.run();
+        return;
+      }
+ catch (      Throwable throwable) {
+        throwable.printStackTrace();
+        LOG.error("An uncaught {} occurred inside OTP. Restarting server.",throwable.getClass().getSimpleName());
+      }
     }
   }
 }
