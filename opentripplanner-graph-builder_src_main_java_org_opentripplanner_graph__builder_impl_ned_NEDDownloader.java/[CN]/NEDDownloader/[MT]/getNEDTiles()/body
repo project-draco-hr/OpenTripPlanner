@@ -1,5 +1,5 @@
 {
-  log.debug("Downloading NED");
+  log.info("Downloading NED elevation data.");
   List<URL> urls=getDownloadURLsCached();
   List<File> files=new ArrayList<File>();
   Iterator<URL> it=urls.iterator();
@@ -9,7 +9,7 @@
     File tile=getPathToNEDTile(key);
     if (tile.exists()) {
       files.add(tile);
-      log.debug(url + " already exists; not downloading");
+      log.info("File found in NED cache, not downloading: {}",tile);
       if (it.hasNext()) {
         url=it.next();
         continue;
@@ -18,6 +18,7 @@
         break;
       }
     }
+    log.info("File not in NED cache, requesting download: {}",tile);
     try {
       while (true) {
         sleep(3000);
@@ -26,7 +27,7 @@
           token=initiateDownload(url);
           int i=0;
           do {
-            log.debug("Waiting to query");
+            log.info("Waiting 30 seconds to check if tile is ready for download...");
             sleep(30000);
           }
  while (!downloadReady(token) && i++ < 20);
@@ -34,7 +35,7 @@
           if (i != 20) {
             break;
           }
-          log.debug("Giving up on slow download and retrying");
+          log.info("Giving up on slow download and retrying.");
         }
         downloadFile(url,token);
         try {

@@ -1,7 +1,7 @@
 {
   List<URL> urls=new ArrayList<URL>();
   List<String> payloads=getValidateElements();
-  log.debug("Getting urls from request validation service");
+  log.info("Getting urls from request validation service");
   String RTendpointURL="http://extract.cr.usgs.gov/requestValidationService/services/RequestValidationService";
   try {
     for (    String payload : payloads) {
