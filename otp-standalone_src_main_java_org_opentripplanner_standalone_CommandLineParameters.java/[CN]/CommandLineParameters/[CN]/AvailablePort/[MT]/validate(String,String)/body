@@ -1,25 +1,5 @@
 {
   new PositiveInteger().validate(name,value);
-  Integer port=Integer.parseInt(value);
-  ServerSocket socket=null;
-  boolean portUnavailable=false;
-  try {
-    socket=new ServerSocket(port);
-  }
- catch (  IOException e) {
-    portUnavailable=true;
-  }
- finally {
-    if (socket != null) {
-      try {
-        socket.close();
-      }
- catch (      IOException e) {
-      }
-    }
-  }
-  if (portUnavailable) {
-    String msg=String.format("Port %d is not available.",port);
-    throw new ParameterException(msg);
-  }
+  int port=Integer.parseInt(value);
+  this.validate(port);
 }
