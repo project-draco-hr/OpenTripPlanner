@@ -1,0 +1,8 @@
+{
+  new ReadableDirectory().validate(name,value);
+  File file=new File(value);
+  if (!file.canWrite()) {
+    String msg=String.format("%s: directory '%s' is not writable.",name,value);
+    throw new ParameterException(msg);
+  }
+}

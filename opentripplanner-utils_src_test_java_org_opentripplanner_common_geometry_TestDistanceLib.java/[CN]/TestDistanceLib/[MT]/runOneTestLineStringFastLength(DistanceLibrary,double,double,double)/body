@@ -1,0 +1,7 @@
+{
+  double dist=dlib.fastLength(makeLineString(latlon));
+  System.out.println("dist=" + dist + ", interval=["+ dMin+ ","+ dMax+ "]");
+  assertTrue(dist >= dMin);
+  assertTrue(dist <= dMax);
+  return dist;
+}

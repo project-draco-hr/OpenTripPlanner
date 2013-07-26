@@ -1,0 +1,26 @@
+{
+  if (timeSec == null)   timeSec=System.currentTimeMillis() / 1000;
+  if (maxReturnedValues == null)   maxReturnedValues=10;
+  if (extended == null)   extended=false;
+  Graph graph=getGraph(routerId);
+  TransitIndexService transitIndexService=graph.getService(TransitIndexService.class);
+  if (transitIndexService == null) {
+    return new TransitError("No transit index found. Add TransitIndexBuilder to your graph builder configuration and rebuild your graph.");
+  }
+  AgencyAndId routeId=AgencyAndId.convertFromString(routeIdStr);
+  List<RouteVariant> variants=transitIndexService.getVariantsForRoute(routeId);
+  Coordinate position=new Coordinate(longitude,latitude);
+  List<ServiceDay> serviceDays=getServiceDays(graph,timeSec,routeId.getAgencyId());
+  TripList response=new TripList();
+  for (  RouteVariant variant : variants) {
+    response.tripMatches.addAll(matchTripsForVariant(variant,position,timeSec,serviceDays,extended));
+  }
+  Collections.sort(response.tripMatches,new Comparator<TripMatch>(){
+    @Override public int compare(    TripMatch o1,    TripMatch o2){
+      return o1.matchFactor - o2.matchFactor < 0 ? -1 : +1;
+    }
+  }
+);
+  if (response.tripMatches.size() > maxReturnedValues)   response.tripMatches=response.tripMatches.subList(0,maxReturnedValues);
+  return response;
+}

@@ -1,0 +1,23 @@
+{
+  LOG.info("Wiring up and configuring server task.");
+  RetryingPathServiceImpl pathService=new RetryingPathServiceImpl();
+  pathService.setFirstPathTimeout(10.0);
+  pathService.setMultiPathTimeout(1.0);
+  OTPComponentProviderFactory cpf=new OTPComponentProviderFactory();
+  cpf.bind(GraphService.class,makeGraphService());
+  cpf.bind(RoutingRequest.class);
+  cpf.bind(PlanGenerator.class);
+  cpf.bind(MetadataService.class);
+  cpf.bind(SPTService.class,new GenericAStar());
+  cpf.bind(PathService.class,pathService);
+  cpf.bind(RemainingWeightHeuristicFactory.class,new DefaultRemainingWeightHeuristicFactoryImpl());
+  if (params.analyst) {
+    cpf.bind(Renderer.class);
+    cpf.bind(SPTCache.class);
+    cpf.bind(TileCache.class);
+    cpf.bind(GeometryIndex.class);
+    cpf.bind(SampleFactory.class);
+  }
+  cpf.doneBinding();
+  return cpf;
+}

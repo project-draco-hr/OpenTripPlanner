@@ -13,7 +13,6 @@
   if (transitIndexService == null) {
     return new TransitError("No transit index found.  Add TransitIndexBuilder to your graph builder configuration and rebuild your graph.");
   }
-  Graph graph=getGraph(routerId);
   HashSet<TripType> trips=new HashSet<TripType>();
   StopTimeList result=new StopTimeList();
   result.stopTimes=new ArrayList<StopTime>();
@@ -26,8 +25,8 @@
     if (preBoardEdge == null)     continue;
     Vertex boarding=preBoardEdge.getToVertex();
     RoutingRequest options=makeTraverseOptions(startTime,routerId);
-    HashMap<Long,Edge> seen=new HashMap();
-    OUTER:     for (    Edge e : boarding.getOutgoing()) {
+    HashMap<Long,Edge> seen=new HashMap<Long,Edge>();
+    for (    Edge e : boarding.getOutgoing()) {
       for (      StopTime st : getStopTimesForBoardEdge(startTime,endTime,options,e,extended)) {
         st.phase="departure";
         if (extended != null && extended.equals(true)) {

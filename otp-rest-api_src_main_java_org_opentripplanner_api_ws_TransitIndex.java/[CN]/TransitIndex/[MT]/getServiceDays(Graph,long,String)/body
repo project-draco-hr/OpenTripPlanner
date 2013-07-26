@@ -1,0 +1,8 @@
+{
+  final long SEC_IN_DAY=60 * 60 * 24;
+  List<ServiceDay> serviceDays=new ArrayList<ServiceDay>(3);
+  serviceDays.add(new ServiceDay(graph,epochSec - SEC_IN_DAY,graph.getCalendarService(),agencyId));
+  serviceDays.add(new ServiceDay(graph,epochSec,graph.getCalendarService(),agencyId));
+  serviceDays.add(new ServiceDay(graph,epochSec + SEC_IN_DAY,graph.getCalendarService(),agencyId));
+  return serviceDays;
+}

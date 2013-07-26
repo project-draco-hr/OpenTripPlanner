@@ -1,0 +1,10 @@
+{
+  server|=(inMemory || port != null);
+  server|=(defaultRouterId != null || graphDirectory != null || staticDirectory != null);
+  if (graphDirectory == null)   graphDirectory=DEFAULT_GRAPH_DIRECTORY;
+  if (defaultRouterId == null)   defaultRouterId=DEFAULT_ROUTER_ID;
+  if (staticDirectory == null)   staticDirectory=DEFAULT_STATIC_DIRECTORY;
+  if (cacheDirectory == null)   cacheDirectory=DEFAULT_CACHE_DIRECTORY;
+  if (port == null)   port=DEFAULT_PORT;
+  new AvailablePort().validate(port);
+}
