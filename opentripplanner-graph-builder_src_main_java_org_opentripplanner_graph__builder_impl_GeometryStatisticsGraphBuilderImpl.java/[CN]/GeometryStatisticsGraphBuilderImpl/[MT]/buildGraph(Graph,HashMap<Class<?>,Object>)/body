@@ -1,0 +1,45 @@
+{
+  int nGeometry=0;
+  int nPoints=0;
+  Map<Integer,AtomicInteger> lenDistribution=new HashMap<Integer,AtomicInteger>();
+  Map<Integer,AtomicInteger> nptDistribution=new HashMap<Integer,AtomicInteger>();
+  int maxNptCount=0;
+  int maxLenCount=0;
+  for (  Edge e : graph.getEdges()) {
+    if (e.getGeometry() != null) {
+      LineString geometry=e.getGeometry();
+      nGeometry++;
+      int n=geometry.getNumPoints();
+      nPoints+=n;
+      AtomicInteger nptCount=nptDistribution.get(n);
+      if (nptCount == null) {
+        nptCount=new AtomicInteger(0);
+        nptDistribution.put(n,nptCount);
+      }
+      if (nptCount.addAndGet(1) > maxNptCount)       maxNptCount=nptCount.get();
+      double lenMeters=distanceLibrary.fastLength(geometry);
+      int lenSlot=(int)Math.round(Math.log(lenMeters) * 2);
+      AtomicInteger lenCount=lenDistribution.get(lenSlot);
+      if (lenCount == null) {
+        lenCount=new AtomicInteger(0);
+        lenDistribution.put(lenSlot,lenCount);
+      }
+      if (lenCount.addAndGet(1) > maxLenCount)       maxLenCount=lenCount.get();
+    }
+  }
+  LOG.info(String.format("Graph contains %d geometries, total %d points, average %.02f points/geometry.",nGeometry,nPoints,nPoints * 1.0 / nGeometry));
+  LOG.info("Number of geometry per geometry length (log scale):");
+  List<Integer> lenSlots=new ArrayList<Integer>(lenDistribution.keySet());
+  Collections.sort(lenSlots);
+  for (  int lenSlot : lenSlots) {
+    double minLen=Math.exp(lenSlot / 2.0);
+    double maxLen=Math.exp((lenSlot + 1) / 2.0);
+    LOG.info(String.format("%9.03f-%9.03f m : %s %d",minLen,maxLen,chart(lenDistribution.get(lenSlot).get(),maxLenCount,60),lenDistribution.get(lenSlot).get()));
+  }
+  LOG.info("Number of geometry per number of points (linear scale):");
+  List<Integer> nptSlots=new ArrayList<Integer>(nptDistribution.keySet());
+  Collections.sort(nptSlots);
+  for (  int nptSlot : nptSlots) {
+    LOG.info(String.format("%d : %s %d",nptSlot,chart(nptDistribution.get(nptSlot).get(),maxNptCount,60),nptDistribution.get(nptSlot).get()));
+  }
+}
