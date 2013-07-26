@@ -1,0 +1,19 @@
+{
+  AgencyAndId tripId=new AgencyAndId("agency","1.1");
+  AgencyAndId tripId2=new AgencyAndId("agency","1.2");
+  AgencyAndId stopId=new AgencyAndId("agency","A");
+  ServiceDate today=new ServiceDate();
+  TableTripPattern pattern=transitIndexService.getTripPatternForTrip(tripId);
+  int tripIndex=pattern.getTripIndex(tripId);
+  int tripIndex2=pattern.getTripIndex(tripId2);
+  Update u=new Update(tripId,stopId,0,0,Update.Status.PREDICTION,0,today);
+  tripUpdate=TripUpdate.forUpdatedTrip(tripId,0,today,Collections.singletonList(u));
+  updater.run();
+  TimetableResolver resolver=updater.getSnapshot();
+  Timetable forToday=resolver.resolve(pattern,today);
+  Timetable schedule=resolver.resolve(pattern,null);
+  assertNotSame(forToday,schedule);
+  assertNotSame(forToday.getTripTimes(tripIndex),schedule.getTripTimes(tripIndex));
+  assertEquals(DecayingDelayTripTimes.class,forToday.getTripTimes(tripIndex).getClass());
+  assertSame(forToday.getTripTimes(tripIndex2),schedule.getTripTimes(tripIndex2));
+}

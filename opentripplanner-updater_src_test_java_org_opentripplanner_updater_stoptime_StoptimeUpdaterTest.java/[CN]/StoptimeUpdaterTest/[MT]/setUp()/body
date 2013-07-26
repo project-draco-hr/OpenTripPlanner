@@ -1,0 +1,11 @@
+{
+  updater=new StoptimeUpdater();
+  updater.setGraphService(graphService);
+  updater.setUpdateStreamer(new UpdateStreamer(){
+    @Override public List<TripUpdate> getUpdates(){
+      return Collections.singletonList(tripUpdate);
+    }
+  }
+);
+  graph.putService(CalendarServiceData.class,GtfsLibrary.createCalendarServiceData(context.getDao()));
+}

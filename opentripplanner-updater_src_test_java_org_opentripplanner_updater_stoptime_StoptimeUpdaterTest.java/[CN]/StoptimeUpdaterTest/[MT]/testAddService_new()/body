@@ -1,0 +1,12 @@
+{
+  CalendarServiceData data=graph.getService(CalendarServiceData.class);
+  AgencyAndId serviceId=new AgencyAndId("A","test");
+  TimeZone timezone=data.getTimeZoneForAgencyId("agency");
+  LocalizedServiceId lServiceId=new LocalizedServiceId(serviceId,timezone);
+  ServiceDate date=new ServiceDate();
+  updater.addService(serviceId,timezone,Collections.singletonList(date));
+  assertTrue(data.getLocalizedServiceIds().contains(lServiceId));
+  data.getServiceIdsForDate(date).contains(serviceId);
+  assertEquals(1,data.getServiceDatesForServiceId(serviceId).size());
+  assertEquals(date,data.getServiceDatesForServiceId(serviceId).get(0));
+}

@@ -1,0 +1,20 @@
+{
+  AgencyAndId tripId=new AgencyAndId("agency","1.1");
+  ServiceDate today=new ServiceDate();
+  ServiceDate previously=today.previous().previous();
+  TableTripPattern pattern=transitIndexService.getTripPatternForTrip(tripId);
+  updater.setMaxSnapshotFrequency(0);
+  updater.setPurgeExpiredData(false);
+  tripUpdate=TripUpdate.forCanceledTrip(tripId,0,today);
+  updater.run();
+  TimetableResolver resolverA=updater.getSnapshot();
+  updater.setPurgeExpiredData(true);
+  tripUpdate=TripUpdate.forCanceledTrip(tripId,0,previously);
+  updater.run();
+  TimetableResolver resolverB=updater.getSnapshot();
+  assertNotSame(resolverA,resolverB);
+  assertSame(resolverA.resolve(pattern,null),resolverB.resolve(pattern,null));
+  assertSame(resolverA.resolve(pattern,today),resolverB.resolve(pattern,today));
+  assertNotSame(resolverA.resolve(pattern,null),resolverA.resolve(pattern,today));
+  assertSame(resolverB.resolve(pattern,null),resolverB.resolve(pattern,previously));
+}

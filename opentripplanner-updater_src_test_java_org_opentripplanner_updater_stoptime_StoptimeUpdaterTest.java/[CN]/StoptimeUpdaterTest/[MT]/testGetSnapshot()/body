@@ -1,0 +1,16 @@
+{
+  AgencyAndId tripId=new AgencyAndId("agency","1.1");
+  ServiceDate serviceDate=new ServiceDate();
+  tripUpdate=TripUpdate.forCanceledTrip(tripId,0,serviceDate);
+  updater.run();
+  TimetableResolver resolver=updater.getSnapshot();
+  assertNotNull(resolver);
+  assertSame(resolver,updater.getSnapshot());
+  tripUpdate=TripUpdate.forCanceledTrip(tripId,0,serviceDate);
+  updater.run();
+  assertSame(resolver,updater.getSnapshot());
+  updater.setMaxSnapshotFrequency(-1);
+  TimetableResolver newResolver=updater.getSnapshot();
+  assertNotNull(newResolver);
+  assertNotSame(resolver,newResolver);
+}

@@ -3,7 +3,7 @@
   if (force || now - lastSnapshotTime > maxSnapshotFrequency) {
     if (force || buffer.isDirty()) {
       LOG.debug("Committing {}",buffer.toString());
-      snapshot=buffer.commit();
+      snapshot=buffer.commit(force);
     }
  else {
       LOG.debug("Buffer was unchanged, keeping old snapshot.");

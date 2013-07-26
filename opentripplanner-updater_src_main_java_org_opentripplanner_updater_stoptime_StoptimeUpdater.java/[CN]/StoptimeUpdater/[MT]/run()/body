@@ -1,4 +1,6 @@
 {
+  graph=graphService.getGraph();
+  transitIndexService=graph.getService(TransitIndexService.class);
   List<TripUpdate> tripUpdates=updateStreamer.getUpdates();
   if (tripUpdates == null) {
     LOG.debug("updates is null");

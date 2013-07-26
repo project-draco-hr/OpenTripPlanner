@@ -1,7 +1,7 @@
 {
   ServiceDate today=new ServiceDate();
   ServiceDate previously=today.previous().previous();
-  if (lastPurgeDate.compareTo(previously) > 0) {
+  if (lastPurgeDate != null && lastPurgeDate.compareTo(previously) > 0) {
     return false;
   }
   LOG.debug("purging expired realtime data");
