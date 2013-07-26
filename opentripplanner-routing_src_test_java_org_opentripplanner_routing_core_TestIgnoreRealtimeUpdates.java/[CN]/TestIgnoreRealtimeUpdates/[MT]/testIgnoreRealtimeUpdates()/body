@@ -1,0 +1,21 @@
+{
+  RoutingRequest options=new RoutingRequest();
+  assertFalse(options.isIgnoreRealtimeUpdates());
+  Graph graph=new Graph();
+  Stop stop1=new Stop();
+  stop1.setId(new AgencyAndId("agency","stop1"));
+  Stop stop2=new Stop();
+  stop2.setId(new AgencyAndId("agency","stop2"));
+  Vertex from=new TransitStop(graph,stop1);
+  Vertex to=new TransitStop(graph,stop2);
+  TimetableResolver resolver=new TimetableResolver();
+  TimetableSnapshotSource source=mock(TimetableSnapshotSource.class);
+  when(source.getSnapshot()).thenReturn(resolver);
+  graph.timetableSnapshotSource=source;
+  RoutingContext rctx=new RoutingContext(options,graph,from,to);
+  assertNotNull(rctx.timetableSnapshot);
+  options.setIgnoreRealtimeUpdates(true);
+  assertTrue(options.isIgnoreRealtimeUpdates());
+  rctx=new RoutingContext(options,graph,from,to);
+  assertNull(rctx.timetableSnapshot);
+}

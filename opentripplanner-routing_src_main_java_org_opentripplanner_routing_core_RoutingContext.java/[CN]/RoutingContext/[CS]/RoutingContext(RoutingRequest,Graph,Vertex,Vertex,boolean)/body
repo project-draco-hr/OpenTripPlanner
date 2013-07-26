@@ -1,8 +1,12 @@
 {
   this.opt=routingRequest;
   this.graph=graph;
-  if (graph.timetableSnapshotSource != null)   timetableSnapshot=graph.timetableSnapshotSource.getSnapshot();
- else   timetableSnapshot=null;
+  if (routingRequest.isIgnoreRealtimeUpdates() == false && graph.timetableSnapshotSource != null) {
+    timetableSnapshot=graph.timetableSnapshotSource.getSnapshot();
+  }
+ else {
+    timetableSnapshot=null;
+  }
   calendarService=graph.getCalendarService();
   setServiceDays();
   Edge fromBackEdge=null;

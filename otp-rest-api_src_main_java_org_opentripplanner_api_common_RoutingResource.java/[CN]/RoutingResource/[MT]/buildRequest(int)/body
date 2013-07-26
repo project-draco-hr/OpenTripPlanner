@@ -115,6 +115,7 @@
   }
   request.setClampInitialWait(get(clampInitialWait,n,request.getClampInitialWait()));
   request.setReverseOptimizeOnTheFly(get(reverseOptimizeOnTheFly,n,request.isReverseOptimizeOnTheFly()));
+  request.setIgnoreRealtimeUpdates(get(ignoreRealtimeUpdates,n,request.isIgnoreRealtimeUpdates()));
   String localeSpec=get(locale,n,"en");
   String[] localeSpecParts=localeSpec.split("_");
   Locale locale;
