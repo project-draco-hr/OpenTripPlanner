@@ -1,10 +1,13 @@
 {
-  String msg="bad request";
-  if (request.teacherName != null) {
-    request.id=null;
-    request.save();
-    Long id=request.id;
-    msg="Your request has been submitted.";
+  System.out.println("newRequest tn=" + req.teacherName);
+  if (req.teacherName != null) {
+    req.id=null;
+    req.save();
+    Long id=req.id;
+    System.out.println("about to render");
+    render(req);
   }
-  render(msg);
+ else {
+    badRequest();
+  }
 }

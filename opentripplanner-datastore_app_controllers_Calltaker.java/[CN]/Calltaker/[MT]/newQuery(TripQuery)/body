@@ -1,5 +1,6 @@
 {
   TrinetUser user=checkLogin();
+  checkAccess(user);
   query.save();
   renderJSON(query.id);
 }

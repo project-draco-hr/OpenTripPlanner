@@ -1,0 +1,10 @@
+{
+  if (user == null) {
+    System.out.println("null user in FieldTrip module");
+    forbidden("null user");
+  }
+  if (!user.hasCalltakerAccess()) {
+    System.out.println("User " + user.username + " has insufficient access for Calltaker module");
+    forbidden("insufficient access privileges");
+  }
+}

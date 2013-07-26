@@ -1,0 +1,33 @@
+{
+  SLF4JBridgeHandler.removeHandlersForRootLogger();
+  SLF4JBridgeHandler.install();
+  LOG.info("Starting OTP Grizzly server on port {} using graphs at {}",params.port,params.graphDirectory);
+  HttpServer httpServer=new HttpServer();
+  NetworkListener networkListener=new NetworkListener("otp_listener","localhost",params.port);
+  ThreadPoolConfig threadPoolConfig=ThreadPoolConfig.defaultConfig().setCorePoolSize(1).setMaxPoolSize(Runtime.getRuntime().availableProcessors());
+  networkListener.getTransport().setWorkerThreadPoolConfig(threadPoolConfig);
+  httpServer.addListener(networkListener);
+  ResourceConfig rc=new PackagesResourceConfig("org.opentripplanner");
+  rc.getProperties().put(ResourceConfig.PROPERTY_CONTAINER_REQUEST_FILTERS,new String[]{AuthFilter.class.getName(),RewriteFilter.class.getName()});
+  rc.getProperties().put(ResourceConfig.PROPERTY_CONTAINER_RESPONSE_FILTERS,new String[]{JsonpFilter.class.getName()});
+  HttpHandler handler=ContainerFactory.createContainer(HttpHandler.class,rc,iocFactory);
+  httpServer.getServerConfiguration().addHttpHandler(handler,"/opentripplanner-api-webapp/");
+  params.staticDirectory="../opentripplanner-leaflet-client/src/main/webapp/";
+  HttpHandler staticHandler=new StaticHttpHandler(params.staticDirectory);
+  httpServer.getServerConfiguration().addHttpHandler(staticHandler,"/");
+  try {
+    httpServer.start();
+    LOG.info("Grizzly server running.");
+    Thread.currentThread().join();
+  }
+ catch (  BindException be) {
+    LOG.error("Cannot bind to port {}. Is it already in use?",params.port);
+  }
+catch (  IOException ioe) {
+    LOG.error("IO exception while starting server.");
+  }
+catch (  InterruptedException ie) {
+    LOG.info("Interrupted, shutting down.");
+    httpServer.stop();
+  }
+}

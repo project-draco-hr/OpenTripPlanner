@@ -1,0 +1,13 @@
+{
+  if (graph != null && params.inMemory) {
+    return new GraphServiceBeanImpl(graph);
+  }
+  GraphServiceImpl graphService=new GraphServiceImpl();
+  if (params.graphDirectory != null) {
+    graphService.setPath(params.graphDirectory);
+  }
+  if (params.defaultRouterId != null) {
+    graphService.setDefaultRouterId(params.defaultRouterId);
+  }
+  return graphService;
+}

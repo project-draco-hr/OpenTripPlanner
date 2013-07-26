@@ -1,0 +1,69 @@
+{
+  LOG.info("Wiring up and configuring graph builder task.");
+  if (params.build == null || params.build.isEmpty()) {
+    return null;
+  }
+  GraphBuilderTask graphBuilder=new GraphBuilderTask();
+  List<File> gtfsFiles=Lists.newArrayList();
+  List<File> osmFiles=Lists.newArrayList();
+  for (  File dir : params.build) {
+    LOG.info("Searching for graph builder input files in {}",dir);
+    if (!dir.isDirectory() && dir.canRead()) {
+      LOG.error("'{}' is not a readable directory.",dir);
+      continue;
+    }
+    graphBuilder.setPath(dir);
+    for (    File file : dir.listFiles()) {
+switch (InputFileType.forFile(file)) {
+case GTFS:
+        LOG.info("Found GTFS file {}",file);
+      gtfsFiles.add(file);
+    break;
+case OSM:
+  LOG.info("Found OSM file {}",file);
+osmFiles.add(file);
+break;
+case OTHER:
+LOG.debug("Skipping file '{}'",file);
+}
+}
+}
+boolean hasOSM=!(osmFiles.isEmpty() || params.noStreets);
+boolean hasGTFS=!(gtfsFiles.isEmpty() || params.noTransit);
+if (!(hasOSM || hasGTFS)) {
+LOG.error("Found no input files from which to build a graph in {}",params.build.toString());
+return null;
+}
+if (hasOSM) {
+List<OpenStreetMapProvider> osmProviders=Lists.newArrayList();
+for (File osmFile : osmFiles) {
+OpenStreetMapProvider osmProvider=new AnyFileBasedOpenStreetMapProviderImpl(osmFile);
+osmProviders.add(osmProvider);
+}
+GraphBuilder osmBuilder=new OpenStreetMapGraphBuilderImpl(osmProviders);
+graphBuilder.addGraphBuilder(osmBuilder);
+}
+if (hasGTFS) {
+List<GtfsBundle> gtfsBundles=Lists.newArrayList();
+for (File gtfsFile : gtfsFiles) {
+GtfsBundle gtfsBundle=new GtfsBundle(gtfsFile);
+gtfsBundles.add(gtfsBundle);
+}
+GraphBuilder gtfsBuilder=new GtfsGraphBuilderImpl(gtfsBundles);
+graphBuilder.addGraphBuilder(gtfsBuilder);
+if (hasOSM) {
+graphBuilder.addGraphBuilder(new TransitToStreetNetworkGraphBuilderImpl());
+}
+ else {
+graphBuilder.addGraphBuilder(new StreetlessStopLinker());
+}
+}
+if (params.elevation) {
+File cacheDirectory=new File(params.cacheDirectory,"ned");
+NEDGridCoverageFactory ngcf=new NEDGridCoverageFactoryImpl(cacheDirectory);
+GraphBuilder nedBuilder=new NEDGraphBuilderImpl(ngcf);
+graphBuilder.addGraphBuilder(nedBuilder);
+}
+graphBuilder.setSerializeGraph(!params.inMemory);
+return graphBuilder;
+}

@@ -1,4 +1,6 @@
 {
+  TrinetUser user=checkLogin();
+  checkAccess(user);
   ScheduledFieldTrip trip=ScheduledFieldTrip.findById(id);
   trip.delete();
   renderJSON(id);

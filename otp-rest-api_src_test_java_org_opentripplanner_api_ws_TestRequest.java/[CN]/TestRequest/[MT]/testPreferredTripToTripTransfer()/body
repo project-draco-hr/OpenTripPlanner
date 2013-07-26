@@ -1,0 +1,16 @@
+{
+  TestPlanner planner=new TestPlanner("portland","45.506077,-122.621139","45.464637,-122.706061");
+  TransferTable table=new TransferTable();
+  Graph graph=Context.getInstance().graph;
+  when(graph.getTransferTable()).thenReturn(table);
+  Response response=planner.getItineraries();
+  Itinerary itinerary=response.getPlan().itinerary.get(0);
+  assertEquals("751W1320",itinerary.legs.get(1).tripId);
+  assertEquals("91W1350",itinerary.legs.get(3).tripId);
+  addTripToTripTransferTimeToTable(table,"7528","9756","75","12","750W1300","120W1320",StopTransfer.PREFERRED_TRANSFER);
+  response=planner.getItineraries();
+  itinerary=response.getPlan().itinerary.get(0);
+  assertEquals("750W1300",itinerary.legs.get(1).tripId);
+  assertEquals("120W1320",itinerary.legs.get(3).tripId);
+  reset(graph);
+}

@@ -1,0 +1,10 @@
+{
+  DistanceLibrary dlib=new SphericalDistanceLibrary();
+  double a=runOneTestLineStringFastLength(dlib,11119,11120,45,0,45.1,0);
+  double b=runOneTestLineStringFastLength(dlib,7862,7863,45,0,45,0.1);
+  double c=runOneTestLineStringFastLength(dlib,13614,13615,45,0,45.1,0.1);
+  double d=runOneTestLineStringFastLength(dlib,18975,18976,45,0,45.1,0,45.1,0.1);
+  assertTrue(Math.abs(b - a * Math.cos(Math.toRadians(45))) < 1.0);
+  assertTrue(Math.abs(c - Math.sqrt(a * a + b * b)) < 10.0);
+  assertTrue(Math.abs(d - (a + b)) < 10.0);
+}

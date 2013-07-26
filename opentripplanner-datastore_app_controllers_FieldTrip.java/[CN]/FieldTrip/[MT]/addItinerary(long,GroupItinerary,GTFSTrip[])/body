@@ -1,4 +1,7 @@
 {
+  TrinetUser user=checkLogin();
+  checkAccess(user);
+  System.out.println("aI / fieldTripId=" + fieldTripId);
   ScheduledFieldTrip fieldTrip=ScheduledFieldTrip.findById(fieldTripId);
   itinerary.fieldTrip=fieldTrip;
   fieldTrip.groupItineraries.add(itinerary);

@@ -1,4 +1,6 @@
 {
+  TrinetUser user=checkLogin();
+  checkAccess(user);
   System.out.println("getFTs, date=" + date);
   List<ScheduledFieldTrip> trips;
   String sql="";

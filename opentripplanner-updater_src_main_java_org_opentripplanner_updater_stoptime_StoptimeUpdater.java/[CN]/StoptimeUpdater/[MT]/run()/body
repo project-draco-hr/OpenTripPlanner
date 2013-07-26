@@ -22,7 +22,7 @@
         LOG.debug("UpdateBlock contains no updates after filtering, skipping.");
         continue;
       }
-      TableTripPattern pattern=patternIndex.get(block.tripId);
+      TableTripPattern pattern=transitIndexService.getTripPatternForTrip(block.tripId);
       if (pattern == null) {
         LOG.debug("No pattern found for tripId {}, skipping UpdateBlock.",block.tripId);
         continue;

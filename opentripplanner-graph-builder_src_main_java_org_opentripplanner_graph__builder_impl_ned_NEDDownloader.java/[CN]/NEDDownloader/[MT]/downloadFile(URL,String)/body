@@ -1,7 +1,7 @@
 {
   try {
     String key=getKey(url);
-    log.debug("Starting download " + key);
+    log.info("Starting download " + key);
     File path=getPathToNEDArchive(key);
     URL downloadUrl=new URL("http://extract.cr.usgs.gov/axis2/services/DownloadService/getData?downloadID=" + token);
     URLConnection connection=downloadUrl.openConnection();
@@ -19,7 +19,7 @@
     ostream.close();
     istream.close();
     httpconnection.disconnect();
-    log.debug("Done download " + key);
+    log.info("Finished download " + key);
     NEDDownloader.sleep(3000);
   }
  catch (  Exception e) {

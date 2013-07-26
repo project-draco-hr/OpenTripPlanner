@@ -1,0 +1,17 @@
+{
+  String name=file.getName();
+  if (name.endsWith(".zip")) {
+    try {
+      ZipFile zip=new ZipFile(file);
+      ZipEntry stopTimesEntry=zip.getEntry("stop_times.txt");
+      zip.close();
+      if (stopTimesEntry != null)       return GTFS;
+    }
+ catch (    Exception e) {
+    }
+  }
+  if (name.endsWith(".pbf"))   return OSM;
+  if (name.endsWith(".osm"))   return OSM;
+  if (name.endsWith(".osm.xml"))   return OSM;
+  return OTHER;
+}
