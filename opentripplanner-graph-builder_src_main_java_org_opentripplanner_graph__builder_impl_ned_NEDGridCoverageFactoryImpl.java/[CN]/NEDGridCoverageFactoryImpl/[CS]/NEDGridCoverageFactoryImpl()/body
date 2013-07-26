@@ -1,12 +1,2 @@
 {
-  String[] filenames={"g2012a00.gtx","g2012g00.gtx","g2012h00.gtx","g2012p00.gtx","g2012s00.gtx","g2012u00.gtx"};
-  GtxVDatumReader reader=new GtxVDatumReader();
-  try {
-    for (    String filename : filenames) {
-      datums.add(reader.read(getClass().getResourceAsStream("g12/" + filename)));
-    }
-  }
- catch (  IOException e) {
-    throw new RuntimeException(e);
-  }
 }
