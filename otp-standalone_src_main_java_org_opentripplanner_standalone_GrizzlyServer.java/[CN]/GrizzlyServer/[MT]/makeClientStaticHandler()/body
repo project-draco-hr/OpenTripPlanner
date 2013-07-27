@@ -1,0 +1,16 @@
+{
+  File tempDir=Files.createTempDir();
+  File clientWar=new File(tempDir,CLIENT_WAR_FILENAME);
+  try {
+    Files.copy(new ClientWarSupplier(),clientWar);
+    ZipFile zip=new ZipFile(clientWar);
+    zip.extractAll(tempDir.toString());
+  }
+ catch (  ZipException e) {
+    LOG.error("Error expanding client WAR, client will not be available.");
+  }
+catch (  IOException e) {
+    LOG.error("Error copying client WAR, client will not be available.");
+  }
+  return new StaticHttpHandler(tempDir.toString());
+}

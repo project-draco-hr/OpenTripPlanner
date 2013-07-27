@@ -1,6 +1,4 @@
 {
-  SLF4JBridgeHandler.removeHandlersForRootLogger();
-  SLF4JBridgeHandler.install();
   LOG.info("Starting OTP Grizzly server on port {} using graphs at {}",params.port,params.graphDirectory);
   HttpServer httpServer=new HttpServer();
   NetworkListener networkListener=new NetworkListener("otp_listener","localhost",params.port);
@@ -12,8 +10,7 @@
   rc.getProperties().put(ResourceConfig.PROPERTY_CONTAINER_RESPONSE_FILTERS,new String[]{JsonpFilter.class.getName()});
   HttpHandler handler=ContainerFactory.createContainer(HttpHandler.class,rc,iocFactory);
   httpServer.getServerConfiguration().addHttpHandler(handler,"/opentripplanner-api-webapp/");
-  params.staticDirectory="../opentripplanner-leaflet-client/src/main/webapp/";
-  HttpHandler staticHandler=new StaticHttpHandler(params.staticDirectory);
+  HttpHandler staticHandler=makeClientStaticHandler();
   httpServer.getServerConfiguration().addHttpHandler(staticHandler,"/");
   try {
     httpServer.start();
