@@ -1,63 +1,16 @@
 {
-  com.google.protobuf.UnknownFieldSet.Builder unknownFields=com.google.protobuf.UnknownFieldSet.newBuilder(this.getUnknownFields());
-  while (true) {
-    int tag=input.readTag();
-switch (tag) {
-case 0:
-      this.setUnknownFields(unknownFields.build());
-    onChanged();
-  return this;
-default :
-{
-  if (!parseUnknownField(input,unknownFields,extensionRegistry,tag)) {
-    this.setUnknownFields(unknownFields.build());
-    onChanged();
-    return this;
+  com.google.transit.realtime.GtfsRealtime.FeedEntity parsedMessage=null;
+  try {
+    parsedMessage=PARSER.parsePartialFrom(input,extensionRegistry);
   }
-  break;
-}
-case 10:
-{
-bitField0_|=0x00000001;
-id_=input.readBytes();
-break;
-}
-case 16:
-{
-bitField0_|=0x00000002;
-isDeleted_=input.readBool();
-break;
-}
-case 26:
-{
-com.google.transit.realtime.GtfsRealtime.TripUpdate.Builder subBuilder=com.google.transit.realtime.GtfsRealtime.TripUpdate.newBuilder();
-if (hasTripUpdate()) {
-subBuilder.mergeFrom(getTripUpdate());
-}
-input.readMessage(subBuilder,extensionRegistry);
-setTripUpdate(subBuilder.buildPartial());
-break;
-}
-case 34:
-{
-com.google.transit.realtime.GtfsRealtime.VehiclePosition.Builder subBuilder=com.google.transit.realtime.GtfsRealtime.VehiclePosition.newBuilder();
-if (hasVehicle()) {
-subBuilder.mergeFrom(getVehicle());
-}
-input.readMessage(subBuilder,extensionRegistry);
-setVehicle(subBuilder.buildPartial());
-break;
-}
-case 42:
-{
-com.google.transit.realtime.GtfsRealtime.Alert.Builder subBuilder=com.google.transit.realtime.GtfsRealtime.Alert.newBuilder();
-if (hasAlert()) {
-subBuilder.mergeFrom(getAlert());
-}
-input.readMessage(subBuilder,extensionRegistry);
-setAlert(subBuilder.buildPartial());
-break;
-}
-}
-}
+ catch (  com.google.protobuf.InvalidProtocolBufferException e) {
+    parsedMessage=(com.google.transit.realtime.GtfsRealtime.FeedEntity)e.getUnfinishedMessage();
+    throw e;
+  }
+ finally {
+    if (parsedMessage != null) {
+      mergeFrom(parsedMessage);
+    }
+  }
+  return this;
 }

@@ -1,14 +1,21 @@
 {
   if (other == com.google.transit.realtime.GtfsRealtime.VehicleDescriptor.getDefaultInstance())   return this;
   if (other.hasId()) {
-    setId(other.getId());
+    bitField0_|=0x00000001;
+    id_=other.id_;
+    onChanged();
   }
   if (other.hasLabel()) {
-    setLabel(other.getLabel());
+    bitField0_|=0x00000002;
+    label_=other.label_;
+    onChanged();
   }
   if (other.hasLicensePlate()) {
-    setLicensePlate(other.getLicensePlate());
+    bitField0_|=0x00000004;
+    licensePlate_=other.licensePlate_;
+    onChanged();
   }
+  this.mergeExtensionFields(other);
   this.mergeUnknownFields(other.getUnknownFields());
   return this;
 }

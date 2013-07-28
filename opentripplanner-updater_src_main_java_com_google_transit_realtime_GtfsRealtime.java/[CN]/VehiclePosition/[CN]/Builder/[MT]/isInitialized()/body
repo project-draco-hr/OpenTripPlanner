@@ -1,8 +1,21 @@
 {
+  if (hasTrip()) {
+    if (!getTrip().isInitialized()) {
+      return false;
+    }
+  }
+  if (hasVehicle()) {
+    if (!getVehicle().isInitialized()) {
+      return false;
+    }
+  }
   if (hasPosition()) {
     if (!getPosition().isInitialized()) {
       return false;
     }
+  }
+  if (!extensionsAreInitialized()) {
+    return false;
   }
   return true;
 }

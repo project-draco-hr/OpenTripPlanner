@@ -10,7 +10,7 @@
     StateEditor s1=state0.edit(this);
     int type;
     if (boarding)     type=getPattern().getBoardType(stopIndex);
- else     type=getPattern().getAlightType(stopIndex + 1);
+ else     type=getPattern().getAlightType(stopIndex);
     if (TransitUtils.handleBoardAlightType(s1,type)) {
       return null;
     }
@@ -60,7 +60,7 @@
       if (sd.serviceIdRunning(serviceId)) {
         tripTimes=getPattern().getNextTrip(stopIndex,secondsSinceMidnight,state0,sd,mode == TraverseMode.BICYCLE,boarding);
         if (tripTimes != null) {
-          wait=boarding ? (int)(sd.time(tripTimes.getDepartureTime(stopIndex)) - current_time) : (int)(current_time - sd.time(tripTimes.getArrivalTime(stopIndex)));
+          wait=boarding ? (int)(sd.time(tripTimes.getDepartureTime(stopIndex)) - current_time) : (int)(current_time - sd.time(tripTimes.getArrivalTime(stopIndex - 1)));
           if (wait < 0)           LOG.error("negative wait time on board");
           if (bestWait < 0 || wait < bestWait) {
             bestWait=wait;
@@ -86,7 +86,7 @@
     s1.setBackMode(getMode());
     int type;
     if (boarding)     type=getPattern().getBoardType(stopIndex);
- else     type=getPattern().getAlightType(stopIndex + 1);
+ else     type=getPattern().getAlightType(stopIndex);
     if (TransitUtils.handleBoardAlightType(s1,type)) {
       return null;
     }

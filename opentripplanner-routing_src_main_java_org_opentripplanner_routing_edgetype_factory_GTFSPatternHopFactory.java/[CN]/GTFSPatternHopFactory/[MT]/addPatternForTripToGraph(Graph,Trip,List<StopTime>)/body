@@ -1,0 +1,13 @@
+{
+  ScheduledStopPattern stopPattern=ScheduledStopPattern.fromTrip(trip,stopTimes);
+  TableTripPattern tripPattern=patterns.get(stopPattern);
+  if (tripPattern == null) {
+    T2<TableTripPattern,List<PatternHop>> patternAndHops=makePatternVerticesAndEdges(graph,trip,stopPattern,stopTimes);
+    List<PatternHop> hops=patternAndHops.getSecond();
+    createGeometry(graph,trip,stopTimes,hops);
+    tripPattern=patternAndHops.getFirst();
+    patterns.put(stopPattern,tripPattern);
+  }
+  tripPattern.addTrip(trip,stopTimes);
+  return tripPattern;
+}

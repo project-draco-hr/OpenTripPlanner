@@ -1,0 +1,60 @@
+{
+  if (!(stopTimeUpdate.hasStopId() || stopTimeUpdate.hasStopSequence())) {
+    LOG.warn("A stopId or stopSequence must be provided: \n{}",stopTimeUpdate);
+    return null;
+  }
+  AgencyAndId stopId=null;
+  if (stopTimeUpdate.hasStopId())   stopId=new AgencyAndId(defaultAgencyId,stopTimeUpdate.getStopId());
+  Integer stopSequence=null;
+  if (stopTimeUpdate.hasStopSequence())   stopSequence=stopTimeUpdate.getStopSequence();
+  if (stopTimeUpdate.hasScheduleRelationship() && GtfsRealtime.TripUpdate.StopTimeUpdate.ScheduleRelationship.NO_DATA == stopTimeUpdate.getScheduleRelationship()) {
+    Update u=new Update(tripId,stopId,stopSequence,0,0,Update.Status.PLANNED,timestamp,serviceDate);
+    return u;
+  }
+  if (stopTimeUpdate.hasScheduleRelationship() && GtfsRealtime.TripUpdate.StopTimeUpdate.ScheduleRelationship.SKIPPED == stopTimeUpdate.getScheduleRelationship()) {
+    Update u=new Update(tripId,stopId,stopSequence,0,0,Update.Status.CANCEL,timestamp,serviceDate);
+    return u;
+  }
+ else {
+    if (!(stopTimeUpdate.hasArrival() || stopTimeUpdate.hasDeparture())) {
+      LOG.warn("Neither an arrival or departure was provided for: \n{}",stopTimeUpdate);
+      return null;
+    }
+    long today=serviceDate.getAsDate(TimeZone.getTimeZone("GMT")).getTime() / 1000;
+    long arrivalTime=-1, departureTime=-1;
+    if (stopTimeUpdate.hasArrival()) {
+      GtfsRealtime.TripUpdate.StopTimeEvent event=stopTimeUpdate.getArrival();
+      if (event.hasTime()) {
+        arrivalTime=event.getTime();
+        arrivalTime=arrivalTime - today;
+      }
+ else       if (event.hasDelay()) {
+        Update u=new Update(tripId,stopId,stopSequence,event.getDelay(),Update.Status.PREDICTION,timestamp,serviceDate);
+        return u;
+      }
+    }
+    if (stopTimeUpdate.hasDeparture()) {
+      GtfsRealtime.TripUpdate.StopTimeEvent event=stopTimeUpdate.getDeparture();
+      if (event.hasTime()) {
+        departureTime=event.getTime();
+        departureTime=departureTime - today;
+      }
+ else       if (event.hasDelay()) {
+        Update u=new Update(tripId,stopId,stopSequence,event.getDelay(),Update.Status.PREDICTION,timestamp,serviceDate);
+        return u;
+      }
+    }
+    if (arrivalTime < 0 && departureTime < 0) {
+      LOG.warn("Neither an arrival or departure time was provided for: \n{}",stopTimeUpdate);
+      return null;
+    }
+    if (arrivalTime == -1) {
+      arrivalTime=departureTime;
+    }
+    if (departureTime == -1) {
+      departureTime=arrivalTime;
+    }
+    Update u=new Update(tripId,stopId,stopSequence,(int)arrivalTime,(int)departureTime,Update.Status.PREDICTION,timestamp,serviceDate);
+    return u;
+  }
+}

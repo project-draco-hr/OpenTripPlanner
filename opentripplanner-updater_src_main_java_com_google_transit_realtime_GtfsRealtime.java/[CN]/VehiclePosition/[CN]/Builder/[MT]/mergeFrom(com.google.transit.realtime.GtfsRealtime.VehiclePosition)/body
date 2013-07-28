@@ -13,7 +13,9 @@
     setCurrentStopSequence(other.getCurrentStopSequence());
   }
   if (other.hasStopId()) {
-    setStopId(other.getStopId());
+    bitField0_|=0x00000010;
+    stopId_=other.stopId_;
+    onChanged();
   }
   if (other.hasCurrentStatus()) {
     setCurrentStatus(other.getCurrentStatus());
@@ -24,6 +26,7 @@
   if (other.hasCongestionLevel()) {
     setCongestionLevel(other.getCongestionLevel());
   }
+  this.mergeExtensionFields(other);
   this.mergeUnknownFields(other.getUnknownFields());
   return this;
 }

@@ -69,6 +69,7 @@
   if (other.hasDescriptionText()) {
     mergeDescriptionText(other.getDescriptionText());
   }
+  this.mergeExtensionFields(other);
   this.mergeUnknownFields(other.getUnknownFields());
   return this;
 }

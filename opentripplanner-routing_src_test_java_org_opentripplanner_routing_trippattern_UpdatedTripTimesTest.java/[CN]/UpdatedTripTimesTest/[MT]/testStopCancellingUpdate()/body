@@ -1,0 +1,24 @@
+{
+  TripUpdate tripUpdate;
+  List<Update> updates=new LinkedList<Update>();
+  updates.add(new Update(tripId,stop_a,0,0,0,Update.Status.PLANNED,0,new ServiceDate()));
+  updates.add(new Update(tripId,stop_b,1,0,0,Update.Status.PLANNED,0,new ServiceDate()));
+  updates.add(new Update(tripId,stop_c,2,0,0,Update.Status.CANCEL,0,new ServiceDate()));
+  updates.add(new Update(tripId,stop_d,3,0,0,Update.Status.CANCEL,0,new ServiceDate()));
+  tripUpdate=TripUpdate.forUpdatedTrip(tripId,0,new ServiceDate(),updates);
+  UpdatedTripTimes updateTriptimesA=new UpdatedTripTimes(originalTripTimesA,tripUpdate,0);
+  assertTrue(updateTriptimesA.timesIncreasing());
+  assertEquals(1 * 60,updateTriptimesA.getDepartureTime(1));
+  assertEquals(TripTimes.CANCELED,updateTriptimesA.getDepartureTime(2));
+  assertEquals(TripTimes.CANCELED,updateTriptimesA.getDepartureTime(3));
+  assertEquals(4 * 60,updateTriptimesA.getDepartureTime(4));
+  assertEquals(1 * 60,updateTriptimesA.getArrivalTime(0));
+  assertEquals(TripTimes.CANCELED,updateTriptimesA.getArrivalTime(1));
+  assertEquals(TripTimes.CANCELED,updateTriptimesA.getArrivalTime(2));
+  assertEquals(4 * 60,updateTriptimesA.getArrivalTime(3));
+  assertEquals(60,updateTriptimesA.getRunningTime(0));
+  assertEquals(0,updateTriptimesA.getRunningTime(1));
+  assertEquals(0,updateTriptimesA.getRunningTime(2));
+  assertEquals(180,updateTriptimesA.getRunningTime(3));
+  assertEquals(60,updateTriptimesA.getRunningTime(4));
+}

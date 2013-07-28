@@ -1,0 +1,6 @@
+{
+  if (!validateTripDescriptor(tripUpdate.getTrip())) {
+    return null;
+  }
+  return TripUpdate.forCanceledTrip(tripId,timestamp,serviceDate);
+}

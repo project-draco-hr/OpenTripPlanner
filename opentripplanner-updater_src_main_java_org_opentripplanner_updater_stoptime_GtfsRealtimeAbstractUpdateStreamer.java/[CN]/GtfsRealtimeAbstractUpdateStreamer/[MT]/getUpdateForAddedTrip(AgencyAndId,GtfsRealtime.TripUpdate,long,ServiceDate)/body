@@ -1,0 +1,28 @@
+{
+  if (!validateTripDescriptor(tripUpdate.getTrip())) {
+    return null;
+  }
+  if (!tripUpdate.getTrip().hasRouteId()) {
+    LOG.warn("A routeId must be provided for added/unscheduled trips.");
+    return null;
+  }
+  Trip trip=new Trip();
+  trip.setId(tripId);
+  Route route=new Route();
+  AgencyAndId routeId=new AgencyAndId(defaultAgencyId,tripUpdate.getTrip().getRouteId());
+  route.setId(routeId);
+  trip.setRoute(route);
+  List<Update> updates=new LinkedList<Update>();
+  for (  GtfsRealtime.TripUpdate.StopTimeUpdate stopTimeUpdate : tripUpdate.getStopTimeUpdateList()) {
+    Update u=getStopTimeUpdateForTrip(tripId,timestamp,serviceDate,stopTimeUpdate);
+    if (u == null) {
+      return null;
+    }
+    updates.add(u);
+  }
+  if (updates.size() < 2) {
+    LOG.warn("At least two stop times must be provided for an added trip.");
+    return null;
+  }
+  return TripUpdate.forAddedTrip(trip,timestamp,serviceDate,updates);
+}

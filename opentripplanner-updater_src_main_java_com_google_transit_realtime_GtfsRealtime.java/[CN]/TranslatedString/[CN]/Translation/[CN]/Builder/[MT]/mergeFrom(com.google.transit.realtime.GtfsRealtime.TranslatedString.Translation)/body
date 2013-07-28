@@ -1,10 +1,14 @@
 {
   if (other == com.google.transit.realtime.GtfsRealtime.TranslatedString.Translation.getDefaultInstance())   return this;
   if (other.hasText()) {
-    setText(other.getText());
+    bitField0_|=0x00000001;
+    text_=other.text_;
+    onChanged();
   }
   if (other.hasLanguage()) {
-    setLanguage(other.getLanguage());
+    bitField0_|=0x00000002;
+    language_=other.language_;
+    onChanged();
   }
   this.mergeUnknownFields(other.getUnknownFields());
   return this;

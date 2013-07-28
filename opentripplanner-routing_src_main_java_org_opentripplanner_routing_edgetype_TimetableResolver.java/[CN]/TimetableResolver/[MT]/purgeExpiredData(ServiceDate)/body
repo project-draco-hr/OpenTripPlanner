@@ -1,0 +1,25 @@
+{
+synchronized (this) {
+    if (dirty == null)     throw new ConcurrentModificationException("This TimetableResolver is read-only.");
+    boolean modified=false;
+    for (    TableTripPattern pattern : timetables.keySet()) {
+      SortedSet<Timetable> sortedTimetables=timetables.get(pattern);
+      SortedSet<Timetable> toKeepTimetables=new TreeSet<Timetable>(new SortedTimetableComparator());
+      for (      Timetable timetable : sortedTimetables) {
+        if (serviceDate.compareTo(timetable.getServiceDate()) < 0) {
+          toKeepTimetables.add(timetable);
+        }
+ else {
+          modified=true;
+        }
+      }
+      if (toKeepTimetables.isEmpty()) {
+        timetables.remove(pattern);
+      }
+ else {
+        timetables.put(pattern,toKeepTimetables);
+      }
+    }
+    return modified;
+  }
+}

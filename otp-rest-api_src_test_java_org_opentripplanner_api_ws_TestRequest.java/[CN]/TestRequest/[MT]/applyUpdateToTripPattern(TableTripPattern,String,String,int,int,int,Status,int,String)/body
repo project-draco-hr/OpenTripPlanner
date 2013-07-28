@@ -1,0 +1,7 @@
+{
+  Update update=new Update(new AgencyAndId("TriMet",tripId),new AgencyAndId("TriMet",stopId),stopSeq,arrive,depart,prediction,timestamp,ServiceDate.parseString(serviceDate));
+  ArrayList<Update> updates=new ArrayList<Update>(Arrays.asList(update));
+  TripUpdate tripUpdate=TripUpdate.splitByTrip(updates).get(0);
+  boolean success=pattern.update(tripUpdate);
+  assertTrue(success);
+}

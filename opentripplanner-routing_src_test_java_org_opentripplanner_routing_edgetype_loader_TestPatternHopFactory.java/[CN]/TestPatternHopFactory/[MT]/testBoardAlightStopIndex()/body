@@ -1,0 +1,13 @@
+{
+  Vertex stop_b_arrive=graph.getVertex("agency_C_arrive");
+  Vertex stop_b_depart=graph.getVertex("agency_C_depart");
+  Map<TableTripPattern,Integer> stopIndex=new HashMap<TableTripPattern,Integer>();
+  for (  Edge edge : stop_b_depart.getOutgoing()) {
+    TransitBoardAlight tba=(TransitBoardAlight)edge;
+    stopIndex.put(tba.getPattern(),tba.getStopIndex());
+  }
+  for (  Edge edge : stop_b_arrive.getIncoming()) {
+    TransitBoardAlight tba=(TransitBoardAlight)edge;
+    if (stopIndex.containsKey(tba.getPattern()))     assertEquals((Integer)stopIndex.get(tba.getPattern()),new Integer(tba.getStopIndex()));
+  }
+}

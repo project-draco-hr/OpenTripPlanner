@@ -2,5 +2,21 @@
   if (!hasTrip()) {
     return false;
   }
+  if (!getTrip().isInitialized()) {
+    return false;
+  }
+  if (hasVehicle()) {
+    if (!getVehicle().isInitialized()) {
+      return false;
+    }
+  }
+  for (int i=0; i < getStopTimeUpdateCount(); i++) {
+    if (!getStopTimeUpdate(i).isInitialized()) {
+      return false;
+    }
+  }
+  if (!extensionsAreInitialized()) {
+    return false;
+  }
   return true;
 }

@@ -5,6 +5,9 @@
   for (int hop=0; hop < nHops; hop++) {
     int dep=getDepartureTime(hop);
     int arr=getArrivalTime(hop);
+    if (arr == CANCELED || dep == CANCELED) {
+      continue;
+    }
     if (arr < dep) {
       LOG.error("Negative hop time in TripTimes at index {}.",hop);
       increasing=false;

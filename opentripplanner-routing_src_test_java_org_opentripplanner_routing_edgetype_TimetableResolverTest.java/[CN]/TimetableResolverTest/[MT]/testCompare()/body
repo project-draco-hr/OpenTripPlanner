@@ -1,0 +1,6 @@
+{
+  Timetable orig=new Timetable(null);
+  Timetable a=orig.copy(new ServiceDate().previous());
+  Timetable b=orig.copy(new ServiceDate());
+  assertEquals(-1,(new TimetableResolver.SortedTimetableComparator()).compare(a,b));
+}

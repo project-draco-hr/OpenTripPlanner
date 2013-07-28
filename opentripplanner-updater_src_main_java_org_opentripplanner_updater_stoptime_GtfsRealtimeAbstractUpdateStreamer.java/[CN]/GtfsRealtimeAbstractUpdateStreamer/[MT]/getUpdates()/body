@@ -1,0 +1,70 @@
+{
+  GtfsRealtime.FeedMessage feed=getFeedMessage();
+  if (feed == null)   return null;
+  GtfsRealtime.FeedHeader header=feed.getHeader();
+  long feedTimestamp=header.getTimestamp();
+  if (feedTimestamp < lastTimestamp) {
+    LOG.info("Ignoring feed with old timestamp.");
+    return Collections.emptyList();
+  }
+  lastTimestamp=feedTimestamp;
+  List<org.opentripplanner.routing.trippattern.TripUpdate> updates=new ArrayList<org.opentripplanner.routing.trippattern.TripUpdate>();
+  for (  GtfsRealtime.FeedEntity entity : feed.getEntityList()) {
+    if (!entity.hasTripUpdate()) {
+      continue;
+    }
+    GtfsRealtime.TripUpdate rtTripUpdate=entity.getTripUpdate();
+    GtfsRealtime.TripDescriptor descriptor=rtTripUpdate.getTrip();
+    long timestamp=rtTripUpdate.hasTimestamp() ? rtTripUpdate.getTimestamp() : feedTimestamp;
+    if (seenEntities.containsKey(entity.getId())) {
+      TripUpdate processed=seenEntities.get(entity.getId());
+      if (timestamp <= processed.getTimestamp())       continue;
+    }
+    String trip=descriptor.getTripId();
+    AgencyAndId tripId=new AgencyAndId(defaultAgencyId,trip);
+    ServiceDate serviceDate=new ServiceDate();
+    if (descriptor.hasStartDate()) {
+      try {
+        Date date=ymdParser.parse(descriptor.getStartDate());
+        serviceDate=new ServiceDate(date);
+      }
+ catch (      ParseException e) {
+        LOG.warn("Failed to parse startDate in gtfs-rt feed: \n{}",entity);
+        continue;
+      }
+    }
+    GtfsRealtime.TripDescriptor.ScheduleRelationship sr;
+    if (rtTripUpdate.getTrip().hasScheduleRelationship()) {
+      sr=rtTripUpdate.getTrip().getScheduleRelationship();
+    }
+ else {
+      sr=GtfsRealtime.TripDescriptor.ScheduleRelationship.SCHEDULED;
+    }
+    TripUpdate tripUpdate=null;
+switch (sr) {
+case SCHEDULED:
+      tripUpdate=getUpdateForScheduledTrip(tripId,rtTripUpdate,timestamp,serviceDate);
+    break;
+case CANCELED:
+  tripUpdate=getUpdateForCanceledTrip(tripId,rtTripUpdate,timestamp,serviceDate);
+break;
+case ADDED:
+tripUpdate=getUpdateForAddedTrip(tripId,rtTripUpdate,timestamp,serviceDate);
+break;
+case UNSCHEDULED:
+tripUpdate=getUpdateForUnscheduledTrip(tripId,rtTripUpdate,timestamp,serviceDate);
+break;
+case REPLACEMENT:
+tripUpdate=getUpdateForReplacementTrip(tripId,rtTripUpdate,timestamp,serviceDate);
+break;
+}
+if (tripUpdate != null) {
+seenEntities.put(entity.getId(),tripUpdate);
+updates.add(tripUpdate);
+}
+ else {
+LOG.warn("Failed to parse tripUpdate: \n{}",entity);
+}
+}
+return updates;
+}

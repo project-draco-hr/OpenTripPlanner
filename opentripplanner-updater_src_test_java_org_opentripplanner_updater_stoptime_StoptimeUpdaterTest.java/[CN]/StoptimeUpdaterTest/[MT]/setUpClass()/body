@@ -1,0 +1,9 @@
+{
+  context=GtfsLibrary.readGtfs(new File("../opentripplanner-routing/" + ConstantsForTests.FAKE_GTFS));
+  GTFSPatternHopFactory factory=new GTFSPatternHopFactory(context);
+  factory.run(graph);
+  TransitIndexBuilder builder=new TransitIndexBuilder();
+  builder.setDao(context.getDao());
+  builder.buildGraph(graph);
+  transitIndexService=graph.getService(TransitIndexService.class);
+}

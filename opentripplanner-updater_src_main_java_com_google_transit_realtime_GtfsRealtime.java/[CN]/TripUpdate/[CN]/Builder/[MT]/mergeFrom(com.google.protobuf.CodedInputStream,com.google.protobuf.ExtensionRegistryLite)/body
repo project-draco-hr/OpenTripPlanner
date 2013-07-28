@@ -1,48 +1,16 @@
 {
-  com.google.protobuf.UnknownFieldSet.Builder unknownFields=com.google.protobuf.UnknownFieldSet.newBuilder(this.getUnknownFields());
-  while (true) {
-    int tag=input.readTag();
-switch (tag) {
-case 0:
-      this.setUnknownFields(unknownFields.build());
-    onChanged();
-  return this;
-default :
-{
-  if (!parseUnknownField(input,unknownFields,extensionRegistry,tag)) {
-    this.setUnknownFields(unknownFields.build());
-    onChanged();
-    return this;
+  com.google.transit.realtime.GtfsRealtime.TripUpdate parsedMessage=null;
+  try {
+    parsedMessage=PARSER.parsePartialFrom(input,extensionRegistry);
   }
-  break;
-}
-case 10:
-{
-com.google.transit.realtime.GtfsRealtime.TripDescriptor.Builder subBuilder=com.google.transit.realtime.GtfsRealtime.TripDescriptor.newBuilder();
-if (hasTrip()) {
-  subBuilder.mergeFrom(getTrip());
-}
-input.readMessage(subBuilder,extensionRegistry);
-setTrip(subBuilder.buildPartial());
-break;
-}
-case 18:
-{
-com.google.transit.realtime.GtfsRealtime.TripUpdate.StopTimeUpdate.Builder subBuilder=com.google.transit.realtime.GtfsRealtime.TripUpdate.StopTimeUpdate.newBuilder();
-input.readMessage(subBuilder,extensionRegistry);
-addStopTimeUpdate(subBuilder.buildPartial());
-break;
-}
-case 26:
-{
-com.google.transit.realtime.GtfsRealtime.VehicleDescriptor.Builder subBuilder=com.google.transit.realtime.GtfsRealtime.VehicleDescriptor.newBuilder();
-if (hasVehicle()) {
-subBuilder.mergeFrom(getVehicle());
-}
-input.readMessage(subBuilder,extensionRegistry);
-setVehicle(subBuilder.buildPartial());
-break;
-}
-}
-}
+ catch (  com.google.protobuf.InvalidProtocolBufferException e) {
+    parsedMessage=(com.google.transit.realtime.GtfsRealtime.TripUpdate)e.getUnfinishedMessage();
+    throw e;
+  }
+ finally {
+    if (parsedMessage != null) {
+      mergeFrom(parsedMessage);
+    }
+  }
+  return this;
 }
