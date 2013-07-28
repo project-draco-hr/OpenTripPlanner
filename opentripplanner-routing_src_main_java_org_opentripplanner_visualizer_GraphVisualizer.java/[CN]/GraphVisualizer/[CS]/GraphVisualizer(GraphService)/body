@@ -1,0 +1,11 @@
+{
+  super();
+  LOG.info("Starting up graph visualizer...");
+  this.graphService=graphService;
+  this.graph=graphService.getGraph();
+  sptService.setShortestPathTreeFactory(sptFactory);
+  pathservice.setGraphService(graphService);
+  pathservice.setSptService(sptService);
+  setTitle("GraphVisualizer");
+  init();
+}

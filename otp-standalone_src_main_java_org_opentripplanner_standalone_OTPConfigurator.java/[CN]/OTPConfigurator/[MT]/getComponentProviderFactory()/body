@@ -1,10 +1,11 @@
 {
+  if (componentProviderFactory != null)   return componentProviderFactory;
   LOG.info("Wiring up and configuring server task.");
   RetryingPathServiceImpl pathService=new RetryingPathServiceImpl();
   pathService.setFirstPathTimeout(10.0);
   pathService.setMultiPathTimeout(1.0);
   OTPComponentProviderFactory cpf=new OTPComponentProviderFactory();
-  cpf.bind(GraphService.class,makeGraphService());
+  cpf.bind(GraphService.class,getGraphService());
   cpf.bind(RoutingRequest.class);
   cpf.bind(PlanGenerator.class);
   cpf.bind(MetadataService.class);
@@ -19,5 +20,6 @@
     cpf.bind(SampleFactory.class);
   }
   cpf.doneBinding();
+  this.componentProviderFactory=cpf;
   return cpf;
 }

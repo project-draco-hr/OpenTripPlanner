@@ -1,0 +1,8 @@
+{
+  if (params.visualize) {
+    OTPComponentProviderFactory cpf=getComponentProviderFactory();
+    GraphVisualizer visualizer=new GraphVisualizer(getGraphService());
+    return visualizer;
+  }
+ else   return null;
+}

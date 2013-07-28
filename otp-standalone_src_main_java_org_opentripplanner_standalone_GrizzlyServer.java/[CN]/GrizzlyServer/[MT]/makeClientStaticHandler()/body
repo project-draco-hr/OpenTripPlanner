@@ -7,10 +7,10 @@
     zip.extractAll(tempDir.toString());
   }
  catch (  ZipException e) {
-    LOG.error("Error expanding client WAR, client will not be available.");
+    LOG.error("Error expanding client WAR, client will not be available: {}",e.getMessage());
   }
 catch (  IOException e) {
-    LOG.error("Error copying client WAR, client will not be available.");
+    LOG.error("Error copying client WAR, client will not be available: {}",e.getMessage());
   }
   return new StaticHttpHandler(tempDir.toString());
 }

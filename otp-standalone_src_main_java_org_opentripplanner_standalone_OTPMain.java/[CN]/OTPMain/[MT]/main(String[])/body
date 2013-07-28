@@ -17,7 +17,11 @@
   GraphBuilderTask graphBuilder=configurator.builderFromParameters();
   if (graphBuilder != null) {
     graphBuilder.run();
-    configurator.setGraph(graphBuilder.getGraph());
+    configurator.makeGraphService(graphBuilder.getGraph());
+  }
+  GraphVisualizer graphVisualizer=configurator.visualizerFromParameters();
+  if (graphVisualizer != null) {
+    graphVisualizer.run();
   }
   GrizzlyServer grizzlyServer=configurator.serverFromParameters();
   if (grizzlyServer != null) {
