@@ -1,0 +1,11 @@
+{
+  GraphVisualizer gui=null;
+  if (args.length != 1) {
+    System.out.println("Usage: GraphVisualizer /path/to/Graph.obj");
+    System.exit(1);
+  }
+ else {
+    gui=new GraphVisualizer(args[0]);
+  }
+  gui.setVisible(true);
+}
