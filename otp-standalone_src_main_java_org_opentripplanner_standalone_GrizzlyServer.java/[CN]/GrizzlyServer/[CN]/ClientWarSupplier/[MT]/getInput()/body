@@ -1,5 +1,5 @@
 {
   InputStream istream=ClassLoader.getSystemResourceAsStream(CLIENT_WAR_FILENAME);
-  if (istream == null)   throw new IOException("Cannot find client WAR.");
+  if (istream == null)   throw new IOException("Cannot find client WAR on classpath.");
   return istream;
 }
