@@ -1,0 +1,14 @@
+{
+  assertEquals(60000L,itinerary.duration);
+  assertEquals(0L,itinerary.startTime.getTimeInMillis());
+  assertEquals(60000L,itinerary.endTime.getTimeInMillis());
+  assertEquals(27L,itinerary.walkTime);
+  assertEquals(23L,itinerary.transitTime);
+  assertEquals(10L,itinerary.waitingTime);
+  assertEquals(21.0,itinerary.walkDistance,0.0);
+  assertFalse(itinerary.walkLimitExceeded);
+  assertEquals(10.0,itinerary.elevationLost,0.0);
+  assertEquals(16.0,itinerary.elevationGained,0.0);
+  assertEquals(1,itinerary.transfers.intValue());
+  assertFalse(itinerary.tooSloped);
+}
