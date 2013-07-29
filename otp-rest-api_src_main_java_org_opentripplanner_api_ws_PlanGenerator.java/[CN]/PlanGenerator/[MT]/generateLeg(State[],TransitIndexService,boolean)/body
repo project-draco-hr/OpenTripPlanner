@@ -1,0 +1,23 @@
+{
+  Leg leg=new Leg();
+  Edge[] edges=new Edge[states.length - 1];
+  leg.startTime=makeCalendar(states[0]);
+  leg.endTime=makeCalendar(states[states.length - 1]);
+  leg.distance=0.0;
+  for (int i=0; i < edges.length; i++) {
+    edges[i]=states[i + 1].getBackEdge();
+    leg.distance+=edges[i].getDistance();
+  }
+  addModeAndAlerts(leg,states);
+  TimeZone timeZone=leg.startTime.getTimeZone();
+  leg.agencyTimeZoneOffset=timeZone.getOffset(leg.startTime.getTimeInMillis());
+  addTripFields(leg,states,transitIndexService);
+  addPlaces(leg,states,edges,showIntermediateStops);
+  if (leg.isTransitLeg())   addRealTimeData(leg,states);
+  CoordinateArrayListSequence coordinates=makeCoordinates(edges);
+  Geometry geometry=GeometryUtils.getGeometryFactory().createLineString(coordinates);
+  leg.legGeometry=PolylineEncoder.createEncodings(geometry);
+  leg.interlineWithPreviousLeg=states[0].getBackEdge() instanceof PatternInterlineDwell;
+  leg.rentedBike=states[0].isBikeRenting() && states[states.length - 1].isBikeRenting();
+  return leg;
+}

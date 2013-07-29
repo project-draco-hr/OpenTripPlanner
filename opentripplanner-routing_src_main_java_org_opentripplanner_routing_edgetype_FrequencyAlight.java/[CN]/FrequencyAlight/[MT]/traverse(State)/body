@@ -73,7 +73,7 @@
     s1.incrementWeight(preferences_penalty);
     s1.incrementWeight(transferPenalty);
     s1.incrementWeight(wait_cost + options.getBoardCost(mode));
-    s1.setBackMode(TraverseMode.ALIGHTING);
+    s1.setBackMode(TraverseMode.LEG_SWITCH);
     return s1.makeState();
   }
  else {
@@ -88,7 +88,7 @@
     s1.setTripId(null);
     s1.setLastAlightedTimeSeconds(state0.getTimeSeconds());
     s1.setPreviousStop(((TransitVertex)fromv).getStop());
-    s1.setBackMode(TraverseMode.ALIGHTING);
+    s1.setBackMode(TraverseMode.LEG_SWITCH);
     return s1.makeState();
   }
 }

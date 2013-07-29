@@ -1,0 +1,18 @@
+{
+  for (  State state : states) {
+    if (state.getBackMode() == null)     continue;
+switch (state.getBackMode()) {
+default :
+      itinerary.transitTime+=state.getTimeDeltaSeconds();
+    break;
+case LEG_SWITCH:
+  itinerary.waitingTime+=state.getTimeDeltaSeconds();
+break;
+case WALK:
+case BICYCLE:
+case CAR:
+case CUSTOM_MOTOR_VEHICLE:
+itinerary.walkTime+=state.getTimeDeltaSeconds();
+}
+}
+}

@@ -1,0 +1,15 @@
+{
+  CoordinateArrayListSequence coordinates=new CoordinateArrayListSequence();
+  for (  Edge edge : edges) {
+    LineString geometry=edge.getGeometry();
+    if (geometry != null) {
+      if (coordinates.size() == 0) {
+        coordinates.extend(geometry.getCoordinates());
+      }
+ else {
+        coordinates.extend(geometry.getCoordinates(),1);
+      }
+    }
+  }
+  return coordinates;
+}

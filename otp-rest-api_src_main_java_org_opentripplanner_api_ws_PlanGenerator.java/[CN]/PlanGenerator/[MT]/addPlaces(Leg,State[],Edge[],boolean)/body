@@ -1,0 +1,56 @@
+{
+  Vertex firstVertex=states[0].getVertex();
+  Vertex lastVertex=states[states.length - 1].getVertex();
+  Edge firstEdge=edges[0];
+  Edge lastEdge=edges[edges.length - 1];
+  leg.from=new Place(firstVertex.getX(),firstVertex.getY(),firstVertex.getName(),null,makeCalendar(states[0]));
+  leg.to=new Place(lastVertex.getX(),lastVertex.getY(),lastVertex.getName(),makeCalendar(states[states.length - 1]),null);
+  Stop firstStop=null;
+  Stop lastStop=null;
+  if (firstVertex instanceof TransitVertex) {
+    firstStop=((TransitVertex)firstVertex).getStop();
+    if (firstEdge instanceof OnBoardForwardEdge) {
+      leg.from.stopId=firstStop.getId();
+      leg.from.stopCode=firstStop.getCode();
+      leg.from.platformCode=firstStop.getPlatformCode();
+      leg.from.zoneId=firstStop.getZoneId();
+      leg.from.stopIndex=((OnBoardForwardEdge)firstEdge).getStopIndex();
+    }
+  }
+  if (lastVertex instanceof TransitVertex) {
+    lastStop=((TransitVertex)lastVertex).getStop();
+    if (lastEdge instanceof OnBoardForwardEdge) {
+      leg.to.stopId=lastStop.getId();
+      leg.to.stopCode=lastStop.getCode();
+      leg.to.platformCode=lastStop.getPlatformCode();
+      leg.to.zoneId=lastStop.getZoneId();
+      leg.to.stopIndex=((OnBoardForwardEdge)lastEdge).getStopIndex() + 1;
+    }
+  }
+  if (showIntermediateStops) {
+    leg.stop=new ArrayList<Place>();
+    Stop previousStop=null;
+    Stop currentStop;
+    for (int i=1; i < edges.length; i++) {
+      Vertex vertex=states[i].getVertex();
+      if (!(vertex instanceof TransitVertex))       continue;
+      currentStop=((TransitVertex)vertex).getStop();
+      if (currentStop == firstStop)       continue;
+      if (currentStop == previousStop) {
+        leg.stop.get(leg.stop.size() - 1).departure=makeCalendar(states[i]);
+        continue;
+      }
+      previousStop=currentStop;
+      if (currentStop == lastStop)       break;
+      Place place=new Place(vertex.getX(),vertex.getY(),currentStop.getName(),makeCalendar(states[i]),makeCalendar(states[i]));
+      if (edges[i] instanceof OnBoardForwardEdge) {
+        place.stopId=currentStop.getId();
+        place.stopCode=currentStop.getCode();
+        place.platformCode=currentStop.getPlatformCode();
+        place.zoneId=currentStop.getZoneId();
+        place.stopIndex=((OnBoardForwardEdge)edges[i]).getStopIndex();
+      }
+      leg.stop.add(place);
+    }
+  }
+}

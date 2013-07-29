@@ -13,7 +13,7 @@
     }
     s1.setTripId(null);
     s1.setLastAlightedTimeSeconds(state0.getTimeSeconds());
-    s1.setBackMode(TraverseMode.BOARDING);
+    s1.setBackMode(TraverseMode.LEG_SWITCH);
     s1.setPreviousStop(((TransitVertex)fromv).getStop());
     return s1.makeState();
   }
@@ -78,7 +78,7 @@
     s1.setPreviousTrip(trip);
     s1.setZone(pattern.getZone(stopIndex));
     s1.setRoute(trip.getRoute().getId());
-    s1.setBackMode(TraverseMode.BOARDING);
+    s1.setBackMode(TraverseMode.LEG_SWITCH);
     long wait_cost=bestWait;
     if (state0.getNumBoardings() == 0) {
       wait_cost*=options.waitAtBeginningFactor;
