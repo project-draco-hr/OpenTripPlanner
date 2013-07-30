@@ -1,0 +1,22 @@
+{
+  String path=getDottedPath();
+  final Enumeration<?> pnen=properties.propertyNames();
+  Set<String> childrenNodes=new HashSet<String>();
+  while (pnen.hasMoreElements()) {
+    String key=(String)pnen.nextElement();
+    if (key.startsWith(path)) {
+      String subKey=key.substring(path.length());
+      int dotIndex=subKey.indexOf('.');
+      if (dotIndex == -1) {
+        root.put(subKey,properties.getProperty(key));
+      }
+ else {
+        String childName=subKey.substring(0,dotIndex);
+        childrenNodes.add(childName);
+      }
+    }
+  }
+  for (  String childName : childrenNodes) {
+    children.put(childName,new PropertiesPreferences(this,childName,properties));
+  }
+}

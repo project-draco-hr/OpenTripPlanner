@@ -1,0 +1,8 @@
+{
+  PropertiesPreferences child=children.get(name);
+  if (child == null || child.isRemoved()) {
+    child=new PropertiesPreferences(this,name,null);
+    children.put(name,child);
+  }
+  return child;
+}
