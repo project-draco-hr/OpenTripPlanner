@@ -1,0 +1,18 @@
+{
+  Preferences sourcesPreferences=preferences.node("source");
+  String sourceType=sourcesPreferences.get("type",null);
+  Class<? extends BikeRentalDataSource> clazz=bikeRentalSources.get(sourceType);
+  if (clazz == null) {
+    LOG.error("Unknown bike rental source type: " + sourceType);
+    return;
+  }
+  BikeRentalDataSource source=clazz.newInstance();
+  if (source instanceof Configurable) {
+    ((Configurable)source).configure(graph,sourcesPreferences);
+  }
+  BikeRentalUpdater2 updater=new BikeRentalUpdater2(graph,source);
+  updater.setNetwork(preferences.get("networks",DEFAULT_NETWORK_LIST));
+  long frequencySec=preferences.getLong("frequencySec",DEFAULT_UPDATE_FREQ_SEC);
+  PeriodicTimerGraphUpdater periodicGraphUpdater=graph.getService(PeriodicTimerGraphUpdater.class);
+  periodicGraphUpdater.addUpdater(updater,frequencySec * 1000);
+}

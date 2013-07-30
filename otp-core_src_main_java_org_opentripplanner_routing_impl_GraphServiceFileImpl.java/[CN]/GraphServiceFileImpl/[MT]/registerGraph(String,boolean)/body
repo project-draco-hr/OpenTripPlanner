@@ -4,6 +4,7 @@
   Graph graph=this.loadGraph(routerId);
   if (graph != null) {
 synchronized (graphs) {
+      if (!preEvict)       evictGraph(routerId);
       graphs.put(routerId,graph);
     }
     levels.put(routerId,loadLevel);
