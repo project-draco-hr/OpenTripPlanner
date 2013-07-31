@@ -1,16 +1,12 @@
 {
   PeriodicTimerGraphUpdater periodicUpdater=graph.getService(PeriodicTimerGraphUpdater.class,true);
-  if (config != null) {
-    applyConfigurationToGraph(graph,config);
+  EmbeddedConfigService embeddedConfigService=graph.getService(EmbeddedConfigService.class);
+  Preferences embeddedConfig=null;
+  if (embeddedConfigService != null) {
+    embeddedConfig=new PropertiesPreferences(embeddedConfigService.getProperties());
   }
- else {
-    EmbeddedConfigService embeddedConfigService=graph.getService(EmbeddedConfigService.class);
-    if (embeddedConfigService != null) {
-      LOG.info("Decorating graph using embedded config");
-      Preferences embeddedConfig=new PropertiesPreferences(embeddedConfigService.getProperties());
-      applyConfigurationToGraph(graph,embeddedConfig);
-    }
-  }
+  LOG.info("Using configurations: " + (mainConfig == null ? "" : "[main]") + " "+ (embeddedConfig == null ? "" : "[embedded]"));
+  applyConfigurationToGraph(graph,Arrays.asList(mainConfig,embeddedConfig));
   if (periodicUpdater.size() == 0) {
     graph.putService(PeriodicTimerGraphUpdater.class,null);
   }
