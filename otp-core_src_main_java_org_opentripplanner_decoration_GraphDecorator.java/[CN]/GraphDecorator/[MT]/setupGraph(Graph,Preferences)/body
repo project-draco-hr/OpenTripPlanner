@@ -1,26 +1,17 @@
 {
-  try {
-    PeriodicTimerGraphUpdater periodicUpdater=graph.getService(PeriodicTimerGraphUpdater.class,true);
-    for (    String beanName : config.childrenNames()) {
-      Preferences beanConfig=config.node(beanName);
-      String beanType=beanConfig.get("type",null);
-      Class<? extends Configurable> clazz=configurables.get(beanType);
-      if (clazz != null) {
-        try {
-          LOG.info("Configuring bean '{}' of type '{}' ({})",beanName,beanType,clazz.getName());
-          Configurable bean=clazz.newInstance();
-          bean.configure(graph,beanConfig);
-        }
- catch (        Exception e) {
-          LOG.error("Can't configure bean: " + beanName,e);
-        }
-      }
-    }
-    if (periodicUpdater.size() == 0) {
-      graph.putService(PeriodicTimerGraphUpdater.class,null);
+  PeriodicTimerGraphUpdater periodicUpdater=graph.getService(PeriodicTimerGraphUpdater.class,true);
+  if (config != null) {
+    applyConfigurationToGraph(graph,config);
+  }
+ else {
+    EmbeddedConfigService embeddedConfigService=graph.getService(EmbeddedConfigService.class);
+    if (embeddedConfigService != null) {
+      LOG.info("Decorating graph using embedded config");
+      Preferences embeddedConfig=new PropertiesPreferences(embeddedConfigService.getProperties());
+      applyConfigurationToGraph(graph,embeddedConfig);
     }
   }
- catch (  BackingStoreException e) {
-    LOG.error("Can't read configuration",e);
+  if (periodicUpdater.size() == 0) {
+    graph.putService(PeriodicTimerGraphUpdater.class,null);
   }
 }
