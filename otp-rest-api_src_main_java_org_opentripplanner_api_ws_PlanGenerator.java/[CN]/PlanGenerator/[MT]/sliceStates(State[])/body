@@ -9,9 +9,10 @@
     if (backMode == TraverseMode.LEG_SWITCH || forwardMode == TraverseMode.LEG_SWITCH) {
       if (backMode != TraverseMode.LEG_SWITCH) {
         legIndexPairs[1]=i;
-        legsIndexes.add(legIndexPairs);
       }
  else       if (forwardMode != TraverseMode.LEG_SWITCH) {
+        if (legIndexPairs[1] == states.length - 1)         continue;
+        legsIndexes.add(legIndexPairs);
         legIndexPairs=new int[]{i,states.length - 1};
       }
     }
@@ -26,6 +27,7 @@
       legIndexPairs=new int[]{i + 1,states.length - 1};
     }
   }
+  legIndexPairs[1]=states.length - 1;
   legsIndexes.add(legIndexPairs);
   State[][] legsStates=new State[legsIndexes.size()][];
   for (int i=0; i < legsStates.length; i++) {

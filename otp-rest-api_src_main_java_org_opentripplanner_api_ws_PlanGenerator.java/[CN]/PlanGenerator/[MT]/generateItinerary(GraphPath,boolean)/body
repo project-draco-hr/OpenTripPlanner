@@ -1,4 +1,7 @@
 {
+  if (path.states.size() < 2) {
+    throw new TrivialPathException();
+  }
   Itinerary itinerary=new Itinerary();
   State[] states=new State[path.states.size()];
   State lastState=path.states.getLast();
@@ -24,8 +27,5 @@
   calculateElevations(itinerary,edges);
   itinerary.walkDistance=lastState.getWalkDistance();
   if (lastState.getNumBoardings() > 1)   itinerary.transfers=lastState.getNumBoardings() - 1;
-  if (itinerary.legs.size() == 0) {
-    throw new TrivialPathException();
-  }
   return itinerary;
 }
