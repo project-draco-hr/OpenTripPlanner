@@ -1,0 +1,23 @@
+{
+  Preferences sourcesPreferences=preferences.node("source");
+  String sourceType=sourcesPreferences.get("type",null);
+  Class<? extends UpdateStreamer> clazz=updateStreamers.get(sourceType);
+  if (clazz == null) {
+    LOG.error("Unknown update streamer source type: " + sourceType);
+    return;
+  }
+  UpdateStreamer updateStreamer=clazz.newInstance();
+  if (updateStreamer instanceof Configurable) {
+    ((Configurable)updateStreamer).configure(graph,sourcesPreferences);
+  }
+  StoptimeUpdater updater=new StoptimeUpdater(graph);
+  updater.setUpdateStreamer(updateStreamer);
+  int logFrequency=preferences.getInt("logFrequency",-1);
+  if (logFrequency >= 0)   updater.setLogFrequency(logFrequency);
+  int maxSnapshotFrequency=preferences.getInt("maxSnapshotFrequencyMs",-1);
+  if (maxSnapshotFrequency >= 0)   updater.setMaxSnapshotFrequency(maxSnapshotFrequency);
+  updater.setPurgeExpiredData(preferences.getBoolean("purgeExpiredData",true));
+  long frequencySec=preferences.getLong("frequencySec",DEFAULT_UPDATE_FREQ_SEC);
+  PeriodicTimerGraphUpdater periodicGraphUpdater=graph.getService(PeriodicTimerGraphUpdater.class);
+  periodicGraphUpdater.addUpdater(updater,frequencySec * 1000);
+}
