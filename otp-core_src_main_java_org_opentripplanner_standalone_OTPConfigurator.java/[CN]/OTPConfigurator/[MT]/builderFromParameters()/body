@@ -49,7 +49,7 @@ for (File gtfsFile : gtfsFiles) {
 GtfsBundle gtfsBundle=new GtfsBundle(gtfsFile);
 gtfsBundles.add(gtfsBundle);
 }
-GraphBuilder gtfsBuilder=new GtfsGraphBuilderImpl(gtfsBundles);
+GtfsGraphBuilderImpl gtfsBuilder=new GtfsGraphBuilderImpl(gtfsBundles);
 graphBuilder.addGraphBuilder(gtfsBuilder);
 if (hasOSM) {
 graphBuilder.addGraphBuilder(new TransitToStreetNetworkGraphBuilderImpl());
@@ -57,6 +57,11 @@ graphBuilder.addGraphBuilder(new TransitToStreetNetworkGraphBuilderImpl());
  else {
 graphBuilder.addGraphBuilder(new StreetlessStopLinker());
 }
+List<GraphBuilderWithGtfsDao> gtfsBuilders=new ArrayList<GraphBuilderWithGtfsDao>();
+if (params.transitIndex) {
+gtfsBuilders.add(new TransitIndexBuilder());
+}
+gtfsBuilder.setGtfsGraphBuilders(gtfsBuilders);
 }
 if (params.elevation) {
 File cacheDirectory=new File(params.cacheDirectory,"ned");
