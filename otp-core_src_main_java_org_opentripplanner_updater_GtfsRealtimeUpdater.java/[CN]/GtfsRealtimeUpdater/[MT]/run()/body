@@ -9,7 +9,7 @@
     }
     updateHandler.setEarlyStart(earlyStart);
     updateHandler.setDefaultAgencyId(defaultAgencyId);
-    updateHandler.setPatchService(getPatchService());
+    updateHandler.setPatchService(patchService);
     FeedMessage feed=GtfsRealtime.FeedMessage.parseFrom(data);
     updateHandler.update(feed);
   }

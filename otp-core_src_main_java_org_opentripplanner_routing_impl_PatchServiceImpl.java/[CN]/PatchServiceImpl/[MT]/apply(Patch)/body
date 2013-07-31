@@ -1,5 +1,5 @@
 {
-  Graph graph=graphService.getGraph();
+  if (graph == null)   graph=graphService.getGraph();
   if (patches.containsKey(patch.getId())) {
     expire(patches.get(patch.getId()));
   }

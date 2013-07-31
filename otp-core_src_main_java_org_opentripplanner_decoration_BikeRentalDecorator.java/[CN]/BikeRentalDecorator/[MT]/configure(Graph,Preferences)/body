@@ -13,6 +13,7 @@
   BikeRentalUpdater2 updater=new BikeRentalUpdater2(graph,source);
   updater.setNetwork(preferences.get("networks",DEFAULT_NETWORK_LIST));
   long frequencySec=preferences.getLong("frequencySec",DEFAULT_UPDATE_FREQ_SEC);
+  LOG.info("Creating bike-rental updater running every {} seconds : {}",frequencySec,source);
   PeriodicTimerGraphUpdater periodicGraphUpdater=graph.getService(PeriodicTimerGraphUpdater.class);
   periodicGraphUpdater.addUpdater(updater,frequencySec * 1000);
 }

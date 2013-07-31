@@ -7,7 +7,7 @@
       Class<? extends Configurable> clazz=configurables.get(beanType);
       if (clazz != null) {
         try {
-          LOG.info("Configuring bean {} of type {} ({})",beanName,beanType,clazz.getName());
+          LOG.info("Configuring bean '{}' of type '{}' ({})",beanName,beanType,clazz.getName());
           Configurable bean=clazz.newInstance();
           bean.configure(graph,beanConfig);
         }

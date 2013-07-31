@@ -1,0 +1,15 @@
+{
+  GtfsRealtimeUpdater realTimeUpdater=new GtfsRealtimeUpdater();
+  PatchService patchService=new PatchServiceImpl(graph);
+  realTimeUpdater.setPatchService(patchService);
+  Preferences sourcesPreferences=preferences.node("source");
+  String url=sourcesPreferences.get("url",null);
+  if (url == null)   throw new IllegalArgumentException("Missing mandatory 'url' parameter");
+  realTimeUpdater.setUrl(url);
+  realTimeUpdater.setEarlyStart(sourcesPreferences.getInt("earlyStartSec",0));
+  realTimeUpdater.setDefaultAgencyId(sourcesPreferences.get("defaultAgencyId",null));
+  long frequencySec=preferences.getLong("frequencySec",DEFAULT_UPDATE_FREQ_SEC);
+  LOG.info("Creating real-time alert updater running every {} seconds : {}",frequencySec,url);
+  PeriodicTimerGraphUpdater periodicGraphUpdater=graph.getService(PeriodicTimerGraphUpdater.class);
+  periodicGraphUpdater.addUpdater(realTimeUpdater,frequencySec * 1000);
+}
