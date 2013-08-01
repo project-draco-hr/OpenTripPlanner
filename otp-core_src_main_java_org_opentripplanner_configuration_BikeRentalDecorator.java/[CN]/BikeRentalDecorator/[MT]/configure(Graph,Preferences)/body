@@ -7,8 +7,8 @@
     return;
   }
   BikeRentalDataSource source=clazz.newInstance();
-  if (source instanceof Configurable) {
-    ((Configurable)source).configure(graph,sourcesPreferences);
+  if (source instanceof PreferencesConfigurable) {
+    ((PreferencesConfigurable)source).configure(graph,sourcesPreferences);
   }
   BikeRentalUpdater2 updater=new BikeRentalUpdater2(graph,source);
   updater.setNetwork(preferences.get("networks",DEFAULT_NETWORK_LIST));

@@ -7,8 +7,8 @@
     return;
   }
   UpdateStreamer updateStreamer=clazz.newInstance();
-  if (updateStreamer instanceof Configurable) {
-    ((Configurable)updateStreamer).configure(graph,sourcesPreferences);
+  if (updateStreamer instanceof PreferencesConfigurable) {
+    ((PreferencesConfigurable)updateStreamer).configure(graph,sourcesPreferences);
   }
   StoptimeUpdater updater=new StoptimeUpdater(graph);
   updater.setUpdateStreamer(updateStreamer);
