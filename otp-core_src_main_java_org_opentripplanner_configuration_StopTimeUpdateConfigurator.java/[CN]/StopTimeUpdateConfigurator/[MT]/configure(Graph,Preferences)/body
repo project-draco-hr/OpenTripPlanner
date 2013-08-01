@@ -1,6 +1,5 @@
 {
-  Preferences sourcesPreferences=preferences.node("source");
-  String sourceType=sourcesPreferences.get("type",null);
+  String sourceType=preferences.get("sourceType",null);
   Class<? extends UpdateStreamer> clazz=updateStreamers.get(sourceType);
   if (clazz == null) {
     LOG.error("Unknown update streamer source type: " + sourceType);
@@ -8,7 +7,7 @@
   }
   UpdateStreamer updateStreamer=clazz.newInstance();
   if (updateStreamer instanceof PreferencesConfigurable) {
-    ((PreferencesConfigurable)updateStreamer).configure(graph,sourcesPreferences);
+    ((PreferencesConfigurable)updateStreamer).configure(graph,preferences);
   }
   StoptimeUpdater updater=new StoptimeUpdater(graph);
   updater.setUpdateStreamer(updateStreamer);

@@ -1,6 +1,5 @@
 {
-  Preferences sourcesPreferences=preferences.node("source");
-  String sourceType=sourcesPreferences.get("type",null);
+  String sourceType=preferences.get("sourceType",null);
   Class<? extends BikeRentalDataSource> clazz=bikeRentalSources.get(sourceType);
   if (clazz == null) {
     LOG.error("Unknown bike rental source type: " + sourceType);
@@ -8,7 +7,7 @@
   }
   BikeRentalDataSource source=clazz.newInstance();
   if (source instanceof PreferencesConfigurable) {
-    ((PreferencesConfigurable)source).configure(graph,sourcesPreferences);
+    ((PreferencesConfigurable)source).configure(graph,preferences);
   }
   BikeRentalUpdater2 updater=new BikeRentalUpdater2(graph,source);
   updater.setNetwork(preferences.get("networks",DEFAULT_NETWORK_LIST));
