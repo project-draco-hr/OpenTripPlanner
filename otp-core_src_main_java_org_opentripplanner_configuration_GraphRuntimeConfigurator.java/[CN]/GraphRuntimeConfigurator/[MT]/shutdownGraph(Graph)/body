@@ -1,8 +1,4 @@
 {
-  ShutdownGraphService shutdownGraphService=graph.getService(ShutdownGraphService.class);
-  if (shutdownGraphService != null) {
-    shutdownGraphService.shutdown(graph);
-  }
   PeriodicTimerGraphUpdater periodicUpdater=graph.getService(PeriodicTimerGraphUpdater.class);
   if (periodicUpdater != null) {
     LOG.info("Stopping periodic updater with " + periodicUpdater.size() + " updaters.");
