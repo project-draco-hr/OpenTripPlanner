@@ -8,6 +8,7 @@
   LOG.info("Using configurations: " + (mainConfig == null ? "" : "[main]") + " "+ (embeddedConfig == null ? "" : "[embedded]"));
   applyConfigurationToGraph(graph,Arrays.asList(mainConfig,embeddedConfig));
   if (periodicUpdater.size() == 0) {
+    periodicUpdater.stop();
     graph.putService(PeriodicTimerGraphUpdater.class,null);
   }
 }
