@@ -3,5 +3,8 @@
   thread=new Thread(updater);
   thread.setDaemon(false);
   thread.setName("Graph Updater Thread");
+  for (  GraphUpdaterRunnable updater : updaters) {
+    updater.setup();
+  }
   thread.start();
 }

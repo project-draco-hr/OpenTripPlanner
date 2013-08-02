@@ -1,5 +1,6 @@
 {
-  timer.scheduleAtFixedRate(new TimerTask(){
+  updater.setup();
+  scheduler.scheduleAtFixedRate(new Runnable(){
     @Override public void run(){
       try {
         updater.run();
@@ -9,6 +10,6 @@
       }
     }
   }
-,0,frequencyMs);
-  size++;
+,0,frequencyMs,TimeUnit.MILLISECONDS);
+  updaters.add(updater);
 }
