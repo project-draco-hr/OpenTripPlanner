@@ -1,6 +1,5 @@
 {
-  updater=new StoptimeUpdater();
-  updater.setGraphService(graphService);
+  updater=new StoptimeUpdater(graph);
   updater.setUpdateStreamer(new UpdateStreamer(){
     @Override public List<TripUpdate> getUpdates(){
       return Collections.singletonList(tripUpdate);

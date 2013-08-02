@@ -1,0 +1,15 @@
+{
+  updater.setup();
+  scheduler.scheduleAtFixedRate(new Runnable(){
+    @Override public void run(){
+      try {
+        updater.run();
+      }
+ catch (      Exception e) {
+        LOG.error("Error while running updater " + updater.getClass().getName(),e);
+      }
+    }
+  }
+,0,frequencyMs,TimeUnit.MILLISECONDS);
+  updaters.add(updater);
+}

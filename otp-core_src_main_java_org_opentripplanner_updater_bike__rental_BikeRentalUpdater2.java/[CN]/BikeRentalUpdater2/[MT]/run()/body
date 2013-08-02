@@ -1,0 +1,43 @@
+{
+  LOG.debug("Updating bike rental stations from " + source);
+  if (!source.update()) {
+    LOG.debug("No updates");
+    return;
+  }
+  List<BikeRentalStation> stations=source.getStations();
+  Set<BikeRentalStation> stationSet=new HashSet<BikeRentalStation>();
+  Set<String> networks=new HashSet<String>(Arrays.asList(network));
+  for (  BikeRentalStation station : stations) {
+    service.addStation(station);
+    stationSet.add(station);
+    BikeRentalStationVertex vertex=verticesByStation.get(station);
+    if (vertex == null) {
+      vertex=new BikeRentalStationVertex(graph,station);
+      LinkRequest request=networkLinkerLibrary.connectVertexToStreets(vertex);
+      for (      Edge e : request.getEdgesAdded()) {
+        graph.addTemporaryEdge(e);
+      }
+      verticesByStation.put(station,vertex);
+      new RentABikeOnEdge(vertex,vertex,networks);
+      new RentABikeOffEdge(vertex,vertex,networks);
+    }
+ else {
+      vertex.setBikesAvailable(station.bikesAvailable);
+      vertex.setSpacesAvailable(station.spacesAvailable);
+    }
+  }
+  List<BikeRentalStation> toRemove=new ArrayList<BikeRentalStation>();
+  for (  Entry<BikeRentalStation,BikeRentalStationVertex> entry : verticesByStation.entrySet()) {
+    BikeRentalStation station=entry.getKey();
+    if (stationSet.contains(station))     continue;
+    BikeRentalStationVertex vertex=entry.getValue();
+    if (graph.containsVertex(vertex)) {
+      graph.removeVertexAndEdges(vertex);
+    }
+    toRemove.add(station);
+    service.removeStation(station);
+  }
+  for (  BikeRentalStation station : toRemove) {
+    verticesByStation.remove(station);
+  }
+}

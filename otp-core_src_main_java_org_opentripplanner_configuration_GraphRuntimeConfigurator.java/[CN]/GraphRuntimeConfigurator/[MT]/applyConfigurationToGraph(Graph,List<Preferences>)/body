@@ -1,0 +1,28 @@
+{
+  try {
+    Set<String> configurableNames=new HashSet<String>();
+    for (    Preferences config : configs) {
+      if (config == null)       continue;
+      for (      String configurableName : config.childrenNames()) {
+        if (configurableNames.contains(configurableName))         continue;
+        configurableNames.add(configurableName);
+        Preferences prefs=config.node(configurableName);
+        String configurableType=prefs.get("type",null);
+        Class<? extends PreferencesConfigurable> clazz=configurables.get(configurableType);
+        if (clazz != null) {
+          try {
+            LOG.info("Configuring '{}' of type '{}' ({})",configurableName,configurableType,clazz.getName());
+            PreferencesConfigurable configurable=clazz.newInstance();
+            configurable.configure(graph,prefs);
+          }
+ catch (          Exception e) {
+            LOG.error("Can't configure: " + configurableName,e);
+          }
+        }
+      }
+    }
+  }
+ catch (  BackingStoreException e) {
+    LOG.error("Can't read configuration",e);
+  }
+}
