@@ -6,6 +6,7 @@
   GraphBuilderTask graphBuilder=new GraphBuilderTask();
   List<File> gtfsFiles=Lists.newArrayList();
   List<File> osmFiles=Lists.newArrayList();
+  File configFile=null;
   for (  File dir : params.build) {
     LOG.info("Searching for graph builder input files in {}",dir);
     if (!dir.isDirectory() && dir.canRead()) {
@@ -22,6 +23,12 @@ case GTFS:
 case OSM:
   LOG.info("Found OSM file {}",file);
 osmFiles.add(file);
+break;
+case CONFIG:
+if (!params.noEmbedConfig) {
+LOG.info("Found CONFIG file {}",file);
+configFile=file;
+}
 break;
 case OTHER:
 LOG.debug("Skipping file '{}'",file);
@@ -49,7 +56,7 @@ for (File gtfsFile : gtfsFiles) {
 GtfsBundle gtfsBundle=new GtfsBundle(gtfsFile);
 gtfsBundles.add(gtfsBundle);
 }
-GraphBuilder gtfsBuilder=new GtfsGraphBuilderImpl(gtfsBundles);
+GtfsGraphBuilderImpl gtfsBuilder=new GtfsGraphBuilderImpl(gtfsBundles);
 graphBuilder.addGraphBuilder(gtfsBuilder);
 if (hasOSM) {
 graphBuilder.addGraphBuilder(new TransitToStreetNetworkGraphBuilderImpl());
@@ -57,6 +64,16 @@ graphBuilder.addGraphBuilder(new TransitToStreetNetworkGraphBuilderImpl());
  else {
 graphBuilder.addGraphBuilder(new StreetlessStopLinker());
 }
+List<GraphBuilderWithGtfsDao> gtfsBuilders=new ArrayList<GraphBuilderWithGtfsDao>();
+if (params.transitIndex) {
+gtfsBuilders.add(new TransitIndexBuilder());
+}
+gtfsBuilder.setGtfsGraphBuilders(gtfsBuilders);
+}
+if (configFile != null) {
+EmbeddedConfigGraphBuilderImpl embeddedConfigBuilder=new EmbeddedConfigGraphBuilderImpl();
+embeddedConfigBuilder.setPropertiesFile(configFile);
+graphBuilder.addGraphBuilder(embeddedConfigBuilder);
 }
 if (params.elevation) {
 File cacheDirectory=new File(params.cacheDirectory,"ned");

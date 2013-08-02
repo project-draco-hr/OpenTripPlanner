@@ -1,0 +1,9 @@
+{
+  Preferences cursor=this;
+  StringBuffer retval=new StringBuffer();
+  while (cursor != null) {
+    if (cursor.name().length() > 0)     retval.insert(0,cursor.name() + ".");
+    cursor=cursor.parent();
+  }
+  return retval.toString();
+}

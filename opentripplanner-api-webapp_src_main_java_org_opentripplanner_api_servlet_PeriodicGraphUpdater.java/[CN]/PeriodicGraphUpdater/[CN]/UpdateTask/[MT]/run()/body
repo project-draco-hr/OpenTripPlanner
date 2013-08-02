@@ -8,16 +8,19 @@
       }
  catch (      InterruptedException e) {
         if (finished) {
-          return;
+          break;
         }
       }
       now=System.currentTimeMillis();
     }
-    for (    Runnable updater : getUpdaters()) {
+    for (    GraphUpdaterRunnable updater : updaters) {
       System.out.println("running updater " + updater);
       updater.run();
     }
     lastUpdate=now;
     Thread.yield();
+  }
+  for (  GraphUpdaterRunnable updater : updaters) {
+    updater.teardown();
   }
 }

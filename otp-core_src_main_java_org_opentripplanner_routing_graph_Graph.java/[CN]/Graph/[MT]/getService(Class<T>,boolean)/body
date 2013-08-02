@@ -1,0 +1,16 @@
+{
+  @SuppressWarnings("unchecked") T t=(T)_services.get(serviceType);
+  if (t == null) {
+    try {
+      t=(T)serviceType.newInstance();
+    }
+ catch (    InstantiationException e) {
+      throw new RuntimeException(e);
+    }
+catch (    IllegalAccessException e) {
+      throw new RuntimeException(e);
+    }
+    _services.put(serviceType,t);
+  }
+  return t;
+}

@@ -2,7 +2,9 @@
   int n;
 synchronized (graphs) {
     n=graphs.size();
-    graphs.clear();
+    for (    String routerId : graphs.keySet()) {
+      evictGraph(routerId);
+    }
   }
   return n;
 }

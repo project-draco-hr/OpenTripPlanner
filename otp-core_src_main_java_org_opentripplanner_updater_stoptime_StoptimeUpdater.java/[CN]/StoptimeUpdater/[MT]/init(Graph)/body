@@ -1,0 +1,6 @@
+{
+  this.graph=graph;
+  graph.timetableSnapshotSource=this;
+  transitIndexService=graph.getService(TransitIndexService.class);
+  if (transitIndexService == null)   throw new RuntimeException("Real-time update need a TransitIndexService. Please setup one during graph building.");
+}
