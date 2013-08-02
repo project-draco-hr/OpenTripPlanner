@@ -1,0 +1,7 @@
+{
+  TrinetUser user=checkLogin();
+  checkAccess(user);
+  FieldTripNote note=FieldTripNote.findById(noteId);
+  note.delete();
+  renderJSON(noteId);
+}

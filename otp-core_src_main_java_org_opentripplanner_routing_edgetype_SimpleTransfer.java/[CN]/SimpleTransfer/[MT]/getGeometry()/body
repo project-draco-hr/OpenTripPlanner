@@ -1,0 +1,7 @@
+{
+  TransitStop start=(TransitStop)fromv;
+  TransitStop end=(TransitStop)tov;
+  Coordinate c1=new Coordinate(start.getLon(),start.getLat());
+  Coordinate c2=new Coordinate(end.getLon(),end.getLat());
+  return GeometryUtils.getGeometryFactory().createLineString(new Coordinate[]{c1,c2});
+}

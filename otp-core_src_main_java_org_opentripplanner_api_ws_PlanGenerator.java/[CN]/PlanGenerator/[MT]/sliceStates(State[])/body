@@ -1,0 +1,41 @@
+{
+  int[] legIndexPairs={0,states.length - 1};
+  List<int[]> legsIndexes=new ArrayList<int[]>();
+  for (int i=1; i < states.length - 1; i++) {
+    TraverseMode backMode=states[i].getBackMode();
+    TraverseMode forwardMode=states[i + 1].getBackMode();
+    if (backMode == null || forwardMode == null)     continue;
+    Edge edge=states[i + 1].getBackEdge();
+    if (backMode == TraverseMode.LEG_SWITCH || forwardMode == TraverseMode.LEG_SWITCH) {
+      if (backMode != TraverseMode.LEG_SWITCH) {
+        legIndexPairs[1]=i;
+      }
+ else       if (forwardMode != TraverseMode.LEG_SWITCH) {
+        if (legIndexPairs[1] != states.length - 1) {
+          legsIndexes.add(legIndexPairs);
+        }
+        legIndexPairs=new int[]{i,states.length - 1};
+      }
+    }
+ else     if (backMode != forwardMode) {
+      legIndexPairs[1]=i;
+      legsIndexes.add(legIndexPairs);
+      legIndexPairs=new int[]{i,states.length - 1};
+    }
+ else     if (edge instanceof PatternInterlineDwell) {
+      legIndexPairs[1]=i;
+      legsIndexes.add(legIndexPairs);
+      legIndexPairs=new int[]{i + 1,states.length - 1};
+    }
+  }
+  legsIndexes.add(legIndexPairs);
+  State[][] legsStates=new State[legsIndexes.size()][];
+  for (int i=0; i < legsStates.length; i++) {
+    legIndexPairs=legsIndexes.get(i);
+    legsStates[i]=new State[legIndexPairs[1] - legIndexPairs[0] + 1];
+    for (int j=0; j <= legIndexPairs[1] - legIndexPairs[0]; j++) {
+      legsStates[i][j]=states[legIndexPairs[0] + j];
+    }
+  }
+  return legsStates;
+}

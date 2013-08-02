@@ -1,0 +1,16 @@
+{
+  TrinetUser user=checkLogin();
+  checkAccess(user);
+  FieldTripRequest req=FieldTripRequest.findById(requestId);
+  if (req != null) {
+    note.id=null;
+    note.request=req;
+    note.save();
+    req.notes.add(note);
+    req.save();
+    renderJSON(requestId);
+  }
+ else {
+    badRequest();
+  }
+}

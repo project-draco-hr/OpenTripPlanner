@@ -1,0 +1,8 @@
+{
+  TripTimes tripTimes=states[states.length - 1].getTripTimes();
+  if (tripTimes != null && !tripTimes.isScheduled()) {
+    leg.realTime=true;
+    leg.departureDelay=tripTimes.getDepartureDelay(leg.from.stopIndex);
+    leg.arrivalDelay=tripTimes.getArrivalDelay(leg.to.stopIndex - 1);
+  }
+}

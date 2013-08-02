@@ -1,0 +1,27 @@
+{
+  Trip trip=states[states.length - 1].getBackTrip();
+  if (trip != null) {
+    String id=trip.getId().getAgencyId();
+    Route route=trip.getRoute();
+    leg.agencyId=id;
+    leg.headsign=states[states.length - 1].getBackDirection();
+    leg.route=states[states.length - 1].getBackEdge().getName();
+    leg.routeColor=route.getColor();
+    leg.routeId=route.getId().getId();
+    leg.routeLongName=route.getLongName();
+    leg.routeShortName=route.getShortName();
+    leg.routeTextColor=route.getTextColor();
+    leg.routeType=route.getType();
+    leg.tripId=trip.getId().getId();
+    leg.tripShortName=trip.getTripShortName();
+    leg.tripBlockId=trip.getBlockId();
+    if (transitIndexService != null) {
+      Agency agency=transitIndexService.getAgency(id);
+      leg.agencyName=agency.getName();
+      leg.agencyUrl=agency.getUrl();
+    }
+    if (leg.headsign == null) {
+      leg.headsign=trip.getTripHeadsign();
+    }
+  }
+}
