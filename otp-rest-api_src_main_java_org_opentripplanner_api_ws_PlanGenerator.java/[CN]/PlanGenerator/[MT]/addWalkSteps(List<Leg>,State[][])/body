@@ -1,0 +1,13 @@
+{
+  WalkStep previousStep=null;
+  for (int i=0; i < legsStates.length; i++) {
+    List<WalkStep> walkSteps=generateWalkSteps(legsStates[i],previousStep);
+    legs.get(i).walkSteps=walkSteps;
+    if (walkSteps.size() > 0) {
+      previousStep=walkSteps.get(walkSteps.size() - 1);
+    }
+ else {
+      previousStep=null;
+    }
+  }
+}

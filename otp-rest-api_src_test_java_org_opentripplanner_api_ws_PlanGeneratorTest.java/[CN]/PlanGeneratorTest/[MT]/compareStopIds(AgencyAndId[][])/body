@@ -1,0 +1,37 @@
+{
+  assertEquals(2,stopIds[0].length);
+  assertEquals(3,stopIds[1].length);
+  assertEquals(2,stopIds[2].length);
+  assertEquals(2,stopIds[3].length);
+  assertEquals(2,stopIds[4].length);
+  assertEquals(2,stopIds[5].length);
+  assertEquals(2,stopIds[6].length);
+  assertEquals(2,stopIds[7].length);
+  assertEquals(2,stopIds[8].length);
+  assertNull(stopIds[0][0]);
+  assertNull(stopIds[0][1]);
+  assertEquals("Train",stopIds[1][0].getAgencyId());
+  assertEquals("Depart",stopIds[1][0].getId());
+  assertEquals("Train",stopIds[1][1].getAgencyId());
+  assertEquals("Dwell",stopIds[1][1].getId());
+  assertEquals("Train",stopIds[1][2].getAgencyId());
+  assertEquals("Interline",stopIds[1][2].getId());
+  assertEquals("Train",stopIds[2][0].getAgencyId());
+  assertEquals("Interline",stopIds[2][0].getId());
+  assertEquals("Train",stopIds[2][1].getAgencyId());
+  assertEquals("Arrive",stopIds[2][1].getId());
+  assertNull(stopIds[3][0]);
+  assertNull(stopIds[3][1]);
+  assertEquals("Ferry",stopIds[4][0].getAgencyId());
+  assertEquals("Depart",stopIds[4][0].getId());
+  assertEquals("Ferry",stopIds[4][1].getAgencyId());
+  assertEquals("Arrive",stopIds[4][1].getId());
+  assertNull(stopIds[5][0]);
+  assertNull(stopIds[5][1]);
+  assertNull(stopIds[6][0]);
+  assertNull(stopIds[6][1]);
+  assertNull(stopIds[7][0]);
+  assertNull(stopIds[7][1]);
+  assertNull(stopIds[8][0]);
+  assertNull(stopIds[8][1]);
+}
