@@ -77,7 +77,12 @@
   assertEquals("Train arrive zone",places[2][1].zoneId);
   assertNull(places[2][1].orig);
   assertEquals(24000L,places[2][1].arrival.getTimeInMillis());
-  assertEquals(24000L,places[2][1].departure.getTimeInMillis());
+  if (backward) {
+    assertEquals(32000L,places[2][1].departure.getTimeInMillis());
+  }
+ else {
+    assertEquals(24000L,places[2][1].departure.getTimeInMillis());
+  }
   assertEquals("Train stop arrive",places[3][0].name);
   assertEquals(133,places[3][0].lon,0.0);
   assertEquals(67,places[3][0].lat,0.0);
@@ -87,7 +92,12 @@
   assertNull(places[3][0].zoneId);
   assertNull(places[3][0].orig);
   assertEquals(24000L,places[3][0].arrival.getTimeInMillis());
-  assertEquals(24000L,places[3][0].departure.getTimeInMillis());
+  if (backward) {
+    assertEquals(32000L,places[3][0].departure.getTimeInMillis());
+  }
+ else {
+    assertEquals(24000L,places[3][0].departure.getTimeInMillis());
+  }
   assertEquals("Ferry stop depart",places[3][1].name);
   assertEquals(135,places[3][1].lon,0.0);
   assertEquals(67,places[3][1].lat,0.0);
@@ -96,7 +106,12 @@
   assertNull(places[3][1].platformCode);
   assertNull(places[3][1].zoneId);
   assertNull(places[3][1].orig);
-  assertEquals(32000L,places[3][1].arrival.getTimeInMillis());
+  if (backward) {
+    assertEquals(40000L,places[3][1].arrival.getTimeInMillis());
+  }
+ else {
+    assertEquals(32000L,places[3][1].arrival.getTimeInMillis());
+  }
   assertEquals(40000L,places[3][1].departure.getTimeInMillis());
   assertEquals("Ferry stop depart",places[4][0].name);
   assertEquals(135,places[4][0].lon,0.0);
@@ -106,7 +121,12 @@
   assertEquals("Ferry depart platform",places[4][0].platformCode);
   assertEquals("Ferry depart zone",places[4][0].zoneId);
   assertNull(places[4][0].orig);
-  assertEquals(32000L,places[4][0].arrival.getTimeInMillis());
+  if (backward) {
+    assertEquals(40000L,places[4][0].arrival.getTimeInMillis());
+  }
+ else {
+    assertEquals(32000L,places[4][0].arrival.getTimeInMillis());
+  }
   assertEquals(40000L,places[4][0].departure.getTimeInMillis());
   assertEquals("Ferry stop arrive",places[4][1].name);
   assertEquals(179,places[4][1].lon,0.0);
