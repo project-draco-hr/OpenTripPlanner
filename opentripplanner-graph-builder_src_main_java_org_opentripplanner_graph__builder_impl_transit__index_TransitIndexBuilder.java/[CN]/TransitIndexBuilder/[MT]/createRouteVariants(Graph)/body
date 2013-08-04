@@ -1,9 +1,11 @@
 {
   TransitBoardAlight tba;
+  FrequencyBoard fb;
   for (  TransitVertex gv : IterableLibrary.filter(graph.getVertices(),TransitVertex.class)) {
     boolean start=false;
     boolean noStart=false;
     TableTripPattern pattern=null;
+    FrequencyBasedTripPattern fpattern=null;
     Trip trip=null;
     for (    Edge e : gv.getIncoming()) {
       if (handledEdges.contains(e)) {
@@ -15,6 +17,12 @@
       }
       if (e instanceof PatternHop || e instanceof PatternDwell) {
         noStart=true;
+      }
+      if (e instanceof FrequencyBoard) {
+        fb=(FrequencyBoard)e;
+        fpattern=fb.getPattern();
+        trip=fpattern.getTrip();
+        start=true;
       }
       if (e instanceof TransitBoardAlight) {
         tba=(TransitBoardAlight)e;
@@ -62,6 +70,9 @@
           if (e instanceof TransitBoardAlight && ((TransitBoardAlight)e).isBoarding()) {
             segment.board=e;
           }
+          if (e instanceof FrequencyBoard) {
+            segment.board=e;
+          }
         }
         Collection<Edge> outgoing=gv.getOutgoing();
         gv=null;
@@ -76,6 +87,9 @@
               if (e2 instanceof TransitBoardAlight && ((TransitBoardAlight)e2).isBoarding()) {
                 segment.board=e2;
               }
+              if (e2 instanceof FrequencyBoard) {
+                segment.board=e2;
+              }
             }
             for (            Edge e2 : e.getToVertex().getOutgoing()) {
               if (e2 instanceof PatternHop) {
@@ -85,12 +99,18 @@
               if (e2 instanceof TransitBoardAlight && !((TransitBoardAlight)e2).isBoarding()) {
                 segment.alight=e2;
               }
+              if (e2 instanceof FrequencyAlight) {
+                segment.alight=e2;
+              }
             }
           }
           if (e instanceof PatternInterlineDwell) {
             variant.addInterline((PatternInterlineDwell)e);
           }
           if (e instanceof TransitBoardAlight && !((TransitBoardAlight)e).isBoarding()) {
+            segment.alight=e;
+          }
+          if (e instanceof FrequencyAlight) {
             segment.alight=e;
           }
         }

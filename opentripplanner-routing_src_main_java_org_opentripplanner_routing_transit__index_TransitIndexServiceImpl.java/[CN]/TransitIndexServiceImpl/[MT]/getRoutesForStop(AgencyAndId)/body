@@ -9,6 +9,10 @@
         out.add(t.getRoute().getId());
       }
     }
+    if (e instanceof FrequencyBoard) {
+      FrequencyBoard board=(FrequencyBoard)e;
+      out.add(board.getPattern().getTrip().getRoute().getId());
+    }
   }
   return new ArrayList<AgencyAndId>(out);
 }
