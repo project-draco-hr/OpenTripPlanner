@@ -1,6 +1,6 @@
 {
-  GraphPath graphPath=new GraphPath(buildPath().states.get(3),false);
-  Itinerary itinerary=new PlanGenerator().generateItinerary(graphPath,false);
+  GraphPath graphPath=new GraphPath(buildPaths()[0].states.get(3),false);
+  Itinerary itinerary=planGenerator.generateItinerary(graphPath,false);
   assertEquals(1,itinerary.legs.size());
   assertEquals("WALK",itinerary.legs.get(0).mode);
 }
