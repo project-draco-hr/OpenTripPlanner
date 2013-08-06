@@ -113,8 +113,14 @@
   assertNull(legs[3].boardRule);
   assertNull(legs[3].alightRule);
   assertEquals("WALK",legs[3].mode);
-  assertEquals(24000L,legs[3].startTime.getTimeInMillis());
-  assertEquals(32000L,legs[3].endTime.getTimeInMillis());
+  if (backward) {
+    assertEquals(32000L,legs[3].startTime.getTimeInMillis());
+    assertEquals(40000L,legs[3].endTime.getTimeInMillis());
+  }
+ else {
+    assertEquals(24000L,legs[3].startTime.getTimeInMillis());
+    assertEquals(32000L,legs[3].endTime.getTimeInMillis());
+  }
   assertEquals(8000L,legs[3].getDuration());
   assertEquals(0,legs[3].departureDelay);
   assertEquals(0,legs[3].arrivalDelay);
