@@ -2,7 +2,7 @@
   compareItinerary(itinerary);
   compareFare(itinerary.fare);
   Leg[] legs=itinerary.legs.toArray(new Leg[9]);
-  compareLegs(legs);
+  compareLegs(legs,backward);
   WalkStep[][] steps=new WalkStep[9][0];
   for (int i=0; i < steps.length; i++) {
     steps[i]=legs[i].walkSteps.toArray(steps[i]);
@@ -27,7 +27,7 @@
       places[i]=allStops.toArray(places[i]);
     }
   }
-  comparePlaces(places);
+  comparePlaces(places,backward);
   AgencyAndId[][] stopIds=new AgencyAndId[9][2];
   for (int i=0; i < stopIds.length; i++) {
     if (places[i].length > 2) {
