@@ -9,7 +9,7 @@
   rc.getProperties().put(ResourceConfig.PROPERTY_CONTAINER_REQUEST_FILTERS,new String[]{AuthFilter.class.getName(),RewriteFilter.class.getName()});
   rc.getProperties().put(ResourceConfig.PROPERTY_CONTAINER_RESPONSE_FILTERS,new String[]{JsonpFilter.class.getName()});
   HttpHandler handler=ContainerFactory.createContainer(HttpHandler.class,rc,iocFactory);
-  httpServer.getServerConfiguration().addHttpHandler(handler,"/opentripplanner-api-webapp/");
+  httpServer.getServerConfiguration().addHttpHandler(handler,"/otp-rest-servlet/");
   HttpHandler staticHandler=makeClientStaticHandler();
   httpServer.getServerConfiguration().addHttpHandler(staticHandler,"/");
   try {
