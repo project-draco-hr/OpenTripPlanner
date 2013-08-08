@@ -1,0 +1,7 @@
+{
+  AutomatonState out=nt.build(in);
+  AutomatonState out2=new AutomatonState();
+  out.epsilonTransitions.add(out2);
+  in.epsilonTransitions.add(out2);
+  return out2;
+}
