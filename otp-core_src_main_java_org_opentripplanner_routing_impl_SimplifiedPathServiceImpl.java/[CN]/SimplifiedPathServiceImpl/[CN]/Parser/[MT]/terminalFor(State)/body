@@ -1,6 +1,9 @@
 {
   Vertex v=state.getVertex();
   Edge e=state.getBackEdge();
+  if (e == null) {
+    throw new RuntimeException("terminalFor should never be called on States without back edges!");
+  }
   if (e instanceof StreetEdge)   return STREET;
   if (e instanceof StreetTransitLink)   return LINK;
   if (e instanceof TimedTransferEdge)   return XFER;
