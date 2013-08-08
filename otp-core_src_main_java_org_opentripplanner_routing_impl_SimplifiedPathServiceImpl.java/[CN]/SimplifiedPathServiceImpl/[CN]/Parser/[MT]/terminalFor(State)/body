@@ -4,15 +4,11 @@
   if (e == null) {
     throw new RuntimeException("terminalFor should never be called on States without back edges!");
   }
-  if (e instanceof StreetEdge)   return STREET;
+  if (e instanceof OnboardEdge)   return ONBOARD;
+  if (e instanceof StationEdge)   return STATION;
+  if (e instanceof TimedTransferEdge)   return TRANSFER;
+  if (e instanceof SimpleTransfer)   return TRANSFER;
+  if (e instanceof TransferEdge)   return TRANSFER;
   if (e instanceof StreetTransitLink)   return LINK;
-  if (e instanceof TimedTransferEdge)   return XFER;
-  if (e instanceof SimpleTransfer)   return XFER;
-  if (v instanceof OnboardVertex)   return RIDE;
-  if (v instanceof OffboardVertex)   return STATION;
-  if (v instanceof StreetVertex)   return STREET;
- else {
-    LOG.debug("failed to tokenize path. vertex {} edge {}",v,e);
-    throw new RuntimeException("failed to tokenize path");
-  }
+  return STREET;
 }
