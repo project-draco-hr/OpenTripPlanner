@@ -60,7 +60,9 @@ gtfsBundles.add(gtfsBundle);
 GtfsGraphBuilderImpl gtfsBuilder=new GtfsGraphBuilderImpl(gtfsBundles);
 graphBuilder.addGraphBuilder(gtfsBuilder);
 if ((!hasOSM) || params.longDistance) {
+if (!params.useTransfersTxt) {
 graphBuilder.addGraphBuilder(new StreetlessStopLinker());
+}
 }
 if (hasOSM) {
 graphBuilder.addGraphBuilder(new TransitToStreetNetworkGraphBuilderImpl());
