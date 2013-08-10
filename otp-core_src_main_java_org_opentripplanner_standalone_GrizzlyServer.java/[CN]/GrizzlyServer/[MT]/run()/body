@@ -1,7 +1,7 @@
 {
   LOG.info("Starting OTP Grizzly server on port {} using graphs at {}",params.port,params.graphDirectory);
   HttpServer httpServer=new HttpServer();
-  NetworkListener networkListener=new NetworkListener("otp_listener","localhost",params.port);
+  NetworkListener networkListener=new NetworkListener("otp_listener","0.0.0.0",params.port);
   ThreadPoolConfig threadPoolConfig=ThreadPoolConfig.defaultConfig().setCorePoolSize(1).setMaxPoolSize(Runtime.getRuntime().availableProcessors());
   networkListener.getTransport().setWorkerThreadPoolConfig(threadPoolConfig);
   httpServer.addListener(networkListener);
