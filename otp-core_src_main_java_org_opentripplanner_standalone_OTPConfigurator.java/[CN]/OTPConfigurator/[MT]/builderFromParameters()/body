@@ -47,7 +47,9 @@ for (File osmFile : osmFiles) {
 OpenStreetMapProvider osmProvider=new AnyFileBasedOpenStreetMapProviderImpl(osmFile);
 osmProviders.add(osmProvider);
 }
-GraphBuilder osmBuilder=new OpenStreetMapGraphBuilderImpl(osmProviders);
+OpenStreetMapGraphBuilderImpl osmBuilder=new OpenStreetMapGraphBuilderImpl(osmProviders);
+DefaultWayPropertySetSource defaultWayPropertySetSource=new DefaultWayPropertySetSource();
+osmBuilder.setDefaultWayPropertySetSource(defaultWayPropertySetSource);
 graphBuilder.addGraphBuilder(osmBuilder);
 graphBuilder.addGraphBuilder(new PruneFloatingIslands());
 }
