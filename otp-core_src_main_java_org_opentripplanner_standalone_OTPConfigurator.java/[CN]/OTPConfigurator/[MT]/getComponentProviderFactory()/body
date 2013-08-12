@@ -8,7 +8,7 @@
   cpf.bind(MetadataService.class);
   cpf.bind(SPTService.class,new GenericAStar());
   if (params.longDistance) {
-    SimplifiedPathServiceImpl pathService=new SimplifiedPathServiceImpl();
+    LongDistancePathService pathService=new LongDistancePathService();
     pathService.setTimeout(10);
     cpf.bind(PathService.class,pathService);
   }

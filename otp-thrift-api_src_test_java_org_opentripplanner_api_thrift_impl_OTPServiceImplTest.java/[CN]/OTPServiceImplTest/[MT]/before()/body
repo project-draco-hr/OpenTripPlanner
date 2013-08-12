@@ -2,7 +2,7 @@
   rand=new Random(1234);
   GraphServiceImpl graphService=new GraphServiceImpl();
   graphService.registerGraph("",graph);
-  SimplifiedPathServiceImpl pathService=new SimplifiedPathServiceImpl();
+  LongDistancePathService pathService=new LongDistancePathService();
   pathService.setGraphService(graphService);
   pathService.setSptService(new GenericAStar());
   RoutingRequest prototype=new RoutingRequest();
