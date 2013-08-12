@@ -1,0 +1,6 @@
+{
+  WebsocketGTFSRealtimeUpdater wu=new WebsocketGTFSRealtimeUpdater();
+  wu.setUrl("ws://ovapi.nl:8088/tripUpdates");
+  wu.setExecutor(Executors.newSingleThreadExecutor());
+  wu.start();
+}

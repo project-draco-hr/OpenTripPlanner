@@ -1,0 +1,12 @@
+{
+  AsyncHttpClient client=new AsyncHttpClient();
+  WebSocketListener listener=new Listener();
+  WebSocketUpgradeHandler handler=new WebSocketUpgradeHandler.Builder().addWebSocketListener(listener).build();
+  WebSocket socket;
+  try {
+    socket=client.prepareGet(url).execute(handler).get();
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+  }
+}
