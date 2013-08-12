@@ -1,0 +1,14 @@
+{
+  temporaryEdges=Collections.newSetFromMap(new ConcurrentHashMap<Edge,Boolean>());
+  streetIndex=indexFactory.newIndex(this);
+  LOG.debug("street index built.");
+  LOG.debug("Rebuilding edge and vertex indices.");
+  rebuildVertexAndEdgeIndices();
+  Set<TableTripPattern> tableTripPatterns=Sets.newHashSet();
+  for (  PatternArriveVertex pav : IterableLibrary.filter(this.getVertices(),PatternArriveVertex.class)) {
+    tableTripPatterns.add(pav.getTripPattern());
+  }
+  for (  TableTripPattern ttp : tableTripPatterns) {
+    ttp.finish();
+  }
+}

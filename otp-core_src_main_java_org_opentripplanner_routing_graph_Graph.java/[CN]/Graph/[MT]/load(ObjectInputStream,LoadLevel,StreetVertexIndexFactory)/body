@@ -11,12 +11,8 @@
       graph.vertices.put(e.getFromVertex().getLabel(),e.getFromVertex());
       graph.vertices.put(e.getToVertex().getLabel(),e.getToVertex());
     }
-    for (    Vertex v : graph.getVertices())     v.compact();
     LOG.info("Main graph read. |V|={} |E|={}",graph.countVertices(),graph.countEdges());
-    graph.streetIndex=indexFactory.newIndex(graph);
-    LOG.debug("street index built.");
-    LOG.debug("Rebuilding edge and vertex indices");
-    graph.rebuildVertexAndEdgeIndices();
+    graph.index(indexFactory);
     if (level == LoadLevel.FULL) {
       return graph;
     }

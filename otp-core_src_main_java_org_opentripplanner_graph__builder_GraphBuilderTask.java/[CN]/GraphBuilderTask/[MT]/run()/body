@@ -45,9 +45,6 @@
   }
  else {
     LOG.info("Not saving graph to disk, as requested.");
-    LOG.info("Building street index.");
-    graph.streetIndex=new StreetVertexIndexServiceImpl(graph);
-    LOG.info("Building edge and vertex indices.");
-    graph.rebuildVertexAndEdgeIndices();
+    graph.index(new DefaultStreetVertexIndexFactory());
   }
 }
