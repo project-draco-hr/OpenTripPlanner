@@ -14,6 +14,7 @@
     heuristic=new DefaultRemainingWeightHeuristic();
   }
   options.rctx.remainingWeightHeuristic=heuristic;
+  options.setMaxTransfers(10);
   long searchBeginTime=System.currentTimeMillis();
   LOG.debug("BEGIN SEARCH");
   ShortestPathTree spt=sptService.getShortestPathTree(options,timeout);
