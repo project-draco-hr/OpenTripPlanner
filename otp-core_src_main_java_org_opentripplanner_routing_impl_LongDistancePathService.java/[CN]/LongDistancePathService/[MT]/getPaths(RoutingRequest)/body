@@ -9,7 +9,12 @@
   }
   LOG.debug("rreq={}",options);
   RemainingWeightHeuristic heuristic;
-  if (options.modes.isTransit())   heuristic=new ThreadedBidirectionalHeuristic(options.rctx.graph);
+  if (options.isDisableRemainingWeightHeuristic()) {
+    heuristic=new TrivialRemainingWeightHeuristic();
+  }
+ else   if (options.modes.isTransit()) {
+    heuristic=new ThreadedBidirectionalHeuristic(options.rctx.graph);
+  }
  else {
     heuristic=new DefaultRemainingWeightHeuristic();
   }
