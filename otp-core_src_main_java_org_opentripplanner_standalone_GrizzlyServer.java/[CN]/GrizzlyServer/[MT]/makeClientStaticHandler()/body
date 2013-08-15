@@ -1,16 +1,23 @@
 {
-  File tempDir=Files.createTempDir();
-  File clientWar=new File(tempDir,CLIENT_WAR_FILENAME);
+  File clientDir=Files.createTempDir();
+  File clientWar=new File(clientDir,CLIENT_WAR_FILENAME);
+  boolean fallback=false;
   try {
     Files.copy(new ClientWarSupplier(),clientWar);
     ZipFile zip=new ZipFile(clientWar);
-    zip.extractAll(tempDir.toString());
+    zip.extractAll(clientDir.toString());
   }
- catch (  ZipException e) {
-    LOG.error("Error expanding client WAR, client will not be available: {}",e.getMessage());
+ catch (  Exception e) {
+    LOG.error("Error copying or expanding client WAR: {}",e.getMessage());
+    for (    String fallbackClientDir : FALLBACK_CLIENT_DIRS) {
+      File f=new File(fallbackClientDir);
+      if (f.isDirectory() && f.canRead()) {
+        clientDir=f;
+        LOG.info("Found fallback client files at {}",f);
+        break;
+      }
+    }
   }
-catch (  IOException e) {
-    LOG.error("Error copying client WAR, client will not be available: {}",e.getMessage());
-  }
-  return new StaticHttpHandler(tempDir.toString());
+  LOG.info("Serving static client files from {}",clientDir);
+  return new StaticHttpHandler(clientDir.toString());
 }
