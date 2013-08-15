@@ -38,11 +38,9 @@
     if (terminationStrategy != null) {
       if (!terminationStrategy.shouldSearchContinue(rctx.origin,rctx.target,u,spt,options))       break;
     }
- else     if (!options.batch && u_vertex == rctx.target) {
-      if (u.isFinal() && u.allPathParsersAccept()) {
-        targetAcceptedStates.add(u);
-        options.rctx.debug.foundPath();
-      }
+ else     if (!options.batch && u_vertex == rctx.target && u.isFinal() && u.allPathParsersAccept()) {
+      targetAcceptedStates.add(u);
+      options.rctx.debug.foundPath();
       if (targetAcceptedStates.size() >= nPaths) {
         LOG.debug("total vertices visited {}",nVisited);
         storeMemory();
