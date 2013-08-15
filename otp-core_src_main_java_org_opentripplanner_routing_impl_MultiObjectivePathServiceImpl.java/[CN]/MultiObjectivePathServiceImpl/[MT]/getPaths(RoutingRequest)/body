@@ -6,7 +6,7 @@
   RemainingWeightHeuristic heuristic;
   if (options.getModes().isTransit()) {
     LOG.debug("Transit itinerary requested.");
-    heuristic=new BidirectionalRemainingWeightHeuristic(options.rctx.graph);
+    heuristic=new InterleavedBidirectionalHeuristic(options.rctx.graph);
   }
  else {
     LOG.debug("Non-transit itinerary requested.");
