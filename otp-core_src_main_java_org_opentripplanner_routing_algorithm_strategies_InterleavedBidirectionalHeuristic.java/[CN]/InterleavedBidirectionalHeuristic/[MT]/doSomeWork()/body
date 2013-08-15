@@ -1,0 +1,24 @@
+{
+  if (finished)   return;
+  for (int i=0; i < HEURISTIC_STEPS_PER_MAIN_STEP; ++i) {
+    if (q.empty()) {
+      LOG.info("Emptied SSSP queue.");
+      finished=true;
+      break;
+    }
+    double uw=q.peek_min_key();
+    Vertex u=q.extract_min();
+    maxFound=uw;
+    for (    Edge e : options.isArriveBy() ? u.getOutgoing() : u.getIncoming()) {
+      if (e instanceof StreetTransitLink)       continue;
+      Vertex v=options.isArriveBy() ? e.getToVertex() : e.getFromVertex();
+      double ew=e.weightLowerBound(options);
+      double vw=uw + ew;
+      Double old_vw=weights.get(v);
+      if (old_vw == null || vw < old_vw) {
+        weights.put(v,vw);
+        q.insert(v,vw);
+      }
+    }
+  }
+}

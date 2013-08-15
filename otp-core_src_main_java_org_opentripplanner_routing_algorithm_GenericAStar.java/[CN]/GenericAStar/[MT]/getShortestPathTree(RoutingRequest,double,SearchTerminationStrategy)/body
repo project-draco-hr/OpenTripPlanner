@@ -19,6 +19,7 @@
       double w=pq.peek_min_key();
       System.out.println("pq min key = " + w);
     }
+    heuristic.doSomeWork();
     if (abortTime < Long.MAX_VALUE && System.currentTimeMillis() > abortTime) {
       LOG.warn("Search timeout. origin={} target={}",rctx.origin,rctx.target);
       options.rctx.debug.timedOut=true;
