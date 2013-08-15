@@ -12,7 +12,10 @@
     response.setError(error);
   }
  finally {
-    if (request != null)     request.cleanup();
+    if (request != null) {
+      response.debug=request.rctx.debug;
+      request.cleanup();
+    }
   }
   return response;
 }
