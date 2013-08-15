@@ -3,7 +3,7 @@
   perStopFlags=new int[stopPattern.stops.size()];
   int i=0;
   for (  Stop stop : stopPattern.stops) {
-    if (stop.getWheelchairBoarding() == 1) {
+    if (stop.getWheelchairBoarding() != 2) {
       perStopFlags[i]|=FLAG_WHEELCHAIR_ACCESSIBLE;
     }
     perStopFlags[i]|=stopPattern.pickups.get(i) << SHIFT_PICKUP;
