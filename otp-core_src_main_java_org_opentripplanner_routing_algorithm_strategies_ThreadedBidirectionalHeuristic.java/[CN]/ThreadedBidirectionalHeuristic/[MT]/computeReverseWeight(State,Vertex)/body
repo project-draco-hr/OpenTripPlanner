@@ -2,15 +2,14 @@
   final Vertex v=s.getVertex();
   if (v instanceof StreetLocation)   return 0;
   int index=v.getIndex();
+  double upperBoundCost=maxFound;
   if (index < weights.length) {
     double h=weights[index];
     if (v instanceof StreetVertex)     return h;
-    if (closed.get(index)) {
-      return h;
-    }
- else {
-      return maxFound;
-    }
+    if (closed.get(index))     return h;
+ else     return upperBoundCost;
   }
- else   return 0;
+ else {
+    return upperBoundCost;
+  }
 }
