@@ -1,0 +1,10 @@
+{
+  Set<String> purge=new HashSet<String>();
+  PatchServiceImpl instance=getPatchServiceImpl();
+  for (  TestAlertPatch alert : alerts) {
+    purge.add(alert.getId());
+    instance.apply(alert);
+  }
+  instance.expireAll();
+  assertTrue(instance.getAllPatches().isEmpty());
+}
