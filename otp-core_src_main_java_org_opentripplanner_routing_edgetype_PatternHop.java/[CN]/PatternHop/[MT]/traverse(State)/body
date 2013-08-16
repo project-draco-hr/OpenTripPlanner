@@ -1,4 +1,10 @@
 {
+  RoutingRequest options=s0.getOptions();
+  if (!options.getBannedStopsHard().isEmpty()) {
+    if (options.getBannedStopsHard().matches(((PatternStopVertex)fromv).getStop()) || options.getBannedStopsHard().matches(((PatternStopVertex)tov).getStop())) {
+      return null;
+    }
+  }
   TripTimes tripTimes=s0.getTripTimes();
   int runningTime=tripTimes.getRunningTime(stopIndex);
   StateEditor s1=s0.edit(this);

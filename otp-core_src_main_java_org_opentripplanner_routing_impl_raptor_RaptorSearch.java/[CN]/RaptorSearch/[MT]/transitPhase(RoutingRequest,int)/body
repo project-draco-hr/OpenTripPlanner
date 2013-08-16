@@ -54,6 +54,9 @@
       if (options.getBannedStops().matches(stop.stopVertex.getStop())) {
         continue;
       }
+      if (options.getBannedStopsHard().matches(stop.stopVertex.getStop())) {
+        continue;
+      }
       List<RaptorState> states=statesByStop[stop.index];
       List<RaptorState> newStates=new ArrayList<RaptorState>();
       if (states == null) {
