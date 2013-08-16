@@ -5,6 +5,7 @@
   final RemainingWeightHeuristic heuristic=options.batch ? new TrivialRemainingWeightHeuristic() : rctx.remainingWeightHeuristic;
   State initialState=new State(options);
   heuristic.initialize(initialState,rctx.target);
+  options.rctx.debug.finishedPrecalculating();
   spt.add(initialState);
   OTPPriorityQueueFactory qFactory=BinHeap.FACTORY;
   int initialSize=rctx.graph.getVertices().size();
@@ -12,13 +13,16 @@
   OTPPriorityQueue<State> pq=qFactory.create(initialSize);
   pq.insert(initialState,0);
   int nVisited=0;
+  List<State> targetAcceptedStates=Lists.newArrayList();
   while (!pq.empty()) {
     if (_verbose) {
       double w=pq.peek_min_key();
       System.out.println("pq min key = " + w);
     }
+    heuristic.doSomeWork();
     if (abortTime < Long.MAX_VALUE && System.currentTimeMillis() > abortTime) {
       LOG.warn("Search timeout. origin={} target={}",rctx.origin,rctx.target);
+      options.rctx.debug.timedOut=true;
       storeMemory();
       return null;
     }
@@ -35,9 +39,14 @@
       if (!terminationStrategy.shouldSearchContinue(rctx.origin,rctx.target,u,spt,options))       break;
     }
  else     if (!options.batch && u_vertex == rctx.target && u.isFinal() && u.allPathParsersAccept()) {
-      LOG.debug("total vertices visited {}",nVisited);
-      storeMemory();
-      return spt;
+      targetAcceptedStates.add(u);
+      options.rctx.debug.foundPath();
+      if (targetAcceptedStates.size() >= nPaths) {
+        LOG.debug("total vertices visited {}",nVisited);
+        storeMemory();
+        return spt;
+      }
+ else       continue;
     }
     Collection<Edge> edges=options.isArriveBy() ? u_vertex.getIncoming() : u_vertex.getOutgoing();
     nVisited+=1;
@@ -50,6 +59,7 @@
           continue;
         }
         double remaining_w=computeRemainingWeight(heuristic,v,rctx.target,options);
+        Coordinate vc=v.getVertex().getCoordinate();
         if (remaining_w < 0 || Double.isInfinite(remaining_w)) {
           continue;
         }

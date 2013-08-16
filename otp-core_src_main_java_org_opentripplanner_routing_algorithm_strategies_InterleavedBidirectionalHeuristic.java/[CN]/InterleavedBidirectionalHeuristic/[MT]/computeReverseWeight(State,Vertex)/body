@@ -1,0 +1,8 @@
+{
+  final Vertex v=s.getVertex();
+  if (v instanceof StreetLocation)   return 0;
+  Double weight=weights.get(v);
+  if (v instanceof StreetVertex)   return weight == null ? Double.POSITIVE_INFINITY : weight;
+ else   if (weight == null)   return maxFound;
+ else   return weight;
+}

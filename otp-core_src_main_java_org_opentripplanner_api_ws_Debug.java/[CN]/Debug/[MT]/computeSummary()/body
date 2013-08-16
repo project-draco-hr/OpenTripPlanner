@@ -1,0 +1,11 @@
+{
+  precalculationTime=finishedPrecalculating - startedCalculating;
+  pathCalculationTime=finishedCalculating - finishedPrecalculating;
+  long last_t=finishedPrecalculating;
+  for (  long t : foundPaths) {
+    pathTimes.add(t - last_t);
+    last_t=t;
+  }
+  renderingTime=finishedRendering - finishedCalculating;
+  totalTime=finishedRendering - startedCalculating;
+}
