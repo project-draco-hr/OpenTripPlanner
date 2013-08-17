@@ -5,11 +5,16 @@
   String calculatedName=location.getName();
   if (intersection != null) {
     boolean canEscape=false;
-    TraversalRequirements reqs=new TraversalRequirements(options);
-    for (    StreetEdge e : IterableLibrary.filter(options.arriveBy ? intersection.getIncoming() : intersection.getOutgoing(),StreetEdge.class)) {
-      if (reqs.canBeTraversed(e)) {
-        canEscape=true;
-        break;
+    if (options == null) {
+      canEscape=true;
+    }
+ else {
+      TraversalRequirements reqs=new TraversalRequirements(options);
+      for (      StreetEdge e : IterableLibrary.filter(options.arriveBy ? intersection.getIncoming() : intersection.getOutgoing(),StreetEdge.class)) {
+        if (reqs.canBeTraversed(e)) {
+          canEscape=true;
+          break;
+        }
       }
     }
     if (canEscape) {
