@@ -24,7 +24,7 @@
       hf.setDefaultStreetToStopTime(gtfsBundle.getDefaultStreetToStopTime());
       hf.run(graph);
       if (gtfsBundle.doesTransfersTxtDefineStationPaths()) {
-        hf.createStationTransfers(graph);
+        hf.createStationTransfers(graph,gtfsBundle.isLinkStopsToParentStops());
       }
       if (gtfsGraphBuilders != null) {
         for (        GraphBuilderWithGtfsDao builder : gtfsGraphBuilders) {
