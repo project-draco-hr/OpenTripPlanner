@@ -17,7 +17,7 @@
       sourceFile.renameTo(destFile);
     }
     FileOutputStream os=new FileOutputStream(graphFileName);
-    copyStreams(is,os);
+    ByteStreams.copy(is,os);
     sourceFile=new File(graphFileName + ".bak");
     if (sourceFile.exists()) {
       sourceFile.delete();
