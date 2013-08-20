@@ -1,0 +1,11 @@
+{
+  StringBuilder sb=new StringBuilder(basePath);
+  if (!(basePath.endsWith(File.separator))) {
+    sb.append(File.separator);
+  }
+  if (routerId.length() > 0) {
+    sb.append(routerId);
+    sb.append(File.separator);
+  }
+  return sb.toString();
+}
