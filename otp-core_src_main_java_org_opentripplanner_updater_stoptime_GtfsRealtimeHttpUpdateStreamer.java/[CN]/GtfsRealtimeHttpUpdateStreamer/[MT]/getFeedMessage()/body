@@ -3,7 +3,7 @@
   try {
     InputStream is=HttpUtils.getData(url);
     if (is != null) {
-      feed=GtfsRealtime.FeedMessage.parseFrom(is);
+      feed=GtfsRealtime.FeedMessage.PARSER.parseFrom(is);
     }
   }
  catch (  IOException e) {

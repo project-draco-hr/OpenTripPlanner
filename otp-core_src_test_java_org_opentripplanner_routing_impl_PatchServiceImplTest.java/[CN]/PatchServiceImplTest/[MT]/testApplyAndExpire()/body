@@ -1,0 +1,9 @@
+{
+  PatchServiceImpl instance=getPatchServiceImpl();
+  instance.apply(alerts[0]);
+  assertTrue(instance.getStopPatches(testStop).contains(alerts[0]));
+  assertTrue(instance.getRoutePatches(testRoute).contains(alerts[0]));
+  instance.expire(Collections.singleton(alerts[0].getId()));
+  assertTrue(instance.getStopPatches(testStop).isEmpty());
+  assertTrue(instance.getRoutePatches(testRoute).isEmpty());
+}
