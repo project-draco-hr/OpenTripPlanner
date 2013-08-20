@@ -81,6 +81,7 @@
     request.setBannedTrips(bannedTripMap);
   }
   request.setBannedStops(get(bannedStops,n,request.getBannedStopsStr()));
+  request.setBannedStopsHard(get(bannedStopsHard,n,request.getBannedStopsHardStr()));
   if (opt == OptimizeType.TRANSFERS) {
     opt=OptimizeType.QUICK;
     request.setTransferPenalty(get(transferPenalty,n,0) + 1800);
