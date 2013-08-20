@@ -31,6 +31,9 @@
         if (options.getBannedStops().matches(stop.stopVertex.getStop())) {
           continue;
         }
+        if (options.getBannedStopsHard().matches(stop.stopVertex.getStop())) {
+          continue;
+        }
         addStopNearTarget(stop,state.getWalkDistance(),(int)state.getElapsedTimeSeconds());
       }
     }
@@ -120,6 +123,9 @@
       continue;
     }
     if (options.getBannedStops().matches(stop.stopVertex.getStop())) {
+      continue;
+    }
+    if (options.getBannedStopsHard().matches(stop.stopVertex.getStop())) {
       continue;
     }
     if (options.rctx.target != null) {

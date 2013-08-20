@@ -72,6 +72,8 @@
   request.setPreferredAgencies(get(preferredAgencies,n,request.getPreferredAgenciesStr()));
   request.setUnpreferredRoutes(get(unpreferredRoutes,n,request.getUnpreferredRouteStr()));
   request.setUnpreferredAgencies(get(unpreferredAgencies,n,request.getUnpreferredAgenciesStr()));
+  request.setWalkBoardCost(get(walkBoardCost,n,request.getWalkBoardCost()));
+  request.setBikeBoardCost(get(bikeBoardCost,n,request.getBikeBoardCost()));
   request.setBannedRoutes(get(bannedRoutes,n,request.getBannedRouteStr()));
   request.setBannedAgencies(get(bannedAgencies,n,request.getBannedAgenciesStr()));
   HashMap<AgencyAndId,BannedStopSet> bannedTripMap=makeBannedTripMap(get(bannedTrips,n,null));
@@ -79,6 +81,7 @@
     request.setBannedTrips(bannedTripMap);
   }
   request.setBannedStops(get(bannedStops,n,request.getBannedStopsStr()));
+  request.setBannedStopsHard(get(bannedStopsHard,n,request.getBannedStopsHardStr()));
   if (opt == OptimizeType.TRANSFERS) {
     opt=OptimizeType.QUICK;
     request.setTransferPenalty(get(transferPenalty,n,0) + 1800);
