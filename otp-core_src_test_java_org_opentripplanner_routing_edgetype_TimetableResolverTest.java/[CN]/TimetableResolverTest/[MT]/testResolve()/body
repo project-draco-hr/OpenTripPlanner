@@ -6,13 +6,13 @@
   TimetableResolver resolver=new TimetableResolver();
   Timetable scheduled=resolver.resolve(pattern,today);
   assertEquals(scheduled,resolver.resolve(pattern,null));
-  resolver.update(pattern,TripUpdate.forCanceledTrip(pattern.getTrip(0).getId(),0,today));
+  resolver.update(pattern,TripUpdateList.forCanceledTrip(pattern.getTrip(0).getId(),0,today));
   Timetable forNow=resolver.resolve(pattern,today);
   assertEquals(scheduled,resolver.resolve(pattern,yesterday));
   assertNotSame(scheduled,forNow);
   assertEquals(scheduled,resolver.resolve(pattern,tomorrow));
   assertEquals(scheduled,resolver.resolve(pattern,null));
-  resolver.update(pattern,TripUpdate.forCanceledTrip(pattern.getTrip(0).getId(),0,yesterday));
+  resolver.update(pattern,TripUpdateList.forCanceledTrip(pattern.getTrip(0).getId(),0,yesterday));
   Timetable forYesterday=resolver.resolve(pattern,yesterday);
   assertNotSame(scheduled,forYesterday);
   assertNotSame(scheduled,forNow);

@@ -294,9 +294,9 @@
   ArrayList<Update> updates=new ArrayList<Update>();
   updates.add(ferryStopDepartUpdate);
   updates.add(ferryStopArriveUpdate);
-  TripUpdate tripUpdate=TripUpdate.splitByTrip(updates).get(0);
+  TripUpdateList tripUpdateList=TripUpdateList.splitByTrip(updates).get(0);
   TimetableSnapshotSource timetableSnapshotSource=new TimetableSnapshotSourceStub();
-  timetableSnapshotSource.getSnapshot().update(thirdTripPattern,tripUpdate);
+  timetableSnapshotSource.getSnapshot().update(thirdTripPattern,tripUpdateList);
   graph.putService(ServiceIdToNumberService.class,serviceIdToNumberService);
   graph.putService(CalendarServiceData.class,calendarServiceData);
   graph.putService(TransitIndexService.class,transitIndexServiceStub);

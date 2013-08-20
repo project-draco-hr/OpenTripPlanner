@@ -1,35 +1,35 @@
 {
-  List<TripUpdate> tripUpdates=updateStreamer.getUpdates();
-  if (tripUpdates == null) {
+  List<TripUpdateList> tripUpdateLists=updateStreamer.getUpdates();
+  if (tripUpdateLists == null) {
     LOG.debug("updates is null");
     return;
   }
-  LOG.debug("message contains {} trip update blocks",tripUpdates.size());
+  LOG.debug("message contains {} trip update blocks",tripUpdateLists.size());
   int uIndex=0;
-  for (  TripUpdate tripUpdate : tripUpdates) {
+  for (  TripUpdateList tripUpdateList : tripUpdateLists) {
     uIndex+=1;
-    LOG.debug("trip update block #{} ({} updates) :",uIndex,tripUpdate.getUpdates().size());
-    LOG.trace("{}",tripUpdate.toString());
+    LOG.debug("trip update block #{} ({} updates) :",uIndex,tripUpdateList.getUpdates().size());
+    LOG.trace("{}",tripUpdateList.toString());
     boolean applied=false;
-switch (tripUpdate.getStatus()) {
+switch (tripUpdateList.getStatus()) {
 case ADDED:
-      applied=handleAddedTrip(tripUpdate);
+      applied=handleAddedTrip(tripUpdateList);
     break;
 case CANCELED:
-  applied=handleCanceledTrip(tripUpdate);
+  applied=handleCanceledTrip(tripUpdateList);
 break;
 case MODIFIED:
-applied=handleModifiedTrip(tripUpdate);
+applied=handleModifiedTrip(tripUpdateList);
 break;
 case REMOVED:
-applied=handleRemovedTrip(tripUpdate);
+applied=handleRemovedTrip(tripUpdateList);
 break;
 }
 if (applied) {
 appliedBlockCount++;
 }
  else {
-LOG.warn("Failed to apply Tripupdate: " + tripUpdate);
+LOG.warn("Failed to apply TripUpdateList: " + tripUpdateList);
 }
 if (appliedBlockCount % logFrequency == 0) {
 LOG.info("Applied {} stoptime update blocks.",appliedBlockCount);

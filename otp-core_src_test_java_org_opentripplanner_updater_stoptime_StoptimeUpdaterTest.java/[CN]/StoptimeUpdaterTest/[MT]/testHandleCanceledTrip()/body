@@ -5,7 +5,7 @@
   TableTripPattern pattern=transitIndexService.getTripPatternForTrip(tripId);
   int tripIndex=pattern.getTripIndex(tripId);
   int tripIndex2=pattern.getTripIndex(tripId2);
-  tripUpdate=TripUpdate.forCanceledTrip(tripId,0,today);
+  tripUpdateList=TripUpdateList.forCanceledTrip(tripId,0,today);
   updater.run();
   TimetableResolver resolver=updater.getSnapshot();
   Timetable forToday=resolver.resolve(pattern,today);

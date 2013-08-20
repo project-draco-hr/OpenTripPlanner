@@ -1,9 +1,0 @@
-{
-  TableTripPattern pattern=getPatternForTrip(tripUpdate.getTripId());
-  if (pattern == null) {
-    LOG.debug("No pattern found for tripId {}, skipping UpdateBlock.",tripUpdate.getTripId());
-    return false;
-  }
-  boolean applied=buffer.update(pattern,tripUpdate);
-  return applied;
-}

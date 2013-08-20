@@ -5,11 +5,11 @@
   TableTripPattern pattern=transitIndexService.getTripPatternForTrip(tripId);
   updater.setMaxSnapshotFrequency(0);
   updater.setPurgeExpiredData(false);
-  tripUpdate=TripUpdate.forCanceledTrip(tripId,0,today);
+  tripUpdateList=TripUpdateList.forCanceledTrip(tripId,0,today);
   updater.run();
   TimetableResolver resolverA=updater.getSnapshot();
   updater.setPurgeExpiredData(true);
-  tripUpdate=TripUpdate.forCanceledTrip(tripId,0,previously);
+  tripUpdateList=TripUpdateList.forCanceledTrip(tripId,0,previously);
   updater.run();
   TimetableResolver resolverB=updater.getSnapshot();
   assertNotSame(resolverA,resolverB);
