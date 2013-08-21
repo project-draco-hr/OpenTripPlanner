@@ -1,0 +1,19 @@
+{
+  Graph graph=getGraph(routerId);
+  TransitIndexService transitIndexService=graph.getService(TransitIndexService.class);
+  StopList response=new StopList();
+  AgencyAndId stopId=new AgencyAndId(agency,id);
+  Edge preBoardEdge=transitIndexService.getPreBoardEdge(stopId);
+  if (preBoardEdge != null) {
+    TransitStopDepart transitStop=(TransitStopDepart)preBoardEdge.getToVertex();
+    response.stops.add(new StopType(transitStop.getStop(),extended));
+  }
+ else {
+    Edge preAlightEdge=transitIndexService.getPreAlightEdge(stopId);
+    if (preAlightEdge != null) {
+      TransitStopArrive transitStop=(TransitStopArrive)preAlightEdge.getFromVertex();
+      response.stops.add(new StopType(transitStop.getStop(),extended));
+    }
+  }
+  return response;
+}
