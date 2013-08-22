@@ -23,6 +23,9 @@
  else           if (type.equals("real-time-alerts")) {
             updater=new GtfsRealtimeUpdater();
           }
+ else           if (type.equals("example-updater")) {
+            updater=new ExampleGraphUpdater();
+          }
         }
         try {
           if (updater == null) {

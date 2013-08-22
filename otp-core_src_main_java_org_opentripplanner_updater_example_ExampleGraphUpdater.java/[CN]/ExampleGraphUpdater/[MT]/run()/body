@@ -1,0 +1,13 @@
+{
+  try {
+    while (true) {
+      Thread.sleep(frequencySec * 1000);
+      LOG.info("Example updater with hashcode: {}",this.hashCode());
+      ExampleGraphWriter exampleWriter=new ExampleGraphWriter();
+      updaterManager.execute(exampleWriter);
+    }
+  }
+ catch (  InterruptedException e) {
+    e.printStackTrace();
+  }
+}

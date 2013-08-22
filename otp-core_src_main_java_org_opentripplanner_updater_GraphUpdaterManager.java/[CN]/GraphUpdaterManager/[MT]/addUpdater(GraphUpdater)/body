@@ -1,5 +1,15 @@
 {
   updater.setup();
-  updaterPool.execute(updater);
+  updaterPool.execute(new Runnable(){
+    @Override public void run(){
+      try {
+        updater.run();
+      }
+ catch (      Exception e) {
+        LOG.error("Error while running updater " + updater.getClass().getName(),e);
+      }
+    }
+  }
+);
   updaterList.add(updater);
 }
