@@ -1,5 +1,5 @@
 {
-  PeriodicTimerGraphUpdater periodicUpdater=graph.getService(PeriodicTimerGraphUpdater.class);
+  GraphUpdaterManager periodicUpdater=graph.getService(GraphUpdaterManager.class);
   if (periodicUpdater != null) {
     LOG.info("Stopping periodic updater with " + periodicUpdater.size() + " updaters.");
     periodicUpdater.stop();
