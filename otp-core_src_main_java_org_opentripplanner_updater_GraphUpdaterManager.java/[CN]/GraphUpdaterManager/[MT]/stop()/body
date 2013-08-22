@@ -1,7 +1,4 @@
 {
-  for (  GraphUpdaterRunnable updater : updaterList) {
-    updater.teardown();
-  }
   updaterPool.shutdownNow();
   try {
     boolean ok=updaterPool.awaitTermination(30,TimeUnit.SECONDS);
@@ -11,6 +8,9 @@
   }
  catch (  InterruptedException e) {
     LOG.warn("Interrupted while waiting for updaters to finish.");
+  }
+  for (  GraphUpdater updater : updaterList) {
+    updater.teardown();
   }
   scheduler.shutdownNow();
   try {

@@ -1,6 +1,5 @@
 {
-  GraphUpdaterManager updaterManager=new GraphUpdaterManager();
-  graph.setUpdaterManager(updaterManager);
+  GraphUpdaterManager updaterManager=new GraphUpdaterManager(graph);
   Properties embeddedGraphPreferences=graph.getEmbeddedPreferences();
   Preferences embeddedConfig=null;
   if (embeddedGraphPreferences != null) {
@@ -10,6 +9,8 @@
   updaterManager=applyConfigurationToGraph(graph,updaterManager,Arrays.asList(mainConfig,embeddedConfig));
   if (updaterManager.size() == 0) {
     updaterManager.stop();
-    graph.setUpdaterManager(null);
+  }
+ else {
+    graph.setUpdaterManager(updaterManager);
   }
 }

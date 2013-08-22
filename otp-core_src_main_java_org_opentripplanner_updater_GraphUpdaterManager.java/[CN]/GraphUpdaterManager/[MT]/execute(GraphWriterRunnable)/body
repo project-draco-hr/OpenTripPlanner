@@ -1,0 +1,13 @@
+{
+  scheduler.schedule(new Runnable(){
+    @Override public void run(){
+      try {
+        runnable.run(graph);
+      }
+ catch (      Exception e) {
+        LOG.error("Error while running graph writer " + runnable.getClass().getName(),e);
+      }
+    }
+  }
+,0,TimeUnit.MILLISECONDS);
+}

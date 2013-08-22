@@ -2,9 +2,13 @@
   try {
     Set<String> configurableNames=new HashSet<String>();
     for (    Preferences config : configs) {
-      if (config == null)       continue;
+      if (config == null) {
+        continue;
+      }
       for (      String configurableName : config.childrenNames()) {
-        if (configurableNames.contains(configurableName))         continue;
+        if (configurableNames.contains(configurableName)) {
+          continue;
+        }
         configurableNames.add(configurableName);
         Preferences prefs=config.node(configurableName);
         String type=prefs.get("type",null);
@@ -27,6 +31,8 @@
  else           if (updater instanceof PreferencesConfigurable) {
             ((PreferencesConfigurable)updater).configure(graph,prefs);
           }
+          updater.setGraphUpdaterManager(updaterManager);
+          updaterManager.addUpdater(updater);
         }
  catch (        Exception e) {
           LOG.error("Can't configure: " + configurableName,e);
