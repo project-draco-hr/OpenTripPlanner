@@ -1,7 +1,7 @@
 {
-  GraphUpdaterManager periodicUpdater=graph.getService(GraphUpdaterManager.class);
-  if (periodicUpdater != null) {
-    LOG.info("Stopping periodic updater with " + periodicUpdater.size() + " updaters.");
-    periodicUpdater.stop();
+  GraphUpdaterManager updaterManager=graph.getUpdaterManager();
+  if (updaterManager != null) {
+    LOG.info("Stopping periodic updater with " + updaterManager.size() + " updaters.");
+    updaterManager.stop();
   }
 }
