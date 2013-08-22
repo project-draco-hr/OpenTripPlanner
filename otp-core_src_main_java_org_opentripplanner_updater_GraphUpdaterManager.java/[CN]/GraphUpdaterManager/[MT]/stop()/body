@@ -1,4 +1,17 @@
 {
+  for (  GraphUpdaterRunnable updater : updaterList) {
+    updater.teardown();
+  }
+  updaterPool.shutdownNow();
+  try {
+    boolean ok=updaterPool.awaitTermination(30,TimeUnit.SECONDS);
+    if (!ok) {
+      LOG.warn("Timeout waiting for updaters to finish.");
+    }
+  }
+ catch (  InterruptedException e) {
+    LOG.warn("Interrupted while waiting for updaters to finish.");
+  }
   scheduler.shutdownNow();
   try {
     boolean ok=scheduler.awaitTermination(30,TimeUnit.SECONDS);
@@ -8,8 +21,5 @@
   }
  catch (  InterruptedException e) {
     LOG.warn("Interrupted while waiting for scheduled task to finish.");
-  }
-  for (  GraphUpdaterRunnable updater : updaters) {
-    updater.teardown();
   }
 }

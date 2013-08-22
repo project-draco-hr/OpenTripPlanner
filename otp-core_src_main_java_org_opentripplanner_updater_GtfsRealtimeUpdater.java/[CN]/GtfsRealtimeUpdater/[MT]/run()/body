@@ -7,13 +7,13 @@
     GtfsRealtime.FeedMessage feed=GtfsRealtime.FeedMessage.PARSER.parseFrom(data);
     long feedTimestamp=feed.getHeader().getTimestamp();
     if (feedTimestamp <= lastTimestamp) {
-      log.info("Ignoring feed with an old timestamp.");
+      LOG.info("Ignoring feed with an old timestamp.");
       return;
     }
     updateHandler.update(feed);
     lastTimestamp=feedTimestamp;
   }
  catch (  IOException e) {
-    log.error("Eror reading gtfs-realtime feed from " + url,e);
+    LOG.error("Eror reading gtfs-realtime feed from " + url,e);
   }
 }

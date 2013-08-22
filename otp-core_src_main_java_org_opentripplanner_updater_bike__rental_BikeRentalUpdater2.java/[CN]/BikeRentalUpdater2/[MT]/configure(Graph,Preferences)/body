@@ -1,0 +1,42 @@
+{
+  String sourceType=preferences.get("sourceType",null);
+  BikeRentalDataSource source=null;
+  if (sourceType != null) {
+    if (sourceType.equals("jcdecaux")) {
+      source=new JCDecauxBikeRentalDataSource();
+    }
+ else     if (sourceType.equals("b-cycle")) {
+      source=new BCycleBikeRentalDataSource();
+    }
+ else     if (sourceType.equals("bixi")) {
+      source=new BixiBikeRentalDataSource();
+    }
+ else     if (sourceType.equals("keolis-rennes")) {
+      source=new KeolisRennesBikeRentalDataSource();
+    }
+ else     if (sourceType.equals("ov-fiets")) {
+      source=new OVFietsKMLDataSource();
+    }
+ else     if (sourceType.equals("city-bikes")) {
+      source=new CityBikesBikeRentalDataSource();
+    }
+  }
+  if (source == null) {
+    throw new IllegalArgumentException("Unknown bike rental source type: " + sourceType);
+  }
+ else   if (source instanceof PreferencesConfigurable) {
+    ((PreferencesConfigurable)source).configure(graph,preferences);
+  }
+  LOG.info("Setting up bike rental updater.");
+  this.graph=graph;
+  this.source=source;
+  networkLinkerLibrary=new NetworkLinkerLibrary(graph,Collections.<Class<?>,Object>emptyMap());
+  service=graph.getService(BikeRentalStationService.class);
+  if (service == null) {
+    service=new BikeRentalStationService();
+    graph.putService(BikeRentalStationService.class,service);
+  }
+  setNetwork(preferences.get("networks",DEFAULT_NETWORK_LIST));
+  long frequencySec=preferences.getLong("frequencySec",DEFAULT_UPDATE_FREQ_SEC);
+  LOG.info("Creating bike-rental updater running every {} seconds : {}",frequencySec,source);
+}

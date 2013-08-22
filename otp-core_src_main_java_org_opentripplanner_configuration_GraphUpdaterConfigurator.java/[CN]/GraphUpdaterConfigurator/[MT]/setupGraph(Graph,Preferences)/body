@@ -7,7 +7,7 @@
     embeddedConfig=new PropertiesPreferences(embeddedGraphPreferences);
   }
   LOG.info("Using configurations: " + (mainConfig == null ? "" : "[main]") + " "+ (embeddedConfig == null ? "" : "[embedded]"));
-  applyConfigurationToGraph(graph,Arrays.asList(mainConfig,embeddedConfig));
+  updaterManager=applyConfigurationToGraph(graph,updaterManager,Arrays.asList(mainConfig,embeddedConfig));
   if (updaterManager.size() == 0) {
     updaterManager.stop();
     graph.setUpdaterManager(null);
