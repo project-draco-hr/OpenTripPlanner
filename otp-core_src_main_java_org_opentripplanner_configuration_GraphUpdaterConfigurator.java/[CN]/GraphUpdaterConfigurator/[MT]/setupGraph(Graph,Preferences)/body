@@ -1,9 +1,9 @@
 {
   GraphUpdaterManager periodicUpdater=graph.getService(GraphUpdaterManager.class,true);
-  EmbeddedConfigService embeddedConfigService=graph.getService(EmbeddedConfigService.class);
+  Properties embeddedGraphPreferences=graph.getEmbeddedPreferences();
   Preferences embeddedConfig=null;
-  if (embeddedConfigService != null) {
-    embeddedConfig=new PropertiesPreferences(embeddedConfigService.getProperties());
+  if (embeddedGraphPreferences != null) {
+    embeddedConfig=new PropertiesPreferences(embeddedGraphPreferences);
   }
   LOG.info("Using configurations: " + (mainConfig == null ? "" : "[main]") + " "+ (embeddedConfig == null ? "" : "[embedded]"));
   applyConfigurationToGraph(graph,Arrays.asList(mainConfig,embeddedConfig));

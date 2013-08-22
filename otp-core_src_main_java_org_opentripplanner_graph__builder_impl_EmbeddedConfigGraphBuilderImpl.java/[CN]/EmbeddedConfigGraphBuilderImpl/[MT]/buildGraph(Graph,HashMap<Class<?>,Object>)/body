@@ -1,10 +1,9 @@
 {
   try {
     LOG.info("Bundling config '" + propertiesFile.getPath() + "' into graph.");
-    EmbeddedConfigService embeddedConfig=graph.getService(EmbeddedConfigService.class,true);
     Properties props=new Properties();
     props.load(new FileInputStream(propertiesFile));
-    embeddedConfig.setProperties(props);
+    graph.setEmbeddedPreferences(props);
   }
  catch (  IOException e) {
     LOG.error("Can't load properties from '" + propertiesFile.getAbsolutePath() + "'",e);
