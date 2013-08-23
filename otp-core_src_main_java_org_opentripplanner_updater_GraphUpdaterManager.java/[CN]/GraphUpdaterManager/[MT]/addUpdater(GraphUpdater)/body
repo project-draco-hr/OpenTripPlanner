@@ -1,8 +1,8 @@
 {
-  updater.setup();
   updaterPool.execute(new Runnable(){
     @Override public void run(){
       try {
+        updater.setup();
         updater.run();
       }
  catch (      Exception e) {

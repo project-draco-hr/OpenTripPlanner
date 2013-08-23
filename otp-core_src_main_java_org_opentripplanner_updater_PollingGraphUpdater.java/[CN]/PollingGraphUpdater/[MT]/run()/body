@@ -11,6 +11,6 @@
     }
   }
  catch (  InterruptedException e) {
-    e.printStackTrace();
+    LOG.error("Error while running polling updater of type {}: sleep interrupted, " + "updater stops.",type,e);
   }
 }

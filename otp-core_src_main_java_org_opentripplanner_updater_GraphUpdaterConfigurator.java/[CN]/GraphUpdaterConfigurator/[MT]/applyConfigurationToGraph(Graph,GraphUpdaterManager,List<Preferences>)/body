@@ -26,6 +26,9 @@
  else           if (type.equals("example-updater")) {
             updater=new ExampleGraphUpdater();
           }
+ else           if (type.equals("example-polling-updater")) {
+            updater=new ExamplePollingGraphUpdater();
+          }
         }
         try {
           if (updater == null) {
