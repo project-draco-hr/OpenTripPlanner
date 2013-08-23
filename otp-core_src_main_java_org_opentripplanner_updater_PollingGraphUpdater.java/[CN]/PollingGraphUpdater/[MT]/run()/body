@@ -1,0 +1,16 @@
+{
+  try {
+    while (true) {
+      try {
+        runPolling();
+      }
+ catch (      Exception e) {
+        LOG.error("Error while running polling updater of type {}",type,e);
+      }
+      Thread.sleep(frequencySec * 1000);
+    }
+  }
+ catch (  InterruptedException e) {
+    e.printStackTrace();
+  }
+}
