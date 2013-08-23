@@ -1,4 +1,5 @@
 {
+  updaterList.add(updater);
   updaterPool.execute(new Runnable(){
     @Override public void run(){
       try {
@@ -11,5 +12,4 @@
     }
   }
 );
-  updaterList.add(updater);
 }
