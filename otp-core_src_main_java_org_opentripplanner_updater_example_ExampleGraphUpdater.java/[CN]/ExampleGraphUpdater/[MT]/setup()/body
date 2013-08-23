@@ -1,3 +1,15 @@
 {
   LOG.info("Setup example updater");
+  try {
+    updaterManager.executeBlocking(new GraphWriterRunnable(){
+      @Override public void run(      Graph graph){
+        LOG.info("Anonymous graph writer {} runnable is run on the " + "graph writer scheduler.",this.hashCode());
+      }
+    }
+);
+  }
+ catch (  InterruptedException e) {
+  }
+catch (  ExecutionException e) {
+  }
 }

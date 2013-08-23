@@ -1,5 +1,4 @@
 {
   LOG.info("Run example polling updater with hashcode: {}",this.hashCode());
-  ExampleGraphWriter exampleWriter=new ExampleGraphWriter();
-  updaterManager.execute(exampleWriter);
+  updaterManager.execute(new ExampleGraphWriter());
 }
