@@ -1,0 +1,18 @@
+{
+  n_received+=1;
+  if (n_received % 100 == 0) {
+    long this_log_time=System.currentTimeMillis();
+    long elapsed_time=this_log_time - last_log_time;
+    LOG.info("Received {} messages in {} msec, {} msgs/sec",n_received,elapsed_time,n_received / (elapsed_time / 1000d));
+    n_received=0;
+    last_log_time=System.currentTimeMillis();
+  }
+  try {
+    FeedMessage feed=GtfsRealtime.FeedMessage.PARSER.parseFrom(message);
+    List<TripUpdateList> updates=TripUpdateList.decodeFromGtfsRealtime(feed,agencyId);
+    LOG.info("Updates: {}",updates);
+  }
+ catch (  InvalidProtocolBufferException e) {
+    LOG.error("Could not decode gtfs-rt message.",e);
+  }
+}

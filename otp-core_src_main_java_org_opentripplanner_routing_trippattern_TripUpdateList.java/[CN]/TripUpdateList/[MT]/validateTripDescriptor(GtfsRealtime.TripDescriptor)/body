@@ -1,0 +1,7 @@
+{
+  if (tripDescriptor.hasStartTime()) {
+    LOG.warn("Frequency-expanded trips are not supported...");
+    return false;
+  }
+  return tripDescriptor.hasTripId();
+}
