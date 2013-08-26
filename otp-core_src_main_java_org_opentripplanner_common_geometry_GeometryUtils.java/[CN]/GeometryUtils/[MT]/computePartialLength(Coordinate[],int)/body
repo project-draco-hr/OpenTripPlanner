@@ -1,0 +1,11 @@
+{
+  if (index < 1)   return 0;
+  if (index >= coordinates.length)   index=coordinates.length - 1;
+  Coordinate[] array=new Coordinate[index + 1];
+  for (int i=0; i <= index; i++) {
+    array[i]=coordinates[i];
+  }
+  CoordinateSequence sequence=gf.getCoordinateSequenceFactory().create(array);
+  LineString lineString=new LineString(sequence,gf);
+  return lineString.getLength();
+}
