@@ -3,9 +3,11 @@
   checkAccess(user);
   FieldTripRequest req=FieldTripRequest.findById(requestId);
   if (req != null) {
-    if (classpassId != null && classpassId.length() == 0)     classpassId=null;
-    req.classpassId=classpassId;
+    req.travelDate=date;
     req.save();
+    for (    ScheduledFieldTrip trip : req.trips) {
+      trip.delete();
+    }
     renderJSON(requestId);
   }
  else {

@@ -1,4 +1,6 @@
 {
+  TrinetUser user=checkLogin();
+  checkAccess(user);
   FieldTripRequest req=FieldTripRequest.findById(requestId);
   if (req != null) {
     req.status=status;
