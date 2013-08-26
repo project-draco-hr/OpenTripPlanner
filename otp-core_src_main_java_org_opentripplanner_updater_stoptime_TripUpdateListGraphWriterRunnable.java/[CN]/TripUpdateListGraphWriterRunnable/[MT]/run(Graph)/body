@@ -1,3 +1,9 @@
 {
-  LOG.info("Updates: {}",updates);
+  RealtimeDataSnapshotSource snapshotSource=graph.getRealtimeDataSnapshotSource();
+  if (snapshotSource != null) {
+    snapshotSource.applyTripUpdateLists(updates);
+  }
+ else {
+    LOG.error("Could not find realtime data snapshot source in graph." + " The following updates are not applied: {}",updates);
+  }
 }

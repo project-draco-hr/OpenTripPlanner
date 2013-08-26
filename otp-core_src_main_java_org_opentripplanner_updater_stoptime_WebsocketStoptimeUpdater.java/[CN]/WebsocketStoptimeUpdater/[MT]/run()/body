@@ -6,7 +6,10 @@
   try {
     socket=client.prepareGet(url).execute(handler).get();
   }
- catch (  Exception e) {
-    e.printStackTrace();
+ catch (  ExecutionException e) {
+    LOG.error("Could not connect to {}: {}",url,e.getCause().getMessage());
+  }
+catch (  Exception e) {
+    LOG.error("Unknown exception when trying to connect to {}.",url,e);
   }
 }
