@@ -9,9 +9,9 @@
   Vertex from=new TransitStop(graph,stop1);
   Vertex to=new TransitStop(graph,stop2);
   TimetableResolver resolver=new TimetableResolver();
-  TimetableSnapshotSource source=mock(TimetableSnapshotSource.class);
-  when(source.getSnapshot()).thenReturn(resolver);
-  graph.timetableSnapshotSource=source;
+  RealtimeDataSnapshotSource source=mock(RealtimeDataSnapshotSource.class);
+  when(source.getTimetableSnapshot()).thenReturn(resolver);
+  graph.setRealtimeDataSnapshotSource(source);
   RoutingContext rctx=new RoutingContext(options,graph,from,to);
   assertNotNull(rctx.timetableSnapshot);
   options.setIgnoreRealtimeUpdates(true);

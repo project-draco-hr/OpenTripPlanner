@@ -38,10 +38,10 @@
             LOG.error("Unknown updater type: " + type);
           }
  else {
+            updater.setGraphUpdaterManager(updaterManager);
             if (updater instanceof PreferencesConfigurable) {
               ((PreferencesConfigurable)updater).configure(graph,prefs);
             }
-            updater.setGraphUpdaterManager(updaterManager);
             updaterManager.addUpdater(updater);
           }
         }
