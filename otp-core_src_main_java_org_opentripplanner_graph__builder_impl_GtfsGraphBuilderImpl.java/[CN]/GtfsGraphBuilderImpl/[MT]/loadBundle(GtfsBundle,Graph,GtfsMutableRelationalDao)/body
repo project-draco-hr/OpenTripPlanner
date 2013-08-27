@@ -15,6 +15,9 @@
     reader.readEntities(entityClass);
     store.flush();
     if (entityClass == Agency.class) {
+      if (reader.getDefaultAgencyId() == null) {
+        reader.setDefaultAgencyId(reader.getAgencies().get(0).getId());
+      }
       for (      Agency agency : reader.getAgencies()) {
         GtfsBundle existing=agenciesSeen.get(agency);
         if (existing != null) {
@@ -25,6 +28,30 @@
         }
       }
     }
+  }
+  for (  ShapePoint shapePoint : store.getAllEntitiesForType(ShapePoint.class)) {
+    shapePoint.getShapeId().setAgencyId(reader.getDefaultAgencyId());
+  }
+  for (  Route route : store.getAllEntitiesForType(Route.class)) {
+    route.getId().setAgencyId(reader.getDefaultAgencyId());
+  }
+  for (  Stop stop : store.getAllEntitiesForType(Stop.class)) {
+    stop.getId().setAgencyId(reader.getDefaultAgencyId());
+  }
+  for (  Trip trip : store.getAllEntitiesForType(Trip.class)) {
+    trip.getId().setAgencyId(reader.getDefaultAgencyId());
+  }
+  for (  ServiceCalendar serviceCalendar : store.getAllEntitiesForType(ServiceCalendar.class)) {
+    serviceCalendar.getServiceId().setAgencyId(reader.getDefaultAgencyId());
+  }
+  for (  ServiceCalendarDate serviceCalendarDate : store.getAllEntitiesForType(ServiceCalendarDate.class)) {
+    serviceCalendarDate.getServiceId().setAgencyId(reader.getDefaultAgencyId());
+  }
+  for (  FareAttribute fareAttribute : store.getAllEntitiesForType(FareAttribute.class)) {
+    fareAttribute.getId().setAgencyId(reader.getDefaultAgencyId());
+  }
+  for (  Pathway pathway : store.getAllEntitiesForType(Pathway.class)) {
+    pathway.getId().setAgencyId(reader.getDefaultAgencyId());
   }
   store.close();
 }

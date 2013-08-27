@@ -1,10 +1,12 @@
 {
   Trip trip=states[states.length - 1].getBackTrip();
   if (trip != null) {
-    String id=trip.getId().getAgencyId();
     Route route=trip.getRoute();
+    Agency agency=route.getAgency();
     ServiceDay serviceDay=states[states.length - 1].getServiceDay();
-    leg.agencyId=id;
+    leg.agencyId=agency.getId();
+    leg.agencyName=agency.getName();
+    leg.agencyUrl=agency.getUrl();
     leg.headsign=states[states.length - 1].getBackDirection();
     leg.route=states[states.length - 1].getBackEdge().getName();
     leg.routeColor=route.getColor();
@@ -18,11 +20,6 @@
     leg.tripBlockId=trip.getBlockId();
     if (serviceDay != null) {
       leg.serviceDate=serviceDay.getServiceDate().getAsString();
-    }
-    if (transitIndexService != null) {
-      Agency agency=transitIndexService.getAgency(id);
-      leg.agencyName=agency.getName();
-      leg.agencyUrl=agency.getUrl();
     }
     if (leg.headsign == null) {
       leg.headsign=trip.getTripHeadsign();
