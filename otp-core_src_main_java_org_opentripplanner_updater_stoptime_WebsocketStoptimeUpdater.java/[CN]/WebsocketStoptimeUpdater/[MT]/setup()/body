@@ -1,16 +1,11 @@
 {
-  try {
-    updaterManager.executeBlocking(new GraphWriterRunnable(){
-      @Override public void run(      Graph graph){
-        if (graph.getRealtimeDataSnapshotSource() == null) {
-          RealtimeDataSnapshotSource snapshotSource=new RealtimeDataSnapshotSource(graph);
-          graph.setRealtimeDataSnapshotSource(snapshotSource);
-        }
+  updaterManager.executeBlocking(new GraphWriterRunnable(){
+    @Override public void run(    Graph graph){
+      if (graph.getRealtimeDataSnapshotSource() == null) {
+        RealtimeDataSnapshotSource snapshotSource=new RealtimeDataSnapshotSource(graph);
+        graph.setRealtimeDataSnapshotSource(snapshotSource);
       }
     }
+  }
 );
-  }
- catch (  Exception e) {
-    LOG.error("Error while setting up {}:",getClass().getName(),e);
-  }
 }
