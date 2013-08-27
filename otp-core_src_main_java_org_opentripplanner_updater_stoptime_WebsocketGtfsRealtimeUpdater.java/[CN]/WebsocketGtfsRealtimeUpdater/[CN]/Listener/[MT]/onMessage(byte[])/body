@@ -1,0 +1,11 @@
+{
+  try {
+    FeedMessage feed=GtfsRealtime.FeedMessage.PARSER.parseFrom(message);
+    List<TripUpdateList> updates=TripUpdateList.decodeFromGtfsRealtime(feed,agencyId);
+    TripUpdateGraphWriterRunnable runnable=new TripUpdateGraphWriterRunnable(updates);
+    updaterManager.execute(runnable);
+  }
+ catch (  InvalidProtocolBufferException e) {
+    LOG.error("Could not decode gtfs-rt message:",e);
+  }
+}
