@@ -4,13 +4,18 @@
     if (data == null) {
       throw new RuntimeException("Failed to get data from url " + url);
     }
-    GtfsRealtime.FeedMessage feed=GtfsRealtime.FeedMessage.PARSER.parseFrom(data);
+    final GtfsRealtime.FeedMessage feed=GtfsRealtime.FeedMessage.PARSER.parseFrom(data);
     long feedTimestamp=feed.getHeader().getTimestamp();
     if (feedTimestamp <= lastTimestamp) {
       LOG.info("Ignoring feed with an old timestamp.");
       return;
     }
-    updateHandler.update(feed);
+    updaterManager.execute(new GraphWriterRunnable(){
+      @Override public void run(      Graph graph){
+        updateHandler.update(feed);
+      }
+    }
+);
     lastTimestamp=feedTimestamp;
   }
  catch (  IOException e) {
