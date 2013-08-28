@@ -1,10 +1,4 @@
 {
-  LOG.debug("Updating bike rental stations from " + source);
-  if (!source.update()) {
-    LOG.debug("No updates");
-    return;
-  }
-  List<BikeRentalStation> stations=source.getStations();
   Set<BikeRentalStation> stationSet=new HashSet<BikeRentalStation>();
   Set<String> networks=new HashSet<String>(Arrays.asList(network));
   for (  BikeRentalStation station : stations) {

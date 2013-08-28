@@ -30,13 +30,6 @@
   LOG.info("Setting up bike rental updater.");
   this.graph=graph;
   this.source=source;
-  networkLinkerLibrary=new NetworkLinkerLibrary(graph,Collections.<Class<?>,Object>emptyMap());
-  service=graph.getService(BikeRentalStationService.class);
-  if (service == null) {
-    service=new BikeRentalStationService();
-    graph.putService(BikeRentalStationService.class,service);
-  }
   setNetwork(preferences.get("networks",DEFAULT_NETWORK_LIST));
-  long frequencySec=preferences.getLong("frequencySec",DEFAULT_UPDATE_FREQ_SEC);
-  LOG.info("Creating bike-rental updater running every {} seconds : {}",frequencySec,source);
+  LOG.info("Creating bike-rental updater running every {} seconds : {}",getFrequencySec(),source);
 }
