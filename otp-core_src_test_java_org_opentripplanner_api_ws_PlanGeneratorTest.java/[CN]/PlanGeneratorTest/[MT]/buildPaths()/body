@@ -296,7 +296,7 @@
   updates.add(ferryStopArriveUpdate);
   TripUpdateList tripUpdateList=TripUpdateList.splitByTrip(updates).get(0);
   TimetableResolver resolver=new TimetableResolver();
-  RealtimeDataSnapshotSource timetableSnapshotSource=mock(RealtimeDataSnapshotSource.class);
+  TimetableSnapshotSource timetableSnapshotSource=mock(TimetableSnapshotSource.class);
   when(timetableSnapshotSource.getTimetableSnapshot()).thenReturn(resolver);
   timetableSnapshotSource.getTimetableSnapshot().update(thirdTripPattern,tripUpdateList);
   graph.putService(ServiceIdToNumberService.class,serviceIdToNumberService);
@@ -305,7 +305,7 @@
   graph.putService(FareService.class,fareServiceStub);
   graph.addAgency(trainAgency);
   graph.addAgency(ferryAgency);
-  graph.setRealtimeDataSnapshotSource(timetableSnapshotSource);
+  graph.setTimetableSnapshotSource(timetableSnapshotSource);
   ServiceDay serviceDay=new ServiceDay(graph,0,calendarServiceImpl,null);
   RoutingRequest forwardOptions=options.clone();
   RoutingContext forwardContext=new RoutingContext(forwardOptions,graph,v0,v60);

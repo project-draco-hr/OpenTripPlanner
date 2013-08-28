@@ -2,8 +2,8 @@
   this.opt=routingRequest;
   this.graph=graph;
   this.debug.startedCalculating();
-  if (routingRequest.isIgnoreRealtimeUpdates() == false && graph.getRealtimeDataSnapshotSource() != null) {
-    timetableSnapshot=graph.getRealtimeDataSnapshotSource().getTimetableSnapshot();
+  if (routingRequest.isIgnoreRealtimeUpdates() == false && graph.getTimetableSnapshotSource() != null) {
+    timetableSnapshot=graph.getTimetableSnapshotSource().getTimetableSnapshot();
   }
  else {
     timetableSnapshot=null;
