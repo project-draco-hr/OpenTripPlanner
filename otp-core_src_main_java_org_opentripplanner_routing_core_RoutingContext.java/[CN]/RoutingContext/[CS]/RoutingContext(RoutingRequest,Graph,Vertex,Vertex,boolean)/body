@@ -1,4 +1,7 @@
 {
+  if (graph == null) {
+    throw new GraphNotFoundException();
+  }
   this.opt=routingRequest;
   this.graph=graph;
   this.debug.startedCalculating();
