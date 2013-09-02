@@ -1,0 +1,10 @@
+{
+  LOG.debug("Updating bike rental stations from " + source);
+  if (!source.update()) {
+    LOG.debug("No updates");
+    return;
+  }
+  List<BikeRentalStation> stations=source.getStations();
+  BikeRentalGraphWriterRunnable graphWriterRunnable=new BikeRentalGraphWriterRunnable(stations);
+  updaterManager.execute(graphWriterRunnable);
+}

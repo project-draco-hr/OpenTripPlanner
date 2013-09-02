@@ -1,0 +1,58 @@
+{
+  try {
+    Set<String> configurableNames=new HashSet<String>();
+    for (    Preferences config : configs) {
+      if (config == null) {
+        continue;
+      }
+      for (      String configurableName : config.childrenNames()) {
+        if (configurableNames.contains(configurableName)) {
+          continue;
+        }
+        configurableNames.add(configurableName);
+        Preferences prefs=config.node(configurableName);
+        String type=prefs.get("type",null);
+        GraphUpdater updater=null;
+        if (type != null) {
+          if (type.equals("bike-rental")) {
+            updater=new BikeRentalUpdater();
+          }
+ else           if (type.equals("stop-time-updater")) {
+            updater=new PollingStoptimeUpdater();
+          }
+ else           if (type.equals("websocket-gtfs-rt-updater")) {
+            updater=new WebsocketGtfsRealtimeUpdater();
+          }
+ else           if (type.equals("real-time-alerts")) {
+            updater=new GtfsRealtimeAlertsUpdater();
+          }
+ else           if (type.equals("example-updater")) {
+            updater=new ExampleGraphUpdater();
+          }
+ else           if (type.equals("example-polling-updater")) {
+            updater=new ExamplePollingGraphUpdater();
+          }
+        }
+        try {
+          if (updater == null) {
+            LOG.error("Unknown updater type: " + type);
+          }
+ else {
+            updater.setGraphUpdaterManager(updaterManager);
+            if (updater instanceof PreferencesConfigurable) {
+              ((PreferencesConfigurable)updater).configure(graph,prefs);
+            }
+            updaterManager.addUpdater(updater);
+          }
+        }
+ catch (        Exception e) {
+          LOG.error("Can't configure: " + configurableName,e);
+        }
+      }
+    }
+  }
+ catch (  BackingStoreException e) {
+    LOG.error("Can't read configuration",e);
+  }
+  return updaterManager;
+}

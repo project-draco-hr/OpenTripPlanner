@@ -1,0 +1,19 @@
+{
+  try {
+    while (true) {
+      try {
+        runPolling();
+      }
+ catch (      InterruptedException e) {
+        throw e;
+      }
+catch (      Exception e) {
+        LOG.error("Error while running polling updater of type {}",type,e);
+      }
+      Thread.sleep(frequencySec * 1000);
+    }
+  }
+ catch (  InterruptedException e) {
+    LOG.error("Polling updater {} is interrupted, updater stops.",this.getClass().getName());
+  }
+}

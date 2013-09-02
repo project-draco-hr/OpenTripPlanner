@@ -1,0 +1,7 @@
+{
+  GraphUpdaterManager updaterManager=graph.getUpdaterManager();
+  if (updaterManager != null) {
+    LOG.info("Stopping updater manager with " + updaterManager.size() + " updaters.");
+    updaterManager.stop();
+  }
+}

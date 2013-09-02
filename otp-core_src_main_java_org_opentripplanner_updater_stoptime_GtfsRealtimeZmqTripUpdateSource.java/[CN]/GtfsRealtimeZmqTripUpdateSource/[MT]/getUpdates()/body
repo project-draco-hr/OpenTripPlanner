@@ -1,0 +1,15 @@
+{
+  FeedMessage feed=null;
+  List<TripUpdateList> updates=null;
+  try {
+    InputStream is=new FileInputStream(file);
+    if (is != null) {
+      feed=GtfsRealtime.FeedMessage.PARSER.parseFrom(is);
+      updates=TripUpdateList.decodeFromGtfsRealtime(feed,agencyId);
+    }
+  }
+ catch (  IOException e) {
+    LOG.warn("Failed to parse gtfs-rt feed at " + file + ":",e);
+  }
+  return updates;
+}

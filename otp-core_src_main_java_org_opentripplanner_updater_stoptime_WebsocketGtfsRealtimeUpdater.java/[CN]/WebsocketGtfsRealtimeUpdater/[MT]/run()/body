@@ -1,0 +1,33 @@
+{
+  AsyncHttpClient client=new AsyncHttpClient();
+  WebSocketListener listener=new Listener();
+  WebSocketUpgradeHandler handler=new WebSocketUpgradeHandler.Builder().addWebSocketListener(listener).build();
+  while (true) {
+    WebSocket socket=null;
+    boolean connectionSuccessful=true;
+    try {
+      socket=client.prepareGet(url).execute(handler).get();
+      LOG.info("Successfully connected to {}.",url);
+    }
+ catch (    ExecutionException e) {
+      LOG.error("Could not connect to {}: {}",url,e.getCause().getMessage());
+      connectionSuccessful=false;
+    }
+catch (    Exception e) {
+      LOG.error("Unknown exception when trying to connect to {}:",url,e);
+      connectionSuccessful=false;
+    }
+    if (!connectionSuccessful) {
+      Thread.sleep(reconnectPeriodSec * 1000);
+    }
+    while (true) {
+      if (socket == null || !socket.isOpen()) {
+        if (connectionSuccessful) {
+          LOG.warn("Connection to {} was lost. Trying to reconnect...",url);
+        }
+        break;
+      }
+      Thread.sleep(CHECK_CONNECTION_PERIOD_SEC * 1000);
+    }
+  }
+}

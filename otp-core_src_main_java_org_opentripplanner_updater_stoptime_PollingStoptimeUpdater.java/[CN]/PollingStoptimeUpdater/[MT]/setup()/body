@@ -1,0 +1,21 @@
+{
+  updaterManager.executeBlocking(new GraphWriterRunnable(){
+    @Override public void run(    Graph graph){
+      TimetableSnapshotSource snapshotSource=graph.getTimetableSnapshotSource();
+      if (snapshotSource == null) {
+        snapshotSource=new TimetableSnapshotSource(graph);
+        graph.setTimetableSnapshotSource(snapshotSource);
+      }
+      if (logFrequency != null) {
+        snapshotSource.setLogFrequency(logFrequency);
+      }
+      if (maxSnapshotFrequency != null) {
+        snapshotSource.setMaxSnapshotFrequency(maxSnapshotFrequency);
+      }
+      if (purgeExpiredData != null) {
+        snapshotSource.setPurgeExpiredData(purgeExpiredData);
+      }
+    }
+  }
+);
+}

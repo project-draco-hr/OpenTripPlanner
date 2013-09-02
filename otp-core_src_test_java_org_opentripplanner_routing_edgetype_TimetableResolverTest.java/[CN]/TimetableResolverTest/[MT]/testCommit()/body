@@ -5,14 +5,14 @@
   TimetableResolver resolver=new TimetableResolver();
   TimetableResolver snapshot=resolver.commit();
   assertNull(snapshot);
-  assertTrue(resolver.update(pattern,TripUpdate.forCanceledTrip(pattern.getTrip(0).getId(),0,today)));
+  assertTrue(resolver.update(pattern,TripUpdateList.forCanceledTrip(pattern.getTrip(0).getId(),0,today)));
   snapshot=resolver.commit();
   assertEquals(snapshot.resolve(pattern,today),resolver.resolve(pattern,today));
   assertEquals(snapshot.resolve(pattern,yesterday),resolver.resolve(pattern,yesterday));
-  assertTrue(resolver.update(pattern,TripUpdate.forCanceledTrip(pattern.getTrip(0).getId(),0,today)));
+  assertTrue(resolver.update(pattern,TripUpdateList.forCanceledTrip(pattern.getTrip(0).getId(),0,today)));
   assertNotSame(snapshot.resolve(pattern,today),resolver.resolve(pattern,today));
   assertEquals(snapshot.resolve(pattern,yesterday),resolver.resolve(pattern,yesterday));
-  assertTrue(resolver.update(pattern,TripUpdate.forCanceledTrip(pattern.getTrip(0).getId(),0,yesterday)));
+  assertTrue(resolver.update(pattern,TripUpdateList.forCanceledTrip(pattern.getTrip(0).getId(),0,yesterday)));
   assertNotSame(snapshot.resolve(pattern,yesterday),resolver.resolve(pattern,yesterday));
   snapshot=resolver.commit();
   assertEquals(snapshot.resolve(pattern,today),resolver.resolve(pattern,today));
