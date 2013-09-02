@@ -8,16 +8,9 @@
   if (fraction >= 1)   return new P2<LineString>(total,empty);
   double totalDistance=total.getLength();
   double requestedDistance=totalDistance * fraction;
-  double fractionalIndex=binarySearchCoordinates(coordinates,requestedDistance);
-  int lowIndex=(int)Math.floor(fractionalIndex);
-  int highIndex=(int)Math.ceil(fractionalIndex);
-  Coordinate coordinate=coordinates[lowIndex];
-  if (lowIndex != highIndex) {
-    double lowFactor=highIndex - fractionalIndex;
-    double highFactor=fractionalIndex - lowIndex;
-    double x=coordinates[lowIndex].x * lowFactor + coordinates[highIndex].x * highFactor;
-    double y=coordinates[lowIndex].y * lowFactor + coordinates[highIndex].y * highFactor;
-    coordinate=new Coordinate(x,y);
-  }
-  return splitGeometryAtPoint(geometry,coordinate);
+  LocationIndexedLine line=new LocationIndexedLine(geometry);
+  LinearLocation l=LengthLocationMap.getLocation(geometry,requestedDistance);
+  LineString beginning=(LineString)line.extractLine(line.getStartIndex(),l);
+  LineString ending=(LineString)line.extractLine(l,line.getEndIndex());
+  return new P2<LineString>(beginning,ending);
 }
