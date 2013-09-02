@@ -10,7 +10,7 @@
   s1.setTripId(trip.getId());
   s1.setZone(endStop.getZoneId());
   s1.setRoute(trip.getRoute().getId());
-  int remainingTime=Math.round((1.0f - positionInHop) * tripTimes.getRunningTime(stopIndex));
+  int remainingTime=(int)Math.round((1.0 - positionInHop) * tripTimes.getRunningTime(stopIndex));
   s1.incrementTimeInSeconds(remainingTime);
   s1.incrementWeight(remainingTime);
   s1.setBackMode(getMode());

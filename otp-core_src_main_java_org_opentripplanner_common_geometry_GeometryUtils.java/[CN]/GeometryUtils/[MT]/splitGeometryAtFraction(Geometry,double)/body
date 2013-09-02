@@ -1,0 +1,16 @@
+{
+  LineString empty=new LineString(null,gf);
+  Coordinate[] coordinates=geometry.getCoordinates();
+  CoordinateSequence sequence=gf.getCoordinateSequenceFactory().create(coordinates);
+  LineString total=new LineString(sequence,gf);
+  if (coordinates.length < 2)   return new P2<LineString>(empty,empty);
+  if (fraction <= 0)   return new P2<LineString>(empty,total);
+  if (fraction >= 1)   return new P2<LineString>(total,empty);
+  double totalDistance=total.getLength();
+  double requestedDistance=totalDistance * fraction;
+  LocationIndexedLine line=new LocationIndexedLine(geometry);
+  LinearLocation l=LengthLocationMap.getLocation(geometry,requestedDistance);
+  LineString beginning=(LineString)line.extractLine(line.getStartIndex(),l);
+  LineString ending=(LineString)line.extractLine(l,line.getEndIndex());
+  return new P2<LineString>(beginning,ending);
+}
