@@ -24,7 +24,13 @@
       hf.setDefaultStreetToStopTime(gtfsBundle.getDefaultStreetToStopTime());
       hf.run(graph);
       if (gtfsBundle.doesTransfersTxtDefineStationPaths()) {
-        hf.createStationTransfers(graph,gtfsBundle.isLinkStopsToParentStops());
+        hf.createTransfersTxtTransfers();
+      }
+      if (gtfsBundle.isLinkStopsToParentStations()) {
+        hf.linkStopsToParentStations();
+      }
+      if (gtfsBundle.isParentStationTransfers()) {
+        hf.createParentStationTransfers();
       }
       if (gtfsGraphBuilders != null) {
         for (        GraphBuilderWithGtfsDao builder : gtfsGraphBuilders) {
