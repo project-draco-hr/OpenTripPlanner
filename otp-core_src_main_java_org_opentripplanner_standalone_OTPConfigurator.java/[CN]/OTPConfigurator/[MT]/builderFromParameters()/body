@@ -58,7 +58,9 @@ List<GtfsBundle> gtfsBundles=Lists.newArrayList();
 for (File gtfsFile : gtfsFiles) {
 GtfsBundle gtfsBundle=new GtfsBundle(gtfsFile);
 gtfsBundle.setTransfersTxtDefinesStationPaths(params.useTransfersTxt);
+if (!params.noParentStopLinking) {
 gtfsBundle.setLinkStopsToParentStations(true);
+}
 gtfsBundle.setParentStationTransfers(params.parentStationTransfers);
 gtfsBundles.add(gtfsBundle);
 }
