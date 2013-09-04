@@ -134,8 +134,10 @@
   assertEquals("Brian Ferry",legs[4].agencyName);
   assertEquals("http://www.ferry.org/",legs[4].agencyUrl);
   assertEquals(2,legs[4].agencyTimeZoneOffset);
-  assertNull(legs[4].notes);
-  assertNull(legs[4].alerts);
+  assertEquals(1,legs[4].notes.size());
+  assertEquals(alertsExample,legs[4].notes.get(0).text);
+  assertEquals(1,legs[4].alerts.size());
+  assertEquals(Alert.createSimpleAlerts(alertsExample),legs[4].alerts.get(0));
   assertEquals("C",legs[4].route);
   assertEquals("C",legs[4].routeId);
   assertEquals("C",legs[4].routeShortName);
