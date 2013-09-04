@@ -1,24 +1,18 @@
 {
-  boolean accept=false;
-  final int invalidState=-1;
-  int currentState=invalidState;
+  boolean accepted=false;
+  int currentState=AutomatonState.START;
   for (  Class<? extends Edge> edgeClass : path) {
     State state=mock(State.class);
     Edge edge=mock(edgeClass);
     when(state.getBackEdge()).thenReturn(edge);
     int terminal=parser.terminalFor(state);
-    if (currentState == invalidState) {
-      currentState=terminal;
-    }
- else {
-      currentState=parser.transition(currentState,terminal);
-    }
+    currentState=parser.transition(currentState,terminal);
     if (currentState == AutomatonState.REJECT) {
       return false;
     }
   }
   if (parser.accepts(currentState)) {
-    accept=true;
+    accepted=true;
   }
-  return accept;
+  return accepted;
 }
