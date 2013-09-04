@@ -1,6 +1,6 @@
 {
-  boolean accept=false;
-  int currentState=0;
+  boolean accepted=false;
+  int currentState=AutomatonState.START;
   for (  Class<? extends Edge> edgeClass : path) {
     State state=mock(State.class);
     Edge edge=mock(edgeClass);
@@ -12,7 +12,7 @@
     }
   }
   if (parser.accepts(currentState)) {
-    accept=true;
+    accepted=true;
   }
-  return accept;
+  return accepted;
 }
