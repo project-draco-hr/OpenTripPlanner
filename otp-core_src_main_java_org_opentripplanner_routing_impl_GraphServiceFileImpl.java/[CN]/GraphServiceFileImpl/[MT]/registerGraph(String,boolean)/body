@@ -7,6 +7,7 @@ synchronized (graphs) {
       if (!preEvict)       evictGraph(routerId);
       graphs.put(routerId,graph);
     }
+    graph.setRouterId(routerId);
     levels.put(routerId,loadLevel);
     return true;
   }
