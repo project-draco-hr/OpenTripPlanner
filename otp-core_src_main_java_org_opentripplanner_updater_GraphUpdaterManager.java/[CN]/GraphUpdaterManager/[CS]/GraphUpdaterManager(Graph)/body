@@ -1,3 +1,8 @@
 {
   this.graph=graph;
+  String routerId=graph.getRouterId();
+  if (routerId == null || routerId.isEmpty())   routerId=DEFAULT_ROUTER_ID;
+  threadFactory=new ThreadFactoryBuilder().setNameFormat("GraphUpdater-" + routerId + "-%d").build();
+  scheduler=Executors.newSingleThreadScheduledExecutor(threadFactory);
+  updaterPool=Executors.newCachedThreadPool(threadFactory);
 }
