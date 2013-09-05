@@ -9,6 +9,6 @@
     tableTripPatterns.add(pav.getTripPattern());
   }
   for (  TableTripPattern ttp : tableTripPatterns) {
-    ttp.finish();
+    if (ttp != null)     ttp.finish();
   }
 }
