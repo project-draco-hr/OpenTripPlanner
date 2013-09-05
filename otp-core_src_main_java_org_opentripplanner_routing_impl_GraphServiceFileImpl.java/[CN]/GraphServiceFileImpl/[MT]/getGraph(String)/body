@@ -6,7 +6,7 @@
 synchronized (graphs) {
     if (!graphs.containsKey(routerId)) {
       LOG.error("no graph registered with the routerId '{}'",routerId);
-      return null;
+      throw new GraphNotFoundException();
     }
  else {
       return graphs.get(routerId);
