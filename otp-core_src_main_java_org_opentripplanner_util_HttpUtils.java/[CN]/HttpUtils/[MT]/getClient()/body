@@ -1,0 +1,8 @@
+{
+  HttpParams httpParams=new BasicHttpParams();
+  HttpConnectionParams.setConnectionTimeout(httpParams,TIMEOUT_CONNECTION);
+  HttpConnectionParams.setSoTimeout(httpParams,TIMEOUT_SOCKET);
+  DefaultHttpClient httpclient=new DefaultHttpClient();
+  httpclient.setParams(httpParams);
+  return httpclient;
+}
