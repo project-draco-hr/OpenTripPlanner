@@ -267,14 +267,12 @@
     List<Class<? extends Edge>> path=new ArrayList<Class<? extends Edge>>();
     path.add(StreetTransitLink.class);
     path.add(StreetTransitLink.class);
-    assertTrue(parsePath(parser,path));
+    assertFalse(parsePath(parser,path));
   }
 {
     List<Class<? extends Edge>> path=new ArrayList<Class<? extends Edge>>();
-    path.add(StreetTransitLink.class);
-    path.add(StreetTransitLink.class);
-    path.add(StreetTransitLink.class);
-    path.add(StreetTransitLink.class);
+    path.add(StationStopEdge.class);
+    path.add(StationStopEdge.class);
     assertFalse(parsePath(parser,path));
   }
 }
