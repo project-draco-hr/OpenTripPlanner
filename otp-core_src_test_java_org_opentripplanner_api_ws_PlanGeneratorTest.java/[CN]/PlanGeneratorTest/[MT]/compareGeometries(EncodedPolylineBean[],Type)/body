@@ -1,8 +1,18 @@
 {
-  assertEquals(2,geometries[0].getLength());
-  assertEquals("??_ibE_ibE",geometries[0].getPoints());
+  if (type == Type.FORWARD || type == Type.BACKWARD) {
+    assertEquals(2,geometries[0].getLength());
+    assertEquals("??_ibE_ibE",geometries[0].getPoints());
+  }
+ else   if (type == Type.ONBOARD) {
+    assertNull(geometries[0]);
+  }
   assertEquals(3,geometries[1].getLength());
-  assertEquals("_ibE_ibE_{geC_wpkG_{geC_wpkG",geometries[1].getPoints());
+  if (type == Type.FORWARD || type == Type.BACKWARD) {
+    assertEquals("_ibE_ibE_{geC_wpkG_{geC_wpkG",geometries[1].getPoints());
+  }
+ else   if (type == Type.ONBOARD) {
+    assertEquals("_wfhA_ekkC_mcbA_{geC_{geC_wpkG",geometries[1].getPoints());
+  }
   assertEquals(2,geometries[2].getLength());
   assertEquals("_atqG_ye~O_{geC_wpkG",geometries[2].getPoints());
   assertEquals(2,geometries[3].getLength());

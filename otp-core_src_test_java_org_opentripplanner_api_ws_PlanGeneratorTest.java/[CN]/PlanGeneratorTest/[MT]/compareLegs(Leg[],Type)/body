@@ -1,36 +1,41 @@
 {
   assertEquals(9,legs.length);
-  assertNull(legs[0].agencyId);
-  assertNull(legs[0].agencyName);
-  assertNull(legs[0].agencyUrl);
-  assertEquals(2,legs[0].agencyTimeZoneOffset);
-  assertNull(legs[0].notes);
-  assertNull(legs[0].alerts);
-  assertEquals("",legs[0].route);
-  assertNull(legs[0].routeId);
-  assertNull(legs[0].routeShortName);
-  assertNull(legs[0].routeLongName);
-  assertNull(legs[0].routeType);
-  assertNull(legs[0].routeColor);
-  assertNull(legs[0].routeTextColor);
-  assertNull(legs[0].tripId);
-  assertNull(legs[0].tripShortName);
-  assertNull(legs[0].tripBlockId);
-  assertNull(legs[0].serviceDate);
-  assertNull(legs[0].headsign);
-  assertFalse(legs[0].rentedBike);
-  assertFalse(legs[0].isTransitLeg());
-  assertFalse(legs[0].interlineWithPreviousLeg);
-  assertNull(legs[0].boardRule);
-  assertNull(legs[0].alightRule);
-  assertEquals("WALK",legs[0].mode);
-  assertEquals(0L,legs[0].startTime.getTimeInMillis());
-  assertEquals(3000L,legs[0].endTime.getTimeInMillis());
-  assertEquals(3000L,legs[0].getDuration());
-  assertEquals(0,legs[0].departureDelay);
-  assertEquals(0,legs[0].arrivalDelay);
-  assertFalse(legs[0].realTime);
-  assertEquals(DISTANCES[0],legs[0].distance,0.0);
+  if (type == Type.FORWARD || type == Type.BACKWARD) {
+    assertNull(legs[0].agencyId);
+    assertNull(legs[0].agencyName);
+    assertNull(legs[0].agencyUrl);
+    assertEquals(2,legs[0].agencyTimeZoneOffset);
+    assertNull(legs[0].notes);
+    assertNull(legs[0].alerts);
+    assertEquals("",legs[0].route);
+    assertNull(legs[0].routeId);
+    assertNull(legs[0].routeShortName);
+    assertNull(legs[0].routeLongName);
+    assertNull(legs[0].routeType);
+    assertNull(legs[0].routeColor);
+    assertNull(legs[0].routeTextColor);
+    assertNull(legs[0].tripId);
+    assertNull(legs[0].tripShortName);
+    assertNull(legs[0].tripBlockId);
+    assertNull(legs[0].serviceDate);
+    assertNull(legs[0].headsign);
+    assertFalse(legs[0].rentedBike);
+    assertFalse(legs[0].isTransitLeg());
+    assertFalse(legs[0].interlineWithPreviousLeg);
+    assertNull(legs[0].boardRule);
+    assertNull(legs[0].alightRule);
+    assertEquals("WALK",legs[0].mode);
+    assertEquals(0L,legs[0].startTime.getTimeInMillis());
+    assertEquals(3000L,legs[0].endTime.getTimeInMillis());
+    assertEquals(3000L,legs[0].getDuration());
+    assertEquals(0,legs[0].departureDelay);
+    assertEquals(0,legs[0].arrivalDelay);
+    assertFalse(legs[0].realTime);
+    assertEquals(F_DISTANCE[0],legs[0].distance,0.0);
+  }
+ else   if (type == Type.ONBOARD) {
+    assertNull(legs[0]);
+  }
   assertEquals("Train",legs[1].agencyId);
   assertEquals("John Train",legs[1].agencyName);
   assertEquals("http://www.train.org/",legs[1].agencyUrl);
@@ -52,16 +57,32 @@
   assertFalse(legs[1].rentedBike);
   assertTrue(legs[1].isTransitLeg());
   assertFalse(legs[1].interlineWithPreviousLeg);
-  assertEquals("coordinateWithDriver",legs[1].boardRule);
+  if (type == Type.FORWARD || type == Type.BACKWARD) {
+    assertEquals("coordinateWithDriver",legs[1].boardRule);
+  }
+ else   if (type == Type.ONBOARD) {
+    assertNull(legs[1].boardRule);
+  }
   assertNull(legs[1].alightRule);
   assertEquals("RAIL",legs[1].mode);
-  assertEquals(4000L,legs[1].startTime.getTimeInMillis());
+  if (type == Type.FORWARD || type == Type.BACKWARD) {
+    assertEquals(4000L,legs[1].startTime.getTimeInMillis());
+    assertEquals(12000L,legs[1].getDuration());
+  }
+ else   if (type == Type.ONBOARD) {
+    assertEquals(6000L,legs[1].startTime.getTimeInMillis());
+    assertEquals(10000L,legs[1].getDuration());
+  }
   assertEquals(16000L,legs[1].endTime.getTimeInMillis());
-  assertEquals(12000L,legs[1].getDuration());
   assertEquals(0,legs[1].departureDelay);
   assertEquals(0,legs[1].arrivalDelay);
   assertFalse(legs[1].realTime);
-  assertEquals(DISTANCES[1],legs[1].distance,EPSILON);
+  if (type == Type.FORWARD || type == Type.BACKWARD) {
+    assertEquals(F_DISTANCE[1],legs[1].distance,EPSILON);
+  }
+ else   if (type == Type.ONBOARD) {
+    assertEquals(O_DISTANCE,legs[1].distance,EPSILON);
+  }
   assertEquals("Train",legs[2].agencyId);
   assertEquals("John Train",legs[2].agencyName);
   assertEquals("http://www.train.org/",legs[2].agencyUrl);
@@ -92,7 +113,7 @@
   assertEquals(0,legs[2].departureDelay);
   assertEquals(0,legs[2].arrivalDelay);
   assertFalse(legs[2].realTime);
-  assertEquals(DISTANCES[2],legs[2].distance,EPSILON);
+  assertEquals(F_DISTANCE[2],legs[2].distance,EPSILON);
   assertNull(legs[3].agencyId);
   assertNull(legs[3].agencyName);
   assertNull(legs[3].agencyUrl);
@@ -117,19 +138,19 @@
   assertNull(legs[3].boardRule);
   assertNull(legs[3].alightRule);
   assertEquals("WALK",legs[3].mode);
-  if (backward) {
-    assertEquals(32000L,legs[3].startTime.getTimeInMillis());
-    assertEquals(40000L,legs[3].endTime.getTimeInMillis());
-  }
- else {
+  if (type == Type.FORWARD || type == Type.ONBOARD) {
     assertEquals(24000L,legs[3].startTime.getTimeInMillis());
     assertEquals(32000L,legs[3].endTime.getTimeInMillis());
+  }
+ else   if (type == Type.BACKWARD) {
+    assertEquals(32000L,legs[3].startTime.getTimeInMillis());
+    assertEquals(40000L,legs[3].endTime.getTimeInMillis());
   }
   assertEquals(8000L,legs[3].getDuration());
   assertEquals(0,legs[3].departureDelay);
   assertEquals(0,legs[3].arrivalDelay);
   assertFalse(legs[3].realTime);
-  assertEquals(DISTANCES[3],legs[3].distance,0.0);
+  assertEquals(F_DISTANCE[3],legs[3].distance,0.0);
   assertEquals("Ferry",legs[4].agencyId);
   assertEquals("Brian Ferry",legs[4].agencyName);
   assertEquals("http://www.ferry.org/",legs[4].agencyUrl);
@@ -162,7 +183,7 @@
   assertEquals(8,legs[4].departureDelay);
   assertEquals(7,legs[4].arrivalDelay);
   assertTrue(legs[4].realTime);
-  assertEquals(DISTANCES[4],legs[4].distance,EPSILON);
+  assertEquals(F_DISTANCE[4],legs[4].distance,EPSILON);
   assertNull(legs[5].agencyId);
   assertNull(legs[5].agencyName);
   assertNull(legs[5].agencyUrl);
@@ -193,7 +214,7 @@
   assertEquals(0,legs[5].departureDelay);
   assertEquals(0,legs[5].arrivalDelay);
   assertFalse(legs[5].realTime);
-  assertEquals(DISTANCES[5],legs[5].distance,0.0);
+  assertEquals(F_DISTANCE[5],legs[5].distance,0.0);
   assertNull(legs[6].agencyId);
   assertNull(legs[6].agencyName);
   assertNull(legs[6].agencyUrl);
@@ -224,7 +245,7 @@
   assertEquals(0,legs[6].departureDelay);
   assertEquals(0,legs[6].arrivalDelay);
   assertFalse(legs[6].realTime);
-  assertEquals(DISTANCES[6],legs[6].distance,0.0);
+  assertEquals(F_DISTANCE[6],legs[6].distance,0.0);
   assertNull(legs[7].agencyId);
   assertNull(legs[7].agencyName);
   assertNull(legs[7].agencyUrl);
@@ -257,7 +278,7 @@
   assertEquals(0,legs[7].departureDelay);
   assertEquals(0,legs[7].arrivalDelay);
   assertFalse(legs[7].realTime);
-  assertEquals(DISTANCES[7],legs[7].distance,0.0);
+  assertEquals(F_DISTANCE[7],legs[7].distance,0.0);
   assertNull(legs[8].agencyId);
   assertNull(legs[8].agencyName);
   assertNull(legs[8].agencyUrl);
@@ -288,5 +309,5 @@
   assertEquals(0,legs[8].departureDelay);
   assertEquals(0,legs[8].arrivalDelay);
   assertFalse(legs[8].realTime);
-  assertEquals(DISTANCES[8],legs[8].distance,0.0);
+  assertEquals(F_DISTANCE[8],legs[8].distance,0.0);
 }

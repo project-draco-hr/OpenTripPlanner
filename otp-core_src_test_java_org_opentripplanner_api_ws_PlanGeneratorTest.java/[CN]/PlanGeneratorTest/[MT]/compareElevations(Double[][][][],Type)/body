@@ -1,8 +1,16 @@
 {
-  assertEquals(0.0,elevations[0][0][0][0],0.0);
-  assertEquals(0.0,elevations[0][0][0][1],0.0);
-  assertEquals(3.0,elevations[0][0][1][0],0.0);
-  assertEquals(9.9,elevations[0][0][1][1],0.0);
+  if (type == Type.FORWARD || type == Type.BACKWARD) {
+    assertEquals(0.0,elevations[0][0][0][0],0.0);
+    assertEquals(0.0,elevations[0][0][0][1],0.0);
+    assertEquals(3.0,elevations[0][0][1][0],0.0);
+    assertEquals(9.9,elevations[0][0][1][1],0.0);
+  }
+ else   if (type == Type.ONBOARD) {
+    assertNull(elevations[0][0][0][0]);
+    assertNull(elevations[0][0][0][1]);
+    assertNull(elevations[0][0][1][0]);
+    assertNull(elevations[0][0][1][1]);
+  }
   assertNull(elevations[0][1][0][0]);
   assertNull(elevations[0][1][0][1]);
   assertNull(elevations[0][1][1][0]);
