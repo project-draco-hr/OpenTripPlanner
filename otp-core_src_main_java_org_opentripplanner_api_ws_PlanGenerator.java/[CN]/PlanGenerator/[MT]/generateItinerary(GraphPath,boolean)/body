@@ -26,6 +26,9 @@
   calculateTimes(itinerary,states);
   calculateElevations(itinerary,edges);
   itinerary.walkDistance=lastState.getWalkDistance();
-  if (lastState.getNumBoardings() > 1)   itinerary.transfers=lastState.getNumBoardings() - 1;
+  itinerary.transfers=lastState.getNumBoardings();
+  if (itinerary.transfers > 1 && !(states[0].getVertex() instanceof OnboardDepartVertex)) {
+    itinerary.transfers--;
+  }
   return itinerary;
 }
