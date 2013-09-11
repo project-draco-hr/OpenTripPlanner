@@ -261,6 +261,7 @@
   RentABikeOffEdge e57=new RentABikeOffEdge(v56,v58,Collections.singleton(""));
   StreetBikeRentalLink e59=new StreetBikeRentalLink(v58,v60);
   AlertPatch patch=new AlertPatch();
+  patch.setTimePeriods(Collections.singletonList(new TimePeriod(0,Long.MAX_VALUE)));
   patch.setAlert(Alert.createSimpleAlerts(alertsExample));
   e3.setElevationProfile(elevation3,false);
   e17.addTrip(firstTrip,secondTrip,4,0,0);
