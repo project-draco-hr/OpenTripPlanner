@@ -8,7 +8,7 @@
   int runningTime=pattern.getRunningTime(stopIndex);
   StateEditor s1=s0.edit(this);
   s1.incrementTimeInSeconds(runningTime);
-  if (s0.getOptions().isArriveBy())   s1.setZone(getStartStop().getZoneId());
+  if (s0.getOptions().isArriveBy())   s1.setZone(getBeginStop().getZoneId());
  else   s1.setZone(getEndStop().getZoneId());
   s1.setRoute(pattern.getTrip().getRoute().getId());
   s1.setBackMode(getMode());

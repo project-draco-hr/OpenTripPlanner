@@ -25,7 +25,7 @@
       TransitBoardAlight somePatternBoard=(TransitBoardAlight)graph.getVertex("agency_A_depart").getOutgoing().iterator().next();
       assertTrue(somePatternBoard.isBoarding());
       PatternHop somePatternHop=(PatternHop)somePatternBoard.getToVertex().getOutgoing().iterator().next();
-      Stop stopA=somePatternHop.getStartStop();
+      Stop stopA=somePatternHop.getBeginStop();
       ArrayList<Stop> stops=new ArrayList<Stop>();
       stops.add(stopA);
       RouteVariant variant=new RouteVariant(route,stops);
