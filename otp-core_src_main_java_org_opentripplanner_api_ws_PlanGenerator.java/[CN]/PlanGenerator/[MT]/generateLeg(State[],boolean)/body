@@ -11,7 +11,7 @@
   addModeAndAlerts(leg,states);
   TimeZone timeZone=leg.startTime.getTimeZone();
   leg.agencyTimeZoneOffset=timeZone.getOffset(leg.startTime.getTimeInMillis());
-  addTripFields(leg,states,transitIndexService);
+  addTripFields(leg,states);
   addPlaces(leg,states,edges,showIntermediateStops);
   if (leg.isTransitLeg())   addRealTimeData(leg,states);
   CoordinateArrayListSequence coordinates=makeCoordinates(edges);
