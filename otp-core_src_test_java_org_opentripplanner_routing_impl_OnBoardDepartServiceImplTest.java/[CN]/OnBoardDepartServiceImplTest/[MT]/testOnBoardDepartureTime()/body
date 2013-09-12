@@ -5,7 +5,6 @@
   coordinates[2]=new Coordinate(2.0,1.0);
   coordinates[3]=new Coordinate(5.0,1.0);
   coordinates[4]=new Coordinate(5.0,5.0);
-  PatternDepartVertex depart=mock(PatternDepartVertex.class);
   PatternArriveVertex arrive=mock(PatternArriveVertex.class);
   PatternHop patternHop=mock(PatternHop.class);
   TripTimes tripTimes=mock(TripTimes.class);
@@ -18,7 +17,7 @@
   CoordinateSequenceFactory coordinateSequenceFactory=geometryFactory.getCoordinateSequenceFactory();
   CoordinateSequence coordinateSequence=coordinateSequenceFactory.create(coordinates);
   LineString geometry=new LineString(coordinateSequence,geometryFactory);
-  RoutingContext routingContext=new RoutingContext(routingRequest,graph,depart,arrive);
+  RoutingContext routingContext=new RoutingContext(routingRequest,graph,null,arrive);
   routingContext.serviceDays=new ArrayList<ServiceDay>(Collections.singletonList(serviceDay));
   when(graph.getService(TransitIndexService.class)).thenReturn(transitIndexService);
   when(transitIndexService.getTripPatternForTrip(any(AgencyAndId.class))).thenReturn(tableTripPattern);
@@ -37,7 +36,7 @@
   coordinates[2]=new Coordinate(5.0,5.0);
   coordinateSequence=coordinateSequenceFactory.create(coordinates);
   geometry=new LineString(coordinateSequence,geometryFactory);
-  Vertex vertex=new OnBoardDepartServiceImpl().setupDepartOnBoard(routingContext);
+  Vertex vertex=onBoardDepartServiceImpl.setupDepartOnBoard(routingContext);
   Edge edge=vertex.getOutgoing().toArray(new Edge[1])[0];
   assertEquals(vertex,edge.getFromVertex());
   assertEquals(arrive,edge.getToVertex());
