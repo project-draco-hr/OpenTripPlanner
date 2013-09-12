@@ -3,6 +3,7 @@
   Vertex lastVertex=states[states.length - 1].getVertex();
   Edge firstEdge=edges[0];
   Edge lastEdge=edges[edges.length - 1];
+  TripTimes tripTimes=states[states.length - 1].getTripTimes();
   leg.from=new Place(firstVertex.getX(),firstVertex.getY(),firstVertex.getName(),null,makeCalendar(states[0]));
   leg.to=new Place(lastVertex.getX(),lastVertex.getY(),lastVertex.getName(),makeCalendar(states[states.length - 1]),null);
   Stop firstStop=null;
@@ -15,6 +16,7 @@
       leg.from.platformCode=firstStop.getPlatformCode();
       leg.from.zoneId=firstStop.getZoneId();
       leg.from.stopIndex=((OnboardEdge)firstEdge).getStopIndex();
+      leg.from.stopSequence=tripTimes.getStopSequence(leg.from.stopIndex);
     }
   }
   if (lastVertex instanceof TransitVertex) {
@@ -25,6 +27,7 @@
       leg.to.platformCode=lastStop.getPlatformCode();
       leg.to.zoneId=lastStop.getZoneId();
       leg.to.stopIndex=((OnboardEdge)lastEdge).getStopIndex() + 1;
+      leg.to.stopSequence=tripTimes.getStopSequence(leg.to.stopIndex);
     }
   }
   if (showIntermediateStops) {
@@ -49,6 +52,7 @@
         place.platformCode=currentStop.getPlatformCode();
         place.zoneId=currentStop.getZoneId();
         place.stopIndex=((OnboardEdge)edges[i]).getStopIndex();
+        place.stopSequence=tripTimes.getStopSequence(place.stopIndex);
       }
       leg.stop.add(place);
     }
