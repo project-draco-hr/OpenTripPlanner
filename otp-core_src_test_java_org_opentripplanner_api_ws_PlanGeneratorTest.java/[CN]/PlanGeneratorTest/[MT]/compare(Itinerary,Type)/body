@@ -1,20 +1,34 @@
 {
-  compareItinerary(itinerary);
+  compareItinerary(itinerary,type);
   compareFare(itinerary.fare);
   Leg[] legs=itinerary.legs.toArray(new Leg[9]);
-  compareLegs(legs,backward);
+  if (type == Type.ONBOARD) {
+    legs[8]=legs[7];
+    legs[7]=legs[6];
+    legs[6]=legs[5];
+    legs[5]=legs[4];
+    legs[4]=legs[3];
+    legs[3]=legs[2];
+    legs[2]=legs[1];
+    legs[1]=legs[0];
+    legs[0]=null;
+  }
+  compareLegs(legs,type);
   WalkStep[][] steps=new WalkStep[9][0];
   for (int i=0; i < steps.length; i++) {
+    if (legs[i] == null)     continue;
     steps[i]=legs[i].walkSteps.toArray(steps[i]);
   }
-  compareSteps(steps);
+  compareSteps(steps,type);
   EncodedPolylineBean[] geometries=new EncodedPolylineBean[9];
   for (int i=0; i < geometries.length; i++) {
+    if (legs[i] == null)     continue;
     geometries[i]=legs[i].legGeometry;
   }
-  compareGeometries(geometries);
+  compareGeometries(geometries,type);
   Place[][] places=new Place[9][2];
   for (int i=0; i < places.length; i++) {
+    if (legs[i] == null)     continue;
     if (legs[i].stop == null) {
       places[i][0]=legs[i].from;
       places[i][1]=legs[i].to;
@@ -27,17 +41,18 @@
       places[i]=allStops.toArray(places[i]);
     }
   }
-  comparePlaces(places,backward);
+  comparePlaces(places,type);
   AgencyAndId[][] stopIds=new AgencyAndId[9][2];
   for (int i=0; i < stopIds.length; i++) {
     if (places[i].length > 2) {
       stopIds[i]=new AgencyAndId[places[i].length];
     }
     for (int j=0; j < stopIds[i].length; j++) {
+      if (places[i][j] == null)       continue;
       stopIds[i][j]=places[i][j].stopId;
     }
   }
-  compareStopIds(stopIds);
+  compareStopIds(stopIds,type);
   Double[][][][] elevations=new Double[9][2][2][2];
   for (int i=0; i < elevations.length; i++) {
     for (int j=0; j < elevations[i].length; j++) {
@@ -49,5 +64,5 @@
       }
     }
   }
-  compareElevations(elevations);
+  compareElevations(elevations,type);
 }

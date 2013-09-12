@@ -9,10 +9,20 @@
   assertEquals(2,stopIds[7].length);
   assertEquals(2,stopIds[8].length);
   assertNull(stopIds[0][0]);
-  assertEquals("Train",stopIds[0][1].getAgencyId());
-  assertEquals("Depart",stopIds[0][1].getId());
-  assertEquals("Train",stopIds[1][0].getAgencyId());
-  assertEquals("Depart",stopIds[1][0].getId());
+  if (type == Type.FORWARD || type == Type.BACKWARD) {
+    assertEquals("Train",stopIds[0][1].getAgencyId());
+    assertEquals("Depart",stopIds[0][1].getId());
+  }
+ else   if (type == Type.ONBOARD) {
+    assertNull(stopIds[0][1]);
+  }
+  if (type == Type.FORWARD || type == Type.BACKWARD) {
+    assertEquals("Train",stopIds[1][0].getAgencyId());
+    assertEquals("Depart",stopIds[1][0].getId());
+  }
+ else   if (type == Type.ONBOARD) {
+    assertNull(stopIds[1][0]);
+  }
   assertEquals("Train",stopIds[1][1].getAgencyId());
   assertEquals("Dwell",stopIds[1][1].getId());
   assertEquals("Train",stopIds[1][2].getAgencyId());

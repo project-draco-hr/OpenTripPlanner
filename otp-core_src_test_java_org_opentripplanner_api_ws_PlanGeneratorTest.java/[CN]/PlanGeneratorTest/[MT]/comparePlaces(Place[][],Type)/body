@@ -8,36 +8,52 @@
   assertEquals(2,places[6].length);
   assertEquals(2,places[7].length);
   assertEquals(2,places[8].length);
-  assertEquals("Vertex 0",places[0][0].name);
-  assertEquals(0,places[0][0].lon,0.0);
-  assertEquals(0,places[0][0].lat,0.0);
-  assertNull(places[0][0].stopIndex);
-  assertNull(places[0][0].stopCode);
-  assertNull(places[0][0].platformCode);
-  assertNull(places[0][0].zoneId);
-  assertNull(places[0][0].orig);
-  assertNull(places[0][0].arrival);
-  assertEquals(0L,places[0][0].departure.getTimeInMillis());
-  assertEquals("Train stop depart",places[0][1].name);
-  assertEquals(1,places[0][1].lon,0.0);
-  assertEquals(1,places[0][1].lat,0.0);
-  assertNull(places[0][1].stopIndex);
-  assertNull(places[0][1].stopCode);
-  assertNull(places[0][1].platformCode);
-  assertNull(places[0][1].zoneId);
-  assertNull(places[0][1].orig);
-  assertEquals(3000L,places[0][1].arrival.getTimeInMillis());
-  assertEquals(4000L,places[0][1].departure.getTimeInMillis());
-  assertEquals("Train stop depart",places[1][0].name);
-  assertEquals(1,places[1][0].lon,0.0);
-  assertEquals(1,places[1][0].lat,0.0);
-  assertEquals(0,places[1][0].stopIndex.intValue());
-  assertEquals("Train depart code",places[1][0].stopCode);
-  assertEquals("Train depart platform",places[1][0].platformCode);
-  assertEquals("Train depart zone",places[1][0].zoneId);
-  assertNull(places[1][0].orig);
-  assertEquals(3000L,places[1][0].arrival.getTimeInMillis());
-  assertEquals(4000L,places[1][0].departure.getTimeInMillis());
+  if (type == Type.FORWARD || type == Type.BACKWARD) {
+    assertEquals("Vertex 0",places[0][0].name);
+    assertEquals(0,places[0][0].lon,0.0);
+    assertEquals(0,places[0][0].lat,0.0);
+    assertNull(places[0][0].stopIndex);
+    assertNull(places[0][0].stopCode);
+    assertNull(places[0][0].platformCode);
+    assertNull(places[0][0].zoneId);
+    assertNull(places[0][0].orig);
+    assertNull(places[0][0].arrival);
+    assertEquals(0L,places[0][0].departure.getTimeInMillis());
+    assertEquals("Train stop depart",places[0][1].name);
+    assertEquals(1,places[0][1].lon,0.0);
+    assertEquals(1,places[0][1].lat,0.0);
+    assertNull(places[0][1].stopIndex);
+    assertNull(places[0][1].stopCode);
+    assertNull(places[0][1].platformCode);
+    assertNull(places[0][1].zoneId);
+    assertNull(places[0][1].orig);
+    assertEquals(3000L,places[0][1].arrival.getTimeInMillis());
+    assertEquals(4000L,places[0][1].departure.getTimeInMillis());
+    assertEquals("Train stop depart",places[1][0].name);
+    assertEquals(1,places[1][0].lon,0.0);
+    assertEquals(1,places[1][0].lat,0.0);
+    assertEquals(0,places[1][0].stopIndex.intValue());
+    assertEquals("Train depart code",places[1][0].stopCode);
+    assertEquals("Train depart platform",places[1][0].platformCode);
+    assertEquals("Train depart zone",places[1][0].zoneId);
+    assertNull(places[1][0].orig);
+    assertEquals(3000L,places[1][0].arrival.getTimeInMillis());
+    assertEquals(4000L,places[1][0].departure.getTimeInMillis());
+  }
+ else   if (type == Type.ONBOARD) {
+    assertNull(places[0][0]);
+    assertNull(places[0][1]);
+    assertEquals("Onboard",places[1][0].name);
+    assertEquals(23,places[1][0].lon,0.0);
+    assertEquals(12,places[1][0].lat,0.0);
+    assertNull(places[1][0].stopIndex);
+    assertNull(places[1][0].stopCode);
+    assertNull(places[1][0].platformCode);
+    assertNull(places[1][0].zoneId);
+    assertNull(places[1][0].orig);
+    assertNull(places[1][0].arrival);
+    assertEquals(6000L,places[1][0].departure.getTimeInMillis());
+  }
   assertEquals("Train stop dwell",places[1][1].name);
   assertEquals(45,places[1][1].lon,0.0);
   assertEquals(23,places[1][1].lat,0.0);
@@ -77,11 +93,11 @@
   assertEquals("Train arrive zone",places[2][1].zoneId);
   assertNull(places[2][1].orig);
   assertEquals(24000L,places[2][1].arrival.getTimeInMillis());
-  if (backward) {
-    assertEquals(32000L,places[2][1].departure.getTimeInMillis());
-  }
- else {
+  if (type == Type.FORWARD || type == Type.ONBOARD) {
     assertEquals(24000L,places[2][1].departure.getTimeInMillis());
+  }
+ else   if (type == Type.BACKWARD) {
+    assertEquals(32000L,places[2][1].departure.getTimeInMillis());
   }
   assertEquals("Train stop arrive",places[3][0].name);
   assertEquals(133,places[3][0].lon,0.0);
@@ -92,11 +108,11 @@
   assertNull(places[3][0].zoneId);
   assertNull(places[3][0].orig);
   assertEquals(24000L,places[3][0].arrival.getTimeInMillis());
-  if (backward) {
-    assertEquals(32000L,places[3][0].departure.getTimeInMillis());
-  }
- else {
+  if (type == Type.FORWARD || type == Type.ONBOARD) {
     assertEquals(24000L,places[3][0].departure.getTimeInMillis());
+  }
+ else   if (type == Type.BACKWARD) {
+    assertEquals(32000L,places[3][0].departure.getTimeInMillis());
   }
   assertEquals("Ferry stop depart",places[3][1].name);
   assertEquals(135,places[3][1].lon,0.0);
@@ -106,11 +122,11 @@
   assertNull(places[3][1].platformCode);
   assertNull(places[3][1].zoneId);
   assertNull(places[3][1].orig);
-  if (backward) {
-    assertEquals(40000L,places[3][1].arrival.getTimeInMillis());
-  }
- else {
+  if (type == Type.FORWARD || type == Type.ONBOARD) {
     assertEquals(32000L,places[3][1].arrival.getTimeInMillis());
+  }
+ else   if (type == Type.BACKWARD) {
+    assertEquals(40000L,places[3][1].arrival.getTimeInMillis());
   }
   assertEquals(40000L,places[3][1].departure.getTimeInMillis());
   assertEquals("Ferry stop depart",places[4][0].name);
@@ -121,11 +137,11 @@
   assertEquals("Ferry depart platform",places[4][0].platformCode);
   assertEquals("Ferry depart zone",places[4][0].zoneId);
   assertNull(places[4][0].orig);
-  if (backward) {
-    assertEquals(40000L,places[4][0].arrival.getTimeInMillis());
-  }
- else {
+  if (type == Type.FORWARD || type == Type.ONBOARD) {
     assertEquals(32000L,places[4][0].arrival.getTimeInMillis());
+  }
+ else   if (type == Type.BACKWARD) {
+    assertEquals(40000L,places[4][0].arrival.getTimeInMillis());
   }
   assertEquals(40000L,places[4][0].departure.getTimeInMillis());
   assertEquals("Ferry stop arrive",places[4][1].name);

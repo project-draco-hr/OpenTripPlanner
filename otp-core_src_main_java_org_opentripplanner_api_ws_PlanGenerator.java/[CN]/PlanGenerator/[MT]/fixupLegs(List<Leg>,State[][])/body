@@ -6,8 +6,10 @@
       if (legsStates[i][j].getBackEdge() instanceof PatternEdge) {
         PatternEdge patternEdge=(PatternEdge)legsStates[i][j].getBackEdge();
         TripPattern tripPattern=patternEdge.getPattern();
-        int boardType=tripPattern.getBoardType(legs.get(i).from.stopIndex);
-        int alightType=tripPattern.getAlightType(legs.get(i).to.stopIndex);
+        Integer fromIndex=legs.get(i).from.stopIndex;
+        Integer toIndex=legs.get(i).to.stopIndex;
+        int boardType=(fromIndex != null) ? (tripPattern.getBoardType(fromIndex)) : 0;
+        int alightType=(toIndex != null) ? (tripPattern.getAlightType(toIndex)) : 0;
         boardRules[i]=TransitUtils.determineBoardAlightType(boardType);
         alightRules[i]=TransitUtils.determineBoardAlightType(alightType);
       }

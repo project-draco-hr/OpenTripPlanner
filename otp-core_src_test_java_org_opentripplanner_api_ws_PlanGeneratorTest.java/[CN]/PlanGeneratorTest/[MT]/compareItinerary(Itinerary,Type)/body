@@ -1,0 +1,37 @@
+{
+  if (type == Type.FORWARD || type == Type.BACKWARD) {
+    assertEquals(60000L,itinerary.duration);
+    assertEquals(0L,itinerary.startTime.getTimeInMillis());
+  }
+ else   if (type == Type.ONBOARD) {
+    assertEquals(54000L,itinerary.duration);
+    assertEquals(6000L,itinerary.startTime.getTimeInMillis());
+  }
+  assertEquals(60000L,itinerary.endTime.getTimeInMillis());
+  if (type == Type.FORWARD || type == Type.BACKWARD) {
+    assertEquals(27L,itinerary.walkTime);
+    assertEquals(23L,itinerary.transitTime);
+    assertEquals(10L,itinerary.waitingTime);
+  }
+ else   if (type == Type.ONBOARD) {
+    assertEquals(24L,itinerary.walkTime);
+    assertEquals(21L,itinerary.transitTime);
+    assertEquals(9L,itinerary.waitingTime);
+  }
+  if (type == Type.FORWARD || type == Type.BACKWARD) {
+    assertEquals(21.0,itinerary.walkDistance,0.0);
+  }
+ else   if (type == Type.ONBOARD) {
+    assertEquals(18.0,itinerary.walkDistance,0.0);
+  }
+  assertFalse(itinerary.walkLimitExceeded);
+  assertEquals(10.0,itinerary.elevationLost,0.0);
+  if (type == Type.FORWARD || type == Type.BACKWARD) {
+    assertEquals(16.0,itinerary.elevationGained,0.0);
+  }
+ else   if (type == Type.ONBOARD) {
+    assertEquals(6.1,itinerary.elevationGained,0.0);
+  }
+  assertEquals(1,itinerary.transfers.intValue());
+  assertFalse(itinerary.tooSloped);
+}

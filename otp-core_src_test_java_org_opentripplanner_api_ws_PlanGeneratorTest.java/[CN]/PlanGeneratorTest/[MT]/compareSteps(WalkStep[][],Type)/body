@@ -1,5 +1,10 @@
 {
-  assertEquals(1,steps[0].length);
+  if (type == Type.FORWARD || type == Type.BACKWARD) {
+    assertEquals(1,steps[0].length);
+  }
+ else   if (type == Type.ONBOARD) {
+    assertEquals(0,steps[0].length);
+  }
   assertEquals(0,steps[1].length);
   assertEquals(0,steps[2].length);
   assertEquals(1,steps[3].length);
@@ -8,18 +13,20 @@
   assertEquals(1,steps[6].length);
   assertEquals(1,steps[7].length);
   assertEquals(0,steps[8].length);
-  assertEquals(AbsoluteDirection.NORTHEAST,steps[0][0].absoluteDirection);
-  assertEquals(RelativeDirection.DEPART,steps[0][0].relativeDirection);
-  assertEquals(NORTHEAST,steps[0][0].angle,EPSILON);
-  assertEquals("Edge 3",steps[0][0].streetName);
-  assertEquals(3.0,steps[0][0].distance,0.0);
-  assertFalse(steps[0][0].bogusName);
-  assertFalse(steps[0][0].stayOn);
-  assertEquals(0,steps[0][0].lon,0.0);
-  assertEquals(0,steps[0][0].lat,0.0);
-  assertNull(steps[0][0].alerts);
-  assertFalse(steps[0][0].area);
-  assertEquals("Ausfahrt",steps[0][0].exit);
+  if (type == Type.FORWARD || type == Type.BACKWARD) {
+    assertEquals(AbsoluteDirection.NORTHEAST,steps[0][0].absoluteDirection);
+    assertEquals(RelativeDirection.DEPART,steps[0][0].relativeDirection);
+    assertEquals(NORTHEAST,steps[0][0].angle,EPSILON);
+    assertEquals("Edge 3",steps[0][0].streetName);
+    assertEquals(3.0,steps[0][0].distance,0.0);
+    assertFalse(steps[0][0].bogusName);
+    assertFalse(steps[0][0].stayOn);
+    assertEquals(0,steps[0][0].lon,0.0);
+    assertEquals(0,steps[0][0].lat,0.0);
+    assertNull(steps[0][0].alerts);
+    assertFalse(steps[0][0].area);
+    assertEquals("Ausfahrt",steps[0][0].exit);
+  }
   assertEquals(AbsoluteDirection.EAST,steps[3][0].absoluteDirection);
   assertEquals(RelativeDirection.DEPART,steps[3][0].relativeDirection);
   assertEquals(EAST,steps[3][0].angle,EPSILON);
