@@ -1,10 +1,14 @@
 {
   visibleVertices=(List<Vertex>)vertexIndex.query(modelBounds);
   visibleStreetEdges.clear();
+  visibleLinkEdges.clear();
   visibleTransitEdges.clear();
   for (  Edge de : (Iterable<Edge>)edgeIndex.query(modelBounds)) {
-    if (de instanceof PatternEdge || de instanceof StreetTransitLink) {
+    if (de instanceof PatternEdge) {
       visibleTransitEdges.add(de);
+    }
+ else     if (de instanceof PathwayEdge || de instanceof StreetTransitLink || de instanceof SimpleTransfer) {
+      visibleLinkEdges.add(de);
     }
  else     if (de instanceof StreetEdge) {
       visibleStreetEdges.add(de);

@@ -8,7 +8,7 @@
     vertexIndex.insert(env,v);
     for (    Edge e : v.getOutgoing()) {
       if (e.getGeometry() == null)       continue;
-      if (e instanceof PatternEdge || e instanceof StreetTransitLink || e instanceof StreetEdge) {
+      if (e instanceof PatternEdge || e instanceof StreetTransitLink || e instanceof StreetEdge|| e instanceof PathwayEdge|| e instanceof SimpleTransfer) {
         env=e.getGeometry().getEnvelopeInternal();
         edgeIndex.insert(env,e);
       }
