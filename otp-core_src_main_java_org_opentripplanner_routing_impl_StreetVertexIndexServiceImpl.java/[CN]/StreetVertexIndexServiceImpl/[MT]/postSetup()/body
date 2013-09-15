@@ -11,10 +11,6 @@
       edgeTree.insert(env,e);
     }
     if (v instanceof TransitStop) {
-      TransitStop ts=(TransitStop)v;
-      if (!ts.isEntrance() && ts.hasEntrances()) {
-        continue;
-      }
       Envelope env=new Envelope(v.getCoordinate());
       transitStopTree.insert(env,v);
     }

@@ -4,7 +4,9 @@
   ArrayList<TransitStop> out=new ArrayList<TransitStop>();
   for (  Object o : stops) {
     TransitStop stop=(TransitStop)o;
-    out.add(stop);
+    if (envelope.contains(stop.getCoordinate())) {
+      out.add(stop);
+    }
   }
   return out;
 }
