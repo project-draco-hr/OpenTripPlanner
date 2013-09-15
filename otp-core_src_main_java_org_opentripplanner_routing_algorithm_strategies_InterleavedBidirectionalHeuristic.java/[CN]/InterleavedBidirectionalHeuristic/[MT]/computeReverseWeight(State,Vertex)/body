@@ -3,6 +3,10 @@
   if (v instanceof StreetLocation)   return 0;
   Double weight=weights.get(v);
   if (v instanceof StreetVertex)   return weight == null ? Double.POSITIVE_INFINITY : weight;
- else   if (weight == null)   return maxFound;
+ else   if (weight == null) {
+    double dist=distanceLibrary.fastDistance(v.getY(),v.getX(),target.getY(),target.getX());
+    double time=dist / MAX_TRANSIT_SPEED;
+    return Math.max(maxFound,time);
+  }
  else   return weight;
 }
