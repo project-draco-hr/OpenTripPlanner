@@ -15,6 +15,9 @@
         boardRule=TransitUtils.determineBoardAlightType(boardType);
         alightRule=TransitUtils.determineBoardAlightType(alightType);
       }
+      if (legsStates[i][j].getBackEdge() instanceof PathwayEdge) {
+        legs.get(i).pathway=true;
+      }
     }
     if (i + 1 < legsStates.length) {
       legs.get(i + 1).from.arrival=legs.get(i).to.arrival;
