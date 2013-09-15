@@ -5,10 +5,7 @@
   }
   if (e instanceof OnboardEdge)   return ONBOARD;
   if (e instanceof StationEdge)   return STATION;
-  if (e instanceof StationStopEdge) {
-    int to_type=((TransitStop)state.getVertex()).getStop().getLocationType();
-    return to_type == 1 ? STOP_STATION : STATION_STOP;
-  }
+  if (e instanceof StationStopEdge)   return STATION_STOP;
   if (e instanceof SimpleTransfer)   return TRANSFER;
   if (e instanceof TransferEdge)   return TRANSFER;
   if (e instanceof TimedTransferEdge)   return TRANSFER;
