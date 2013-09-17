@@ -37,7 +37,7 @@
       if (newRide == null || !routeId.equals(newRide.route)) {
         newRide=new Ride();
         rides.add(newRide);
-        newRide.firstStop=((HopEdge)backEdge).getStartStop();
+        newRide.firstStop=((HopEdge)backEdge).getBeginStop();
         newRide.route=routeId;
         Trip trip=state.getBackTrip();
         Route route=trip.getRoute();
@@ -55,7 +55,7 @@
         }
         newRide.startTime=state.getTimeSeconds();
       }
-      newRide.lastStop=((HopEdge)backEdge).getStartStop();
+      newRide.lastStop=((HopEdge)backEdge).getBeginStop();
     }
   }
   if (rides.size() == 0) {

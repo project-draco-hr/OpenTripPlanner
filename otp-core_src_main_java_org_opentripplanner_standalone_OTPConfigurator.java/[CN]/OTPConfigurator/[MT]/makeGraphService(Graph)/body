@@ -1,6 +1,14 @@
 {
   if (graph != null && params.inMemory) {
-    this.graphService=new GraphServiceBeanImpl(graph);
+    try {
+      FileInputStream graphConfiguration=new FileInputStream(params.graphConfigFile);
+      Preferences config=new PropertiesPreferences(graphConfiguration);
+      this.graphService=new GraphServiceBeanImpl(graph,config);
+    }
+ catch (    Exception e) {
+      if (params.graphConfigFile != null)       LOG.error("Can't read config file",e);
+      this.graphService=new GraphServiceBeanImpl(graph,null);
+    }
   }
  else {
     GraphServiceImpl graphService=new GraphServiceImpl();

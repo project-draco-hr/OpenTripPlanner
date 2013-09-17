@@ -2,7 +2,12 @@
   Coordinate[] coordinates=new Coordinate[2];
   coordinates[0]=new Coordinate(0.0,0.0);
   coordinates[1]=new Coordinate(0.0,1.0);
-  PatternDepartVertex depart=mock(PatternDepartVertex.class);
+  Stop stop0=new Stop();
+  Stop stop1=new Stop();
+  stop0.setId(new AgencyAndId("Station","0"));
+  stop1.setId(new AgencyAndId("Station","1"));
+  TransitStop station0=mock(TransitStop.class);
+  TransitStop station1=mock(TransitStop.class);
   PatternArriveVertex arrive=mock(PatternArriveVertex.class);
   PatternHop patternHop=mock(PatternHop.class);
   TripTimes tripTimes=mock(TripTimes.class);
@@ -15,8 +20,12 @@
   CoordinateSequenceFactory coordinateSequenceFactory=geometryFactory.getCoordinateSequenceFactory();
   CoordinateSequence coordinateSequence=coordinateSequenceFactory.create(coordinates);
   LineString geometry=new LineString(coordinateSequence,geometryFactory);
-  RoutingContext routingContext=new RoutingContext(routingRequest,graph,depart,arrive);
+  RoutingContext routingContext=new RoutingContext(routingRequest,graph,null,arrive);
   routingContext.serviceDays=new ArrayList<ServiceDay>(Collections.singletonList(serviceDay));
+  when(station0.getX()).thenReturn(coordinates[0].x);
+  when(station0.getY()).thenReturn(coordinates[0].y);
+  when(station1.getX()).thenReturn(coordinates[1].x);
+  when(station1.getY()).thenReturn(coordinates[1].y);
   when(graph.getService(TransitIndexService.class)).thenReturn(transitIndexService);
   when(transitIndexService.getTripPatternForTrip(any(AgencyAndId.class))).thenReturn(tableTripPattern);
   when(tableTripPattern.getPatternHops()).thenReturn(Collections.singletonList(patternHop));
@@ -25,9 +34,13 @@
   when(tripTimes.getDepartureTime(anyInt())).thenReturn(0);
   when(tripTimes.getArrivalTime(anyInt())).thenReturn(10);
   when(serviceDay.secondsSinceMidnight(anyInt())).thenReturn(10);
+  when(patternHop.getBeginStop()).thenReturn(stop0);
   when(patternHop.getToVertex()).thenReturn(arrive);
   when(patternHop.getGeometry()).thenReturn(geometry);
-  Vertex vertex=new OnBoardDepartServiceImpl().setupDepartOnBoard(routingContext);
+  when(patternHop.getEndStop()).thenReturn(stop1);
+  when(graph.getVertex("Station_0")).thenReturn(station0);
+  when(graph.getVertex("Station_1")).thenReturn(station1);
+  Vertex vertex=onBoardDepartServiceImpl.setupDepartOnBoard(routingContext);
   assertEquals(coordinates[1].x,vertex.getX(),0.0);
   assertEquals(coordinates[1].y,vertex.getY(),0.0);
 }

@@ -13,7 +13,7 @@
   PatternStopVertex nextStop;
   TripTimes bestTripTimes=null;
   ServiceDay bestServiceDay=null;
-  int stopIndex;
+  int bestStopIndex=0;
   double fractionCovered;
   LineString geomRemaining;
   Coordinate point=lon == null || lat == null ? null : new Coordinate(lon,lat);
@@ -37,7 +37,7 @@
     double remaining=distanceLibrary.fastLength(geomRemaining);
     fractionCovered=total > 0.0 ? (double)(1.0 - remaining / total) : 0.0;
     nextStop=(PatternStopVertex)bestHop.getToVertex();
-    stopIndex=bestHop.getStopIndex();
+    bestStopIndex=bestHop.getStopIndex();
     int minDelta=Integer.MAX_VALUE;
     int actDelta=0;
     for (    ServiceDay serviceDay : ctx.serviceDays) {
@@ -48,8 +48,8 @@
         Timetable timeTable=ctx.timetableSnapshot.resolve(pattern,serviceDate);
         tripTimes=timeTable.getTripTimes(timeTable.getTripIndex(tripId));
       }
-      int depTime=tripTimes.getDepartureTime(stopIndex);
-      int arrTime=tripTimes.getArrivalTime(stopIndex);
+      int depTime=tripTimes.getDepartureTime(bestStopIndex);
+      int arrTime=tripTimes.getArrivalTime(bestStopIndex);
       int estTime=(int)Math.round(depTime * fractionCovered + arrTime * (1 - fractionCovered));
       int time=serviceDay.secondsSinceMidnight(opt.dateTime);
       int deltaTime=Math.abs(time - estTime);
@@ -87,19 +87,27 @@
     int time=bestServiceDay.secondsSinceMidnight(opt.dateTime);
     PatternHop bestHop=null;
     for (    PatternHop hop : hops) {
-      int depTime=bestTripTimes.getDepartureTime(hop.getStopIndex());
-      if (depTime > time) {
-        break;
+      int stopIndex=hop.getStopIndex();
+      int depTime=bestTripTimes.getDepartureTime(stopIndex);
+      int arrTime=bestTripTimes.getArrivalTime(stopIndex);
+      if (time == arrTime) {
+        return ctx.graph.getVertex(hop.getEndStop().getId().toString());
+      }
+ else       if (depTime < time) {
+        bestHop=hop;
+        bestStopIndex=stopIndex;
+      }
+ else       if (time == depTime || bestTripTimes.getArrivalTime(bestStopIndex) < time) {
+        return ctx.graph.getVertex(hop.getBeginStop().getId().toString());
       }
  else {
-        bestHop=hop;
+        break;
       }
     }
     nextStop=(PatternStopVertex)bestHop.getToVertex();
-    stopIndex=bestHop.getStopIndex();
     LineString geometry=bestHop.getGeometry();
-    int depTime=bestTripTimes.getDepartureTime(stopIndex);
-    int arrTime=bestTripTimes.getArrivalTime(stopIndex);
+    int depTime=bestTripTimes.getDepartureTime(bestStopIndex);
+    int arrTime=bestTripTimes.getArrivalTime(bestStopIndex);
     fractionCovered=((double)(time - depTime)) / ((double)(arrTime - depTime));
     P2<LineString> geomPair=GeometryUtils.splitGeometryAtFraction(geometry,fractionCovered);
     geomRemaining=geomPair.getSecond();
@@ -120,7 +128,7 @@
     }
   }
   OnboardDepartVertex onboardDepart=new OnboardDepartVertex("on_board_depart",lon,lat);
-  OnBoardDepartPatternHop startHop=new OnBoardDepartPatternHop(onboardDepart,nextStop,bestTripTimes,bestServiceDay,stopIndex,fractionCovered);
+  OnBoardDepartPatternHop startHop=new OnBoardDepartPatternHop(onboardDepart,nextStop,bestTripTimes,bestServiceDay,bestStopIndex,fractionCovered);
   startHop.setGeometry(geomRemaining);
   return onboardDepart;
 }

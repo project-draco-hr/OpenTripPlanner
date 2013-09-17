@@ -2,18 +2,12 @@
   for (  State state : states) {
     TraverseMode mode=state.getBackMode();
     Set<Alert> alerts=state.getBackAlerts();
-    Edge edge=state.getBackEdge();
     if (mode != null) {
       leg.mode=mode.toString();
     }
     if (alerts != null) {
       for (      Alert alert : alerts) {
         leg.addAlert(alert);
-      }
-    }
-    if (edge != null) {
-      for (      Patch patch : edge.getPatches()) {
-        leg.addAlert(patch.getAlert());
       }
     }
   }
