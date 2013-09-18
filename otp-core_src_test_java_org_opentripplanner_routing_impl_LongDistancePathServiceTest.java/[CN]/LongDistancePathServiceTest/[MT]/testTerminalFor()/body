@@ -1,0 +1,34 @@
+{
+  Parser parser=new Parser();
+  State emptyState=mock(State.class);
+  State streetState=mock(State.class);
+  when(streetState.getBackEdge()).thenReturn(mock(PlainStreetEdge.class));
+  State linkState=mock(State.class);
+  when(linkState.getBackEdge()).thenReturn(mock(StreetTransitLink.class));
+  State stationState=mock(State.class);
+  when(stationState.getBackEdge()).thenReturn(mock(PreAlightEdge.class));
+  State onboardState=mock(State.class);
+  when(onboardState.getBackEdge()).thenReturn(mock(PatternHop.class));
+  State transferState=mock(State.class);
+  when(transferState.getBackEdge()).thenReturn(mock(TransferEdge.class));
+  State stationStopState=mock(State.class);
+  when(stationStopState.getBackEdge()).thenReturn(mock(StationStopEdge.class));
+  when(stationStopState.getVertex()).thenReturn(mock(TransitStop.class));
+  State stopStationState=mock(State.class);
+  when(stopStationState.getBackEdge()).thenReturn(mock(StationStopEdge.class));
+  when(stopStationState.getVertex()).thenReturn(mock(TransitStation.class));
+  try {
+    parser.terminalFor(emptyState);
+    fail();
+  }
+ catch (  Throwable throwable) {
+    assertEquals(RuntimeException.class,throwable.getClass());
+  }
+  assertEquals(Parser.STREET,parser.terminalFor(streetState));
+  assertEquals(Parser.LINK,parser.terminalFor(linkState));
+  assertEquals(Parser.STATION,parser.terminalFor(stationState));
+  assertEquals(Parser.ONBOARD,parser.terminalFor(onboardState));
+  assertEquals(Parser.TRANSFER,parser.terminalFor(transferState));
+  assertEquals(Parser.STATION_STOP,parser.terminalFor(stationStopState));
+  assertEquals(Parser.STOP_STATION,parser.terminalFor(stopStationState));
+}
