@@ -5,8 +5,8 @@
     if (transfer.getFromStop().equals(transfer.getToStop())) {
       continue;
     }
-    TransitStop fromv=context.stopNodes.get(transfer.getFromStop());
-    TransitStop tov=context.stopNodes.get(transfer.getToStop());
+    TransitStationStop fromv=context.stationStopNodes.get(transfer.getFromStop());
+    TransitStationStop tov=context.stationStopNodes.get(transfer.getToStop());
     double distance=distanceLibrary.distance(fromv.getCoordinate(),tov.getCoordinate());
     int time;
     if (transfer.getTransferType() == 2) {

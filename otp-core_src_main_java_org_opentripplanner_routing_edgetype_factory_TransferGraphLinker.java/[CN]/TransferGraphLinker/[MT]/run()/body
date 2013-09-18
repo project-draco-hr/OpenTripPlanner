@@ -1,15 +1,15 @@
 {
-  Map<AgencyAndId,TransitStop> stopNodes=new HashMap<AgencyAndId,TransitStop>();
+  Map<AgencyAndId,TransitStationStop> stopNodes=new HashMap<AgencyAndId,TransitStationStop>();
   for (  Vertex v : graph.getVertices()) {
-    if (v instanceof TransitStop) {
-      TransitStop transitStop=(TransitStop)v;
-      Stop stop=transitStop.getStop();
-      stopNodes.put(stop.getId(),transitStop);
+    if (v instanceof TransitStationStop) {
+      TransitStationStop transitStationStop=(TransitStationStop)v;
+      Stop stop=transitStationStop.getStop();
+      stopNodes.put(stop.getId(),transitStationStop);
     }
   }
   for (  TransferTable.Transfer transfer : graph.getTransferTable().getAllFirstSpecificTransfers()) {
-    TransitStop fromVertex=stopNodes.get(transfer.fromStopId);
-    TransitStop toVertex=stopNodes.get(transfer.toStopId);
+    TransitStationStop fromVertex=stopNodes.get(transfer.fromStopId);
+    TransitStationStop toVertex=stopNodes.get(transfer.toStopId);
     double distance=distanceLibrary.distance(fromVertex.getCoordinate(),toVertex.getCoordinate());
     TransferEdge edge=null;
 switch (transfer.seconds) {

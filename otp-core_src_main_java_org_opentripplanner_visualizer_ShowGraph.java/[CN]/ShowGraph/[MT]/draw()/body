@@ -63,7 +63,7 @@
     drawTransitStopVertices=(modelBounds.getHeight() * METERS_PER_DEGREE_LAT / this.width < 4);
     fill(60,60,200);
     for (    Vertex v : visibleVertices) {
-      if (drawTransitStopVertices && v instanceof TransitStop) {
+      if (drawTransitStopVertices && v instanceof TransitStationStop) {
         drawVertex(v,5);
       }
  else       if (v instanceof IntersectionVertex) {
