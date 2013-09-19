@@ -2,11 +2,11 @@
   for (  Stop stop : _dao.getAllStops()) {
     String parentStation=stop.getParentStation();
     if (parentStation != null) {
-      Vertex stopVertex=context.stopNodes.get(stop);
+      Vertex stopVertex=context.stationStopNodes.get(stop);
       String agencyId=stop.getId().getAgencyId();
       AgencyAndId parentStationId=new AgencyAndId(agencyId,parentStation);
       Stop parentStop=_dao.getStopForId(parentStationId);
-      Vertex parentStopVertex=context.stopNodes.get(parentStop);
+      Vertex parentStopVertex=context.stationStopNodes.get(parentStop);
       new FreeEdge(parentStopVertex,stopVertex);
       new FreeEdge(stopVertex,parentStopVertex);
       Vertex stopArriveVertex=context.stopArriveNodes.get(stop);

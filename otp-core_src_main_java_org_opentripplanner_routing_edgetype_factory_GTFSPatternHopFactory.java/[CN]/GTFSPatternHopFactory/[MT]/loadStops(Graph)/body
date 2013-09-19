@@ -4,16 +4,22 @@
       continue;
     }
     context.stops.add(stop.getId());
-    TransitStop stopVertex=new TransitStop(graph,stop);
-    stopVertex.setStreetToStopTime(defaultStreetToStopTime);
-    context.stopNodes.put(stop,stopVertex);
-    if (stop.getLocationType() != 2) {
-      TransitStopArrive arrive=new TransitStopArrive(graph,stop,stopVertex);
-      context.stopArriveNodes.put(stop,arrive);
-      TransitStopDepart depart=new TransitStopDepart(graph,stop,stopVertex);
-      context.stopDepartNodes.put(stop,depart);
-      new PreAlightEdge(arrive,stopVertex);
-      new PreBoardEdge(stopVertex,depart);
+    int locationType=stop.getLocationType();
+    if (locationType == 1) {
+      context.stationStopNodes.put(stop,new TransitStation(graph,stop));
+    }
+ else {
+      TransitStop stopVertex=new TransitStop(graph,stop);
+      stopVertex.setStreetToStopTime(defaultStreetToStopTime);
+      context.stationStopNodes.put(stop,stopVertex);
+      if (locationType != 2) {
+        TransitStopArrive arrive=new TransitStopArrive(graph,stop,stopVertex);
+        context.stopArriveNodes.put(stop,arrive);
+        TransitStopDepart depart=new TransitStopDepart(graph,stop,stopVertex);
+        context.stopDepartNodes.put(stop,depart);
+        new PreAlightEdge(arrive,stopVertex);
+        new PreBoardEdge(stopVertex,depart);
+      }
     }
   }
 }

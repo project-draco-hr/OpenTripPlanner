@@ -275,4 +275,9 @@
     path.add(StationStopEdge.class);
     assertFalse(parsePath(parser,path));
   }
+{
+    List<Class<? extends Edge>> path=new ArrayList<Class<? extends Edge>>();
+    path.add(TransferEdge.class);
+    assertTrue(parsePath(parser,path));
+  }
 }
