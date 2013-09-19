@@ -13,6 +13,9 @@
       if (e instanceof StreetTransitLink)       continue;
       Vertex v=options.isArriveBy() ? e.getToVertex() : e.getFromVertex();
       double ew=e.weightLowerBound(options);
+      if (Double.isInfinite(ew)) {
+        continue;
+      }
       double vw=uw + ew;
       Double old_vw=weights.get(v);
       if (old_vw == null || vw < old_vw) {
