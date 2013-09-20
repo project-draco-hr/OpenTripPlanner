@@ -3,10 +3,10 @@
   try {
     boolean success=graphService.save(routerId,is);
     if (success) {
-      return Response.status(201).entity("graph saved.").build();
+      return Response.status(201).entity("graph saved.\n").build();
     }
  else {
-      return Response.status(404).entity("graph not saved or other error.").build();
+      return Response.status(404).entity("graph not saved or other error.\n").build();
     }
   }
  catch (  Exception e) {
