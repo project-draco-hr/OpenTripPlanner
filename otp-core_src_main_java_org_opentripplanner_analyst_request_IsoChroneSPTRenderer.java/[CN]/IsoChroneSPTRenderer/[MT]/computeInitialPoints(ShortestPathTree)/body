@@ -1,0 +1,11 @@
+{
+  List<Coordinate> retval=new ArrayList<Coordinate>(spt.getVertexCount());
+  for (  State s : spt.getAllStates()) {
+    Vertex v=s.getVertex();
+    if (v instanceof StreetVertex) {
+      retval.add(v.getCoordinate());
+    }
+  }
+  LOG.debug("Created {} initial points from {} vertexes.",retval.size(),spt.getVertexCount());
+  return retval;
+}

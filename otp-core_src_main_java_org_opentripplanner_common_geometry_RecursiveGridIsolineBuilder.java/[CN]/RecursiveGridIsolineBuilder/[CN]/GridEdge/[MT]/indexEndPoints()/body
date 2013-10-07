@@ -1,0 +1,11 @@
+{
+  if (size != 1)   throw new AssertionError("Can't dot-index edge with size != 1");
+  if (horizontal) {
+    A.right=this;
+    B.left=this;
+  }
+ else {
+    A.up=this;
+    B.down=this;
+  }
+}
