@@ -3,18 +3,27 @@
     closeSamples();
     closed=true;
   }
-  Set<GridSample> h=new HashSet<GridSample>(allSamples.size());
-  Set<GridSample> v=new HashSet<GridSample>(allSamples.size());
   for (  GridSample A : allSamples.values()) {
-    h.add(A);
-    v.add(A);
+    A.hProcessed=false;
+    A.vProcessed=false;
   }
+  Queue<GridSample> processQ=new ArrayDeque<GridSample>(allSamples.size());
+  processQ.addAll(allSamples.values());
   if (debug)   generateDebugGeometry(zz0);
-  List<Geometry> retval=new ArrayList<Geometry>();
   List<LinearRing> rings=new ArrayList<LinearRing>();
-  while (!(h.isEmpty() && v.isEmpty())) {
-    boolean horizontal=v.isEmpty();
-    GridSample A=horizontal ? h.iterator().next() : v.iterator().next();
+  while (!processQ.isEmpty()) {
+    GridSample A=processQ.remove();
+    if (A.hProcessed && A.vProcessed)     continue;
+    boolean horizontal=!A.hProcessed;
+    if (horizontal) {
+      A.hProcessed=true;
+    }
+ else {
+      A.vProcessed=true;
+    }
+    if (!(A.vProcessed && A.hProcessed)) {
+      processQ.add(A);
+    }
     GridSample B=horizontal ? A.right : A.up;
     boolean ok=B != null;
     int cut=0;
@@ -23,8 +32,6 @@
       ok=(cut != 0);
     }
     if (!ok) {
-      if (horizontal)       h.remove(A);
- else       v.remove(A);
       continue;
     }
     List<Coordinate> polyPoints=new ArrayList<Coordinate>();
@@ -36,8 +43,12 @@
       Coordinate cC=new Coordinate(cA.x * (1.0 - k) + cB.x * k,cA.y * (1.0 - k) + cB.y * k);
       polyPoints.add(cC);
       horizontal=direction == Direction.UP || direction == Direction.DOWN;
-      if (horizontal)       h.remove(A);
- else       v.remove(A);
+      if (horizontal) {
+        A.hProcessed=true;
+      }
+ else {
+        A.vProcessed=true;
+      }
       GridSample C, D;
       Direction d1, d2;
       boolean invertAB;
@@ -76,9 +87,9 @@ D=A.right;
 invertAB=false;
 break;
 }
-boolean ok1=D != null && zFunc.cut(A.zz,D.zz,zz0) != 0 && (horizontal ? (invertAB ? v.contains(D) : v.contains(A)) : (invertAB ? h.contains(D) : h.contains(A)));
-boolean ok2=C != null && zFunc.cut(B.zz,C.zz,zz0) != 0 && (horizontal ? (invertAB ? v.contains(C) : v.contains(B)) : (invertAB ? h.contains(C) : h.contains(B)));
-boolean ok3=C != null && D != null && zFunc.cut(C.zz,D.zz,zz0) != 0 && (horizontal ? h.contains(D) : v.contains(D));
+boolean ok1=D != null && zFunc.cut(A.zz,D.zz,zz0) != 0 && (horizontal ? (invertAB ? !D.vProcessed : !A.vProcessed) : (invertAB ? !D.hProcessed : !A.hProcessed));
+boolean ok2=C != null && zFunc.cut(B.zz,C.zz,zz0) != 0 && (horizontal ? (invertAB ? !C.vProcessed : !B.vProcessed) : (invertAB ? !C.hProcessed : !B.hProcessed));
+boolean ok3=C != null && D != null && zFunc.cut(C.zz,D.zz,zz0) != 0 && (horizontal ? !D.hProcessed : !D.vProcessed);
 if (ok1 && ok2) {
 double dA=Math.max(Math.abs(cA.x - cC.x),Math.abs(cA.y - cC.y));
 double dB=Math.max(Math.abs(cB.x - cC.x),Math.abs(cB.y - cC.y));
@@ -117,6 +128,6 @@ polyPoints.add(polyPoints.get(0));
 LinearRing ring=geometryFactory.createLinearRing(polyPoints.toArray(new Coordinate[polyPoints.size()]));
 rings.add(ring);
 }
-retval.addAll(punchHoles(rings));
+List<Polygon> retval=punchHoles(rings);
 return geometryFactory.createGeometryCollection(retval.toArray(new Geometry[retval.size()]));
 }
