@@ -1,0 +1,29 @@
+{
+  List<GridSample> processList=new ArrayList<GridSample>(allSamples.size());
+  processList.addAll(allSamples.values());
+  int n=0;
+  final int N_STAGES=1;
+  for (int i=0; i < N_STAGES; i++) {
+    List<GridSample> newProcessList=new ArrayList<GridSample>(i == 0 ? processList.size() / 10 : processList.size() * 5 / 4);
+    for (    GridSample A : processList) {
+      if (A.right == null) {
+        newProcessList.add(closeSample(A.index.translated(1,0)));
+        n++;
+      }
+      if (A.left == null) {
+        newProcessList.add(closeSample(A.index.translated(-1,0)));
+        n++;
+      }
+      if (A.up == null) {
+        newProcessList.add(closeSample(A.index.translated(0,1)));
+        n++;
+      }
+      if (A.down == null) {
+        newProcessList.add(closeSample(A.index.translated(0,-1)));
+        n++;
+      }
+    }
+    processList=newProcessList;
+  }
+  LOG.info("Added {} closing samples to {} samples in {} stages.",n,processList.size(),N_STAGES);
+}

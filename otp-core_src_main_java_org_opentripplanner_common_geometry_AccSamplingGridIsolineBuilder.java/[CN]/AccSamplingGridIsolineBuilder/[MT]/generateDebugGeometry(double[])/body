@@ -1,0 +1,26 @@
+{
+  debug=false;
+  GeometryFactory geomFactory=new GeometryFactory();
+  double[] zmax=null;
+  for (  GridSample A : allSamples.values()) {
+    if (zmax == null) {
+      zmax=new double[A.zz.length];
+      for (int i=0; i < zmax.length; i++)       zmax[i]=0.0;
+    }
+    for (int i=1; i < A.zz.length; i++) {
+      double z=A.zz[i] / A.zz[0];
+      if (A.zz[i] < Double.MAX_VALUE && z > zmax[i])       zmax[i]=z;
+    }
+  }
+  for (  GridSample A : allSamples.values()) {
+    Coordinate C1=getCoordinate(A.index);
+    double[] zz=A.zz;
+    for (int i=1; i < zz.length - 1; i++) {
+      double z=zz[i] / zz[0];
+      if (z != Double.POSITIVE_INFINITY) {
+        Coordinate C2=new Coordinate(C1.x + z * dX / zmax[i] * 1 / 4,C1.y + z * dY / zmax[i]);
+        debugGeom.add(geomFactory.createLineString(new Coordinate[]{C1,C2}));
+      }
+    }
+  }
+}

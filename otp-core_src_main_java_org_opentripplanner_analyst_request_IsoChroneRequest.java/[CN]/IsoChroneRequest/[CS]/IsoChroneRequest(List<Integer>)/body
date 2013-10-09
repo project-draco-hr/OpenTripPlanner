@@ -2,5 +2,6 @@
   this.cutoffSecList=cutoffSecList;
   for (  Integer cutoffSec : cutoffSecList) {
     if (cutoffSec > maxCutoffSec)     maxCutoffSec=cutoffSec;
+    if (cutoffSec < minCutoffSec)     minCutoffSec=cutoffSec;
   }
 }

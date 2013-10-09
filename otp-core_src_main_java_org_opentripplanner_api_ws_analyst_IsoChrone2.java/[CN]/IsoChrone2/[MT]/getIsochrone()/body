@@ -17,9 +17,10 @@
     geoJsonBuilder.endObject();
     geoJsonBuilder.key("geometry");
     geoJsonBuilder.writeGeom(isochrone.getGeometry());
-    if (debug) {
+    Geometry debugGeometry=isochrone.getDebugGeometry();
+    if (debug && debugGeometry != null) {
       geoJsonBuilder.key("debugGeometry");
-      geoJsonBuilder.writeGeom(isochrone.getDebugGeometry());
+      geoJsonBuilder.writeGeom(debugGeometry);
     }
     geoJsonBuilder.endObject();
   }
