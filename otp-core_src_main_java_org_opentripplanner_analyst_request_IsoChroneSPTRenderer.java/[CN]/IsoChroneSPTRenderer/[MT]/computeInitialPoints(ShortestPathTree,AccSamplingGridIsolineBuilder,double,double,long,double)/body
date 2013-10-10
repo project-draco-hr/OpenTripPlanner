@@ -14,14 +14,13 @@
           nSkippedTimeOut++;
           continue;
         }
-        if (e.getFromVertex() == null || e.getToVertex() == null) {
-          continue;
+        if (e.getFromVertex() != null && e.getToVertex() != null) {
+          if (processedEdges.contains(e)) {
+            nSkippedDupEdge++;
+            continue;
+          }
+          processedEdges.add(e);
         }
-        if (processedEdges.contains(e)) {
-          nSkippedDupEdge++;
-          continue;
-        }
-        processedEdges.add(e);
         Vertex vx0=s0.getVertex();
         Vertex vx1=s1.getVertex();
         LineString lineString=e.getGeometry();
@@ -30,7 +29,7 @@
         n+=2;
         Coordinate[] pList=lineString.getCoordinates();
         boolean reverse=vx1.getCoordinate().equals(pList[0]);
-        double lineStringLen=distanceLibrary.fastLength(lineString);
+        double lineStringLen=distanceLibrary.fastLength(lineString,cosLat);
         if (lineStringLen > d0) {
           int nSteps=(int)Math.floor(lineStringLen / d0) + 1;
           double stepLen=lineStringLen / nSteps;

@@ -11,12 +11,13 @@
   long t1=System.currentTimeMillis();
   Coordinate center=sptRequest.getFrom().getCoordinate();
   final double gridSizeMeters=isoChroneRequest.getPrecisionMeters();
+  final double cosLat=FastMath.cos(toRadians(center.y));
   double dY=Math.toDegrees(gridSizeMeters / SphericalDistanceLibrary.RADIUS_OF_EARTH_IN_M);
-  double dX=dY / FastMath.cos(Math.toRadians(center.y));
+  double dX=dY / cosLat;
   ZFunc zFunc=new ZFunc(){
     @Override public double[] cumulateSample(    Coordinate C0,    Coordinate Cs,    double z,    double[] zzS){
       double t=z;
-      double d=distanceLibrary.fastDistance(C0,Cs);
+      double d=distanceLibrary.fastDistance(C0,Cs,cosLat);
       double dt=d / V0;
       double w=1 / (d + D0) * (d + D0);
       if (zzS == null) {
@@ -42,8 +43,8 @@
       return zz;
     }
     @Override public int cut(    double[] zzA,    double[] zzB,    double[] zz0){
-      double dA=zzA[2] / zzA[0];
-      double dB=zzB[2] / zzB[0];
+      double dA=zzA[2];
+      double dB=zzB[2];
       double t0=zz0[0];
       double d0=zz0[1];
       double tA=dA > d0 ? Double.POSITIVE_INFINITY : zzA[1] / zzA[0];
@@ -53,8 +54,8 @@
       return 0;
     }
     @Override public double interpolate(    double[] zzA,    double[] zzB,    double[] zz0){
-      double dA=zzA[2] / zzA[0];
-      double dB=zzB[2] / zzB[0];
+      double dA=zzA[2];
+      double dB=zzB[2];
       double t0=zz0[0];
       double d0=zz0[1];
       if (dA > d0 || dB > d0) {
@@ -73,7 +74,7 @@
 ;
   AccSamplingGridIsolineBuilder isolineBuilder=new AccSamplingGridIsolineBuilder(dX,dY,center,zFunc,spt.getVertexCount());
   isolineBuilder.setDebug(isoChroneRequest.isIncludeDebugGeometry());
-  computeInitialPoints(spt,isolineBuilder,gridSizeMeters * 0.7,V0,isoChroneRequest.getMaxCutoffSec() + tOvershot);
+  computeInitialPoints(spt,isolineBuilder,gridSizeMeters * 0.7,V0,isoChroneRequest.getMaxCutoffSec() + tOvershot,cosLat);
   long t2=System.currentTimeMillis();
   List<IsochroneData> isochrones=new ArrayList<IsochroneData>();
   for (  Integer cutoffSec : isoChroneRequest.getCutoffSecList()) {
