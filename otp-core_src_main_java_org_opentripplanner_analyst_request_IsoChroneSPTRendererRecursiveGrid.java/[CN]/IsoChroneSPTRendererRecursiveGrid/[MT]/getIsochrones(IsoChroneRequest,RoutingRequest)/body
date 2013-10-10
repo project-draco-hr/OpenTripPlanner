@@ -1,4 +1,5 @@
 {
+  if (sptRequest.getRouterId() != null && !sptRequest.getRouterId().isEmpty())   throw new IllegalArgumentException("TODO: SampleSource is not multi-router compatible (yet).");
   long t0=System.currentTimeMillis();
   sptRequest.setWorstTime(sptRequest.dateTime + (sptRequest.arriveBy ? -isoChroneRequest.getMaxCutoffSec() : isoChroneRequest.getMaxCutoffSec()));
   sptRequest.setBatch(true);

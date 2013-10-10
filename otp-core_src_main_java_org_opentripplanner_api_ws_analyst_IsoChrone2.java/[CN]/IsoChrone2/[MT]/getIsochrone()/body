@@ -5,7 +5,16 @@
   isoChroneRequest.setIncludeDebugGeometry(debug);
   isoChroneRequest.setPrecisionMeters(precisionMeters);
   RoutingRequest sptRequest=buildRequest(0);
-  List<IsochroneData> isochrones=renderer.getIsochrones(isoChroneRequest,sptRequest);
+  List<IsochroneData> isochrones;
+  if (algorithm == null || "accSampling".equals(algorithm)) {
+    isochrones=accSamplingRenderer.getIsochrones(isoChroneRequest,sptRequest);
+  }
+ else   if ("recursiveGrid".equals(algorithm)) {
+    isochrones=recursiveGridRenderer.getIsochrones(isoChroneRequest,sptRequest);
+  }
+ else {
+    throw new IllegalArgumentException("Unknown algorithm: " + algorithm);
+  }
   StringWriter geoJsonWriter=new StringWriter();
   GeoJSONBuilder geoJsonBuilder=new GeoJSONBuilder(geoJsonWriter);
   geoJsonBuilder.array();
