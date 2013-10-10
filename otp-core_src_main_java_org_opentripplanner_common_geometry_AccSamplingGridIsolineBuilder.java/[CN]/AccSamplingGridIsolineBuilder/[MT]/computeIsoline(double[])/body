@@ -128,8 +128,10 @@ break;
 }
 }
 polyPoints.add(polyPoints.get(0));
+if (polyPoints.size() > 5) {
 LinearRing ring=geometryFactory.createLinearRing(polyPoints.toArray(new Coordinate[polyPoints.size()]));
 rings.add(ring);
+}
 }
 List<Polygon> retval=punchHoles(rings);
 return geometryFactory.createGeometryCollection(retval.toArray(new Geometry[retval.size()]));
