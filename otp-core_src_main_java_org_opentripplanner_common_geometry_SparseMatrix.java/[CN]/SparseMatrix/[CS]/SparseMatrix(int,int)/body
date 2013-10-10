@@ -1,0 +1,10 @@
+{
+  shift=0;
+  mask=chunkSize - 1;
+  while (chunkSize > 1) {
+    if (chunkSize % 2 != 0)     throw new IllegalArgumentException("Chunk size must be a power of 2");
+    chunkSize/=2;
+    shift++;
+  }
+  this.chunks=new HashMap<Long,T[]>(totalSize / ((mask + 1) * (mask + 1)) * 4);
+}

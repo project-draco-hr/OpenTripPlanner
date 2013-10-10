@@ -1,29 +1,37 @@
 {
-  List<GridSample> processList=new ArrayList<GridSample>(allSamples.size());
-  processList.addAll(allSamples.values());
+  final List<GridSample> processList=new ArrayList<GridSample>(allSamples.size());
+  allSamples.iterate(new Visitor<GridSample>(){
+    public void visit(    GridSample A){
+      processList.add(A);
+    }
+  }
+);
   int n=0;
   final int N_STAGES=1;
   for (int i=0; i < N_STAGES; i++) {
     List<GridSample> newProcessList=new ArrayList<GridSample>(i == 0 ? processList.size() / 10 : processList.size() * 5 / 4);
     for (    GridSample A : processList) {
       if (A.right == null) {
-        newProcessList.add(closeSample(A.index.translated(1,0)));
+        newProcessList.add(closeSample(A.x + 1,A.y));
         n++;
       }
       if (A.left == null) {
-        newProcessList.add(closeSample(A.index.translated(-1,0)));
+        newProcessList.add(closeSample(A.x - 1,A.y));
         n++;
       }
       if (A.up == null) {
-        newProcessList.add(closeSample(A.index.translated(0,1)));
+        newProcessList.add(closeSample(A.x,A.y + 1));
         n++;
       }
       if (A.down == null) {
-        newProcessList.add(closeSample(A.index.translated(0,-1)));
+        newProcessList.add(closeSample(A.x,A.y - 1));
         n++;
       }
     }
-    processList=newProcessList;
+    if (i < N_STAGES - 1) {
+      processList.clear();
+      processList.addAll(newProcessList);
+    }
   }
-  LOG.info("Added {} closing samples to {} samples in {} stages.",n,processList.size(),N_STAGES);
+  LOG.info("Added {} closing samples to get a total of {}, in {} stages.",n,allSamples.size(),N_STAGES);
 }

@@ -1,0 +1,28 @@
+{
+  GridSample A=allSamples.get(x,y);
+  if (A != null)   return A;
+  A=new GridSample(x,y);
+  A.zz=null;
+  GridSample Aright=allSamples.get(x + 1,y);
+  if (Aright != null) {
+    Aright.left=A;
+    A.right=Aright;
+  }
+  GridSample Aleft=allSamples.get(x - 1,y);
+  if (Aleft != null) {
+    Aleft.right=A;
+    A.left=Aleft;
+  }
+  GridSample Aup=allSamples.get(x,y + 1);
+  if (Aup != null) {
+    Aup.down=A;
+    A.up=Aup;
+  }
+  GridSample Adown=allSamples.get(x,y - 1);
+  if (Adown != null) {
+    Adown.up=A;
+    A.down=Adown;
+  }
+  allSamples.put(x,y,A);
+  return A;
+}

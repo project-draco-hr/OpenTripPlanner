@@ -2,14 +2,15 @@
   if (closed) {
     throw new IllegalStateException("Cannot add sample once an isochrone is computed.");
   }
-  XYIndex iA=getLowerLeftIndex(C0);
+  int x=(int)Math.round((C0.x - center.x - dX / 2) / dX);
+  int y=(int)Math.round((C0.y - center.y - dY / 2) / dY);
   GridSample[] ABCD=new GridSample[4];
-  ABCD[0]=getOrCreateSample(iA);
-  ABCD[1]=ABCD[0].right != null ? ABCD[0].right : getOrCreateSample(iA.translated(1,0));
-  ABCD[2]=ABCD[0].up != null ? ABCD[0].up : getOrCreateSample(iA.translated(0,1));
-  ABCD[3]=ABCD[1].up != null ? ABCD[1].up : getOrCreateSample(iA.translated(1,1));
+  ABCD[0]=getOrCreateSample(x,y);
+  ABCD[1]=ABCD[0].right != null ? ABCD[0].right : getOrCreateSample(x + 1,y);
+  ABCD[2]=ABCD[0].up != null ? ABCD[0].up : getOrCreateSample(x,y + 1);
+  ABCD[3]=ABCD[1].up != null ? ABCD[1].up : getOrCreateSample(x + 1,y + 1);
   for (  GridSample P : ABCD) {
-    Coordinate C=getCoordinate(P.index);
+    Coordinate C=getCoordinate(P.x,P.y);
     P.zz=zFunc.cumulateSample(C0,C,z,P.zz);
   }
 }

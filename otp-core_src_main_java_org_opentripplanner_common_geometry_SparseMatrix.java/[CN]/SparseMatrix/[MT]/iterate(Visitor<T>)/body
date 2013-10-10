@@ -1,0 +1,10 @@
+{
+  for (  T[] ts : chunks.values()) {
+    for (int i=0; i < ts.length; i++) {
+      T t=ts[i];
+      if (t != null) {
+        visitor.visit(t);
+      }
+    }
+  }
+}
