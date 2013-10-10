@@ -9,19 +9,19 @@
   int n=0;
   for (  GridSample A : processList) {
     if (A.right == null) {
-      closeSample(A.x + 1,A.y);
+      closeSample(A.x + 1,A.y,null,null,null,A);
       n++;
     }
     if (A.left == null) {
-      closeSample(A.x - 1,A.y);
+      closeSample(A.x - 1,A.y,null,null,A,null);
       n++;
     }
     if (A.up == null) {
-      closeSample(A.x,A.y + 1);
+      closeSample(A.x,A.y + 1,null,A,null,null);
       n++;
     }
     if (A.down == null) {
-      closeSample(A.x,A.y - 1);
+      closeSample(A.x,A.y - 1,A,null,null,null);
       n++;
     }
   }
