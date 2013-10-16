@@ -1,0 +1,10 @@
+{
+  assertEquals(-1,originalTripTimes.getDwellTime(Integer.MIN_VALUE));
+  assertEquals(-1,originalTripTimes.getDwellTime(-1));
+  assertEquals(-1,originalTripTimes.getDwellTime(0));
+  assertEquals(0,originalTripTimes.getDwellTime(1));
+  assertEquals(0,originalTripTimes.getDwellTime(stops.length - 2));
+  assertEquals(-1,originalTripTimes.getDwellTime(stops.length - 1));
+  assertEquals(-1,originalTripTimes.getDwellTime(stops.length));
+  assertEquals(-1,originalTripTimes.getDwellTime(Integer.MAX_VALUE));
+}

@@ -1,0 +1,20 @@
+{
+  TimeZone timeZone=new SimpleTimeZone(-7,"PST");
+  long today=serviceDate.getAsDate(timeZone).getTime() / 1000;
+  TripDescriptor.Builder tripDescriptorBuilder=TripDescriptor.newBuilder();
+  tripDescriptorBuilder.setTripId(tripId);
+  StopTimeEvent.Builder departStopTimeEventBuilder=StopTimeEvent.newBuilder();
+  StopTimeEvent.Builder arriveStopTimeEventBuilder=StopTimeEvent.newBuilder();
+  departStopTimeEventBuilder.setTime(today + depart);
+  arriveStopTimeEventBuilder.setTime(today + arrive);
+  StopTimeUpdate.Builder stopTimeUpdateBuilder=StopTimeUpdate.newBuilder();
+  stopTimeUpdateBuilder.setStopSequence(stopSeq);
+  stopTimeUpdateBuilder.setDeparture(departStopTimeEventBuilder);
+  stopTimeUpdateBuilder.setArrival(arriveStopTimeEventBuilder);
+  stopTimeUpdateBuilder.setScheduleRelationship(scheduleRelationship);
+  TripUpdate.Builder tripUpdateBuilder=TripUpdate.newBuilder();
+  tripUpdateBuilder.setTrip(tripDescriptorBuilder);
+  tripUpdateBuilder.addStopTimeUpdate(0,stopTimeUpdateBuilder);
+  TripUpdate tripUpdate=tripUpdateBuilder.build();
+  assertTrue(pattern.update(tripUpdate,"agency",timeZone,serviceDate));
+}

@@ -1,13 +1,9 @@
 {
-  AgencyAndId tripId=new AgencyAndId("agency","1.1");
-  ServiceDate serviceDate=new ServiceDate();
-  TripUpdateList tripUpdateList=TripUpdateList.forCanceledTrip(tripId,0,serviceDate);
-  updater.applyTripUpdateLists(Arrays.asList(tripUpdateList));
+  updater.applyTripUpdates(Arrays.asList(TripUpdate.parseFrom(cancellation)),"agency");
   TimetableResolver resolver=updater.getTimetableSnapshot();
   assertNotNull(resolver);
   assertSame(resolver,updater.getTimetableSnapshot());
-  tripUpdateList=TripUpdateList.forCanceledTrip(tripId,0,serviceDate);
-  updater.applyTripUpdateLists(Arrays.asList(tripUpdateList));
+  updater.applyTripUpdates(Arrays.asList(TripUpdate.parseFrom(cancellation)),"agency");
   assertSame(resolver,updater.getTimetableSnapshot());
   updater.setMaxSnapshotFrequency(-1);
   TimetableResolver newResolver=updater.getTimetableSnapshot();
