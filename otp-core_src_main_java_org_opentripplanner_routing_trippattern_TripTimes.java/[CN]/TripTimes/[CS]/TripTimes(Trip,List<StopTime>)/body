@@ -1,0 +1,18 @@
+{
+  this.trip=trip;
+  int nStops=stopTimes.size();
+  int nHops=nStops - 1;
+  scheduledDepartureTimes=new int[nHops];
+  scheduledArrivalTimes=new int[nHops];
+  stopSequences=new int[nStops];
+  for (int hop=0; hop < nHops; hop++) {
+    scheduledDepartureTimes[hop]=stopTimes.get(hop).getDepartureTime();
+    scheduledArrivalTimes[hop]=stopTimes.get(hop + 1).getArrivalTime();
+  }
+  for (int stop=0; stop < nStops; stop++) {
+    StopTime stopTime=stopTimes.get(stop);
+    stopSequences[stop]=stopTime.getStopSequence();
+  }
+  this.headsigns=makeHeadsignsArray(stopTimes);
+  this.compact();
+}

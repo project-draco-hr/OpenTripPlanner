@@ -1,7 +1,7 @@
 {
-  ScheduledTripTimes tripTime=new ScheduledTripTimes(trip,stopTimes);
+  TripTimes tripTime=new TripTimes(trip,stopTimes);
   if (!tripTimes.isEmpty()) {
-    ScheduledTripTimes firstTripTime=(ScheduledTripTimes)tripTimes.get(0);
+    TripTimes firstTripTime=tripTimes.get(0);
     tripTime.compactStopSequence(firstTripTime);
   }
   tripTimes.add(tripTime);

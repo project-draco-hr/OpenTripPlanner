@@ -1,14 +1,19 @@
 {
-  FeedMessage feed=null;
-  List<TripUpdateList> updates=null;
+  FeedMessage feedMessage=null;
+  List<FeedEntity> feedEntityList=null;
+  List<TripUpdate> updates=null;
   try {
     InputStream is=HttpUtils.getData(url);
     if (is != null) {
-      feed=GtfsRealtime.FeedMessage.PARSER.parseFrom(is);
-      updates=TripUpdateList.decodeFromGtfsRealtime(feed,agencyId);
+      feedMessage=FeedMessage.PARSER.parseFrom(is);
+      feedEntityList=feedMessage.getEntityList();
+      updates=new ArrayList<TripUpdate>(feedEntityList.size());
+      for (      FeedEntity feedEntity : feedEntityList) {
+        updates.add(feedEntity.getTripUpdate());
+      }
     }
   }
- catch (  IOException e) {
+ catch (  Exception e) {
     LOG.warn("Failed to parse gtfs-rt feed from " + url + ":",e);
   }
   return updates;

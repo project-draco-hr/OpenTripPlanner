@@ -1,0 +1,68 @@
+{
+  if (updates == null) {
+    LOG.debug("updates is null");
+    return;
+  }
+  LOG.debug("message contains {} trip updates",updates.size());
+  int uIndex=0;
+  for (  TripUpdate tripUpdate : updates) {
+    if (!tripUpdate.hasTrip()) {
+      LOG.warn("Missing TripDescriptor in gtfs-rt trip update: \n{}",tripUpdate);
+      continue;
+    }
+    ServiceDate serviceDate=new ServiceDate();
+    TripDescriptor tripDescriptor=tripUpdate.getTrip();
+    if (tripDescriptor.hasStartDate()) {
+      try {
+        serviceDate=ServiceDate.parseString(tripDescriptor.getStartDate());
+      }
+ catch (      ParseException e) {
+        LOG.warn("Failed to parse startDate in gtfs-rt trip update: \n{}",tripUpdate);
+        continue;
+      }
+    }
+    uIndex+=1;
+    LOG.debug("trip update #{} ({} updates) :",uIndex,tripUpdate.getStopTimeUpdateCount());
+    LOG.trace("{}",tripUpdate);
+    boolean applied=false;
+    if (tripDescriptor.hasScheduleRelationship()) {
+switch (tripDescriptor.getScheduleRelationship()) {
+case SCHEDULED:
+        applied=handleScheduledTrip(tripUpdate,agencyId,serviceDate);
+      break;
+case ADDED:
+    applied=handleAddedTrip(tripUpdate,agencyId,serviceDate);
+  break;
+case UNSCHEDULED:
+applied=handleUnscheduledTrip(tripUpdate,agencyId,serviceDate);
+break;
+case CANCELED:
+applied=handleCanceledTrip(tripUpdate,agencyId,serviceDate);
+break;
+case REPLACEMENT:
+applied=handleReplacementTrip(tripUpdate,agencyId,serviceDate);
+break;
+}
+}
+ else {
+applied=handleScheduledTrip(tripUpdate,agencyId,serviceDate);
+}
+if (applied) {
+appliedBlockCount++;
+}
+ else {
+LOG.warn("Failed to apply TripUpdate:\n{}",tripUpdate);
+}
+if (appliedBlockCount % logFrequency == 0) {
+LOG.info("Applied {} trip updates.",appliedBlockCount);
+}
+}
+LOG.debug("end of update message");
+if (purgeExpiredData) {
+boolean modified=purgeExpiredData();
+getTimetableSnapshot(modified);
+}
+ else {
+getTimetableSnapshot();
+}
+}
