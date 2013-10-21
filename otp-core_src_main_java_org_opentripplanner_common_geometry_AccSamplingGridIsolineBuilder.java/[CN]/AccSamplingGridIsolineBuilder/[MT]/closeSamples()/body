@@ -1,11 +1,8 @@
 {
-  final List<GridSample> processList=new ArrayList<GridSample>(allSamples.size());
-  allSamples.iterate(new Visitor<GridSample>(){
-    public void visit(    GridSample A){
-      processList.add(A);
-    }
+  List<GridSample> processList=new ArrayList<GridSample>(allSamples.size());
+  for (  GridSample A : allSamples) {
+    processList.add(A);
   }
-);
   int n=0;
   for (  GridSample A : processList) {
     if (A.right == null) {

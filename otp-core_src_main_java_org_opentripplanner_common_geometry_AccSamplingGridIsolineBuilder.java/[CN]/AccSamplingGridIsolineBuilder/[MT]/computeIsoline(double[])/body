@@ -3,15 +3,12 @@
     closeSamples();
     closed=true;
   }
-  final Queue<GridSample> processQ=new ArrayDeque<GridSample>(allSamples.size());
-  allSamples.iterate(new Visitor<GridSample>(){
-    @Override public void visit(    GridSample A){
-      A.hProcessed=false;
-      A.vProcessed=false;
-      processQ.add(A);
-    }
+  Queue<GridSample> processQ=new ArrayDeque<GridSample>(allSamples.size());
+  for (  GridSample A : allSamples) {
+    A.hProcessed=false;
+    A.vProcessed=false;
+    processQ.add(A);
   }
-);
   if (debug)   generateDebugGeometry(zz0);
   List<LinearRing> rings=new ArrayList<LinearRing>();
   while (!processQ.isEmpty()) {
