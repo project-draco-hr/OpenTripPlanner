@@ -80,6 +80,7 @@ gtfsBuilders.add(new TransitIndexBuilder());
 }
 gtfsBuilder.setFareServiceFactory(new DefaultFareServiceFactory());
 gtfsBuilder.setGtfsGraphBuilders(gtfsBuilders);
+gtfsBuilder.setDeleteUselessDwells(params.deleteUselessDwells);
 }
 if (configFile != null) {
 EmbeddedConfigGraphBuilderImpl embeddedConfigBuilder=new EmbeddedConfigGraphBuilderImpl();
