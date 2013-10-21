@@ -8,6 +8,9 @@
   State initState=new State(initVertex,rr);
   pq.insert(initState,0);
   while (!pq.empty()) {
+    if (abortTime < Long.MAX_VALUE && System.currentTimeMillis() > abortTime) {
+      return null;
+    }
     State s=pq.extract_min();
     Double w=s.getWeight();
     Vertex v=s.getVertex();

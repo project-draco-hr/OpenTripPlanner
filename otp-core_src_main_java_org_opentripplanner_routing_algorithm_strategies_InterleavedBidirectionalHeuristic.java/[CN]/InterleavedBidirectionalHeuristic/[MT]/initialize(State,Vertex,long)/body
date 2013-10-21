@@ -10,10 +10,13 @@
   this.options=s.getOptions();
   this.origin=s.getVertex();
   LOG.debug("initializing heuristic computation thread");
-  streetSearch(options,false);
+  List<State> search=streetSearch(options,false,abortTime);
+  if (search == null)   return;
   LOG.info("end foreward street search {}",System.currentTimeMillis());
   q=new BinHeap<Vertex>();
-  for (  State stopState : streetSearch(options,true)) {
+  search=streetSearch(options,true,abortTime);
+  if (search == null)   return;
+  for (  State stopState : search) {
     q.insert(stopState.getVertex(),stopState.getWeight());
   }
   LOG.info("end backward street search {}",System.currentTimeMillis());
