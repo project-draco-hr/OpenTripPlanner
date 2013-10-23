@@ -7,7 +7,6 @@
   sptRequest.setBatch(true);
   sptRequest.setRoutingContext(graphService.getGraph(sptRequest.getRouterId()));
   final ShortestPathTree spt=sptService.getShortestPathTree(sptRequest);
-  sptRequest.cleanup();
   long t1=System.currentTimeMillis();
   Coordinate center=sptRequest.getFrom().getCoordinate();
   final double gridSizeMeters=isoChroneRequest.getPrecisionMeters();
@@ -75,6 +74,7 @@
   AccSamplingGridIsolineBuilder isolineBuilder=new AccSamplingGridIsolineBuilder(dX,dY,center,zFunc,spt.getVertexCount());
   isolineBuilder.setDebug(isoChroneRequest.isIncludeDebugGeometry());
   computeInitialPoints(spt,isolineBuilder,gridSizeMeters * 0.7,V0,sptRequest.getMaxWalkDistance());
+  sptRequest.cleanup();
   long t2=System.currentTimeMillis();
   List<IsochroneData> isochrones=new ArrayList<IsochroneData>();
   for (  Integer cutoffSec : isoChroneRequest.getCutoffSecList()) {
