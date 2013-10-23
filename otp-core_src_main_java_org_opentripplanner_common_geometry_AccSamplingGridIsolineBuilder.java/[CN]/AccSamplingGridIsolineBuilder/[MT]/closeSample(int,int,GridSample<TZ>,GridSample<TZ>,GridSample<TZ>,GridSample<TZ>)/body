@@ -1,0 +1,5 @@
+{
+  GridSample<TZ> A=getOrCreateSample(x,y,up,down,right,left);
+  A.z=zFunc.closeSample(A.up != null ? A.up.z : null,A.down != null ? A.down.z : null,A.right != null ? A.right.z : null,A.left != null ? A.left.z : null);
+  return A;
+}

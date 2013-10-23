@@ -1,8 +1,8 @@
 {
-  GridSample A=allSamples.get(x,y);
+  GridSample<TZ> A=allSamples.get(x,y);
   if (A != null)   return A;
-  A=new GridSample(x,y);
-  A.zz=null;
+  A=new GridSample<TZ>(x,y);
+  A.z=null;
   if (Aup == null)   Aup=allSamples.get(x,y + 1);
   if (Aup != null) {
     Aup.down=A;

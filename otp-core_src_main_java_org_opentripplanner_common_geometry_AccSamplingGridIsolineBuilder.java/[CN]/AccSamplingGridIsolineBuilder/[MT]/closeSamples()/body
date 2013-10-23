@@ -1,10 +1,10 @@
 {
-  List<GridSample> processList=new ArrayList<GridSample>(allSamples.size());
-  for (  GridSample A : allSamples) {
+  List<GridSample<TZ>> processList=new ArrayList<GridSample<TZ>>(allSamples.size());
+  for (  GridSample<TZ> A : allSamples) {
     processList.add(A);
   }
   int n=0;
-  for (  GridSample A : processList) {
+  for (  GridSample<TZ> A : processList) {
     if (A.right == null) {
       closeSample(A.x + 1,A.y,null,null,null,A);
       n++;

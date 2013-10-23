@@ -3,16 +3,16 @@
     closeSamples();
     closed=true;
   }
-  Queue<GridSample> processQ=new ArrayDeque<GridSample>(allSamples.size());
-  for (  GridSample A : allSamples) {
+  Queue<GridSample<TZ>> processQ=new ArrayDeque<GridSample<TZ>>(allSamples.size());
+  for (  GridSample<TZ> A : allSamples) {
     A.hProcessed=false;
     A.vProcessed=false;
     processQ.add(A);
   }
-  if (debug)   generateDebugGeometry(zz0);
+  if (debug)   generateDebugGeometry(z0);
   List<LinearRing> rings=new ArrayList<LinearRing>();
   while (!processQ.isEmpty()) {
-    GridSample A=processQ.remove();
+    GridSample<TZ> A=processQ.remove();
     if (A.hProcessed && A.vProcessed)     continue;
     boolean horizontal=!A.hProcessed;
     if (horizontal) {
@@ -24,11 +24,11 @@
     if (!(A.vProcessed && A.hProcessed)) {
       processQ.add(A);
     }
-    GridSample B=horizontal ? A.right : A.up;
+    GridSample<TZ> B=horizontal ? A.right : A.up;
     boolean ok=B != null;
     int cut=0;
     if (ok) {
-      cut=zFunc.cut(A.zz,B.zz,zz0);
+      cut=zFunc.cut(A.z,B.z,z0);
       ok=(cut != 0);
     }
     if (!ok) {
@@ -39,7 +39,7 @@
     while (true) {
       Coordinate cA=getCoordinate(A.x,A.y);
       Coordinate cB=getCoordinate(B.x,B.y);
-      double k=zFunc.interpolate(A.zz,B.zz,zz0);
+      double k=zFunc.interpolate(A.z,B.z,z0);
       Coordinate cC=new Coordinate(cA.x * (1.0 - k) + cB.x * k,cA.y * (1.0 - k) + cB.y * k);
       polyPoints.add(cC);
       horizontal=direction == Direction.UP || direction == Direction.DOWN;
@@ -49,7 +49,7 @@
  else {
         A.vProcessed=true;
       }
-      GridSample C, D;
+      GridSample<TZ> C, D;
       Direction d1, d2;
       boolean invertAB;
 switch (direction) {
@@ -87,14 +87,14 @@ D=A.right;
 invertAB=false;
 break;
 }
-boolean ok1=D != null && zFunc.cut(A.zz,D.zz,zz0) != 0 && (horizontal ? (invertAB ? !D.vProcessed : !A.vProcessed) : (invertAB ? !D.hProcessed : !A.hProcessed));
-boolean ok2=C != null && zFunc.cut(B.zz,C.zz,zz0) != 0 && (horizontal ? (invertAB ? !C.vProcessed : !B.vProcessed) : (invertAB ? !C.hProcessed : !B.hProcessed));
-boolean ok3=C != null && D != null && zFunc.cut(C.zz,D.zz,zz0) != 0 && (horizontal ? !D.hProcessed : !D.vProcessed);
+boolean ok1=D != null && zFunc.cut(A.z,D.z,z0) != 0 && (horizontal ? (invertAB ? !D.vProcessed : !A.vProcessed) : (invertAB ? !D.hProcessed : !A.hProcessed));
+boolean ok2=C != null && zFunc.cut(B.z,C.z,z0) != 0 && (horizontal ? (invertAB ? !C.vProcessed : !B.vProcessed) : (invertAB ? !C.hProcessed : !B.hProcessed));
+boolean ok3=C != null && D != null && zFunc.cut(C.z,D.z,z0) != 0 && (horizontal ? !D.hProcessed : !D.vProcessed);
 if (ok1 && ok2) {
 double dA=Math.max(Math.abs(cA.x - cC.x),Math.abs(cA.y - cC.y));
 double dB=Math.max(Math.abs(cB.x - cC.x),Math.abs(cB.y - cC.y));
 if (dA <= dB) {
-GridSample oA=A;
+GridSample<TZ> oA=A;
 A=invertAB ? D : A;
 B=invertAB ? oA : D;
 direction=d1;
@@ -106,7 +106,7 @@ direction=d2;
 }
 }
  else if (ok1) {
-GridSample oA=A;
+GridSample<TZ> oA=A;
 A=invertAB ? D : A;
 B=invertAB ? oA : D;
 direction=d1;
