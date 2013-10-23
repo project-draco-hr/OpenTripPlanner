@@ -1,26 +1,26 @@
 {
-  List<GridSample<TZ>> processList=new ArrayList<GridSample<TZ>>(allSamples.size());
-  for (  GridSample<TZ> A : allSamples) {
+  List<ZSamplePoint<TZ,IsoLineUserData>> processList=new ArrayList<ZSamplePoint<TZ,IsoLineUserData>>(sampleGrid.size());
+  for (  ZSamplePoint<TZ,IsoLineUserData> A : sampleGrid) {
     processList.add(A);
   }
   int n=0;
-  for (  GridSample<TZ> A : processList) {
-    if (A.right == null) {
-      closeSample(A.x + 1,A.y,null,null,null,A);
+  for (  ZSamplePoint<TZ,IsoLineUserData> A : processList) {
+    if (A.right() == null) {
+      closeSample(A.getX() + 1,A.getY(),null,null,null,A);
       n++;
     }
-    if (A.left == null) {
-      closeSample(A.x - 1,A.y,null,null,A,null);
+    if (A.left() == null) {
+      closeSample(A.getX() - 1,A.getY(),null,null,A,null);
       n++;
     }
-    if (A.up == null) {
-      closeSample(A.x,A.y + 1,null,A,null,null);
+    if (A.up() == null) {
+      closeSample(A.getX(),A.getY() + 1,null,A,null,null);
       n++;
     }
-    if (A.down == null) {
-      closeSample(A.x,A.y - 1,A,null,null,null);
+    if (A.down() == null) {
+      closeSample(A.getX(),A.getY() - 1,A,null,null,null);
       n++;
     }
   }
-  LOG.info("Added {} closing samples to get a total of {}.",n,allSamples.size());
+  LOG.info("Added {} closing samples to get a total of {}.",n,sampleGrid.size());
 }

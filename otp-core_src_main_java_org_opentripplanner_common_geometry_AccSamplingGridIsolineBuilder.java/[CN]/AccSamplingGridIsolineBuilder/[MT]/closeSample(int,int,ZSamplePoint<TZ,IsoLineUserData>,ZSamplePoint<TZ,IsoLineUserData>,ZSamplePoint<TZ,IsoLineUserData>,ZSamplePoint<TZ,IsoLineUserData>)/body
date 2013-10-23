@@ -1,0 +1,6 @@
+{
+  ZSamplePoint<TZ,IsoLineUserData> A=sampleGrid.getOrCreate(x,y);
+  if (A.getU() == null)   A.setU(new IsoLineUserData());
+  A.setZ(zFunc.closeSample(A.up() != null ? A.up().getZ() : null,A.down() != null ? A.down().getZ() : null,A.right() != null ? A.right().getZ() : null,A.left() != null ? A.left().getZ() : null));
+  return A;
+}

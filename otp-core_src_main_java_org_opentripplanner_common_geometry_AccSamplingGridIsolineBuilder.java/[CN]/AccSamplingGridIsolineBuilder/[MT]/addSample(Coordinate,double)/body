@@ -4,13 +4,14 @@
   }
   int x=(int)Math.round((C0.x - center.x - dX / 2) / dX);
   int y=(int)Math.round((C0.y - center.y - dY / 2) / dY);
-  @SuppressWarnings("unchecked") GridSample<TZ>[] ABCD=new GridSample[4];
-  ABCD[0]=getOrCreateSample(x,y,null,null,null,null);
-  ABCD[1]=ABCD[0].right != null ? ABCD[0].right : getOrCreateSample(x + 1,y,null,null,null,ABCD[0]);
-  ABCD[2]=ABCD[0].up != null ? ABCD[0].up : getOrCreateSample(x,y + 1,null,ABCD[0],null,null);
-  ABCD[3]=ABCD[1].up != null ? ABCD[1].up : getOrCreateSample(x + 1,y + 1,null,ABCD[1],null,ABCD[2]);
-  for (  GridSample<TZ> P : ABCD) {
-    Coordinate C=getCoordinate(P.x,P.y);
-    P.z=zFunc.cumulateSample(C0,C,z,P.z);
+  @SuppressWarnings("unchecked") ZSamplePoint<TZ,IsoLineUserData>[] ABCD=new ZSamplePoint[4];
+  ABCD[0]=sampleGrid.getOrCreate(x,y);
+  ABCD[1]=sampleGrid.getOrCreate(x + 1,y);
+  ABCD[2]=sampleGrid.getOrCreate(x,y + 1);
+  ABCD[3]=sampleGrid.getOrCreate(x + 1,y + 1);
+  for (  ZSamplePoint<TZ,IsoLineUserData> P : ABCD) {
+    if (P.getU() == null)     P.setU(new IsoLineUserData());
+    Coordinate C=getCoordinate(P.getX(),P.getY());
+    P.setZ(zFunc.cumulateSample(C0,C,z,P.getZ()));
   }
 }

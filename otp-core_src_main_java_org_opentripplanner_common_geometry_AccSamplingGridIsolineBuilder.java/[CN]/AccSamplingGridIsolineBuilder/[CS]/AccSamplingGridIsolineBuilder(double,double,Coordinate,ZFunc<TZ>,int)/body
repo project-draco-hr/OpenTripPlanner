@@ -3,6 +3,6 @@
   this.dY=dY;
   this.center=center;
   this.zFunc=zFunc;
-  allSamples=new SparseMatrix<GridSample<TZ>>(16,size);
+  sampleGrid=new SparseMatrixZSampleGrid<TZ,IsoLineUserData>(16,size);
   LOG.debug("Center={} dX={} dY={}",this.center,dX,dY);
 }
