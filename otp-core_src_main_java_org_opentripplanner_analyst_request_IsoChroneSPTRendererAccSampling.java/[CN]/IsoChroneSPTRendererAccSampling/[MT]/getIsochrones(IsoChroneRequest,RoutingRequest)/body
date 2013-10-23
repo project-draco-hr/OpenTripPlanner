@@ -74,7 +74,7 @@
 ;
   AccSamplingGridIsolineBuilder isolineBuilder=new AccSamplingGridIsolineBuilder(dX,dY,center,zFunc,spt.getVertexCount());
   isolineBuilder.setDebug(isoChroneRequest.isIncludeDebugGeometry());
-  computeInitialPoints(spt,isolineBuilder,gridSizeMeters * 0.7,V0,isoChroneRequest.getMaxCutoffSec() + tOvershot,cosLat);
+  computeInitialPoints(spt,isolineBuilder,gridSizeMeters * 0.7,V0,sptRequest.getMaxWalkDistance());
   long t2=System.currentTimeMillis();
   List<IsochroneData> isochrones=new ArrayList<IsochroneData>();
   for (  Integer cutoffSec : isoChroneRequest.getCutoffSecList()) {
