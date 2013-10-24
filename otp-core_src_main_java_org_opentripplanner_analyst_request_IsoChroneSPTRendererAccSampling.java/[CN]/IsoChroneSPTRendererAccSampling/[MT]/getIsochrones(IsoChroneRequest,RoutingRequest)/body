@@ -13,34 +13,10 @@
   final double cosLat=FastMath.cos(toRadians(center.y));
   double dY=Math.toDegrees(gridSizeMeters / SphericalDistanceLibrary.RADIUS_OF_EARTH_IN_M);
   double dX=dY / cosLat;
-  ZFunc<WTWD> zFunc=new ZFunc<WTWD>(){
-    @Override public WTWD cumulateSample(    Coordinate C0,    Coordinate Cs,    double z,    WTWD zS){
-      double t=z;
-      double d=distanceLibrary.fastDistance(C0,Cs,cosLat);
-      double dt=d / V0;
-      double w=1 / (d + D0) * (d + D0);
-      if (zS == null) {
-        zS=new WTWD();
-        zS.d=Double.MAX_VALUE;
-      }
-      zS.w=zS.w + w;
-      zS.tw=zS.tw + w * (t + dt);
-      if (d < zS.d)       zS.d=d;
-      return zS;
-    }
-    @Override public WTWD closeSample(    WTWD zUp,    WTWD zDown,    WTWD zRight,    WTWD zLeft){
-      double dMin=Double.MAX_VALUE;
-      for (      WTWD z : new WTWD[]{zUp,zDown,zRight,zLeft}) {
-        if (z == null)         continue;
-        double d=z.d / z.w;
-        if (d < dMin)         dMin=d;
-      }
-      WTWD z=new WTWD();
-      z.w=1.0;
-      z.tw=Double.POSITIVE_INFINITY;
-      z.d=dMin + gridSizeMeters;
-      return z;
-    }
+  ZSampleGrid<WTWD> sampleGrid=new SparseMatrixZSampleGrid<WTWD>(16,spt.getVertexCount(),dX,dY,center);
+  sampleSPT(spt,sampleGrid,gridSizeMeters * 0.7,gridSizeMeters,V0,sptRequest.getMaxWalkDistance(),cosLat);
+  sptRequest.cleanup();
+  ZMetric<WTWD> zMetric=new ZMetric<WTWD>(){
     @Override public int cut(    WTWD zA,    WTWD zB,    WTWD z0){
       double t0=z0.tw / z0.w;
       double tA=zA.d > z0.d ? Double.POSITIVE_INFINITY : zA.tw / zA.w;
@@ -65,10 +41,8 @@
     }
   }
 ;
-  AccSamplingGridIsolineBuilder<WTWD> isolineBuilder=new AccSamplingGridIsolineBuilder<WTWD>(dX,dY,center,zFunc,spt.getVertexCount());
+  SampleGridIsolineBuilder<WTWD> isolineBuilder=new SampleGridIsolineBuilder<WTWD>(sampleGrid,zMetric);
   isolineBuilder.setDebug(isoChroneRequest.isIncludeDebugGeometry());
-  computeInitialPoints(spt,isolineBuilder,gridSizeMeters * 0.7,V0,sptRequest.getMaxWalkDistance());
-  sptRequest.cleanup();
   long t2=System.currentTimeMillis();
   List<IsochroneData> isochrones=new ArrayList<IsochroneData>();
   for (  Integer cutoffSec : isoChroneRequest.getCutoffSecList()) {
