@@ -1,0 +1,33 @@
+{
+  triangulation=new ArrayList<GridDelaunayEdge>(allSamples.size() * 3);
+  for (  SparseMatrixSamplePoint A : allSamples) {
+    SparseMatrixSamplePoint B=(SparseMatrixSamplePoint)A.right();
+    SparseMatrixSamplePoint D=(SparseMatrixSamplePoint)A.up();
+    SparseMatrixSamplePoint C=(SparseMatrixSamplePoint)(B != null ? B.up() : D != null ? D.right() : null);
+    if (B != null)     triangulation.add(new GridDelaunayEdge(A,B,GridDelaunayEdge.TYPE_HORIZONTAL));
+    if (D != null)     triangulation.add(new GridDelaunayEdge(A,D,GridDelaunayEdge.TYPE_VERTICAL));
+    if (C != null)     triangulation.add(new GridDelaunayEdge(A,C,GridDelaunayEdge.TYPE_DIAGONAL));
+  }
+  for (  GridDelaunayEdge e : triangulation) {
+switch (e.type) {
+case GridDelaunayEdge.TYPE_HORIZONTAL:
+      e.ccw1=e.B.eUp;
+    e.ccw2=e.A.eUpRight;
+  e.cw1=e.A.down == null ? null : e.A.down.eUpRight;
+e.cw2=e.A.down == null ? null : e.A.down.eUp;
+break;
+case GridDelaunayEdge.TYPE_VERTICAL:
+e.ccw1=e.A.left == null ? null : e.A.left.eUpRight;
+e.ccw2=e.A.left == null ? null : e.A.left.eRight;
+e.cw1=e.B.eRight;
+e.cw2=e.A.eUpRight;
+break;
+case GridDelaunayEdge.TYPE_DIAGONAL:
+e.ccw1=e.A.up == null ? null : e.A.up.eRight;
+e.ccw2=e.A.eUp;
+e.cw1=e.A.right == null ? null : e.A.right.eUp;
+e.cw2=e.A.eRight;
+break;
+}
+}
+}

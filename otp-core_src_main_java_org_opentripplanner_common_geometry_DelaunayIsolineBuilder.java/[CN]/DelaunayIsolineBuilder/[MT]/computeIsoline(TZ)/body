@@ -1,0 +1,52 @@
+{
+  Queue<DelaunayEdge<TZ>> processQ=new ArrayDeque<DelaunayEdge<TZ>>(triangulation.edgesCount());
+  for (  DelaunayEdge<TZ> e : triangulation.edges()) {
+    e.setProcessed(false);
+    processQ.add(e);
+  }
+  if (debug)   generateDebugGeometry(z0);
+  List<LinearRing> rings=new ArrayList<LinearRing>();
+  while (!processQ.isEmpty()) {
+    DelaunayEdge<TZ> e=processQ.remove();
+    if (e.isProcessed())     continue;
+    e.setProcessed(true);
+    int cut=zMetric.cut(e.getA().getZ(),e.getB().getZ(),z0);
+    if (cut == 0) {
+      continue;
+    }
+    List<Coordinate> polyPoints=new ArrayList<Coordinate>();
+    boolean ccw=cut > 0;
+    while (true) {
+      Coordinate cA=e.getA().getCoordinates();
+      Coordinate cB=e.getB().getCoordinates();
+      double k=zMetric.interpolate(e.getA().getZ(),e.getB().getZ(),z0);
+      Coordinate cC=new Coordinate(cA.x * (1.0 - k) + cB.x * k,cA.y * (1.0 - k) + cB.y * k);
+      polyPoints.add(cC);
+      e.setProcessed(true);
+      DelaunayEdge<TZ> E1=e.getEdge1(ccw);
+      DelaunayEdge<TZ> E2=e.getEdge2(ccw);
+      int cut1=E1 == null ? 0 : zMetric.cut(E1.getA().getZ(),E1.getB().getZ(),z0);
+      int cut2=E2 == null ? 0 : zMetric.cut(E2.getA().getZ(),E2.getB().getZ(),z0);
+      boolean ok1=cut1 != 0 && !E1.isProcessed();
+      boolean ok2=cut2 != 0 && !E2.isProcessed();
+      if (ok1) {
+        e=E1;
+        ccw=cut1 > 0;
+      }
+ else       if (ok2) {
+        e=E2;
+        ccw=cut2 > 0;
+      }
+ else {
+        break;
+      }
+    }
+    polyPoints.add(polyPoints.get(0));
+    if (polyPoints.size() > 5) {
+      LinearRing ring=geometryFactory.createLinearRing(polyPoints.toArray(new Coordinate[polyPoints.size()]));
+      rings.add(ring);
+    }
+  }
+  List<Polygon> retval=punchHoles(rings);
+  return geometryFactory.createGeometryCollection(retval.toArray(new Geometry[retval.size()]));
+}

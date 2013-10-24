@@ -4,7 +4,7 @@
       double t=z;
       double d=distanceLibrary.fastDistance(C0,Cs,cosLat);
       double dt=d / v0;
-      double w=1 / (d + d0) * (d + d0);
+      double w=1 / ((d + d0) * (d + d0));
       if (zS == null) {
         zS=new WTWD();
         zS.d=Double.MAX_VALUE;
@@ -18,8 +18,7 @@
       double dMin=Double.MAX_VALUE;
       for (      WTWD z : new WTWD[]{zUp,zDown,zRight,zLeft}) {
         if (z == null)         continue;
-        double d=z.d / z.w;
-        if (d < dMin)         dMin=d;
+        if (z.d < dMin)         dMin=z.d;
       }
       WTWD z=new WTWD();
       z.w=1.0;

@@ -13,7 +13,7 @@
   final double cosLat=FastMath.cos(toRadians(center.y));
   double dY=Math.toDegrees(gridSizeMeters / SphericalDistanceLibrary.RADIUS_OF_EARTH_IN_M);
   double dX=dY / cosLat;
-  ZSampleGrid<WTWD> sampleGrid=new SparseMatrixZSampleGrid<WTWD>(16,spt.getVertexCount(),dX,dY,center);
+  SparseMatrixZSampleGrid<WTWD> sampleGrid=new SparseMatrixZSampleGrid<WTWD>(16,spt.getVertexCount(),dX,dY,center);
   sampleSPT(spt,sampleGrid,gridSizeMeters * 0.7,gridSizeMeters,V0,sptRequest.getMaxWalkDistance(),cosLat);
   sptRequest.cleanup();
   ZMetric<WTWD> zMetric=new ZMetric<WTWD>(){
@@ -41,7 +41,7 @@
     }
   }
 ;
-  SampleGridIsolineBuilder<WTWD> isolineBuilder=new SampleGridIsolineBuilder<WTWD>(sampleGrid,zMetric);
+  DelaunayIsolineBuilder<WTWD> isolineBuilder=new DelaunayIsolineBuilder<WTWD>(sampleGrid,zMetric);
   isolineBuilder.setDebug(isoChroneRequest.isIncludeDebugGeometry());
   long t2=System.currentTimeMillis();
   List<IsochroneData> isochrones=new ArrayList<IsochroneData>();
