@@ -2,8 +2,9 @@
   if (closed) {
     throw new IllegalStateException("Cannot add sample once an isochrone is computed.");
   }
-  int x=(int)Math.round((C0.x - center.x - dX / 2) / dX);
-  int y=(int)Math.round((C0.y - center.y - dY / 2) / dY);
+  int[] xy=sampleGrid.getLowerLeftIndex(C0);
+  int x=xy[0];
+  int y=xy[1];
   @SuppressWarnings("unchecked") ZSamplePoint<TZ,IsoLineUserData>[] ABCD=new ZSamplePoint[4];
   ABCD[0]=sampleGrid.getOrCreate(x,y);
   ABCD[1]=sampleGrid.getOrCreate(x + 1,y);
@@ -11,7 +12,7 @@
   ABCD[3]=sampleGrid.getOrCreate(x + 1,y + 1);
   for (  ZSamplePoint<TZ,IsoLineUserData> P : ABCD) {
     if (P.getU() == null)     P.setU(new IsoLineUserData());
-    Coordinate C=getCoordinate(P.getX(),P.getY());
+    Coordinate C=sampleGrid.getCoordinates(P);
     P.setZ(zFunc.cumulateSample(C0,C,z,P.getZ()));
   }
 }

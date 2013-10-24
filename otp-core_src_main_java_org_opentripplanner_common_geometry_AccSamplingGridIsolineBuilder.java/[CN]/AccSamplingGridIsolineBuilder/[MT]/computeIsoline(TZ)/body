@@ -38,8 +38,8 @@
     List<Coordinate> polyPoints=new ArrayList<Coordinate>();
     Direction direction=horizontal ? (cut > 0 ? Direction.UP : Direction.DOWN) : (cut > 0 ? Direction.LEFT : Direction.RIGHT);
     while (true) {
-      Coordinate cA=getCoordinate(A.getX(),A.getY());
-      Coordinate cB=getCoordinate(B.getX(),B.getY());
+      Coordinate cA=sampleGrid.getCoordinates(A);
+      Coordinate cB=sampleGrid.getCoordinates(B);
       double k=zFunc.interpolate(A.getZ(),B.getZ(),z0);
       Coordinate cC=new Coordinate(cA.x * (1.0 - k) + cB.x * k,cA.y * (1.0 - k) + cB.y * k);
       polyPoints.add(cC);
