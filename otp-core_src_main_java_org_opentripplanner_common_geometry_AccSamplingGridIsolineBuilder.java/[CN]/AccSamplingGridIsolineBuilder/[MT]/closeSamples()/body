@@ -1,10 +1,10 @@
 {
-  List<ZSamplePoint<TZ,IsoLineUserData>> processList=new ArrayList<ZSamplePoint<TZ,IsoLineUserData>>(sampleGrid.size());
-  for (  ZSamplePoint<TZ,IsoLineUserData> A : sampleGrid) {
+  List<ZSamplePoint<TZ>> processList=new ArrayList<ZSamplePoint<TZ>>(sampleGrid.size());
+  for (  ZSamplePoint<TZ> A : sampleGrid) {
     processList.add(A);
   }
   int n=0;
-  for (  ZSamplePoint<TZ,IsoLineUserData> A : processList) {
+  for (  ZSamplePoint<TZ> A : processList) {
     if (A.right() == null) {
       closeSample(A.getX() + 1,A.getY(),null,null,null,A);
       n++;

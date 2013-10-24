@@ -1,10 +1,10 @@
 {
-  return new Iterator<ZSamplePoint<TZ,U>>(){
-    private Iterator<SparseMatrixSamplePoint<TZ,U>> iterator=allSamples.iterator();
+  return new Iterator<ZSamplePoint<TZ>>(){
+    private Iterator<SparseMatrixSamplePoint<TZ>> iterator=allSamples.iterator();
     @Override public boolean hasNext(){
       return iterator.hasNext();
     }
-    @Override public ZSamplePoint<TZ,U> next(){
+    @Override public ZSamplePoint<TZ> next(){
       return iterator.next();
     }
     @Override public void remove(){

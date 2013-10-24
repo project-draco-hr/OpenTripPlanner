@@ -3,17 +3,18 @@
     closeSamples();
     closed=true;
   }
-  Queue<ZSamplePoint<TZ,IsoLineUserData>> processQ=new ArrayDeque<ZSamplePoint<TZ,IsoLineUserData>>(sampleGrid.size());
-  for (  ZSamplePoint<TZ,IsoLineUserData> A : sampleGrid) {
-    A.getU().hProcessed=false;
-    A.getU().vProcessed=false;
+  Queue<ZSamplePoint<TZ>> processQ=new ArrayDeque<ZSamplePoint<TZ>>(sampleGrid.size());
+  for (  ZSamplePoint<TZ> A : sampleGrid) {
+    IsoLineUserData iud=(IsoLineUserData)A.getUserData();
+    iud.hProcessed=false;
+    iud.vProcessed=false;
     processQ.add(A);
   }
   if (debug)   generateDebugGeometry(z0);
   List<LinearRing> rings=new ArrayList<LinearRing>();
   while (!processQ.isEmpty()) {
-    ZSamplePoint<TZ,IsoLineUserData> A=processQ.remove();
-    IsoLineUserData uA=A.getU();
+    ZSamplePoint<TZ> A=processQ.remove();
+    IsoLineUserData uA=(IsoLineUserData)A.getUserData();
     if (uA.hProcessed && uA.vProcessed)     continue;
     boolean horizontal=!uA.hProcessed;
     if (horizontal) {
@@ -25,7 +26,7 @@
     if (!(uA.vProcessed && uA.hProcessed)) {
       processQ.add(A);
     }
-    ZSamplePoint<TZ,IsoLineUserData> B=horizontal ? A.right() : A.up();
+    ZSamplePoint<TZ> B=horizontal ? A.right() : A.up();
     boolean ok=B != null;
     int cut=0;
     if (ok) {
@@ -45,12 +46,12 @@
       polyPoints.add(cC);
       horizontal=direction == Direction.UP || direction == Direction.DOWN;
       if (horizontal) {
-        A.getU().hProcessed=true;
+        ((IsoLineUserData)A.getUserData()).hProcessed=true;
       }
  else {
-        A.getU().vProcessed=true;
+        ((IsoLineUserData)A.getUserData()).vProcessed=true;
       }
-      ZSamplePoint<TZ,IsoLineUserData> C, D;
+      ZSamplePoint<TZ> C, D;
       Direction d1, d2;
       boolean invertAB;
 switch (direction) {
@@ -88,14 +89,14 @@ D=A.right();
 invertAB=false;
 break;
 }
-boolean ok1=D != null && zFunc.cut(A.getZ(),D.getZ(),z0) != 0 && (horizontal ? (invertAB ? !D.getU().vProcessed : !A.getU().vProcessed) : (invertAB ? !D.getU().hProcessed : !A.getU().hProcessed));
-boolean ok2=C != null && zFunc.cut(B.getZ(),C.getZ(),z0) != 0 && (horizontal ? (invertAB ? !C.getU().vProcessed : !B.getU().vProcessed) : (invertAB ? !C.getU().hProcessed : !B.getU().hProcessed));
-boolean ok3=C != null && D != null && zFunc.cut(C.getZ(),D.getZ(),z0) != 0 && (horizontal ? !D.getU().hProcessed : !D.getU().vProcessed);
+boolean ok1=D != null && zFunc.cut(A.getZ(),D.getZ(),z0) != 0 && (horizontal ? (invertAB ? !((IsoLineUserData)D.getUserData()).vProcessed : !((IsoLineUserData)A.getUserData()).vProcessed) : (invertAB ? !((IsoLineUserData)D.getUserData()).hProcessed : !((IsoLineUserData)A.getUserData()).hProcessed));
+boolean ok2=C != null && zFunc.cut(B.getZ(),C.getZ(),z0) != 0 && (horizontal ? (invertAB ? !((IsoLineUserData)C.getUserData()).vProcessed : !((IsoLineUserData)B.getUserData()).vProcessed) : (invertAB ? !((IsoLineUserData)C.getUserData()).hProcessed : !((IsoLineUserData)B.getUserData()).hProcessed));
+boolean ok3=C != null && D != null && zFunc.cut(C.getZ(),D.getZ(),z0) != 0 && (horizontal ? !((IsoLineUserData)D.getUserData()).hProcessed : !((IsoLineUserData)D.getUserData()).vProcessed);
 if (ok1 && ok2) {
 double dA=Math.max(Math.abs(cA.x - cC.x),Math.abs(cA.y - cC.y));
 double dB=Math.max(Math.abs(cB.x - cC.x),Math.abs(cB.y - cC.y));
 if (dA <= dB) {
-ZSamplePoint<TZ,IsoLineUserData> oA=A;
+ZSamplePoint<TZ> oA=A;
 A=invertAB ? D : A;
 B=invertAB ? oA : D;
 direction=d1;
@@ -107,7 +108,7 @@ direction=d2;
 }
 }
  else if (ok1) {
-ZSamplePoint<TZ,IsoLineUserData> oA=A;
+ZSamplePoint<TZ> oA=A;
 A=invertAB ? D : A;
 B=invertAB ? oA : D;
 direction=d1;

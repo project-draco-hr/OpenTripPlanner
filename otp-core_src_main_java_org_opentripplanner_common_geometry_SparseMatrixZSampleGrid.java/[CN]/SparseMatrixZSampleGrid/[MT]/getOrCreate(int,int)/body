@@ -1,26 +1,26 @@
 {
-  SparseMatrixSamplePoint<TZ,U> A=allSamples.get(x,y);
+  SparseMatrixSamplePoint<TZ> A=allSamples.get(x,y);
   if (A != null)   return A;
-  A=new SparseMatrixSamplePoint<TZ,U>();
+  A=new SparseMatrixSamplePoint<TZ>();
   A.x=x;
   A.y=y;
   A.z=null;
-  SparseMatrixSamplePoint<TZ,U> Aup=allSamples.get(x,y + 1);
+  SparseMatrixSamplePoint<TZ> Aup=allSamples.get(x,y + 1);
   if (Aup != null) {
     Aup.down=A;
     A.up=Aup;
   }
-  SparseMatrixSamplePoint<TZ,U> Adown=allSamples.get(x,y - 1);
+  SparseMatrixSamplePoint<TZ> Adown=allSamples.get(x,y - 1);
   if (Adown != null) {
     Adown.up=A;
     A.down=Adown;
   }
-  SparseMatrixSamplePoint<TZ,U> Aright=allSamples.get(x + 1,y);
+  SparseMatrixSamplePoint<TZ> Aright=allSamples.get(x + 1,y);
   if (Aright != null) {
     Aright.left=A;
     A.right=Aright;
   }
-  SparseMatrixSamplePoint<TZ,U> Aleft=allSamples.get(x - 1,y);
+  SparseMatrixSamplePoint<TZ> Aleft=allSamples.get(x - 1,y);
   if (Aleft != null) {
     Aleft.right=A;
     A.left=Aleft;
