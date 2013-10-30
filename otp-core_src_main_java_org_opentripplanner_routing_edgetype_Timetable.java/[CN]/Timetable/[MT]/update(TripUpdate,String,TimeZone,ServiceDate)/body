@@ -58,7 +58,15 @@
           }
  else {
             long today=updateServiceDate.getAsDate(timeZone).getTime() / 1000;
-            if (i > 0) {
+            if (i == 0) {
+              if (update.hasArrival()) {
+                StopTimeEvent arrival=update.getArrival();
+                if (arrival.hasDelay()) {
+                  delay=arrival.getDelay();
+                }
+              }
+            }
+ else {
               if (update.hasArrival()) {
                 StopTimeEvent arrival=update.getArrival();
                 if (arrival.hasDelay()) {
