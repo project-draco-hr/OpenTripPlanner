@@ -3,7 +3,7 @@
   AgencyAndId tripId=new AgencyAndId(agencyId,tripDescriptor.getTripId());
   TableTripPattern pattern=getPatternForTrip(tripId);
   if (pattern == null) {
-    LOG.debug("No pattern found for tripId {}, skipping TripUpdate.",tripId);
+    LOG.warn("No pattern found for tripId {}, skipping TripUpdate.",tripId);
     return false;
   }
   if (tripUpdate.getStopTimeUpdateCount() < 1) {
