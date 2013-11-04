@@ -5,6 +5,12 @@
   isoChroneRequest.setIncludeDebugGeometry(debug);
   isoChroneRequest.setPrecisionMeters(precisionMeters);
   RoutingRequest sptRequest=buildRequest(0);
+  if (maxTimeSec != null) {
+    isoChroneRequest.setMaxTimeSec(maxTimeSec);
+  }
+ else {
+    isoChroneRequest.setMaxTimeSec(isoChroneRequest.getMaxCutoffSec());
+  }
   List<IsochroneData> isochrones;
   if (algorithm == null || "accSampling".equals(algorithm)) {
     isochrones=accSamplingRenderer.getIsochrones(isoChroneRequest,sptRequest);
