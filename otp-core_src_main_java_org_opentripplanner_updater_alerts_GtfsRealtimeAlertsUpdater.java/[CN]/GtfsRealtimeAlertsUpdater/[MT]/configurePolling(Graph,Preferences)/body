@@ -2,7 +2,9 @@
   PatchService patchService=new PatchServiceImpl(graph);
   this.patchService=patchService;
   String url=preferences.get("url",null);
-  if (url == null)   throw new IllegalArgumentException("Missing mandatory 'url' parameter");
+  if (url == null) {
+    throw new IllegalArgumentException("Missing mandatory 'url' parameter");
+  }
   this.url=url;
   this.earlyStart=preferences.getInt("earlyStartSec",0);
   this.defaultAgencyId=preferences.get("defaultAgencyId",null);

@@ -1,0 +1,34 @@
+{
+  rangeCheckParameters();
+  request=buildRequest(0);
+  Graph graph=graphService.getGraph();
+  Coordinate originCoord=request.getFrom().getCoordinate();
+  if (originCoord == null)   return null;
+  List<TransitStop> stops=graph.streetIndex.getNearbyTransitStops(originCoord,radiusMeters);
+  if (stops.isEmpty()) {
+    LOG.error("No stops found within {} meters.",radiusMeters);
+    return null;
+  }
+  if (shpName == null)   shpName=stops.get(0).getName().split(" ")[0];
+  StreetVertex origin=new IntersectionVertex(graph,"iso_temp",originCoord.x,originCoord.y);
+  for (  TransitStop stop : stops) {
+    new StreetTransitLink(origin,stop,false);
+    LOG.debug("linked to stop {}",stop.getName());
+  }
+  request.setRoutingContext(graph,origin,null);
+  int nRequests=(requestTimespanHours * 60) / requestSpacingMinutes;
+  request.setClampInitialWait(requestSpacingMinutes * 60);
+  Date date=request.getDateTime();
+  MinMap<Vertex,Double> points=new MinMap<Vertex,Double>();
+  for (int r=0; r < nRequests; r++) {
+    request.dateTime=date.getTime() / 1000 + r * requestSpacingMinutes * 60;
+    LOG.debug("date: {} {}",new Date(request.dateTime),request.dateTime);
+    ShortestPathTree spt=sptService.getShortestPathTree(request,10);
+    for (    State s : spt.getAllStates()) {
+      if (stopsOnly && !(s.getVertex() instanceof TransitStop))       continue;
+      points.putMin(s.getVertex(),(double)(s.getActiveTime()));
+    }
+  }
+  graph.removeVertexAndEdges(origin);
+  return points;
+}

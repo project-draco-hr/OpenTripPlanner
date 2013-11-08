@@ -1,27 +1,40 @@
 {
+  int arrivalTime;
+  int departureTime;
+  TableTripPattern pattern;
+  TripTimes newTripTimes;
+  TripTimes oldTripTimes=state0.getTripTimes();
   RoutingRequest options=state0.getOptions();
   AgencyAndId tripId=state0.getTripId();
   InterlineDwellData dwellData;
   if (options.isArriveBy()) {
     dwellData=reverseTripIdToInterlineDwellData.get(tripId);
+    if (dwellData == null)     return null;
+    pattern=((OnboardVertex)fromv).getTripPattern();
+    newTripTimes=pattern.getResolvedTripTimes(dwellData.patternIndex,state0);
+    arrivalTime=newTripTimes.getArrivalTime(newTripTimes.getNumHops() - 1);
+    departureTime=oldTripTimes.getDepartureTime(0);
   }
  else {
     dwellData=tripIdToInterlineDwellData.get(tripId);
-  }
-  if (dwellData == null) {
-    return null;
+    if (dwellData == null)     return null;
+    pattern=((OnboardVertex)tov).getTripPattern();
+    newTripTimes=pattern.getResolvedTripTimes(dwellData.patternIndex,state0);
+    arrivalTime=oldTripTimes.getArrivalTime(oldTripTimes.getNumHops() - 1);
+    departureTime=newTripTimes.getDepartureTime(0);
   }
   BannedStopSet banned=options.bannedTrips.get(dwellData.trip.getId());
   if (banned != null) {
     if (banned.contains(0))     return null;
   }
+  int dwellTime=departureTime - arrivalTime;
+  if (dwellTime < 0)   return null;
   StateEditor s1=state0.edit(this);
-  TableTripPattern pattern=((OnboardVertex)s1.getVertex()).getTripPattern();
-  s1.incrementTimeInSeconds(dwellData.dwellTime);
+  s1.incrementTimeInSeconds(dwellTime);
   s1.setTripId(dwellData.trip.getId());
   s1.setPreviousTrip(dwellData.trip);
-  s1.setTripTimes(pattern.getTripTimes(dwellData.patternIndex));
-  s1.incrementWeight(dwellData.dwellTime);
+  s1.setTripTimes(newTripTimes);
+  s1.incrementWeight(dwellTime);
   s1.setBackMode(getMode());
   return s1.makeState();
 }

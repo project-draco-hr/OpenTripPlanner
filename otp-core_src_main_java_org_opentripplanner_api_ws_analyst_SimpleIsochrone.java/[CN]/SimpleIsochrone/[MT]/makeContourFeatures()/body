@@ -1,0 +1,14 @@
+{
+  Map<Integer,Geometry> contours=makeContours();
+  DefaultFeatureCollection featureCollection=new DefaultFeatureCollection(null,contourSchema);
+  SimpleFeatureBuilder fbuilder=new SimpleFeatureBuilder(contourSchema);
+  List<Integer> thresholds=new ArrayList<Integer>(contours.keySet());
+  Collections.sort(thresholds);
+  for (  Integer threshold : thresholds) {
+    Geometry contour=contours.get(threshold);
+    fbuilder.add(contour);
+    fbuilder.add(threshold);
+    featureCollection.add(fbuilder.buildFeature(null));
+  }
+  return featureCollection;
+}

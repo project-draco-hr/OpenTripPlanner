@@ -1,7 +1,0 @@
-{
-  Update update=new Update(new AgencyAndId("agency",tripId),new AgencyAndId("agency",stopId),stopSeq,arrive,depart,prediction,timestamp,ServiceDate.parseString(serviceDate));
-  ArrayList<Update> updates=new ArrayList<Update>(Arrays.asList(update));
-  TripUpdateList tripUpdateList=TripUpdateList.splitByTrip(updates).get(0);
-  boolean success=pattern.update(tripUpdateList);
-  assertTrue(success);
-}

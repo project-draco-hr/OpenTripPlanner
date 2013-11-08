@@ -1,0 +1,34 @@
+{
+  Map<Vertex,Double> points=makePoints();
+  if (points == null || points.isEmpty()) {
+    LOG.error("No destinations were reachable.");
+    return null;
+  }
+  CoordinateReferenceSystem wgs=DefaultGeographicCRS.WGS84;
+  MathTransform toMeters=CRS.findMathTransform(wgs,crs,false);
+  MathTransform fromMeters=CRS.findMathTransform(crs,wgs,false);
+  GeometryFactory geomf=JTSFactoryFinder.getGeometryFactory();
+  Multimap<Integer,Geometry> bufferLists=ArrayListMultimap.create();
+  for (int c=0; c < nContours; ++c) {
+    int thresholdSeconds=(c + 1) * contourSpacingMinutes * 60;
+    for (    Map.Entry<Vertex,Double> vertexSeconds : points.entrySet()) {
+      double remainingSeconds=thresholdSeconds - vertexSeconds.getValue();
+      if (remainingSeconds > 60) {
+        double remainingMeters=remainingSeconds * request.getWalkSpeed();
+        Geometry point=geomf.createPoint(vertexSeconds.getKey().getCoordinate());
+        point=JTS.transform(point,toMeters);
+        Geometry buffer=point.buffer(remainingMeters);
+        bufferLists.put(thresholdSeconds,buffer);
+      }
+    }
+  }
+  Map<Integer,Geometry> contours=Maps.newHashMap();
+  for (  Integer threshold : bufferLists.keys()) {
+    Collection<Geometry> buffers=bufferLists.get(threshold);
+    Geometry geom=geomf.buildGeometry(buffers);
+    geom=geom.union();
+    if (!resultsProjected)     geom=JTS.transform(geom,fromMeters);
+    contours.put(threshold,geom);
+  }
+  return contours;
+}

@@ -1,0 +1,21 @@
+{
+  SimpleFeatureCollection contourFeatures=makeContourFeatures();
+  final File shapeDir=Files.createTempDir();
+  shapeDir.deleteOnExit();
+  File shapeFile=new File(shapeDir,shpName + ".shp");
+  LOG.debug("writing out shapefile {}",shapeFile);
+  ShapefileDataStore outStore=new ShapefileDataStore(shapeFile.toURI().toURL());
+  outStore.createSchema(contourSchema);
+  SimpleFeatureStore featureStore=(SimpleFeatureStore)outStore.getFeatureSource();
+  featureStore.addFeatures(contourFeatures);
+  StreamingOutput output=new DirectoryZipper(shapeDir);
+  if (stream) {
+    return Response.ok().entity(output).build();
+  }
+ else {
+    File zipFile=new File(shapeDir,shpName + ".zip");
+    OutputStream fos=new FileOutputStream(zipFile);
+    output.write(fos);
+    return Response.ok().entity(zipFile).build();
+  }
+}

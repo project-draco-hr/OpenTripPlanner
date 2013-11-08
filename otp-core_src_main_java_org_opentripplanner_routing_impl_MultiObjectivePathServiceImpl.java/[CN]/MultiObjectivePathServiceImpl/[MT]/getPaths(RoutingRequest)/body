@@ -23,19 +23,19 @@
     LOG.debug("try search with max walk {}",maxWalk);
     if (maxWalk < Math.min(distanceLibrary.distance(originVertex.getCoordinate(),targetVertex.getCoordinate()),originVertex.getDistanceToNearestTransitStop() + targetVertex.getDistanceToNearestTransitStop()))     continue WALK;
     options.setMaxWalkDistance(maxWalk);
+    long startTime=System.currentTimeMillis();
+    long endTime=startTime + (int)(_timeouts[0] * 1000);
+    LOG.debug("starttime {} endtime {}",startTime,endTime);
     final double AVG_TRANSIT_SPEED=25;
     double cutoff=(distanceLibrary.distance(originVertex.getCoordinate(),targetVertex.getCoordinate()) * 1.5) / AVG_TRANSIT_SPEED;
     cutoff+=options.getMaxWalkDistance() * options.walkReluctance;
     options.maxWeight=cutoff;
     State origin=new State(options);
-    heuristic.initialize(origin,targetVertex);
+    heuristic.initialize(origin,targetVertex,endTime);
     options.maxWeight=cutoff + 30 * 60 * options.waitReluctance;
     HashMap<Vertex,List<State>> states=new HashMap<Vertex,List<State>>();
     pq.reset();
     pq.insert(origin,0);
-    long startTime=System.currentTimeMillis();
-    long endTime=startTime + (int)(_timeouts[0] * 1000);
-    LOG.debug("starttime {} endtime {}",startTime,endTime);
     QUEUE:     while (!pq.empty()) {
       if (System.currentTimeMillis() > endTime) {
         LOG.debug("timeout at {} msec",System.currentTimeMillis() - startTime);

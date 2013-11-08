@@ -1,0 +1,25 @@
+{
+  if (target == this.target) {
+    LOG.debug("reusing existing heuristic");
+    return;
+  }
+  LOG.info("begin init heuristic        {}",System.currentTimeMillis());
+  this.target=target;
+  int nVertices=graph.countVertices();
+  weights=Maps.newHashMapWithExpectedSize(((int)Math.log(nVertices)) + 1);
+  this.options=s.getOptions();
+  this.origin=s.getVertex();
+  LOG.debug("initializing heuristic computation thread");
+  List<State> search=streetSearch(options,false,abortTime);
+  if (search == null)   return;
+  LOG.info("end foreward street search {}",System.currentTimeMillis());
+  q=new BinHeap<Vertex>();
+  search=streetSearch(options,true,abortTime);
+  if (search == null)   return;
+  for (  State stopState : search) {
+    q.insert(stopState.getVertex(),stopState.getWeight());
+  }
+  LOG.info("end backward street search {}",System.currentTimeMillis());
+  options.setMaxWalkDistance(Double.POSITIVE_INFINITY);
+  LOG.debug("initialized SSSP");
+}

@@ -1,8 +1,15 @@
 {
+  FeedMessage feedMessage=null;
+  List<FeedEntity> feedEntityList=null;
+  List<TripUpdate> updates=null;
   try {
-    FeedMessage feed=GtfsRealtime.FeedMessage.PARSER.parseFrom(message);
-    List<TripUpdateList> updates=TripUpdateList.decodeFromGtfsRealtime(feed,agencyId);
-    TripUpdateGraphWriterRunnable runnable=new TripUpdateGraphWriterRunnable(updates);
+    feedMessage=FeedMessage.PARSER.parseFrom(message);
+    feedEntityList=feedMessage.getEntityList();
+    updates=new ArrayList<TripUpdate>(feedEntityList.size());
+    for (    FeedEntity feedEntity : feedEntityList) {
+      updates.add(feedEntity.getTripUpdate());
+    }
+    TripUpdateGraphWriterRunnable runnable=new TripUpdateGraphWriterRunnable(updates,agencyId);
     updaterManager.execute(runnable);
   }
  catch (  InvalidProtocolBufferException e) {

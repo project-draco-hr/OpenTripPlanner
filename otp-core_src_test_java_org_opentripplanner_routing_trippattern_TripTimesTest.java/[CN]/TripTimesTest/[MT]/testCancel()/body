@@ -1,0 +1,10 @@
+{
+  TripTimes updatedTripTimesA=new TripTimes(originalTripTimes);
+  updatedTripTimesA.cancel();
+  for (int i=0; i < stops.length - 1; i++) {
+    assertEquals(originalTripTimes.getDepartureTime(i),updatedTripTimesA.getScheduledDepartureTime(i));
+    assertEquals(originalTripTimes.getArrivalTime(i),updatedTripTimesA.getScheduledArrivalTime(i));
+    assertEquals(TripTimes.CANCELED,updatedTripTimesA.getDepartureTime(i));
+    assertEquals(TripTimes.CANCELED,updatedTripTimesA.getArrivalTime(i));
+  }
+}

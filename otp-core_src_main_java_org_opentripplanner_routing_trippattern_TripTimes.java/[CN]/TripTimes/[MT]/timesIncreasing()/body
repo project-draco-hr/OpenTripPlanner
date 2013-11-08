@@ -1,5 +1,4 @@
 {
-  boolean increasing=true;
   int nHops=getNumHops();
   int prevArr=-1;
   for (int hop=0; hop < nHops; hop++) {
@@ -10,13 +9,13 @@
     }
     if (arr < dep) {
       LOG.error("Negative hop time in TripTimes at index {}.",hop);
-      increasing=false;
+      return false;
     }
     if (prevArr > dep) {
       LOG.error("Negative dwell time in TripTimes at index {}.",hop);
-      increasing=false;
+      return false;
     }
     prevArr=arr;
   }
-  return increasing;
+  return true;
 }

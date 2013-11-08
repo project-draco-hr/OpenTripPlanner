@@ -1,0 +1,8 @@
+{
+  V oldValue=this.get(key);
+  if (oldValue == null || value.compareTo(oldValue) < 0) {
+    this.put(key,value);
+    return true;
+  }
+  return false;
+}

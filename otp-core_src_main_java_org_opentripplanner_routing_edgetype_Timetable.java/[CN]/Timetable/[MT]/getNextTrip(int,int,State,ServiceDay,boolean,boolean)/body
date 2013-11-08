@@ -5,8 +5,12 @@
   Stop currentStop=pattern.getStop(stopIndex);
   if (tableIndex != null) {
     TripTimes[] sorted;
-    if (tableIndex.length == 1)     sorted=tableIndex[0];
- else     sorted=tableIndex[boarding ? stopIndex : stopIndex - 1];
+    if (tableIndex.length == 1) {
+      sorted=tableIndex[0];
+    }
+ else {
+      sorted=tableIndex[boarding ? stopIndex : stopIndex - 1];
+    }
     if (boarding) {
       index=TripTimes.binarySearchDepartures(sorted,stopIndex,time);
       while (index < sorted.length) {

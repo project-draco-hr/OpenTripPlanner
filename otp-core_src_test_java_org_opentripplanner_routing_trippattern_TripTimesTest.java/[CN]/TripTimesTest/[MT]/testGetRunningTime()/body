@@ -1,0 +1,5 @@
+{
+  TripTimes updatedTripTimesA=new TripTimes(originalTripTimes);
+  updatedTripTimesA.updateDepartureTime(0,TripTimes.CANCELED);
+  assertEquals(0,updatedTripTimesA.getRunningTime(0));
+}

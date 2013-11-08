@@ -1,0 +1,156 @@
+{
+  if (tripUpdate == null) {
+    LOG.error("A null TripUpdate pointer was passed to the Timetable class update method.");
+    return false;
+  }
+ else   try {
+    if (!tripUpdate.hasTrip()) {
+      LOG.error("TripUpdate object has no TripDescriptor field.");
+      return false;
+    }
+    TripDescriptor tripDescriptor=tripUpdate.getTrip();
+    if (!tripDescriptor.hasTripId()) {
+      LOG.error("TripDescriptor object has no TripId field");
+      return false;
+    }
+    AgencyAndId tripId=new AgencyAndId(agencyId,tripDescriptor.getTripId());
+    int tripIndex=getTripIndex(tripId);
+    if (tripIndex == -1) {
+      LOG.info("tripId {} not found in pattern.",tripId);
+      return false;
+    }
+ else {
+      LOG.trace("tripId {} found at index {} in scheduled timetable.",tripId,tripIndex);
+    }
+    TripTimes newTimes=new TripTimes(getTripTimes(tripIndex));
+    if (tripDescriptor.hasScheduleRelationship() && tripDescriptor.getScheduleRelationship() == TripDescriptor.ScheduleRelationship.CANCELED) {
+      newTimes.cancel();
+    }
+ else {
+      Iterator<StopTimeUpdate> updates=tripUpdate.getStopTimeUpdateList().iterator();
+      if (!updates.hasNext()) {
+        LOG.warn("Won't apply zero-length trip update to trip {}.",tripId);
+        return false;
+      }
+      StopTimeUpdate update=updates.next();
+      int numHops=newTimes.getNumHops();
+      Integer delay=null;
+      for (int i=0; i <= numHops; i++) {
+        boolean match=false;
+        if (update != null) {
+          if (update.hasStopSequence()) {
+            match=update.getStopSequence() == newTimes.getStopSequence(i);
+          }
+ else           if (update.hasStopId()) {
+            match=pattern.getStop(i).getId().getId().equals(update.getStopId());
+          }
+        }
+        if (match) {
+          StopTimeUpdate.ScheduleRelationship scheduleRelationship=update.hasScheduleRelationship() ? update.getScheduleRelationship() : StopTimeUpdate.ScheduleRelationship.SCHEDULED;
+          if (scheduleRelationship == StopTimeUpdate.ScheduleRelationship.SKIPPED) {
+            if (i > 0)             newTimes.updateArrivalTime(i - 1,TripTimes.CANCELED);
+            if (i < numHops)             newTimes.updateDepartureTime(i,TripTimes.CANCELED);
+          }
+ else           if (scheduleRelationship == StopTimeUpdate.ScheduleRelationship.NO_DATA) {
+            if (i > 0)             newTimes.updateArrivalDelay(i - 1,0);
+            if (i < numHops)             newTimes.updateDepartureDelay(i,0);
+            delay=0;
+          }
+ else {
+            long today=updateServiceDate.getAsDate(timeZone).getTime() / 1000;
+            if (i == 0) {
+              if (update.hasArrival()) {
+                StopTimeEvent arrival=update.getArrival();
+                if (arrival.hasDelay()) {
+                  delay=arrival.getDelay();
+                }
+              }
+            }
+ else {
+              if (update.hasArrival()) {
+                StopTimeEvent arrival=update.getArrival();
+                if (arrival.hasDelay()) {
+                  delay=arrival.getDelay();
+                  newTimes.updateArrivalDelay(i - 1,delay);
+                }
+ else                 if (arrival.hasTime()) {
+                  newTimes.updateArrivalTime(i - 1,(int)(arrival.getTime() - today));
+                  delay=newTimes.getArrivalDelay(i - 1);
+                }
+ else {
+                  LOG.error("Arrival time at index {} is erroneous.",i);
+                  return false;
+                }
+              }
+ else {
+                if (delay == null) {
+                  newTimes.updateArrivalTime(i - 1,TripTimes.PASSED);
+                }
+ else {
+                  newTimes.updateArrivalDelay(i - 1,delay);
+                }
+              }
+            }
+            if (i < numHops) {
+              if (update.hasDeparture()) {
+                StopTimeEvent departure=update.getDeparture();
+                if (departure.hasDelay()) {
+                  delay=departure.getDelay();
+                  newTimes.updateDepartureDelay(i,delay);
+                }
+ else                 if (departure.hasTime()) {
+                  newTimes.updateDepartureTime(i,(int)(departure.getTime() - today));
+                  delay=newTimes.getDepartureDelay(i);
+                }
+ else {
+                  LOG.error("Departure time at index {} is erroneous.",i);
+                  return false;
+                }
+              }
+ else {
+                if (delay == null) {
+                  newTimes.updateDepartureTime(i,TripTimes.PASSED);
+                }
+ else {
+                  newTimes.updateDepartureDelay(i,delay);
+                }
+              }
+            }
+          }
+          if (updates.hasNext()) {
+            update=updates.next();
+          }
+ else {
+            update=null;
+          }
+        }
+ else {
+          if (delay == null) {
+            if (i > 0)             newTimes.updateArrivalTime(i - 1,TripTimes.PASSED);
+            if (i < numHops)             newTimes.updateDepartureTime(i,TripTimes.PASSED);
+          }
+ else {
+            if (i > 0)             newTimes.updateArrivalDelay(i - 1,delay);
+            if (i < numHops)             newTimes.updateDepartureDelay(i,delay);
+          }
+        }
+      }
+      newTimes.compactArrivalsAndDepartures();
+      if (update != null) {
+        LOG.error("Part of a TripUpdate object could not be applied successfully.");
+        return false;
+      }
+    }
+    if (!newTimes.timesIncreasing()) {
+      LOG.error("TripTimes are non-increasing after applying GTFS-RT delay propagation.");
+      return false;
+    }
+    tripTimes.set(tripIndex,newTimes);
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+    return false;
+  }
+  LOG.trace("A valid TripUpdate object was applied using the Timetable class update method.");
+  return true;
+}
