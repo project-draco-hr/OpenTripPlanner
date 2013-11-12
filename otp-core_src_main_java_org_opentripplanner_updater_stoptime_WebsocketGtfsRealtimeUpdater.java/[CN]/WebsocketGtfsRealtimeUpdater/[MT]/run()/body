@@ -1,8 +1,8 @@
 {
-  AsyncHttpClient client=new AsyncHttpClient();
-  WebSocketListener listener=new Listener();
-  WebSocketUpgradeHandler handler=new WebSocketUpgradeHandler.Builder().addWebSocketListener(listener).build();
   while (true) {
+    AsyncHttpClient client=new AsyncHttpClient();
+    WebSocketListener listener=new Listener();
+    WebSocketUpgradeHandler handler=new WebSocketUpgradeHandler.Builder().addWebSocketListener(listener).build();
     WebSocket socket=null;
     boolean connectionSuccessful=true;
     try {
