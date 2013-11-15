@@ -1,0 +1,22 @@
+{
+  Edge backEdge=s0.getBackEdge();
+  boolean back=s0.getOptions().isArriveBy();
+  if ((back != exit) && !(backEdge instanceof ParkAndRideEdge))   return null;
+  StateEditor s1=s0.edit(this);
+  TraverseMode mode=s0.getNonTransitMode();
+  if (mode == TraverseMode.WALK) {
+    double walkTime=linkDistance * WALK_GEOMETRIC_CONVOLUTION_FACTOR / s0.getOptions().getWalkSpeed();
+    s1.incrementTimeInSeconds((int)Math.round(walkTime));
+    s1.incrementWeight(walkTime);
+    s1.incrementWalkDistance(linkDistance);
+  }
+ else   if (mode == TraverseMode.CAR) {
+    double driveTime=linkDistance * DRIVE_GEOMETRIC_CONVOLUTION_FACTOR / DRIVE_SPEED_MS;
+    s1.incrementTimeInSeconds((int)Math.round(driveTime));
+    s1.incrementWeight(driveTime);
+  }
+ else {
+    throw new IllegalStateException("Must walk OR drive here: " + mode);
+  }
+  return s1.makeState();
+}

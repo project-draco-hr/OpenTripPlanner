@@ -1,0 +1,31 @@
+{
+  RoutingRequest request=s0.getOptions();
+  if (request.isArriveBy()) {
+    if (s0.getNonTransitMode() != TraverseMode.WALK) {
+      return null;
+    }
+    if (!request.getModes().getCar()) {
+      return null;
+    }
+    if (!s0.isCarParked()) {
+      throw new IllegalStateException("Stolen car?");
+    }
+    StateEditor s1=s0.edit(this);
+    int time=request.getCarDropoffTime();
+    s1.incrementWeight(time);
+    s1.incrementTimeInSeconds(time);
+    s1.setCarParked(false);
+    return s1.makeState();
+  }
+ else {
+    if (s0.getNonTransitMode() != TraverseMode.CAR)     return null;
+    if (!request.getModes().getWalk())     return null;
+    if (s0.isCarParked())     throw new IllegalStateException("Can't drive 2 cars");
+    StateEditor s1=s0.edit(this);
+    int time=request.getCarDropoffTime();
+    s1.incrementWeight(time);
+    s1.incrementTimeInSeconds(time);
+    s1.setCarParked(true);
+    return s1.makeState();
+  }
+}

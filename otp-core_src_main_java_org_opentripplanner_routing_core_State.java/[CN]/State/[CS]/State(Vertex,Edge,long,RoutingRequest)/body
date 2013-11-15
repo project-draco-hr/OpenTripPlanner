@@ -7,6 +7,7 @@
   this.stateData.opt=options;
   this.stateData.startTime=timeSeconds;
   this.stateData.usingRentedBike=false;
+  this.stateData.carParked=options.isArriveBy() && options.getModes().getCar() && options.getModes().getWalk();
   this.walkDistance=0;
   this.time=timeSeconds * 1000;
   if (options.rctx != null) {

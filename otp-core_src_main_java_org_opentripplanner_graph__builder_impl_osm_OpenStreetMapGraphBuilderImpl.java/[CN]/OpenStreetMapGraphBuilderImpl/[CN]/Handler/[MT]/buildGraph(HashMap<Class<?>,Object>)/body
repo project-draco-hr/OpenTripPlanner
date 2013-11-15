@@ -8,7 +8,10 @@
   _nodes.keySet().retainAll(_keep);
   initIntersectionNodes();
   buildBasicGraph();
-  buildAreas();
+  buildWalkableAreas();
+  if (staticParkAndRide) {
+    buildParkAndRideAreas();
+  }
   buildElevatorEdges(graph);
   for (  List<TurnRestrictionTag> restrictions : turnRestrictionsByFromWay.values()) {
     for (    TurnRestrictionTag restrictionTag : restrictions) {
