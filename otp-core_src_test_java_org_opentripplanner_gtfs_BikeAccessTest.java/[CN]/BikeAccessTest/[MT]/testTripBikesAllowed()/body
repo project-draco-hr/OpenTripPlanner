@@ -1,0 +1,16 @@
+{
+  Trip trip=new Trip();
+  Route route=new Route();
+  trip.setRoute(route);
+  assertEquals(BikeAccess.UNKNOWN,BikeAccess.fromTrip(trip));
+  trip.setTripBikesAllowed(2);
+  assertEquals(BikeAccess.ALLOWED,BikeAccess.fromTrip(trip));
+  trip.setTripBikesAllowed(1);
+  assertEquals(BikeAccess.NOT_ALLOWED,BikeAccess.fromTrip(trip));
+  route.setRouteBikesAllowed(2);
+  assertEquals(BikeAccess.NOT_ALLOWED,BikeAccess.fromTrip(trip));
+  trip.setTripBikesAllowed(0);
+  assertEquals(BikeAccess.ALLOWED,BikeAccess.fromTrip(trip));
+  route.setRouteBikesAllowed(1);
+  assertEquals(BikeAccess.NOT_ALLOWED,BikeAccess.fromTrip(trip));
+}
