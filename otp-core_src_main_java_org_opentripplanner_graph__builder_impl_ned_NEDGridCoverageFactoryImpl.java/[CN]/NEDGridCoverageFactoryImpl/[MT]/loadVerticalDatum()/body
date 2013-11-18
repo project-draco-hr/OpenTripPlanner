@@ -10,6 +10,7 @@
       }
     }
  catch (    IOException e) {
+      LOG.error("OTP needs additional files (a vertical datum) to convert between NED elevations and OSM's WGS84 elevations. See https://github.com/openplans/OpenTripPlanner/wiki/GraphBuilder#elevation-data for further information.");
       throw new RuntimeException(e);
     }
   }
