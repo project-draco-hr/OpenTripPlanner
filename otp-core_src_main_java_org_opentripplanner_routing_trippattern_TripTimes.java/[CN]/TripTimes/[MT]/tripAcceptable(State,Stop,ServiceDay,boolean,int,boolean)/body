@@ -10,10 +10,8 @@
   if (options.wheelchairAccessible && trip.getWheelchairAccessible() != 1) {
     return false;
   }
-  if (bicycle) {
-    if ((trip.getTripBikesAllowed() != 2) && (trip.getRoute().getBikesAllowed() != 2 || trip.getTripBikesAllowed() == 1)) {
-      return false;
-    }
+  if (bicycle && BikeAccess.fromTrip(trip) != BikeAccess.ALLOWED) {
+    return false;
   }
   if (state0.getNumBoardings() > 0) {
     TransferTable transferTable=options.getRoutingContext().transferTable;
