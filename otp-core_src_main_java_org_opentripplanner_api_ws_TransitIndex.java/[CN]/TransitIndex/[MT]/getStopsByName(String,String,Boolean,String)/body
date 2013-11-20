@@ -4,11 +4,11 @@
     return new TransitError("No transit index found.  Add TransitIndexBuilder to your graph builder configuration and rebuild your graph.");
   }
   StopList response=new StopList();
-  AgencyAndId stopId=new AgencyAndId(agency,id);
   Map<AgencyAndId,Stop> allStops=transitIndexService.getAllStops();
   for (  Map.Entry<AgencyAndId,Stop> entry : allStops.entrySet()) {
-    if (entry.getKey().equals(stopId)) {
-      response.stops.add(new StopType(entry.getValue(),extended));
+    Stop stop=entry.getValue();
+    if (entry.getKey().getAgencyId().equals(agency) && stop.getName().toLowerCase().contains(name.toLowerCase())) {
+      response.stops.add(new StopType(stop,extended));
     }
   }
   return response;
