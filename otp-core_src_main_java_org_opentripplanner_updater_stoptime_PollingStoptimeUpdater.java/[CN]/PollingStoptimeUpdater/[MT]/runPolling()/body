@@ -1,5 +1,7 @@
 {
   List<TripUpdate> updates=updateSource.getUpdates();
-  TripUpdateGraphWriterRunnable runnable=new TripUpdateGraphWriterRunnable(updates,agencyId);
-  updaterManager.execute(runnable);
+  if (updates != null && updates.size() > 0) {
+    TripUpdateGraphWriterRunnable runnable=new TripUpdateGraphWriterRunnable(updates,agencyId);
+    updaterManager.execute(runnable);
+  }
 }
