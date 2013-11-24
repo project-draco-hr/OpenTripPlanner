@@ -1,4 +1,5 @@
 {
+  ServiceDate serviceDate=new ServiceDate(2009,10,01);
   TestPlanner planner=new TestPlanner("portland","45.506077,-122.621139","45.464637,-122.706061");
   TransferTable table=new TransferTable();
   Graph graph=Context.getInstance().graph;
@@ -16,16 +17,16 @@
   assertEquals("750W1300",itinerary.legs.get(1).tripId);
   assertEquals("120W1320",itinerary.legs.get(3).tripId);
   @SuppressWarnings("deprecation") TableTripPattern pattern=((PatternStopVertex)graph.getVertex("TriMet_9756_TriMet_120W1320_22_A")).getTripPattern();
-  applyUpdateToTripPattern(pattern,"120W1320","9756",21,41580,41580,Update.Status.PREDICTION,0,"20091001");
+  applyUpdateToTripPattern(pattern,"120W1320","9756",22,41580,41580,ScheduleRelationship.SCHEDULED,0,serviceDate);
   response=planner.getItineraries();
   itinerary=response.getPlan().itinerary.get(0);
   assertEquals("750W1300",itinerary.legs.get(1).tripId);
   assertEquals("120W1320",itinerary.legs.get(3).tripId);
-  applyUpdateToTripPattern(pattern,"120W1320","9756",21,41579,41579,Update.Status.PREDICTION,0,"20091001");
+  applyUpdateToTripPattern(pattern,"120W1320","9756",22,41579,41579,ScheduleRelationship.SCHEDULED,0,serviceDate);
   response=planner.getItineraries();
   itinerary=response.getPlan().itinerary.get(0);
   assertFalse("190W1280".equals(itinerary.legs.get(1).tripId) && "751W1330".equals(itinerary.legs.get(3).tripId));
-  applyUpdateToTripPattern(pattern,"120W1320","9756",21,41820,41820,Update.Status.PREDICTION,0,"20091001");
+  applyUpdateToTripPattern(pattern,"120W1320","9756",22,41820,41820,ScheduleRelationship.SCHEDULED,0,serviceDate);
   timedTransferEdge.detach();
   reset(graph);
 }

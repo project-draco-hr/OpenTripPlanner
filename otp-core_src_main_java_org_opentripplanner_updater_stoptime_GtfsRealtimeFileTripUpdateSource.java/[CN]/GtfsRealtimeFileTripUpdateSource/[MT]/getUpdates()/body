@@ -1,0 +1,20 @@
+{
+  FeedMessage feedMessage=null;
+  List<FeedEntity> feedEntityList=null;
+  List<TripUpdate> updates=null;
+  try {
+    InputStream is=new FileInputStream(file);
+    if (is != null) {
+      feedMessage=FeedMessage.PARSER.parseFrom(is);
+      feedEntityList=feedMessage.getEntityList();
+      updates=new ArrayList<TripUpdate>(feedEntityList.size());
+      for (      FeedEntity feedEntity : feedEntityList) {
+        updates.add(feedEntity.getTripUpdate());
+      }
+    }
+  }
+ catch (  Exception e) {
+    LOG.warn("Failed to parse gtfs-rt feed at " + file + ":",e);
+  }
+  return updates;
+}

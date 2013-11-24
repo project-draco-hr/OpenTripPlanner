@@ -6,4 +6,10 @@
   builder.setDao(context.getDao());
   builder.buildGraph(graph);
   transitIndexService=graph.getService(TransitIndexService.class);
+  TripDescriptor.Builder tripDescriptorBuilder=TripDescriptor.newBuilder();
+  tripDescriptorBuilder.setTripId("1.1");
+  tripDescriptorBuilder.setScheduleRelationship(TripDescriptor.ScheduleRelationship.CANCELED);
+  TripUpdate.Builder tripUpdateBuilder=TripUpdate.newBuilder();
+  tripUpdateBuilder.setTrip(tripDescriptorBuilder);
+  cancellation=tripUpdateBuilder.build().toByteArray();
 }

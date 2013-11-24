@@ -4,7 +4,12 @@
   ShortestPathTree spt=createShortestPathTree(options);
   final RemainingWeightHeuristic heuristic=options.batch ? new TrivialRemainingWeightHeuristic() : rctx.remainingWeightHeuristic;
   State initialState=new State(options);
-  heuristic.initialize(initialState,rctx.target);
+  heuristic.initialize(initialState,rctx.target,abortTime);
+  if (abortTime < Long.MAX_VALUE && System.currentTimeMillis() > abortTime) {
+    LOG.warn("Timeout during initialization of interleaved bidirectional heuristic.");
+    options.rctx.debug.timedOut=true;
+    return null;
+  }
   options.rctx.debug.finishedPrecalculating();
   spt.add(initialState);
   OTPPriorityQueueFactory qFactory=BinHeap.FACTORY;

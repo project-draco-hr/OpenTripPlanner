@@ -1,0 +1,7 @@
+{
+  TripTimes updatedTripTimesA=new TripTimes(originalTripTimes);
+  updatedTripTimesA.updateDepartureDelay(0,10);
+  updatedTripTimesA.updateArrivalDelay(5,13);
+  assertEquals(0 * 60 + 10,updatedTripTimesA.getDepartureTime(0));
+  assertEquals(6 * 60 + 13,updatedTripTimesA.getArrivalTime(5));
+}

@@ -8,8 +8,8 @@
   if (alert.getActivePeriodCount() > 0) {
     long bestStartTime=Long.MAX_VALUE;
     for (    TimeRange activePeriod : alert.getActivePeriodList()) {
-      final long start=activePeriod.hasStart() ? activePeriod.getStart() - earlyStart : 0;
       final long realStart=activePeriod.hasStart() ? activePeriod.getStart() : 0;
+      final long start=activePeriod.hasStart() ? realStart - earlyStart : 0;
       if (realStart > 0 && realStart < bestStartTime) {
         bestStartTime=realStart;
       }

@@ -23,7 +23,7 @@
     State s0=new State(gv,options);
     for (    Edge e : gv.getOutgoing()) {
       Vertex in=gv;
-      if (!(e instanceof StreetEdge || e instanceof StreetTransitLink || e instanceof ElevatorEdge)) {
+      if (!(e instanceof StreetEdge || e instanceof StreetTransitLink || e instanceof ElevatorEdge|| e instanceof FreeEdge)) {
         continue;
       }
       State s1=e.traverse(s0);

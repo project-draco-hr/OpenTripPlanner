@@ -1,0 +1,15 @@
+{
+  MockGtfs gtfs=getSimpleGtfs();
+  gtfs.putTrips(2,"r0","sid0","bikes_allowed=0,1");
+  gtfs.putStopTimes("t0,t1","s0,s1");
+  GtfsBundles bundles=getGtfsAsBundles(gtfs);
+  bundles.getBundles().get(0).setDefaultBikesAllowed(false);
+  _builder.setGtfsBundles(bundles);
+  Graph graph=new Graph();
+  _builder.buildGraph(graph,_extra);
+  TransitIndexService index=graph.getService(TransitIndexService.class);
+  TableTripPattern pattern=index.getTripPatternForTrip(new AgencyAndId("a0","t0"));
+  List<Trip> trips=pattern.getTrips();
+  assertEquals(BikeAccess.UNKNOWN,BikeAccess.fromTrip(withId(trips,new AgencyAndId("a0","t0"))));
+  assertEquals(BikeAccess.ALLOWED,BikeAccess.fromTrip(withId(trips,new AgencyAndId("a0","t1"))));
+}

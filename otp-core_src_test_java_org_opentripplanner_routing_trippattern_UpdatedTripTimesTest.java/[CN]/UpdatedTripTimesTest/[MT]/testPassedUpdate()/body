@@ -1,9 +1,0 @@
-{
-  TripUpdateList tripUpdateList;
-  List<Update> updates=new LinkedList<Update>();
-  updates.add(new Update(tripId,stop_a,0,0,0,Update.Status.PASSED,0,new ServiceDate()));
-  tripUpdateList=TripUpdateList.forUpdatedTrip(tripId,0,new ServiceDate(),updates);
-  UpdatedTripTimes updateTriptimesA=new UpdatedTripTimes(originalTripTimesA,tripUpdateList,0);
-  assertEquals(TripTimes.PASSED,updateTriptimesA.getDepartureTime(0));
-  assertEquals(60,updateTriptimesA.getArrivalTime(0));
-}

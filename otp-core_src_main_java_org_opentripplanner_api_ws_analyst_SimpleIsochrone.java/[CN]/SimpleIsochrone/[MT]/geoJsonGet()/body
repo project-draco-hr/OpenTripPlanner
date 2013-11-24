@@ -1,0 +1,7 @@
+{
+  SimpleFeatureCollection contourFeatures=makeContourFeatures();
+  StringWriter writer=new StringWriter();
+  FeatureJSON fj=new FeatureJSON();
+  fj.writeFeatureCollection(contourFeatures,writer);
+  return Response.ok().entity(writer.toString()).build();
+}

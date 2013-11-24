@@ -1,0 +1,10 @@
+{
+  TripTimes updatedTripTimesA=new TripTimes(originalTripTimes);
+  updatedTripTimesA.updateArrivalTime(0,60);
+  updatedTripTimesA.updateDepartureTime(1,59);
+  assertFalse(updatedTripTimesA.timesIncreasing());
+  TripTimes updatedTripTimesB=new TripTimes(originalTripTimes);
+  updatedTripTimesB.updateDepartureTime(6,421);
+  updatedTripTimesB.updateArrivalTime(6,420);
+  assertFalse(updatedTripTimesB.timesIncreasing());
+}

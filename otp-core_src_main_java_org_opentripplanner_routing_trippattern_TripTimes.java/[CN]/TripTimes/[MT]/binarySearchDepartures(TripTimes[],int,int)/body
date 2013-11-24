@@ -5,9 +5,15 @@
   while (low <= hi) {
     mid=(low + hi) >>> 1;
     final int d=a[mid].getDepartureTime(hop);
-    if (d == key)     return mid;
- else     if (d > key)     hi=mid - 1;
- else     low=++mid;
+    if (d == key) {
+      return mid;
+    }
+ else     if (d > key) {
+      hi=mid - 1;
+    }
+ else {
+      low=++mid;
+    }
   }
   return mid;
 }

@@ -1,11 +1,20 @@
 {
+  FeedMessage feedMessage=null;
+  List<FeedEntity> feedEntityList=null;
+  List<TripUpdate> updates=null;
   try {
-    FeedMessage feed=GtfsRealtime.FeedMessage.PARSER.parseFrom(message);
-    List<TripUpdateList> updates=TripUpdateList.decodeFromGtfsRealtime(feed,agencyId);
-    TripUpdateGraphWriterRunnable runnable=new TripUpdateGraphWriterRunnable(updates);
-    updaterManager.execute(runnable);
+    feedMessage=FeedMessage.PARSER.parseFrom(message);
+    feedEntityList=feedMessage.getEntityList();
+    updates=new ArrayList<TripUpdate>(feedEntityList.size());
+    for (    FeedEntity feedEntity : feedEntityList) {
+      if (feedEntity.hasTripUpdate())       updates.add(feedEntity.getTripUpdate());
+    }
   }
  catch (  InvalidProtocolBufferException e) {
     LOG.error("Could not decode gtfs-rt message:",e);
+  }
+  if (updates != null && updates.size() > 0) {
+    TripUpdateGraphWriterRunnable runnable=new TripUpdateGraphWriterRunnable(updates,agencyId);
+    updaterManager.execute(runnable);
   }
 }

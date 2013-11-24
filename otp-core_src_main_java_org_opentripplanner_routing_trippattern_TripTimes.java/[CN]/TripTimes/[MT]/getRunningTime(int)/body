@@ -4,8 +4,7 @@
   if (arrivalTime == TripTimes.CANCELED) {
     return 0;
   }
-  while (hop >= 0 && departureTime == TripTimes.CANCELED) {
-    hop--;
+  while (--hop >= 0 && departureTime == TripTimes.CANCELED) {
     departureTime=getDepartureTime(hop);
   }
   if (departureTime == TripTimes.CANCELED) {
