@@ -15,7 +15,9 @@
           Calendar cal=new GregorianCalendar(tz);
           cal.setTime(retVal);
           int year=cal.get(Calendar.YEAR);
-          if (year >= 2000)           break;
+          if (year >= SANITY_CHECK_CUTOFF_YEAR) {
+            break;
+          }
         }
       }
     }
