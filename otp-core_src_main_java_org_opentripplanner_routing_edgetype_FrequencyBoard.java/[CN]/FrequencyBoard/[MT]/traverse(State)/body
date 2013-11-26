@@ -65,7 +65,9 @@
     if (bestWait < 0) {
       return null;
     }
-    if (options.tripIsBanned(trip))     return null;
+    if (options.tripIsBanned(trip)) {
+      return null;
+    }
     long preferences_penalty=options.preferencesPenaltyForTrip(trip);
     StateEditor s1=state0.edit(this);
     int type=pattern.getBoardType(stopIndex);
