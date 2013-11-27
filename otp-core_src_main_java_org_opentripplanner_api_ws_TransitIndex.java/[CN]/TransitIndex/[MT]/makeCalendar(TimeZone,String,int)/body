@@ -1,0 +1,7 @@
+{
+  Calendar calendar=Calendar.getInstance(timeZone);
+  Date date=DateUtils.toDate(dateString,"00:00",timeZone);
+  long time=date.getTime() + seconds * 1000L;
+  calendar.setTimeInMillis(time);
+  return calendar;
+}
