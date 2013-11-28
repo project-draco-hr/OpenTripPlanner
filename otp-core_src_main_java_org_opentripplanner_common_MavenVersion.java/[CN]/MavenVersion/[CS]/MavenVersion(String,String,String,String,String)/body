@@ -1,6 +1,6 @@
 {
-  version=v;
-  String[] fields=v.split("\\-");
+  this.version=version;
+  String[] fields=version.split("\\-");
   if (fields.length > 1)   qualifier=fields[1];
  else   qualifier="";
   fields=fields[0].split("\\.");
@@ -10,5 +10,8 @@
  else   minor=0;
   if (fields.length > 2)   incremental=Integer.parseInt(fields[2]);
  else   incremental=0;
-  commit=c;
+  this.commit=commit;
+  this.describe=describe;
+  this.commit_time=commit_time;
+  this.build_time=build_time;
 }
