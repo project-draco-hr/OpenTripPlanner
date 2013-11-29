@@ -25,4 +25,10 @@
   directionsForRoute=index.getDirectionsForRoute(new AgencyAndId("agency","2"));
   assertEquals(1,directionsForRoute.size());
   assertEquals(null,directionsForRoute.iterator().next());
+  List<Stop> stops=index.getStopsForStation(new AgencyAndId("agency","station"));
+  assertEquals(2,stops.size());
+  assertEquals(new AgencyAndId("agency","A"),stops.get(0).getId());
+  assertEquals(new AgencyAndId("agency","entrance_a"),stops.get(1).getId());
+  stops=index.getStopsForStation(new AgencyAndId("agency","A"));
+  assertEquals(0,stops.size());
 }
