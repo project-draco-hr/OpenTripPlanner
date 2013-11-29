@@ -24,7 +24,7 @@
   HashMap<AgencyAndId,PreBoardEdge> preBoardEdges=new HashMap<AgencyAndId,PreBoardEdge>(1,1);
   preAlightEdges.put(arrive,preAlightEdge);
   preBoardEdges.put(depart,preBoardEdge);
-  TransitIndexServiceImpl transitIndexServiceImpl=new TransitIndexServiceImpl(null,null,null,preBoardEdges,preAlightEdges,null,null,null,null,null,null);
+  TransitIndexServiceImpl transitIndexServiceImpl=new TransitIndexServiceImpl(null,null,null,null,preBoardEdges,preAlightEdges,null,null,null,null,null,null);
   List<AgencyAndId> arrivals=transitIndexServiceImpl.getRoutesForStop(arrive);
   List<AgencyAndId> departures=transitIndexServiceImpl.getRoutesForStop(depart);
   assertNull(departures.get(0));
