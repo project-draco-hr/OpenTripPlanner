@@ -15,6 +15,7 @@
   }
   HashSet<TripType> trips=new HashSet<TripType>();
   StopTimeList result=new StopTimeList();
+  result.stop=new AgencyAndId(stopAgency,stopId);
   result.stopTimes=new ArrayList<StopTime>();
   if (references != null && references.equals(true)) {
     result.routes=new HashSet<Route>();
