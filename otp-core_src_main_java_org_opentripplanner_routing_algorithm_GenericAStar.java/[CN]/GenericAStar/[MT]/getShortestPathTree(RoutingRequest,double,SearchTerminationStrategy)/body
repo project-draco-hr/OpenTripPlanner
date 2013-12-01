@@ -5,7 +5,6 @@
   final RemainingWeightHeuristic heuristic=options.batch ? new TrivialRemainingWeightHeuristic() : rctx.remainingWeightHeuristic;
   State initialState=new State(options);
   heuristic.initialize(initialState,rctx.target);
-  options.rctx.debug.finishedPrecalculating();
   spt.add(initialState);
   OTPPriorityQueueFactory qFactory=BinHeap.FACTORY;
   int initialSize=rctx.graph.getVertices().size();
