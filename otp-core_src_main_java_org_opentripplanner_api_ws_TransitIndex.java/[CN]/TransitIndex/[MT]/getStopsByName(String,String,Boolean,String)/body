@@ -1,0 +1,15 @@
+{
+  TransitIndexService transitIndexService=getGraph(routerId).getService(TransitIndexService.class);
+  if (transitIndexService == null) {
+    return new TransitError("No transit index found.  Add TransitIndexBuilder to your graph builder configuration and rebuild your graph.");
+  }
+  StopList response=new StopList();
+  Map<AgencyAndId,Stop> allStops=transitIndexService.getAllStops();
+  for (  Map.Entry<AgencyAndId,Stop> entry : allStops.entrySet()) {
+    Stop stop=entry.getValue();
+    if (entry.getKey().getAgencyId().equals(agency) && stop.getName().toLowerCase().contains(name.toLowerCase())) {
+      response.stops.add(new StopType(stop,extended));
+    }
+  }
+  return response;
+}

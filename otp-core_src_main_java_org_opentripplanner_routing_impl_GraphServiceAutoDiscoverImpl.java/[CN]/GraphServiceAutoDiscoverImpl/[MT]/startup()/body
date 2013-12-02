@@ -1,9 +1,9 @@
 {
   autoDiscoverGraphs();
-  new Timer().scheduleAtFixedRate(new TimerTask(){
+  scanExecutor.scheduleWithFixedDelay(new Runnable(){
     @Override public void run(){
       autoDiscoverGraphs();
     }
   }
-,autoScanPeriodSec * 1000L,autoScanPeriodSec * 1000L);
+,autoScanPeriodSec,autoScanPeriodSec,TimeUnit.SECONDS);
 }

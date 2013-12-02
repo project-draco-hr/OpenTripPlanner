@@ -22,4 +22,5 @@
   LOG.info("end backward street search {}",System.currentTimeMillis());
   options.setMaxWalkDistance(Double.POSITIVE_INFINITY);
   LOG.debug("initialized SSSP");
+  s.getOptions().rctx.debug.finishedPrecalculating();
 }
