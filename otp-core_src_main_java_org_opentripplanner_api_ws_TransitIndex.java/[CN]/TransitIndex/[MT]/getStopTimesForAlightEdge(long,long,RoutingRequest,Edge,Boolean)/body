@@ -10,6 +10,13 @@
     time=result.getTimeSeconds();
     if (time < startTime)     break;
     StopTime stopTime=new StopTime();
+    TripTimes tripTimes=result.getTripTimes();
+    Edge backEdge=result.getBackEdge();
+    if (tripTimes != null && !tripTimes.isScheduled() && backEdge instanceof OnboardEdge) {
+      OnboardEdge onboardEdge=(OnboardEdge)backEdge;
+      stopTime.realTime=true;
+      stopTime.delay=tripTimes.getArrivalDelay(onboardEdge.getStopIndex() - 1);
+    }
     stopTime.time=time;
     stopTime.trip=new TripType(result.getBackTrip(),extended);
     out.add(stopTime);
