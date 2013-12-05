@@ -10,6 +10,7 @@
     if (time > endTime)     break;
     StopTime stopTime=new StopTime();
     stopTime.time=time;
+    stopTime.direction=result.getBackDirection();
     stopTime.trip=new TripType(result.getBackTrip(),extended);
     out.add(stopTime);
     time+=1;
