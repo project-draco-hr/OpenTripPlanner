@@ -4,8 +4,13 @@
     String newString=input.trim().replace('_','.').replace('-','.').replace(':','.').replace('/','.');
     if (newString != null) {
       List<String> dl=DF_LIST;
-      if (newString.length() <= 8 && !newString.matches(".*20\\d\\d.*")) {
-        dl=SMALL_DF_LIST;
+      if (newString.length() <= 8) {
+        if (newString.matches("\\d\\d\\d\\d\\d\\d\\d\\d")) {
+          newString=newString.substring(0,4) + '.' + newString.substring(4,6)+ '.'+ newString.substring(6,8);
+        }
+ else         if (!(newString.matches(".*20\\d\\d.*"))) {
+          dl=SMALL_DF_LIST;
+        }
       }
       for (      String df : dl) {
         SimpleDateFormat sdf=new SimpleDateFormat(df);
