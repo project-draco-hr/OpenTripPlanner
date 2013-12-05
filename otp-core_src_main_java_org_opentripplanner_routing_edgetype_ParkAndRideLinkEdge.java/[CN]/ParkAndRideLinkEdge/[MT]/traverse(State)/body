@@ -16,7 +16,7 @@
     s1.incrementWeight(driveTime);
   }
  else {
-    throw new IllegalStateException("Must walk OR drive here: " + mode);
+    return null;
   }
   return s1.makeState();
 }
