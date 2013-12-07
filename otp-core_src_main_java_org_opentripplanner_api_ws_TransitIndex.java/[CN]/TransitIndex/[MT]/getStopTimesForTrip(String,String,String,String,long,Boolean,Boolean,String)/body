@@ -13,6 +13,10 @@
   RoutingRequest options=makeTraverseOptions(time,routerId);
   StopTimeList result=new StopTimeList();
   result.stopTimes=new ArrayList<StopTime>();
+  if (references != null && references.equals(true)) {
+    result.routes=new HashSet<Route>();
+    result.routes.add(variant.getRoute());
+  }
   State state=null;
   RouteSegment start=null;
   for (  RouteSegment segment : variant.getSegments()) {
