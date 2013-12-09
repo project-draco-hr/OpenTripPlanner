@@ -1,0 +1,16 @@
+{
+  route=ride.route.getId().getId();
+  from=ride.from.getId().getId();
+  to=ride.to.getId().getId();
+  for (  Pattern pattern : ride.patterns) {
+    boolean onboard=false;
+    for (    Stop stop : pattern.stops) {
+      if (!onboard) {
+        if (stop == ride.from)         onboard=true;
+ else         continue;
+      }
+      stops.add(stop.getId().getId());
+      if (stop == ride.to)       break;
+    }
+  }
+}

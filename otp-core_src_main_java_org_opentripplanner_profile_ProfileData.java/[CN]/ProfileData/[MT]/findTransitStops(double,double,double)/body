@@ -1,0 +1,11 @@
+{
+  Envelope envelope=distlib.bounds(lat,lon,radius,radius);
+  List<?> stops=stopTree.query(envelope);
+  List<Stop> out=Lists.newArrayList();
+  for (  Stop stop : IterableLibrary.filter(stops,Stop.class)) {
+    if (distlib.fastDistance(lat,lon,stop.getLat(),stop.getLon()) < radius) {
+      out.add(stop);
+    }
+  }
+  return out;
+}

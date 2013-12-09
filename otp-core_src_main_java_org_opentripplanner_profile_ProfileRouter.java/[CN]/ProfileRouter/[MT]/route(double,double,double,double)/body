@@ -1,0 +1,36 @@
+{
+  final int ROUNDS=2;
+  int finalRound=ROUNDS - 1;
+  int penultimateRound=ROUNDS - 2;
+  fromStops=data.closestPatterns(fromLon,fromLat);
+  toStops=data.closestPatterns(toLon,toLat);
+  LOG.info("from stops: {}",fromStops);
+  LOG.info("to stops: {}",toStops);
+  List<QRide> queue=Lists.newArrayList();
+  for (  Entry<Pattern,StopAtDistance> entry : fromStops.entrySet()) {
+    queue.add(new QRide(entry.getValue().stop,entry.getKey(),null));
+  }
+  for (int round=0; round < ROUNDS; ++round) {
+    LOG.info("ROUND {}",round);
+    for (    QRide qr : queue) {
+      makeRides(qr,rides);
+    }
+    LOG.info("number of rides: {}",rides.size());
+    if (round != finalRound) {
+      queue.clear();
+      for (      Ride ride : rides.values()) {
+        for (        Transfer tr : data.transfersForStop.get(ride.to)) {
+          if (round == penultimateRound && !toStops.containsKey(tr.tp2))           continue;
+          if (ride.patterns.contains(tr.tp1)) {
+            if (pathContainsRoute(ride,tr.tp2.route))             continue;
+            if (tr.s1 != tr.s2 && pathContainsStop(ride,tr.s2))             continue;
+            queue.add(new QRide(tr.s2,tr.tp2,ride));
+          }
+        }
+      }
+      LOG.info("number of new queue states: {}",queue.size());
+      rides.clear();
+    }
+  }
+  return targetRides;
+}

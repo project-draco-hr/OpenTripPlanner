@@ -1,0 +1,12 @@
+{
+  String[] fromCoords=from.split(",");
+  String[] toCoords=to.split(",");
+  double fromLat=Double.parseDouble(fromCoords[0]);
+  double fromLon=Double.parseDouble(fromCoords[1]);
+  double toLat=Double.parseDouble(toCoords[0]);
+  double toLon=Double.parseDouble(toCoords[1]);
+  if (data == null)   data=new ProfileData(graphService.getGraph());
+  ProfileRouter router=new ProfileRouter(data);
+  Response response=new Response(router.route(fromLat,fromLon,toLat,toLon));
+  return response;
+}

@@ -1,0 +1,21 @@
+{
+  List<Stop> stops=qr.pattern.stops;
+  Stop targetStop=null;
+  if (toStops.containsKey(qr.pattern)) {
+    targetStop=toStops.get(qr.pattern).stop;
+  }
+  boolean boarded=false;
+  for (int s=0; s < stops.size(); ++s) {
+    Stop stop=stops.get(s);
+    if (!boarded) {
+      if (stop == qr.from)       boarded=true;
+      continue;
+    }
+    if (targetStop != null && targetStop == stop) {
+      targetRides.add(addRide(qr,stop));
+    }
+ else     if (hasTransfers(stop,qr.pattern)) {
+      if (!pathContainsStop(qr.previous,stop))       addRide(qr,stop);
+    }
+  }
+}
