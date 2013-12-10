@@ -5,17 +5,21 @@
     targetStop=toStops.get(qr.pattern).stop;
   }
   boolean boarded=false;
+  int s0=-1;
   for (int s=0; s < stops.size(); ++s) {
     Stop stop=stops.get(s);
     if (!boarded) {
-      if (stop == qr.from)       boarded=true;
+      if (stop == qr.from) {
+        boarded=true;
+        s0=s;
+      }
       continue;
     }
     if (targetStop != null && targetStop == stop) {
-      targetRides.add(addRide(qr,stop));
+      targetRides.add(addRide(qr,stop,new Stats(qr.pattern,s0,s)));
     }
  else     if (hasTransfers(stop,qr.pattern)) {
-      if (!pathContainsStop(qr.previous,stop))       addRide(qr,stop);
+      if (!pathContainsStop(qr.previous,stop))       addRide(qr,stop,new Stats(qr.pattern,s0,s));
     }
   }
 }

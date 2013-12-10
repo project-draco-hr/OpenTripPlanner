@@ -4,6 +4,7 @@
   route=first.exemplar.getRoute();
   int nStops=stops.size();
   min=new int[nStops];
+  avg=new int[nStops];
   max=new int[nStops];
   for (int s=0; s < nStops; ++s)   min[s]=Integer.MAX_VALUE;
   for (  TableTripPattern ttp : ttps) {
@@ -18,11 +19,14 @@
     int nTrips=ttp.getTrips().size();
     for (int i=0; i < nTrips; ++i) {
       TripTimes tt=ttp.getTripTimes(i);
+      int t0=tt.getDepartureTime(0);
       for (int hop=0; hop < nStops - 1; ++hop) {
-        int tn=tt.getRunningTime(hop);
+        int tn=tt.getDepartureTime(hop);
+        tn-=t0;
         if (tn < min[hop])         min[hop]=tn;
         if (tn > max[hop])         max[hop]=tn;
       }
     }
   }
+  for (int s=0; s < nStops; ++s)   avg[s]=(min[s] + max[s]) / 2;
 }

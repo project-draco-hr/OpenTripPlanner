@@ -8,7 +8,7 @@
   LOG.info("to stops: {}",toStops);
   List<QRide> queue=Lists.newArrayList();
   for (  Entry<Pattern,StopAtDistance> entry : fromStops.entrySet()) {
-    queue.add(new QRide(entry.getValue().stop,entry.getKey(),null));
+    queue.add(new QRide(entry.getValue().stop,entry.getKey(),null,null));
   }
   for (int round=0; round < ROUNDS; ++round) {
     LOG.info("ROUND {}",round);
@@ -24,7 +24,7 @@
           if (ride.patterns.contains(tr.tp1)) {
             if (pathContainsRoute(ride,tr.tp2.route))             continue;
             if (tr.s1 != tr.s2 && pathContainsStop(ride,tr.s2))             continue;
-            queue.add(new QRide(tr.s2,tr.tp2,ride));
+            queue.add(new QRide(tr.s2,tr.tp2,ride,null));
           }
         }
       }
