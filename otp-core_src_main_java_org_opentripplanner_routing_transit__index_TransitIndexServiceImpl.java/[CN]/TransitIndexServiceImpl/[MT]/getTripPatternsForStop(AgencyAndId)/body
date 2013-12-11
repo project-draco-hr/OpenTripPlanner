@@ -1,0 +1,22 @@
+{
+  Edge alight=preAlightEdges.get(stop);
+  Edge board=preBoardEdges.get(stop);
+  HashSet<TripPattern> patterns=new HashSet<TripPattern>();
+  if (alight != null)   for (  Edge edge : alight.getFromVertex().getIncoming()) {
+    if (edge instanceof TransitBoardAlight && !(((TransitBoardAlight)edge).isBoarding())) {
+      patterns.add(((TransitBoardAlight)edge).getPattern());
+    }
+ else     if (edge instanceof FrequencyAlight) {
+      patterns.add(((FrequencyAlight)edge).getPattern());
+    }
+  }
+  if (board != null)   for (  Edge edge : board.getToVertex().getOutgoing()) {
+    if (edge instanceof TransitBoardAlight && (((TransitBoardAlight)edge).isBoarding())) {
+      patterns.add(((TransitBoardAlight)edge).getPattern());
+    }
+ else     if (edge instanceof FrequencyBoard) {
+      patterns.add(((FrequencyBoard)edge).getPattern());
+    }
+  }
+  return new ArrayList<TripPattern>(patterns);
+}

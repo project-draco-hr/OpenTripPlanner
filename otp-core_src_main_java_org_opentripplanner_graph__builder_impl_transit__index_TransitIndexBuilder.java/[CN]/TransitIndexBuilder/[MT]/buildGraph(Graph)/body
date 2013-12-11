@@ -1,5 +1,6 @@
 {
   LOG.debug("Building transit index");
+  connectParentStations(stopsByStation);
   createRouteVariants(graph);
   indexTableTripPatternByTrip(graph);
   nameVariants(variantsByRoute);
@@ -18,13 +19,13 @@
   for (  Route route : dao.getAllRoutes()) {
     routes.put(route.getId(),route);
   }
-  LOG.debug("Built transit index: " + variantsByAgency.size() + " agencies, "+ variantsByRoute.size()+ " routes, "+ totalTrips+ " trips, "+ totalVariants+ " variants ");
+  LOG.debug("Built transit index: " + stopsByStation.size() + " stations, "+ variantsByAgency.size()+ " agencies, "+ variantsByRoute.size()+ " routes, "+ totalTrips+ " trips, "+ totalVariants+ " variants ");
   TransitIndexServiceImpl service=(TransitIndexServiceImpl)graph.getService(TransitIndexService.class);
   if (service == null) {
-    service=new TransitIndexServiceImpl(variantsByAgency,variantsByRoute,variantsByTrip,preBoardEdges,preAlightEdges,tableTripPatternsByTrip,directionsByRoute,stopsByRoute,routes,stops,modes);
+    service=new TransitIndexServiceImpl(stopsByStation,variantsByAgency,variantsByRoute,variantsByTrip,preBoardEdges,preAlightEdges,tableTripPatternsByTrip,directionsByRoute,stopsByRoute,routes,stops,modes);
   }
  else {
-    service.merge(variantsByAgency,variantsByRoute,variantsByTrip,preBoardEdges,preAlightEdges,tableTripPatternsByTrip,directionsByRoute,stopsByRoute,routes,stops,modes);
+    service.merge(stopsByStation,variantsByAgency,variantsByRoute,variantsByTrip,preBoardEdges,preAlightEdges,tableTripPatternsByTrip,directionsByRoute,stopsByRoute,routes,stops,modes);
   }
   insertCalendarData(service);
   addAgencies(service);

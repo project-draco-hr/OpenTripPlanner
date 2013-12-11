@@ -1,0 +1,15 @@
+{
+  for (  Stop stop : dao.getAllStops()) {
+    if (stop.getLocationType() != 1)     continue;
+    stopsByStation.put(stop.getId(),new ArrayList<Stop>());
+  }
+  for (  Stop stop : dao.getAllStops()) {
+    if (stop.getLocationType() == 1)     continue;
+    String stationName=stop.getParentStation();
+    if (stationName == null || stationName.equals(""))     continue;
+    AgencyAndId stationId=new AgencyAndId(stop.getId().getAgencyId(),stationName);
+    List<Stop> list=stopsByStation.get(stationId);
+    if (list == null)     continue;
+    list.add(stop);
+  }
+}

@@ -1,0 +1,82 @@
+{
+  TripTimesPair result=new TripTimesPair();
+  if (agency == null || id == null) {
+    return new TransitError("Not all required parameters were specified.");
+  }
+  AgencyAndId trip=new AgencyAndId(agency,id);
+  Graph graph=getGraph(routerId);
+  TimeZone timeZone=graph.getTimeZone();
+  TransitIndexService transitIndexService=graph.getService(TransitIndexService.class);
+  CalendarService calendarService=graph.getCalendarService();
+  if (transitIndexService == null) {
+    return new TransitError("No transit index found. Add TransitIndexBuilder to your graph builder " + "configuration and rebuild your graph.");
+  }
+  if (calendarService == null) {
+    return new TransitError("No calendar service found.");
+  }
+  TableTripPattern pattern=transitIndexService.getTripPatternForTrip(trip);
+  if (pattern == null) {
+    return new TransitError("Could not find trip pattern.");
+  }
+  int tripIndex=pattern.getTripIndex(trip);
+  TripTimes tripTimes=pattern.getTripTimes(tripIndex);
+  TimetableSnapshotSource timetableSnapshotSource=graph.getTimetableSnapshotSource();
+  Calendar calendar=makeCalendar(timeZone,date,0);
+  if (calendar == null) {
+    return new TransitError("Date format can't be parsed.");
+  }
+  ServiceDate serviceDate=new ServiceDate(calendar);
+  AgencyAndId serviceId=pattern.getTrip(tripIndex).getServiceId();
+  result.scheduled=new Place[tripTimes.getNumHops() + 1];
+  if (!(calendarService.getServiceIdsOnDate(serviceDate).contains(serviceId))) {
+    return new TransitError("Trip does not run on the specified service date.");
+  }
+  if (timetableSnapshotSource != null) {
+    TimetableResolver timetableResolver=timetableSnapshotSource.getTimetableSnapshot();
+    if (timetableResolver != null) {
+      Timetable timetable=timetableResolver.resolve(pattern,serviceDate);
+      if (timetable != null) {
+        TripTimes resolvedTripTimes=timetable.getTripTimes(tripIndex);
+        if (resolvedTripTimes != null) {
+          tripTimes=resolvedTripTimes;
+          if (!tripTimes.isScheduled()) {
+            result.resolved=new Place[tripTimes.getNumHops() + 1];
+          }
+        }
+      }
+    }
+  }
+  for (int i=0; i < result.scheduled.length; i++) {
+    boolean invalid=(result.resolved == null);
+    Calendar arrival=null, departure=null;
+    Calendar scheduledArrival=null, scheduledDeparture=null;
+    Stop stop=pattern.getStop(i);
+    if (i > 0) {
+      arrival=makeCalendar(timeZone,date,tripTimes.getArrivalTime(i - 1));
+      invalid|=tripTimes.getArrivalTime(i - 1) < 0;
+      scheduledArrival=makeCalendar(timeZone,date,tripTimes.getScheduledArrivalTime(i - 1));
+    }
+    if (i < tripTimes.getNumHops()) {
+      departure=makeCalendar(timeZone,date,tripTimes.getDepartureTime(i));
+      invalid|=tripTimes.getDepartureTime(i) < 0;
+      scheduledDeparture=makeCalendar(timeZone,date,tripTimes.getScheduledDepartureTime(i));
+    }
+    if (!invalid) {
+      result.resolved[i]=new Place(stop.getLon(),stop.getLat(),stop.getName(),arrival,departure);
+      result.resolved[i].stopIndex=i;
+      result.resolved[i].stopId=stop.getId();
+      result.resolved[i].stopCode=stop.getCode();
+      result.resolved[i].platformCode=stop.getPlatformCode();
+      result.resolved[i].zoneId=stop.getZoneId();
+      result.resolved[i].stopSequence=tripTimes.getStopSequence(i);
+    }
+    result.scheduled[i]=new Place(stop.getLon(),stop.getLat(),stop.getName(),scheduledArrival,scheduledDeparture);
+    result.scheduled[i].stopIndex=i;
+    result.scheduled[i].stopId=stop.getId();
+    result.scheduled[i].stopCode=stop.getCode();
+    result.scheduled[i].platformCode=stop.getPlatformCode();
+    result.scheduled[i].zoneId=stop.getZoneId();
+    result.scheduled[i].stopSequence=tripTimes.getStopSequence(i);
+  }
+  return result;
+}
