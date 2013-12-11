@@ -1,0 +1,20 @@
+{
+  if (horizontal && A.index.xIndex > B.index.xIndex || !horizontal && A.index.yIndex > B.index.yIndex) {
+    this.A=B;
+    this.B=A;
+  }
+ else {
+    this.A=A;
+    this.B=B;
+  }
+  this.size=size;
+  this.horizontal=horizontal;
+  if (horizontal) {
+    if (this.A.index.yIndex != this.B.index.yIndex)     throw new AssertionError("Building horizontal edge with non horizontally-aligned dots");
+    if (this.B.index.xIndex - this.A.index.xIndex != size)     throw new AssertionError("Building horizontal edge with incorrect size vs dot spacing");
+  }
+ else {
+    if (this.A.index.xIndex != this.B.index.xIndex)     throw new AssertionError("Building vertical edge with non vertically-aligned dots");
+    if (this.B.index.yIndex - this.A.index.yIndex != size)     throw new AssertionError("Building vertical edge with incorrect size vs dot spacing");
+  }
+}

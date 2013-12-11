@@ -3,6 +3,6 @@
   double cosLat=FastMath.cos(lat);
   double lon=Math.toRadians(point.x) * cosLat;
   Point point2=GeometryUtils.getGeometryFactory().createPoint(new Coordinate(lon,lat));
-  LineString lineString2=equirectangularProject(point,lineString);
+  LineString lineString2=equirectangularProject(lineString,cosLat);
   return lineString2.distance(point2) * RADIUS_OF_EARTH_IN_M;
 }

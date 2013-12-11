@@ -1,0 +1,22 @@
+{
+  int n=0;
+  while (n < 3 && (zA == Long.MAX_VALUE || zB == Long.MAX_VALUE)) {
+    Coordinate C=new Coordinate((A.x + B.x) / 2.0,(A.y + B.y) / 2.0);
+    long zC=fz.z(A);
+    fzInterpolateCount++;
+    if (zA == Long.MAX_VALUE && z0 <= zC) {
+      A=C;
+      zA=zC;
+    }
+ else {
+      B=C;
+      zB=zC;
+    }
+    n++;
+  }
+  if (zA == Long.MAX_VALUE)   zA=z0 * 2;
+  if (zB == Long.MAX_VALUE)   zB=z0 * 2;
+  double k=zB == zA ? 0.5 : (z0 - zA) / (double)(zB - zA);
+  Coordinate C=new Coordinate(A.x * (1.0 - k) + B.x * k,A.y * (1.0 - k) + B.y * k);
+  return C;
+}

@@ -1,0 +1,5 @@
+{
+  double dLat=toRadians(from.y - to.y);
+  double dLon=toRadians(from.x - to.x) * cosLat;
+  return RADIUS_OF_EARTH_IN_M * sqrt(dLat * dLat + dLon * dLon);
+}

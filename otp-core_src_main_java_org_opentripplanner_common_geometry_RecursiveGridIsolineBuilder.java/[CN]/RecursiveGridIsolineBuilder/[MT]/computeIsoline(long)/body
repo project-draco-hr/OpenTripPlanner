@@ -1,0 +1,164 @@
+{
+  fzInterpolateCount=0;
+  GeometryFactory geomFactory=new GeometryFactory();
+  Queue<GridEdge> edgesToDivide=new ArrayDeque<GridEdge>();
+  edgesToDivide.addAll(initialEdges);
+  Queue<GridEdge> edgesToExpand=new ArrayDeque<GridEdge>();
+  while (!edgesToDivide.isEmpty()) {
+    GridEdge e=edgesToDivide.remove();
+    if (e.cut(z0) == 0)     continue;
+    int size2=e.size / 2;
+    XYIndex iC=e.horizontal ? e.A.index.translated(size2,0) : e.A.index.translated(0,size2);
+    GridDot C=getOrCreateDot(iC);
+    GridEdge e1=new GridEdge(e.A,C,size2,e.horizontal);
+    GridEdge e2=new GridEdge(C,e.B,size2,e.horizontal);
+    GridEdge eCut=e1.cut(z0) != 0 ? e1 : e2;
+    if (eCut.cut(z0) == 0)     throw new AssertionError("Edge MUST cut!");
+    if (size2 == 1) {
+      edgesToExpand.add(eCut);
+    }
+ else {
+      edgesToDivide.add(eCut);
+    }
+  }
+  Set<GridEdge> finalEdges=new HashSet<GridEdge>();
+  Set<GridEdge> finalNonCuttingEdges=new HashSet<GridEdge>();
+  while (!edgesToExpand.isEmpty()) {
+    GridEdge e=edgesToExpand.remove();
+    if (finalEdges.add(e) == false) {
+      continue;
+    }
+    XYIndex iC=e.horizontal ? e.A.index.translated(0,1) : e.A.index.translated(-1,0);
+    XYIndex iD=e.horizontal ? e.B.index.translated(0,1) : e.B.index.translated(-1,0);
+    XYIndex iE=e.horizontal ? e.A.index.translated(0,-1) : e.A.index.translated(1,0);
+    XYIndex iF=e.horizontal ? e.B.index.translated(0,-1) : e.B.index.translated(1,0);
+    GridDot C=getOrCreateDot(iC);
+    GridDot D=getOrCreateDot(iD);
+    GridDot E=getOrCreateDot(iE);
+    GridDot F=getOrCreateDot(iF);
+    GridEdge[] e2List=new GridEdge[]{new GridEdge(e.A,C,1,!e.horizontal),new GridEdge(C,D,1,e.horizontal),new GridEdge(e.B,D,1,!e.horizontal),new GridEdge(e.A,E,1,!e.horizontal),new GridEdge(E,F,1,e.horizontal),new GridEdge(e.B,F,1,!e.horizontal)};
+    for (    GridEdge e2 : e2List) {
+      if (e2.cut(z0) == 0) {
+        finalNonCuttingEdges.add(e2);
+        continue;
+      }
+      if (finalEdges.contains(e2))       continue;
+      edgesToExpand.add(e2);
+    }
+  }
+  for (  GridEdge e : finalEdges) {
+    e.indexEndPoints();
+  }
+  for (  GridEdge e : finalNonCuttingEdges) {
+    e.indexEndPoints();
+  }
+  int finalEdgesSize=finalEdges.size();
+  int finalNonCuttingEdgesSize=finalNonCuttingEdges.size();
+  List<Geometry> debugGeom=new ArrayList<Geometry>();
+  if (debugSeedGrid) {
+    for (    GridEdge e : initialEdges) {
+      Coordinate A=getCoordinate(e.A.index);
+      Coordinate B=getCoordinate(e.B.index);
+      debugGeom.add(geomFactory.createLineString(new Coordinate[]{A,B}));
+    }
+  }
+  if (debugCrossingEdges) {
+    for (    GridEdge e : finalEdges) {
+      Coordinate A=getCoordinate(e.A.index);
+      Coordinate B=getCoordinate(e.B.index);
+      Coordinate C=interpolate(A,B,e.A.z,e.B.z,z0);
+      Coordinate C1=new Coordinate(C.x + (B.y - A.y) * 0.1,C.y + (B.x - A.x) * 0.1);
+      Coordinate C2=new Coordinate(C.x - (B.y - A.y) * 0.1,C.y - (B.x - A.x) * 0.1);
+      debugGeom.add(geomFactory.createLineString(new Coordinate[]{A,C,C1,C2,C,B}));
+    }
+  }
+  List<Geometry> retval=new ArrayList<Geometry>();
+  List<LinearRing> rings=new ArrayList<LinearRing>();
+  while (!finalEdges.isEmpty()) {
+    GridEdge e0=finalEdges.iterator().next();
+    List<Coordinate> polyPoints=new ArrayList<Coordinate>();
+    int cut=e0.cut(z0);
+    Direction direction=e0.horizontal ? (cut > 0 ? Direction.UP : Direction.DOWN) : (cut > 0 ? Direction.LEFT : Direction.RIGHT);
+    GridEdge e=e0;
+    while (true) {
+      Coordinate cA=getCoordinate(e.A.index);
+      Coordinate cB=getCoordinate(e.B.index);
+      Coordinate cC=interpolate(cA,cB,e.A.z,e.B.z,z0);
+      polyPoints.add(cC);
+      e.used=true;
+      finalEdges.remove(e);
+      GridEdge e1, e2, e3;
+      Direction d1, d2;
+switch (direction) {
+default :
+case UP:
+        e1=e.A.up;
+      d1=Direction.LEFT;
+    e2=e.B.up;
+  d2=Direction.RIGHT;
+e3=e1.B.right;
+break;
+case DOWN:
+e1=e.A.down;
+d1=Direction.LEFT;
+e2=e.B.down;
+d2=Direction.RIGHT;
+e3=e1.A.right;
+break;
+case LEFT:
+e1=e.A.left;
+d1=Direction.DOWN;
+e2=e.B.left;
+d2=Direction.UP;
+e3=e1.A.up;
+break;
+case RIGHT:
+e1=e.A.right;
+d1=Direction.DOWN;
+e2=e.B.right;
+d2=Direction.UP;
+e3=e1.B.up;
+break;
+}
+boolean ok1=e1.cut(z0) != 0 && !e1.used;
+boolean ok2=e2.cut(z0) != 0 && !e2.used;
+boolean ok3=e3.cut(z0) != 0 && !e3.used;
+if (ok1 && ok2) {
+double dA=Math.max(Math.abs(cA.x - cC.x),Math.abs(cA.y - cC.y));
+double dB=Math.max(Math.abs(cB.x - cC.x),Math.abs(cB.y - cC.y));
+if (dA <= dB) {
+e=e1;
+direction=d1;
+}
+ else {
+e=e2;
+direction=d2;
+}
+}
+ else if (ok1) {
+e=e1;
+direction=d1;
+}
+ else if (ok2) {
+e=e2;
+direction=d2;
+}
+ else if (ok3) {
+e=e3;
+}
+ else {
+break;
+}
+}
+polyPoints.add(polyPoints.get(0));
+LinearRing ring=geomFactory.createLinearRing(polyPoints.toArray(new Coordinate[polyPoints.size()]));
+rings.add(ring);
+}
+retval.addAll(punchHoles(geomFactory,rings));
+LOG.info("Isochrones: {}+{} Fz samples, {} cutting edges, {} non-cutting edges",allDots.size(),fzInterpolateCount,finalEdgesSize,finalNonCuttingEdgesSize);
+for (GridDot A : allDots.values()) {
+A.up=A.down=A.right=A.left=null;
+}
+debugGeometry=geomFactory.createGeometryCollection(debugGeom.toArray(new Geometry[debugGeom.size()]));
+return geomFactory.createGeometryCollection(retval.toArray(new Geometry[retval.size()]));
+}

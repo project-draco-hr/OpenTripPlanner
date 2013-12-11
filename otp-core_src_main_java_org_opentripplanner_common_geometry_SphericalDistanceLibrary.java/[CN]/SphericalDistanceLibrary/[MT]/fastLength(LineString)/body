@@ -1,5 +1,6 @@
 {
   Coordinate[] coordinates=lineString.getCoordinates();
-  Coordinate middle=new Coordinate((coordinates[0].x + coordinates[coordinates.length - 1].x) / 2.0,(coordinates[0].y + coordinates[coordinates.length - 1].y) / 2.0);
-  return equirectangularProject(middle,lineString).getLength() * RADIUS_OF_EARTH_IN_M;
+  double middleY=(coordinates[0].y + coordinates[coordinates.length - 1].y) / 2.0;
+  double cosLat=FastMath.cos(Math.toRadians(middleY));
+  return equirectangularProject(lineString,cosLat).getLength() * RADIUS_OF_EARTH_IN_M;
 }
