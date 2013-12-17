@@ -5,6 +5,7 @@
     return null;
   }
   CoordinateReferenceSystem wgs=DefaultGeographicCRS.WGS84;
+  CoordinateReferenceSystem crs=CRS.decode(crsCode);
   MathTransform toMeters=CRS.findMathTransform(wgs,crs,false);
   MathTransform fromMeters=CRS.findMathTransform(crs,wgs,false);
   GeometryFactory geomf=JTSFactoryFinder.getGeometryFactory();
