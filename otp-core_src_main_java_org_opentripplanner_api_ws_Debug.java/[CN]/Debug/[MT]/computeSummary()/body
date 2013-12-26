@@ -6,7 +6,7 @@
     pathTimes.add(t - last_t);
     last_t=t;
   }
-  System.out.printf("%s\n",pathTimes);
+  LOG.debug("times to find each path: {}",pathTimes);
   renderingTime=finishedRendering - finishedCalculating;
   totalTime=finishedRendering - startedCalculating;
 }
