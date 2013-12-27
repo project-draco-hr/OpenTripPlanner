@@ -21,9 +21,10 @@
     heuristic.doSomeWork();
     if (abortTime < Long.MAX_VALUE && System.currentTimeMillis() > abortTime) {
       LOG.warn("Search timeout. origin={} target={}",rctx.origin,rctx.target);
+      options.rctx.aborted=true;
       options.rctx.debug.timedOut=true;
       storeMemory();
-      return null;
+      return spt;
     }
     State u=pq.extract_min();
     if (!spt.visit(u)) {
