@@ -1,0 +1,9 @@
+{
+  if (other instanceof StopPattern) {
+    StopPattern pattern=(StopPattern)other;
+    return pattern.stops.equals(stops) && pattern.pickups.equals(pickups) && pattern.dropoffs.equals(dropoffs);
+  }
+ else {
+    return false;
+  }
+}
