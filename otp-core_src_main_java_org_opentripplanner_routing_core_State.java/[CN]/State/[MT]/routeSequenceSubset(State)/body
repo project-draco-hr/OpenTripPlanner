@@ -1,0 +1,17 @@
+{
+  AgencyAndId[] rs0=this.stateData.routeSequence;
+  AgencyAndId[] rs1=that.stateData.routeSequence;
+  if (rs0 == rs1)   return true;
+  if (rs0.length > rs1.length)   return false;
+  for (  AgencyAndId r0 : rs0) {
+    boolean match=false;
+    for (    AgencyAndId r1 : rs1) {
+      if (r0 == r1) {
+        match=true;
+        break;
+      }
+    }
+    if (!match)     return false;
+  }
+  return true;
+}
