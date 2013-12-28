@@ -1,4 +1,5 @@
 {
+  LOG.warn("BEGIN HOP GENERATION");
   if (fareServiceFactory == null) {
     fareServiceFactory=new DefaultFareServiceFactory();
   }
@@ -14,15 +15,18 @@
   for (  Frequency freq : _dao.getAllFrequencies()) {
     frequenciesForTrip.put(freq.getTrip(),freq);
   }
+  Multimap<StopPattern,TripTimes> tripTimesForStopPattern=ArrayListMultimap.create();
   TRIP:   for (  Trip trip : trips) {
-    tripCount++;
-    if (tripCount % 100000 == 0) {
+    if (++tripCount % 100000 == 0) {
       LOG.debug("trips=" + tripCount + "/"+ trips.size());
     }
     if (!_calendarService.getServiceIds().contains(trip.getServiceId())) {
       LOG.warn(graph.addBuilderAnnotation(new TripUndefinedService(trip)));
     }
-    List<StopTime> stopTimes=getNonduplicateStopTimesForTrip(trip);
+    List<StopTime> stopTimes=_dao.getStopTimesForTrip(trip);
+    if (removeRepeatedStops(stopTimes)) {
+      LOG.warn(graph.addBuilderAnnotation(new RepeatedStops(trip)));
+    }
     filterStopTimes(stopTimes,graph);
     interpolateStopTimes(stopTimes);
     if (stopTimes.size() < 2) {
@@ -47,11 +51,10 @@
         continue TRIP;
       }
     }
-    TableTripPattern tripPattern=addPatternForTripToGraph(graph,trip,stopTimes);
-    String blockId=trip.getBlockId();
-    if (blockId != null && !blockId.equals("")) {
-      addTripToInterliningMap(trip,stopTimes,tripPattern);
-    }
+    StopPattern stopPattern=new StopPattern(stopTimes);
+    TripTimes tripTimes=new TripTimes(trip,stopTimes);
+    tripTimesForStopPattern.put(stopPattern,tripTimes);
+    addPatternForTripToGraph(graph,trip,stopTimes);
   }
   for (  List<InterliningTrip> blockTrips : tripsForBlock.values()) {
     if (blockTrips.size() == 1) {
@@ -90,4 +93,5 @@
   graph.putService(FareService.class,fareServiceFactory.makeFareService());
   graph.putService(ServiceIdToNumberService.class,new ServiceIdToNumberService(context.serviceIds));
   graph.putService(OnBoardDepartService.class,new OnBoardDepartServiceImpl());
+  LOG.warn("END HOP GENERATION");
 }

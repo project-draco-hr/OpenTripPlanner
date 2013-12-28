@@ -5,13 +5,12 @@
     st0.setDepartureTime(st0.getArrivalTime());
   }
   boolean midnightCrossed=false;
-  final int HOUR=60 * 60;
   for (int i=1; i < stopTimes.size(); i++) {
     boolean st1bogus=false;
     StopTime st1=stopTimes.get(i);
     if (midnightCrossed) {
-      if (st1.isDepartureTimeSet())       st1.setDepartureTime(st1.getDepartureTime() + 24 * HOUR);
-      if (st1.isArrivalTimeSet())       st1.setArrivalTime(st1.getArrivalTime() + 24 * HOUR);
+      if (st1.isDepartureTimeSet())       st1.setDepartureTime(st1.getDepartureTime() + 24 * SECONDS_IN_HOUR);
+      if (st1.isArrivalTimeSet())       st1.setArrivalTime(st1.getArrivalTime() + 24 * SECONDS_IN_HOUR);
     }
     if (!st1.isDepartureTimeSet() && st1.isArrivalTimeSet()) {
       st1.setDepartureTime(st1.getArrivalTime());
@@ -22,9 +21,9 @@
     int dwellTime=st0.getDepartureTime() - st0.getArrivalTime();
     if (dwellTime < 0) {
       LOG.warn(graph.addBuilderAnnotation(new NegativeDwellTime(st0)));
-      if (st0.getArrivalTime() > 23 * HOUR && st0.getDepartureTime() < 1 * HOUR) {
+      if (st0.getArrivalTime() > 23 * SECONDS_IN_HOUR && st0.getDepartureTime() < 1 * SECONDS_IN_HOUR) {
         midnightCrossed=true;
-        st0.setDepartureTime(st0.getDepartureTime() + 24 * HOUR);
+        st0.setDepartureTime(st0.getDepartureTime() + 24 * SECONDS_IN_HOUR);
       }
  else {
         st0.setDepartureTime(st0.getArrivalTime());
@@ -34,8 +33,8 @@
     if (runningTime < 0) {
       LOG.warn(graph.addBuilderAnnotation(new NegativeHopTime(new StopTime(st0),new StopTime(st1))));
       midnightCrossed=true;
-      if (st0.getDepartureTime() > 23 * HOUR && st1.getArrivalTime() < 1 * HOUR) {
-        st1.setArrivalTime(st1.getArrivalTime() + 24 * HOUR);
+      if (st0.getDepartureTime() > 23 * SECONDS_IN_HOUR && st1.getArrivalTime() < 1 * SECONDS_IN_HOUR) {
+        st1.setArrivalTime(st1.getArrivalTime() + 24 * SECONDS_IN_HOUR);
       }
  else {
         st1.setArrivalTime(st0.getDepartureTime());

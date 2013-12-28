@@ -1,0 +1,17 @@
+{
+  boolean filtered=false;
+  StopTime prev=null;
+  Iterator<StopTime> it=stopTimes.iterator();
+  while (it.hasNext()) {
+    StopTime st=it.next();
+    if (prev != null) {
+      if (prev.getStop().equals(st.getStop())) {
+        prev.setDepartureTime(st.getDepartureTime());
+        it.remove();
+        filtered=true;
+      }
+    }
+    prev=st;
+  }
+  return filtered;
+}
