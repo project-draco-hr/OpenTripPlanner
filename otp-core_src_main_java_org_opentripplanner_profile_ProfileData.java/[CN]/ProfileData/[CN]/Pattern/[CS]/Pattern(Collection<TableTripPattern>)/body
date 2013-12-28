@@ -1,7 +1,7 @@
 {
   TableTripPattern first=ttps.iterator().next();
   stops=first.getStops();
-  route=first.exemplar.getRoute();
+  route=first.getRoute();
   int nStops=stops.size();
   min=new int[nStops];
   avg=new int[nStops];
@@ -12,7 +12,7 @@
       LOG.error("mismatched stop pattern");
       continue;
     }
-    if (!ttp.exemplar.getRoute().equals(route)) {
+    if (!ttp.getRoute().equals(route)) {
       LOG.error("mismatched route");
       continue;
     }
