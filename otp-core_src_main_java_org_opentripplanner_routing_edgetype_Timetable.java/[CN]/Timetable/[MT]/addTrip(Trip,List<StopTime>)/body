@@ -1,9 +1,8 @@
 {
-  TripTimes tripTime=new TripTimes(trip,stopTimes);
+  TripTimes newTripTimes=new TripTimes(trip,stopTimes);
   if (!tripTimes.isEmpty()) {
-    TripTimes firstTripTime=tripTimes.get(0);
-    tripTime.compactStopSequence(firstTripTime);
+    TripTimes firstTripTimes=tripTimes.get(0);
+    newTripTimes.compactStopSequence(firstTripTimes);
   }
-  tripTimes.add(tripTime);
-  pattern.trips.add(trip);
+  tripTimes.add(newTripTimes);
 }

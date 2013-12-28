@@ -1,0 +1,13 @@
+{
+  patternHops=new PatternHop[stopPattern.size - 1];
+  perStopFlags=new int[stopPattern.size];
+  int i=0;
+  for (  Stop stop : stopPattern.stops) {
+    if (stop.getWheelchairBoarding() != 2) {
+      perStopFlags[i]|=FLAG_WHEELCHAIR_ACCESSIBLE;
+    }
+    perStopFlags[i]|=stopPattern.pickups[i] << SHIFT_PICKUP;
+    perStopFlags[i]|=stopPattern.dropoffs[i] << SHIFT_DROPOFF;
+    ++i;
+  }
+}
