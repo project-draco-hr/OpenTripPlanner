@@ -30,7 +30,7 @@
       continue TRIP;
     }
     List<Frequency> frequencies=frequenciesForTrip.get(trip);
-    if (frequencies != null) {
+    if (frequencies != null && !frequencies.isEmpty()) {
       Collections.sort(frequencies,new Comparator<Frequency>(){
         @Override public int compare(        Frequency o1,        Frequency o2){
           return o1.getStartTime() - o2.getStartTime();
