@@ -15,7 +15,6 @@
   for (  Frequency freq : _dao.getAllFrequencies()) {
     frequenciesForTrip.put(freq.getTrip(),freq);
   }
-  Multimap<StopPattern,TripTimes> tripTimesForStopPattern=ArrayListMultimap.create();
   TRIP:   for (  Trip trip : trips) {
     if (++tripCount % 100000 == 0) {
       LOG.debug("trips=" + tripCount + "/"+ trips.size());
@@ -53,9 +52,18 @@
     }
     StopPattern stopPattern=new StopPattern(stopTimes);
     TripTimes tripTimes=new TripTimes(trip,stopTimes);
-    tripTimesForStopPattern.put(stopPattern,tripTimes);
-    addPatternForTripToGraph(graph,trip,stopTimes);
+    tripTimesForBlock.put(new BlockIdAndServiceId(trip),trip);
+    TableTripPattern tableTripPattern=tableTripPatterns.get(stopPattern);
+    if (tableTripPattern == null) {
+      tableTripPattern=new TableTripPattern(trip.getRoute(),stopPattern);
+      tableTripPatterns.put(stopPattern,tableTripPattern);
+    }
+    tableTripPattern.addTrip(trip,stopTimes);
   }
+  for (  TableTripPattern tableTripPattern : tableTripPatterns.values()) {
+    System.out.printf(" -- %s\n",tableTripPattern.getName());
+  }
+  TableTripPattern.generateUniqueNames(tableTripPatterns.values());
   for (  List<InterliningTrip> blockTrips : tripsForBlock.values()) {
     if (blockTrips.size() == 1) {
       continue;
