@@ -1,3 +1,96 @@
 {
-  Set<String> names=Sets.newHashSet();
+  Set<String> usedRouteNames=Sets.newHashSet();
+  Map<Route,String> uniqueRouteNames=Maps.newHashMap();
+  Multimap<Route,TableTripPattern> patternsByRoute=ArrayListMultimap.create();
+  for (  TableTripPattern ttp : tableTripPatterns) {
+    patternsByRoute.put(ttp.route,ttp);
+  }
+  for (  Route route : patternsByRoute.keys()) {
+    String routeName=GtfsLibrary.getRouteName(route);
+    if (usedRouteNames.contains(routeName)) {
+      LOG.warn("Route has non-unique name. Generating one to ensure uniqueness of TripPattern names.");
+      int i=2;
+      String generatedRouteName;
+      do       generatedRouteName=routeName + (i++);
+ while (usedRouteNames.contains(generatedRouteName));
+      routeName=generatedRouteName;
+    }
+    usedRouteNames.add(routeName);
+    uniqueRouteNames.put(route,routeName);
+  }
+  ROUTE:   for (  Route route : patternsByRoute.keys()) {
+    Collection<TableTripPattern> tripPatterns=patternsByRoute.get(route);
+    String routeName=uniqueRouteNames.get(route);
+    if (tripPatterns.size() == 1) {
+      tripPatterns.iterator().next().setName(routeName);
+      continue;
+    }
+    Multimap<String,TableTripPattern> starts=ArrayListMultimap.create();
+    Multimap<String,TableTripPattern> ends=ArrayListMultimap.create();
+    Multimap<String,TableTripPattern> vias=ArrayListMultimap.create();
+    for (    TableTripPattern pattern : tableTripPatterns) {
+      List<Stop> stops=pattern.getStops();
+      starts.put(stopNameAndId(stops.get(0)),pattern);
+      ends.put(stopNameAndId(stops.get(stops.size() - 1)),pattern);
+      for (      Stop stop : stops) {
+        vias.put(stopNameAndId(stop),pattern);
+      }
+    }
+    PATTERN:     for (    TableTripPattern pattern : tableTripPatterns) {
+      List<Stop> stops=pattern.getStops();
+      String start=stopNameAndId(stops.get(0));
+      if (starts.get(start).size() == 1) {
+        pattern.setName(routeName + " from " + start);
+        continue PATTERN;
+      }
+      String end=stopNameAndId(stops.get(stops.size() - 1));
+      if (ends.get(end).size() == 1) {
+        pattern.setName(routeName + " to " + end);
+        continue PATTERN;
+      }
+      for (      Stop stop : stops) {
+        String via=stopNameAndId(stop);
+        if (vias.get(via).size() == 1) {
+          pattern.setName(routeName + " via " + via);
+          continue PATTERN;
+        }
+      }
+      Set<TableTripPattern> remainingPatterns=Sets.newHashSet();
+      remainingPatterns.addAll(starts.get(start));
+      remainingPatterns.retainAll(ends.get(end));
+      if (remainingPatterns.size() == 1) {
+        pattern.setName(routeName + " from " + start+ " to "+ end);
+        continue PATTERN;
+      }
+      for (      Stop stop : stops) {
+        String via=stopNameAndId(stop);
+        if (via.equals(start) || via.equals(end))         continue;
+        boolean found=false;
+        boolean bad=false;
+        for (        TableTripPattern viaPattern : vias.get(via)) {
+          if (remainingPatterns.contains(viaPattern)) {
+            if (found) {
+              bad=true;
+              break;
+            }
+ else {
+              found=true;
+            }
+          }
+        }
+        if (found && !bad) {
+          String name=routeName + " from " + start+ " to "+ end+ " via "+ via;
+          pattern.setName(name);
+          continue PATTERN;
+        }
+      }
+      if (remainingPatterns.size() == 2) {
+        String name=routeName + " from " + start+ " to "+ end+ " express";
+        pattern.setName(name);
+      }
+ else {
+        pattern.setName(routeName + " like trip " + pattern.getTrips().get(0).getId());
+      }
+    }
+  }
 }
