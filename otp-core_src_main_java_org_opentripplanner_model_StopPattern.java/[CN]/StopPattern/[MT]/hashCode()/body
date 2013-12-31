@@ -1,3 +1,9 @@
 {
-  return this.stops.hashCode() + this.pickups.hashCode() + this.dropoffs.hashCode();
+  int hash=size;
+  hash+=Arrays.hashCode(this.stops);
+  hash*=31;
+  hash+=Arrays.hashCode(this.pickups);
+  hash*=31;
+  hash+=Arrays.hashCode(this.dropoffs);
+  return hash;
 }

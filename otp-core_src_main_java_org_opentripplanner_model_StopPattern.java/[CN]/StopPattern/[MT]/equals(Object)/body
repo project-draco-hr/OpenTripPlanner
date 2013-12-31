@@ -1,7 +1,7 @@
 {
   if (other instanceof StopPattern) {
-    StopPattern pattern=(StopPattern)other;
-    return pattern.stops.equals(stops) && pattern.pickups.equals(pickups) && pattern.dropoffs.equals(dropoffs);
+    StopPattern that=(StopPattern)other;
+    return Arrays.equals(this.stops,that.stops) && Arrays.equals(this.pickups,that.pickups) && Arrays.equals(this.dropoffs,that.dropoffs);
   }
  else {
     return false;
