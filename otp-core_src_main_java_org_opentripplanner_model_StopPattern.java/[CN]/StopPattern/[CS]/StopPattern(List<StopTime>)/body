@@ -1,9 +1,12 @@
 {
   this(stopTimes.size());
+  if (size == 0)   return;
   for (int i=0; i < size; ++i) {
     StopTime stopTime=stopTimes.get(i);
     stops[i]=stopTime.getStop();
     pickups[i]=stopTime.getPickupType();
     dropoffs[i]=stopTime.getDropOffType();
   }
+  dropoffs[0]=0;
+  pickups[size - 1]=0;
 }
