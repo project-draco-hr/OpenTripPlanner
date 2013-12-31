@@ -1,5 +1,5 @@
 {
-  LOG.warn("BEGIN HOP GENERATION");
+  LOG.info("BEGIN HOP GENERATION");
   if (fareServiceFactory == null) {
     fareServiceFactory=new DefaultFareServiceFactory();
   }
@@ -52,7 +52,9 @@
     }
     StopPattern stopPattern=new StopPattern(stopTimes);
     TripTimes tripTimes=new TripTimes(trip,stopTimes);
-    tripTimesForBlock.put(new BlockIdAndServiceId(trip),trip);
+    if (trip.getBlockId() != null) {
+      tripTimesForBlock.put(new BlockIdAndServiceId(tripTimes.getTrip()),tripTimes);
+    }
     TableTripPattern tableTripPattern=tableTripPatterns.get(stopPattern);
     if (tableTripPattern == null) {
       tableTripPattern=new TableTripPattern(trip.getRoute(),stopPattern);
@@ -60,46 +62,29 @@
     }
     tableTripPattern.addTrip(trip,stopTimes);
   }
-  for (  TableTripPattern tableTripPattern : tableTripPatterns.values()) {
-    System.out.printf(" -- %s\n",tableTripPattern.getName());
-  }
   TableTripPattern.generateUniqueNames(tableTripPatterns.values());
-  for (  List<InterliningTrip> blockTrips : tripsForBlock.values()) {
-    if (blockTrips.size() == 1) {
-      continue;
-    }
-    Collections.sort(blockTrips);
-    for (int i=0; i < blockTrips.size() - 1; ++i) {
-      InterliningTrip fromInterlineTrip=blockTrips.get(i);
-      InterliningTrip toInterlineTrip=blockTrips.get(i + 1);
-      Trip fromTrip=fromInterlineTrip.trip;
-      Trip toTrip=toInterlineTrip.trip;
-      StopTime st0=fromInterlineTrip.lastStopTime;
-      StopTime st1=toInterlineTrip.firstStopTime;
-      Stop s0=st0.getStop();
-      Stop s1=st1.getStop();
-      if (st0.getPickupType() == 1) {
-        continue;
+  Map<TripTimes,TripTimes> interlinedTrips=Maps.newHashMap();
+  for (  BlockIdAndServiceId block : tripTimesForBlock.keySet()) {
+    List<TripTimes> blockTripTimes=tripTimesForBlock.get(block);
+    Collections.sort(blockTripTimes);
+    TripTimes last=null;
+    for (    TripTimes tripTimes : blockTripTimes) {
+      if (last != null) {
+        interlinedTrips.put(last,tripTimes);
       }
-      Trip fromExemplar=fromInterlineTrip.tripPattern.exemplar;
-      Trip toExemplar=toInterlineTrip.tripPattern.exemplar;
-      InterlineSwitchoverKey dwellKey=new InterlineSwitchoverKey(s0,s1,fromInterlineTrip.tripPattern,toInterlineTrip.tripPattern);
-      PatternInterlineDwell dwell=getInterlineDwell(dwellKey);
-      if (dwell == null) {
-        Vertex startJourney=context.patternArriveNodes.get(new T2<Stop,Trip>(s0,fromExemplar));
-        Vertex endJourney=context.patternDepartNodes.get(new T2<Stop,Trip>(s1,toExemplar));
-        dwell=new PatternInterlineDwell(startJourney,endJourney,toTrip);
-        interlineDwells.put(dwellKey,dwell);
-      }
-      int dwellTime=st1.getDepartureTime() - st0.getArrivalTime();
-      dwell.addTrip(fromTrip,toTrip,dwellTime,fromInterlineTrip.getPatternIndex(),toInterlineTrip.getPatternIndex());
+      last=tripTimes;
     }
+  }
+  for (  TableTripPattern tableTripPattern : tableTripPatterns.values()) {
   }
   loadTransfers(graph);
   if (_deleteUselessDwells)   deleteUselessDwells(graph);
+  for (  TableTripPattern tableTripPattern : tableTripPatterns.values()) {
+    tableTripPattern.getScheduledTimetable().finish();
+  }
   clearCachedData();
   graph.putService(FareService.class,fareServiceFactory.makeFareService());
   graph.putService(ServiceIdToNumberService.class,new ServiceIdToNumberService(context.serviceIds));
   graph.putService(OnBoardDepartService.class,new OnBoardDepartServiceImpl());
-  LOG.warn("END HOP GENERATION");
+  LOG.info("END HOP GENERATION");
 }

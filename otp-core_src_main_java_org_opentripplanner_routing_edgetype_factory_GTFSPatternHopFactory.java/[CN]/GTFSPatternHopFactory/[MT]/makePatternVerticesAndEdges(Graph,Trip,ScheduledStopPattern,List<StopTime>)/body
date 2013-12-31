@@ -1,5 +1,5 @@
 {
-  TableTripPattern tripPattern=new TableTripPattern(trip,stopPattern,getServiceId(trip));
+  TableTripPattern tripPattern=null;
   getTripPatternIndex(tripPattern);
   TraverseMode mode=GtfsLibrary.getTraverseMode(trip.getRoute());
   ArrayList<PatternHop> hops=new ArrayList<PatternHop>();
