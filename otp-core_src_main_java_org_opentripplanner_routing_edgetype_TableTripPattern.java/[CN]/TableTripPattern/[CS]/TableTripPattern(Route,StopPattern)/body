@@ -1,5 +1,13 @@
 {
   this.route=route;
   this.stopPattern=stopPattern;
+  int size=stopPattern.size;
   setStopsFromStopPattern(stopPattern);
+  stopVertices=new TransitStop[size];
+  departVertices=new PatternDepartVertex[size];
+  arriveVertices=new PatternArriveVertex[size];
+  boardEdges=new TransitBoardAlight[size];
+  alightEdges=new TransitBoardAlight[size];
+  hopEdges=new PatternHop[size];
+  dwellEdges=new PatternDwell[size];
 }
