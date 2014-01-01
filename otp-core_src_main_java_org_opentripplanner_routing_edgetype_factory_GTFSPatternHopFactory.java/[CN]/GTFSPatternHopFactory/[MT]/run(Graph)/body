@@ -52,7 +52,7 @@
     }
     StopPattern stopPattern=new StopPattern(stopTimes);
     TripTimes tripTimes=new TripTimes(trip,stopTimes);
-    if (trip.getBlockId() != null) {
+    if (trip.getBlockId() != null && !trip.getBlockId().equals("")) {
       tripTimesForBlock.put(new BlockIdAndServiceId(tripTimes.getTrip()),tripTimes);
     }
     TableTripPattern tableTripPattern=tableTripPatterns.get(stopPattern);
@@ -63,6 +63,9 @@
     tableTripPattern.addTrip(trip,stopTimes);
   }
   TableTripPattern.generateUniqueNames(tableTripPatterns.values());
+  for (  TableTripPattern tableTripPattern : tableTripPatterns.values()) {
+    tableTripPattern.makePatternVerticesAndEdges(graph,context);
+  }
   Map<TripTimes,TripTimes> interlinedTrips=Maps.newHashMap();
   for (  BlockIdAndServiceId block : tripTimesForBlock.keySet()) {
     List<TripTimes> blockTripTimes=tripTimesForBlock.get(block);
@@ -74,8 +77,6 @@
       }
       last=tripTimes;
     }
-  }
-  for (  TableTripPattern tableTripPattern : tableTripPatterns.values()) {
   }
   loadTransfers(graph);
   if (_deleteUselessDwells)   deleteUselessDwells(graph);
