@@ -1,6 +1,5 @@
 {
   long preferences_penalty=0;
-  Route route=trip.getRoute();
   String agencyID=route.getId().getAgencyId();
   if ((preferredRoutes != null && !preferredRoutes.equals(RouteMatcher.emptyMatcher())) || (preferredAgencies != null && !preferredAgencies.isEmpty())) {
     boolean isPreferedRoute=preferredRoutes != null && preferredRoutes.matches(route);
