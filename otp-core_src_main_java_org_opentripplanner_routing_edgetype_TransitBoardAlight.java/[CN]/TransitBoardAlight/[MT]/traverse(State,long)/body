@@ -1,6 +1,10 @@
 {
   RoutingContext rctx=s0.getContext();
   RoutingRequest options=s0.getOptions();
+  if (options.wheelchairAccessible && !getPattern().wheelchairAccessible(stopIndex)) {
+    return null;
+  }
+  ;
   boolean leavingTransit=(boarding && options.isArriveBy()) || (!boarding && !options.isArriveBy());
   if (leavingTransit) {
     if (s0.getBackEdge() instanceof TransitBoardAlight) {
