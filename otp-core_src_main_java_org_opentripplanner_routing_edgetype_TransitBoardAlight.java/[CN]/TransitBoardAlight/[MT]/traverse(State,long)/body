@@ -1,7 +1,6 @@
 {
   RoutingContext rctx=s0.getContext();
   RoutingRequest options=s0.getOptions();
-  TraverseMode streetMode=s0.getNonTransitMode();
   boolean leavingTransit=(boarding && options.isArriveBy()) || (!boarding && !options.isArriveBy());
   if (leavingTransit) {
     if (s0.getBackEdge() instanceof TransitBoardAlight) {
@@ -18,7 +17,7 @@
       s1.incrementWeight(wait * options.waitAtBeginningFactor);
       s1.setInitialWaitTimeSeconds(wait);
     }
-    if (options.isReverseOptimizing())     s1.incrementWeight(options.getBoardCost(streetMode));
+    if (options.isReverseOptimizing())     s1.incrementWeight(options.getBoardCost(s0.getNonTransitMode()));
     if (options.isReverseOptimizeOnTheFly()) {
       int thisDeparture=s0.getTripTimes().getDepartureTime(stopIndex);
       int numTrips=getPattern().getNumScheduledTrips();
@@ -52,7 +51,7 @@
     for (    ServiceDay sd : rctx.serviceDays) {
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
       int wait;
-      TripTimes tripTimes=getPattern().getNextTrip(stopIndex,secondsSinceMidnight,s0,sd,streetMode == TraverseMode.BICYCLE,boarding);
+      TripTimes tripTimes=getPattern().getNextTrip(stopIndex,secondsSinceMidnight,s0,sd,s0.getNonTransitMode() == TraverseMode.BICYCLE,boarding);
       if (tripTimes != null) {
         wait=boarding ? (int)(sd.time(tripTimes.getDepartureTime(stopIndex)) - current_time) : (int)(current_time - sd.time(tripTimes.getArrivalTime(stopIndex - 1)));
         if (wait < 0) {
@@ -101,7 +100,7 @@
       s1.incrementWeight(wait_cost);
     }
  else {
-      s1.incrementWeight(wait_cost + options.getBoardCost(streetMode));
+      s1.incrementWeight(wait_cost + options.getBoardCost(s0.getNonTransitMode()));
     }
     if (options.isReverseOptimizeOnTheFly() && !options.isReverseOptimizing() && s0.getisEverBoarded()&& s0.getLastNextArrivalDelta() <= bestWait && s0.getLastNextArrivalDelta() > -1) {
       State optimized=s1.makeState().optimizeOrReverse(true,true);
