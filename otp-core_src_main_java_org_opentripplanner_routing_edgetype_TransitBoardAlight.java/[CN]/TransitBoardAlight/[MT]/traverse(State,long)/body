@@ -44,16 +44,14 @@
     if (options.bannedRoutes != null && options.bannedRoutes.matches(getPattern().route)) {
       return null;
     }
-    long current_time=s0.getTimeSeconds();
     int bestWait=-1;
     TripTimes bestTripTimes=null;
     ServiceDay bestServiceDay=null;
     for (    ServiceDay sd : rctx.serviceDays) {
-      int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
       int wait;
-      TripTimes tripTimes=getPattern().getNextTrip(stopIndex,secondsSinceMidnight,s0,sd,s0.getNonTransitMode() == TraverseMode.BICYCLE,boarding);
+      TripTimes tripTimes=getPattern().getNextTrip(s0,sd,stopIndex,boarding);
       if (tripTimes != null) {
-        wait=boarding ? (int)(sd.time(tripTimes.getDepartureTime(stopIndex)) - current_time) : (int)(current_time - sd.time(tripTimes.getArrivalTime(stopIndex - 1)));
+        wait=boarding ? (int)(sd.time(tripTimes.getDepartureTime(stopIndex)) - s0.getTimeSeconds()) : (int)(s0.getTimeSeconds() - sd.time(tripTimes.getArrivalTime(stopIndex - 1)));
         if (wait < 0) {
           LOG.error("Negative wait time when boarding.");
         }

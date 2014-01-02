@@ -1,8 +1,8 @@
 {
-  RoutingRequest options=state0.getOptions();
+  RoutingRequest options=s0.getOptions();
   Timetable timetable=scheduledTimetable;
   TimetableResolver snapshot=options.rctx.timetableSnapshot;
-  if (snapshot != null)   timetable=snapshot.resolve(this,sd.getServiceDate());
+  if (snapshot != null)   timetable=snapshot.resolve(this,serviceDay.getServiceDate());
   int mask=boarding ? MASK_PICKUP : MASK_DROPOFF;
   int shift=boarding ? SHIFT_PICKUP : SHIFT_DROPOFF;
   if ((perStopFlags[stopIndex] & mask) >> shift == NO_PICKUP) {
@@ -11,5 +11,5 @@
   if (options.wheelchairAccessible && (perStopFlags[stopIndex] & FLAG_WHEELCHAIR_ACCESSIBLE) == 0) {
     return null;
   }
-  return timetable.getNextTrip(stopIndex,time,state0,sd,haveBicycle,boarding);
+  return timetable.getNextTrip(s0,serviceDay,stopIndex,boarding);
 }
