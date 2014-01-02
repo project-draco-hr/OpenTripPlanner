@@ -35,6 +35,7 @@
  else {
     int bestTime=boarding ? Integer.MAX_VALUE : Integer.MIN_VALUE;
     for (    TripTimes tt : tripTimes) {
+      if (!sd.serviceRunning(tt.serviceCode))       continue;
       if (boarding) {
         int depTime=tt.getDepartureTime(stopIndex);
         if (depTime >= time && depTime < bestTime && tt.tripAcceptable(state0,currentStop,sd,haveBicycle,stopIndex,boarding)) {
