@@ -1,9 +1,0 @@
-{
-  AgencyAndId gtfsId=trip.getServiceId();
-  Integer id=context.serviceIds.get(gtfsId);
-  if (id == null) {
-    id=context.serviceIds.size();
-    context.serviceIds.put(gtfsId,id);
-  }
-  return id;
-}

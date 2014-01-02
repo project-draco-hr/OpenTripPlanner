@@ -1,0 +1,7 @@
+{
+  Set<AgencyAndId> services=Sets.newHashSet();
+  for (  Trip trip : this.trips) {
+    services.add(trip.getServiceId());
+  }
+  LOG.info("route {} : {}",route,services);
+}

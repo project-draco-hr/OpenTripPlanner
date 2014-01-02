@@ -3,8 +3,10 @@
     if (!options.getModes().get(modeMask)) {
       return Double.POSITIVE_INFINITY;
     }
-    int serviceId=getPattern().getServiceId();
-    for (    ServiceDay sd : options.rctx.serviceDays)     if (sd.serviceIdRunning(serviceId))     return 0;
+    BitSet services=getPattern().services;
+    for (    ServiceDay sd : options.rctx.serviceDays) {
+      if (sd.anyServiceRunning(services))       return 0;
+    }
     return Double.POSITIVE_INFINITY;
   }
  else {

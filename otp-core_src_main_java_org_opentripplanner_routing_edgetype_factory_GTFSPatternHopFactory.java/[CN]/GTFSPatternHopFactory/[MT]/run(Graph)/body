@@ -8,6 +8,9 @@
   loadPathways(graph);
   loadAgencies(graph);
   clearCachedData();
+  for (  AgencyAndId serviceId : _dao.getAllServiceIds()) {
+    graph.serviceCodes.put(serviceId,graph.serviceCodes.size());
+  }
   LOG.debug("building hops from trips");
   Collection<Trip> trips=_dao.getAllTrips();
   int tripCount=0;
@@ -65,6 +68,7 @@
   TableTripPattern.generateUniqueNames(tableTripPatterns.values());
   for (  TableTripPattern tableTripPattern : tableTripPatterns.values()) {
     tableTripPattern.makePatternVerticesAndEdges(graph,context);
+    tableTripPattern.setServiceCodes(graph.serviceCodes);
   }
   Map<TripTimes,TripTimes> interlinedTrips=Maps.newHashMap();
   for (  BlockIdAndServiceId block : tripTimesForBlock.keySet()) {
@@ -85,7 +89,6 @@
   }
   clearCachedData();
   graph.putService(FareService.class,fareServiceFactory.makeFareService());
-  graph.putService(ServiceIdToNumberService.class,new ServiceIdToNumberService(context.serviceIds));
   graph.putService(OnBoardDepartService.class,new OnBoardDepartServiceImpl());
   LOG.info("END HOP GENERATION");
 }

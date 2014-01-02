@@ -296,7 +296,7 @@
   serviceId.put(firstTrip.getId(),firstTripPattern.getServiceId());
   serviceId.put(secondTrip.getId(),secondTripPattern.getServiceId());
   serviceId.put(thirdTrip.getId(),thirdTripPattern.getServiceId());
-  ServiceIdToNumberService serviceIdToNumberService=new ServiceIdToNumberService(serviceId);
+  graph.serviceIdIntegers=serviceId;
   CalendarServiceData calendarServiceData=new CalendarServiceDataStub(serviceId.keySet());
   CalendarServiceImpl calendarServiceImpl=new CalendarServiceImpl(calendarServiceData);
   calendarServiceData.putTimeZoneForAgencyId("Train",timeZone);
@@ -328,7 +328,7 @@
   TimetableSnapshotSource timetableSnapshotSource=mock(TimetableSnapshotSource.class);
   when(timetableSnapshotSource.getTimetableSnapshot()).thenReturn(resolver);
   timetableSnapshotSource.getTimetableSnapshot().update(thirdTripPattern,tripUpdate,"Ferry",timeZone,serviceDate);
-  graph.putService(ServiceIdToNumberService.class,serviceIdToNumberService);
+  graph.serviceIdIntegers=serviceId;
   graph.putService(CalendarServiceData.class,calendarServiceData);
   graph.putService(FareService.class,fareServiceStub);
   graph.addAgency(trainAgency);
