@@ -1,26 +1,26 @@
 {
-  RoutingContext rctx=state0.getContext();
-  RoutingRequest options=state0.getOptions();
-  TraverseMode streetMode=state0.getNonTransitMode();
+  RoutingContext rctx=s0.getContext();
+  RoutingRequest options=s0.getOptions();
+  TraverseMode streetMode=s0.getNonTransitMode();
   boolean leavingTransit=(boarding && options.isArriveBy()) || (!boarding && !options.isArriveBy());
   if (leavingTransit) {
-    if (state0.getBackEdge() instanceof TransitBoardAlight) {
+    if (s0.getBackEdge() instanceof TransitBoardAlight) {
       return null;
     }
-    StateEditor s1=state0.edit(this);
+    StateEditor s1=s0.edit(this);
     s1.setTripId(null);
-    s1.setLastAlightedTimeSeconds(state0.getTimeSeconds());
+    s1.setLastAlightedTimeSeconds(s0.getTimeSeconds());
     s1.setPreviousStop(getStop());
     s1.setLastPattern(this.getPattern());
     if (arrivalTimeAtStop > 0) {
-      int wait=(int)Math.abs(state0.getTimeSeconds() - arrivalTimeAtStop);
+      int wait=(int)Math.abs(s0.getTimeSeconds() - arrivalTimeAtStop);
       s1.incrementTimeInSeconds(wait);
       s1.incrementWeight(wait * options.waitAtBeginningFactor);
       s1.setInitialWaitTimeSeconds(wait);
     }
     if (options.isReverseOptimizing())     s1.incrementWeight(options.getBoardCost(streetMode));
     if (options.isReverseOptimizeOnTheFly()) {
-      int thisDeparture=state0.getTripTimes().getDepartureTime(stopIndex);
+      int thisDeparture=s0.getTripTimes().getDepartureTime(stopIndex);
       int numTrips=getPattern().getNumScheduledTrips();
       int nextDeparture;
       s1.setLastNextArrivalDelta(Integer.MAX_VALUE);
@@ -36,7 +36,7 @@
     return s1.makeState();
   }
  else {
-    if (state0.getLastPattern() == this.getPattern()) {
+    if (s0.getLastPattern() == this.getPattern()) {
       return null;
     }
     if (!options.getModes().get(modeMask)) {
@@ -45,14 +45,14 @@
     if (options.bannedRoutes != null && options.bannedRoutes.matches(getPattern().route)) {
       return null;
     }
-    long current_time=state0.getTimeSeconds();
+    long current_time=s0.getTimeSeconds();
     int bestWait=-1;
     TripTimes bestTripTimes=null;
     ServiceDay bestServiceDay=null;
     for (    ServiceDay sd : rctx.serviceDays) {
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
       int wait;
-      TripTimes tripTimes=getPattern().getNextTrip(stopIndex,secondsSinceMidnight,state0,sd,streetMode == TraverseMode.BICYCLE,boarding);
+      TripTimes tripTimes=getPattern().getNextTrip(stopIndex,secondsSinceMidnight,s0,sd,streetMode == TraverseMode.BICYCLE,boarding);
       if (tripTimes != null) {
         wait=boarding ? (int)(sd.time(tripTimes.getDepartureTime(stopIndex)) - current_time) : (int)(current_time - sd.time(tripTimes.getArrivalTime(stopIndex - 1)));
         if (wait < 0) {
@@ -72,12 +72,12 @@
     if (options.tripIsBanned(trip))     return null;
     long preferences_penalty=options.preferencesPenaltyForRoute(getPattern().route);
     int transferPenalty=0;
-    if (state0.isEverBoarded()) {
+    if (s0.isEverBoarded()) {
       TransferTable transferTable=options.getRoutingContext().transferTable;
-      int transferTime=transferTable.getTransferTime(state0.getPreviousStop(),getStop(),state0.getPreviousTrip(),trip,boarding);
+      int transferTime=transferTable.getTransferTime(s0.getPreviousStop(),getStop(),s0.getPreviousTrip(),trip,boarding);
       transferPenalty=transferTable.determineTransferPenalty(transferTime,options.nonpreferredTransferPenalty);
     }
-    StateEditor s1=state0.edit(this);
+    StateEditor s1=s0.edit(this);
     s1.setBackMode(getMode());
     s1.setServiceDay(bestServiceDay);
     s1.setTripTimes(bestTripTimes);
@@ -88,7 +88,7 @@
     s1.setZone(getPattern().getZone(stopIndex));
     s1.setRoute(trip.getRoute().getId());
     double wait_cost=bestWait;
-    if (!state0.isEverBoarded() && !options.isReverseOptimizing()) {
+    if (!s0.isEverBoarded() && !options.isReverseOptimizing()) {
       wait_cost*=options.waitAtBeginningFactor;
       s1.setInitialWaitTimeSeconds(bestWait);
     }
@@ -103,7 +103,7 @@
  else {
       s1.incrementWeight(wait_cost + options.getBoardCost(streetMode));
     }
-    if (options.isReverseOptimizeOnTheFly() && !options.isReverseOptimizing() && state0.getisEverBoarded()&& state0.getLastNextArrivalDelta() <= bestWait && state0.getLastNextArrivalDelta() > -1) {
+    if (options.isReverseOptimizeOnTheFly() && !options.isReverseOptimizing() && s0.getisEverBoarded()&& s0.getLastNextArrivalDelta() <= bestWait && s0.getLastNextArrivalDelta() > -1) {
       State optimized=s1.makeState().optimizeOrReverse(true,true);
       if (optimized == null)       LOG.error("Null optimized state. This shouldn't happen.");
       return optimized;
