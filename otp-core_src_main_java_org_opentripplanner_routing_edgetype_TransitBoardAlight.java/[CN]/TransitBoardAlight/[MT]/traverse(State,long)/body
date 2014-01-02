@@ -1,14 +1,13 @@
 {
   RoutingContext rctx=state0.getContext();
   RoutingRequest options=state0.getOptions();
-  TraverseMode mode=state0.getNonTransitMode();
-  boolean offTransit=(boarding && options.isArriveBy()) || (!boarding && !options.isArriveBy());
-  if (offTransit) {
+  TraverseMode streetMode=state0.getNonTransitMode();
+  boolean leavingTransit=(boarding && options.isArriveBy()) || (!boarding && !options.isArriveBy());
+  if (leavingTransit) {
     if (state0.getBackEdge() instanceof TransitBoardAlight) {
       return null;
     }
     StateEditor s1=state0.edit(this);
-    int type=this.getBoardAlightType();
     s1.setTripId(null);
     s1.setLastAlightedTimeSeconds(state0.getTimeSeconds());
     s1.setPreviousStop(getStop());
@@ -19,7 +18,7 @@
       s1.incrementWeight(wait * options.waitAtBeginningFactor);
       s1.setInitialWaitTimeSeconds(wait);
     }
-    if (options.isReverseOptimizing())     s1.incrementWeight(options.getBoardCost(mode));
+    if (options.isReverseOptimizing())     s1.incrementWeight(options.getBoardCost(streetMode));
     if (options.isReverseOptimizeOnTheFly()) {
       int thisDeparture=state0.getTripTimes().getDepartureTime(stopIndex);
       int numTrips=getPattern().getNumScheduledTrips();
@@ -53,7 +52,7 @@
     for (    ServiceDay sd : rctx.serviceDays) {
       int secondsSinceMidnight=sd.secondsSinceMidnight(current_time);
       int wait;
-      TripTimes tripTimes=getPattern().getNextTrip(stopIndex,secondsSinceMidnight,state0,sd,mode == TraverseMode.BICYCLE,boarding);
+      TripTimes tripTimes=getPattern().getNextTrip(stopIndex,secondsSinceMidnight,state0,sd,streetMode == TraverseMode.BICYCLE,boarding);
       if (tripTimes != null) {
         wait=boarding ? (int)(sd.time(tripTimes.getDepartureTime(stopIndex)) - current_time) : (int)(current_time - sd.time(tripTimes.getArrivalTime(stopIndex - 1)));
         if (wait < 0) {
@@ -102,7 +101,7 @@
       s1.incrementWeight(wait_cost);
     }
  else {
-      s1.incrementWeight(wait_cost + options.getBoardCost(mode));
+      s1.incrementWeight(wait_cost + options.getBoardCost(streetMode));
     }
     if (options.isReverseOptimizeOnTheFly() && !options.isReverseOptimizing() && state0.getisEverBoarded()&& state0.getLastNextArrivalDelta() <= bestWait && state0.getLastNextArrivalDelta() > -1) {
       State optimized=s1.makeState().optimizeOrReverse(true,true);
