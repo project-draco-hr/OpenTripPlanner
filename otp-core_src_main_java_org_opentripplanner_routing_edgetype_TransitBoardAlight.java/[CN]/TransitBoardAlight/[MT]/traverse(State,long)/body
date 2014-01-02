@@ -8,12 +8,7 @@
       return null;
     }
     StateEditor s1=state0.edit(this);
-    int type;
-    if (boarding)     type=getPattern().getBoardType(stopIndex);
- else     type=getPattern().getAlightType(stopIndex);
-    if (TransitUtils.handleBoardAlightType(s1,type)) {
-      return null;
-    }
+    int type=this.getBoardAlightType();
     s1.setTripId(null);
     s1.setLastAlightedTimeSeconds(state0.getTimeSeconds());
     s1.setPreviousStop(getStop());
@@ -85,12 +80,6 @@
     }
     StateEditor s1=state0.edit(this);
     s1.setBackMode(getMode());
-    int type;
-    if (boarding)     type=getPattern().getBoardType(stopIndex);
- else     type=getPattern().getAlightType(stopIndex);
-    if (TransitUtils.handleBoardAlightType(s1,type)) {
-      return null;
-    }
     s1.setServiceDay(bestServiceDay);
     s1.setTripTimes(bestTripTimes);
     s1.incrementTimeInSeconds(bestWait);
