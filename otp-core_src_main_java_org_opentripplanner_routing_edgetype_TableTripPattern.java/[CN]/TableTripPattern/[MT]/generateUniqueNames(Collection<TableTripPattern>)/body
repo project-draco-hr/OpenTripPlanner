@@ -80,8 +80,8 @@
       pattern.setName(sb.toString());
     }
   }
-  LOG.info("Done generating unique names for stop patterns on each route.");
   if (LOG.isDebugEnabled()) {
+    LOG.debug("Done generating unique names for stop patterns on each route.");
     for (    Route route : patternsByRoute.keySet()) {
       Collection<TableTripPattern> routeTripPatterns=patternsByRoute.get(route);
       LOG.debug("Named {} patterns in route {}",routeTripPatterns.size(),uniqueRouteNames.get(route));
