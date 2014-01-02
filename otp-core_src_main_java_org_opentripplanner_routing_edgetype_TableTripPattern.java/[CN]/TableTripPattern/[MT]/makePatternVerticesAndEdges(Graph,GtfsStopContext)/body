@@ -17,7 +17,11 @@
     TransitStopArrive stopArrive=getStopOrParent(context.stopArriveNodes,s1,graph);
     TraverseMode mode=GtfsLibrary.getTraverseMode(this.route);
     stopArrive.getStopVertex().addMode(mode);
-    boardEdges[hop]=new TransitBoardAlight(stopDepart,pdv0,hop,mode);
-    alightEdges[hop + 1]=new TransitBoardAlight(pav1,stopArrive,hop + 1,mode);
+    if (this.canBoard(hop)) {
+      boardEdges[hop]=new TransitBoardAlight(stopDepart,pdv0,hop,mode);
+    }
+    if (this.canAlight(hop + 1)) {
+      alightEdges[hop + 1]=new TransitBoardAlight(pav1,stopArrive,hop + 1,mode);
+    }
   }
 }
