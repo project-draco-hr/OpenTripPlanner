@@ -1,0 +1,13 @@
+{
+  Graph graph=graphService.getGraph();
+  AgencyAndId tripId=AgencyAndId.convertFromString(tripIdString);
+  Trip trip=graph.getIndex().tripForId.get(tripId);
+  if (trip != null) {
+    TableTripPattern pattern=graph.getIndex().patternForTrip.get(trip);
+    Timetable table=pattern.getScheduledTimetable();
+    return Response.status(Status.OK).entity(TripTimeShort.fromTripTimes(table,trip)).build();
+  }
+ else {
+    return Response.status(Status.NOT_FOUND).entity(MSG_404).build();
+  }
+}

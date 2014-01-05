@@ -1,0 +1,36 @@
+{
+  LOG.info("Indexing graph...");
+  Collection<Edge> edges=graph.getEdges();
+  Set<Vertex> vertices=Sets.newHashSet();
+  for (  Edge edge : edges) {
+    vertices.add(edge.getFromVertex());
+    vertices.add(edge.getToVertex());
+    if (edge instanceof TablePatternEdge) {
+      TablePatternEdge patternEdge=(TablePatternEdge)edge;
+      TableTripPattern pattern=patternEdge.getPattern();
+      patternForId.put(pattern.getCode(),pattern);
+    }
+  }
+  for (  Vertex vertex : vertices) {
+    vertexForId.put(vertex.getLabel(),vertex);
+    if (vertex instanceof TransitStop) {
+      TransitStop transitStop=(TransitStop)vertex;
+      stopForId.put(transitStop.getStop().getId(),transitStop.getStop());
+      stopVertexForStop.put(transitStop.getStop(),transitStop);
+    }
+  }
+  for (  TableTripPattern pattern : patternForId.values()) {
+    patternsForRoute.put(pattern.route,pattern);
+    for (    Trip trip : pattern.getTrips()) {
+      patternForTrip.put(trip,pattern);
+      tripForId.put(trip.getId(),trip);
+    }
+    for (    Stop stop : pattern.getStops()) {
+      patternsForStop.put(stop,pattern);
+    }
+  }
+  for (  Route route : patternsForRoute.asMap().keySet()) {
+    routeForId.put(route.getId(),route);
+  }
+  LOG.info("Done indexing graph.");
+}

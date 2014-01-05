@@ -1,0 +1,11 @@
+{
+  Graph graph=graphService.getGraph();
+  TableTripPattern pattern=graph.getIndex().patternForId.get(string);
+  if (pattern != null) {
+    List<Stop> stops=pattern.getStops();
+    return Response.status(Status.OK).entity(StopShort.list(stops)).build();
+  }
+ else {
+    return Response.status(Status.NOT_FOUND).entity(MSG_404).build();
+  }
+}

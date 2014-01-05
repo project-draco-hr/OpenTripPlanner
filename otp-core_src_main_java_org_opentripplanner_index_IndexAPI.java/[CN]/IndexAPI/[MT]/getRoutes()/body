@@ -1,0 +1,5 @@
+{
+  Graph graph=graphService.getGraph();
+  Collection<Route> routes=graph.getIndex().routeForId.values();
+  return Response.status(Status.OK).entity(RouteShort.list(routes)).build();
+}

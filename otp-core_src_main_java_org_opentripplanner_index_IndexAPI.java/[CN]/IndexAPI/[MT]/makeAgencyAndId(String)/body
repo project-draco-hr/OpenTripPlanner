@@ -1,0 +1,14 @@
+{
+  final String defaultAgency="fjdsakl";
+  String agency, id;
+  int i=string.indexOf('_');
+  if (i == -1) {
+    agency=defaultAgency;
+    id=string;
+  }
+ else {
+    agency=string.substring(0,i);
+    id=string.substring(i + 1);
+  }
+  return new AgencyAndId(agency,id);
+}

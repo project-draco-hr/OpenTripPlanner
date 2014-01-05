@@ -1,0 +1,16 @@
+{
+  Graph graph=graphService.getGraph();
+  AgencyAndId routeId=AgencyAndId.convertFromString(routeIdString);
+  Route route=graph.getIndex().routeForId.get(routeId);
+  if (route != null) {
+    List<Trip> trips=Lists.newArrayList();
+    Collection<TableTripPattern> patterns=graph.getIndex().patternsForRoute.get(route);
+    for (    TableTripPattern pattern : patterns) {
+      trips.addAll(pattern.getTrips());
+    }
+    return Response.status(Status.OK).entity(TripShort.list(trips)).build();
+  }
+ else {
+    return Response.status(Status.NOT_FOUND).entity(MSG_404).build();
+  }
+}

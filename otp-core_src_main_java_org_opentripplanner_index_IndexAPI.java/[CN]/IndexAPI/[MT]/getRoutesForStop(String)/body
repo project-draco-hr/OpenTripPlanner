@@ -1,0 +1,15 @@
+{
+  Graph graph=graphService.getGraph();
+  AgencyAndId id=AgencyAndId.convertFromString(string);
+  Stop stop=graph.getIndex().stopForId.get(id);
+  if (stop != null) {
+    Set<Route> routes=Sets.newHashSet();
+    for (    TableTripPattern pattern : graph.getIndex().patternsForStop.get(stop)) {
+      routes.add(pattern.route);
+    }
+    return Response.status(Status.OK).entity(RouteShort.list(routes)).build();
+  }
+ else {
+    return Response.status(Status.NOT_FOUND).entity(MSG_404).build();
+  }
+}
