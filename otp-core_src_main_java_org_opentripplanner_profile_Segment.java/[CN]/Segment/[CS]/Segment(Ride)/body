@@ -8,15 +8,8 @@
   toName=ride.to.getName();
   stats=ride.stats;
   for (  Pattern pattern : ride.patterns) {
-    boolean onboard=false;
     patterns.add(pattern.patternId);
-    for (    Stop stop : pattern.stops) {
-      if (!onboard) {
-        if (stop == ride.from)         onboard=true;
- else         continue;
-      }
-      stops.add(stop.getId().getId());
-      if (stop == ride.to)       break;
-    }
   }
+  walkDist=ride.dist;
+  waitStats=characterizeTransfer(ride);
 }
