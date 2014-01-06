@@ -4,6 +4,9 @@
     tpsBinned.put(ttp.getStops(),ttp);
   }
   for (  Collection<TableTripPattern> tpBin : tpsBinned.asMap().values()) {
+    if (tpBin.size() > 1) {
+      LOG.warn("TripPattern bin has size greater than one: {}",tpBin.size());
+    }
     patterns.add(new Pattern(tpBin));
   }
   LOG.info("Number of patterns is {}",patterns.size());
