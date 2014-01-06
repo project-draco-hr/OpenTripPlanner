@@ -2,8 +2,8 @@
   for (int i=0; i < legsStates.length; i++) {
     boolean toOther=i + 1 < legsStates.length && legs.get(i + 1).interlineWithPreviousLeg;
     boolean fromOther=legs.get(i).interlineWithPreviousLeg;
-    Object boardRule=null;
-    Object alightRule=null;
+    String boardRule=null;
+    String alightRule=null;
     for (int j=1; j < legsStates[i].length; j++) {
       if (legsStates[i][j].getBackEdge() instanceof PatternEdge) {
         PatternEdge patternEdge=(PatternEdge)legsStates[i][j].getBackEdge();
@@ -12,8 +12,8 @@
         Integer toIndex=legs.get(i).to.stopIndex;
         int boardType=(fromIndex != null) ? (tripPattern.getBoardType(fromIndex)) : 0;
         int alightType=(toIndex != null) ? (tripPattern.getAlightType(toIndex)) : 0;
-        boardRule=TransitUtils.determineBoardAlightType(boardType);
-        alightRule=TransitUtils.determineBoardAlightType(alightType);
+        boardRule=getBoardAlightMessage(boardType);
+        alightRule=getBoardAlightMessage(alightType);
       }
       if (legsStates[i][j].getBackEdge() instanceof PathwayEdge) {
         legs.get(i).pathway=true;
@@ -30,11 +30,11 @@
       }
     }
     if (legs.get(i).isTransitLeg()) {
-      if (boardRule instanceof String && !fromOther) {
-        legs.get(i).boardRule=(String)boardRule;
+      if (boardRule != null && !fromOther) {
+        legs.get(i).boardRule=boardRule;
       }
-      if (alightRule instanceof String && !toOther) {
-        legs.get(i).alightRule=(String)alightRule;
+      if (alightRule != null && !toOther) {
+        legs.get(i).alightRule=alightRule;
       }
     }
   }
