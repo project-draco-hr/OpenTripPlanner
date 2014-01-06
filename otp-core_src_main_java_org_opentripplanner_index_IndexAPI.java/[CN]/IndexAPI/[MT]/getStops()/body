@@ -1,5 +1,0 @@
-{
-  Graph graph=graphService.getGraph();
-  Collection<Stop> stops=graph.getIndex().stopForId.values();
-  return Response.status(Status.OK).entity(StopShort.list(stops)).build();
-}

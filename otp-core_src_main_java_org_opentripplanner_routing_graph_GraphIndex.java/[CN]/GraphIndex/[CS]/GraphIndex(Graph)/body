@@ -19,6 +19,10 @@
       stopVertexForStop.put(transitStop.getStop(),transitStop);
     }
   }
+  stopSpatialIndex.setProjectionMeridian(vertices.iterator().next().getCoordinate().x);
+  for (  TransitStop stopVertex : stopVertexForStop.values()) {
+    stopSpatialIndex.put(stopVertex.getCoordinate(),stopVertex);
+  }
   for (  TableTripPattern pattern : patternForId.values()) {
     patternsForRoute.put(pattern.route,pattern);
     for (    Trip trip : pattern.getTrips()) {
