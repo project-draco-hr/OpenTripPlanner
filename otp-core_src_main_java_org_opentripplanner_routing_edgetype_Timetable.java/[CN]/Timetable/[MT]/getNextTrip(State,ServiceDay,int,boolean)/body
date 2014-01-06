@@ -17,6 +17,7 @@
       index=TripTimes.binarySearchDepartures(sorted,stopIndex,time);
       while (index < sorted.length) {
         TripTimes tt=sorted[index++];
+        if (!serviceDay.serviceRunning(tt.serviceCode))         continue;
         if (tt.tripAcceptable(s0,currentStop,serviceDay,haveBicycle,stopIndex,boarding)) {
           bestTrip=tt;
           break;
@@ -27,6 +28,7 @@
       index=TripTimes.binarySearchArrivals(sorted,stopIndex - 1,time);
       while (index >= 0) {
         TripTimes tt=sorted[index--];
+        if (!serviceDay.serviceRunning(tt.serviceCode))         continue;
         if (tt.tripAcceptable(s0,currentStop,serviceDay,haveBicycle,stopIndex,boarding)) {
           bestTrip=tt;
           break;
