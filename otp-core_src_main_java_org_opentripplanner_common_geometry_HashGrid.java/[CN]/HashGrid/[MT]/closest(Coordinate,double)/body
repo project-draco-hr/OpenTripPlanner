@@ -1,5 +1,5 @@
 {
-  Object closestT=null;
+  T closestT=null;
   double closestDistance=Double.POSITIVE_INFINITY;
   int radiusBins=(int)Math.ceil(radiusMeters / binSizeMeters);
   int xBin=xBin(c);
@@ -12,9 +12,9 @@
     int wrappedX=xWrap(x);
     for (int y=minBinY; y <= maxBinY; y+=1) {
       int wrappedY=yWrap(y);
-      List<Object> bin=bins[wrappedX][wrappedY];
+      List<T> bin=bins[wrappedX][wrappedY];
       if (bin != null) {
-        for (        Object t : bin) {
+        for (        T t : bin) {
           double distance=distanceLibrary.fastDistance(c,c);
           if (distance > radiusMeters)           continue;
           if (distance < closestDistance) {

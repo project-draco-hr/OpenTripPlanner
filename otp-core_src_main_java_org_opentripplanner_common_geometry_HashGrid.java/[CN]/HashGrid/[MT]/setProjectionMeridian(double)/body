@@ -1,0 +1,8 @@
+{
+  if (nEntries > 0) {
+    String message="Setting projection meridian on a HashGrid already containing objects.";
+    LOG.error(message);
+    throw new RuntimeException(message);
+  }
+  projectionMeridian=longitude;
+}

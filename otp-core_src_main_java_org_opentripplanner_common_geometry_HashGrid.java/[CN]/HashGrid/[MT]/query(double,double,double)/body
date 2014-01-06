@@ -1,6 +1,6 @@
 {
   Coordinate c=new Coordinate(lon,lat);
-  List<Object> ret=new ArrayList<Object>();
+  List<T> ret=Lists.newArrayList();
   int radiusBins=(int)Math.ceil(radiusMeters / binSizeMeters);
   int xBin=xBin(c);
   int yBin=yBin(c);
@@ -12,7 +12,7 @@
     int wrappedX=xWrap(x);
     for (int y=minBinY; y <= maxBinY; y+=1) {
       int wrappedY=yWrap(y);
-      List<Object> bin=bins[wrappedX][wrappedY];
+      List<T> bin=bins[wrappedX][wrappedY];
       if (bin != null) {
         ret.addAll(bin);
       }
