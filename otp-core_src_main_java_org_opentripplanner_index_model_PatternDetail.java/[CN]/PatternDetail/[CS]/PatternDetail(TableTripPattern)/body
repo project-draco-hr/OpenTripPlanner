@@ -1,7 +1,6 @@
 {
   super(pattern);
   routeId=pattern.route.getId().getId();
-  for (  Stop stop : pattern.getStops()) {
-    stops.add(new StopShort(stop));
-  }
+  stops=StopShort.list(pattern.getStops());
+  trips=TripShort.list(pattern.getTrips());
 }
