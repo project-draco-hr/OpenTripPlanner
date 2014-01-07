@@ -10,5 +10,6 @@
   for (  PatternRide patternRide : ride.patternRides) {
     segmentPatterns.add(new SegmentPattern(patternRide));
   }
+  Collections.sort(segmentPatterns);
   waitStats=characterizeTransfer(ride);
 }
