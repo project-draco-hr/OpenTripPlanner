@@ -1,10 +1,8 @@
 {
-  Ride prev=ride.previous;
-  Stats stats=new Stats();
-  if (prev != null) {
-    stats.min=500;
-    stats.avg=700;
-    stats.max=900;
-  }
-  return stats;
+  Stats ret=new Stats();
+  ret.min=200;
+  ret.avg=400;
+  ret.max=600;
+  walkTime=(int)(ride.getTransferDistance() / WALK_SPEED);
+  return ret;
 }

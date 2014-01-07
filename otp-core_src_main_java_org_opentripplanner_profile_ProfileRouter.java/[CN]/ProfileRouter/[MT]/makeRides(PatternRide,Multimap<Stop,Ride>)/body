@@ -1,0 +1,18 @@
+{
+  List<Stop> stops=pr.pattern.stops;
+  Stop targetStop=null;
+  if (toStops.containsKey(pr.pattern)) {
+    targetStop=toStops.get(pr.pattern).stop;
+  }
+  for (int s=pr.fromIndex; s < stops.size(); ++s) {
+    Stop stop=stops.get(s);
+    if (targetStop != null && targetStop == stop) {
+      targetRides.add(addRide(pr.extendToIndex(s)));
+    }
+ else     if (hasTransfers(stop,pr.pattern)) {
+      if (!pathContainsStop(pr.previous,stop)) {
+        addRide(pr.extendToIndex(s));
+      }
+    }
+  }
+}

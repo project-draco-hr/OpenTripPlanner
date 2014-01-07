@@ -1,0 +1,8 @@
+{
+  Stats ret=new Stats();
+  ret.min=Integer.MAX_VALUE;
+  for (  PatternRide patternRide : patternRides) {
+    ret.merge(patternRide.stats);
+  }
+  return ret;
+}

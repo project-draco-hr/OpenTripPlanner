@@ -6,10 +6,9 @@
   to=ride.to.getId().getId();
   fromName=ride.from.getName();
   toName=ride.to.getName();
-  stats=ride.stats;
-  for (  Pattern pattern : ride.patterns) {
-    patterns.add(pattern.patternId);
+  rideStats=ride.getStats();
+  for (  PatternRide patternRide : ride.patternRides) {
+    segmentPatterns.add(new SegmentPattern(patternRide));
   }
-  walkDist=ride.dist;
   waitStats=characterizeTransfer(ride);
 }

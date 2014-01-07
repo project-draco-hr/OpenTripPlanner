@@ -1,0 +1,11 @@
+{
+  for (  Ride ride : rides.get(pr.getToStop())) {
+    if (ride.previous == pr.previous && ride.route == pr.pattern.route && ride.to == pr.getToStop()) {
+      ride.patternRides.add(pr);
+      return ride;
+    }
+  }
+  Ride ride=new Ride(pr);
+  rides.put(pr.getToStop(),ride);
+  return ride;
+}
