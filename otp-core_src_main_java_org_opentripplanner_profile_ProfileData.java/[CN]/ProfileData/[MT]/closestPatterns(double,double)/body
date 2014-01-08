@@ -1,9 +1,8 @@
 {
-  MinMap<Pattern,StopAtDistance> closest=new MinMap<Pattern,StopAtDistance>();
-  for (  Stop stop : findTransitStops(lon,lat,WALK_RADIUS)) {
-    int distance=(int)distlib.distance(lat,lon,stop.getLat(),stop.getLon());
-    for (    Pattern pattern : patternsForStop.get(stop)) {
-      closest.putMin(pattern,new StopAtDistance(stop,distance));
+  MinMap<TableTripPattern,StopAtDistance> closest=new MinMap<TableTripPattern,StopAtDistance>();
+  for (  StopAtDistance stopDist : findTransitStops(lon,lat,WALK_RADIUS)) {
+    for (    TableTripPattern pattern : patternsForStop.get(stopDist.stop)) {
+      closest.putMin(pattern,stopDist);
     }
   }
   return closest;

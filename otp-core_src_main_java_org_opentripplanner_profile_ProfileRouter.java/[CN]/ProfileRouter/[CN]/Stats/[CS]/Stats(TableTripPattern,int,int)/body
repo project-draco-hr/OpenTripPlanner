@@ -1,7 +1,7 @@
 {
   min=Integer.MAX_VALUE;
   num=0;
-  for (  TripTimes tripTimes : pattern.backingPattern.getScheduledTimetable().getTripTimes()) {
+  for (  TripTimes tripTimes : pattern.getScheduledTimetable().getTripTimes()) {
     int depart=tripTimes.getDepartureTime(hop0);
     int arrive=tripTimes.getArrivalTime(hop1);
     int t=arrive - depart;

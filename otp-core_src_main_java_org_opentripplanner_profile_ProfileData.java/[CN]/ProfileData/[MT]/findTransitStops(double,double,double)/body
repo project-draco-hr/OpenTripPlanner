@@ -1,11 +1,9 @@
 {
-  Envelope envelope=distlib.bounds(lat,lon,radius,radius);
-  List<?> stops=stopTree.query(envelope);
-  List<Stop> out=Lists.newArrayList();
-  for (  Stop stop : IterableLibrary.filter(stops,Stop.class)) {
-    if (distlib.fastDistance(lat,lon,stop.getLat(),stop.getLon()) < radius) {
-      out.add(stop);
-    }
+  List<StopAtDistance> ret=Lists.newArrayList();
+  for (  TransitStop tstop : graph.getIndex().stopSpatialIndex.query(lon,lat,radius)) {
+    Stop stop=tstop.getStop();
+    int distance=(int)distlib.distance(lat,lon,stop.getLat(),stop.getLon());
+    if (distance < radius)     ret.add(new StopAtDistance(stop,distance));
   }
-  return out;
+  return ret;
 }
