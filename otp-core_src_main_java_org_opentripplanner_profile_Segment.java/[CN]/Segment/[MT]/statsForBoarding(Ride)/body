@@ -1,0 +1,19 @@
+{
+  Stats stats=new Stats();
+  stats.min=0;
+  int[] departures=getSortedDepartures(ride);
+  int last=-1;
+  double avgAccumulated=0.0;
+  for (  int dep : departures) {
+    if (last > 0) {
+      int maxWait=dep - last;
+      if (maxWait > stats.max)       stats.max=maxWait;
+      avgAccumulated+=(maxWait / 2.0) * maxWait;
+      stats.num+=maxWait;
+    }
+    last=dep;
+    continue;
+  }
+  stats.avg=(int)(avgAccumulated / stats.num);
+  return stats;
+}
