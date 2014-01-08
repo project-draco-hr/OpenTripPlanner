@@ -1,0 +1,26 @@
+{
+  if (debug == null)   debug=false;
+  if (precisionMeters == null)   precisionMeters=200;
+  if (precisionMeters < 10)   throw new IllegalArgumentException("Too small precisionMeters: " + precisionMeters);
+  IsoChroneRequest isoChroneRequest=new IsoChroneRequest(cutoffSecList);
+  isoChroneRequest.setIncludeDebugGeometry(debug);
+  isoChroneRequest.setPrecisionMeters(precisionMeters);
+  RoutingRequest sptRequest=buildRequest(0);
+  if (maxTimeSec != null) {
+    isoChroneRequest.setMaxTimeSec(maxTimeSec);
+  }
+ else {
+    isoChroneRequest.setMaxTimeSec(isoChroneRequest.getMaxCutoffSec());
+  }
+  List<IsochroneData> isochrones;
+  if (algorithm == null || "accSampling".equals(algorithm)) {
+    isochrones=accSamplingRenderer.getIsochrones(isoChroneRequest,sptRequest);
+  }
+ else   if ("recursiveGrid".equals(algorithm)) {
+    isochrones=recursiveGridRenderer.getIsochrones(isoChroneRequest,sptRequest);
+  }
+ else {
+    throw new IllegalArgumentException("Unknown algorithm: " + algorithm);
+  }
+  return isochrones;
+}

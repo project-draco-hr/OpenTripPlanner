@@ -1,0 +1,10 @@
+{
+  SimpleFeatureCollection contourFeatures=makeContourFeatures();
+  StringWriter writer=new StringWriter();
+  FeatureJSON fj=new FeatureJSON();
+  fj.writeFeatureCollection(contourFeatures,writer);
+  CacheControl cc=new CacheControl();
+  cc.setMaxAge(3600);
+  cc.setNoCache(false);
+  return Response.ok().entity(writer.toString()).cacheControl(cc).build();
+}
