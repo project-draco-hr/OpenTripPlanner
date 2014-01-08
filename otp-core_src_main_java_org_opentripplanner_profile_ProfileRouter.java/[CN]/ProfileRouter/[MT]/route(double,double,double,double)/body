@@ -6,7 +6,7 @@
   toStops=data.closestPatterns(toLon,toLat);
   LOG.info("from stops: {}",fromStops);
   LOG.info("to stops: {}",toStops);
-  List<PatternRide> queue=Lists.newArrayList();
+  Set<PatternRide> queue=Sets.newHashSet();
   for (  Entry<Pattern,StopAtDistance> entry : fromStops.entrySet()) {
     Pattern pattern=entry.getKey();
     StopAtDistance sd=entry.getValue();

@@ -1,5 +1,5 @@
 {
   if (other.min < min)   min=other.min;
   if (other.max > max)   max=other.max;
-  avg=(min + max) / 2;
+  avg=(avg * num + other.avg * other.num) / (num + other.num);
 }

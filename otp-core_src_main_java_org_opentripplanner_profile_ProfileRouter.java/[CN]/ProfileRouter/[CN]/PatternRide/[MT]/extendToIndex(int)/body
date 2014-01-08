@@ -1,6 +1,6 @@
 {
   PatternRide ret=new PatternRide(pattern,fromIndex,previous,xfer);
   ret.toIndex=toIndex;
-  ret.stats=new Stats(ret.pattern,ret.fromIndex,ret.toIndex);
+  ret.stats=new Stats(ret.pattern,ret.fromIndex,ret.toIndex - 1);
   return ret;
 }

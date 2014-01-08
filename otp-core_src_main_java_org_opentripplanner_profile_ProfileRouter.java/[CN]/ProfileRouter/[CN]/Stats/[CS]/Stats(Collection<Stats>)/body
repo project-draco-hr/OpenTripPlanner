@@ -1,0 +1,11 @@
+{
+  min=Integer.MAX_VALUE;
+  num=0;
+  for (  Stats other : stats) {
+    if (other.min < min)     min=other.min;
+    if (other.max > max)     max=other.max;
+    avg+=other.avg * other.num;
+    num+=other.num;
+  }
+  avg/=num;
+}

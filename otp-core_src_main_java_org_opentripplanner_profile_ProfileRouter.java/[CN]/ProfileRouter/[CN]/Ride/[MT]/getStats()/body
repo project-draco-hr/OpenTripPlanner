@@ -1,8 +1,7 @@
 {
-  Stats ret=new Stats();
-  ret.min=Integer.MAX_VALUE;
+  List<Stats> stats=Lists.newArrayList();
   for (  PatternRide patternRide : patternRides) {
-    ret.merge(patternRide.stats);
+    stats.add(patternRide.stats);
   }
-  return ret;
+  return new Stats(stats);
 }
