@@ -1,4 +1,5 @@
 {
+  final DistanceLibrary distanceLibrary=SphericalDistanceLibrary.getInstance();
   AccumulativeMetric<WTWD> accMetric=new AccumulativeMetric<WTWD>(){
     @Override public WTWD cumulateSample(    Coordinate C0,    Coordinate Cs,    double z,    WTWD zS){
       double t=z;
@@ -16,13 +17,16 @@
     }
     @Override public WTWD closeSample(    WTWD zUp,    WTWD zDown,    WTWD zRight,    WTWD zLeft){
       double dMin=Double.MAX_VALUE;
+      double tMin=Double.MAX_VALUE;
       for (      WTWD z : new WTWD[]{zUp,zDown,zRight,zLeft}) {
         if (z == null)         continue;
         if (z.d < dMin)         dMin=z.d;
+        double t=z.tw / z.w;
+        if (t < tMin)         tMin=t;
       }
       WTWD z=new WTWD();
       z.w=1.0;
-      z.tw=Double.POSITIVE_INFINITY;
+      z.tw=tMin + gridSizeMeters / v0;
       z.d=dMin + gridSizeMeters;
       return z;
     }

@@ -1,21 +1,10 @@
 {
-  final double D0=isoChroneRequest.getPrecisionMeters() * 0.8;
-  final double V0=1.00;
+  final double D0=sampleGridRenderer.getOffRoadDistanceMeters(isoChroneRequest.getPrecisionMeters());
+  SampleGridRequest tgRequest=new SampleGridRequest();
+  tgRequest.setMaxTimeSec(isoChroneRequest.getMaxTimeSec());
+  tgRequest.setPrecisionMeters(isoChroneRequest.getPrecisionMeters());
+  ZSampleGrid<WTWD> sampleGrid=sampleGridRenderer.getSampleGrid(tgRequest,sptRequest);
   long t0=System.currentTimeMillis();
-  long tOvershot=(long)(2 * D0 / V0);
-  sptRequest.setWorstTime(sptRequest.dateTime + (sptRequest.arriveBy ? -isoChroneRequest.getMaxTimeSec() - tOvershot : isoChroneRequest.getMaxTimeSec() + tOvershot));
-  sptRequest.setBatch(true);
-  sptRequest.setRoutingContext(graphService.getGraph(sptRequest.getRouterId()));
-  final ShortestPathTree spt=sptService.getShortestPathTree(sptRequest);
-  long t1=System.currentTimeMillis();
-  Coordinate center=sptRequest.getFrom().getCoordinate();
-  final double gridSizeMeters=isoChroneRequest.getPrecisionMeters();
-  final double cosLat=FastMath.cos(toRadians(center.y));
-  double dY=Math.toDegrees(gridSizeMeters / SphericalDistanceLibrary.RADIUS_OF_EARTH_IN_M);
-  double dX=dY / cosLat;
-  SparseMatrixZSampleGrid<WTWD> sampleGrid=new SparseMatrixZSampleGrid<WTWD>(16,spt.getVertexCount(),dX,dY,center);
-  sampleSPT(spt,sampleGrid,gridSizeMeters * 0.7,gridSizeMeters,V0,sptRequest.getMaxWalkDistance(),cosLat);
-  sptRequest.cleanup();
   ZMetric<WTWD> zMetric=new ZMetric<WTWD>(){
     @Override public int cut(    WTWD zA,    WTWD zB,    WTWD z0){
       double t0=z0.tw / z0.w;
@@ -41,9 +30,8 @@
     }
   }
 ;
-  DelaunayIsolineBuilder<WTWD> isolineBuilder=new DelaunayIsolineBuilder<WTWD>(sampleGrid,zMetric);
+  DelaunayIsolineBuilder<WTWD> isolineBuilder=new DelaunayIsolineBuilder<WTWD>(sampleGrid.delaunayTriangulate(),zMetric);
   isolineBuilder.setDebug(isoChroneRequest.isIncludeDebugGeometry());
-  long t2=System.currentTimeMillis();
   List<IsochroneData> isochrones=new ArrayList<IsochroneData>();
   for (  Integer cutoffSec : isoChroneRequest.getCutoffSecList()) {
     WTWD z0=new WTWD();
@@ -54,7 +42,7 @@
     if (isoChroneRequest.isIncludeDebugGeometry())     isochrone.setDebugGeometry(isolineBuilder.getDebugGeometry());
     isochrones.add(isochrone);
   }
-  long t3=System.currentTimeMillis();
-  LOG.info("Computed SPT in {}msec, {} isochrones in {}msec ({}msec for sampling)",(int)(t1 - t0),isochrones.size(),(int)(t3 - t1),(int)(t2 - t1));
+  long t1=System.currentTimeMillis();
+  LOG.info("Computed {} isochrones in {}msec",isochrones.size(),(int)(t1 - t0));
   return isochrones;
 }

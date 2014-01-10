@@ -1,5 +1,6 @@
 {
   shift=0;
+  this.chunkSize=chunkSize;
   mask=chunkSize - 1;
   while (chunkSize > 1) {
     if (chunkSize % 2 != 0)     throw new IllegalArgumentException("Chunk size must be a power of 2");

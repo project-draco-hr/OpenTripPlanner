@@ -1,0 +1,19 @@
+{
+  if (precisionMeters < 10)   throw new IllegalArgumentException("Too small precisionMeters: " + precisionMeters);
+  RoutingRequest sptRequest=buildRequest(0);
+  SampleGridRequest tgRequest=new SampleGridRequest();
+  tgRequest.setMaxTimeSec(maxTimeSec);
+  tgRequest.setPrecisionMeters(precisionMeters);
+  ZSampleGrid<WTWD> sampleGrid=sampleGridRenderer.getSampleGrid(tgRequest,sptRequest);
+  TimeGrid timeGrid=sampleGrid.asTimeGrid(new TimeGridMapper<WTWD>(){
+    @Override public int[] mapValues(    WTWD z){
+      double t=z.tw / z.w;
+      int it;
+      if (Double.isInfinite(t))       it=-1;
+ else       it=(int)Math.round(t);
+      return new int[]{it,(int)Math.round(z.d)};
+    }
+  }
+,sampleGridRenderer.getOffRoadDistanceMeters(precisionMeters));
+  return Response.ok().entity(timeGrid).build();
+}
