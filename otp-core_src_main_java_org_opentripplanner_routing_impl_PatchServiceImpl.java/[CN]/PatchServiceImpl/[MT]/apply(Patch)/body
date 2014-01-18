@@ -9,11 +9,11 @@
     AlertPatch alertPatch=(AlertPatch)patch;
     AgencyAndId stop=alertPatch.getStop();
     if (stop != null) {
-      MapUtils.addToMapList(patchesByStop,stop,patch);
+      patchesByStop.put(stop,patch);
     }
     AgencyAndId route=alertPatch.getRoute();
     if (route != null) {
-      MapUtils.addToMapList(patchesByRoute,route,patch);
+      patchesByRoute.put(route,patch);
     }
   }
 }

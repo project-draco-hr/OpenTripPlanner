@@ -1,6 +1,6 @@
 {
   DisjointSet<Vertex> components=getConnectedComponents(graph);
-  Map<Integer,List<Coordinate>> componentCoordinates=new HashMap<Integer,List<Coordinate>>();
+  LinkedListMultimap<Integer,Coordinate> componentCoordinates=LinkedListMultimap.create();
   options.setDummyRoutingContext(graph);
   for (  Vertex v : graph.getVertices()) {
     for (    Edge e : v.getOutgoing()) {
@@ -17,7 +17,7 @@
             coordinate.y=Math.round(coordinate.y * PRECISION) / PRECISION;
             coordinates.set(i,coordinate);
           }
-          MapUtils.addToMapList(componentCoordinates,component,coordinates);
+          componentCoordinates.putAll(component,coordinates);
         }
       }
     }
@@ -26,7 +26,8 @@
   int mainComponentSize=0;
   int mainComponentIndex=-1;
   int component=0;
-  for (  List<Coordinate> coords : componentCoordinates.values()) {
+  for (  Integer key : componentCoordinates.keySet()) {
+    List<Coordinate> coords=componentCoordinates.get(key);
     Coordinate[] coordArray=new Coordinate[coords.size()];
     ConvexHull hull=new ConvexHull(coords.toArray(coordArray),GeometryUtils.getGeometryFactory());
     Geometry geom=hull.getConvexHull();

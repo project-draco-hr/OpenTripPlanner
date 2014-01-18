@@ -3,7 +3,7 @@
     return Collections.emptyList();
   }
   List<List<Long>> closedRings=new ArrayList<List<Long>>();
-  HashMap<Long,List<OSMWay>> waysByEndpoint=new HashMap<Long,List<OSMWay>>();
+  ArrayListMultimap<Long,OSMWay> waysByEndpoint=ArrayListMultimap.create();
   for (  OSMWay way : ways) {
     List<Long> refs=way.getNodeRefs();
     long start=refs.get(0);
@@ -13,19 +13,19 @@
       closedRings.add(ring);
     }
  else {
-      MapUtils.addToMapList(waysByEndpoint,start,way);
-      MapUtils.addToMapList(waysByEndpoint,end,way);
+      waysByEndpoint.put(start,way);
+      waysByEndpoint.put(end,way);
     }
   }
   List<Long> toRemove=new ArrayList<Long>();
-  for (  Map.Entry<Long,List<OSMWay>> entry : waysByEndpoint.entrySet()) {
-    List<OSMWay> list=entry.getValue();
+  for (  Long endpoint : waysByEndpoint.keySet()) {
+    Collection<OSMWay> list=waysByEndpoint.get(endpoint);
     if (list.size() % 2 == 1) {
       return null;
     }
   }
   for (  Long key : toRemove) {
-    waysByEndpoint.remove(key);
+    waysByEndpoint.removeAll(key);
   }
   List<Long> partialRing=new ArrayList<Long>();
   if (waysByEndpoint.size() == 0) {
@@ -33,9 +33,8 @@
   }
   long firstEndpoint=0, otherEndpoint=0;
   OSMWay firstWay=null;
-  for (  Map.Entry<Long,List<OSMWay>> entry : waysByEndpoint.entrySet()) {
-    firstEndpoint=entry.getKey();
-    List<OSMWay> list=entry.getValue();
+  for (  Long endpoint : waysByEndpoint.keySet()) {
+    List<OSMWay> list=waysByEndpoint.get(endpoint);
     firstWay=list.get(0);
     List<Long> nodeRefs=firstWay.getNodeRefs();
     partialRing.addAll(nodeRefs);

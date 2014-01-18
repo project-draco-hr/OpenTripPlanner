@@ -67,6 +67,6 @@
       LOG.info("Unparseable turn restriction: " + relation.getId());
     }
   }
-  MapUtils.addToMapList(turnRestrictionsByFromWay,from,tag);
-  MapUtils.addToMapList(turnRestrictionsByToWay,to,tag);
+  turnRestrictionsByFromWay.put(from,tag);
+  turnRestrictionsByToWay.put(to,tag);
 }

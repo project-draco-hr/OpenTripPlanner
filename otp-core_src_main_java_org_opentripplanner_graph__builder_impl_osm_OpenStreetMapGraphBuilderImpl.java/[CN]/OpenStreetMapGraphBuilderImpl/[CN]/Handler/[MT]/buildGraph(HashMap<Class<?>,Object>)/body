@@ -10,8 +10,8 @@
   buildBasicGraph();
   buildAreas();
   buildElevatorEdges(graph);
-  for (  List<TurnRestrictionTag> restrictions : turnRestrictionsByFromWay.values()) {
-    for (    TurnRestrictionTag restrictionTag : restrictions) {
+  for (  Long fromWay : turnRestrictionsByFromWay.keySet()) {
+    for (    TurnRestrictionTag restrictionTag : turnRestrictionsByFromWay.get(fromWay)) {
       if (restrictionTag.possibleFrom.isEmpty()) {
         LOG.warn("No from edge found for " + restrictionTag);
         continue;
