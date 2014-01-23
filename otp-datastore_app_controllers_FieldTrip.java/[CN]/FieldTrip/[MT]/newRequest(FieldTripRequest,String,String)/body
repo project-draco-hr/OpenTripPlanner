@@ -1,0 +1,22 @@
+{
+  String publicKey=(String)Play.configuration.get("recaptcha.public_key");
+  String privateKey=(String)Play.configuration.get("recaptcha.private_key");
+  ReCaptcha captcha=ReCaptchaFactory.newReCaptcha(publicKey,privateKey,false);
+  ReCaptchaResponse response=captcha.checkAnswer(request.remoteAddress,recaptcha_challenge_field,recaptcha_response_field);
+  boolean validRecaptcha=false;
+  if (response.isValid()) {
+    validRecaptcha=true;
+  }
+ else {
+    render(req,validRecaptcha);
+  }
+  if (req.teacherName != null && validRecaptcha) {
+    req.id=null;
+    req.save();
+    Long id=req.id;
+    render(req,validRecaptcha);
+  }
+ else {
+    badRequest();
+  }
+}
