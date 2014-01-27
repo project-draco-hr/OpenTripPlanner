@@ -4,6 +4,7 @@
   SampleGridRequest tgRequest=new SampleGridRequest();
   tgRequest.setMaxTimeSec(maxTimeSec);
   tgRequest.setPrecisionMeters(precisionMeters);
+  if (coordinateOrigin != null)   tgRequest.setCoordinateOrigin(new GenericLocation(null,coordinateOrigin).getCoordinate());
   ZSampleGrid<WTWD> sampleGrid=sampleGridRenderer.getSampleGrid(tgRequest,sptRequest);
   int cols=sampleGrid.getXMax() - sampleGrid.getXMin() + 1;
   int rows=sampleGrid.getYMax() - sampleGrid.getYMin() + 1;
@@ -20,8 +21,8 @@
   pHYS.setPixelsxUnitY(0);
   pHYS.setUnits(1);
   pw.getChunksList().queue(pHYS);
-  String gridCornerStr=String.format(Locale.US,"%f,%f",sampleGrid.getCenter().y + sampleGrid.getYMin() * sampleGrid.getCellSize().y,sampleGrid.getCenter().x + sampleGrid.getXMin() * sampleGrid.getCellSize().x);
-  String gridCellSzStr=String.format(Locale.US,"%f,%f",sampleGrid.getCellSize().y,sampleGrid.getCellSize().x);
+  String gridCornerStr=String.format(Locale.US,"%.8f,%.8f",sampleGrid.getCenter().y + sampleGrid.getYMin() * sampleGrid.getCellSize().y,sampleGrid.getCenter().x + sampleGrid.getXMin() * sampleGrid.getCellSize().x);
+  String gridCellSzStr=String.format(Locale.US,"%.12f,%.12f",sampleGrid.getCellSize().y,sampleGrid.getCellSize().x);
   String offRoadDistStr=String.format(Locale.US,"%f",sampleGridRenderer.getOffRoadDistanceMeters(precisionMeters));
   PngChunkTEXT gridCornerChunk=new PngChunkTEXT(imgInfo);
   gridCornerChunk.setKeyVal(OTPA_GRID_CORNER,gridCornerStr);

@@ -3,6 +3,7 @@
   SampleGridRequest tgRequest=new SampleGridRequest();
   tgRequest.setMaxTimeSec(isoChroneRequest.getMaxTimeSec());
   tgRequest.setPrecisionMeters(isoChroneRequest.getPrecisionMeters());
+  tgRequest.setCoordinateOrigin(isoChroneRequest.getCoordinateOrigin());
   ZSampleGrid<WTWD> sampleGrid=sampleGridRenderer.getSampleGrid(tgRequest,sptRequest);
   long t0=System.currentTimeMillis();
   ZMetric<WTWD> zMetric=new ZMetric<WTWD>(){

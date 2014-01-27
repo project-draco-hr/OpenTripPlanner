@@ -5,6 +5,7 @@
   IsoChroneRequest isoChroneRequest=new IsoChroneRequest(cutoffSecList);
   isoChroneRequest.setIncludeDebugGeometry(debug);
   isoChroneRequest.setPrecisionMeters(precisionMeters);
+  if (coordinateOrigin != null)   isoChroneRequest.setCoordinateOrigin(new GenericLocation(null,coordinateOrigin).getCoordinate());
   RoutingRequest sptRequest=buildRequest(0);
   if (maxTimeSec != null) {
     isoChroneRequest.setMaxTimeSec(maxTimeSec);
