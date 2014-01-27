@@ -1,3 +1,3 @@
 {
-  return (int)(getTimeSeconds() - backState.getTimeSeconds());
+  return backState != null ? (int)(getTimeSeconds() - backState.getTimeSeconds()) : 0;
 }

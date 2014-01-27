@@ -1,7 +1,9 @@
 {
   StringBuilder sb=new StringBuilder();
   sb.append("( ");
-  for (  int i : pathParserStates)   sb.append(String.format("%02d ",i));
+  for (  int i : pathParserStates) {
+    sb.append(String.format("%02d ",i));
+  }
   sb.append(")");
   return sb.toString();
 }

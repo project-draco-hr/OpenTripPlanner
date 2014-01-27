@@ -7,7 +7,7 @@
   heuristic.initialize(initialState,rctx.target,abortTime);
   if (abortTime < Long.MAX_VALUE && System.currentTimeMillis() > abortTime) {
     LOG.warn("Timeout during initialization of interleaved bidirectional heuristic.");
-    options.rctx.debug.timedOut=true;
+    options.rctx.debugOutput.timedOut=true;
     return null;
   }
   spt.add(initialState);
@@ -26,7 +26,7 @@
     heuristic.doSomeWork();
     if (abortTime < Long.MAX_VALUE && System.currentTimeMillis() > abortTime) {
       LOG.warn("Search timeout. origin={} target={}",rctx.origin,rctx.target);
-      options.rctx.debug.timedOut=true;
+      options.rctx.debugOutput.timedOut=true;
       storeMemory();
       return null;
     }
@@ -44,7 +44,7 @@
     }
  else     if (!options.batch && u_vertex == rctx.target && u.isFinal() && u.allPathParsersAccept()) {
       targetAcceptedStates.add(u);
-      options.rctx.debug.foundPath();
+      options.rctx.debugOutput.foundPath();
       if (targetAcceptedStates.size() >= nPaths) {
         LOG.debug("total vertices visited {}",nVisited);
         storeMemory();
