@@ -41,7 +41,7 @@
       it=ImageLineHelper.clampTo_0_65535((int)Math.round(t));
       if (it == 65535)       it=65534;
     }
-    int id=ImageLineHelper.clampTo_0_255((int)Math.round(z.d / 2));
+    int id=ImageLineHelper.clampTo_0_255((int)Math.round(z.d / precisionMeters * 100));
     int offset=col * channels;
     rgba[row][offset + 0]=it & 0xFF;
     rgba[row][offset + 1]=it >> 8;
