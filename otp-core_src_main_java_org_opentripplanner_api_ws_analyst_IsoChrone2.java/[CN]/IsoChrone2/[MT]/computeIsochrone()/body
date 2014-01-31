@@ -1,6 +1,5 @@
 {
   if (debug == null)   debug=false;
-  if (precisionMeters == null)   precisionMeters=200;
   if (precisionMeters < 10)   throw new IllegalArgumentException("Too small precisionMeters: " + precisionMeters);
   IsoChroneRequest isoChroneRequest=new IsoChroneRequest(cutoffSecList);
   isoChroneRequest.setIncludeDebugGeometry(debug);
