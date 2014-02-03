@@ -1,0 +1,10 @@
+{
+  List<Ride> rides=Lists.newLinkedList();
+  Ride ride=this;
+  while (ride != null) {
+    rides.add(0,ride);
+    ride=ride.previous;
+  }
+  LOG.info("Path from {} to {}",rides.get(0).from,rides.get(rides.size() - 1).to);
+  for (  Ride r : rides)   LOG.info("  {}",r);
+}

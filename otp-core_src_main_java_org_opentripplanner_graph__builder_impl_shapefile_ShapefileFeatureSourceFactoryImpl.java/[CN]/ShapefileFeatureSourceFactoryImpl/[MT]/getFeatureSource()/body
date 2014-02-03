@@ -1,6 +1,6 @@
 {
   try {
-    ShapefileDataStore dataStore=new ShapefileDataStore(_path.toURI().toURL());
+    dataStore=new ShapefileDataStore(_path.toURI().toURL());
     String typeNames[]=dataStore.getTypeNames();
     String typeName=typeNames[0];
     return dataStore.getFeatureSource(typeName);

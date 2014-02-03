@@ -21,6 +21,7 @@
       stopTime.serviceDate=serviceDay.getServiceDate().getAsString();
     }
     stopTime.time=time;
+    stopTime.direction=result.getBackDirection();
     stopTime.trip=new TripType(result.getBackTrip(),extended);
     out.add(stopTime);
     time+=1;

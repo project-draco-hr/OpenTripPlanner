@@ -1,0 +1,8 @@
+{
+  while (ride != null) {
+    if (ride.from == stop)     return true;
+    if (ride.to == stop)     return true;
+    ride=ride.previous;
+  }
+  return false;
+}

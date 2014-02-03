@@ -23,11 +23,33 @@
     long subsearchBeginTime=System.currentTimeMillis();
     LOG.debug("BEGIN SUBSEARCH");
     ShortestPathTree spt=sptService.getShortestPathTree(currOptions,timeout);
-    if (spt == null)     break;
+    if (spt == null) {
+      LOG.warn("Aborting search. {} paths found, elapsed time {} sec",paths.size(),(System.currentTimeMillis() - searchBeginTime) / 1000.0);
+      break;
+    }
     List<GraphPath> somePaths=spt.getPaths();
     LOG.debug("END SUBSEARCH ({} msec of {} msec total)",System.currentTimeMillis() - subsearchBeginTime,System.currentTimeMillis() - searchBeginTime);
-    if (somePaths == null) {
-      LOG.warn("Aborting search. {} paths found, elapsed time {} sec",paths.size(),(System.currentTimeMillis() - searchBeginTime) / 1000.0);
+    LOG.debug("SPT provides {} paths to target.",somePaths.size());
+    for (    GraphPath path : somePaths) {
+      if (!paths.contains(path)) {
+        if (path.getWalkDistance() > maxWalk) {
+          maxWalk=path.getWalkDistance() * 1.25;
+        }
+        paths.add(path);
+        LOG.debug("New trips: {}",path.getTrips());
+        if (!path.getTrips().isEmpty()) {
+          RoutingRequest newOptions=currOptions.clone();
+          for (          AgencyAndId trip : path.getTrips()) {
+            newOptions.banTrip(trip);
+          }
+          if (!optionQueue.contains(newOptions)) {
+            optionQueue.add(newOptions);
+          }
+        }
+      }
+    }
+    LOG.debug("{} / {} itineraries",paths.size(),currOptions.numItineraries);
+    if (options.rctx.aborted) {
       break;
     }
     if (maxWeight == Double.MAX_VALUE && maxWalk == Double.MAX_VALUE) {
@@ -55,25 +77,6 @@
       optionQueue.add(currOptions);
       continue;
     }
-    for (    GraphPath path : somePaths) {
-      if (!paths.contains(path)) {
-        if (path.getWalkDistance() > maxWalk) {
-          maxWalk=path.getWalkDistance() * 1.25;
-        }
-        paths.add(path);
-        LOG.debug("New trips: {}",path.getTrips());
-        if (!path.getTrips().isEmpty()) {
-          RoutingRequest newOptions=currOptions.clone();
-          for (          AgencyAndId trip : path.getTrips()) {
-            newOptions.banTrip(trip);
-          }
-          if (!optionQueue.contains(newOptions)) {
-            optionQueue.add(newOptions);
-          }
-        }
-      }
-    }
-    LOG.debug("{} / {} itineraries",paths.size(),currOptions.numItineraries);
   }
   if (paths.size() == 0) {
     return null;

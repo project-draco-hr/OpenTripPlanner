@@ -77,7 +77,7 @@
     if (options.tripIsBanned(trip))     return null;
     long preferences_penalty=options.preferencesPenaltyForTrip(trip);
     int transferPenalty=0;
-    if (state0.getNumBoardings() > 0) {
+    if (state0.isEverBoarded()) {
       TransferTable transferTable=options.getRoutingContext().transferTable;
       int transferTime=transferTable.getTransferTime(state0.getPreviousStop(),getStop(),state0.getPreviousTrip(),trip,boarding);
       transferPenalty=transferTable.determineTransferPenalty(transferTime,options.nonpreferredTransferPenalty);
@@ -99,7 +99,7 @@
     s1.setZone(getPattern().getZone(stopIndex));
     s1.setRoute(trip.getRoute().getId());
     double wait_cost=bestWait;
-    if (state0.getNumBoardings() == 0 && !options.isReverseOptimizing()) {
+    if (!state0.isEverBoarded() && !options.isReverseOptimizing()) {
       wait_cost*=options.waitAtBeginningFactor;
       s1.setInitialWaitTimeSeconds(bestWait);
     }
@@ -110,7 +110,7 @@
     s1.incrementWeight(transferPenalty);
     if (options.isReverseOptimizing())     s1.incrementWeight(wait_cost);
  else     s1.incrementWeight(wait_cost + options.getBoardCost(mode));
-    if (options.isReverseOptimizeOnTheFly() && !options.isReverseOptimizing() && state0.getNumBoardings() > 0 && state0.getLastNextArrivalDelta() <= bestWait && state0.getLastNextArrivalDelta() > -1) {
+    if (options.isReverseOptimizeOnTheFly() && !options.isReverseOptimizing() && state0.isEverBoarded()&& state0.getLastNextArrivalDelta() <= bestWait && state0.getLastNextArrivalDelta() > -1) {
       State optimized=s1.makeState().optimizeOrReverse(true,true);
       if (optimized == null)       LOG.error("Null optimized state. This shouldn't happen");
       return optimized;

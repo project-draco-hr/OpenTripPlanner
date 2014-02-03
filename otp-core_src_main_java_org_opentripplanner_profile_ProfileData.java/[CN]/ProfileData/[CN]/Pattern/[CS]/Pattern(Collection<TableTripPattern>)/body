@@ -1,0 +1,32 @@
+{
+  TableTripPattern first=ttps.iterator().next();
+  stops=first.getStops();
+  route=first.exemplar.getRoute();
+  int nStops=stops.size();
+  min=new int[nStops];
+  avg=new int[nStops];
+  max=new int[nStops];
+  for (int s=0; s < nStops; ++s)   min[s]=Integer.MAX_VALUE;
+  for (  TableTripPattern ttp : ttps) {
+    if (!ttp.getStops().equals(stops)) {
+      LOG.error("mismatched stop pattern");
+      continue;
+    }
+    if (!ttp.exemplar.getRoute().equals(route)) {
+      LOG.error("mismatched route");
+      continue;
+    }
+    int nTrips=ttp.getTrips().size();
+    for (int i=0; i < nTrips; ++i) {
+      TripTimes tt=ttp.getTripTimes(i);
+      int t0=tt.getDepartureTime(0);
+      for (int stop=1; stop < nStops; ++stop) {
+        int tn=tt.getArrivalTime(stop - 1);
+        tn-=t0;
+        if (tn < min[stop])         min[stop]=tn;
+        if (tn > max[stop])         max[stop]=tn;
+      }
+    }
+  }
+  for (int s=0; s < nStops; ++s)   avg[s]=(min[s] + max[s]) / 2;
+}

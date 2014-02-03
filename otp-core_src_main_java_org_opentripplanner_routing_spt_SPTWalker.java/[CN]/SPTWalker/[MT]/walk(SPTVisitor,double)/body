@@ -1,0 +1,56 @@
+{
+  int nTotal=0, nSkippedDupEdge=0, nSkippedNoGeometry=0;
+  Collection<? extends State> allStates=spt.getAllStates();
+  Set<Edge> processedEdges=new HashSet<Edge>(allStates.size());
+  for (  State s0 : allStates) {
+    for (    Edge e : s0.getVertex().getIncoming()) {
+      if (e != null && visitor.accept(e)) {
+        State s1=spt.getState(e.getFromVertex());
+        if (s1 == null)         continue;
+        if (e.getFromVertex() != null && e.getToVertex() != null) {
+          if (processedEdges.contains(e)) {
+            nSkippedDupEdge++;
+            continue;
+          }
+          processedEdges.add(e);
+        }
+        Vertex vx0=s0.getVertex();
+        Vertex vx1=s1.getVertex();
+        LineString lineString=e.getGeometry();
+        if (lineString == null) {
+          nSkippedNoGeometry++;
+          continue;
+        }
+        double lineStringLen=distanceLibrary.fastLength(lineString);
+        visitor.visit(vx0.getCoordinate(),s0,s1,0.0,lineStringLen);
+        visitor.visit(vx1.getCoordinate(),s0,s1,lineStringLen,0.0);
+        nTotal+=2;
+        Coordinate[] pList=lineString.getCoordinates();
+        boolean reverse=vx1.getCoordinate().equals(pList[0]);
+        if (lineStringLen > d0) {
+          int nSteps=(int)Math.floor(lineStringLen / d0) + 1;
+          double stepLen=lineStringLen / nSteps;
+          double startLen=0;
+          double curLen=stepLen;
+          int ns=1;
+          for (int i=0; i < pList.length - 1; i++) {
+            Coordinate p0=pList[i];
+            Coordinate p1=pList[i + 1];
+            double segLen=distanceLibrary.fastDistance(p0,p1);
+            while (curLen - startLen < segLen) {
+              double k=(curLen - startLen) / segLen;
+              Coordinate p=new Coordinate(p0.x * (1 - k) + p1.x * k,p0.y * (1 - k) + p1.y * k);
+              visitor.visit(p,reverse ? s1 : s0,reverse ? s0 : s1,curLen,lineStringLen - curLen);
+              nTotal++;
+              curLen+=stepLen;
+              ns++;
+            }
+            startLen+=segLen;
+            if (ns >= nSteps)             break;
+          }
+        }
+      }
+    }
+  }
+  LOG.info("SPTWalker: Generated {} points ({} dup edges, {} no geometry) from {} states.",nTotal,nSkippedDupEdge,nSkippedNoGeometry,allStates.size());
+}

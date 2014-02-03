@@ -1,0 +1,8 @@
+{
+  GridDot A=allDots.get(xyIndex);
+  if (A == null) {
+    A=new GridDot(xyIndex,fz.z(getCoordinate(xyIndex)));
+    allDots.put(xyIndex,A);
+  }
+  return A;
+}

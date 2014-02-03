@@ -1,0 +1,32 @@
+{
+  this.dX=dX;
+  this.dY=dY;
+  this.center=center;
+  LOG.debug("Center={} dX={} dY={}",this.center,dX,dY);
+  this.fz=fz;
+  allDots=new HashMap<XYIndex,GridDot>(p0List.size() / 2);
+  initialDots=new HashSet<GridDot>(p0List.size() / 2);
+  for (  Coordinate p0 : p0List) {
+    XYIndex index0=getIndex(p0,SIZE_0);
+    for (int dx=-SIZE_0; dx <= SIZE_0; dx+=SIZE_0) {
+      for (int dy=-SIZE_0; dy <= SIZE_0; dy+=SIZE_0) {
+        GridDot A=getOrCreateDot(index0.translated(dx,dy));
+        initialDots.add(A);
+      }
+    }
+  }
+  initialEdges=new ArrayList<GridEdge>(initialDots.size());
+  for (  GridDot A : initialDots) {
+    GridDot B=allDots.get(A.index.translated(SIZE_0,0));
+    if (B != null) {
+      GridEdge e=new GridEdge(A,B,SIZE_0,true);
+      initialEdges.add(e);
+    }
+    B=allDots.get(A.index.translated(0,SIZE_0));
+    if (B != null) {
+      GridEdge e=new GridEdge(A,B,SIZE_0,false);
+      initialEdges.add(e);
+    }
+  }
+  LOG.debug("Created {} dots and {} edges out of {} initial points.",initialDots.size(),initialEdges.size(),p0List.size());
+}
