@@ -11,7 +11,7 @@
   if (bicycle && BikeAccess.fromTrip(trip) != BikeAccess.ALLOWED) {
     return false;
   }
-  if (state0.getNumBoardings() > 0) {
+  if (state0.isEverBoarded()) {
     TransferTable transferTable=options.getRoutingContext().transferTable;
     int transferTime=transferTable.getTransferTime(state0.getPreviousStop(),currentStop,state0.getPreviousTrip(),trip,boarding);
     if (transferTime > 0) {

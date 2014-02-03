@@ -8,7 +8,7 @@
     }
     long currentTime=state0.getTimeSeconds();
     int transferPenalty=0;
-    if (state0.getNumBoardings() > 0) {
+    if (state0.isEverBoarded()) {
       TransferTable transferTable=options.getRoutingContext().transferTable;
       Stop currentStop=((TransitVertex)tov).getStop();
       int transferTime=transferTable.getTransferTime(state0.getPreviousStop(),currentStop,state0.getPreviousTrip(),trip,false);
@@ -64,7 +64,7 @@
     s1.setZone(pattern.getZone(stopIndex));
     s1.setRoute(trip.getRoute().getId());
     long wait_cost=bestWait;
-    if (state0.getNumBoardings() == 0) {
+    if (!state0.isEverBoarded()) {
       wait_cost*=options.waitAtBeginningFactor;
     }
  else {
