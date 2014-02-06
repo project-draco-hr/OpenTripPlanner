@@ -8,8 +8,8 @@
     boolean transform=false;
     CoordinateReferenceSystem destCrs=CRS.decode("EPSG:4326");
     Boolean latLon=null;
-    if (inputCrs != null) {
-      CoordinateReferenceSystem sourceCrs=CRS.decode(inputCrs);
+    if (crs != null) {
+      CoordinateReferenceSystem sourceCrs=CRS.decode(crs);
       if (CRS.getAxisOrder(destCrs) == CRS.AxisOrder.NORTH_EAST)       latLon=true;
  else       if (CRS.getAxisOrder(destCrs) == CRS.AxisOrder.EAST_NORTH)       latLon=false;
  else       throw new UnsupportedOperationException("Coordinate axis order for WGS 84 unknown.");
