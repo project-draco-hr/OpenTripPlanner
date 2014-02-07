@@ -12,13 +12,7 @@
   }
   if (options.isArriveBy()) {
     if (!options.getModes().isTransit())     return null;
-    if (s0.isAlightedLocal()) {
-      return null;
-    }
     TransitStop toVertex=(TransitStop)getToVertex();
-    if (toVertex.isLocal() && s0.isEverBoarded()) {
-      return null;
-    }
     if (s0.getNumBoardings() > options.maxTransfers)     return null;
     long t0=s0.getTimeSeconds();
     long slack;
@@ -43,9 +37,6 @@
  else {
     StateEditor s1=s0.edit(this);
     TransitStop toVertex=(TransitStop)getToVertex();
-    if (toVertex.isLocal()) {
-      s1.setAlightedLocal(true);
-    }
     s1.alightTransit();
     s1.incrementTimeInSeconds(options.getAlightSlack());
     s1.setBackMode(getMode());
