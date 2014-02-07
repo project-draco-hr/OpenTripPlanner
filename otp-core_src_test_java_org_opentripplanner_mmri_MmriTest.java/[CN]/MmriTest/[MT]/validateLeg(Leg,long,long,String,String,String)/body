@@ -1,0 +1,21 @@
+{
+  assertEquals(startTime,leg.startTime.getTimeInMillis());
+  assertEquals(endTime,leg.endTime.getTimeInMillis());
+  assertEquals(toStopId,leg.to.stopId.getId());
+  assertEquals("MMRI",leg.to.stopId.getAgencyId());
+  if (fromStopId != null) {
+    assertEquals("MMRI",leg.from.stopId.getAgencyId());
+    assertEquals(fromStopId,leg.from.stopId.getId());
+  }
+ else {
+    assertNull(leg.from.stopId);
+  }
+  if (alert != null) {
+    assertNotNull(leg.alerts);
+    assertEquals(1,leg.alerts.size());
+    assertEquals(alert,leg.alerts.get(0).alertHeaderText.getSomeTranslation());
+  }
+ else {
+    assertNull(leg.alerts);
+  }
+}

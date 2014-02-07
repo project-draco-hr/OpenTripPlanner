@@ -1,0 +1,42 @@
+{
+  File gtfs=new File("src/test/resources/mmri/" + getFeedName() + ".zip");
+  File gtfsRealTime=new File("src/test/resources/mmri/" + getFeedName() + ".pb");
+  GtfsBundle gtfsBundle=new GtfsBundle(gtfs);
+  List<GtfsBundle> gtfsBundleList=Collections.singletonList(gtfsBundle);
+  GtfsGraphBuilderImpl gtfsGraphBuilderImpl=new GtfsGraphBuilderImpl(gtfsBundleList);
+  GraphBuilderWithGtfsDao transitIndexBuilder=new TransitIndexBuilder();
+  alertsUpdateHandler=new AlertsUpdateHandler();
+  graph=new Graph();
+  gtfsBundle.setTransfersTxtDefinesStationPaths(true);
+  gtfsGraphBuilderImpl.setGtfsGraphBuilders(Collections.singletonList(transitIndexBuilder));
+  gtfsGraphBuilderImpl.buildGraph(graph,null);
+  graph.index(new DefaultStreetVertexIndexFactory());
+  timetableSnapshotSource=new TimetableSnapshotSource(graph);
+  timetableSnapshotSource.setPurgeExpiredData(false);
+  graph.setTimetableSnapshotSource(timetableSnapshotSource);
+  patchServiceImpl=new PatchServiceImpl(graph);
+  alertsUpdateHandler.setPatchService(patchServiceImpl);
+  alertsUpdateHandler.setDefaultAgencyId("MMRI");
+  try {
+    InputStream inputStream=new FileInputStream(gtfsRealTime);
+    FeedMessage feedMessage=FeedMessage.PARSER.parseFrom(inputStream);
+    List<FeedEntity> feedEntityList=feedMessage.getEntityList();
+    List<TripUpdate> updates=new ArrayList<TripUpdate>(feedEntityList.size());
+    for (    FeedEntity feedEntity : feedEntityList) {
+      updates.add(feedEntity.getTripUpdate());
+    }
+    timetableSnapshotSource.applyTripUpdates(updates,"MMRI");
+    alertsUpdateHandler.update(feedMessage);
+  }
+ catch (  Exception exception) {
+  }
+  planGenerator=new PlanGenerator();
+  longDistancePathService=new LongDistancePathService();
+  genericAStar=new GenericAStar();
+  serviceDayList=new ArrayList<ServiceDay>(3);
+  planGenerator.pathService=longDistancePathService;
+  longDistancePathService.setSptService(genericAStar);
+  serviceDayList.add(new ServiceDay(graph,1388534400L,graph.getCalendarService(),"MMRI"));
+  serviceDayList.add(new ServiceDay(graph,1388620800L,graph.getCalendarService(),"MMRI"));
+  serviceDayList.add(new ServiceDay(graph,1388707200L,graph.getCalendarService(),"MMRI"));
+}
