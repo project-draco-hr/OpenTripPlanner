@@ -39,26 +39,6 @@
   searchDate=new JTextField();
   searchDate.setText(dateFormat.format(new Date()));
   routingPanel.add(searchDate);
-  walkCheckBox=new JCheckBox("walk");
-  routingPanel.add(walkCheckBox);
-  bikeCheckBox=new JCheckBox("bike");
-  routingPanel.add(bikeCheckBox);
-  trainCheckBox=new JCheckBox("trainish");
-  routingPanel.add(trainCheckBox);
-  busCheckBox=new JCheckBox("busish");
-  routingPanel.add(busCheckBox);
-  ferryCheckBox=new JCheckBox("ferry");
-  routingPanel.add(ferryCheckBox);
-  transitCheckBox=new JCheckBox("transit");
-  routingPanel.add(transitCheckBox);
-  carCheckBox=new JCheckBox("car");
-  routingPanel.add(carCheckBox);
-  cmvCheckBox=new JCheckBox("custom vehicle");
-  routingPanel.add(cmvCheckBox);
-  JLabel boardPenaltyLabel=new JLabel("Boarding penalty (min):");
-  routingPanel.add(boardPenaltyLabel);
-  boardingPenaltyField=new JTextField("5");
-  routingPanel.add(boardingPenaltyField);
   JButton routeButton=new JButton("path search");
   routeButton.addActionListener(new ActionListener(){
     public void actionPerformed(    ActionEvent e){

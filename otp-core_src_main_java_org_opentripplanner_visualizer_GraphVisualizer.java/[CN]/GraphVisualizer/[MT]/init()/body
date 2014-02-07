@@ -1,10 +1,7 @@
 {
   JTabbedPane tabbedPane=new JTabbedPane();
-  Container pane=initMainTab();
-  tabbedPane.addTab("Main",null,pane,"Pretty much everything");
-  JComponent panel2=makeTextPanel("routing preferences go here");
-  tabbedPane.addTab("Prefs",null,panel2,"Routing preferences");
-  tabbedPane.setMnemonicAt(1,KeyEvent.VK_2);
+  tabbedPane.addTab("Main",null,initMainTab(),"Pretty much everything");
+  tabbedPane.addTab("Prefs",null,makePrefsPanel(),"Routing preferences");
   add(tabbedPane);
   tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
   showGraph.init();
