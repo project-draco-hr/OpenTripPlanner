@@ -1,5 +1,5 @@
 {
   for (  ServiceCalendar calendar : allCalendars) {
-    MapUtils.addToMapList(calendarsByAgency,calendar.getServiceId().getAgencyId(),calendar);
+    calendarsByAgency.put(calendar.getServiceId().getAgencyId(),calendar);
   }
 }

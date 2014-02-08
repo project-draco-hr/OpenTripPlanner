@@ -6,15 +6,15 @@
       variants.get(0).setName(routeName);
       continue;
     }
-    HashMap<String,List<RouteVariant>> starts=new HashMap<String,List<RouteVariant>>();
-    HashMap<String,List<RouteVariant>> ends=new HashMap<String,List<RouteVariant>>();
-    HashMap<String,List<RouteVariant>> vias=new HashMap<String,List<RouteVariant>>();
+    ListMultimap<String,RouteVariant> starts=ArrayListMultimap.create();
+    ListMultimap<String,RouteVariant> ends=ArrayListMultimap.create();
+    ListMultimap<String,RouteVariant> vias=ArrayListMultimap.create();
     for (    RouteVariant variant : variants) {
       List<Stop> stops=variant.getStops();
-      MapUtils.addToMapList(starts,getName(stops.get(0)),variant);
-      MapUtils.addToMapList(ends,getName(stops.get(stops.size() - 1)),variant);
+      starts.put(getName(stops.get(0)),variant);
+      ends.put(getName(stops.get(stops.size() - 1)),variant);
       for (      Stop stop : stops) {
-        MapUtils.addToMapList(vias,getName(stop),variant);
+        vias.put(getName(stop),variant);
       }
     }
     for (    RouteVariant variant : variants) {

@@ -4,8 +4,8 @@
     List<Long> nodeRefs=way.getNodeRefs();
     long firstEndpoint=nodeRefs.get(0);
     long otherEndpoint=nodeRefs.get(nodeRefs.size() - 1);
-    MapUtils.removeFromMapList(waysByEndpoint,firstEndpoint,way);
-    MapUtils.removeFromMapList(waysByEndpoint,otherEndpoint,way);
+    waysByEndpoint.remove(firstEndpoint,way);
+    waysByEndpoint.remove(otherEndpoint,way);
     ArrayList<Long> newRing=new ArrayList<Long>(ring.size() + nodeRefs.size());
     long newFirstEndpoint;
     if (firstEndpoint == endpoint) {
@@ -27,9 +27,8 @@
       }
       newRing=new ArrayList<Long>();
       OSMWay firstWay=null;
-      for (      Map.Entry<Long,List<OSMWay>> entry : waysByEndpoint.entrySet()) {
-        firstEndpoint=entry.getKey();
-        List<OSMWay> list=entry.getValue();
+      for (      Long entry : waysByEndpoint.keySet()) {
+        List<OSMWay> list=waysByEndpoint.get(entry);
         firstWay=list.get(0);
         nodeRefs=firstWay.getNodeRefs();
         newRing.addAll(nodeRefs);
@@ -37,13 +36,13 @@
         otherEndpoint=nodeRefs.get(nodeRefs.size() - 1);
         break;
       }
-      MapUtils.removeFromMapList(waysByEndpoint,firstEndpoint,firstWay);
-      MapUtils.removeFromMapList(waysByEndpoint,otherEndpoint,firstWay);
+      waysByEndpoint.remove(firstEndpoint,firstWay);
+      waysByEndpoint.remove(otherEndpoint,firstWay);
       if (constructRingsRecursive(waysByEndpoint,newRing,closedRings,firstEndpoint)) {
         return true;
       }
-      MapUtils.addToMapList(waysByEndpoint,firstEndpoint,firstWay);
-      MapUtils.addToMapList(waysByEndpoint,otherEndpoint,firstWay);
+      waysByEndpoint.remove(firstEndpoint,firstWay);
+      waysByEndpoint.remove(otherEndpoint,firstWay);
     }
  else {
       if (waysByEndpoint.get(newFirstEndpoint) != null) {
@@ -53,10 +52,10 @@
       }
     }
     if (firstEndpoint == endpoint) {
-      MapUtils.addToMapList(waysByEndpoint,otherEndpoint,way);
+      waysByEndpoint.put(otherEndpoint,way);
     }
  else {
-      MapUtils.addToMapList(waysByEndpoint,firstEndpoint,way);
+      waysByEndpoint.put(firstEndpoint,way);
     }
   }
   return false;
