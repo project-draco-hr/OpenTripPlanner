@@ -1,0 +1,9 @@
+{
+  AgencyAndId agencyAndId=new AgencyAndId();
+  Route route=new Route();
+  Trip trip=new Trip();
+  RoutingRequest routingRequest=new RoutingRequest();
+  trip.setRoute(route);
+  route.setId(agencyAndId);
+  assertEquals(0,routingRequest.preferencesPenaltyForTrip(trip));
+}
