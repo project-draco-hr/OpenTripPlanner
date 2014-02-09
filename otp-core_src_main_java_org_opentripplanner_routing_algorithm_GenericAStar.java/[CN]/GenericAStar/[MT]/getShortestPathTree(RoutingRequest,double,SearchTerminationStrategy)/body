@@ -63,7 +63,7 @@
         if (remaining_w < 0 || Double.isInfinite(remaining_w)) {
           continue;
         }
-        double estimate=v.getWeight() + remaining_w;
+        double estimate=v.getWeight() + remaining_w * options.getHeuristicWeight();
         if (_verbose) {
           System.out.println("      edge " + edge);
           System.out.println("      " + u.getWeight() + " -> "+ v.getWeight()+ "(w) + "+ remaining_w+ "(heur) = "+ estimate+ " vert = "+ v.getVertex());
