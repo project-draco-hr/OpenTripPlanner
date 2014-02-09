@@ -1,4 +1,5 @@
 {
+  if (pr == null)   return null;
   for (  Ride ride : rides.get(pr.getToStop())) {
     if (ride.previous == pr.previous && ride.route == pr.pattern.route && ride.to == pr.getToStop()) {
       ride.patternRides.add(pr);

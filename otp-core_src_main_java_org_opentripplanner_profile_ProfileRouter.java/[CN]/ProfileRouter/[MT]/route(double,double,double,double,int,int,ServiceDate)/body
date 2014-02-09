@@ -1,0 +1,53 @@
+{
+  final int ROUNDS=2;
+  int finalRound=ROUNDS - 1;
+  int penultimateRound=ROUNDS - 2;
+  fromStops=data.closestPatterns(fromLon,fromLat);
+  toStops=data.closestPatterns(toLon,toLat);
+  LOG.info("from stops: {}",fromStops);
+  LOG.info("to stops: {}",toStops);
+  this.window=new TimeWindow(fromTime,toTime,data.servicesRunning(date));
+  Set<PatternRide> queue=Sets.newHashSet();
+  for (  Entry<TableTripPattern,StopAtDistance> entry : fromStops.entrySet()) {
+    TableTripPattern pattern=entry.getKey();
+    StopAtDistance sd=entry.getValue();
+    for (int i=0; i < pattern.getStops().size(); ++i) {
+      if (pattern.getStops().get(i) == sd.stop) {
+        Transfer xfer=new Transfer(null,pattern,null,sd.stop,sd.distance);
+        queue.add(new PatternRide(pattern,i,null,xfer));
+      }
+    }
+  }
+  for (int round=0; round < ROUNDS; ++round) {
+    LOG.info("ROUND {}",round);
+    for (    PatternRide pr : queue) {
+      makeRides(pr,rides);
+    }
+    LOG.info("number of rides: {}",rides.size());
+    if (round != finalRound) {
+      queue.clear();
+      for (      Ride ride : rides.values()) {
+        for (        Transfer tr : data.transfersForStop.get(ride.to)) {
+          if (round == penultimateRound && !toStops.containsKey(tr.tp2))           continue;
+          if (ride.containsPattern(tr.tp1)) {
+            if (pathContainsRoute(ride,tr.tp2.route))             continue;
+            if (tr.s1 != tr.s2 && pathContainsStop(ride,tr.s2))             continue;
+            for (int i=0; i < tr.tp2.getStops().size(); ++i) {
+              if (tr.tp2.getStops().get(i) == tr.s2) {
+                queue.add(new PatternRide(tr.tp2,i,ride,tr));
+              }
+            }
+          }
+        }
+      }
+      LOG.info("number of new queue states: {}",queue.size());
+      rides.clear();
+    }
+  }
+  List<Option> options=Lists.newArrayList();
+  for (  Ride ride : targetRides) {
+    int dist=toStops.get(ride.patternRides.get(0).pattern).distance;
+    options.add(new Option(ride,dist,window));
+  }
+  return options;
+}

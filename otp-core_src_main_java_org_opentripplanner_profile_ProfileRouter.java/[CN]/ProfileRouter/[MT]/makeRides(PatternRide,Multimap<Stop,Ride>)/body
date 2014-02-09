@@ -7,11 +7,12 @@
   for (int s=pr.fromIndex; s < stops.size(); ++s) {
     Stop stop=stops.get(s);
     if (targetStop != null && targetStop == stop) {
-      targetRides.add(addRide(pr.extendToIndex(s)));
+      Ride ride=addRide(pr.extendToIndex(s,window));
+      if (ride != null)       targetRides.add(ride);
     }
  else     if (hasTransfers(stop,pr.pattern)) {
       if (!pathContainsStop(pr.previous,stop)) {
-        addRide(pr.extendToIndex(s));
+        addRide(pr.extendToIndex(s,window));
       }
     }
   }

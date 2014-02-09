@@ -1,0 +1,18 @@
+{
+  Stats stats=new Stats();
+  stats.min=0;
+  List<Integer> departures=getSortedStoptimes(window,false);
+  int last=window.from;
+  double avgAccumulated=0.0;
+  for (  int dep : departures) {
+    int maxWait=dep - last;
+    if (maxWait > stats.max)     stats.max=maxWait;
+    avgAccumulated+=(maxWait / 2.0) * maxWait;
+    stats.num+=maxWait;
+    last=dep;
+  }
+  if (stats.num > 0) {
+    stats.avg=(int)(avgAccumulated / stats.num);
+  }
+  return stats;
+}

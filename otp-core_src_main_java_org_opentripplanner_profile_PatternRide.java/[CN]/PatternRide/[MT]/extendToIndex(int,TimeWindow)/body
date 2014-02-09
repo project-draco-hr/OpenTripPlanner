@@ -1,0 +1,8 @@
+{
+  Stats stats=Stats.create(pattern,fromIndex,toIndex - 1,window);
+  if (stats == null)   return null;
+  PatternRide ret=new PatternRide(this);
+  ret.toIndex=toIndex;
+  ret.stats=stats;
+  return ret;
+}

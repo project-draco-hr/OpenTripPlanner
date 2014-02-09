@@ -1,0 +1,16 @@
+{
+  route=ride.route.getId().getId();
+  routeShortName=ride.route.getShortName();
+  routeLongName=ride.route.getLongName();
+  from=ride.from.getId().getId();
+  to=ride.to.getId().getId();
+  fromName=ride.from.getName();
+  toName=ride.to.getName();
+  rideStats=ride.getStats();
+  for (  PatternRide patternRide : ride.patternRides) {
+    segmentPatterns.add(new SegmentPattern(patternRide));
+  }
+  Collections.sort(segmentPatterns);
+  walkTime=(int)(ride.getTransferDistance() / ProfileRouter.WALK_SPEED);
+  waitStats=ride.statsForTransfer(window);
+}
