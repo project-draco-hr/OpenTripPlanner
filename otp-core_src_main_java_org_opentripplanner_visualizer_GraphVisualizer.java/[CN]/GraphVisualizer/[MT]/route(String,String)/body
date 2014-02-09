@@ -26,6 +26,10 @@
   options.setToString(to);
   options.setWalkSpeed(Float.parseFloat(walkSpeed.getText()));
   options.setBikeSpeed(Float.parseFloat(bikeSpeed.getText()));
+  options.setHeuristicWeight(Float.parseFloat(heuristicWeight.getText()));
+  options.setSoftWalkLimiting(softWalkLimiting.isSelected());
+  options.setSoftWalkPenalty(Float.parseFloat(softWalkPenalty.getText()));
+  options.setSoftWalkOverageRate(Float.parseFloat(this.softWalkOverageRate.getText()));
   options.numItineraries=1;
   System.out.println("--------");
   System.out.println("Path from " + from + " to "+ to+ " at "+ when);
