@@ -8,6 +8,7 @@
   s1.setServiceDay(serviceDay);
   s1.setTripTimes(tripTimes);
   s1.setTripId(trip.getId());
+  s1.setPreviousTrip(trip);
   s1.setZone(endStop.getZoneId());
   s1.setRoute(trip.getRoute().getId());
   int remainingTime=(int)Math.round((1.0 - positionInHop) * tripTimes.getRunningTime(stopIndex));
