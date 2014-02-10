@@ -17,6 +17,7 @@
   modeSet.setCustomMotorVehicle(cmvCheckBox.isSelected());
   if (transitCheckBox.isSelected())   modeSet.setTransit(true);
   RoutingRequest options=new RoutingRequest(modeSet);
+  options.setArriveBy(arriveByCheckBox.isSelected());
   options.setWalkBoardCost(Integer.parseInt(boardingPenaltyField.getText()) * 60);
   options.setBikeBoardCost(Integer.parseInt(boardingPenaltyField.getText()) * 60 * 2);
   options.setOptimize(getSelectedOptimizeType());
