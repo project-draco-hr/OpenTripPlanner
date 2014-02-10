@@ -1,0 +1,39 @@
+{
+  GraphIndex index=graphService.getGraph().getIndex();
+  if (ui.getQueryParameters().isEmpty()) {
+    Collection<Stop> stops=index.stopForId.values();
+    return Response.status(Status.OK).entity(StopShort.list(stops)).build();
+  }
+  boolean expectCircle=(lat != null || lon != null || radius != null);
+  if (expectCircle) {
+    if (lat == null || lon == null || radius == null || radius < 0) {
+      return Response.status(Status.BAD_REQUEST).entity(MSG_400).build();
+    }
+    if (radius > MAX_STOP_SEARCH_RADIUS) {
+      radius=MAX_STOP_SEARCH_RADIUS;
+    }
+    List<StopShort> stops=Lists.newArrayList();
+    Coordinate coord=new Coordinate(lon,lat);
+    for (    TransitStop stopVertex : index.stopSpatialIndex.query(lon,lat,radius)) {
+      double distance=distanceLibrary.fastDistance(stopVertex.getCoordinate(),coord);
+      if (distance < radius) {
+        stops.add(new StopShort(stopVertex.getStop(),(int)distance));
+      }
+    }
+    return Response.status(Status.OK).entity(stops).build();
+  }
+ else {
+    if (minLat == null || minLon == null || maxLat == null || maxLon == null) {
+      return Response.status(Status.BAD_REQUEST).entity(MSG_400).build();
+    }
+    if (maxLat <= minLat || maxLon <= minLon) {
+      return Response.status(Status.BAD_REQUEST).entity(MSG_400).build();
+    }
+    List<StopShort> stops=Lists.newArrayList();
+    for (    TransitStop stopVertex : index.stopSpatialIndex.query(lon,lat,radius)) {
+      index.stopSpatialIndex.query(lon,lat,radius);
+      stops.add(new StopShort(stopVertex.getStop()));
+    }
+    return Response.status(Status.OK).entity(stops).build();
+  }
+}
