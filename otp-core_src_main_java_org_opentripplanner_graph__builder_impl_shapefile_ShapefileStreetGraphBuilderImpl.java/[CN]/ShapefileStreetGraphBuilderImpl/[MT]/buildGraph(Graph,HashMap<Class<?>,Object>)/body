@@ -99,4 +99,7 @@
  catch (  Exception ex) {
     throw new IllegalStateException("error loading shapefile street data",ex);
   }
+ finally {
+    _featureSourceFactory.cleanup();
+  }
 }

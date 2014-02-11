@@ -1,0 +1,13 @@
+{
+  debug=false;
+  for (  DelaunayEdge<TZ> e : triangulation.edges()) {
+    Coordinate cA=e.getA().getCoordinates();
+    Coordinate cB=e.getB().getCoordinates();
+    debugGeom.add(geometryFactory.createLineString(new Coordinate[]{cA,cB}));
+    if (zMetric.cut(e.getA().getZ(),e.getB().getZ(),z0) != 0) {
+      double k=zMetric.interpolate(e.getA().getZ(),e.getB().getZ(),z0);
+      Coordinate cC=new Coordinate(cA.x * (1.0 - k) + cB.x * k,cA.y * (1.0 - k) + cB.y * k);
+      debugGeom.add(geometryFactory.createPoint(cC));
+    }
+  }
+}

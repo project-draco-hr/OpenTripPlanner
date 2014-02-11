@@ -1,0 +1,25 @@
+{
+  AgencyAndId[] rs0=this.stateData.routeSequence;
+  AgencyAndId[] rs1=that.stateData.routeSequence;
+  if (rs0 == rs1)   return true;
+  AgencyAndId[] shorter, longer;
+  if (rs0.length < rs1.length) {
+    shorter=rs0;
+    longer=rs1;
+  }
+ else {
+    shorter=rs1;
+    longer=rs0;
+  }
+  for (  AgencyAndId ais : shorter) {
+    boolean match=false;
+    for (    AgencyAndId ail : longer) {
+      if (ais == ail) {
+        match=true;
+        break;
+      }
+    }
+    if (!match)     return false;
+  }
+  return true;
+}

@@ -1,0 +1,10 @@
+{
+  int xIndex=(int)Math.round((p.x - center.x) / dX);
+  int yIndex=(int)Math.round((p.y - center.y) / dY);
+  if (size != 1) {
+    int size2=size / 2;
+    xIndex=(xIndex + (xIndex > 0 ? size2 : -size2)) / size * size;
+    yIndex=(yIndex + (yIndex > 0 ? size2 : -size2)) / size * size;
+  }
+  return new XYIndex(xIndex,yIndex);
+}

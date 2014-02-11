@@ -1,0 +1,15 @@
+{
+  if (chunk == null) {
+    chunk=mapIterator.hasNext() ? mapIterator.next() : null;
+    if (chunk == null)     return;
+  }
+  while (true) {
+    chunkIndex++;
+    if (chunkIndex == matSize) {
+      chunkIndex=0;
+      chunk=mapIterator.hasNext() ? mapIterator.next() : null;
+      if (chunk == null)       return;
+    }
+    if (chunk[chunkIndex] != null)     return;
+  }
+}

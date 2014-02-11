@@ -1,0 +1,30 @@
+{
+  Multimap<List<Stop>,TableTripPattern> tpsBinned=HashMultimap.create();
+  for (  TableTripPattern ttp : IterableLibrary.filter(getTripPatterns(),TableTripPattern.class)) {
+    tpsBinned.put(ttp.getStops(),ttp);
+  }
+  for (  Collection<TableTripPattern> tpBin : tpsBinned.asMap().values()) {
+    patterns.add(new Pattern(tpBin));
+  }
+  LOG.info("Number of patterns is {}",patterns.size());
+  for (  Pattern ptp : patterns) {
+    for (    Stop stop : ptp.stops) {
+      patternsForStop.put(stop,ptp);
+    }
+  }
+  for (  Pattern ptp : patterns) {
+    patternsForRoute.put(ptp.route,ptp);
+  }
+  Set<Route> routes=patternsForRoute.keySet();
+  for (  Route route : routes) {
+    LOG.debug("Route {} {}",route.getShortName(),route.getLongName());
+    for (    Pattern pattern : patternsForRoute.get(route)) {
+      LOG.debug("  {}",pattern.stopString());
+    }
+  }
+  for (  Stop s : stops) {
+    stopTree.insert(new Envelope(s.getLon(),s.getLat(),s.getLon(),s.getLat()),s);
+  }
+  stopTree.build();
+  findTransfers();
+}

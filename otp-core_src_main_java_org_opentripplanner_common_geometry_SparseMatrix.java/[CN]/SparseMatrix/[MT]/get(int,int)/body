@@ -1,0 +1,13 @@
+{
+  x+=0x7FFFFFFF;
+  y+=0x7FFFFFFF;
+  long x0=x >> shift;
+  long y0=y >> shift;
+  Long key=x0 + (y0 << 32);
+  T[] ts=chunks.get(key);
+  if (ts == null) {
+    return null;
+  }
+  int index=((x & mask) << shift) + (y & mask);
+  return ts[index];
+}

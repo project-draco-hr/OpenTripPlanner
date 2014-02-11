@@ -28,5 +28,7 @@
     LOG.warn("SPT was null.");
     return null;
   }
-  return spt.getPaths();
+  List<GraphPath> paths=spt.getPaths();
+  Collections.sort(paths,new PathWeightComparator());
+  return paths;
 }
