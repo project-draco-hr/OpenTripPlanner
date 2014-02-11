@@ -36,7 +36,16 @@
   System.out.println("Path from " + from + " to "+ to+ " at "+ when);
   System.out.println("\tModes: " + modeSet);
   System.out.println("\tOptions: " + options);
+  if (dontUseGraphicalCallbackCheckBox.isSelected()) {
+    sptService.setTraverseVisitor(null);
+  }
+ else {
+    sptService.setTraverseVisitor(new VisualTraverseVisitor(showGraph));
+  }
+  long t0=System.currentTimeMillis();
   List<GraphPath> paths=pathservice.getPaths(options);
+  long dt=System.currentTimeMillis() - t0;
+  searchTimeElapsedLabel.setText("search time elapsed: " + dt + "ms");
   if (paths == null) {
     System.out.println("no path");
     showGraph.highlightGraphPath(null);
