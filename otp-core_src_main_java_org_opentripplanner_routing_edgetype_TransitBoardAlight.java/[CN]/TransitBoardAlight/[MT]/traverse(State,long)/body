@@ -104,7 +104,7 @@
  else {
       s1.incrementWeight(wait_cost + options.getBoardCost(s0.getNonTransitMode()));
     }
-    if (options.isReverseOptimizeOnTheFly() && !options.isReverseOptimizing() && s0.getisEverBoarded()&& s0.getLastNextArrivalDelta() <= bestWait && s0.getLastNextArrivalDelta() > -1) {
+    if (options.isReverseOptimizeOnTheFly() && !options.isReverseOptimizing() && s0.isEverBoarded()&& s0.getLastNextArrivalDelta() <= bestWait && s0.getLastNextArrivalDelta() > -1) {
       State optimized=s1.makeState().optimizeOrReverse(true,true);
       if (optimized == null)       LOG.error("Null optimized state. This shouldn't happen.");
       return optimized;
