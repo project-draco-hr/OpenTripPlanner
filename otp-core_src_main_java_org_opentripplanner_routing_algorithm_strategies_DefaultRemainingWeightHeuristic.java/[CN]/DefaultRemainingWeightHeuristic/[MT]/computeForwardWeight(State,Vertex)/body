@@ -4,9 +4,6 @@
   if (useTransit) {
     double streetSpeed=options.getStreetSpeedUpperBound();
     if (euclideanDistance < target.getDistanceToNearestTransitStop()) {
-      if (euclideanDistance + s.getWalkDistance() > options.getMaxWalkDistance()) {
-        return -1;
-      }
       return options.walkReluctance * euclideanDistance / streetSpeed;
     }
     int boardCost;
