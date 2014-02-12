@@ -1,6 +1,6 @@
 {
   ShortestPathTree spt=null;
-  if (options.getModes().isTransit() || options.getModes().getWalk() && options.getModes().getBicycle()) {
+  if (options.getModes().isTransit() || options.getModes().getWalk() && options.getModes().getBicycle() || options.getModes().getWalk() && options.getModes().getCar()) {
     spt=new MultiShortestPathTree(options);
   }
  else {
