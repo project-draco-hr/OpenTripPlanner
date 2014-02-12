@@ -1,0 +1,6 @@
+{
+  if (data == null)   data=new ProfileData(graphService.getGraph());
+  ProfileRouter router=new ProfileRouter(data);
+  ProfileResponse pr=router.route(from,to,fromTime.toSeconds(),toTime.toSeconds(),date.toJoda());
+  return Response.status(Status.OK).entity(pr).build();
+}

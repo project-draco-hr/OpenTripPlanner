@@ -1,0 +1,13 @@
+{
+  String[] fields=value.split(":");
+  hour=Integer.parseInt(fields[0]);
+  if (fields.length > 1) {
+    minute=Integer.parseInt(fields[1]);
+  }
+  if (fields.length > 2) {
+    second=Integer.parseInt(fields[2]);
+  }
+  checkRangeInclusive(hour,0,23);
+  checkRangeInclusive(minute,0,59);
+  checkRangeInclusive(second,0,59);
+}

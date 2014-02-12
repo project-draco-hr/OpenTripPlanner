@@ -1,0 +1,10 @@
+{
+  try {
+    parse(value);
+  }
+ catch (  Throwable e) {
+    String message=String.format("Error parsing parameter: %s (%s)",value,e.toString());
+    Response response=Response.status(Status.BAD_REQUEST).entity(message).build();
+    throw new WebApplicationException(response);
+  }
+}

@@ -2,8 +2,8 @@
   final int ROUNDS=2;
   int finalRound=ROUNDS - 1;
   int penultimateRound=ROUNDS - 2;
-  fromStops=data.closestPatterns(fromLon,fromLat);
-  toStops=data.closestPatterns(toLon,toLat);
+  fromStops=data.closestPatterns(from.lon,from.lat);
+  toStops=data.closestPatterns(to.lon,to.lat);
   LOG.info("from stops: {}",fromStops);
   LOG.info("to stops: {}",toStops);
   this.window=new TimeWindow(fromTime,toTime,data.servicesRunning(date));
@@ -49,5 +49,5 @@
     int dist=toStops.get(ride.patternRides.get(0).pattern).distance;
     options.add(new Option(ride,dist,window));
   }
-  return options;
+  return new ProfileResponse(options);
 }

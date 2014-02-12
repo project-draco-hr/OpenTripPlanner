@@ -1,0 +1,12 @@
+{
+  if (value == null || value.equalsIgnoreCase("today") || value.isEmpty()) {
+    value=new LocalDate().toString();
+  }
+  String[] fields=value.split("-");
+  year=Integer.parseInt(fields[0]);
+  month=Integer.parseInt(fields[1]);
+  day=Integer.parseInt(fields[2]);
+  checkRangeInclusive(year,2000,2100);
+  checkRangeInclusive(month,1,12);
+  checkRangeInclusive(day,1,daysInMonth[month - 1]);
+}
