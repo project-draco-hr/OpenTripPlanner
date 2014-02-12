@@ -147,7 +147,7 @@
   StringWriter sw=new StringWriter();
   GeoJSONBuilder json=new GeoJSONBuilder(sw);
   try {
-    if (output.equals(IsoChrone.RESULT_TYPE_POINTS)) {
+    if (output.equals(SIsochrone.RESULT_TYPE_POINTS)) {
       if (noRoadNearBy) {
         Geometry circleShape=createCirle(dropPoint,pathToStreet);
         coords=circleShape.getCoordinates();
@@ -156,7 +156,7 @@
       json.writeGeom(gf.createMultiPoint(coords));
       LOG.debug("done");
     }
- else     if (output.equals(IsoChrone.RESULT_TYPE_SHED)) {
+ else     if (output.equals(SIsochrone.RESULT_TYPE_SHED)) {
       Geometry geomsArray[]=null;
       if (noRoadNearBy) {
         Geometry circleShape=createCirle(dropPoint,pathToStreet);
@@ -198,7 +198,7 @@
         LOG.debug("done");
       }
     }
- else     if (output.equals(IsoChrone.RESULT_TYPE_EDGES)) {
+ else     if (output.equals(SIsochrone.RESULT_TYPE_EDGES)) {
       if (noRoadNearBy) {
         json.writeGeom(pathToStreet);
       }
