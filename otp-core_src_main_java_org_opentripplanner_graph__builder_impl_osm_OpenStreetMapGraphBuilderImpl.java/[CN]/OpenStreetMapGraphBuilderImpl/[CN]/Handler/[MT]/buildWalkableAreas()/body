@@ -1,0 +1,7 @@
+{
+  LOG.info("Building visibility graphs for walkable areas");
+  List<AreaGroup> areaGroups=groupAreas(_walkableAreas);
+  for (  AreaGroup group : areaGroups) {
+    buildWalkableAreasForGroup(group);
+  }
+}

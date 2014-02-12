@@ -1,0 +1,57 @@
+{
+  Envelope2D envelope=null;
+  List<IntersectionVertex> accessVertexes=new ArrayList<IntersectionVertex>();
+  String creativeName=null;
+  long osmId=0L;
+  for (  Area area : group.areas) {
+    osmId=area.parent.getId();
+    if (creativeName == null || area.parent.getTag("name") != null)     creativeName=wayPropertySet.getCreativeNameForWay(area.parent);
+    for (    Ring ring : area.outermostRings) {
+      for (      OSMNode node : ring.nodes) {
+        if (envelope == null)         envelope=new Envelope2D(null,node.getLon(),node.getLat(),0,0);
+ else         envelope.add(node.getLon(),node.getLat());
+        IntersectionVertex accessVertex=getVertexForOsmNode(node,area.parent);
+        if (accessVertex.getIncoming().isEmpty() || accessVertex.getOutgoing().isEmpty())         continue;
+        accessVertexes.add(accessVertex);
+      }
+    }
+  }
+  TraversalRequirements walkReq=new TraversalRequirements(new RoutingRequest(TraverseMode.WALK));
+  TraversalRequirements driveReq=new TraversalRequirements(new RoutingRequest(TraverseMode.CAR));
+  boolean walkAccessibleIn=false;
+  boolean carAccessibleIn=false;
+  boolean walkAccessibleOut=false;
+  boolean carAccessibleOut=false;
+  for (  IntersectionVertex accessVertex : accessVertexes) {
+    for (    Edge incoming : accessVertex.getIncoming()) {
+      if (incoming instanceof StreetEdge) {
+        if (walkReq.canBeTraversed((StreetEdge)incoming))         walkAccessibleIn=true;
+        if (driveReq.canBeTraversed((StreetEdge)incoming))         carAccessibleIn=true;
+      }
+    }
+    for (    Edge outgoing : accessVertex.getOutgoing()) {
+      if (outgoing instanceof StreetEdge) {
+        if (walkReq.canBeTraversed((StreetEdge)outgoing))         walkAccessibleOut=true;
+        if (driveReq.canBeTraversed((StreetEdge)outgoing))         carAccessibleOut=true;
+      }
+    }
+  }
+  if (walkAccessibleIn != walkAccessibleOut) {
+    LOG.error("P+R walk IN/OUT accessibility mismatch! Please have a look as this should not happen.");
+  }
+  if (!walkAccessibleOut || !carAccessibleIn) {
+    LOG.warn(graph.addBuilderAnnotation(new ParkAndRideUnlinked(creativeName,osmId)));
+    return false;
+  }
+  if (!walkAccessibleIn || !carAccessibleOut) {
+    LOG.warn("P+R '{}' ({}) is not walk-accessible");
+  }
+  ParkAndRideVertex parkAndRideVertex=new ParkAndRideVertex(graph,"P+R" + osmId,"P+R_" + osmId,envelope.getCenterX(),envelope.getCenterY(),creativeName);
+  new ParkAndRideEdge(parkAndRideVertex);
+  for (  IntersectionVertex accessVertex : accessVertexes) {
+    new ParkAndRideLinkEdge(parkAndRideVertex,accessVertex);
+    new ParkAndRideLinkEdge(accessVertex,parkAndRideVertex);
+  }
+  LOG.debug("Created P+R '{}' ({})",creativeName,osmId);
+  return true;
+}

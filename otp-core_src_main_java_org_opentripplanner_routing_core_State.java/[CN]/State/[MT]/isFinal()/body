@@ -1,3 +1,5 @@
 {
-  return !isBikeRenting();
+  boolean parkAndRide=stateData.opt.getModes().getCar() && stateData.opt.getModes().getWalk();
+  if (stateData.opt.isArriveBy())   return !isBikeRenting() && !(parkAndRide && isCarParked());
+ else   return !isBikeRenting() && !(parkAndRide && !isCarParked());
 }

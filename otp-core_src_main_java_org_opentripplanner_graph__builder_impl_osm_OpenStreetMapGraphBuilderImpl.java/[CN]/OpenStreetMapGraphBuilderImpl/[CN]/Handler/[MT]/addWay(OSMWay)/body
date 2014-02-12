@@ -4,10 +4,10 @@
   if (_areaWayIds.contains(wayId)) {
     _areaWaysById.put(wayId,way);
   }
-  if (!isWayRoutable(way)) {
+  if (!(isWayRoutable(way) || way.isParkAndRide())) {
     return;
   }
-  if (way.isTag("area","yes") && way.getNodeRefs().size() > 2) {
+  if ((way.isTag("area","yes") || way.isTag("amenity","parking")) && way.getNodeRefs().size() > 2) {
     if (!_areaWayIds.contains(wayId)) {
       _singleWayAreas.add(way);
       _areaWaysById.put(wayId,way);
