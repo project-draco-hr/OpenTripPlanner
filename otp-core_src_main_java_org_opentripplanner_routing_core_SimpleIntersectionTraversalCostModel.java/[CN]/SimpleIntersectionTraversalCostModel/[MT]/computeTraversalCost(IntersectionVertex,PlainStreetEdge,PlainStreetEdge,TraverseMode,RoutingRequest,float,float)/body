@@ -6,39 +6,31 @@
     return computeNonDrivingTraversalCost(v,from,to,fromSpeed,toSpeed);
   }
   double turnCost=0;
-  double probabilityStopToTurn=0;
   int turnAngle=calculateTurnAngle(from,to,options);
   if (v.isTrafficLight()) {
     if (isRightTurn(turnAngle)) {
       turnCost=expectedRightAtLightTimeSec;
-      probabilityStopToTurn=1.0 - rightTurnActiveProb;
     }
  else     if (isLeftTurn(turnAngle)) {
       turnCost=expectedLeftAtLightTimeSec;
-      probabilityStopToTurn=1.0 - leftTurnActiveProb;
     }
  else {
       turnCost=expectedStraightAtLightTimeSec;
-      probabilityStopToTurn=1.0 - continueStraightActiveProb;
     }
   }
  else {
+    if (from.getCarSpeed() > 25 && to.getCarSpeed() > 25) {
+      return 0;
+    }
     if (isRightTurn(turnAngle)) {
       turnCost=expectedRightNoLightTimeSec;
-      probabilityStopToTurn=noLightStopToTurnProb;
     }
  else     if (isLeftTurn(turnAngle)) {
       turnCost=expectedLeftNoLightTimeSec;
-      probabilityStopToTurn=noLightStopToTurnProb;
     }
  else {
       turnCost=expectedStraightNoLightTimeSec;
-      probabilityStopToTurn=noLightStopToContinueProb;
     }
   }
-  double decelerationTime=fromSpeed / options.carDecelerationSpeed;
-  turnCost+=decelerationTime * 0.5 * probabilityStopToTurn;
-  double accelerationTime=(toSpeed / options.carAccelerationSpeed);
-  turnCost+=accelerationTime * 0.5 * probabilityStopToTurn;
   return turnCost;
 }
