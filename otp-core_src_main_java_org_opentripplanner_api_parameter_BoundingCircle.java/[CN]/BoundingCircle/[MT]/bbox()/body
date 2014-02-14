@@ -1,0 +1,6 @@
+{
+  Envelope env=new Envelope(center());
+  double meters_per_degree_lon=METERS_PER_DEGREE_LAT * Math.cos(Math.toRadians(lat));
+  env.expandBy(radius / meters_per_degree_lon,radius / METERS_PER_DEGREE_LAT);
+  return env;
+}

@@ -1,0 +1,17 @@
+{
+  String[] elements=s.split(",");
+  if (elements.length != 3) {
+    err("A circle must have two coordinates and a radius.");
+  }
+  try {
+    lat=Double.parseDouble(elements[0]);
+    lon=Double.parseDouble(elements[1]);
+    radius=Double.parseDouble(elements[2]);
+  }
+ catch (  NumberFormatException pe) {
+    err("Unable to parse coordinate: " + pe.getMessage());
+  }
+  if (radius < 0 || radius > MAX_RADIUS) {
+    err("Radius out of range.");
+  }
+}

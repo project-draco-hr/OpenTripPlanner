@@ -1,0 +1,15 @@
+{
+  String[] elements=s.split(",");
+  if (elements.length != 4) {
+    err("A bounding box must have four coordinates.");
+  }
+  try {
+    minLat=Double.parseDouble(elements[0]);
+    minLon=Double.parseDouble(elements[1]);
+    maxLat=Double.parseDouble(elements[2]);
+    maxLon=Double.parseDouble(elements[3]);
+  }
+ catch (  NumberFormatException pe) {
+    err("Unable to parse coordinate: " + pe.getMessage());
+  }
+}
