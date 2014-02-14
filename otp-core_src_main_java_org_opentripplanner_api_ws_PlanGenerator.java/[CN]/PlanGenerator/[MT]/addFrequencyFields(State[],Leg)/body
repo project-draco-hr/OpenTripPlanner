@@ -5,7 +5,7 @@
     FrequencyBasedTripPattern pt=fb.getPattern();
     int boardTime=preBoardState.getServiceDay().secondsSinceMidnight(preBoardState.getTimeSeconds());
     int period=pt.getPeriod(fb.getStopIndex(),boardTime);
-    leg.isNonExactFrequency=pt.isExact();
+    leg.isNonExactFrequency=!pt.isExact();
     leg.headway=period;
   }
 }
