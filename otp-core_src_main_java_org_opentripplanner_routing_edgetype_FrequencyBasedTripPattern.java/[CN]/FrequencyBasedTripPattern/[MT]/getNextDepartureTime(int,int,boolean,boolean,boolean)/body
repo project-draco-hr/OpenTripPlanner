@@ -23,7 +23,7 @@
   int firstDepartureTimeInRange=stopDepartureTimeOffset + timeRangeStart[timeRange];
   int frequency=timeRangeFrequency[timeRange];
   int departureTime;
-  if (exact) {
+  if (isExact()) {
     if (afterTime < firstDepartureTimeInRange) {
       departureTime=firstDepartureTimeInRange;
     }
