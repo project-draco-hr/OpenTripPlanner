@@ -2,5 +2,6 @@
   if (address == null) {
     badRequest("no address");
   }
-  return geocoder.geocode(address,bbox.envelope());
+  Envelope env=(bbox == null) ? null : bbox.envelope();
+  return geocoder.geocode(address,env);
 }
