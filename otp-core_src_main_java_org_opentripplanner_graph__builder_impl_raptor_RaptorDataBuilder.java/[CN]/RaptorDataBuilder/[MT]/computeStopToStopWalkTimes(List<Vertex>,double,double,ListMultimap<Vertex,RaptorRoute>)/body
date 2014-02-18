@@ -1,6 +1,6 @@
 {
   log.debug("Finding stop-to-stop walk times");
-  @SuppressWarnings("unchecked") HashMap<Vertex,T2<Integer,Double>>[] times=new HashMap[AbstractVertex.getMaxIndex()];
+  @SuppressWarnings("unchecked") HashMap<Vertex,T2<Integer,Double>>[] times=new HashMap[Vertex.getMaxIndex()];
   RoutingRequest walkOptions=new RoutingRequest(TraverseMode.WALK);
   walkOptions.setWalkSpeed(minSpeed);
   walkOptions.setArriveBy(true);
