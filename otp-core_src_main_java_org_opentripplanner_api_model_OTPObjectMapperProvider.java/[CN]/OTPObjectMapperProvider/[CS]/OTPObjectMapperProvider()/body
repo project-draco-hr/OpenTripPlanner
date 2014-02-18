@@ -1,0 +1,7 @@
+{
+  SimpleModule module=new SimpleModule("OTP",Version.unknownVersion());
+  module.addSerializer(AgencyAndId.class,new AgencyAndIdSerializer());
+  mapper=new ObjectMapper();
+  mapper.registerModule(module);
+  mapper.setSerializationInclusion(Include.NON_NULL);
+}

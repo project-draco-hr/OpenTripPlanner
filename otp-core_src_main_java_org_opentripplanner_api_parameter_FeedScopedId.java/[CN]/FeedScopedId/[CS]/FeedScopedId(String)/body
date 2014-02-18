@@ -1,0 +1,16 @@
+{
+  try {
+    int idx=s.indexOf('/');
+    if (idx == -1) {
+      feedId="none";
+      entityId=s;
+    }
+ else {
+      feedId=s.substring(0,idx);
+      entityId=s.substring(idx + 1);
+    }
+  }
+ catch (  Exception ex) {
+    err("Unable to parse feed-scoped ID: " + ex.getMessage());
+  }
+}
