@@ -1,0 +1,40 @@
+{
+  JPanel rightPanel=new JPanel();
+  rightPanel.setLayout(new BorderLayout());
+  pane.add(rightPanel,BorderLayout.LINE_END);
+  JTabbedPane rightPanelTabs=new JTabbedPane();
+  rightPanel.add(rightPanelTabs,BorderLayout.LINE_END);
+  serviceIdLabel=new JLabel("[service id]");
+  rightPanel.add(serviceIdLabel,BorderLayout.PAGE_END);
+  departurePattern=new JList();
+  JScrollPane dpScrollPane=new JScrollPane(departurePattern);
+  rightPanelTabs.addTab("trip pattern",dpScrollPane);
+  metadataList=new JList();
+  metadataModel=new DefaultListModel();
+  metadataList.setModel(metadataModel);
+  JScrollPane mdScrollPane=new JScrollPane(metadataList);
+  mdScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+  rightPanelTabs.addTab("metadata",mdScrollPane);
+  annotationMatches=new JList();
+  annotationMatches.addListSelectionListener(new ListSelectionListener(){
+    public void valueChanged(    ListSelectionEvent e){
+      JList theList=(JList)e.getSource();
+      GraphBuilderAnnotation anno=(GraphBuilderAnnotation)theList.getSelectedValue();
+      if (anno == null)       return;
+      showGraph.drawAnotation(anno);
+    }
+  }
+);
+  annotationMatchesModel=new DefaultListModel();
+  annotationMatches.setModel(annotationMatchesModel);
+  JScrollPane amScrollPane=new JScrollPane(annotationMatches);
+  amScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+  rightPanelTabs.addTab("annotations",amScrollPane);
+  Dimension size=new Dimension(200,1600);
+  amScrollPane.setMaximumSize(size);
+  amScrollPane.setPreferredSize(size);
+  mdScrollPane.setMaximumSize(size);
+  mdScrollPane.setPreferredSize(size);
+  rightPanelTabs.setMaximumSize(size);
+  rightPanel.setMaximumSize(size);
+}

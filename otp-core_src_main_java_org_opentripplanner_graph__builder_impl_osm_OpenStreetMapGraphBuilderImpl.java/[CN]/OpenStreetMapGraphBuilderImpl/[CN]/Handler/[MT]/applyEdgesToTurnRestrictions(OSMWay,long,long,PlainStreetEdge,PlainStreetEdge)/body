@@ -1,5 +1,5 @@
 {
-  List<TurnRestrictionTag> restrictionTags=turnRestrictionsByFromWay.get(way.getId());
+  Collection<TurnRestrictionTag> restrictionTags=turnRestrictionsByFromWay.get(way.getId());
   if (restrictionTags != null) {
     for (    TurnRestrictionTag tag : restrictionTags) {
       if (tag.via == startNode) {

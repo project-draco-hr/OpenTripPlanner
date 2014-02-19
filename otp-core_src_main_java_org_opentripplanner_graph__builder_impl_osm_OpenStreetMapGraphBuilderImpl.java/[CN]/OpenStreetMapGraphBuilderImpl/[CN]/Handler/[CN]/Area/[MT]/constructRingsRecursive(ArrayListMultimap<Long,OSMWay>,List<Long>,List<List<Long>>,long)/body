@@ -1,0 +1,62 @@
+{
+  List<OSMWay> ways=new ArrayList<OSMWay>(waysByEndpoint.get(endpoint));
+  for (  OSMWay way : ways) {
+    List<Long> nodeRefs=way.getNodeRefs();
+    long firstEndpoint=nodeRefs.get(0);
+    long otherEndpoint=nodeRefs.get(nodeRefs.size() - 1);
+    waysByEndpoint.remove(firstEndpoint,way);
+    waysByEndpoint.remove(otherEndpoint,way);
+    ArrayList<Long> newRing=new ArrayList<Long>(ring.size() + nodeRefs.size());
+    long newFirstEndpoint;
+    if (firstEndpoint == endpoint) {
+      for (int j=nodeRefs.size() - 1; j >= 1; --j) {
+        newRing.add(nodeRefs.get(j));
+      }
+      newRing.addAll(ring);
+      newFirstEndpoint=otherEndpoint;
+    }
+ else {
+      newRing.addAll(nodeRefs.subList(0,nodeRefs.size() - 1));
+      newRing.addAll(ring);
+      newFirstEndpoint=firstEndpoint;
+    }
+    if (newRing.get(newRing.size() - 1).equals(newRing.get(0))) {
+      closedRings.add(newRing);
+      if (waysByEndpoint.size() == 0) {
+        return true;
+      }
+      newRing=new ArrayList<Long>();
+      OSMWay firstWay=null;
+      for (      Long entry : waysByEndpoint.keySet()) {
+        List<OSMWay> list=waysByEndpoint.get(entry);
+        firstWay=list.get(0);
+        nodeRefs=firstWay.getNodeRefs();
+        newRing.addAll(nodeRefs);
+        firstEndpoint=nodeRefs.get(0);
+        otherEndpoint=nodeRefs.get(nodeRefs.size() - 1);
+        break;
+      }
+      waysByEndpoint.remove(firstEndpoint,firstWay);
+      waysByEndpoint.remove(otherEndpoint,firstWay);
+      if (constructRingsRecursive(waysByEndpoint,newRing,closedRings,firstEndpoint)) {
+        return true;
+      }
+      waysByEndpoint.remove(firstEndpoint,firstWay);
+      waysByEndpoint.remove(otherEndpoint,firstWay);
+    }
+ else {
+      if (waysByEndpoint.get(newFirstEndpoint) != null) {
+        if (constructRingsRecursive(waysByEndpoint,newRing,closedRings,newFirstEndpoint)) {
+          return true;
+        }
+      }
+    }
+    if (firstEndpoint == endpoint) {
+      waysByEndpoint.put(otherEndpoint,way);
+    }
+ else {
+      waysByEndpoint.put(firstEndpoint,way);
+    }
+  }
+  return false;
+}

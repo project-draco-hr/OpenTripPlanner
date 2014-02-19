@@ -4,11 +4,11 @@
     AlertPatch alertPatch=(AlertPatch)patch;
     AgencyAndId stop=alertPatch.getStop();
     if (stop != null) {
-      MapUtils.removeFromMapList(patchesByStop,stop,patch);
+      patchesByStop.remove(stop,patch);
     }
     AgencyAndId route=alertPatch.getRoute();
     if (route != null) {
-      MapUtils.removeFromMapList(patchesByRoute,route,patch);
+      patchesByRoute.remove(route,patch);
     }
   }
   patch.remove(graph);

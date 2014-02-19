@@ -1,0 +1,9 @@
+{
+  LOG.info("Building P+R areas");
+  List<AreaGroup> areaGroups=groupAreas(_parkAndRideAreas);
+  int n=0;
+  for (  AreaGroup group : areaGroups) {
+    if (buildParkAndRideAreasForGroup(group))     n++;
+  }
+  LOG.info("Created {} P+R.",n);
+}

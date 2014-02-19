@@ -1,0 +1,61 @@
+{
+  JPanel routingPanel=new JPanel();
+  routingPanel.setLayout(new GridLayout(0,2));
+  leftPanel.add(routingPanel,BorderLayout.NORTH);
+  JButton setSourceVertexButton=new JButton("set source");
+  setSourceVertexButton.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+      Object selected=nearbyVertices.getSelectedValue();
+      if (selected != null) {
+        sourceVertex.setText(selected.toString());
+      }
+    }
+  }
+);
+  routingPanel.add(setSourceVertexButton);
+  sourceVertex=new JTextField();
+  routingPanel.add(sourceVertex);
+  JButton setSinkVertexButton=new JButton("set sink");
+  setSinkVertexButton.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+      Object selected=nearbyVertices.getSelectedValue();
+      if (selected != null) {
+        sinkVertex.setText(selected.toString());
+      }
+    }
+  }
+);
+  routingPanel.add(setSinkVertexButton);
+  sinkVertex=new JTextField();
+  routingPanel.add(sinkVertex);
+  JButton resetSearchDateButton=new JButton("now ->");
+  resetSearchDateButton.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+      searchDate.setText(dateFormat.format(new Date()));
+    }
+  }
+);
+  routingPanel.add(resetSearchDateButton);
+  searchDate=new JTextField();
+  searchDate.setText(dateFormat.format(new Date()));
+  routingPanel.add(searchDate);
+  JButton routeButton=new JButton("path search");
+  routeButton.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+      String from=sourceVertex.getText();
+      String to=sinkVertex.getText();
+      route(from,to);
+    }
+  }
+);
+  routingPanel.add(routeButton);
+  JButton clearRouteButton=new JButton("clear path");
+  clearRouteButton.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+      showGraph.highlightGraphPath(null);
+      showGraph.clearHighlights();
+    }
+  }
+);
+  routingPanel.add(clearRouteButton);
+}

@@ -6,7 +6,7 @@
     WayProperties wayData=wayPropertySet.getDataForWay(way);
     setWayName(way);
     StreetTraversalPermission permissions=getPermissionsForWay(way,wayData.getPermission());
-    if (permissions.allowsNothing())     continue;
+    if (!isWayRoutable(way) || permissions.allowsNothing())     continue;
     ArrayList<Long> nodes=new ArrayList<Long>(way.getNodeRefs().size());
     long last=-1;
     double lastLat=-1, lastLon=-1;

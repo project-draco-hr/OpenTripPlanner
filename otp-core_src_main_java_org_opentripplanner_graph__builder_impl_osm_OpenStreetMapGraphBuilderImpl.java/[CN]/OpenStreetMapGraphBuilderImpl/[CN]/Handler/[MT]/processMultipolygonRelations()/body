@@ -3,7 +3,7 @@
     if (_processedAreas.contains(relation)) {
       continue;
     }
-    if (!(relation.isTag("type","multipolygon") && isOsmEntityRoutable(relation))) {
+    if (!(relation.isTag("type","multipolygon") && (isOsmEntityRoutable(relation) || relation.isParkAndRide()))) {
       continue;
     }
     ArrayList<OSMWay> innerWays=new ArrayList<OSMWay>();
@@ -31,16 +31,12 @@
       }
     }
     _processedAreas.add(relation);
-    Area area;
     try {
-      StreetTraversalPermission areaPermissions=getPermissionsForEntity(relation,StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
-      if (areaPermissions == StreetTraversalPermission.NONE)       continue;
-      area=new Area(relation,outerWays,innerWays);
+      newArea(new Area(relation,outerWays,innerWays));
     }
  catch (    Area.AreaConstructionException e) {
       continue;
     }
-    _areas.add(area);
     for (    OSMRelationMember member : relation.getMembers()) {
       if (!("way".equals(member.getType()) && _ways.containsKey(member.getRef()))) {
         continue;
