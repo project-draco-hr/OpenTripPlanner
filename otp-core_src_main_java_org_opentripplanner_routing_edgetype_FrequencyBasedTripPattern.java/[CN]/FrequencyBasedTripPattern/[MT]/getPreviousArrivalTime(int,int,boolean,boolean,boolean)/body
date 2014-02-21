@@ -26,7 +26,7 @@
   int frequencyOffset=(timeRangeEnd[timeRange] - timeRangeStart[timeRange]) % frequency;
   int lastArrivalTimeInRange=stopArrivalTimeOffset + timeRangeEnd[timeRange] - frequencyOffset;
   int arrivalTime;
-  if (exact) {
+  if (isExact()) {
     if (beforeTime > lastArrivalTimeInRange) {
       arrivalTime=lastArrivalTimeInRange;
     }

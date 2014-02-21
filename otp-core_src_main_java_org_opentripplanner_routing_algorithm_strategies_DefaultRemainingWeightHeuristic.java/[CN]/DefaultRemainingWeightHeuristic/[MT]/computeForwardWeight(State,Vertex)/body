@@ -3,10 +3,7 @@
   double euclideanDistance=distanceLibrary.fastDistance(sv.getY(),sv.getX(),targetY,targetX);
   if (useTransit) {
     double streetSpeed=options.getStreetSpeedUpperBound();
-    if (s.isAlightedLocal() || euclideanDistance < target.getDistanceToNearestTransitStop()) {
-      if (euclideanDistance + s.getWalkDistance() > options.getMaxWalkDistance()) {
-        return -1;
-      }
+    if (euclideanDistance < target.getDistanceToNearestTransitStop()) {
       return options.walkReluctance * euclideanDistance / streetSpeed;
     }
     int boardCost;

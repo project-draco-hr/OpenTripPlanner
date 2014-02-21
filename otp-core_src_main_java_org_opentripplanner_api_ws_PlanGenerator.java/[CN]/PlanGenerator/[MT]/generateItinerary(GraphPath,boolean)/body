@@ -20,7 +20,7 @@
   }
   addWalkSteps(itinerary.legs,legsStates);
   fixupLegs(itinerary.legs,legsStates);
-  itinerary.duration=1000L * lastState.getElapsedTimeSeconds();
+  itinerary.duration=(double)lastState.getElapsedTimeSeconds();
   itinerary.startTime=makeCalendar(states[0]);
   itinerary.endTime=makeCalendar(lastState);
   calculateTimes(itinerary,states);
