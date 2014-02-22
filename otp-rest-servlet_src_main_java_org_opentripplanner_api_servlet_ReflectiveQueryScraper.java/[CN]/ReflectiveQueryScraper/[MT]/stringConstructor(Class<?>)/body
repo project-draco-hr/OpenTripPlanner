@@ -1,5 +1,5 @@
 {
-  clazz=filterPrimitives(clazz);
+  clazz=Primitives.wrap(clazz);
   for (  Constructor<?> constructor : clazz.getDeclaredConstructors()) {
     Class<?>[] params=constructor.getParameterTypes();
     if (params.length != 1)     continue;
