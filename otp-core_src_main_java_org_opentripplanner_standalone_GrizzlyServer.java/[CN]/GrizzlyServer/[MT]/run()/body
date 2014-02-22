@@ -12,6 +12,9 @@
   httpServer.getServerConfiguration().addHttpHandler(handler,"/otp-rest-servlet/");
   HttpHandler staticHandler=makeClientStaticHandler();
   httpServer.getServerConfiguration().addHttpHandler(staticHandler,"/");
+  GraphService gs=(GraphService)iocFactory.getComponentProvider(GraphService.class).getInstance();
+  Graph graph=gs.getGraph();
+  httpServer.getServerConfiguration().addHttpHandler(new OTPHttpHandler(graph),"/test/*");
   for (  NetworkListener l : httpServer.getListeners()) {
     l.getFileCache().setEnabled(false);
   }
