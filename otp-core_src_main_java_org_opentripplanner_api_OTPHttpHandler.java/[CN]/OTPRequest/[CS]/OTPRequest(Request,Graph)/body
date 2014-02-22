@@ -1,0 +1,27 @@
+{
+  this.graph=graph;
+  for (  String key : req.getParameterNames()) {
+    params.put(key,req.getParameter(key));
+  }
+  String path=req.getPathInfo();
+  sfmt=SerializeFormat.JSON;
+  if (req.getHeader("Accept").contains("application/xml")) {
+    sfmt=SerializeFormat.XML;
+  }
+  if (req.getHeader("Accept").contains("application/json")) {
+    sfmt=SerializeFormat.JSON;
+  }
+  if (path.endsWith(".xml")) {
+    path=path.substring(0,path.length() - 4);
+    sfmt=SerializeFormat.XML;
+  }
+  ;
+  if (path.endsWith(".json")) {
+    path=path.substring(0,path.length() - 5);
+    sfmt=SerializeFormat.JSON;
+  }
+  ;
+  parts=path.split("/");
+  if (parts.length > 1)   action=parts[1];
+  if (parts.length > 2)   id=parts[2];
+}

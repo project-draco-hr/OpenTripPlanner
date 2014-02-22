@@ -1,0 +1,22 @@
+{
+  try {
+    OTPRequest oreq=new OTPRequest(req,graph);
+    Object result=handlers.get(oreq.action).handle(oreq);
+    ObjectMapper mapper;
+    if (oreq.sfmt == SerializeFormat.XML) {
+      resp.setContentType("application/xml");
+      mapper=xmlMapper;
+    }
+ else {
+      resp.setContentType("application/json");
+      mapper=jsonMapper;
+    }
+    resp.setStatus(200);
+    mapper.writeValue(resp.getNIOOutputStream(),result);
+  }
+ catch (  Exception ex) {
+    resp.setStatus(500);
+    resp.setContentType("text/plain");
+    resp.getNIOWriter().write("Error: " + ex.toString());
+  }
+}

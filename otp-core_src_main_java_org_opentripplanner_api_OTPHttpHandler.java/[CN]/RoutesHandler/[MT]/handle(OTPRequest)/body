@@ -1,0 +1,13 @@
+{
+  Map<String,Route> routes=Maps.newHashMap();
+  for (  TransitBoardAlight ba : Iterables.filter(oreq.graph.getEdges(),TransitBoardAlight.class)) {
+    Route route=ba.getPattern().getExemplar().getRoute();
+    routes.put(route.getId().toString(),route);
+  }
+  if (oreq.id != null) {
+    return routes.get(oreq.id);
+  }
+ else {
+    return routes;
+  }
+}

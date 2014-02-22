@@ -1,0 +1,8 @@
+{
+  this.graph=graph;
+  handlers.put("routes",new RoutesHandler());
+  handlers.put("plan",new PlanHandler());
+  Module module=AgencyAndIdSerializer.makeModule();
+  xmlMapper.registerModule(module);
+  jsonMapper.registerModule(module);
+}
