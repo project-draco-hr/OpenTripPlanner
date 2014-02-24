@@ -1,12 +1,12 @@
 {
-  if (!kioskNode.path("Status").getTextValue().equals("Active")) {
+  if (!kioskNode.path("Status").asText().equals("Active")) {
     return null;
   }
   BikeRentalStation brstation=new BikeRentalStation();
   brstation.id=kioskNode.path("Id").toString();
   brstation.x=kioskNode.path("Location").path("Longitude").asDouble();
   brstation.y=kioskNode.path("Location").path("Latitude").asDouble();
-  brstation.name=kioskNode.path("Name").getTextValue();
+  brstation.name=kioskNode.path("Name").asText();
   brstation.bikesAvailable=kioskNode.path("BikesAvailable").asInt();
   brstation.spacesAvailable=kioskNode.path("DocksAvailable").asInt();
   return brstation;
