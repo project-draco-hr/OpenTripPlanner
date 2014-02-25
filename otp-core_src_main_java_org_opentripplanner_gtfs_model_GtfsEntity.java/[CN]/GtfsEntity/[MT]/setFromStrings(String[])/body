@@ -1,0 +1,20 @@
+{
+  List<Error> errors=Lists.newArrayList();
+  int i=0;
+  for (  Field field : getClass().getFields()) {
+    try {
+      if (strings[i] != null) {
+        field.set(this,strings[i]);
+      }
+    }
+ catch (    ArrayIndexOutOfBoundsException ex) {
+      errors.add(new Error("Missing fields in row."));
+      break;
+    }
+catch (    Exception e) {
+      errors.add(new Error("Exception: " + e));
+    }
+    i++;
+  }
+  return errors;
+}

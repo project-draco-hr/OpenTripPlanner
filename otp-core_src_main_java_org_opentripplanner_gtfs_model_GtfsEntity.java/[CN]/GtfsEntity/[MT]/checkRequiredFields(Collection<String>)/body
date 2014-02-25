@@ -1,0 +1,11 @@
+{
+  List<Error> errors=Lists.newArrayList();
+  for (  Field field : getClass().getFields()) {
+    if (field.isAnnotationPresent(Required.class)) {
+      if (!present.contains(field.getName())) {
+        errors.add(new Error("Missing required field " + field.getName()));
+      }
+    }
+  }
+  return errors;
+}

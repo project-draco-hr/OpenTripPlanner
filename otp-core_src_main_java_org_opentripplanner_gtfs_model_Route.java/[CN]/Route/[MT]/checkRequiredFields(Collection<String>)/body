@@ -1,0 +1,6 @@
+{
+  List<Error> errors=super.checkRequiredFields(present);
+  boolean ok=present.contains("route_short_name") || present.contains("route_long_name");
+  if (!ok)   errors.add(new Error("must contain one of..."));
+  return errors;
+}
