@@ -9,11 +9,15 @@
     if (!iterate(runState)) {
       continue;
     }
+    if (runState.foundPathWeight != null && runState.u.getWeight() > runState.foundPathWeight * OVERSEARCH_MULTIPLIER) {
+      break;
+    }
     if (runState.terminationStrategy != null) {
       if (!runState.terminationStrategy.shouldSearchContinue(runState.rctx.origin,runState.rctx.target,runState.u,runState.spt,runState.options))       break;
     }
  else     if (!runState.options.batch && runState.u_vertex == runState.rctx.target && runState.u.isFinal() && runState.u.allPathParsersAccept()) {
       runState.targetAcceptedStates.add(runState.u);
+      runState.foundPathWeight=u.getWeight();
       runState.options.rctx.debugOutput.foundPath();
       if (runState.targetAcceptedStates.size() >= nPaths) {
         LOG.debug("total vertices visited {}",runState.nVisited);
