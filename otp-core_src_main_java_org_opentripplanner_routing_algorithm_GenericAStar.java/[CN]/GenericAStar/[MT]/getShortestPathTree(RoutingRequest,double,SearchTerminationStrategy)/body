@@ -1,11 +1,12 @@
 {
+  runState=new RunState();
   RoutingContext rctx=options.getRoutingContext();
   long abortTime=DateUtils.absoluteTimeout(relTimeout);
-  ShortestPathTree spt=createShortestPathTree(options);
+  runState.spt=createShortestPathTree(options);
   final RemainingWeightHeuristic heuristic=options.batch ? new TrivialRemainingWeightHeuristic() : rctx.remainingWeightHeuristic;
   State initialState=new State(options);
   heuristic.initialize(initialState,rctx.target);
-  spt.add(initialState);
+  runState.spt.add(initialState);
   OTPPriorityQueueFactory qFactory=BinHeap.FACTORY;
   int initialSize=rctx.graph.getVertices().size();
   initialSize=(int)Math.ceil(2 * (Math.sqrt((double)initialSize + 1)));
@@ -24,10 +25,10 @@
       options.rctx.aborted=true;
       options.rctx.debug.timedOut=true;
       storeMemory();
-      return spt;
+      return runState.spt;
     }
     State u=pq.extract_min();
-    if (!spt.visit(u)) {
+    if (!runState.spt.visit(u)) {
       continue;
     }
     if (traverseVisitor != null) {
@@ -36,7 +37,7 @@
     Vertex u_vertex=u.getVertex();
     if (verbose)     System.out.println("   vertex " + u_vertex);
     if (terminationStrategy != null) {
-      if (!terminationStrategy.shouldSearchContinue(rctx.origin,rctx.target,u,spt,options))       break;
+      if (!terminationStrategy.shouldSearchContinue(rctx.origin,rctx.target,u,runState.spt,options))       break;
     }
  else     if (!options.batch && u_vertex == rctx.target && u.isFinal() && u.allPathParsersAccept()) {
       targetAcceptedStates.add(u);
@@ -44,7 +45,7 @@
       if (targetAcceptedStates.size() >= nPaths) {
         LOG.debug("total vertices visited {}",nVisited);
         storeMemory();
-        return spt;
+        return runState.spt;
       }
  else       continue;
     }
@@ -55,7 +56,7 @@
         if (traverseVisitor != null) {
           traverseVisitor.visitEdge(edge,v);
         }
-        if (skipTraversalResultStrategy != null && skipTraversalResultStrategy.shouldSkipTraversalResult(rctx.origin,rctx.target,u,v,spt,options)) {
+        if (skipTraversalResultStrategy != null && skipTraversalResultStrategy.shouldSkipTraversalResult(rctx.origin,rctx.target,u,v,runState.spt,options)) {
           continue;
         }
         double remaining_w=computeRemainingWeight(heuristic,v,rctx.target,options);
@@ -74,7 +75,7 @@
           if (verbose)           System.out.println("         too much time to reach, not enqueued. time = " + v.getTimeSeconds());
         }
  else {
-          if (spt.add(v)) {
+          if (runState.spt.add(v)) {
             if (traverseVisitor != null)             traverseVisitor.visitEnqueue(v);
             pq.insert(v,estimate);
           }
@@ -83,5 +84,5 @@
     }
   }
   storeMemory();
-  return spt;
+  return runState.spt;
 }
