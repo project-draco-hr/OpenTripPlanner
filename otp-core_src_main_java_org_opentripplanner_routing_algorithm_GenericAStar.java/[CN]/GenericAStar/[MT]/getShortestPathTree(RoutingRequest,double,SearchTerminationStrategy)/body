@@ -14,7 +14,7 @@
   int nVisited=0;
   List<State> targetAcceptedStates=Lists.newArrayList();
   while (!pq.empty()) {
-    if (_verbose) {
+    if (verbose) {
       double w=pq.peek_min_key();
       System.out.println("pq min key = " + w);
     }
@@ -34,7 +34,7 @@
       traverseVisitor.visitVertex(u);
     }
     Vertex u_vertex=u.getVertex();
-    if (_verbose)     System.out.println("   vertex " + u_vertex);
+    if (verbose)     System.out.println("   vertex " + u_vertex);
     if (terminationStrategy != null) {
       if (!terminationStrategy.shouldSearchContinue(rctx.origin,rctx.target,u,spt,options))       break;
     }
@@ -55,7 +55,7 @@
         if (traverseVisitor != null) {
           traverseVisitor.visitEdge(edge,v);
         }
-        if (_skipTraversalResultStrategy != null && _skipTraversalResultStrategy.shouldSkipTraversalResult(rctx.origin,rctx.target,u,v,spt,options)) {
+        if (skipTraversalResultStrategy != null && skipTraversalResultStrategy.shouldSkipTraversalResult(rctx.origin,rctx.target,u,v,spt,options)) {
           continue;
         }
         double remaining_w=computeRemainingWeight(heuristic,v,rctx.target,options);
@@ -63,15 +63,15 @@
           continue;
         }
         double estimate=v.getWeight() + remaining_w * options.getHeuristicWeight();
-        if (_verbose) {
+        if (verbose) {
           System.out.println("      edge " + edge);
           System.out.println("      " + u.getWeight() + " -> "+ v.getWeight()+ "(w) + "+ remaining_w+ "(heur) = "+ estimate+ " vert = "+ v.getVertex());
         }
         if (estimate > options.maxWeight) {
-          if (_verbose)           System.out.println("         too expensive to reach, not enqueued. estimated weight = " + estimate);
+          if (verbose)           System.out.println("         too expensive to reach, not enqueued. estimated weight = " + estimate);
         }
  else         if (isWorstTimeExceeded(v,options)) {
-          if (_verbose)           System.out.println("         too much time to reach, not enqueued. time = " + v.getTimeSeconds());
+          if (verbose)           System.out.println("         too much time to reach, not enqueued. time = " + v.getTimeSeconds());
         }
  else {
           if (spt.add(v)) {
