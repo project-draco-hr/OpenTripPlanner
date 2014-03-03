@@ -11,6 +11,7 @@
     segmentPatterns.add(new SegmentPattern(patternRide));
   }
   Collections.sort(segmentPatterns);
+  walkDistance=(int)ride.getTransferDistance();
   walkTime=(int)(ride.getTransferDistance() / ProfileRouter.WALK_SPEED);
   waitStats=ride.statsForTransfer(window);
 }
