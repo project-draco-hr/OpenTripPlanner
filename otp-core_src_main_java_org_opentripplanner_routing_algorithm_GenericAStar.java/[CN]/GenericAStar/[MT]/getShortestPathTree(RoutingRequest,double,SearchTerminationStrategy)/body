@@ -56,9 +56,6 @@
         if (traverseVisitor != null) {
           traverseVisitor.visitEdge(edge,v);
         }
-        if (skipTraversalResultStrategy != null && skipTraversalResultStrategy.shouldSkipTraversalResult(rctx.origin,rctx.target,u,v,runState.spt,options)) {
-          continue;
-        }
         double remaining_w=computeRemainingWeight(heuristic,v,rctx.target,options);
         if (remaining_w < 0 || Double.isInfinite(remaining_w)) {
           continue;
