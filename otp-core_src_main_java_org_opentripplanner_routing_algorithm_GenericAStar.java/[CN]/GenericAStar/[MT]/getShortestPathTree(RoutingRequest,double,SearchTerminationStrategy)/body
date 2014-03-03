@@ -2,7 +2,7 @@
   runState=new RunState();
   RoutingContext rctx=options.getRoutingContext();
   long abortTime=DateUtils.absoluteTimeout(relTimeout);
-  runState.spt=createShortestPathTree(options);
+  runState.spt=shortestPathTreeFactory.create(options);
   final RemainingWeightHeuristic heuristic=options.batch ? new TrivialRemainingWeightHeuristic() : rctx.remainingWeightHeuristic;
   State initialState=new State(options);
   heuristic.initialize(initialState,rctx.target);
