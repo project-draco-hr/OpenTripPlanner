@@ -10,15 +10,8 @@
       return runState.spt;
     }
     RunStatus status=iterate();
-    if (status == RunStatus.CONTINUE) {
-      continue;
-    }
- else     if (status == RunStatus.BREAK) {
+    if (status == RunStatus.DONE) {
       break;
-    }
- else     if (status == RunStatus.RETURN) {
-      storeMemory();
-      return runState.spt;
     }
   }
   storeMemory();

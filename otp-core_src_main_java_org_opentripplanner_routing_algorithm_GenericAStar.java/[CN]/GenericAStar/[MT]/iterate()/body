@@ -6,7 +6,7 @@
   runState.heuristic.doSomeWork();
   runState.u=runState.pq.extract_min();
   if (!runState.spt.visit(runState.u)) {
-    return RunStatus.CONTINUE;
+    return RunStatus.RUNNING;
   }
   if (traverseVisitor != null) {
     traverseVisitor.visitVertex(runState.u);
@@ -14,17 +14,17 @@
   runState.u_vertex=runState.u.getVertex();
   if (verbose)   System.out.println("   vertex " + runState.u_vertex);
   if (runState.terminationStrategy != null) {
-    if (!runState.terminationStrategy.shouldSearchContinue(runState.rctx.origin,runState.rctx.target,runState.u,runState.spt,runState.options))     return RunStatus.RETURN;
+    if (!runState.terminationStrategy.shouldSearchContinue(runState.rctx.origin,runState.rctx.target,runState.u,runState.spt,runState.options))     return RunStatus.DONE;
   }
  else   if (!runState.options.batch && runState.u_vertex == runState.rctx.target && runState.u.isFinal() && runState.u.allPathParsersAccept()) {
     runState.targetAcceptedStates.add(runState.u);
     runState.options.rctx.debug.foundPath();
     if (runState.targetAcceptedStates.size() >= nPaths) {
       LOG.debug("total vertices visited {}",runState.nVisited);
-      return RunStatus.RETURN;
+      return RunStatus.DONE;
     }
  else {
-      return RunStatus.CONTINUE;
+      return RunStatus.RUNNING;
     }
   }
   runState.nVisited+=1;
