@@ -1,5 +1,5 @@
 {
-  runState=new RunState();
+  runState=new RunState(options,terminationStrategy);
   runState.rctx=options.getRoutingContext();
   runState.spt=shortestPathTreeFactory.create(options);
   runState.heuristic=options.batch ? new TrivialRemainingWeightHeuristic() : runState.rctx.remainingWeightHeuristic;
