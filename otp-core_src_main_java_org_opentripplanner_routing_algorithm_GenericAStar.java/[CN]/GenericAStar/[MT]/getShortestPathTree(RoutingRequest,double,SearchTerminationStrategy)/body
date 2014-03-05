@@ -9,9 +9,19 @@
       storeMemory();
       return runState.spt;
     }
-    RunStatus status=iterate();
-    if (status == RunStatus.STOPPED) {
-      break;
+    if (!iterate()) {
+      continue;
+    }
+    if (runState.terminationStrategy != null) {
+      if (!runState.terminationStrategy.shouldSearchContinue(runState.rctx.origin,runState.rctx.target,runState.u,runState.spt,runState.options))       break;
+    }
+ else     if (!runState.options.batch && runState.u_vertex == runState.rctx.target && runState.u.isFinal() && runState.u.allPathParsersAccept()) {
+      runState.targetAcceptedStates.add(runState.u);
+      runState.options.rctx.debug.foundPath();
+      if (runState.targetAcceptedStates.size() >= nPaths) {
+        LOG.debug("total vertices visited {}",runState.nVisited);
+        break;
+      }
     }
   }
   storeMemory();
