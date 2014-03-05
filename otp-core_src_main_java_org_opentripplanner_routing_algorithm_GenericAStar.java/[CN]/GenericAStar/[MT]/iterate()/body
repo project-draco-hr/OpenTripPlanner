@@ -14,14 +14,14 @@
   runState.u_vertex=runState.u.getVertex();
   if (verbose)   System.out.println("   vertex " + runState.u_vertex);
   if (runState.terminationStrategy != null) {
-    if (!runState.terminationStrategy.shouldSearchContinue(runState.rctx.origin,runState.rctx.target,runState.u,runState.spt,runState.options))     return RunStatus.DONE;
+    if (!runState.terminationStrategy.shouldSearchContinue(runState.rctx.origin,runState.rctx.target,runState.u,runState.spt,runState.options))     return RunStatus.STOPPED;
   }
  else   if (!runState.options.batch && runState.u_vertex == runState.rctx.target && runState.u.isFinal() && runState.u.allPathParsersAccept()) {
     runState.targetAcceptedStates.add(runState.u);
     runState.options.rctx.debug.foundPath();
     if (runState.targetAcceptedStates.size() >= nPaths) {
       LOG.debug("total vertices visited {}",runState.nVisited);
-      return RunStatus.DONE;
+      return RunStatus.STOPPED;
     }
  else {
       return RunStatus.RUNNING;
