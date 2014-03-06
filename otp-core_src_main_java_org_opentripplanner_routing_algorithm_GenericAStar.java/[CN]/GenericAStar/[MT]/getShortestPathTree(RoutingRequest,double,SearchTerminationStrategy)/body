@@ -1,6 +1,6 @@
 {
-  startSearch(options,terminationStrategy);
-  runSearch(relTimeout);
+  RunState runState=startSearch(options,terminationStrategy);
+  runSearch(runState,relTimeout);
   storeMemory();
   return runState.spt;
 }
