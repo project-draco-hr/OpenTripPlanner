@@ -6,7 +6,7 @@
     for (    Class<? extends GtfsEntity> entityClass : gtfsTables) {
       GtfsEntity entity=entityClass.newInstance();
       GtfsTable table=new GtfsTable(entity.getFilename(),false,entity.getGtfsFields(),entityClass);
-      System.out.printf("Reading GTFS table '%s' (%soptional)\n",table.name,table.optional ? "" : "not ");
+      LOG.info("Reading GTFS table '{}' ({}optional)",table.name,table.optional ? "" : "not ");
       table.entities=db.getTreeMap(table.name);
       ZipEntry entry=zipfile.getEntry(table.name);
       InputStream zis=zipfile.getInputStream(entry);
@@ -22,7 +22,7 @@
       int rec=0;
       while (reader.readRecord()) {
         if (++rec % 100000 == 0) {
-          System.out.println(human(rec));
+          LOG.info(human(rec));
         }
         String[] row=new String[table.fields.length];
         int col=0;
@@ -38,7 +38,7 @@
         table.entities.put(e.getKey(),e);
       }
     }
-    for (    Error e : errors)     System.out.println(e.message);
+    for (    Error e : errors)     LOG.warn(e.message);
     zipfile.close();
   }
  catch (  Exception e) {
@@ -50,7 +50,7 @@
   int t=0;
   for (  String trip_id : trips.keySet()) {
     if (++t % 10000 == 0) {
-      System.out.printf("trip %s\n",human(t));
+      LOG.info("trip {}",human(t));
     }
     Map<Fun.Tuple2,StopTime> tripStopTimes=stopTimes.subMap(Fun.t2(trip_id,null),Fun.t2(trip_id,Fun.HI));
     List<String> stops=Lists.newArrayList();
@@ -59,6 +59,6 @@
     }
     patterns.add(stops);
   }
-  System.out.printf("Total patterns: %d\n",patterns.size());
+  LOG.info("Total patterns: {}",patterns.size());
   db.close();
 }
