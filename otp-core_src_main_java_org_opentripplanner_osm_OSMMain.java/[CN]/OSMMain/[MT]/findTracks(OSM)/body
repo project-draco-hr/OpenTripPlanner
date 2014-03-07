@@ -1,0 +1,7 @@
+{
+  for (  Entry<Long,Way> e : osm.ways.entrySet()) {
+    if ("track".equals(e.getValue().getTag("highway"))) {
+      LOG.info("{} is a track.",e.getKey());
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  if (tags == null)   return null;
+  for (  String tag : tags.split(";")) {
+    String[] kv=tag.split("=");
+    if (kv.length == 2) {
+      if (kv[0].equals(key))       return kv[1];
+    }
+  }
+  return null;
+}

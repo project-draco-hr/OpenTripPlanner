@@ -1,0 +1,27 @@
+{
+  StringBuilder sb=new StringBuilder();
+  for (  Osmformat.Way w : ways) {
+    if (wayCount++ % 50000 == 0) {
+      LOG.info("way {}",human(wayCount));
+    }
+    Way way=new Way();
+    sb.setLength(0);
+    for (int k=0; k < w.getKeysCount(); k++) {
+      String key=getStringById(w.getKeys(k));
+      String val=getStringById(w.getVals(k));
+      addTag(sb,key,val);
+    }
+    way.tags=sb.toString();
+    List<Long> rl=w.getRefsList();
+    long[] nodes=new long[rl.size()];
+    long ref=0;
+    for (int n=0; n < nodes.length; n++) {
+      ref+=rl.get(n);
+      nodes[n]=ref;
+    }
+    way.nodes=nodes;
+    if (!way.tagless()) {
+      osm.ways.put(w.getId(),way);
+    }
+  }
+}

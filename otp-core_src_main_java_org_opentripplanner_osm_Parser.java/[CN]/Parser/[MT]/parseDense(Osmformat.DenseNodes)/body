@@ -1,0 +1,32 @@
+{
+  long lastId=0, lastLat=0, lastLon=0;
+  int kv=0;
+  StringBuilder sb=new StringBuilder();
+  for (int n=0; n < nodes.getIdCount(); n++) {
+    if (nodeCount++ % 100000 == 0) {
+      LOG.info("node {}",human(nodeCount));
+    }
+    Node node=new Node();
+    long id=nodes.getId(n) + lastId;
+    long lat=nodes.getLat(n) + lastLat;
+    long lon=nodes.getLon(n) + lastLon;
+    lastId=id;
+    lastLat=lat;
+    lastLon=lon;
+    node.lat=(float)parseLat(lat);
+    node.lon=(float)parseLon(lon);
+    if (nodes.getKeysValsCount() > 0) {
+      sb.setLength(0);
+      while (nodes.getKeysVals(kv) != 0) {
+        int kid=nodes.getKeysVals(kv++);
+        int vid=nodes.getKeysVals(kv++);
+        String key=getStringById(kid);
+        String val=getStringById(vid);
+        addTag(sb,key,val);
+      }
+      kv++;
+    }
+    node.tags=sb.toString();
+    osm.nodes.put(id,node);
+  }
+}

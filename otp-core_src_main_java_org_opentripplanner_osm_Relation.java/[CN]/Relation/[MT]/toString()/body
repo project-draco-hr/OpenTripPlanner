@@ -1,0 +1,13 @@
+{
+  StringBuilder sb=new StringBuilder();
+  sb.append("Relation with tags ");
+  sb.append(tags);
+  sb.append('\n');
+  for (  Member member : members) {
+    sb.append("  ");
+    sb.append(member.toString());
+    sb.append('\n');
+  }
+  sb.append('\n');
+  return sb.toString();
+}
