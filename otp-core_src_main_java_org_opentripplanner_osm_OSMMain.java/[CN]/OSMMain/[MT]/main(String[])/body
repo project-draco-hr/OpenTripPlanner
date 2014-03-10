@@ -1,63 +1,6 @@
 {
-  File dbFile=new File(DB);
-  if (dbFile.exists()) {
-    LOG.error("Target file already exists.");
-    System.exit(0);
-  }
-  DB db=DBMaker.newFileDB(dbFile).transactionDisable().asyncWriteEnable().compressionEnable().make();
-  LOG.info("Reading PBF file '{}'",INPUT);
-  OSM osm=new OSM();
-  osm.nodes=db.getTreeMap("nodes");
-  osm.ways=db.getTreeMap("ways");
-  osm.relations=db.getTreeMap("relations");
-  LOG.info("Finding nodes within the bounding geometry.");
-  NodeGeomFilter ngf=new NodeGeomFilter(52.2,4.4,53.3,5.5);
-  ngf.parse(INPUT);
-  LOG.info("Loading ways containing nodes found within the bounding geometry.");
-  WayLoader wl=new WayLoader(osm,ngf.nodes);
-  wl.parse(INPUT);
-  LOG.info("Loading nodes used in the retained ways.");
-  NodeLoader nl=new NodeLoader(osm,wl.nodesInWays);
-  nl.parse(INPUT);
-  LOG.info("Loading relations (which ones?)");
-  LOG.info("Finding intersections.");
-  NodeTracker referenced=new NodeTracker();
-  NodeTracker intersections=new NodeTracker();
-  for (  long wid : osm.ways.keySet()) {
-    Way way=osm.ways.get(wid);
-    for (    long nid : way.nodes) {
-      if (referenced.contains(nid)) {
-        intersections.add(nid);
-      }
- else {
-        referenced.add(nid);
-      }
-    }
-  }
-  LOG.info("Done finding intersections.");
-  LOG.info("Making edges from Ways.");
-  List<Edge> edges=Lists.newArrayList();
-  for (  Entry<Long,Way> e : osm.ways.entrySet()) {
-    Way way=e.getValue();
-    Edge edge=new Edge();
-    edge.way=e.getKey();
-    edge.from=way.nodes[0];
-    for (int n=1; n < way.nodes.length; n++) {
-      long node=way.nodes[n];
-      if (n == (way.nodes.length - 1)) {
-        edge.to=node;
-        edges.add(edge);
-      }
- else       if (intersections.contains(node)) {
-        edge.to=node;
-        edges.add(edge);
-        edge=new Edge();
-        edge.way=e.getKey();
-        edge.from=node;
-      }
-    }
-  }
-  LOG.info("Done making {} edges from {} ways.",edges.size(),osm.ways.size());
+  OSM osm=OSM.fromPBF(INPUT,ENV);
+  List<Edge> edges=makeEdges(osm);
   PrintStream ps;
   try {
     ps=new PrintStream(new FileOutputStream("/home/abyrd/edges.wkt"));
@@ -70,5 +13,4 @@
  catch (  FileNotFoundException e1) {
     e1.printStackTrace();
   }
-  db.close();
 }

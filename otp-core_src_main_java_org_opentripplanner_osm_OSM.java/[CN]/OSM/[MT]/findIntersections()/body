@@ -1,0 +1,16 @@
+{
+  LOG.info("Finding intersections.");
+  intersections=new NodeTracker();
+  NodeTracker referenced=new NodeTracker();
+  for (  Way way : ways.values()) {
+    for (    long nid : way.nodes) {
+      if (referenced.contains(nid)) {
+        intersections.add(nid);
+      }
+ else {
+        referenced.add(nid);
+      }
+    }
+  }
+  LOG.info("Done finding intersections.");
+}
