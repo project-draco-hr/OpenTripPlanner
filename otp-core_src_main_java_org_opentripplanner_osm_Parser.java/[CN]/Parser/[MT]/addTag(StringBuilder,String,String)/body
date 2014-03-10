@@ -1,8 +1,10 @@
 {
-  if (sb.length() > 0)   sb.append(';');
-  sb.append(key);
-  if (val != null && !val.isEmpty()) {
-    sb.append('=');
-    sb.append(val);
+  if (retainTag(key)) {
+    if (sb.length() > 0)     sb.append(';');
+    sb.append(key);
+    if (val != null && !val.isEmpty()) {
+      sb.append('=');
+      sb.append(val);
+    }
   }
 }

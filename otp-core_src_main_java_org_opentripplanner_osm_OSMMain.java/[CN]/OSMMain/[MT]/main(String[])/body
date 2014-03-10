@@ -10,18 +10,19 @@
   osm.nodes=db.getTreeMap("nodes");
   osm.ways=db.getTreeMap("ways");
   osm.relations=db.getTreeMap("relations");
-  try {
-    Parser parser=new Parser(osm);
-    FileInputStream input=new FileInputStream(INPUT);
-    BlockInputStream bis=new BlockInputStream(input,parser);
-    bis.process();
-  }
- catch (  Exception e) {
-    throw new RuntimeException(e);
-  }
+  LOG.info("Finding nodes within the bounding geometry.");
+  NodeGeomFilter ngf=new NodeGeomFilter(52.2,4.4,53.3,5.5);
+  ngf.parse(INPUT);
+  LOG.info("Loading ways containing nodes found within the bounding geometry.");
+  WayLoader wl=new WayLoader(osm,ngf.nodes);
+  wl.parse(INPUT);
+  LOG.info("Loading nodes used in the retained ways.");
+  NodeLoader nl=new NodeLoader(osm,wl.nodesInWays);
+  nl.parse(INPUT);
+  LOG.info("Loading relations (which ones?)");
   LOG.info("Finding intersections.");
-  Set<Long> referenced=db.getTreeSet("nodes_referenced");
-  Set<Long> intersections=db.getTreeSet("nodes_intersections");
+  NodeTracker referenced=new NodeTracker();
+  NodeTracker intersections=new NodeTracker();
   for (  long wid : osm.ways.keySet()) {
     Way way=osm.ways.get(wid);
     for (    long nid : way.nodes) {
@@ -57,5 +58,17 @@
     }
   }
   LOG.info("Done making {} edges from {} ways.",edges.size(),osm.ways.size());
+  PrintStream ps;
+  try {
+    ps=new PrintStream(new FileOutputStream("/home/abyrd/edges.wkt"));
+    for (    Edge edge : edges) {
+      Node fromNode=osm.nodes.get(edge.from);
+      Node toNode=osm.nodes.get(edge.to);
+      ps.printf("LINESTRING(%f %f,%f %f))\n",fromNode.lon,fromNode.lat,toNode.lon,toNode.lat);
+    }
+  }
+ catch (  FileNotFoundException e1) {
+    e1.printStackTrace();
+  }
   db.close();
 }

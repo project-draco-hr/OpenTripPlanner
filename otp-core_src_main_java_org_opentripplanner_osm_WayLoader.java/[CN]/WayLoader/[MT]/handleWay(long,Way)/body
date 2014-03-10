@@ -1,0 +1,16 @@
+{
+  if (way.tagless())   return;
+  boolean found=false;
+  for (  long node : way.nodes) {
+    if (nodesInGeom.contains(node)) {
+      found=true;
+      break;
+    }
+  }
+  if (found) {
+    for (    long node : way.nodes) {
+      nodesInWays.add(node);
+    }
+    osm.ways.put(id,way);
+  }
+}

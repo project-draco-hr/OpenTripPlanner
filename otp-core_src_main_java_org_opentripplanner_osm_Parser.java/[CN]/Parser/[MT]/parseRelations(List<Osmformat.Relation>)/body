@@ -30,8 +30,6 @@ LOG.error("Relation type is unexpected.");
 }
 rel.members.add(member);
 }
-if (!rel.tagless()) {
-osm.relations.put(r.getId(),rel);
-}
+handleRelation(r.getId(),rel);
 }
 }

@@ -1,0 +1,10 @@
+{
+  try {
+    FileInputStream input=new FileInputStream(filename);
+    new BlockInputStream(input,this).process();
+    input.close();
+  }
+ catch (  IOException e) {
+    throw new RuntimeException("Error parsing OSM PBF.",e);
+  }
+}

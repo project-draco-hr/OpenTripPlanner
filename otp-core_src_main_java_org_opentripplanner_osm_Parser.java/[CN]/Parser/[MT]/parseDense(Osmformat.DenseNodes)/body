@@ -3,7 +3,7 @@
   int kv=0;
   StringBuilder sb=new StringBuilder();
   for (int n=0; n < nodes.getIdCount(); n++) {
-    if (nodeCount++ % 100000 == 0) {
+    if (nodeCount++ % 5000000 == 0) {
       LOG.info("node {}",human(nodeCount));
     }
     Node node=new Node();
@@ -27,6 +27,6 @@
       kv++;
     }
     node.tags=sb.toString();
-    osm.nodes.put(id,node);
+    handleNode(id,node);
   }
 }

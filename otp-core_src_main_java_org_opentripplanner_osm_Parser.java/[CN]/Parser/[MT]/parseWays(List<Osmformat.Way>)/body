@@ -1,7 +1,7 @@
 {
   StringBuilder sb=new StringBuilder();
   for (  Osmformat.Way w : ways) {
-    if (wayCount++ % 50000 == 0) {
+    if (wayCount++ % 1000000 == 0) {
       LOG.info("way {}",human(wayCount));
     }
     Way way=new Way();
@@ -20,8 +20,6 @@
       nodes[n]=ref;
     }
     way.nodes=nodes;
-    if (!way.tagless()) {
-      osm.ways.put(w.getId(),way);
-    }
+    handleWay(w.getId(),way);
   }
 }

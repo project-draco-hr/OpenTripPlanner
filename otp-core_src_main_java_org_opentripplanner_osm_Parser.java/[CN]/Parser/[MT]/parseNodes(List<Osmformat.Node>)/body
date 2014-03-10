@@ -1,7 +1,7 @@
 {
   StringBuilder sb=new StringBuilder();
   for (  Osmformat.Node n : nodes) {
-    if (nodeCount++ % 100000 == 0) {
+    if (nodeCount++ % 10000000 == 0) {
       LOG.info("node {}",human(nodeCount));
     }
     Node node=new Node();
@@ -14,6 +14,6 @@
       addTag(sb,key,val);
     }
     node.tags=sb.toString();
-    osm.nodes.put(n.getId(),node);
+    handleNode(n.getId(),node);
   }
 }
