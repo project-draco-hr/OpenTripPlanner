@@ -1,0 +1,11 @@
+{
+  long key=x & BLOCK_MASK;
+  long[] block=blocks.get(key);
+  if (block == null && create) {
+    block=new long[64];
+    blocks.put(key,block);
+    LOG.debug("Number of blocks is now {}, total {} MiB",blocks.size(),blocks.size() * 64 * 8 / 1024.0 / 1024.0);
+  }
+  LOG.debug("   block {}",key);
+  return block;
+}

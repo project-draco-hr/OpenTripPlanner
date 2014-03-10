@@ -1,0 +1,6 @@
+{
+  LOG.debug("get node {}: index {} bit {}",x,index(x),bit(x));
+  long[] block=block(x,false);
+  if (block == null)   return false;
+  return (block[index(x)] & (1L << bit(x))) != 0;
+}
