@@ -1,0 +1,11 @@
+{
+  for (  String seg : s.split(";")) {
+    Set<QualifiedMode> qModeSet=Sets.newHashSet();
+    for (    String qMode : seg.split(",")) {
+      qModeSet.add(new QualifiedMode(qMode));
+    }
+    if (!qModeSet.isEmpty()) {
+      qModeSets.add(qModeSet);
+    }
+  }
+}
