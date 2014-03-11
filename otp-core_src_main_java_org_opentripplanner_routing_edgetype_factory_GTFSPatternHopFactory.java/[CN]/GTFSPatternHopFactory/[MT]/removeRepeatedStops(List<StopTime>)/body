@@ -6,6 +6,8 @@
     StopTime st=it.next();
     if (prev != null) {
       if (prev.getStop().equals(st.getStop())) {
+        prev.setDepartureTime(st.getDepartureTime());
+        it.remove();
         filtered=true;
       }
     }
