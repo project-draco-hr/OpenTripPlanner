@@ -1,0 +1,10 @@
+{
+  Field[] fields=entityClass.getFields();
+  GtfsField[] gfields=new GtfsField[fields.length];
+  for (int i=0; i < fields.length; i++) {
+    String name=fields[i].getName();
+    boolean required=fields[i].isAnnotationPresent(Required.class);
+    gfields[i]=new GtfsField(name,!required);
+  }
+  return gfields;
+}

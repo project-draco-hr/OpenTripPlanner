@@ -1,5 +1,4 @@
 {
-  List<Error> errors=Lists.newArrayList();
   int i=0;
   for (  Field field : getClass().getFields()) {
     try {
@@ -8,13 +7,13 @@
       }
     }
  catch (    ArrayIndexOutOfBoundsException ex) {
-      errors.add(new Error("Missing fields in row."));
+      LOG.error("Missing fields in row: ");
       break;
     }
 catch (    Exception e) {
-      errors.add(new Error("Exception: " + e));
+      LOG.error("Exception: " + e);
+      throw new RuntimeException(e);
     }
     i++;
   }
-  return errors;
 }
