@@ -81,8 +81,8 @@
   assertTrue(timetable.update(tripUpdate,"agency",timeZone,serviceDate));
   TripTimes tripTimes=timetable.getTripTimes(trip_1_1_index);
   for (int i=0; i < tripTimes.getNumHops(); i++) {
-    assertEquals(TripTimes.CANCELED,tripTimes.getDepartureTime(i));
-    assertEquals(TripTimes.CANCELED,tripTimes.getArrivalTime(i));
+    assertEquals(TripTimes.UNAVAILABLE,tripTimes.getDepartureTime(i));
+    assertEquals(TripTimes.UNAVAILABLE,tripTimes.getArrivalTime(i));
   }
   options.setRoutingContext(graph,stop_a,stop_c);
   spt=aStar.getShortestPathTree(options);
