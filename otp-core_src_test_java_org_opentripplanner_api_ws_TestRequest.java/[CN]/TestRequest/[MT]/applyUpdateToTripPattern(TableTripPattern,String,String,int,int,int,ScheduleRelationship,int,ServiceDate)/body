@@ -1,4 +1,7 @@
 {
+  Graph graph=Context.getInstance().graph;
+  TimetableResolver snapshot=graph.getTimetableSnapshotSource().getTimetableSnapshot();
+  Timetable timetable=snapshot.resolve(pattern,serviceDate);
   TimeZone timeZone=new SimpleTimeZone(-7,"PST");
   long today=serviceDate.getAsDate(timeZone).getTime() / 1000;
   TripDescriptor.Builder tripDescriptorBuilder=TripDescriptor.newBuilder();
@@ -16,5 +19,5 @@
   tripUpdateBuilder.setTrip(tripDescriptorBuilder);
   tripUpdateBuilder.addStopTimeUpdate(0,stopTimeUpdateBuilder);
   TripUpdate tripUpdate=tripUpdateBuilder.build();
-  assertTrue(pattern.update(tripUpdate,"TriMet",timeZone,serviceDate));
+  assertTrue(timetable.update(tripUpdate,"TriMet",timeZone,serviceDate));
 }
