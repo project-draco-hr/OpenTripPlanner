@@ -9,9 +9,8 @@
         display=patch.displayDuring(child.stateData.opt,child.getStartTimeSeconds(),child.getTimeSeconds());
       }
       if (display || active) {
-        if (!patch.filterTraverseResult(this,display))         return false;
+        patch.filterTraverseResult(this);
       }
     }
   }
-  return true;
 }
