@@ -19,6 +19,14 @@
       if (d < zS.d)       zS.d=d;
       return zS;
     }
+    /** 
+ * A Generated closing sample take 1) as off-road distance, the minimum of the off-road
+ * distance of all enclosing samples, plus the grid size, and 2) as time the minimum
+ * time of all enclosing samples plus the grid size * off-road walk speed as additional
+ * time. All this are approximations.
+ * TODO Is there a better way of computing this? Here the computation will be different
+ * based on the order where we close the samples.
+ */
     @Override public WTWD closeSample(    WTWD zUp,    WTWD zDown,    WTWD zRight,    WTWD zLeft){
       double dMin=Double.MAX_VALUE;
       double tMin=Double.MAX_VALUE;
