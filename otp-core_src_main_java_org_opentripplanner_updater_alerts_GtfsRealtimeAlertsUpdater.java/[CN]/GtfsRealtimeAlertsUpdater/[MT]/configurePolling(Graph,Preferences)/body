@@ -1,6 +1,6 @@
 {
-  PatchService patchService=new PatchServiceImpl(graph);
-  this.patchService=patchService;
+  AlertPatchService alertPatchService=new AlertPatchServiceImpl(graph);
+  this.alertPatchService=alertPatchService;
   String url=preferences.get("url",null);
   if (url == null) {
     throw new IllegalArgumentException("Missing mandatory 'url' parameter");

@@ -14,7 +14,7 @@ synchronized (ssb) {
     if (ssb.pathService == null) {
       SubServicesBundle newSsb=loadSubServices(routerID);
       ssb.pathService=newSsb.pathService;
-      ssb.patchService=newSsb.patchService;
+      ssb.alertPatchService=newSsb.alertPatchService;
       ssb.context=newSsb.context;
       ssb.timestampLoaded=System.currentTimeMillis();
       return ssb;
@@ -26,12 +26,12 @@ synchronized (ssb) {
       if (!asyncReload) {
         LOG.info("Reloading modified graph '" + routerID + "'");
         ssb.pathService=null;
-        ssb.patchService=null;
+        ssb.alertPatchService=null;
         ssb.context.close();
         ssb.context=null;
         SubServicesBundle newSsb=loadSubServices(routerID);
         ssb.pathService=newSsb.pathService;
-        ssb.patchService=newSsb.patchService;
+        ssb.alertPatchService=newSsb.alertPatchService;
         ssb.context=newSsb.context;
         ssb.timestampLoaded=System.currentTimeMillis();
       }
@@ -46,7 +46,7 @@ synchronized (ssb) {
 synchronized (ssb) {
       LOG.info("Async reloading modified graph '" + routerID + "'");
       ssb.pathService=newSsb.pathService;
-      ssb.patchService=newSsb.patchService;
+      ssb.alertPatchService=newSsb.alertPatchService;
       ssb.context.close();
       ssb.context=newSsb.context;
       ssb.reloadInProgress=false;

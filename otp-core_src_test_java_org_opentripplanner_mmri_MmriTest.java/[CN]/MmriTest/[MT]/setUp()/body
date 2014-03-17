@@ -14,8 +14,8 @@
   timetableSnapshotSource=new TimetableSnapshotSource(graph);
   timetableSnapshotSource.setPurgeExpiredData(false);
   graph.setTimetableSnapshotSource(timetableSnapshotSource);
-  patchServiceImpl=new PatchServiceImpl(graph);
-  alertsUpdateHandler.setPatchService(patchServiceImpl);
+  alertPatchServiceImpl=new AlertPatchServiceImpl(graph);
+  alertsUpdateHandler.setAlertPatchService(alertPatchServiceImpl);
   alertsUpdateHandler.setDefaultAgencyId("MMRI");
   try {
     InputStream inputStream=new FileInputStream(gtfsRealTime);

@@ -1,0 +1,8 @@
+{
+  for (  TimePeriod period : timePeriods) {
+    if (!(end <= period.startTime || start >= period.endTime)) {
+      return true;
+    }
+  }
+  return false;
+}

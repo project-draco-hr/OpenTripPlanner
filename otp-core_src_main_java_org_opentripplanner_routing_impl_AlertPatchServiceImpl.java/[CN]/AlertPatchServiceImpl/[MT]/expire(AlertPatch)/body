@@ -1,0 +1,14 @@
+{
+  if (graph == null) {
+    graph=graphService.getGraph();
+  }
+  AgencyAndId stop=alertPatch.getStop();
+  if (stop != null) {
+    patchesByStop.remove(stop,alertPatch);
+  }
+  AgencyAndId route=alertPatch.getRoute();
+  if (route != null) {
+    patchesByRoute.remove(route,alertPatch);
+  }
+  alertPatch.remove(graph);
+}

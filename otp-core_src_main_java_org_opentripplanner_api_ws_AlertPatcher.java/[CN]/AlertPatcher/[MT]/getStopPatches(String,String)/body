@@ -1,0 +1,8 @@
+{
+  AlertPatchResponse response=new AlertPatchResponse();
+  Collection<AlertPatch> alertPatches=alertPatchService.getStopPatches(new AgencyAndId(agency,id));
+  for (  AlertPatch alertPatch : alertPatches) {
+    response.addAlertPatch(alertPatch);
+  }
+  return response;
+}

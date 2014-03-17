@@ -1,0 +1,15 @@
+{
+  Set<String> purge=new HashSet<String>();
+  AlertPatchServiceImpl instance=getAlertPatchServiceImpl();
+  for (  TestAlertPatch alert : alerts) {
+    instance.apply(alert);
+  }
+  purge.add(alerts[0].getId());
+  purge.add(alerts[1].getId());
+  instance.expire(purge);
+  assertEquals(2,instance.getAllAlertPatches().size());
+  assertFalse(instance.getAllAlertPatches().contains(alerts[0]));
+  assertFalse(instance.getAllAlertPatches().contains(alerts[1]));
+  assertTrue(instance.getAllAlertPatches().contains(alerts[2]));
+  assertTrue(instance.getAllAlertPatches().contains(alerts[3]));
+}

@@ -1,0 +1,18 @@
+{
+  if (graph == null) {
+    graph=graphService.getGraph();
+  }
+  if (alertPatches.containsKey(alertPatch.getId())) {
+    expire(alertPatches.get(alertPatch.getId()));
+  }
+  alertPatch.apply(graph);
+  alertPatches.put(alertPatch.getId(),alertPatch);
+  AgencyAndId stop=alertPatch.getStop();
+  if (stop != null) {
+    patchesByStop.put(stop,alertPatch);
+  }
+  AgencyAndId route=alertPatch.getRoute();
+  if (route != null) {
+    patchesByRoute.put(route,alertPatch);
+  }
+}

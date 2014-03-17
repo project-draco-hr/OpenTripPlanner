@@ -53,5 +53,45 @@
       return false;
     }
   }
-  return other.alert.equals(alert) && super.equals(other);
+  if (alert == null) {
+    if (other.alert != null) {
+      return false;
+    }
+  }
+ else {
+    if (!alert.equals(other.alert)) {
+      return false;
+    }
+  }
+  if (id == null) {
+    if (other.id != null) {
+      return false;
+    }
+  }
+ else {
+    if (!id.equals(other.id)) {
+      return false;
+    }
+  }
+  if (timePeriods == null) {
+    if (other.timePeriods != null) {
+      return false;
+    }
+  }
+ else {
+    if (!timePeriods.equals(other.timePeriods)) {
+      return false;
+    }
+  }
+  if (displayTimePeriods == null) {
+    if (other.displayTimePeriods != null) {
+      return false;
+    }
+  }
+ else {
+    if (!displayTimePeriods.equals(other.displayTimePeriods)) {
+      return false;
+    }
+  }
+  return true;
 }

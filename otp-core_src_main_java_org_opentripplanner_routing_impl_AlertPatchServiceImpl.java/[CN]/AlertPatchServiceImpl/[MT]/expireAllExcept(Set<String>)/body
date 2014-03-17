@@ -1,0 +1,11 @@
+{
+  ArrayList<String> toRemove=new ArrayList<String>();
+  for (  Entry<String,AlertPatch> entry : alertPatches.entrySet()) {
+    final String key=entry.getKey();
+    if (!retain.contains(key)) {
+      toRemove.add(key);
+      expire(entry.getValue());
+    }
+  }
+  alertPatches.keySet().removeAll(toRemove);
+}

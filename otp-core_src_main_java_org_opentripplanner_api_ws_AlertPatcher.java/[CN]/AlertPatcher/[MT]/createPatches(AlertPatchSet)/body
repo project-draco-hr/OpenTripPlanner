@@ -1,0 +1,19 @@
+{
+  AlertPatchCreationResponse response=new AlertPatchCreationResponse();
+  for (  AlertPatch alertPatch : alertPatches.alertPatches) {
+    if (alertPatch.getId() == null) {
+      response.status="Every patch must have an id";
+      return response;
+    }
+    final AgencyAndId route=alertPatch.getRoute();
+    if (route != null && route.getId().equals("")) {
+      response.status="Every route patch must have a route id";
+      return response;
+    }
+  }
+  for (  AlertPatch alertPatch : alertPatches.alertPatches) {
+    alertPatchService.apply(alertPatch);
+  }
+  response.status="OK";
+  return response;
+}

@@ -278,12 +278,12 @@
   StreetBikeRentalLink e55=new StreetBikeRentalLink(v54,v56);
   RentABikeOffEdge e57=new RentABikeOffEdge(v56,v58,Collections.singleton(""));
   StreetBikeRentalLink e59=new StreetBikeRentalLink(v58,v60);
-  AlertPatch patch=new AlertPatch();
-  patch.setTimePeriods(Collections.singletonList(new TimePeriod(0,Long.MAX_VALUE)));
-  patch.setAlert(Alert.createSimpleAlerts(alertsExample));
+  AlertPatch alertPatch=new AlertPatch();
+  alertPatch.setTimePeriods(Collections.singletonList(new TimePeriod(0,Long.MAX_VALUE)));
+  alertPatch.setAlert(Alert.createSimpleAlerts(alertsExample));
   e3.setElevationProfile(elevation3,false);
   e17.addTrip(firstTrip,secondTrip,4,0,0);
-  e29.addPatch(patch);
+  e29.addAlertPatch(alertPatch);
   e39.setElevationProfile(elevation39,false);
   e41.setElevationProfile(elevation41,false);
   e41.setHasBogusName(true);

@@ -1,8 +1,0 @@
-{
-  PatchResponse response=new PatchResponse();
-  Collection<Patch> patches=patchservice.getRoutePatches(new AgencyAndId(agency,id));
-  for (  Patch patch : patches) {
-    response.addPatch(patch);
-  }
-  return response;
-}

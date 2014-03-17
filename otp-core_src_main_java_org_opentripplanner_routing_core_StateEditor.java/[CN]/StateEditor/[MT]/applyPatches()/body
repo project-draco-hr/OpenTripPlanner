@@ -1,15 +1,15 @@
 {
-  List<Patch> patches=child.backEdge.getPatches();
+  List<AlertPatch> alertPatches=child.backEdge.getAlertPatches();
   boolean display=false, active=false;
-  if (patches != null) {
-    for (    Patch patch : patches) {
+  if (alertPatches != null) {
+    for (    AlertPatch alertPatch : alertPatches) {
       display=false;
-      active=patch.activeDuring(child.stateData.opt,child.getStartTimeSeconds(),child.getTimeSeconds());
+      active=alertPatch.activeDuring(child.stateData.opt,child.getStartTimeSeconds(),child.getTimeSeconds());
       if (!active) {
-        display=patch.displayDuring(child.stateData.opt,child.getStartTimeSeconds(),child.getTimeSeconds());
+        display=alertPatch.displayDuring(child.stateData.opt,child.getStartTimeSeconds(),child.getTimeSeconds());
       }
       if (display || active) {
-        patch.filterTraverseResult(this);
+        alertPatch.filterTraverseResult(this);
       }
     }
   }

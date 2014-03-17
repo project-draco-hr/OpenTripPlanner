@@ -22,10 +22,10 @@
       for (      RouteSegment segment : variant.getSegments()) {
         if (stop == null || segment.stop.equals(stop)) {
           if (segment.board != null) {
-            segment.board.removePatch(this);
+            segment.board.removeAlertPatch(this);
           }
           if (segment.alight != null) {
-            segment.alight.removePatch(this);
+            segment.alight.removeAlertPatch(this);
           }
         }
       }
@@ -33,8 +33,8 @@
   }
  else   if (stop != null) {
     Edge edge=index.getPreBoardEdge(stop);
-    if (edge != null)     edge.removePatch(this);
+    if (edge != null)     edge.removeAlertPatch(this);
     edge=index.getPreAlightEdge(stop);
-    if (edge != null)     edge.removePatch(this);
+    if (edge != null)     edge.removeAlertPatch(this);
   }
 }
