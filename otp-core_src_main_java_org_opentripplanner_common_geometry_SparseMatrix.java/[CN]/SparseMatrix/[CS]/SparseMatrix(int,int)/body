@@ -1,5 +1,6 @@
 {
   shift=0;
+  this.chunkSize=chunkSize;
   mask=chunkSize - 1;
   while (chunkSize > 1) {
     if (chunkSize % 2 != 0)     throw new IllegalArgumentException("Chunk size must be a power of 2");
@@ -8,4 +9,8 @@
   }
   this.matSize=(mask + 1) * (mask + 1);
   this.chunks=new HashMap<Long,T[]>(totalSize / matSize * 4);
+  this.xMin=Integer.MAX_VALUE;
+  this.yMin=Integer.MAX_VALUE;
+  this.xMax=Integer.MIN_VALUE;
+  this.yMax=Integer.MIN_VALUE;
 }
