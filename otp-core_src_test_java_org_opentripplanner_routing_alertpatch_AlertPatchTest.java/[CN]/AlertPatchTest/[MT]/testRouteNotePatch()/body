@@ -1,6 +1,6 @@
 {
   AlertPatch rnp1=new AlertPatch();
-  rnp1.addTimePeriod(0,1000L * 60 * 60* 24* 365* 40);
+  rnp1.setTimePeriods(Collections.singletonList(new TimePeriod(0,1000L * 60 * 60* 24* 365* 40)));
   Alert note1=Alert.createSimpleAlerts("The route note");
   rnp1.setAlert(note1);
   rnp1.setId("id1");
@@ -14,7 +14,12 @@
   spt=aStar.getShortestPathTree(options);
   path=spt.getPath(stop_e,false);
   assertNotNull(path);
-  HashSet<Alert> expectedNotes=new HashSet<Alert>();
-  expectedNotes.add(note1);
-  assertEquals(expectedNotes,path.states.get(2).getBackAlerts());
+  HashSet<Alert> expectedAlerts=new HashSet<Alert>();
+  expectedAlerts.add(note1);
+  Edge actualEdge=path.states.get(2).getBackEdge();
+  HashSet<Alert> actualAlerts=new HashSet<Alert>();
+  for (  AlertPatch alertPatch : graph.getAlertPatches(actualEdge)) {
+    actualAlerts.add(alertPatch.getAlert());
+  }
+  assertEquals(expectedAlerts,actualAlerts);
 }

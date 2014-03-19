@@ -283,7 +283,6 @@
   alertPatch.setAlert(Alert.createSimpleAlerts(alertsExample));
   e3.setElevationProfile(elevation3,false);
   e17.addTrip(firstTrip,secondTrip,4,0,0);
-  e29.addAlertPatch(alertPatch);
   e39.setElevationProfile(elevation39,false);
   e41.setElevationProfile(elevation41,false);
   e41.setHasBogusName(true);
@@ -333,6 +332,7 @@
   graph.addAgency(trainAgency);
   graph.addAgency(ferryAgency);
   graph.setTimetableSnapshotSource(timetableSnapshotSource);
+  graph.addAlertPatch(e29,alertPatch);
   ServiceDay serviceDay=new ServiceDay(graph,0,calendarServiceImpl,null);
   OnboardDepartVertex onboardDepartVertex=new OnboardDepartVertex("Onboard",23.0,12.0);
   OnBoardDepartPatternHop onBoardDepartPatternHop=new OnBoardDepartPatternHop(onboardDepartVertex,v12,firstTripPattern.getTripTimes(0),serviceDay,0,0.5);

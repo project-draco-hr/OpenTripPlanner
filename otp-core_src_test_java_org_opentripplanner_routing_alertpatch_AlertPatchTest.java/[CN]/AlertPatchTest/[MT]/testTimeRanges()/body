@@ -1,10 +1,12 @@
 {
   AlertPatch snp1=new AlertPatch();
+  LinkedList<TimePeriod> timePeriods=new LinkedList<TimePeriod>();
   long breakTime=TestUtils.dateInSeconds("America/New_York",2009,8,7,0,0,0);
-  snp1.addTimePeriod(0,breakTime);
+  timePeriods.add(new TimePeriod(0,breakTime));
   long secondPeriodStartTime=TestUtils.dateInSeconds("America/New_York",2009,8,7,7,0,0);
   long secondPeriodEndTime=TestUtils.dateInSeconds("America/New_York",2009,8,8,0,0,0);
-  snp1.addTimePeriod(secondPeriodStartTime,secondPeriodEndTime);
+  timePeriods.add(new TimePeriod(secondPeriodStartTime,secondPeriodEndTime));
+  snp1.setTimePeriods(timePeriods);
   Alert note1=Alert.createSimpleAlerts("The first note");
   snp1.setAlert(note1);
   snp1.setId("id1");
@@ -19,7 +21,15 @@
   spt=aStar.getShortestPathTree(options);
   path=spt.getPath(stop_e,true);
   assertNotNull(path);
-  assertNull(path.states.get(1).getBackAlerts());
+  State noAlertPatchesState=path.states.get(1);
+  Edge noAlertPatchesEdge=noAlertPatchesState.getBackEdge();
+  HashSet<Alert> noAlertPatchesAlerts=new HashSet<Alert>();
+  for (  AlertPatch alertPatch : graph.getAlertPatches(noAlertPatchesEdge)) {
+    if (alertPatch.displayDuring(noAlertPatchesState)) {
+      noAlertPatchesAlerts.add(alertPatch.getAlert());
+    }
+  }
+  assertEquals(new HashSet<Alert>(),noAlertPatchesAlerts);
   options.dateTime=TestUtils.dateInSeconds("America/New_York",2009,8,7,8,0,0);
   options.setRoutingContext(graph,stop_a,stop_e);
   spt=aStar.getShortestPathTree(options);
@@ -27,5 +37,13 @@
   assertNotNull(path);
   HashSet<Alert> expectedNotes=new HashSet<Alert>();
   expectedNotes.add(note1);
-  assertEquals(expectedNotes,path.states.get(1).getBackAlerts());
+  State oneAlertPatchState=path.states.get(1);
+  Edge oneAlertPatchEdge=oneAlertPatchState.getBackEdge();
+  HashSet<Alert> oneAlertPatchAlerts=new HashSet<Alert>();
+  for (  AlertPatch alertPatch : graph.getAlertPatches(oneAlertPatchEdge)) {
+    if (alertPatch.displayDuring(oneAlertPatchState)) {
+      oneAlertPatchAlerts.add(alertPatch.getAlert());
+    }
+  }
+  assertEquals(expectedNotes,oneAlertPatchAlerts);
 }

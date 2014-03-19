@@ -1,0 +1,11 @@
+{
+  if (edge != null) {
+synchronized (alertPatches) {
+      Set<AlertPatch> alertPatches=this.alertPatches.get(edge);
+      if (alertPatches != null) {
+        return alertPatches.toArray(new AlertPatch[alertPatches.size()]);
+      }
+    }
+  }
+  return new AlertPatch[0];
+}

@@ -15,7 +15,7 @@
     itinerary.fare=fareService.getCost(path);
   }
   for (  State[] legStates : legsStates) {
-    itinerary.addLeg(generateLeg(legStates,showIntermediateStops));
+    itinerary.addLeg(generateLeg(graph,legStates,showIntermediateStops));
   }
   addWalkSteps(itinerary.legs,legsStates);
   fixupLegs(itinerary.legs,legsStates);

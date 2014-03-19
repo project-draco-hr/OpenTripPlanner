@@ -1,0 +1,18 @@
+{
+  if (edge == null || alertPatch == null)   return;
+synchronized (alertPatches) {
+    Set<AlertPatch> alertPatches=this.alertPatches.get(edge);
+    if (alertPatches == null) {
+      this.alertPatches.put(edge,Collections.singleton(alertPatch));
+    }
+ else     if (alertPatches instanceof HashSet) {
+      alertPatches.add(alertPatch);
+    }
+ else {
+      alertPatches=new HashSet<AlertPatch>(alertPatches);
+      if (alertPatches.add(alertPatch)) {
+        this.alertPatches.put(edge,alertPatches);
+      }
+    }
+  }
+}
