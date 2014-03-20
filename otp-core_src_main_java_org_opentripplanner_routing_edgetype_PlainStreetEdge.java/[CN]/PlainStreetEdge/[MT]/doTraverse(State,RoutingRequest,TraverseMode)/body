@@ -131,10 +131,10 @@ s1.incrementWalkDistance(length);
 }
 if (options.kissAndRide || options.parkAndRide) {
 if (options.arriveBy) {
-if (!s0.isCarParked()) weight*=4;
+if (!s0.isCarParked()) weight*=options.firstLegReluctance;
 }
  else {
-if (!s0.isEverBoarded()) weight*=4;
+if (!s0.isEverBoarded()) weight*=options.firstLegReluctance;
 }
 }
 if (s1.weHaveWalkedTooFar(options)) {
