@@ -95,9 +95,8 @@
   }
   request.setBatch(get(batch,n,new Boolean(request.isBatch())));
   request.setOptimize(opt);
-  TraverseModeSet modeSet=get(modes,n,request.getModes());
-  request.setModes(modeSet);
-  if (modeSet.getBicycle() && modeSet.getWalk() && bikeSpeedParam == -1) {
+  modes.get(0).applyToRequest(request);
+  if (request.allowBikeRental && bikeSpeedParam == -1) {
     request.setBikeSpeed(4.3);
   }
   request.setBoardSlack(get(boardSlack,n,request.getBoardSlack()));

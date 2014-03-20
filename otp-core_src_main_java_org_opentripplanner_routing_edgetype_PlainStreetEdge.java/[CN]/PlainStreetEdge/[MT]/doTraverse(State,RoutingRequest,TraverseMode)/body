@@ -10,9 +10,23 @@
   }
   backWalkingBike&=TraverseMode.WALK.equals(backMode);
   walkingBike&=TraverseMode.WALK.equals(traverseMode);
+  if (options.arriveBy && options.kissAndRide && s0.isCarParked()&& s0.isEverBoarded()&& traverseMode == TraverseMode.WALK) {
+    StateEditor editor=doTraverse(s0,options,TraverseMode.CAR);
+    if (editor != null) {
+      editor.setCarParked(false);
+      return editor;
+    }
+  }
   if (!canTraverse(options,traverseMode)) {
     if (traverseMode == TraverseMode.BICYCLE) {
       return doTraverse(s0,options.getBikeWalkingOptions(),TraverseMode.WALK);
+    }
+    if (!options.arriveBy && traverseMode == TraverseMode.CAR && options.kissAndRide && !s0.isCarParked()) {
+      StateEditor editor=doTraverse(s0,options,TraverseMode.WALK);
+      if (editor != null) {
+        editor.setCarParked(true);
+        return editor;
+      }
     }
     return null;
   }
@@ -115,6 +129,14 @@ s1.incrementWeight(options.bikeSwitchCost);
 if (!traverseMode.isDriving()) {
 s1.incrementWalkDistance(length);
 }
+if (options.kissAndRide || options.parkAndRide) {
+if (options.arriveBy) {
+if (!s0.isCarParked()) weight*=4;
+}
+ else {
+if (!s0.isEverBoarded()) weight*=4;
+}
+}
 if (s1.weHaveWalkedTooFar(options)) {
 if (options.isSoftWalkLimiting()) {
 double overageLength;
@@ -139,5 +161,5 @@ s1.addAlerts(notes);
 if (this.isToll() && traverseMode.isDriving()) {
 s1.addAlert(Alert.createSimpleAlerts("Toll road"));
 }
-return s1.makeState();
+return s1;
 }

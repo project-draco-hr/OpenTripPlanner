@@ -1,4 +1,5 @@
 {
   final RoutingRequest options=s0.getOptions();
-  return doTraverse(s0,options,s0.getNonTransitMode());
+  StateEditor editor=doTraverse(s0,options,s0.getNonTransitMode());
+  return editor == null ? null : editor.makeState();
 }

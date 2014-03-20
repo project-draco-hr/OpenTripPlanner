@@ -7,9 +7,8 @@
   this.stateData.opt=options;
   this.stateData.startTime=timeSeconds;
   this.stateData.usingRentedBike=false;
-  boolean parkAndRideEnabled=options.getModes().getCar() && options.getModes().getWalk();
-  this.stateData.carParked=options.isArriveBy() && parkAndRideEnabled;
-  if (parkAndRideEnabled) {
+  if (options.parkAndRide || options.kissAndRide) {
+    this.stateData.carParked=options.isArriveBy();
     this.stateData.nonTransitMode=this.stateData.carParked ? TraverseMode.WALK : TraverseMode.CAR;
   }
   this.walkDistance=0;

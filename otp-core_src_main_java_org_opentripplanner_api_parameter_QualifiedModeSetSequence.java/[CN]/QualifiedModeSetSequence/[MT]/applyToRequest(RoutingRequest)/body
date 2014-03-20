@@ -1,0 +1,26 @@
+{
+  req.modes=new TraverseModeSet();
+  if (sets.isEmpty())   return;
+  Set<QualifiedMode> qModes=sets.get(0);
+  for (  QualifiedMode qMode : qModes) {
+    req.modes.setMode(qMode.mode,true);
+  }
+  for (  QualifiedMode qMode : qModes) {
+    if (qMode.mode == TraverseMode.BICYCLE) {
+      if (qMode.qualifiers.contains(Qualifier.RENT)) {
+        req.allowBikeRental=true;
+      }
+      if (req.modes.isTransit()) {
+        req.bikeParkAndRide=qMode.qualifiers.contains(Qualifier.PARK);
+      }
+    }
+    if (qMode.mode == TraverseMode.CAR) {
+      if (qMode.qualifiers.contains(Qualifier.PARK)) {
+        req.parkAndRide=true;
+      }
+ else {
+        req.kissAndRide=true;
+      }
+    }
+  }
+}

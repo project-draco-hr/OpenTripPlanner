@@ -1,5 +1,10 @@
 {
-  if (s0.getBackEdge() instanceof StreetBikeRentalLink)   return null;
+  if (!s0.getOptions().allowBikeRental) {
+    return null;
+  }
+  if (s0.getBackEdge() instanceof StreetBikeRentalLink) {
+    return null;
+  }
   StateEditor s1=s0.edit(this);
   s1.incrementTimeInSeconds(1);
   s1.incrementWeight(1);
