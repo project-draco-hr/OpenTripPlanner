@@ -10,23 +10,29 @@
   }
   backWalkingBike&=TraverseMode.WALK.equals(backMode);
   walkingBike&=TraverseMode.WALK.equals(traverseMode);
-  if (options.arriveBy && options.kissAndRide && s0.isCarParked()&& s0.isEverBoarded()&& traverseMode == TraverseMode.WALK) {
-    StateEditor editor=doTraverse(s0,options,TraverseMode.CAR);
-    if (editor != null) {
-      editor.setCarParked(false);
-      return editor;
+  if (options.kissAndRide) {
+    if (options.arriveBy) {
+      if (s0.isCarParked() && s0.isEverBoarded() && traverseMode == TraverseMode.WALK) {
+        StateEditor editor=doTraverse(s0,options,TraverseMode.CAR);
+        if (editor != null) {
+          editor.setCarParked(false);
+          return editor;
+        }
+      }
+    }
+ else {
+      if (!s0.isCarParked() && !permission.allows(TraverseMode.CAR) && traverseMode == TraverseMode.CAR) {
+        StateEditor editor=doTraverse(s0,options,TraverseMode.WALK);
+        if (editor != null) {
+          editor.setCarParked(true);
+          return editor;
+        }
+      }
     }
   }
   if (!canTraverse(options,traverseMode)) {
     if (traverseMode == TraverseMode.BICYCLE) {
       return doTraverse(s0,options.getBikeWalkingOptions(),TraverseMode.WALK);
-    }
-    if (!options.arriveBy && traverseMode == TraverseMode.CAR && options.kissAndRide && !s0.isCarParked()) {
-      StateEditor editor=doTraverse(s0,options,TraverseMode.WALK);
-      if (editor != null) {
-        editor.setCarParked(true);
-        return editor;
-      }
     }
     return null;
   }
