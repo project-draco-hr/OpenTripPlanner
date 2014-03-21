@@ -15,7 +15,7 @@
         req.bikeParkAndRide=qMode.qualifiers.contains(Qualifier.PARK);
       }
     }
-    if (qMode.mode == TraverseMode.CAR) {
+    if (qMode.mode == TraverseMode.CAR && req.modes.isTransit()) {
       if (qMode.qualifiers.contains(Qualifier.PARK)) {
         req.parkAndRide=true;
       }
