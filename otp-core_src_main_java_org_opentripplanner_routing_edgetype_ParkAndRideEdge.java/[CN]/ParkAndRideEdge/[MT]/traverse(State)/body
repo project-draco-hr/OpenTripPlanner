@@ -1,10 +1,10 @@
 {
   RoutingRequest request=s0.getOptions();
+  if (!request.parkAndRide) {
+    return null;
+  }
   if (request.isArriveBy()) {
     if (s0.getNonTransitMode() != TraverseMode.WALK) {
-      return null;
-    }
-    if (!request.getModes().getCar()) {
       return null;
     }
     if (!s0.isCarParked()) {
@@ -18,9 +18,12 @@
     return s1.makeState();
   }
  else {
-    if (s0.getNonTransitMode() != TraverseMode.CAR)     return null;
-    if (!request.getModes().getWalk())     return null;
-    if (s0.isCarParked())     throw new IllegalStateException("Can't drive 2 cars");
+    if (s0.getNonTransitMode() != TraverseMode.CAR) {
+      return null;
+    }
+    if (s0.isCarParked()) {
+      throw new IllegalStateException("Can't drive 2 cars");
+    }
     StateEditor s1=s0.edit(this);
     int time=request.getCarDropoffTime();
     s1.incrementWeight(time);
