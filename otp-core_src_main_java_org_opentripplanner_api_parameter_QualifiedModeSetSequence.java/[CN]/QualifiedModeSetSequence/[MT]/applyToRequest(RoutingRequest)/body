@@ -5,6 +5,7 @@
   for (  QualifiedMode qMode : qModes) {
     req.modes.setMode(qMode.mode,true);
   }
+  req.modes.setMode(TraverseMode.WALK,true);
   for (  QualifiedMode qMode : qModes) {
     if (qMode.mode == TraverseMode.BICYCLE) {
       if (qMode.qualifiers.contains(Qualifier.RENT)) {
