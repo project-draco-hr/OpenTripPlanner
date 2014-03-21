@@ -1,5 +1,31 @@
 {
   final RoutingRequest options=s0.getOptions();
+  final TraverseMode currMode=s0.getNonTransitMode();
   StateEditor editor=doTraverse(s0,options,s0.getNonTransitMode());
-  return editor == null ? null : editor.makeState();
+  State state=(editor == null) ? null : editor.makeState();
+  if (options.kissAndRide) {
+    if (options.arriveBy) {
+      if (s0.isCarParked() && s0.isEverBoarded() && currMode == TraverseMode.WALK) {
+        editor=doTraverse(s0,options,TraverseMode.CAR);
+        if (editor != null) {
+          editor.setCarParked(false);
+          State forkState=editor.makeState();
+          if (forkState != null) {
+            forkState.addToExistingResultChain(state);
+            return forkState;
+          }
+        }
+      }
+    }
+ else {
+      if (!s0.isCarParked() && !permission.allows(TraverseMode.CAR) && currMode == TraverseMode.CAR) {
+        editor=doTraverse(s0,options,TraverseMode.WALK);
+        if (editor != null) {
+          editor.setCarParked(true);
+          return editor.makeState();
+        }
+      }
+    }
+  }
+  return state;
 }

@@ -1,10 +1,11 @@
 {
+  RoutingRequest req=s0.getOptions();
   if (s0.getOptions().wheelchairAccessible && !wheelchairAccessible) {
     return null;
   }
   StateEditor s1=s0.edit(this);
   if (s0.getNonTransitMode() == TraverseMode.CAR) {
-    if (s0.getOptions().kissAndRide && !s0.isCarParked()) {
+    if (req.kissAndRide && !s0.isCarParked()) {
       s1.setCarParked(true);
     }
  else {
