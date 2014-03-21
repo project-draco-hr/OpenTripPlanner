@@ -48,7 +48,8 @@
   new StreetBikeRentalLink(v3,stationVertex2);
   new RentABikeOnEdge(stationVertex2,stationVertex2,networks);
   new RentABikeOffEdge(stationVertex2,stationVertex2,networks);
-  options=new RoutingRequest(new TraverseModeSet("WALK,BICYCLE,TRANSIT"));
+  options=new RoutingRequest();
+  new QualifiedModeSetSequence("BICYCLE_RENT,TRANSIT").applyToRequest(options);
   options.setRoutingContext(graph,v1,v3);
   tree=aStar.getShortestPathTree(options);
   path=tree.getPath(v3,false);
