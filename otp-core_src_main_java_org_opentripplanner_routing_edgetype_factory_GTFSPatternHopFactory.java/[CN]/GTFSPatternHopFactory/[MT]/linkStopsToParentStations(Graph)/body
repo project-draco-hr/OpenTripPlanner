@@ -1,0 +1,19 @@
+{
+  for (  Stop stop : _dao.getAllStops()) {
+    String parentStation=stop.getParentStation();
+    if (parentStation != null) {
+      TransitStop stopVertex=(TransitStop)context.stationStopNodes.get(stop);
+      String agencyId=stop.getId().getAgencyId();
+      AgencyAndId parentStationId=new AgencyAndId(agencyId,parentStation);
+      Stop parentStop=_dao.getStopForId(parentStationId);
+      if (context.stationStopNodes.get(parentStop) instanceof TransitStation) {
+        TransitStation parentStopVertex=(TransitStation)context.stationStopNodes.get(parentStop);
+        new StationStopEdge(parentStopVertex,stopVertex);
+        new StationStopEdge(stopVertex,parentStopVertex);
+      }
+ else {
+        LOG.warn(graph.addBuilderAnnotation(new NonStationParentStation(stopVertex)));
+      }
+    }
+  }
+}
