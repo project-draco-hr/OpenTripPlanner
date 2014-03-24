@@ -1,0 +1,6 @@
+{
+  String[] lowerLeftParts=lowerLeft.split(",");
+  String[] upperRightParts=upperRight.split(",");
+  Envelope envelope=new Envelope(Double.parseDouble(lowerLeftParts[1]),Double.parseDouble(upperRightParts[1]),Double.parseDouble(lowerLeftParts[0]),Double.parseDouble(upperRightParts[0]));
+  return envelope;
+}

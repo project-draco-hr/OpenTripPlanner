@@ -5,7 +5,7 @@
   if (bikeRentalService == null)   return new BikeRentalStationList();
   Envelope envelope;
   if (lowerLeft != null) {
-    envelope=GraphInternals.getEnvelope(lowerLeft,upperRight);
+    envelope=getEnvelope(lowerLeft,upperRight);
   }
  else {
     envelope=new Envelope(-180,180,-90,90);
