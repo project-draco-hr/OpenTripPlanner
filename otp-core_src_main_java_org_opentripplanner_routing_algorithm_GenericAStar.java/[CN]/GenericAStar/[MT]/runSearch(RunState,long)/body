@@ -17,7 +17,7 @@
     }
  else     if (!runState.options.batch && runState.u_vertex == runState.rctx.target && runState.u.isFinal() && runState.u.allPathParsersAccept()) {
       runState.targetAcceptedStates.add(runState.u);
-      runState.foundPathWeight=u.getWeight();
+      runState.foundPathWeight=runState.u.getWeight();
       runState.options.rctx.debugOutput.foundPath();
       if (runState.targetAcceptedStates.size() >= nPaths) {
         LOG.debug("total vertices visited {}",runState.nVisited);
