@@ -1,6 +1,6 @@
 {
   Graph graph=graphService.getGraph();
-  TableTripPattern pattern=graph.getIndex().patternForId.get(string);
+  TripPattern pattern=graph.getIndex().patternForId.get(string);
   if (pattern != null) {
     List<Stop> stops=pattern.getStops();
     return Response.status(Status.OK).entity(StopShort.list(stops)).build();

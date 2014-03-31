@@ -4,8 +4,8 @@
   Route route=graph.getIndex().routeForId.get(routeId);
   if (route != null) {
     List<Trip> trips=Lists.newArrayList();
-    Collection<TableTripPattern> patterns=graph.getIndex().patternsForRoute.get(route);
-    for (    TableTripPattern pattern : patterns) {
+    Collection<TripPattern> patterns=graph.getIndex().patternsForRoute.get(route);
+    for (    TripPattern pattern : patterns) {
       trips.addAll(pattern.getTrips());
     }
     return Response.status(Status.OK).entity(TripShort.list(trips)).build();

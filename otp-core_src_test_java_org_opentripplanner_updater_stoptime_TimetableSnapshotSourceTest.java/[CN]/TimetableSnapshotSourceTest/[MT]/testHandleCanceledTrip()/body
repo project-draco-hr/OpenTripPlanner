@@ -1,7 +1,7 @@
 {
   AgencyAndId tripId=new AgencyAndId("agency","1.1");
   AgencyAndId tripId2=new AgencyAndId("agency","1.2");
-  TableTripPattern pattern=transitIndexService.getTripPatternForTrip(tripId);
+  TripPattern pattern=transitIndexService.getTripPatternForTrip(tripId);
   int tripIndex=pattern.getTripIndex(tripId);
   int tripIndex2=pattern.getTripIndex(tripId2);
   updater.applyTripUpdates(Arrays.asList(TripUpdate.parseFrom(cancellation)),"agency");

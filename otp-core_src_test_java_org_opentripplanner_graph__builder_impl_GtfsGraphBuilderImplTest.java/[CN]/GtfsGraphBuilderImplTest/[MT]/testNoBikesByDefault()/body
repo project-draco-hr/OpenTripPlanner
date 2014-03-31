@@ -8,7 +8,7 @@
   Graph graph=new Graph();
   _builder.buildGraph(graph,_extra);
   TransitIndexService index=graph.getService(TransitIndexService.class);
-  TableTripPattern pattern=index.getTripPatternForTrip(new AgencyAndId("a0","t0"));
+  TripPattern pattern=index.getTripPatternForTrip(new AgencyAndId("a0","t0"));
   List<Trip> trips=pattern.getTrips();
   assertEquals(BikeAccess.UNKNOWN,BikeAccess.fromTrip(withId(trips,new AgencyAndId("a0","t0"))));
   assertEquals(BikeAccess.ALLOWED,BikeAccess.fromTrip(withId(trips,new AgencyAndId("a0","t1"))));

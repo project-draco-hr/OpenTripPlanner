@@ -168,9 +168,9 @@
   ScheduledStopPattern firstStopPattern=ScheduledStopPattern.fromTrip(firstTrip,firstStopTimes);
   ScheduledStopPattern secondStopPattern=ScheduledStopPattern.fromTrip(secondTrip,secondStopTimes);
   ScheduledStopPattern thirdStopPattern=ScheduledStopPattern.fromTrip(thirdTrip,thirdStopTimes);
-  TableTripPattern firstTripPattern=new TableTripPattern(firstTrip,firstStopPattern,0);
-  TableTripPattern secondTripPattern=new TableTripPattern(secondTrip,secondStopPattern,1);
-  TableTripPattern thirdTripPattern=new TableTripPattern(thirdTrip,thirdStopPattern,2);
+  TripPattern firstTripPattern=new TripPattern(firstTrip,firstStopPattern,0);
+  TripPattern secondTripPattern=new TripPattern(secondTrip,secondStopPattern,1);
+  TripPattern thirdTripPattern=new TripPattern(thirdTrip,thirdStopPattern,2);
   firstTripPattern.addTrip(firstTrip,firstStopTimes);
   secondTripPattern.addTrip(secondTrip,secondStopTimes);
   thirdTripPattern.addTrip(thirdTrip,thirdStopTimes);

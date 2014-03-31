@@ -1,16 +1,16 @@
 {
-  MinMap<P2<TableTripPattern>,Transfer> bestTransfers=new MinMap<P2<TableTripPattern>,ProfileData.Transfer>();
+  MinMap<P2<TripPattern>,Transfer> bestTransfers=new MinMap<P2<TripPattern>,ProfileData.Transfer>();
   LOG.info("Finding transfers...");
   for (  Stop s0 : graph.getIndex().stopForId.values()) {
-    Collection<TableTripPattern> ps0=patternsForStop.get(s0);
+    Collection<TripPattern> ps0=patternsForStop.get(s0);
     for (    StopAtDistance sd : findTransitStops(s0.getLon(),s0.getLat(),WALK_RADIUS)) {
       Stop s1=sd.stop;
       if (s0 == s1)       continue;
-      Collection<TableTripPattern> ps1=patternsForStop.get(s1);
-      for (      TableTripPattern p0 : ps0) {
-        for (        TableTripPattern p1 : ps1) {
+      Collection<TripPattern> ps1=patternsForStop.get(s1);
+      for (      TripPattern p0 : ps0) {
+        for (        TripPattern p1 : ps1) {
           if (p0 == p1)           continue;
-          bestTransfers.putMin(new P2<TableTripPattern>(p0,p1),new Transfer(p0,p1,s0,s1,sd.distance));
+          bestTransfers.putMin(new P2<TripPattern>(p0,p1),new Transfer(p0,p1,s0,s1,sd.distance));
         }
       }
     }

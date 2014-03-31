@@ -58,15 +58,15 @@
     if (trip.getBlockId() != null && !trip.getBlockId().equals("")) {
       tripTimesForBlock.put(new BlockIdAndServiceId(tripTimes.getTrip()),tripTimes);
     }
-    TableTripPattern tableTripPattern=tableTripPatterns.get(stopPattern);
+    TripPattern tableTripPattern=tableTripPatterns.get(stopPattern);
     if (tableTripPattern == null) {
-      tableTripPattern=new TableTripPattern(trip.getRoute(),stopPattern);
+      tableTripPattern=new TripPattern(trip.getRoute(),stopPattern);
       tableTripPatterns.put(stopPattern,tableTripPattern);
     }
     tableTripPattern.addTrip(trip,stopTimes);
   }
-  TableTripPattern.generateUniqueNames(tableTripPatterns.values());
-  for (  TableTripPattern tableTripPattern : tableTripPatterns.values()) {
+  TripPattern.generateUniqueNames(tableTripPatterns.values());
+  for (  TripPattern tableTripPattern : tableTripPatterns.values()) {
     tableTripPattern.makePatternVerticesAndEdges(graph,context);
     tableTripPattern.setServiceCodes(graph.serviceCodes);
   }
@@ -84,7 +84,7 @@
   }
   loadTransfers(graph);
   if (_deleteUselessDwells)   deleteUselessDwells(graph);
-  for (  TableTripPattern tableTripPattern : tableTripPatterns.values()) {
+  for (  TripPattern tableTripPattern : tableTripPatterns.values()) {
     tableTripPattern.getScheduledTimetable().finish();
   }
   clearCachedData();

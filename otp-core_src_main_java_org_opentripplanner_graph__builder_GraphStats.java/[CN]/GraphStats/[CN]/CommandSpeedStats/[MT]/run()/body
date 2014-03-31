@@ -6,7 +6,7 @@
       for (      PatternHop ph : IterableLibrary.filter(v.getOutgoing(),PatternHop.class)) {
         double distance=ph.getDistance();
         if (distance < 3)         continue;
-        TableTripPattern ttp=ph.getPattern();
+        TripPattern ttp=ph.getPattern();
         List<Trip> trips=ttp.getTrips();
         int hop=ph.stopIndex;
         String route=ttp.getRoute().getId().toString();

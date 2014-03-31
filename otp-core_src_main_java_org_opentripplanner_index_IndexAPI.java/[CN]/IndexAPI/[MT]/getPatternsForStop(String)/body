@@ -3,7 +3,7 @@
   AgencyAndId id=AgencyAndId.convertFromString(string);
   Stop stop=graph.getIndex().stopForId.get(id);
   if (stop != null) {
-    Collection<TableTripPattern> patterns=graph.getIndex().patternsForStop.get(stop);
+    Collection<TripPattern> patterns=graph.getIndex().patternsForStop.get(stop);
     return Response.status(Status.OK).entity(PatternShort.list(patterns)).build();
   }
  else {

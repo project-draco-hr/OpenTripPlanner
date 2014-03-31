@@ -4,8 +4,8 @@ synchronized (this) {
       throw new ConcurrentModificationException("This TimetableResolver is read-only.");
     }
     boolean modified=false;
-    for (Iterator<TableTripPattern> it=timetables.keySet().iterator(); it.hasNext(); ) {
-      TableTripPattern pattern=it.next();
+    for (Iterator<TripPattern> it=timetables.keySet().iterator(); it.hasNext(); ) {
+      TripPattern pattern=it.next();
       SortedSet<Timetable> sortedTimetables=timetables.get(pattern);
       SortedSet<Timetable> toKeepTimetables=new TreeSet<Timetable>(new SortedTimetableComparator());
       for (      Timetable timetable : sortedTimetables) {

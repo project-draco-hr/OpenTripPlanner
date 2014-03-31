@@ -3,7 +3,7 @@
   RoutingRequest opt=ctx.opt;
   AgencyAndId tripId=opt.getStartingTransitTripId();
   TransitIndexService transitIndexService=ctx.graph.getService(TransitIndexService.class);
-  TableTripPattern tripPattern=transitIndexService.getTripPatternForTrip(tripId);
+  TripPattern tripPattern=transitIndexService.getTripPatternForTrip(tripId);
   if (tripPattern == null) {
     throw new IllegalArgumentException("Unknown/invalid trip ID: " + tripId);
   }
@@ -42,7 +42,7 @@
     int actDelta=0;
     for (    ServiceDay serviceDay : ctx.serviceDays) {
       ServiceDate serviceDate=serviceDay.getServiceDate();
-      TableTripPattern pattern=nextStop.getTripPattern();
+      TripPattern pattern=nextStop.getTripPattern();
       TripTimes tripTimes=pattern.getTripTimes(pattern.getTripIndex(tripId));
       if (ctx.timetableSnapshot != null) {
         Timetable timeTable=ctx.timetableSnapshot.resolve(pattern,serviceDate);

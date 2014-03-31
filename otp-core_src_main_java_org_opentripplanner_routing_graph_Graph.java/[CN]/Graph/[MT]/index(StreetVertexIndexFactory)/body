@@ -4,11 +4,11 @@
   LOG.debug("street index built.");
   LOG.debug("Rebuilding edge and vertex indices.");
   rebuildVertexAndEdgeIndices();
-  Set<TableTripPattern> tableTripPatterns=Sets.newHashSet();
+  Set<TripPattern> tableTripPatterns=Sets.newHashSet();
   for (  PatternArriveVertex pav : IterableLibrary.filter(this.getVertices(),PatternArriveVertex.class)) {
     tableTripPatterns.add(pav.getTripPattern());
   }
-  for (  TableTripPattern ttp : tableTripPatterns) {
+  for (  TripPattern ttp : tableTripPatterns) {
     if (ttp != null)     ttp.getScheduledTimetable().finish();
   }
   this.index=new GraphIndex(this);

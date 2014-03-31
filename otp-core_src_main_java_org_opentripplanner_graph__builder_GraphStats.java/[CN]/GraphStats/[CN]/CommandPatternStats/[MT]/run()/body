@@ -2,10 +2,10 @@
   LOG.info("counting number of trips per pattern...");
   try {
     writer.writeRecord(new String[]{"nTripsInPattern","frequency","cumulativePatterns","empiricalDistPatterns","cumulativeTrips","empiricalDistTrips"});
-    Set<TableTripPattern> patterns=new HashSet<TableTripPattern>();
+    Set<TripPattern> patterns=new HashSet<TripPattern>();
     for (    Vertex v : graph.getVertices()) {
       for (      PatternHop ph : IterableLibrary.filter(v.getOutgoing(),PatternHop.class)) {
-        TableTripPattern ttp=ph.getPattern();
+        TripPattern ttp=ph.getPattern();
         patterns.add(ttp);
       }
     }
@@ -13,7 +13,7 @@
     int nPatterns=patterns.size();
     LOG.info("total number of patterns is: {}",nPatterns);
     int nTrips=0;
-    for (    TableTripPattern ttp : patterns) {
+    for (    TripPattern ttp : patterns) {
       List<Trip> trips=ttp.getTrips();
       counts.add(trips.size());
       nTrips+=trips.size();

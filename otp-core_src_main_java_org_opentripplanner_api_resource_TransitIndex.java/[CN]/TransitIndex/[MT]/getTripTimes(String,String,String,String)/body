@@ -14,7 +14,7 @@
   if (calendarService == null) {
     return new TransitError("No calendar service found.");
   }
-  TableTripPattern pattern=transitIndexService.getTripPatternForTrip(trip);
+  TripPattern pattern=transitIndexService.getTripPatternForTrip(trip);
   if (pattern == null) {
     return new TransitError("Could not find trip pattern.");
   }

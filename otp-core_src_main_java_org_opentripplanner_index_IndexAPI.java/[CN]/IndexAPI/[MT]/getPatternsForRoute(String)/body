@@ -3,7 +3,7 @@
   AgencyAndId routeId=AgencyAndId.convertFromString(routeIdString);
   Route route=graph.getIndex().routeForId.get(routeId);
   if (route != null) {
-    List<TableTripPattern> patterns=graph.getIndex().patternsForRoute.get(route);
+    List<TripPattern> patterns=graph.getIndex().patternsForRoute.get(route);
     return Response.status(Status.OK).entity(PatternShort.list(patterns)).build();
   }
  else {

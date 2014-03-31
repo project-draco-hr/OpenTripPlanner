@@ -3,7 +3,7 @@
   AgencyAndId tripId=AgencyAndId.convertFromString(tripIdString);
   Trip trip=graph.getIndex().tripForId.get(tripId);
   if (trip != null) {
-    TableTripPattern pattern=graph.getIndex().patternForTrip.get(trip);
+    TripPattern pattern=graph.getIndex().patternForTrip.get(trip);
     Collection<Stop> stops=pattern.getStops();
     return Response.status(Status.OK).entity(StopShort.list(stops)).build();
   }

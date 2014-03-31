@@ -25,7 +25,7 @@
   trips=extractTrips(path);
   assertEquals("8.1",trips.get(0).getId().getId());
   assertEquals("4.2",trips.get(1).getId().getId());
-  @SuppressWarnings("deprecation") TableTripPattern pattern=((PatternStopVertex)graph.getVertex("agency_F_agency_4.3_1_D")).getTripPattern();
+  @SuppressWarnings("deprecation") TripPattern pattern=((PatternStopVertex)graph.getVertex("agency_F_agency_4.3_1_D")).getTripPattern();
   applyUpdateToTripPattern(pattern,"4.2","F",1,55200,55200,ScheduleRelationship.SCHEDULED,0,serviceDate);
   path=planJourney(options);
   trips=extractTrips(path);

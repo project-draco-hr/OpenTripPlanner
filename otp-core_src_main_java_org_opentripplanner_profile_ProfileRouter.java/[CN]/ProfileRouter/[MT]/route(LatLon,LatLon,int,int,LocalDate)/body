@@ -8,8 +8,8 @@
   LOG.info("to stops: {}",toStops);
   this.window=new TimeWindow(fromTime,toTime,data.servicesRunning(date));
   Set<PatternRide> queue=Sets.newHashSet();
-  for (  Entry<TableTripPattern,StopAtDistance> entry : fromStops.entrySet()) {
-    TableTripPattern pattern=entry.getKey();
+  for (  Entry<TripPattern,StopAtDistance> entry : fromStops.entrySet()) {
+    TripPattern pattern=entry.getKey();
     StopAtDistance sd=entry.getValue();
     for (int i=0; i < pattern.getStops().size(); ++i) {
       if (pattern.getStops().get(i) == sd.stop) {

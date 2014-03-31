@@ -8,7 +8,7 @@ synchronized (this) {
     for (    Timetable tt : dirty) {
       tt.finish();
     }
-    ret.timetables=(HashMap<TableTripPattern,SortedSet<Timetable>>)this.timetables.clone();
+    ret.timetables=(HashMap<TripPattern,SortedSet<Timetable>>)this.timetables.clone();
     this.dirty.clear();
   }
   ret.dirty=null;

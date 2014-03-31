@@ -70,11 +70,11 @@
   pattern.setStops(stops);
   int wheelchair=0;
   if (trip.getWheelchairAccessible() == 1) {
-    wheelchair=TableTripPattern.FLAG_WHEELCHAIR_ACCESSIBLE;
+    wheelchair=TripPattern.FLAG_WHEELCHAIR_ACCESSIBLE;
   }
   int bikes=0;
   if (BikeAccess.fromTrip(trip) == BikeAccess.ALLOWED) {
-    bikes=TableTripPattern.FLAG_BIKES_ALLOWED;
+    bikes=TripPattern.FLAG_BIKES_ALLOWED;
   }
   pattern.setTripFlags(wheelchair | bikes);
   return new T2<FrequencyBasedTripPattern,List<FrequencyHop>>(pattern,hops);

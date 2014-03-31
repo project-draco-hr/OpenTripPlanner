@@ -4,7 +4,7 @@
   Stop stop=graph.getIndex().stopForId.get(id);
   if (stop != null) {
     Set<Route> routes=Sets.newHashSet();
-    for (    TableTripPattern pattern : graph.getIndex().patternsForStop.get(stop)) {
+    for (    TripPattern pattern : graph.getIndex().patternsForStop.get(stop)) {
       routes.add(pattern.route);
     }
     return Response.status(Status.OK).entity(RouteShort.list(routes)).build();
