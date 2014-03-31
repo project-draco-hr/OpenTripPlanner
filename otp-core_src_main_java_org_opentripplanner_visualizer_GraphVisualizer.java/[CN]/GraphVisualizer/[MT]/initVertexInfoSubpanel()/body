@@ -92,7 +92,7 @@
       }
       ListModel model=new TripPatternListModel(pattern,stopIndex);
       departurePattern.setModel(model);
-      Trip trip=pattern.getExemplar();
+      Trip trip=null;
       serviceIdLabel.setText(trip.getServiceId().toString());
     }
     private void getMetadata(    Object selected){

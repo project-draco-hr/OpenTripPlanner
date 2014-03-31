@@ -11,10 +11,8 @@
   Graph graph=new Graph();
   factory.run(graph);
   for (  Edge edge : graph.getEdges()) {
-    if (edge instanceof FrequencyBoard) {
-      FrequencyBoard board=(FrequencyBoard)edge;
-      FrequencyBasedTripPattern pattern=board.getPattern();
-      assertTrue(pattern.getBikesAllowed());
+    if (edge instanceof TransitBoardAlight) {
+      TripPattern pattern=((TransitBoardAlight)edge).getPattern();
     }
   }
 }

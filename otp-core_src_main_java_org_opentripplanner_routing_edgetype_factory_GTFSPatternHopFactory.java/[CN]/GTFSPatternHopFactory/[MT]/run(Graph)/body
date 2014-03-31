@@ -1,5 +1,4 @@
 {
-  LOG.info("BEGIN HOP GENERATION");
   if (fareServiceFactory == null) {
     fareServiceFactory=new DefaultFareServiceFactory();
   }
@@ -20,7 +19,7 @@
   }
   TRIP:   for (  Trip trip : trips) {
     if (++tripCount % 100000 == 0) {
-      LOG.debug("trips=" + tripCount + "/"+ trips.size());
+      LOG.debug("loading trips {}/{}",tripCount,trips.size());
     }
     if (!_calendarService.getServiceIds().contains(trip.getServiceId())) {
       LOG.warn(graph.addBuilderAnnotation(new TripUndefinedService(trip)));
@@ -35,33 +34,28 @@
       LOG.warn(graph.addBuilderAnnotation(new TripDegenerate(trip)));
       continue TRIP;
     }
-    List<Frequency> frequencies=frequenciesForTrip.get(trip);
-    if (frequencies != null && !frequencies.isEmpty()) {
-      Collections.sort(frequencies,new Comparator<Frequency>(){
-        @Override public int compare(        Frequency o1,        Frequency o2){
-          return o1.getStartTime() - o2.getStartTime();
-        }
-      }
-);
-      Frequency frequency=frequencies.get(0);
-      if (frequencies.size() > 1 || frequency.getStartTime() != stopTimes.get(0).getDepartureTime() || frequency.getEndTime() - frequency.getStartTime() > frequency.getHeadwaySecs()) {
-        continue TRIP;
-      }
-    }
     StopPattern stopPattern=new StopPattern(stopTimes);
-    TripTimes tripTimes=new TripTimes(trip,stopTimes);
-    if (trip.getBlockId() != null && !trip.getBlockId().equals("")) {
-      tripTimesForBlock.put(new BlockIdAndServiceId(tripTimes.getTrip()),tripTimes);
+    TripPattern tripPattern=tripPatterns.get(stopPattern);
+    if (tripPattern == null) {
+      tripPattern=new TripPattern(trip.getRoute(),stopPattern);
+      tripPatterns.put(stopPattern,tripPattern);
     }
-    TripPattern tableTripPattern=tableTripPatterns.get(stopPattern);
-    if (tableTripPattern == null) {
-      tableTripPattern=new TripPattern(trip.getRoute(),stopPattern);
-      tableTripPatterns.put(stopPattern,tableTripPattern);
+    List<Frequency> frequencies=frequenciesForTrip.get(trip);
+    if (frequencies != null && !(frequencies.isEmpty())) {
+      for (      Frequency freq : frequencies) {
+        tripPattern.add(new FrequencyTripTimes(trip,stopTimes,freq));
+      }
     }
-    tableTripPattern.addTrip(trip,stopTimes);
+ else {
+      TripTimes tripTimes=new TripTimes(trip,stopTimes);
+      tripPattern.add(tripTimes);
+      if (trip.getBlockId() != null && !trip.getBlockId().equals("")) {
+        tripTimesForBlock.put(new BlockIdAndServiceId(trip),tripTimes);
+      }
+    }
   }
-  TripPattern.generateUniqueNames(tableTripPatterns.values());
-  for (  TripPattern tableTripPattern : tableTripPatterns.values()) {
+  TripPattern.generateUniqueNames(tripPatterns.values());
+  for (  TripPattern tableTripPattern : tripPatterns.values()) {
     tableTripPattern.makePatternVerticesAndEdges(graph,context);
     tableTripPattern.setServiceCodes(graph.serviceCodes);
   }
@@ -79,11 +73,10 @@
   }
   loadTransfers(graph);
   if (_deleteUselessDwells)   deleteUselessDwells(graph);
-  for (  TripPattern tableTripPattern : tableTripPatterns.values()) {
+  for (  TripPattern tableTripPattern : tripPatterns.values()) {
     tableTripPattern.getScheduledTimetable().finish();
   }
   clearCachedData();
   graph.putService(FareService.class,fareServiceFactory.makeFareService());
   graph.putService(OnBoardDepartService.class,new OnBoardDepartServiceImpl());
-  LOG.info("END HOP GENERATION");
 }
