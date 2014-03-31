@@ -45,11 +45,6 @@
 );
       Frequency frequency=frequencies.get(0);
       if (frequencies.size() > 1 || frequency.getStartTime() != stopTimes.get(0).getDepartureTime() || frequency.getEndTime() - frequency.getStartTime() > frequency.getHeadwaySecs()) {
-        T2<FrequencyBasedTripPattern,List<FrequencyHop>> patternAndHops=makeFrequencyPattern(graph,trip,stopTimes);
-        List<FrequencyHop> hops=patternAndHops.getSecond();
-        FrequencyBasedTripPattern frequencyPattern=patternAndHops.getFirst();
-        if (frequencyPattern != null)         frequencyPattern.createRanges(frequencies);
-        createGeometry(graph,trip,stopTimes,hops);
         continue TRIP;
       }
     }
