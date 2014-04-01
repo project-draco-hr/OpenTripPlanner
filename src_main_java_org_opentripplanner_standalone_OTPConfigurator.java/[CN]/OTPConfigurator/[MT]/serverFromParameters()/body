@@ -1,7 +1,6 @@
 {
   if (params.server) {
-    OTPComponentProviderFactory cpf=getComponentProviderFactory();
-    GrizzlyServer server=new GrizzlyServer(cpf,params);
+    GrizzlyServer server=new GrizzlyServer(params,getServer());
     return server;
   }
  else   return null;

@@ -1,0 +1,28 @@
+{
+  LOG.info("Wiring up and configuring server.");
+  graphService=gs;
+  routingRequest=new RoutingRequest();
+  sptService=new GenericAStar();
+  metadataService=new MetadataService(graphService);
+  if (params.longDistance) {
+    LongDistancePathService pathService=new LongDistancePathService();
+    pathService.setTimeout(10);
+    this.pathService=pathService;
+  }
+ else {
+    RetryingPathServiceImpl pathService=new RetryingPathServiceImpl();
+    pathService.setFirstPathTimeout(10.0);
+    pathService.setMultiPathTimeout(1.0);
+    this.pathService=pathService;
+  }
+  planGenerator=new PlanGenerator(graphService,pathService);
+  if (params.analyst) {
+    sampleFactory=new SampleFactory();
+    geometryIndex=new GeometryIndex(graphService);
+    tileCache=new TileCache(sampleFactory);
+    sptCache=new SPTCache(sptService,graphService);
+    renderer=new Renderer(tileCache,sptCache);
+    sampleGridRenderer=new SampleGridRenderer(graphService,sptService);
+    isoChroneSPTRenderer=new IsoChroneSPTRendererAccSampling(graphService,sptService,sampleGridRenderer);
+  }
+}

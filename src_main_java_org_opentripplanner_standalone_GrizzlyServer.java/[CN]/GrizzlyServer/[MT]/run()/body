@@ -5,7 +5,7 @@
   ThreadPoolConfig threadPoolConfig=ThreadPoolConfig.defaultConfig().setCorePoolSize(1).setMaxPoolSize(Runtime.getRuntime().availableProcessors());
   networkListener.getTransport().setWorkerThreadPoolConfig(threadPoolConfig);
   httpServer.addListener(networkListener);
-  Application app=new OTPApplication();
+  Application app=new OTPApplication(server);
   HttpHandler dynamicHandler=ContainerFactory.createContainer(HttpHandler.class,app);
   httpServer.getServerConfiguration().addHttpHandler(dynamicHandler,"/otp");
   HttpHandler staticHandler=new CLStaticHttpHandler(GrizzlyServer.class.getClassLoader());
