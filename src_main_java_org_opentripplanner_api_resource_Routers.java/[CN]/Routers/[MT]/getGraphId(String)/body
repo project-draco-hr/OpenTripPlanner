@@ -1,5 +1,5 @@
 {
   RouterInfo routerInfo=getRouterInfo(routerId);
-  if (routerInfo == null)   throw new WebApplicationException(Responses.notFound().entity("Graph id '" + routerId + "' not registered.\n").type("text/plain").build());
+  if (routerInfo == null)   throw new WebApplicationException(Response.status(Status.NOT_FOUND).entity("Graph id '" + routerId + "' not registered.\n").type("text/plain").build());
   return routerInfo;
 }

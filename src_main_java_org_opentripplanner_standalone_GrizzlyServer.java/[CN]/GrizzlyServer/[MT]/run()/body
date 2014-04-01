@@ -8,7 +8,7 @@
   Application app=new OTPApplication(server);
   HttpHandler dynamicHandler=ContainerFactory.createContainer(HttpHandler.class,app);
   httpServer.getServerConfiguration().addHttpHandler(dynamicHandler,"/otp");
-  HttpHandler staticHandler=new CLStaticHttpHandler(GrizzlyServer.class.getClassLoader());
+  HttpHandler staticHandler=new CLStaticHttpHandler(GrizzlyServer.class.getClassLoader(),"/");
   httpServer.getServerConfiguration().addHttpHandler(staticHandler,"/");
   try {
     httpServer.start();

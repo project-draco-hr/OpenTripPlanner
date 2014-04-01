@@ -1,8 +1,0 @@
-{
-  String callback=request.getQueryParameters().getFirst("callback");
-  if (callback != null) {
-    ContainerResponseWriter writer=response.getContainerResponseWriter();
-    response.setContainerResponseWriter(new JsonpResponseWriter(writer,callback));
-  }
-  return response;
-}
