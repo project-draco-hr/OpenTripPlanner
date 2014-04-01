@@ -1,0 +1,10 @@
+{
+  final URI uri=new URI("http://localhost:3232");
+  System.out.println("Starting grizzly...");
+  OTPApplication otpApplication=new OTPApplication();
+  ApplicationHandler appHandler=new ApplicationHandler(otpApplication);
+  HttpServer server=GrizzlyHttpServerFactory.createHttpServer(uri,appHandler);
+  server.start();
+  System.in.read();
+  System.exit(0);
+}
