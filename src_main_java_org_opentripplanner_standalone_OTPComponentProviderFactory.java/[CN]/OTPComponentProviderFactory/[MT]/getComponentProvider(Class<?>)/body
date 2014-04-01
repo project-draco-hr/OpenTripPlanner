@@ -1,8 +1,0 @@
-{
-  if (!bindings.containsKey(c)) {
-    LOG.debug("Requested component provider for unbound " + c);
-    return null;
-  }
-  LOG.debug("Returning component provider for " + c);
-  return new JerseyComponentProvider(bindings.get(c));
-}

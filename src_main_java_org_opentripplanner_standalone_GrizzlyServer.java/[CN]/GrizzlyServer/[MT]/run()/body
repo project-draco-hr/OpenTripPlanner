@@ -5,19 +5,11 @@
   ThreadPoolConfig threadPoolConfig=ThreadPoolConfig.defaultConfig().setCorePoolSize(1).setMaxPoolSize(Runtime.getRuntime().availableProcessors());
   networkListener.getTransport().setWorkerThreadPoolConfig(threadPoolConfig);
   httpServer.addListener(networkListener);
-  ResourceConfig rc=new PackagesResourceConfig("org.opentripplanner.api");
-  rc.getProperties().put(ResourceConfig.PROPERTY_CONTAINER_REQUEST_FILTERS,new String[]{AuthFilter.class.getName(),RewriteFilter.class.getName()});
-  rc.getProperties().put(ResourceConfig.PROPERTY_CONTAINER_RESPONSE_FILTERS,new String[]{JsonpFilter.class.getName()});
-  HttpHandler handler=ContainerFactory.createContainer(HttpHandler.class,rc,iocFactory);
-  httpServer.getServerConfiguration().addHttpHandler(handler,"/otp");
-  HttpHandler staticHandler=makeClientStaticHandler();
+  Application app=new OTPApplication();
+  HttpHandler dynamicHandler=ContainerFactory.createContainer(HttpHandler.class,app);
+  httpServer.getServerConfiguration().addHttpHandler(dynamicHandler,"/otp");
+  HttpHandler staticHandler=new CLStaticHttpHandler(GrizzlyServer.class.getClassLoader());
   httpServer.getServerConfiguration().addHttpHandler(staticHandler,"/");
-  GraphService gs=(GraphService)iocFactory.getComponentProvider(GraphService.class).getInstance();
-  Graph graph=gs.getGraph();
-  httpServer.getServerConfiguration().addHttpHandler(new OTPHttpHandler(graph),"/test/*");
-  for (  NetworkListener l : httpServer.getListeners()) {
-    l.getFileCache().setEnabled(false);
-  }
   try {
     httpServer.start();
     LOG.info("Grizzly server running.");
@@ -31,6 +23,6 @@ catch (  IOException ioe) {
   }
 catch (  InterruptedException ie) {
     LOG.info("Interrupted, shutting down.");
-    httpServer.stop();
   }
+  httpServer.shutdown();
 }
