@@ -1,6 +1,6 @@
 {
   RouterList routerList=new RouterList();
-  for (  String id : graphService.getRouterIds()) {
+  for (  String id : server.graphService.getRouterIds()) {
     routerList.routerInfo.add(getRouterInfo(id));
   }
   return routerList;
