@@ -1,0 +1,4 @@
+{
+  String message=String.format("Incorrect password for OpenTripPlanner user '%s'",user);
+  throw new WebApplicationException(Response.status(Status.UNAUTHORIZED).header(HttpHeaders.WWW_AUTHENTICATE,"Basic realm=\"OpenTripPlanner\"").entity(message).build());
+}

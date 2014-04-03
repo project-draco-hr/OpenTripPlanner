@@ -1,20 +1,19 @@
 {
-  String method=containerRequest.getMethod();
-  if (method.equals("GET")) {
-    return;
-  }
-  String auth=containerRequest.getHeaderString("authorization");
-  if (auth == null) {
-    throw unauthorized;
-  }
-  if (auth.startsWith("Basic ") || auth.startsWith("basic ")) {
-    auth=auth.replaceFirst("[Bb]asic ","");
-    String userColonPass=Base64.base64Decode(auth);
-    if (!userColonPass.equals("admin:admin")) {
-      throw unauthorized;
-    }
-  }
+  String auth=containerRequest.getHeaderString(HttpHeaders.AUTHORIZATION);
+  if (auth != null) {
+    if (auth.startsWith("Basic ") || auth.startsWith("basic ")) {
+      if (!containerRequest.getSecurityContext().isSecure())       unencrypted();
+      auth=auth.replaceFirst("[Bb]asic ","");
+      String[] split=Base64.base64Decode(auth).split(":",2);
+      if (split.length != 2)       return;
+      String user=split[0];
+      String pass=split[1];
+      if (pass.equals(passwords.get(user))) {
+        containerRequest.setSecurityContext(makeSecurityContext(user,user));
+      }
  else {
-    throw unauthorized;
+        unauthenticated(user);
+      }
+    }
   }
 }

@@ -1,0 +1,27 @@
+{
+  return new SecurityContext(){
+    @Override public Principal getUserPrincipal(){
+      return new Principal(){
+        @Override public String getName(){
+          return name;
+        }
+      }
+;
+    }
+    @Override public boolean isUserInRole(    String role){
+      for (      String r : roles) {
+        if (r.equals(role)) {
+          return true;
+        }
+      }
+      return false;
+    }
+    @Override public String getAuthenticationScheme(){
+      return SecurityContext.BASIC_AUTH;
+    }
+    @Override public boolean isSecure(){
+      return true;
+    }
+  }
+;
+}
