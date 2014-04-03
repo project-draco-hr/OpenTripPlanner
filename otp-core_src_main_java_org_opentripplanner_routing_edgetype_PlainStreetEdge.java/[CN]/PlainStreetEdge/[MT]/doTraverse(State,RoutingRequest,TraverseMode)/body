@@ -106,9 +106,6 @@ long turnTime=(long)Math.ceil(realTurnCost);
 time+=turnTime;
 weight+=options.turnReluctance * realTurnCost;
 }
-int timeLong=(int)Math.ceil(time);
-s1.incrementTimeInSeconds(timeLong);
-s1.incrementWeight(weight);
 if (walkingBike || TraverseMode.BICYCLE.equals(traverseMode)) {
 if (!(backWalkingBike || TraverseMode.BICYCLE.equals(backMode))) {
 s1.incrementTimeInSeconds(options.bikeSwitchTime);
@@ -119,9 +116,25 @@ if (!traverseMode.isDriving()) {
 s1.incrementWalkDistance(length);
 }
 if (s1.weHaveWalkedTooFar(options)) {
+if (options.isSoftWalkLimiting()) {
+double overageLength;
+if (s0.getWalkDistance() <= options.getMaxWalkDistance() && s1.getWalkDistance() > options.getMaxWalkDistance()) {
+weight+=options.getSoftWalkPenalty();
+overageLength=s1.getWalkDistance() - options.getMaxWalkDistance();
+}
+ else {
+overageLength=length;
+}
+weight+=options.getSoftWalkOverageRate() * overageLength;
+}
+ else {
 LOG.debug("Too much walking. Bailing.");
 return null;
 }
+}
+int timeLong=(int)Math.ceil(time);
+s1.incrementTimeInSeconds(timeLong);
+s1.incrementWeight(weight);
 s1.addAlerts(notes);
 if (this.isToll() && traverseMode.isDriving()) {
 s1.addAlert(Alert.createSimpleAlerts("Toll road"));

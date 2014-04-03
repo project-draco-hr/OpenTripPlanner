@@ -5,14 +5,14 @@
   planner.setModes(Arrays.asList(new TraverseModeSet("BICYCLE,TRANSIT")));
   Response response=planner.getItineraries();
   Itinerary itinerary=response.getPlan().itinerary.get(0);
-  Long duration=itinerary.duration;
+  Double duration=itinerary.duration;
   planner.setBikeSwitchTime(Arrays.asList(30));
   response=planner.getItineraries();
   itinerary=response.getPlan().itinerary.get(0);
-  assertTrue(duration + 30000L == itinerary.duration);
+  assertTrue(duration + 30.0 == itinerary.duration);
   planner.setBikeSwitchCost(Arrays.asList(99));
   response=planner.getItineraries();
   itinerary=response.getPlan().itinerary.get(0);
   assertTrue(duration < itinerary.duration);
-  assertTrue(duration + 30000L > itinerary.duration);
+  assertTrue(duration + 30.0 > itinerary.duration);
 }

@@ -18,6 +18,7 @@
   Geometry geometry=GeometryUtils.getGeometryFactory().createLineString(coordinates);
   leg.legGeometry=PolylineEncoder.createEncodings(geometry);
   leg.interlineWithPreviousLeg=states[0].getBackEdge() instanceof PatternInterlineDwell;
+  addFrequencyFields(states,leg);
   leg.rentedBike=states[0].isBikeRenting() && states[states.length - 1].isBikeRenting();
   return leg;
 }

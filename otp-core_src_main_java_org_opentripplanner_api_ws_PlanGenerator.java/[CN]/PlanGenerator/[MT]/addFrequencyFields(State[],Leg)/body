@@ -1,0 +1,11 @@
+{
+  if (states[0].getBackEdge() instanceof FrequencyBoard) {
+    State preBoardState=states[0].getBackState();
+    FrequencyBoard fb=(FrequencyBoard)states[0].getBackEdge();
+    FrequencyBasedTripPattern pt=fb.getPattern();
+    int boardTime=preBoardState.getServiceDay().secondsSinceMidnight(preBoardState.getTimeSeconds());
+    int period=pt.getPeriod(fb.getStopIndex(),boardTime);
+    leg.isNonExactFrequency=!pt.isExact();
+    leg.headway=period;
+  }
+}

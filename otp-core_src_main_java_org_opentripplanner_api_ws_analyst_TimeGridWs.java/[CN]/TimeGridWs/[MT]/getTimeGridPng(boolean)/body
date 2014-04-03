@@ -1,0 +1,90 @@
+{
+  if (precisionMeters < 10)   throw new IllegalArgumentException("Too small precisionMeters: " + precisionMeters);
+  RoutingRequest sptRequest=buildRequest(0);
+  SampleGridRequest tgRequest=new SampleGridRequest();
+  tgRequest.setMaxTimeSec(maxTimeSec);
+  tgRequest.setPrecisionMeters(precisionMeters);
+  if (coordinateOrigin != null)   tgRequest.setCoordinateOrigin(new GenericLocation(null,coordinateOrigin).getCoordinate());
+  ZSampleGrid<WTWD> sampleGrid=sampleGridRenderer.getSampleGrid(tgRequest,sptRequest);
+  int cols=sampleGrid.getXMax() - sampleGrid.getXMin() + 1;
+  int rows=sampleGrid.getYMax() - sampleGrid.getYMin() + 1;
+  int channels=4;
+  ImageInfo imgInfo=new ImageInfo(cols,rows,8,true,false,false);
+  int[][] rgba=new int[rows][cols * channels];
+  ByteArrayOutputStream baos=new ByteArrayOutputStream();
+  PngWriter pw=new PngWriter(baos,imgInfo);
+  pw.getMetadata().setText(PngChunkTextVar.KEY_Software,"OTPA");
+  pw.getMetadata().setText(PngChunkTextVar.KEY_Creation_Time,new Date().toString());
+  pw.getMetadata().setText(PngChunkTextVar.KEY_Description,"Sample grid bitmap");
+  String gridCornerStr=String.format(Locale.US,"%.8f,%.8f",sampleGrid.getCenter().y + sampleGrid.getYMin() * sampleGrid.getCellSize().y,sampleGrid.getCenter().x + sampleGrid.getXMin() * sampleGrid.getCellSize().x);
+  String gridCellSzStr=String.format(Locale.US,"%.12f,%.12f",sampleGrid.getCellSize().y,sampleGrid.getCellSize().x);
+  String offRoadDistStr=String.format(Locale.US,"%f",sampleGridRenderer.getOffRoadDistanceMeters(precisionMeters));
+  PngChunkTEXT gridCornerChunk=new PngChunkTEXT(imgInfo);
+  gridCornerChunk.setKeyVal(OTPA_GRID_CORNER,gridCornerStr);
+  pw.getChunksList().queue(gridCornerChunk);
+  PngChunkTEXT gridCellSzChunk=new PngChunkTEXT(imgInfo);
+  gridCellSzChunk.setKeyVal(OTPA_GRID_CELL_SIZE,gridCellSzStr);
+  pw.getChunksList().queue(gridCellSzChunk);
+  PngChunkTEXT offRoadDistChunk=new PngChunkTEXT(imgInfo);
+  offRoadDistChunk.setKeyVal(OTPA_OFFROAD_DIST,offRoadDistStr);
+  pw.getChunksList().queue(offRoadDistChunk);
+  double unit;
+switch (zDataType) {
+case TIME:
+    unit=1.0;
+  break;
+case BOARDINGS:
+unit=1000.0;
+break;
+case WALK_DISTANCE:
+unit=10.0;
+break;
+default :
+throw new IllegalArgumentException("Unsupported Z DataType.");
+}
+for (ZSamplePoint<WTWD> p : sampleGrid) {
+WTWD z=p.getZ();
+int row=p.getY() - sampleGrid.getYMin();
+int col=p.getX() - sampleGrid.getXMin();
+double zz;
+switch (zDataType) {
+case TIME:
+zz=z.wTime / z.w;
+break;
+case BOARDINGS:
+zz=z.wBoardings / z.w;
+break;
+case WALK_DISTANCE:
+zz=z.wWalkDist / z.w;
+break;
+default :
+throw new IllegalArgumentException("Unsupported Z DataType.");
+}
+int iz;
+if (Double.isInfinite(zz)) {
+iz=65535;
+}
+ else {
+iz=ImageLineHelper.clampTo_0_65535((int)Math.round(zz * unit));
+if (iz == 65535) iz=65534;
+}
+int id=ImageLineHelper.clampTo_0_255((int)Math.round(z.d / precisionMeters * 100));
+int offset=col * channels;
+rgba[row][offset + 0]=(iz & 0xFF);
+rgba[row][offset + 1]=(iz >> 8);
+rgba[row][offset + 2]=id;
+rgba[row][offset + 3]=255;
+}
+for (int row=0; row < rgba.length; row++) {
+ImageLineInt iline=new ImageLineInt(imgInfo,rgba[row]);
+pw.writeRow(iline,row);
+}
+pw.end();
+CacheControl cc=new CacheControl();
+cc.setNoCache(true);
+byte[] data=baos.toByteArray();
+if (base64) {
+data=Base64.encode(data);
+}
+return Response.ok().cacheControl(cc).entity(data).header(OTPA_GRID_CORNER,gridCornerStr).header(OTPA_GRID_CELL_SIZE,gridCellSzStr).header(OTPA_OFFROAD_DIST,offRoadDistStr).build();
+}

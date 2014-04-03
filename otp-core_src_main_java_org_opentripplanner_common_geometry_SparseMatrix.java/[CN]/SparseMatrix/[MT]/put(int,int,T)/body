@@ -1,8 +1,10 @@
 {
-  x+=0x7FFFFFFF;
-  y+=0x7FFFFFFF;
-  long x0=x >> shift;
-  long y0=y >> shift;
+  if (x < xMin)   xMin=x;
+  if (x > xMax)   xMax=x;
+  if (y < yMin)   yMin=y;
+  if (y > yMax)   yMax=y;
+  long x0=((long)x + INDEX_OFFSET) >> shift;
+  long y0=((long)y + INDEX_OFFSET) >> shift;
   Long key=x0 + (y0 << 32);
   T[] ts=chunks.get(key);
   if (ts == null) {

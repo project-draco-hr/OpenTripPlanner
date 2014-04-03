@@ -125,11 +125,6 @@
         newStates.add(newState);
       }
       if (stopNo != lastBoardStop) {
-        if (stop.stopVertex.isLocal() && nBoardings > 1) {
-          createdStates.addAll(newStates);
-          states.addAll(newStates);
-          continue;
-        }
         TRYBOARD:         for (        RaptorState oldState : states) {
           if (oldState.nBoardings != nBoardings - 1)           continue;
           if (oldState.getRoute() == route)           continue;
