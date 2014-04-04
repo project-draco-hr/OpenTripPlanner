@@ -7,4 +7,8 @@
     port=DEFAULT_PORT;
     new AvailablePort().validate(port);
   }
+  if (server && securePort == null) {
+    securePort=DEFAULT_SECURE_PORT;
+    new AvailablePort().validate(securePort);
+  }
 }

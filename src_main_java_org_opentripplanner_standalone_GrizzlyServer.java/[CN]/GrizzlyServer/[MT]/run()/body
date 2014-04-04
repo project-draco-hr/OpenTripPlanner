@@ -1,15 +1,16 @@
 {
-  LOG.info("Starting OTP Grizzly server on port {} using graphs at {}",params.port,params.graphDirectory);
+  LOG.info("Starting OTP Grizzly server on ports {} (HTTP) and {} (HTTPS) of interface {}",params.port,params.securePort,params.bindAddress);
+  LOG.info("Base path is X, graphs are at {}",params.graphDirectory);
   HttpServer httpServer=new HttpServer();
   SSLContextConfigurator sslConfig=new SSLContextConfigurator();
   sslConfig.setKeyStoreFile("/var/otp/ssh/keystore_server");
   sslConfig.setKeyStorePass("opentrip");
-  NetworkListener httpListener=new NetworkListener("otp_insecure_listener","0.0.0.0",params.port);
+  NetworkListener httpListener=new NetworkListener("otp_insecure",params.bindAddress,params.port);
   ThreadPoolConfig threadPoolConfig=ThreadPoolConfig.defaultConfig().setCorePoolSize(1).setMaxPoolSize(Runtime.getRuntime().availableProcessors());
   httpListener.getTransport().setWorkerThreadPoolConfig(threadPoolConfig);
   httpListener.setSecure(false);
   httpServer.addListener(httpListener);
-  NetworkListener httpsListener=new NetworkListener("otp_secure_listener","0.0.0.0",params.port + 1);
+  NetworkListener httpsListener=new NetworkListener("otp_secure",params.bindAddress,params.securePort);
   httpsListener.getTransport().setWorkerThreadPoolConfig(threadPoolConfig);
   httpsListener.setSecure(true);
   httpsListener.setSSLEngineConfig(new SSLEngineConfigurator(sslConfig).setClientMode(false).setNeedClientAuth(false));
