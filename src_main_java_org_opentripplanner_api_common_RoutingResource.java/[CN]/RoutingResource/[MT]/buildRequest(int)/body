@@ -1,5 +1,5 @@
 {
-  RoutingRequest request=prototypeRoutingRequest.clone();
+  RoutingRequest request=otpServer.routingRequest.clone();
   request.setFromString(get(fromPlace,n,request.getFromPlace().getRepresentation()));
   request.setToString(get(toPlace,n,request.getToPlace().getRepresentation()));
   request.setRouterId(routerId);
@@ -7,8 +7,8 @@
     String d=get(date,n,null);
     String t=get(time,n,null);
     TimeZone tz;
-    if (graphService != null) {
-      tz=graphService.getGraph(request.routerId).getTimeZone();
+    if (otpServer.graphService != null) {
+      tz=otpServer.graphService.getGraph(request.routerId).getTimeZone();
     }
  else {
       LOG.warn("no graph service available, using default timezone.");
