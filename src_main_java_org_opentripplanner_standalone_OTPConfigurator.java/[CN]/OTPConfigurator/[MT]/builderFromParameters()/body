@@ -91,9 +91,9 @@ graphBuilder.addGraphBuilder(embeddedConfigBuilder);
 }
 if (params.elevation) {
 File cacheDirectory=new File(params.cacheDirectory,"ned");
-NEDGridCoverageFactory ngcf=new NEDGridCoverageFactoryImpl(cacheDirectory);
-GraphBuilder nedBuilder=new NEDGraphBuilderImpl(ngcf);
-graphBuilder.addGraphBuilder(nedBuilder);
+ElevationGridCoverageFactory gcf=new NEDGridCoverageFactoryImpl(cacheDirectory);
+GraphBuilder elevationBuilder=new ElevationGraphBuilderImpl(gcf);
+graphBuilder.addGraphBuilder(elevationBuilder);
 }
 graphBuilder.setSerializeGraph(!params.inMemory);
 return graphBuilder;
