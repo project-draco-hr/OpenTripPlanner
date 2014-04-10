@@ -16,6 +16,7 @@
   Graph graph=mock(Graph.class);
   RoutingRequest routingRequest=mock(RoutingRequest.class);
   ServiceDay serviceDay=mock(ServiceDay.class);
+  when(graph.getTimeZone()).thenReturn(TimeZone.getTimeZone("Greenwhich"));
   GeometryFactory geometryFactory=GeometryUtils.getGeometryFactory();
   CoordinateSequenceFactory coordinateSequenceFactory=geometryFactory.getCoordinateSequenceFactory();
   CoordinateSequence coordinateSequence=coordinateSequenceFactory.create(coordinates);

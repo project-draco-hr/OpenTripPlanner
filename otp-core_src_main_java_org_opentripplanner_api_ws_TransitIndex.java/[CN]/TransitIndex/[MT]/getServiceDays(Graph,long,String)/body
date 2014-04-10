@@ -1,8 +1,11 @@
 {
-  final long SEC_IN_DAY=60 * 60 * 24;
+  Calendar c=Calendar.getInstance();
+  c.setTime(new Date(epochSec * 1000));
+  c.setTimeZone(graph.getTimeZone());
+  ServiceDate serviceDate=new ServiceDate(c);
   List<ServiceDay> serviceDays=new ArrayList<ServiceDay>(3);
-  serviceDays.add(new ServiceDay(graph,epochSec - SEC_IN_DAY,graph.getCalendarService(),agencyId));
-  serviceDays.add(new ServiceDay(graph,epochSec,graph.getCalendarService(),agencyId));
-  serviceDays.add(new ServiceDay(graph,epochSec + SEC_IN_DAY,graph.getCalendarService(),agencyId));
+  serviceDays.add(new ServiceDay(graph,serviceDate.previous(),graph.getCalendarService(),agencyId));
+  serviceDays.add(new ServiceDay(graph,serviceDate,graph.getCalendarService(),agencyId));
+  serviceDays.add(new ServiceDay(graph,serviceDate.next(),graph.getCalendarService(),agencyId));
   return serviceDays;
 }

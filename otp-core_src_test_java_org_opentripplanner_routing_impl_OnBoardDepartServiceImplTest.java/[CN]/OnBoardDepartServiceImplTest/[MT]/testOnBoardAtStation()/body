@@ -17,6 +17,7 @@
   Graph graph=mock(Graph.class);
   RoutingRequest routingRequest=mock(RoutingRequest.class);
   ServiceDay serviceDay=mock(ServiceDay.class);
+  when(graph.getTimeZone()).thenReturn(TimeZone.getTimeZone("Greenwhich"));
   ArrayList<PatternHop> hops=new ArrayList<PatternHop>(2);
   RoutingContext routingContext=new RoutingContext(routingRequest,graph,null,arrive);
   hops.add(patternHop0);

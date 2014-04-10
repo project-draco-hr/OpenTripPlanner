@@ -1,0 +1,11 @@
+{
+  Date d=serviceDate.getAsDate(timeZone);
+  this.midnight=d.getTime() / 1000;
+  serviceIdsRunning=new BitSet(cs.getServiceIds().size());
+  ServiceIdToNumberService service=graph.getService(ServiceIdToNumberService.class);
+  for (  AgencyAndId serviceId : cs.getServiceIdsOnDate(serviceDate)) {
+    int n=service.getNumber(serviceId);
+    if (n < 0)     continue;
+    serviceIdsRunning.set(n);
+  }
+}
