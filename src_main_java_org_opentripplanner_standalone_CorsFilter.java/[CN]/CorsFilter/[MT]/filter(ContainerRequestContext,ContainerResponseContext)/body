@@ -1,0 +1,7 @@
+{
+  String origin=request.getHeaderString("Origin");
+  MultivaluedMap<String,Object> headers=response.getHeaders();
+  headers.add("Access-Control-Allow-Origin",origin);
+  boolean secureTransport=request.getSecurityContext().isSecure();
+  headers.add("Access-Control-Allow-Credentials",secureTransport);
+}

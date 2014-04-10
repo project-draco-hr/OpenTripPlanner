@@ -1,0 +1,6 @@
+{
+  if (HttpMethod.OPTIONS.equals(requestContext.getMethod())) {
+    Response preflightResponse=Response.status(Response.Status.OK).build();
+    requestContext.abortWith(preflightResponse);
+  }
+}
