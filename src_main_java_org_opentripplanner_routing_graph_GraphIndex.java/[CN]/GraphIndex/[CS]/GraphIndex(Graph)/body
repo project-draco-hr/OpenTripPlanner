@@ -20,6 +20,7 @@
       TransitStop transitStop=(TransitStop)vertex;
       stopForId.put(transitStop.getStop().getId(),transitStop.getStop());
       stopVertexForStop.put(transitStop.getStop(),transitStop);
+      stopsForParentStation.put(transitStop.getStop().getParentStation(),transitStop.getStop());
     }
   }
   stopSpatialIndex.setProjectionMeridian(vertices.iterator().next().getCoordinate().x);
