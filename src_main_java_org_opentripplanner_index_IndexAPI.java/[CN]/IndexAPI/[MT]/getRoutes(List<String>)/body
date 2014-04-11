@@ -1,0 +1,16 @@
+{
+  Collection<Route> routes=index.routeForId.values();
+  if (stopIds != null) {
+    routes=Lists.newArrayList(routes);
+    for (    String stopId : stopIds) {
+      Stop stop=index.stopForId.get(AgencyAndId.convertFromString(stopId));
+      if (stop == null)       return Response.status(Status.NOT_FOUND).entity(MSG_404).build();
+      Set<Route> routesHere=Sets.newHashSet();
+      for (      TripPattern pattern : index.patternsForStop.get(stop)) {
+        routesHere.add(pattern.route);
+      }
+      routes.retainAll(routesHere);
+    }
+  }
+  return Response.status(Status.OK).entity(RouteShort.list(routes)).build();
+}
