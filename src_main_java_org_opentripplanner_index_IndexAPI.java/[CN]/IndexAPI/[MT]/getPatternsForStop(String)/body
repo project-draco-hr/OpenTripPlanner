@@ -1,9 +1,8 @@
 {
-  Graph graph=graphService.getGraph();
   AgencyAndId id=AgencyAndId.convertFromString(string);
-  Stop stop=graph.getIndex().stopForId.get(id);
+  Stop stop=index.stopForId.get(id);
   if (stop != null) {
-    Collection<TripPattern> patterns=graph.getIndex().patternsForStop.get(stop);
+    Collection<TripPattern> patterns=index.patternsForStop.get(stop);
     return Response.status(Status.OK).entity(PatternShort.list(patterns)).build();
   }
  else {

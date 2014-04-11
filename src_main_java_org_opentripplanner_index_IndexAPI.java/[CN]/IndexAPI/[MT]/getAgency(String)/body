@@ -1,6 +1,5 @@
 {
-  Graph graph=graphService.getGraph();
-  for (  Agency agency : graph.getAgencies()) {
+  for (  Agency agency : index.agencyForId.values()) {
     if (agency.getId().equals(id)) {
       return Response.status(Status.OK).entity(agency).build();
     }

@@ -1,5 +1,4 @@
 {
-  Graph graph=graphService.getGraph();
-  Collection<TripPattern> patterns=graph.getIndex().patternForId.values();
+  Collection<TripPattern> patterns=index.patternForId.values();
   return Response.status(Status.OK).entity(PatternShort.list(patterns)).build();
 }

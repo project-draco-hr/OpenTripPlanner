@@ -1,7 +1,6 @@
 {
-  Graph graph=graphService.getGraph();
   AgencyAndId routeId=AgencyAndId.convertFromString(routeIdString);
-  Route route=graph.getIndex().routeForId.get(routeId);
+  Route route=index.routeForId.get(routeId);
   if (route != null) {
     return Response.status(Status.OK).entity(route).build();
   }

@@ -1,7 +1,6 @@
 {
-  Graph graph=graphService.getGraph();
   AgencyAndId tripId=AgencyAndId.convertFromString(tripIdString);
-  Trip trip=graph.getIndex().tripForId.get(tripId);
+  Trip trip=index.tripForId.get(tripId);
   if (trip != null) {
     return Response.status(Status.OK).entity(trip).build();
   }

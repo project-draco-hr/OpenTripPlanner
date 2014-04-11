@@ -1,9 +1,8 @@
 {
-  Graph graph=graphService.getGraph();
   AgencyAndId tripId=AgencyAndId.convertFromString(tripIdString);
-  Trip trip=graph.getIndex().tripForId.get(tripId);
+  Trip trip=index.tripForId.get(tripId);
   if (trip != null) {
-    TripPattern pattern=graph.getIndex().patternForTrip.get(trip);
+    TripPattern pattern=index.patternForTrip.get(trip);
     Timetable table=pattern.getScheduledTimetable();
     return Response.status(Status.OK).entity(TripTimeShort.fromTripTimes(table,trip)).build();
   }

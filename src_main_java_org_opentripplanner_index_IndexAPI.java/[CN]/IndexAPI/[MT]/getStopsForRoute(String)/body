@@ -1,10 +1,9 @@
 {
-  Graph graph=graphService.getGraph();
   AgencyAndId routeId=AgencyAndId.convertFromString(routeIdString);
-  Route route=graph.getIndex().routeForId.get(routeId);
+  Route route=index.routeForId.get(routeId);
   if (route != null) {
     Set<Stop> stops=Sets.newHashSet();
-    Collection<TripPattern> patterns=graph.getIndex().patternsForRoute.get(route);
+    Collection<TripPattern> patterns=index.patternsForRoute.get(route);
     for (    TripPattern pattern : patterns) {
       stops.addAll(pattern.getStops());
     }

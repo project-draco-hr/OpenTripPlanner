@@ -1,10 +1,9 @@
 {
-  Graph graph=graphService.getGraph();
   AgencyAndId id=AgencyAndId.convertFromString(string);
-  Stop stop=graph.getIndex().stopForId.get(id);
+  Stop stop=index.stopForId.get(id);
   if (stop != null) {
     Set<Route> routes=Sets.newHashSet();
-    for (    TripPattern pattern : graph.getIndex().patternsForStop.get(stop)) {
+    for (    TripPattern pattern : index.patternsForStop.get(stop)) {
       routes.add(pattern.route);
     }
     return Response.status(Status.OK).entity(RouteShort.list(routes)).build();

@@ -1,7 +1,6 @@
 {
-  Graph graph=graphService.getGraph();
   AgencyAndId id=AgencyAndId.convertFromString(string);
-  Stop stop=graph.getIndex().stopForId.get(id);
+  Stop stop=index.stopForId.get(id);
   if (stop != null) {
     return Response.status(Status.OK).entity(stop).build();
   }

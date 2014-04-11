@@ -1,6 +1,5 @@
 {
-  Graph graph=graphService.getGraph();
-  TripPattern pattern=graph.getIndex().patternForId.get(string);
+  TripPattern pattern=index.patternForId.get(string);
   if (pattern != null) {
     return Response.status(Status.OK).entity(new PatternDetail(pattern)).build();
   }

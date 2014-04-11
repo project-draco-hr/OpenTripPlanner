@@ -1,5 +1,4 @@
 {
-  GraphIndex index=graphService.getGraph().getIndex();
   if (ui.getQueryParameters().isEmpty()) {
     Collection<Stop> stops=index.stopForId.values();
     return Response.status(Status.OK).entity(StopShort.list(stops)).build();
