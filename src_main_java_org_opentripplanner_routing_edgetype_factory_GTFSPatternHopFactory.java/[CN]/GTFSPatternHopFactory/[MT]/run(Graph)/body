@@ -55,6 +55,7 @@
     }
   }
   TripPattern.generateUniqueNames(tripPatterns.values());
+  TripPattern.generateUniqueIds(tripPatterns.values());
   for (  TripPattern tableTripPattern : tripPatterns.values()) {
     tableTripPattern.makePatternVerticesAndEdges(graph,context);
     tableTripPattern.setServiceCodes(graph.serviceCodes);
