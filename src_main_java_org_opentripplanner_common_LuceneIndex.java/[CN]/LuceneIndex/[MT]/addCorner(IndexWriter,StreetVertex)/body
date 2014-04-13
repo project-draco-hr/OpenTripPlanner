@@ -1,0 +1,16 @@
+{
+  String mainStreet=null;
+  String crossStreet=null;
+  for (  PlainStreetEdge pse : Iterables.filter(sv.getOutgoing(),PlainStreetEdge.class)) {
+    if (mainStreet == null)     mainStreet=pse.getName();
+ else     crossStreet=pse.getName();
+  }
+  if (mainStreet == null || crossStreet == null)   return;
+  if (mainStreet.equals(crossStreet))   return;
+  Document doc=new Document();
+  doc.add(new TextField("name",mainStreet + " & " + crossStreet,Field.Store.YES));
+  doc.add(new DoubleField("lat",sv.getLat(),Field.Store.YES));
+  doc.add(new DoubleField("lon",sv.getLon(),Field.Store.YES));
+  doc.add(new StringField("category",Category.CORNER.name(),Field.Store.YES));
+  iwriter.addDocument(doc);
+}

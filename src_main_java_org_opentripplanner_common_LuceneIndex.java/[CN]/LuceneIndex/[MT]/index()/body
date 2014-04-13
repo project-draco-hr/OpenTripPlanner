@@ -1,0 +1,21 @@
+{
+  try {
+    long startTime=System.currentTimeMillis();
+    directory=FSDirectory.open(new File("/var/otp/lucene"));
+    IndexWriterConfig config=new IndexWriterConfig(Version.LUCENE_47,analyzer).setOpenMode(OpenMode.CREATE);
+    final IndexWriter writer=new IndexWriter(directory,config);
+    for (    Stop stop : graphIndex.stopForId.values()) {
+      addStop(writer,stop);
+    }
+    for (    StreetVertex sv : Iterables.filter(graphIndex.vertexForId.values(),StreetVertex.class)) {
+      addCorner(writer,sv);
+    }
+    writer.close();
+    long elapsedTime=System.currentTimeMillis() - startTime;
+    LOG.info("Built Lucene index in {} msec",elapsedTime);
+    searcher=new IndexSearcher(DirectoryReader.open(directory));
+  }
+ catch (  Exception ex) {
+    throw new RuntimeException("Lucene indexing failed.",ex);
+  }
+}

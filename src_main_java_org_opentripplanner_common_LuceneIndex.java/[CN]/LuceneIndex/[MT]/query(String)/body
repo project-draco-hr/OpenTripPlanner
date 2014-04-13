@@ -1,0 +1,26 @@
+{
+  List<LuceneResult> result=Lists.newArrayList();
+  try {
+    Query query=parser.parse(queryString);
+    TopScoreDocCollector collector=TopScoreDocCollector.create(10,true);
+    searcher.search(query,collector);
+    ScoreDoc[] docs=collector.topDocs().scoreDocs;
+    for (int i=0; i < docs.length; i++) {
+      LuceneResult lr=new LuceneResult();
+      Document doc=searcher.doc(docs[i].doc);
+      lr.lat=doc.getField("lat").numericValue().doubleValue();
+      lr.lng=doc.getField("lon").numericValue().doubleValue();
+      String category=doc.getField("category").stringValue().toLowerCase();
+      String name=doc.getField("name").stringValue();
+      lr.description=category + " " + name;
+      result.add(lr);
+    }
+  }
+ catch (  Exception ex) {
+    LOG.error("Error during Lucene search: {}",ex.toString());
+    ex.printStackTrace();
+  }
+ finally {
+    return result;
+  }
+}

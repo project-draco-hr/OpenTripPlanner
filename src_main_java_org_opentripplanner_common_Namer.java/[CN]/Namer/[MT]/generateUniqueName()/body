@@ -1,0 +1,13 @@
+{
+  String name;
+  do {
+    name="";
+    int nSyllables=random.nextInt(2) + 2;
+    for (int i=0; i < nSyllables; i++) {
+      name+=syllables.get(random.nextInt(syllables.size()));
+    }
+  }
+ while (usedNames.contains(name));
+  usedNames.add(name);
+  return name;
+}
