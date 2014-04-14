@@ -1,5 +1,5 @@
 {
-  AgencyAndId id=AgencyAndId.convertFromString(string);
+  AgencyAndId id=AgencyAndId.convertFromString(stopIdString);
   Stop stop=index.stopForId.get(id);
   if (stop == null)   return Response.status(Status.NOT_FOUND).entity(MSG_404).build();
   Collection<TripPattern> patterns=index.patternsForStop.get(stop);

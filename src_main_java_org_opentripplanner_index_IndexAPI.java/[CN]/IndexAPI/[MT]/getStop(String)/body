@@ -1,6 +1,6 @@
 {
-  AgencyAndId id=AgencyAndId.convertFromString(string);
-  Stop stop=index.stopForId.get(id);
+  AgencyAndId stopId=AgencyAndId.convertFromString(stopIdString);
+  Stop stop=index.stopForId.get(stopId);
   if (stop != null) {
     return Response.status(Status.OK).entity(stop).build();
   }

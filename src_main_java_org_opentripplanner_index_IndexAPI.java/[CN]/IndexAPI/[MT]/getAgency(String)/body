@@ -1,6 +1,6 @@
 {
   for (  Agency agency : index.agencyForId.values()) {
-    if (agency.getId().equals(id)) {
+    if (agency.getId().equals(agencyId)) {
       return Response.status(Status.OK).entity(agency).build();
     }
   }

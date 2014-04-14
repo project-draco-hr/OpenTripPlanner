@@ -1,5 +1,5 @@
 {
-  TripPattern pattern=index.patternForId.get(string);
+  TripPattern pattern=index.patternForId.get(patternIdString);
   if (pattern != null) {
     List<Trip> trips=pattern.getTrips();
     return Response.status(Status.OK).entity(TripShort.list(trips)).build();

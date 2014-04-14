@@ -1,5 +1,5 @@
 {
-  TripPattern pattern=index.patternForId.get(string);
+  TripPattern pattern=index.patternForId.get(patternIdString);
   if (pattern != null) {
     List<Stop> stops=pattern.getStops();
     return Response.status(Status.OK).entity(StopShort.list(stops)).build();

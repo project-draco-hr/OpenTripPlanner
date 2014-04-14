@@ -1,5 +1,5 @@
 {
-  Stop stop=index.stopForId.get(AgencyAndId.convertFromString(string));
+  Stop stop=index.stopForId.get(AgencyAndId.convertFromString(stopIdString));
   if (stop == null)   return Response.status(Status.NOT_FOUND).entity(MSG_404).build();
   Collection<StopTime> stopTimes;
   return Response.status(Status.OK).build();
