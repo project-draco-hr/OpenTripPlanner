@@ -145,7 +145,7 @@
     for (    Edge tedge : connectingEdgesMap.values())     allConnectingEdges.add(tedge);
   }
   StringWriter sw=new StringWriter();
-  GeoJSONBuilder json=new GeoJSONBuilder(sw);
+  GeometryJSON geometryJSON=new GeometryJSON();
   try {
     if (output.equals(SIsochrone.RESULT_TYPE_POINTS)) {
       if (noRoadNearBy) {
@@ -153,14 +153,14 @@
         coords=circleShape.getCoordinates();
       }
       LOG.debug("write multipoint geom with {} points",coords.length);
-      json.writeGeom(gf.createMultiPoint(coords));
+      geometryJSON.write(gf.createMultiPoint(coords),sw);
       LOG.debug("done");
     }
  else     if (output.equals(SIsochrone.RESULT_TYPE_SHED)) {
       Geometry geomsArray[]=null;
       if (noRoadNearBy) {
         Geometry circleShape=createCirle(dropPoint,pathToStreet);
-        json.writeGeom(circleShape);
+        geometryJSON.write(circleShape,sw);
       }
  else {
         if (maxTime > shedCalcMethodSwitchTimeInSec) {
@@ -194,13 +194,13 @@
           LOG.debug("Could not generate ConcaveHull for WalkShed, using ConvexHull instead.");
         }
         LOG.debug("write shed geom");
-        json.writeGeom(outputHull);
+        geometryJSON.write(outputHull,sw);
         LOG.debug("done");
       }
     }
  else     if (output.equals(SIsochrone.RESULT_TYPE_EDGES)) {
       if (noRoadNearBy) {
-        json.writeGeom(pathToStreet);
+        geometryJSON.write(pathToStreet,sw);
       }
  else {
         Map<ReversibleLineStringWrapper,LineString> walkShedEdges=Maps.newHashMap();
@@ -216,7 +216,7 @@
         LOG.debug("create multilinestring from {} geoms",edges.length);
         mls=gf.createMultiLineString(edges);
         LOG.debug("write geom");
-        json.writeGeom(mls);
+        geometryJSON.write(mls,sw);
         LOG.debug("done");
       }
     }
@@ -238,11 +238,11 @@
       }
       Geometry mls=gf.createMultiLineString(edges);
       LOG.debug("write debug geom");
-      json.writeGeom(mls);
+      geometryJSON.write(mls,sw);
       LOG.debug("done");
     }
   }
- catch (  org.codehaus.jettison.json.JSONException e) {
+ catch (  Exception e) {
     e.printStackTrace();
   }
   return sw.toString();
