@@ -1,7 +1,10 @@
 {
+  BooleanQuery query=new BooleanQuery();
+  for (  String term : queryString.split(" ")) {
+    query.add(new FuzzyQuery(new Term("name",term)),BooleanClause.Occur.SHOULD);
+  }
   List<LuceneResult> result=Lists.newArrayList();
   try {
-    Query query=parser.parse(queryString);
     TopScoreDocCollector collector=TopScoreDocCollector.create(10,true);
     searcher.search(query,collector);
     ScoreDoc[] docs=collector.topDocs().scoreDocs;
