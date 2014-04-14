@@ -3,7 +3,7 @@
   double walkspeed=rr.getWalkSpeed();
   StateEditor se=s0.edit(this);
   se.setBackMode(TraverseMode.WALK);
-  int time=(int)(distance / walkspeed);
+  int time=(int)Math.ceil(distance / walkspeed) + 2 * StreetTransitLink.STL_TRAVERSE_COST;
   se.incrementTimeInSeconds(time);
   se.incrementWeight(time * rr.walkReluctance);
   se.incrementWalkDistance(distance);

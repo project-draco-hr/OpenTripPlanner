@@ -1,0 +1,5 @@
+{
+  Nonterminal streets=star(STREET);
+  Nonterminal itinerary=seq(LINK,streets,LINK);
+  DFA=itinerary.toDFA().minimize();
+}
