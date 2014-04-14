@@ -40,6 +40,7 @@
   for (  Route route : patternsForRoute.asMap().keySet()) {
     routeForId.put(route.getId(),route);
   }
+  analyzeServices();
   luceneIndex=new LuceneIndex(this,true);
   LOG.info("Done indexing graph.");
 }
