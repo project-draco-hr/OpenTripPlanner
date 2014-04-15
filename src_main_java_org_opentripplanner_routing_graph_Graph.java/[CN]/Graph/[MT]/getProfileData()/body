@@ -1,0 +1,7 @@
+{
+  if (profileData == null) {
+    LOG.info("Lazy-initializing profile router data.");
+    profileData=new ProfileData(this);
+  }
+  return profileData;
+}
