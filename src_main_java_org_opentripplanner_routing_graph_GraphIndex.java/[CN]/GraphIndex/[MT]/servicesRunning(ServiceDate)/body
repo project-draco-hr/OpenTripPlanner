@@ -1,0 +1,9 @@
+{
+  BitSet services=new BitSet(calendarService.getServiceIds().size());
+  for (  AgencyAndId serviceId : calendarService.getServiceIdsOnDate(date)) {
+    int n=serviceCodes.get(serviceId);
+    if (n < 0)     continue;
+    services.set(n);
+  }
+  return services;
+}

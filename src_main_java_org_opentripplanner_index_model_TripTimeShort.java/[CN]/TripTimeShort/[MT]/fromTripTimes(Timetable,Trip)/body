@@ -1,7 +1,7 @@
 {
   TripTimes times=table.getTripTimes(table.getTripIndex(trip.getId()));
   List<TripTimeShort> out=Lists.newArrayList();
-  for (int i=0; i < times.getNumHops(); ++i) {
+  for (int i=0; i <= times.getNumHops(); ++i) {
     out.add(new TripTimeShort(times,i,table.getPattern().getStop(i)));
   }
   return out;

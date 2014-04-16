@@ -1,0 +1,23 @@
+{
+  final double TRANSFER_RADIUS=500.0;
+  SimpleIsochrone.MinMap<P2<TripPattern>,ProfileTransfer> bestTransfers=new SimpleIsochrone.MinMap<P2<TripPattern>,ProfileTransfer>();
+  LOG.info("Finding transfers...");
+  for (  Stop s0 : stopForId.values()) {
+    Collection<TripPattern> ps0=patternsForStop.get(s0);
+    for (    StopAtDistance sd : findTransitStops(s0.getLon(),s0.getLat(),TRANSFER_RADIUS)) {
+      Stop s1=sd.stop;
+      if (s0 == s1)       continue;
+      Collection<TripPattern> ps1=patternsForStop.get(s1);
+      for (      TripPattern p0 : ps0) {
+        for (        TripPattern p1 : ps1) {
+          if (p0 == p1)           continue;
+          bestTransfers.putMin(new P2<TripPattern>(p0,p1),new ProfileTransfer(p0,p1,s0,s1,sd.distance));
+        }
+      }
+    }
+  }
+  for (  ProfileTransfer tr : bestTransfers.values()) {
+    transfersForStop.put(tr.s1,tr);
+  }
+  LOG.info("Done finding transfers.");
+}

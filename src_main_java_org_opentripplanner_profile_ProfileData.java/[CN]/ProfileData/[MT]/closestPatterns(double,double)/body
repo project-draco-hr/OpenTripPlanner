@@ -1,9 +1,0 @@
-{
-  MinMap<TripPattern,StopAtDistance> closest=new MinMap<TripPattern,StopAtDistance>();
-  for (  StopAtDistance stopDist : findTransitStops(lon,lat,WALK_RADIUS)) {
-    for (    TripPattern pattern : patternsForStop.get(stopDist.stop)) {
-      closest.putMin(pattern,stopDist);
-    }
-  }
-  return closest;
-}

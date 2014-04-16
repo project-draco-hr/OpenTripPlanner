@@ -2,18 +2,18 @@
   final int ROUNDS=2;
   int finalRound=ROUNDS - 1;
   int penultimateRound=ROUNDS - 2;
-  fromStops=data.closestPatterns(from.lon,from.lat);
-  toStops=data.closestPatterns(to.lon,to.lat);
+  fromStops=index.closestPatterns(from.lon,from.lat,WALK_DISTANCE);
+  toStops=index.closestPatterns(to.lon,to.lat,WALK_DISTANCE);
   LOG.info("from stops: {}",fromStops);
   LOG.info("to stops: {}",toStops);
-  this.window=new TimeWindow(fromTime,toTime,data.servicesRunning(date));
+  this.window=new TimeWindow(fromTime,toTime,index.servicesRunning(date));
   Set<PatternRide> queue=Sets.newHashSet();
   for (  Entry<TripPattern,StopAtDistance> entry : fromStops.entrySet()) {
     TripPattern pattern=entry.getKey();
     StopAtDistance sd=entry.getValue();
     for (int i=0; i < pattern.getStops().size(); ++i) {
       if (pattern.getStops().get(i) == sd.stop) {
-        Transfer xfer=new Transfer(null,pattern,null,sd.stop,sd.distance);
+        ProfileTransfer xfer=new ProfileTransfer(null,pattern,null,sd.stop,sd.distance);
         queue.add(new PatternRide(pattern,i,null,xfer));
       }
     }
@@ -27,7 +27,7 @@
     if (round != finalRound) {
       queue.clear();
       for (      Ride ride : rides.values()) {
-        for (        Transfer tr : data.transfersForStop.get(ride.to)) {
+        for (        ProfileTransfer tr : index.transfersForStop.get(ride.to)) {
           if (round == penultimateRound && !toStops.containsKey(tr.tp2))           continue;
           if (ride.containsPattern(tr.tp1)) {
             if (pathContainsRoute(ride,tr.tp2.route))             continue;

@@ -1,0 +1,9 @@
+{
+  SimpleIsochrone.MinMap<TripPattern,StopAtDistance> closest=new SimpleIsochrone.MinMap<TripPattern,StopAtDistance>();
+  for (  StopAtDistance stopDist : findTransitStops(lon,lat,radius)) {
+    for (    TripPattern pattern : patternsForStop.get(stopDist.stop)) {
+      closest.putMin(pattern,stopDist);
+    }
+  }
+  return closest;
+}

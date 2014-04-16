@@ -40,7 +40,8 @@
   for (  Route route : patternsForRoute.asMap().keySet()) {
     routeForId.put(route.getId(),route);
   }
-  analyzeServices();
+  calendarService=graph.getCalendarService();
+  serviceCodes=graph.serviceCodes;
   luceneIndex=new LuceneIndex(this,true);
   LOG.info("Done indexing graph.");
 }

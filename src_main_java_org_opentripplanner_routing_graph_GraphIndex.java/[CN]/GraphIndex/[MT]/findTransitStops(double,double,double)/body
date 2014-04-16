@@ -1,0 +1,9 @@
+{
+  List<StopAtDistance> ret=Lists.newArrayList();
+  for (  TransitStop tstop : stopSpatialIndex.query(lon,lat,radius)) {
+    Stop stop=tstop.getStop();
+    int distance=(int)distlib.distance(lat,lon,stop.getLat(),stop.getLon());
+    if (distance < radius)     ret.add(new StopAtDistance(stop,distance));
+  }
+  return ret;
+}
