@@ -1,0 +1,11 @@
+{
+  int stopDepartureTimeOffset=departureTimes[stopIndex];
+  int afterTimeAtStart=afterTime - stopDepartureTimeOffset;
+  int timeRange=Arrays.binarySearch(timeRangeStart,afterTimeAtStart);
+  if (timeRange < 0) {
+    timeRange=-timeRange - 1;
+    if (timeRange > 0)     timeRange-=1;
+  }
+  int frequency=timeRangeFrequency[timeRange];
+  return frequency;
+}

@@ -1,7 +1,6 @@
 {
   File clientDir=Files.createTempDir();
   File clientWar=new File(clientDir,CLIENT_WAR_FILENAME);
-  boolean fallback=false;
   try {
     Files.copy(new ClientWarSupplier(),clientWar);
     ZipFile zip=new ZipFile(clientWar);
@@ -9,7 +8,10 @@
   }
  catch (  Exception e) {
     LOG.error("Error copying or expanding client WAR: {}",e.getMessage());
-    for (    String fallbackClientDir : FALLBACK_CLIENT_DIRS) {
+    List<String> allStaticDirs=new ArrayList<String>();
+    allStaticDirs.add(params.staticDirectory);
+    allStaticDirs.addAll(Arrays.asList(FALLBACK_CLIENT_DIRS));
+    for (    String fallbackClientDir : allStaticDirs) {
       File f=new File(fallbackClientDir);
       if (f.isDirectory() && f.canRead()) {
         clientDir=f;
@@ -19,5 +21,7 @@
     }
   }
   LOG.info("Serving static client files from {}",clientDir);
-  return new StaticHttpHandler(clientDir.toString());
+  StaticHttpHandler handler=new StaticHttpHandler(clientDir.toString());
+  handler.setFileCacheEnabled(false);
+  return handler;
 }

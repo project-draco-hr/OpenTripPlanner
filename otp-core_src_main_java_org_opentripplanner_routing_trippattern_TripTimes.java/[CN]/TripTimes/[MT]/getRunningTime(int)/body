@@ -1,14 +1,9 @@
 {
+  if (hop < 0 || hop >= getNumHops())   return -1;
   int arrivalTime=getArrivalTime(hop);
   int departureTime=getDepartureTime(hop);
-  if (arrivalTime == TripTimes.CANCELED) {
-    return 0;
-  }
-  while (--hop >= 0 && departureTime == TripTimes.CANCELED) {
-    departureTime=getDepartureTime(hop);
-  }
-  if (departureTime == TripTimes.CANCELED) {
-    return 0;
+  if (departureTime == UNAVAILABLE) {
+    return -1;
   }
   return arrivalTime - departureTime;
 }

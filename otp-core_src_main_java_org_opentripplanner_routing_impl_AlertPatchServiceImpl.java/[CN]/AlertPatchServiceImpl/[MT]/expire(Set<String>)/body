@@ -1,0 +1,8 @@
+{
+  for (  String patchId : purge) {
+    if (alertPatches.containsKey(patchId)) {
+      expire(alertPatches.get(patchId));
+    }
+  }
+  alertPatches.keySet().removeAll(purge);
+}

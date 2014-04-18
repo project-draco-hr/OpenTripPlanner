@@ -47,10 +47,6 @@
       }
       if (options.rctx.target != null) {
         double minWalk=distanceToNearestTransitStop;
-        double targetDistance=bounder.getTargetDistance(stopVertex);
-        if (targetDistance + state.walkDistance > options.getMaxWalkDistance()) {
-          if (state.stop.stopVertex.isLocal())           continue;
-        }
         if (minWalk + state.walkDistance > options.getMaxWalkDistance()) {
           continue;
         }

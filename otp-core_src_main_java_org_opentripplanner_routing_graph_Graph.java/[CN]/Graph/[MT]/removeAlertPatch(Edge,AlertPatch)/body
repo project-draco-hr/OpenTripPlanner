@@ -1,0 +1,14 @@
+{
+  if (edge == null || alertPatch == null)   return;
+synchronized (alertPatches) {
+    Set<AlertPatch> alertPatches=this.alertPatches.get(edge);
+    if (alertPatches != null && alertPatches.contains(alertPatch)) {
+      if (alertPatches.size() < 2) {
+        this.alertPatches.remove(edge);
+      }
+ else {
+        alertPatches.remove(alertPatch);
+      }
+    }
+  }
+}

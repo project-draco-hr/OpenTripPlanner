@@ -11,10 +11,10 @@
       AutowireCapableBeanFactory factory=retval.context.getAutowireCapableBeanFactory();
       retval.pathService=(PathService)factory.getBean("pathService",PathService.class);
       try {
-        retval.patchService=(PatchService)factory.getBean("patchService",PatchService.class);
+        retval.alertPatchService=(AlertPatchService)factory.getBean("alertPatchService",AlertPatchService.class);
       }
  catch (      NoSuchBeanDefinitionException e) {
-        LOG.warn("No bean 'patchService' defined in application-context.xml, skipping it.");
+        LOG.warn("No bean 'alertPatchService' defined in application-context.xml, skipping it.");
       }
       break;
     }

@@ -1,0 +1,9 @@
+{
+  AlertPatchServiceImpl instance=getAlertPatchServiceImpl();
+  for (  TestAlertPatch alert : alerts) {
+    instance.apply(alert);
+  }
+  instance.expireAllExcept(Collections.singleton(alerts[0].getId()));
+  assertEquals(1,instance.getAllAlertPatches().size());
+  assertTrue(instance.getAllAlertPatches().contains(alerts[0]));
+}

@@ -5,11 +5,17 @@
   this.opt=routingRequest;
   this.graph=graph;
   this.debugOutput.startedCalculating();
-  if (routingRequest.isIgnoreRealtimeUpdates() == false && graph.getTimetableSnapshotSource() != null) {
-    timetableSnapshot=graph.getTimetableSnapshotSource().getTimetableSnapshot();
+  if (routingRequest.isIgnoreRealtimeUpdates()) {
+    timetableSnapshot=null;
   }
  else {
-    timetableSnapshot=null;
+    TimetableSnapshotSource timetableSnapshotSource=graph.getTimetableSnapshotSource();
+    if (timetableSnapshotSource == null) {
+      timetableSnapshot=null;
+    }
+ else {
+      timetableSnapshot=timetableSnapshotSource.getTimetableSnapshot();
+    }
   }
   calendarService=graph.getCalendarService();
   setServiceDays();

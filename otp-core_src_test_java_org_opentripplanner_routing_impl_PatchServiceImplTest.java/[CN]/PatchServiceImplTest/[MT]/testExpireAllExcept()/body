@@ -1,9 +1,0 @@
-{
-  PatchServiceImpl instance=getPatchServiceImpl();
-  for (  TestAlertPatch alert : alerts) {
-    instance.apply(alert);
-  }
-  instance.expireAllExcept(Collections.singleton(alerts[0].getId()));
-  assertEquals(1,instance.getAllPatches().size());
-  assertTrue(instance.getAllPatches().contains(alerts[0]));
-}

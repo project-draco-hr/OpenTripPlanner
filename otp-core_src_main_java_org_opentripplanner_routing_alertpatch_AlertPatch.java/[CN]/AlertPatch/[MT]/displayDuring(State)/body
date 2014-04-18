@@ -1,0 +1,10 @@
+{
+  for (  TimePeriod timePeriod : timePeriods) {
+    if (state.getTimeSeconds() >= timePeriod.startTime) {
+      if (state.getStartTimeSeconds() < timePeriod.endTime) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

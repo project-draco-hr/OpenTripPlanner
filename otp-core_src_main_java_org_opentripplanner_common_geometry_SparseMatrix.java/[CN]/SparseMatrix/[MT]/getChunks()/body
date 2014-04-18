@@ -1,0 +1,27 @@
+{
+  return new Iterable<SparseMatrixChunk>(){
+    @Override public Iterator<SparseMatrixChunk> iterator(){
+      final Iterator<Long> indexIterator=chunks.keySet().iterator();
+      return new Iterator<SparseMatrixChunk>(){
+        @Override public boolean hasNext(){
+          return indexIterator.hasNext();
+        }
+        @Override public SparseMatrixChunk next(){
+          long index=indexIterator.next();
+          T[] ts=chunks.get(index);
+          if (ts == null) {
+            return null;
+          }
+          int x0=(int)(((index & 0xFFFFFFFFL) << shift) - INDEX_OFFSET);
+          int y0=(int)((((index & 0xFFFFFFFF00000000L) >> 32) << shift) - INDEX_OFFSET);
+          return new SparseMatrixChunk(x0,y0,ts);
+        }
+        @Override public void remove(){
+          throw new UnsupportedOperationException("remove");
+        }
+      }
+;
+    }
+  }
+;
+}

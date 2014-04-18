@@ -1,5 +1,5 @@
 {
-  patchService.expire(patchIds);
+  alertPatchService.expire(patchIds);
   patchIds.clear();
   for (  FeedEntity entity : message.getEntityList()) {
     if (!entity.hasAlert()) {

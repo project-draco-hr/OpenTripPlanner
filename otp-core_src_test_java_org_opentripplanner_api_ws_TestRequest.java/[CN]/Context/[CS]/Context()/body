@@ -29,4 +29,8 @@
   pathService.setSptService(new GenericAStar());
   pathService.setGraphService(graphService);
   planGenerator.pathService=pathService;
+  TimetableResolver resolver=new TimetableResolver();
+  TimetableSnapshotSource timetableSnapshotSource=mock(TimetableSnapshotSource.class);
+  when(timetableSnapshotSource.getTimetableSnapshot()).thenReturn(resolver);
+  graph.setTimetableSnapshotSource(timetableSnapshotSource);
 }

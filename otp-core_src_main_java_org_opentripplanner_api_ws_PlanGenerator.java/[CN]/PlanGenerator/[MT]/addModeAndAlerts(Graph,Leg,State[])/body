@@ -1,0 +1,20 @@
+{
+  for (  State state : states) {
+    TraverseMode mode=state.getBackMode();
+    Set<Alert> alerts=state.getBackAlerts();
+    Edge edge=state.getBackEdge();
+    if (mode != null) {
+      leg.mode=mode.toString();
+    }
+    if (alerts != null) {
+      for (      Alert alert : alerts) {
+        leg.addAlert(alert);
+      }
+    }
+    for (    AlertPatch alertPatch : graph.getAlertPatches(edge)) {
+      if (alertPatch.displayDuring(state)) {
+        leg.addAlert(alertPatch.getAlert());
+      }
+    }
+  }
+}

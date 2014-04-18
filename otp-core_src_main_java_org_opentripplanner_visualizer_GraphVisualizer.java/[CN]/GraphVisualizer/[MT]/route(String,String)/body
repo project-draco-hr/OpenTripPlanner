@@ -17,6 +17,7 @@
   modeSet.setCustomMotorVehicle(cmvCheckBox.isSelected());
   if (transitCheckBox.isSelected())   modeSet.setTransit(true);
   RoutingRequest options=new RoutingRequest(modeSet);
+  options.setArriveBy(arriveByCheckBox.isSelected());
   options.setWalkBoardCost(Integer.parseInt(boardingPenaltyField.getText()) * 60);
   options.setBikeBoardCost(Integer.parseInt(boardingPenaltyField.getText()) * 60 * 2);
   options.setOptimize(getSelectedOptimizeType());
@@ -26,12 +27,25 @@
   options.setToString(to);
   options.setWalkSpeed(Float.parseFloat(walkSpeed.getText()));
   options.setBikeSpeed(Float.parseFloat(bikeSpeed.getText()));
+  options.setHeuristicWeight(Float.parseFloat(heuristicWeight.getText()));
+  options.setSoftWalkLimiting(softWalkLimiting.isSelected());
+  options.setSoftWalkPenalty(Float.parseFloat(softWalkPenalty.getText()));
+  options.setSoftWalkOverageRate(Float.parseFloat(this.softWalkOverageRate.getText()));
   options.numItineraries=1;
   System.out.println("--------");
   System.out.println("Path from " + from + " to "+ to+ " at "+ when);
   System.out.println("\tModes: " + modeSet);
   System.out.println("\tOptions: " + options);
+  if (dontUseGraphicalCallbackCheckBox.isSelected()) {
+    sptService.setTraverseVisitor(null);
+  }
+ else {
+    sptService.setTraverseVisitor(new VisualTraverseVisitor(showGraph));
+  }
+  long t0=System.currentTimeMillis();
   List<GraphPath> paths=pathservice.getPaths(options);
+  long dt=System.currentTimeMillis() - t0;
+  searchTimeElapsedLabel.setText("search time elapsed: " + dt + "ms");
   if (paths == null) {
     System.out.println("no path");
     showGraph.highlightGraphPath(null);

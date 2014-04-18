@@ -4,7 +4,7 @@
   planner.setWalkReluctance(Arrays.asList(1.0));
   Response response=planner.getItineraries();
   Itinerary itinerary=response.getPlan().itinerary.get(0);
-  Long duration=itinerary.duration;
+  Double duration=itinerary.duration;
   assertTrue(itinerary.walkDistance > 0);
   planner.setWalkReluctance(Arrays.asList(16.0));
   response=planner.getItineraries();

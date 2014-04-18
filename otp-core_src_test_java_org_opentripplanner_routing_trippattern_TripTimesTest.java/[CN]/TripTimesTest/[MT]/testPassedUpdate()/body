@@ -1,6 +1,6 @@
 {
   TripTimes updatedTripTimesA=new TripTimes(originalTripTimes);
-  updatedTripTimesA.updateDepartureTime(0,TripTimes.PASSED);
-  assertEquals(TripTimes.PASSED,updatedTripTimesA.getDepartureTime(0));
+  updatedTripTimesA.updateDepartureTime(0,TripTimes.UNAVAILABLE);
+  assertEquals(TripTimes.UNAVAILABLE,updatedTripTimesA.getDepartureTime(0));
   assertEquals(60,updatedTripTimesA.getArrivalTime(0));
 }
