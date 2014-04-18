@@ -1,5 +1,10 @@
 {
   TrinetUser user=TrinetUser.findById(id);
+  List<Session> sessions;
+  sessions=Session.find("byUser",user).fetch();
+  for (  Session sess : sessions) {
+    sess.delete();
+  }
   user.delete();
   getUsers();
 }
