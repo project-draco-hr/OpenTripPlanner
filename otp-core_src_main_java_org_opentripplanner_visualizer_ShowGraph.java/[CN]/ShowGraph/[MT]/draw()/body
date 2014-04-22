@@ -43,6 +43,21 @@
       }
     }
   }
+ else   if (drawLevel == DRAW_LINKS) {
+    if (drawLinkEdges) {
+      stroke(256,165,0,30);
+      strokeWeight(3);
+      noFill();
+      while (drawOffset < visibleLinkEdges.size()) {
+        Edge e=visibleLinkEdges.get(drawOffset);
+        drawEdge(e);
+        drawOffset+=1;
+        if (drawOffset % BLOCK_SIZE == 0) {
+          if (millis() - startMillis > FRAME_TIME)           return;
+        }
+      }
+    }
+  }
  else   if (drawLevel == DRAW_TRANSIT) {
     if (drawTransitEdges) {
       stroke(40,40,128,30);

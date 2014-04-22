@@ -57,7 +57,8 @@
   double closestStopDistance=Double.POSITIVE_INFINITY;
   Vertex closestStop=null;
   if (options != null && options.getModes().isTransit()) {
-    for (    Vertex v : getLocalTransitStops(coord,1000)) {
+    for (    TransitStop v : getLocalTransitStops(coord,1000)) {
+      if (!v.isStreetLinkable())       continue;
       double d=distanceLibrary.distance(v.getCoordinate(),coord);
       if (d < closestStopDistance) {
         closestStopDistance=d;

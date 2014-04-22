@@ -1,5 +1,6 @@
 {
   try {
+    LOG.error("Polling updater {}@{} started.",this.getClass().getName(),this.hashCode());
     while (true) {
       try {
         runPolling();
@@ -14,6 +15,6 @@ catch (      Exception e) {
     }
   }
  catch (  InterruptedException e) {
-    LOG.error("Polling updater {} is interrupted, updater stops.",this.getClass().getName());
+    LOG.error("Polling updater {}@{} is interrupted, updater stops.",this.getClass().getName(),this.hashCode());
   }
 }

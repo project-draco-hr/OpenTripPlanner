@@ -1,6 +1,6 @@
 {
   HttpHead head=new HttpHead(url);
-  HttpClient httpclient=new DefaultHttpClient();
+  HttpClient httpclient=getClient();
   HttpResponse response=httpclient.execute(head);
   StatusLine status=response.getStatusLine();
   if (status.getStatusCode() == 404) {

@@ -54,6 +54,7 @@
     }
   }
 ;
+  when(graph.getTimeZone()).thenReturn(TimeZone.getTimeZone("Greenwhich"));
   when(routingRequest.getModes()).thenReturn(TraverseModeSet.allModes());
   when(endJourney.getTripPattern()).thenReturn(secondTripPattern);
   when(serviceDay.getServiceDate()).thenReturn(serviceDate);

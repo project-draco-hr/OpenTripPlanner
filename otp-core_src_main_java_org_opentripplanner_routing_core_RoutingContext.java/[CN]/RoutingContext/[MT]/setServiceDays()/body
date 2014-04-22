@@ -1,14 +1,16 @@
 {
-  final long SEC_IN_DAY=60 * 60 * 24;
-  final long time=opt.getSecondsSinceEpoch();
+  Calendar c=Calendar.getInstance();
+  c.setTime(new Date(opt.getSecondsSinceEpoch() * 1000));
+  c.setTimeZone(graph.getTimeZone());
+  final ServiceDate serviceDate=new ServiceDate(c);
   this.serviceDays=new ArrayList<ServiceDay>(3);
   if (calendarService == null && graph.getCalendarService() != null && (opt.getModes() == null || opt.getModes().contains(TraverseMode.TRANSIT))) {
     LOG.warn("RoutingContext has no CalendarService. Transit will never be boarded.");
     return;
   }
   for (  String agency : graph.getAgencyIds()) {
-    addIfNotExists(this.serviceDays,new ServiceDay(graph,time - SEC_IN_DAY,calendarService,agency));
-    addIfNotExists(this.serviceDays,new ServiceDay(graph,time,calendarService,agency));
-    addIfNotExists(this.serviceDays,new ServiceDay(graph,time + SEC_IN_DAY,calendarService,agency));
+    addIfNotExists(this.serviceDays,new ServiceDay(graph,serviceDate.previous(),calendarService,agency));
+    addIfNotExists(this.serviceDays,new ServiceDay(graph,serviceDate,calendarService,agency));
+    addIfNotExists(this.serviceDays,new ServiceDay(graph,serviceDate.next(),calendarService,agency));
   }
 }

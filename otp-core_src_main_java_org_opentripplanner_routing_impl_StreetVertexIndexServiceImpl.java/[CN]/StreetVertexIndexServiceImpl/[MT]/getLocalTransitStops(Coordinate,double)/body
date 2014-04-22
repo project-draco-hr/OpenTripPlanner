@@ -1,9 +1,9 @@
 {
   Envelope env=new Envelope(c);
   env.expandBy(SphericalDistanceLibrary.metersToDegrees(distance));
-  List<Vertex> nearby=transitStopTree.query(env);
-  List<Vertex> results=new ArrayList<Vertex>();
-  for (  Vertex v : nearby) {
+  List<TransitStop> nearby=transitStopTree.query(env);
+  List<TransitStop> results=new ArrayList<TransitStop>();
+  for (  TransitStop v : nearby) {
     if (distanceLibrary.distance(v.getCoordinate(),c) <= distance) {
       results.add(v);
     }

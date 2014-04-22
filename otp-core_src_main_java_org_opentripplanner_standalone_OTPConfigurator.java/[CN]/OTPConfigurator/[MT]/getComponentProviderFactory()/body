@@ -7,7 +7,14 @@
   cpf.bind(PlanGenerator.class);
   cpf.bind(MetadataService.class);
   cpf.bind(SPTService.class,new GenericAStar());
-  if (params.longDistance) {
+  if (params.raptor) {
+    Raptor raptor=new Raptor();
+    raptor.setMultiPathTimeout(1.0);
+    raptor.setShortPathCutoff(1000);
+    cpf.bind(PathService.class,raptor);
+    cpf.bind(RemainingWeightHeuristicFactory.class,new DefaultRemainingWeightHeuristicFactoryImpl());
+  }
+ else   if (params.longDistance) {
     LongDistancePathService pathService=new LongDistancePathService();
     pathService.setTimeout(10);
     cpf.bind(PathService.class,pathService);
