@@ -1,0 +1,17 @@
+{
+  RoutingRequest request=null;
+  if (modes != null) {
+    request=new RoutingRequest(modes);
+  }
+  Collection<StreetVertex> nearbyStreetVertices=getNearbyStreetVertices(v,null,request);
+  if (nearbyStreetVertices == null) {
+    result=false;
+  }
+ else {
+    for (    StreetVertex sv : nearbyStreetVertices) {
+      Collection<? extends Edge> edges=streetLinkFactory.connect(sv,v);
+      addEdges(edges.toArray(new Edge[0]));
+    }
+    result=true;
+  }
+}

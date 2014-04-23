@@ -1,5 +1,10 @@
 {
   LinkRequest request=new LinkRequest(this);
-  request.connectVertexToStreets(v);
+  request.connectVertexToStreets(v,new TraverseModeSet(TraverseMode.WALK,TraverseMode.BICYCLE),new StreetLinkFactory<BikeRentalStationVertex>(){
+    @Override public Collection<? extends Edge> connect(    StreetVertex sv,    BikeRentalStationVertex v){
+      return Arrays.asList(new StreetBikeRentalLink(sv,v),new StreetBikeRentalLink(v,sv));
+    }
+  }
+);
   return request;
 }
