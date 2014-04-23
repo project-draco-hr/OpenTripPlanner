@@ -50,10 +50,4 @@
       LOG.warn(graph.addBuilderAnnotation(new BikeRentalStationUnlinked(brsv)));
     }
   }
-  LOG.debug("Linking bike parks...");
-  for (  BikeParkVertex bpv : Iterables.filter(vertices,BikeParkVertex.class)) {
-    if (!networkLinkerLibrary.connectVertexToStreets(bpv).getResult()) {
-      LOG.warn(graph.addBuilderAnnotation(new BikeParkUnlinked(bpv)));
-    }
-  }
 }
