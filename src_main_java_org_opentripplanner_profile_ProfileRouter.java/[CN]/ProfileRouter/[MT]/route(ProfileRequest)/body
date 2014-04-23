@@ -23,7 +23,7 @@
   for (int round=0; round < ROUNDS; ++round) {
     LOG.info("ROUND {}",round);
     for (    PatternRide pr : queue) {
-      makeRides(pr,rides);
+      makeRides(pr);
     }
     LOG.info("number of rides: {}",rides.size());
     if (round != finalRound) {
