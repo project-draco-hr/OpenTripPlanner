@@ -1,0 +1,34 @@
+{
+  Set<BikePark> bikeParkSet=new HashSet<BikePark>();
+  for (  BikePark bikePark : bikeParks) {
+    bikeService.addBikePark(bikePark);
+    bikeParkSet.add(bikePark);
+    BikeParkVertex bikeParkVertex=verticesByPark.get(bikePark);
+    if (bikeParkVertex == null) {
+      bikeParkVertex=new BikeParkVertex(graph,bikePark);
+      LinkRequest request=networkLinkerLibrary.connectVertexToStreets(bikeParkVertex);
+      for (      Edge e : request.getEdgesAdded()) {
+        graph.addTemporaryEdge(e);
+      }
+      verticesByPark.put(bikePark,bikeParkVertex);
+      new BikeParkEdge(bikeParkVertex);
+    }
+ else {
+      bikeParkVertex.setSpacesAvailable(bikePark.spacesAvailable);
+    }
+  }
+  List<BikePark> toRemove=new ArrayList<BikePark>();
+  for (  Entry<BikePark,BikeParkVertex> entry : verticesByPark.entrySet()) {
+    BikePark bikePark=entry.getKey();
+    if (bikeParkSet.contains(bikePark))     continue;
+    BikeParkVertex vertex=entry.getValue();
+    if (graph.containsVertex(vertex)) {
+      graph.removeVertexAndEdges(vertex);
+    }
+    toRemove.add(bikePark);
+    bikeService.removeBikePark(bikePark);
+  }
+  for (  BikePark bikePark : toRemove) {
+    verticesByPark.remove(bikePark);
+  }
+}
