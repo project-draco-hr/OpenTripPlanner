@@ -2,11 +2,7 @@
   networkLinkerLibrary=new NetworkLinkerLibrary(graph,Collections.<Class<?>,Object>emptyMap());
   updaterManager.executeBlocking(new GraphWriterRunnable(){
     @Override public void run(    Graph graph){
-      service=graph.getService(BikeRentalStationService.class);
-      if (service == null) {
-        service=new BikeRentalStationService();
-        graph.putService(BikeRentalStationService.class,service);
-      }
+      service=graph.getService(BikeRentalStationService.class,true);
     }
   }
 );
