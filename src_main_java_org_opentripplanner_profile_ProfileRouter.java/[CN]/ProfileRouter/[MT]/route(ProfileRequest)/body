@@ -14,16 +14,16 @@
     for (int i=0; i < pattern.getStops().size(); ++i) {
       if (pattern.getStops().get(i) == sd.stop) {
         ProfileTransfer xfer=new ProfileTransfer(null,pattern,null,sd.stop,sd.distance);
-        queue.add(new PatternRide(pattern,i,null,xfer));
+        if (req.modes.contains(pattern.mode)) {
+          queue.add(new PatternRide(pattern,i,null,xfer));
+        }
       }
     }
   }
   for (int round=0; round < ROUNDS; ++round) {
     LOG.info("ROUND {}",round);
     for (    PatternRide pr : queue) {
-      if (req.modes.contains(pr.pattern.mode)) {
-        makeRides(pr,rides);
-      }
+      makeRides(pr,rides);
     }
     LOG.info("number of rides: {}",rides.size());
     if (round != finalRound) {
@@ -36,7 +36,9 @@
             if (tr.s1 != tr.s2 && pathContainsStop(ride,tr.s2))             continue;
             for (int i=0; i < tr.tp2.getStops().size(); ++i) {
               if (tr.tp2.getStops().get(i) == tr.s2) {
-                queue.add(new PatternRide(tr.tp2,i,ride,tr));
+                if (req.modes.contains(tr.tp2.mode)) {
+                  queue.add(new PatternRide(tr.tp2,i,ride,tr));
+                }
               }
             }
           }
