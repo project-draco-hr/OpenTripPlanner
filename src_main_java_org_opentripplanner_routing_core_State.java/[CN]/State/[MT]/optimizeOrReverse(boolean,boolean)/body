@@ -35,6 +35,7 @@
       editor.setBackMode(orig.getBackMode());
       if (orig.isBikeRenting() != orig.getBackState().isBikeRenting())       editor.setBikeRenting(!orig.isBikeRenting());
       if (orig.isCarParked() != orig.getBackState().isCarParked())       editor.setCarParked(!orig.isCarParked());
+      if (orig.isBikeParked() != orig.getBackState().isBikeParked())       editor.setBikeParked(!orig.isBikeParked());
       editor.setNumBoardings(getNumBoardings() - orig.getNumBoardings());
       ret=editor.makeState();
     }

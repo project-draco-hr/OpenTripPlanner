@@ -1,0 +1,38 @@
+{
+  GenericAStar aStar=new GenericAStar();
+  RoutingRequest options=new RoutingRequest("BICYCLE,WALK");
+  options.bikeParkAndRide=true;
+  options.freezeTraverseMode();
+  options.setRoutingContext(graph,B,D);
+  ShortestPathTree tree=aStar.getShortestPathTree(options);
+  GraphPath path=tree.getPath(D,false);
+  assertNull(path);
+  BikePark bpc=new BikePark();
+  bpc.id="bpc";
+  bpc.name="Bike Park C";
+  bpc.x=0.002;
+  bpc.y=45.00001;
+  bpc.spacesAvailable=1;
+  BikeParkVertex BPRC=new BikeParkVertex(graph,bpc);
+  new BikeParkEdge(BPRC);
+  new StreetBikeParkLink(BPRC,C);
+  new StreetBikeParkLink(C,BPRC);
+  options=new RoutingRequest("BICYCLE");
+  options.bikeParkAndRide=false;
+  options.setRoutingContext(graph,B,D);
+  tree=aStar.getShortestPathTree(options);
+  path=tree.getPath(D,false);
+  assertNotNull(path);
+  State s=tree.getState(D);
+  assertFalse(s.isBikeParked());
+  assertTrue(s.isBackWalkingBike());
+  options=new RoutingRequest("BICYCLE,WALK");
+  options.bikeParkAndRide=true;
+  options.setRoutingContext(graph,B,D);
+  tree=aStar.getShortestPathTree(options);
+  path=tree.getPath(D,false);
+  assertNotNull(path);
+  s=tree.getState(D);
+  assertTrue(s.isBikeParked());
+  assertFalse(s.isBackWalkingBike());
+}
