@@ -1,0 +1,14 @@
+{
+  QueryParameter.checkRangeInclusive(limit,0,Integer.MAX_VALUE);
+  ProfileRequest req=new ProfileRequest();
+  req.from=from;
+  req.to=to;
+  req.fromTime=fromTime.toSeconds();
+  req.toTime=toTime.toSeconds();
+  req.date=date.toJoda();
+  req.orderBy=orderBy;
+  req.limit=limit;
+  req.modes=modes;
+  ProfileResponse response=router.route(req);
+  return Response.status(Status.OK).entity(response).build();
+}

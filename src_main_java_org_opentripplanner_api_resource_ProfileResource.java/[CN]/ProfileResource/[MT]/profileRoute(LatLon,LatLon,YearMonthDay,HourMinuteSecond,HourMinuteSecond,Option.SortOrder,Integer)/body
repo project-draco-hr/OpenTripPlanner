@@ -1,5 +1,0 @@
-{
-  List<Option> options=router.route(from,to,fromTime.toSeconds(),toTime.toSeconds(),date.toJoda());
-  ProfileResponse pr=new ProfileResponse(options,orderBy,limit);
-  return Response.status(Status.OK).entity(pr).build();
-}

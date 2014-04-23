@@ -2,11 +2,11 @@
   final int ROUNDS=2;
   int finalRound=ROUNDS - 1;
   int penultimateRound=ROUNDS - 2;
-  fromStops=index.closestPatterns(from.lon,from.lat,WALK_DISTANCE);
-  toStops=index.closestPatterns(to.lon,to.lat,WALK_DISTANCE);
+  fromStops=index.closestPatterns(req.from.lon,req.from.lat,WALK_DISTANCE);
+  toStops=index.closestPatterns(req.to.lon,req.to.lat,WALK_DISTANCE);
   LOG.info("from stops: {}",fromStops);
   LOG.info("to stops: {}",toStops);
-  this.window=new TimeWindow(fromTime,toTime,index.servicesRunning(date));
+  this.window=new TimeWindow(req.fromTime,req.toTime,index.servicesRunning(req.date));
   Set<PatternRide> queue=Sets.newHashSet();
   for (  Entry<TripPattern,StopAtDistance> entry : fromStops.entrySet()) {
     TripPattern pattern=entry.getKey();
@@ -50,5 +50,5 @@
     Option option=new Option(ride,dist,window);
     if (!option.hasEmptyRides())     options.add(option);
   }
-  return options;
+  return new ProfileResponse(options,req.orderBy,req.limit);
 }
