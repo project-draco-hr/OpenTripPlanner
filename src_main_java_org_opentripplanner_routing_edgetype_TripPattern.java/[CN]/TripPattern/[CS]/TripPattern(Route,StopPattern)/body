@@ -1,5 +1,6 @@
 {
   this.route=route;
+  this.mode=GtfsLibrary.getTraverseMode(this.route);
   this.stopPattern=stopPattern;
   int size=stopPattern.size;
   setStopsFromStopPattern(stopPattern);
