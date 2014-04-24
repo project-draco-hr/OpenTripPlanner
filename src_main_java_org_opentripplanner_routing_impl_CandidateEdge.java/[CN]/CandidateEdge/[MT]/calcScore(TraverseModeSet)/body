@@ -1,4 +1,5 @@
 {
+  int platform=calcPlatform(modes);
   double myScore=0;
   myScore=distance * SphericalDistanceLibrary.RADIUS_OF_EARTH_IN_M / 360.0;
   myScore/=preference;
@@ -8,7 +9,7 @@
   if (edge.getName().contains("sidewalk")) {
     myScore/=SIDEWALK_PREFERENCE;
   }
-  if (edge.getPermission().allows(StreetTraversalPermission.CAR) || (edge.getStreetClass() & platform) != 0) {
+  if (modes.getDriving() && edge.getPermission().allows(StreetTraversalPermission.CAR) || (edge.getStreetClass() & platform) != 0) {
     myScore-=CAR_PREFERENCE;
   }
   if (heading != null) {
