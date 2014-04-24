@@ -1,12 +1,11 @@
 {
-  final int ROUNDS=2;
+  final int ROUNDS=3;
   int finalRound=ROUNDS - 1;
   int penultimateRound=ROUNDS - 2;
-  fromStops=index.closestPatterns(req.from.lon,req.from.lat,WALK_DISTANCE);
-  toStops=index.closestPatterns(req.to.lon,req.to.lat,WALK_DISTANCE);
+  findClosestPatterns();
   LOG.info("from stops: {}",fromStops);
   LOG.info("to stops: {}",toStops);
-  this.window=new TimeWindow(req.fromTime,req.toTime,index.servicesRunning(req.date));
+  this.window=new TimeWindow(request.fromTime,request.toTime,graph.index.servicesRunning(request.date));
   Set<PatternRide> queue=Sets.newHashSet();
   for (  Entry<TripPattern,StopAtDistance> entry : fromStops.entrySet()) {
     TripPattern pattern=entry.getKey();
@@ -14,7 +13,7 @@
     for (int i=0; i < pattern.getStops().size(); ++i) {
       if (pattern.getStops().get(i) == sd.stop) {
         ProfileTransfer xfer=new ProfileTransfer(null,pattern,null,sd.stop,sd.distance);
-        if (req.modes.contains(pattern.mode)) {
+        if (request.modes.contains(pattern.mode)) {
           queue.add(new PatternRide(pattern,i,null,xfer));
         }
       }
@@ -22,21 +21,24 @@
   }
   for (int round=0; round < ROUNDS; ++round) {
     LOG.info("ROUND {}",round);
+    LOG.info("Queue size at beginning of round: {}",queue.size());
     for (    PatternRide pr : queue) {
+      LOG.info("  PatternRide: {}",pr);
       makeRides(pr);
     }
-    LOG.info("number of rides: {}",rides.size());
+    LOG.info("Number of new rides created: {}",rides.size());
     if (round != finalRound) {
       queue.clear();
       for (      Ride ride : rides.values()) {
-        for (        ProfileTransfer tr : index.transfersForStop.get(ride.to)) {
+        LOG.info("RIDE {}",ride);
+        for (        ProfileTransfer tr : graph.index.transfersForStop.get(ride.to)) {
           if (round == penultimateRound && !toStops.containsKey(tr.tp2))           continue;
           if (ride.containsPattern(tr.tp1)) {
             if (pathContainsRoute(ride,tr.tp2.route))             continue;
             if (tr.s1 != tr.s2 && pathContainsStop(ride,tr.s2))             continue;
             for (int i=0; i < tr.tp2.getStops().size(); ++i) {
               if (tr.tp2.getStops().get(i) == tr.s2) {
-                if (req.modes.contains(tr.tp2.mode)) {
+                if (request.modes.contains(tr.tp2.mode)) {
                   queue.add(new PatternRide(tr.tp2,i,ride,tr));
                 }
               }
@@ -54,5 +56,5 @@
     Option option=new Option(ride,dist,window);
     if (!option.hasEmptyRides())     options.add(option);
   }
-  return new ProfileResponse(options,req.orderBy,req.limit);
+  return new ProfileResponse(options,request.orderBy,request.limit);
 }

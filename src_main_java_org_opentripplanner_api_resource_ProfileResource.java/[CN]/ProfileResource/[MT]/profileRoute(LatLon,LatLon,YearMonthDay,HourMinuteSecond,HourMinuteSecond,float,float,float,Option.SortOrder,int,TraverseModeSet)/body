@@ -1,14 +1,20 @@
 {
   QueryParameter.checkRangeInclusive(limit,0,Integer.MAX_VALUE);
+  QueryParameter.checkRangeInclusive(walkSpeed,0,7);
+  QueryParameter.checkRangeInclusive(bikeSpeed,0,21);
   ProfileRequest req=new ProfileRequest();
   req.from=from;
   req.to=to;
   req.fromTime=fromTime.toSeconds();
   req.toTime=toTime.toSeconds();
+  req.walkSpeed=walkSpeed;
+  req.bikeSpeed=bikeSpeed;
+  req.streetDist=streetDist;
   req.date=date.toJoda();
   req.orderBy=orderBy;
   req.limit=limit;
   req.modes=modes;
-  ProfileResponse response=router.route(req);
+  ProfileRouter router=new ProfileRouter(graph,req);
+  ProfileResponse response=router.route();
   return Response.status(Status.OK).entity(response).build();
 }

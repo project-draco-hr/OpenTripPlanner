@@ -1,0 +1,40 @@
+{
+  RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
+  rr.setFrom(new GenericLocation(request.from.lat,request.from.lon));
+  rr.setTo(new GenericLocation(request.to.lat,request.to.lon));
+  rr.setRoutingContext(graph);
+  rr.setBatch(true);
+  rr.setArriveBy(back);
+  int worstElapsedTime=60 * 90;
+  if (back)   worstElapsedTime*=-1;
+  rr.setWorstTime(rr.dateTime + worstElapsedTime);
+  GenericAStar astar=new GenericAStar();
+  astar.setNPaths(1);
+  final List<StopAtDistance> ret=Lists.newArrayList();
+  astar.setTraverseVisitor(new TraverseVisitor(){
+    @Override public void visitEdge(    Edge edge,    State state){
+    }
+    @Override public void visitEnqueue(    State state){
+    }
+    @Override public void visitVertex(    State state){
+      if (state.getWalkDistance() < request.streetDist) {
+        Vertex vertex=state.getVertex();
+        if (vertex instanceof TransitStop) {
+          TransitStop tstop=(TransitStop)vertex;
+          ret.add(new StopAtDistance(tstop.getStop(),(int)state.getWalkDistance()));
+        }
+      }
+    }
+  }
+);
+  SearchTerminationStrategy terminator=new SearchTerminationStrategy(){
+    @Override public boolean shouldSearchContinue(    Vertex origin,    Vertex target,    State current,    ShortestPathTree spt,    RoutingRequest req){
+      if (current.getVertex() != target)       return true;
+      return false;
+    }
+  }
+;
+  ShortestPathTree spt=astar.getShortestPathTree(rr,System.currentTimeMillis() + 5000,terminator);
+  rr.rctx.destroy();
+  return ret;
+}
