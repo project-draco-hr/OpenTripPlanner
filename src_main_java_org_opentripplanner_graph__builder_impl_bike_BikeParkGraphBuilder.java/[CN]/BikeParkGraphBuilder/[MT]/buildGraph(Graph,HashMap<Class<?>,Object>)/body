@@ -8,6 +8,7 @@
   }
   Collection<BikePark> bikeParks=dataSource.getBikeParks();
   for (  BikePark bikePark : bikeParks) {
+    if (namePrefix != null)     bikePark.name=namePrefix + bikePark.name;
     service.addBikePark(bikePark);
     BikeParkVertex bikeParkVertex=new BikeParkVertex(graph,bikePark);
     new BikeParkEdge(bikeParkVertex);
