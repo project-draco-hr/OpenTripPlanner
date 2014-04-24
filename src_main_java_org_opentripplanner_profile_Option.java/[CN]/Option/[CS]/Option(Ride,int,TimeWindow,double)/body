@@ -1,7 +1,7 @@
 {
   stats=new Stats();
   while (ride != null) {
-    Segment segment=new Segment(ride,window);
+    Segment segment=new Segment(ride,window,walkSpeed);
     segments.add(0,segment);
     stats.add(segment.walkTime);
     stats.add(segment.waitStats);

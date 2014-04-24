@@ -13,6 +13,6 @@
   }
   Collections.sort(segmentPatterns);
   walkDistance=(int)ride.getTransferDistance();
-  walkTime=(int)(ride.getTransferDistance() / ProfileRouter.WALK_SPEED);
-  waitStats=ride.statsForTransfer(window);
+  walkTime=(int)(ride.getTransferDistance() / walkSpeed);
+  waitStats=ride.statsForTransfer(window,walkSpeed);
 }

@@ -2,7 +2,7 @@
   if (previous == null)   return this.statsForBoarding(window);
   List<Integer> departures=getSortedStoptimes(window,false);
   List<Integer> arrivals=getSortedStoptimes(window,true);
-  int walkTime=(int)(getTransferDistance() / ProfileRouter.WALK_SPEED);
+  int walkTime=(int)(getTransferDistance() / walkSpeed);
   List<Integer> waits=Lists.newArrayList();
   Iterator<Integer> departureIterator=departures.iterator();
   int departure=departureIterator.next();

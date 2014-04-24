@@ -53,7 +53,7 @@
   List<Option> options=Lists.newArrayList();
   for (  Ride ride : targetRides) {
     int dist=toStops.get(ride.patternRides.get(0).pattern).distance;
-    Option option=new Option(ride,dist,window);
+    Option option=new Option(ride,dist,window,request.walkSpeed);
     if (!option.hasEmptyRides())     options.add(option);
   }
   return new ProfileResponse(options,request.orderBy,request.limit);
