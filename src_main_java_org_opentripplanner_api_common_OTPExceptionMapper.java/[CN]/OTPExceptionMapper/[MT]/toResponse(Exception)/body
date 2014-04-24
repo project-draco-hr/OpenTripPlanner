@@ -1,0 +1,4 @@
+{
+  ex.printStackTrace();
+  return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.toString() + " " + ex.getMessage()).type("text/plain").build();
+}
