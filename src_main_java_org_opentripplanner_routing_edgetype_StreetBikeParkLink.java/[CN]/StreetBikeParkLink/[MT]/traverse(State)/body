@@ -1,4 +1,7 @@
 {
+  if (!s0.getOptions().bikeParkAndRide) {
+    return null;
+  }
   if (s0.getBackEdge() instanceof StreetBikeParkLink)   return null;
   StateEditor s1=s0.edit(this);
   s1.incrementTimeInSeconds(1);
