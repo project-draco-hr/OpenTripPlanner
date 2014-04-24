@@ -2,9 +2,9 @@
   RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
   rr.setFrom(new GenericLocation(request.from.lat,request.from.lon));
   rr.setTo(new GenericLocation(request.to.lat,request.to.lon));
+  rr.setArriveBy(back);
   rr.setRoutingContext(graph);
   rr.setBatch(true);
-  rr.setArriveBy(back);
   int worstElapsedTime=60 * 90;
   if (back)   worstElapsedTime*=-1;
   rr.setWorstTime(rr.dateTime + worstElapsedTime);
@@ -30,7 +30,7 @@
   SearchTerminationStrategy terminator=new SearchTerminationStrategy(){
     @Override public boolean shouldSearchContinue(    Vertex origin,    Vertex target,    State current,    ShortestPathTree spt,    RoutingRequest req){
       if (current.getVertex() != target)       return true;
-      return false;
+      return true;
     }
   }
 ;
