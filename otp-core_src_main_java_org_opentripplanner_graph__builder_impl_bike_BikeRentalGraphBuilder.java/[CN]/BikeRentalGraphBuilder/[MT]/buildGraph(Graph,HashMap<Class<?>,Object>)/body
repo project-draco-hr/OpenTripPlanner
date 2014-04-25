@@ -1,0 +1,24 @@
+{
+  LOG.info("Building bike rental stations from static source...");
+  NetworkLinkerLibrary networkLinkerLibrary=new NetworkLinkerLibrary(graph,extra);
+  BikeRentalStationService service=graph.getService(BikeRentalStationService.class,true);
+  if (!dataSource.update()) {
+    LOG.warn("No bike rental found from the data source.");
+    return;
+  }
+  Collection<BikeRentalStation> stations=dataSource.getStations();
+  for (  BikeRentalStation station : stations) {
+    service.addBikeRentalStation(station);
+    BikeRentalStationVertex vertex=new BikeRentalStationVertex(graph,station);
+    if (!networkLinkerLibrary.connectVertexToStreets(vertex).getResult()) {
+      LOG.warn(graph.addBuilderAnnotation(new BikeRentalStationUnlinked(vertex)));
+    }
+    LinkRequest request=networkLinkerLibrary.connectVertexToStreets(vertex);
+    for (    Edge e : request.getEdgesAdded()) {
+      graph.addTemporaryEdge(e);
+    }
+    new RentABikeOnEdge(vertex,vertex,station.networks);
+    new RentABikeOffEdge(vertex,vertex,station.networks);
+  }
+  LOG.info("Created " + stations.size() + " bike rental stations.");
+}
