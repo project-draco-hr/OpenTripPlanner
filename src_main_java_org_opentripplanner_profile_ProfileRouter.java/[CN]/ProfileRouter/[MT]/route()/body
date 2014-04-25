@@ -56,5 +56,6 @@
     Option option=new Option(ride,dist,window,request.walkSpeed);
     if (!option.hasEmptyRides())     options.add(option);
   }
+  if (directOption != null)   options.add(directOption);
   return new ProfileResponse(options,request.orderBy,request.limit);
 }

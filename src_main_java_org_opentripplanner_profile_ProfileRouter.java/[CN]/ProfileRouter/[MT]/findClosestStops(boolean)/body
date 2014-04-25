@@ -30,6 +30,7 @@
   SearchTerminationStrategy terminator=new SearchTerminationStrategy(){
     @Override public boolean shouldSearchContinue(    Vertex origin,    Vertex target,    State current,    ShortestPathTree spt,    RoutingRequest req){
       if (current.getVertex() != target)       return true;
+      directOption=new Option(current);
       return true;
     }
   }
