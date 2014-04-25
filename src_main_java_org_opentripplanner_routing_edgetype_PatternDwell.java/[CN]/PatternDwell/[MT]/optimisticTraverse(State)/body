@@ -1,5 +1,5 @@
 {
-  int dwellTime=getPattern().getBestDwellTime(stopIndex);
+  int dwellTime=getPattern().scheduledTimetable.getBestDwellTime(stopIndex);
   StateEditor s1=s0.edit(this);
   s1.incrementTimeInSeconds(dwellTime);
   s1.setBackMode(getMode());

@@ -5,7 +5,7 @@
       return null;
     }
   }
-  int runningTime=getPattern().getBestRunningTime(stopIndex);
+  int runningTime=getPattern().scheduledTimetable.getBestRunningTime(stopIndex);
   StateEditor s1=state0.edit(this);
   s1.incrementTimeInSeconds(runningTime);
   s1.setBackMode(getMode());
