@@ -2,4 +2,5 @@
   String url=preferences.get("url",null);
   if (url == null)   throw new IllegalArgumentException("Missing mandatory 'url' configuration.");
   setUrl(url);
+  setNamePrefix(preferences.get("namePrefix",null));
 }
