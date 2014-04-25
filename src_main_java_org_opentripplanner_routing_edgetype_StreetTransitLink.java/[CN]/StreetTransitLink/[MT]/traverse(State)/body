@@ -3,6 +3,9 @@
   if (s0.getOptions().wheelchairAccessible && !wheelchairAccessible) {
     return null;
   }
+  if (s0.getOptions().bikeParkAndRide && !s0.isBikeParked()) {
+    return null;
+  }
   StateEditor s1=s0.edit(this);
   if (s0.getNonTransitMode() == TraverseMode.CAR) {
     if (req.kissAndRide && !s0.isCarParked()) {
