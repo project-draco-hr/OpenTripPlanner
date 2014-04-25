@@ -68,11 +68,16 @@ GtfsGraphBuilderImpl gtfsBuilder=new GtfsGraphBuilderImpl(gtfsBundles);
 graphBuilder.addGraphBuilder(gtfsBuilder);
 if ((!hasOSM) || params.longDistance) {
 if (!params.useTransfersTxt) {
+if (!hasOSM || !params.useStreetsForLinking) {
 graphBuilder.addGraphBuilder(new StreetlessStopLinker());
+}
 }
 }
 if (hasOSM) {
 graphBuilder.addGraphBuilder(new TransitToStreetNetworkGraphBuilderImpl());
+if (params.longDistance && params.useStreetsForLinking && !params.useTransfersTxt) {
+graphBuilder.addGraphBuilder(new StreetfulStopLinker());
+}
 }
 List<GraphBuilderWithGtfsDao> gtfsBuilders=new ArrayList<GraphBuilderWithGtfsDao>();
 if (params.transitIndex || params.raptor) {

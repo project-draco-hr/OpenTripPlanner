@@ -19,10 +19,10 @@
     assertEquals(9L,itinerary.waitingTime);
   }
   if (type == Type.FORWARD || type == Type.BACKWARD) {
-    assertEquals(21.0,itinerary.walkDistance,0.0);
+    assertEquals(17.0,itinerary.walkDistance,0.0);
   }
  else   if (type == Type.ONBOARD) {
-    assertEquals(18.0,itinerary.walkDistance,0.0);
+    assertEquals(14.0,itinerary.walkDistance,0.0);
   }
   assertFalse(itinerary.walkLimitExceeded);
   assertEquals(10.0,itinerary.elevationLost,0.0);
