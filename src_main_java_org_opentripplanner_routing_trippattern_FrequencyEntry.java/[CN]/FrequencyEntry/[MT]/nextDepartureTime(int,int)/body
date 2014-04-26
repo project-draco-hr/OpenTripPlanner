@@ -1,4 +1,5 @@
 {
+  LOG.info("FreqTripTimes {} {} {}",getTrip().getRoute().toString(),startTime,endTime);
   if (t > endTime)   return -1;
   int stopOffset=getDepartureTime(hop) - getDepartureTime(0);
   int beg=startTime + stopOffset;
