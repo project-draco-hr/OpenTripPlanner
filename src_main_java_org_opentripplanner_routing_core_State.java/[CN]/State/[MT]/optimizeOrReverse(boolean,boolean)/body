@@ -14,7 +14,9 @@
         ret=((TransitBoardAlight)edge).traverse(ret,orig.getBackState().getTimeSeconds());
         newInitialWaitTime=ret.stateData.initialWaitTime;
       }
- else       ret=edge.traverse(ret);
+ else {
+        ret=edge.traverse(ret);
+      }
       if (ret != null && ret.getBackMode() != null && orig.getBackMode() != null && ret.getBackMode() != orig.getBackMode()) {
         ret=ret.next;
       }
