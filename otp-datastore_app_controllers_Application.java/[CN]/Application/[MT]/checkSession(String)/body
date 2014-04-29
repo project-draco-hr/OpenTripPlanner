@@ -6,6 +6,7 @@
   resp.put("sessionId",sessionId);
   if (userSession != null) {
     resp.put("username",userSession.user.username);
+    resp.put("role",userSession.user.role);
   }
   renderJSON(resp);
 }
