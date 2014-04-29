@@ -3,7 +3,13 @@
     State preBoardState=states[0].getBackState();
     FrequencyBoard fb=(FrequencyBoard)states[0].getBackEdge();
     FrequencyBasedTripPattern pt=fb.getPattern();
-    int boardTime=preBoardState.getServiceDay().secondsSinceMidnight(preBoardState.getTimeSeconds());
+    int boardTime;
+    if (preBoardState.getServiceDay() == null) {
+      boardTime=0;
+    }
+ else {
+      boardTime=preBoardState.getServiceDay().secondsSinceMidnight(preBoardState.getTimeSeconds());
+    }
     int period=pt.getPeriod(fb.getStopIndex(),boardTime);
     leg.isNonExactFrequency=!pt.isExact();
     leg.headway=period;
