@@ -17,7 +17,7 @@
   GraphBuilderTask graphBuilder=configurator.builderFromParameters();
   if (graphBuilder != null) {
     graphBuilder.run();
-    configurator.makeGraphService(graphBuilder.getGraph());
+    if (params.inMemory)     configurator.makeGraphService(graphBuilder.getGraph());
   }
   GraphVisualizer graphVisualizer=configurator.visualizerFromParameters();
   if (graphVisualizer != null) {
