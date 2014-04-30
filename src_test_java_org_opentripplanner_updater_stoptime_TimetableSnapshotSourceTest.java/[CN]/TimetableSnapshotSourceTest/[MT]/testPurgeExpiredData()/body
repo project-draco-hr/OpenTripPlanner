@@ -1,7 +1,8 @@
 {
   AgencyAndId tripId=new AgencyAndId("agency","1.1");
   ServiceDate previously=serviceDate.previous().previous();
-  TripPattern pattern=transitIndexService.getTripPatternForTrip(tripId);
+  Trip trip=graph.index.tripForId.get(tripId);
+  TripPattern pattern=graph.index.patternForTrip.get(trip);
   updater.setMaxSnapshotFrequency(0);
   updater.setPurgeExpiredData(false);
   updater.applyTripUpdates(Arrays.asList(TripUpdate.parseFrom(cancellation)),"agency");
