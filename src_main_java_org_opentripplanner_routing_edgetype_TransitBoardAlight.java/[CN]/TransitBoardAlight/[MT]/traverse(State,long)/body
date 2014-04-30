@@ -28,7 +28,7 @@
       int nextDeparture;
       s1.setLastNextArrivalDelta(Integer.MAX_VALUE);
       for (int tripIndex=0; tripIndex < numTrips; tripIndex++) {
-        nextDeparture=getPattern().scheduledTimetable.getDepartureTime(stopIndex,tripIndex);
+        nextDeparture=getPattern().scheduledTimetable.getTripTimes(tripIndex).getDepartureTime(stopIndex);
         if (nextDeparture > thisDeparture) {
           s1.setLastNextArrivalDelta(nextDeparture - thisDeparture);
           break;

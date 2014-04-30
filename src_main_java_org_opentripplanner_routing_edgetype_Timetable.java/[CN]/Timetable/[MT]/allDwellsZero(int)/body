@@ -1,6 +1,6 @@
 {
-  for (int t=0; t < tripTimes.size(); ++t) {
-    if (getDwellTime(hopIndex,t) != 0) {
+  for (  TripTimes tt : tripTimes) {
+    if (tt.getDwellTime(hopIndex) != 0) {
       return false;
     }
   }
