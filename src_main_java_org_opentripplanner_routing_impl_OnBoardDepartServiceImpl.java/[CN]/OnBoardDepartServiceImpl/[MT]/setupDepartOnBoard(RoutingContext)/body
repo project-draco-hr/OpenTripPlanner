@@ -2,8 +2,8 @@
   DistanceLibrary distanceLibrary=SphericalDistanceLibrary.getInstance();
   RoutingRequest opt=ctx.opt;
   AgencyAndId tripId=opt.getStartingTransitTripId();
-  TransitIndexService transitIndexService=ctx.graph.getService(TransitIndexService.class);
-  TripPattern tripPattern=transitIndexService.getTripPatternForTrip(tripId);
+  Trip trip=ctx.graph.index.tripForId.get(tripId);
+  TripPattern tripPattern=ctx.graph.index.patternForTrip.get(trip);
   if (tripPattern == null) {
     throw new IllegalArgumentException("Unknown/invalid trip ID: " + tripId);
   }
