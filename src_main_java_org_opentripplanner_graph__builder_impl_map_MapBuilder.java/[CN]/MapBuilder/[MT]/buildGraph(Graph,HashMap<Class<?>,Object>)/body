@@ -1,27 +1,25 @@
 {
-  TransitIndexService transit=graph.getService(TransitIndexService.class);
   StreetMatcher matcher=new StreetMatcher(graph);
   EdgesForRoute edgesForRoute=new EdgesForRoute();
   extra.put(EdgesForRoute.class,edgesForRoute);
   log.info("matching route variants to street edges...");
-  for (  AgencyAndId route : transit.getAllRouteIds()) {
-    for (    RouteVariant variant : transit.getVariantsForRoute(route)) {
-      Geometry geometry=variant.getGeometry();
-      if (variant.getTraverseMode() == TraverseMode.BUS) {
-        log.debug("Matching: " + variant + " ncoords = "+ geometry.getNumPoints());
-        List<Edge> edges=matcher.match(geometry);
+  for (  Route route : graph.index.routeForId.values()) {
+    for (    TripPattern pattern : graph.index.patternsForRoute.get(route)) {
+      if (pattern.mode == TraverseMode.BUS) {
+        log.debug("Matching {} ncoords={}",pattern,pattern.geometry.getNumPoints());
+        List<Edge> edges=matcher.match(pattern.geometry);
         if (edges == null) {
-          log.warn("Could not match " + variant.getName() + " to street network");
+          log.warn("Could not match to street network: {}",pattern);
           continue;
         }
         List<Coordinate> coordinates=new ArrayList<Coordinate>();
         for (        Edge e : edges) {
           coordinates.addAll(Arrays.asList(e.getGeometry().getCoordinates()));
-          edgesForRoute.edgesForRoute.put(route,e);
+          edgesForRoute.edgesForRoute.put(route.getId(),e);
         }
         Coordinate[] coordinateArray=new Coordinate[coordinates.size()];
         LineString ls=GeometryUtils.getGeometryFactory().createLineString(coordinates.toArray(coordinateArray));
-        variant.setGeometry(ls);
+        pattern.geometry=ls;
       }
     }
   }
