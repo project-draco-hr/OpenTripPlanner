@@ -14,7 +14,7 @@
   assertEquals("15.1",trips.get(1).getId().getId());
   long time=-1;
   for (  State s : path.states) {
-    if (s.getBackEdge() instanceof FrequencyBoard) {
+    if (s.getBackEdge() instanceof TransitBoardAlight) {
       time=s.getTimeSeconds();
       break;
     }
@@ -31,7 +31,7 @@
   assertEquals("15.1",trips.get(1).getId().getId());
   long newTime=-1;
   for (  State s : path.states) {
-    if (s.getBackEdge() instanceof FrequencyBoard) {
+    if (s.getBackEdge() instanceof TransitBoardAlight) {
       newTime=s.getTimeSeconds();
       break;
     }

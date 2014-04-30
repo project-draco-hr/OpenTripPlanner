@@ -15,7 +15,7 @@
   assertEquals("5.1",trips.get(1).getId().getId());
   long time=-1;
   for (  State s : path.states) {
-    if (s.getBackEdge() instanceof FrequencyAlight && s.getBackState() != null) {
+    if (s.getBackEdge() instanceof TransitBoardAlight && s.getBackState() != null) {
       time=s.getBackState().getTimeSeconds();
       break;
     }
@@ -32,7 +32,7 @@
   assertEquals("5.1",trips.get(1).getId().getId());
   long newTime=-1;
   for (  State s : path.states) {
-    if (s.getBackEdge() instanceof FrequencyAlight && s.getBackState() != null) {
+    if (s.getBackEdge() instanceof TransitBoardAlight && s.getBackState() != null) {
       newTime=s.getBackState().getTimeSeconds();
       break;
     }
