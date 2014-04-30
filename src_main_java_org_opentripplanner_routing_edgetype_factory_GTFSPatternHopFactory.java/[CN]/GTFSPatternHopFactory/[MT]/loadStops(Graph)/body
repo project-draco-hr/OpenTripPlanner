@@ -1,6 +1,7 @@
 {
   for (  Stop stop : _dao.getAllStops()) {
     if (context.stops.contains(stop.getId())) {
+      LOG.error("Skipping stop {} because we already loaded an identical ID.",stop.getId());
       continue;
     }
     context.stops.add(stop.getId());
@@ -15,8 +16,10 @@
       if (locationType != 2) {
         TransitStopArrive arrive=new TransitStopArrive(graph,stop,stopVertex);
         context.stopArriveNodes.put(stop,arrive);
+        stopVertex.arriveVertex=arrive;
         TransitStopDepart depart=new TransitStopDepart(graph,stop,stopVertex);
         context.stopDepartNodes.put(stop,depart);
+        stopVertex.departVertex=depart;
         new PreAlightEdge(arrive,stopVertex);
         new PreBoardEdge(stopVertex,depart);
       }

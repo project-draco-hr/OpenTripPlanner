@@ -18,9 +18,10 @@
     vertexForId.put(vertex.getLabel(),vertex);
     if (vertex instanceof TransitStop) {
       TransitStop transitStop=(TransitStop)vertex;
-      stopForId.put(transitStop.getStop().getId(),transitStop.getStop());
-      stopVertexForStop.put(transitStop.getStop(),transitStop);
-      stopsForParentStation.put(transitStop.getStop().getParentStation(),transitStop.getStop());
+      Stop stop=transitStop.getStop();
+      stopForId.put(stop.getId(),stop);
+      stopVertexForStop.put(stop,transitStop);
+      stopsForParentStation.put(stop.getParentStation(),stop);
     }
   }
   stopSpatialIndex.setProjectionMeridian(vertices.iterator().next().getCoordinate().x);

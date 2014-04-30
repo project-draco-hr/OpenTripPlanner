@@ -65,12 +65,9 @@
     }
   }
   if (opt.getStartingTransitStopId() != null) {
-    TransitIndexService tis=graph.getService(TransitIndexService.class);
-    if (tis == null) {
-      throw new RuntimeException("Next/Previous/First/Last trip " + "functionality depends on the transit index. Rebuild " + "the graph with TransitIndexBuilder");
-    }
-    AgencyAndId stopId=opt.getStartingTransitStopId();
-    startingStop=tis.getPreBoardEdge(stopId).getToVertex();
+    Stop stop=graph.index.stopForId.get(opt.getStartingTransitStopId());
+    TransitStop tstop=graph.index.stopVertexForStop.get(stop);
+    startingStop=tstop.departVertex;
   }
   origin=opt.arriveBy ? toVertex : fromVertex;
   originBackEdge=opt.arriveBy ? toBackEdge : fromBackEdge;
