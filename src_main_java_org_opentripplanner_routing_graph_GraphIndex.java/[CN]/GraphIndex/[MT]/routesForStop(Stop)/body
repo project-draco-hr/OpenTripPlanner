@@ -1,0 +1,7 @@
+{
+  Set<Route> routes=Sets.newHashSet();
+  for (  TripPattern p : patternsForStop.get(stop)) {
+    routes.add(p.route);
+  }
+  return routes;
+}

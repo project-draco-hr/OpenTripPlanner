@@ -1,8 +1,8 @@
 {
   List<Edge> nearbyEdges=null;
-  if (linker.edgesForRoute != null && linker.transitIndex != null) {
+  if (linker.edgesForRoute != null) {
     nearbyEdges=new ArrayList<Edge>();
-    for (    AgencyAndId route : linker.transitIndex.getRoutesForStop(v.getStopId())) {
+    for (    Route route : linker.graph.index.routesForStop(v.getStop())) {
       Collection<Edge> edges=linker.edgesForRoute.get(route);
       if (edges != null) {
         nearbyEdges.addAll(edges);
