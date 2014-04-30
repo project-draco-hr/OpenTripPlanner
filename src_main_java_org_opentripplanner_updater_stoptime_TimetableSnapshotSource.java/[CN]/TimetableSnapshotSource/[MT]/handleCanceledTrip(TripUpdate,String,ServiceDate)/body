@@ -1,7 +1,7 @@
 {
   TripDescriptor tripDescriptor=tripUpdate.getTrip();
   AgencyAndId tripId=new AgencyAndId(agencyId,tripDescriptor.getTripId());
-  TripPattern pattern=getPatternForTrip(tripId);
+  TripPattern pattern=getPatternForTripId(tripId);
   if (pattern == null) {
     LOG.warn("No pattern found for tripId {}, skipping TripUpdate.",tripId);
     return false;

@@ -1,5 +1,4 @@
 {
   timeZone=graph.getTimeZone();
-  transitIndexService=graph.getService(TransitIndexService.class);
-  if (transitIndexService == null)   throw new RuntimeException("Real-time updates need a TransitIndexService. " + "Please setup one during graph building.");
+  graphIndex=graph.index;
 }
