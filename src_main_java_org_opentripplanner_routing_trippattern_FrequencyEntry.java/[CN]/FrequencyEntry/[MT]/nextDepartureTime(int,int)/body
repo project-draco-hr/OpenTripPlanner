@@ -4,12 +4,12 @@
   int beg=startTime + stopOffset;
   int end=endTime + stopOffset;
   if (exactTimes) {
-    for (int dep=beg; dep < end; dep+=headwaySecs) {
+    for (int dep=beg; dep < end; dep+=headway) {
       if (dep >= time)       return dep;
     }
   }
  else {
-    int dep=time + headwaySecs;
+    int dep=time + headway;
     if (dep < beg)     return beg;
     if (dep < end)     return dep;
   }
