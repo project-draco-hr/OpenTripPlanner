@@ -43,7 +43,7 @@
     List<Frequency> frequencies=frequenciesForTrip.get(trip);
     if (frequencies != null && !(frequencies.isEmpty())) {
       for (      Frequency freq : frequencies) {
-        tripPattern.add(new FrequencyTripTimes(trip,stopTimes,freq));
+        tripPattern.add(new FrequencyEntry(freq,new TripTimes(trip,stopTimes)));
       }
     }
  else {

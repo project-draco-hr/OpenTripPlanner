@@ -1,0 +1,9 @@
+{
+  IntArray intArray=new IntArray(original);
+  IntArray canonical=canonicalIntArrays.get(intArray);
+  if (canonical == null) {
+    canonical=intArray;
+    canonicalIntArrays.put(canonical,canonical);
+  }
+  return canonical.array;
+}

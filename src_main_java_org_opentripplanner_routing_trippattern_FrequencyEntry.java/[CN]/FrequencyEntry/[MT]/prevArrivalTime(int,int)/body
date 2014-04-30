@@ -1,6 +1,6 @@
 {
   if (t < startTime)   return -1;
-  int stopOffset=getArrivalTime(hop) - getDepartureTime(0);
+  int stopOffset=tripTimes.getArrivalTime(stop) - tripTimes.getDepartureTime(0);
   int beg=startTime + stopOffset;
   int end=endTime + stopOffset;
   if (exactTimes) {

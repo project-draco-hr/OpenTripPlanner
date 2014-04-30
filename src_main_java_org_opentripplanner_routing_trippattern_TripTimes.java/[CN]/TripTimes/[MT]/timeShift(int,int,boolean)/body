@@ -1,0 +1,7 @@
+{
+  if (arrivalTimes != null || departureTimes != null)   return null;
+  TripTimes shifted=this.clone();
+  int shift=time - (depart ? getDepartureTime(stop) : getArrivalTime(stop));
+  shifted.timeShift+=shift;
+  return shifted;
+}

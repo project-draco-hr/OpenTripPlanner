@@ -1,5 +1,9 @@
 {
   for (  TripTimes tt : this.tripTimes) {
-    tt.serviceCode=serviceCodes.get(tt.getTrip().getServiceId());
+    tt.serviceCode=serviceCodes.get(tt.trip.getServiceId());
+  }
+  for (  FrequencyEntry freq : this.frequencyEntries) {
+    TripTimes tt=freq.tripTimes;
+    tt.serviceCode=serviceCodes.get(tt.trip.getServiceId());
   }
 }

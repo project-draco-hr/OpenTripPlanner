@@ -1,0 +1,10 @@
+{
+  TripTimes ret=null;
+  try {
+    ret=(TripTimes)super.clone();
+  }
+ catch (  CloneNotSupportedException e) {
+    LOG.error("This is not happening.");
+  }
+  return ret;
+}

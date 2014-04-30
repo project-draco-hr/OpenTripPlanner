@@ -1,0 +1,10 @@
+{
+  if (arrivalTimes == null) {
+    arrivalTimes=Arrays.copyOf(scheduledArrivalTimes,scheduledArrivalTimes.length);
+    departureTimes=Arrays.copyOf(scheduledDepartureTimes,scheduledDepartureTimes.length);
+    for (int i=0; i < arrivalTimes.length; i++) {
+      arrivalTimes[i]+=timeShift;
+      departureTimes[i]+=timeShift;
+    }
+  }
+}

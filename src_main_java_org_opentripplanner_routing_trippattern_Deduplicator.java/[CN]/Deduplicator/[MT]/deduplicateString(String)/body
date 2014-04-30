@@ -1,0 +1,8 @@
+{
+  String canonical=canonicalStrings.get(original);
+  if (canonical == null) {
+    canonical=original;
+    canonicalStrings.put(canonical,canonical);
+  }
+  return canonical;
+}

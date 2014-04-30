@@ -59,7 +59,7 @@
       }
       TripTimes tripTimes=timetable.getNextTrip(s0,sd,stopIndex,boarding);
       if (tripTimes != null) {
-        int wait=boarding ? (int)(sd.time(tripTimes.getDepartureTime(stopIndex)) - s0.getTimeSeconds()) : (int)(s0.getTimeSeconds() - sd.time(tripTimes.getArrivalTime(stopIndex - 1)));
+        int wait=boarding ? (int)(sd.time(tripTimes.getDepartureTime(stopIndex)) - s0.getTimeSeconds()) : (int)(s0.getTimeSeconds() - sd.time(tripTimes.getArrivalTime(stopIndex)));
         if (wait < 0)         LOG.error("Negative wait time when boarding.");
         if (bestWait < 0 || wait < bestWait) {
           bestWait=wait;
@@ -69,7 +69,7 @@
       }
     }
     if (bestWait < 0)     return null;
-    Trip trip=bestTripTimes.getTrip();
+    Trip trip=bestTripTimes.trip;
     if (options.tripIsBanned(trip))     return null;
     long preferences_penalty=options.preferencesPenaltyForRoute(getPattern().route);
     int transferPenalty=0;

@@ -1,10 +1,11 @@
 {
-  int nHops=pattern.getHopCount();
+  int nStops=pattern.stopPattern.size;
+  int nHops=nStops - 1;
   int nTrips=tripTimes.size();
   bestRunningTimes=new int[nHops];
   boolean nullArrivals=false;
   if (!nullArrivals) {
-    bestDwellTimes=new int[nHops];
+    bestDwellTimes=new int[nStops];
     for (int h=1; h < nHops; ++h) {
       bestDwellTimes[h]=Integer.MAX_VALUE;
       for (int t=0; t < nTrips; ++t) {

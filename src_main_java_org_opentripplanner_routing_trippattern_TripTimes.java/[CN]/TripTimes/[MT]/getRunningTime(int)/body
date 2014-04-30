@@ -1,9 +1,3 @@
 {
-  if (hop < 0 || hop >= getNumHops())   return -1;
-  int arrivalTime=getArrivalTime(hop);
-  int departureTime=getDepartureTime(hop);
-  if (departureTime == UNAVAILABLE) {
-    return -1;
-  }
-  return arrivalTime - departureTime;
+  return getArrivalTime(stop + 1) - getDepartureTime(stop);
 }

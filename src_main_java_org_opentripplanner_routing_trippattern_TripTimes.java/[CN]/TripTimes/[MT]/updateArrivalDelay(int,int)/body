@@ -1,4 +1,4 @@
 {
-  if (arrivalTimes == null)   createArrivalTimesArray();
-  arrivalTimes[hop]=getScheduledArrivalTime(hop) + delay;
+  checkCreateTimesArrays();
+  arrivalTimes[stop]=scheduledArrivalTimes[stop] + timeShift + delay;
 }

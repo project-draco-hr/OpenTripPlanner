@@ -1,16 +1,15 @@
 {
-  LOG.info("FreqTripTimes {} {} {}",getTrip().getRoute().toString(),startTime,endTime);
-  if (t > endTime)   return -1;
-  int stopOffset=getDepartureTime(hop) - getDepartureTime(0);
+  if (time > endTime)   return -1;
+  int stopOffset=tripTimes.getDepartureTime(stop) - tripTimes.getDepartureTime(0);
   int beg=startTime + stopOffset;
   int end=endTime + stopOffset;
   if (exactTimes) {
     for (int dep=beg; dep < end; dep+=headwaySecs) {
-      if (dep >= t)       return dep;
+      if (dep >= time)       return dep;
     }
   }
  else {
-    int dep=t + headwaySecs;
+    int dep=time + headwaySecs;
     if (dep < beg)     return beg;
     if (dep < end)     return dep;
   }

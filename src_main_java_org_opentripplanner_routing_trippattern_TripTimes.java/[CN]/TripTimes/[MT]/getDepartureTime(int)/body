@@ -1,8 +1,4 @@
 {
-  if (departureTimes == null) {
-    return scheduledDepartureTimes[hop];
-  }
- else {
-    return departureTimes[hop];
-  }
+  if (departureTimes == null)   return getScheduledDepartureTime(stop);
+ else   return departureTimes[stop];
 }

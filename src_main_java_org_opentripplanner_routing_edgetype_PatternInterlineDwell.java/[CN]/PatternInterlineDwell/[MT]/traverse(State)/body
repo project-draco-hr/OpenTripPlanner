@@ -12,7 +12,7 @@
     if (dwellData == null)     return null;
     pattern=((OnboardVertex)fromv).getTripPattern();
     newTripTimes=pattern.getResolvedTripTimes(dwellData.patternIndex,state0);
-    arrivalTime=newTripTimes.getArrivalTime(newTripTimes.getNumHops() - 1);
+    arrivalTime=newTripTimes.getArrivalTime(newTripTimes.getNumStops());
     departureTime=oldTripTimes.getDepartureTime(0);
   }
  else {
@@ -20,7 +20,7 @@
     if (dwellData == null)     return null;
     pattern=((OnboardVertex)tov).getTripPattern();
     newTripTimes=pattern.getResolvedTripTimes(dwellData.patternIndex,state0);
-    arrivalTime=oldTripTimes.getArrivalTime(oldTripTimes.getNumHops() - 1);
+    arrivalTime=oldTripTimes.getArrivalTime(oldTripTimes.getNumStops());
     departureTime=newTripTimes.getDepartureTime(0);
   }
   BannedStopSet banned=options.bannedTrips.get(dwellData.trip.getId());

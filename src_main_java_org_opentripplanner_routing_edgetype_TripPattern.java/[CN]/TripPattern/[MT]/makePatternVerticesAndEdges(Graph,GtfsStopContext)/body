@@ -1,27 +1,28 @@
 {
   PatternArriveVertex pav0, pav1=null;
   PatternDepartVertex pdv0;
-  for (int hop=0; hop < this.getHopCount(); hop++) {
-    Stop s0=stopPattern.stops[hop];
-    Stop s1=stopPattern.stops[hop + 1];
-    pdv0=new PatternDepartVertex(graph,this,hop);
-    departVertices[hop]=pdv0;
-    if (hop > 0) {
+  int nStops=stopPattern.size;
+  for (int stop=0; stop < nStops - 1; stop++) {
+    Stop s0=stopPattern.stops[stop];
+    Stop s1=stopPattern.stops[stop + 1];
+    pdv0=new PatternDepartVertex(graph,this,stop);
+    departVertices[stop]=pdv0;
+    if (stop > 0) {
       pav0=pav1;
-      dwellEdges[hop]=new PatternDwell(pav0,pdv0,hop,this);
+      dwellEdges[stop]=new PatternDwell(pav0,pdv0,stop,this);
     }
-    pav1=new PatternArriveVertex(graph,this,hop + 1);
-    arriveVertices[hop + 1]=pav1;
-    hopEdges[hop]=new PatternHop(pdv0,pav1,s0,s1,hop);
+    pav1=new PatternArriveVertex(graph,this,stop + 1);
+    arriveVertices[stop + 1]=pav1;
+    hopEdges[stop]=new PatternHop(pdv0,pav1,s0,s1,stop);
     TransitStopDepart stopDepart=getStopOrParent(context.stopDepartNodes,s0,graph);
     TransitStopArrive stopArrive=getStopOrParent(context.stopArriveNodes,s1,graph);
     TraverseMode mode=GtfsLibrary.getTraverseMode(this.route);
     stopArrive.getStopVertex().addMode(mode);
-    if (this.canBoard(hop)) {
-      boardEdges[hop]=new TransitBoardAlight(stopDepart,pdv0,hop,mode);
+    if (this.canBoard(stop)) {
+      boardEdges[stop]=new TransitBoardAlight(stopDepart,pdv0,stop,mode);
     }
-    if (this.canAlight(hop + 1)) {
-      alightEdges[hop + 1]=new TransitBoardAlight(pav1,stopArrive,hop + 1,mode);
+    if (this.canAlight(stop + 1)) {
+      alightEdges[stop + 1]=new TransitBoardAlight(pav1,stopArrive,stop + 1,mode);
     }
   }
 }

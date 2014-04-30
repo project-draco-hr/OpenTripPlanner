@@ -16,13 +16,38 @@
       }
     }
  else {
-      int arvTime=tt.getArrivalTime(stopIndex - 1);
+      int arvTime=tt.getArrivalTime(stopIndex);
       if (arvTime < 0)       continue;
       if (arvTime <= time && arvTime > bestTime && tt.tripAcceptable(s0,currentStop,serviceDay,haveBicycle,stopIndex,boarding)) {
         bestTrip=tt;
         bestTime=arvTime;
       }
     }
+  }
+  FrequencyEntry bestFreq=null;
+  for (  FrequencyEntry freq : frequencyEntries) {
+    TripTimes tt=freq.tripTimes;
+    if (!serviceDay.serviceRunning(tt.serviceCode))     continue;
+    LOG.debug("  running freq {}",freq);
+    if (boarding) {
+      int depTime=freq.nextDepartureTime(stopIndex,time);
+      if (depTime < 0)       continue;
+      if (depTime >= time && depTime < bestTime && tt.tripAcceptable(s0,currentStop,serviceDay,haveBicycle,stopIndex,boarding)) {
+        bestFreq=freq;
+        bestTime=depTime;
+      }
+    }
+ else {
+      int arvTime=freq.prevArrivalTime(stopIndex,time);
+      if (arvTime < 0)       continue;
+      if (arvTime <= time && arvTime > bestTime && tt.tripAcceptable(s0,currentStop,serviceDay,haveBicycle,stopIndex,boarding)) {
+        bestFreq=freq;
+        bestTime=arvTime;
+      }
+    }
+  }
+  if (bestFreq != null) {
+    bestTrip=bestFreq.tripTimes.timeShift(stopIndex,bestTime,boarding);
   }
   return bestTrip;
 }
