@@ -1,32 +1,32 @@
 {
   int nStops=pattern.stopPattern.size;
   int nHops=nStops - 1;
-  bestDwellTimes=new int[nHops];
-  bestRunningTimes=new int[nHops];
-  Arrays.fill(bestDwellTimes,Integer.MAX_VALUE);
-  Arrays.fill(bestRunningTimes,Integer.MAX_VALUE);
-  for (  TripTimes tt : tripTimes) {
+  minDwellTimes=new int[nHops];
+  minRunningTimes=new int[nHops];
+  Arrays.fill(minDwellTimes,Integer.MAX_VALUE);
+  Arrays.fill(minRunningTimes,Integer.MAX_VALUE);
+  List<TripTimes> allTripTimes=Lists.newArrayList(tripTimes);
+  for (  FrequencyEntry freq : frequencyEntries)   allTripTimes.add(freq.tripTimes);
+  for (  TripTimes tt : allTripTimes) {
     for (int h=0; h < nHops; ++h) {
       int dt=tt.getDwellTime(h);
-      if (bestDwellTimes[h] > dt) {
-        bestDwellTimes[h]=dt;
+      if (minDwellTimes[h] > dt) {
+        minDwellTimes[h]=dt;
       }
       int rt=tt.getRunningTime(h);
-      if (bestRunningTimes[h] > rt) {
-        bestRunningTimes[h]=rt;
+      if (minRunningTimes[h] > rt) {
+        minRunningTimes[h]=rt;
       }
     }
   }
-  minDepart=Integer.MAX_VALUE;
-  maxArrive=Integer.MIN_VALUE;
+  minTime=Integer.MAX_VALUE;
+  maxTime=Integer.MIN_VALUE;
   for (  TripTimes tt : tripTimes) {
-    int depart=tt.getDepartureTime(0);
-    if (minDepart > depart) {
-      minDepart=depart;
-    }
-    int arrive=tt.getArrivalTime(nStops - 1);
-    if (maxArrive < arrive) {
-      maxArrive=arrive;
-    }
+    minTime=Math.min(minTime,tt.getDepartureTime(0));
+    maxTime=Math.max(maxTime,tt.getArrivalTime(nStops - 1));
+  }
+  for (  FrequencyEntry freq : frequencyEntries) {
+    minTime=Math.min(minTime,freq.getMinDeparture());
+    maxTime=Math.max(maxTime,freq.getMaxArrival());
   }
 }
