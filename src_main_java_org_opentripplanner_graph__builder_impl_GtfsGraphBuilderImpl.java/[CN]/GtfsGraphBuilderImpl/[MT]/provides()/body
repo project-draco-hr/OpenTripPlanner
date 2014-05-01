@@ -1,10 +1,5 @@
 {
   List<String> result=new ArrayList<String>();
   result.add("transit");
-  if (gtfsGraphBuilders != null) {
-    for (    GraphBuilderWithGtfsDao builder : gtfsGraphBuilders) {
-      result.addAll(builder.provides());
-    }
-  }
   return result;
 }

@@ -33,13 +33,6 @@
       if (gtfsBundle.isParentStationTransfers()) {
         hf.createParentStationTransfers();
       }
-      if (gtfsGraphBuilders != null) {
-        for (        GraphBuilderWithGtfsDao builder : gtfsGraphBuilders) {
-          builder.setDao(dao);
-          builder.buildGraph(graph);
-          builder.setDao(null);
-        }
-      }
     }
   }
  catch (  IOException e) {

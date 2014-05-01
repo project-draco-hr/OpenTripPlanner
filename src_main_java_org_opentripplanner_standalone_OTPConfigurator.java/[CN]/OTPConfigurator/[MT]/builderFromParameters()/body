@@ -79,9 +79,7 @@ if (params.longDistance && params.useStreetsForLinking && !params.useTransfersTx
 graphBuilder.addGraphBuilder(new StreetfulStopLinker());
 }
 }
-List<GraphBuilderWithGtfsDao> gtfsBuilders=new ArrayList<GraphBuilderWithGtfsDao>();
 gtfsBuilder.setFareServiceFactory(new DefaultFareServiceFactory());
-gtfsBuilder.setGtfsGraphBuilders(gtfsBuilders);
 gtfsBuilder.setDeleteUselessDwells(params.deleteUselessDwells);
 }
 if (configFile != null) {
