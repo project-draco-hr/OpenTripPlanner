@@ -14,9 +14,6 @@
       hf.setFareServiceFactory(_fareServiceFactory);
       hf.setMaxStopToShapeSnapDistance(gtfsBundle.getMaxStopToShapeSnapDistance());
       hf.setDeleteUselessDwells(deleteUselessDwells);
-      if (generateFeedIds && gtfsBundle.getDefaultAgencyId() == null) {
-        gtfsBundle.setDefaultAgencyId("FEED#" + bundleIndex);
-      }
       loadBundle(gtfsBundle,graph,dao);
       CalendarServiceDataFactoryImpl csfactory=new CalendarServiceDataFactoryImpl();
       csfactory.setGtfsDao(dao);
