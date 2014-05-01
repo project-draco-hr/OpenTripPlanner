@@ -17,6 +17,8 @@
   for (  Frequency freq : _dao.getAllFrequencies()) {
     frequenciesForTrip.put(freq.getTrip(),freq);
   }
+  int freqCount=0;
+  int nonFreqCount=0;
   TRIP:   for (  Trip trip : trips) {
     if (++tripCount % 100000 == 0) {
       LOG.debug("loading trips {}/{}",tripCount,trips.size());
@@ -44,16 +46,19 @@
     if (frequencies != null && !(frequencies.isEmpty())) {
       for (      Frequency freq : frequencies) {
         tripPattern.add(new FrequencyEntry(freq,new TripTimes(trip,stopTimes)));
+        freqCount++;
       }
     }
  else {
       TripTimes tripTimes=new TripTimes(trip,stopTimes);
       tripPattern.add(tripTimes);
+      nonFreqCount++;
       if (trip.getBlockId() != null && !trip.getBlockId().equals("")) {
         tripTimesForBlock.put(new BlockIdAndServiceId(trip),tripTimes);
       }
     }
   }
+  LOG.info("Added {} frequency-based timetable entries and {} single-trip entries.",freqCount,nonFreqCount);
   TripPattern.generateUniqueNames(tripPatterns.values());
   TripPattern.generateUniqueIds(tripPatterns.values());
   for (  TripPattern tableTripPattern : tripPatterns.values()) {
