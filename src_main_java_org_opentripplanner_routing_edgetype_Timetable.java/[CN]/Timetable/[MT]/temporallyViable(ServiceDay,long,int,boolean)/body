@@ -1,0 +1,10 @@
+{
+  if (!sd.anyServiceRunning(this.pattern.services))   return false;
+  searchTime=sd.secondsSinceMidnight(searchTime);
+  if (boarding ? (searchTime > this.maxArrive) : (searchTime < this.minDepart))   return false;
+  if (bestWait >= 0) {
+    long bestTime=searchTime + bestWait;
+    if (boarding ? (bestTime < this.minDepart) : (bestTime > this.maxArrive))     return false;
+  }
+  return true;
+}
