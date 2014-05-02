@@ -2,6 +2,6 @@
   trips.add(tt.trip);
   scheduledTimetable.addTripTimes(tt);
   if (this.route != tt.trip.getRoute()) {
-    LOG.warn("The trip {} is on route {} but its stop pattern is on route {}.",tt.trip,tt.trip.getRoute());
+    LOG.warn("The trip {} is on route {} but its stop pattern is on route {}.",tt.trip,tt.trip.getRoute(),this.getRoute());
   }
 }
