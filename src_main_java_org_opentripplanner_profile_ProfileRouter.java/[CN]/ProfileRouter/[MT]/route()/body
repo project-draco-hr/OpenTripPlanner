@@ -2,6 +2,9 @@
   final int ROUNDS=3;
   int finalRound=ROUNDS - 1;
   int penultimateRound=ROUNDS - 2;
+  if (graph.index.transfersForStop == null) {
+    graph.index.initializeProfileTransfers();
+  }
   findClosestPatterns();
   LOG.info("from stops: {}",fromStops);
   LOG.info("to stops: {}",toStops);
@@ -20,17 +23,12 @@
     }
   }
   for (int round=0; round < ROUNDS; ++round) {
-    LOG.info("ROUND {}",round);
-    LOG.info("Queue size at beginning of round: {}",queue.size());
     for (    PatternRide pr : queue) {
-      LOG.info("  PatternRide: {}",pr);
       makeRides(pr);
     }
-    LOG.info("Number of new rides created: {}",rides.size());
     if (round != finalRound) {
       queue.clear();
       for (      Ride ride : rides.values()) {
-        LOG.info("RIDE {}",ride);
         for (        ProfileTransfer tr : graph.index.transfersForStop.get(ride.to)) {
           if (round == penultimateRound && !toStops.containsKey(tr.tp2))           continue;
           if (ride.containsPattern(tr.tp1)) {
@@ -46,7 +44,6 @@
           }
         }
       }
-      LOG.info("number of new queue states: {}",queue.size());
       rides.clear();
     }
   }
