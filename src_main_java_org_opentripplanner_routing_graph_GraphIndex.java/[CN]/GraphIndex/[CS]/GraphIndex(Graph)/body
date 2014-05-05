@@ -29,6 +29,7 @@
     stopSpatialIndex.put(stopVertex.getCoordinate(),stopVertex);
   }
   for (  TripPattern pattern : patternForId.values()) {
+    patternsForAgency.put(pattern.route.getAgency(),pattern);
     patternsForRoute.put(pattern.route,pattern);
     for (    Trip trip : pattern.getTrips()) {
       patternForTrip.put(trip,pattern);

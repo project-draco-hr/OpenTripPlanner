@@ -1,2 +1,48 @@
 {
+  Agency agency=this.agency != null ? graph.index.agencyForId.get(this.agency) : null;
+  Route route=this.route != null ? graph.index.routeForId.get(this.route) : null;
+  Stop stop=this.stop != null ? graph.index.stopForId.get(this.stop) : null;
+  Trip trip=this.trip != null ? graph.index.tripForId.get(this.trip) : null;
+  if (route != null || trip != null || agency != null) {
+    Collection<TripPattern> tripPatterns;
+    if (trip != null) {
+      tripPatterns=new LinkedList<TripPattern>();
+      TripPattern tripPattern=graph.index.patternForTrip.get(trip);
+      if (tripPattern != null) {
+        tripPatterns.add(tripPattern);
+      }
+    }
+ else     if (route != null) {
+      tripPatterns=graph.index.patternsForRoute.get(route);
+    }
+ else {
+      tripPatterns=graph.index.patternsForAgency.get(agency);
+    }
+    for (    TripPattern tripPattern : tripPatterns) {
+      if (direction != null && !direction.equals(tripPattern.getDirection())) {
+        continue;
+      }
+      for (int i=0; i < tripPattern.stopVertices.length; i++) {
+        if (stop == null || tripPattern.stopVertices[i].getStop().equals(stop)) {
+          graph.addAlertPatch(tripPattern.boardEdges[i],this);
+          graph.addAlertPatch(tripPattern.alightEdges[i],this);
+        }
+      }
+    }
+  }
+ else   if (stop != null) {
+    TransitStop transitStop=graph.index.stopVertexForStop.get(stop);
+    for (    Edge edge : transitStop.getOutgoing()) {
+      if (edge instanceof PreBoardEdge) {
+        graph.addAlertPatch(edge,this);
+        break;
+      }
+    }
+    for (    Edge edge : transitStop.getIncoming()) {
+      if (edge instanceof PreAlightEdge) {
+        graph.addAlertPatch(edge,this);
+        break;
+      }
+    }
+  }
 }
