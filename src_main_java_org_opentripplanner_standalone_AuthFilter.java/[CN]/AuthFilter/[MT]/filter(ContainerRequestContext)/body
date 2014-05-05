@@ -4,7 +4,7 @@
     if (auth.startsWith("Basic ") || auth.startsWith("basic ")) {
       if (!containerRequest.getSecurityContext().isSecure())       unencrypted();
       auth=auth.replaceFirst("[Bb]asic ","");
-      String[] split="".split(":",2);
+      String[] split=new String(BaseEncoding.base64().decode(auth)).split(":",2);
       if (split.length != 2)       return;
       String user=split[0];
       String pass=split[1];
