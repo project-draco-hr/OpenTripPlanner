@@ -2,7 +2,7 @@
   try {
     RoutingRequest options=this.buildRequest();
     options.intermediatePlacesOrdered=false;
-    return this.planGenerator.pathService.getPaths(options);
+    return tsp.getPaths(options);
   }
  catch (  ParameterException e) {
     e.printStackTrace();

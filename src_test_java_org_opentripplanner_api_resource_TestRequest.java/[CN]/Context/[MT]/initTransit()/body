@@ -7,7 +7,6 @@
   GtfsBundles bundles=new GtfsBundles();
   bundles.setBundles(bundleList);
   gtfsBuilder.setGtfsBundles(bundles);
-  gtfsBuilder.setGtfsGraphBuilders(Arrays.asList((GraphBuilderWithGtfsDao)new TransitIndexBuilder()));
   HashMap<Class<?>,Object> extra=new HashMap<Class<?>,Object>();
   gtfsBuilder.buildGraph(graph,extra);
   TransitToStreetNetworkGraphBuilderImpl linker=new TransitToStreetNetworkGraphBuilderImpl();

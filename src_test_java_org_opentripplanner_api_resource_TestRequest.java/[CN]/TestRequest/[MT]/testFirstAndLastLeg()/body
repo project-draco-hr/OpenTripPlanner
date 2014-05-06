@@ -1,5 +1,5 @@
 {
-  Planner planner=new TestPlanner("portland","45.58,-122.68","45.48,-122.6");
+  TestPlanner planner=new TestPlanner("portland","45.58,-122.68","45.48,-122.6");
   Response response=planner.getFirstTrip();
   Itinerary itinerary=response.getPlan().itinerary.get(0);
   List<Leg> legs=itinerary.legs;

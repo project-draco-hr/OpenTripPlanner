@@ -16,9 +16,6 @@
   this.bikeSwitchTime=Arrays.asList(0);
   this.bikeSwitchCost=Arrays.asList(0);
   this.routerId=routerId;
-  this.planGenerator=Context.getInstance().planGenerator;
-  this.graphService=Context.getInstance().graphService;
-  this.planGenerator.graphService=Context.getInstance().graphService;
-  this.prototypeRoutingRequest=new RoutingRequest();
   this.numItineraries=Arrays.asList(1);
+  this.otpServer=Context.getInstance().otpServer;
 }

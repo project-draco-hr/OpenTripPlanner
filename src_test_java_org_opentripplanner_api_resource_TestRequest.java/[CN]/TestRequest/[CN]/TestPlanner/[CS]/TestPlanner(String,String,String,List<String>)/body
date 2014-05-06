@@ -2,8 +2,5 @@
   this(routerId,v1,v2);
   this.modes=Arrays.asList(new QualifiedModeSetSequence("WALK"));
   this.intermediatePlaces=intermediates;
-  TravelingSalesmanPathService tsp=new TravelingSalesmanPathService();
-  tsp.setChainedPathService(Context.getInstance().pathService);
-  tsp.graphService=Context.getInstance().graphService;
-  this.planGenerator.pathService=tsp;
+  tsp=new TravelingSalesmanPathService(otpServer.graphService,otpServer.pathService);
 }

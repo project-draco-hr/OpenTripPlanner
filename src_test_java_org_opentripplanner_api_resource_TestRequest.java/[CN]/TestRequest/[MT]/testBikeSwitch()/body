@@ -1,18 +1,3 @@
 {
-  TestPlanner planner=new TestPlanner("portland","45.440947,-122.837645","45.463966,-122.755822");
-  planner.setMaxWalkDistance(Arrays.asList(Double.POSITIVE_INFINITY));
-  planner.setWalkReluctance(Arrays.asList(1.0));
-  planner.setModes(Arrays.asList(new TraverseModeSet("BICYCLE,TRANSIT")));
-  Response response=planner.getItineraries();
-  Itinerary itinerary=response.getPlan().itinerary.get(0);
-  Double duration=itinerary.duration;
-  planner.setBikeSwitchTime(Arrays.asList(30));
-  response=planner.getItineraries();
-  itinerary=response.getPlan().itinerary.get(0);
-  assertTrue(duration + 30.0 == itinerary.duration);
-  planner.setBikeSwitchCost(Arrays.asList(99));
-  response=planner.getItineraries();
-  itinerary=response.getPlan().itinerary.get(0);
-  assertTrue(duration < itinerary.duration);
-  assertTrue(duration + 30.0 > itinerary.duration);
+  fail("This feature is known to be broken.");
 }

@@ -1,6 +1,6 @@
 {
   Routers routerApi=new Routers();
-  routerApi.graphService=Context.getInstance().graphService;
+  routerApi.server=Context.getInstance().otpServer;
   RouterList routers=routerApi.getRouterIds();
   assertEquals(2,routers.routerInfo.size());
   RouterInfo router0=routers.routerInfo.get(0);
