@@ -24,7 +24,6 @@
   }
   routingRequest.setOtherThanPreferredRoutesPenalty(0);
   routingRequest.setWalkBoardCost(0);
-  routingRequest.rctx.serviceDays=serviceDayList;
   TripPlan tripPlan=planGenerator.generate(routingRequest);
   Itinerary itinerary=tripPlan.itinerary.get(0);
   assertEquals(legCount,itinerary.legs.size());
