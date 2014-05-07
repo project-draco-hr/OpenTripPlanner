@@ -1,38 +1,32 @@
 {
-  int arrivalTime;
-  int departureTime;
-  TripPattern pattern;
+  RoutingRequest options=state0.getOptions();
+  Trip oldTrip=state0.getBackTrip();
+  Trip newTrip=options.arriveBy ? trips.inverse().get(oldTrip) : trips.get(oldTrip);
+  if (newTrip == null)   return null;
+  TripPattern newPattern;
   TripTimes newTripTimes;
   TripTimes oldTripTimes=state0.getTripTimes();
-  RoutingRequest options=state0.getOptions();
+  int arrivalTime;
+  int departureTime;
   AgencyAndId tripId=state0.getTripId();
-  InterlineDwellData dwellData;
   if (options.isArriveBy()) {
-    dwellData=reverseTripIdToInterlineDwellData.get(tripId);
-    if (dwellData == null)     return null;
-    pattern=((OnboardVertex)fromv).getTripPattern();
-    newTripTimes=pattern.getResolvedTripTimes(dwellData.patternIndex,state0);
-    arrivalTime=newTripTimes.getArrivalTime(newTripTimes.getNumStops());
+    newPattern=((OnboardVertex)fromv).getTripPattern();
+    newTripTimes=newPattern.getResolvedTripTimes(newTrip,state0);
+    arrivalTime=newTripTimes.getArrivalTime(newTripTimes.getNumStops() - 1);
     departureTime=oldTripTimes.getDepartureTime(0);
   }
  else {
-    dwellData=tripIdToInterlineDwellData.get(tripId);
-    if (dwellData == null)     return null;
-    pattern=((OnboardVertex)tov).getTripPattern();
-    newTripTimes=pattern.getResolvedTripTimes(dwellData.patternIndex,state0);
-    arrivalTime=oldTripTimes.getArrivalTime(oldTripTimes.getNumStops());
+    newPattern=((OnboardVertex)tov).getTripPattern();
+    newTripTimes=newPattern.getResolvedTripTimes(newTrip,state0);
+    arrivalTime=oldTripTimes.getArrivalTime(oldTripTimes.getNumStops() - 1);
     departureTime=newTripTimes.getDepartureTime(0);
-  }
-  BannedStopSet banned=options.bannedTrips.get(dwellData.trip.getId());
-  if (banned != null) {
-    if (banned.contains(0))     return null;
   }
   int dwellTime=departureTime - arrivalTime;
   if (dwellTime < 0)   return null;
   StateEditor s1=state0.edit(this);
   s1.incrementTimeInSeconds(dwellTime);
-  s1.setTripId(dwellData.trip.getId());
-  s1.setPreviousTrip(dwellData.trip);
+  s1.setTripId(newTrip.getId());
+  s1.setPreviousTrip(oldTrip);
   s1.setTripTimes(newTripTimes);
   s1.incrementWeight(dwellTime);
   s1.setBackMode(getMode());
