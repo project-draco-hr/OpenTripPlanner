@@ -1,6 +1,6 @@
 {
-  File gtfs=new File("src/test/resources/mmri/" + getFeedName() + ".zip");
-  File gtfsRealTime=new File("src/test/resources/mmri/" + getFeedName() + ".pb");
+  File gtfs=new File("src/test/resources/" + getFeedName() + ".zip");
+  File gtfsRealTime=new File("src/test/resources/" + getFeedName() + ".pb");
   GtfsBundle gtfsBundle=new GtfsBundle(gtfs);
   List<GtfsBundle> gtfsBundleList=Collections.singletonList(gtfsBundle);
   GtfsGraphBuilderImpl gtfsGraphBuilderImpl=new GtfsGraphBuilderImpl(gtfsBundleList);
@@ -29,6 +29,11 @@
  catch (  Exception exception) {
   }
   genericAStar=new GenericAStar();
-  longDistancePathService=new LongDistancePathService(null,genericAStar);
-  planGenerator=new PlanGenerator(null,longDistancePathService);
+  if (isLongDistance()) {
+    pathService=new LongDistancePathService(null,genericAStar);
+  }
+ else {
+    pathService=new RetryingPathServiceImpl(null,genericAStar);
+  }
+  planGenerator=new PlanGenerator(null,pathService);
 }
