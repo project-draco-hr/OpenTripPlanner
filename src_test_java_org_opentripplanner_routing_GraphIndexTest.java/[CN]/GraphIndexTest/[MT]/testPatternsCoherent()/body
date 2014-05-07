@@ -1,0 +1,16 @@
+{
+  for (  Trip trip : graph.index.tripForId.values()) {
+    TripPattern pattern=graph.index.patternForTrip.get(trip);
+    assertTrue(pattern.getTrips().contains(trip));
+  }
+  for (  Route route : graph.index.routeForId.values()) {
+    for (    TripPattern pattern : graph.index.patternsForRoute.get(route)) {
+      assertEquals(pattern.getRoute(),route);
+    }
+  }
+  for (  Stop stop : graph.index.stopForId.values()) {
+    for (    TripPattern pattern : graph.index.patternsForStop.get(stop)) {
+      assertTrue(pattern.stopPattern.containsStop(stop.getId().toString()));
+    }
+  }
+}
