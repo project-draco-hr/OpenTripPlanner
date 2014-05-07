@@ -5,5 +5,5 @@
   RoutingRequest routingRequest=new RoutingRequest();
   trip.setRoute(route);
   route.setId(agencyAndId);
-  assertEquals(0,routingRequest.preferencesPenaltyForTrip(trip));
+  assertEquals(0,routingRequest.preferencesPenaltyForRoute(trip.getRoute()));
 }
