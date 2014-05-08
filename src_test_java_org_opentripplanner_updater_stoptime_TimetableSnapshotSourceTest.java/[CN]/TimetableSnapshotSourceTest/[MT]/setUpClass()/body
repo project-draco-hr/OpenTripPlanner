@@ -1,7 +1,8 @@
 {
-  context=GtfsLibrary.readGtfs(new File("../otp-core/" + ConstantsForTests.FAKE_GTFS));
+  context=GtfsLibrary.readGtfs(new File(ConstantsForTests.FAKE_GTFS));
   GTFSPatternHopFactory factory=new GTFSPatternHopFactory(context);
   factory.run(graph);
+  graph.index(new DefaultStreetVertexIndexFactory());
   TripDescriptor.Builder tripDescriptorBuilder=TripDescriptor.newBuilder();
   tripDescriptorBuilder.setTripId("1.1");
   tripDescriptorBuilder.setScheduleRelationship(TripDescriptor.ScheduleRelationship.CANCELED);
