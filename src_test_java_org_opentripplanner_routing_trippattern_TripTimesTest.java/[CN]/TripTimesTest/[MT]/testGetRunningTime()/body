@@ -1,5 +1,12 @@
 {
-  TripTimes updatedTripTimesA=new TripTimes(originalTripTimes);
-  updatedTripTimesA.updateDepartureTime(0,TripTimes.UNAVAILABLE);
-  assertEquals(-1,updatedTripTimesA.getRunningTime(0));
+  for (int i=0; i < stops.length - 1; i++) {
+    assertEquals(60,originalTripTimes.getRunningTime(i));
+  }
+  TripTimes updatedTripTimes=new TripTimes(originalTripTimes);
+  for (int i=0; i < stops.length - 1; i++) {
+    updatedTripTimes.updateDepartureDelay(i,i);
+  }
+  for (int i=0; i < stops.length - 1; i++) {
+    assertEquals(60 - i,updatedTripTimes.getRunningTime(i));
+  }
 }

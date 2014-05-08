@@ -1,11 +1,11 @@
 {
   TripTimes updatedTripTimesA=new TripTimes(originalTripTimes);
-  updatedTripTimesA.updateArrivalTime(2,190);
+  updatedTripTimesA.updateArrivalTime(3,190);
   updatedTripTimesA.updateDepartureTime(3,190);
-  updatedTripTimesA.updateArrivalTime(4,311);
+  updatedTripTimesA.updateArrivalTime(5,311);
   updatedTripTimesA.updateDepartureTime(5,312);
-  assertEquals(3 * 60 + 10,updatedTripTimesA.getArrivalTime(2));
+  assertEquals(3 * 60 + 10,updatedTripTimesA.getArrivalTime(3));
   assertEquals(3 * 60 + 10,updatedTripTimesA.getDepartureTime(3));
-  assertEquals(5 * 60 + 11,updatedTripTimesA.getArrivalTime(4));
+  assertEquals(5 * 60 + 11,updatedTripTimesA.getArrivalTime(5));
   assertEquals(5 * 60 + 12,updatedTripTimesA.getDepartureTime(5));
 }
