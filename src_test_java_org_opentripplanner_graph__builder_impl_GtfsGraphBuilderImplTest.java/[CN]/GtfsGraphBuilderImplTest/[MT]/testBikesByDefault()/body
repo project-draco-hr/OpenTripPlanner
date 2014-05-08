@@ -7,6 +7,7 @@
   _builder.setGtfsBundles(bundles);
   Graph graph=new Graph();
   _builder.buildGraph(graph,_extra);
+  graph.index(new DefaultStreetVertexIndexFactory());
   Trip trip=graph.index.tripForId.get(new AgencyAndId("a0","t0"));
   TripPattern pattern=graph.index.patternForTrip.get(trip);
   List<Trip> trips=pattern.getTrips();
