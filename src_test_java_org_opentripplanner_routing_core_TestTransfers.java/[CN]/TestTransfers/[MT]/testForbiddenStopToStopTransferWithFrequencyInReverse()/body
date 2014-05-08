@@ -1,8 +1,8 @@
 {
   TransferTable table=new TransferTable();
   when(graph.getTransferTable()).thenReturn(table);
-  @SuppressWarnings("deprecation") Vertex origin=graph.getVertex("agency_U");
-  @SuppressWarnings("deprecation") Vertex destination=graph.getVertex("agency_J");
+  Vertex origin=graph.getVertex("agency_U");
+  Vertex destination=graph.getVertex("agency_J");
   RoutingRequest options=new RoutingRequest();
   options.setArriveBy(true);
   options.dateTime=TestUtils.dateInSeconds("America/New_York",2009,7,11,11,11,0);

@@ -4,6 +4,7 @@
   graph=spy(new Graph());
   GTFSPatternHopFactory factory=new GTFSPatternHopFactory(context);
   factory.run(graph);
+  graph.index(new DefaultStreetVertexIndexFactory());
   graph.putService(CalendarServiceData.class,GtfsLibrary.createCalendarServiceData(context.getDao()));
   createSimpleTransfer("agency_K","agency_F",100);
   createSimpleTransfer("agency_P","agency_U",100);
