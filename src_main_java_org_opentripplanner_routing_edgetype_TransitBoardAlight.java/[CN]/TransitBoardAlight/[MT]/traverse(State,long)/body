@@ -23,12 +23,14 @@
     }
     if (options.isReverseOptimizing())     s1.incrementWeight(options.getBoardCost(s0.getNonTransitMode()));
     if (options.isReverseOptimizeOnTheFly()) {
+      TripPattern pattern=getPattern();
       int thisDeparture=s0.getTripTimes().getDepartureTime(stopIndex);
       int numTrips=getPattern().getNumScheduledTrips();
       int nextDeparture;
       s1.setLastNextArrivalDelta(Integer.MAX_VALUE);
       for (int tripIndex=0; tripIndex < numTrips; tripIndex++) {
-        nextDeparture=getPattern().scheduledTimetable.getTripTimes(tripIndex).getDepartureTime(stopIndex);
+        Timetable timetable=pattern.getUpdatedTimetable(options,s0.getServiceDay());
+        nextDeparture=timetable.getTripTimes(tripIndex).getDepartureTime(stopIndex);
         if (nextDeparture > thisDeparture) {
           s1.setLastNextArrivalDelta(nextDeparture - thisDeparture);
           break;
@@ -53,10 +55,7 @@
     TripTimes bestTripTimes=null;
     ServiceDay bestServiceDay=null;
     for (    ServiceDay sd : rctx.serviceDays) {
-      Timetable timetable=tripPattern.scheduledTimetable;
-      if (rctx.timetableSnapshot != null) {
-        timetable=rctx.timetableSnapshot.resolve(tripPattern,sd.getServiceDate());
-      }
+      Timetable timetable=tripPattern.getUpdatedTimetable(options,sd);
       TripTimes tripTimes=timetable.getNextTrip(s0,sd,stopIndex,boarding);
       if (tripTimes != null) {
         int wait=boarding ? (int)(sd.time(tripTimes.getDepartureTime(stopIndex)) - s0.getTimeSeconds()) : (int)(s0.getTimeSeconds() - sd.time(tripTimes.getArrivalTime(stopIndex)));

@@ -1,0 +1,6 @@
+{
+  if (req != null && req.rctx != null && req.rctx.timetableSnapshot != null && sd != null) {
+    return req.rctx.timetableSnapshot.resolve(this,sd.getServiceDate());
+  }
+  return scheduledTimetable;
+}

@@ -1,10 +1,6 @@
 {
-  ServiceDate serviceDate=state0.getServiceDay().getServiceDate();
+  ServiceDay serviceDay=state0.getServiceDay();
   RoutingRequest options=state0.getOptions();
-  Timetable timetable=scheduledTimetable;
-  TimetableResolver snapshot=options.rctx.timetableSnapshot;
-  if (snapshot != null) {
-    timetable=snapshot.resolve(this,serviceDate);
-  }
+  Timetable timetable=getUpdatedTimetable(options,serviceDay);
   return timetable.getTripTimes(tripIndex);
 }

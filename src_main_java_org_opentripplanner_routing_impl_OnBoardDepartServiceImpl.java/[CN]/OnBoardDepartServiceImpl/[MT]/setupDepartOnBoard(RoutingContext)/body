@@ -1,6 +1,7 @@
 {
   DistanceLibrary distanceLibrary=SphericalDistanceLibrary.getInstance();
   RoutingRequest opt=ctx.opt;
+  opt.rctx=ctx;
   AgencyAndId tripId=opt.getStartingTransitTripId();
   Trip trip=ctx.graph.index.tripForId.get(tripId);
   TripPattern tripPattern=ctx.graph.index.patternForTrip.get(trip);
@@ -41,15 +42,9 @@
     int minDelta=Integer.MAX_VALUE;
     int actDelta=0;
     for (    ServiceDay serviceDay : ctx.serviceDays) {
-      ServiceDate serviceDate=serviceDay.getServiceDate();
       TripPattern pattern=nextStop.getTripPattern();
-      Timetable timetable=pattern.getScheduledTimetable();
-      int tripIndex=timetable.getTripIndex(tripId);
-      TripTimes tripTimes=timetable.getTripTimes(tripIndex);
-      if (ctx.timetableSnapshot != null) {
-        Timetable timeTable=ctx.timetableSnapshot.resolve(pattern,serviceDate);
-        tripTimes=timeTable.getTripTimes(timeTable.getTripIndex(tripId));
-      }
+      Timetable timetable=pattern.getUpdatedTimetable(opt,serviceDay);
+      TripTimes tripTimes=timetable.getTripTimes(timetable.getTripIndex(tripId));
       int depTime=tripTimes.getDepartureTime(bestStopIndex);
       int arrTime=tripTimes.getArrivalTime(bestStopIndex);
       int estTime=(int)Math.round(depTime * fractionCovered + arrTime * (1 - fractionCovered));
@@ -67,14 +62,8 @@
   }
  else {
     for (    ServiceDay serviceDay : ctx.serviceDays) {
-      ServiceDate serviceDate=serviceDay.getServiceDate();
-      Timetable timetable=tripPattern.getScheduledTimetable();
-      int tripIndex=timetable.getTripIndex(tripId);
-      TripTimes tripTimes=timetable.getTripTimes(tripIndex);
-      if (ctx.timetableSnapshot != null) {
-        Timetable timeTable=ctx.timetableSnapshot.resolve(tripPattern,serviceDate);
-        tripTimes=timeTable.getTripTimes(timeTable.getTripIndex(tripId));
-      }
+      Timetable timetable=tripPattern.getUpdatedTimetable(opt,serviceDay);
+      TripTimes tripTimes=timetable.getTripTimes(timetable.getTripIndex(tripId));
       int depTime=tripTimes.getDepartureTime(0);
       int arrTime=tripTimes.getArrivalTime(tripTimes.getNumStops() - 1);
       int time=serviceDay.secondsSinceMidnight(opt.dateTime);
