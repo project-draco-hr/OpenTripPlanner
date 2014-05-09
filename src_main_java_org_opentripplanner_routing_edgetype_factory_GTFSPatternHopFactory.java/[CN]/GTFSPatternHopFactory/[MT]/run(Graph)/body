@@ -61,6 +61,12 @@
   for (  TripPattern tripPattern : tripPatterns.values()) {
     tripPattern.makePatternVerticesAndEdges(graph,context);
     tripPattern.setServiceCodes(graph.serviceCodes);
+    for (    Trip trip : tripPattern.getTrips()) {
+      if (trip.getShapeId() != null && trip.getShapeId().getId() != null && !trip.getShapeId().getId().equals("")) {
+        createGeometry(graph,trip,tripPattern.hopEdges);
+        break;
+      }
+    }
   }
   interline(tripPatterns.values());
   loadTransfers(graph);

@@ -1,14 +1,14 @@
 {
   AgencyAndId shapeId=trip.getShapeId();
-  if (shapeId == null || shapeId.getId() == null || shapeId.getId().equals(""))   return;
+  List<StopTime> stopTimes=_dao.getStopTimesForTrip(trip);
   StopTime st0=stopTimes.get(0);
   boolean hasShapeDist=st0.isShapeDistTraveledSet();
   if (hasShapeDist) {
-    for (int i=0; i < hops.size(); ++i) {
-      Edge hop=hops.get(i);
+    for (int i=0; i < hops.length; ++i) {
+      if (hops[i] == null)       continue;
       st0=stopTimes.get(i);
       StopTime st1=stopTimes.get(i + 1);
-      ((HopEdge)hop).setGeometry(getHopGeometryViaShapeDistTraveled(graph,shapeId,st0,st1,hop.getFromVertex(),hop.getToVertex()));
+      hops[i].setGeometry(getHopGeometryViaShapeDistTraveled(graph,shapeId,st0,st1,hops[i].getFromVertex(),hops[i].getToVertex()));
     }
     return;
   }
@@ -18,7 +18,7 @@
       st0=stopTimes.get(i);
       StopTime st1=stopTimes.get(i + 1);
       LineString geometry=createSimpleGeometry(st0.getStop(),st1.getStop());
-      hops.get(i).setGeometry(geometry);
+      hops[i].setGeometry(geometry);
     }
     return;
   }
@@ -80,7 +80,7 @@
       st0=stopTimes.get(i);
       StopTime st1=stopTimes.get(i + 1);
       LineString geometry=createSimpleGeometry(st0.getStop(),st1.getStop());
-      hops.get(i).setGeometry(geometry);
+      hops[i].setGeometry(geometry);
       LOG.warn(graph.addBuilderAnnotation(new BogusShapeGeometryCaught(shapeId,st0,st1)));
     }
     return;
@@ -89,8 +89,8 @@
   LinearLocation endLocation=locationIt.next();
   double distanceSoFar=0;
   int last=0;
-  for (int i=0; i < hops.size(); ++i) {
-    Edge hop=hops.get(i);
+  for (int i=0; i < hops.length; ++i) {
+    if (hops[i] == null)     continue;
     LinearLocation startLocation=endLocation;
     endLocation=locationIt.next();
     for (int j=last; j < startLocation.getSegmentIndex(); ++j) {
@@ -119,6 +119,6 @@
       CoordinateSequence sequence=new PackedCoordinateSequence.Double(geometry.getCoordinates(),2);
       geometry=_geometryFactory.createLineString(sequence);
     }
-    ((HopEdge)hop).setGeometry(geometry);
+    hops[i].setGeometry(geometry);
   }
 }
