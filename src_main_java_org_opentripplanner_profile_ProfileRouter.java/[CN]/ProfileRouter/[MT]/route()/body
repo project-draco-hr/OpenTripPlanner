@@ -1,4 +1,6 @@
 {
+  long searchBeginTime=System.currentTimeMillis();
+  long abortTime=searchBeginTime + TIMEOUT * 1000;
   final int ROUNDS=3;
   int finalRound=ROUNDS - 1;
   int penultimateRound=ROUNDS - 2;
@@ -44,6 +46,7 @@
             }
           }
         }
+        if (System.currentTimeMillis() > abortTime)         throw new RuntimeException("TIMEOUT");
       }
       rides.clear();
     }
@@ -57,5 +60,6 @@
   for (  Option option : directOptions) {
     options.add(option);
   }
+  LOG.info("Profile routing request finished in {} sec.",(System.currentTimeMillis() - searchBeginTime) / 1000.0);
   return new ProfileResponse(options,request.orderBy,request.limit);
 }

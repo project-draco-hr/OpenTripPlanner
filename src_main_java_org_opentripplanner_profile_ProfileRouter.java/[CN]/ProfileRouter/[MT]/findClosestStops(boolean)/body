@@ -5,7 +5,7 @@
   rr.setArriveBy(back);
   rr.setRoutingContext(graph);
   rr.setBatch(true);
-  int worstElapsedTime=60 * 60 * 3;
+  int worstElapsedTime=request.accessTime * 60;
   if (back)   worstElapsedTime*=-1;
   rr.setWorstTime(rr.dateTime + worstElapsedTime);
   GenericAStar astar=new GenericAStar();
@@ -17,12 +17,12 @@
     @Override public void visitEnqueue(    State state){
     }
     @Override public void visitVertex(    State state){
-      if (state.getWalkDistance() < request.streetDist) {
-        Vertex vertex=state.getVertex();
-        if (vertex instanceof TransitStop) {
-          TransitStop tstop=(TransitStop)vertex;
-          ret.add(new StopAtDistance(tstop.getStop(),(int)state.getWalkDistance()));
-        }
+      Vertex vertex=state.getVertex();
+      if (vertex instanceof TransitStop) {
+        TransitStop tstop=(TransitStop)vertex;
+        LOG.debug("found stop: {} ({}m)",tstop.getStopId(),state.getWalkDistance());
+        LOG.debug("  elapsed time {}",state.getElapsedTimeSeconds());
+        ret.add(new StopAtDistance(tstop.getStop(),(int)state.getWalkDistance()));
       }
     }
   }

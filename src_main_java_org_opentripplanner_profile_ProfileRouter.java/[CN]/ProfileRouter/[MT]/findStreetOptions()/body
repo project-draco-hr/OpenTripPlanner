@@ -1,5 +1,7 @@
 {
   for (  TraverseMode mode : Lists.newArrayList(TraverseMode.WALK,TraverseMode.BICYCLE,TraverseMode.CAR)) {
-    findStreetOption(mode);
+    if (request.modes.contains(mode)) {
+      findStreetOption(mode);
+    }
   }
 }

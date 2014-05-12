@@ -4,7 +4,7 @@
   rr.setTo(new GenericLocation(request.to.lat,request.to.lon));
   rr.setArriveBy(false);
   rr.setRoutingContext(graph);
-  int worstElapsedTime=60 * 60 * 2;
+  int worstElapsedTime=request.streetTime * 60;
   rr.setWorstTime(rr.dateTime + worstElapsedTime);
   GenericAStar astar=new GenericAStar();
   astar.setNPaths(1);

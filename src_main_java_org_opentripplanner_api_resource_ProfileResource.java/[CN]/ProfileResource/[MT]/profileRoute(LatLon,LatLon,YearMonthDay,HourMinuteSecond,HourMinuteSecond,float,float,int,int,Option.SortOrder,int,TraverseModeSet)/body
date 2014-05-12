@@ -2,6 +2,8 @@
   QueryParameter.checkRangeInclusive(limit,0,Integer.MAX_VALUE);
   QueryParameter.checkRangeInclusive(walkSpeed,0,7);
   QueryParameter.checkRangeInclusive(bikeSpeed,0,21);
+  QueryParameter.checkRangeInclusive(streetTime,1,480);
+  QueryParameter.checkRangeInclusive(accessTime,1,480);
   ProfileRequest req=new ProfileRequest();
   req.from=from;
   req.to=to;
@@ -9,7 +11,8 @@
   req.toTime=toTime.toSeconds();
   req.walkSpeed=walkSpeed;
   req.bikeSpeed=bikeSpeed;
-  req.streetDist=streetDist;
+  req.streetTime=streetTime;
+  req.accessTime=accessTime;
   req.date=date.toJoda();
   req.orderBy=orderBy;
   req.limit=limit;
