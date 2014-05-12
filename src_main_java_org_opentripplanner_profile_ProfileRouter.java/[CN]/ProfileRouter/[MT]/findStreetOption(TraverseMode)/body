@@ -6,6 +6,8 @@
   rr.setRoutingContext(graph);
   int worstElapsedTime=request.streetTime * 60;
   rr.setWorstTime(rr.dateTime + worstElapsedTime);
+  rr.setWalkSpeed(request.walkSpeed);
+  rr.setBikeSpeed(request.bikeSpeed);
   GenericAStar astar=new GenericAStar();
   astar.setNPaths(1);
   ShortestPathTree spt=astar.getShortestPathTree(rr,System.currentTimeMillis() + 5000);
