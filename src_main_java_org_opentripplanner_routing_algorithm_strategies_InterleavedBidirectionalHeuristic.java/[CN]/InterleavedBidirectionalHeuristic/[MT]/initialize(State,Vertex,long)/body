@@ -9,6 +9,7 @@
   weights=Maps.newHashMapWithExpectedSize(((int)Math.log(nVertices)) + 1);
   this.options=s.getOptions();
   this.origin=s.getVertex();
+  options.setSoftWalkLimiting(false);
   LOG.debug("initializing heuristic computation thread");
   List<State> search=streetSearch(options,false,abortTime);
   if (search == null)   return;
