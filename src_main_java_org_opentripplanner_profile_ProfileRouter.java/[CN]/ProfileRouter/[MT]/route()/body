@@ -5,6 +5,7 @@
   if (graph.index.transfersForStop == null) {
     graph.index.initializeProfileTransfers();
   }
+  findStreetOptions();
   findClosestPatterns();
   LOG.info("from stops: {}",fromStops);
   LOG.info("to stops: {}",toStops);
@@ -53,6 +54,8 @@
     Option option=new Option(ride,dist,window,request.walkSpeed);
     if (!option.hasEmptyRides())     options.add(option);
   }
-  if (directOption != null)   options.add(directOption);
+  for (  Option option : directOptions) {
+    options.add(option);
+  }
   return new ProfileResponse(options,request.orderBy,request.limit);
 }

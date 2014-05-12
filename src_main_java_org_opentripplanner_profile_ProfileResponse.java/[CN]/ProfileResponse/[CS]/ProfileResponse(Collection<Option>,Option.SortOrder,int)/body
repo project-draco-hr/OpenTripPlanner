@@ -1,5 +1,9 @@
 {
-  this.options.addAll(options);
+  List<Option> transitOptions=Lists.newArrayList();
+  for (  Option option : options) {
+    if (option.segments.isEmpty())     this.options.add(option);
+ else     transitOptions.add(option);
+  }
   Comparator<Option> c;
 switch (orderBy) {
 case MAX:
@@ -12,8 +16,9 @@ case MIN:
 default :
 c=new Option.MinComparator();
 }
-Collections.sort(this.options,c);
-if (limit > 0 && limit <= options.size()) {
-this.options=this.options.subList(0,limit);
+Collections.sort(transitOptions,c);
+if (limit > 0 && limit <= transitOptions.size()) {
+transitOptions=transitOptions.subList(0,limit);
 }
+this.options.addAll(transitOptions);
 }

@@ -5,7 +5,7 @@
   rr.setArriveBy(back);
   rr.setRoutingContext(graph);
   rr.setBatch(true);
-  int worstElapsedTime=60 * 90;
+  int worstElapsedTime=60 * 60 * 3;
   if (back)   worstElapsedTime*=-1;
   rr.setWorstTime(rr.dateTime + worstElapsedTime);
   GenericAStar astar=new GenericAStar();
@@ -27,15 +27,7 @@
     }
   }
 );
-  SearchTerminationStrategy terminator=new SearchTerminationStrategy(){
-    @Override public boolean shouldSearchContinue(    Vertex origin,    Vertex target,    State current,    ShortestPathTree spt,    RoutingRequest req){
-      if (current.getVertex() != target)       return true;
-      directOption=new Option(current);
-      return true;
-    }
-  }
-;
-  ShortestPathTree spt=astar.getShortestPathTree(rr,System.currentTimeMillis() + 5000,terminator);
+  ShortestPathTree spt=astar.getShortestPathTree(rr,System.currentTimeMillis() + 5000);
   rr.rctx.destroy();
   return ret;
 }
