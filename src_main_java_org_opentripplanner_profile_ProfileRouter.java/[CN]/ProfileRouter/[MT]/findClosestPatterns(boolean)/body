@@ -6,15 +6,26 @@
     }
   }
   if (closest.size() > 50) {
-    LOG.info("Truncating the list to include only the closest patterns.");
-    List<Integer> distances=Lists.newArrayList();
-    for (    StopAtDistance sd : closest.values())     distances.add(sd.distance);
-    Collections.sort(distances);
-    int maxDist=distances.get(50);
-    Iterator<Entry<TripPattern,StopAtDistance>> iter=closest.entrySet().iterator();
-    while (iter.hasNext()) {
-      Entry<TripPattern,StopAtDistance> entry=iter.next();
-      if (entry.getValue().distance > maxDist)       iter.remove();
+    Multimap<StopAtDistance,TripPattern> busPatterns=TreeMultimap.create(Ordering.natural(),Ordering.arbitrary());
+    Multimap<StopAtDistance,TripPattern> otherPatterns=TreeMultimap.create(Ordering.natural(),Ordering.arbitrary());
+    Multimap<StopAtDistance,TripPattern> patterns;
+    for (    TripPattern pattern : closest.keySet()) {
+      patterns=(pattern.mode == TraverseMode.BUS) ? busPatterns : otherPatterns;
+      patterns.put(closest.get(pattern),pattern);
+    }
+    closest.clear();
+    Iterator<StopAtDistance> iterBus=busPatterns.keySet().iterator();
+    Iterator<StopAtDistance> iterOther=otherPatterns.keySet().iterator();
+    while (closest.size() < 50) {
+      StopAtDistance sd;
+      if (iterBus.hasNext()) {
+        sd=iterBus.next();
+        for (        TripPattern tp : busPatterns.get(sd))         closest.put(tp,sd);
+      }
+      if (iterOther.hasNext()) {
+        sd=iterOther.next();
+        for (        TripPattern tp : otherPatterns.get(sd))         closest.put(tp,sd);
+      }
     }
   }
   return closest;
