@@ -295,6 +295,12 @@
   e53.setElevationProfile(elevation53,false);
   e53.setNote(Alert.newSimpleAlertSet(alertsExample));
   new PlainStreetEdge(v40,new IntersectionVertex(graph,"Extra vertex",180,88),new LineString(new PackedCoordinateSequence.Double(new double[]{180,89,180,88},2),geometryFactory),"Extra edge",1.9,StreetTraversalPermission.NONE,true,0);
+  graph.serviceCodes.put(firstTrip.getId(),0);
+  graph.serviceCodes.put(secondTrip.getId(),1);
+  graph.serviceCodes.put(thirdTrip.getId(),2);
+  firstTripTimes.serviceCode=graph.serviceCodes.get(firstTrip.getId());
+  secondTripTimes.serviceCode=graph.serviceCodes.get(secondTrip.getId());
+  thirdTripTimes.serviceCode=graph.serviceCodes.get(thirdTrip.getId());
   CalendarServiceData calendarServiceData=new CalendarServiceDataStub(graph.serviceCodes.keySet());
   CalendarServiceImpl calendarServiceImpl=new CalendarServiceImpl(calendarServiceData);
   calendarServiceData.putTimeZoneForAgencyId("Train",timeZone);
