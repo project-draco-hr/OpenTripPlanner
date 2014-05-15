@@ -41,7 +41,7 @@
             coordinateList.add(lastState.getVertex().getCoordinate());
             coordinates=new CoordinateArrayListSequence(coordinateList);
           }
-          LineString geometry=geometryFactory.createLineString(coordinates);
+          LineString geometry=geometryFactory.createLineString(new PackedCoordinateSequence.Double(coordinates.toCoordinateArray()));
           LOG.trace("  to stop: {} ({}m) [{}]",other,distance,geometry);
           new SimpleTransfer(ts,other,distance,geometry);
           n++;
