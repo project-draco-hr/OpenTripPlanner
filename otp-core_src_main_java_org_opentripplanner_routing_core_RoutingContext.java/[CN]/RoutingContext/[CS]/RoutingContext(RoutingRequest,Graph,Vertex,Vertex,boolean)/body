@@ -72,6 +72,13 @@
   transferTable=graph.getTransferTable();
   if (opt.batch)   remainingWeightHeuristic=new TrivialRemainingWeightHeuristic();
  else   remainingWeightHeuristic=heuristicFactory.getInstanceForSearch(opt);
+  for (  Vertex vertex : new Vertex[]{fromVertex,toVertex}) {
+    if (vertex instanceof StreetLocation) {
+      for (      PartialPlainStreetEdge ppse : Iterables.filter(((StreetLocation)vertex).getExtra(),PartialPlainStreetEdge.class)) {
+        ppse.visibleTo=this;
+      }
+    }
+  }
   if (this.origin != null) {
     LOG.debug("Origin vertex inbound edges {}",this.origin.getIncoming());
     LOG.debug("Origin vertex outbound edges {}",this.origin.getOutgoing());
