@@ -55,7 +55,8 @@
     StreetVertex toStreetVertex=(StreetVertex)toVertex;
     Set<PlainStreetEdge> overlap=overlappingPlainStreetEdges(fromStreetVertex,toStreetVertex);
     for (    PlainStreetEdge pse : overlap) {
-      makePartialEdgeAlong(pse,fromStreetVertex,toStreetVertex);
+      PartialPlainStreetEdge ppse=makePartialEdgeAlong(pse,fromStreetVertex,toStreetVertex);
+      ((StreetLocation)fromVertex).getExtra().add(ppse);
     }
   }
   if (opt.getStartingTransitStopId() != null) {
@@ -74,9 +75,7 @@
  else   remainingWeightHeuristic=heuristicFactory.getInstanceForSearch(opt);
   for (  Vertex vertex : new Vertex[]{fromVertex,toVertex}) {
     if (vertex instanceof StreetLocation) {
-      for (      PartialPlainStreetEdge ppse : Iterables.filter(((StreetLocation)vertex).getExtra(),PartialPlainStreetEdge.class)) {
-        ppse.visibleTo=this;
-      }
+      ((StreetLocation)vertex).setTemporaryEdgeVisibility(this);
     }
   }
   if (this.origin != null) {
