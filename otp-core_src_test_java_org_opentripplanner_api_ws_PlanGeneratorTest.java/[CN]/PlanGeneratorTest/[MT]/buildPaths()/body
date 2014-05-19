@@ -320,6 +320,7 @@
   forwardOptions.dateTime=0L;
   forwardOptions.bikeRentalPickupTime=4;
   forwardOptions.bikeRentalDropoffTime=2;
+  e53.visibleTo=forwardContext;
   State s0Forward=new State(forwardOptions);
   State s2Forward=e1.traverse(s0Forward);
   State s4Forward=e3.traverse(s2Forward);
@@ -360,6 +361,7 @@
   backwardOptions.bikeRentalPickupTime=4;
   backwardOptions.bikeRentalDropoffTime=2;
   backwardOptions.setArriveBy(true);
+  e53.visibleTo=backwardContext;
   State s60Backward=new State(backwardOptions);
   State s58Backward=e59.traverse(s60Backward);
   State s56Backward=e57.traverse(s58Backward);
@@ -399,6 +401,7 @@
   onboardOptions.dateTime=6L;
   onboardOptions.bikeRentalPickupTime=4;
   onboardOptions.bikeRentalDropoffTime=2;
+  e53.visibleTo=onboardContext;
   State s10Onboard=new State(onboardOptions);
   State s12Onboard=onBoardDepartPatternHop.traverse(s10Onboard);
   State s14Onboard=e13.traverse(s12Onboard);
