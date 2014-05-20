@@ -8,6 +8,8 @@
   graph=new Graph();
   gtfsBundle.setTransfersTxtDefinesStationPaths(true);
   gtfsGraphBuilderImpl.buildGraph(graph,null);
+  agencyId=graph.getAgencyIds().iterator().next();
+  System.out.printf("Set the agency ID for this test to %s\n",agencyId);
   graph.index(new DefaultStreetVertexIndexFactory());
   timetableSnapshotSource=new TimetableSnapshotSource(graph);
   timetableSnapshotSource.setPurgeExpiredData(false);
@@ -23,7 +25,7 @@
     for (    FeedEntity feedEntity : feedEntityList) {
       updates.add(feedEntity.getTripUpdate());
     }
-    timetableSnapshotSource.applyTripUpdates(updates,"MMRI");
+    timetableSnapshotSource.applyTripUpdates(updates,agencyId);
     alertsUpdateHandler.update(feedMessage);
   }
  catch (  Exception exception) {
@@ -34,6 +36,7 @@
   }
  else {
     pathService=new RetryingPathServiceImpl(null,genericAStar);
+    genericAStar.setNPaths(1);
   }
   planGenerator=new PlanGenerator(null,pathService);
 }

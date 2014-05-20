@@ -4,28 +4,28 @@
   routingRequest.setArriveBy(dateTime < 0);
   routingRequest.dateTime=Math.abs(dateTime);
   if (fromVertex != null && !fromVertex.isEmpty()) {
-    routingRequest.setFrom(new GenericLocation(null,"MMRI_" + fromVertex));
+    routingRequest.setFrom(new GenericLocation(null,agencyId + "_" + fromVertex));
   }
   if (toVertex != null && !toVertex.isEmpty()) {
-    routingRequest.setTo(new GenericLocation(null,"MMRI_" + toVertex));
+    routingRequest.setTo(new GenericLocation(null,agencyId + "_" + toVertex));
   }
   if (onTripId != null && !onTripId.isEmpty()) {
-    routingRequest.setStartingTransitTripId(new AgencyAndId("MMRI",onTripId));
+    routingRequest.setStartingTransitTripId(new AgencyAndId(agencyId,onTripId));
   }
   routingRequest.setRoutingContext(graph);
   routingRequest.setWheelchairAccessible(wheelchairAccessible);
   routingRequest.setTransferPenalty(preferLeastTransfers ? 300 : 0);
   routingRequest.setModes(new TraverseModeSet(TraverseMode.WALK,mode));
   if (excludedRoute != null && !excludedRoute.isEmpty()) {
-    routingRequest.setBannedRoutes("MMRI__" + excludedRoute);
+    routingRequest.setBannedRoutes(agencyId + "__" + excludedRoute);
   }
   if (excludedStop != null && !excludedStop.isEmpty()) {
-    routingRequest.setBannedStopsHard("MMRI_" + excludedStop);
+    routingRequest.setBannedStopsHard(agencyId + "_" + excludedStop);
   }
   routingRequest.setOtherThanPreferredRoutesPenalty(0);
   routingRequest.setWalkBoardCost(0);
   TripPlan tripPlan=planGenerator.generate(routingRequest);
-  Itinerary itinerary=tripPlan.itinerary.get(0);
+  itinerary=tripPlan.itinerary.get(0);
   assertEquals(legCount,itinerary.legs.size());
   return itinerary.legs.toArray(new Leg[legCount]);
 }

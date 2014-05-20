@@ -2,9 +2,9 @@
   assertEquals(startTime,leg.startTime.getTimeInMillis());
   assertEquals(endTime,leg.endTime.getTimeInMillis());
   assertEquals(toStopId,leg.to.stopId.getId());
-  assertEquals("MMRI",leg.to.stopId.getAgencyId());
+  assertEquals(agencyId,leg.to.stopId.getAgencyId());
   if (fromStopId != null) {
-    assertEquals("MMRI",leg.from.stopId.getAgencyId());
+    assertEquals(agencyId,leg.from.stopId.getAgencyId());
     assertEquals(fromStopId,leg.from.stopId.getId());
   }
  else {
