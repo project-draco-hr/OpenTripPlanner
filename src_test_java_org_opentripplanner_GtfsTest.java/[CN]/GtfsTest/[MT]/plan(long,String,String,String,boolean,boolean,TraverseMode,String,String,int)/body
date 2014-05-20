@@ -23,7 +23,8 @@
     routingRequest.setBannedStopsHard(agencyId + "_" + excludedStop);
   }
   routingRequest.setOtherThanPreferredRoutesPenalty(0);
-  routingRequest.setWalkBoardCost(0);
+  routingRequest.setWaitReluctance(1);
+  routingRequest.setWalkBoardCost(30);
   TripPlan tripPlan=planGenerator.generate(routingRequest);
   itinerary=tripPlan.itinerary.get(0);
   assertEquals(legCount,itinerary.legs.size());
