@@ -1,7 +1,12 @@
 {
   if (csvInputSource == null) {
     if (path != null) {
-      csvInputSource=new ZipFileCsvInputSource(new ZipFile(path));
+      if (path.isDirectory()) {
+        csvInputSource=new FileCsvInputSource(path);
+      }
+ else {
+        csvInputSource=new ZipFileCsvInputSource(new ZipFile(path));
+      }
     }
  else     if (url != null) {
       DownloadableGtfsInputSource isrc=new DownloadableGtfsInputSource();
