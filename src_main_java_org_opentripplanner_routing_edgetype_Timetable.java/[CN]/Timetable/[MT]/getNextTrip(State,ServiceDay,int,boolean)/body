@@ -1,8 +1,6 @@
 {
   int time=serviceDay.secondsSinceMidnight(s0.getTimeSeconds());
-  boolean haveBicycle=s0.getNonTransitMode() == TraverseMode.BICYCLE;
   TripTimes bestTrip=null;
-  int index;
   Stop currentStop=pattern.getStop(stopIndex);
   int bestTime=boarding ? Integer.MAX_VALUE : Integer.MIN_VALUE;
   for (  TripTimes tt : tripTimes) {
@@ -10,7 +8,7 @@
     if (boarding) {
       int depTime=tt.getDepartureTime(stopIndex);
       if (depTime < 0)       continue;
-      if (depTime >= time && depTime < bestTime && tt.tripAcceptable(s0,currentStop,serviceDay,haveBicycle,stopIndex,boarding)) {
+      if (depTime >= time && depTime < bestTime && tt.tripAcceptable(s0,currentStop,serviceDay,stopIndex,boarding)) {
         bestTrip=tt;
         bestTime=depTime;
       }
@@ -18,7 +16,7 @@
  else {
       int arvTime=tt.getArrivalTime(stopIndex);
       if (arvTime < 0)       continue;
-      if (arvTime <= time && arvTime > bestTime && tt.tripAcceptable(s0,currentStop,serviceDay,haveBicycle,stopIndex,boarding)) {
+      if (arvTime <= time && arvTime > bestTime && tt.tripAcceptable(s0,currentStop,serviceDay,stopIndex,boarding)) {
         bestTrip=tt;
         bestTime=arvTime;
       }
@@ -32,7 +30,7 @@
     if (boarding) {
       int depTime=freq.nextDepartureTime(stopIndex,time);
       if (depTime < 0)       continue;
-      if (depTime >= time && depTime < bestTime && tt.tripAcceptable(s0,currentStop,serviceDay,haveBicycle,stopIndex,boarding)) {
+      if (depTime >= time && depTime < bestTime && tt.tripAcceptable(s0,currentStop,serviceDay,stopIndex,boarding)) {
         bestFreq=freq;
         bestTime=depTime;
       }
@@ -40,7 +38,7 @@
  else {
       int arvTime=freq.prevArrivalTime(stopIndex,time);
       if (arvTime < 0)       continue;
-      if (arvTime <= time && arvTime > bestTime && tt.tripAcceptable(s0,currentStop,serviceDay,haveBicycle,stopIndex,boarding)) {
+      if (arvTime <= time && arvTime > bestTime && tt.tripAcceptable(s0,currentStop,serviceDay,stopIndex,boarding)) {
         bestFreq=freq;
         bestTime=arvTime;
       }

@@ -9,6 +9,7 @@
   if (options.wheelchairAccessible && trip.getWheelchairAccessible() != 1) {
     return false;
   }
+  boolean bicycle=state0.getNonTransitMode() == TraverseMode.BICYCLE;
   if (bicycle && BikeAccess.fromTrip(trip) != BikeAccess.ALLOWED) {
     return false;
   }
