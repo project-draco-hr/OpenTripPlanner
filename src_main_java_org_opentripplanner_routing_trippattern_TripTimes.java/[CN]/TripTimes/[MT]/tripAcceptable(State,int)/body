@@ -1,10 +1,8 @@
 {
   RoutingRequest options=state0.getOptions();
   BannedStopSet banned=options.bannedTrips.get(trip.getId());
-  if (banned != null) {
-    if (banned.contains(stopIndex)) {
-      return false;
-    }
+  if (banned != null && banned.contains(stopIndex)) {
+    return false;
   }
   if (options.wheelchairAccessible && trip.getWheelchairAccessible() != 1) {
     return false;

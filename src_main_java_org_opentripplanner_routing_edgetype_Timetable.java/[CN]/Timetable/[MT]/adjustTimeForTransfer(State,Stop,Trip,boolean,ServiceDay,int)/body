@@ -1,6 +1,6 @@
 {
   if (!state.isEverBoarded()) {
-    return 0;
+    return t0;
   }
   TransferTable transferTable=state.getOptions().getRoutingContext().transferTable;
   int transferTime=transferTable.getTransferTime(state.getPreviousStop(),currentStop,state.getPreviousTrip(),trip,boarding);
@@ -10,10 +10,19 @@
     }
   }
   if (transferTime == StopTransfer.UNKNOWN_TRANSFER) {
-    return 0;
+    return t0;
   }
   if (transferTime == StopTransfer.FORBIDDEN_TRANSFER) {
     return -1;
   }
-  return transferTime;
+  int minTime=serviceDay.secondsSinceMidnight(state.getLastAlightedTimeSeconds());
+  if (boarding) {
+    minTime+=transferTime;
+    if (minTime > t0)     return minTime;
+  }
+ else {
+    minTime-=transferTime;
+    if (minTime < t0)     return minTime;
+  }
+  return t0;
 }
