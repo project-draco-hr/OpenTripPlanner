@@ -5,7 +5,9 @@
   int bestTime=boarding ? Integer.MAX_VALUE : Integer.MIN_VALUE;
   for (  TripTimes tt : tripTimes) {
     if (!serviceDay.serviceRunning(tt.serviceCode))     continue;
-    if (!tt.tripAcceptable(s0,currentStop,serviceDay,stopIndex,boarding))     continue;
+    if (!tt.tripAcceptable(s0,stopIndex))     continue;
+    int minTransferTime=getTransferTime(s0,currentStop,tt.trip,boarding);
+    if (minTransferTime < 0)     continue;
     if (boarding) {
       int depTime=tt.getDepartureTime(stopIndex);
       if (depTime < 0)       continue;
@@ -27,7 +29,9 @@
   for (  FrequencyEntry freq : frequencyEntries) {
     TripTimes tt=freq.tripTimes;
     if (!serviceDay.serviceRunning(tt.serviceCode))     continue;
-    if (!tt.tripAcceptable(s0,currentStop,serviceDay,stopIndex,boarding))     continue;
+    if (!tt.tripAcceptable(s0,stopIndex))     continue;
+    int minTransferTime=getTransferTime(s0,currentStop,tt.trip,boarding);
+    if (minTransferTime < 0)     continue;
     LOG.debug("  running freq {}",freq);
     if (boarding) {
       int depTime=freq.nextDepartureTime(stopIndex,time);
