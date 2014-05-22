@@ -1,0 +1,8 @@
+{
+  BitSet canonical=canonicalBitSets.get(original);
+  if (canonical == null) {
+    canonical=original;
+    canonicalBitSets.put(canonical,canonical);
+  }
+  return canonical;
+}
