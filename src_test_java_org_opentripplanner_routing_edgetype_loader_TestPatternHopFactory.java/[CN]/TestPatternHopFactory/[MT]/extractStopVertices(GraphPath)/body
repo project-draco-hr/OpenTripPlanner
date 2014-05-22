@@ -1,0 +1,9 @@
+{
+  List<TransitStop> ret=Lists.newArrayList();
+  for (  State state : path.states) {
+    if (state.getVertex() instanceof TransitStop) {
+      ret.add(((TransitStop)state.getVertex()));
+    }
+  }
+  return ret;
+}

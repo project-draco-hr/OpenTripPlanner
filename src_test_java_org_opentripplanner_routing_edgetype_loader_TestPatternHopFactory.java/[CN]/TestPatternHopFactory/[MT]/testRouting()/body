@@ -24,13 +24,18 @@
   spt=aStar.getShortestPathTree(options);
   path=spt.getPath(stop_d,false);
   assertNotNull(path);
+  List<TransitStop> stops=extractStopVertices(path);
+  assertEquals(stops.size(),3);
+  assertEquals(stops.get(1),stop_c);
   long endTime=startTime + 40 * 60;
   assertEquals(endTime,path.getEndTime());
   options.setRoutingContext(graph,stop_a,stop_e);
   spt=aStar.getShortestPathTree(options);
   path=spt.getPath(stop_e,false);
   assertNotNull(path);
-  assertTrue(path.states.size() == 14);
+  stops=extractStopVertices(path);
+  assertEquals(stops.size(),3);
+  assertEquals(stops.get(1),stop_c);
   endTime=startTime + 70 * 60;
   assertEquals(endTime,path.getEndTime());
 }
