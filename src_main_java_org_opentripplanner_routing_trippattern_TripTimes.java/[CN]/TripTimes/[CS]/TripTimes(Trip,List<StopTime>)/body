@@ -4,12 +4,14 @@
   int[] departures=new int[nStops];
   int[] arrivals=new int[nStops];
   int[] sequences=new int[nStops];
+  timepoints=new BitSet(nStops);
   timeShift=stopTimes.get(0).getArrivalTime();
   int s=0;
   for (  StopTime st : stopTimes) {
     departures[s]=st.getDepartureTime() - timeShift;
     arrivals[s]=st.getArrivalTime() - timeShift;
     sequences[s]=st.getStopSequence();
+    timepoints.set(s,st.getTimepoint() == 1);
     s++;
   }
   this.scheduledDepartureTimes=Deduplicator.deduplicateIntArray(departures);
@@ -18,4 +20,6 @@
   this.headsigns=makeHeadsignsArray(stopTimes);
   this.arrivalTimes=null;
   this.departureTimes=null;
+  this.timepoints=Deduplicator.deduplicateBitSet(timepoints);
+  LOG.info("trip {} has timepoint at indexes {}",trip,timepoints);
 }

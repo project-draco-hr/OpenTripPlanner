@@ -1,11 +1,10 @@
 {
   stopId=stop.getId().getId();
-  if (i > 0) {
-    scheduledArrival=tt.getScheduledArrivalTime(i);
-    realtimeArrival=tt.getArrivalTime(i);
-    arrivalDelay=tt.getArrivalDelay(i);
-    scheduledDeparture=tt.getScheduledDepartureTime(i);
-    realtimeDeparture=tt.getDepartureTime(i);
-    departureDelay=tt.getDepartureDelay(i);
-  }
+  scheduledArrival=tt.getScheduledArrivalTime(i);
+  realtimeArrival=tt.getArrivalTime(i);
+  arrivalDelay=tt.getArrivalDelay(i);
+  scheduledDeparture=tt.getScheduledDepartureTime(i);
+  realtimeDeparture=tt.getDepartureTime(i);
+  departureDelay=tt.getDepartureDelay(i);
+  timepoint=tt.isTimepoint(i);
 }

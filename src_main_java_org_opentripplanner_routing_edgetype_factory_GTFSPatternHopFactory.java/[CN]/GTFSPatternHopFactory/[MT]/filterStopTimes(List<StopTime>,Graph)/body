@@ -4,10 +4,21 @@
   if (!st0.isDepartureTimeSet() && st0.isArrivalTimeSet()) {
     st0.setDepartureTime(st0.getArrivalTime());
   }
+  boolean hasTimepoints=false;
+  for (  StopTime stopTime : stopTimes) {
+    if (stopTime.getTimepoint() == 1) {
+      hasTimepoints=true;
+      break;
+    }
+  }
+  if (!hasTimepoints)   st0.setTimepoint(1);
   boolean midnightCrossed=false;
   for (int i=1; i < stopTimes.size(); i++) {
     boolean st1bogus=false;
     StopTime st1=stopTimes.get(i);
+    if (!hasTimepoints && (st1.isDepartureTimeSet() || st1.isArrivalTimeSet())) {
+      st1.setTimepoint(1);
+    }
     if (midnightCrossed) {
       if (st1.isDepartureTimeSet())       st1.setDepartureTime(st1.getDepartureTime() + 24 * SECONDS_IN_HOUR);
       if (st1.isArrivalTimeSet())       st1.setArrivalTime(st1.getArrivalTime() + 24 * SECONDS_IN_HOUR);
