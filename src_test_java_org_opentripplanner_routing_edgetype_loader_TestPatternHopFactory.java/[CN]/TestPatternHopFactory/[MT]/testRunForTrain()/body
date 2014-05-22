@@ -8,4 +8,8 @@
   options.setRoutingContext(graph,"agency_Q",destination.getLabel());
   ShortestPathTree spt=aStar.getShortestPathTree(options);
   GraphPath path=spt.getPath(destination,false);
+  long endTime=path.getEndTime();
+  Calendar c=new GregorianCalendar();
+  c.setTimeInMillis(endTime * 1000L);
+  assertTrue(endTime - TestUtils.toSeconds(startTime) < 7200);
 }
