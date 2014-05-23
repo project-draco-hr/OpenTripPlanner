@@ -1,10 +1,11 @@
 {
+  final int N=1000;
   for (  long lo : new long[]{1L << 6,1L << 16,1L << 34,1L << 50}) {
     Set<Long> numbers=Sets.newHashSet();
     NodeTracker tracker=new NodeTracker();
     long hi=0L;
     int count=0;
-    for (int i=0; i < 3000; i++) {
+    for (int i=0; i < 1000; i++) {
       long n=i * i + lo;
       numbers.add(n);
       tracker.add(n);
@@ -12,7 +13,6 @@
       count++;
     }
     assertTrue(numbers.size() == count);
-    System.out.printf("Testing node tracker on %d numbers in range [%d,%d]\n",count,lo,hi);
     for (long i=lo; i < hi; i++) {
       if (tracker.contains(i)) {
         assertTrue(numbers.contains(i));
