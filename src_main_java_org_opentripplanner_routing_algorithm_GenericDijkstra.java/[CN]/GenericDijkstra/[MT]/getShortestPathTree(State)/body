@@ -4,7 +4,7 @@
     target=initialState.getOptions().rctx.target;
   }
   ShortestPathTree spt=createShortestPathTree(options);
-  OTPPriorityQueue<State> queue=createPriorityQueue();
+  BinHeap<State> queue=new BinHeap<State>(1000);
   spt.add(initialState);
   queue.insert(initialState,initialState.getWeight());
   while (!queue.empty()) {

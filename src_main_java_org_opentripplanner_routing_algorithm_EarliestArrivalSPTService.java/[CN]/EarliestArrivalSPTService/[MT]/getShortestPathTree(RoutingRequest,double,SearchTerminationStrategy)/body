@@ -8,7 +8,7 @@
   ShortestPathTree spt=new EarliestArrivalShortestPathTree(options);
   State initialState=new State(options);
   spt.add(initialState);
-  OTPPriorityQueue<State> pq=new BinHeap<State>();
+  BinHeap<State> pq=new BinHeap<State>();
   pq.insert(initialState,0);
   while (!pq.empty()) {
     State u=pq.extract_min();

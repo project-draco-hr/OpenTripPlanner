@@ -1,0 +1,26 @@
+{
+  List<Integer> result=new ArrayList<Integer>(N);
+  int expectedSum=0;
+  for (  Integer i : input) {
+    q.insert(i,i * 0.5);
+    expectedSum+=i;
+  }
+  while (!q.empty()) {
+    result.add(q.extract_min());
+  }
+  assertEquals(result,expected);
+  assertEquals(q.size(),0);
+  assertNull(q.peek_min());
+  assertNull(q.extract_min());
+  q.insert(100,10);
+  q.insert(200,20);
+  assertEquals(q.size(),2);
+  assertNotNull(q.extract_min());
+  assertNotNull(q.extract_min());
+  assertNull(q.extract_min());
+  assertEquals(q.size(),0);
+  int sum=0;
+  for (  Integer i : input)   q.insert(i,i);
+  while (!q.empty())   sum+=q.extract_min();
+  assertTrue(sum == expectedSum);
+}

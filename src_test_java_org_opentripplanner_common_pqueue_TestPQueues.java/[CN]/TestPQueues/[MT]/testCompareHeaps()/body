@@ -2,19 +2,14 @@
   List<Integer> input, expected;
   input=new ArrayList<Integer>(N);
   for (int i=0; i < N; i++)   input.add((int)(Math.random() * 10000));
-  System.out.println("\ninsert/extract " + N + " Integers "+ INNER_ITER+ " times");
   expected=new ArrayList<Integer>(N);
   PriorityQueue<Integer> q=new PriorityQueue<Integer>(N);
-  for (  Integer j : input)   q.add(j);
-  while (!q.isEmpty())   expected.add(q.remove());
-  System.out.println(q.getClass() + " (expected results)");
-  for (int i=0; i < ITER; i++) {
-    for (    OTPPriorityQueue<Integer> queue : makeQueues()) {
-      doQueue(queue,input,expected);
-    }
+  for (  Integer j : input) {
+    q.add(j);
   }
-  System.out.println("\nmaintain queue at size " + N);
-  for (  OTPPriorityQueue<Integer> queue : makeQueues()) {
-    fillQueue(queue,input);
+  while (!q.isEmpty()) {
+    expected.add(q.remove());
   }
+  doQueue(new BinHeap<Integer>(),input,expected);
+  fillQueue(new BinHeap<Integer>(),input);
 }

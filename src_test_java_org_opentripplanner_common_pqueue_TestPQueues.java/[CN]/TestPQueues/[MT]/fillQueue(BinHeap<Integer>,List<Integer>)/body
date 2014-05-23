@@ -1,0 +1,14 @@
+{
+  for (  Integer i : input) {
+    q.insert(i,i * 0.5);
+  }
+  int sum=0;
+  for (  Integer j : input) {
+    sum+=q.extract_min();
+    q.insert(j,j * 0.5);
+  }
+  while (!q.empty()) {
+    sum+=q.extract_min();
+  }
+  assertTrue(sum != 0);
+}

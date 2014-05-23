@@ -1,5 +1,5 @@
 {
-  final int N=50000;
+  final int N=5000;
   final int ITER=2;
   List<Double> keys;
   List<Integer> vals;
@@ -15,16 +15,9 @@
     for (int i=0; i < N; i++) {
       bh.insert(vals.get(i),keys.get(i));
     }
-    System.out.printf("\nRekey %d elements\n",N);
-    long t0=System.currentTimeMillis();
     for (int i=0; i < N; i++) {
       bh.rekey(vals.get(i),i * 2.0D + 10);
     }
-    long t1=System.currentTimeMillis();
-    double tSec=(t1 - t0) / 1000.0;
-    System.out.printf("time %f sec\n",tSec);
-    System.out.printf("time per rekey %f\n",tSec / N);
-    System.out.printf("Comparing to expected results\n");
     for (int i=0; i < N; i++) {
       Double qp=bh.peek_min_key();
       Integer qi=bh.extract_min();
