@@ -42,7 +42,7 @@
       tripPattern=new TripPattern(trip.getRoute(),stopPattern);
       tripPatterns.put(stopPattern,tripPattern);
     }
-    TripTimes tripTimes=new TripTimes(trip,stopTimes);
+    TripTimes tripTimes=new TripTimes(trip,stopTimes,graph.deduplicator);
     List<Frequency> frequencies=frequenciesForTrip.get(trip);
     if (frequencies != null && !(frequencies.isEmpty())) {
       for (      Frequency freq : frequencies) {

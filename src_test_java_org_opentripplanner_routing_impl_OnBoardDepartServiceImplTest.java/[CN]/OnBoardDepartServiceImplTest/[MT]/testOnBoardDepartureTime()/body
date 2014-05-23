@@ -45,7 +45,7 @@
   stopTimes.add(stopArriveTime);
   trip.setId(agencyAndId);
   trip.setTripHeadsign("The right");
-  TripTimes tripTimes=new TripTimes(trip,stopTimes);
+  TripTimes tripTimes=new TripTimes(trip,stopTimes,new Deduplicator());
   StopPattern stopPattern=new StopPattern(stopTimes);
   TripPattern tripPattern=new TripPattern(route,stopPattern);
   when(depart.getTripPattern()).thenReturn(tripPattern);

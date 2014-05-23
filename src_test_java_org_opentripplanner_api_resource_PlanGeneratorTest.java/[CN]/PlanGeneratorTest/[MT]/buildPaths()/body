@@ -171,9 +171,9 @@
   TripPattern firstTripPattern=new TripPattern(firstRoute,firstStopPattern);
   TripPattern secondTripPattern=new TripPattern(secondRoute,secondStopPattern);
   TripPattern thirdTripPattern=new TripPattern(thirdRoute,thirdStopPattern);
-  TripTimes firstTripTimes=new TripTimes(firstTrip,firstStopTimes);
-  TripTimes secondTripTimes=new TripTimes(secondTrip,secondStopTimes);
-  TripTimes thirdTripTimes=new TripTimes(thirdTrip,thirdStopTimes);
+  TripTimes firstTripTimes=new TripTimes(firstTrip,firstStopTimes,new Deduplicator());
+  TripTimes secondTripTimes=new TripTimes(secondTrip,secondStopTimes,new Deduplicator());
+  TripTimes thirdTripTimes=new TripTimes(thirdTrip,thirdStopTimes,new Deduplicator());
   firstTripPattern.add(firstTripTimes);
   secondTripPattern.add(secondTripTimes);
   thirdTripPattern.add(thirdTripTimes);

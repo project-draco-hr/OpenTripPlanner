@@ -4,7 +4,7 @@
   Route route=new Route();
   trip.setRoute(route);
   List<StopTime> stopTimes=Arrays.asList(new StopTime(),new StopTime());
-  TripTimes s=new TripTimes(trip,stopTimes);
+  TripTimes s=new TripTimes(trip,stopTimes,new Deduplicator());
   RoutingRequest request=new RoutingRequest(TraverseMode.BICYCLE);
   Vertex v=new SimpleConcreteVertex(graph,"",0.0,0.0);
   request.setRoutingContext(graph,v,v);

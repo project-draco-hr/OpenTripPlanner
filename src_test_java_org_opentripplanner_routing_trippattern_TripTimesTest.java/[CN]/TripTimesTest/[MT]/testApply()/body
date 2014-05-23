@@ -24,7 +24,7 @@
   stopTimes.add(stopTime0);
   stopTimes.add(stopTime1);
   stopTimes.add(stopTime2);
-  TripTimes differingTripTimes=new TripTimes(trip,stopTimes);
+  TripTimes differingTripTimes=new TripTimes(trip,stopTimes,new Deduplicator());
   TripTimes updatedTripTimesA=new TripTimes(differingTripTimes);
   updatedTripTimesA.updateArrivalTime(1,89);
   updatedTripTimesA.updateDepartureTime(1,98);
