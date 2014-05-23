@@ -1,9 +1,9 @@
 {
-  Vertex stop_a=graph.getVertex("agency_A_depart");
-  Vertex stop_b=graph.getVertex("agency_B_arrive");
-  Vertex stop_c=graph.getVertex("agency_C_arrive");
-  Vertex stop_d=graph.getVertex("agency_D_arrive");
-  Vertex stop_e=graph.getVertex("agency_E_arrive");
+  Vertex stop_a=graph.getVertex("agency_A");
+  Vertex stop_b=graph.getVertex("agency_B");
+  Vertex stop_c=graph.getVertex("agency_C");
+  Vertex stop_d=graph.getVertex("agency_D");
+  Vertex stop_e=graph.getVertex("agency_E");
   RoutingRequest options=new RoutingRequest();
   options.dateTime=TestUtils.dateInSeconds("America/New_York",2009,8,7,0,0,0);
   ShortestPathTree spt;
@@ -12,24 +12,24 @@
   spt=aStar.getShortestPathTree(options);
   path=spt.getPath(stop_b,false);
   assertNotNull(path);
-  assertEquals(4,path.states.size());
+  assertEquals(extractStopVertices(path),Lists.newArrayList(stop_a,stop_b));
   options.setRoutingContext(graph,stop_a,stop_c);
   spt=aStar.getShortestPathTree(options);
   path=spt.getPath(stop_c,false);
   assertNotNull(path);
-  assertEquals(6,path.states.size());
+  assertEquals(extractStopVertices(path),Lists.newArrayList(stop_a,stop_c));
   options.setRoutingContext(graph,stop_a,stop_d);
   spt=aStar.getShortestPathTree(options);
   path=spt.getPath(stop_d,false);
   assertNotNull(path);
-  assertTrue(path.states.size() <= 11);
+  assertEquals(extractStopVertices(path),Lists.newArrayList(stop_a,stop_c,stop_d));
   long endTime=TestUtils.dateInSeconds("America/New_York",2009,8,7,0,0,0) + 40 * 60;
   assertEquals(endTime,path.getEndTime());
   options.setRoutingContext(graph,stop_a,stop_e);
   spt=aStar.getShortestPathTree(options);
   path=spt.getPath(stop_e,false);
   assertNotNull(path);
-  assertTrue(path.states.size() <= 12);
+  assertEquals(extractStopVertices(path),Lists.newArrayList(stop_a,stop_c,stop_e));
   endTime=TestUtils.dateInSeconds("America/New_York",2009,8,7,0,0,0) + 70 * 60;
   assertEquals(endTime,path.getEndTime());
 }
