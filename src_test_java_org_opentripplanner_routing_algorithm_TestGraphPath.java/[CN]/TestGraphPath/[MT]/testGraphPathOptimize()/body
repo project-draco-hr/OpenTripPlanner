@@ -1,6 +1,7 @@
 {
-  Vertex stop_a=graph.getVertex("agency_A_depart");
-  Vertex stop_e=graph.getVertex("agency_E_arrive");
+  Vertex stop_a=graph.getVertex("agency_A");
+  Vertex stop_c=graph.getVertex("agency_C");
+  Vertex stop_e=graph.getVertex("agency_E");
   ShortestPathTree spt;
   GraphPath path;
   RoutingRequest options=new RoutingRequest();
@@ -9,7 +10,15 @@
   spt=aStar.getShortestPathTree(options);
   path=spt.getPath(stop_e,false);
   assertNotNull(path);
-  assertTrue(path.states.size() == 12);
+  List<Vertex> stopvs=Lists.newArrayList();
+  for (  State state : path.states) {
+    if (state.getVertex() instanceof TransitStop) {
+      stopvs.add(state.getVertex());
+    }
+  }
+  assertTrue(stopvs.get(0) == stop_a);
+  assertTrue(stopvs.get(1) == stop_c);
+  assertTrue(stopvs.get(2) == stop_e);
   long bestStart=TestUtils.dateInSeconds("America/New_York",2009,8,7,0,20,0);
   assertNotSame(bestStart,path.getStartTime());
   path=spt.getPath(stop_e,true);
