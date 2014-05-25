@@ -1,7 +1,7 @@
 {
-  Vertex stop_i=graph.getVertex("agency_I_depart");
-  PatternHop hop=getHopOut(stop_i);
-  Geometry geometry=hop.getGeometry();
-  assertTrue(geometry.getLength() > 1.0);
-  assertTrue(geometry.getLength() < 2.0);
+  PatternHop hop;
+  Geometry geom;
+  hop=getHopEdge("I","5");
+  geom=hop.getGeometry();
+  assertEquals(geom.getLength(),1.73,0.1);
 }
