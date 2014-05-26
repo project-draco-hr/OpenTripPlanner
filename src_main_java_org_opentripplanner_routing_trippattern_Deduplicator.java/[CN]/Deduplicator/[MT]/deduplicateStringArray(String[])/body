@@ -1,0 +1,9 @@
+{
+  if (original == null)   return null;
+  StringArray canonical=canonicalStringArrays.get(new StringArray(original,false));
+  if (canonical == null) {
+    canonical=new StringArray(original,true);
+    canonicalStringArrays.put(canonical,canonical);
+  }
+  return canonical.array;
+}

@@ -1,7 +1,8 @@
 {
+  if (original == null)   return null;
   String canonical=canonicalStrings.get(original);
   if (canonical == null) {
-    canonical=original;
+    canonical=new String(original.toCharArray());
     canonicalStrings.put(canonical,canonical);
   }
   return canonical;

@@ -17,7 +17,7 @@
   this.scheduledDepartureTimes=deduplicator.deduplicateIntArray(departures);
   this.scheduledArrivalTimes=deduplicator.deduplicateIntArray(arrivals);
   this.stopSequences=deduplicator.deduplicateIntArray(sequences);
-  this.headsigns=makeHeadsignsArray(stopTimes);
+  this.headsigns=deduplicator.deduplicateStringArray(makeHeadsignsArray(stopTimes));
   this.arrivalTimes=null;
   this.departureTimes=null;
   this.timepoints=deduplicator.deduplicateBitSet(timepoints);
