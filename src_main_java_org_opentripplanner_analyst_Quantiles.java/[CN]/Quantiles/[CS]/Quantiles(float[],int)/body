@@ -1,0 +1,25 @@
+{
+  if (nq < 4)   nq=4;
+  if (nq > 20)   nq=20;
+  Arrays.sort(times);
+  if (times[0] < 0)   throw new AssertionError();
+  if (times[0] == Float.POSITIVE_INFINITY)   count=0;
+ else {
+    int lastIdx=Arrays.binarySearch(times,Float.POSITIVE_INFINITY);
+    while (lastIdx >= 0 && times[lastIdx] == Float.POSITIVE_INFINITY)     lastIdx--;
+    count=(lastIdx >= 0) ? lastIdx + 1 : times.length;
+  }
+  if (count < 2)   throw new RuntimeException("Less than two times.");
+  breaks=new double[nq + 1];
+  double step=(count - 1) / (double)nq;
+  for (int br=0; br < breaks.length - 1; br++) {
+    double position=br * step;
+    int index=(int)position;
+    double frac=position - index;
+    float low=times[index];
+    float high=times[index + 1];
+    float range=high - low;
+    breaks[br]=(int)(low + (frac * range));
+  }
+  breaks[breaks.length - 1]=times[count - 1];
+}

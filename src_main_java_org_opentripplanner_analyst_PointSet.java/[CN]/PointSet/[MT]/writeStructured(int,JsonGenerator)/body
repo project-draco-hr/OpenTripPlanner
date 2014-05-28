@@ -1,0 +1,16 @@
+{
+  jgen.writeObjectFieldStart("structured");
+  for (  Category cat : categories) {
+    jgen.writeObjectFieldStart(cat.id);
+    for (    Attribute attr : cat.attributes) {
+      if (attr.quantiles != null) {
+        jgen.writeObjectField(attr.id,attr.quantiles[i]);
+      }
+ else       if (attr.magnitudes != null) {
+        jgen.writeNumberField(attr.id,attr.magnitudes[i]);
+      }
+    }
+    jgen.writeEndObject();
+  }
+  jgen.writeEndObject();
+}

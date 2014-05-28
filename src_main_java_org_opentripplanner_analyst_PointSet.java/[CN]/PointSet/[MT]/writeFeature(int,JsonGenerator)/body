@@ -1,0 +1,23 @@
+{
+  jgen.writeStartObject();
+{
+    jgen.writeStringField("type","Feature");
+    jgen.writeObjectFieldStart("geometry");
+{
+      jgen.writeStringField("type","Point");
+      jgen.writeArrayFieldStart("coordinates");
+{
+        jgen.writeNumber(lons[i]);
+        jgen.writeNumber(lats[i]);
+      }
+      jgen.writeEndArray();
+    }
+    jgen.writeEndObject();
+    jgen.writeObjectFieldStart("properties");
+{
+      writeStructured(i,jgen);
+    }
+    jgen.writeEndObject();
+  }
+  jgen.writeEndObject();
+}

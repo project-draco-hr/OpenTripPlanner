@@ -1,0 +1,15 @@
+{
+  times=new int[Vertex.getMaxIndex()];
+  Arrays.fill(times,UNREACHABLE);
+  for (  State state : spt.getAllStates()) {
+    Vertex vertex=state.getVertex();
+    if (vertex instanceof StreetVertex || vertex instanceof TransitStop) {
+      int i=vertex.getIndex();
+      int t=(int)state.getActiveTime();
+      if (times[i] == UNREACHABLE || times[i] > t) {
+        times[i]=t;
+      }
+    }
+  }
+  this.id=makeUniqueId();
+}

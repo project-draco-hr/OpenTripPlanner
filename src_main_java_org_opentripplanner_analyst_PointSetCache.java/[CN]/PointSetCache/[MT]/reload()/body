@@ -1,0 +1,27 @@
+{
+  LOG.info("Loading all PointSets in directory '{}'",PATH);
+  File dir=new File(PATH);
+  if (!(dir.isDirectory() && dir.canRead())) {
+    LOG.error("'{}' is not a readable directory.",dir);
+    return;
+  }
+  pointSets.clear();
+  for (  File file : dir.listFiles()) {
+    String name=file.getName();
+    if (name.endsWith(".csv")) {
+      String baseName=name.substring(0,name.length() - 4);
+      LOG.info("loading '{}' with ID '{}'",file,baseName);
+      try {
+        PointSet pset=PointSet.fromCsv(file.getAbsolutePath());
+        if (pset == null) {
+          LOG.warn("skipping this pointset.");
+        }
+        pset.samples=new SampleSet(pset,sfac);
+        pointSets.put(baseName,pset);
+      }
+ catch (      IOException ioex) {
+        LOG.warn("Exception while loading pointset: {}",ioex);
+      }
+    }
+  }
+}

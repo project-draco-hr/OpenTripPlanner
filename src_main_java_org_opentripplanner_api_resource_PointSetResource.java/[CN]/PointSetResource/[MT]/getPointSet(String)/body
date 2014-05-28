@@ -1,0 +1,12 @@
+{
+  final PointSet pset=server.pointSetCache.get(pointSetId);
+  if (pset == null) {
+    return Response.status(Status.NOT_FOUND).entity("Invalid PointSet ID.").build();
+  }
+  return Response.ok().entity(new StreamingOutput(){
+    @Override public void write(    OutputStream output) throws IOException, WebApplicationException {
+      pset.writeJson(output);
+    }
+  }
+).build();
+}

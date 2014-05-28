@@ -1,0 +1,19 @@
+{
+  this.pset=pset;
+  v0s=new Vertex[pset.nFeatures];
+  v1s=new Vertex[pset.nFeatures];
+  d0s=new float[pset.nFeatures];
+  d1s=new float[pset.nFeatures];
+  for (int i=0; i < pset.nFeatures; i++) {
+    Sample sample=sfac.getSample(pset.lons[i],pset.lats[i]);
+    if (sample == null) {
+      d0s[i]=Float.NaN;
+      d1s[i]=Float.NaN;
+      continue;
+    }
+    v0s[i]=sample.v0;
+    v1s[i]=sample.v1;
+    d0s[i]=sample.t0;
+    d1s[i]=sample.t1;
+  }
+}

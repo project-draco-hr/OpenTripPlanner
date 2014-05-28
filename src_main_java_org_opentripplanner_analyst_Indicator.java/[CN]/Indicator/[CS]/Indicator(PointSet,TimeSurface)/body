@@ -1,0 +1,18 @@
+{
+  this.targets=targets;
+  this.surface=surface;
+  this.nFeatures=1;
+  this.lons=new double[1];
+  this.lats=new double[1];
+  for (  Category cat : targets.categories) {
+    this.categories.add(new Category(cat));
+  }
+  float[] times=targets.samples.eval(surface);
+  Quantiles quant=new Quantiles(times,10);
+  for (  Category cat : categories) {
+    for (    Attribute attr : cat.attributes) {
+      attr.quantiles=new Quantiles[1];
+      attr.quantiles[0]=quant;
+    }
+  }
+}
