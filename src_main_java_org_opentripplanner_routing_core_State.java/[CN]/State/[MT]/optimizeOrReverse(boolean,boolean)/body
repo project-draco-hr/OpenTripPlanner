@@ -21,6 +21,9 @@
         if (forward)         return this;
  else         return unoptimized.reverse();
       }
+ else       if (ret.getBackMode() != null && orig.getBackMode() != null && ret.getBackMode() != orig.getBackMode()) {
+        ret=ret.next;
+      }
     }
  else {
       StateEditor editor=ret.edit(edge);
