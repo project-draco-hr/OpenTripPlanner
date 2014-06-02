@@ -1,7 +1,9 @@
 {
   GraphIndex graphIndex=otpServer.graphService.getGraph(routerId).index;
-  if (graphIndex.luceneIndex == null) {
-    graphIndex.luceneIndex=new LuceneIndex(graphIndex,false);
+synchronized (graphIndex) {
+    if (graphIndex.luceneIndex == null) {
+      graphIndex.luceneIndex=new LuceneIndex(graphIndex,false);
+    }
+    index=graphIndex.luceneIndex;
   }
-  index=graphIndex.luceneIndex;
 }
