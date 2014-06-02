@@ -11,5 +11,8 @@
       }
     }
   }
+  GenericLocation from=spt.getOptions().getFrom();
+  this.lon=from.getLng();
+  this.lat=from.getLat();
   this.id=makeUniqueId();
 }
