@@ -117,23 +117,18 @@ s1.incrementWalkDistance(length);
 }
 if (options.kissAndRide || options.parkAndRide) {
 if (options.arriveBy) {
-if (!s0.isCarParked()) weight*=options.firstLegReluctance;
+if (!s0.isCarParked()) s1.incrementPreTransitDistance(length);
 }
  else {
-if (!s0.isEverBoarded()) weight*=options.firstLegReluctance;
+if (!s0.isEverBoarded()) s1.incrementPreTransitDistance(length);
+}
+if (s1.isMaxPreTransitDistanceExceeded(options)) {
+weight+=calculateOverageWeight(s0.getPreTransitDistance(),s1.getPreTransitDistance(),options.getMaxPreTransitDistance(),options.getPreTransitPenalty(),options.getPreTransitOverageRate());
 }
 }
 if (s1.weHaveWalkedTooFar(options)) {
 if (options.isSoftWalkLimiting()) {
-double overageLength;
-if (s0.getWalkDistance() <= options.getMaxWalkDistance() && s1.getWalkDistance() > options.getMaxWalkDistance()) {
-weight+=options.getSoftWalkPenalty();
-overageLength=s1.getWalkDistance() - options.getMaxWalkDistance();
-}
- else {
-overageLength=length;
-}
-weight+=options.getSoftWalkOverageRate() * overageLength;
+weight+=calculateOverageWeight(s0.getWalkDistance(),s1.getWalkDistance(),options.getMaxWalkDistance(),options.getSoftWalkPenalty(),options.getSoftWalkOverageRate());
 }
  else {
 LOG.debug("Too much walking. Bailing.");
