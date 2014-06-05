@@ -1,0 +1,8 @@
+{
+  if (seconds < 0) {
+    LOG.warn("A state's pre-transit time is being incremented by a negative amount.");
+    defectiveTraversal=true;
+    return;
+  }
+  child.preTransitTime+=seconds;
+}

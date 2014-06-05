@@ -1,12 +1,12 @@
 {
   boolean applyPenalty=false;
-  double overageLength;
-  if (firstDistance <= maxDistance && secondDistance > maxDistance) {
+  double overageValue;
+  if (firstValue <= maxValue && secondValue > maxValue) {
     applyPenalty=true;
-    overageLength=secondDistance - maxDistance;
+    overageValue=secondValue - maxValue;
   }
  else {
-    overageLength=length;
+    overageValue=secondValue - firstValue;
   }
-  return (overageRate * overageLength) + (applyPenalty ? softWalkPenalty : 0.0);
+  return (overageRate * overageValue) + (applyPenalty ? softPenalty : 0.0);
 }

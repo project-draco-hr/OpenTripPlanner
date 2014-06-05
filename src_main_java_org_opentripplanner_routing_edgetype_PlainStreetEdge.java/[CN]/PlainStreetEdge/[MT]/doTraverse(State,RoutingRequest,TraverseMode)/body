@@ -115,15 +115,16 @@ s1.incrementWeight(options.bikeSwitchCost);
 if (!traverseMode.isDriving()) {
 s1.incrementWalkDistance(length);
 }
+int roundedTime=(int)Math.ceil(time);
 if (options.kissAndRide || options.parkAndRide) {
 if (options.arriveBy) {
-if (!s0.isCarParked()) s1.incrementPreTransitDistance(length);
+if (!s0.isCarParked()) s1.incrementPreTransitTime(roundedTime);
 }
  else {
-if (!s0.isEverBoarded()) s1.incrementPreTransitDistance(length);
+if (!s0.isEverBoarded()) s1.incrementPreTransitTime(roundedTime);
 }
-if (s1.isMaxPreTransitDistanceExceeded(options)) {
-weight+=calculateOverageWeight(s0.getPreTransitDistance(),s1.getPreTransitDistance(),options.getMaxPreTransitDistance(),options.getPreTransitPenalty(),options.getPreTransitOverageRate());
+if (s1.isMaxPreTransitTimeExceeded(options)) {
+weight+=calculateOverageWeight(s0.getPreTransitTime(),s1.getPreTransitTime(),options.getMaxPreTransitTime(),options.getPreTransitPenalty(),options.getPreTransitOverageRate());
 }
 }
 if (s1.weHaveWalkedTooFar(options)) {
@@ -135,8 +136,7 @@ LOG.debug("Too much walking. Bailing.");
 return null;
 }
 }
-int timeLong=(int)Math.ceil(time);
-s1.incrementTimeInSeconds(timeLong);
+s1.incrementTimeInSeconds(roundedTime);
 s1.incrementWeight(weight);
 s1.addAlerts(notes);
 if (this.isToll() && traverseMode.isDriving()) {

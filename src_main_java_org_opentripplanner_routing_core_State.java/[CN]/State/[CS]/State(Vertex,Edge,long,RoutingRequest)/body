@@ -12,7 +12,7 @@
     this.stateData.nonTransitMode=this.stateData.carParked ? TraverseMode.WALK : TraverseMode.CAR;
   }
   this.walkDistance=0;
-  this.preTransitDistance=0;
+  this.preTransitTime=0;
   this.time=timeSeconds * 1000;
   if (options.rctx != null) {
     this.pathParserStates=new int[options.rctx.pathParsers.length];
