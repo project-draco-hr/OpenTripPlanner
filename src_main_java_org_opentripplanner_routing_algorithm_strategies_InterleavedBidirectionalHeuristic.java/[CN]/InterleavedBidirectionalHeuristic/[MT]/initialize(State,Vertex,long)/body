@@ -10,6 +10,7 @@
   this.options=s.getOptions();
   this.origin=s.getVertex();
   options.setSoftWalkLimiting(false);
+  options.setSoftPreTransitLimiting(false);
   LOG.debug("initializing heuristic computation thread");
   List<State> search=streetSearch(options,false,abortTime);
   if (search == null)   return;
