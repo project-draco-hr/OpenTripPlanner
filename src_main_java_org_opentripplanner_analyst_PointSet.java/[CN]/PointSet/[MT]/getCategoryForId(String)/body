@@ -1,0 +1,8 @@
+{
+  Category category=categories.get(id);
+  if (category == null) {
+    category=new Category(id);
+    categories.put(id,category);
+  }
+  return category;
+}

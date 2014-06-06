@@ -5,19 +5,20 @@
   JsonNode props=feature.get("properties");
   if (props == null || props.getNodeType() != JsonNodeType.OBJECT)   return;
   JsonNode structured=props.get("structured");
-  if (structured == null || structured.getNodeType() != JsonNodeType.OBJECT)   return;
   List<AttributeData> attributes=Lists.newArrayList();
-  Iterator<Entry<String,JsonNode>> catIter=structured.fields();
-  while (catIter.hasNext()) {
-    Entry<String,JsonNode> catEntry=catIter.next();
-    String catName=catEntry.getKey();
-    JsonNode catNode=catEntry.getValue();
-    Iterator<Entry<String,JsonNode>> attrIter=catNode.fields();
-    while (attrIter.hasNext()) {
-      Entry<String,JsonNode> attrEntry=attrIter.next();
-      String attrName=attrEntry.getKey();
-      int magnitude=attrEntry.getValue().asInt();
-      attributes.add(new AttributeData(Joiner.on(':').join(catName,attrName),magnitude));
+  if (structured != null && structured.getNodeType() == JsonNodeType.OBJECT) {
+    Iterator<Entry<String,JsonNode>> catIter=structured.fields();
+    while (catIter.hasNext()) {
+      Entry<String,JsonNode> catEntry=catIter.next();
+      String catName=catEntry.getKey();
+      JsonNode catNode=catEntry.getValue();
+      Iterator<Entry<String,JsonNode>> attrIter=catNode.fields();
+      while (attrIter.hasNext()) {
+        Entry<String,JsonNode> attrEntry=attrIter.next();
+        String attrName=attrEntry.getKey();
+        int magnitude=attrEntry.getValue().asInt();
+        attributes.add(new AttributeData(catName,attrName,magnitude));
+      }
     }
   }
   String id=null;

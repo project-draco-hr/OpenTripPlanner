@@ -1,0 +1,9 @@
+{
+  Category category=getCategoryForId(cat);
+  Attribute attribute=category.attributes.get(attr);
+  if (attribute == null) {
+    attribute=new Attribute(attr);
+    category.attributes.put(attr,attribute);
+  }
+  return attribute;
+}

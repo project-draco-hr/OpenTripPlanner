@@ -1,4 +1,7 @@
 {
+  if (index >= capacity) {
+    throw new AssertionError("Number of features seems to have grown since validation.");
+  }
   if (geom instanceof MultiPolygon) {
     if (geom.isEmpty()) {
       LOG.warn("Empty MultiPolygon, skipping.");
@@ -24,10 +27,10 @@
   lats[index]=point.getCoordinate().y;
   lons[index]=point.getCoordinate().x;
   ids[index]=id;
-  for (  AttributeData d : data) {
-    Attribute attr=getAttributeForColumn(d.id,"default",true);
+  for (  AttributeData ad : attributes) {
+    Attribute attr=getAttributeFor(ad.category,ad.attribute);
     if (attr == null)     continue;
     if (attr.magnitudes == null)     attr.magnitudes=new int[capacity];
-    attr.magnitudes[index]=d.value;
+    attr.magnitudes[index]=ad.value;
   }
 }

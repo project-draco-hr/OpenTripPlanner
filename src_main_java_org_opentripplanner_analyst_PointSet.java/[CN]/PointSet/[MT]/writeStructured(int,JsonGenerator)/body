@@ -8,7 +8,9 @@
         jgen.writeObjectField(attr.id,attr.quantiles[i]);
       }
  else       if (attr.magnitudes != null) {
-        jgen.writeNumberField(attr.id,attr.magnitudes[i]);
+        if (attr.magnitudes[i] > 0) {
+          jgen.writeNumberField(attr.id,attr.magnitudes[i]);
+        }
       }
     }
     jgen.writeEndObject();
