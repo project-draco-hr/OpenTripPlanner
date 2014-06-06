@@ -1,0 +1,25 @@
+{
+  GeometryFactory geometryFactory=new GeometryFactory(new PrecisionModel());
+  GeometrySerializer geomSerializer=new GeometrySerializer();
+  jgen.writeStartObject();
+{
+    jgen.writeStringField("id",ids[i]);
+    jgen.writeStringField("type","Feature");
+    jgen.writeFieldName("geometry");
+{
+      if (!forcePoints && polygons != null && polygons.length >= i && polygons[i] != null) {
+        geomSerializer.writeGeometry(jgen,polygons[i]);
+      }
+ else {
+        Point p=geometryFactory.createPoint(new Coordinate(lons[i],lats[i]));
+        geomSerializer.writeGeometry(jgen,p);
+      }
+    }
+    jgen.writeObjectFieldStart("properties");
+{
+      writeStructured(i,jgen);
+    }
+    jgen.writeEndObject();
+  }
+  jgen.writeEndObject();
+}

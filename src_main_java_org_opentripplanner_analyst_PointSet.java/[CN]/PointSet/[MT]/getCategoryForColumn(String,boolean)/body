@@ -1,0 +1,11 @@
+{
+  Category category=categories.get(id);
+  if (category == null) {
+    if (create) {
+      category=new Category(id);
+      categories.put(id,category);
+    }
+ else     return null;
+  }
+  return category;
+}

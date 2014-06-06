@@ -4,12 +4,12 @@
   this.nFeatures=1;
   this.lons=new double[1];
   this.lats=new double[1];
-  for (  Category cat : targets.categories) {
-    this.categories.add(new Category(cat));
+  for (  Category cat : targets.categories.values()) {
+    this.categories.put(cat.id,new Category(cat));
   }
   int[] times=targets.samples.eval(surface);
-  for (  Category cat : categories) {
-    for (    Attribute attr : cat.attributes) {
+  for (  Category cat : categories.values()) {
+    for (    Attribute attr : cat.attributes.values()) {
       attr.quantiles=new Quantiles[1];
       attr.quantiles[0]=new Quantiles(times,attr.magnitudes,10);
     }

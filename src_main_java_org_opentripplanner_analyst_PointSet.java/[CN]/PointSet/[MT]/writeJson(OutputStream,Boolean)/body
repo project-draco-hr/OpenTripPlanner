@@ -1,0 +1,68 @@
+{
+  try {
+    JsonFactory jsonFactory=new JsonFactory();
+    JsonGenerator jgen=jsonFactory.createGenerator(out);
+    jgen.setCodec(new ObjectMapper());
+    jgen.writeStartObject();
+{
+      jgen.writeStringField("type","FeatureCollection");
+      jgen.writeObjectFieldStart("properties");
+{
+        if (id != null)         jgen.writeStringField("id",id);
+        if (label != null)         jgen.writeStringField("label",label);
+        if (description != null)         jgen.writeStringField("description",description);
+        jgen.writeObjectFieldStart("schema");
+{
+          for (          Category cat : this.categories.values()) {
+            jgen.writeObjectFieldStart(cat.id);
+{
+              if (cat.label != null)               jgen.writeStringField("label",cat.label);
+              jgen.writeStringField("type","Category");
+              if (cat.style != null && cat.style.attributes != null) {
+                jgen.writeObjectFieldStart("style");
+{
+                  for (                  String styleKey : cat.style.attributes.keySet()) {
+                    jgen.writeStringField(styleKey,cat.style.attributes.get(styleKey));
+                  }
+                }
+                jgen.writeEndObject();
+              }
+            }
+            jgen.writeEndObject();
+            for (            Attribute attr : cat.attributes.values()) {
+              jgen.writeObjectFieldStart(cat.id + ":" + attr.id);
+{
+                if (attr.label != null)                 jgen.writeStringField("label",attr.label);
+                jgen.writeStringField("type","Attribute");
+                if (attr.style != null && attr.style.attributes != null) {
+                  jgen.writeObjectFieldStart("style");
+{
+                    for (                    String styleKey : attr.style.attributes.keySet()) {
+                      jgen.writeStringField(styleKey,attr.style.attributes.get(styleKey));
+                    }
+                  }
+                  jgen.writeEndObject();
+                }
+              }
+              jgen.writeEndObject();
+            }
+          }
+        }
+        jgen.writeEndObject();
+      }
+      jgen.writeEndObject();
+      jgen.writeArrayFieldStart("features");
+{
+        for (int f=0; f < nFeatures; f++) {
+          writeFeature(f,jgen,forcePoints);
+        }
+      }
+      jgen.writeEndArray();
+    }
+    jgen.writeEndObject();
+    jgen.close();
+  }
+ catch (  IOException ioex) {
+    LOG.info("IOException, connection may have been closed while streaming JSON.");
+  }
+}
