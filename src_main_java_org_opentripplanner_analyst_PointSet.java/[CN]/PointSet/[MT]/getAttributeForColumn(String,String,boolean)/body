@@ -7,30 +7,12 @@
       levels.add(0,def);
     }
   }
-  Category category=null;
-  for (  Category cat : categories) {
-    if (cat.id.equals(levels.get(0))) {
-      category=cat;
-      break;
-    }
-  }
-  if (category == null) {
-    if (create) {
-      category=new Category(levels.get(0));
-      categories.add(category);
-    }
- else     return null;
-  }
-  Attribute attribute=null;
-  for (  Attribute attr : category.attributes) {
-    if (attr.id.equals(levels.get(1))) {
-      attribute=attr;
-      break;
-    }
-  }
+  Category category=getCategoryForColumn(levels.get(0),create);
+  if (category == null)   return null;
+  Attribute attribute=category.attributes.get(levels.get(1));
   if (attribute == null && create) {
     attribute=new Attribute(levels.get(1));
-    category.attributes.add(attribute);
+    category.attributes.put(levels.get(1),attribute);
   }
   return attribute;
 }

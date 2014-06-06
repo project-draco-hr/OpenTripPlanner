@@ -1,6 +1,6 @@
 {
   super(other);
-  for (  Attribute attr : other.attributes) {
-    attributes.add(new Attribute(attr));
+  for (  String key : other.attributes.keySet()) {
+    attributes.put(key,new Attribute(other.attributes.get(key)));
   }
 }

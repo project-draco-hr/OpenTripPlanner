@@ -1,8 +1,9 @@
 {
   jgen.writeObjectFieldStart("structured");
-  for (  Category cat : categories) {
-    jgen.writeObjectFieldStart(cat.id);
-    for (    Attribute attr : cat.attributes) {
+  for (  String cat_id : categories.keySet()) {
+    jgen.writeObjectFieldStart(cat_id);
+    for (    String attr_id : categories.get(cat_id).attributes.keySet()) {
+      Attribute attr=categories.get(cat_id).attributes.get(attr_id);
       if (attr.quantiles != null) {
         jgen.writeObjectField(attr.id,attr.quantiles[i]);
       }

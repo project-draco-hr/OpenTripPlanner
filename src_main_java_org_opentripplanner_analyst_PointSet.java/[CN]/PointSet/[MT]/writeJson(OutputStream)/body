@@ -1,23 +1,3 @@
 {
-  try {
-    JsonFactory jsonFactory=new JsonFactory();
-    JsonGenerator jgen=jsonFactory.createGenerator(out);
-    jgen.setCodec(new ObjectMapper());
-    jgen.writeStartObject();
-{
-      jgen.writeStringField("type","FeatureCollection");
-      jgen.writeArrayFieldStart("features");
-{
-        for (int f=0; f < nFeatures; f++) {
-          writeFeature(f,jgen);
-        }
-      }
-      jgen.writeEndArray();
-    }
-    jgen.writeEndObject();
-    jgen.close();
-  }
- catch (  IOException ioex) {
-    LOG.info("IOException, connection may have been closed while streaming JSON.");
-  }
+  writeJson(out,false);
 }
