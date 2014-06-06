@@ -1,9 +1,7 @@
 {
+  super(1);
   this.targets=targets;
   this.surface=surface;
-  this.capacity=1;
-  this.lons=new double[1];
-  this.lats=new double[1];
   for (  Category cat : targets.categories.values()) {
     this.categories.put(cat.id,new Category(cat));
   }
