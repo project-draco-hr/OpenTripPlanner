@@ -1,0 +1,23 @@
+{
+  String id=null;
+  List<AttributeData> attributes=Lists.newArrayList();
+  if (feature.getNodeType() != JsonNodeType.OBJECT)   return;
+  JsonNode type=feature.get("type");
+  if (type == null || !type.asText().equalsIgnoreCase("Feature"))   return;
+  JsonNode props=feature.get("properties");
+  if (props == null || props.getNodeType() != JsonNodeType.OBJECT)   return;
+  JsonNode structured=props.get("structured");
+  if (structured == null || structured.getNodeType() != JsonNodeType.OBJECT)   return;
+  for (  JsonNode category : structured) {
+    for (    JsonNode attribute : category) {
+      LOG.warn("attribute {}, {}",attribute);
+    }
+  }
+  JsonNode geom=feature.get("geometry");
+  Geometry jtsGeom=null;
+  if (geom != null && geom.getNodeType() == JsonNodeType.OBJECT) {
+    GeometryDeserializer deserializer=new GeometryDeserializer();
+    jtsGeom=deserializer.parseGeometry(geom);
+  }
+  addFeature(id,jtsGeom,attributes);
+}

@@ -1,0 +1,5 @@
+{
+  ObjectCodec oc=jp.getCodec();
+  JsonNode root=oc.readTree(jp);
+  return parseGeometry(root);
+}

@@ -1,0 +1,10 @@
+{
+  jgen.writeStartObject();
+  jgen.writeStringField("type","MultiPoint");
+  jgen.writeArrayFieldStart("coordinates");
+  for (int i=0; i != value.getNumGeometries(); ++i) {
+    writePointCoords(jgen,(Point)value.getGeometryN(i));
+  }
+  jgen.writeEndArray();
+  jgen.writeEndObject();
+}

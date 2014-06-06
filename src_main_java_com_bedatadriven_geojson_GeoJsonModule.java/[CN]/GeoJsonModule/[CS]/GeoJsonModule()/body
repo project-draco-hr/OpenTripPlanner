@@ -1,0 +1,5 @@
+{
+  super("GeoJson",new Version(1,0,0,null,"com.bedatadriven","jackson-geojson"));
+  addSerializer(Geometry.class,new GeometrySerializer());
+  addDeserializer(Geometry.class,new GeometryDeserializer());
+}

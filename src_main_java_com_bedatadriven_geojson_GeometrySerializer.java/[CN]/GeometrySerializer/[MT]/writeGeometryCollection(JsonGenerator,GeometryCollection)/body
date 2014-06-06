@@ -1,0 +1,10 @@
+{
+  jgen.writeStartObject();
+  jgen.writeStringField("type","GeometryCollection");
+  jgen.writeArrayFieldStart("geometries");
+  for (int i=0; i != value.getNumGeometries(); ++i) {
+    writeGeometry(jgen,value.getGeometryN(i));
+  }
+  jgen.writeEndArray();
+  jgen.writeEndObject();
+}

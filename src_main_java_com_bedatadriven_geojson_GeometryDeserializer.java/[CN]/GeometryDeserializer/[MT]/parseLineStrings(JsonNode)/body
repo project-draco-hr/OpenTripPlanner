@@ -1,0 +1,7 @@
+{
+  LineString[] strings=new LineString[array.size()];
+  for (int i=0; i != array.size(); ++i) {
+    strings[i]=gf.createLineString(parseLineString(array.get(i)));
+  }
+  return strings;
+}

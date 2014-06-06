@@ -1,0 +1,34 @@
+{
+  JsonFactory f=new MappingJsonFactory();
+  PointSet ret=new PointSet(1000);
+  try {
+    JsonParser jp=f.createParser(is);
+    JsonToken current=jp.nextToken();
+    if (current != JsonToken.START_OBJECT) {
+      LOG.error("Root of GeoJSON should be a JSON object.");
+      return null;
+    }
+    while (jp.nextToken() != JsonToken.END_OBJECT) {
+      String key=jp.getCurrentName();
+      current=jp.nextToken();
+      if (key.equals("features")) {
+        if (current != JsonToken.START_ARRAY) {
+          LOG.error("Error: GeoJSON features are not in an array.");
+          jp.skipChildren();
+        }
+        while (jp.nextToken() != JsonToken.END_ARRAY) {
+          JsonNode feature=jp.readValueAsTree();
+          ret.addFeature(feature);
+        }
+      }
+ else {
+        jp.skipChildren();
+      }
+    }
+  }
+ catch (  Exception ex) {
+    LOG.error("FAIL");
+    return null;
+  }
+  return ret;
+}

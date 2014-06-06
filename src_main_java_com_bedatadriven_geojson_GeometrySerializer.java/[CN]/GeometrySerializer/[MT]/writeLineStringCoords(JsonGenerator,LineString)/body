@@ -1,0 +1,8 @@
+{
+  jgen.writeStartArray();
+  for (int i=0; i != ring.getNumPoints(); ++i) {
+    Point p=ring.getPointN(i);
+    writePointCoords(jgen,p);
+  }
+  jgen.writeEndArray();
+}

@@ -1,0 +1,10 @@
+{
+  try {
+    InputStream is=new FileInputStream(filename);
+    return fromGeoJson(is);
+  }
+ catch (  FileNotFoundException ex) {
+    LOG.error("GeoJSON file not found: {}",filename);
+    return null;
+  }
+}
