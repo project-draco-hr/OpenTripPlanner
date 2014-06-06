@@ -27,7 +27,7 @@
   for (  AttributeData d : data) {
     Attribute attr=getAttributeForColumn(d.id,"default",true);
     if (attr == null)     continue;
-    if (attr.magnitudes == null)     attr.magnitudes=new int[nFeatures];
+    if (attr.magnitudes == null)     attr.magnitudes=new int[capacity];
     attr.magnitudes[featureCount]=d.value;
   }
   featureCount++;
