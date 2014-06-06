@@ -7,7 +7,7 @@
     Point p=geom.getCentroid();
     lats[featureCount]=p.getCoordinate().y;
     lons[featureCount]=p.getCoordinate().x;
-    polygons[featureCount]=geom;
+    polygons[featureCount]=(Polygon)geom;
   }
  else   if (geom instanceof MultiPolygon) {
     if (geom.getNumGeometries() > 1)     return;
