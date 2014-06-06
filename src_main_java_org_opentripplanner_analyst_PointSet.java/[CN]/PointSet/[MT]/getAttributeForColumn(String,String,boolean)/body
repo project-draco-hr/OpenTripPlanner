@@ -7,7 +7,7 @@
       levels.add(0,def);
     }
   }
-  Category category=getCategoryForColumn(levels.get(0),create);
+  Category category=getCategoryForId(levels.get(0),create);
   if (category == null)   return null;
   Attribute attribute=category.attributes.get(levels.get(1));
   if (attribute == null && create) {
