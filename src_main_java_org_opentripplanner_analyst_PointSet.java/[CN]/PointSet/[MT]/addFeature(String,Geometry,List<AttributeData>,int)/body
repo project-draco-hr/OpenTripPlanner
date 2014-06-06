@@ -15,20 +15,19 @@
   }
  else   if (geom instanceof Polygon) {
     point=geom.getCentroid();
-    polygons[featureCount]=(Polygon)geom;
+    polygons[index]=(Polygon)geom;
   }
  else {
     LOG.warn("Non-point, non-polygon Geometry, not supported.");
     return;
   }
-  lats[featureCount]=point.getCoordinate().y;
-  lons[featureCount]=point.getCoordinate().x;
-  ids[featureCount]=id;
+  lats[index]=point.getCoordinate().y;
+  lons[index]=point.getCoordinate().x;
+  ids[index]=id;
   for (  AttributeData d : data) {
     Attribute attr=getAttributeForColumn(d.id,"default",true);
     if (attr == null)     continue;
     if (attr.magnitudes == null)     attr.magnitudes=new int[capacity];
-    attr.magnitudes[featureCount]=d.value;
+    attr.magnitudes[index]=d.value;
   }
-  featureCount++;
 }

@@ -1,6 +1,7 @@
 {
   JsonFactory f=new MappingJsonFactory();
   PointSet ret=new PointSet(n);
+  int index=0;
   try {
     JsonParser jp=f.createParser(is);
     JsonToken current=jp.nextToken();
@@ -10,7 +11,7 @@
       if (key.equals("features")) {
         while (jp.nextToken() != JsonToken.END_ARRAY) {
           JsonNode feature=jp.readValueAsTree();
-          ret.addFeature(feature);
+          ret.addFeature(feature,index++);
         }
       }
  else {

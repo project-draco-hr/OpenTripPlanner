@@ -27,5 +27,8 @@
     GeometryDeserializer deserializer=new GeometryDeserializer();
     jtsGeom=deserializer.parseGeometry(geom);
   }
-  addFeature(id,jtsGeom,attributes);
+  addFeature(id,jtsGeom,attributes,index++);
+  if (index > capacity) {
+    throw new AssertionError("Number of features seems to have grown since validation.");
+  }
 }
