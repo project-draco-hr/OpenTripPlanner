@@ -1,0 +1,35 @@
+{
+  int n=0;
+  JsonFactory f=new JsonFactory();
+  try {
+    JsonParser jp=f.createParser(is);
+    JsonToken current=jp.nextToken();
+    if (current != JsonToken.START_OBJECT) {
+      LOG.error("Root of OTPA GeoJSON should be a JSON object.");
+      return -1;
+    }
+    while (jp.nextToken() != JsonToken.END_OBJECT) {
+      String key=jp.getCurrentName();
+      current=jp.nextToken();
+      if (key.equals("features")) {
+        if (current != JsonToken.START_ARRAY) {
+          LOG.error("Error: GeoJSON features are not in an array.");
+          return -1;
+        }
+        while (jp.nextToken() != JsonToken.END_ARRAY) {
+          n+=1;
+          jp.skipChildren();
+        }
+      }
+ else {
+        jp.skipChildren();
+      }
+    }
+    if (n == 0)     return -1;
+    return n;
+  }
+ catch (  Exception ex) {
+    LOG.error("Exception while validating GeoJSON: {}",ex);
+    return -1;
+  }
+}

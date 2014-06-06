@@ -1,10 +1,17 @@
 {
   try {
-    InputStream is=new FileInputStream(filename);
-    return fromGeoJson(is);
+    FileInputStream fis=new FileInputStream(filename);
+    int n=validateGeoJson(fis);
+    if (n < 0)     return null;
+    fis.getChannel().position(0);
+    return fromValidatedGeoJson(fis,n);
   }
  catch (  FileNotFoundException ex) {
     LOG.error("GeoJSON file not found: {}",filename);
+    return null;
+  }
+catch (  IOException ex) {
+    LOG.error("I/O exception while reading GeoJSON file: {}",filename);
     return null;
   }
 }
