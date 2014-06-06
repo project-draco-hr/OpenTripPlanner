@@ -10,6 +10,9 @@
       current=jp.nextToken();
       if (key.equals("features")) {
         while (jp.nextToken() != JsonToken.END_ARRAY) {
+          if (index >= ret.capacity) {
+            throw new AssertionError("Number of features seems to have grown since validation.");
+          }
           JsonNode feature=jp.readValueAsTree();
           ret.addFeature(feature,index++);
         }
