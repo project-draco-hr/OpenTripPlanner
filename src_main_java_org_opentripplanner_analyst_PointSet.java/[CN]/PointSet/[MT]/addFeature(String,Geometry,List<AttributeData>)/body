@@ -1,22 +1,28 @@
 {
+  if (geom instanceof MultiPolygon) {
+    if (geom.isEmpty()) {
+      LOG.warn("Empty MultiPolygon, skipping.");
+      return;
+    }
+    if (geom.getNumGeometries() > 1) {
+      LOG.warn("Multiple polygons in MultiPolygon, using only the first.");
+    }
+    geom=geom.getGeometryN(0);
+  }
+  Point point;
   if (geom instanceof Point) {
-    lats[featureCount]=geom.getCoordinate().y;
-    lons[featureCount]=geom.getCoordinate().x;
+    point=(Point)geom;
   }
  else   if (geom instanceof Polygon) {
-    Point p=geom.getCentroid();
-    lats[featureCount]=p.getCoordinate().y;
-    lons[featureCount]=p.getCoordinate().x;
+    point=geom.getCentroid();
     polygons[featureCount]=(Polygon)geom;
   }
- else   if (geom instanceof MultiPolygon) {
-    if (geom.getNumGeometries() > 1)     return;
-    Point p=geom.getGeometryN(0).getCentroid();
-    lats[featureCount]=p.getCoordinate().y;
-    lons[featureCount]=p.getCoordinate().x;
-    polygons[featureCount]=(Polygon)geom.getGeometryN(0);
+ else {
+    LOG.warn("Non-point, non-polygon Geometry, not supported.");
+    return;
   }
- else   return;
+  lats[featureCount]=point.getCoordinate().y;
+  lons[featureCount]=point.getCoordinate().x;
   ids[featureCount]=id;
   for (  AttributeData d : data) {
     Attribute attr=getAttributeForColumn(d.id,"default",true);
