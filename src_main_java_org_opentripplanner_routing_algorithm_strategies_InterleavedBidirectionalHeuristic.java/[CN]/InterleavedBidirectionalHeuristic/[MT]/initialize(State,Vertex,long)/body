@@ -23,6 +23,7 @@
   }
   LOG.info("end backward street search {}",System.currentTimeMillis());
   options.setMaxWalkDistance(Double.POSITIVE_INFINITY);
+  options.setMaxPreTransitTime(Integer.MAX_VALUE);
   LOG.debug("initialized SSSP");
   s.getOptions().rctx.debugOutput.finishedPrecalculating();
 }
