@@ -1,13 +1,18 @@
 {
   stats=new Stats();
-  while (ride != null) {
+  List<Ride> rides=Lists.newArrayList();
+  for (Ride ride=tail; ride != null; ride=ride.previous) {
+    rides.add(ride);
+  }
+  Collections.reverse(rides);
+  for (  Ride ride : rides) {
     Segment segment=new Segment(ride,window,walkSpeed);
-    segments.add(0,segment);
+    segments.add(segment);
     stats.add(segment.walkTime);
     stats.add(segment.waitStats);
     stats.add(segment.rideStats);
-    ride=ride.previous;
   }
+  fares=DCFareCalculator.calculateFares(rides);
   this.finalWalkTime=finalWalkTime;
   stats.add(finalWalkTime);
   summary=generateSegmentSummary();

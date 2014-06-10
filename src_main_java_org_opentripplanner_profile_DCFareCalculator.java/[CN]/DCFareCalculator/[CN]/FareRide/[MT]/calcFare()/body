@@ -1,0 +1,130 @@
+{
+  RideType prevType=(prev == null) ? null : prev.type;
+switch (type) {
+case METRO_RAIL:
+    fare=METRORAIL.lookup(from,to);
+  if (prevType == RideType.METRO_BUS_LOCAL || prevType == RideType.METRO_BUS_EXPRESS || prevType == RideType.MCRO_BUS_LOCAL || prevType == RideType.MCRO_BUS_EXPRESS) {
+    fare.discount(0.50);
+  }
+break;
+case METRO_BUS_LOCAL:
+if (prevType == RideType.DASH_BUS) {
+setFare(0.00,true);
+}
+ else if (prevType == RideType.METRO_BUS_EXPRESS || prevType == RideType.METRO_BUS_AIRPORT) {
+setFare(0.00,true);
+}
+ else if (prevType == RideType.MCRO_BUS_LOCAL || prevType == RideType.MCRO_BUS_EXPRESS) {
+setFare(0.00,true);
+}
+ else if (prevType == RideType.METRO_RAIL) {
+setFare(1.10,true);
+}
+ else if (prevType == RideType.ART_BUS) {
+setFare(0.10,true);
+}
+ else {
+setFare(1.60,false);
+}
+break;
+case METRO_BUS_EXPRESS:
+if (prevType == RideType.METRO_BUS_LOCAL) {
+setFare(2.05,true);
+}
+ else {
+setFare(3.65,false);
+}
+break;
+case METRO_BUS_AIRPORT:
+setFare(6.00,false);
+break;
+case DC_CIRCULATOR_BUS:
+if (prevType == RideType.METRO_BUS_LOCAL || prevType == RideType.METRO_BUS_EXPRESS || prevType == RideType.METRO_BUS_AIRPORT || prevType == RideType.ART_BUS) {
+setFare(0.00,true);
+}
+ else if (prevType == RideType.METRO_RAIL) {
+setFare(0.50,true);
+}
+ else {
+setFare(1.00,false);
+}
+break;
+case ART_BUS:
+if (prevType == RideType.METRO_BUS_LOCAL || prevType == RideType.METRO_BUS_EXPRESS) {
+setFare(0.00,true);
+}
+ else if (prevType == RideType.METRO_RAIL) {
+setFare(1.00,true);
+}
+ else {
+setFare(1.50,false);
+}
+break;
+case DASH_BUS:
+if (prevType == RideType.METRO_BUS_LOCAL || prevType == RideType.METRO_BUS_EXPRESS) {
+setFare(0.00,true);
+}
+ else {
+setFare(1.60,false);
+}
+break;
+case MARC_RAIL:
+fare=MARC.lookup(from,to);
+break;
+case VRE_BUS:
+fare=VRE.lookup(from,to);
+break;
+case MCRO_BUS_LOCAL:
+if (prevType == RideType.MCRO_BUS_EXPRESS) {
+setFare(0.00,true);
+}
+ else if (prevType == RideType.METRO_RAIL) {
+setFare(1.10,true);
+}
+ else {
+setFare(1.60,false);
+}
+break;
+case MCRO_BUS_EXPRESS:
+if (prevType == RideType.MCRO_BUS_LOCAL) {
+setFare(2.05,true);
+}
+ else if (prevType == RideType.METRO_RAIL) {
+setFare(3.15,true);
+}
+ else {
+setFare(3.65,false);
+}
+break;
+case FAIRFAX_CONNECTOR_BUS:
+String routeName=route.getShortName();
+if (routeName.equals("394") || routeName.equals("395")) {
+setFare(3.65,false);
+}
+ else if (routeName.equals("480")) {
+setFare(5.00,false);
+}
+ else if (routeName.equals("595") || routeName.equals("597")) {
+setFare(7.50,false);
+}
+break;
+case PRTC_BUS:
+routeName=route.getLongName();
+if (prevType == RideType.VRE_BUS) {
+setFare(0.00,true);
+}
+ else if (routeName.contains("omniride")) {
+setFare(5.75,false);
+}
+ else if (routeName.contains("omnilink") || routeName.contains("connector")) {
+setFare(1.30,false);
+}
+ else if (routeName.contains("metro direct")) {
+setFare(2.90,false);
+}
+break;
+default :
+setFare(0.00,false);
+}
+if (fare != null) fare.type=type;
+}

@@ -1,0 +1,20 @@
+{
+  List<FareRide> fareRides=Lists.newArrayList();
+  FareRide prev=null;
+  for (  Ride ride : rides) {
+    FareRide fareRide=new FareRide(ride,prev);
+    if (prev != null && prev.type == fareRide.type) {
+      prev.to=fareRide.to;
+      prev.calcFare();
+    }
+ else {
+      fareRides.add(fareRide);
+      prev=fareRide;
+    }
+  }
+  List<Fare> fares=Lists.newArrayList();
+  for (  FareRide fareRide : fareRides) {
+    fares.add(fareRide.fare);
+  }
+  return fares;
+}
