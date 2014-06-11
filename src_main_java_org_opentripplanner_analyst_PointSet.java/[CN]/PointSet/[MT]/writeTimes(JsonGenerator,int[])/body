@@ -1,0 +1,8 @@
+{
+  jgen.writeObjectFieldStart("times");
+  for (int i=0; i < times.length; i++) {
+    int t=times[i];
+    if (t != Integer.MAX_VALUE)     jgen.writeNumberField(ids[i],t);
+  }
+  jgen.writeEndObject();
+}

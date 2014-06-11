@@ -1,0 +1,17 @@
+{
+  final TimeSurface surf=server.surfaceCache.get(surfaceId);
+  if (surf == null)   return badRequest("Invalid TimeSurface ID.");
+  if (cutoffs == null || cutoffs.isEmpty()) {
+    cutoffs.add(surf.cutoffMinutes);
+    cutoffs.add(surf.cutoffMinutes / 2);
+  }
+  List<IsochroneData> isochrones=getIsochrones(surf,cutoffs);
+  final FeatureCollection fc=LIsochrone.makeContourFeatures(isochrones);
+  return Response.ok().entity(new StreamingOutput(){
+    @Override public void write(    OutputStream output) throws IOException, WebApplicationException {
+      FeatureJSON fj=new FeatureJSON();
+      fj.writeFeatureCollection(fc,output);
+    }
+  }
+).build();
+}

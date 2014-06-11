@@ -1,0 +1,32 @@
+{
+  long t0=System.currentTimeMillis();
+  BufferedImage image=getEmptyImage(renderRequest.style);
+  byte[] imagePixelData=((DataBufferByte)image.getRaster().getDataBuffer()).getData();
+  int i=0;
+  for (  Sample s : getSamples()) {
+    byte pixel;
+    if (s != null) {
+      if (renderRequest.style == Style.BOARDINGS) {
+        pixel=0;
+      }
+ else {
+        long t=s.eval(surf);
+        if (t == Long.MAX_VALUE)         pixel=UNREACHABLE;
+ else {
+          t/=60;
+          if (t < -120)           t=-120;
+ else           if (t > 120)           t=120;
+          pixel=(byte)t;
+        }
+      }
+    }
+ else {
+      pixel=UNREACHABLE;
+    }
+    imagePixelData[i]=pixel;
+    i++;
+  }
+  long t1=System.currentTimeMillis();
+  LOG.debug("filled in tile image from SPT in {}msec",t1 - t0);
+  return image;
+}

@@ -27,10 +27,14 @@
   breaks[0]=tw0.time;
   breaks[nq]=tws.get(tws.size() - 1).time;
   int cw0=0, cw1=-1;
-  for (int q=1, wdi=0; q < nq; q++) {
+  for (int q=1, wdi=-1; q < nq; q++) {
     float cw=((float)q) * sum / nq;
     while (cw1 < cw) {
       wdi+=1;
+      if (wdi + 1 >= tws.size()) {
+        System.out.println("Out of range.");
+        break;
+      }
       tw0=tws.get(wdi);
       tw1=tws.get(wdi + 1);
       cw0+=tw0.weight;

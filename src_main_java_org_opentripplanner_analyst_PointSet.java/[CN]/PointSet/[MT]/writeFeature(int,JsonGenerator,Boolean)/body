@@ -18,6 +18,9 @@
     jgen.writeObjectFieldStart("properties");
 {
       writeStructured(i,jgen);
+      if (this instanceof Indicator && times != null) {
+        ((Indicator)this).targets.writeTimes(jgen,times[i]);
+      }
     }
     jgen.writeEndObject();
   }

@@ -1,0 +1,10 @@
+{
+  DefaultFeatureCollection featureCollection=new DefaultFeatureCollection(null,contourSchema);
+  SimpleFeatureBuilder fbuilder=new SimpleFeatureBuilder(contourSchema);
+  for (  IsochroneData isochrone : isochrones) {
+    fbuilder.add(isochrone.getGeometry());
+    fbuilder.add(isochrone.getCutoffSec());
+    featureCollection.add(fbuilder.buildFeature(null));
+  }
+  return featureCollection;
+}

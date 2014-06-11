@@ -1,5 +1,5 @@
 {
-  SimpleFeatureCollection contourFeatures=makeContourFeatures();
+  SimpleFeatureCollection contourFeatures=makeContourFeatures(computeIsochrone());
   StringWriter writer=new StringWriter();
   FeatureJSON fj=new FeatureJSON();
   fj.writeFeatureCollection(contourFeatures,writer);

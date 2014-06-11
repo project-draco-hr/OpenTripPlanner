@@ -1,5 +1,5 @@
 {
-  SimpleFeatureCollection contourFeatures=makeContourFeatures();
+  SimpleFeatureCollection contourFeatures=makeContourFeatures(computeIsochrone());
   final File shapeDir=Files.createTempDir();
   File shapeFile=new File(shapeDir,shpName + ".shp");
   LOG.debug("writing out shapefile {}",shapeFile);
