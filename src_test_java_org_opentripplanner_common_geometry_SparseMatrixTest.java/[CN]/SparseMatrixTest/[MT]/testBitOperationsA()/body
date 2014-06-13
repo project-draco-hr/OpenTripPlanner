@@ -1,0 +1,7 @@
+{
+  int a=Integer.MIN_VALUE;
+  int b=Integer.MAX_VALUE;
+  long c=(((long)a) << 32) | (((long)b) & 0xFFFFFFFFL);
+  assertEquals(a,(int)(c >>> 32));
+  assertEquals(b,(int)(c << 32 >>> 32));
+}

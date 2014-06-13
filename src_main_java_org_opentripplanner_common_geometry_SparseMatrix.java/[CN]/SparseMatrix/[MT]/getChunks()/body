@@ -1,19 +1,19 @@
 {
   return new Iterable<SparseMatrixChunk>(){
     @Override public Iterator<SparseMatrixChunk> iterator(){
-      final Iterator<Long> indexIterator=chunks.keySet().iterator();
+      final Iterator<Key> keyIterator=chunks.keySet().iterator();
       return new Iterator<SparseMatrixChunk>(){
         @Override public boolean hasNext(){
-          return indexIterator.hasNext();
+          return keyIterator.hasNext();
         }
         @Override public SparseMatrixChunk next(){
-          long index=indexIterator.next();
-          T[] ts=chunks.get(index);
+          Key key=keyIterator.next();
+          T[] ts=chunks.get(key);
           if (ts == null) {
             return null;
           }
-          int x0=(int)(((index & 0xFFFFFFFFL) << shift) - INDEX_OFFSET);
-          int y0=(int)((((index & 0xFFFFFFFF00000000L) >> 32) << shift) - INDEX_OFFSET);
+          int x0=key.x << shift;
+          int y0=key.y << shift;
           return new SparseMatrixChunk(x0,y0,ts);
         }
         @Override public void remove(){

@@ -3,9 +3,7 @@
   if (x > xMax)   xMax=x;
   if (y < yMin)   yMin=y;
   if (y > yMax)   yMax=y;
-  long x0=((long)x + INDEX_OFFSET) >> shift;
-  long y0=((long)y + INDEX_OFFSET) >> shift;
-  Long key=x0 + (y0 << 32);
+  Key key=new Key(x,y,shift);
   T[] ts=chunks.get(key);
   if (ts == null) {
     ts=(T[])(new Object[matSize]);
