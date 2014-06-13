@@ -1,0 +1,14 @@
+{
+  if (zA.d > z0.d || zB.d > z0.d) {
+    if (zA.d > z0.d && zB.d > z0.d)     throw new AssertionError("dA > d0 && dB > d0");
+    double k=zA.d == zB.d ? 0.5 : (z0.d - zA.d) / (zB.d - zA.d);
+    return k;
+  }
+ else {
+    double tA=zA.wTime / zA.w;
+    double tB=zB.wTime / zB.w;
+    double t0=z0.wTime / z0.w;
+    double k=tA == tB ? 0.5 : (t0 - tA) / (tB - tA);
+    return k;
+  }
+}

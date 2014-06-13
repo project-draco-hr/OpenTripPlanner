@@ -5,7 +5,7 @@
     cutoffs.add(surf.cutoffMinutes);
     cutoffs.add(surf.cutoffMinutes / 2);
   }
-  List<IsochroneData> isochrones=getIsochrones(surf,cutoffs);
+  List<IsochroneData> isochrones=getIsochronesAccumulative(surf,cutoffs);
   final FeatureCollection fc=LIsochrone.makeContourFeatures(isochrones);
   return Response.ok().entity(new StreamingOutput(){
     @Override public void write(    OutputStream output) throws IOException, WebApplicationException {

@@ -1,4 +1,5 @@
 {
+  long t0=System.currentTimeMillis();
   times=new int[Vertex.getMaxIndex()];
   Arrays.fill(times,UNREACHABLE);
   for (  State state : spt.getAllStates()) {
@@ -16,4 +17,7 @@
   this.lat=from.getLat();
   this.id=makeUniqueId();
   this.dateTime=spt.getOptions().dateTime;
+  long t1=System.currentTimeMillis();
+  LOG.info("Made TimeSurface from SPT in {} msec.",(int)(t1 - t0));
+  makeSampleGrid(spt);
 }
