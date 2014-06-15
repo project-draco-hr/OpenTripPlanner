@@ -1,0 +1,32 @@
+{
+  try {
+    RoutingRequest req=buildRequest(0);
+    Graph graph;
+    if (routerId == null || routerId.isEmpty()) {
+      graph=server.graphService.getGraph();
+    }
+ else     graph=server.graphService.getGraph(routerId);
+    req.setRoutingContext(graph);
+    req.setRoutingContext(graph);
+    EarliestArrivalSPTService sptService=new EarliestArrivalSPTService();
+    sptService.setMaxDuration(60 * cutoffMinutes);
+    ShortestPathTree spt=sptService.getShortestPathTree(req);
+    req.cleanup();
+    if (spt != null) {
+      TimeSurface surface=new TimeSurface(spt);
+      surface.params=Maps.newHashMap();
+      for (      Map.Entry<String,List<String>> e : uriInfo.getQueryParameters().entrySet()) {
+        surface.params.put(e.getKey(),e.getValue().get(0));
+      }
+      surface.cutoffMinutes=cutoffMinutes;
+      server.surfaceCache.add(surface);
+      return Response.ok().entity(new TimeSurfaceShort(surface)).build();
+    }
+ else {
+      return Response.noContent().entity("NO SPT").build();
+    }
+  }
+ catch (  ParameterException pex) {
+    return Response.status(Response.Status.BAD_REQUEST).entity("BAD USER").build();
+  }
+}

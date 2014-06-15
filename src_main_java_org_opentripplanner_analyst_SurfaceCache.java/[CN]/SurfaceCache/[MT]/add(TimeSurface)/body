@@ -1,9 +1,4 @@
 {
-synchronized (this) {
-    if (cache.size() >= capacity) {
-      cache.remove(0);
-    }
-    cache.add(surface);
-  }
+  this.cache.put(surface.id,surface);
   return surface.id;
 }

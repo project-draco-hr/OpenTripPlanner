@@ -1,3 +1,4 @@
 {
-  return pointSets.get(id);
+  if (!pointSets.containsKey(pointSetId))   pointSets.put(pointSetId,pointSetService.getPointSet(pointSetId));
+  return pointSets.get(pointSetId);
 }

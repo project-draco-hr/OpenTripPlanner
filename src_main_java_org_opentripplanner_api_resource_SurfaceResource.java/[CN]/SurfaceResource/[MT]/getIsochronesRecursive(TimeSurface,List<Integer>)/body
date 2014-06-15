@@ -1,12 +1,12 @@
 {
   List<Coordinate> initialPoints=Lists.newArrayList();
-  Graph graph=server.graphService.getGraph();
+  final Graph graph=server.graphService.getGraph(surf.routerId);
   for (  StreetVertex sv : Iterables.filter(graph.getVertices(),StreetVertex.class)) {
     if (surf.getTime(sv) != TimeSurface.UNREACHABLE)     initialPoints.add(sv.getCoordinate());
   }
   RecursiveGridIsolineBuilder.ZFunc timeFunc=new RecursiveGridIsolineBuilder.ZFunc(){
     @Override public long z(    Coordinate c){
-      Sample sample=server.sampleFactory.getSample(c.x,c.y);
+      Sample sample=graph.getSampleFactory().getSample(c.x,c.y);
       if (sample == null)       return Long.MAX_VALUE;
       Long z=sample.eval(surf);
       return z;

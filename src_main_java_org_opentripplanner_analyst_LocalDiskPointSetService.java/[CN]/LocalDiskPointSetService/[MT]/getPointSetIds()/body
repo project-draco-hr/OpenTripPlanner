@@ -1,0 +1,15 @@
+{
+  ArrayList<String> ids=new ArrayList<String>();
+  for (  File f : pointSetPath.listFiles()) {
+    String name=f.getName();
+    if (name.endsWith(".csv")) {
+      String baseName=name.substring(0,name.length() - 4);
+      ids.add(baseName);
+    }
+ else     if (name.endsWith(".json")) {
+      String baseName=name.substring(0,name.length() - 5);
+      ids.add(baseName);
+    }
+  }
+  return ids;
+}
