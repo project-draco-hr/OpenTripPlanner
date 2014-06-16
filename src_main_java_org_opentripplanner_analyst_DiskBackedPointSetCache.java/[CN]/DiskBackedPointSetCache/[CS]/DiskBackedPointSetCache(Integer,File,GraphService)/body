@@ -1,4 +1,5 @@
 {
   super(graphService);
-  this.pointSets=CacheBuilder.newBuilder().maximumSize(maxCacheSize).build(new Loader());
+  this.pointSetPath=pointSetPath;
+  this.pointSets=CacheBuilder.newBuilder().maximumSize(maxCacheSize).build(new PointSetLoader());
 }
