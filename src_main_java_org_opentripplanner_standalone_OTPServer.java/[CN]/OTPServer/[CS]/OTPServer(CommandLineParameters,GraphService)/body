@@ -16,13 +16,12 @@
   }
   planGenerator=new PlanGenerator(graphService,pathService);
   if (params.analyst) {
-    pointSetService=new LocalDiskPointSetService(new File("/var/otp/pointsets/"),graphService);
     tileCache=new TileCache(graphService);
     sptCache=new SPTCache(sptService,graphService);
     renderer=new Renderer(tileCache,sptCache);
     sampleGridRenderer=new SampleGridRenderer(graphService,sptService);
     isoChroneSPTRenderer=new IsoChroneSPTRendererAccSampling(graphService,sptService,sampleGridRenderer);
     surfaceCache=new SurfaceCache(30);
-    pointSetCache=new PointSetCache(pointSetService);
+    pointSetCache=new DiskBackedPointSetCache(100,new File("/var/otp/pointsets/"),graphService);
   }
 }

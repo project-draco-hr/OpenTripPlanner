@@ -5,7 +5,7 @@
   }
   for (  File file : pointSetPath.listFiles()) {
     if (file.getName().toLowerCase().startsWith(pointSetId.toLowerCase())) {
-      PointSet pointSet=load(file);
+      PointSet pointSet=this.loadFromFile(file);
       if (pointSet != null)       return pointSet;
     }
   }

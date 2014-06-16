@@ -1,4 +1,3 @@
 {
-  if (!pointSets.containsKey(pointSetId))   pointSets.put(pointSetId,pointSetService.getPointSet(pointSetId));
-  return pointSets.get(pointSetId);
+  return pointSets.getUnchecked(pointSetId);
 }

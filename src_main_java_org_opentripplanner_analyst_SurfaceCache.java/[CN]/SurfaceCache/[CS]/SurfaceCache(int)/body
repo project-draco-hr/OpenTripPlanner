@@ -1,3 +1,3 @@
 {
-  this.cache=Collections.synchronizedMap(new LRUMap(capacity));
+  this.cache=CacheBuilder.newBuilder().maximumSize(100).build();
 }
