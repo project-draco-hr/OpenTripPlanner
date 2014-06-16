@@ -1,20 +1,21 @@
 {
-  String ref=ts.getStopCode();
-  if (ref == null) {
-    return false;
-  }
+  String stopCode=ts.getStopCode();
+  String stopId=ts.getStopId().getId();
   Envelope envelope=new Envelope(ts.getCoordinate());
-  envelope.expandBy(0.002);
+  envelope.expandBy(0.003);
   Collection<Vertex> vertices=index.getVerticesForEnvelope(envelope);
   for (  Vertex v : vertices) {
-    if (!(v instanceof IntersectionVertex)) {
+    if (!(v instanceof TransitStopStreetVertex)) {
       continue;
     }
-    if (((IntersectionVertex)v).getStopCode() != null && ((IntersectionVertex)v).getStopCode().matches(ref)) {
-      new StreetTransitLink(ts,(StreetVertex)v,wheelchairAccessible);
-      new StreetTransitLink((StreetVertex)v,ts,wheelchairAccessible);
-      LOG.info("Connected " + ts.toString() + " to "+ v.getLabel());
-      return true;
+    TransitStopStreetVertex tsv=(TransitStopStreetVertex)v;
+    if (tsv.getStopCode() != null) {
+      if ((stopId != null && tsv.getStopCode().matches(stopId)) || (stopCode != null && tsv.getStopCode().matches(stopCode))) {
+        new StreetTransitLink(ts,tsv,wheelchairAccessible);
+        new StreetTransitLink(tsv,ts,wheelchairAccessible);
+        LOG.info("Connected " + ts.toString() + " to "+ tsv.getLabel());
+        return true;
+      }
     }
   }
   return false;
