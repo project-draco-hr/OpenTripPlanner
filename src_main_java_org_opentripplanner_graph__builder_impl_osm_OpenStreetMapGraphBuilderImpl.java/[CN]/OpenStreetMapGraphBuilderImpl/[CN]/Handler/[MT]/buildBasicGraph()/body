@@ -53,7 +53,7 @@
       if (segmentCoordinates.size() == 0) {
         segmentCoordinates.add(getCoordinate(osmStartNode));
       }
-      if (intersectionNodes.containsKey(endNode) || i == nodes.size() - 2 || nodes.subList(0,i).contains(nodes.get(i)) || osmEndNode.hasTag("ele") || "bus_stop".equals(osmEndNode.getTag("highway")) || "tram_stop".equals(osmEndNode.getTag("railway")) || "station".equals(osmEndNode.getTag("railway")) || "halt".equals(osmEndNode.getTag("railway"))) {
+      if (intersectionNodes.containsKey(endNode) || i == nodes.size() - 2 || nodes.subList(0,i).contains(nodes.get(i)) || osmEndNode.hasTag("ele") || "bus_stop".equals(osmEndNode.getTag("highway")) || "tram_stop".equals(osmEndNode.getTag("railway")) || "station".equals(osmEndNode.getTag("railway")) || "halt".equals(osmEndNode.getTag("railway")) || "bus_station".equals(osmEndNode.getTag("amenity"))) {
         segmentCoordinates.add(getCoordinate(osmEndNode));
         geometry=GeometryUtils.getGeometryFactory().createLineString(segmentCoordinates.toArray(new Coordinate[0]));
         segmentCoordinates.clear();
