@@ -19,7 +19,7 @@
       runState.targetAcceptedStates.add(runState.u);
       runState.foundPathWeight=runState.u.getWeight();
       runState.options.rctx.debugOutput.foundPath();
-      if (runState.targetAcceptedStates.size() >= nPaths) {
+      if (runState.targetAcceptedStates.size() >= runState.options.getNumItineraries()) {
         LOG.debug("total vertices visited {}",runState.nVisited);
         break;
       }

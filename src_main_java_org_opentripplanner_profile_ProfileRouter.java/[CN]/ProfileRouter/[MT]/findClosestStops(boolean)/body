@@ -10,7 +10,8 @@
   if (back)   worstElapsedTime*=-1;
   rr.setWorstTime(rr.dateTime + worstElapsedTime);
   GenericAStar astar=new GenericAStar();
-  astar.setNPaths(1);
+  int oldNumItineraries=rr.getNumItineraries();
+  rr.setNumItineraries(1);
   final List<StopAtDistance> ret=Lists.newArrayList();
   astar.setTraverseVisitor(new TraverseVisitor(){
     @Override public void visitEdge(    Edge edge,    State state){
@@ -29,6 +30,7 @@
   }
 );
   ShortestPathTree spt=astar.getShortestPathTree(rr,System.currentTimeMillis() + 5000);
+  rr.setNumItineraries(oldNumItineraries);
   rr.rctx.destroy();
   return ret;
 }
