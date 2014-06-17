@@ -16,7 +16,7 @@
     if (ts.isEntrance() || !ts.hasEntrances()) {
       boolean wheelchairAccessible=ts.hasWheelchairEntrance();
       if (!connectVertexToStop(ts,wheelchairAccessible)) {
-        LOG.info("Could not connect " + ts.toString());
+        LOG.debug("Could not connect " + ts.toString());
       }
     }
   }

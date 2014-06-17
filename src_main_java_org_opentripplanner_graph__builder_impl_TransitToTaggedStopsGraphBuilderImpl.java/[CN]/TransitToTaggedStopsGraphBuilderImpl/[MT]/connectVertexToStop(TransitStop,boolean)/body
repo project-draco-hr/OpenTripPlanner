@@ -14,7 +14,7 @@
     if (tsv.getStopCode() != null && tsv.getStopCode().matches(stopCode)) {
       new StreetTransitLink(ts,tsv,wheelchairAccessible);
       new StreetTransitLink(tsv,ts,wheelchairAccessible);
-      LOG.info("Connected " + ts.toString() + " to "+ tsv.getLabel());
+      LOG.debug("Connected " + ts.toString() + " to "+ tsv.getLabel());
       return true;
     }
   }
