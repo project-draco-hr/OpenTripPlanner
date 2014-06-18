@@ -11,7 +11,7 @@
       continue;
     }
     TransitStopStreetVertex tsv=(TransitStopStreetVertex)v;
-    if (tsv.getStopCode() != null && tsv.getStopCode().matches(stopCode)) {
+    if (tsv.getStopCode() != null && tsv.getStopCode().equals(stopCode)) {
       new StreetTransitLink(ts,tsv,wheelchairAccessible);
       new StreetTransitLink(tsv,ts,wheelchairAccessible);
       LOG.debug("Connected " + ts.toString() + " to "+ tsv.getLabel());
