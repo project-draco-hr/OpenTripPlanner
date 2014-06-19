@@ -75,6 +75,7 @@ graphBuilder.addGraphBuilder(new StreetlessStopLinker());
 }
 }
 if (hasOSM) {
+graphBuilder.addGraphBuilder(new TransitToTaggedStopsGraphBuilderImpl());
 graphBuilder.addGraphBuilder(new TransitToStreetNetworkGraphBuilderImpl());
 if (params.longDistance && params.useStreetsForLinking && !params.useTransfersTxt) {
 graphBuilder.addGraphBuilder(new StreetfulStopLinker());

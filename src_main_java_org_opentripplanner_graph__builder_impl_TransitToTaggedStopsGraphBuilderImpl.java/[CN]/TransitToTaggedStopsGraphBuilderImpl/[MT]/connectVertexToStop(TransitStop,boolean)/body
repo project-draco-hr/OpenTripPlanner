@@ -1,0 +1,22 @@
+{
+  String stopCode=ts.getStopCode();
+  if (stopCode == null) {
+    return false;
+  }
+  Envelope envelope=new Envelope(ts.getCoordinate());
+  envelope.expandBy(0.003);
+  Collection<Vertex> vertices=index.getVerticesForEnvelope(envelope);
+  for (  Vertex v : vertices) {
+    if (!(v instanceof TransitStopStreetVertex)) {
+      continue;
+    }
+    TransitStopStreetVertex tsv=(TransitStopStreetVertex)v;
+    if (tsv.getStopCode() != null && tsv.getStopCode().equals(stopCode)) {
+      new StreetTransitLink(ts,tsv,wheelchairAccessible);
+      new StreetTransitLink(tsv,ts,wheelchairAccessible);
+      LOG.debug("Connected " + ts.toString() + " to "+ tsv.getLabel());
+      return true;
+    }
+  }
+  return false;
+}
