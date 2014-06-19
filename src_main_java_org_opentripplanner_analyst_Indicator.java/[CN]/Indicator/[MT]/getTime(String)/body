@@ -1,0 +1,16 @@
+{
+  if (times != null) {
+synchronized (idTimeIndex) {
+      if (idTimeIndex.keySet().size() < this.times[0].length) {
+        idTimeIndex.clear();
+        int i=0;
+        for (        String sampleId : this.targets.ids) {
+          idTimeIndex.put(sampleId,this.times[0][i]);
+          i++;
+        }
+      }
+    }
+    return idTimeIndex.get(id);
+  }
+ else   return null;
+}
