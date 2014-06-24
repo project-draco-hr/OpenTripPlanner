@@ -1,5 +1,9 @@
 {
-  routerId=spt.getOptions().routerId;
+  String routerId=spt.getOptions().routerId;
+  if (routerId == null || routerId.isEmpty() || routerId.equalsIgnoreCase("default")) {
+    routerId="default";
+  }
+  this.routerId=routerId;
   long t0=System.currentTimeMillis();
   times=new int[Vertex.getMaxIndex()];
   Arrays.fill(times,UNREACHABLE);
