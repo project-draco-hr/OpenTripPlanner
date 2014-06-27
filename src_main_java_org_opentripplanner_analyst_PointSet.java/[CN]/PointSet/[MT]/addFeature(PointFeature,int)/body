@@ -1,0 +1,16 @@
+{
+  if (index >= capacity) {
+    throw new AssertionError("Number of features seems to have grown since validation.");
+  }
+  polygons[index]=feat.getPolygon();
+  Point point=feat.getPoint();
+  lats[index]=point.getCoordinate().y;
+  lons[index]=point.getCoordinate().x;
+  ids[index]=feat.getId();
+  for (  AttributeData ad : feat.getAttributes()) {
+    Attribute attr=getAttributeFor(ad.category,ad.attribute);
+    if (attr == null)     continue;
+    if (attr.magnitudes == null)     attr.magnitudes=new int[capacity];
+    attr.magnitudes[index]=ad.value;
+  }
+}

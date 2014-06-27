@@ -1,0 +1,19 @@
+{
+  if (geom instanceof MultiPolygon) {
+    if (geom.isEmpty()) {
+      throw new EmptyPolygonException();
+    }
+    if (geom.getNumGeometries() > 1) {
+    }
+    this.geom=geom.getGeometryN(0);
+  }
+  if (geom instanceof Point) {
+    this.point=(Point)geom;
+  }
+ else   if (geom instanceof Polygon) {
+    this.point=geom.getCentroid();
+  }
+ else {
+    throw new UnsupportedGeometryException("Non-point, non-polygon Geometry, not supported.");
+  }
+}

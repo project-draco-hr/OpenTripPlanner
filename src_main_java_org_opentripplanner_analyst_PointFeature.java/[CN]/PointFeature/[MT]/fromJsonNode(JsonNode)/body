@@ -1,0 +1,37 @@
+{
+  if (feature.getNodeType() != JsonNodeType.OBJECT)   return null;
+  JsonNode type=feature.get("type");
+  if (type == null || !type.asText().equalsIgnoreCase("Feature"))   return null;
+  JsonNode props=feature.get("properties");
+  if (props == null || props.getNodeType() != JsonNodeType.OBJECT)   return null;
+  JsonNode structured=props.get("structured");
+  List<AttributeData> attributes=Lists.newArrayList();
+  if (structured != null && structured.getNodeType() == JsonNodeType.OBJECT) {
+    Iterator<Entry<String,JsonNode>> catIter=structured.fields();
+    while (catIter.hasNext()) {
+      Entry<String,JsonNode> catEntry=catIter.next();
+      String catName=catEntry.getKey();
+      JsonNode catNode=catEntry.getValue();
+      Iterator<Entry<String,JsonNode>> attrIter=catNode.fields();
+      while (attrIter.hasNext()) {
+        Entry<String,JsonNode> attrEntry=attrIter.next();
+        String attrName=attrEntry.getKey();
+        int magnitude=attrEntry.getValue().asInt();
+        attributes.add(new AttributeData(catName,attrName,magnitude));
+      }
+    }
+  }
+  String id=null;
+  JsonNode idNode=feature.get("id");
+  if (idNode != null)   id=idNode.asText();
+  Geometry jtsGeom=null;
+  JsonNode geom=feature.get("geometry");
+  if (geom != null && geom.getNodeType() == JsonNodeType.OBJECT) {
+    GeometryDeserializer deserializer=new GeometryDeserializer();
+    jtsGeom=deserializer.parseGeometry(geom);
+  }
+  PointFeature ret=new PointFeature(id);
+  ret.setGeom(jtsGeom);
+  ret.setAttributes(attributes);
+  return ret;
+}
