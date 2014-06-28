@@ -1,0 +1,11 @@
+{
+  PointSet points=PointSet.fromGeoJson("src/test/resources/pointset/population.geo.json");
+  PointSet all=points.slice(0,points.featureCount());
+  assertEquals(all.featureCount(),points.featureCount());
+  PointSet firstHalf=points.slice(0,1);
+  assertEquals(firstHalf.featureCount(),1);
+  assertEquals(firstHalf.getFeature(0).getId(),"XYZ0001");
+  PointSet lastHalf=points.slice(1,2);
+  assertEquals(lastHalf.featureCount(),1);
+  assertEquals(lastHalf.getFeature(0).getId(),"XYZ0002");
+}

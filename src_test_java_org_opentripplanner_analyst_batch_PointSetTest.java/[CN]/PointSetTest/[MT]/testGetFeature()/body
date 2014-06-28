@@ -1,0 +1,9 @@
+{
+  PointSet points=PointSet.fromGeoJson("src/test/resources/pointset/population.geo.json");
+  PointFeature pt=points.getFeature(0);
+  assertNotNull(pt);
+  assertEquals(pt.getId(),"XYZ0001");
+  List<AttributeData> attrs=pt.getAttributes();
+  assertEquals(attrs.size(),6);
+  assertEquals(attrs.get(0).toString(),"age.senior:5");
+}
