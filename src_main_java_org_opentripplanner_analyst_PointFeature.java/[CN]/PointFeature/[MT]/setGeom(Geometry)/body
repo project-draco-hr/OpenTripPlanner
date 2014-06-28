@@ -13,5 +13,7 @@
  else {
     throw new UnsupportedGeometryException("Non-point, non-polygon Geometry, not supported.");
   }
-  this.point=geom.getCentroid();
+  Point point=geom.getCentroid();
+  this.lat=point.getY();
+  this.lon=point.getX();
 }
