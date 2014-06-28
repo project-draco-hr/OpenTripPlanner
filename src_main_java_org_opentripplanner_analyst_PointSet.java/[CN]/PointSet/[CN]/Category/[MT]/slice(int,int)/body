@@ -1,0 +1,10 @@
+{
+  Category ret=new Category(this.id);
+  ret.description=this.description;
+  ret.label=this.label;
+  ret.style=this.style;
+  for (  Entry<String,Attribute> attr : this.attributes.entrySet()) {
+    ret.attributes.put(attr.getKey(),attr.getValue().slice(start,end));
+  }
+  return ret;
+}

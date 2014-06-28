@@ -1,0 +1,21 @@
+{
+  PointFeature ret=new PointFeature(ids[index]);
+  if (polygons[index] != null) {
+    try {
+      ret.setGeom(polygons[index]);
+    }
+ catch (    Exception e) {
+    }
+  }
+  ret.setLat(lats[index]);
+  ret.setLon(lons[index]);
+  for (  Entry<String,Category> category : this.categories.entrySet()) {
+    for (    Entry<String,Attribute> attribute : category.getValue().attributes.entrySet()) {
+      String catLabel=category.getKey();
+      String attrLabel=attribute.getKey();
+      int mag=attribute.getValue().magnitudes[index];
+      ret.addAttribute(new AttributeData(catLabel,attrLabel,mag));
+    }
+  }
+  return ret;
+}

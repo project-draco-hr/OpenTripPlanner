@@ -1,0 +1,18 @@
+{
+  PointSet ret=new PointSet(end - start);
+  ret.id=id;
+  ret.label=label;
+  ret.description=description;
+  int n=0;
+  for (int i=start; i < end; i++) {
+    ret.lats[n]=this.lats[i];
+    ret.lons[n]=this.lons[i];
+    ret.ids[n]=this.ids[i];
+    ret.polygons[n]=this.polygons[i];
+    n++;
+  }
+  for (  Entry<String,Category> category : this.categories.entrySet()) {
+    ret.categories.put(category.getKey(),category.getValue().slice(start,end));
+  }
+  return ret;
+}

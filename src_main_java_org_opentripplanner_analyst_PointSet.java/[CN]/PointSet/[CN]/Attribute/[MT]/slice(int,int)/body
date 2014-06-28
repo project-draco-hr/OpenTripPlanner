@@ -1,0 +1,14 @@
+{
+  Attribute ret=new Attribute(this.id);
+  ret.description=this.description;
+  ret.label=this.label;
+  ret.style=this.style;
+  this.magnitudes=new int[end - start];
+  this.quantiles=new Quantiles[end - start];
+  int n=0;
+  for (int i=start; i < end; i++) {
+    ret.magnitudes[n]=this.magnitudes[i];
+    ret.quantiles[n]=this.quantiles[i];
+  }
+  return ret;
+}
