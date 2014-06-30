@@ -8,7 +8,6 @@
       if (pset == null) {
         LOG.warn("Failure, skipping this pointset.");
       }
-      pset.setGraphService(graphService);
       return pset;
     }
  catch (    IOException ioex) {
@@ -22,7 +21,6 @@
     if (pset == null) {
       LOG.warn("Failure, skipping this pointset.");
     }
-    pset.setGraphService(graphService);
     return pset;
   }
   return null;
