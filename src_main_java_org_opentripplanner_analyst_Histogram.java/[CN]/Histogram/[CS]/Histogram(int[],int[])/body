@@ -1,0 +1,18 @@
+{
+  int tmpCounts[]=new int[1000];
+  int tmpSums[]=new int[1000];
+  int uppperBound=0;
+  for (int i=0; i < times.length; i++) {
+    if (times[i] < 0 || times[i] == Integer.MAX_VALUE)     continue;
+    int minuteBin=(int)Math.ceil(times[i] / 60.0);
+    tmpCounts[minuteBin]+=1;
+    tmpSums[minuteBin]+=weights[i];
+    if (minuteBin > uppperBound)     uppperBound=minuteBin;
+  }
+  counts=new int[uppperBound];
+  sums=new int[uppperBound];
+  for (int i=0; i < uppperBound; i++) {
+    counts[i]=tmpCounts[i];
+    sums[i]=tmpSums[i];
+  }
+}
