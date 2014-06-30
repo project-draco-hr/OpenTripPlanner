@@ -1,8 +1,6 @@
 {
+  if (this.graphService == null)   return null;
   if (this.samples.containsKey(routerId))   return this.samples.get(routerId);
   Graph g=this.graphService.getGraph(routerId);
-  if (g == null)   return null;
-  SampleSet sampleSet=new SampleSet(this,g.getSampleFactory());
-  this.samples.put(routerId,sampleSet);
-  return sampleSet;
+  return getSampleSet(g);
 }
