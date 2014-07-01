@@ -1,5 +1,5 @@
 {
-  server|=(inMemory || port != null);
+  server|=(inMemory || preFlight || port != null);
   if (graphDirectory == null)   graphDirectory=DEFAULT_GRAPH_DIRECTORY;
   if (routerIds == null)   routerIds=Arrays.asList(DEFAULT_ROUTER_ID);
   if (cacheDirectory == null)   cacheDirectory=DEFAULT_CACHE_DIRECTORY;
