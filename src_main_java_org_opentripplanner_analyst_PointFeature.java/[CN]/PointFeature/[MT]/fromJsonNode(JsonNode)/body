@@ -5,7 +5,7 @@
   JsonNode props=feature.get("properties");
   if (props == null || props.getNodeType() != JsonNodeType.OBJECT)   return null;
   JsonNode structured=props.get("structured");
-  List<AttributeData> attributes=Lists.newArrayList();
+  Map<String,Integer> attributes=new HashMap<String,Integer>();
   if (structured != null && structured.getNodeType() == JsonNodeType.OBJECT) {
     Iterator<Entry<String,JsonNode>> catIter=structured.fields();
     while (catIter.hasNext()) {
@@ -17,7 +17,7 @@
         Entry<String,JsonNode> attrEntry=attrIter.next();
         String attrName=attrEntry.getKey();
         int magnitude=attrEntry.getValue().asInt();
-        attributes.add(new AttributeData(catName,attrName,magnitude));
+        attributes.put(catName + ":" + attrName,magnitude);
       }
     }
   }

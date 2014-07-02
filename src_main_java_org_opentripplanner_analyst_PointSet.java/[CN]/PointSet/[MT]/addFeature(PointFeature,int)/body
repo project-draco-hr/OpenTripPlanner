@@ -6,10 +6,12 @@
   lats[index]=feat.getLat();
   lons[index]=feat.getLon();
   ids[index]=feat.getId();
-  for (  AttributeData ad : feat.getAttributes()) {
-    Attribute attr=getAttributeFor(ad.category,ad.attribute);
+  for (  Entry<String,Integer> ad : feat.getAttributes().entrySet()) {
+    String attrId=ad.getKey();
+    Integer attrVal=ad.getValue();
+    Attribute attr=getAttributeFor(attrId);
     if (attr == null)     continue;
     if (attr.magnitudes == null)     attr.magnitudes=new int[capacity];
-    attr.magnitudes[index]=ad.value;
+    attr.magnitudes[index]=attrVal;
   }
 }

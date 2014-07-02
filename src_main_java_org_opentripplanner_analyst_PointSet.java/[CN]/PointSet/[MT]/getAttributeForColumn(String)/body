@@ -1,7 +1,7 @@
 {
   String[] levels=heading.split(":",2);
   if (levels.length == 1) {
-    return getAttributeFor("NONE",levels[0]);
+    return getAttributeFor("NONE" + ":" + levels[0]);
   }
-  return getAttributeFor(levels[0],levels[1]);
+  return getAttributeFor(levels[0] + ":" + levels[1]);
 }

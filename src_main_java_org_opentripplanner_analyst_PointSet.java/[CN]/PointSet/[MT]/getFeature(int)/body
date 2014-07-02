@@ -14,7 +14,7 @@
       String catLabel=category.getKey();
       String attrLabel=attribute.getKey();
       int mag=attribute.getValue().magnitudes[index];
-      ret.addAttribute(new AttributeData(catLabel,attrLabel,mag));
+      ret.addAttribute(catLabel + ":" + attrLabel,mag);
     }
   }
   return ret;

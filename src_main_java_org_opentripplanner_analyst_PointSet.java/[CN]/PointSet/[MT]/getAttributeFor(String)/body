@@ -1,4 +1,7 @@
 {
+  String[] parts=attrId.split(":");
+  String cat=parts[0];
+  String attr=parts[1];
   Category category=getCategoryForId(cat);
   Attribute attribute=category.attributes.get(attr);
   if (attribute == null) {

@@ -3,7 +3,7 @@
   PointFeature pt=points.getFeature(0);
   assertNotNull(pt);
   assertEquals(pt.getId(),"XYZ0001");
-  List<AttributeData> attrs=pt.getAttributes();
+  Map<String,Integer> attrs=pt.getAttributes();
   assertEquals(attrs.size(),6);
-  assertEquals(attrs.get(0).toString(),"age.senior:5");
+  assertEquals(pt.getProperty("age:child"),10);
 }
