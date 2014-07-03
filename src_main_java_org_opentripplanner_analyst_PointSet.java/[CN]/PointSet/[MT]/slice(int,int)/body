@@ -11,8 +11,15 @@
     ret.polygons[n]=this.polygons[i];
     n++;
   }
-  for (  Entry<String,Category> category : this.categories.entrySet()) {
-    ret.categories.put(category.getKey(),category.getValue().slice(start,end));
+  for (  Entry<String,int[]> category : this.categories.entrySet()) {
+    int[] data=category.getValue();
+    int[] magSlice=new int[end - start];
+    n=0;
+    for (int i=start; i < end; i++) {
+      magSlice[n]=data[i];
+      n++;
+    }
+    ret.categories.put(category.getKey(),magSlice);
   }
   return ret;
 }

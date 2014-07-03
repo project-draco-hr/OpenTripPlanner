@@ -1,0 +1,9 @@
+{
+  CategoryMetadata category=catMetadata.get(id);
+  if (category == null) {
+    category=new CategoryMetadata(id);
+    catMetadata.put(id,category);
+    categories.put(id,new int[capacity]);
+  }
+  return category;
+}

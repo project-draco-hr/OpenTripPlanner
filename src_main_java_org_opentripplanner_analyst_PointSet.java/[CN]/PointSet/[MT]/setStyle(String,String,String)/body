@@ -1,3 +1,6 @@
 {
-  setStyle(catId,null,styleAttribute,styleValue);
+  CategoryMetadata meta=catMetadata.get(catId);
+  if (meta != null) {
+    meta.addStyle(styleAttribute,styleValue);
+  }
 }

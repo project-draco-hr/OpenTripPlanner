@@ -9,13 +9,8 @@
   }
   ret.setLat(lats[index]);
   ret.setLon(lons[index]);
-  for (  Entry<String,Category> category : this.categories.entrySet()) {
-    for (    Entry<String,Attribute> attribute : category.getValue().attributes.entrySet()) {
-      String catLabel=category.getKey();
-      String attrLabel=attribute.getKey();
-      int mag=attribute.getValue().magnitudes[index];
-      ret.addAttribute(catLabel + ":" + attrLabel,mag);
-    }
+  for (  Entry<String,int[]> category : this.categories.entrySet()) {
+    ret.addAttribute(category.getKey(),category.getValue()[index]);
   }
   return ret;
 }

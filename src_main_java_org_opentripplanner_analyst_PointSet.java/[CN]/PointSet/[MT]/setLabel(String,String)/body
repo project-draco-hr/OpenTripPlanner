@@ -1,3 +1,6 @@
 {
-  setLabel(catId,null,label);
+  CategoryMetadata meta=this.catMetadata.get(catId);
+  if (meta != null) {
+    meta.setLabel(label);
+  }
 }

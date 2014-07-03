@@ -1,19 +1,7 @@
 {
   jgen.writeObjectFieldStart("structured");
-  for (  String cat_id : categories.keySet()) {
-    jgen.writeObjectFieldStart(cat_id);
-    for (    String attr_id : categories.get(cat_id).attributes.keySet()) {
-      Attribute attr=categories.get(cat_id).attributes.get(attr_id);
-      if (attr.histogram != null) {
-        jgen.writeObjectField(attr.id,attr.histogram[i]);
-      }
- else       if (attr.magnitudes != null) {
-        if (attr.magnitudes[i] > 0) {
-          jgen.writeNumberField(attr.id,attr.magnitudes[i]);
-        }
-      }
-    }
-    jgen.writeEndObject();
+  for (  Entry<String,int[]> entry : categories.entrySet()) {
+    jgen.writeNumberField(entry.getKey(),entry.getValue()[i]);
   }
   jgen.writeEndObject();
 }

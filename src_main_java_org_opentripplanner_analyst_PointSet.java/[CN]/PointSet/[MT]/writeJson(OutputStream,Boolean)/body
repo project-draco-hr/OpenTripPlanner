@@ -13,7 +13,7 @@
         if (description != null)         jgen.writeStringField("description",description);
         jgen.writeObjectFieldStart("schema");
 {
-          for (          Category cat : this.categories.values()) {
+          for (          CategoryMetadata cat : this.catMetadata.values()) {
             jgen.writeObjectFieldStart(cat.id);
 {
               if (cat.label != null)               jgen.writeStringField("label",cat.label);
@@ -29,23 +29,6 @@
               }
             }
             jgen.writeEndObject();
-            for (            Attribute attr : cat.attributes.values()) {
-              jgen.writeObjectFieldStart(cat.id + ":" + attr.id);
-{
-                if (attr.label != null)                 jgen.writeStringField("label",attr.label);
-                jgen.writeStringField("type","Attribute");
-                if (attr.style != null && attr.style.attributes != null) {
-                  jgen.writeObjectFieldStart("style");
-{
-                    for (                    String styleKey : attr.style.attributes.keySet()) {
-                      jgen.writeStringField(styleKey,attr.style.attributes.get(styleKey));
-                    }
-                  }
-                  jgen.writeEndObject();
-                }
-              }
-              jgen.writeEndObject();
-            }
           }
         }
         jgen.writeEndObject();
