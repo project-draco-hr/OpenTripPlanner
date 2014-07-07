@@ -5,19 +5,19 @@
   JsonNode props=feature.get("properties");
   if (props == null || props.getNodeType() != JsonNodeType.OBJECT)   return null;
   JsonNode structured=props.get("structured");
-  Map<String,Integer> attributes=new HashMap<String,Integer>();
+  Map<String,Integer> properties=new HashMap<String,Integer>();
   if (structured != null && structured.getNodeType() == JsonNodeType.OBJECT) {
     Iterator<Entry<String,JsonNode>> catIter=structured.fields();
     while (catIter.hasNext()) {
       Entry<String,JsonNode> catEntry=catIter.next();
       String catName=catEntry.getKey();
       JsonNode catNode=catEntry.getValue();
-      Iterator<Entry<String,JsonNode>> attrIter=catNode.fields();
-      while (attrIter.hasNext()) {
-        Entry<String,JsonNode> attrEntry=attrIter.next();
-        String attrName=attrEntry.getKey();
-        int magnitude=attrEntry.getValue().asInt();
-        attributes.put(catName + ":" + attrName,magnitude);
+      Iterator<Entry<String,JsonNode>> propIter=catNode.fields();
+      while (propIter.hasNext()) {
+        Entry<String,JsonNode> propEntry=propIter.next();
+        String propName=propEntry.getKey();
+        int magnitude=propEntry.getValue().asInt();
+        properties.put(catName + ":" + propName,magnitude);
       }
     }
   }
@@ -32,6 +32,6 @@
   }
   PointFeature ret=new PointFeature(id);
   ret.setGeom(jtsGeom);
-  ret.setAttributes(attributes);
+  ret.setAttributes(properties);
   return ret;
 }

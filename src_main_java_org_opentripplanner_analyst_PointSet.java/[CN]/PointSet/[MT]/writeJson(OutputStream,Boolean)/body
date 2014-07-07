@@ -13,7 +13,7 @@
         if (description != null)         jgen.writeStringField("description",description);
         jgen.writeObjectFieldStart("schema");
 {
-          for (          CategoryMetadata cat : this.catMetadata.values()) {
+          for (          PropertyMetadata cat : this.propMetadata.values()) {
             jgen.writeObjectFieldStart(cat.id);
 {
               if (cat.label != null)               jgen.writeStringField("label",cat.label);

@@ -6,10 +6,10 @@
   lats[index]=feat.getLat();
   lons[index]=feat.getLon();
   ids[index]=feat.getId();
-  for (  Entry<String,Integer> ad : feat.getAttributes().entrySet()) {
-    String attrId=ad.getKey();
-    Integer attrVal=ad.getValue();
-    this.getOrCreateCategoryForId(attrId);
-    this.categories.get(attrId)[index]=attrVal;
+  for (  Entry<String,Integer> ad : feat.getProperties().entrySet()) {
+    String propId=ad.getKey();
+    Integer propVal=ad.getValue();
+    this.getOrCreatePropertyForId(propId);
+    this.properties.get(propId)[index]=propVal;
   }
 }
