@@ -1,10 +1,11 @@
 {
-  histograms=new HashMap<String,Histogram>();
+  ResultFeature ret=new ResultFeature();
   PointSet targets=samples.pset;
   int[] times=samples.eval(surface);
   for (  Entry<String,int[]> cat : targets.categories.entrySet()) {
     String catId=cat.getKey();
     int[] mags=cat.getValue();
-    this.histograms.put(catId,new Histogram(times,mags));
+    ret.histograms.put(catId,new Histogram(times,mags));
   }
+  return ret;
 }
