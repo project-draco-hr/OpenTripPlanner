@@ -9,6 +9,7 @@
   for (  Entry<String,Integer> ad : feat.getAttributes().entrySet()) {
     String attrId=ad.getKey();
     Integer attrVal=ad.getValue();
+    this.getOrCreateCategoryForId(attrId);
     this.categories.get(attrId)[index]=attrVal;
   }
 }
