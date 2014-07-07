@@ -1,0 +1,16 @@
+{
+  jgen.writeArrayFieldStart("sums");
+{
+    for (    int sum : sums) {
+      jgen.writeNumber(sum);
+    }
+  }
+  jgen.writeEndArray();
+  jgen.writeArrayFieldStart("counts");
+{
+    for (    int count : counts) {
+      jgen.writeNumber(count);
+    }
+  }
+  jgen.writeEndArray();
+}
