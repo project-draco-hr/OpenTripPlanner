@@ -1,0 +1,7 @@
+{
+  PointSet points=PointSet.fromShapefile("src/test/resources/pointset/shp/austin.shp");
+  assertNotNull(points);
+  PointFeature ft=points.getFeature(0);
+  int pop=ft.getProperty("DEC_10_S_2");
+  assertEquals(pop,42);
+}

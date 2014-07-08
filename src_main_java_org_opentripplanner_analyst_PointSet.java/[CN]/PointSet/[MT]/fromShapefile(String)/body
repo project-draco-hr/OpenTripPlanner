@@ -1,0 +1,46 @@
+{
+  File file=new File(filename);
+  if (!file.exists())   throw new RuntimeException("Shapefile does not exist.");
+  FileDataStore store=FileDataStoreFinder.getDataStore(file);
+  SimpleFeatureSource featureSource=store.getFeatureSource();
+  CoordinateReferenceSystem sourceCRS=featureSource.getInfo().getCRS();
+  CoordinateReferenceSystem WGS84=CRS.decode("EPSG:4326",true);
+  Query query=new Query();
+  query.setCoordinateSystem(sourceCRS);
+  query.setCoordinateSystemReproject(WGS84);
+  SimpleFeatureCollection featureCollection=featureSource.getFeatures(query);
+  SimpleFeatureIterator it=featureCollection.features();
+  PointSet ret=new PointSet(featureCollection.size());
+  int i=0;
+  while (it.hasNext()) {
+    SimpleFeature feature=it.next();
+    Geometry geom=(Geometry)feature.getDefaultGeometry();
+    PointFeature ft=new PointFeature();
+    ft.setGeom(geom);
+    for (    Property prop : feature.getProperties()) {
+      Object binding=prop.getType().getBinding();
+      int val;
+      if (binding.equals(Integer.class)) {
+        val=(Integer)prop.getValue();
+      }
+ else       if (binding.equals(Long.class)) {
+        val=((Long)prop.getValue()).intValue();
+      }
+ else       if (binding.equals(String.class)) {
+        try {
+          val=Integer.parseInt((String)prop.getValue());
+        }
+ catch (        NumberFormatException ex) {
+          continue;
+        }
+      }
+ else {
+        continue;
+      }
+      ft.addAttribute(prop.getName().toString(),val);
+    }
+    ret.addFeature(ft,i);
+    i++;
+  }
+  return ret;
+}
