@@ -1,0 +1,18 @@
+{
+  stats=new Stats();
+  List<Ride> rides=Lists.newArrayList();
+  for (Ride ride=tail; ride != null; ride=ride.previous) {
+    rides.add(ride);
+  }
+  Collections.reverse(rides);
+  for (  Ride ride : rides) {
+    Segment segment=new Segment(ride);
+    segments.add(segment);
+    stats.add(segment.walkTime);
+    if (segment.waitStats != null)     stats.add(segment.waitStats);
+    stats.add(segment.rideStats);
+  }
+  fares=null;
+  this.finalWalkTime=finalWalkTime;
+  stats.add(finalWalkTime);
+}

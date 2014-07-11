@@ -1,0 +1,16 @@
+{
+  Route route=ride.patternRides.get(0).pattern.getRoute();
+  mode=GtfsLibrary.getTraverseMode(route).toString();
+  from=ride.from.getId().getId();
+  to=ride.to.getId().getId();
+  fromName=ride.from.getName();
+  toName=ride.to.getName();
+  rideStats=ride.rideStats;
+  for (  PatternRide patternRide : ride.patternRides) {
+    segmentPatterns.add(new SegmentPattern(patternRide));
+  }
+  Collections.sort(segmentPatterns);
+  walkDistance=(int)ride.getTransferDistance();
+  walkTime=(int)(ride.getTransferDistance());
+  waitStats=ride.waitStats;
+}
