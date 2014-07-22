@@ -1,31 +1,3 @@
 {
-  try {
-    JsonFactory jsonFactory=new JsonFactory();
-    JsonGenerator jgen=jsonFactory.createGenerator(output);
-    jgen.setCodec(new ObjectMapper());
-    jgen.writeStartObject();
-{
-      jgen.writeObjectFieldStart("properties");
-{
-        if (id != null)         jgen.writeStringField("id",id);
-      }
-      jgen.writeEndObject();
-      jgen.writeObjectFieldStart("data");
-{
-        for (        String propertyId : histograms.keySet()) {
-          jgen.writeObjectFieldStart(propertyId);
-{
-            histograms.get(propertyId).writeJson(jgen);
-          }
-          jgen.writeEndObject();
-        }
-      }
-      jgen.writeEndObject();
-    }
-    jgen.writeEndObject();
-    jgen.close();
-  }
- catch (  IOException ioex) {
-    LOG.info("IOException, connection may have been closed while streaming JSON.");
-  }
+  writeJson(output,null);
 }

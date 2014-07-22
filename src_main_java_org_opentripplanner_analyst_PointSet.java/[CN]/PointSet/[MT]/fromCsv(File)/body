@@ -1,5 +1,5 @@
 {
-  CsvReader reader=new CsvReader(filename,',',Charset.forName("UTF8"));
+  CsvReader reader=new CsvReader(filename.getAbsolutePath(),',',Charset.forName("UTF8"));
   reader.readHeaders();
   int nCols=reader.getHeaderCount();
   while (reader.readRecord()) {
@@ -10,7 +10,7 @@
   }
   int nRecs=(int)reader.getCurrentRecord() + 1;
   reader.close();
-  reader=new CsvReader(filename,',',Charset.forName("UTF8"));
+  reader=new CsvReader(filename.getAbsolutePath(),',',Charset.forName("UTF8"));
   PointSet ret=new PointSet(nRecs);
   reader.readHeaders();
   if (reader.getHeaderCount() != nCols) {

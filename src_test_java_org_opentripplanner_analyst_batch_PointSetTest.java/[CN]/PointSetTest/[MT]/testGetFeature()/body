@@ -1,5 +1,5 @@
 {
-  PointSet points=PointSet.fromGeoJson("src/test/resources/pointset/population.geo.json");
+  PointSet points=PointSet.fromGeoJson(new File("src/test/resources/pointset/population.geo.json"));
   PointFeature pt=points.getFeature(0);
   assertNotNull(pt);
   assertEquals(pt.getId(),"XYZ0001");
