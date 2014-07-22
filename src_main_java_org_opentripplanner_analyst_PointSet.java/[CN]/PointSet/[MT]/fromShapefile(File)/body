@@ -1,5 +1,4 @@
 {
-  File file=new File(filename);
   if (!file.exists())   throw new RuntimeException("Shapefile does not exist.");
   FileDataStore store=FileDataStoreFinder.getDataStore(file);
   SimpleFeatureSource featureSource=store.getFeatureSource();
