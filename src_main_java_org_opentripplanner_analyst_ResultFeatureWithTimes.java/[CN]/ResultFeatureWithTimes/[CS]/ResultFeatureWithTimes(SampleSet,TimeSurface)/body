@@ -1,0 +1,10 @@
+{
+  id=samples.pset.id + "_" + surface.id+ "_times";
+  times=samples.eval(surface);
+  buildHistograms(times,samples.pset);
+  int i=0;
+  for (  String id : samples.pset.ids) {
+    timeIdMap.put(id,times[i]);
+    i++;
+  }
+}

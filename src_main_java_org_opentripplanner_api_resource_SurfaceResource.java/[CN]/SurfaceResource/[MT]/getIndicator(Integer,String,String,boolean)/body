@@ -5,7 +5,7 @@
   if (pset == null)   return badRequest("Missing or invalid target PointSet ID.");
   Graph gg=server.graphService.getGraph(surf.routerId);
   SampleSet samples=pset.getSampleSet(gg);
-  final ResultFeature indicator=ResultFeature.eval(samples,surf);
+  final ResultFeature indicator=new ResultFeature(samples,surf);
   if (indicator == null)   return badServer("Could not compute indicator as requested.");
   return Response.ok().entity(new StreamingOutput(){
     @Override public void write(    OutputStream output) throws IOException, WebApplicationException {
