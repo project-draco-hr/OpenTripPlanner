@@ -8,7 +8,7 @@
     return retval;
   }
  catch (  MissingResourceException e) {
-    LOG.warn("Missing translation for key: " + key);
+    LOG.debug("Missing translation for key: " + key);
     return key;
   }
 }
