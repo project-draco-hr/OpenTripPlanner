@@ -1,6 +1,10 @@
 {
   for (  Ride ride : rides.get(newRide.to)) {
+    if (newRide.durationLowerBound() < ride.durationUpperBound()) {
+      rides.put(newRide.to,newRide);
+      queue.insert(newRide,newRide.durationLowerBound());
+      return true;
+    }
   }
-  rides.put(newRide.to,newRide);
-  queue.insert();
+  return false;
 }

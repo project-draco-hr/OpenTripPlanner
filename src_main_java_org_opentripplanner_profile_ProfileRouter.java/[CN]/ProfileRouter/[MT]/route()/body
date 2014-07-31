@@ -1,10 +1,7 @@
 {
   long searchBeginTime=System.currentTimeMillis();
   long abortTime=searchBeginTime + TIMEOUT * 1000;
-  final int maxPathDuration=60 * 90;
-  final int ROUNDS=3;
-  int finalRound=ROUNDS - 1;
-  int penultimateRound=ROUNDS - 2;
+  this.window=new TimeWindow(request.fromTime,request.toTime,graph.index.servicesRunning(request.date));
   if (graph.index.transfersForStop == null) {
     graph.index.initializeProfileTransfers();
   }
@@ -12,7 +9,6 @@
   findClosestPatterns();
   LOG.info("from stops: {}",fromStops);
   LOG.info("to stops: {}",toStops);
-  this.window=new TimeWindow(request.fromTime,request.toTime,graph.index.servicesRunning(request.date));
   Map<Stop,Ride> initialRides=Maps.newHashMap();
   for (  Entry<TripPattern,StopAtDistance> entry : fromStops.entrySet()) {
     TripPattern pattern=entry.getKey();
@@ -67,7 +63,7 @@
         targetRides.remove(r1);
         continue;
       }
-      if (r1.pathLength() >= 3)       continue;
+      if (r1.pathLength() >= MAX_RIDES)       continue;
       for (      ProfileTransfer tr : graph.index.transfersForStop.get(r1.to)) {
         if (r1.containsPattern(tr.tp1)) {
           if (r1.pathContainsRoute(tr.tp2.route))           continue;
@@ -89,13 +85,12 @@
     }
     for (    Ride xr : xferRides.values()) {
       int dlb=xr.previous.durationLowerBound();
-      if (dlb > maxPathDuration)       continue;
+      if (dlb > MAX_DURATION)       continue;
       queue.insert(xr,dlb);
     }
     if (System.currentTimeMillis() > abortTime)     throw new RuntimeException("TIMEOUT");
   }
   List<Option> options=Lists.newArrayList();
-  for (  Ride ride : targetRides)   ride.dump();
   for (  Ride ride : targetRides) {
     int dist=toStops.get(ride.patternRides.get(0).pattern).distance;
     Option option=new Option(ride,dist);

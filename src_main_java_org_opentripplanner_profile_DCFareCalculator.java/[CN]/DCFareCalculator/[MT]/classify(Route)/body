@@ -1,10 +1,10 @@
 {
-  String agency=ride.route.getAgency().getId();
-  String agency_url=ride.route.getAgency().getUrl();
-  String short_name=ride.route.getShortName();
-  String long_name=ride.route.getLongName();
+  String agency=route.getAgency().getId();
+  String agency_url=route.getAgency().getUrl();
+  String short_name=route.getShortName();
+  String long_name=route.getLongName();
   if ("MET".equals(agency)) {
-    if (ride.route.getType() == 1)     return RideType.METRO_RAIL;
+    if (route.getType() == 1)     return RideType.METRO_RAIL;
     if ("5A".equals(short_name) || "B30".equals(short_name))     return RideType.METRO_BUS_AIRPORT;
     for (    String sn : metroExpress)     if (sn.equals(short_name))     return RideType.METRO_BUS_EXPRESS;
     return RideType.METRO_BUS_LOCAL;
@@ -30,7 +30,7 @@
       return RideType.VRE_BUS;
     }
     if (agency_url.contains("mtamaryland.com")) {
-      if (ride.route.getType() == 2)       return RideType.MARC_RAIL;
+      if (route.getType() == 2)       return RideType.MARC_RAIL;
  else       return RideType.DASH_BUS;
     }
   }
