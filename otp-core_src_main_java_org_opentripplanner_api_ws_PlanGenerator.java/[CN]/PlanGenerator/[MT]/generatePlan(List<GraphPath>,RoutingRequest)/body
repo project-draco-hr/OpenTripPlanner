@@ -8,8 +8,8 @@
   GraphPath exemplar=paths.get(0);
   Vertex tripStartVertex=exemplar.getStartVertex();
   Vertex tripEndVertex=exemplar.getEndVertex();
-  String startName=tripStartVertex.getName();
-  String endName=tripEndVertex.getName();
+  String startName=localize(tripStartVertex.getName());
+  String endName=localize(tripEndVertex.getName());
   if (startName == null) {
     startName=tripStartVertex.getLabel();
   }

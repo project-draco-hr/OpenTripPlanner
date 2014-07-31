@@ -1,4 +1,7 @@
 {
+  if (key == null) {
+    return null;
+  }
   try {
     String retval=getResourceBundle().getString(key);
     LOG.debug(String.format("Localized '%s' using '%s'",key,retval));
