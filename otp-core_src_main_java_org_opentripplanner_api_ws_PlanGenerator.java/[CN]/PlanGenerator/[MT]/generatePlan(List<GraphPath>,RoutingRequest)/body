@@ -1,4 +1,10 @@
 {
+  if (requestedLocale != null && resources != null) {
+    if (request.getLocale() != requestedLocale) {
+      resources=null;
+    }
+  }
+  requestedLocale=request.getLocale();
   GraphPath exemplar=paths.get(0);
   Vertex tripStartVertex=exemplar.getStartVertex();
   Vertex tripEndVertex=exemplar.getEndVertex();

@@ -1,5 +1,11 @@
 {
   RoutingRequest originalOptions=options.clone();
+  if (requestedLocale != null && resources != null) {
+    if (options.getLocale() != requestedLocale) {
+      resources=null;
+    }
+  }
+  requestedLocale=options.getLocale();
   List<GraphPath> paths=null;
   boolean tooSloped=false;
   try {
