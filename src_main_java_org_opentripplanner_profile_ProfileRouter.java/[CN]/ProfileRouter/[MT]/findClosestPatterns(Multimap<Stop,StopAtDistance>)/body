@@ -1,11 +1,12 @@
 {
   SimpleIsochrone.MinMap<TripPattern,StopAtDistance> closest=new SimpleIsochrone.MinMap<TripPattern,StopAtDistance>();
-  for (  StopAtDistance stopDist : findClosestStops(back)) {
+  for (  StopAtDistance stopDist : stops.values()) {
     for (    TripPattern pattern : graph.index.patternsForStop.get(stopDist.stop)) {
       closest.putMin(pattern,stopDist);
     }
   }
-  if (closest.size() > 50) {
+  if (closest.size() > 500) {
+    LOG.warn("Truncating long list of patterns.");
     Multimap<StopAtDistance,TripPattern> busPatterns=TreeMultimap.create(Ordering.natural(),Ordering.arbitrary());
     Multimap<StopAtDistance,TripPattern> otherPatterns=TreeMultimap.create(Ordering.natural(),Ordering.arbitrary());
     Multimap<StopAtDistance,TripPattern> patterns;

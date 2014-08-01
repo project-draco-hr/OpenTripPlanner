@@ -1,0 +1,36 @@
+{
+  RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
+  rr.setFrom(new GenericLocation(request.from.lat,request.from.lon));
+  rr.setTo(new GenericLocation(request.to.lat,request.to.lon));
+  rr.setArriveBy(dest);
+  rr.setMode(mode);
+  rr.setRoutingContext(graph);
+  rr.setBatch(true);
+  rr.setWalkSpeed(request.walkSpeed);
+  int worstElapsedTime=request.accessTime * 60;
+  if (dest)   worstElapsedTime*=-1;
+  rr.setWorstTime(rr.dateTime + worstElapsedTime);
+  GenericAStar astar=new GenericAStar();
+  astar.setNPaths(1);
+  final List<StopAtDistance> ret=Lists.newArrayList();
+  astar.setTraverseVisitor(new TraverseVisitor(){
+    @Override public void visitEdge(    Edge edge,    State state){
+    }
+    @Override public void visitEnqueue(    State state){
+    }
+    @Override public void visitVertex(    State state){
+      Vertex vertex=state.getVertex();
+      if (vertex instanceof TransitStop) {
+        StopAtDistance sd=new StopAtDistance(state);
+        sd.mode=mode;
+        if (sd.mode == TraverseMode.CAR && sd.etime < MIN_DRIVE_TIME)         return;
+        LOG.debug("found stop: {}",sd);
+        ret.add(sd);
+      }
+    }
+  }
+);
+  ShortestPathTree spt=astar.getShortestPathTree(rr,System.currentTimeMillis() + 5000);
+  rr.rctx.destroy();
+  return ret;
+}

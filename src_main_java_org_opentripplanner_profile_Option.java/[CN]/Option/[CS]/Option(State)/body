@@ -3,8 +3,6 @@
   int time=(int)state.getElapsedTimeSeconds();
   stats.add(time);
   TraverseMode mode=state.getNonTransitMode();
-  if (mode == TraverseMode.WALK)   this.finalWalkTime=time;
   summary=mode.toString();
-  GraphPath path=new GraphPath(state,false);
-  walkSteps=PlanGenerator.generateWalkSteps(path.states.toArray(new State[0]),null);
+  access=Lists.newArrayList(new StreetSegment(state));
 }

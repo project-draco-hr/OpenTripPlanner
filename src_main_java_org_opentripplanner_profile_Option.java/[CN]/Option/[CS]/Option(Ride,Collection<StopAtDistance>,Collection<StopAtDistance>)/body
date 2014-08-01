@@ -5,6 +5,8 @@
     rides.add(ride);
   }
   Collections.reverse(rides);
+  access=StreetSegment.list(accessPaths);
+  egress=StreetSegment.list(egressPaths);
   for (  Ride ride : rides) {
     Segment segment=new Segment(ride);
     segments.add(segment);
@@ -13,6 +15,4 @@
     stats.add(segment.rideStats);
   }
   fares=null;
-  this.finalWalkTime=finalWalkTime;
-  stats.add(finalWalkTime);
 }

@@ -5,13 +5,14 @@
   LOG.info("Finding transfers...");
   for (  Stop s0 : stopForId.values()) {
     Collection<TripPattern> ps0=patternsForStop.get(s0);
-    for (    StopAtDistance sd : findTransitStops(s0.getLon(),s0.getLat(),TRANSFER_RADIUS)) {
-      Stop s1=sd.stop;
+    Map<Stop,Double> stops=findTransitStops(s0.getLon(),s0.getLat(),TRANSFER_RADIUS);
+    for (    Stop s1 : stops.keySet()) {
+      double distance=stops.get(s1);
       Collection<TripPattern> ps1=patternsForStop.get(s1);
       for (      TripPattern p0 : ps0) {
         for (        TripPattern p1 : ps1) {
           if (p0 == p1)           continue;
-          bestTransfers.putMin(new P2<TripPattern>(p0,p1),new ProfileTransfer(p0,p1,s0,s1,sd.distance));
+          bestTransfers.putMin(new P2<TripPattern>(p0,p1),new ProfileTransfer(p0,p1,s0,s1,(int)distance));
         }
       }
     }
