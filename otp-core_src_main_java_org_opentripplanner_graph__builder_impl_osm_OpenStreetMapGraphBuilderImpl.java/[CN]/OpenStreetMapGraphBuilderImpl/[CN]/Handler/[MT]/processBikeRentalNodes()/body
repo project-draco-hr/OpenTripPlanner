@@ -26,7 +26,9 @@
     }
     BikeRentalStation station=new BikeRentalStation();
     station.id="" + node.getId();
-    station.name=creativeName;
+    station.station_name=node.getTag("name");
+    station.name=node.getTag("name");
+    station.pattern=creativeName;
     station.x=node.getLon();
     station.y=node.getLat();
     station.spacesAvailable=capacity / 2;
