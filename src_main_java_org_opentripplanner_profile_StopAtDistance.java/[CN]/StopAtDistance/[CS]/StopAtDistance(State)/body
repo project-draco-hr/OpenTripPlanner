@@ -1,8 +1,11 @@
 {
-  TransitStop tstop=(TransitStop)state.getVertex();
-  this.state=state;
-  stop=tstop.getStop();
+  GraphPath path=new GraphPath(state,false);
+  walkSteps=PlanGenerator.generateWalkSteps(path.states.toArray(new State[0]),null);
   etime=(int)state.getElapsedTimeSeconds();
   distance=(int)state.getWalkDistance();
   mode=state.getNonTransitMode();
+  if (state.getVertex() instanceof TransitStop) {
+    TransitStop tstop=(TransitStop)state.getVertex();
+    stop=tstop.getStop();
+  }
 }

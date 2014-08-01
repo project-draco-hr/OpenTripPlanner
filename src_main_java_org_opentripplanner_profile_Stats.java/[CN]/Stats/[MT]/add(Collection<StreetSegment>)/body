@@ -1,0 +1,7 @@
+{
+  if (segs == null || segs.isEmpty())   return;
+  List<Integer> times=Lists.newArrayList();
+  for (  StreetSegment seg : segs)   times.add(seg.time);
+  Stats s=new Stats(times);
+  add(s);
+}
