@@ -35,12 +35,13 @@
           locale=options.getLocale();
         }
         ResourceBundle resources=ResourceBundle.getBundle("internals",locale);
+        ResourceBundle resources_names=ResourceBundle.getBundle("WayProperties",locale);
         String fmt=resources.getString("corner");
         if (uniqueNames.size() > 1) {
-          calculatedName=String.format(fmt,uniqueNames.get(0),uniqueNames.get(1));
+          calculatedName=String.format(fmt,localize(uniqueNames.get(0),resources_names),localize(uniqueNames.get(1),resources_names));
         }
  else         if (uniqueNames.size() == 1) {
-          calculatedName=uniqueNames.get(0);
+          calculatedName=localize(uniqueNames.get(0),resources_names);
         }
  else {
           calculatedName=resources.getString("unnamedStreet");
