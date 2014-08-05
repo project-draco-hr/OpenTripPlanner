@@ -1,0 +1,11 @@
+{
+  int NHUES=6;
+  int HUELEN=256;
+  int RAMPLEN=NHUES * HUELEN;
+  int BRIGHTNESS=220;
+  aa=aa % RAMPLEN;
+  int hueIndex=aa / HUELEN;
+  int hue=hueIndex * (HUELEN / NHUES);
+  int saturation=HUELEN - aa % HUELEN;
+  return color(hue,saturation,BRIGHTNESS);
+}
