@@ -61,6 +61,27 @@
   pane.add(nPathsLabel);
   nPaths=new JTextField("1");
   pane.add(nPaths);
+  ItemListener onChangeVizPrefs=new ItemListener(){
+    @Override public void itemStateChanged(    ItemEvent e){
+      showGraph.setShowTransit(showTransitCheckbox.isSelected());
+      showGraph.setShowStreets(showStreetsCheckbox.isSelected());
+      showGraph.setShowHightlights(showHighlightedCheckbox.isSelected());
+      showGraph.redraw();
+    }
+  }
+;
+  showTransitCheckbox=new JCheckBox("show transit");
+  showTransitCheckbox.setSelected(true);
+  showTransitCheckbox.addItemListener(onChangeVizPrefs);
+  pane.add(showTransitCheckbox);
+  showStreetsCheckbox=new JCheckBox("show streets");
+  showStreetsCheckbox.setSelected(true);
+  showStreetsCheckbox.addItemListener(onChangeVizPrefs);
+  pane.add(showStreetsCheckbox);
+  showHighlightedCheckbox=new JCheckBox("show highlighted");
+  showHighlightedCheckbox.setSelected(true);
+  showHighlightedCheckbox.addItemListener(onChangeVizPrefs);
+  pane.add(showHighlightedCheckbox);
   opQuick=new JRadioButton("Quick");
   opQuick.setSelected(true);
   opSafe=new JRadioButton("Safe");
