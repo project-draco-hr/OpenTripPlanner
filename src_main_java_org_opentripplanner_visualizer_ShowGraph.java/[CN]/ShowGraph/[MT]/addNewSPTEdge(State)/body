@@ -1,10 +1,4 @@
 {
   this.newSPTEdges.add(state);
-  SPTNode curNode=new SPTNode(state);
-  SPTNode parentNode=simpleSPT.get(state.getBackState());
-  if (parentNode != null) {
-    parentNode.children.add(curNode);
-  }
-  curNode.parent=parentNode;
-  this.simpleSPT.put(state,curNode);
+  this.simpleSPT.add(state);
 }

@@ -50,7 +50,11 @@
   pathsList=new JList();
   pathsList.addListSelectionListener(new ListSelectionListener(){
     @Override public void valueChanged(    ListSelectionEvent ev){
-      GraphPath path=((PathPrinter)pathsList.getSelectedValue()).gp;
+      PathPrinter pp=((PathPrinter)pathsList.getSelectedValue());
+      if (pp == null) {
+        return;
+      }
+      GraphPath path=pp.gp;
       DefaultListModel pathModel=new DefaultListModel();
       for (      State st : path.states) {
         pathModel.addElement(st.toString());

@@ -1,0 +1,9 @@
+{
+  SPTNode curNode=new SPTNode(state);
+  SPTNode parentNode=this.nodes.get(state.getBackState());
+  if (parentNode != null) {
+    parentNode.children.add(curNode);
+  }
+  curNode.parent=parentNode;
+  this.nodes.put(state,curNode);
+}
