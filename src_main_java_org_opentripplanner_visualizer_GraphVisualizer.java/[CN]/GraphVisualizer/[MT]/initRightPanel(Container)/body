@@ -9,6 +9,10 @@
   departurePattern=new JList();
   JScrollPane dpScrollPane=new JScrollPane(departurePattern);
   rightPanelTabs.addTab("trip pattern",dpScrollPane);
+  pathStates=new JList();
+  JScrollPane stScrollPane=new JScrollPane(pathStates);
+  stScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+  rightPanelTabs.addTab("path states",stScrollPane);
   metadataList=new JList();
   metadataModel=new DefaultListModel();
   metadataList.setModel(metadataModel);
@@ -33,6 +37,8 @@
   Dimension size=new Dimension(200,1600);
   amScrollPane.setMaximumSize(size);
   amScrollPane.setPreferredSize(size);
+  stScrollPane.setMaximumSize(size);
+  stScrollPane.setPreferredSize(size);
   mdScrollPane.setMaximumSize(size);
   mdScrollPane.setPreferredSize(size);
   rightPanelTabs.setMaximumSize(size);
