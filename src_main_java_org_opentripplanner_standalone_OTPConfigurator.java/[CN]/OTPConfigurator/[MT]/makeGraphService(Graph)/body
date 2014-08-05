@@ -1,5 +1,5 @@
 {
-  if (graph != null && params.inMemory) {
+  if (graph != null && (params.inMemory || params.preFlight)) {
     try {
       FileInputStream graphConfiguration=new FileInputStream(params.graphConfigFile);
       Preferences config=new PropertiesPreferences(graphConfiguration);
