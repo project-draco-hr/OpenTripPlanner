@@ -1,4 +1,5 @@
 {
+  smooth();
   int startMillis=millis();
   if (drawLevel == DRAW_PARTIAL) {
     drawPartial(startMillis);
@@ -23,14 +24,11 @@
   }
  else   if (drawLevel == DRAW_VERTICES) {
     drawVertices();
+    simpleSPT.draw();
   }
  else   if (drawLevel == DRAW_MINIMAL) {
     if (!newHighlightedEdges.isEmpty())     handleNewHighlights();
     drawNewEdges();
-    if (drawSPTNext) {
-      simpleSPT.draw();
-      drawSPTNext=false;
-    }
     drawCoords();
   }
   drawOffset=0;
