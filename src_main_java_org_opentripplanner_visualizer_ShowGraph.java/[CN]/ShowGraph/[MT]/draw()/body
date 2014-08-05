@@ -25,12 +25,13 @@
     drawVertices();
   }
  else   if (drawLevel == DRAW_MINIMAL) {
-    drawMinimal();
+    if (!newHighlightedEdges.isEmpty())     handleNewHighlights();
     drawNewEdges();
     if (drawSPTNext) {
       simpleSPT.draw();
       drawSPTNext=false;
     }
+    drawCoords();
   }
   drawOffset=0;
   if (drawLevel > DRAW_MINIMAL)   drawLevel-=1;
