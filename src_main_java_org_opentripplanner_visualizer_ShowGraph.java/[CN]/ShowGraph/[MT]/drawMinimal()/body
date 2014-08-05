@@ -1,0 +1,11 @@
+{
+  if (!newHighlightedEdges.isEmpty())   handleNewHighlights();
+  fill(0,0,0);
+  stroke(30,128,30);
+  strokeWeight(1);
+  rect(3,3,303,textAscent() + textDescent() + 6);
+  fill(128,128,256);
+  String output=lonFormatter.format(mouseModelX) + " " + latFormatter.format(mouseModelY);
+  textAlign(LEFT,TOP);
+  text(output,6,6);
+}

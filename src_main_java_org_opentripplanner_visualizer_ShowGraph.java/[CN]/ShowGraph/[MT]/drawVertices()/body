@@ -1,0 +1,44 @@
+{
+  final double METERS_PER_DEGREE_LAT=111111.111111;
+  drawTransitStopVertices=(modelBounds.getHeight() * METERS_PER_DEGREE_LAT / this.width < 4);
+  fill(60,60,200);
+  for (  Vertex v : visibleVertices) {
+    if (drawTransitStopVertices && v instanceof TransitStationStop) {
+      drawVertex(v,5);
+    }
+ else     if (v instanceof IntersectionVertex) {
+      IntersectionVertex iv=(IntersectionVertex)v;
+      if (iv.isTrafficLight()) {
+        drawVertex(v,7);
+      }
+    }
+  }
+  noFill();
+  stroke(200,200,000,16);
+  strokeWeight(8);
+  if (highlightedEdges != null) {
+    for (    Edge e : highlightedEdges) {
+      drawEdge(e);
+    }
+  }
+  if (highlightedGraphPath != null) {
+    drawGraphPath(highlightedGraphPath);
+  }
+  if (highlightedEdge != null && highlightedEdge.getGeometry() != null) {
+    stroke(10,200,10,128);
+    strokeWeight(12);
+    drawEdge(highlightedEdge);
+  }
+  fill(255,127,0);
+  noStroke();
+  if (highlightedVertices != null) {
+    for (    Vertex v : highlightedVertices) {
+      drawVertex(v,8);
+    }
+  }
+  if (highlightedVertex != null) {
+    fill(255,255,30);
+    drawVertex(highlightedVertex,7);
+  }
+  noFill();
+}

@@ -1,0 +1,16 @@
+{
+  if (drawTransitEdges) {
+    stroke(40,40,128,30);
+    strokeWeight(4);
+    noFill();
+    while (drawOffset < visibleTransitEdges.size()) {
+      Edge e=visibleTransitEdges.get(drawOffset);
+      drawEdge(e);
+      drawOffset+=1;
+      if (drawOffset % BLOCK_SIZE == 0) {
+        if (millis() - startMillis > FRAME_TIME)         return false;
+      }
+    }
+  }
+  return true;
+}
