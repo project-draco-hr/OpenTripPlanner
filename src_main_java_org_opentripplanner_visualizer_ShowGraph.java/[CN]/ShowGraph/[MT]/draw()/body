@@ -25,10 +25,7 @@
     drawVertices();
   }
  else   if (drawLevel == DRAW_MINIMAL) {
-    boolean success=drawTrunks(startMillis);
-    if (!success) {
-      return;
-    }
+    drawNewEdges();
   }
   drawOffset=0;
   if (drawLevel > DRAW_MINIMAL)   drawLevel-=1;

@@ -1,0 +1,14 @@
+{
+  if (drawEdges) {
+    stroke(255,255,255);
+    noFill();
+    while (!newSPTEdges.isEmpty()) {
+      State leaf=newSPTEdges.poll();
+      if (leaf != null) {
+        if (leaf.getBackEdge() != null) {
+          drawEdge(leaf.getBackEdge());
+        }
+      }
+    }
+  }
+}
