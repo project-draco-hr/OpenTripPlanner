@@ -2,10 +2,11 @@
   if (--sleepAfter <= 0) {
     sleepAfter=SLEEP_AFTER;
     try {
-      Thread.sleep(1);
+      Thread.sleep(SLEEP_LEN);
     }
  catch (    InterruptedException e) {
       e.printStackTrace();
     }
   }
+  gui.updateTrunkiness(state);
 }

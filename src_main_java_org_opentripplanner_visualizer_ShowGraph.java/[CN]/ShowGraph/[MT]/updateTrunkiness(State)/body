@@ -1,0 +1,17 @@
+{
+  State cur=tip;
+  while (cur != null) {
+    Edge backEdge=cur.getBackEdge();
+    if (backEdge == null) {
+      break;
+    }
+    Double prevWeight=this.trunkiness.get(backEdge);
+    if (prevWeight == null) {
+      prevWeight=0.0;
+    }
+    Double trunkiness=prevWeight + tip.getWeight();
+    this.trunkiness.put(backEdge,trunkiness);
+    this.trunkQueue.add(new Trunk(backEdge,trunkiness));
+    cur=cur.getBackState();
+  }
+}
