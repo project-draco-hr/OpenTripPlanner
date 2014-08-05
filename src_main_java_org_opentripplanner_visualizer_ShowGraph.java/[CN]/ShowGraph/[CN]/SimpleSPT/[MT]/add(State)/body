@@ -4,6 +4,9 @@
   if (parentNode != null) {
     parentNode.children.add(curNode);
   }
+ else {
+    root=curNode;
+  }
   curNode.parent=parentNode;
   this.nodes.put(state,curNode);
 }
