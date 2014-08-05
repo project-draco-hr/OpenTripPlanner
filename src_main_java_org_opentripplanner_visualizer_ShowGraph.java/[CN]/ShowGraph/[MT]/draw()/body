@@ -25,7 +25,12 @@
     drawVertices();
   }
  else   if (drawLevel == DRAW_MINIMAL) {
+    drawMinimal();
     drawNewEdges();
+    if (drawSPTNext) {
+      simpleSPT.draw();
+      drawSPTNext=false;
+    }
   }
   drawOffset=0;
   if (drawLevel > DRAW_MINIMAL)   drawLevel-=1;
