@@ -57,7 +57,8 @@
     data.addElement(paths.get(i));
   }
   pathsList.setModel(data);
-  GraphPath gp=paths.get(0);
-  showGraph.highlightGraphPath(gp);
+  if (data.size() > 0) {
+    pathsList.setSelectedIndex(0);
+  }
   options.cleanup();
 }
