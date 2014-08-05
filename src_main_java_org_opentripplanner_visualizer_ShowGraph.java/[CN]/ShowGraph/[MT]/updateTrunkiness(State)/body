@@ -1,4 +1,5 @@
 {
+  List<Trunk> ret=new ArrayList<Trunk>();
   State cur=tip;
   while (cur != null) {
     Edge backEdge=cur.getBackEdge();
@@ -11,7 +12,8 @@
     }
     Double trunkiness=prevWeight + tip.getWeight();
     this.trunkiness.put(backEdge,trunkiness);
-    this.trunkQueue.add(new Trunk(backEdge,trunkiness));
+    ret.add(new Trunk(backEdge,trunkiness));
     cur=cur.getBackState();
   }
+  return ret;
 }

@@ -43,6 +43,7 @@
  else {
     sptService.setTraverseVisitor(new VisualTraverseVisitor(showGraph));
   }
+  showGraph.resetTrunks();
   long t0=System.currentTimeMillis();
   List<GraphPath> paths=pathservice.getPaths(options);
   long dt=System.currentTimeMillis() - t0;
@@ -52,7 +53,6 @@
     showGraph.highlightGraphPath(null);
     return;
   }
-  showGraph.resetTrunks();
   DefaultListModel data=new DefaultListModel();
   for (  GraphPath gp : paths) {
     data.addElement(new PathPrinter(gp));
