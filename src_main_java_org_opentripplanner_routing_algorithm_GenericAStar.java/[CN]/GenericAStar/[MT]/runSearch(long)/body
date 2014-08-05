@@ -6,7 +6,7 @@
       runState.options.rctx.debugOutput.timedOut=true;
       break;
     }
-    if (!iterate(runState)) {
+    if (!iterate()) {
       continue;
     }
     if (runState.foundPathWeight != null && runState.u.getWeight() > runState.foundPathWeight * OVERSEARCH_MULTIPLIER) {
