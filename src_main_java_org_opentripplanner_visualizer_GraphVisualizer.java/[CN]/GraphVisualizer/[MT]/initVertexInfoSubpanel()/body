@@ -147,7 +147,7 @@ catch (          IllegalAccessException e1) {
   pathsList=new JList();
   pathsList.addListSelectionListener(new ListSelectionListener(){
     @Override public void valueChanged(    ListSelectionEvent ev){
-      GraphPath path=(GraphPath)pathsList.getSelectedValue();
+      GraphPath path=((PathPrinter)pathsList.getSelectedValue()).gp;
       DefaultListModel pathModel=new DefaultListModel();
       for (      State st : path.states) {
         pathModel.addElement(st.toString());
