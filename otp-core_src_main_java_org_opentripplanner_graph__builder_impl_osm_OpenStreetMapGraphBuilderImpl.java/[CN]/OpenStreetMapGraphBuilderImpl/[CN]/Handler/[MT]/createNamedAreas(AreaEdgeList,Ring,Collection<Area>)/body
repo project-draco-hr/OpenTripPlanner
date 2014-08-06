@@ -12,7 +12,7 @@
     namedArea.setStreetClass(cls);
     String id="way (area) " + areaEntity.getId() + " (splitter linking)";
     id=unique(id);
-    String name=getNameForWay(areaEntity,id);
+    I18NString name=getNameForWay(areaEntity,id);
     namedArea.setName(name);
     WayProperties wayData=wayPropertySet.getDataForWay(areaEntity);
     Double safety=wayData.getSafetyFeatures().getFirst();

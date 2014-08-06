@@ -14,5 +14,5 @@
   double lengthRatio=myGeom.getLength() / parentGeom.getLength();
   double length=e.getLength() * lengthRatio;
   String name=first.getLabel() + " to " + second.getLabel();
-  return new PartialPlainStreetEdge(e,first,second,myGeom,name,length);
+  return new PartialPlainStreetEdge(e,first,second,myGeom,new NonLocalizedString(name),length);
 }

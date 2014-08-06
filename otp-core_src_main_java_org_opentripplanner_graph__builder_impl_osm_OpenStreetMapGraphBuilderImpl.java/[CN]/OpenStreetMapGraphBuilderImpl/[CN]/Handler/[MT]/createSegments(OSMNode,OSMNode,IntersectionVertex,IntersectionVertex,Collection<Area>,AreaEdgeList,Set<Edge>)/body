@@ -23,7 +23,7 @@
     cls|=getStreetClasses(areaEntity);
     String label="way (area) " + areaEntity.getId() + " from "+ startEndpoint.getLabel()+ " to "+ endEndpoint.getLabel();
     label=unique(label);
-    String name=getNameForWay(areaEntity,label);
+    I18NString name=getNameForWay(areaEntity,label);
     AreaEdge street=edgeFactory.createAreaEdge(fromNode,toNode,areaEntity,startEndpoint,endEndpoint,line,name,length,areaPermissions,false,carSpeed,edgeList);
     street.setStreetClass(cls);
     edges.add(street);

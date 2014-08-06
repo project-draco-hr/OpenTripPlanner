@@ -1,0 +1,12 @@
+{
+  this.key=key;
+  List<String> lparams=new ArrayList<String>(1);
+  String tag_name=getTagNames();
+  if (tag_name != null) {
+    String param=way.getTag(tag_name);
+    if (param != null) {
+      lparams.add(param);
+      this.params=lparams.toArray(new String[lparams.size()]);
+    }
+  }
+}

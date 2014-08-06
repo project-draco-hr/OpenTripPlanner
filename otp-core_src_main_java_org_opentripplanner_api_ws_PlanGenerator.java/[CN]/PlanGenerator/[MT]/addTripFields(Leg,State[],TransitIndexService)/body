@@ -6,7 +6,7 @@
     ServiceDay serviceDay=states[states.length - 1].getServiceDay();
     leg.agencyId=id;
     leg.headsign=states[states.length - 1].getBackDirection();
-    leg.route=localize(states[states.length - 1].getBackEdge().getName());
+    leg.route=states[states.length - 1].getBackEdge().getName(requestedLocale);
     leg.routeColor=route.getColor();
     leg.routeId=route.getId().getId();
     leg.routeLongName=route.getLongName();

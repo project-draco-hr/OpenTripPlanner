@@ -3,8 +3,8 @@
   Vertex lastVertex=states[states.length - 1].getVertex();
   Edge firstEdge=edges[0];
   Edge lastEdge=edges[edges.length - 1];
-  leg.from=new Place(firstVertex.getX(),firstVertex.getY(),localize(firstVertex.getName()),null,makeCalendar(states[0]));
-  leg.to=new Place(lastVertex.getX(),lastVertex.getY(),localize(lastVertex.getName()),makeCalendar(states[states.length - 1]),null);
+  leg.from=new Place(firstVertex.getX(),firstVertex.getY(),firstVertex.getName(requestedLocale),null,makeCalendar(states[0]));
+  leg.to=new Place(lastVertex.getX(),lastVertex.getY(),lastVertex.getName(requestedLocale),makeCalendar(states[states.length - 1]),null);
   Stop firstStop=null;
   Stop lastStop=null;
   if (firstVertex instanceof TransitVertex) {

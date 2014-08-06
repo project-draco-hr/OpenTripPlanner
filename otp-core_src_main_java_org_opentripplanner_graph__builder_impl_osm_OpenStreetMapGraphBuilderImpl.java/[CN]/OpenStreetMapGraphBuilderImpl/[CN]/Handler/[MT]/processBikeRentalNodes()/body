@@ -5,7 +5,7 @@
   graph.putService(BikeRentalStationService.class,bikeRentalService);
   for (  OSMNode node : _bikeRentalNodes) {
     n++;
-    String creativeName=wayPropertySet.getCreativeNameForWay(node);
+    I18NString creativeName=wayPropertySet.getCreativeNameForWay(node);
     int capacity=Integer.MAX_VALUE;
     if (node.hasTag("capacity")) {
       try {
@@ -26,9 +26,7 @@
     }
     BikeRentalStation station=new BikeRentalStation();
     station.id="" + node.getId();
-    station.station_name=node.getTag("name");
-    station.name=node.getTag("name");
-    station.pattern=creativeName;
+    station.raw_name=creativeName;
     station.x=node.getLon();
     station.y=node.getLat();
     station.spacesAvailable=capacity / 2;

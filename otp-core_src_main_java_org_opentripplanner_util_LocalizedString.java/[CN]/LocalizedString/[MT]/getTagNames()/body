@@ -1,0 +1,15 @@
+{
+  if (key_params.containsKey(key)) {
+    return key_params.get(key);
+  }
+  String english_trans=ResourceBundleSingleton.INSTANCE.localize(this.key,Locale.ENGLISH);
+  matcher.reset(english_trans);
+  int lastEnd=0;
+  while (matcher.find()) {
+    lastEnd=matcher.end();
+    String m_key=matcher.group(1);
+    key_params.put(key,m_key);
+    return m_key;
+  }
+  return null;
+}

@@ -9,12 +9,12 @@
       if (name == null) {
         continue;
       }
-      e.setName(name);
+      e.setName(new NonLocalizedString(name));
       return name;
     }
  else {
       String name=out.getName();
-      e.setName(name);
+      e.setName(new NonLocalizedString(name));
       return name;
     }
   }
