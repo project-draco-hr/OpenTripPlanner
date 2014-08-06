@@ -53,14 +53,12 @@
     showGraph.highlightGraphPath(null);
     return;
   }
-  t0=System.currentTimeMillis();
   showGraph.simpleSPT.setWeights();
-  dt=System.currentTimeMillis() - t0;
-  System.out.println("weight " + showGraph.simpleSPT.root.weight + " set in "+ dt+ " ms");
   DefaultListModel data=new DefaultListModel();
   for (  GraphPath gp : paths) {
     data.addElement(new PathPrinter(gp));
   }
   pathsList.setModel(data);
+  showGraph.redraw();
   options.cleanup();
 }

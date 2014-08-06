@@ -31,6 +31,9 @@
       return;
     }
   }
+ else   if (drawLevel == DRAW_HIGHLIGHTED) {
+    drawHighlighted();
+  }
  else   if (drawLevel == DRAW_MINIMAL) {
     if (!newHighlightedEdges.isEmpty())     handleNewHighlights();
     drawNewEdges();
