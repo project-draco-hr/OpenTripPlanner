@@ -4,7 +4,7 @@
   this.graphService=graphService;
   this.graph=graphService.getGraph();
   sptService.setShortestPathTreeFactory(sptFactory);
-  this.pathservice=new RetryingPathServiceImpl(graphService,sptService);
+  this.pathservice=new ParetoPathService(graphService,sptService);
   setTitle("GraphVisualizer");
   init();
 }

@@ -1,0 +1,26 @@
+{
+  ArrayList<GraphPath> paths=new ArrayList<GraphPath>();
+  if (options.rctx == null) {
+    options.setRoutingContext(graphService.getGraph(options.getRouterId()));
+    options.rctx.pathParsers=new PathParser[]{new BasicPathParser(),new NoThruTrafficPathParser()};
+  }
+  long searchBeginTime=System.currentTimeMillis();
+  ShortestPathTree spt=sptService.getShortestPathTree(options,timeout);
+  if (spt == null) {
+    LOG.warn("Aborting search. {} paths found, elapsed time {} sec",paths.size(),(System.currentTimeMillis() - searchBeginTime) / 1000.0);
+    return null;
+  }
+  for (  GraphPath gp : spt.getPaths()) {
+    paths.add(gp);
+  }
+  LOG.debug("SPT provides {} paths to target.",paths.size());
+  LOG.debug("{} / {} itineraries",paths.size(),options.numItineraries);
+  if (options.rctx.aborted) {
+    return null;
+  }
+  if (paths.size() == 0) {
+    return null;
+  }
+  Collections.sort(paths,new PathComparator(options.isArriveBy()));
+  return paths;
+}
