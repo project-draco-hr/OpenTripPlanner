@@ -57,7 +57,6 @@
   showGraph.simpleSPT.setWeights();
   dt=System.currentTimeMillis() - t0;
   System.out.println("weight " + showGraph.simpleSPT.root.weight + " set in "+ dt+ " ms");
-  showGraph.intentDrawSPT();
   DefaultListModel data=new DefaultListModel();
   for (  GraphPath gp : paths) {
     data.addElement(new PathPrinter(gp));

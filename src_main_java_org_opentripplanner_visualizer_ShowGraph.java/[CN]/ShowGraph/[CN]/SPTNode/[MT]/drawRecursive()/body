@@ -5,5 +5,8 @@
     strokeWeight((float)(0.1 * Math.pow(weight,0.3)));
     drawEdge(state.getBackEdge());
   }
+  for (  SPTNode child : children) {
+    child.drawRecursive();
+  }
   colorMode(RGB);
 }
