@@ -58,6 +58,8 @@
   }
   showGraph.simpleSPT.setWeights();
   showPathsInPanel(paths);
+  showGraph.setSPTFlattening(Float.parseFloat(sptFlattening.getText()));
+  showGraph.setSPTThickness(Float.parseFloat(sptThickness.getText()));
   showGraph.redraw();
   options.cleanup();
 }

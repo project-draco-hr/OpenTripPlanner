@@ -2,7 +2,7 @@
   colorMode(HSB);
   if (state.getBackEdge() != null) {
     stroke(colorRamp((int)(state.getWeight() / 10.0)));
-    strokeWeight((float)(0.1 * Math.pow(weight,0.3)));
+    strokeWeight((float)(sptThickness * Math.pow(weight,sptFlattening)));
     drawEdge(state.getBackEdge());
   }
   for (  SPTNode child : children) {

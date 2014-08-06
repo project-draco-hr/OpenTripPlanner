@@ -87,6 +87,14 @@
   showSPTCheckbox.setSelected(true);
   showSPTCheckbox.addItemListener(onChangeVizPrefs);
   pane.add(showSPTCheckbox);
+  JLabel sptFlatteningLabel=new JLabel("SPT flattening:");
+  pane.add(sptFlatteningLabel);
+  sptFlattening=new JTextField("0.3");
+  pane.add(sptFlattening);
+  JLabel sptThicknessLabel=new JLabel("SPT thickness:");
+  pane.add(sptThicknessLabel);
+  sptThickness=new JTextField("0.1");
+  pane.add(sptThickness);
   opQuick=new JRadioButton("Quick");
   opQuick.setSelected(true);
   opSafe=new JRadioButton("Safe");
