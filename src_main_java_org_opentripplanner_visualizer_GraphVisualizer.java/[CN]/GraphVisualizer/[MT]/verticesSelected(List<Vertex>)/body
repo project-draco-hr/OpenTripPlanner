@@ -7,4 +7,15 @@
 );
   ListModel data=new VertexList(selected);
   nearbyVertices.setModel(data);
+  Vertex target=null;
+  for (  Vertex vv : selected) {
+    if (vv instanceof IntersectionVertex) {
+      target=vv;
+      break;
+    }
+  }
+  if (target != null && spt != null) {
+    List<GraphPath> paths=spt.getPaths(target,true);
+    showPathsInPanel(paths);
+  }
 }

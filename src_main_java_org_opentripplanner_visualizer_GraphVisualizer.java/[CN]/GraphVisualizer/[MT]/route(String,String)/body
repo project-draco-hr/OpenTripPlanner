@@ -43,22 +43,21 @@
  else {
     sptService.setTraverseVisitor(new VisualTraverseVisitor(showGraph));
   }
-  showGraph.resetSPT();
+  ParetoPathService.SPTVisitor vis=pathservice.new SPTVisitor();
+  pathservice.setSPTVisitor(vis);
   long t0=System.currentTimeMillis();
   List<GraphPath> paths=pathservice.getPaths(options);
   long dt=System.currentTimeMillis() - t0;
   searchTimeElapsedLabel.setText("search time elapsed: " + dt + "ms");
+  spt=vis.spt;
+  System.out.println("got spt:" + spt);
   if (paths == null) {
     System.out.println("no path");
     showGraph.highlightGraphPath(null);
     return;
   }
   showGraph.simpleSPT.setWeights();
-  DefaultListModel data=new DefaultListModel();
-  for (  GraphPath gp : paths) {
-    data.addElement(new PathPrinter(gp));
-  }
-  pathsList.setModel(data);
+  showPathsInPanel(paths);
   showGraph.redraw();
   options.cleanup();
 }

@@ -1,0 +1,7 @@
+{
+  DefaultListModel data=new DefaultListModel();
+  for (  GraphPath gp : paths) {
+    data.addElement(new PathPrinter(gp));
+  }
+  pathsList.setModel(data);
+}

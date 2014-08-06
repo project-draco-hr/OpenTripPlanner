@@ -6,6 +6,13 @@
   }
   long searchBeginTime=System.currentTimeMillis();
   ShortestPathTree spt=sptService.getShortestPathTree(options,timeout);
+  if (sptVisitor != null) {
+    System.out.println("setting spt");
+    sptVisitor.spt=spt;
+  }
+ else {
+    System.out.println("no spt visitor");
+  }
   if (spt == null) {
     LOG.warn("Aborting search. {} paths found, elapsed time {} sec",paths.size(),(System.currentTimeMillis() - searchBeginTime) / 1000.0);
     return null;
