@@ -6,10 +6,10 @@
   rightPanel.add(rightPanelTabs,BorderLayout.LINE_END);
   serviceIdLabel=new JLabel("[service id]");
   rightPanel.add(serviceIdLabel,BorderLayout.PAGE_END);
-  departurePattern=new JList();
+  departurePattern=new JList<String>();
   JScrollPane dpScrollPane=new JScrollPane(departurePattern);
   rightPanelTabs.addTab("trip pattern",dpScrollPane);
-  pathStates=new JList();
+  pathStates=new JList<State>();
   JScrollPane stScrollPane=new JScrollPane(pathStates);
   stScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
   rightPanelTabs.addTab("path states",stScrollPane);
@@ -17,30 +17,30 @@
     @Override public void valueChanged(    ListSelectionEvent e){
       outgoingEdges.clearSelection();
       incomingEdges.clearSelection();
-      JList theList=(JList)e.getSource();
+      @SuppressWarnings("unchecked") JList<State> theList=(JList<State>)e.getSource();
       State st=(State)theList.getSelectedValue();
       Edge edge=st.getBackEdge();
       reactToEdgeSelection(edge,false);
     }
   }
 );
-  metadataList=new JList();
-  metadataModel=new DefaultListModel();
+  metadataList=new JList<String>();
+  metadataModel=new DefaultListModel<String>();
   metadataList.setModel(metadataModel);
   JScrollPane mdScrollPane=new JScrollPane(metadataList);
   mdScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
   rightPanelTabs.addTab("metadata",mdScrollPane);
-  annotationMatches=new JList();
+  annotationMatches=new JList<GraphBuilderAnnotation>();
   annotationMatches.addListSelectionListener(new ListSelectionListener(){
     public void valueChanged(    ListSelectionEvent e){
-      JList theList=(JList)e.getSource();
-      GraphBuilderAnnotation anno=(GraphBuilderAnnotation)theList.getSelectedValue();
+      @SuppressWarnings("unchecked") JList<GraphBuilderAnnotation> theList=(JList<GraphBuilderAnnotation>)e.getSource();
+      GraphBuilderAnnotation anno=theList.getSelectedValue();
       if (anno == null)       return;
       showGraph.drawAnotation(anno);
     }
   }
 );
-  annotationMatchesModel=new DefaultListModel();
+  annotationMatchesModel=new DefaultListModel<GraphBuilderAnnotation>();
   annotationMatches.setModel(annotationMatchesModel);
   JScrollPane amScrollPane=new JScrollPane(annotationMatches);
   amScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);

@@ -5,24 +5,24 @@
   leftPanel.add(vertexDataPanel,BorderLayout.CENTER);
   JLabel nvLabel=new JLabel("Vertices");
   vertexDataPanel.add(nvLabel);
-  nearbyVertices=new JList();
+  nearbyVertices=new JList<DisplayVertex>();
   nearbyVertices.setVisibleRowCount(4);
   JScrollPane nvScrollPane=new JScrollPane(nearbyVertices);
   vertexDataPanel.add(nvScrollPane);
   JLabel ogeLabel=new JLabel("Outgoing edges");
   vertexDataPanel.add(ogeLabel);
-  outgoingEdges=new JList();
+  outgoingEdges=new JList<Edge>();
   outgoingEdges.setVisibleRowCount(4);
   JScrollPane ogeScrollPane=new JScrollPane(outgoingEdges);
   vertexDataPanel.add(ogeScrollPane);
   JLabel iceLabel=new JLabel("Incoming edges");
   vertexDataPanel.add(iceLabel);
-  incomingEdges=new JList();
+  incomingEdges=new JList<Edge>();
   JScrollPane iceScrollPane=new JScrollPane(incomingEdges);
   vertexDataPanel.add(iceScrollPane);
   ListSelectionListener edgeChanged=new ListSelectionListener(){
     public void valueChanged(    ListSelectionEvent e){
-      JList edgeList=(JList)e.getSource();
+      @SuppressWarnings("unchecked") JList<Edge> edgeList=(JList<Edge>)e.getSource();
       Edge selected=(Edge)edgeList.getSelectedValue();
       boolean outgoing=(edgeList == outgoingEdges);
       reactToEdgeSelection(selected,outgoing);
@@ -47,7 +47,7 @@
 );
   JLabel pathsLabel=new JLabel("Paths");
   vertexDataPanel.add(pathsLabel);
-  pathsList=new JList();
+  pathsList=new JList<PathPrinter>();
   pathsList.addListSelectionListener(new ListSelectionListener(){
     @Override public void valueChanged(    ListSelectionEvent ev){
       PathPrinter pp=((PathPrinter)pathsList.getSelectedValue());
@@ -55,9 +55,9 @@
         return;
       }
       GraphPath path=pp.gp;
-      DefaultListModel pathModel=new DefaultListModel();
+      DefaultListModel<State> pathModel=new DefaultListModel<State>();
       for (      State st : path.states) {
-        pathModel.addElement(st.toString());
+        pathModel.addElement(st);
       }
       pathStates.setModel(pathModel);
       showGraph.highlightGraphPath(path);
