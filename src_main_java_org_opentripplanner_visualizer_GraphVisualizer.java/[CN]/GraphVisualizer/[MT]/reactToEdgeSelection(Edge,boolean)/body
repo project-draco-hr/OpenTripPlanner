@@ -40,8 +40,6 @@
     nearbyVertices.setModel(nearbyModel);
   }
   metadataModel.clear();
-  Class<?> c;
-  Field[] fields;
   getMetadata(selected);
   Vertex fromv=selected.getFromVertex();
   getMetadata(fromv);
@@ -65,7 +63,7 @@
     departurePattern.removeAll();
     return;
   }
-  ListModel model=new TripPatternListModel(pattern,stopIndex);
+  ListModel<String> model=new TripPatternListModel(pattern,stopIndex);
   departurePattern.setModel(model);
   Trip trip=pattern.getExemplar();
   serviceIdLabel.setText(trip.getServiceId().toString());
