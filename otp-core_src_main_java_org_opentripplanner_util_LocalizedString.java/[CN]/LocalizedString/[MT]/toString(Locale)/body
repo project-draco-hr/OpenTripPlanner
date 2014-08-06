@@ -2,5 +2,9 @@
   if (this.key == null) {
     return null;
   }
-  return String.format(ResourceBundleSingleton.INSTANCE.localize(this.key,locale),(Object[])params);
+  String translation=ResourceBundleSingleton.INSTANCE.localize(this.key,locale);
+  if (this.params != null) {
+    translation=pattern.matcher(translation).replaceFirst("%s");
+  }
+  return String.format(translation,(Object[])params);
 }
