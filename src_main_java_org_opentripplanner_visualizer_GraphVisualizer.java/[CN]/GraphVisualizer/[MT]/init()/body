@@ -1,10 +1,23 @@
 {
-  JTabbedPane tabbedPane=new JTabbedPane();
-  tabbedPane.addTab("Main",null,makeMainTab(),"Pretty much everything");
-  tabbedPane.addTab("Prefs",null,makePrefsPanel(),"Routing preferences");
+  final JTabbedPane tabbedPane=new JTabbedPane();
+  final Container mainTab=makeMainTab();
+  Container prefsPanel=makePrefsPanel();
+  tabbedPane.addTab("Main",null,mainTab,"Pretty much everything");
+  tabbedPane.addTab("Prefs",null,prefsPanel,"Routing preferences");
   add(tabbedPane);
   tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
   showGraph.init();
   addWindowListener(new ExitListener());
   pack();
+  tabbedPane.addChangeListener(new ChangeListener(){
+    @Override public void stateChanged(    ChangeEvent e){
+      if (tabbedPane.getSelectedComponent().equals(mainTab)) {
+        showGraph.loop();
+      }
+ else {
+        showGraph.noLoop();
+      }
+    }
+  }
+);
 }
