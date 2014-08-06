@@ -1,0 +1,14 @@
+{
+  if (sptEdgeQueue == null) {
+    sptEdgeQueue=simpleSPT.getEdgeQueue();
+  }
+  int i=0;
+  while (!sptEdgeQueue.isEmpty()) {
+    SPTNode node=sptEdgeQueue.poll();
+    i++;
+    node.draw();
+    if ((i % BLOCK_SIZE == 0) && (millis() - startMillis > FRAME_TIME))     return false;
+  }
+  sptEdgeQueue=null;
+  return true;
+}
