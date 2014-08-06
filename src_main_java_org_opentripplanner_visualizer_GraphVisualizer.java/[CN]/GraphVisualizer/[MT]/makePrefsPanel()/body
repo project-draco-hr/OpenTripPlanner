@@ -66,6 +66,7 @@
       showGraph.setShowTransit(showTransitCheckbox.isSelected());
       showGraph.setShowStreets(showStreetsCheckbox.isSelected());
       showGraph.setShowHightlights(showHighlightedCheckbox.isSelected());
+      showGraph.setShowSPT(showSPTCheckbox.isSelected());
       showGraph.redraw();
     }
   }
@@ -82,6 +83,10 @@
   showHighlightedCheckbox.setSelected(true);
   showHighlightedCheckbox.addItemListener(onChangeVizPrefs);
   pane.add(showHighlightedCheckbox);
+  showSPTCheckbox=new JCheckBox("show SPT");
+  showSPTCheckbox.setSelected(true);
+  showSPTCheckbox.addItemListener(onChangeVizPrefs);
+  pane.add(showSPTCheckbox);
   opQuick=new JRadioButton("Quick");
   opQuick.setSelected(true);
   opSafe=new JRadioButton("Safe");
