@@ -1,6 +1,5 @@
 {
   if (selected == null) {
-    departurePattern.removeAll();
     return;
   }
   showGraph.highlightEdge(selected);
@@ -47,24 +46,4 @@
     getMetadata(((EdgeWithElevation)selected).getElevationProfileSegment());
   }
   metadataList.revalidate();
-  TripPattern pattern=null;
-  int stopIndex=0;
-  if (selected instanceof TransitBoardAlight && ((TransitBoardAlight)selected).isBoarding()) {
-    TransitBoardAlight boardEdge=(TransitBoardAlight)selected;
-    pattern=boardEdge.getPattern();
-    stopIndex=boardEdge.getStopIndex();
-  }
- else   if (selected instanceof TransitBoardAlight && !((TransitBoardAlight)selected).isBoarding()) {
-    TransitBoardAlight alightEdge=(TransitBoardAlight)selected;
-    pattern=alightEdge.getPattern();
-    stopIndex=alightEdge.getStopIndex();
-  }
- else {
-    departurePattern.removeAll();
-    return;
-  }
-  ListModel<String> model=new TripPatternListModel(pattern,stopIndex);
-  departurePattern.setModel(model);
-  Trip trip=pattern.getExemplar();
-  serviceIdLabel.setText(trip.getServiceId().toString());
 }

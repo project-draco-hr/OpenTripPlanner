@@ -4,11 +4,6 @@
   pane.add(rightPanel,BorderLayout.LINE_END);
   JTabbedPane rightPanelTabs=new JTabbedPane();
   rightPanel.add(rightPanelTabs,BorderLayout.LINE_END);
-  serviceIdLabel=new JLabel("[service id]");
-  rightPanel.add(serviceIdLabel,BorderLayout.PAGE_END);
-  departurePattern=new JList<String>();
-  JScrollPane dpScrollPane=new JScrollPane(departurePattern);
-  rightPanelTabs.addTab("trip pattern",dpScrollPane);
   pathStates=new JList<State>();
   JScrollPane stScrollPane=new JScrollPane(pathStates);
   stScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
