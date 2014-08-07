@@ -1,8 +1,8 @@
 {
   from=ride.from;
   to=ride.to;
-  route=ride.route;
-  type=classify(ride);
+  route=ride.patternRides.get(0).pattern.route;
+  type=classify(route);
   prev=prevRide;
   calcFare();
 }

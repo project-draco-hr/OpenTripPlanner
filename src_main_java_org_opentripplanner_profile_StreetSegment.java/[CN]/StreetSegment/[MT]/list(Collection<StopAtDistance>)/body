@@ -1,0 +1,8 @@
+{
+  if (sds == null || sds.isEmpty())   return null;
+  List<StreetSegment> ret=Lists.newArrayList();
+  for (  StopAtDistance sd : sds) {
+    ret.add(new StreetSegment(sd));
+  }
+  return ret;
+}

@@ -3,7 +3,7 @@
   sb.append("routes ");
   List<String> routeShortNames=Lists.newArrayList();
   List<String> vias=Lists.newArrayList();
-  for (  Segment segment : segments) {
+  for (  Segment segment : transit) {
     String routeName=segment.routeShortName == null ? segment.routeLongName : segment.routeShortName;
     routeShortNames.add(routeName);
     vias.add(segment.toName);

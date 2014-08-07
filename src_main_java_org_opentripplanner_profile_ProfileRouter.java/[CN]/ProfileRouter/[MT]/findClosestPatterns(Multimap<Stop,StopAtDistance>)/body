@@ -1,0 +1,33 @@
+{
+  SimpleIsochrone.MinMap<TripPattern,StopAtDistance> closest=new SimpleIsochrone.MinMap<TripPattern,StopAtDistance>();
+  for (  StopAtDistance stopDist : stops.values()) {
+    for (    TripPattern pattern : graph.index.patternsForStop.get(stopDist.stop)) {
+      closest.putMin(pattern,stopDist);
+    }
+  }
+  if (closest.size() > 500) {
+    LOG.warn("Truncating long list of patterns.");
+    Multimap<StopAtDistance,TripPattern> busPatterns=TreeMultimap.create(Ordering.natural(),Ordering.arbitrary());
+    Multimap<StopAtDistance,TripPattern> otherPatterns=TreeMultimap.create(Ordering.natural(),Ordering.arbitrary());
+    Multimap<StopAtDistance,TripPattern> patterns;
+    for (    TripPattern pattern : closest.keySet()) {
+      patterns=(pattern.mode == TraverseMode.BUS) ? busPatterns : otherPatterns;
+      patterns.put(closest.get(pattern),pattern);
+    }
+    closest.clear();
+    Iterator<StopAtDistance> iterBus=busPatterns.keySet().iterator();
+    Iterator<StopAtDistance> iterOther=otherPatterns.keySet().iterator();
+    while (closest.size() < 50) {
+      StopAtDistance sd;
+      if (iterBus.hasNext()) {
+        sd=iterBus.next();
+        for (        TripPattern tp : busPatterns.get(sd))         closest.put(tp,sd);
+      }
+      if (iterOther.hasNext()) {
+        sd=iterOther.next();
+        for (        TripPattern tp : otherPatterns.get(sd))         closest.put(tp,sd);
+      }
+    }
+  }
+  return closest;
+}

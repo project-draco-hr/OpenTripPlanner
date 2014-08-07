@@ -14,7 +14,7 @@
   State state=spt.getState(rr.rctx.target);
   if (state != null) {
     LOG.info("Found non-transit option for mode {}",mode);
-    directOptions.add(new Option(state));
+    directPaths.add(new StopAtDistance(state));
   }
   rr.rctx.destroy();
 }
