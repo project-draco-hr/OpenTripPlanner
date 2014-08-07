@@ -88,13 +88,16 @@
           if (r1.pathContainsRoute(tr.tp2.route))           continue;
           if (tr.s1 != tr.s2 && r1.pathContainsStop(tr.s2))           continue;
           if (!request.analyst && penultimateRide && !toStops.containsKey(tr.tp2))           continue;
-          for (int i=0; i < tr.tp2.getStops().size(); ++i) {
+          TARGET_STOP:           for (int i=0; i < tr.tp2.getStops().size(); ++i) {
             if (tr.tp2.getStops().get(i) == tr.s2) {
               if (request.modes.contains(tr.tp2.mode)) {
                 Ride r2=xferRides.get(tr.s2);
                 if (r2 == null) {
                   r2=new Ride(tr.s2,r1);
                   xferRides.put(tr.s2,r2);
+                }
+                for (                PatternRide pr : r2.patternRides) {
+                  if (pr.pattern == tr.tp2 && pr.fromIndex == i)                   continue TARGET_STOP;
                 }
                 r2.patternRides.add(new PatternRide(tr.tp2,i,r1,tr));
               }
