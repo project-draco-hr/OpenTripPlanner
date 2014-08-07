@@ -1,16 +1,22 @@
 {
   Route route=ride.patternRides.get(0).pattern.getRoute();
-  mode=GtfsLibrary.getTraverseMode(route).toString();
-  from=ride.from.getId().getId();
-  to=ride.to.getId().getId();
+  from=ride.from.getId();
+  to=ride.to.getId();
   fromName=ride.from.getName();
   toName=ride.to.getName();
   rideStats=ride.rideStats;
+  Set<Route> routes=Sets.newHashSet();
   for (  PatternRide patternRide : ride.patternRides) {
     segmentPatterns.add(new SegmentPattern(patternRide));
+    routes.add(patternRide.pattern.route);
   }
   Collections.sort(segmentPatterns);
+  mode=ride.patternRides.get(0).pattern.mode;
+  for (  PatternRide pr : ride.patternRides) {
+    if (pr.pattern.mode != mode)     LOG.warn("Segment contains patterns using more than one mode.");
+  }
   walkDistance=(int)ride.getTransferDistance();
   walkTime=(int)(ride.getTransferDistance());
   waitStats=ride.waitStats;
+  this.routes=RouteShort.list(routes);
 }
