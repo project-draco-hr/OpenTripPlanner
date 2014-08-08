@@ -3,7 +3,7 @@
   if (options.rctx != null) {
     target=initialState.getOptions().rctx.target;
   }
-  ShortestPathTree spt=createShortestPathTree(options);
+  ShortestPathTree spt=new BasicShortestPathTree(options);
   BinHeap<State> queue=new BinHeap<State>(1000);
   spt.add(initialState);
   queue.insert(initialState,initialState.getWeight());
