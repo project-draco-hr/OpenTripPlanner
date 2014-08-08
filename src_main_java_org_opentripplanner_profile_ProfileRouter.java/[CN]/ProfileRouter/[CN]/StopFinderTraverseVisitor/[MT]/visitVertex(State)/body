@@ -1,0 +1,10 @@
+{
+  Vertex vertex=state.getVertex();
+  if (vertex instanceof TransitStop) {
+    StopAtDistance sd=new StopAtDistance(state);
+    sd.mode=mode;
+    if (sd.mode == TraverseMode.CAR && sd.etime < MIN_DRIVE_TIME)     return;
+    LOG.debug("found stop: {}",sd);
+    stopsFound.add(sd);
+  }
+}

@@ -1,0 +1,20 @@
+{
+  access=StreetSegment.list(accessPaths);
+  egress=StreetSegment.list(egressPaths);
+  stats.add(access);
+  stats.add(egress);
+  List<Ride> rides=Lists.newArrayList();
+  for (Ride ride=tail; ride != null; ride=ride.previous)   rides.add(ride);
+  if (!rides.isEmpty()) {
+    Collections.reverse(rides);
+    transit=Lists.newArrayList();
+    for (    Ride ride : rides) {
+      Segment segment=new Segment(ride);
+      transit.add(segment);
+      stats.add(segment.walkTime);
+      if (segment.waitStats != null)       stats.add(segment.waitStats);
+      stats.add(segment.rideStats);
+    }
+  }
+  summary=generateSummary();
+}

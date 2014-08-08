@@ -1,0 +1,10 @@
+{
+  int ret=0;
+  Ride ride=this;
+  while (ride != null) {
+    ret+=ride.rideStats.min;
+    ret+=ride.waitStats.min;
+    ride=ride.previous;
+  }
+  return ret;
+}

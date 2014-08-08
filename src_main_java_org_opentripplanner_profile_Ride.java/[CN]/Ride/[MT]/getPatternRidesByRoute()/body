@@ -1,0 +1,5 @@
+{
+  Multimap<Route,PatternRide> ret=HashMultimap.create();
+  for (  PatternRide pr : patternRides)   ret.put(pr.pattern.route,pr);
+  return ret;
+}
