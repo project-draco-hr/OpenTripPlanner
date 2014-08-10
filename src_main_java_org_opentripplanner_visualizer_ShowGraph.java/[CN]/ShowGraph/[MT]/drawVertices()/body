@@ -12,5 +12,11 @@
         drawVertex(v,7);
       }
     }
+    if (drawMultistateVertices && spt != null) {
+      List<? extends State> states=spt.getStates(v);
+      if (states != null) {
+        drawVertex(v,states.size() * 2);
+      }
+    }
   }
 }

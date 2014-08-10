@@ -50,6 +50,7 @@
   long dt=System.currentTimeMillis() - t0;
   searchTimeElapsedLabel.setText("search time elapsed: " + dt + "ms");
   spt=vis.spt;
+  showGraph.setSPT(spt);
   System.out.println("got spt:" + spt);
   if (paths == null) {
     System.out.println("no path");

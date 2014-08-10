@@ -63,6 +63,7 @@
     @Override public void itemStateChanged(    ItemEvent e){
       showGraph.setShowTransit(showTransitCheckbox.isSelected());
       showGraph.setShowStreets(showStreetsCheckbox.isSelected());
+      showGraph.setShowMultistateVertices(showMultistateVerticesCheckbox.isSelected());
       showGraph.setShowHightlights(showHighlightedCheckbox.isSelected());
       showGraph.setShowSPT(showSPTCheckbox.isSelected());
       showGraph.redraw();
@@ -85,6 +86,10 @@
   showSPTCheckbox.setSelected(true);
   showSPTCheckbox.addItemListener(onChangeVizPrefs);
   pane.add(showSPTCheckbox);
+  showMultistateVerticesCheckbox=new JCheckBox("show multistate vertices");
+  showMultistateVerticesCheckbox.setSelected(true);
+  showMultistateVerticesCheckbox.addItemListener(onChangeVizPrefs);
+  pane.add(showMultistateVerticesCheckbox);
   JLabel sptFlatteningLabel=new JLabel("SPT flattening:");
   pane.add(sptFlatteningLabel);
   sptFlattening=new JTextField("0.3");
