@@ -1,0 +1,68 @@
+{
+  System.out.println(name);
+  String[] parts=name.toUpperCase().split("[&@]",2);
+  List<String> normalizedParts=Lists.newArrayList();
+  for (  String part : parts) {
+    String quadrant=null;
+    String streetType=null;
+    String[] words=part.split("[ ,.]");
+    QD:     for (int i=0; i < words.length; i++) {
+      String word=words[i];
+      for (      String[] q : QUADRANTS) {
+        for (        String qn : q) {
+          if (word.equals(qn)) {
+            quadrant=q[0];
+            words[i]=null;
+            break QD;
+          }
+        }
+      }
+    }
+    ST:     for (int i=0; i < words.length; i++) {
+      String word=words[i];
+      for (      String[] st : STREET_TYPES) {
+        for (        String stn : st) {
+          if (stn.equals(word)) {
+            streetType=st[0];
+            words[i]=null;
+            break ST;
+          }
+        }
+      }
+    }
+    for (int i=0; i < words.length; i++) {
+      String word=words[i];
+      for (      String[] qs : QUALIFIERS) {
+        for (        String qn : qs) {
+          if (qn.equals(word)) {
+            words[i]=null;
+          }
+        }
+      }
+    }
+    for (int i=0; i < words.length - 1; i++) {
+      String word=words[i];
+      if ("BAY".equals(word)) {
+        words[i]=null;
+        words[i + 1]=null;
+      }
+    }
+    StringBuilder sb=new StringBuilder();
+    for (    String word : words) {
+      if (word != null) {
+        sb.append(word);
+        sb.append(' ');
+      }
+    }
+    if (streetType != null) {
+      sb.append(streetType);
+      sb.append(' ');
+    }
+    if (quadrant != null)     sb.append(quadrant);
+    normalizedParts.add(sb.toString());
+  }
+  Collections.sort(normalizedParts);
+  String result=Joiner.on(" & ").join(normalizedParts);
+  System.out.println(result);
+  return result;
+}

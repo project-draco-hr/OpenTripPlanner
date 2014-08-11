@@ -1,0 +1,12 @@
+{
+  try {
+    out.print("\tvar data=");
+    ObjectMapper mapper=new ObjectMapper();
+    JsonGenerator jsonGenerator=mapper.getJsonFactory().createJsonGenerator(out);
+    mapper.writeValue(jsonGenerator,annotations.asMap());
+    out.println(";");
+  }
+ catch (  IOException ex) {
+    java.util.logging.Logger.getLogger(AnnotationsToHTML.class.getName()).log(Level.SEVERE,null,ex);
+  }
+}
