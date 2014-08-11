@@ -1,0 +1,20 @@
+{
+  colorMode(HSB);
+  Integer vertexHeight=vertexStatesEncountered.get(this.state.getVertex());
+  if (vertexHeight == null) {
+    vertexHeight=0;
+  }
+  if (vertexHeight > height) {
+    height=vertexHeight;
+  }
+  vertexStatesEncountered.put(this.state.getVertex(),vertexHeight + 1);
+  if (state.getBackEdge() != null) {
+    stroke(color((height * 10) % 255,255,255));
+    strokeWeight((float)(sptThickness * Math.pow(weight,sptFlattening)));
+    drawEdge(state.getBackEdge());
+  }
+  for (  SPTNode child : children) {
+    child.drawRecursive(height,vertexStatesEncountered);
+  }
+  colorMode(RGB);
+}

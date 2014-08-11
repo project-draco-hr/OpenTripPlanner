@@ -1,12 +1,9 @@
 {
   colorMode(HSB);
   if (state.getBackEdge() != null) {
-    stroke(colorRamp((int)(state.getWeight() / 10.0)));
     strokeWeight((float)(sptThickness * Math.pow(weight,sptFlattening)));
+    stroke(colors.get(this.height));
     drawEdge(state.getBackEdge());
-  }
-  for (  SPTNode child : children) {
-    child.drawRecursive();
   }
   colorMode(RGB);
 }

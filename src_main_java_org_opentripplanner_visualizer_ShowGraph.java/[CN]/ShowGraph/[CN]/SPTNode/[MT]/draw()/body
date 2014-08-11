@@ -1,9 +1,0 @@
-{
-  colorMode(HSB);
-  if (state.getBackEdge() != null) {
-    stroke(colorRamp((int)(state.getWeight() / 10.0)));
-    strokeWeight((float)(sptThickness * Math.pow(weight,sptFlattening)));
-    drawEdge(state.getBackEdge());
-  }
-  colorMode(RGB);
-}
