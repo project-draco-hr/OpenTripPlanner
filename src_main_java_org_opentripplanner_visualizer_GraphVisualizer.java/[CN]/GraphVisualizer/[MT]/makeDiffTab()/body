@@ -5,8 +5,31 @@
   JScrollPane stScrollPane=new JScrollPane(firstComparePathStates);
   stScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
   pane.add(stScrollPane);
+  firstComparePathStates.addListSelectionListener(new ListSelectionListener(){
+    @Override public void valueChanged(    ListSelectionEvent e){
+      JList<State> theList=(JList<State>)e.getSource();
+      State st=(State)theList.getSelectedValue();
+      System.out.println("got state " + st);
+    }
+  }
+);
   secondComparePathStates=new JList<State>();
   stScrollPane=new JScrollPane(secondComparePathStates);
+  stScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+  pane.add(stScrollPane);
+  secondComparePathStates.addListSelectionListener(new ListSelectionListener(){
+    @Override public void valueChanged(    ListSelectionEvent e){
+      JList<State> theList=(JList<State>)e.getSource();
+      State st=(State)theList.getSelectedValue();
+    }
+  }
+);
+  firstStateData=new JList<String>();
+  stScrollPane=new JScrollPane(firstStateData);
+  stScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+  pane.add(stScrollPane);
+  secondStateData=new JList<String>();
+  stScrollPane=new JScrollPane(secondStateData);
   stScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
   pane.add(stScrollPane);
   return pane;

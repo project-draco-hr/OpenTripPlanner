@@ -24,10 +24,6 @@
       break;
     }
   }
-  System.out.println("paths diverge at vertex: " + firstComparePath.states.get(divergence).getVertex());
-  System.out.println("paths converge at vertex: " + firstComparePath.states.get(l1 - convergence - 1).getVertex());
-  System.out.println("first state: " + firstComparePath.states.get(l1 - convergence - 1));
-  System.out.println("second state: " + secondComparePath.states.get(l2 - convergence - 1));
   int[] ret={divergence,convergence};
   return ret;
 }
