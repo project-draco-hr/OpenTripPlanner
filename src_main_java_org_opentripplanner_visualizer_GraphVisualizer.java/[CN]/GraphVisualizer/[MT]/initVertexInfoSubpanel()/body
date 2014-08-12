@@ -50,19 +50,7 @@
   pathsList=new JList<PathPrinter>();
   popup=new JPopupMenu();
   JMenuItem compareMenuItem=new JMenuItem("compare");
-  compareMenuItem.addActionListener(new ActionListener(){
-    @Override public void actionPerformed(    ActionEvent e){
-      PathPrinter pp=((PathPrinter)pathsList.getSelectedValue());
-      if (pp == null) {
-        return;
-      }
-      GraphPath path=pp.gp;
-      firstComparePath=secondComparePath;
-      secondComparePath=path;
-      comparePaths();
-    }
-  }
-);
+  compareMenuItem.addActionListener(new OnPopupMenuClickListener());
   popup.add(compareMenuItem);
   pathsList.addMouseListener(new MouseListener(){
     @Override public void mouseClicked(    MouseEvent e){

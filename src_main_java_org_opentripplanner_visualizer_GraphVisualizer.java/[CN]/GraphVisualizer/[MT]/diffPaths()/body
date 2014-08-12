@@ -1,5 +1,8 @@
 {
-  if (firstComparePath == null || secondComparePath == null)   return;
+  if (firstComparePath == null || secondComparePath == null) {
+    int[] failboat={-2,-2};
+    return failboat;
+  }
   int l1=firstComparePath.states.size();
   int l2=secondComparePath.states.size();
   int minlen=l1 < l2 ? l1 : l2;
@@ -25,4 +28,6 @@
   System.out.println("paths converge at vertex: " + firstComparePath.states.get(l1 - convergence - 1).getVertex());
   System.out.println("first state: " + firstComparePath.states.get(l1 - convergence - 1));
   System.out.println("second state: " + secondComparePath.states.get(l2 - convergence - 1));
+  int[] ret={divergence,convergence};
+  return ret;
 }

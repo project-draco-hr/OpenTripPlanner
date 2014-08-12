@@ -1,0 +1,13 @@
+{
+  JPanel pane=new JPanel();
+  pane.setLayout(new GridLayout(0,2));
+  firstComparePathStates=new JList<State>();
+  JScrollPane stScrollPane=new JScrollPane(firstComparePathStates);
+  stScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+  pane.add(stScrollPane);
+  secondComparePathStates=new JList<State>();
+  stScrollPane=new JScrollPane(secondComparePathStates);
+  stScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+  pane.add(stScrollPane);
+  return pane;
+}

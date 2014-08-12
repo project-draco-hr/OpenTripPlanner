@@ -2,8 +2,10 @@
   final JTabbedPane tabbedPane=new JTabbedPane();
   final Container mainTab=makeMainTab();
   Container prefsPanel=makePrefsPanel();
+  Container diffTab=makeDiffTab();
   tabbedPane.addTab("Main",null,mainTab,"Pretty much everything");
   tabbedPane.addTab("Prefs",null,prefsPanel,"Routing preferences");
+  tabbedPane.addTab("Diff",null,diffTab,"multistate path diffs");
   add(tabbedPane);
   tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
   showGraph.init();
