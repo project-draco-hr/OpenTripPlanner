@@ -9,28 +9,6 @@
   nearbyVertices.setVisibleRowCount(4);
   JScrollPane nvScrollPane=new JScrollPane(nearbyVertices);
   vertexDataPanel.add(nvScrollPane);
-  JLabel ogeLabel=new JLabel("Outgoing edges");
-  vertexDataPanel.add(ogeLabel);
-  outgoingEdges=new JList<Edge>();
-  outgoingEdges.setVisibleRowCount(4);
-  JScrollPane ogeScrollPane=new JScrollPane(outgoingEdges);
-  vertexDataPanel.add(ogeScrollPane);
-  JLabel iceLabel=new JLabel("Incoming edges");
-  vertexDataPanel.add(iceLabel);
-  incomingEdges=new JList<Edge>();
-  JScrollPane iceScrollPane=new JScrollPane(incomingEdges);
-  vertexDataPanel.add(iceScrollPane);
-  ListSelectionListener edgeChanged=new ListSelectionListener(){
-    public void valueChanged(    ListSelectionEvent e){
-      @SuppressWarnings("unchecked") JList<Edge> edgeList=(JList<Edge>)e.getSource();
-      Edge selected=(Edge)edgeList.getSelectedValue();
-      boolean outgoing=(edgeList == outgoingEdges);
-      reactToEdgeSelection(selected,outgoing);
-    }
-  }
-;
-  outgoingEdges.addListSelectionListener(edgeChanged);
-  incomingEdges.addListSelectionListener(edgeChanged);
   nearbyVertices.addListSelectionListener(new ListSelectionListener(){
     public void valueChanged(    ListSelectionEvent e){
       outgoingEdges.removeAll();
@@ -45,9 +23,66 @@
     }
   }
 );
+  ListSelectionListener edgeChanged=new ListSelectionListener(){
+    public void valueChanged(    ListSelectionEvent e){
+      @SuppressWarnings("unchecked") JList<Edge> edgeList=(JList<Edge>)e.getSource();
+      Edge selected=(Edge)edgeList.getSelectedValue();
+      boolean outgoing=(edgeList == outgoingEdges);
+      reactToEdgeSelection(selected,outgoing);
+    }
+  }
+;
+  JLabel ogeLabel=new JLabel("Outgoing edges");
+  vertexDataPanel.add(ogeLabel);
+  outgoingEdges=new JList<Edge>();
+  outgoingEdges.setVisibleRowCount(4);
+  JScrollPane ogeScrollPane=new JScrollPane(outgoingEdges);
+  vertexDataPanel.add(ogeScrollPane);
+  outgoingEdges.addListSelectionListener(edgeChanged);
+  JLabel iceLabel=new JLabel("Incoming edges");
+  vertexDataPanel.add(iceLabel);
+  incomingEdges=new JList<Edge>();
+  JScrollPane iceScrollPane=new JScrollPane(incomingEdges);
+  vertexDataPanel.add(iceScrollPane);
+  incomingEdges.addListSelectionListener(edgeChanged);
   JLabel pathsLabel=new JLabel("Paths");
   vertexDataPanel.add(pathsLabel);
   pathsList=new JList<PathPrinter>();
+  popup=new JPopupMenu();
+  JMenuItem compareMenuItem=new JMenuItem("compare");
+  compareMenuItem.addActionListener(new ActionListener(){
+    @Override public void actionPerformed(    ActionEvent e){
+      PathPrinter pp=((PathPrinter)pathsList.getSelectedValue());
+      if (pp == null) {
+        return;
+      }
+      GraphPath path=pp.gp;
+      firstComparePath=secondComparePath;
+      secondComparePath=path;
+      comparePaths();
+    }
+  }
+);
+  popup.add(compareMenuItem);
+  pathsList.addMouseListener(new MouseListener(){
+    @Override public void mouseClicked(    MouseEvent e){
+      if (SwingUtilities.isRightMouseButton(e)) {
+        @SuppressWarnings("unchecked") JList<PathPrinter> list=(JList<PathPrinter>)e.getSource();
+        int row=list.locationToIndex(e.getPoint());
+        list.setSelectedIndex(row);
+        popup.show(list,e.getX(),e.getY());
+      }
+    }
+    @Override public void mousePressed(    MouseEvent e){
+    }
+    @Override public void mouseReleased(    MouseEvent e){
+    }
+    @Override public void mouseEntered(    MouseEvent e){
+    }
+    @Override public void mouseExited(    MouseEvent e){
+    }
+  }
+);
   pathsList.addListSelectionListener(new ListSelectionListener(){
     @Override public void valueChanged(    ListSelectionEvent ev){
       PathPrinter pp=((PathPrinter)pathsList.getSelectedValue());
