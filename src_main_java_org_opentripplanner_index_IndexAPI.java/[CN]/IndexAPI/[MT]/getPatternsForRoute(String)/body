@@ -1,5 +1,5 @@
 {
-  AgencyAndId routeId=AgencyAndId.convertFromString(routeIdString);
+  AgencyAndId routeId=GtfsLibrary.convertIdFromString(routeIdString);
   Route route=index.routeForId.get(routeId);
   if (route != null) {
     Collection<TripPattern> patterns=index.patternsForRoute.get(route);

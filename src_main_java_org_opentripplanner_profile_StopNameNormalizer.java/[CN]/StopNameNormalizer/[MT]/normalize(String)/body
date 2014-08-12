@@ -1,11 +1,13 @@
 {
-  System.out.println(name);
   String[] parts=name.toUpperCase().split("[&@]",2);
   List<String> normalizedParts=Lists.newArrayList();
   for (  String part : parts) {
     String quadrant=null;
     String streetType=null;
     String[] words=part.split("[ ,.]");
+    for (int i=0; i < words.length; i++) {
+      words[i]=words[i].trim();
+    }
     QD:     for (int i=0; i < words.length; i++) {
       String word=words[i];
       for (      String[] q : QUADRANTS) {
@@ -59,10 +61,9 @@
       sb.append(' ');
     }
     if (quadrant != null)     sb.append(quadrant);
-    normalizedParts.add(sb.toString());
+    normalizedParts.add(sb.toString().trim());
   }
   Collections.sort(normalizedParts);
   String result=Joiner.on(" & ").join(normalizedParts);
-  System.out.println(result);
   return result;
 }
