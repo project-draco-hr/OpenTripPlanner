@@ -42,9 +42,12 @@
   for (  Route route : patternsForRoute.asMap().keySet()) {
     routeForId.put(route.getId(),route);
   }
+  for (  StopCluster cluster : StopCluster.clusterStops(this)) {
+    stopClusterForId.put(cluster.id,cluster);
+  }
   calendarService=graph.getCalendarService();
   serviceCodes=graph.serviceCodes;
   this.graph=graph;
   LOG.info("Done indexing graph.");
-  new StopClusterer().clusterStops(this);
+  StopCluster.clusterStops(this);
 }

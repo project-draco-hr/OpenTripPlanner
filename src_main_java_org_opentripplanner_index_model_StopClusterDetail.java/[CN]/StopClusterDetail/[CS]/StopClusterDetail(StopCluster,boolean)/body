@@ -1,0 +1,12 @@
+{
+  id=cluster.id;
+  lat=cluster.lat;
+  lon=cluster.lon;
+  name=cluster.name;
+  if (detail) {
+    stops=Lists.newArrayList();
+    for (    Stop stop : cluster.children) {
+      stops.add(new StopShort(stop));
+    }
+  }
+}
