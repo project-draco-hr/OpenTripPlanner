@@ -2,8 +2,12 @@
   if (graph.index.transfersForStop == null) {
     graph.index.initializeProfileTransfers();
   }
-  Arrays.fill(mins,Integer.MAX_VALUE);
-  Arrays.fill(maxs,Integer.MAX_VALUE);
+  if (request.analyst) {
+    mins=new int[Vertex.getMaxIndex()];
+    maxs=new int[Vertex.getMaxIndex()];
+    Arrays.fill(mins,Integer.MAX_VALUE);
+    Arrays.fill(maxs,Integer.MAX_VALUE);
+  }
   LOG.info("modes: {}",request.modes);
   long searchBeginTime=System.currentTimeMillis();
   long abortTime=searchBeginTime + TIMEOUT * 1000;
