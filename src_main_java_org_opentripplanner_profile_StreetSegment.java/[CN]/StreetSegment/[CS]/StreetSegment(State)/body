@@ -1,4 +1,8 @@
 {
   GraphPath path=new GraphPath(state,false);
-  walkSteps=PlanGenerator.generateWalkSteps(path.states.toArray(new State[0]),null);
+  PlanGenerator pgen=new PlanGenerator(null,null);
+  Itinerary itin=pgen.generateItinerary(path,false);
+  Leg leg=itin.legs.get(0);
+  walkSteps=leg.walkSteps;
+  geometry=leg.legGeometry;
 }
