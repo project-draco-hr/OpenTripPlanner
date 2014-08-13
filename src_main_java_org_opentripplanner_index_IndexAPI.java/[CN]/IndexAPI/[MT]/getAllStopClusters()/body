@@ -1,4 +1,4 @@
 {
-  List<StopClusterDetail> scl=StopClusterDetail.list(index.stopClusterForId.values(),false);
+  List<StopClusterDetail> scl=StopClusterDetail.list(index.stopClusterForId.values(),detail);
   return Response.status(Status.OK).entity(scl).build();
 }
