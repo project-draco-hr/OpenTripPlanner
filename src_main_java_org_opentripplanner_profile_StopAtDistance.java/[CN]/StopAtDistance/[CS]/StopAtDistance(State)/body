@@ -1,12 +1,6 @@
 {
-  GraphPath path=new GraphPath(state,false);
-  PlanGenerator pgen=new PlanGenerator(null,null);
-  Itinerary itin=pgen.generateItinerary(path,false);
-  Leg leg=itin.legs.get(0);
-  walkSteps=leg.walkSteps;
-  geometry=leg.legGeometry;
+  this.state=state;
   etime=(int)state.getElapsedTimeSeconds();
-  distance=(int)state.getWalkDistance();
   mode=state.getNonTransitMode();
   if (state.getVertex() instanceof TransitStop) {
     TransitStop tstop=(TransitStop)state.getVertex();

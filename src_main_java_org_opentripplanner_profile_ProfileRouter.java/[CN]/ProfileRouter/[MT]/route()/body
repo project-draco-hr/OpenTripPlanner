@@ -36,7 +36,7 @@
           if (ride == null) {
             ride=new Ride(sd.stop,null);
             ride.accessTime=sd.etime;
-            ride.accessDist=sd.distance;
+            ride.accessDist=0;
             initialRides.put(sd.stop,ride);
           }
           ride.patternRides.add(new PatternRide(pattern,i));
