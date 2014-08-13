@@ -5,8 +5,8 @@
   if (request.analyst) {
     mins=new int[Vertex.getMaxIndex()];
     maxs=new int[Vertex.getMaxIndex()];
-    Arrays.fill(mins,Integer.MAX_VALUE);
-    Arrays.fill(maxs,Integer.MAX_VALUE);
+    Arrays.fill(mins,TimeSurface.UNREACHABLE);
+    Arrays.fill(maxs,TimeSurface.UNREACHABLE);
   }
   LOG.info("modes: {}",request.modes);
   long searchBeginTime=System.currentTimeMillis();
@@ -83,8 +83,8 @@
         int tsidx=tstop.getIndex();
         int lb=r1.durationLowerBound();
         int ub=r1.durationUpperBound();
-        if (mins[tsidx] > lb)         mins[tsidx]=lb;
-        if (maxs[tsidx] > ub)         maxs[tsidx]=ub;
+        if (mins[tsidx] == TimeSurface.UNREACHABLE || mins[tsidx] > lb)         mins[tsidx]=lb;
+        if (maxs[tsidx] == TimeSurface.UNREACHABLE || maxs[tsidx] > ub)         maxs[tsidx]=ub;
       }
       int nRides=r1.pathLength();
       if (nRides >= MAX_RIDES)       continue;
