@@ -1,0 +1,16 @@
+{
+  @SuppressWarnings("unchecked") JList<State> theList=(JList<State>)e.getSource();
+  State st=(State)theList.getSelectedValue();
+  if (st == null) {
+    return;
+  }
+  DefaultListModel<String> stateListModel=new DefaultListModel<String>();
+  stateListModel.addElement("weight:" + st.getWeight());
+  stateListModel.addElement("bikeRenting:" + st.isBikeRenting());
+  stateListModel.addElement("carParked:" + st.isCarParked());
+  stateListModel.addElement("walkDistance:" + st.getWalkDistance());
+  stateListModel.addElement("elapsedTime:" + st.getElapsedTimeSeconds());
+  stateListModel.addElement("numBoardings:" + st.getNumBoardings());
+  outputList.setModel(stateListModel);
+  lastStateClicked=st;
+}
