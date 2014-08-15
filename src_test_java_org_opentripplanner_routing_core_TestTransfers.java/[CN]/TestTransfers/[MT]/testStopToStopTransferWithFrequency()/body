@@ -1,8 +1,8 @@
 {
   TransferTable table=new TransferTable();
   when(graph.getTransferTable()).thenReturn(table);
-  Vertex origin=graph.getVertex("agency_O");
-  Vertex destination=graph.getVertex("agency_V");
+  Vertex origin=graph.getVertex("agency:O");
+  Vertex destination=graph.getVertex("agency:V");
   RoutingRequest options=new RoutingRequest();
   options.dateTime=TestUtils.dateInSeconds("America/New_York",2009,7,11,13,11,0);
   options.setRoutingContext(graph,origin,destination);

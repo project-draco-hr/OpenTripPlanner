@@ -8,16 +8,16 @@
   ShortestPathTree spt;
   GraphPath path=null;
   options.dateTime=TestUtils.dateInSeconds("America/Los_Angeles",2009,8,7,12,0,0);
-  options.setRoutingContext(gg,"Caltrain_Millbrae Caltrain","Caltrain_Mountain View Caltrain");
+  options.setRoutingContext(gg,"Caltrain:Millbrae Caltrain","Caltrain:Mountain View Caltrain");
   spt=aStar.getShortestPathTree(options);
-  path=spt.getPath(gg.getVertex("Caltrain_Mountain View Caltrain"),true);
+  path=spt.getPath(gg.getVertex("Caltrain:Mountain View Caltrain"),true);
   long endTime=TestUtils.dateInSeconds("America/Los_Angeles",2009,8,7,13,29,0);
   assertEquals(path.getEndTime(),endTime);
   options.setArriveBy(true);
   options.dateTime=endTime;
-  options.setRoutingContext(gg,"Caltrain_Millbrae Caltrain","Caltrain_Mountain View Caltrain");
+  options.setRoutingContext(gg,"Caltrain:Millbrae Caltrain","Caltrain:Mountain View Caltrain");
   spt=aStar.getShortestPathTree(options);
-  path=spt.getPath(gg.getVertex("Caltrain_Millbrae Caltrain"),true);
+  path=spt.getPath(gg.getVertex("Caltrain:Millbrae Caltrain"),true);
   long expectedStartTime=TestUtils.dateInSeconds("America/Los_Angeles",2009,8,7,12,39,0);
   assertTrue(path.getStartTime() - expectedStartTime <= 1);
 }

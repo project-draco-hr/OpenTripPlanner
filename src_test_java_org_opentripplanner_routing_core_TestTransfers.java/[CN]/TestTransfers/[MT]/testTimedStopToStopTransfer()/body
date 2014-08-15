@@ -2,8 +2,8 @@
   ServiceDate serviceDate=new ServiceDate(2009,07,11);
   TransferTable table=new TransferTable();
   when(graph.getTransferTable()).thenReturn(table);
-  Vertex origin=graph.getVertex("agency_N");
-  Vertex destination=graph.getVertex("agency_H");
+  Vertex origin=graph.getVertex("agency:N");
+  Vertex destination=graph.getVertex("agency:H");
   RoutingRequest options=new RoutingRequest();
   options.dateTime=TestUtils.dateInSeconds("America/New_York",2009,7,11,11,11,0);
   options.setRoutingContext(graph,origin,destination);
@@ -18,8 +18,8 @@
   Stop stopF=new Stop();
   stopF.setId(new AgencyAndId("agency","F"));
   table.addTransferTime(stopK,stopF,null,null,null,null,StopTransfer.TIMED_TRANSFER);
-  Vertex fromVertex=graph.getVertex("agency_K_arrive");
-  Vertex toVertex=graph.getVertex("agency_F_depart");
+  Vertex fromVertex=graph.getVertex("agency:K_arrive");
+  Vertex toVertex=graph.getVertex("agency:F_depart");
   TimedTransferEdge timedTransferEdge=new TimedTransferEdge(fromVertex,toVertex);
   path=planJourney(options);
   trips=extractTrips(path);

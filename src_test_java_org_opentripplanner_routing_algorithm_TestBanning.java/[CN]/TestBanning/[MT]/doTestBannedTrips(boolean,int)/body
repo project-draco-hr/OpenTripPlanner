@@ -6,8 +6,8 @@
     options.dateTime=TestUtils.dateInSeconds("America/Los_Angeles",2009,11,1,12,34,25);
     Vertex start=null;
     Vertex end=null;
-    while (start == null)     start=graph.getVertex("TriMet_" + rand.nextInt(10000));
-    while (end == null)     end=graph.getVertex("TriMet_" + rand.nextInt(10000));
+    while (start == null)     start=graph.getVertex("TriMet:" + rand.nextInt(10000));
+    while (end == null)     end=graph.getVertex("TriMet:" + rand.nextInt(10000));
     options.setRoutingContext(graph,start,end);
     ShortestPathTree spt=null;
     int n=rand.nextInt(5) + 3;

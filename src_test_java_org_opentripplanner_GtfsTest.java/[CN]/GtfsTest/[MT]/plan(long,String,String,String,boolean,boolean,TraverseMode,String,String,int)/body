@@ -4,10 +4,10 @@
   routingRequest.setArriveBy(dateTime < 0);
   routingRequest.dateTime=Math.abs(dateTime);
   if (fromVertex != null && !fromVertex.isEmpty()) {
-    routingRequest.setFrom(new GenericLocation(null,agencyId + "_" + fromVertex));
+    routingRequest.setFrom(new GenericLocation(null,agencyId + ":" + fromVertex));
   }
   if (toVertex != null && !toVertex.isEmpty()) {
-    routingRequest.setTo(new GenericLocation(null,agencyId + "_" + toVertex));
+    routingRequest.setTo(new GenericLocation(null,agencyId + ":" + toVertex));
   }
   if (onTripId != null && !onTripId.isEmpty()) {
     routingRequest.setStartingTransitTripId(new AgencyAndId(agencyId,onTripId));
@@ -20,7 +20,7 @@
     routingRequest.setBannedRoutes(agencyId + "__" + excludedRoute);
   }
   if (excludedStop != null && !excludedStop.isEmpty()) {
-    routingRequest.setBannedStopsHard(agencyId + "_" + excludedStop);
+    routingRequest.setBannedStopsHard(agencyId + ":" + excludedStop);
   }
   routingRequest.setOtherThanPreferredRoutesPenalty(0);
   routingRequest.setWaitReluctance(1);
