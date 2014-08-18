@@ -11,13 +11,13 @@
   for (  String today : new String[]{"monday","tuesday","wednesday","thursday","friday","saturday","sunday","monday","tuesday","wednesday","thursday","friday","saturday","sunday"}) {
     if (today.startsWith(day_on.toLowerCase()))     active=true;
     if (active) {
-      if (today == "monday")       ret.setMonday(onOff);
- else       if (today == "tuesday")       ret.setTuesday(onOff);
- else       if (today == "wednesday")       ret.setWednesday(onOff);
- else       if (today == "thursday")       ret.setThursday(onOff);
- else       if (today == "friday")       ret.setFriday(onOff);
- else       if (today == "saturday")       ret.setSaturday(onOff);
- else       if (today == "sunday")       ret.setSunday(onOff);
+      if (today == "monday")       ret.monday=onOff;
+ else       if (today == "tuesday")       ret.tuesday=onOff;
+ else       if (today == "wednesday")       ret.wednesday=onOff;
+ else       if (today == "thursday")       ret.thursday=onOff;
+ else       if (today == "friday")       ret.friday=onOff;
+ else       if (today == "saturday")       ret.saturday=onOff;
+ else       if (today == "sunday")       ret.sunday=onOff;
     }
     if (today.startsWith(day_off.toLowerCase()))     active=false;
   }

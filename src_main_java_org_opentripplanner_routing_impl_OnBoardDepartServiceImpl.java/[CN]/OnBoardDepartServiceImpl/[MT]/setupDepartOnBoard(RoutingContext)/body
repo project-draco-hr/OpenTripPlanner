@@ -9,8 +9,8 @@
     throw new IllegalArgumentException("Unknown/invalid trip ID: " + tripId);
   }
   List<PatternHop> hops=tripPattern.getPatternHops();
-  Double lon=opt.getFrom().getLng();
-  Double lat=opt.getFrom().getLat();
+  Double lon=opt.getFrom().lng;
+  Double lat=opt.getFrom().lat;
   PatternStopVertex nextStop;
   TripTimes bestTripTimes=null;
   ServiceDay bestServiceDay=null;

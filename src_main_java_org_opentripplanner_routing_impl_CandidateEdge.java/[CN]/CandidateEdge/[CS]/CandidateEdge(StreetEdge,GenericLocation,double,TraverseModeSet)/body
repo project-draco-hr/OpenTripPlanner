@@ -12,7 +12,7 @@
   Coordinate c1=edgeCoords.getCoordinate(edgeSegmentIndex + 1);
   directionOfEdge=DirectionUtils.getAzimuth(c0,c1);
   directionToEdge=DirectionUtils.getAzimuth(nearestPointOnEdge,loc.getCoordinate());
-  heading=loc.getHeading();
+  heading=loc.heading;
   if (heading != null) {
     double absDiff=Math.abs(heading - directionOfEdge);
     directionDifference=Math.min(MAX_ABS_DIRECTION_DIFFERENCE - absDiff,absDiff);

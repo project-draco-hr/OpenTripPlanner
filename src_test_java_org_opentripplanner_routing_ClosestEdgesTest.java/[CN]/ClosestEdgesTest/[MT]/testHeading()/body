@@ -6,9 +6,9 @@
   reqs.setModes(modes);
   for (double degreeOff=0.0; degreeOff < 30.0; degreeOff+=3.0) {
     GenericLocation loc=new GenericLocation(c);
-    loc.setHeading(top.getAzimuth() + degreeOff);
+    loc.heading=top.getAzimuth() + degreeOff;
     checkBest(reqs,loc,top,2);
-    loc.setHeading(top.getAzimuth() - degreeOff);
+    loc.heading=top.getAzimuth() - degreeOff;
     checkBest(reqs,loc,top,2);
   }
 }

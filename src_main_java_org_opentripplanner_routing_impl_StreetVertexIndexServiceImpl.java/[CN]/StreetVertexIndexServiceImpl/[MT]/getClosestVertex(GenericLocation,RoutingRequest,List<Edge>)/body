@@ -2,7 +2,7 @@
   LOG.debug("Looking for/making a vertex near {}",location);
   Coordinate coord=location.getCoordinate();
   StreetVertex intersection=getIntersectionAt(coord,MAX_CORNER_DISTANCE);
-  String calculatedName=location.getName();
+  String calculatedName=location.name;
   if (intersection != null) {
     boolean canEscape=false;
     if (options == null) {

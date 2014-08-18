@@ -25,7 +25,7 @@
     if (!opt.batch || opt.arriveBy) {
       toVertex=graph.streetIndex.getVertexForLocation(opt.getTo(),opt);
       if (opt.getTo().hasEdgeId()) {
-        toBackEdge=graph.getEdgeById(opt.getTo().getEdgeId());
+        toBackEdge=graph.getEdgeById(opt.getTo().edgeId);
       }
     }
  else {
@@ -39,7 +39,7 @@
  else     if (!opt.batch || !opt.arriveBy) {
       fromVertex=graph.streetIndex.getVertexForLocation(opt.getFrom(),opt,toVertex);
       if (opt.getFrom().hasEdgeId()) {
-        fromBackEdge=graph.getEdgeById(opt.getFrom().getEdgeId());
+        fromBackEdge=graph.getEdgeById(opt.getFrom().edgeId);
       }
     }
  else {

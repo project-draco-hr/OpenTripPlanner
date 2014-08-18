@@ -5,7 +5,7 @@
   modes.setCar(true);
   reqs.setModes(modes);
   GenericLocation loc=new GenericLocation(c);
-  loc.setHeading(top.getAzimuth());
+  loc.heading=top.getAzimuth();
   CandidateEdgeBundle candidates=finder.getClosestEdges(loc,reqs);
   Collections.sort(candidates,new CandidateEdge.CandidateEdgeScoreComparator());
   double lastScore=candidates.best.getScore();
