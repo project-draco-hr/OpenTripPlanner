@@ -40,7 +40,7 @@
     z0.wTime=cutoffSec;
     z0.d=D0;
     IsochroneData isochrone=new IsochroneData(cutoffSec,isolineBuilder.computeIsoline(z0));
-    if (isoChroneRequest.isIncludeDebugGeometry())     isochrone.setDebugGeometry(isolineBuilder.getDebugGeometry());
+    if (isoChroneRequest.isIncludeDebugGeometry())     isochrone.debugGeometry=isolineBuilder.getDebugGeometry();
     isochrones.add(isochrone);
   }
   long t1=System.currentTimeMillis();
