@@ -1,11 +1,11 @@
 {
-  Vertex destination=graph.getVertex("agency_T");
+  Vertex destination=graph.getVertex("agency:T");
   RoutingRequest options=new RoutingRequest();
   options.setTransferSlack(0);
   GregorianCalendar startTime=new GregorianCalendar(2009,11,2,8,30,0);
   startTime.setTimeZone(TimeZone.getTimeZone("America/New_York"));
   options.dateTime=TestUtils.toSeconds(startTime);
-  options.setRoutingContext(graph,"agency_Q",destination.getLabel());
+  options.setRoutingContext(graph,"agency:Q",destination.getLabel());
   ShortestPathTree spt=aStar.getShortestPathTree(options);
   GraphPath path=spt.getPath(destination,false);
   long endTime=path.getEndTime();

@@ -2,12 +2,11 @@
   if (previous == null)   return this.statsForBoarding(window);
   List<Integer> arrivals=previous.getSortedStoptimes(window,true);
   List<Integer> departures=this.getSortedStoptimes(window,false);
-  int walkTime=(int)(getTransferDistance() / walkSpeed);
   List<Integer> waits=Lists.newArrayList();
   Iterator<Integer> departureIterator=departures.iterator();
   int departure=departureIterator.next();
   ARRIVAL:   for (  int arrival : arrivals) {
-    int boardTime=arrival + walkTime + ProfileRouter.SLACK;
+    int boardTime=arrival + accessTime + ProfileRouter.SLACK;
     while (departure <= boardTime) {
       if (!departureIterator.hasNext())       break ARRIVAL;
       departure=departureIterator.next();

@@ -4,7 +4,7 @@
   Itinerary itinerary=response.getPlan().itinerary.get(0);
   Leg leg=itinerary.legs.get(1);
   assertTrue(leg.tripId.equals("190W1280"));
-  planner.setBannedStopsHard(Arrays.asList("TriMet_2009"));
+  planner.setBannedStopsHard(Arrays.asList("TriMet:2009"));
   response=planner.getItineraries();
   itinerary=response.getPlan().itinerary.get(0);
   leg=itinerary.legs.get(1);

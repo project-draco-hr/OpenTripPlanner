@@ -2,8 +2,12 @@
   if (graph.index.transfersForStop == null) {
     graph.index.initializeProfileTransfers();
   }
-  Arrays.fill(mins,Integer.MAX_VALUE);
-  Arrays.fill(maxs,Integer.MAX_VALUE);
+  if (request.analyst) {
+    mins=new int[Vertex.getMaxIndex()];
+    maxs=new int[Vertex.getMaxIndex()];
+    Arrays.fill(mins,TimeSurface.UNREACHABLE);
+    Arrays.fill(maxs,TimeSurface.UNREACHABLE);
+  }
   LOG.info("modes: {}",request.modes);
   long searchBeginTime=System.currentTimeMillis();
   long abortTime=searchBeginTime + TIMEOUT * 1000;
@@ -30,7 +34,9 @@
         if (request.modes.contains(pattern.mode)) {
           Ride ride=initialRides.get(sd.stop);
           if (ride == null) {
-            ride=new Ride(sd.stop,null,null);
+            ride=new Ride(sd.stop,null);
+            ride.accessTime=sd.etime;
+            ride.accessDist=0;
             initialRides.put(sd.stop,ride);
           }
           ride.patternRides.add(new PatternRide(pattern,i));
@@ -77,8 +83,8 @@
         int tsidx=tstop.getIndex();
         int lb=r1.durationLowerBound();
         int ub=r1.durationUpperBound();
-        if (mins[tsidx] > lb)         mins[tsidx]=lb;
-        if (maxs[tsidx] > ub)         maxs[tsidx]=ub;
+        if (mins[tsidx] == TimeSurface.UNREACHABLE || mins[tsidx] > lb)         mins[tsidx]=lb;
+        if (maxs[tsidx] == TimeSurface.UNREACHABLE || maxs[tsidx] > ub)         maxs[tsidx]=ub;
       }
       int nRides=r1.pathLength();
       if (nRides >= MAX_RIDES)       continue;
@@ -93,7 +99,9 @@
               if (request.modes.contains(tr.tp2.mode)) {
                 Ride r2=xferRides.get(tr.s2);
                 if (r2 == null) {
-                  r2=new Ride(tr.s2,r1,tr);
+                  r2=new Ride(tr.s2,r1);
+                  r2.accessDist=tr.distance;
+                  r2.accessTime=(int)(tr.distance / request.walkSpeed);
                   xferRides.put(tr.s2,r2);
                 }
                 for (                PatternRide pr : r2.patternRides) {

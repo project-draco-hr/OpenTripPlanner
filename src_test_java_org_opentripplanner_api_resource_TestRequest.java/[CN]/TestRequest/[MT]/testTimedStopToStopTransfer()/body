@@ -9,8 +9,8 @@
   assertEquals("751W1320",itinerary.legs.get(1).tripId);
   assertEquals("91W1350",itinerary.legs.get(3).tripId);
   addStopToStopTransferTimeToTable(table,"7528","9756",StopTransfer.TIMED_TRANSFER);
-  Vertex fromVertex=graph.getVertex("TriMet_7528_arrive");
-  Vertex toVertex=graph.getVertex("TriMet_9756_depart");
+  Vertex fromVertex=graph.getVertex("TriMet:7528_arrive");
+  Vertex toVertex=graph.getVertex("TriMet:9756_depart");
   TimedTransferEdge timedTransferEdge=new TimedTransferEdge(fromVertex,toVertex);
   response=planner.getItineraries();
   itinerary=response.getPlan().itinerary.get(0);

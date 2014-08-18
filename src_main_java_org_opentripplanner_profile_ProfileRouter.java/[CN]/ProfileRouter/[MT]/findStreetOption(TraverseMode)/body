@@ -16,5 +16,5 @@
     LOG.info("Found non-transit option for mode {}",mode);
     directPaths.add(new StopAtDistance(state));
   }
-  rr.rctx.destroy();
+  routingContexts.add(rr.rctx);
 }

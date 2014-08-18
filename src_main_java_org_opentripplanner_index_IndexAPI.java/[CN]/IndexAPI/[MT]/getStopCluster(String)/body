@@ -1,0 +1,9 @@
+{
+  StopCluster cluster=index.stopClusterForId.get(clusterIdString);
+  if (cluster != null) {
+    return Response.status(Status.OK).entity(new StopClusterDetail(cluster,true)).build();
+  }
+ else {
+    return Response.status(Status.NOT_FOUND).entity(MSG_404).build();
+  }
+}

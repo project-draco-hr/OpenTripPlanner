@@ -12,8 +12,8 @@
   snp1.setId("id1");
   snp1.setStop(new AgencyAndId("agency","A"));
   snp1.apply(graph);
-  Vertex stop_a=graph.getVertex("agency_A");
-  Vertex stop_e=graph.getVertex("agency_E_arrive");
+  Vertex stop_a=graph.getVertex("agency:A");
+  Vertex stop_e=graph.getVertex("agency:E_arrive");
   ShortestPathTree spt;
   GraphPath path;
   options.dateTime=TestUtils.dateInSeconds("America/New_York",2009,8,7,0,0,0);
