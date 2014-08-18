@@ -3,12 +3,12 @@
   Files.write("Santa Barbara Botanical Gardens,1,6046688.23,1992920.46\n",csvFile,Charset.forName("utf-8"));
   CSVPopulation pop=new CSVPopulation();
   pop.sourceFilename=csvFile.getAbsolutePath();
-  pop.setSkipHeaders(false);
-  pop.setXCol(2);
-  pop.setYCol(3);
-  pop.setInputCol(1);
-  pop.setLabelCol(0);
-  pop.setCrs("EPSG:2229");
+  pop.skipHeaders=false;
+  pop.xCol=2;
+  pop.yCol=3;
+  pop.inputCol=1;
+  pop.labelCol=0;
+  pop.crs="EPSG:2229";
   pop.createIndividuals();
   Individual sbbg=pop.individuals.get(0);
   assertEquals(sbbg.lat,34.45659,0.00001);
