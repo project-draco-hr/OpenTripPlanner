@@ -2,18 +2,18 @@
   File csvFile=temporaryFolder.newFile("noCoordinateTransform.csv");
   Files.write("Marine Science,1,-119.84330,34.40783\n",csvFile,Charset.forName("utf-8"));
   CSVPopulation pop=new CSVPopulation();
-  pop.setSourceFilename(csvFile.getAbsolutePath());
+  pop.sourceFilename=csvFile.getAbsolutePath();
   pop.setSkipHeaders(false);
   pop.setLonCol(2);
   pop.setLatCol(3);
   pop.setInputCol(1);
   pop.setLabelCol(0);
   pop.createIndividuals();
-  Individual marsci=pop.getIndividuals().get(0);
+  Individual marsci=pop.individuals.get(0);
   assertEquals(marsci.lat,34.40783,0.00001);
   assertEquals(marsci.lon,-119.84330,0.00001);
   pop=new CSVPopulation();
-  pop.setSourceFilename(csvFile.getAbsolutePath());
+  pop.sourceFilename=csvFile.getAbsolutePath();
   pop.setSkipHeaders(false);
   pop.setLonCol(2);
   pop.setLatCol(3);
@@ -21,7 +21,7 @@
   pop.setLabelCol(0);
   pop.setCrs("EPSG:4326");
   pop.createIndividuals();
-  marsci=pop.getIndividuals().get(0);
+  marsci=pop.individuals.get(0);
   assertEquals(marsci.lat,34.40783,0.00001);
   assertEquals(marsci.lon,-119.84330,0.00001);
 }
