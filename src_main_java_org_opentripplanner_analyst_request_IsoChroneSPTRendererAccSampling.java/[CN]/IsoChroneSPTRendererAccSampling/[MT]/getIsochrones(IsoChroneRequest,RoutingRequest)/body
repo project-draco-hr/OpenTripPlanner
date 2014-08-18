@@ -1,9 +1,9 @@
 {
   final double D0=sampleGridRenderer.getOffRoadDistanceMeters(isoChroneRequest.precisionMeters);
   SampleGridRequest tgRequest=new SampleGridRequest();
-  tgRequest.setMaxTimeSec(isoChroneRequest.maxTimeSec);
-  tgRequest.setPrecisionMeters(isoChroneRequest.precisionMeters);
-  tgRequest.setCoordinateOrigin(isoChroneRequest.coordinateOrigin);
+  tgRequest.maxTimeSec=isoChroneRequest.maxTimeSec;
+  tgRequest.precisionMeters=isoChroneRequest.precisionMeters;
+  tgRequest.coordinateOrigin=isoChroneRequest.coordinateOrigin;
   ZSampleGrid<WTWD> sampleGrid=sampleGridRenderer.getSampleGrid(tgRequest,sptRequest);
   long t0=System.currentTimeMillis();
   ZMetric<WTWD> zMetric=new ZMetric<WTWD>(){
