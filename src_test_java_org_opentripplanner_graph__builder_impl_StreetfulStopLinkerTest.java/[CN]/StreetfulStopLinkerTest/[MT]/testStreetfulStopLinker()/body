@@ -56,10 +56,10 @@
   StreetfulStopLinker streetfulStopLinker=new StreetfulStopLinker();
   assertEquals(9,graph.countVertices());
   assertEquals(9,graph.countEdges());
-  streetfulStopLinker.setMaxDuration(1);
+  streetfulStopLinker.maxDuration=1;
   streetfulStopLinker.buildGraph(graph,null);
   assertEquals(9,graph.countEdges());
-  streetfulStopLinker.setMaxDuration(16);
+  streetfulStopLinker.maxDuration=16;
   streetfulStopLinker.buildGraph(graph,null);
   assertEquals(13,graph.countEdges());
   assertEquals(9,graph.countVertices());
