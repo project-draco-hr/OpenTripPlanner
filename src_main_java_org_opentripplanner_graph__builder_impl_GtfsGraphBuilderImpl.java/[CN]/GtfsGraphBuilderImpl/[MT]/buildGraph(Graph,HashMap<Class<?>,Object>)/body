@@ -3,8 +3,8 @@
   GtfsStopContext stopContext=new GtfsStopContext();
   try {
     for (    GtfsBundle gtfsBundle : _gtfsBundles.getBundles()) {
-      if (cacheDirectory != null && gtfsBundle.getCacheDirectory() == null)       gtfsBundle.setCacheDirectory(cacheDirectory);
-      if (useCached != null && gtfsBundle.getUseCached() == null)       gtfsBundle.setUseCached(useCached);
+      if (cacheDirectory != null && gtfsBundle.cacheDirectory == null)       gtfsBundle.cacheDirectory=cacheDirectory;
+      if (useCached != null && gtfsBundle.useCached == null)       gtfsBundle.useCached=useCached;
       GtfsMutableRelationalDao dao=new GtfsRelationalDaoImpl();
       GtfsContext context=GtfsLibrary.createContext(dao,service);
       GTFSPatternHopFactory hf=new GTFSPatternHopFactory(context);
@@ -21,10 +21,10 @@
       if (gtfsBundle.doesTransfersTxtDefineStationPaths()) {
         hf.createTransfersTxtTransfers();
       }
-      if (gtfsBundle.isLinkStopsToParentStations()) {
+      if (gtfsBundle.linkStopsToParentStations) {
         hf.linkStopsToParentStations(graph);
       }
-      if (gtfsBundle.isParentStationTransfers()) {
+      if (gtfsBundle.parentStationTransfers) {
         hf.createParentStationTransfers();
       }
     }
