@@ -26,10 +26,10 @@
           levelsDiffer=true;
         }
       }
-      if (nodeId != last && (node.getLat() != lastLat || node.getLon() != lastLon || levelsDiffer))       nodes.add(nodeId);
+      if (nodeId != last && (node.lat != lastLat || node.lon != lastLon || levelsDiffer))       nodes.add(nodeId);
       last=nodeId;
-      lastLon=node.getLon();
-      lastLat=node.getLat();
+      lastLon=node.lon;
+      lastLat=node.lat;
       lastLevel=level;
     }
     IntersectionVertex startEndpoint=null, endEndpoint=null;
