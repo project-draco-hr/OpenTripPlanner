@@ -7,7 +7,7 @@
   GenericLocation latLon=new GenericLocation(i.lat,i.lon);
   req.batch=true;
   if (req.arriveBy)   req.setTo(latLon);
- else   req.setFrom(latLon);
+ else   req.from=latLon;
   try {
     req.setRoutingContext(graphService.getGraph(req.routerId));
     return req;
