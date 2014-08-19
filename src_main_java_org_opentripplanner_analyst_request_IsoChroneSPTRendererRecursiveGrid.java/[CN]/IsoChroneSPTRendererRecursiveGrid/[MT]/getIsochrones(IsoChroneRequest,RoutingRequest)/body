@@ -1,7 +1,7 @@
 {
   if (sptRequest.routerId != null && !sptRequest.routerId.isEmpty())   throw new IllegalArgumentException("TODO: SampleSource is not multi-router compatible (yet).");
   long t0=System.currentTimeMillis();
-  sptRequest.setWorstTime(sptRequest.dateTime + (sptRequest.arriveBy ? -isoChroneRequest.maxCutoffSec : isoChroneRequest.maxCutoffSec));
+  sptRequest.worstTime=(sptRequest.dateTime + (sptRequest.arriveBy ? -isoChroneRequest.maxCutoffSec : isoChroneRequest.maxCutoffSec));
   sptRequest.setBatch(true);
   sptRequest.setRoutingContext(graphService.getGraph(sptRequest.routerId));
   final ShortestPathTree spt=sptService.getShortestPathTree(sptRequest);

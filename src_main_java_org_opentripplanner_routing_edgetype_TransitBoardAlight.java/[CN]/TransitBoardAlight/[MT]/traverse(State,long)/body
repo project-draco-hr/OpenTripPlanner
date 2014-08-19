@@ -44,7 +44,7 @@
     if (s0.getLastPattern() == this.getPattern()) {
       return null;
     }
-    if (!options.getModes().get(modeMask)) {
+    if (!options.modes.get(modeMask)) {
       return null;
     }
     if (options.bannedRoutes != null && options.bannedRoutes.matches(getPattern().route)) {

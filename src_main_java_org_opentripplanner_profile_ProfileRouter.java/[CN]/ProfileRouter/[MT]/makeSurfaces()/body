@@ -4,7 +4,7 @@
   rr.setMode(TraverseMode.WALK);
   rr.setWalkSpeed(request.walkSpeed);
   int worstElapsedTime=request.accessTime * 60;
-  rr.setWorstTime(rr.dateTime + worstElapsedTime);
+  rr.worstTime=(rr.dateTime + worstElapsedTime);
   rr.setBatch(true);
   GenericAStar astar=new GenericAStar();
   astar.setNPaths(1);

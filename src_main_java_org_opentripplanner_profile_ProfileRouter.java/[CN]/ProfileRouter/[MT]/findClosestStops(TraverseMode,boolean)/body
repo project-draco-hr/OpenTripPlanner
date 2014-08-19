@@ -9,7 +9,7 @@
   rr.setWalkSpeed(request.walkSpeed);
   long worstElapsedTime=request.accessTime * 60;
   if (dest)   worstElapsedTime*=-1;
-  rr.setWorstTime(rr.dateTime + worstElapsedTime);
+  rr.worstTime=(rr.dateTime + worstElapsedTime);
   GenericAStar astar=new GenericAStar();
   astar.setNPaths(1);
   StopFinderTraverseVisitor visitor=new StopFinderTraverseVisitor(mode);

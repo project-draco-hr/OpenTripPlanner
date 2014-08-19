@@ -19,7 +19,7 @@
     return s1.makeState();
   }
  else {
-    if (!options.getModes().isTransit())     return null;
+    if (!options.modes.isTransit())     return null;
     if (s0.getNumBoardings() > options.maxTransfers)     return null;
     long t0=s0.getTimeSeconds();
     long slack;

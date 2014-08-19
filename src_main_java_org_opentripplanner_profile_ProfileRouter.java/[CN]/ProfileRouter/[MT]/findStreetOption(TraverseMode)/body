@@ -5,7 +5,7 @@
   rr.setArriveBy(false);
   rr.setRoutingContext(graph);
   int worstElapsedTime=request.streetTime * 60;
-  rr.setWorstTime(rr.dateTime + worstElapsedTime);
+  rr.worstTime=(rr.dateTime + worstElapsedTime);
   rr.setWalkSpeed(request.walkSpeed);
   rr.setBikeSpeed(request.bikeSpeed);
   GenericAStar astar=new GenericAStar();

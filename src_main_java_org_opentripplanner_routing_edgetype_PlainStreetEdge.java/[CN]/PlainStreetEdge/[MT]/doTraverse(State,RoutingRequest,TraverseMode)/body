@@ -125,7 +125,7 @@ if (!s0.isEverBoarded()) s1.incrementPreTransitTime(roundedTime);
 }
 if (s1.isMaxPreTransitTimeExceeded(options)) {
 if (options.isSoftPreTransitLimiting()) {
-weight+=calculateOverageWeight(s0.getPreTransitTime(),s1.getPreTransitTime(),options.getMaxPreTransitTime(),options.getPreTransitPenalty(),options.getPreTransitOverageRate());
+weight+=calculateOverageWeight(s0.getPreTransitTime(),s1.getPreTransitTime(),options.maxPreTransitTime,options.getPreTransitPenalty(),options.getPreTransitOverageRate());
 }
  else return null;
 }
