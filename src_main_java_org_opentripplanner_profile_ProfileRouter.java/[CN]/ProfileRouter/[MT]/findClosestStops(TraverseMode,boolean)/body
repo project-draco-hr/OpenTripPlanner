@@ -1,7 +1,7 @@
 {
   RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
   rr.from=(new GenericLocation(request.from.lat,request.from.lon));
-  rr.setTo(new GenericLocation(request.to.lat,request.to.lon));
+  rr.to=new GenericLocation(request.to.lat,request.to.lon);
   rr.setArriveBy(dest);
   rr.setMode(mode);
   rr.setRoutingContext(graph);

@@ -23,9 +23,9 @@
   Edge toBackEdge=null;
   if (findPlaces) {
     if (!opt.batch || opt.arriveBy) {
-      toVertex=graph.streetIndex.getVertexForLocation(opt.getTo(),opt);
-      if (opt.getTo().hasEdgeId()) {
-        toBackEdge=graph.getEdgeById(opt.getTo().edgeId);
+      toVertex=graph.streetIndex.getVertexForLocation(opt.to,opt);
+      if (opt.to.hasEdgeId()) {
+        toBackEdge=graph.getEdgeById(opt.to.edgeId);
       }
     }
  else {
