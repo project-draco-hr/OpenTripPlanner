@@ -3,7 +3,7 @@
     LOG.debug("No intermediates places given, calling underlying path service.");
     return chainedPathService.getPaths(options);
   }
-  Graph graph=graphService.getGraph(options.getRouterId());
+  Graph graph=graphService.getGraph(options.routerId);
   long time=options.dateTime;
   options.setRoutingContext(graph);
   options.rctx.pathParsers=new PathParser[]{new BasicPathParser(),new NoThruTrafficPathParser()};

@@ -5,7 +5,7 @@
   long tOvershot=(long)(2 * D0 / V0);
   sptRequest.setWorstTime(sptRequest.dateTime + (sptRequest.arriveBy ? -spgRequest.maxTimeSec - tOvershot : spgRequest.maxTimeSec + tOvershot));
   sptRequest.setBatch(true);
-  sptRequest.setRoutingContext(graphService.getGraph(sptRequest.getRouterId()));
+  sptRequest.setRoutingContext(graphService.getGraph(sptRequest.routerId));
   final ShortestPathTree spt=sptService.getShortestPathTree(sptRequest);
   long t1=System.currentTimeMillis();
   Coordinate coordinateOrigin=spgRequest.coordinateOrigin;

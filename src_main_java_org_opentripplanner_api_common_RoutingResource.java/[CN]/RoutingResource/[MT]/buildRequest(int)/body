@@ -2,7 +2,7 @@
   RoutingRequest request=otpServer.routingRequest.clone();
   request.setFromString(get(fromPlace,n,request.getFromPlace().getRepresentation()));
   request.setToString(get(toPlace,n,request.getToPlace().getRepresentation()));
-  request.setRouterId(routerId);
+  request.routerId=routerId;
 {
     String d=get(date,n,null);
     String t=get(time,n,null);
