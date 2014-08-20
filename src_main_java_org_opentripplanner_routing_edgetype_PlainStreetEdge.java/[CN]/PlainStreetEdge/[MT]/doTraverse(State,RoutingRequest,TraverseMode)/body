@@ -72,8 +72,8 @@ weight*=options.walkReluctance;
 StateEditor s1=s0.edit(this);
 s1.setBackMode(traverseMode);
 s1.setBackWalkingBike(walkingBike);
-if (wheelchairNotes != null && options.wheelchairAccessible) {
-s1.addAlerts(wheelchairNotes);
+if (getWheelchairNotes() != null && options.wheelchairAccessible) {
+s1.addAlerts(getWheelchairNotes());
 }
 PlainStreetEdge backPSE;
 if (backEdge != null && backEdge instanceof PlainStreetEdge) {
