@@ -9,7 +9,7 @@
   }
   LOG.debug("rreq={}",options);
   RemainingWeightHeuristic heuristic;
-  if (options.isDisableRemainingWeightHeuristic()) {
+  if (options.disableRemainingWeightHeuristic) {
     heuristic=new TrivialRemainingWeightHeuristic();
   }
  else   if (options.modes.isTransit()) {

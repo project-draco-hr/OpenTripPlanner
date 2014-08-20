@@ -43,7 +43,7 @@
   when(depart.getCoordinate()).thenReturn(new Coordinate(0,0));
   when(arrive.getCoordinate()).thenReturn(new Coordinate(0,0));
   routingRequest.from=new GenericLocation();
-  when(routingRequest.getStartingTransitTripId()).thenReturn(agencyAndId);
+  routingRequest.startingTransitTripId=agencyAndId;
   when(serviceDay.secondsSinceMidnight(anyInt())).thenReturn(10);
   when(graph.getVertex("Station_0")).thenReturn(station0);
   when(graph.getVertex("Station_1")).thenReturn(station1);

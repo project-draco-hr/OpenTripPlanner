@@ -59,7 +59,7 @@
   when(dwell.getCoordinate()).thenReturn(new Coordinate(0,0));
   when(arrive.getCoordinate()).thenReturn(new Coordinate(0,0));
   routingRequest.from=new GenericLocation();
-  when(routingRequest.getStartingTransitTripId()).thenReturn(agencyAndId);
+  routingRequest.startingTransitTripId=agencyAndId;
   when(serviceDay.secondsSinceMidnight(anyInt())).thenReturn(9);
   patternHop0.setGeometry(geometry);
   tripPattern.add(tripTimes);

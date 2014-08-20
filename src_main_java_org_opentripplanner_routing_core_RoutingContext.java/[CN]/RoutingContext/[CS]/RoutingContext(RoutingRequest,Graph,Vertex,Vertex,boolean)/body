@@ -5,7 +5,7 @@
   this.opt=routingRequest;
   this.graph=graph;
   this.debugOutput.startedCalculating();
-  if (routingRequest.isIgnoreRealtimeUpdates()) {
+  if (routingRequest.ignoreRealtimeUpdates) {
     timetableSnapshot=null;
   }
  else {
@@ -31,7 +31,7 @@
  else {
       toVertex=null;
     }
-    if (opt.getStartingTransitTripId() != null && !opt.arriveBy) {
+    if (opt.startingTransitTripId != null && !opt.arriveBy) {
       OnBoardDepartService onBoardDepartService=graph.getService(OnBoardDepartService.class);
       if (onBoardDepartService == null)       throw new UnsupportedOperationException("Missing OnBoardDepartService");
       fromVertex=onBoardDepartService.setupDepartOnBoard(this);
@@ -65,8 +65,8 @@
       ((StreetLocation)fromVertex).getExtra().add(ppse);
     }
   }
-  if (opt.getStartingTransitStopId() != null) {
-    Stop stop=graph.index.stopForId.get(opt.getStartingTransitStopId());
+  if (opt.startingTransitStopId != null) {
+    Stop stop=graph.index.stopForId.get(opt.startingTransitStopId);
     TransitStop tstop=graph.index.stopVertexForStop.get(stop);
     startingStop=tstop.departVertex;
   }
