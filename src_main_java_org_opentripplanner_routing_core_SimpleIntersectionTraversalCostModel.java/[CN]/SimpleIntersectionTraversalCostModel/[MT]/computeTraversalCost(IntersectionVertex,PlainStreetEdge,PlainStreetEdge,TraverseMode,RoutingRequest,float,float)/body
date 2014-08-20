@@ -7,7 +7,7 @@
   }
   double turnCost=0;
   int turnAngle=calculateTurnAngle(from,to,options);
-  if (v.isTrafficLight()) {
+  if (v.trafficLight) {
     if (isRightTurn(turnAngle)) {
       turnCost=expectedRightAtLightTimeSec;
     }
