@@ -1,6 +1,6 @@
 {
   if (options.wheelchairAccessible) {
-    if (!wheelchairAccessible) {
+    if (!isWheelchairAccessible()) {
       return false;
     }
     if (elevationProfileSegment.getMaxSlope() > options.maxSlope) {
