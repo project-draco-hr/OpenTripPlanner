@@ -36,7 +36,7 @@
   System.out.println("Path from " + from + " to "+ to+ " at "+ when);
   System.out.println("\tModes: " + modeSet);
   System.out.println("\tOptions: " + options);
-  sptService.setNPaths(Integer.parseInt(this.nPaths.getText()));
+  sptService.nPaths=(Integer.parseInt(this.nPaths.getText()));
   if (dontUseGraphicalCallbackCheckBox.isSelected()) {
     sptService.setTraverseVisitor(null);
   }

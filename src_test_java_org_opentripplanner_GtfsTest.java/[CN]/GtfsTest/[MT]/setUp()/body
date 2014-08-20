@@ -36,7 +36,7 @@
   }
  else {
     pathService=new RetryingPathServiceImpl(null,genericAStar);
-    genericAStar.setNPaths(1);
+    genericAStar.nPaths=(1);
   }
   planGenerator=new PlanGenerator(null,pathService);
 }

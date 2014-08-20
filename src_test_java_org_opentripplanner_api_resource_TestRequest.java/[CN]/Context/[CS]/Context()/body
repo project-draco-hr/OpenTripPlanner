@@ -26,7 +26,7 @@
       throw new RuntimeException(e);
     }
   }
-  ((GenericAStar)otpServer.sptService).setNPaths(1);
+  ((GenericAStar)otpServer.sptService).nPaths=(1);
   TimetableResolver resolver=new TimetableResolver();
   TimetableSnapshotSource timetableSnapshotSource=mock(TimetableSnapshotSource.class);
   when(timetableSnapshotSource.getTimetableSnapshot()).thenReturn(resolver);
