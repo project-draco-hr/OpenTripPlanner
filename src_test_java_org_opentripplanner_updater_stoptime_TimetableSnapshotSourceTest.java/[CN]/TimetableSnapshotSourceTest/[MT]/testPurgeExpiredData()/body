@@ -3,11 +3,11 @@
   ServiceDate previously=serviceDate.previous().previous();
   Trip trip=graph.index.tripForId.get(tripId);
   TripPattern pattern=graph.index.patternForTrip.get(trip);
-  updater.setMaxSnapshotFrequency(0);
-  updater.setPurgeExpiredData(false);
+  updater.maxSnapshotFrequency=(0);
+  updater.purgeExpiredData=(false);
   updater.applyTripUpdates(Arrays.asList(TripUpdate.parseFrom(cancellation)),"agency");
   TimetableResolver resolverA=updater.getTimetableSnapshot();
-  updater.setPurgeExpiredData(true);
+  updater.purgeExpiredData=(true);
   TripDescriptor.Builder tripDescriptorBuilder=TripDescriptor.newBuilder();
   tripDescriptorBuilder.setTripId("1.1");
   tripDescriptorBuilder.setScheduleRelationship(TripDescriptor.ScheduleRelationship.CANCELED);
