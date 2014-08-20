@@ -71,7 +71,7 @@
   interline(tripPatterns.values());
   loadTransfers(graph);
   for (  TripPattern tableTripPattern : tripPatterns.values()) {
-    tableTripPattern.getScheduledTimetable().finish();
+    tableTripPattern.scheduledTimetable.finish();
   }
   clearCachedData();
   graph.putService(FareService.class,fareServiceFactory.makeFareService());

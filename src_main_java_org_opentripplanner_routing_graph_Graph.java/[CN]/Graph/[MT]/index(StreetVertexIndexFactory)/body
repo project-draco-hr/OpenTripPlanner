@@ -9,7 +9,7 @@
     tableTripPatterns.add(pav.getTripPattern());
   }
   for (  TripPattern ttp : tableTripPatterns) {
-    if (ttp != null)     ttp.getScheduledTimetable().finish();
+    if (ttp != null)     ttp.scheduledTimetable.finish();
   }
   this.index=new GraphIndex(this);
 }

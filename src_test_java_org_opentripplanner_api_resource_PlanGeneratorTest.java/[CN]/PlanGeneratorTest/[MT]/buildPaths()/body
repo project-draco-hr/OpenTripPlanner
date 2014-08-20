@@ -340,7 +340,7 @@
   graph.addAlertPatch(e29,alertPatch);
   ServiceDay serviceDay=new ServiceDay(graph,0,calendarServiceImpl,null);
   OnboardDepartVertex onboardDepartVertex=new OnboardDepartVertex("Onboard",23.0,12.0);
-  OnBoardDepartPatternHop onBoardDepartPatternHop=new OnBoardDepartPatternHop(onboardDepartVertex,v12,firstTripPattern.getScheduledTimetable().getTripTimes(0),serviceDay,0,0.5);
+  OnBoardDepartPatternHop onBoardDepartPatternHop=new OnBoardDepartPatternHop(onboardDepartVertex,v12,firstTripPattern.scheduledTimetable.getTripTimes(0),serviceDay,0,0.5);
   RoutingRequest forwardOptions=options.clone();
   RoutingContext forwardContext=new RoutingContext(forwardOptions,graph,v0,v60);
   forwardContext.serviceDays=new ArrayList<ServiceDay>(1);
