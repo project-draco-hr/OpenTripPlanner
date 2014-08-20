@@ -5,7 +5,7 @@
   rr.walkSpeed=request.walkSpeed;
   int worstElapsedTime=request.accessTime * 60;
   rr.worstTime=(rr.dateTime + worstElapsedTime);
-  rr.setBatch(true);
+  rr.batch=(true);
   GenericAStar astar=new GenericAStar();
   astar.setNPaths(1);
   for (  TransitStop tstop : graph.index.stopVertexForStop.values()) {

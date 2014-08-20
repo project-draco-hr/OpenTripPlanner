@@ -3,7 +3,7 @@
   if (!s0.getNonTransitMode().equals(TraverseMode.WALK))   return null;
   if (!options.modes.contains(TraverseMode.BICYCLE))   return null;
   BikeRentalStationVertex dropoff=(BikeRentalStationVertex)tov;
-  if (options.isUseBikeRentalAvailabilityInformation() && dropoff.getBikesAvailable() == 0) {
+  if (options.useBikeRentalAvailabilityInformation && dropoff.getBikesAvailable() == 0) {
     return null;
   }
   StateEditor s1=s0.edit(this);

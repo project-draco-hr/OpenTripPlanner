@@ -12,7 +12,7 @@
   walkingBike&=TraverseMode.WALK.equals(traverseMode);
   if (!canTraverse(options,traverseMode)) {
     if (traverseMode == TraverseMode.BICYCLE) {
-      return doTraverse(s0,options.getBikeWalkingOptions(),TraverseMode.WALK);
+      return doTraverse(s0,options.bikeWalkingOptions,TraverseMode.WALK);
     }
     return null;
   }
