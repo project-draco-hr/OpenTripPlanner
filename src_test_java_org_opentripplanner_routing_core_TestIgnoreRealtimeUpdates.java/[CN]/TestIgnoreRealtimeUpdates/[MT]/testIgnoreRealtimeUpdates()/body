@@ -11,7 +11,7 @@
   TimetableResolver resolver=new TimetableResolver();
   TimetableSnapshotSource source=mock(TimetableSnapshotSource.class);
   when(source.getTimetableSnapshot()).thenReturn(resolver);
-  graph.setTimetableSnapshotSource(source);
+  graph.timetableSnapshotSource=(source);
   RoutingContext rctx=new RoutingContext(options,graph,from,to);
   assertNotNull(rctx.timetableSnapshot);
   options.ignoreRealtimeUpdates=(true);

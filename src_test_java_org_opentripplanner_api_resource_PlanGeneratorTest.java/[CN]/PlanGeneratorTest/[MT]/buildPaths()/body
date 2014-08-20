@@ -336,7 +336,7 @@
   graph.putService(FareService.class,fareServiceStub);
   graph.addAgency(trainAgency);
   graph.addAgency(ferryAgency);
-  graph.setTimetableSnapshotSource(timetableSnapshotSource);
+  graph.timetableSnapshotSource=(timetableSnapshotSource);
   graph.addAlertPatch(e29,alertPatch);
   ServiceDay serviceDay=new ServiceDay(graph,0,calendarServiceImpl,null);
   OnboardDepartVertex onboardDepartVertex=new OnboardDepartVertex("Onboard",23.0,12.0);

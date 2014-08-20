@@ -1,10 +1,10 @@
 {
   updaterManager.executeBlocking(new GraphWriterRunnable(){
     @Override public void run(    Graph graph){
-      TimetableSnapshotSource snapshotSource=graph.getTimetableSnapshotSource();
+      TimetableSnapshotSource snapshotSource=graph.timetableSnapshotSource;
       if (snapshotSource == null) {
         snapshotSource=new TimetableSnapshotSource(graph);
-        graph.setTimetableSnapshotSource(snapshotSource);
+        graph.timetableSnapshotSource=(snapshotSource);
       }
       if (logFrequency != null) {
         snapshotSource.setLogFrequency(logFrequency);

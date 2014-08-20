@@ -30,5 +30,5 @@
   TimetableResolver resolver=new TimetableResolver();
   TimetableSnapshotSource timetableSnapshotSource=mock(TimetableSnapshotSource.class);
   when(timetableSnapshotSource.getTimetableSnapshot()).thenReturn(resolver);
-  graph.setTimetableSnapshotSource(timetableSnapshotSource);
+  graph.timetableSnapshotSource=(timetableSnapshotSource);
 }
