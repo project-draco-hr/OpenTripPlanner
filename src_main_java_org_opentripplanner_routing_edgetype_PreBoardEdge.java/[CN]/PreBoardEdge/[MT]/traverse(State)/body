@@ -13,7 +13,7 @@
   if (options.arriveBy) {
     StateEditor s1=s0.edit(this);
     TransitStop fromVertex=(TransitStop)getFromVertex();
-    s1.incrementTimeInSeconds(options.getBoardSlack());
+    s1.incrementTimeInSeconds(options.boardSlack);
     s1.alightTransit();
     s1.setBackMode(getMode());
     return s1.makeState();
@@ -24,10 +24,10 @@
     long t0=s0.getTimeSeconds();
     long slack;
     if (s0.isEverBoarded()) {
-      slack=options.getTransferSlack() - options.getAlightSlack();
+      slack=options.transferSlack - options.alightSlack;
     }
  else {
-      slack=options.getBoardSlack();
+      slack=options.boardSlack;
     }
     long board_after=t0 + slack;
     long transfer_penalty=0;
