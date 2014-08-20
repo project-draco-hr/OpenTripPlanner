@@ -2,7 +2,7 @@
   Stats s=new Stats();
   s.min=Integer.MAX_VALUE;
   s.num=0;
-  for (  TripTimes tripTimes : pattern.getScheduledTimetable().getTripTimes()) {
+  for (  TripTimes tripTimes : pattern.getScheduledTimetable().tripTimes) {
     int depart=tripTimes.getDepartureTime(stop0);
     int arrive=tripTimes.getArrivalTime(stop1);
     if (window.includes(depart) && window.includes(arrive) && window.servicesRunning.get(tripTimes.serviceCode)) {
