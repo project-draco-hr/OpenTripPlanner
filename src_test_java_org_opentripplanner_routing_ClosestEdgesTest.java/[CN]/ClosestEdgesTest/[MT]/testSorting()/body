@@ -3,7 +3,7 @@
   TraversalRequirements reqs=new TraversalRequirements();
   TraverseModeSet modes=new TraverseModeSet();
   modes.setCar(true);
-  reqs.setModes(modes);
+  reqs.modes=modes;
   GenericLocation loc=new GenericLocation(c);
   loc.heading=top.getAzimuth();
   CandidateEdgeBundle candidates=finder.getClosestEdges(loc,reqs);
