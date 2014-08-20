@@ -1,7 +1,7 @@
 {
   RoutingRequest options=state0.getOptions();
-  if (!options.getBannedStopsHard().isEmpty()) {
-    if (options.getBannedStopsHard().matches(((PatternStopVertex)fromv).getStop()) || options.getBannedStopsHard().matches(((PatternStopVertex)tov).getStop())) {
+  if (!options.bannedStopsHard.isEmpty()) {
+    if (options.bannedStopsHard.matches(((PatternStopVertex)fromv).getStop()) || options.bannedStopsHard.matches(((PatternStopVertex)tov).getStop())) {
       return null;
     }
   }
