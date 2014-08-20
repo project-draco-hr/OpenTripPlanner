@@ -14,7 +14,7 @@
   }
   routingRequest.setRoutingContext(graph);
   routingRequest.setWheelchairAccessible(wheelchairAccessible);
-  routingRequest.setTransferPenalty(preferLeastTransfers ? 300 : 0);
+  routingRequest.transferPenalty=(preferLeastTransfers ? 300 : 0);
   routingRequest.setModes(new TraverseModeSet(TraverseMode.WALK,mode));
   if (excludedRoute != null && !excludedRoute.isEmpty()) {
     routingRequest.setBannedRoutes(agencyId + "__" + excludedRoute);

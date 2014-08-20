@@ -10,8 +10,8 @@
   State s2=e1.traverse(s1);
   State s3=e2.traverse(s2);
   RoutingRequest withPenalty=proto.clone();
-  withPenalty.setBikeSwitchTime(42);
-  withPenalty.setBikeSwitchCost(23);
+  withPenalty.bikeSwitchTime=(42);
+  withPenalty.bikeSwitchCost=(23);
   withPenalty.setMode(TraverseMode.BICYCLE);
   withPenalty.setRoutingContext(_graph,v0,v0);
   State s4=new State(withPenalty);
