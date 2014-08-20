@@ -1,0 +1,8 @@
+{
+  Map<StopCluster,Double> ret=Maps.newHashMap();
+  for (  StopCluster cluster : stopClusterSpatialIndex.query(sc.lon,sc.lat,radius)) {
+    double distance=distlib.distance(sc.lat,sc.lon,cluster.lat,cluster.lon);
+    if (distance < radius)     ret.put(cluster,distance);
+  }
+  return ret;
+}

@@ -1,5 +1,5 @@
 {
-  if (graph.index.transfersForStop == null) {
+  if (graph.index.transfersFromStopCluster == null) {
     graph.index.initializeProfileTransfers();
   }
   if (request.analyst) {
@@ -25,12 +25,12 @@
   LOG.info("Done finding access/egress paths.");
   LOG.info("From patterns/stops: {}",fromStops);
   LOG.info("To patterns/stops: {}",toStops);
-  Map<Stop,Ride> initialRides=Maps.newHashMap();
+  Map<StopCluster,Ride> initialRides=Maps.newHashMap();
   for (  Entry<TripPattern,StopAtDistance> entry : fromStops.entrySet()) {
     TripPattern pattern=entry.getKey();
     StopAtDistance sd=entry.getValue();
     for (int i=0; i < pattern.getStops().size(); ++i) {
-      if (pattern.getStops().get(i) == sd.stop) {
+      if (pattern.getStops().get(i).getParentStation() == sd.stop.id) {
         if (request.modes.contains(pattern.mode)) {
           Ride ride=initialRides.get(sd.stop);
           if (ride == null) {
@@ -50,7 +50,7 @@
   while (!queue.empty()) {
     Ride ride=queue.extract_min();
     if (ride.to != null)     throw new AssertionError("Ride should be unfinished.");
-    Map<Stop,Ride> rides=Maps.newHashMap();
+    Map<StopCluster,Ride> rides=Maps.newHashMap();
     PR:     for (    PatternRide pr : ride.patternRides) {
       List<Stop> stops=pr.pattern.getStops();
       Stop targetStop=null;

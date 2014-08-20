@@ -1,24 +1,24 @@
 {
-  transfersForStop=HashMultimap.create();
+  transfersFromStopCluster=HashMultimap.create();
   final double TRANSFER_RADIUS=500.0;
   SimpleIsochrone.MinMap<P2<TripPattern>,ProfileTransfer> bestTransfers=new SimpleIsochrone.MinMap<P2<TripPattern>,ProfileTransfer>();
   LOG.info("Finding transfers...");
-  for (  Stop s0 : stopForId.values()) {
-    Collection<TripPattern> ps0=patternsForStop.get(s0);
-    Map<Stop,Double> stops=findTransitStops(s0.getLon(),s0.getLat(),TRANSFER_RADIUS);
-    for (    Stop s1 : stops.keySet()) {
-      double distance=stops.get(s1);
-      Collection<TripPattern> ps1=patternsForStop.get(s1);
-      for (      TripPattern p0 : ps0) {
-        for (        TripPattern p1 : ps1) {
-          if (p0 == p1)           continue;
-          bestTransfers.putMin(new P2<TripPattern>(p0,p1),new ProfileTransfer(p0,p1,s0,s1,(int)distance));
+  for (  StopCluster sc0 : stopClusterForId.values()) {
+    Set<TripPattern> tripPatterns0=patternsForStopCluster(sc0);
+    Map<StopCluster,Double> nearbyStopClusters=findNearbyStopClusters(sc0,TRANSFER_RADIUS);
+    for (    StopCluster sc1 : nearbyStopClusters.keySet()) {
+      double distance=nearbyStopClusters.get(sc1);
+      Set<TripPattern> tripPatterns1=patternsForStopCluster(sc1);
+      for (      TripPattern tp0 : tripPatterns0) {
+        for (        TripPattern tp1 : tripPatterns1) {
+          if (tp0 == tp1)           continue;
+          bestTransfers.putMin(new P2<TripPattern>(tp0,tp1),new ProfileTransfer(tp0,tp1,sc0,sc1,(int)distance));
         }
       }
     }
   }
   for (  ProfileTransfer tr : bestTransfers.values()) {
-    transfersForStop.put(tr.s1,tr);
+    transfersFromStopCluster.put(tr.sc1,tr);
   }
   LOG.info("Done finding transfers.");
 }
