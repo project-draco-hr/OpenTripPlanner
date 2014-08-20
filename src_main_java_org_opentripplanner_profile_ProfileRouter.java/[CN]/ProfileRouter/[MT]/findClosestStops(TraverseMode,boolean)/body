@@ -6,7 +6,7 @@
   rr.setMode(mode);
   rr.setRoutingContext(graph);
   rr.setBatch(true);
-  rr.setWalkSpeed(request.walkSpeed);
+  rr.walkSpeed=request.walkSpeed;
   long worstElapsedTime=request.accessTime * 60;
   if (dest)   worstElapsedTime*=-1;
   rr.worstTime=(rr.dateTime + worstElapsedTime);

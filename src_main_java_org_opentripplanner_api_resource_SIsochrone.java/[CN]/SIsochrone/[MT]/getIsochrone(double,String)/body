@@ -54,10 +54,10 @@
   int numberOfModes=modes.getModes().size();
   if (numberOfModes == 1) {
     if (modes.getWalk()) {
-      this.maxUserSpeed=sptRequestA.getWalkSpeed();
+      this.maxUserSpeed=sptRequestA.walkSpeed;
     }
  else     if (modes.getBicycle()) {
-      this.maxUserSpeed=sptRequestA.getBikeSpeed();
+      this.maxUserSpeed=sptRequestA.bikeSpeed;
     }
  else     if (modes.getDriving()) {
       this.maxUserSpeed=sptRequestA.getCarSpeed();
@@ -65,7 +65,7 @@
     }
   }
  else {
-    this.maxUserSpeed=sptRequestA.getWalkSpeed();
+    this.maxUserSpeed=sptRequestA.walkSpeed;
   }
   if (doSpeedTest) {
     LOG.debug("performing angle and speed based test to detect u-shapes");

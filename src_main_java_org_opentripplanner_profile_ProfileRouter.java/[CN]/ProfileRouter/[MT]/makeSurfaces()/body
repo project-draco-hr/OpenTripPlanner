@@ -2,7 +2,7 @@
   LOG.info("Propagating profile router result to street vertices.");
   RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
   rr.setMode(TraverseMode.WALK);
-  rr.setWalkSpeed(request.walkSpeed);
+  rr.walkSpeed=request.walkSpeed;
   int worstElapsedTime=request.accessTime * 60;
   rr.worstTime=(rr.dateTime + worstElapsedTime);
   rr.setBatch(true);
