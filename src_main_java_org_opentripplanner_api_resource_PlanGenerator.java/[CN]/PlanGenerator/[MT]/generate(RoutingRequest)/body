@@ -4,7 +4,7 @@
   boolean tooSloped=false;
   try {
     paths=pathService.getPaths(options);
-    if (paths == null && options.isWheelchairAccessible()) {
+    if (paths == null && options.wheelchairAccessible) {
       options.maxSlope=Double.MAX_VALUE;
       options.maxWalkDistance=originalOptions.maxWalkDistance;
       paths=pathService.getPaths(options);
@@ -21,7 +21,7 @@
     throw new PathNotFoundException();
   }
   for (  GraphPath graphPath : paths) {
-    if (originalOptions.isArriveBy()) {
+    if (originalOptions.arriveBy) {
       if (graphPath.states.getLast().getTimeSeconds() > originalOptions.dateTime) {
         LOG.error("A graph path arrives after the requested time. This implies a bug.");
       }

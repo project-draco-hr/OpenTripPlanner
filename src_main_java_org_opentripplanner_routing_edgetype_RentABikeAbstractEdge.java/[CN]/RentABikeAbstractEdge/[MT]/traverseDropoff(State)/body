@@ -6,8 +6,8 @@
     return null;
   }
   StateEditor s1e=s0.edit(this);
-  s1e.incrementWeight(options.isArriveBy() ? options.bikeRentalPickupCost : options.bikeRentalDropoffCost);
-  s1e.incrementTimeInSeconds(options.isArriveBy() ? options.bikeRentalPickupTime : options.bikeRentalDropoffTime);
+  s1e.incrementWeight(options.arriveBy ? options.bikeRentalPickupCost : options.bikeRentalDropoffCost);
+  s1e.incrementTimeInSeconds(options.arriveBy ? options.bikeRentalPickupTime : options.bikeRentalDropoffTime);
   s1e.setBikeRenting(false);
   s1e.setBackMode(TraverseMode.WALK);
   State s1=s1e.makeState();

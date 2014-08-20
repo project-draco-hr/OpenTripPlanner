@@ -10,7 +10,7 @@
   while (orig.getBackState() != null) {
     edge=orig.getBackEdge();
     if (optimize) {
-      if (edge instanceof TransitBoardAlight && forward && orig.getNumBoardings() == 1 && ((((TransitBoardAlight)edge).isBoarding() && !stateData.opt.isArriveBy()) || (!((TransitBoardAlight)edge).isBoarding() && stateData.opt.isArriveBy()))) {
+      if (edge instanceof TransitBoardAlight && forward && orig.getNumBoardings() == 1 && ((((TransitBoardAlight)edge).isBoarding() && !stateData.opt.arriveBy) || (!((TransitBoardAlight)edge).isBoarding() && stateData.opt.arriveBy))) {
         ret=((TransitBoardAlight)edge).traverse(ret,orig.getBackState().getTimeSeconds());
         newInitialWaitTime=ret.stateData.initialWaitTime;
       }

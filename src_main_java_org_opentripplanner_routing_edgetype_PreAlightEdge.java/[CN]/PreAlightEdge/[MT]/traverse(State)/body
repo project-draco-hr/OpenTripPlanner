@@ -10,7 +10,7 @@
       return null;
     }
   }
-  if (options.isArriveBy()) {
+  if (options.arriveBy) {
     if (!options.modes.isTransit())     return null;
     TransitStop toVertex=(TransitStop)getToVertex();
     if (s0.getNumBoardings() > options.maxTransfers)     return null;

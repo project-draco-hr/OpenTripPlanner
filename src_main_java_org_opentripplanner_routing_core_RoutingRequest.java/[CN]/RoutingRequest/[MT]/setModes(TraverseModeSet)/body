@@ -2,7 +2,7 @@
   this.modes=modes;
   if (modes.getBicycle()) {
     bikeWalkingOptions=new RoutingRequest();
-    bikeWalkingOptions.setArriveBy(this.isArriveBy());
+    bikeWalkingOptions.setArriveBy(this.arriveBy);
     bikeWalkingOptions.maxWalkDistance=maxWalkDistance;
     bikeWalkingOptions.maxPreTransitTime=maxPreTransitTime;
     bikeWalkingOptions.walkSpeed=walkSpeed * 0.8;
@@ -17,7 +17,7 @@
   }
  else   if (modes.getDriving()) {
     bikeWalkingOptions=new RoutingRequest();
-    bikeWalkingOptions.setArriveBy(this.isArriveBy());
+    bikeWalkingOptions.setArriveBy(this.arriveBy);
     bikeWalkingOptions.maxWalkDistance=maxWalkDistance;
     bikeWalkingOptions.maxPreTransitTime=maxPreTransitTime;
     bikeWalkingOptions.modes=modes.clone();

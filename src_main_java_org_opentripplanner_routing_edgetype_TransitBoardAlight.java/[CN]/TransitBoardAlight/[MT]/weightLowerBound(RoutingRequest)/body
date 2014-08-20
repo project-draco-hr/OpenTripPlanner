@@ -1,4 +1,4 @@
 {
-  if ((options.isArriveBy() && boarding) || (!options.isArriveBy() && !boarding))   return timeLowerBound(options);
+  if ((options.arriveBy && boarding) || (!options.arriveBy && !boarding))   return timeLowerBound(options);
  else   return options.getBoardCostLowerBound();
 }

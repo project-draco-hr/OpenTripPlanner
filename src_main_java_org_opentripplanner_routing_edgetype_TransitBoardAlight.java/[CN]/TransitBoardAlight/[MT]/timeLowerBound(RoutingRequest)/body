@@ -1,5 +1,5 @@
 {
-  if ((options.isArriveBy() && boarding) || (!options.isArriveBy() && !boarding)) {
+  if ((options.arriveBy && boarding) || (!options.arriveBy && !boarding)) {
     if (!options.modes.get(modeMask)) {
       return Double.POSITIVE_INFINITY;
     }

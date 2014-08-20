@@ -5,7 +5,7 @@
     return null;
   }
   ;
-  boolean leavingTransit=(boarding && options.isArriveBy()) || (!boarding && !options.isArriveBy());
+  boolean leavingTransit=(boarding && options.arriveBy) || (!boarding && !options.arriveBy);
   if (leavingTransit) {
     if (s0.getBackEdge() instanceof TransitBoardAlight) {
       return null;
