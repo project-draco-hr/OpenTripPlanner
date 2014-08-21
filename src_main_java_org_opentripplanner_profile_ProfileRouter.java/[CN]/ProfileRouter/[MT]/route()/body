@@ -52,13 +52,8 @@
     Map<StopCluster,Ride> rides=Maps.newHashMap();
     PR:     for (    PatternRide pr : ride.patternRides) {
       List<Stop> stops=pr.pattern.getStops();
-      StopCluster targetCluster=null;
-      if (toStops != null && toStops.containsKey(pr.pattern)) {
-        targetCluster=toStops.get(pr.pattern).stop;
-      }
       for (int s=pr.fromIndex + 1; s < stops.size(); ++s) {
         StopCluster cluster=graph.index.stopClusterForStop.get(stops.get(s));
-        boolean isTarget=(targetCluster != null && targetCluster == cluster);
         PatternRide pr2=pr.extendToIndex(s,window);
         if (pr2 == null)         continue PR;
         Ride ride2=rides.get(cluster);
@@ -67,14 +62,12 @@
           rides.put(cluster,ride2);
         }
         ride2.patternRides.add(pr2);
-        if (isTarget)         targetRides.add(ride2);
       }
     }
     Map<StopCluster,Ride> xferRides=Maps.newHashMap();
     for (    Ride r1 : rides.values()) {
       r1.calcStats(window,request.walkSpeed);
       if (r1.waitStats == null) {
-        targetRides.remove(r1);
         continue;
       }
       if (!addIfNondominated(r1))       continue;
@@ -124,6 +117,19 @@
     makeSurfaces();
     return null;
   }
+  Set<Ride> targetRides=Sets.newHashSet();
+  for (  StopCluster cluster : toStopPaths.keySet()) {
+    for (    Ride ride : retainedRides.get(cluster)) {
+      PATTERN:       for (      PatternRide pr : ride.patternRides) {
+        StopAtDistance clusterForPattern=toStops.get(pr.pattern);
+        if (clusterForPattern != null && clusterForPattern.stop == cluster) {
+          targetRides.add(ride);
+          break PATTERN;
+        }
+      }
+    }
+  }
+  LOG.info("{} nondominated rides stop near the destination.",targetRides.size());
   List<Option> options=Lists.newArrayList();
   for (  Ride ride : targetRides) {
     int dist=toStops.get(ride.patternRides.get(0).pattern).etime;

@@ -4,11 +4,13 @@
     cluster=newRide.from;
     newRide=newRide.previous;
   }
-  int ndlb=newRide.durationLowerBound();
-  if (ndlb > MAX_DURATION)   return false;
+  if (newRide.durationLowerBound() > MAX_DURATION)   return false;
   for (  Ride oldRide : retainedRides.get(cluster)) {
     if (oldRide.to == null)     oldRide=oldRide.previous;
-    if (ndlb > oldRide.durationUpperBound()) {
+    if (oldRide.pathLength() < newRide.pathLength() && oldRide.durationLowerBound() < newRide.durationLowerBound() && oldRide.durationUpperBound() < newRide.durationUpperBound()) {
+      return false;
+    }
+    if (newRide.durationLowerBound() > oldRide.durationUpperBound()) {
       return false;
     }
   }
