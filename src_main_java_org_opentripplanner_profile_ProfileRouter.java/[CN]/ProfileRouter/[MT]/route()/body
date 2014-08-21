@@ -59,17 +59,15 @@
       for (int s=pr.fromIndex + 1; s < stops.size(); ++s) {
         StopCluster cluster=graph.index.stopClusterForStop.get(stops.get(s));
         boolean isTarget=(targetCluster != null && targetCluster == cluster);
-        if (isTarget || hasTransfers(cluster,pr.pattern)) {
-          PatternRide pr2=pr.extendToIndex(s,window);
-          if (pr2 == null)           continue PR;
-          Ride ride2=rides.get(cluster);
-          if (ride2 == null) {
-            ride2=ride.extendTo(cluster);
-            rides.put(cluster,ride2);
-          }
-          ride2.patternRides.add(pr2);
-          if (isTarget)           targetRides.add(ride2);
+        PatternRide pr2=pr.extendToIndex(s,window);
+        if (pr2 == null)         continue PR;
+        Ride ride2=rides.get(cluster);
+        if (ride2 == null) {
+          ride2=ride.extendTo(cluster);
+          rides.put(cluster,ride2);
         }
+        ride2.patternRides.add(pr2);
+        if (isTarget)         targetRides.add(ride2);
       }
     }
     Map<StopCluster,Ride> xferRides=Maps.newHashMap();
@@ -79,6 +77,7 @@
         targetRides.remove(r1);
         continue;
       }
+      if (!addIfNondominated(r1))       continue;
       if (request.analyst) {
         TransitStop tstop=graph.index.stopVertexForStop.get(r1.to);
         int tsidx=tstop.getIndex();
@@ -115,7 +114,9 @@
         }
       }
     }
-    for (    Ride r : xferRides.values())     maybeAddRide(r);
+    for (    Ride r : xferRides.values()) {
+      if (addIfNondominated(r))       queue.insert(r,r.previous.durationLowerBound());
+    }
     if (System.currentTimeMillis() > abortTime)     throw new RuntimeException("TIMEOUT");
   }
   LOG.info("Profile routing request finished in {} sec.",(System.currentTimeMillis() - searchBeginTime) / 1000.0);

@@ -1,0 +1,17 @@
+{
+  StopCluster cluster=newRide.to;
+  if (cluster == null) {
+    cluster=newRide.from;
+    newRide=newRide.previous;
+  }
+  int ndlb=newRide.durationLowerBound();
+  if (ndlb > MAX_DURATION)   return false;
+  for (  Ride oldRide : retainedRides.get(cluster)) {
+    if (oldRide.to == null)     oldRide=oldRide.previous;
+    if (ndlb > oldRide.durationUpperBound()) {
+      return false;
+    }
+  }
+  retainedRides.put(cluster,newRide);
+  return true;
+}
