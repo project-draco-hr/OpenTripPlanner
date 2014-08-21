@@ -3,7 +3,7 @@
     return null;
   }
   StringBuffer gen_name=new StringBuffer();
-  matcher.reset(pattern);
+  Matcher matcher=patternMatcher.matcher(pattern);
   int lastEnd=0;
   while (matcher.find()) {
     gen_name.append(pattern,lastEnd,matcher.start());
