@@ -21,4 +21,7 @@ if (limit > 0 && limit <= transitOptions.size()) {
 transitOptions=transitOptions.subList(0,limit);
 }
 this.options.addAll(transitOptions);
+for (Option option : this.options) {
+LOG.info("{} {}",option.stats,option.summary);
+}
 }
