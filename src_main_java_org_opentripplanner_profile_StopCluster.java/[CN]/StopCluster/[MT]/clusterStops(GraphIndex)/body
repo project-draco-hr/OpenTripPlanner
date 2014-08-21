@@ -4,6 +4,9 @@
   LOG.info("Clustering stops by geographic and name proximity...");
   Map<String,String> descriptionForStationId=Maps.newHashMap();
   for (  Stop s0 : gidx.stopForId.values()) {
+    s0.setParentStation(null);
+  }
+  for (  Stop s0 : gidx.stopForId.values()) {
     if (s0.getParentStation() != null)     continue;
     String s0normalizedName=StopNameNormalizer.normalize(s0.getName());
     StopCluster cluster=new StopCluster(String.format("C%03d",psIdx++),s0normalizedName);

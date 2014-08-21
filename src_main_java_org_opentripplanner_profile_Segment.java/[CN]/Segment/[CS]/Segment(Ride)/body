@@ -1,14 +1,16 @@
 {
   Route route=ride.patternRides.get(0).pattern.getRoute();
-  from=ride.from.getId();
-  to=ride.to.getId();
-  fromName=ride.from.getName();
-  toName=ride.to.getName();
+  from=ride.from.id;
+  to=ride.to.id;
+  fromName=ride.from.name;
+  toName=ride.to.name;
   rideStats=ride.rideStats;
   Set<Route> routes=Sets.newHashSet();
+  LOG.info(" Ride fom {} to {}",ride.from.id,ride.to.id);
   for (  PatternRide patternRide : ride.patternRides) {
     segmentPatterns.add(new SegmentPattern(patternRide));
     routes.add(patternRide.pattern.route);
+    LOG.info("   pattern {} {} from {} to {}",patternRide.pattern.mode,patternRide.pattern.getCode(),patternRide.getFromStop(),patternRide.getToStop());
   }
   Collections.sort(segmentPatterns);
   mode=ride.patternRides.get(0).pattern.mode;

@@ -16,5 +16,5 @@
   astar.setTraverseVisitor(visitor);
   ShortestPathTree spt=astar.getShortestPathTree(rr,5);
   routingContexts.add(rr.rctx);
-  return visitor.stopsFound;
+  return visitor.stopClustersFound.values();
 }

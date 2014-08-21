@@ -1,10 +1,9 @@
 {
-  Multimap<Stop,StopAtDistance> pathsByStop=ArrayListMultimap.create();
+  Multimap<StopCluster,StopAtDistance> pathsByStop=ArrayListMultimap.create();
   for (  TraverseMode mode : (dest ? EGRESS_MODES : ACCESS_MODES)) {
     if (request.modes.contains(mode)) {
       LOG.info("{} mode {}",dest ? "egress" : "access",mode);
-      List<StopAtDistance> stops=findClosestStops(mode,dest);
-      for (      StopAtDistance sd : stops) {
+      for (      StopAtDistance sd : findClosestStops(mode,dest)) {
         pathsByStop.put(sd.stop,sd);
       }
     }

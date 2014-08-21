@@ -1,8 +1,10 @@
 {
   SimpleIsochrone.MinMap<TripPattern,StopAtDistance> closest=new SimpleIsochrone.MinMap<TripPattern,StopAtDistance>();
-  for (  StopAtDistance stopDist : stops.values()) {
-    for (    TripPattern pattern : graph.index.patternsForStop.get(stopDist.stop)) {
-      closest.putMin(pattern,stopDist);
+  for (  StopAtDistance stopDist : stopClusters.values()) {
+    for (    Stop stop : stopDist.stop.children) {
+      for (      TripPattern pattern : graph.index.patternsForStop.get(stop)) {
+        closest.putMin(pattern,stopDist);
+      }
     }
   }
   if (closest.size() > 500) {

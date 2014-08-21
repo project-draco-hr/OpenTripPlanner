@@ -4,6 +4,7 @@
   mode=state.getNonTransitMode();
   if (state.getVertex() instanceof TransitStop) {
     TransitStop tstop=(TransitStop)state.getVertex();
-    stop=tstop.getStop();
+    StopCluster cluster=state.getOptions().rctx.graph.index.clusterForStop(tstop.getStop());
+    stop=cluster;
   }
 }
