@@ -31,7 +31,7 @@
     StopAtDistance sd=entry.getValue();
     if (!request.modes.contains(pattern.mode))     continue;
     for (int i=0; i < pattern.getStops().size(); ++i) {
-      if (sd.stop == graph.index.clusterForStop(pattern.getStops().get(i))) {
+      if (sd.stop == graph.index.stopClusterForStop.get(pattern.getStops().get(i))) {
         Ride ride=initialRides.get(sd.stop);
         if (ride == null) {
           ride=new Ride(sd.stop,null);
@@ -57,7 +57,7 @@
         targetCluster=toStops.get(pr.pattern).stop;
       }
       for (int s=pr.fromIndex + 1; s < stops.size(); ++s) {
-        StopCluster cluster=graph.index.clusterForStop(stops.get(s));
+        StopCluster cluster=graph.index.stopClusterForStop.get(stops.get(s));
         boolean isTarget=(targetCluster != null && targetCluster == cluster);
         if (isTarget || hasTransfers(cluster,pr.pattern)) {
           PatternRide pr2=pr.extendToIndex(s,window);
@@ -97,7 +97,7 @@
           if (tr.sc1 != tr.sc2 && r1.pathContainsStop(tr.sc2))           continue;
           if (!request.analyst && penultimateRide && !toStops.containsKey(tr.tp2))           continue;
           TARGET_STOP:           for (int i=0; i < tr.tp2.getStops().size(); ++i) {
-            StopCluster cluster=graph.index.clusterForStop(tr.tp2.getStops().get(i));
+            StopCluster cluster=graph.index.stopClusterForStop.get(tr.tp2.getStops().get(i));
             if (cluster == tr.sc2) {
               Ride r2=xferRides.get(tr.sc2);
               if (r2 == null) {

@@ -42,9 +42,10 @@
   for (  Route route : patternsForRoute.asMap().keySet()) {
     routeForId.put(route.getId(),route);
   }
+  clusterStops();
+  LOG.info("Creating a spatial index for stop clusters.");
   stopClusterSpatialIndex=new HashGrid<StopCluster>();
-  for (  StopCluster cluster : StopCluster.clusterStops(this)) {
-    stopClusterForId.put(cluster.id,cluster);
+  for (  StopCluster cluster : stopClusterForId.values()) {
     stopClusterSpatialIndex.put(new Coordinate(cluster.lon,cluster.lat),cluster);
   }
   calendarService=graph.getCalendarService();
