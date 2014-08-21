@@ -5,7 +5,7 @@
   int bestRightScore=0;
   List<WayProperties> leftMixins=new ArrayList<WayProperties>();
   List<WayProperties> rightMixins=new ArrayList<WayProperties>();
-  for (  WayPropertyPicker picker : getWayProperties()) {
+  for (  WayPropertyPicker picker : wayProperties) {
     OSMSpecifier specifier=picker.getSpecifier();
     WayProperties wayProperties=picker.getProperties();
     P2<Integer> score=specifier.matchScores(way);

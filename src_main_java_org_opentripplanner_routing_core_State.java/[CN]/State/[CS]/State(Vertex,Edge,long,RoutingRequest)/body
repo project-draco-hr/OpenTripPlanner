@@ -8,7 +8,7 @@
   this.stateData.startTime=timeSeconds;
   this.stateData.usingRentedBike=false;
   if (options.parkAndRide || options.kissAndRide) {
-    this.stateData.carParked=options.isArriveBy();
+    this.stateData.carParked=options.arriveBy;
     this.stateData.nonTransitMode=this.stateData.carParked ? TraverseMode.WALK : TraverseMode.CAR;
   }
   this.walkDistance=0;

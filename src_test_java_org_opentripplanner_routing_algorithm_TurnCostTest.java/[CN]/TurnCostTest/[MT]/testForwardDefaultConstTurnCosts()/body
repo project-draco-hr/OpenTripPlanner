@@ -1,6 +1,6 @@
 {
   RoutingRequest options=proto.clone();
-  options.setTraversalCostModel(new ConstantIntersectionTraversalCostModel(10.0));
+  options.traversalCostModel=(new ConstantIntersectionTraversalCostModel(10.0));
   options.setRoutingContext(_graph,topRight,bottomLeft);
   GraphPath path=checkForwardRouteDuration(options,330);
   List<State> states=path.states;

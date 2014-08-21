@@ -1,6 +1,6 @@
 {
   RoutingRequest rr=s0.getOptions();
-  double walkspeed=rr.getWalkSpeed();
+  double walkspeed=rr.walkSpeed;
   StateEditor se=s0.edit(this);
   se.setBackMode(TraverseMode.WALK);
   int time=(int)Math.ceil(distance / walkspeed) + 2 * StreetTransitLink.STL_TRAVERSE_COST;

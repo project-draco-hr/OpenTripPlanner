@@ -1,7 +1,7 @@
 {
   Edge other=e;
   if (e instanceof PartialPlainStreetEdge) {
-    other=((PartialPlainStreetEdge)e).getParentEdge();
+    other=((PartialPlainStreetEdge)e).parentEdge;
   }
   return parentEdge.isReverseOf(other);
 }

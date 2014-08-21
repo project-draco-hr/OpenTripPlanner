@@ -14,7 +14,7 @@
   assertEquals("15.1",trips.get(1).getId().getId());
   long time=-1;
   for (  State s : path.states) {
-    if (s.getBackEdge() instanceof TransitBoardAlight && ((TransitBoardAlight)s.getBackEdge()).isBoarding()) {
+    if (s.getBackEdge() instanceof TransitBoardAlight && ((TransitBoardAlight)s.getBackEdge()).boarding) {
       time=s.getTimeSeconds();
     }
   }
@@ -30,7 +30,7 @@
   assertEquals("15.1",trips.get(1).getId().getId());
   long newTime=-1;
   for (  State s : path.states) {
-    if (s.getBackEdge() instanceof TransitBoardAlight && ((TransitBoardAlight)s.getBackEdge()).isBoarding()) {
+    if (s.getBackEdge() instanceof TransitBoardAlight && ((TransitBoardAlight)s.getBackEdge()).boarding) {
       newTime=s.getTimeSeconds();
     }
   }

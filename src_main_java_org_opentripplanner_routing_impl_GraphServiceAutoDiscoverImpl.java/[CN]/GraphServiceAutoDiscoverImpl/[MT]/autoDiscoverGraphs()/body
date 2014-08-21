@@ -1,9 +1,9 @@
 {
-  LOG.debug("Auto discovering graphs under {}",decorated.getBasePath());
+  LOG.debug("Auto discovering graphs under {}",decorated.basePath);
   Collection<String> graphOnDisk=new HashSet<String>();
   Collection<String> graphToLoad=new HashSet<String>();
   long validEndTime=System.currentTimeMillis() - loadDelaySec * 1000;
-  File baseFile=new File(decorated.getBasePath());
+  File baseFile=new File(decorated.basePath);
   File rootGraphFile=new File(baseFile,GraphServiceFileImpl.GRAPH_FILENAME);
   if (rootGraphFile.exists() && rootGraphFile.canRead()) {
     graphOnDisk.add("");
@@ -42,8 +42,8 @@
       decorated.evictGraph(routerId);
     }
   }
-  if (!getRouterIds().contains(decorated.getDefaultRouterId())) {
-    LOG.warn("Default routerId '{}' not available!",decorated.getDefaultRouterId());
+  if (!getRouterIds().contains(decorated.defaultRouterId)) {
+    LOG.warn("Default routerId '{}' not available!",decorated.defaultRouterId);
     if (!getRouterIds().isEmpty()) {
       String defRouterId=null;
       if (getRouterIds().contains("")) {
@@ -55,7 +55,7 @@
         if (getRouterIds().size() > 1)         LOG.warn("Setting default routerId to arbitrary one '{}'",defRouterId);
  else         LOG.info("Setting default routerId to '{}'",defRouterId);
       }
-      decorated.setDefaultRouterId(defRouterId);
+      decorated.defaultRouterId=(defRouterId);
     }
   }
   if (this.getRouterIds().isEmpty()) {

@@ -18,7 +18,7 @@
       System.out.println(u_vertex);
     }
     if (searchTerminationStrategy != null && !searchTerminationStrategy.shouldSearchContinue(initialState.getVertex(),null,u,spt,options))     break;
-    for (    Edge edge : options.isArriveBy() ? u_vertex.getIncoming() : u_vertex.getOutgoing()) {
+    for (    Edge edge : options.arriveBy ? u_vertex.getIncoming() : u_vertex.getOutgoing()) {
       if (skipEdgeStrategy != null && skipEdgeStrategy.shouldSkipEdge(initialState.getVertex(),null,u,edge,spt,options))       continue;
       for (State v=edge.traverse(u); v != null; v=v.getNextResult()) {
         if (skipTraverseResultStrategy != null && skipTraverseResultStrategy.shouldSkipTraversalResult(initialState.getVertex(),null,u,v,spt,options))         continue;

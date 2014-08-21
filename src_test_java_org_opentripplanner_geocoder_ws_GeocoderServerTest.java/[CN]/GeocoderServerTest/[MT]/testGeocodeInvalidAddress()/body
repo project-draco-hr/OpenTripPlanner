@@ -1,11 +1,11 @@
 {
   final String error="uh oh";
-  geocoderServer.setGeocoder(new Geocoder(){
+  geocoderServer.geocoder=new Geocoder(){
     @Override public GeocoderResults geocode(    String address,    Envelope bbox){
       return new GeocoderResults(error);
     }
   }
-);
+;
   GeocoderResults result=geocoderServer.geocode("121 elm street",null);
   assertEquals("error returned",error,result.getError());
 }

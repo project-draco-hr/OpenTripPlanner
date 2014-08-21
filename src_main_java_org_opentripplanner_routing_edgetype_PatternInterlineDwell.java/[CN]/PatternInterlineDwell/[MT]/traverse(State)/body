@@ -9,7 +9,7 @@
   int arrivalTime;
   int departureTime;
   AgencyAndId tripId=state0.getTripId();
-  if (options.isArriveBy()) {
+  if (options.arriveBy) {
     newPattern=((OnboardVertex)fromv).getTripPattern();
     newTripTimes=newPattern.getResolvedTripTimes(newTrip,state0);
     arrivalTime=newTripTimes.getArrivalTime(newTripTimes.getNumStops() - 1);

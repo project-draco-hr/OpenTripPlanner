@@ -2,7 +2,7 @@
   RoutingRequest options=new RoutingRequest(new TraverseModeSet(TraverseMode.WALK));
   options.setMaxWalkDistance(Double.MAX_VALUE);
   options.walkReluctance=1.0;
-  options.setWalkSpeed(1.0);
+  options.walkSpeed=1.0;
   State u, v;
   HashSet<Vertex> closed=new HashSet<Vertex>();
   BinHeap<State> queue=new BinHeap<State>(50);

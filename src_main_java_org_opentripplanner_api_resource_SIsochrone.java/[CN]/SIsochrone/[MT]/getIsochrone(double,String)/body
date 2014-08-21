@@ -2,7 +2,7 @@
   this.debugGeoms=new ArrayList();
   this.tooFastTraversedEdgeGeoms=new ArrayList();
   RoutingRequest sptRequestA=buildRequest(0);
-  String from=sptRequestA.getFrom().toString();
+  String from=sptRequestA.from.toString();
   int pos=1;
   float lat=0;
   float lon=0;
@@ -54,18 +54,18 @@
   int numberOfModes=modes.getModes().size();
   if (numberOfModes == 1) {
     if (modes.getWalk()) {
-      this.maxUserSpeed=sptRequestA.getWalkSpeed();
+      this.maxUserSpeed=sptRequestA.walkSpeed;
     }
  else     if (modes.getBicycle()) {
-      this.maxUserSpeed=sptRequestA.getBikeSpeed();
+      this.maxUserSpeed=sptRequestA.bikeSpeed;
     }
  else     if (modes.getDriving()) {
-      this.maxUserSpeed=sptRequestA.getCarSpeed();
+      this.maxUserSpeed=sptRequestA.carSpeed;
       this.usesCar=true;
     }
   }
  else {
-    this.maxUserSpeed=sptRequestA.getWalkSpeed();
+    this.maxUserSpeed=sptRequestA.walkSpeed;
   }
   if (doSpeedTest) {
     LOG.debug("performing angle and speed based test to detect u-shapes");

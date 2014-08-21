@@ -1,9 +1,9 @@
 {
   updaterManager.executeBlocking(new GraphWriterRunnable(){
     @Override public void run(    Graph graph){
-      if (graph.getTimetableSnapshotSource() == null) {
+      if (graph.timetableSnapshotSource == null) {
         TimetableSnapshotSource snapshotSource=new TimetableSnapshotSource(graph);
-        graph.setTimetableSnapshotSource(snapshotSource);
+        graph.timetableSnapshotSource=(snapshotSource);
       }
     }
   }

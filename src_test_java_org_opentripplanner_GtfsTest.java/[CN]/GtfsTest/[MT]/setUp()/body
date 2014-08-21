@@ -12,8 +12,8 @@
   System.out.printf("Set the agency ID for this test to %s\n",agencyId);
   graph.index(new DefaultStreetVertexIndexFactory());
   timetableSnapshotSource=new TimetableSnapshotSource(graph);
-  timetableSnapshotSource.setPurgeExpiredData(false);
-  graph.setTimetableSnapshotSource(timetableSnapshotSource);
+  timetableSnapshotSource.purgeExpiredData=(false);
+  graph.timetableSnapshotSource=(timetableSnapshotSource);
   alertPatchServiceImpl=new AlertPatchServiceImpl(graph);
   alertsUpdateHandler.setAlertPatchService(alertPatchServiceImpl);
   alertsUpdateHandler.setDefaultAgencyId("MMRI");
@@ -36,7 +36,7 @@
   }
  else {
     pathService=new RetryingPathServiceImpl(null,genericAStar);
-    genericAStar.setNPaths(1);
+    genericAStar.nPaths=(1);
   }
   planGenerator=new PlanGenerator(null,pathService);
 }

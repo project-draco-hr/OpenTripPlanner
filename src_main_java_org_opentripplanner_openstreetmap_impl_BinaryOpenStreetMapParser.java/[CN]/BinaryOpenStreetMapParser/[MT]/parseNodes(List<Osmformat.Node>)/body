@@ -5,8 +5,8 @@
   for (  Osmformat.Node i : nodes) {
     OSMNode tmp=new OSMNode();
     tmp.setId(i.getId());
-    tmp.setLat(parseLat(i.getLat()));
-    tmp.setLon(parseLon(i.getLon()));
+    tmp.lat=parseLat(i.getLat());
+    tmp.lon=parseLon(i.getLon());
     for (int j=0; j < i.getKeysCount(); j++) {
       String key=internalize(getStringById(i.getKeys(j)));
       String value=internalize(getStringById(i.getVals(j)));

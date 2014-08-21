@@ -18,7 +18,7 @@
       }
     }
  else {
-      if (!s0.isCarParked() && !permission.allows(TraverseMode.CAR) && currMode == TraverseMode.CAR) {
+      if (!s0.isCarParked() && !getPermission().allows(TraverseMode.CAR) && currMode == TraverseMode.CAR) {
         editor=doTraverse(s0,options,TraverseMode.WALK);
         if (editor != null) {
           editor.setCarParked(true);
