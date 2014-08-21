@@ -1,36 +1,48 @@
 {
   JPanel pane=new JPanel();
   pane.setLayout(new GridLayout(0,2));
+  firstStateData=new JList<String>();
+  secondStateData=new JList<String>();
   firstComparePathStates=new JList<State>();
   JScrollPane stScrollPane=new JScrollPane(firstComparePathStates);
   stScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
   pane.add(stScrollPane);
-  firstComparePathStates.addListSelectionListener(new ListSelectionListener(){
-    @Override public void valueChanged(    ListSelectionEvent e){
-      JList<State> theList=(JList<State>)e.getSource();
-      State st=(State)theList.getSelectedValue();
-      System.out.println("got state " + st);
-    }
-  }
-);
+  firstComparePathStates.addListSelectionListener(new ComparePathStatesClickListener(firstStateData));
   secondComparePathStates=new JList<State>();
   stScrollPane=new JScrollPane(secondComparePathStates);
   stScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
   pane.add(stScrollPane);
-  secondComparePathStates.addListSelectionListener(new ListSelectionListener(){
-    @Override public void valueChanged(    ListSelectionEvent e){
-      JList<State> theList=(JList<State>)e.getSource();
-      State st=(State)theList.getSelectedValue();
-    }
-  }
-);
-  firstStateData=new JList<String>();
+  secondComparePathStates.addListSelectionListener(new ComparePathStatesClickListener(secondStateData));
   stScrollPane=new JScrollPane(firstStateData);
   stScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
   pane.add(stScrollPane);
-  secondStateData=new JList<String>();
   stScrollPane=new JScrollPane(secondStateData);
   stScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
   pane.add(stScrollPane);
+  JButton dominateButton=new JButton();
+  dominateButton.setText("dominates");
+  dominateButton.addActionListener(new ActionListener(){
+    @Override public void actionPerformed(    ActionEvent e){
+      State s1=firstComparePathStates.getSelectedValue();
+      State s2=secondComparePathStates.getSelectedValue();
+      System.out.println("s1 dominates s2:" + s1.dominates(s2));
+    }
+  }
+);
+  pane.add(dominateButton);
+  JButton traverseButton=new JButton();
+  traverseButton.setText("traverse");
+  traverseButton.addActionListener(new ActionListener(){
+    @Override public void actionPerformed(    ActionEvent e){
+      if (lastStateClicked == null) {
+        return;
+      }
+      Edge backEdge=lastStateClicked.getBackEdge();
+      State backState=lastStateClicked.getBackState();
+      backEdge.traverse(backState);
+    }
+  }
+);
+  pane.add(traverseButton);
   return pane;
 }
