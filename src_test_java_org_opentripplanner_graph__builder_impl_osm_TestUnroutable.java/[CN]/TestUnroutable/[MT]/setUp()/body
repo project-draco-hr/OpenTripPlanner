@@ -1,0 +1,11 @@
+{
+  OpenStreetMapGraphBuilderImpl osmBuilder=new OpenStreetMapGraphBuilderImpl();
+  osmBuilder.setDefaultWayPropertySetSource(new DefaultWayPropertySetSource());
+  AnyFileBasedOpenStreetMapProviderImpl provider=new AnyFileBasedOpenStreetMapProviderImpl();
+  URL osmDataUrl=getClass().getResource("bridge_construction.osm.pbf");
+  File osmDataFile=new File(osmDataUrl.getFile());
+  provider.setPath(osmDataFile);
+  osmBuilder.setProvider(provider);
+  HashMap<Class<?>,Object> extra=Maps.newHashMap();
+  osmBuilder.buildGraph(graph,extra);
+}
