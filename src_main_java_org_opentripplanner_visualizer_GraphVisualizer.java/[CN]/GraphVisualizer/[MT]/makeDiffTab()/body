@@ -25,7 +25,7 @@
     @Override public void actionPerformed(    ActionEvent e){
       State s1=firstComparePathStates.getSelectedValue();
       State s2=secondComparePathStates.getSelectedValue();
-      System.out.println("s1 dominates s2:" + s1.dominates(s2));
+      System.out.println("s1 dominates s2:" + MultiShortestPathTree.dominates(s1,s2));
     }
   }
 );

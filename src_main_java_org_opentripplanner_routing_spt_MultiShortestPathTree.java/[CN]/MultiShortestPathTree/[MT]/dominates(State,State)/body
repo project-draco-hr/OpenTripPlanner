@@ -1,0 +1,16 @@
+{
+  if (other.weight == 0) {
+    return false;
+  }
+  if (thisState.isBikeRenting() != other.isBikeRenting())   return false;
+  if (thisState.isCarParked() != other.isCarParked())   return false;
+  if (thisState.backEdge != other.getBackEdge() && ((thisState.backEdge instanceof PlainStreetEdge) && (!((PlainStreetEdge)thisState.backEdge).getTurnRestrictions().isEmpty())))   return false;
+  if (thisState.routeSequenceSubset(other)) {
+    return thisState.weight <= other.weight && thisState.getElapsedTimeSeconds() <= other.getElapsedTimeSeconds();
+  }
+  boolean walkDistanceBetter=thisState.walkDistance <= other.getWalkDistance() * 1.05;
+  double weightRatio=thisState.weight / other.weight;
+  boolean weightBetter=(weightRatio < 1.02 && thisState.weight - other.weight < 30);
+  boolean timeBetter=thisState.getElapsedTimeSeconds() - other.getElapsedTimeSeconds() <= 30;
+  return walkDistanceBetter && weightBetter && timeBetter;
+}
