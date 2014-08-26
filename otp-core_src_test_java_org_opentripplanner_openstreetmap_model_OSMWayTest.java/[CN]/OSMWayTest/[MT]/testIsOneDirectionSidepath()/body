@@ -1,0 +1,11 @@
+{
+  OSMWay way=new OSMWay();
+  assertFalse(way.isForwardDirectionSidepath());
+  assertFalse(way.isReverseDirectionSidepath());
+  way.addTag("bicycle:forward","use_sidepath");
+  assertTrue(way.isForwardDirectionSidepath());
+  assertFalse(way.isReverseDirectionSidepath());
+  way.addTag("bicycle:backward","use_sidepath");
+  assertTrue(way.isForwardDirectionSidepath());
+  assertTrue(way.isReverseDirectionSidepath());
+}

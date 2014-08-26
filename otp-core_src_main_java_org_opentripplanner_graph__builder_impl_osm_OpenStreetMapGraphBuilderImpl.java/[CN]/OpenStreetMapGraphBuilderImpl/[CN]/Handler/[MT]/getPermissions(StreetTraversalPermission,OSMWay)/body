@@ -7,10 +7,10 @@
   if (way.isOneWayReverseDriving()) {
     permissionsFront=permissionsFront.remove(StreetTraversalPermission.BICYCLE_AND_DRIVING);
   }
-  if (way.isOneWayForwardBicycle()) {
+  if (way.isOneWayForwardBicycle() || way.isReverseDirectionSidepath()) {
     permissionsBack=permissionsBack.remove(StreetTraversalPermission.BICYCLE);
   }
-  if (way.isOneWayReverseBicycle()) {
+  if (way.isOneWayReverseBicycle() || way.isForwardDirectionSidepath()) {
     permissionsFront=permissionsFront.remove(StreetTraversalPermission.BICYCLE);
   }
   String oneWayBicycle=way.getTag("oneway:bicycle");
