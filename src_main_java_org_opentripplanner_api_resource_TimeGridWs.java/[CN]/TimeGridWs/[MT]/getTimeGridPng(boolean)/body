@@ -84,7 +84,7 @@ CacheControl cc=new CacheControl();
 cc.setNoCache(true);
 byte[] data=baos.toByteArray();
 if (base64) {
-data=Base64.encode(data);
+data=Base64.encodeBase64(data);
 }
 return Response.ok().cacheControl(cc).entity(data).header(OTPA_GRID_CORNER,gridCornerStr).header(OTPA_GRID_CELL_SIZE,gridCellSzStr).header(OTPA_OFFROAD_DIST,offRoadDistStr).build();
 }
