@@ -1,0 +1,15 @@
+{
+  if (e instanceof PlainStreetEdge) {
+    PlainStreetEdge pse=(PlainStreetEdge)e;
+    if (pse.isStairs()) {
+      attrs.color=STAIRS_COLOR;
+      attrs.label="stairs";
+    }
+ else {
+      attrs.color=getColor(pse.getPermission());
+      attrs.label=getLabel(pse.getPermission());
+    }
+    return true;
+  }
+  return false;
+}
