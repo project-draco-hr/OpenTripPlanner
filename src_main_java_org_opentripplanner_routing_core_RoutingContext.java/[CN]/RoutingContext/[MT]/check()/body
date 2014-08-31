@@ -10,7 +10,7 @@
   if (notFound.size() > 0) {
     throw new VertexNotFoundException(notFound);
   }
-  if (opt.getModes().isTransit() && !graph.transitFeedCovers(opt.dateTime)) {
+  if (opt.modes.isTransit() && !graph.transitFeedCovers(opt.dateTime)) {
     throw new TransitTimesException();
   }
 }

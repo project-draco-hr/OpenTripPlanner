@@ -1,0 +1,10 @@
+{
+  if (o == this)   return true;
+  if (!(o instanceof PatternRide))   return false;
+  PatternRide other=(PatternRide)o;
+  if (!other.pattern.equals(this.pattern))   return false;
+  if (other.fromIndex != fromIndex)   return false;
+  if (other.toIndex != toIndex)   return false;
+  if (!other.stats.equals(this.stats))   return false;
+  return true;
+}

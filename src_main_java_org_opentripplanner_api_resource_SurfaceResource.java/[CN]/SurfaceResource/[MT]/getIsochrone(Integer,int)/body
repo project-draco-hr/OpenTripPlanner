@@ -1,0 +1,14 @@
+{
+  final TimeSurface surf=server.surfaceCache.get(surfaceId);
+  if (surf == null)   return badRequest("Invalid TimeSurface ID.");
+  if (spacing < 1)   spacing=5;
+  List<IsochroneData> isochrones=getIsochronesAccumulative(surf,spacing);
+  final FeatureCollection fc=LIsochrone.makeContourFeatures(isochrones);
+  return Response.ok().entity(new StreamingOutput(){
+    @Override public void write(    OutputStream output) throws IOException {
+      FeatureJSON fj=new FeatureJSON();
+      fj.writeFeatureCollection(fc,output);
+    }
+  }
+).build();
+}

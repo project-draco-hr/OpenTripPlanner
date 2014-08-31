@@ -49,11 +49,19 @@
   }
 );
   routingPanel.add(routeButton);
+  JButton continueButton=new JButton("continue");
+  continueButton.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+    }
+  }
+);
+  routingPanel.add(continueButton);
   JButton clearRouteButton=new JButton("clear path");
   clearRouteButton.addActionListener(new ActionListener(){
     public void actionPerformed(    ActionEvent e){
       showGraph.highlightGraphPath(null);
       showGraph.clearHighlights();
+      showGraph.resetSPT();
     }
   }
 );

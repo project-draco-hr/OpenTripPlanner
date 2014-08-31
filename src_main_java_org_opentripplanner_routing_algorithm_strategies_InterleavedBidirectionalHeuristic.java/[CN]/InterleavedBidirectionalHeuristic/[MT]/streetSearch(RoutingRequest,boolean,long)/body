@@ -1,6 +1,6 @@
 {
   rr=rr.clone();
-  if (fromTarget)   rr.setArriveBy(!rr.isArriveBy());
+  if (fromTarget)   rr.setArriveBy(!rr.arriveBy);
   List<State> stopStates=Lists.newArrayList();
   ShortestPathTree spt=new BasicShortestPathTree(rr);
   BinHeap<State> pq=new BinHeap<State>();

@@ -2,7 +2,8 @@
   List<FareRide> fareRides=Lists.newArrayList();
   FareRide prev=null;
   for (  Ride ride : rides) {
-    FareRide fareRide=new FareRide(ride,prev);
+    PatternRide exemplarPatternRide=ride.patternRides.get(0);
+    FareRide fareRide=new FareRide(exemplarPatternRide,prev);
     if (prev != null && prev.type == fareRide.type) {
       prev.to=fareRide.to;
       prev.calcFare();

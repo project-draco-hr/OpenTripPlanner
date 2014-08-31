@@ -1,0 +1,38 @@
+{
+  String agency=route.getAgency().getId();
+  String agency_url=route.getAgency().getUrl();
+  String short_name=route.getShortName();
+  String long_name=route.getLongName();
+  if ("MET".equals(agency)) {
+    if (route.getType() == 1)     return RideType.METRO_RAIL;
+    if ("5A".equals(short_name) || "B30".equals(short_name))     return RideType.METRO_BUS_AIRPORT;
+    for (    String sn : metroExpress)     if (sn.equals(short_name))     return RideType.METRO_BUS_EXPRESS;
+    return RideType.METRO_BUS_LOCAL;
+  }
+ else   if ("DC".equals(agency)) {
+    return RideType.DC_CIRCULATOR_BUS;
+  }
+ else   if ("MCRO".equals(agency)) {
+    if (short_name.equals("70"))     return RideType.MCRO_BUS_EXPRESS;
+ else     return RideType.MCRO_BUS_LOCAL;
+  }
+ else   if (agency_url != null) {
+    if (agency_url.contains("fairfaxconnector.com")) {
+      return RideType.FAIRFAX_CONNECTOR_BUS;
+    }
+    if (agency_url.contains("prtctransit.org")) {
+      return RideType.PRTC_BUS;
+    }
+    if (agency_url.contains("arlingtontransit.com")) {
+      return RideType.ART_BUS;
+    }
+    if (agency_url.contains("vre.org")) {
+      return RideType.VRE_BUS;
+    }
+    if (agency_url.contains("mtamaryland.com")) {
+      if (route.getType() == 2)       return RideType.MARC_RAIL;
+ else       return RideType.DASH_BUS;
+    }
+  }
+  return null;
+}

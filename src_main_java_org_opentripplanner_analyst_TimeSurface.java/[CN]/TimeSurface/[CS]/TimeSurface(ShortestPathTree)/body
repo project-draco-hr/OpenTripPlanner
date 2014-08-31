@@ -1,5 +1,10 @@
 {
-  routerId=spt.getOptions().routerId;
+  params=spt.getOptions().parameters;
+  String routerId=spt.getOptions().routerId;
+  if (routerId == null || routerId.isEmpty() || routerId.equalsIgnoreCase("default")) {
+    routerId="default";
+  }
+  this.routerId=routerId;
   long t0=System.currentTimeMillis();
   times=new int[Vertex.getMaxIndex()];
   Arrays.fill(times,UNREACHABLE);
@@ -13,9 +18,9 @@
       }
     }
   }
-  GenericLocation from=spt.getOptions().getFrom();
-  this.lon=from.getLng();
-  this.lat=from.getLat();
+  GenericLocation from=spt.getOptions().from;
+  this.lon=from.lng;
+  this.lat=from.lat;
   this.id=makeUniqueId();
   this.dateTime=spt.getOptions().dateTime;
   long t1=System.currentTimeMillis();

@@ -1,0 +1,8 @@
+{
+  Ride ride=this;
+  while (ride != null) {
+    if (ride.from == stopCluster || ride.to == stopCluster)     return true;
+    ride=ride.previous;
+  }
+  return false;
+}

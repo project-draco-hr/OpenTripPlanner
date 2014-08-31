@@ -1,6 +1,6 @@
 {
-  Vertex stop_b_arrive=graph.getVertex("agency_C_arrive");
-  Vertex stop_b_depart=graph.getVertex("agency_C_depart");
+  Vertex stop_b_arrive=graph.getVertex("agency:C_arrive");
+  Vertex stop_b_depart=graph.getVertex("agency:C_depart");
   Map<TripPattern,Integer> stopIndex=new HashMap<TripPattern,Integer>();
   for (  Edge edge : stop_b_depart.getOutgoing()) {
     TransitBoardAlight tba=(TransitBoardAlight)edge;

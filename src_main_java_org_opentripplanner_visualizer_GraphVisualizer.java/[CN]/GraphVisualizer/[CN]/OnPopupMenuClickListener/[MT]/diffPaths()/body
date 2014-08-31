@@ -1,0 +1,29 @@
+{
+  if (firstComparePath == null || secondComparePath == null) {
+    int[] failboat={-2,-2};
+    return failboat;
+  }
+  int l1=firstComparePath.states.size();
+  int l2=secondComparePath.states.size();
+  int minlen=l1 < l2 ? l1 : l2;
+  int divergence=-1;
+  int convergence=-1;
+  for (int i=0; i < minlen; i++) {
+    Vertex v1=firstComparePath.states.get(i).getVertex();
+    Vertex v2=secondComparePath.states.get(i).getVertex();
+    if (!v1.equals(v2)) {
+      divergence=i - 1;
+      break;
+    }
+  }
+  for (int i=0; i < minlen; i++) {
+    Vertex v1=firstComparePath.states.get(l1 - i - 1).getVertex();
+    Vertex v2=secondComparePath.states.get(l2 - i - 1).getVertex();
+    if (!v1.equals(v2)) {
+      convergence=i - 1;
+      break;
+    }
+  }
+  int[] ret={divergence,convergence};
+  return ret;
+}

@@ -5,7 +5,7 @@
   assertSame(resolver,updater.getTimetableSnapshot());
   updater.applyTripUpdates(Arrays.asList(TripUpdate.parseFrom(cancellation)),"agency");
   assertSame(resolver,updater.getTimetableSnapshot());
-  updater.setMaxSnapshotFrequency(-1);
+  updater.maxSnapshotFrequency=(-1);
   TimetableResolver newResolver=updater.getTimetableSnapshot();
   assertNotNull(newResolver);
   assertNotSame(resolver,newResolver);

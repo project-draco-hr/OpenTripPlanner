@@ -1,0 +1,22 @@
+{
+  background(15);
+  stroke(30,128,30);
+  strokeWeight(1);
+  noFill();
+  int drawIndex=0;
+  int drawStart=0;
+  int drawCount=0;
+  while (drawStart < DECIMATE && drawStart < visibleStreetEdges.size()) {
+    if (drawFast)     drawEdgeFast(visibleStreetEdges.get(drawIndex));
+ else     drawEdge(visibleStreetEdges.get(drawIndex));
+    drawIndex+=DECIMATE;
+    drawCount+=1;
+    if (drawCount % BLOCK_SIZE == 0 && millis() - startMillis > FRAME_TIME) {
+      break;
+    }
+    if (drawIndex >= visibleStreetEdges.size()) {
+      drawStart+=1;
+      drawIndex=drawStart;
+    }
+  }
+}

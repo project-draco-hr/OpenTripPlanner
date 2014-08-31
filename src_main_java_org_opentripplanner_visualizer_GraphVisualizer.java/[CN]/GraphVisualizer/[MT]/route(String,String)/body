@@ -25,37 +25,42 @@
   options.setDateTime(when);
   options.setFromString(from);
   options.setToString(to);
-  options.setWalkSpeed(Float.parseFloat(walkSpeed.getText()));
-  options.setBikeSpeed(Float.parseFloat(bikeSpeed.getText()));
-  options.setHeuristicWeight(Float.parseFloat(heuristicWeight.getText()));
-  options.setSoftWalkLimiting(softWalkLimiting.isSelected());
-  options.setSoftWalkPenalty(Float.parseFloat(softWalkPenalty.getText()));
-  options.setSoftWalkOverageRate(Float.parseFloat(this.softWalkOverageRate.getText()));
+  options.walkSpeed=Float.parseFloat(walkSpeed.getText());
+  options.bikeSpeed=Float.parseFloat(bikeSpeed.getText());
+  options.heuristicWeight=(Float.parseFloat(heuristicWeight.getText()));
+  options.softWalkLimiting=(softWalkLimiting.isSelected());
+  options.softWalkPenalty=(Float.parseFloat(softWalkPenalty.getText()));
+  options.softWalkOverageRate=(Float.parseFloat(this.softWalkOverageRate.getText()));
   options.numItineraries=1;
   System.out.println("--------");
   System.out.println("Path from " + from + " to "+ to+ " at "+ when);
   System.out.println("\tModes: " + modeSet);
   System.out.println("\tOptions: " + options);
+  sptService.nPaths=(Integer.parseInt(this.nPaths.getText()));
   if (dontUseGraphicalCallbackCheckBox.isSelected()) {
     sptService.setTraverseVisitor(null);
   }
  else {
     sptService.setTraverseVisitor(new VisualTraverseVisitor(showGraph));
   }
+  ParetoPathService.SPTVisitor vis=pathservice.new SPTVisitor();
+  pathservice.setSPTVisitor(vis);
   long t0=System.currentTimeMillis();
   List<GraphPath> paths=pathservice.getPaths(options);
   long dt=System.currentTimeMillis() - t0;
   searchTimeElapsedLabel.setText("search time elapsed: " + dt + "ms");
+  spt=vis.spt;
+  showGraph.setSPT(spt);
+  System.out.println("got spt:" + spt);
   if (paths == null) {
     System.out.println("no path");
     showGraph.highlightGraphPath(null);
     return;
   }
-  GraphPath gp=paths.get(0);
-  for (  State s : gp.states) {
-    System.out.print(s.toString() + " <- ");
-    System.out.println(s.getBackEdge());
-  }
-  showGraph.highlightGraphPath(gp);
+  showGraph.simpleSPT.setWeights();
+  showPathsInPanel(paths);
+  showGraph.setSPTFlattening(Float.parseFloat(sptFlattening.getText()));
+  showGraph.setSPTThickness(Float.parseFloat(sptThickness.getText()));
+  showGraph.redraw();
   options.cleanup();
 }

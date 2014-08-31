@@ -60,9 +60,9 @@ for (File gtfsFile : gtfsFiles) {
 GtfsBundle gtfsBundle=new GtfsBundle(gtfsFile);
 gtfsBundle.setTransfersTxtDefinesStationPaths(params.useTransfersTxt);
 if (!params.noParentStopLinking) {
-gtfsBundle.setLinkStopsToParentStations(true);
+gtfsBundle.linkStopsToParentStations=true;
 }
-gtfsBundle.setParentStationTransfers(params.parentStationTransfers);
+gtfsBundle.parentStationTransfers=params.parentStationTransfers;
 gtfsBundles.add(gtfsBundle);
 }
 GtfsGraphBuilderImpl gtfsBuilder=new GtfsGraphBuilderImpl(gtfsBundles);
@@ -75,6 +75,7 @@ graphBuilder.addGraphBuilder(new StreetlessStopLinker());
 }
 }
 if (hasOSM) {
+graphBuilder.addGraphBuilder(new TransitToTaggedStopsGraphBuilderImpl());
 graphBuilder.addGraphBuilder(new TransitToStreetNetworkGraphBuilderImpl());
 if (params.longDistance && params.useStreetsForLinking && !params.useTransfersTxt) {
 graphBuilder.addGraphBuilder(new StreetfulStopLinker());
@@ -84,7 +85,7 @@ gtfsBuilder.setFareServiceFactory(new DefaultFareServiceFactory());
 }
 if (configFile != null) {
 EmbeddedConfigGraphBuilderImpl embeddedConfigBuilder=new EmbeddedConfigGraphBuilderImpl();
-embeddedConfigBuilder.setPropertiesFile(configFile);
+embeddedConfigBuilder.propertiesFile=configFile;
 graphBuilder.addGraphBuilder(embeddedConfigBuilder);
 }
 if (params.elevation) {
@@ -93,6 +94,6 @@ ElevationGridCoverageFactory gcf=new NEDGridCoverageFactoryImpl(cacheDirectory);
 GraphBuilder elevationBuilder=new ElevationGraphBuilderImpl(gcf);
 graphBuilder.addGraphBuilder(elevationBuilder);
 }
-graphBuilder.setSerializeGraph(!params.inMemory);
+graphBuilder.serializeGraph=(!params.inMemory) || params.preFlight;
 return graphBuilder;
 }

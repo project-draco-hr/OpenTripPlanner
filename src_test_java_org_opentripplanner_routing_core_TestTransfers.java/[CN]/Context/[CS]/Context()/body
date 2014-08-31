@@ -6,11 +6,11 @@
   factory.run(graph);
   graph.index(new DefaultStreetVertexIndexFactory());
   graph.putService(CalendarServiceData.class,GtfsLibrary.createCalendarServiceData(context.getDao()));
-  createSimpleTransfer("agency_K","agency_F",100);
-  createSimpleTransfer("agency_P","agency_U",100);
-  createSimpleTransfer("agency_V","agency_I",100);
+  createSimpleTransfer("agency:K","agency:F",100);
+  createSimpleTransfer("agency:P","agency:U",100);
+  createSimpleTransfer("agency:V","agency:I",100);
   TimetableResolver resolver=new TimetableResolver();
   TimetableSnapshotSource timetableSnapshotSource=mock(TimetableSnapshotSource.class);
   when(timetableSnapshotSource.getTimetableSnapshot()).thenReturn(resolver);
-  graph.setTimetableSnapshotSource(timetableSnapshotSource);
+  graph.timetableSnapshotSource=(timetableSnapshotSource);
 }

@@ -1,0 +1,13 @@
+{
+  Component c=super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
+  if (isSelected) {
+    return c;
+  }
+  if (index <= diverge) {
+    c.setBackground(new Color(196,201,255));
+  }
+  if (index >= converge) {
+    c.setBackground(new Color(255,196,196));
+  }
+  return c;
+}

@@ -1,0 +1,57 @@
+{
+  CsvReader reader=new CsvReader(filename.getAbsolutePath(),',',Charset.forName("UTF8"));
+  reader.readHeaders();
+  int nCols=reader.getHeaderCount();
+  while (reader.readRecord()) {
+    if (reader.getColumnCount() != nCols) {
+      LOG.error("CSV record {} has the wrong number of fields.",reader.getCurrentRecord());
+      return null;
+    }
+  }
+  int nRecs=(int)reader.getCurrentRecord() + 1;
+  reader.close();
+  reader=new CsvReader(filename.getAbsolutePath(),',',Charset.forName("UTF8"));
+  PointSet ret=new PointSet(nRecs);
+  reader.readHeaders();
+  if (reader.getHeaderCount() != nCols) {
+    LOG.error("Number of headers changed.");
+    return null;
+  }
+  int latCol=-1;
+  int lonCol=-1;
+  int[][] properties=new int[nCols][ret.capacity];
+  for (int c=0; c < nCols; c++) {
+    String header=reader.getHeader(c);
+    if (header.equalsIgnoreCase("lat") || header.equalsIgnoreCase("latitude")) {
+      latCol=c;
+    }
+ else     if (header.equalsIgnoreCase("lon") || header.equalsIgnoreCase("longitude")) {
+      lonCol=c;
+    }
+ else {
+      ret.getOrCreatePropertyForId(header);
+      properties[c]=ret.properties.get(header);
+    }
+  }
+  if (latCol < 0 || lonCol < 0) {
+    LOG.error("CSV file did not contain a latitude or longitude column.");
+    throw new IOException();
+  }
+  ret.lats=new double[nRecs];
+  ret.lons=new double[nRecs];
+  while (reader.readRecord()) {
+    int rec=(int)reader.getCurrentRecord();
+    for (int c=0; c < nCols; c++) {
+      if (c == latCol || c == lonCol) {
+        continue;
+      }
+      int[] prop=properties[c];
+      int mag=Integer.parseInt(reader.get(c));
+      prop[rec]=mag;
+    }
+    ret.lats[rec]=Double.parseDouble(reader.get(latCol));
+    ret.lons[rec]=Double.parseDouble(reader.get(lonCol));
+  }
+  ret.capacity=nRecs;
+  return ret;
+}

@@ -17,11 +17,11 @@
   Float bestSpeed=null;
   int score;
   for (  SpeedPicker picker : speedPickers) {
-    OSMSpecifier specifier=picker.getSpecifier();
+    OSMSpecifier specifier=picker.specifier;
     score=specifier.matchScore(way);
     if (score > bestScore) {
       bestScore=score;
-      bestSpeed=picker.getSpeed();
+      bestSpeed=picker.speed;
     }
   }
   if (bestSpeed != null)   return bestSpeed;

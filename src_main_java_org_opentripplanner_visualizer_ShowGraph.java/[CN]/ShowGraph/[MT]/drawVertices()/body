@@ -1,0 +1,22 @@
+{
+  final double METERS_PER_DEGREE_LAT=111111.111111;
+  boolean closeEnough=(modelBounds.getHeight() * METERS_PER_DEGREE_LAT / this.width < 4);
+  fill(60,60,200);
+  for (  Vertex v : visibleVertices) {
+    if (drawTransitStopVertices && closeEnough && v instanceof TransitStationStop) {
+      drawVertex(v,5);
+    }
+    if (drawStreetVertices && v instanceof IntersectionVertex) {
+      IntersectionVertex iv=(IntersectionVertex)v;
+      if (iv.trafficLight) {
+        drawVertex(v,7);
+      }
+    }
+    if (drawMultistateVertices && spt != null) {
+      List<? extends State> states=spt.getStates(v);
+      if (states != null) {
+        drawVertex(v,states.size() * 2);
+      }
+    }
+  }
+}

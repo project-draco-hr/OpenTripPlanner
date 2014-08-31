@@ -1,36 +1,12 @@
 {
-  RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
-  rr.setFrom(new GenericLocation(request.from.lat,request.from.lon));
-  rr.setTo(new GenericLocation(request.to.lat,request.to.lon));
-  rr.setArriveBy(back);
-  rr.setRoutingContext(graph);
-  rr.setBatch(true);
-  rr.setWalkSpeed(request.walkSpeed);
-  int worstElapsedTime=request.accessTime * 60;
-  if (back)   worstElapsedTime*=-1;
-  rr.setWorstTime(rr.dateTime + worstElapsedTime);
-  GenericAStar astar=new GenericAStar();
-  int oldNumItineraries=rr.getNumItineraries();
-  rr.setNumItineraries(1);
-  final List<StopAtDistance> ret=Lists.newArrayList();
-  astar.setTraverseVisitor(new TraverseVisitor(){
-    @Override public void visitEdge(    Edge edge,    State state){
-    }
-    @Override public void visitEnqueue(    State state){
-    }
-    @Override public void visitVertex(    State state){
-      Vertex vertex=state.getVertex();
-      if (vertex instanceof TransitStop) {
-        TransitStop tstop=(TransitStop)vertex;
-        LOG.debug("found stop: {} ({}m)",tstop.getStopId(),state.getWalkDistance());
-        LOG.debug("  elapsed time {}",state.getElapsedTimeSeconds());
-        ret.add(new StopAtDistance(tstop.getStop(),(int)state.getWalkDistance()));
+  Multimap<StopCluster,StopAtDistance> pathsByStop=ArrayListMultimap.create();
+  for (  TraverseMode mode : (dest ? EGRESS_MODES : ACCESS_MODES)) {
+    if (request.modes.contains(mode)) {
+      LOG.info("{} mode {}",dest ? "egress" : "access",mode);
+      for (      StopAtDistance sd : findClosestStops(mode,dest)) {
+        pathsByStop.put(sd.stop,sd);
       }
     }
   }
-);
-  ShortestPathTree spt=astar.getShortestPathTree(rr,System.currentTimeMillis() + 5000);
-  rr.setNumItineraries(oldNumItineraries);
-  rr.rctx.destroy();
-  return ret;
+  return pathsByStop;
 }

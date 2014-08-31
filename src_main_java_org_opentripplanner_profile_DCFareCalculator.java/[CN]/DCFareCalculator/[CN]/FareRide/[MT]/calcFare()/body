@@ -1,5 +1,6 @@
 {
   RideType prevType=(prev == null) ? null : prev.type;
+  if (type == null)   return;
 switch (type) {
 case METRO_RAIL:
     fare=METRORAIL.lookup(from,to);

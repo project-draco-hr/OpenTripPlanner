@@ -1,0 +1,16 @@
+{
+  PointFeature ret=new PointFeature(ids[index]);
+  if (polygons[index] != null) {
+    try {
+      ret.setGeom(polygons[index]);
+    }
+ catch (    Exception e) {
+    }
+  }
+  ret.setLat(lats[index]);
+  ret.setLon(lons[index]);
+  for (  Entry<String,int[]> property : this.properties.entrySet()) {
+    ret.addAttribute(property.getKey(),property.getValue()[index]);
+  }
+  return ret;
+}

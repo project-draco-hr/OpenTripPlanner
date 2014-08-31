@@ -1,6 +1,6 @@
 {
   RoutingRequest options=new RoutingRequest(TraverseMode.CAR);
-  options.setCarSpeed(1.0);
+  options.carSpeed=1.0;
   options.setRoutingContext(_graph,topRight,bottomLeft);
   ShortestPathTree tree=new GenericAStar().getShortestPathTree(options);
   GraphPath path=tree.getPath(bottomLeft,false);

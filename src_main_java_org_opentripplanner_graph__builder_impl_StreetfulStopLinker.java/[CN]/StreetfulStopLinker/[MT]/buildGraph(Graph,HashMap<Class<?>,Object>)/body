@@ -2,12 +2,22 @@
   final Parser parser[]=new Parser[]{new Parser()};
   GeometryFactory geometryFactory=GeometryUtils.getGeometryFactory();
   EarliestArrivalSPTService earliestArrivalSPTService=new EarliestArrivalSPTService();
-  earliestArrivalSPTService.setMaxDuration(maxDuration);
+  earliestArrivalSPTService.maxDuration=(maxDuration);
   for (  TransitStop ts : IterableLibrary.filter(graph.getVertices(),TransitStop.class)) {
-    LOG.trace("linking stop {}",ts);
+    if (!ts.isStreetLinkable())     continue;
+    LOG.trace("linking stop '{}' {}",ts.getStop(),ts);
+    Set<TransitStop> pathwayDestinations=new HashSet<TransitStop>();
+    for (    Edge e : ts.getOutgoing()) {
+      if (e instanceof PathwayEdge || e instanceof SimpleTransfer) {
+        if (e.getToVertex() instanceof TransitStop) {
+          TransitStop to=(TransitStop)e.getToVertex();
+          pathwayDestinations.add(to);
+        }
+      }
+    }
     int n=0;
     RoutingRequest routingRequest=new RoutingRequest(TraverseMode.WALK);
-    routingRequest.setClampInitialWait(0L);
+    routingRequest.clampInitialWait=(0L);
     routingRequest.setRoutingContext(graph,ts,null);
     routingRequest.rctx.pathParsers=parser;
     ShortestPathTree spt=earliestArrivalSPTService.getShortestPathTree(routingRequest);
@@ -17,6 +27,11 @@
         if (ts == vertex)         continue;
         if (vertex instanceof TransitStop) {
           TransitStop other=(TransitStop)vertex;
+          if (!other.isStreetLinkable())           continue;
+          if (pathwayDestinations.contains(other)) {
+            LOG.trace("Skipping '{}', {}, already connected.",other.getStop(),other);
+            continue;
+          }
           double distance=0.0;
           GraphPath graphPath=new GraphPath(state,false);
           CoordinateArrayListSequence coordinates=new CoordinateArrayListSequence();
@@ -42,7 +57,7 @@
             coordinates=new CoordinateArrayListSequence(coordinateList);
           }
           LineString geometry=geometryFactory.createLineString(new PackedCoordinateSequence.Double(coordinates.toCoordinateArray()));
-          LOG.trace("  to stop: {} ({}m) [{}]",other,distance,geometry);
+          LOG.trace("  to stop: '{}' {} ({}m) [{}]",other.getStop(),other,distance,geometry);
           new SimpleTransfer(ts,other,distance,geometry);
           n++;
         }

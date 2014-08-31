@@ -5,129 +5,10 @@
   leftPanel.add(vertexDataPanel,BorderLayout.CENTER);
   JLabel nvLabel=new JLabel("Vertices");
   vertexDataPanel.add(nvLabel);
-  nearbyVertices=new JList();
+  nearbyVertices=new JList<DisplayVertex>();
   nearbyVertices.setVisibleRowCount(4);
   JScrollPane nvScrollPane=new JScrollPane(nearbyVertices);
   vertexDataPanel.add(nvScrollPane);
-  JLabel ogeLabel=new JLabel("Outgoing edges");
-  vertexDataPanel.add(ogeLabel);
-  outgoingEdges=new JList();
-  outgoingEdges.setVisibleRowCount(4);
-  JScrollPane ogeScrollPane=new JScrollPane(outgoingEdges);
-  vertexDataPanel.add(ogeScrollPane);
-  JLabel iceLabel=new JLabel("Incoming edges");
-  vertexDataPanel.add(iceLabel);
-  incomingEdges=new JList();
-  JScrollPane iceScrollPane=new JScrollPane(incomingEdges);
-  vertexDataPanel.add(iceScrollPane);
-  ListSelectionListener edgeChanged=new ListSelectionListener(){
-    public void valueChanged(    ListSelectionEvent e){
-      JList edgeList=(JList)e.getSource();
-      Edge selected=(Edge)edgeList.getSelectedValue();
-      if (selected == null) {
-        departurePattern.removeAll();
-        return;
-      }
-      showGraph.highlightEdge(selected);
-      if (selected instanceof StreetEdge) {
-        List<Vertex> vertices=new ArrayList<Vertex>();
-        List<Edge> edges=new ArrayList<Edge>();
-        Vertex tov=selected.getToVertex();
-        for (        Edge og : tov.getOutgoing()) {
-          if (og instanceof StreetEdge) {
-            edges.add(og);
-            vertices.add(og.getToVertex());
-            break;
-          }
-        }
-        Vertex fromv=selected.getFromVertex();
-        for (        Edge ic : fromv.getIncoming()) {
-          if (ic instanceof StreetEdge) {
-            edges.add(ic);
-            vertices.add(ic.getFromVertex());
-            break;
-          }
-        }
-        showGraph.setHighlightedEdges(edges);
-      }
-      VertexList nearbyModel=(VertexList)nearbyVertices.getModel();
-      List<Vertex> vertices=nearbyModel.selected;
-      Vertex v;
-      if (edgeList == outgoingEdges) {
-        v=selected.getToVertex();
-      }
- else {
-        v=selected.getFromVertex();
-      }
-      if (!vertices.contains(v)) {
-        vertices.add(v);
-        nearbyModel=new VertexList(vertices);
-        nearbyVertices.setModel(nearbyModel);
-      }
-      metadataModel.clear();
-      Class<?> c;
-      Field[] fields;
-      getMetadata(selected);
-      Vertex fromv=selected.getFromVertex();
-      getMetadata(fromv);
-      if (selected instanceof EdgeWithElevation) {
-        getMetadata(((EdgeWithElevation)selected).getElevationProfileSegment());
-      }
-      metadataList.revalidate();
-      TripPattern pattern=null;
-      int stopIndex=0;
-      if (selected instanceof TransitBoardAlight && ((TransitBoardAlight)selected).isBoarding()) {
-        TransitBoardAlight boardEdge=(TransitBoardAlight)selected;
-        pattern=boardEdge.getPattern();
-        stopIndex=boardEdge.getStopIndex();
-      }
- else       if (selected instanceof TransitBoardAlight && !((TransitBoardAlight)selected).isBoarding()) {
-        TransitBoardAlight alightEdge=(TransitBoardAlight)selected;
-        pattern=alightEdge.getPattern();
-        stopIndex=alightEdge.getStopIndex();
-      }
- else {
-        departurePattern.removeAll();
-        return;
-      }
-      ListModel model=new TripPatternListModel(pattern,stopIndex);
-      departurePattern.setModel(model);
-      Trip trip=null;
-      serviceIdLabel.setText(trip.getServiceId().toString());
-    }
-    private void getMetadata(    Object selected){
-      Class<?> c=selected.getClass();
-      Field[] fields;
-      while (c != null && c != Object.class) {
-        metadataModel.addElement("Class:" + c);
-        fields=c.getDeclaredFields();
-        for (int i=0; i < fields.length; i++) {
-          Field field=fields[i];
-          int modifiers=field.getModifiers();
-          if ((modifiers & Modifier.STATIC) != 0) {
-            continue;
-          }
-          field.setAccessible(true);
-          String name=field.getName();
-          String value="(unknown -- see console for stack trace)";
-          try {
-            value="" + field.get(selected);
-          }
- catch (          IllegalArgumentException e1) {
-            e1.printStackTrace();
-          }
-catch (          IllegalAccessException e1) {
-            e1.printStackTrace();
-          }
-          metadataModel.addElement(name + ": " + value);
-        }
-        c=c.getSuperclass();
-      }
-    }
-  }
-;
-  outgoingEdges.addListSelectionListener(edgeChanged);
-  incomingEdges.addListSelectionListener(edgeChanged);
   nearbyVertices.addListSelectionListener(new ListSelectionListener(){
     public void valueChanged(    ListSelectionEvent e){
       outgoingEdges.removeAll();
@@ -142,4 +23,70 @@ catch (          IllegalAccessException e1) {
     }
   }
 );
+  ListSelectionListener edgeChanged=new ListSelectionListener(){
+    public void valueChanged(    ListSelectionEvent e){
+      @SuppressWarnings("unchecked") JList<Edge> edgeList=(JList<Edge>)e.getSource();
+      Edge selected=(Edge)edgeList.getSelectedValue();
+      boolean outgoing=(edgeList == outgoingEdges);
+      reactToEdgeSelection(selected,outgoing);
+    }
+  }
+;
+  JLabel ogeLabel=new JLabel("Outgoing edges");
+  vertexDataPanel.add(ogeLabel);
+  outgoingEdges=new JList<Edge>();
+  outgoingEdges.setVisibleRowCount(4);
+  JScrollPane ogeScrollPane=new JScrollPane(outgoingEdges);
+  vertexDataPanel.add(ogeScrollPane);
+  outgoingEdges.addListSelectionListener(edgeChanged);
+  JLabel iceLabel=new JLabel("Incoming edges");
+  vertexDataPanel.add(iceLabel);
+  incomingEdges=new JList<Edge>();
+  JScrollPane iceScrollPane=new JScrollPane(incomingEdges);
+  vertexDataPanel.add(iceScrollPane);
+  incomingEdges.addListSelectionListener(edgeChanged);
+  JLabel pathsLabel=new JLabel("Paths");
+  vertexDataPanel.add(pathsLabel);
+  pathsList=new JList<PathPrinter>();
+  popup=new JPopupMenu();
+  JMenuItem compareMenuItem=new JMenuItem("compare");
+  compareMenuItem.addActionListener(new OnPopupMenuClickListener());
+  popup.add(compareMenuItem);
+  pathsList.addMouseListener(new MouseListener(){
+    @Override public void mouseClicked(    MouseEvent e){
+      if (SwingUtilities.isRightMouseButton(e)) {
+        @SuppressWarnings("unchecked") JList<PathPrinter> list=(JList<PathPrinter>)e.getSource();
+        int row=list.locationToIndex(e.getPoint());
+        list.setSelectedIndex(row);
+        popup.show(list,e.getX(),e.getY());
+      }
+    }
+    @Override public void mousePressed(    MouseEvent e){
+    }
+    @Override public void mouseReleased(    MouseEvent e){
+    }
+    @Override public void mouseEntered(    MouseEvent e){
+    }
+    @Override public void mouseExited(    MouseEvent e){
+    }
+  }
+);
+  pathsList.addListSelectionListener(new ListSelectionListener(){
+    @Override public void valueChanged(    ListSelectionEvent ev){
+      PathPrinter pp=((PathPrinter)pathsList.getSelectedValue());
+      if (pp == null) {
+        return;
+      }
+      GraphPath path=pp.gp;
+      DefaultListModel<State> pathModel=new DefaultListModel<State>();
+      for (      State st : path.states) {
+        pathModel.addElement(st);
+      }
+      pathStates.setModel(pathModel);
+      showGraph.highlightGraphPath(path);
+    }
+  }
+);
+  JScrollPane pathsScrollPane=new JScrollPane(pathsList);
+  vertexDataPanel.add(pathsScrollPane);
 }

@@ -4,7 +4,7 @@
   boolean tooSloped=false;
   try {
     paths=pathService.getPaths(options);
-    if (paths == null && options.isWheelchairAccessible()) {
+    if (paths == null && options.wheelchairAccessible) {
       options.maxSlope=Double.MAX_VALUE;
       options.maxWalkDistance=originalOptions.maxWalkDistance;
       paths=pathService.getPaths(options);
@@ -12,16 +12,16 @@
     }
   }
  catch (  VertexNotFoundException e) {
-    LOG.info("Vertex not found: " + options.getFrom() + " : "+ options.getTo(),e);
+    LOG.info("Vertex not found: " + options.from + " : "+ options.to,e);
     throw e;
   }
   options.rctx.debugOutput.finishedCalculating();
   if (paths == null || paths.size() == 0) {
-    LOG.info("Path not found: " + options.getFrom() + " : "+ options.getTo());
+    LOG.info("Path not found: " + options.from + " : "+ options.to);
     throw new PathNotFoundException();
   }
   for (  GraphPath graphPath : paths) {
-    if (originalOptions.isArriveBy()) {
+    if (originalOptions.arriveBy) {
       if (graphPath.states.getLast().getTimeSeconds() > originalOptions.dateTime) {
         LOG.error("A graph path arrives after the requested time. This implies a bug.");
       }

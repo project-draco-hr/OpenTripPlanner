@@ -2,15 +2,15 @@
   DistanceLibrary distanceLibrary=SphericalDistanceLibrary.getInstance();
   RoutingRequest opt=ctx.opt;
   opt.rctx=ctx;
-  AgencyAndId tripId=opt.getStartingTransitTripId();
+  AgencyAndId tripId=opt.startingTransitTripId;
   Trip trip=ctx.graph.index.tripForId.get(tripId);
   TripPattern tripPattern=ctx.graph.index.patternForTrip.get(trip);
   if (tripPattern == null) {
     throw new IllegalArgumentException("Unknown/invalid trip ID: " + tripId);
   }
   List<PatternHop> hops=tripPattern.getPatternHops();
-  Double lon=opt.getFrom().getLng();
-  Double lat=opt.getFrom().getLat();
+  Double lon=opt.from.lng;
+  Double lat=opt.from.lat;
   PatternStopVertex nextStop;
   TripTimes bestTripTimes=null;
   ServiceDay bestServiceDay=null;

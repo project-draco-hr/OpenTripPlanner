@@ -1,5 +1,5 @@
 {
-  Stop stop=index.stopForId.get(AgencyAndId.convertFromString(stopId));
+  Stop stop=index.stopForId.get(GtfsLibrary.convertIdFromString(stopId));
   if (stop == null)   return Response.status(Status.NOT_FOUND).entity(MSG_404).build();
   Set<Route> routes=Sets.newHashSet();
   for (  TripPattern pattern : index.patternsForStop.get(stop)) {

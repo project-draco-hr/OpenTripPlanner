@@ -12,5 +12,6 @@
   if (e instanceof TransferEdge)   return TRANSFER;
   if (e instanceof TimedTransferEdge)   return TRANSFER;
   if (e instanceof StreetTransitLink)   return LINK;
+  if (e instanceof PathwayEdge)   return LINK;
   return STREET;
 }

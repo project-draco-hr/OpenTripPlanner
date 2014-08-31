@@ -1,0 +1,25 @@
+{
+  if (transit == null || transit.isEmpty()) {
+    return "Non-transit options";
+  }
+  List<String> vias=Lists.newArrayList();
+  List<String> routes=Lists.newArrayList();
+  for (  Segment segment : transit) {
+    List<String> routeShortNames=Lists.newArrayList();
+    for (    RouteShort rs : segment.routes) {
+      String routeName=rs.shortName == null ? rs.longName : rs.shortName;
+      routeShortNames.add(routeName);
+    }
+    routes.add(Joiner.on("/").join(routeShortNames));
+    vias.add(segment.toName);
+  }
+  StringBuilder sb=new StringBuilder();
+  sb.append("routes ");
+  sb.append(Joiner.on(", ").join(routes));
+  if (!vias.isEmpty())   vias.remove(vias.size() - 1);
+  if (!vias.isEmpty()) {
+    sb.append(" via ");
+    sb.append(Joiner.on(", ").join(vias));
+  }
+  return sb.toString();
+}

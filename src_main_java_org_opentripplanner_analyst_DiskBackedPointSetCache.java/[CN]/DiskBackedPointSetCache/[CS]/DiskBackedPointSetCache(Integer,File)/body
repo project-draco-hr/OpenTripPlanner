@@ -1,0 +1,5 @@
+{
+  super();
+  this.pointSetPath=pointSetPath;
+  this.pointSets=CacheBuilder.newBuilder().maximumSize(maxCacheSize).build(new PointSetLoader());
+}

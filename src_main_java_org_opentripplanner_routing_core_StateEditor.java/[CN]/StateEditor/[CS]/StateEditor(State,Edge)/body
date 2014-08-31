@@ -10,7 +10,7 @@
   }
  else {
     if (e.getFromVertex().equals(e.getToVertex()) && parent.vertex.equals(e.getFromVertex())) {
-      traversingBackward=parent.getOptions().isArriveBy();
+      traversingBackward=parent.getOptions().arriveBy;
       child.vertex=e.getToVertex();
     }
  else     if (parent.vertex.equals(e.getFromVertex())) {
@@ -28,7 +28,7 @@
       LOG.warn("   parent vertex: {}",parent.vertex);
       defectiveTraversal=true;
     }
-    if (traversingBackward != parent.getOptions().isArriveBy()) {
+    if (traversingBackward != parent.getOptions().arriveBy) {
       LOG.error("Actual traversal direction does not match traversal direction in TraverseOptions.");
       defectiveTraversal=true;
     }

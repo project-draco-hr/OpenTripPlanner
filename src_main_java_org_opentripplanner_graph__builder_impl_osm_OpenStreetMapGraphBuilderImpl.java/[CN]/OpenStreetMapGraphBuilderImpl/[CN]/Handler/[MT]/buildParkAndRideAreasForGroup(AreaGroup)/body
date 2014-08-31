@@ -8,8 +8,8 @@
     if (creativeName == null || area.parent.getTag("name") != null)     creativeName=wayPropertySet.getCreativeNameForWay(area.parent);
     for (    Ring ring : area.outermostRings) {
       for (      OSMNode node : ring.nodes) {
-        if (envelope == null)         envelope=new Envelope2D(null,node.getLon(),node.getLat(),0,0);
- else         envelope.add(node.getLon(),node.getLat());
+        if (envelope == null)         envelope=new Envelope2D(null,node.lon,node.lat,0,0);
+ else         envelope.add(node.lon,node.lat);
         IntersectionVertex accessVertex=getVertexForOsmNode(node,area.parent);
         if (accessVertex.getIncoming().isEmpty() || accessVertex.getOutgoing().isEmpty())         continue;
         accessVertexes.add(accessVertex);

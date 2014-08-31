@@ -1,0 +1,9 @@
+{
+  GraphPath path=new GraphPath(state,false);
+  PlanGenerator pgen=new PlanGenerator(null,null);
+  Itinerary itin=pgen.generateItinerary(path,false);
+  Leg leg=itin.legs.get(0);
+  walkSteps=leg.walkSteps;
+  geometry=leg.legGeometry;
+  time=(int)(state.getElapsedTimeSeconds());
+}

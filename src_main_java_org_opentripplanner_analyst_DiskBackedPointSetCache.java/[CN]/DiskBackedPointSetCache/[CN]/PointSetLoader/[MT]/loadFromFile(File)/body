@@ -4,11 +4,10 @@
     String baseName=name.substring(0,name.length() - 4);
     LOG.info("loading '{}' with ID '{}'",pointSetData,baseName);
     try {
-      PointSet pset=PointSet.fromCsv(pointSetData.getAbsolutePath());
+      PointSet pset=PointSet.fromCsv(pointSetData);
       if (pset == null) {
         LOG.warn("Failure, skipping this pointset.");
       }
-      pset.setGraphService(graphService);
       return pset;
     }
  catch (    IOException ioex) {
@@ -18,11 +17,10 @@
  else   if (name.endsWith(".json")) {
     String baseName=name.substring(0,name.length() - 5);
     LOG.info("loading '{}' with ID '{}'",pointSetData,baseName);
-    PointSet pset=PointSet.fromGeoJson(pointSetData.getAbsolutePath());
+    PointSet pset=PointSet.fromGeoJson(pointSetData);
     if (pset == null) {
       LOG.warn("Failure, skipping this pointset.");
     }
-    pset.setGraphService(graphService);
     return pset;
   }
   return null;

@@ -1,0 +1,49 @@
+{
+  if (selected == null) {
+    return;
+  }
+  showGraph.highlightEdge(selected);
+  if (selected instanceof StreetEdge) {
+    List<Vertex> vertices=new ArrayList<Vertex>();
+    List<Edge> edges=new ArrayList<Edge>();
+    Vertex tov=selected.getToVertex();
+    for (    Edge og : tov.getOutgoing()) {
+      if (og instanceof StreetEdge) {
+        edges.add(og);
+        vertices.add(og.getToVertex());
+        break;
+      }
+    }
+    Vertex fromv=selected.getFromVertex();
+    for (    Edge ic : fromv.getIncoming()) {
+      if (ic instanceof StreetEdge) {
+        edges.add(ic);
+        vertices.add(ic.getFromVertex());
+        break;
+      }
+    }
+    showGraph.setHighlightedEdges(edges);
+  }
+  VertexList nearbyModel=(VertexList)nearbyVertices.getModel();
+  List<Vertex> vertices=nearbyModel.selected;
+  Vertex v;
+  if (outgoing) {
+    v=selected.getToVertex();
+  }
+ else {
+    v=selected.getFromVertex();
+  }
+  if (!vertices.contains(v)) {
+    vertices.add(v);
+    nearbyModel=new VertexList(vertices);
+    nearbyVertices.setModel(nearbyModel);
+  }
+  metadataModel.clear();
+  getMetadata(selected);
+  Vertex fromv=selected.getFromVertex();
+  getMetadata(fromv);
+  if (selected instanceof EdgeWithElevation) {
+    getMetadata(((EdgeWithElevation)selected).getElevationProfileSegment());
+  }
+  metadataList.revalidate();
+}

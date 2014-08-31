@@ -1,8 +1,8 @@
 {
   TransferTable table=new TransferTable();
   when(graph.getTransferTable()).thenReturn(table);
-  Vertex origin=graph.getVertex("agency_O");
-  Vertex destination=graph.getVertex("agency_V");
+  Vertex origin=graph.getVertex("agency:O");
+  Vertex destination=graph.getVertex("agency:V");
   RoutingRequest options=new RoutingRequest();
   options.dateTime=TestUtils.dateInSeconds("America/New_York",2009,7,11,13,11,0);
   options.setRoutingContext(graph,origin,destination);
@@ -14,7 +14,7 @@
   assertEquals("15.1",trips.get(1).getId().getId());
   long time=-1;
   for (  State s : path.states) {
-    if (s.getBackEdge() instanceof TransitBoardAlight && ((TransitBoardAlight)s.getBackEdge()).isBoarding()) {
+    if (s.getBackEdge() instanceof TransitBoardAlight && ((TransitBoardAlight)s.getBackEdge()).boarding) {
       time=s.getTimeSeconds();
     }
   }
@@ -30,7 +30,7 @@
   assertEquals("15.1",trips.get(1).getId().getId());
   long newTime=-1;
   for (  State s : path.states) {
-    if (s.getBackEdge() instanceof TransitBoardAlight && ((TransitBoardAlight)s.getBackEdge()).isBoarding()) {
+    if (s.getBackEdge() instanceof TransitBoardAlight && ((TransitBoardAlight)s.getBackEdge()).boarding) {
       newTime=s.getTimeSeconds();
     }
   }

@@ -8,7 +8,7 @@
     }
     n++;
     try {
-      AgencyAndId stopId=AgencyAndId.convertFromString(stopString);
+      AgencyAndId stopId=GtfsLibrary.convertIdFromString(stopString);
       retval.agencyAndStopIds.add(stopId);
     }
  catch (    IllegalArgumentException e) {

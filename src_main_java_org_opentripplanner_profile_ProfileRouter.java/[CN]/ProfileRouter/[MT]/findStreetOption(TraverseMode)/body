@@ -1,13 +1,13 @@
 {
   RoutingRequest rr=new RoutingRequest(mode);
-  rr.setFrom(new GenericLocation(request.from.lat,request.from.lon));
-  rr.setTo(new GenericLocation(request.to.lat,request.to.lon));
+  rr.from=(new GenericLocation(request.from.lat,request.from.lon));
+  rr.to=new GenericLocation(request.to.lat,request.to.lon);
   rr.setArriveBy(false);
   rr.setRoutingContext(graph);
   int worstElapsedTime=request.streetTime * 60;
-  rr.setWorstTime(rr.dateTime + worstElapsedTime);
-  rr.setWalkSpeed(request.walkSpeed);
-  rr.setBikeSpeed(request.bikeSpeed);
+  rr.worstTime=(rr.dateTime + worstElapsedTime);
+  rr.walkSpeed=request.walkSpeed;
+  rr.bikeSpeed=request.bikeSpeed;
   GenericAStar astar=new GenericAStar();
   int oldNumItineraries=rr.getNumItineraries();
   rr.setNumItineraries(1);
@@ -15,8 +15,8 @@
   State state=spt.getState(rr.rctx.target);
   if (state != null) {
     LOG.info("Found non-transit option for mode {}",mode);
-    directOptions.add(new Option(state));
+    directPaths.add(new StopAtDistance(state));
   }
   rr.setNumItineraries(oldNumItineraries);
-  rr.rctx.destroy();
+  routingContexts.add(rr.rctx);
 }

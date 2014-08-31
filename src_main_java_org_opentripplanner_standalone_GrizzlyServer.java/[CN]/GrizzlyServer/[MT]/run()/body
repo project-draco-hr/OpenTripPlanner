@@ -5,16 +5,20 @@
   SSLContextConfigurator sslConfig=new SSLContextConfigurator();
   sslConfig.setKeyStoreFile("/var/otp/ssh/keystore_server");
   sslConfig.setKeyStorePass("opentrip");
-  NetworkListener httpListener=new NetworkListener("otp_insecure",params.bindAddress,params.port);
   ThreadPoolConfig threadPoolConfig=ThreadPoolConfig.defaultConfig().setCorePoolSize(1).setMaxPoolSize(Runtime.getRuntime().availableProcessors());
-  httpListener.getTransport().setWorkerThreadPoolConfig(threadPoolConfig);
+  NetworkListener httpListener=new NetworkListener("otp_insecure",params.bindAddress,params.port);
   httpListener.setSecure(false);
-  httpServer.addListener(httpListener);
   NetworkListener httpsListener=new NetworkListener("otp_secure",params.bindAddress,params.securePort);
-  httpsListener.getTransport().setWorkerThreadPoolConfig(threadPoolConfig);
   httpsListener.setSecure(true);
   httpsListener.setSSLEngineConfig(new SSLEngineConfigurator(sslConfig).setClientMode(false).setNeedClientAuth(false));
-  httpServer.addListener(httpsListener);
+  for (  NetworkListener listener : new NetworkListener[]{httpListener,httpsListener}) {
+    CompressionConfig cc=listener.getCompressionConfig();
+    cc.setCompressionMode(CompressionConfig.CompressionMode.ON);
+    cc.setCompressionMinSize(50000);
+    cc.setCompressableMimeTypes("application/json","text/json");
+    listener.getTransport().setWorkerThreadPoolConfig(threadPoolConfig);
+    httpServer.addListener(listener);
+  }
   Application app=new OTPApplication(server);
   HttpHandler dynamicHandler=ContainerFactory.createContainer(HttpHandler.class,app);
   httpServer.getServerConfiguration().addHttpHandler(dynamicHandler,"/otp/");

@@ -11,7 +11,7 @@
     if (edge instanceof TablePatternEdge) {
       TablePatternEdge patternEdge=(TablePatternEdge)edge;
       TripPattern pattern=patternEdge.getPattern();
-      patternForId.put(pattern.getCode(),pattern);
+      patternForId.put(pattern.code,pattern);
     }
   }
   for (  Vertex vertex : vertices) {
@@ -41,6 +41,12 @@
   }
   for (  Route route : patternsForRoute.asMap().keySet()) {
     routeForId.put(route.getId(),route);
+  }
+  clusterStops();
+  LOG.info("Creating a spatial index for stop clusters.");
+  stopClusterSpatialIndex=new HashGrid<StopCluster>();
+  for (  StopCluster cluster : stopClusterForId.values()) {
+    stopClusterSpatialIndex.put(new Coordinate(cluster.lon,cluster.lat),cluster);
   }
   calendarService=graph.getCalendarService();
   serviceCodes=graph.serviceCodes;

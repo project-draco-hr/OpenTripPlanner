@@ -1,9 +1,9 @@
 {
-  AgencyAndId tripId=AgencyAndId.convertFromString(tripIdString);
+  AgencyAndId tripId=GtfsLibrary.convertIdFromString(tripIdString);
   Trip trip=index.tripForId.get(tripId);
   if (trip != null) {
     TripPattern pattern=index.patternForTrip.get(trip);
-    Timetable table=pattern.getScheduledTimetable();
+    Timetable table=pattern.scheduledTimetable;
     return Response.status(Status.OK).entity(TripTimeShort.fromTripTimes(table,trip)).build();
   }
  else {

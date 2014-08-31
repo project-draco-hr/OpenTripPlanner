@@ -1,10 +1,10 @@
 {
   if (options.rctx == null) {
-    options.setRoutingContext(graphService.getGraph(options.getRouterId()));
+    options.setRoutingContext(graphService.getGraph(options.routerId));
     options.rctx.pathParsers=new PathParser[]{new BasicPathParser(),new NoThruTrafficPathParser()};
   }
   RemainingWeightHeuristic heuristic;
-  if (options.getModes().isTransit()) {
+  if (options.modes.isTransit()) {
     LOG.debug("Transit itinerary requested.");
     heuristic=new InterleavedBidirectionalHeuristic(options.rctx.graph);
   }
@@ -52,7 +52,7 @@
       }
       if (u.equals(targetVertex)) {
         returnStates.add(su);
-        if (!options.getModes().isTransit())         break QUEUE;
+        if (!options.modes.isTransit())         break QUEUE;
         if (returnStates.size() >= _maxPaths)         break QUEUE;
         if (returnStates.size() < _timeouts.length) {
           endTime=startTime + (int)(_timeouts[returnStates.size()] * 1000);
@@ -60,7 +60,7 @@
         }
         continue QUEUE;
       }
-      for (      Edge e : options.isArriveBy() ? u.getIncoming() : u.getOutgoing()) {
+      for (      Edge e : options.arriveBy ? u.getIncoming() : u.getOutgoing()) {
         STATE:         for (State new_sv=e.traverse(su); new_sv != null; new_sv=new_sv.getNextResult()) {
           if (traverseVisitor != null) {
             traverseVisitor.visitEdge(e,new_sv);

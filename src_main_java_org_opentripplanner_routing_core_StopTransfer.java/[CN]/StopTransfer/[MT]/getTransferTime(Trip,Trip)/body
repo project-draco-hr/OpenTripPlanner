@@ -5,7 +5,7 @@
     int specificity=specificTransfer.getSpecificity();
     if (specificity > maxFoundSpecificity) {
       if (specificTransfer.matches(fromTrip,toTrip)) {
-        transferTime=specificTransfer.getTransferTime();
+        transferTime=specificTransfer.transferTime;
         maxFoundSpecificity=specificity;
         if (maxFoundSpecificity == SpecificTransfer.MAX_SPECIFICITY) {
           break;

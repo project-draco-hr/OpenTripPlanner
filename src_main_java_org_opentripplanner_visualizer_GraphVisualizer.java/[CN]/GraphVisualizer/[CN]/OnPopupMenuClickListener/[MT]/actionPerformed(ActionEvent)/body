@@ -1,0 +1,30 @@
+{
+  PathPrinter pp=((PathPrinter)pathsList.getSelectedValue());
+  if (pp == null) {
+    return;
+  }
+  GraphPath path=pp.gp;
+  firstComparePath=secondComparePath;
+  secondComparePath=path;
+  if (firstComparePath != null) {
+    DefaultListModel<State> pathModel=new DefaultListModel<State>();
+    for (    State st : firstComparePath.states) {
+      pathModel.addElement(st);
+    }
+    firstComparePathStates.setModel(pathModel);
+  }
+  if (secondComparePath != null) {
+    DefaultListModel<State> pathModel=new DefaultListModel<State>();
+    for (    State st : secondComparePath.states) {
+      pathModel.addElement(st);
+    }
+    secondComparePathStates.setModel(pathModel);
+  }
+  int[] diff=diffPaths();
+  final int diverge=diff[0];
+  final int converge=diff[1];
+  if (diff[0] >= 0) {
+    firstComparePathStates.setCellRenderer(new DiffListCellRenderer(diverge,firstComparePath.states.size() - converge - 1));
+    secondComparePathStates.setCellRenderer(new DiffListCellRenderer(diverge,secondComparePath.states.size() - converge - 1));
+  }
+}

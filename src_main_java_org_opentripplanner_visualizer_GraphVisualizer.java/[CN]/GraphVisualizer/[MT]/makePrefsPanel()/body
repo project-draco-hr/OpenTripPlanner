@@ -55,6 +55,49 @@
   pane.add(softWalkLimitOverageLabel);
   softWalkOverageRate=new JTextField("5.0");
   pane.add(softWalkOverageRate);
+  JLabel nPathsLabel=new JLabel("nPaths:");
+  pane.add(nPathsLabel);
+  nPaths=new JTextField("1");
+  pane.add(nPaths);
+  ItemListener onChangeVizPrefs=new ItemListener(){
+    @Override public void itemStateChanged(    ItemEvent e){
+      showGraph.setShowTransit(showTransitCheckbox.isSelected());
+      showGraph.setShowStreets(showStreetsCheckbox.isSelected());
+      showGraph.setShowMultistateVertices(showMultistateVerticesCheckbox.isSelected());
+      showGraph.setShowHightlights(showHighlightedCheckbox.isSelected());
+      showGraph.setShowSPT(showSPTCheckbox.isSelected());
+      showGraph.redraw();
+    }
+  }
+;
+  showTransitCheckbox=new JCheckBox("show transit");
+  showTransitCheckbox.setSelected(true);
+  showTransitCheckbox.addItemListener(onChangeVizPrefs);
+  pane.add(showTransitCheckbox);
+  showStreetsCheckbox=new JCheckBox("show streets");
+  showStreetsCheckbox.setSelected(true);
+  showStreetsCheckbox.addItemListener(onChangeVizPrefs);
+  pane.add(showStreetsCheckbox);
+  showHighlightedCheckbox=new JCheckBox("show highlighted");
+  showHighlightedCheckbox.setSelected(true);
+  showHighlightedCheckbox.addItemListener(onChangeVizPrefs);
+  pane.add(showHighlightedCheckbox);
+  showSPTCheckbox=new JCheckBox("show SPT");
+  showSPTCheckbox.setSelected(true);
+  showSPTCheckbox.addItemListener(onChangeVizPrefs);
+  pane.add(showSPTCheckbox);
+  showMultistateVerticesCheckbox=new JCheckBox("show multistate vertices");
+  showMultistateVerticesCheckbox.setSelected(true);
+  showMultistateVerticesCheckbox.addItemListener(onChangeVizPrefs);
+  pane.add(showMultistateVerticesCheckbox);
+  JLabel sptFlatteningLabel=new JLabel("SPT flattening:");
+  pane.add(sptFlatteningLabel);
+  sptFlattening=new JTextField("0.3");
+  pane.add(sptFlattening);
+  JLabel sptThicknessLabel=new JLabel("SPT thickness:");
+  pane.add(sptThicknessLabel);
+  sptThickness=new JTextField("0.1");
+  pane.add(sptThickness);
   JLabel optimizeTypeLabel=new JLabel("Optimize type:");
   pane.add(optimizeTypeLabel);
   opQuick=new JRadioButton("Quick");

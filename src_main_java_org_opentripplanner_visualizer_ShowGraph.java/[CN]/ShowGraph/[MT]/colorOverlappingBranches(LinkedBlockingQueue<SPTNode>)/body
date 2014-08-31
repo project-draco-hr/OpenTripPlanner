@@ -1,0 +1,16 @@
+{
+  HashMap<Vertex,Integer> stateHeight=new HashMap<Vertex,Integer>();
+  Iterator<SPTNode> nodes=queue.iterator();
+  while (nodes.hasNext()) {
+    SPTNode node=nodes.next();
+    Integer height=stateHeight.get(node.state.getVertex());
+    if (height == null) {
+      height=0;
+    }
+ else {
+      height+=1;
+    }
+    stateHeight.put(node.state.getVertex(),height);
+    node.setHeight(height);
+  }
+}

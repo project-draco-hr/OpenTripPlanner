@@ -1,0 +1,10 @@
+{
+  int n=0;
+  for (  RoutingContext rctx : routingContexts) {
+    rctx.destroy();
+    n+=1;
+  }
+  routingContexts.clear();
+  LOG.info("destroyed {} routing contexts.",n);
+  return n;
+}

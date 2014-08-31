@@ -1,0 +1,9 @@
+{
+  int min=min0 + (int)state.getElapsedTimeSeconds();
+  int max=max0 + (int)state.getElapsedTimeSeconds();
+  Vertex vertex=state.getVertex();
+  int index=vertex.getIndex();
+  if (index >= mins.length)   return;
+  if (mins[index] == TimeSurface.UNREACHABLE || mins[index] > min)   mins[index]=min;
+  if (maxs[index] == TimeSurface.UNREACHABLE || maxs[index] > max)   maxs[index]=max;
+}

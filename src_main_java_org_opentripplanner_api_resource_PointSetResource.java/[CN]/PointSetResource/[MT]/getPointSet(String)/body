@@ -3,6 +3,9 @@
   if (pset == null) {
     return Response.status(Status.NOT_FOUND).entity("Invalid PointSet ID.").build();
   }
+  if (pset.capacity > 200) {
+    return Response.ok().entity(new PointSetShort(pointSetId,pset)).build();
+  }
   return Response.ok().entity(new StreamingOutput(){
     @Override public void write(    OutputStream output) throws IOException, WebApplicationException {
       pset.writeJson(output);

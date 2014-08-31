@@ -1,0 +1,9 @@
+{
+  double lonSum=0, latSum=0;
+  for (  Stop stop : children) {
+    lonSum+=stop.getLon();
+    latSum+=stop.getLat();
+  }
+  lon=lonSum / children.size();
+  lat=latSum / children.size();
+}

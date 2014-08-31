@@ -1,0 +1,11 @@
+{
+  Vertex vertex=state.getVertex();
+  if (vertex instanceof TransitStop) {
+    StopAtDistance sd=new StopAtDistance(state);
+    sd.mode=mode;
+    if (sd.mode == TraverseMode.CAR && sd.etime < MIN_DRIVE_TIME)     return;
+    if (stopClustersFound.containsKey(sd.stop))     return;
+    LOG.debug("found stop cluster: {}",sd);
+    stopClustersFound.put(sd.stop,sd);
+  }
+}

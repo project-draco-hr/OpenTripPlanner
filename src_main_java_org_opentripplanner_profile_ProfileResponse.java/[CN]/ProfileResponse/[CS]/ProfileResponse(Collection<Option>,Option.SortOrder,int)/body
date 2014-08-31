@@ -1,7 +1,7 @@
 {
   List<Option> transitOptions=Lists.newArrayList();
   for (  Option option : options) {
-    if (option.segments.isEmpty())     this.options.add(option);
+    if (option.transit == null || option.transit.isEmpty())     this.options.add(option);
  else     transitOptions.add(option);
   }
   Comparator<Option> c;
@@ -21,4 +21,7 @@ if (limit > 0 && limit <= transitOptions.size()) {
 transitOptions=transitOptions.subList(0,limit);
 }
 this.options.addAll(transitOptions);
+for (Option option : this.options) {
+LOG.info("{} {}",option.stats,option.summary);
+}
 }

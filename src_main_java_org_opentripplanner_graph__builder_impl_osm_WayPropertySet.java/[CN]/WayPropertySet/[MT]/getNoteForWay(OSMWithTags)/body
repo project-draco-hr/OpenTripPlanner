@@ -1,8 +1,8 @@
 {
   HashSet<Alert> out=new HashSet<Alert>();
   for (  NotePicker picker : notes) {
-    OSMSpecifier specifier=picker.getSpecifier();
-    NoteProperties noteProperties=picker.getNoteProperties();
+    OSMSpecifier specifier=picker.specifier;
+    NoteProperties noteProperties=picker.noteProperties;
     if (specifier.matchScore(way) > 0) {
       out.add(Alert.createSimpleAlerts(noteProperties.generateNote(way).intern()));
     }

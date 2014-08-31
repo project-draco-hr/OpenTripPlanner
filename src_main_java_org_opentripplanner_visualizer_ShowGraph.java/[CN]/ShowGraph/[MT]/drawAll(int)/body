@@ -1,0 +1,19 @@
+{
+  if (drawOffset == 0) {
+    findVisibleElements();
+    background(15);
+  }
+  if (drawStreetEdges) {
+    stroke(30,128,30);
+    strokeWeight(1);
+    noFill();
+    while (drawOffset < visibleStreetEdges.size()) {
+      drawEdge(visibleStreetEdges.get(drawOffset));
+      drawOffset+=1;
+      if (drawOffset % BLOCK_SIZE == 0) {
+        if (millis() - startMillis > FRAME_TIME)         return false;
+      }
+    }
+  }
+  return true;
+}

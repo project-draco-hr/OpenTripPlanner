@@ -5,8 +5,8 @@
   while (true) {
     Vertex origin, destination;
     do {
-      origin=graph.getVertex("agency_" + (char)(65 + rand.nextInt(20)));
-      destination=graph.getVertex("agency_" + (char)(65 + rand.nextInt(20)));
+      origin=graph.getVertex("agency:" + (char)(65 + rand.nextInt(20)));
+      destination=graph.getVertex("agency:" + (char)(65 + rand.nextInt(20)));
     }
  while (origin.equals(destination));
     RoutingRequest options=new RoutingRequest();
@@ -63,7 +63,7 @@
     double lat=end.getLat();
     double lon=end.getLon();
     OnboardDepartVertex onboardOrigin=new OnboardDepartVertex("OnBoard_Origin",lat,lon);
-    @SuppressWarnings("unused") OnBoardDepartPatternHop currentHop=new OnBoardDepartPatternHop(onboardOrigin,nextV,tripTimes,options.getRctx().serviceDays.get(1),stopIndex,k);
+    @SuppressWarnings("unused") OnBoardDepartPatternHop currentHop=new OnBoardDepartPatternHop(onboardOrigin,nextV,tripTimes,options.rctx.serviceDays.get(1),stopIndex,k);
     options.dateTime=newStart;
     options.setRoutingContext(graph,onboardOrigin,destination);
     spt=aStar.getShortestPathTree(options);

@@ -1,0 +1,8 @@
+{
+  List<Stats> stats=Lists.newArrayList();
+  for (  PatternRide patternRide : patternRides) {
+    stats.add(patternRide.stats);
+  }
+  this.rideStats=new Stats(stats);
+  this.waitStats=this.calcStatsForTransfer(window,walkSpeed);
+}
