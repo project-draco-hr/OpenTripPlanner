@@ -1,9 +1,23 @@
 {
   GraphPath path=new GraphPath(state,false);
+  CoordinateArrayListSequence coordinates=new CoordinateArrayListSequence();
+  for (  Edge edge : path.edges) {
+    LineString geometry=edge.getGeometry();
+    if (geometry != null) {
+      if (coordinates.size() == 0) {
+        coordinates.extend(geometry.getCoordinates());
+      }
+ else {
+        coordinates.extend(geometry.getCoordinates(),1);
+      }
+    }
+  }
+  Geometry geom=GeometryUtils.getGeometryFactory().createLineString(coordinates);
+  this.geometry=PolylineEncoder.createEncodings(geom);
   PlanGenerator pgen=new PlanGenerator(null,null);
   Itinerary itin=pgen.generateItinerary(path,false);
-  Leg leg=itin.legs.get(0);
-  walkSteps=leg.walkSteps;
-  geometry=leg.legGeometry;
+  for (  Leg leg : itin.legs) {
+    walkSteps.addAll(leg.walkSteps);
+  }
   time=(int)(state.getElapsedTimeSeconds());
 }
