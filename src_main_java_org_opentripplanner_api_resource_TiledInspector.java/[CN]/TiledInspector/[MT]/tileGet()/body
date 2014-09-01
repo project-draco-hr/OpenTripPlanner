@@ -2,11 +2,7 @@
   Envelope2D env=SlippyTile.tile2Envelope(x,y,z);
   TileRequest tileRequest=new TileRequest(routerId,env,256,256);
   BufferedImage image=otpServer.tileRendererManager.renderTile(tileRequest,layer);
-  MIMEImageFormat format=new MIMEImageFormat("image/png");
-  if (image == null) {
-    LOG.warn("null image");
-    return null;
-  }
+  MIMEImageFormat format=new MIMEImageFormat("image/" + ext);
   ByteArrayOutputStream baos=new ByteArrayOutputStream(image.getWidth() * image.getHeight() / 4);
   ImageIO.write(image,format.type,baos);
   CacheControl cc=new CacheControl();

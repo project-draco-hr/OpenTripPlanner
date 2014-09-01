@@ -1,7 +1,8 @@
 {
   float lineWidth=(float)(1.0f + 5.0f / Math.sqrt(context.metersPerPixel));
-  Collection<Vertex> vertices=context.graph.streetIndex.getVerticesForEnvelope(context.bbox);
-  Collection<StreetEdge> edges=context.graph.streetIndex.getEdgesForEnvelope(context.bbox);
+  Envelope bboxWithMargins=context.expandPixels(lineWidth * 2.0,lineWidth * 2.0);
+  Collection<Vertex> vertices=context.graph.streetIndex.getVerticesForEnvelope(bboxWithMargins);
+  Collection<StreetEdge> edges=context.graph.streetIndex.getEdgesForEnvelope(bboxWithMargins);
   ShapeWriter shapeWriter=new ShapeWriter(new IdentityPointTransformation(),new PointShapeFactory.Point());
   GeometryFactory geomFactory=new GeometryFactory();
   Stroke stroke=new BasicStroke(lineWidth * 1.4f,BasicStroke.CAP_ROUND,BasicStroke.JOIN_BEVEL);
@@ -21,7 +22,6 @@
     evAttrs.label=null;
     Geometry edgeGeom=edge.getGeometry();
     if (edgeGeom == null)     continue;
-    if (!context.bbox.intersects(edgeGeom.getEnvelopeInternal()))     continue;
     boolean render=evRenderer.renderEdge(edge,evAttrs);
     if (!render)     continue;
     Geometry midLineGeom=context.transform.transform(edgeGeom);
@@ -54,7 +54,6 @@
     vvAttrs.color=null;
     vvAttrs.label=null;
     Point point=geomFactory.createPoint(new Coordinate(vertex.getLon(),vertex.getLat()));
-    if (!context.bbox.contains(point.getCoordinate()))     continue;
     boolean render=evRenderer.renderVertex(vertex,vvAttrs);
     if (!render)     continue;
     Point tilePoint=(Point)context.transform.transform(point);
