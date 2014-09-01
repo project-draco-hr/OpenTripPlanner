@@ -14,15 +14,16 @@
     if (radius > MAX_DISTANCE_FROM_STREET) {
       return candidateEdges;
     }
-    Iterable<StreetEdge> nearbyEdges=edgeTree.query(envelope);
+    Iterable<Edge> nearbyEdges=edgeTree.query(envelope);
     if (nearbyEdges != null) {
       nearbyEdges=Iterables.concat(nearbyEdges,extraStreets);
     }
-    for (    StreetEdge e : nearbyEdges) {
-      if (e == null || e.getFromVertex() == null) {
+    for (    Edge e : nearbyEdges) {
+      if (e == null || e.getFromVertex() == null || !(e instanceof StreetEdge)) {
         continue;
       }
-      if (!reqs.canBeTraversed(e)) {
+      StreetEdge se=(StreetEdge)e;
+      if (!reqs.canBeTraversed(se)) {
         continue;
       }
       double preferrence=1;
@@ -30,7 +31,7 @@
         preferrence=3.0;
       }
       TraverseModeSet modes=reqs.modes;
-      CandidateEdge ce=new CandidateEdge(e,location,preferrence,modes);
+      CandidateEdge ce=new CandidateEdge(se,location,preferrence,modes);
       if (ce.distance < radius) {
         candidateEdges.add(ce);
       }
