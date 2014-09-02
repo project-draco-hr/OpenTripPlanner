@@ -14,7 +14,7 @@
   Stroke halfStroke=new BasicStroke(lineWidth * 0.6f + 1.0f,BasicStroke.CAP_ROUND,BasicStroke.JOIN_BEVEL);
   Stroke halfDashedStroke=new BasicStroke(lineWidth * 0.6f + 1.0f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_BEVEL,1.0f,new float[]{4 * lineWidth,lineWidth},2 * lineWidth);
   Stroke arrowStroke=new ShapeStroke(new Polygon(new int[]{0,0,30},new int[]{0,20,10},3),lineWidth / 2,5.0f * lineWidth,2.5f * lineWidth);
-  BasicStroke finStroke=new BasicStroke(1.0f,BasicStroke.CAP_ROUND,BasicStroke.JOIN_BEVEL);
+  BasicStroke thinStroke=new BasicStroke(1.0f,BasicStroke.CAP_ROUND,BasicStroke.JOIN_BEVEL);
   Font font=new Font(Font.SANS_SERIF,Font.PLAIN,Math.round(lineWidth));
   Font largeFont=new Font(Font.SANS_SERIF,Font.PLAIN,Math.round(lineWidth * 1.5f));
   FontMetrics largeFontMetrics=context.graphics.getFontMetrics(largeFont);
@@ -53,7 +53,7 @@
     }
     if (lineWidth > 4.0f) {
       context.graphics.setColor(Color.BLACK);
-      context.graphics.setStroke(finStroke);
+      context.graphics.setStroke(thinStroke);
       context.graphics.draw(midLineShape);
     }
     if (evAttrs.label != null && lineWidth > 8.0f) {
