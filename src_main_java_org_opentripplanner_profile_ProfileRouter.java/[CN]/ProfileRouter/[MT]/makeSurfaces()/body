@@ -7,7 +7,6 @@
   rr.worstTime=(rr.dateTime + worstElapsedTime);
   rr.batch=(true);
   GenericAStar astar=new GenericAStar();
-  int oldNumItineraries=rr.getNumItineraries();
   rr.setNumItineraries(1);
   for (  TransitStop tstop : graph.index.stopVertexForStop.values()) {
     int index=tstop.getIndex();
@@ -20,6 +19,5 @@
   minSurface=new TimeSurface(this,false);
   maxSurface=new TimeSurface(this,true);
   LOG.info("done making timesurfaces.");
-  rr.setNumItineraries(oldNumItineraries);
   return new P2<TimeSurface>(minSurface,maxSurface);
 }

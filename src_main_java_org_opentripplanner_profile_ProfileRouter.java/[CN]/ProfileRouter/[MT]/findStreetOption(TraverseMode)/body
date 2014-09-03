@@ -9,7 +9,6 @@
   rr.walkSpeed=request.walkSpeed;
   rr.bikeSpeed=request.bikeSpeed;
   GenericAStar astar=new GenericAStar();
-  int oldNumItineraries=rr.getNumItineraries();
   rr.setNumItineraries(1);
   ShortestPathTree spt=astar.getShortestPathTree(rr,System.currentTimeMillis() + 5000);
   State state=spt.getState(rr.rctx.target);
@@ -17,6 +16,5 @@
     LOG.info("Found non-transit option for mode {}",mode);
     directPaths.add(new StopAtDistance(state));
   }
-  rr.setNumItineraries(oldNumItineraries);
   routingContexts.add(rr.rctx);
 }
