@@ -1,0 +1,22 @@
+{
+  if (e instanceof PlainStreetEdge) {
+    PlainStreetEdge pse=(PlainStreetEdge)e;
+    if (pse.getPermission().allows(TraverseMode.BICYCLE)) {
+      double bikeSafety=pse.getBicycleSafetyEffectiveLength() / pse.getLength();
+      attrs.color=palette.getColor(bikeSafety);
+      attrs.label=String.format("%.02f",bikeSafety);
+    }
+ else {
+      attrs.color=Color.LIGHT_GRAY;
+      attrs.label="no bikes";
+    }
+  }
+ else   if (e instanceof StreetBikeRentalLink) {
+    attrs.color=palette.getColor(1.0f);
+    attrs.label="link";
+  }
+ else {
+    return false;
+  }
+  return true;
+}

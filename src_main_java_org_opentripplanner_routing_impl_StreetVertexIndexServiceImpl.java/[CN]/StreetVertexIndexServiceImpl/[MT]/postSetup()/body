@@ -1,9 +1,9 @@
 {
   transitStopTree=new STRtree();
-  intersectionTree=new STRtree();
+  verticesTree=new STRtree();
   for (  Vertex gv : graph.getVertices()) {
     Vertex v=gv;
-    for (    StreetEdge e : filter(gv.getOutgoing(),StreetEdge.class)) {
+    for (    Edge e : gv.getOutgoing()) {
       if (e.getGeometry() == null) {
         continue;
       }
@@ -14,10 +14,8 @@
       Envelope env=new Envelope(v.getCoordinate());
       transitStopTree.insert(env,v);
     }
-    if (v instanceof IntersectionVertex) {
-      Envelope env=new Envelope(v.getCoordinate());
-      intersectionTree.insert(env,v);
-    }
+    Envelope env=new Envelope(v.getCoordinate());
+    verticesTree.insert(env,v);
   }
   transitStopTree.build();
 }
