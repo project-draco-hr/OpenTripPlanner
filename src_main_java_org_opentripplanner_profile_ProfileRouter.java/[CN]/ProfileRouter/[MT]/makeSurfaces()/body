@@ -7,7 +7,7 @@
   rr.worstTime=(rr.dateTime + worstElapsedTime);
   rr.batch=(true);
   GenericAStar astar=new GenericAStar();
-  astar.nPaths=(1);
+  rr.setNumItineraries(1);
   for (  TransitStop tstop : graph.index.stopVertexForStop.values()) {
     int index=tstop.getIndex();
     if (mins[index] == TimeSurface.UNREACHABLE || maxs[index] == TimeSurface.UNREACHABLE)     continue;

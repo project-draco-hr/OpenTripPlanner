@@ -1,6 +1,7 @@
 {
   final TraverseMode mode=preferredMode != null ? preferredMode : TraverseMode.TRANSIT;
   RoutingRequest routingRequest=new RoutingRequest();
+  routingRequest.setNumItineraries(1);
   routingRequest.setArriveBy(dateTime < 0);
   routingRequest.dateTime=Math.abs(dateTime);
   if (fromVertex != null && !fromVertex.isEmpty()) {

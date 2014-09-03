@@ -9,7 +9,7 @@
   rr.walkSpeed=request.walkSpeed;
   rr.bikeSpeed=request.bikeSpeed;
   GenericAStar astar=new GenericAStar();
-  astar.nPaths=(1);
+  rr.setNumItineraries(1);
   ShortestPathTree spt=astar.getShortestPathTree(rr,System.currentTimeMillis() + 5000);
   State state=spt.getState(rr.rctx.target);
   if (state != null) {
