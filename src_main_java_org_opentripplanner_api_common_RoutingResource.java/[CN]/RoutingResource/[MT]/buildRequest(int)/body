@@ -11,13 +11,21 @@
       tz=otpServer.graphService.getGraph(request.routerId).getTimeZone();
     }
  else {
-      LOG.warn("no graph service available, using default timezone.");
+      LOG.warn("No graph service available, using default time zone.");
       tz=TimeZone.getDefault();
+      LOG.info("Time zone set to {}",tz);
     }
     if (d == null && t != null) {
       LOG.debug("parsing ISO datetime {}",t);
       try {
-        request.setDateTime(javax.xml.datatype.DatatypeFactory.newInstance().newXMLGregorianCalendar(t).toGregorianCalendar().getTime());
+        DatatypeFactory df=javax.xml.datatype.DatatypeFactory.newInstance();
+        XMLGregorianCalendar xmlGregCal=df.newXMLGregorianCalendar(t);
+        GregorianCalendar gregCal=xmlGregCal.toGregorianCalendar();
+        if (xmlGregCal.getTimezone() == DatatypeConstants.FIELD_UNDEFINED) {
+          gregCal.setTimeZone(tz);
+        }
+        Date d2=gregCal.getTime();
+        request.setDateTime(d2);
       }
  catch (      DatatypeConfigurationException e) {
         request.setDateTime(d,t,tz);
