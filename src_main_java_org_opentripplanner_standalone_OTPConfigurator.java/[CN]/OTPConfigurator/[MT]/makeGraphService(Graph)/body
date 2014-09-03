@@ -10,6 +10,17 @@
       this.graphService=new GraphServiceBeanImpl(graph,null);
     }
   }
+ else   if (params.autoScan) {
+    GraphServiceAutoDiscoverImpl graphService=new GraphServiceAutoDiscoverImpl();
+    if (params.graphDirectory != null) {
+      graphService.setPath(params.graphDirectory);
+    }
+    if (params.routerIds.size() > 0) {
+      graphService.setDefaultRouterId(params.routerIds.get(0));
+    }
+    graphService.startup();
+    this.graphService=graphService;
+  }
  else {
     GraphServiceImpl graphService=new GraphServiceImpl();
     if (params.graphDirectory != null) {
