@@ -1,7 +1,10 @@
 {
   Set<BikeRentalStation> stationSet=new HashSet<BikeRentalStation>();
-  Set<String> networks=new HashSet<String>(Arrays.asList(network));
+  Set<String> defaultNetworks=new HashSet<String>(Arrays.asList(network));
   for (  BikeRentalStation station : stations) {
+    if (station.networks == null) {
+      station.networks=defaultNetworks;
+    }
     service.addStation(station);
     stationSet.add(station);
     BikeRentalStationVertex vertex=verticesByStation.get(station);
@@ -12,8 +15,8 @@
         graph.addTemporaryEdge(e);
       }
       verticesByStation.put(station,vertex);
-      new RentABikeOnEdge(vertex,vertex,networks);
-      new RentABikeOffEdge(vertex,vertex,networks);
+      new RentABikeOnEdge(vertex,vertex,station.networks);
+      new RentABikeOffEdge(vertex,vertex,station.networks);
     }
  else {
       vertex.setBikesAvailable(station.bikesAvailable);

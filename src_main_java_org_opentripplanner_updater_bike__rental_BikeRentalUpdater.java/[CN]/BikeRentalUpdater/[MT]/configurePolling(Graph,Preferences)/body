@@ -20,6 +20,9 @@
  else     if (sourceType.equals("city-bikes")) {
       source=new CityBikesBikeRentalDataSource();
     }
+ else     if (sourceType.equals("vcub")) {
+      source=new VCubDataSource();
+    }
   }
   if (source == null) {
     throw new IllegalArgumentException("Unknown bike rental source type: " + sourceType);
