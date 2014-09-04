@@ -1,5 +1,5 @@
 {
-  if (_nodesWithNeighbors.contains(node.getId()) || multipleAreasContain(node.getId())) {
+  if (_nodesWithNeighbors.contains(node.getId()) || multipleAreasContain(node.getId()) || node.isStop()) {
     startingNodes.add(node);
     VLPoint point=new VLPoint(node.lon,node.lat);
     if (!visibilityPoints.contains(point)) {

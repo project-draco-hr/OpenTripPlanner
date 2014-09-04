@@ -11,6 +11,11 @@
       if (!ring.toJtsPolygon().contains(area.toJTSMultiPolygon())) {
         continue;
       }
+      if (stopsInAreas.containsKey(area.parent)) {
+        for (        OSMNode node : stopsInAreas.get(area.parent)) {
+          addtoVisibilityAndStartSets(startingNodes,visibilityPoints,visibilityNodes,node);
+        }
+      }
       for (      Ring outerRing : area.outermostRings) {
         for (int i=0; i < outerRing.nodes.size(); ++i) {
           OSMNode node=outerRing.nodes.get(i);

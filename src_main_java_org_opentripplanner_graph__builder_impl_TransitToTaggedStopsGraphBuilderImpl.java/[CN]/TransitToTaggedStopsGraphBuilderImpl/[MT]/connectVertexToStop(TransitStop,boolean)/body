@@ -4,7 +4,8 @@
     return false;
   }
   Envelope envelope=new Envelope(ts.getCoordinate());
-  envelope.expandBy(0.003);
+  double xscale=Math.cos(ts.getCoordinate().y * Math.PI / 180);
+  envelope.expandBy(searchRadiusLat / xscale,searchRadiusLat);
   Collection<Vertex> vertices=index.getVerticesForEnvelope(envelope);
   for (  Vertex v : vertices) {
     if (!(v instanceof TransitStopStreetVertex)) {
