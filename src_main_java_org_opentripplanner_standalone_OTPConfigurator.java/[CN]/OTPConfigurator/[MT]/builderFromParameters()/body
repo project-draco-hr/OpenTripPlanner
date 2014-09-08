@@ -94,6 +94,9 @@ ElevationGridCoverageFactory gcf=new NEDGridCoverageFactoryImpl(cacheDirectory);
 GraphBuilder elevationBuilder=new ElevationGraphBuilderImpl(gcf);
 graphBuilder.addGraphBuilder(elevationBuilder);
 }
+if (params.graphStatistics) {
+graphBuilder.addGraphBuilder(new GraphStatisticsGraphBuilderImpl());
+}
 graphBuilder.serializeGraph=(!params.inMemory) || params.preFlight;
 return graphBuilder;
 }
