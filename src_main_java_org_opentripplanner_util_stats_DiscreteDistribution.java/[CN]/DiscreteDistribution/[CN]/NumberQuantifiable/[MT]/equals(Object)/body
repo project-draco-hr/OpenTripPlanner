@@ -1,0 +1,7 @@
+{
+  if (another instanceof NumberQuantifiable) {
+    @SuppressWarnings("unchecked") NumberQuantifiable<K> other=(NumberQuantifiable<K>)another;
+    return other.num.equals(this.num);
+  }
+  return false;
+}
