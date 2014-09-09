@@ -1,5 +1,8 @@
 {
-  int size=coords == null ? 2 : (coords.length / 2) + 2;
+  int[] coords=packedCoords == null ? null : DlugoszVarLenIntPacker.unpack(packedCoords);
+  int size=packedCoords == null ? 2 : (coords.length / 2) + 2;
+  if (packedCoords == null) {
+  }
   Coordinate[] c=new Coordinate[size];
   c[0]=new Coordinate(x0,y0);
   if (coords != null) {

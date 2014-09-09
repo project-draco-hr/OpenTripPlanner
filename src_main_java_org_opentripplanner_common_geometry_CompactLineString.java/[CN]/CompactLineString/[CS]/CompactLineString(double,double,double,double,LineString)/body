@@ -3,7 +3,7 @@
   if (Math.abs(x0 - c[0].x) > EPS || Math.abs(y0 - c[0].y) > EPS || Math.abs(x1 - c[c.length - 1].x) > EPS || Math.abs(y1 - c[c.length - 1].y) > EPS)   throw new IllegalArgumentException("CompactLineString geometry must stick to given end points. If you need to relax this, please read source code.");
   int oix=(int)Math.round(x0 * FIXED_FLOAT_MULT);
   int oiy=(int)Math.round(y0 * FIXED_FLOAT_MULT);
-  coords=new int[(c.length - 2) * 2];
+  int[] coords=new int[(c.length - 2) * 2];
   for (int i=1; i < c.length - 1; i++) {
     int ix=(int)Math.round(c[i].x * FIXED_FLOAT_MULT);
     int iy=(int)Math.round(c[i].y * FIXED_FLOAT_MULT);
@@ -14,4 +14,5 @@
     oix=ix;
     oiy=iy;
   }
+  packedCoords=DlugoszVarLenIntPacker.pack(coords);
 }
