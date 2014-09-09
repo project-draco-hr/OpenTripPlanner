@@ -1,0 +1,38 @@
+{
+  List<Integer> retval=new ArrayList<Integer>(arr.length);
+  int i=0;
+  while (i < arr.length) {
+    int v1=arr[i] & 0xFF;
+    i++;
+    if ((v1 & 0x80) == 0x00) {
+      int sv=(v1 & 0x7F) - 64;
+      retval.add(sv);
+    }
+ else     if ((v1 & 0xC0) == 0x80) {
+      int sv=((v1 & 0x3F) << 8) + (arr[i] & 0xFF) - 8192;
+      i++;
+      retval.add(sv);
+    }
+ else     if ((v1 & 0xE0) == 0xC0) {
+      int sv=((v1 & 0x1F) << 16) + ((arr[i] & 0xFF) << 8) + (arr[i + 1] & 0xFF) - 1048576;
+      i+=2;
+      retval.add(sv);
+    }
+ else     if ((v1 & 0xF8) == 0xE0) {
+      int sv=((v1 & 0x1F) << 24) + ((arr[i] & 0xFF) << 16) + ((arr[i + 1] & 0xFF) << 8)+ (arr[i + 2] & 0xFF) - 67108864;
+      i+=3;
+      retval.add(sv);
+    }
+ else {
+      long sv=(((long)v1 & 0x1F) << 32) + ((arr[i] & 0xFF) << 24) + ((arr[i + 1] & 0xFF) << 16)+ ((arr[i + 2] & 0xFF) << 8)+ (arr[i + 3] & 0xFF) - 2147483648L;
+      i+=4;
+      retval.add((int)sv);
+    }
+  }
+  int[] bufret=new int[retval.size()];
+  i=0;
+  for (  int v : retval) {
+    bufret[i++]=v;
+  }
+  return bufret;
+}
