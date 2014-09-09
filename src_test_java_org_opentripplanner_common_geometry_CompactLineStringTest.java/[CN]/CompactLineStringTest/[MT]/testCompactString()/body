@@ -1,0 +1,25 @@
+{
+  GeometryFactory gf=new GeometryFactory();
+  List<Coordinate> c=new ArrayList<Coordinate>();
+  double x0=1.111111111;
+  double y0=0.123456789;
+  double x1=2.0;
+  double y1=0.0;
+  c.add(new Coordinate(x0,y0));
+  c.add(new Coordinate(x1,y1));
+  LineString ls=gf.createLineString(c.toArray(new Coordinate[0]));
+  CompactLineString cls=CompactLineString.create(x0,y0,x1,y1,ls);
+  assertTrue(cls == CompactLineString.STRAIGHT_LINE);
+  LineString ls2=cls.toLineString(x0,y0,x1,y1);
+  assertTrue(ls.equalsExact(ls2,0.00000015));
+  c.clear();
+  c.add(new Coordinate(x0,y0));
+  c.add(new Coordinate(-179.99,1.12345));
+  c.add(new Coordinate(179.99,1.12345));
+  c.add(new Coordinate(x1,y1));
+  ls=gf.createLineString(c.toArray(new Coordinate[0]));
+  cls=CompactLineString.create(x0,y0,x1,y1,ls);
+  assertTrue(cls != CompactLineString.STRAIGHT_LINE);
+  ls2=cls.toLineString(x0,y0,x1,y1);
+  assertTrue(ls.equalsExact(ls2,0.00000015));
+}
