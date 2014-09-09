@@ -1,7 +1,6 @@
 {
   LOG.info("Linking transit stops to tagged bus stops...");
   index=new StreetVertexIndexServiceImpl(graph);
-  index.setup();
   ArrayList<Vertex> vertices=new ArrayList<>();
   vertices.addAll(graph.getVertices());
   for (  TransitStop ts : IterableLibrary.filter(vertices,TransitStop.class)) {
