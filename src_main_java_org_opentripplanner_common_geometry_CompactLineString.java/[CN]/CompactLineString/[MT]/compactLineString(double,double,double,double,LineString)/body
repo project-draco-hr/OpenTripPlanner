@@ -1,4 +1,6 @@
 {
+  if (lineString == null)   return null;
+  if (lineString.getCoordinates().length == 2)   return STRAIGHT_LINE;
   Coordinate[] c=lineString.getCoordinates();
   if (Math.abs(x0 - c[0].x) > EPS || Math.abs(y0 - c[0].y) > EPS || Math.abs(x1 - c[c.length - 1].x) > EPS || Math.abs(y1 - c[c.length - 1].y) > EPS)   throw new IllegalArgumentException("CompactLineString geometry must stick to given end points. If you need to relax this, please read source code.");
   int oix=(int)Math.round(x0 * FIXED_FLOAT_MULT);
@@ -14,5 +16,5 @@
     oix=ix;
     oiy=iy;
   }
-  packedCoords=DlugoszVarLenIntPacker.pack(coords);
+  return coords;
 }
