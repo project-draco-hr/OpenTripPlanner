@@ -1,0 +1,5 @@
+{
+  String longmsg=String.format("config file parse error in file '%s' at line %d:\n%s",filename,line,msg);
+  LOG.error(longmsg);
+  throw new RuntimeException(longmsg);
+}

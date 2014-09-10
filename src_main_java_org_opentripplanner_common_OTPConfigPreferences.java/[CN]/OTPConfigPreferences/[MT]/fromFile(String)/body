@@ -1,0 +1,59 @@
+{
+  OTPConfigPreferences curr=new OTPConfigPreferences(null,"");
+  try (BufferedReader br=new BufferedReader(new FileReader(filename))){
+    Stack<OTPConfigPreferences> stack=new Stack<OTPConfigPreferences>();
+    String line;
+    int nline=0;
+    while ((line=br.readLine()) != null) {
+      nline++;
+      String[] tokens=line.trim().split("\\s+",2);
+      if (tokens.length == 0 || tokens[0].length() == 0 || tokens[0].startsWith("#")) {
+        continue;
+      }
+      if (tokens.length > 2) {
+        parseError("line must contain a key-value pair, a child name and an opening bracket, " + "or a single closing bracket.",filename,nline);
+      }
+      String key=tokens[0].trim();
+      String val="NONE";
+      if (tokens.length > 1)       val=tokens[1].trim();
+      if (key.equals("}")) {
+        if (tokens.length > 1) {
+          parseError("closing bracket should appear alone on a line.",filename,nline);
+        }
+        if (stack.isEmpty()) {
+          parseError("bracket mismatch (too many closing brackets)",filename,nline);
+        }
+        curr=stack.pop();
+        continue;
+      }
+      if (key.endsWith("{")) {
+        parseError("an opening bracket should be preceded by a child name and whitespace.",filename,nline);
+      }
+      if (val.startsWith("{") && val.length() > 1) {
+        parseError("opening bracket should be the last element on a line.",filename,nline);
+      }
+      if ("{".equals(val)) {
+        OTPConfigPreferences child=curr.children.get(key);
+        if (child != null) {
+          parseError(String.format("multiple definitions of child %s.",key),filename,nline);
+        }
+        child=new OTPConfigPreferences(curr,key);
+        curr.children.put(key,child);
+        stack.push(curr);
+        curr=child;
+      }
+ else {
+        if (curr.entries.get(key) != null) {
+          parseError(String.format("key '%s' appears multiple times.",key),filename,nline);
+        }
+        curr.entries.put(key,val);
+      }
+    }
+    if (!stack.isEmpty())     parseError("Bracket mismatch: not enough closing brackets.",filename,nline);
+    return curr;
+  }
+ catch (  IOException e) {
+    e.printStackTrace();
+    return null;
+  }
+}
