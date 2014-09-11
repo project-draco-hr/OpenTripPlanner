@@ -1,0 +1,8 @@
+{
+  RoutingRequest req=new RoutingRequest();
+  req.setRoutingContext(graph,(Vertex)null,(Vertex)null);
+  Calendar calendar=Calendar.getInstance();
+  ServiceDate serviceDate=new ServiceDate(calendar.getTime());
+  Timetable table=req.rctx.timetableSnapshot.resolve(tripPattern,serviceDate);
+  return table;
+}
