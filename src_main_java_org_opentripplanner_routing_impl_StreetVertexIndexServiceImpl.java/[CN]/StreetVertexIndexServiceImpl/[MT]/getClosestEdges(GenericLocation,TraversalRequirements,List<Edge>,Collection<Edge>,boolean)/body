@@ -14,7 +14,7 @@
     if (radius > MAX_DISTANCE_FROM_STREET) {
       return candidateEdges;
     }
-    Iterable<Edge> nearbyEdges=edgeTree.query(envelope);
+    Iterable<Edge> nearbyEdges=getEdgesForEnvelope(envelope);
     if (nearbyEdges != null) {
       nearbyEdges=Iterables.concat(nearbyEdges,extraStreets);
     }

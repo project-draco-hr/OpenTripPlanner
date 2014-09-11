@@ -1,13 +1,12 @@
 {
-  transitStopTree=new STRtree();
-  verticesTree=new STRtree();
   for (  Vertex gv : graph.getVertices()) {
     Vertex v=gv;
     for (    Edge e : gv.getOutgoing()) {
-      if (e.getGeometry() == null) {
+      LineString geometry=e.getGeometry();
+      if (geometry == null) {
         continue;
       }
-      Envelope env=e.getGeometry().getEnvelopeInternal();
+      Envelope env=geometry.getEnvelopeInternal();
       edgeTree.insert(env,e);
     }
     if (v instanceof TransitStop) {
@@ -17,5 +16,4 @@
     Envelope env=new Envelope(v.getCoordinate());
     verticesTree.insert(env,v);
   }
-  transitStopTree.build();
 }
