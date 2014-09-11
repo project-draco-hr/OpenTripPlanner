@@ -1,0 +1,26 @@
+{
+  Coordinate min=new Coordinate(envelope.getMinX(),envelope.getMinY());
+  Coordinate max=new Coordinate(envelope.getMaxX(),envelope.getMaxY());
+  long minXKey=xKey(min.x);
+  long maxXKey=xKey(max.x);
+  long minYKey=yKey(min.y);
+  long maxYKey=yKey(max.y);
+  for (long xKey=minXKey; xKey <= maxXKey; xKey++) {
+    for (long yKey=minYKey; yKey <= maxYKey; yKey++) {
+      long mapKey=xKey << 32 | yKey;
+      List<T> bin=bins.get(mapKey);
+      if (createIfEmpty && bin == null) {
+        bin=new ArrayList<>();
+        bins.put(mapKey,bin);
+        nBins++;
+      }
+      if (bin != null) {
+        boolean modified=binVisitor.visit(bin);
+        if (modified && bin.isEmpty()) {
+          bins.remove(mapKey);
+          nBins--;
+        }
+      }
+    }
+  }
+}

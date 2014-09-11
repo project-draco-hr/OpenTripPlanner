@@ -1,0 +1,21 @@
+{
+  boolean retval=false;
+  Coordinate min=new Coordinate(envelope.getMinX(),envelope.getMinY());
+  Coordinate max=new Coordinate(envelope.getMaxX(),envelope.getMaxY());
+  long minXKey=xKey(min.x);
+  long maxXKey=xKey(max.x);
+  long minYKey=yKey(min.y);
+  long maxYKey=yKey(max.y);
+  for (long xKey=minXKey; xKey <= maxXKey; xKey++) {
+    for (long yKey=minYKey; yKey <= maxYKey; yKey++) {
+      long mapKey=xKey << 32 | yKey;
+      List<T> bin=bins.get(mapKey);
+      if (bin != null) {
+        boolean removed=bin.remove(item);
+        if (removed)         retval=true;
+      }
+    }
+  }
+  if (retval)   nEntries--;
+  return retval;
+}
