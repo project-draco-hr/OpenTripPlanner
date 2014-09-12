@@ -1,5 +1,0 @@
-{
-  long xKey=Math.round(x / xBinSize) + 0x8000000;
-  if (xKey < 0 || xKey > Integer.MAX_VALUE)   throw new RuntimeException("HashGrid bin X-index overflow, please use larger bin size.");
-  return xKey;
-}

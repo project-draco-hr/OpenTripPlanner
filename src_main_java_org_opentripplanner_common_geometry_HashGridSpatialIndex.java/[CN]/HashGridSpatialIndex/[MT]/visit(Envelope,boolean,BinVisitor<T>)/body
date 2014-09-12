@@ -1,13 +1,13 @@
 {
   Coordinate min=new Coordinate(envelope.getMinX(),envelope.getMinY());
   Coordinate max=new Coordinate(envelope.getMaxX(),envelope.getMaxY());
-  long minXKey=xKey(min.x);
-  long maxXKey=xKey(max.x);
-  long minYKey=yKey(min.y);
-  long maxYKey=yKey(max.y);
+  long minXKey=Math.round(min.x / xBinSize);
+  long maxXKey=Math.round(max.x / xBinSize);
+  long minYKey=Math.round(min.y / yBinSize);
+  long maxYKey=Math.round(max.y / yBinSize);
   for (long xKey=minXKey; xKey <= maxXKey; xKey++) {
     for (long yKey=minYKey; yKey <= maxYKey; yKey++) {
-      long mapKey=xKey << 32 | yKey;
+      long mapKey=(yKey << 32) | ((xKey & 0xFFFF) << 16) | ((xKey >> 16) & 0xFFFF);
       List<T> bin=bins.get(mapKey);
       if (createIfEmpty && bin == null) {
         bin=new ArrayList<>();

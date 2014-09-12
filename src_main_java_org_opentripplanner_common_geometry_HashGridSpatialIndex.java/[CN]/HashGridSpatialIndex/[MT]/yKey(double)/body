@@ -1,5 +1,0 @@
-{
-  long yKey=Math.round(y / yBinSize) + 0x8000000;
-  if (yKey < 0 || yKey > Integer.MAX_VALUE)   throw new RuntimeException("HashGrid bin Y-index overflow, please use larger bin size.");
-  return yKey;
-}
