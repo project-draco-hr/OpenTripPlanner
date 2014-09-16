@@ -1,7 +1,7 @@
 {
   final Set<T> ret=new HashSet<>(1024);
   visit(envelope,false,new BinVisitor<T>(){
-    @Override public boolean visit(    List<T> bin){
+    @Override public boolean visit(    List<T> bin,    long mapKey){
       ret.addAll(bin);
       return false;
     }

@@ -1,7 +1,7 @@
 {
   final AtomicInteger removedCount=new AtomicInteger();
   visit(envelope,false,new BinVisitor<T>(){
-    @Override public boolean visit(    List<T> bin){
+    @Override public boolean visit(    List<T> bin,    long mapKey){
       boolean removed=bin.remove(item);
       if (removed) {
         nEntries--;
@@ -11,5 +11,11 @@
     }
   }
 );
-  return removedCount.get() > 0;
+  if (removedCount.get() > 0) {
+    nObjects--;
+    return true;
+  }
+ else {
+    return false;
+  }
 }

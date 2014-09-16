@@ -15,7 +15,7 @@
         nBins++;
       }
       if (bin != null) {
-        boolean modified=binVisitor.visit(bin);
+        boolean modified=binVisitor.visit(bin,mapKey);
         if (modified && bin.isEmpty()) {
           bins.remove(mapKey);
           nBins--;
