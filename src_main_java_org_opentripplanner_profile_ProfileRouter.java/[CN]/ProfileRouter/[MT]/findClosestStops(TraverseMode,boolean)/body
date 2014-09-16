@@ -1,9 +1,11 @@
 {
-  RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
+  RoutingRequest rr=new RoutingRequest(mode);
+  if (mode == TraverseMode.CAR) {
+    rr.kissAndRide=true;
+  }
   rr.from=(new GenericLocation(request.from.lat,request.from.lon));
   rr.to=new GenericLocation(request.to.lat,request.to.lon);
   rr.setArriveBy(dest);
-  rr.setMode(mode);
   rr.setRoutingContext(graph);
   rr.batch=(true);
   rr.walkSpeed=request.walkSpeed;

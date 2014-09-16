@@ -136,8 +136,6 @@
     Collection<StopAtDistance> accessPaths=fromStopPaths.get(ride.getAccessStopCluster());
     Collection<StopAtDistance> egressPaths=toStopPaths.get(ride.getEgressStopCluster());
     Option option=new Option(ride,accessPaths,egressPaths);
-    StopCluster s0=ride.getAccessStopCluster();
-    StopCluster s1=ride.getEgressStopCluster();
     if (!option.hasEmptyRides())     options.add(option);
   }
   options.add(new Option(null,directPaths,null));
