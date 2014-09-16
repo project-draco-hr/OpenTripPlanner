@@ -1,0 +1,20 @@
+{
+  Set<T> retval=new HashSet<T>(1024);
+  Coordinate min=new Coordinate(env.getMinX(),env.getMinY());
+  Coordinate max=new Coordinate(env.getMaxX(),env.getMaxY());
+  int minBinX=xBin(min);
+  int maxBinX=xBin(max);
+  int minBinY=yBin(min);
+  int maxBinY=yBin(max);
+  for (int x=minBinX; x <= maxBinX; x+=1) {
+    int wrappedX=xWrap(x);
+    for (int y=minBinY; y <= maxBinY; y+=1) {
+      int wrappedY=yWrap(y);
+      List<T> bin=bins[wrappedX][wrappedY];
+      if (bin != null) {
+        retval.addAll(bin);
+      }
+    }
+  }
+  return new ArrayList<>(retval);
+}
