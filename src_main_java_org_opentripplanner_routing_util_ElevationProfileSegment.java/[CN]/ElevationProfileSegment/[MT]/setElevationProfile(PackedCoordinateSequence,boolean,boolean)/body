@@ -1,22 +1,15 @@
 {
   if (elev == null || elev.size() < 2) {
-    return false;
+    return null;
   }
   if (slopeOverride && !computed) {
-    return false;
+    return null;
   }
   elevationProfile=elev;
-  double lengthMultiplier=ElevationUtils.getLengthMultiplierFromElevation(elev);
-  if (Double.isNaN(lengthMultiplier)) {
-    LOG.error("lengthMultiplier from elevation profile is NaN, setting to 1");
-    lengthMultiplier=1;
-  }
-  bicycleSafetyEffectiveLength*=lengthMultiplier;
   SlopeCosts costs=ElevationUtils.getSlopeCosts(elev,slopeLimit);
   slopeSpeedEffectiveLength=costs.slopeSpeedEffectiveLength;
   maxSlope=costs.maxSlope;
   slopeWorkCost=costs.slopeWorkCost;
-  bicycleSafetyEffectiveLength+=costs.slopeSafetyCost;
   flattened=costs.flattened;
-  return costs.flattened;
+  return costs;
 }

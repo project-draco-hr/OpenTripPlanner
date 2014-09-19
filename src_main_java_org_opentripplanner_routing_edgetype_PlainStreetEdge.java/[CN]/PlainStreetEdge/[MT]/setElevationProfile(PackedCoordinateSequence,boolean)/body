@@ -1,3 +1,7 @@
 {
-  return elevationProfileSegment.setElevationProfile(elev,computed,getPermission().allows(StreetTraversalPermission.CAR));
+  SlopeCosts costs=elevationProfileSegment.setElevationProfile(elev,computed,getPermission().allows(StreetTraversalPermission.CAR));
+  if (costs == null)   return false;
+  bicycleSafetyEffectiveLength*=costs.lengthMultiplier;
+  bicycleSafetyEffectiveLength+=costs.slopeSafetyCost;
+  return costs.flattened;
 }
