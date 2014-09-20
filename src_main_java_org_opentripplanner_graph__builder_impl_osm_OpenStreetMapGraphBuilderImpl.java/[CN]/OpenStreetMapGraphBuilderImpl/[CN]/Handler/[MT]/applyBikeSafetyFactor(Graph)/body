@@ -18,7 +18,7 @@
       PlainStreetEdge pse=(PlainStreetEdge)e;
       if (!seenEdges.contains(e)) {
         seenEdges.add(e);
-        pse.setBicycleSafetyEffectiveLength(pse.getBicycleSafetyEffectiveLength() / bestBikeSafety);
+        pse.setBicycleSafetyFactor(pse.getBicycleSafetyFactor() / bestBikeSafety);
       }
     }
     for (    Edge e : vertex.getIncoming()) {
@@ -28,7 +28,7 @@
       PlainStreetEdge pse=(PlainStreetEdge)e;
       if (!seenEdges.contains(e)) {
         seenEdges.add(e);
-        pse.setBicycleSafetyEffectiveLength(pse.getBicycleSafetyEffectiveLength() / bestBikeSafety);
+        pse.setBicycleSafetyFactor(pse.getBicycleSafetyFactor() / bestBikeSafety);
       }
     }
   }

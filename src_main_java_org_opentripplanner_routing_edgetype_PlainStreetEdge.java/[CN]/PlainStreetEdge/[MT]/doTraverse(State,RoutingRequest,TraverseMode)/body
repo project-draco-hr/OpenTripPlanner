@@ -26,11 +26,11 @@
     time=elevationProfileSegment.getSlopeSpeedFactor() * length / speed;
 switch (options.optimize) {
 case SAFE:
-      weight=bicycleSafetyEffectiveLength / speed;
+      weight=bicycleSafetyFactor * length / speed;
     break;
 case GREENWAYS:
-  weight=bicycleSafetyEffectiveLength / speed;
-if (bicycleSafetyEffectiveLength / length <= GREENWAY_SAFETY_FACTOR) {
+  weight=bicycleSafetyFactor * length / speed;
+if (bicycleSafetyFactor <= GREENWAY_SAFETY_FACTOR) {
   weight*=0.66;
 }
 break;
@@ -42,7 +42,7 @@ weight=elevationProfileSegment.getSlopeSpeedFactor() * length / speed;
 break;
 case TRIANGLE:
 double quick=elevationProfileSegment.getSlopeSpeedFactor() * length;
-double safety=bicycleSafetyEffectiveLength;
+double safety=bicycleSafetyFactor * length;
 double slope=elevationProfileSegment.getSlopeWorkFactor() * length;
 weight=quick * options.triangleTimeFactor + slope * options.triangleSlopeFactor + safety * options.triangleSafetyFactor;
 weight/=speed;
