@@ -1,6 +1,13 @@
 {
-  SlopeCosts costs=elevationProfileSegment.setElevationProfile(elev,computed,getPermission().allows(StreetTraversalPermission.CAR));
-  if (costs == null)   return false;
+  if (elev == null || elev.size() < 2) {
+    return false;
+  }
+  if (isSlopeOverride() && !computed) {
+    return false;
+  }
+  boolean slopeLimit=getPermission().allows(StreetTraversalPermission.CAR);
+  SlopeCosts costs=ElevationUtils.getSlopeCosts(elev,slopeLimit);
+  elevationProfileSegment=new ElevationProfileSegment(costs,elev);
   bicycleSafetyEffectiveLength*=costs.lengthMultiplier;
   bicycleSafetyEffectiveLength+=costs.slopeSafetyCost;
   return costs.flattened;
