@@ -7,9 +7,9 @@
   }
   elevationProfile=elev;
   SlopeCosts costs=ElevationUtils.getSlopeCosts(elev,slopeLimit);
-  slopeSpeedEffectiveLength=costs.slopeSpeedEffectiveLength;
+  slopeSpeedFactor=costs.slopeSpeedFactor;
+  slopeWorkFactor=costs.slopeWorkFactor;
   maxSlope=costs.maxSlope;
-  slopeWorkCost=costs.slopeWorkCost;
   flattened=costs.flattened;
   return costs;
 }

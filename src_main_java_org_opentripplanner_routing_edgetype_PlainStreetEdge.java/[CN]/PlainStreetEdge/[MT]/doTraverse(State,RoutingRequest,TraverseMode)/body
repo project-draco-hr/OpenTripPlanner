@@ -20,10 +20,10 @@
   double time=length / speed;
   double weight;
   if (options.wheelchairAccessible) {
-    weight=elevationProfileSegment.getSlopeSpeedEffectiveLength() / speed;
+    weight=elevationProfileSegment.getSlopeSpeedFactor() * length / speed;
   }
  else   if (traverseMode.equals(TraverseMode.BICYCLE)) {
-    time=elevationProfileSegment.getSlopeSpeedEffectiveLength() / speed;
+    time=elevationProfileSegment.getSlopeSpeedFactor() * length / speed;
 switch (options.optimize) {
 case SAFE:
       weight=bicycleSafetyEffectiveLength / speed;
@@ -35,15 +35,15 @@ if (bicycleSafetyEffectiveLength / length <= GREENWAY_SAFETY_FACTOR) {
 }
 break;
 case FLAT:
-weight=length / speed + elevationProfileSegment.getSlopeWorkCost();
+weight=length / speed + elevationProfileSegment.getSlopeWorkFactor() * length;
 break;
 case QUICK:
-weight=elevationProfileSegment.getSlopeSpeedEffectiveLength() / speed;
+weight=elevationProfileSegment.getSlopeSpeedFactor() * length / speed;
 break;
 case TRIANGLE:
-double quick=elevationProfileSegment.getSlopeSpeedEffectiveLength();
+double quick=elevationProfileSegment.getSlopeSpeedFactor() * length;
 double safety=bicycleSafetyEffectiveLength;
-double slope=elevationProfileSegment.getSlopeWorkCost();
+double slope=elevationProfileSegment.getSlopeWorkFactor() * length;
 weight=quick * options.triangleTimeFactor + slope * options.triangleSlopeFactor + safety * options.triangleSafetyFactor;
 weight/=speed;
 break;
@@ -53,7 +53,7 @@ weight=length / speed;
 }
  else {
 if (walkingBike) {
-time=elevationProfileSegment.getSlopeSpeedEffectiveLength() / speed;
+time=elevationProfileSegment.getSlopeSpeedFactor() * length / speed;
 }
 weight=time;
 if (traverseMode.equals(TraverseMode.WALK)) {
