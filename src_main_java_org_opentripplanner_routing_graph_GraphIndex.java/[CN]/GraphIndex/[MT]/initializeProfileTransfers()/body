@@ -23,11 +23,29 @@
       }
     }
   }
+  LOG.info("Filtering out long series of transfers on trunks shared between patterns.");
   for (  P2<TripPattern> pair : transfers.keySet()) {
     ProfileTransfer.GoodTransferList list=transfers.get(pair);
-    for (    ProfileTransfer tr : list.good) {
+    TripPattern fromPattern=pair.getFirst();
+    Map<StopCluster,ProfileTransfer> transfersByFromCluster=Maps.newHashMap();
+    for (    ProfileTransfer transfer : list.good) {
+      transfersByFromCluster.put(transfer.sc1,transfer);
+    }
+    List<ProfileTransfer> retainedTransfers=Lists.newArrayList();
+    boolean inSeries=false;
+    for (    Stop stop : fromPattern.stopPattern.stops) {
+      StopCluster cluster=this.stopClusterForStop.get(stop);
+      ProfileTransfer transfer=transfersByFromCluster.get(cluster);
+      if (transfer == null) {
+        inSeries=false;
+        continue;
+      }
+      if (inSeries)       continue;
+      retainedTransfers.add(transfer);
+      inSeries=true;
+    }
+    for (    ProfileTransfer tr : retainedTransfers) {
       transfersFromStopCluster.put(tr.sc1,tr);
-      break;
     }
   }
   LOG.info("Done finding transfers.");
