@@ -4,9 +4,9 @@
   boolean noThruTraffic=way.isThroughTrafficExplicitlyDisallowed();
   if (street != null) {
     double safety=wayData.getSafetyFeatures().getFirst();
-    street.setBicycleSafetyFactor(safety);
+    street.setBicycleSafetyFactor((float)safety);
     if (safety < bestBikeSafety) {
-      bestBikeSafety=safety;
+      bestBikeSafety=(float)safety;
     }
     if (note != null) {
       street.setNote(note);
@@ -19,9 +19,9 @@
   if (backStreet != null) {
     double safety=wayData.getSafetyFeatures().getSecond();
     if (safety < bestBikeSafety) {
-      bestBikeSafety=safety;
+      bestBikeSafety=(float)safety;
     }
-    backStreet.setBicycleSafetyFactor(safety);
+    backStreet.setBicycleSafetyFactor((float)safety);
     if (note != null) {
       backStreet.setNote(note);
     }
