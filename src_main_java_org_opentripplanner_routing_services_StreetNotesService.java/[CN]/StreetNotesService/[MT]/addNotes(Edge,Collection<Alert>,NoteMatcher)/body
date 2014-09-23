@@ -1,0 +1,7 @@
+{
+  if (LOG.isDebugEnabled())   LOG.debug("Adding notes {} to {} with matcher {}",Arrays.toString(notes.toArray()),edge,matcher);
+  if (notes == null || notes.isEmpty())   return;
+  for (  Alert note : notes) {
+    notesForEdge.put(edge,new MatcherAndAlert(matcher,note));
+  }
+}

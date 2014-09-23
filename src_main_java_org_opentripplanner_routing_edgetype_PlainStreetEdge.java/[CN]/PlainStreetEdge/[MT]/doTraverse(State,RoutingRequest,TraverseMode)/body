@@ -72,9 +72,6 @@ weight*=options.walkReluctance;
 StateEditor s1=s0.edit(this);
 s1.setBackMode(traverseMode);
 s1.setBackWalkingBike(walkingBike);
-if (getWheelchairNotes() != null && options.wheelchairAccessible) {
-s1.addAlerts(getWheelchairNotes());
-}
 PlainStreetEdge backPSE;
 if (backEdge != null && backEdge instanceof PlainStreetEdge) {
 backPSE=(PlainStreetEdge)backEdge;
@@ -141,9 +138,5 @@ return null;
 }
 s1.incrementTimeInSeconds(roundedTime);
 s1.incrementWeight(weight);
-s1.addAlerts(getNotes());
-if (this.isToll() && traverseMode.isDriving()) {
-s1.addAlert(Alert.createSimpleAlerts("Toll road"));
-}
 return s1;
 }

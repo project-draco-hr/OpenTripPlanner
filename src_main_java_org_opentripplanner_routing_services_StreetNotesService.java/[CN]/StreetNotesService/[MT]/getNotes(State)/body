@@ -1,0 +1,13 @@
+{
+  Edge edge=state.getBackEdge();
+  Set<MatcherAndAlert> maas=notesForEdge.get(edge);
+  if (maas == null || maas.isEmpty()) {
+    return null;
+  }
+  Set<Alert> notes=new HashSet<Alert>(maas.size());
+  for (  MatcherAndAlert maa : maas) {
+    if (maa.matcher.matches(state))     notes.add(maa.note);
+  }
+  if (notes.isEmpty())   return null;
+  return notes;
+}

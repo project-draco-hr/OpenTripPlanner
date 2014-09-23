@@ -1,6 +1,6 @@
 {
-  Set<Alert> note=wayPropertySet.getNoteForWay(way);
-  Set<Alert> wheelchairNote=getWheelchairNotes(way);
+  Set<Alert> notes=wayPropertySet.getNoteForWay(way);
+  Set<Alert> wheelchairNotes=getWheelchairNotes(way);
   boolean noThruTraffic=way.isThroughTrafficExplicitlyDisallowed();
   if (street != null) {
     double safety=wayData.getSafetyFeatures().getFirst();
@@ -8,11 +8,11 @@
     if (safety < bestBikeSafety) {
       bestBikeSafety=(float)safety;
     }
-    if (note != null) {
-      street.setNote(note);
+    if (notes != null) {
+      graph.streetNotesService.addNotes(street,notes);
     }
-    if (wheelchairNote != null) {
-      street.setWheelchairNote(wheelchairNote);
+    if (wheelchairNotes != null) {
+      graph.streetNotesService.addNotes(street,notes,StreetNotesService.WHEELCHAIR_MATCHER);
     }
     street.setNoThruTraffic(noThruTraffic);
   }
@@ -22,11 +22,11 @@
       bestBikeSafety=(float)safety;
     }
     backStreet.setBicycleSafetyFactor((float)safety);
-    if (note != null) {
-      backStreet.setNote(note);
+    if (notes != null) {
+      graph.streetNotesService.addNotes(backStreet,notes);
     }
-    if (wheelchairNote != null) {
-      backStreet.setWheelchairNote(wheelchairNote);
+    if (wheelchairNotes != null) {
+      graph.streetNotesService.addNotes(backStreet,wheelchairNotes,StreetNotesService.WHEELCHAIR_MATCHER);
     }
     backStreet.setNoThruTraffic(noThruTraffic);
   }

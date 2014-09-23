@@ -28,8 +28,9 @@
     street.setHasBogusName(true);
   }
   street.setStairs(steps);
-  if (way.isTagTrue("toll") || way.isTagTrue("toll:motorcar"))   street.setToll(true);
- else   street.setToll(false);
+  if (way.isTagTrue("toll") || way.isTagTrue("toll:motorcar")) {
+    graph.streetNotesService.addNotes(street,Alert.newSimpleAlertSet("Toll road"),StreetNotesService.DRIVING_MATCHER);
+  }
   if (!ignoreWheelchairAccessibility && (way.isTagFalse("wheelchair") || (steps && !way.isTagTrue("wheelchair")))) {
     street.setWheelchairAccessible(false);
   }
