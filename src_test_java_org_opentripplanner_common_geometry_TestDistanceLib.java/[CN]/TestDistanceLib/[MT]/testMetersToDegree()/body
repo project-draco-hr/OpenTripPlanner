@@ -1,0 +1,19 @@
+{
+  double degree;
+  degree=SphericalDistanceLibrary.metersToDegrees(111194.926644559);
+  assertTrue(Math.abs(degree - 1.0) < 1e-5);
+  degree=SphericalDistanceLibrary.metersToLonDegrees(111194.926644559,0);
+  assertTrue(Math.abs(degree - 1.0 / Math.cos(Math.toRadians(1))) < 1e-5);
+  degree=SphericalDistanceLibrary.metersToLonDegrees(111194.926644559,1.0);
+  assertTrue(Math.abs(degree - 1.0 / Math.cos(Math.toRadians(2))) < 1e-5);
+  degree=SphericalDistanceLibrary.metersToLonDegrees(111194.926644559,-1.0);
+  assertTrue(Math.abs(degree - 1.0 / Math.cos(Math.toRadians(2))) < 1e-5);
+  degree=SphericalDistanceLibrary.metersToLonDegrees(111194.926644559,45.0);
+  assertTrue(Math.abs(degree - 1.0 / Math.cos(Math.toRadians(46))) < 1e-5);
+  degree=SphericalDistanceLibrary.metersToLonDegrees(111194.926644559,-45.0);
+  assertTrue(Math.abs(degree - 1.0 / Math.cos(Math.toRadians(46))) < 1e-5);
+  degree=SphericalDistanceLibrary.metersToLonDegrees(111194.926644559,80);
+  assertTrue(Math.abs(degree - 1.0 / Math.cos(Math.toRadians(81))) < 1e-4);
+  degree=SphericalDistanceLibrary.metersToLonDegrees(111.194926,45);
+  assertTrue(Math.abs(degree - 1.0 / Math.cos(Math.toRadians(44.999)) / 1000) < 1e-5);
+}

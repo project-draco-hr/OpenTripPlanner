@@ -1,6 +1,8 @@
 {
-  DirectionUtils utils=getInstance();
-  utils.geodeticCalculator.setStartingGeographicPoint(a.x,a.y);
-  utils.geodeticCalculator.setDestinationGeographicPoint(b.x,b.y);
-  return utils.geodeticCalculator.getAzimuth();
+  double cosLat=FastMath.cos(FastMath.toRadians((a.y + b.y) / 2.0));
+  double dY=(b.y - a.y);
+  double dX=(b.x - a.x) * cosLat;
+  if (Math.abs(dX) < 1e-10 && Math.abs(dY) < 1e-10)   return 180;
+  double az=FastMath.toDegrees(FastMath.atan2(dX,dY));
+  return az;
 }

@@ -13,6 +13,5 @@
   StreetEdge leftBack=new PlainStreetEdge(tl,bl,(LineString)left.getGeometry().reverse(),"leftBack",1500,StreetTraversalPermission.BICYCLE_AND_CAR,true);
   StreetEdge rightBack=new PlainStreetEdge(tr,br,(LineString)right.getGeometry().reverse(),"rightBack",1500,StreetTraversalPermission.CAR,true);
   StreetVertexIndexServiceImpl myFinder=new StreetVertexIndexServiceImpl(graph);
-  myFinder.setup();
   finder=myFinder;
 }

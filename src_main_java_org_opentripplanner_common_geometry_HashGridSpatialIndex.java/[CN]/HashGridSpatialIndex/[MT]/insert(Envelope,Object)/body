@@ -1,0 +1,11 @@
+{
+  visit(envelope,true,new BinVisitor<T>(){
+    @SuppressWarnings("unchecked") @Override public boolean visit(    List<T> bin,    long mapKey){
+      bin.add((T)item);
+      nEntries++;
+      return false;
+    }
+  }
+);
+  nObjects++;
+}
