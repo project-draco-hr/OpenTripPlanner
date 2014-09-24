@@ -1,6 +1,5 @@
 {
-  NoteProperties properties=new NoteProperties();
   String pattern=localize(patternKey);
-  properties.notePattern=pattern;
+  NoteProperties properties=new NoteProperties(pattern,matcher);
   propset.addNote(new OSMSpecifier(spec),properties);
 }

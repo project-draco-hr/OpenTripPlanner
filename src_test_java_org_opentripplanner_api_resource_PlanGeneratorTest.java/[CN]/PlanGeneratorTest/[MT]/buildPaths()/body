@@ -293,7 +293,7 @@
   e41.setHasBogusName(true);
   e49.setElevationProfile(elevation49,false);
   e53.setElevationProfile(elevation53,false);
-  graph.streetNotesService.addNotes(e53,Alert.newSimpleAlertSet(alertsExample));
+  graph.streetNotesService.addNote(e53,Alert.createSimpleAlerts(alertsExample));
   new PlainStreetEdge(v40,new IntersectionVertex(graph,"Extra vertex",180,88),new LineString(new PackedCoordinateSequence.Double(new double[]{180,89,180,88},2),geometryFactory),"Extra edge",1.9,StreetTraversalPermission.NONE,true,0);
   graph.serviceCodes.put(firstTrip.getId(),0);
   graph.serviceCodes.put(secondTrip.getId(),1);

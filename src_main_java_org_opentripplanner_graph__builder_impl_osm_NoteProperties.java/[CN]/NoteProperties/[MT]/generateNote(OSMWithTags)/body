@@ -1,3 +1,5 @@
 {
-  return TemplateLibrary.generate(notePattern,way);
+  String noteText=TemplateLibrary.generate(notePattern,way);
+  Alert note=Alert.createSimpleAlerts(noteText.intern());
+  return new T2<>(note,noteMatcher);
 }
