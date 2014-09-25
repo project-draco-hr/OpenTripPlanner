@@ -1,6 +1,6 @@
 {
   Stats stats=new Stats();
-  int n=0;
+  stats.num=0;
   for (  PatternRide patternRide : patternRides) {
     for (    FrequencyEntry freq : patternRide.pattern.scheduledTimetable.frequencyEntries) {
       if (freq.exactTimes) {
@@ -11,11 +11,11 @@
       if (overlap > 0) {
         if (freq.headway > stats.max)         stats.max=freq.headway;
         stats.avg+=(freq.headway / 2) * overlap;
-        n+=overlap;
+        stats.num+=overlap;
       }
     }
   }
-  if (n == 0)   return null;
-  stats.avg/=n;
+  if (stats.num == 0)   return null;
+  stats.avg/=stats.num;
   return stats;
 }
