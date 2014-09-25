@@ -1,6 +1,6 @@
 {
   Coordinate c=new Coordinate(lon,lat);
-  List<T> ret=Lists.newArrayList();
+  Set<T> ret=new HashSet<>();
   int radiusBins=(int)Math.ceil(radiusMeters / binSizeMeters);
   int xBin=xBin(c);
   int yBin=yBin(c);
@@ -18,5 +18,5 @@
       }
     }
   }
-  return ret;
+  return new ArrayList<>(ret);
 }

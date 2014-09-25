@@ -1,3 +1,9 @@
 {
-  return edgeTree.query(envelope);
+  List<Edge> edges=edgeTree.query(envelope);
+  for (Iterator<Edge> ie=edges.iterator(); ie.hasNext(); ) {
+    Edge e=ie.next();
+    Envelope eenv=e.getGeometry().getEnvelopeInternal();
+    if (!envelope.intersects(eenv))     ie.remove();
+  }
+  return edges;
 }

@@ -1,7 +1,7 @@
 {
   LOG.debug("Looking for/making a vertex near {}",location);
   Coordinate coord=location.getCoordinate();
-  StreetVertex intersection=getIntersectionAt(coord,MAX_CORNER_DISTANCE);
+  StreetVertex intersection=getIntersectionAt(coord);
   String calculatedName=location.name;
   if (intersection != null) {
     boolean canEscape=false;
@@ -57,7 +57,7 @@
   double closestStopDistance=Double.POSITIVE_INFINITY;
   Vertex closestStop=null;
   if (options != null && options.modes.isTransit()) {
-    for (    TransitStop v : getLocalTransitStops(coord,1000)) {
+    for (    TransitStop v : getNearbyTransitStops(coord,1000)) {
       if (!v.isStreetLinkable())       continue;
       double d=distanceLibrary.distance(v.getCoordinate(),coord);
       if (d < closestStopDistance) {

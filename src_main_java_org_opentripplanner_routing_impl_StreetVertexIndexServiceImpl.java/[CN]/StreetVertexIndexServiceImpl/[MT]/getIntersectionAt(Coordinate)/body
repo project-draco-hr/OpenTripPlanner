@@ -1,3 +1,21 @@
 {
-  return getIntersectionAt(coordinate,MAX_CORNER_DISTANCE);
+  double dLon=SphericalDistanceLibrary.metersToLonDegrees(MAX_CORNER_DISTANCE_METERS,coordinate.y);
+  double dLat=SphericalDistanceLibrary.metersToDegrees(MAX_CORNER_DISTANCE_METERS);
+  Envelope envelope=new Envelope(coordinate);
+  envelope.expandBy(dLon,dLat);
+  List<Vertex> nearby=getVerticesForEnvelope(envelope);
+  StreetVertex nearest=null;
+  double bestDistanceMeter=Double.POSITIVE_INFINITY;
+  for (  Vertex v : nearby) {
+    if (v instanceof StreetVertex) {
+      double distanceMeter=distanceLibrary.fastDistance(coordinate,v.getCoordinate());
+      if (distanceMeter < MAX_CORNER_DISTANCE_METERS) {
+        if (distanceMeter < bestDistanceMeter) {
+          bestDistanceMeter=distanceMeter;
+          nearest=(StreetVertex)v;
+        }
+      }
+    }
+  }
+  return nearest;
 }
