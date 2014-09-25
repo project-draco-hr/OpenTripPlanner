@@ -5,7 +5,7 @@
   sptService=new GenericAStar();
   if (params.longDistance) {
     LongDistancePathService pathService=new LongDistancePathService(graphService,sptService);
-    pathService.setTimeout(10);
+    pathService.timeout=10;
     this.pathService=pathService;
   }
  else {
@@ -15,6 +15,7 @@
     this.pathService=pathService;
   }
   planGenerator=new PlanGenerator(graphService,pathService);
+  tileRendererManager=new TileRendererManager(graphService);
   if (params.analyst) {
     tileCache=new TileCache(graphService);
     sptCache=new SPTCache(sptService,graphService);

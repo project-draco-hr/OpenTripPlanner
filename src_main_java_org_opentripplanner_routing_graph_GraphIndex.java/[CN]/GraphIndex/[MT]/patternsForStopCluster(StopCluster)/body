@@ -1,0 +1,5 @@
+{
+  Set<TripPattern> tripPatterns=Sets.newHashSet();
+  for (  Stop stop : sc.children)   tripPatterns.addAll(patternsForStop.get(stop));
+  return tripPatterns;
+}

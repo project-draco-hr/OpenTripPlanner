@@ -63,9 +63,9 @@
   assertNull(steps[5][1].alerts);
   assertFalse(steps[5][1].area);
   assertNull(steps[5][1].exit);
-  assertEquals(AbsoluteDirection.NORTHWEST,steps[6][0].absoluteDirection);
-  assertEquals(RelativeDirection.LEFT,steps[6][0].relativeDirection);
-  assertEquals(NORTHWEST,steps[6][0].angle,EPSILON);
+  assertEquals(AbsoluteDirection.SOUTH,steps[6][0].absoluteDirection);
+  assertEquals(RelativeDirection.HARD_LEFT,steps[6][0].relativeDirection);
+  assertEquals(SOUTH,steps[6][0].angle,EPSILON);
   assertEquals("Edge 49",steps[6][0].streetName);
   assertEquals(2.0,steps[6][0].distance,0.0);
   assertFalse(steps[6][0].bogusName);
@@ -76,9 +76,9 @@
   assertFalse(steps[6][0].area);
   assertNull(steps[6][0].exit);
   assertEquals(alertsExample,steps[7][0].alerts.get(0).alertHeaderText.getSomeTranslation());
-  assertEquals(AbsoluteDirection.NORTHWEST,steps[7][0].absoluteDirection);
+  assertEquals(AbsoluteDirection.SOUTH,steps[7][0].absoluteDirection);
   assertEquals(RelativeDirection.CONTINUE,steps[7][0].relativeDirection);
-  assertEquals(NORTHWEST,steps[7][0].angle,EPSILON);
+  assertEquals(SOUTH,steps[7][0].angle,EPSILON);
   assertEquals("Edge 53",steps[7][0].streetName);
   assertEquals(1.0,steps[7][0].distance,0.0);
   assertEquals(1,steps[7][0].alerts.size());

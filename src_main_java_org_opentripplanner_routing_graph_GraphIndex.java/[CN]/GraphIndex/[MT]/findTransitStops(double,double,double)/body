@@ -1,9 +1,0 @@
-{
-  Map<Stop,Double> ret=Maps.newHashMap();
-  for (  TransitStop tstop : stopSpatialIndex.query(lon,lat,radius)) {
-    Stop stop=tstop.getStop();
-    double distance=distlib.distance(lat,lon,stop.getLat(),stop.getLon());
-    if (distance < radius)     ret.put(stop,distance);
-  }
-  return ret;
-}

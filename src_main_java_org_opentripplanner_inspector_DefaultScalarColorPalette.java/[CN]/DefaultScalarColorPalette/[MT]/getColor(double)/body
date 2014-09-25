@@ -1,0 +1,12 @@
+{
+  if (value > max) {
+    float x=(float)((value - max) / (maxMax - max));
+    if (x > 1.0f)     x=1.0f;
+    return Color.getHSBColor(0.0f,1.0f,0.7f - x * 0.7f);
+  }
+ else {
+    float x=(float)((value - min) / (max - min));
+    if (x < 0.0f)     x=0.0f;
+    return Color.getHSBColor(0.3f + 0.7f * x,1.0f,0.7f);
+  }
+}

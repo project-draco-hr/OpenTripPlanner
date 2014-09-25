@@ -4,14 +4,15 @@
     return false;
   }
   Envelope envelope=new Envelope(ts.getCoordinate());
-  envelope.expandBy(0.003);
+  double xscale=Math.cos(ts.getCoordinate().y * Math.PI / 180);
+  envelope.expandBy(searchRadiusLat / xscale,searchRadiusLat);
   Collection<Vertex> vertices=index.getVerticesForEnvelope(envelope);
   for (  Vertex v : vertices) {
     if (!(v instanceof TransitStopStreetVertex)) {
       continue;
     }
     TransitStopStreetVertex tsv=(TransitStopStreetVertex)v;
-    if (tsv.getStopCode() != null && tsv.getStopCode().equals(stopCode)) {
+    if (tsv.stopCode != null && tsv.stopCode.equals(stopCode)) {
       new StreetTransitLink(ts,tsv,wheelchairAccessible);
       new StreetTransitLink(tsv,ts,wheelchairAccessible);
       LOG.debug("Connected " + ts.toString() + " to "+ tsv.getLabel());

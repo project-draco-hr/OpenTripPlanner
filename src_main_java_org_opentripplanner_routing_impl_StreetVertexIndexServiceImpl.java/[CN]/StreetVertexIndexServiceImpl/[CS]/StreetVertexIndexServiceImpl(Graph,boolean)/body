@@ -1,0 +1,18 @@
+{
+  this.graph=graph;
+  if (hashGrid) {
+    edgeTree=new HashGridSpatialIndex<>();
+    transitStopTree=new HashGridSpatialIndex<>();
+    verticesTree=new HashGridSpatialIndex<>();
+  }
+ else {
+    edgeTree=new STRtree();
+    transitStopTree=new STRtree();
+    verticesTree=new STRtree();
+  }
+  postSetup();
+  if (!hashGrid) {
+    ((STRtree)edgeTree).build();
+    ((STRtree)transitStopTree).build();
+  }
+}

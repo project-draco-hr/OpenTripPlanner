@@ -1,5 +1,5 @@
 {
   boolean checkPark=stateData.opt.parkAndRide || stateData.opt.kissAndRide;
-  if (stateData.opt.isArriveBy())   return !isBikeRenting() && !(checkPark && isCarParked());
+  if (stateData.opt.arriveBy)   return !isBikeRenting() && !(checkPark && isCarParked());
  else   return !isBikeRenting() && !(checkPark && !isCarParked());
 }

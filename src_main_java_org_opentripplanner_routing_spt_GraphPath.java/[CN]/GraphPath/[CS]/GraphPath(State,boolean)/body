@@ -1,8 +1,8 @@
 {
-  optimize&=s.getOptions().getModes().isTransit();
+  optimize&=s.getOptions().modes.isTransit();
   this.rctx=s.getContext();
-  this.back=s.getOptions().isArriveBy();
-  if (s.getOptions().getStartingTransitTripId() != null) {
+  this.back=s.getOptions().arriveBy;
+  if (s.getOptions().startingTransitTripId != null) {
     LOG.debug("Disable reverse-optimize for on-board depart");
     optimize=false;
   }

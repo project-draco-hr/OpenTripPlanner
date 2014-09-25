@@ -1,0 +1,22 @@
+{
+  BikeRentalStation brstation=new BikeRentalStation();
+  brstation.id=attributes.get("ms:GID").trim();
+  String[] coordinates=attributes.get("ms:msGeometry").trim().split(" ");
+  if (coordinates.length >= 2) {
+    brstation.x=Double.parseDouble(coordinates[1]);
+    brstation.y=Double.parseDouble(coordinates[0]);
+  }
+  if (brstation.x == 0 || brstation.y == 0)   return null;
+  brstation.name=attributes.get("ms:NOM");
+  boolean connected="CONNECTEE".equalsIgnoreCase(attributes.get("ms:ETAT"));
+  brstation.realTimeData=connected;
+  String nbPlaces=attributes.get("ms:NBPLACES");
+  if (nbPlaces != null)   brstation.spacesAvailable=Integer.parseInt(nbPlaces);
+  String nbVelos=attributes.get("ms:NBVELOS");
+  if (nbVelos != null)   brstation.bikesAvailable=Integer.parseInt(nbVelos);
+  @SuppressWarnings("unused") String type=attributes.get("ms:TYPE");
+  brstation.networks=new HashSet<String>();
+  brstation.networks.add("VCUB");
+  brstation.networks.add("VCUB+");
+  return brstation;
+}

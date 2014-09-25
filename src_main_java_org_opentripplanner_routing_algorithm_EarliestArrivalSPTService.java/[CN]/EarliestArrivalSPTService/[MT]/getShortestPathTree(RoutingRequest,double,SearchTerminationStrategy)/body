@@ -2,8 +2,8 @@
   options=options.clone();
   options.setMaxTransfers(Integer.MAX_VALUE);
   options.setMaxWalkDistance(Double.MAX_VALUE);
-  if (options.getClampInitialWait() < 0)   options.setClampInitialWait(60 * 30);
-  final long maxt=maxDuration + options.getClampInitialWait();
+  if (options.clampInitialWait < 0)   options.clampInitialWait=(60 * 30);
+  final long maxt=maxDuration + options.clampInitialWait;
   options.worstTime=options.dateTime + (options.arriveBy ? -maxt : maxt);
   ShortestPathTree spt=new EarliestArrivalShortestPathTree(options);
   State initialState=new State(options);
@@ -14,7 +14,7 @@
     State u=pq.extract_min();
     Vertex u_vertex=u.getVertex();
     if (!spt.visit(u))     continue;
-    Collection<Edge> edges=options.isArriveBy() ? u_vertex.getIncoming() : u_vertex.getOutgoing();
+    Collection<Edge> edges=options.arriveBy ? u_vertex.getIncoming() : u_vertex.getOutgoing();
     for (    Edge edge : edges) {
       for (State v=edge.traverse(u); v != null; v=v.getNextResult()) {
         if (isWorstTimeExceeded(v,options)) {

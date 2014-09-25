@@ -1,0 +1,8 @@
+{
+  OTPConfigPreferences child=children.get(name);
+  if (child == null || child.isRemoved()) {
+    child=new OTPConfigPreferences(this,name);
+    children.put(name,child);
+  }
+  return child;
+}

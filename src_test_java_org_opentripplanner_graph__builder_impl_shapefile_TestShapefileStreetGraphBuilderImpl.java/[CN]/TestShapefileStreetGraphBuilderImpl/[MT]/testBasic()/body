@@ -81,7 +81,7 @@
   ShortestPathTree spt=aStar.getShortestPathTree(opt);
   assertNotNull(spt);
   opt=new RoutingRequest(new TraverseModeSet(TraverseMode.BICYCLE));
-  opt.setBikeSpeed(2);
+  opt.bikeSpeed=2;
   opt.setRoutingContext(gg,start,carlton);
   spt=aStar.getShortestPathTree(opt);
   assertNotNull(spt);

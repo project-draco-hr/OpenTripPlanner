@@ -1,7 +1,6 @@
 {
   LOG.info("Linking transit stops to tagged bus stops...");
   index=new StreetVertexIndexServiceImpl(graph);
-  index.setup();
   ArrayList<Vertex> vertices=new ArrayList<>();
   vertices.addAll(graph.getVertices());
   for (  TransitStop ts : IterableLibrary.filter(vertices,TransitStop.class)) {
@@ -16,7 +15,7 @@
     if (ts.isEntrance() || !ts.hasEntrances()) {
       boolean wheelchairAccessible=ts.hasWheelchairEntrance();
       if (!connectVertexToStop(ts,wheelchairAccessible)) {
-        LOG.debug("Could not connect " + ts.toString());
+        LOG.debug("Could not connect " + ts.getStopCode() + " at "+ ts.getCoordinate().toString());
       }
     }
   }

@@ -1,0 +1,5 @@
+{
+  int[] coords=compactLineString(x0,y0,x1,y1,lineString);
+  if (coords == STRAIGHT_LINE)   return STRAIGHT_LINE_PACKED;
+  return DlugoszVarLenIntPacker.pack(coords);
+}

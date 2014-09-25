@@ -1,0 +1,29 @@
+{
+  if (e instanceof PlainStreetEdge) {
+    PlainStreetEdge pse=(PlainStreetEdge)e;
+    if (pse.isStairs()) {
+      attrs.color=STAIRS_COLOR_EDGE;
+      attrs.label="stairs";
+    }
+ else {
+      attrs.color=getColor(pse.getPermission());
+      attrs.label=getLabel(pse.getPermission());
+    }
+  }
+ else   if (e instanceof StreetTransitLink) {
+    attrs.color=LINK_COLOR_EDGE;
+    attrs.label="link";
+  }
+ else   if (e instanceof StreetBikeRentalLink) {
+    attrs.color=LINK_COLOR_EDGE;
+    attrs.label="link";
+  }
+ else   if (e instanceof ParkAndRideLinkEdge) {
+    attrs.color=LINK_COLOR_EDGE;
+    attrs.label="link";
+  }
+ else {
+    return false;
+  }
+  return true;
+}

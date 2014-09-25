@@ -1,14 +1,14 @@
 {
   String input="0::";
   GenericLocation loc=GenericLocation.fromOldStyleString(input);
-  assertEquals("0",loc.getName());
-  assertEquals("",loc.getPlace());
+  assertEquals("0",loc.name);
+  assertEquals("",loc.place);
   input="::1";
   loc=GenericLocation.fromOldStyleString(input);
-  assertEquals("",loc.getName());
-  assertEquals("1",loc.getPlace());
+  assertEquals("",loc.name);
+  assertEquals("1",loc.place);
   input="::";
   loc=GenericLocation.fromOldStyleString(input);
-  assertEquals("",loc.getName());
-  assertEquals("",loc.getPlace());
+  assertEquals("",loc.name);
+  assertEquals("",loc.place);
 }

@@ -5,11 +5,11 @@
   this.opt=routingRequest;
   this.graph=graph;
   this.debugOutput.startedCalculating();
-  if (routingRequest.isIgnoreRealtimeUpdates()) {
+  if (routingRequest.ignoreRealtimeUpdates) {
     timetableSnapshot=null;
   }
  else {
-    TimetableSnapshotSource timetableSnapshotSource=graph.getTimetableSnapshotSource();
+    TimetableSnapshotSource timetableSnapshotSource=graph.timetableSnapshotSource;
     if (timetableSnapshotSource == null) {
       timetableSnapshot=null;
     }
@@ -23,23 +23,23 @@
   Edge toBackEdge=null;
   if (findPlaces) {
     if (!opt.batch || opt.arriveBy) {
-      toVertex=graph.streetIndex.getVertexForLocation(opt.getTo(),opt);
-      if (opt.getTo().hasEdgeId()) {
-        toBackEdge=graph.getEdgeById(opt.getTo().getEdgeId());
+      toVertex=graph.streetIndex.getVertexForLocation(opt.to,opt);
+      if (opt.to.hasEdgeId()) {
+        toBackEdge=graph.getEdgeById(opt.to.edgeId);
       }
     }
  else {
       toVertex=null;
     }
-    if (opt.getStartingTransitTripId() != null && !opt.arriveBy) {
+    if (opt.startingTransitTripId != null && !opt.arriveBy) {
       OnBoardDepartService onBoardDepartService=graph.getService(OnBoardDepartService.class);
       if (onBoardDepartService == null)       throw new UnsupportedOperationException("Missing OnBoardDepartService");
       fromVertex=onBoardDepartService.setupDepartOnBoard(this);
     }
  else     if (!opt.batch || !opt.arriveBy) {
-      fromVertex=graph.streetIndex.getVertexForLocation(opt.getFrom(),opt,toVertex);
-      if (opt.getFrom().hasEdgeId()) {
-        fromBackEdge=graph.getEdgeById(opt.getFrom().getEdgeId());
+      fromVertex=graph.streetIndex.getVertexForLocation(opt.from,opt,toVertex);
+      if (opt.from.hasEdgeId()) {
+        fromBackEdge=graph.getEdgeById(opt.from.edgeId);
       }
     }
  else {
@@ -65,8 +65,8 @@
       ((StreetLocation)fromVertex).getExtra().add(ppse);
     }
   }
-  if (opt.getStartingTransitStopId() != null) {
-    Stop stop=graph.index.stopForId.get(opt.getStartingTransitStopId());
+  if (opt.startingTransitStopId != null) {
+    Stop stop=graph.index.stopForId.get(opt.startingTransitStopId);
     TransitStop tstop=graph.index.stopVertexForStop.get(stop);
     startingStop=tstop.departVertex;
   }

@@ -1,0 +1,12 @@
+{
+  Envelope2D env=SlippyTile.tile2Envelope(x,y,z);
+  TileRequest tileRequest=new TileRequest(routerId,env,256,256);
+  BufferedImage image=otpServer.tileRendererManager.renderTile(tileRequest,layer);
+  MIMEImageFormat format=new MIMEImageFormat("image/" + ext);
+  ByteArrayOutputStream baos=new ByteArrayOutputStream(image.getWidth() * image.getHeight() / 4);
+  ImageIO.write(image,format.type,baos);
+  CacheControl cc=new CacheControl();
+  cc.setMaxAge(3600);
+  cc.setNoCache(false);
+  return Response.ok(baos.toByteArray()).type(format.toString()).cacheControl(cc).build();
+}

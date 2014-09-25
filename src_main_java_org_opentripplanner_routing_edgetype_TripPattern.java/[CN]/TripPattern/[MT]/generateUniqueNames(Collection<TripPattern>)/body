@@ -23,7 +23,7 @@
     Collection<TripPattern> routeTripPatterns=patternsByRoute.get(route);
     String routeName=uniqueRouteNames.get(route);
     if (routeTripPatterns.size() == 1) {
-      routeTripPatterns.iterator().next().setName(routeName);
+      routeTripPatterns.iterator().next().name=routeName;
       continue;
     }
     Multimap<String,TripPattern> signs=ArrayListMultimap.create();
@@ -44,20 +44,20 @@
       Stop end=stops.get(stops.size() - 1);
       sb.append(" to " + stopNameAndId(end));
       if (ends.get(end).size() == 1) {
-        pattern.setName(sb.toString());
+        pattern.name=sb.toString();
         continue PATTERN;
       }
       Stop start=stops.get(0);
       sb.append(" from " + stopNameAndId(start));
       if (starts.get(start).size() == 1) {
-        pattern.setName(sb.toString());
+        pattern.name=(sb.toString());
         continue PATTERN;
       }
       Set<TripPattern> remainingPatterns=Sets.newHashSet();
       remainingPatterns.addAll(starts.get(start));
       remainingPatterns.retainAll(ends.get(end));
       if (remainingPatterns.size() == 1) {
-        pattern.setName(sb.toString());
+        pattern.name=(sb.toString());
         continue PATTERN;
       }
       for (      Stop via : stops) {
@@ -67,7 +67,7 @@
         intersection.retainAll(vias.get(via));
         if (intersection.size() == 1) {
           sb.append(" via " + stopNameAndId(via));
-          pattern.setName(sb.toString());
+          pattern.name=(sb.toString());
           continue PATTERN;
         }
       }
@@ -77,7 +77,7 @@
  else {
         sb.append(" like trip " + pattern.getTrips().get(0).getId());
       }
-      pattern.setName(sb.toString());
+      pattern.name=(sb.toString());
     }
   }
   if (LOG.isDebugEnabled()) {
@@ -86,7 +86,7 @@
       Collection<TripPattern> routeTripPatterns=patternsByRoute.get(route);
       LOG.debug("Named {} patterns in route {}",routeTripPatterns.size(),uniqueRouteNames.get(route));
       for (      TripPattern pattern : routeTripPatterns) {
-        LOG.debug("    {} ({} stops)",pattern.getName(),pattern.stopPattern.size);
+        LOG.debug("    {} ({} stops)",pattern.name,pattern.stopPattern.size);
       }
     }
   }

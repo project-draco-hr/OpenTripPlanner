@@ -1,0 +1,18 @@
+{
+  int size=coords == null ? 2 : (coords.length / 2) + 2;
+  Coordinate[] c=new Coordinate[size];
+  c[0]=new Coordinate(x0,y0);
+  if (coords != null) {
+    int oix=(int)Math.round(x0 * FIXED_FLOAT_MULT);
+    int oiy=(int)Math.round(y0 * FIXED_FLOAT_MULT);
+    for (int i=1; i < c.length - 1; i++) {
+      int ix=oix + coords[(i - 1) * 2];
+      int iy=oiy + coords[(i - 1) * 2 + 1];
+      c[i]=new Coordinate(ix / FIXED_FLOAT_MULT,iy / FIXED_FLOAT_MULT);
+      oix=ix;
+      oiy=iy;
+    }
+  }
+  c[c.length - 1]=new Coordinate(x1,y1);
+  return geometryFactory.createLineString(c);
+}

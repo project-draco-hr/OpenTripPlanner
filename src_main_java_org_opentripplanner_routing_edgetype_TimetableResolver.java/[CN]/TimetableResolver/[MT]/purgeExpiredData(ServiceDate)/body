@@ -9,7 +9,7 @@ synchronized (this) {
       SortedSet<Timetable> sortedTimetables=timetables.get(pattern);
       SortedSet<Timetable> toKeepTimetables=new TreeSet<Timetable>(new SortedTimetableComparator());
       for (      Timetable timetable : sortedTimetables) {
-        if (serviceDate.compareTo(timetable.getServiceDate()) < 0) {
+        if (serviceDate.compareTo(timetable.serviceDate) < 0) {
           toKeepTimetables.add(timetable);
         }
  else {

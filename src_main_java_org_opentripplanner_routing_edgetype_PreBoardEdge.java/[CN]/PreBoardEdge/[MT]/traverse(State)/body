@@ -1,33 +1,33 @@
 {
   RoutingRequest options=s0.getOptions();
-  if (!options.getBannedStops().isEmpty()) {
-    if (options.getBannedStops().matches(((TransitStop)fromv).getStop())) {
+  if (!options.bannedStops.isEmpty()) {
+    if (options.bannedStops.matches(((TransitStop)fromv).getStop())) {
       return null;
     }
   }
-  if (!options.getBannedStopsHard().isEmpty()) {
-    if (options.getBannedStopsHard().matches(((TransitStop)fromv).getStop())) {
+  if (!options.bannedStopsHard.isEmpty()) {
+    if (options.bannedStopsHard.matches(((TransitStop)fromv).getStop())) {
       return null;
     }
   }
-  if (options.isArriveBy()) {
+  if (options.arriveBy) {
     StateEditor s1=s0.edit(this);
     TransitStop fromVertex=(TransitStop)getFromVertex();
-    s1.incrementTimeInSeconds(options.getBoardSlack());
+    s1.incrementTimeInSeconds(options.boardSlack);
     s1.alightTransit();
     s1.setBackMode(getMode());
     return s1.makeState();
   }
  else {
-    if (!options.getModes().isTransit())     return null;
+    if (!options.modes.isTransit())     return null;
     if (s0.getNumBoardings() > options.maxTransfers)     return null;
     long t0=s0.getTimeSeconds();
     long slack;
     if (s0.isEverBoarded()) {
-      slack=options.getTransferSlack() - options.getAlightSlack();
+      slack=options.transferSlack - options.alightSlack;
     }
  else {
-      slack=options.getBoardSlack();
+      slack=options.boardSlack;
     }
     long board_after=t0 + slack;
     long transfer_penalty=0;

@@ -1,0 +1,9 @@
+{
+  this.advance=advance;
+  this.phase=phase;
+  Rectangle2D bounds=shape.getBounds2D();
+  double scale=width / bounds.getHeight();
+  t.setToScale(scale,scale);
+  t.translate(-bounds.getCenterX(),-bounds.getCenterY());
+  this.theShape=t.createTransformedShape(shape);
+}

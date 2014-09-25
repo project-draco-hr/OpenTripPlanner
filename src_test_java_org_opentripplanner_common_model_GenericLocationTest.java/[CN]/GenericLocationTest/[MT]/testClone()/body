@@ -1,10 +1,10 @@
 {
   Coordinate expectedCoord=new Coordinate(2.0,1.0);
   GenericLocation loc=new GenericLocation(expectedCoord);
-  loc.setHeading(137.2);
+  loc.heading=137.2;
   GenericLocation cloned=loc.clone();
   assertEquals(expectedCoord,cloned.getCoordinate());
-  assertEquals(loc.getHeading(),cloned.getHeading());
+  assertEquals(loc.heading,cloned.heading);
   assertEquals(loc.getNamedPlace().name,cloned.getNamedPlace().name);
   assertEquals(loc.getNamedPlace().place,cloned.getNamedPlace().place);
 }

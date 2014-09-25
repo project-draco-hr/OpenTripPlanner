@@ -3,15 +3,15 @@
   TraversalRequirements reqs=new TraversalRequirements();
   TraverseModeSet modes=new TraverseModeSet();
   modes.setCar(true);
-  reqs.setModes(modes);
+  reqs.modes=modes;
   GenericLocation loc=new GenericLocation(c);
-  loc.setHeading(top.getAzimuth());
+  loc.heading=top.getAzimuth();
   CandidateEdgeBundle candidates=finder.getClosestEdges(loc,reqs);
   Collections.sort(candidates,new CandidateEdge.CandidateEdgeScoreComparator());
-  double lastScore=candidates.best.getScore();
+  double lastScore=candidates.best.score;
   for (  CandidateEdge ce : candidates) {
-    assertTrue(ce.getScore() >= lastScore);
-    lastScore=ce.getScore();
+    assertTrue(ce.score >= lastScore);
+    lastScore=ce.score;
   }
-  assertEquals(candidates.best.getScore(),candidates.get(0).getScore(),0.0);
+  assertEquals(candidates.best.score,candidates.get(0).score,0.0);
 }

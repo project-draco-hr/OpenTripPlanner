@@ -1,11 +1,11 @@
 {
   if (options.wheelchairAccessible) {
-    if (!wheelchairAccessible) {
+    if (!isWheelchairAccessible()) {
       return false;
     }
     if (elevationProfileSegment.getMaxSlope() > options.maxSlope) {
       return false;
     }
   }
-  return canTraverse(options.getModes());
+  return canTraverse(options.modes);
 }

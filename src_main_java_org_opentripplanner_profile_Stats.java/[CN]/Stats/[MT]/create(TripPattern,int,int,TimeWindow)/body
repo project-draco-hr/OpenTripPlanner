@@ -2,7 +2,7 @@
   Stats s=new Stats();
   s.min=Integer.MAX_VALUE;
   s.num=0;
-  for (  TripTimes tripTimes : pattern.getScheduledTimetable().getTripTimes()) {
+  for (  TripTimes tripTimes : pattern.scheduledTimetable.tripTimes) {
     int depart=tripTimes.getDepartureTime(stop0);
     int arrive=tripTimes.getArrivalTime(stop1);
     if (window.includes(depart) && window.includes(arrive) && window.servicesRunning.get(tripTimes.serviceCode)) {
@@ -12,6 +12,19 @@
       s.avg+=t;
       ++s.num;
     }
+  }
+  for (  FrequencyEntry freq : pattern.scheduledTimetable.frequencyEntries) {
+    TripTimes tt=freq.tripTimes;
+    int overlap=window.overlap(freq.startTime,freq.endTime,tt.serviceCode);
+    if (overlap == 0)     continue;
+    int n=overlap / freq.headway + 1;
+    int depart=tt.getDepartureTime(stop0);
+    int arrive=tt.getArrivalTime(stop1);
+    int t=arrive - depart;
+    if (t < s.min)     s.min=t;
+    if (t > s.max)     s.max=t;
+    s.avg+=(t * n);
+    s.num+=n;
   }
   if (s.num > 0) {
     s.avg/=s.num;

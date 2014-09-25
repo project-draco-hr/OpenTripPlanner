@@ -1,0 +1,13 @@
+{
+  if (v instanceof BikeRentalStationVertex) {
+    attrs.color=BIKE_RENTAL_COLOR_VERTEX;
+    attrs.label=v.getName();
+  }
+ else   if (v instanceof IntersectionVertex) {
+    attrs.color=Color.DARK_GRAY;
+  }
+ else {
+    return false;
+  }
+  return true;
+}

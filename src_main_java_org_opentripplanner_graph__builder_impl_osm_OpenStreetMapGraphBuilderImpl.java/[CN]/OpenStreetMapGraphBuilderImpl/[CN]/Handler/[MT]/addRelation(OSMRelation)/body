@@ -9,7 +9,7 @@
     }
     getLevelsForWay(relation);
   }
- else   if (!(relation.isTag("type","restriction")) && !(relation.isTag("type","route") && relation.isTag("route","road")) && !(relation.isTag("type","multipolygon") && isOsmEntityRoutable(relation))&& !(relation.isTag("type","level_map"))) {
+ else   if (!(relation.isTag("type","restriction")) && !(relation.isTag("type","route") && relation.isTag("route","road")) && !(relation.isTag("type","multipolygon") && isOsmEntityRoutable(relation))&& !(relation.isTag("type","level_map"))&& !(relation.isTag("type","public_transport") && relation.isTag("public_transport","stop_area"))) {
     return;
   }
   _relations.put(relation.getId(),relation);

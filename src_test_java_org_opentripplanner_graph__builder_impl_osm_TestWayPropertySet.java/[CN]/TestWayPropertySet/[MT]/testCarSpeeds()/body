@@ -31,7 +31,7 @@
   wps.addSpeedPicker(getSpeedPicker("highway=motorway",kmhAsMs(100)));
   wps.addSpeedPicker(getSpeedPicker("highway=*",kmhAsMs(35)));
   wps.addSpeedPicker(getSpeedPicker("surface=gravel",kmhAsMs(10)));
-  wps.setDefaultSpeed(kmhAsMs(25));
+  wps.defaultSpeed=kmhAsMs(25);
   way=new OSMWithTags();
   assertTrue(within(kmhAsMs(25),wps.getCarSpeedForWay(way,false),epsilon));
   assertTrue(within(kmhAsMs(25),wps.getCarSpeedForWay(way,true),epsilon));

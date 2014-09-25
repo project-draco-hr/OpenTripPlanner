@@ -20,6 +20,9 @@
  else     if (sourceType.equals("city-bikes")) {
       source=new CityBikesBikeRentalDataSource();
     }
+ else     if (sourceType.equals("vcub")) {
+      source=new VCubDataSource();
+    }
   }
   if (source == null) {
     throw new IllegalArgumentException("Unknown bike rental source type: " + sourceType);
@@ -30,6 +33,6 @@
   LOG.info("Setting up bike rental updater.");
   this.graph=graph;
   this.source=source;
-  setNetwork(preferences.get("networks",DEFAULT_NETWORK_LIST));
-  LOG.info("Creating bike-rental updater running every {} seconds : {}",getFrequencySec(),source);
+  this.network=(preferences.get("networks",DEFAULT_NETWORK_LIST));
+  LOG.info("Creating bike-rental updater running every {} seconds : {}",frequencySec,source);
 }

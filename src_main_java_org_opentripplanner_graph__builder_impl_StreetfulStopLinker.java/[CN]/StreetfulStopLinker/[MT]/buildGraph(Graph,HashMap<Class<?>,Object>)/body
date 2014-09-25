@@ -2,7 +2,7 @@
   final Parser parser[]=new Parser[]{new Parser()};
   GeometryFactory geometryFactory=GeometryUtils.getGeometryFactory();
   EarliestArrivalSPTService earliestArrivalSPTService=new EarliestArrivalSPTService();
-  earliestArrivalSPTService.setMaxDuration(maxDuration);
+  earliestArrivalSPTService.maxDuration=(maxDuration);
   for (  TransitStop ts : IterableLibrary.filter(graph.getVertices(),TransitStop.class)) {
     if (!ts.isStreetLinkable())     continue;
     LOG.trace("linking stop '{}' {}",ts.getStop(),ts);
@@ -17,7 +17,7 @@
     }
     int n=0;
     RoutingRequest routingRequest=new RoutingRequest(TraverseMode.WALK);
-    routingRequest.setClampInitialWait(0L);
+    routingRequest.clampInitialWait=(0L);
     routingRequest.setRoutingContext(graph,ts,null);
     routingRequest.rctx.pathParsers=parser;
     ShortestPathTree spt=earliestArrivalSPTService.getShortestPathTree(routingRequest);

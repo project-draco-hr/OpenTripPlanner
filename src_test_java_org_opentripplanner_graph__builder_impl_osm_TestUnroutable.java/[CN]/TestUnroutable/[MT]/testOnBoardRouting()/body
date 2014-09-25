@@ -1,0 +1,14 @@
+{
+  RoutingRequest options=new RoutingRequest();
+  Vertex from=graph.getVertex("osm:node:2003617278");
+  Vertex to=graph.getVertex("osm:node:40446276");
+  options.setRoutingContext(graph,from,to);
+  options.setMode(TraverseMode.BICYCLE);
+  ShortestPathTree spt=aStar.getShortestPathTree(options);
+  GraphPath path=spt.getPath(to,false);
+  if (path != null) {
+    for (    Edge edge : path.edges) {
+      assertFalse("Path should not use the as-yet unbuilt Tilikum Crossing bridge.","Tilikum Crossing".equals(edge.getName()));
+    }
+  }
+}

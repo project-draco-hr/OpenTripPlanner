@@ -14,8 +14,8 @@
     lastId=id;
     double latf=parseLat(lat), lonf=parseLon(lon);
     tmp.setId(id);
-    tmp.setLat(latf);
-    tmp.setLon(lonf);
+    tmp.lat=latf;
+    tmp.lon=lonf;
     if (nodes.getKeysValsCount() > 0) {
       while (nodes.getKeysVals(j) != 0) {
         int keyid=nodes.getKeysVals(j++);

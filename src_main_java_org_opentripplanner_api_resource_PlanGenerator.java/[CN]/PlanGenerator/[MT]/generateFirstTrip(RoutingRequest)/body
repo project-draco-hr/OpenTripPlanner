@@ -1,5 +1,5 @@
 {
-  Graph graph=graphService.getGraph(request.getRouterId());
+  Graph graph=graphService.getGraph(request.routerId);
   request.setArriveBy(false);
   TimeZone tz=graph.getTimeZone();
   GregorianCalendar calendar=new GregorianCalendar(tz);

@@ -1,13 +1,12 @@
 {
-  Envelope envelope=new Envelope(coordinate);
-  envelope.expandBy(SphericalDistanceLibrary.metersToDegrees(radius));
-  List<?> stops=transitStopTree.query(envelope);
-  ArrayList<TransitStop> out=new ArrayList<TransitStop>();
-  for (  Object o : stops) {
-    TransitStop stop=(TransitStop)o;
-    if (distanceLibrary.distance(stop.getCoordinate(),coordinate) < radius) {
-      out.add(stop);
+  Envelope env=new Envelope(coordinate);
+  env.expandBy(SphericalDistanceLibrary.metersToLonDegrees(radius,coordinate.y),SphericalDistanceLibrary.metersToDegrees(radius));
+  List<TransitStop> nearby=getTransitStopForEnvelope(env);
+  List<TransitStop> results=new ArrayList<TransitStop>();
+  for (  TransitStop v : nearby) {
+    if (distanceLibrary.distance(v.getCoordinate(),coordinate) <= radius) {
+      results.add(v);
     }
   }
-  return out;
+  return results;
 }

@@ -9,9 +9,9 @@
     double uw=q.peek_min_key();
     Vertex u=q.extract_min();
     maxFound=uw;
-    for (    Edge e : options.isArriveBy() ? u.getOutgoing() : u.getIncoming()) {
+    for (    Edge e : options.arriveBy ? u.getOutgoing() : u.getIncoming()) {
       if (e instanceof StreetTransitLink)       continue;
-      Vertex v=options.isArriveBy() ? e.getToVertex() : e.getFromVertex();
+      Vertex v=options.arriveBy ? e.getToVertex() : e.getFromVertex();
       double ew=e.weightLowerBound(options);
       if (Double.isInfinite(ew)) {
         continue;

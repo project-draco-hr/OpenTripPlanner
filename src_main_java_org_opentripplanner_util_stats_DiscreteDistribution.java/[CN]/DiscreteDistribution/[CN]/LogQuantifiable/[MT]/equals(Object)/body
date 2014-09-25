@@ -1,0 +1,7 @@
+{
+  if (another instanceof LogQuantifiable) {
+    @SuppressWarnings("unchecked") LogQuantifiable<K> anotherLog=(LogQuantifiable<K>)another;
+    return anotherLog.log == this.log;
+  }
+  return false;
+}

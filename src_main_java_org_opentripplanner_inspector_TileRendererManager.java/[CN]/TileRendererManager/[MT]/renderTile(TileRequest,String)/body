@@ -1,0 +1,30 @@
+{
+  TileRenderContext context=new TileRenderContext(){
+    @Override public Envelope expandPixels(    double marginXPixels,    double marginYPixels){
+      Envelope retval=new Envelope(bbox);
+      retval.expandBy(marginXPixels / tileRequest.width * (bbox.getMaxX() - bbox.getMinX()),marginYPixels / tileRequest.height * (bbox.getMaxY() - bbox.getMinY()));
+      return retval;
+    }
+  }
+;
+  context.graph=graphService.getGraph(tileRequest.routerId);
+  if (context.graph == null)   throw new IllegalArgumentException("Unknown routerId: " + tileRequest.routerId);
+  TileRenderer renderer=renderers.get(layer);
+  if (renderer == null)   throw new IllegalArgumentException("Unknown layer: " + layer);
+  BufferedImage image=new BufferedImage(tileRequest.width,tileRequest.height,renderer.getColorModel());
+  context.graphics=image.createGraphics();
+  Envelope2D trbb=tileRequest.bbox;
+  context.bbox=new Envelope(trbb.x,trbb.x + trbb.width,trbb.y,trbb.y + trbb.height);
+  context.transform=new AffineTransformation();
+  double xScale=tileRequest.width / trbb.width;
+  double yScale=tileRequest.height / trbb.height;
+  context.transform.translate(-trbb.x,-trbb.y - trbb.height);
+  context.transform.scale(xScale,-yScale);
+  context.metersPerPixel=Math.toRadians(trbb.height) * 6371000 / tileRequest.height;
+  context.tileWidth=tileRequest.width;
+  context.tileHeight=tileRequest.height;
+  long start=System.currentTimeMillis();
+  renderer.renderTile(context);
+  LOG.debug("Rendered tile at {},{} in {} ms",tileRequest.bbox.y,tileRequest.bbox.x,System.currentTimeMillis() - start);
+  return image;
+}

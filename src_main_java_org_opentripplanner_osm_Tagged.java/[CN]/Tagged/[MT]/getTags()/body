@@ -1,0 +1,14 @@
+{
+  List<Tag> ret=Lists.newArrayList();
+  if (tags != null) {
+    for (    String tag : tags.split(";")) {
+      String[] kv=tag.split("=");
+      if (kv.length < 1)       continue;
+      Tag t=new Tag();
+      t.key=kv[0];
+      if (kv.length > 1)       t.value=kv[1];
+      ret.add(t);
+    }
+  }
+  return ret;
+}

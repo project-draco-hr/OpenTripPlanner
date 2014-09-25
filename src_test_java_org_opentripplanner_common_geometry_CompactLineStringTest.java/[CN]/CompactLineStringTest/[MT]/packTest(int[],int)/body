@@ -1,0 +1,7 @@
+{
+  byte[] packed=DlugoszVarLenIntPacker.pack(arr);
+  System.out.println("Unpacked: " + Arrays.toString(arr) + " -> packed: "+ unsignedCharString(packed));
+  assertEquals(expectedPackedLen,packed.length);
+  int[] unpacked=DlugoszVarLenIntPacker.unpack(packed);
+  assertTrue(Arrays.equals(arr,unpacked));
+}

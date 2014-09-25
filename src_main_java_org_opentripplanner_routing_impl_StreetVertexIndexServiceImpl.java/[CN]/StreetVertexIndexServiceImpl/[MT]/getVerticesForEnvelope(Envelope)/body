@@ -1,3 +1,8 @@
 {
-  return intersectionTree.query(envelope);
+  List<Vertex> vertices=verticesTree.query(envelope);
+  for (Iterator<Vertex> iv=vertices.iterator(); iv.hasNext(); ) {
+    Vertex v=iv.next();
+    if (!envelope.contains(new Coordinate(v.getLon(),v.getLat())))     iv.remove();
+  }
+  return vertices;
 }
