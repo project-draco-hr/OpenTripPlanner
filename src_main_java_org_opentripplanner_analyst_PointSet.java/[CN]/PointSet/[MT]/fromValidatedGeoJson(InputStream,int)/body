@@ -8,6 +8,32 @@
     while (jp.nextToken() != JsonToken.END_OBJECT) {
       String key=jp.getCurrentName();
       current=jp.nextToken();
+      if (key.equals("properties")) {
+        JsonNode properties=jp.readValueAsTree();
+        if (properties.get("id") != null)         ret.id=properties.get("id").asText();
+        if (properties.get("label") != null)         ret.label=properties.get("label").asText();
+        if (properties.get("description") != null)         ret.label=properties.get("description").asText();
+        if (properties.get("schema") != null) {
+          Iterator<Entry<String,JsonNode>> catIter=properties.get("schema").fields();
+          while (catIter.hasNext()) {
+            Entry<String,JsonNode> catEntry=catIter.next();
+            String catName=catEntry.getKey();
+            JsonNode catNode=catEntry.getValue();
+            PropertyMetadata cat=new PropertyMetadata(catName);
+            if (catNode.get("label") != null)             cat.label=catNode.get("label").asText();
+            if (catNode.get("style") != null) {
+              Iterator<Entry<String,JsonNode>> styleIter=catNode.get("style").fields();
+              while (styleIter.hasNext()) {
+                Entry<String,JsonNode> styleEntry=styleIter.next();
+                String styleName=styleEntry.getKey();
+                JsonNode styleValue=styleEntry.getValue();
+                cat.addStyle(styleName,styleValue.asText());
+              }
+            }
+            ret.propMetadata.put(catName,cat);
+          }
+        }
+      }
       if (key.equals("features")) {
         while (jp.nextToken() != JsonToken.END_ARRAY) {
           JsonNode feature=jp.readValueAsTree();

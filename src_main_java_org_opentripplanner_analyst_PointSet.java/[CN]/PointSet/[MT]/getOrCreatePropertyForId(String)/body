@@ -3,7 +3,7 @@
   if (property == null) {
     property=new PropertyMetadata(id);
     propMetadata.put(id,property);
-    properties.put(id,new int[capacity]);
   }
+  if (!properties.containsKey(id))   properties.put(id,new int[capacity]);
   return property;
 }
