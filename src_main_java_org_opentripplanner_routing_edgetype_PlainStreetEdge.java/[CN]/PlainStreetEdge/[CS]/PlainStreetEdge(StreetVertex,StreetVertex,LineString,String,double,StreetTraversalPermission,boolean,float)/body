@@ -2,7 +2,8 @@
   super(v1,v2);
   this.setGeometry(geometry);
   this.length=length;
-  this.elevationProfileSegment=new ElevationProfileSegment(length);
+  this.bicycleSafetyFactor=1.0f;
+  this.elevationProfileSegment=ElevationProfileSegment.getFlatProfile();
   this.name=name;
   this.setPermission(permission);
   this.setBack(back);

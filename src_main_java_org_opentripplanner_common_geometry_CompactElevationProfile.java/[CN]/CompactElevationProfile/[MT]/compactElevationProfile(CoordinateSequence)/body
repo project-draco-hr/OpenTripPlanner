@@ -1,0 +1,18 @@
+{
+  if (elevation == null)   return null;
+  int oix=0;
+  int oiy=0;
+  int[] coords=new int[elevation.size() * 2];
+  for (int i=0; i < elevation.size(); i++) {
+    Coordinate c=elevation.getCoordinate(i);
+    int ix=(int)Math.round(c.x * FIXED_FLOAT_MULT);
+    int iy=(int)Math.round(c.y * FIXED_FLOAT_MULT);
+    int dix=ix - oix;
+    int diy=iy - oiy;
+    coords[i * 2]=dix;
+    coords[i * 2 + 1]=diy;
+    oix=ix;
+    oiy=iy;
+  }
+  return DlugoszVarLenIntPacker.pack(coords);
+}

@@ -1,10 +1,10 @@
 {
-  HashSet<Alert> out=new HashSet<Alert>();
+  HashSet<T2<Alert,NoteMatcher>> out=new HashSet<>();
   for (  NotePicker picker : notes) {
     OSMSpecifier specifier=picker.specifier;
     NoteProperties noteProperties=picker.noteProperties;
     if (specifier.matchScore(way) > 0) {
-      out.add(Alert.createSimpleAlerts(noteProperties.generateNote(way).intern()));
+      out.add(noteProperties.generateNote(way));
     }
   }
   if (out.size() == 0) {

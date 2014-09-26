@@ -2,10 +2,11 @@
   HashSet<Edge> turns=new HashSet<Edge>();
   turns.add(left);
   turns.add(leftBack);
-  Set<Alert> alert=new HashSet<Alert>();
-  alert.add(Alert.createSimpleAlerts("This is the alert"));
-  left.setNote(alert);
-  leftBack.setNote(alert);
+  Alert alert=Alert.createSimpleAlerts("This is the alert");
+  Set<Alert> alerts=new HashSet<>();
+  alerts.add(alert);
+  graph.streetNotesService.addNote(left,alert);
+  graph.streetNotesService.addNote(leftBack,alert);
   StreetLocation start=StreetLocation.createStreetLocation(graph,"start","start",cast(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()));
   RoutingRequest req=new RoutingRequest();
   req.setMaxWalkDistance(Double.MAX_VALUE);
@@ -18,15 +19,16 @@
       break;
     }
   }
-  assertEquals(alert,traversedOne.getBackAlerts());
+  assertEquals(alerts,graph.streetNotesService.getNotes(traversedOne));
   assertNotSame(left,traversedOne.getBackEdge().getFromVertex());
   assertNotSame(leftBack,traversedOne.getBackEdge().getFromVertex());
-  Set<Alert> wheelchairAlert=new HashSet<Alert>();
-  wheelchairAlert.add(Alert.createSimpleAlerts("This is the wheelchair alert"));
-  left.setNote(null);
-  leftBack.setNote(null);
-  left.setWheelchairNote(wheelchairAlert);
-  leftBack.setWheelchairNote(wheelchairAlert);
+  Alert wheelchairAlert=Alert.createSimpleAlerts("This is the wheelchair alert");
+  Set<Alert> wheelchairAlerts=new HashSet<>();
+  wheelchairAlerts.add(wheelchairAlert);
+  graph.streetNotesService.removeNotes(left);
+  graph.streetNotesService.removeNotes(leftBack);
+  graph.streetNotesService.addNote(left,wheelchairAlert,StreetNotesService.WHEELCHAIR_MATCHER);
+  graph.streetNotesService.addNote(leftBack,wheelchairAlert,StreetNotesService.WHEELCHAIR_MATCHER);
   req.setWheelchairAccessible(true);
   start=StreetLocation.createStreetLocation(graph,"start","start",cast(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()));
   traversedOne=new State((Vertex)start,req);
@@ -37,7 +39,7 @@
       break;
     }
   }
-  assertEquals(wheelchairAlert,traversedOne.getBackAlerts());
+  assertEquals(wheelchairAlerts,graph.streetNotesService.getNotes(traversedOne));
   assertNotSame(left,traversedOne.getBackEdge().getFromVertex());
   assertNotSame(leftBack,traversedOne.getBackEdge().getFromVertex());
 }

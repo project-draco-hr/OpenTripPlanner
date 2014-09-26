@@ -9,6 +9,7 @@
         permission=permission.remove(StreetTraversalPermission.PEDESTRIAN);
         permission=permission.remove(StreetTraversalPermission.BICYCLE);
         if (permission == StreetTraversalPermission.NONE) {
+          graph.streetNotesService.removeNotes(pse);
           pse.detach();
         }
  else {

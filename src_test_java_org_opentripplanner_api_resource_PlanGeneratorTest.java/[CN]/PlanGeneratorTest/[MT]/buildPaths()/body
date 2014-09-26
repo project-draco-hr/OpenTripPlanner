@@ -279,7 +279,8 @@
   StreetBikeRentalLink e47=new StreetBikeRentalLink(v46,v48);
   PlainStreetEdge e49=new PlainStreetEdge(v48,v50,l49,"Edge 49",2.0,StreetTraversalPermission.ALL,false,0);
   LegSwitchingEdge e51=new LegSwitchingEdge(v50,v52);
-  PartialPlainStreetEdge e53=new PartialPlainStreetEdge(new PlainStreetEdge(v52,v54,l53,"Edge 53",1.0,StreetTraversalPermission.ALL,false,0),v52,v54,l53,"Edge 53",1.0,StreetTraversalPermission.ALL,false);
+  PlainStreetEdge e53p=new PlainStreetEdge(v52,v54,l53,"Edge 53",1.0,StreetTraversalPermission.ALL,false,0);
+  PartialPlainStreetEdge e53=new PartialPlainStreetEdge(e53p,v52,v54,l53,"Edge 53",1.0,StreetTraversalPermission.ALL,false);
   StreetBikeRentalLink e55=new StreetBikeRentalLink(v54,v56);
   RentABikeOffEdge e57=new RentABikeOffEdge(v56,v58,Collections.singleton(""));
   StreetBikeRentalLink e59=new StreetBikeRentalLink(v58,v60);
@@ -293,7 +294,7 @@
   e41.setHasBogusName(true);
   e49.setElevationProfile(elevation49,false);
   e53.setElevationProfile(elevation53,false);
-  e53.setNote(Alert.newSimpleAlertSet(alertsExample));
+  graph.streetNotesService.addNote(e53p,Alert.createSimpleAlerts(alertsExample));
   new PlainStreetEdge(v40,new IntersectionVertex(graph,"Extra vertex",180,88),new LineString(new PackedCoordinateSequence.Double(new double[]{180,89,180,88},2),geometryFactory),"Extra edge",1.9,StreetTraversalPermission.NONE,true,0);
   graph.serviceCodes.put(firstTrip.getId(),0);
   graph.serviceCodes.put(secondTrip.getId(),1);

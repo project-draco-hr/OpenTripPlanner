@@ -28,8 +28,6 @@
     street.setHasBogusName(true);
   }
   street.setStairs(steps);
-  if (way.isTagTrue("toll") || way.isTagTrue("toll:motorcar"))   street.setToll(true);
- else   street.setToll(false);
   if (!ignoreWheelchairAccessibility && (way.isTagFalse("wheelchair") || (steps && !way.isTagTrue("wheelchair")))) {
     street.setWheelchairAccessible(false);
   }
