@@ -2,6 +2,7 @@
   LOG.debug("creating linkages...");
   ArrayList<Vertex> vertices=new ArrayList<Vertex>();
   vertices.addAll(graph.getVertices());
+  int nUnlinked=0;
   for (  TransitStop ts : Iterables.filter(vertices,TransitStop.class)) {
     boolean alreadyLinked=false;
     for (    Edge e : ts.getOutgoing()) {
@@ -14,9 +15,13 @@
     if (ts.isEntrance() || !ts.hasEntrances()) {
       boolean wheelchairAccessible=ts.hasWheelchairEntrance();
       if (!networkLinkerLibrary.connectVertexToStreets(ts,wheelchairAccessible).getResult()) {
-        LOG.warn(graph.addBuilderAnnotation(new StopUnlinked(ts)));
+        LOG.debug(graph.addBuilderAnnotation(new StopUnlinked(ts)));
+        nUnlinked+=1;
       }
     }
+  }
+  if (nUnlinked > 0) {
+    LOG.warn("{} transit stops were not close enough to the street network to be connected to it.",nUnlinked);
   }
   for (  HashSet<StreetEdge> toRemove : networkLinkerLibrary.replacements.keySet()) {
     for (    StreetEdge edge : toRemove) {
