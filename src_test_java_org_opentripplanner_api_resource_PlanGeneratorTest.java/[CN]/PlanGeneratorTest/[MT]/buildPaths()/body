@@ -254,7 +254,7 @@
   LineString l49=new LineString(coordinates49,geometryFactory);
   LineString l53=new LineString(coordinates53,geometryFactory);
   FreeEdge e1=new FreeEdge(v0,v2);
-  PlainStreetEdge e3=new PlainStreetEdge(v2,v4,l3,"Edge 3",3.0,StreetTraversalPermission.ALL,false,0);
+  StreetEdge e3=new StreetEdge(v2,v4,l3,"Edge 3",3.0,StreetTraversalPermission.ALL,false,0);
   StreetTransitLink e5=new StreetTransitLink(v4,v6,false);
   PreBoardEdge e7=new PreBoardEdge(v6,v8);
   TransitBoardAlight e9=new TransitBoardAlight(v8,v10,0,TraverseMode.RAIL);
@@ -273,13 +273,13 @@
   PreAlightEdge e35=new PreAlightEdge(v34,v36);
   StreetTransitLink e37=new StreetTransitLink(v36,v38,true);
   AreaEdge e39=new AreaEdge(v38,v40,l39,"Edge 39 / 41",2.1,StreetTraversalPermission.ALL,false,0,new AreaEdgeList());
-  PlainStreetEdge e41=new PlainStreetEdge(v40,v42,l41,"Edge 39 / 41",1.9,StreetTraversalPermission.ALL,false,0);
+  StreetEdge e41=new StreetEdge(v40,v42,l41,"Edge 39 / 41",1.9,StreetTraversalPermission.ALL,false,0);
   StreetBikeRentalLink e43=new StreetBikeRentalLink(v42,v44);
   RentABikeOnEdge e45=new RentABikeOnEdge(v44,v46,Collections.singleton(""));
   StreetBikeRentalLink e47=new StreetBikeRentalLink(v46,v48);
-  PlainStreetEdge e49=new PlainStreetEdge(v48,v50,l49,"Edge 49",2.0,StreetTraversalPermission.ALL,false,0);
+  StreetEdge e49=new StreetEdge(v48,v50,l49,"Edge 49",2.0,StreetTraversalPermission.ALL,false,0);
   LegSwitchingEdge e51=new LegSwitchingEdge(v50,v52);
-  PlainStreetEdge e53p=new PlainStreetEdge(v52,v54,l53,"Edge 53",1.0,StreetTraversalPermission.ALL,false,0);
+  StreetEdge e53p=new StreetEdge(v52,v54,l53,"Edge 53",1.0,StreetTraversalPermission.ALL,false,0);
   PartialPlainStreetEdge e53=new PartialPlainStreetEdge(e53p,v52,v54,l53,"Edge 53",1.0,StreetTraversalPermission.ALL,false);
   StreetBikeRentalLink e55=new StreetBikeRentalLink(v54,v56);
   RentABikeOffEdge e57=new RentABikeOffEdge(v56,v58,Collections.singleton(""));
@@ -295,7 +295,7 @@
   e49.setElevationProfile(elevation49,false);
   e53.setElevationProfile(elevation53,false);
   graph.streetNotesService.addStaticNote(e53p,Alert.createSimpleAlerts(alertsExample),StreetNotesService.ALWAYS_MATCHER);
-  new PlainStreetEdge(v40,new IntersectionVertex(graph,"Extra vertex",180,88),new LineString(new PackedCoordinateSequence.Double(new double[]{180,89,180,88},2),geometryFactory),"Extra edge",1.9,StreetTraversalPermission.NONE,true,0);
+  new StreetEdge(v40,new IntersectionVertex(graph,"Extra vertex",180,88),new LineString(new PackedCoordinateSequence.Double(new double[]{180,89,180,88},2),geometryFactory),"Extra edge",1.9,StreetTraversalPermission.NONE,true,0);
   graph.serviceCodes.put(firstTrip.getId(),0);
   graph.serviceCodes.put(secondTrip.getId(),1);
   graph.serviceCodes.put(thirdTrip.getId(),2);

@@ -3,8 +3,8 @@
   StreetVertex A=new IntersectionVertex(graph,"A",0.000,45,"A");
   StreetVertex B=new IntersectionVertex(graph,"B",0.001,45,"B");
   StreetVertex C=new IntersectionVertex(graph,"C",0.002,45,"C");
-  @SuppressWarnings("unused") Edge walk=new PlainStreetEdge(A,B,GeometryUtils.makeLineString(0.000,45,0.001,45),"AB street",87,StreetTraversalPermission.CAR,false);
-  @SuppressWarnings("unused") Edge mustDrive=new PlainStreetEdge(B,C,GeometryUtils.makeLineString(0.001,45,0.002,45),"BC street",87,StreetTraversalPermission.PEDESTRIAN,false);
+  @SuppressWarnings("unused") Edge walk=new StreetEdge(A,B,GeometryUtils.makeLineString(0.000,45,0.001,45),"AB street",87,StreetTraversalPermission.CAR,false);
+  @SuppressWarnings("unused") Edge mustDrive=new StreetEdge(B,C,GeometryUtils.makeLineString(0.001,45,0.002,45),"BC street",87,StreetTraversalPermission.PEDESTRIAN,false);
   GenericAStar aStar=new GenericAStar();
   RoutingRequest options=new RoutingRequest(new TraverseModeSet("WALK"));
   options.setRoutingContext(graph,A,C);

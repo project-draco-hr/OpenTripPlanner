@@ -81,7 +81,7 @@
       }
  else {
         boolean shouldGenerateContinue=false;
-        if (edge instanceof PlainStreetEdge) {
+        if (edge instanceof StreetEdge) {
           double angleDiff=getAbsoluteAngleDiff(thisAngle,lastAngle);
           for (          Edge alternative : backState.getVertex().getOutgoingStreetEdges()) {
             if (alternative.getName().equals(streetName)) {

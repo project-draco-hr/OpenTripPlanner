@@ -12,20 +12,20 @@
           area.setBicycleSafetyMultiplier(area.getBicycleSafetyMultiplier() / bestBikeSafety);
         }
       }
-      if (!(e instanceof PlainStreetEdge)) {
+      if (!(e instanceof StreetEdge)) {
         continue;
       }
-      PlainStreetEdge pse=(PlainStreetEdge)e;
+      StreetEdge pse=(StreetEdge)e;
       if (!seenEdges.contains(e)) {
         seenEdges.add(e);
         pse.setBicycleSafetyFactor(pse.getBicycleSafetyFactor() / bestBikeSafety);
       }
     }
     for (    Edge e : vertex.getIncoming()) {
-      if (!(e instanceof PlainStreetEdge)) {
+      if (!(e instanceof StreetEdge)) {
         continue;
       }
-      PlainStreetEdge pse=(PlainStreetEdge)e;
+      StreetEdge pse=(StreetEdge)e;
       if (!seenEdges.contains(e)) {
         seenEdges.add(e);
         pse.setBicycleSafetyFactor(pse.getBicycleSafetyFactor() / bestBikeSafety);

@@ -1,7 +1,7 @@
 {
-  PlainStreetEdge e0=edge(v0,v1,0.0,StreetTraversalPermission.PEDESTRIAN);
-  PlainStreetEdge e1=edge(v1,v2,0.0,StreetTraversalPermission.BICYCLE);
-  PlainStreetEdge e2=edge(v2,v0,0.0,StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
+  StreetEdge e0=edge(v0,v1,0.0,StreetTraversalPermission.PEDESTRIAN);
+  StreetEdge e1=edge(v1,v2,0.0,StreetTraversalPermission.BICYCLE);
+  StreetEdge e2=edge(v2,v0,0.0,StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
   RoutingRequest noPenalty=proto.clone();
   noPenalty.setMode(TraverseMode.BICYCLE);
   noPenalty.setRoutingContext(_graph,v0,v0);

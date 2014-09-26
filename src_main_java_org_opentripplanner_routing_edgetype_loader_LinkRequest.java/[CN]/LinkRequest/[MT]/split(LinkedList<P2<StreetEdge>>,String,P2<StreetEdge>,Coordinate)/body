@@ -1,0 +1,86 @@
+{
+  StreetEdge e1=bestPair.getFirst();
+  StreetEdge e2=bestPair.getSecond();
+  String name=e1.getName();
+  StreetVertex e1v1=(StreetVertex)e1.getFromVertex();
+  StreetVertex e1v2=(StreetVertex)e1.getToVertex();
+  LineString forwardGeometry=e1.getGeometry();
+  StreetVertex e2v1=null;
+  StreetVertex e2v2=null;
+  P2<LineString> backGeometryPair=null;
+  if (e2 != null) {
+    e2v1=(StreetVertex)e2.getFromVertex();
+    e2v2=(StreetVertex)e2.getToVertex();
+    LineString backGeometry=e2.getGeometry();
+    backGeometryPair=GeometryUtils.splitGeometryAtPoint(backGeometry,coordinate);
+  }
+  P2<LineString> forwardGeometryPair=GeometryUtils.splitGeometryAtPoint(forwardGeometry,coordinate);
+  LineString toMidpoint=forwardGeometryPair.getFirst();
+  Coordinate midCoord=toMidpoint.getEndPoint().getCoordinate();
+  double totalGeomLength=forwardGeometry.getLength();
+  double lengthRatioIn=toMidpoint.getLength() / totalGeomLength;
+  if (lengthRatioIn < 0.00001) {
+    ArrayList<StreetVertex> out=new ArrayList<StreetVertex>();
+    out.add(e1v1);
+    if (e2 != null) {
+      out.add(e2v2);
+    }
+    return out;
+  }
+ else   if (lengthRatioIn > 0.99999) {
+    ArrayList<StreetVertex> out=new ArrayList<StreetVertex>();
+    out.add(e1v2);
+    if (e2 != null) {
+      out.add(e1v2);
+    }
+    return out;
+  }
+  double lengthIn=e1.getLength() * lengthRatioIn;
+  double lengthOut=e1.getLength() * (1 - lengthRatioIn);
+  IntersectionVertex e1midpoint=new IntersectionVertex(linker.graph,"split 1 at " + label,midCoord.x,midCoord.y,name);
+  StreetEdge forward1=new StreetEdge(e1v1,e1midpoint,toMidpoint,name,lengthIn,e1.getPermission(),false);
+  StreetEdge forward2=new StreetEdge(e1midpoint,e1v2,forwardGeometryPair.getSecond(),name,lengthOut,e1.getPermission(),true);
+  if (e1 instanceof AreaEdge) {
+    ((AreaEdge)e1).getArea().addVertex(e1midpoint,linker.graph);
+  }
+  addEdges(forward1,forward2);
+  StreetEdge backward1=null;
+  StreetEdge backward2=null;
+  IntersectionVertex e2midpoint=null;
+  if (e2 != null) {
+    e2midpoint=new IntersectionVertex(linker.graph,"split 2 at " + label,midCoord.x,midCoord.y,name);
+    backward1=new StreetEdge(e2v1,e2midpoint,backGeometryPair.getFirst(),name,lengthOut,e2.getPermission(),false);
+    backward2=new StreetEdge(e2midpoint,e2v2,backGeometryPair.getSecond(),name,lengthIn,e2.getPermission(),true);
+    if (e2 instanceof AreaEdge) {
+      ((AreaEdge)e2).getArea().addVertex(e2midpoint,linker.graph);
+    }
+    backward1.setBicycleSafetyFactor(e2.getBicycleSafetyFactor());
+    backward2.setBicycleSafetyFactor(e2.getBicycleSafetyFactor());
+    backward1.setElevationProfile(e2.getElevationProfile(0,lengthOut),false);
+    backward2.setElevationProfile(e2.getElevationProfile(lengthIn,totalGeomLength),false);
+    addEdges(backward1,backward2);
+  }
+  forward1.setBicycleSafetyFactor(e1.getBicycleSafetyFactor());
+  forward2.setBicycleSafetyFactor(e1.getBicycleSafetyFactor());
+  forward1.setElevationProfile(e1.getElevationProfile(0,lengthIn),false);
+  forward2.setElevationProfile(e1.getElevationProfile(lengthOut,totalGeomLength),false);
+  ListIterator<P2<StreetEdge>> it=replacement.listIterator();
+  while (it.hasNext()) {
+    P2<StreetEdge> pair=it.next();
+    if (pair == bestPair) {
+      it.set(new P2<StreetEdge>(forward1,backward2));
+      it.add(new P2<StreetEdge>(forward2,backward1));
+      break;
+    }
+  }
+  linker.graph.removeTemporaryEdge(e1);
+  edgesAdded.remove(e1);
+  if (e2 != null) {
+    linker.graph.removeTemporaryEdge(e2);
+    edgesAdded.remove(e2);
+    return Arrays.asList((StreetVertex)e1midpoint,e2midpoint);
+  }
+ else {
+    return Arrays.asList((StreetVertex)e1midpoint);
+  }
+}

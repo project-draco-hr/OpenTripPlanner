@@ -1,8 +1,8 @@
 {
-  if (!(edge instanceof EdgeWithElevation)) {
+  if (!(edge instanceof StreetEdge)) {
     return new ArrayList<P2<Double>>();
   }
-  EdgeWithElevation elevEdge=(EdgeWithElevation)edge;
+  StreetEdge elevEdge=(StreetEdge)edge;
   if (elevEdge.getElevationProfile() == null) {
     return new ArrayList<P2<Double>>();
   }

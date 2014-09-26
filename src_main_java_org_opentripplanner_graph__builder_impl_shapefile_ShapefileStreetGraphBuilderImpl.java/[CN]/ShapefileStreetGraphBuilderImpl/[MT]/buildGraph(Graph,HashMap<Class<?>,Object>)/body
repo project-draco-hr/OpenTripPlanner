@@ -72,9 +72,9 @@
         length+=JTS.orthodromicDistance(coordinates[i],coordinates[i + 1],worldCRS);
       }
       P2<StreetTraversalPermission> permissions=permissionConverter.convert(feature);
-      PlainStreetEdge street=new PlainStreetEdge(startIntersection,endIntersection,geom,name,length,permissions.getFirst(),false);
+      StreetEdge street=new StreetEdge(startIntersection,endIntersection,geom,name,length,permissions.getFirst(),false);
       LineString reversed=(LineString)geom.reverse();
-      PlainStreetEdge backStreet=new PlainStreetEdge(endIntersection,startIntersection,reversed,name,length,permissions.getSecond(),true);
+      StreetEdge backStreet=new StreetEdge(endIntersection,startIntersection,reversed,name,length,permissions.getSecond(),true);
       if (noteConverter != null) {
         String note=noteConverter.convert(feature);
         if (note != null && note.length() > 0) {

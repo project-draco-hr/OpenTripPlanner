@@ -42,8 +42,8 @@
   getMetadata(selected);
   Vertex fromv=selected.getFromVertex();
   getMetadata(fromv);
-  if (selected instanceof EdgeWithElevation) {
-    getMetadata(((EdgeWithElevation)selected).getElevationProfileSegment());
+  if (selected instanceof StreetEdge) {
+    getMetadata(((StreetEdge)selected).getElevationProfileSegment());
   }
   metadataList.revalidate();
 }
