@@ -61,7 +61,7 @@
     StreetVertex toStreetVertex=(StreetVertex)toVertex;
     Set<StreetEdge> overlap=overlappingPlainStreetEdges(fromStreetVertex,toStreetVertex);
     for (    StreetEdge pse : overlap) {
-      PartialPlainStreetEdge ppse=makePartialEdgeAlong(pse,fromStreetVertex,toStreetVertex);
+      PartialStreetEdge ppse=makePartialEdgeAlong(pse,fromStreetVertex,toStreetVertex);
       ((StreetLocation)fromVertex).getExtra().add(ppse);
     }
   }

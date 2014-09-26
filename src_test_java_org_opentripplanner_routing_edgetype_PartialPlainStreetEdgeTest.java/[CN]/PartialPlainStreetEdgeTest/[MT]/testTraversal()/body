@@ -2,8 +2,8 @@
   RoutingRequest options=new RoutingRequest();
   options.setMode(TraverseMode.CAR);
   options.setRoutingContext(_graph,v1,v2);
-  PartialPlainStreetEdge pEdge1=new PartialPlainStreetEdge(e1,v1,v2,e1.getGeometry(),"partial e1",e1.getLength());
-  PartialPlainStreetEdge pEdge2=new PartialPlainStreetEdge(e2,v2,v3,e2.getGeometry(),"partial e2",e2.getLength());
+  PartialStreetEdge pEdge1=new PartialStreetEdge(e1,v1,v2,e1.getGeometry(),"partial e1",e1.getLength());
+  PartialStreetEdge pEdge2=new PartialStreetEdge(e2,v2,v3,e2.getGeometry(),"partial e2",e2.getLength());
   pEdge1.visibleTo=options.rctx;
   pEdge2.visibleTo=options.rctx;
   State s0=new State(options);

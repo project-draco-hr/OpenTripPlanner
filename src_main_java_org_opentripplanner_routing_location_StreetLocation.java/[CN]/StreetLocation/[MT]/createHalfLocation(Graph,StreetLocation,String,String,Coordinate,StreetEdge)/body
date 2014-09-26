@@ -7,8 +7,8 @@
   double lengthRatioIn=geometries.getFirst().getLength() / totalGeomLength;
   double lengthIn=street.getLength() * lengthRatioIn;
   double lengthOut=street.getLength() * (1 - lengthRatioIn);
-  StreetEdge newLeft=new PartialPlainStreetEdge(street,fromv,base,geometries.getFirst(),name,lengthIn);
-  StreetEdge newRight=new PartialPlainStreetEdge(street,base,tov,geometries.getSecond(),name,lengthOut);
+  StreetEdge newLeft=new PartialStreetEdge(street,fromv,base,geometries.getFirst(),name,lengthIn);
+  StreetEdge newRight=new PartialStreetEdge(street,base,tov,geometries.getSecond(),name,lengthOut);
   newLeft.setElevationProfile(street.getElevationProfile(0,lengthIn),false);
   newLeft.setNoThruTraffic(street.isNoThruTraffic());
   newLeft.setStreetClass(street.getStreetClass());
