@@ -4,7 +4,7 @@
   Vertex near_c=graph.getVertex("near_1_agency_C");
   Vertex stop_d=graph.getVertex("agency:D");
   Vertex split_d=null;
-  for (  StreetTransitLink e : filter(stop_d.getOutgoing(),StreetTransitLink.class)) {
+  for (  StreetTransitLink e : Iterables.filter(stop_d.getOutgoing(),StreetTransitLink.class)) {
     split_d=e.getToVertex();
   }
   RoutingRequest options=new RoutingRequest();

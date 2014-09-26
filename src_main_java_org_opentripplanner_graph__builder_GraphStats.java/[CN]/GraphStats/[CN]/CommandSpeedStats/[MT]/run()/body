@@ -3,7 +3,7 @@
   try {
     writer.writeRecord(new String[]{"route","distance","time","speed"});
     for (    Vertex v : graph.getVertices()) {
-      for (      PatternHop ph : IterableLibrary.filter(v.getOutgoing(),PatternHop.class)) {
+      for (      PatternHop ph : Iterables.filter(v.getOutgoing(),PatternHop.class)) {
         double distance=ph.getDistance();
         if (distance < 3)         continue;
         TripPattern ttp=ph.getPattern();

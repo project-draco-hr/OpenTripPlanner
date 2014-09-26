@@ -1,9 +1,9 @@
 {
   Coordinate coordinate=location.getCoordinate();
   Envelope envelope=new Envelope(coordinate);
-  Iterable<StreetEdge> extraStreets=IterableLibrary.filter(graph.getTemporaryEdges(),StreetEdge.class);
+  Iterable<StreetEdge> extraStreets=Iterables.filter(graph.getTemporaryEdges(),StreetEdge.class);
   if (extraEdges != null) {
-    extraStreets=Iterables.concat(IterableLibrary.filter(extraEdges,StreetEdge.class),extraStreets);
+    extraStreets=Iterables.concat(Iterables.filter(extraEdges,StreetEdge.class),extraStreets);
   }
   double envelopeGrowthAmount=0.001;
   double radius=0;

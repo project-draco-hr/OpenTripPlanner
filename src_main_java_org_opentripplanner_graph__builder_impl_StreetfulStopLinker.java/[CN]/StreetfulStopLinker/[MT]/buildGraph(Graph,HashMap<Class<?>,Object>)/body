@@ -3,7 +3,7 @@
   GeometryFactory geometryFactory=GeometryUtils.getGeometryFactory();
   EarliestArrivalSPTService earliestArrivalSPTService=new EarliestArrivalSPTService();
   earliestArrivalSPTService.maxDuration=(maxDuration);
-  for (  TransitStop ts : IterableLibrary.filter(graph.getVertices(),TransitStop.class)) {
+  for (  TransitStop ts : Iterables.filter(graph.getVertices(),TransitStop.class)) {
     if (!ts.isStreetLinkable())     continue;
     LOG.trace("linking stop '{}' {}",ts.getStop(),ts);
     Set<TransitStop> pathwayDestinations=new HashSet<TransitStop>();

@@ -7,7 +7,7 @@
   alerts.add(alert);
   graph.streetNotesService.addNote(left,alert);
   graph.streetNotesService.addNote(leftBack,alert);
-  StreetLocation start=StreetLocation.createStreetLocation(graph,"start","start",cast(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()));
+  StreetLocation start=StreetLocation.createStreetLocation(graph,"start","start",filter(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()));
   RoutingRequest req=new RoutingRequest();
   req.setMaxWalkDistance(Double.MAX_VALUE);
   State traversedOne=new State((Vertex)start,req);
@@ -30,7 +30,7 @@
   graph.streetNotesService.addNote(left,wheelchairAlert,StreetNotesService.WHEELCHAIR_MATCHER);
   graph.streetNotesService.addNote(leftBack,wheelchairAlert,StreetNotesService.WHEELCHAIR_MATCHER);
   req.setWheelchairAccessible(true);
-  start=StreetLocation.createStreetLocation(graph,"start","start",cast(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()));
+  start=StreetLocation.createStreetLocation(graph,"start","start",filter(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()));
   traversedOne=new State((Vertex)start,req);
   for (  Edge e : start.getOutgoing()) {
     currentState=e.traverse(traversedOne);

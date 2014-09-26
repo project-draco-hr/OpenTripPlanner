@@ -2,7 +2,7 @@
   LOG.debug("creating linkages...");
   ArrayList<Vertex> vertices=new ArrayList<Vertex>();
   vertices.addAll(graph.getVertices());
-  for (  TransitStop ts : IterableLibrary.filter(vertices,TransitStop.class)) {
+  for (  TransitStop ts : Iterables.filter(vertices,TransitStop.class)) {
     boolean alreadyLinked=false;
     for (    Edge e : ts.getOutgoing()) {
       if (e instanceof StreetTransitLink) {
@@ -41,7 +41,7 @@
   }
   FindMaxWalkDistances.find(graph);
   LOG.debug("Linking bike rental stations...");
-  for (  BikeRentalStationVertex brsv : IterableLibrary.filter(vertices,BikeRentalStationVertex.class)) {
+  for (  BikeRentalStationVertex brsv : Iterables.filter(vertices,BikeRentalStationVertex.class)) {
     if (!networkLinkerLibrary.connectVertexToStreets(brsv).getResult()) {
       LOG.warn(graph.addBuilderAnnotation(new BikeRentalStationUnlinked(brsv)));
     }

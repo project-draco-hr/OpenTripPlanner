@@ -4,7 +4,7 @@
     writer.writeRecord(new String[]{"nTripsInPattern","frequency","cumulativePatterns","empiricalDistPatterns","cumulativeTrips","empiricalDistTrips"});
     Set<TripPattern> patterns=new HashSet<TripPattern>();
     for (    Vertex v : graph.getVertices()) {
-      for (      PatternHop ph : IterableLibrary.filter(v.getOutgoing(),PatternHop.class)) {
+      for (      PatternHop ph : Iterables.filter(v.getOutgoing(),PatternHop.class)) {
         TripPattern ttp=ph.getPattern();
         patterns.add(ttp);
       }
