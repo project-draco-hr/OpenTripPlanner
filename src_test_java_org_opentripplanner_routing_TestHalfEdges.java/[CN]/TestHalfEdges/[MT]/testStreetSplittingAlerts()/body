@@ -5,8 +5,8 @@
   Alert alert=Alert.createSimpleAlerts("This is the alert");
   Set<Alert> alerts=new HashSet<>();
   alerts.add(alert);
-  graph.streetNotesService.addNote(left,alert);
-  graph.streetNotesService.addNote(leftBack,alert);
+  graph.streetNotesService.addStaticNote(left,alert,StreetNotesService.ALWAYS_MATCHER);
+  graph.streetNotesService.addStaticNote(leftBack,alert,StreetNotesService.ALWAYS_MATCHER);
   StreetLocation start=StreetLocation.createStreetLocation(graph,"start","start",cast(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()));
   RoutingRequest req=new RoutingRequest();
   req.setMaxWalkDistance(Double.MAX_VALUE);
@@ -25,10 +25,10 @@
   Alert wheelchairAlert=Alert.createSimpleAlerts("This is the wheelchair alert");
   Set<Alert> wheelchairAlerts=new HashSet<>();
   wheelchairAlerts.add(wheelchairAlert);
-  graph.streetNotesService.removeNotes(left);
-  graph.streetNotesService.removeNotes(leftBack);
-  graph.streetNotesService.addNote(left,wheelchairAlert,StreetNotesService.WHEELCHAIR_MATCHER);
-  graph.streetNotesService.addNote(leftBack,wheelchairAlert,StreetNotesService.WHEELCHAIR_MATCHER);
+  graph.streetNotesService.removeStaticNotes(left);
+  graph.streetNotesService.removeStaticNotes(leftBack);
+  graph.streetNotesService.addStaticNote(left,wheelchairAlert,StreetNotesService.WHEELCHAIR_MATCHER);
+  graph.streetNotesService.addStaticNote(leftBack,wheelchairAlert,StreetNotesService.WHEELCHAIR_MATCHER);
   req.setWheelchairAccessible(true);
   start=StreetLocation.createStreetLocation(graph,"start","start",cast(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()));
   traversedOne=new State((Vertex)start,req);

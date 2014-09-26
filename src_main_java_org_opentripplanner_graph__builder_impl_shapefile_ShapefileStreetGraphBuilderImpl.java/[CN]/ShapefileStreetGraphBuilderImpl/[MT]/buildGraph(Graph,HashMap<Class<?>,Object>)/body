@@ -79,8 +79,8 @@
         String note=noteConverter.convert(feature);
         if (note != null && note.length() > 0) {
           Alert noteAlert=Alert.createSimpleAlerts(note);
-          graph.streetNotesService.addNote(street,noteAlert);
-          graph.streetNotesService.addNote(backStreet,noteAlert);
+          graph.streetNotesService.addStaticNote(street,noteAlert,StreetNotesService.ALWAYS_MATCHER);
+          graph.streetNotesService.addStaticNote(backStreet,noteAlert,StreetNotesService.ALWAYS_MATCHER);
         }
       }
       boolean slopeOverride=slopeOverrideCoverter.convert(feature);
