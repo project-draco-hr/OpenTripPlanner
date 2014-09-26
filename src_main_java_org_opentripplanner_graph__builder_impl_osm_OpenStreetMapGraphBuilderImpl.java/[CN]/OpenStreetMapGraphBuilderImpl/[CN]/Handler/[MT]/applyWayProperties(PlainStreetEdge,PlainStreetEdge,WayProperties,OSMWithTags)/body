@@ -8,7 +8,7 @@
       bestBikeSafety=(float)safety;
     }
     if (notes != null) {
-      for (      T2<Alert,NoteMatcher> note : notes)       graph.streetNotesService.addNote(street,note.getFirst(),note.getSecond());
+      for (      T2<Alert,NoteMatcher> note : notes)       graph.streetNotesService.addStaticNote(street,note.getFirst(),note.getSecond());
     }
     street.setNoThruTraffic(noThruTraffic);
   }
@@ -19,7 +19,7 @@
     }
     backStreet.setBicycleSafetyFactor((float)safety);
     if (notes != null) {
-      for (      T2<Alert,NoteMatcher> note : notes)       graph.streetNotesService.addNote(backStreet,note.getFirst(),note.getSecond());
+      for (      T2<Alert,NoteMatcher> note : notes)       graph.streetNotesService.addStaticNote(backStreet,note.getFirst(),note.getSecond());
     }
     backStreet.setNoThruTraffic(noThruTraffic);
   }
