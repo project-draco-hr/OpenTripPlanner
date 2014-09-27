@@ -1,6 +1,6 @@
 {
-  PartialStreetEdge pEdge1=new PartialStreetEdge(e1,v1,v2,e1.getGeometry(),"partial e1",e1.getLength());
-  PartialStreetEdge pEdge2=new PartialStreetEdge(e1Reverse,v2,v1,e1Reverse.getGeometry(),"partial e2",e1Reverse.getLength());
+  PartialStreetEdge pEdge1=new PartialStreetEdge(e1,v1,v2,e1.getGeometry(),"partial e1",e1.getDistance());
+  PartialStreetEdge pEdge2=new PartialStreetEdge(e1Reverse,v2,v1,e1Reverse.getGeometry(),"partial e2",e1Reverse.getDistance());
   assertFalse(e1.isReverseOf(pEdge1));
   assertFalse(pEdge1.isReverseOf(e1));
   assertFalse(e1Reverse.isReverseOf(pEdge2));

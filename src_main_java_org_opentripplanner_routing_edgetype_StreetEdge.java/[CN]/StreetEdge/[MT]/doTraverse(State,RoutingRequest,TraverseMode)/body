@@ -17,47 +17,47 @@
     return null;
   }
   double speed=calculateSpeed(options,traverseMode);
-  double time=length / speed;
+  double time=getDistance() / speed;
   double weight;
   if (options.wheelchairAccessible) {
-    weight=elevationProfileSegment.getSlopeSpeedFactor() * length / speed;
+    weight=elevationProfileSegment.getSlopeSpeedFactor() * getDistance() / speed;
   }
  else   if (traverseMode.equals(TraverseMode.BICYCLE)) {
-    time=elevationProfileSegment.getSlopeSpeedFactor() * length / speed;
+    time=elevationProfileSegment.getSlopeSpeedFactor() * getDistance() / speed;
 switch (options.optimize) {
 case SAFE:
-      weight=bicycleSafetyFactor * length / speed;
+      weight=bicycleSafetyFactor * getDistance() / speed;
     break;
 case GREENWAYS:
-  weight=bicycleSafetyFactor * length / speed;
+  weight=bicycleSafetyFactor * getDistance() / speed;
 if (bicycleSafetyFactor <= GREENWAY_SAFETY_FACTOR) {
   weight*=0.66;
 }
 break;
 case FLAT:
-weight=length / speed + elevationProfileSegment.getSlopeWorkFactor() * length;
+weight=getDistance() / speed + elevationProfileSegment.getSlopeWorkFactor() * getDistance();
 break;
 case QUICK:
-weight=elevationProfileSegment.getSlopeSpeedFactor() * length / speed;
+weight=elevationProfileSegment.getSlopeSpeedFactor() * getDistance() / speed;
 break;
 case TRIANGLE:
-double quick=elevationProfileSegment.getSlopeSpeedFactor() * length;
-double safety=bicycleSafetyFactor * length;
-double slope=elevationProfileSegment.getSlopeWorkFactor() * length;
+double quick=elevationProfileSegment.getSlopeSpeedFactor() * getDistance();
+double safety=bicycleSafetyFactor * getDistance();
+double slope=elevationProfileSegment.getSlopeWorkFactor() * getDistance();
 weight=quick * options.triangleTimeFactor + slope * options.triangleSlopeFactor + safety * options.triangleSafetyFactor;
 weight/=speed;
 break;
 default :
-weight=length / speed;
+weight=getDistance() / speed;
 }
 }
  else {
 if (walkingBike) {
-time=elevationProfileSegment.getSlopeSpeedFactor() * length / speed;
+time=elevationProfileSegment.getSlopeSpeedFactor() * getDistance() / speed;
 }
 weight=time;
 if (traverseMode.equals(TraverseMode.WALK)) {
-double costs=ElevationUtils.getWalkCostsForSlope(length,elevationProfileSegment.getMaxSlope());
+double costs=ElevationUtils.getWalkCostsForSlope(getDistance(),elevationProfileSegment.getMaxSlope());
 double elevationUtilsSpeed=4.0 / 3.0;
 weight=costs * (elevationUtilsSpeed / speed);
 time=weight;
@@ -110,7 +110,7 @@ s1.incrementWeight(options.bikeSwitchCost);
 }
 }
 if (!traverseMode.isDriving()) {
-s1.incrementWalkDistance(length);
+s1.incrementWalkDistance(getDistance());
 }
 int roundedTime=(int)Math.ceil(time);
 if (options.kissAndRide || options.parkAndRide) {

@@ -9,6 +9,6 @@
   SlopeCosts costs=ElevationUtils.getSlopeCosts(elev,slopeLimit);
   elevationProfileSegment=new ElevationProfileSegment(costs,elev);
   bicycleSafetyFactor*=costs.lengthMultiplier;
-  bicycleSafetyFactor+=costs.slopeSafetyCost / length;
+  bicycleSafetyFactor+=costs.slopeSafetyCost / getDistance();
   return costs.flattened;
 }
