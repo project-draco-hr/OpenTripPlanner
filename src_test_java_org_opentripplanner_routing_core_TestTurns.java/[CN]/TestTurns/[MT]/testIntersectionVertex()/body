@@ -6,5 +6,5 @@
   StreetEdge leftEdge=new StreetEdge(v1,v2,geometry,"morx",10.0,StreetTraversalPermission.ALL,true);
   LineString geometry2=gf.createLineString(new Coordinate[]{new Coordinate(0,0),new Coordinate(-0.10,0)});
   StreetEdge rightEdge=new StreetEdge(v1,v2,geometry2,"fleem",10.0,StreetTraversalPermission.ALL,false);
-  assertEquals(180,Math.abs(leftEdge.outAngle - rightEdge.outAngle));
+  assertEquals(180,Math.abs(leftEdge.getOutAngle() - rightEdge.getOutAngle()));
 }

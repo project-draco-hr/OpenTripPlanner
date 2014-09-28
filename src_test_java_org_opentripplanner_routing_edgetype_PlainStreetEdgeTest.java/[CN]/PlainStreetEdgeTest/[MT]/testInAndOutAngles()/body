@@ -5,8 +5,6 @@
   StreetVertex u=vertex("test1",2.0,1.0);
   StreetVertex v=vertex("test2",2.0,2.0);
   StreetEdge e2=edge(u,v,1.0,StreetTraversalPermission.ALL);
-  assertEquals(180,e2.getInAngle());
-  assertEquals(180,e2.getOutAngle());
-  int diff=(e1.getOutAngle() - e2.getInAngle());
-  assertEquals(-90,diff);
+  assertEquals(180,Math.abs(e2.getInAngle()));
+  assertEquals(180,Math.abs(e2.getOutAngle()));
 }

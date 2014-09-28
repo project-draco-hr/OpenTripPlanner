@@ -19,10 +19,10 @@
           System.out.println("Y DOOM");
         }
       }
-      double angleR=DirectionUtils.getLastAngle(geometry);
-      outAngle=((int)Math.toDegrees(angleR) + 180) % 360;
-      angleR=DirectionUtils.getFirstAngle(geometry);
-      inAngle=((int)Math.toDegrees(angleR) + 180) % 360;
+      double angleRadians=DirectionUtils.getLastAngle(geometry);
+      outAngle=(byte)Math.round(angleRadians * 128 / Math.PI + 128);
+      angleRadians=DirectionUtils.getFirstAngle(geometry);
+      inAngle=(byte)Math.round(angleRadians * 128 / Math.PI + 128);
     }
  catch (    IllegalArgumentException iae) {
       LOG.error("exception while determining street edge angles. setting to zero. there is probably something wrong with this street segment's geometry.");
