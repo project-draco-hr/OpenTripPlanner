@@ -1,0 +1,8 @@
+{
+  if (ArrayUtils.deepEquals(compactGeometry,reversedEdge.compactGeometry)) {
+    compactGeometry=reversedEdge.compactGeometry;
+  }
+ else {
+    LOG.warn("Can't share geometry between {} and {}",this,reversedEdge);
+  }
+}
