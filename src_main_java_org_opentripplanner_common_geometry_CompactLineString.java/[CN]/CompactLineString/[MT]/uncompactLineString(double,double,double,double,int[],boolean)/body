@@ -1,6 +1,10 @@
 {
   int size=coords == null ? 2 : (coords.length / 2) + 2;
   Coordinate[] c=new Coordinate[size];
+  double x0=reverse ? xb : xa;
+  double y0=reverse ? yb : ya;
+  double x1=reverse ? xa : xb;
+  double y1=reverse ? ya : yb;
   c[0]=new Coordinate(x0,y0);
   if (coords != null) {
     int oix=(int)Math.round(x0 * FIXED_FLOAT_MULT);
@@ -14,5 +18,7 @@
     }
   }
   c[c.length - 1]=new Coordinate(x1,y1);
-  return geometryFactory.createLineString(c);
+  LineString out=geometryFactory.createLineString(c);
+  if (reverse)   out=(LineString)out.reverse();
+  return out;
 }
