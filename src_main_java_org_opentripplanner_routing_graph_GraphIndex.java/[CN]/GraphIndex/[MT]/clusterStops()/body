@@ -1,7 +1,6 @@
 {
   int psIdx=0;
   LOG.info("Clustering stops by geographic proximity and name...");
-  Map<String,String> descriptionForStationId=Maps.newHashMap();
   for (  Stop s0 : stopForId.values()) {
     if (stopClusterForStop.containsKey(s0))     continue;
     String s0normalizedName=StopNameNormalizer.normalize(s0.getName());
