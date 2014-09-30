@@ -1,6 +1,8 @@
 {
   Map<StopCluster,Double> ret=Maps.newHashMap();
-  for (  StopCluster cluster : stopClusterSpatialIndex.query(sc.lon,sc.lat,radius)) {
+  Envelope env=new Envelope(new Coordinate(sc.lon,sc.lat));
+  env.expandBy(SphericalDistanceLibrary.metersToLonDegrees(radius,sc.lat),SphericalDistanceLibrary.metersToDegrees(radius));
+  for (  StopCluster cluster : stopClusterSpatialIndex.query(env)) {
     double distance=distlib.distance(sc.lat,sc.lon,cluster.lat,cluster.lon);
     if (distance < radius)     ret.put(cluster,distance);
   }

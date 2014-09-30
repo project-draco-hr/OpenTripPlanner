@@ -5,7 +5,9 @@
     if (stopClusterForStop.containsKey(s0))     continue;
     String s0normalizedName=StopNameNormalizer.normalize(s0.getName());
     StopCluster cluster=new StopCluster(String.format("C%03d",psIdx++),s0normalizedName);
-    for (    TransitStop ts1 : stopSpatialIndex.query(s0.getLon(),s0.getLat(),CLUSTER_RADIUS)) {
+    Envelope env=new Envelope(new Coordinate(s0.getLon(),s0.getLat()));
+    env.expandBy(SphericalDistanceLibrary.metersToLonDegrees(CLUSTER_RADIUS,s0.getLat()),SphericalDistanceLibrary.metersToDegrees(CLUSTER_RADIUS));
+    for (    TransitStop ts1 : stopSpatialIndex.query(env)) {
       Stop s1=ts1.getStop();
       double geoDistance=SphericalDistanceLibrary.getInstance().fastDistance(s0.getLat(),s0.getLon(),s1.getLat(),s1.getLon());
       if (geoDistance < CLUSTER_RADIUS) {

@@ -24,9 +24,9 @@
       stopsForParentStation.put(stop.getParentStation(),stop);
     }
   }
-  stopSpatialIndex.setProjectionMeridian(vertices.iterator().next().getCoordinate().x);
   for (  TransitStop stopVertex : stopVertexForStop.values()) {
-    stopSpatialIndex.put(stopVertex.getCoordinate(),stopVertex);
+    Envelope envelope=new Envelope(stopVertex.getCoordinate());
+    stopSpatialIndex.insert(envelope,stopVertex);
   }
   for (  TripPattern pattern : patternForId.values()) {
     patternsForAgency.put(pattern.route.getAgency(),pattern);
@@ -44,9 +44,10 @@
   }
   clusterStops();
   LOG.info("Creating a spatial index for stop clusters.");
-  stopClusterSpatialIndex=new HashGrid<StopCluster>();
+  stopClusterSpatialIndex=new HashGridSpatialIndex<StopCluster>();
   for (  StopCluster cluster : stopClusterForId.values()) {
-    stopClusterSpatialIndex.put(new Coordinate(cluster.lon,cluster.lat),cluster);
+    Envelope envelope=new Envelope(new Coordinate(cluster.lon,cluster.lat));
+    stopClusterSpatialIndex.insert(envelope,cluster);
   }
   calendarService=graph.getCalendarService();
   serviceCodes=graph.serviceCodes;

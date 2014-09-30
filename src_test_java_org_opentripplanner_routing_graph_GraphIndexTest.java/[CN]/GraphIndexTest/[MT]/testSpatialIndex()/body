@@ -5,7 +5,9 @@
   TransitStop stopvJ=graph.index.stopVertexForStop.get(stopJ);
   TransitStop stopvL=graph.index.stopVertexForStop.get(stopL);
   TransitStop stopvM=graph.index.stopVertexForStop.get(stopM);
-  List<TransitStop> stops=graph.index.stopSpatialIndex.query(stopJ.getLon(),stopJ.getLat(),100);
+  Envelope env=new Envelope(new Coordinate(stopJ.getLon(),stopJ.getLat()));
+  env.expandBy(SphericalDistanceLibrary.metersToLonDegrees(100,stopJ.getLat()),SphericalDistanceLibrary.metersToDegrees(100));
+  List<TransitStop> stops=graph.index.stopSpatialIndex.query(env);
   assertTrue(stops.contains(stopvJ));
   assertTrue(stops.contains(stopvL));
   assertTrue(stops.contains(stopvM));
