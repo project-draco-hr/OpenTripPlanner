@@ -15,10 +15,11 @@
     backGeometryPair=GeometryUtils.splitGeometryAtPoint(backGeometry,coordinate);
   }
   P2<LineString> forwardGeometryPair=GeometryUtils.splitGeometryAtPoint(forwardGeometry,coordinate);
-  LineString toMidpoint=forwardGeometryPair.getFirst();
-  Coordinate midCoord=toMidpoint.getEndPoint().getCoordinate();
+  LineString forward1Geom=forwardGeometryPair.getFirst();
+  LineString forward2Geom=forwardGeometryPair.getSecond();
+  Coordinate midCoord=forward1Geom.getEndPoint().getCoordinate();
   double totalGeomLength=forwardGeometry.getLength();
-  double lengthRatioIn=toMidpoint.getLength() / totalGeomLength;
+  double lengthRatioIn=forward1Geom.getLength() / totalGeomLength;
   if (lengthRatioIn < 0.00001) {
     ArrayList<StreetVertex> out=new ArrayList<StreetVertex>();
     out.add(e1v1);
@@ -38,8 +39,8 @@
   double lengthIn=e1.getDistance() * lengthRatioIn;
   double lengthOut=e1.getDistance() * (1 - lengthRatioIn);
   IntersectionVertex e1midpoint=new IntersectionVertex(linker.graph,"split 1 at " + label,midCoord.x,midCoord.y,name);
-  StreetEdge forward1=new StreetEdge(e1v1,e1midpoint,toMidpoint,name,lengthIn,e1.getPermission(),false);
-  StreetEdge forward2=new StreetEdge(e1midpoint,e1v2,forwardGeometryPair.getSecond(),name,lengthOut,e1.getPermission(),true);
+  StreetEdge forward1=new StreetEdge(e1v1,e1midpoint,forward1Geom,name,lengthIn,e1.getPermission(),e1.isBack());
+  StreetEdge forward2=new StreetEdge(e1midpoint,e1v2,forward2Geom,name,lengthOut,e1.getPermission(),e1.isBack());
   if (e1 instanceof AreaEdge) {
     ((AreaEdge)e1).getArea().addVertex(e1midpoint,linker.graph);
   }
@@ -49,8 +50,8 @@
   IntersectionVertex e2midpoint=null;
   if (e2 != null) {
     e2midpoint=new IntersectionVertex(linker.graph,"split 2 at " + label,midCoord.x,midCoord.y,name);
-    backward1=new StreetEdge(e2v1,e2midpoint,backGeometryPair.getFirst(),name,lengthOut,e2.getPermission(),false);
-    backward2=new StreetEdge(e2midpoint,e2v2,backGeometryPair.getSecond(),name,lengthIn,e2.getPermission(),true);
+    backward1=new StreetEdge(e2v1,e2midpoint,backGeometryPair.getFirst(),name,lengthOut,e2.getPermission(),e2.isBack());
+    backward2=new StreetEdge(e2midpoint,e2v2,backGeometryPair.getSecond(),name,lengthIn,e2.getPermission(),e2.isBack());
     if (e2 instanceof AreaEdge) {
       ((AreaEdge)e2).getArea().addVertex(e2midpoint,linker.graph);
     }
