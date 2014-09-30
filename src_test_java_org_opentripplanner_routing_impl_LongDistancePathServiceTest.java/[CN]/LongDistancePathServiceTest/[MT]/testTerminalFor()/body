@@ -2,7 +2,7 @@
   Parser parser=new Parser();
   State emptyState=mock(State.class);
   State streetState=mock(State.class);
-  when(streetState.getBackEdge()).thenReturn(mock(PlainStreetEdge.class));
+  when(streetState.getBackEdge()).thenReturn(mock(StreetEdge.class));
   State linkState=mock(State.class);
   when(linkState.getBackEdge()).thenReturn(mock(StreetTransitLink.class));
   State stationState=mock(State.class);

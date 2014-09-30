@@ -36,7 +36,7 @@
           GraphPath graphPath=new GraphPath(state,false);
           CoordinateArrayListSequence coordinates=new CoordinateArrayListSequence();
           for (          Edge edge : graphPath.edges) {
-            if (edge instanceof PlainStreetEdge) {
+            if (edge instanceof StreetEdge) {
               LineString geometry=edge.getGeometry();
               if (geometry != null) {
                 if (coordinates.size() == 0) {

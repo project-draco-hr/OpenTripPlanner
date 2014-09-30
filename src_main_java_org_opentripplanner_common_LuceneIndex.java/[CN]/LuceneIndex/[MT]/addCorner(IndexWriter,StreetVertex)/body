@@ -1,7 +1,7 @@
 {
   String mainStreet=null;
   String crossStreet=null;
-  for (  PlainStreetEdge pse : Iterables.filter(sv.getOutgoing(),PlainStreetEdge.class)) {
+  for (  StreetEdge pse : Iterables.filter(sv.getOutgoing(),StreetEdge.class)) {
     if (mainStreet == null)     mainStreet=pse.getName();
  else     crossStreet=pse.getName();
   }

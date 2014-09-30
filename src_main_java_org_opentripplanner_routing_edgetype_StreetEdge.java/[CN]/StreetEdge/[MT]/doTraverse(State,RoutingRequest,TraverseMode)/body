@@ -1,0 +1,142 @@
+{
+  boolean walkingBike=options.walkingBike;
+  boolean backWalkingBike=s0.isBackWalkingBike();
+  TraverseMode backMode=s0.getBackMode();
+  Edge backEdge=s0.getBackEdge();
+  if (backEdge != null) {
+    if (this.isReverseOf(backEdge) || backEdge.isReverseOf(this)) {
+      return null;
+    }
+  }
+  backWalkingBike&=TraverseMode.WALK.equals(backMode);
+  walkingBike&=TraverseMode.WALK.equals(traverseMode);
+  if (!canTraverse(options,traverseMode)) {
+    if (traverseMode == TraverseMode.BICYCLE) {
+      return doTraverse(s0,options.bikeWalkingOptions,TraverseMode.WALK);
+    }
+    return null;
+  }
+  double speed=calculateSpeed(options,traverseMode);
+  double time=getDistance() / speed;
+  double weight;
+  if (options.wheelchairAccessible) {
+    weight=elevationProfileSegment.getSlopeSpeedFactor() * getDistance() / speed;
+  }
+ else   if (traverseMode.equals(TraverseMode.BICYCLE)) {
+    time=elevationProfileSegment.getSlopeSpeedFactor() * getDistance() / speed;
+switch (options.optimize) {
+case SAFE:
+      weight=bicycleSafetyFactor * getDistance() / speed;
+    break;
+case GREENWAYS:
+  weight=bicycleSafetyFactor * getDistance() / speed;
+if (bicycleSafetyFactor <= GREENWAY_SAFETY_FACTOR) {
+  weight*=0.66;
+}
+break;
+case FLAT:
+weight=getDistance() / speed + elevationProfileSegment.getSlopeWorkFactor() * getDistance();
+break;
+case QUICK:
+weight=elevationProfileSegment.getSlopeSpeedFactor() * getDistance() / speed;
+break;
+case TRIANGLE:
+double quick=elevationProfileSegment.getSlopeSpeedFactor() * getDistance();
+double safety=bicycleSafetyFactor * getDistance();
+double slope=elevationProfileSegment.getSlopeWorkFactor() * getDistance();
+weight=quick * options.triangleTimeFactor + slope * options.triangleSlopeFactor + safety * options.triangleSafetyFactor;
+weight/=speed;
+break;
+default :
+weight=getDistance() / speed;
+}
+}
+ else {
+if (walkingBike) {
+time=elevationProfileSegment.getSlopeSpeedFactor() * getDistance() / speed;
+}
+weight=time;
+if (traverseMode.equals(TraverseMode.WALK)) {
+double costs=ElevationUtils.getWalkCostsForSlope(getDistance(),elevationProfileSegment.getMaxSlope());
+double elevationUtilsSpeed=4.0 / 3.0;
+weight=costs * (elevationUtilsSpeed / speed);
+time=weight;
+}
+}
+if (isStairs()) {
+weight*=options.stairsReluctance;
+}
+ else {
+weight*=options.walkReluctance;
+}
+StateEditor s1=s0.edit(this);
+s1.setBackMode(traverseMode);
+s1.setBackWalkingBike(walkingBike);
+StreetEdge backPSE;
+if (backEdge != null && backEdge instanceof StreetEdge) {
+backPSE=(StreetEdge)backEdge;
+RoutingRequest backOptions=backWalkingBike ? s0.getOptions().bikeWalkingOptions : s0.getOptions();
+double backSpeed=backPSE.calculateSpeed(backOptions,backMode);
+final double realTurnCost;
+if (options.arriveBy && !canTurnOnto(backPSE,s0,backMode)) {
+return null;
+}
+ else if (!options.arriveBy && !backPSE.canTurnOnto(this,s0,traverseMode)) {
+return null;
+}
+if (options.arriveBy && tov instanceof IntersectionVertex) {
+IntersectionVertex traversedVertex=((IntersectionVertex)tov);
+realTurnCost=backOptions.getIntersectionTraversalCostModel().computeTraversalCost(traversedVertex,this,backPSE,backMode,backOptions,(float)speed,(float)backSpeed);
+}
+ else if (!options.arriveBy && fromv instanceof IntersectionVertex) {
+IntersectionVertex traversedVertex=((IntersectionVertex)fromv);
+realTurnCost=options.getIntersectionTraversalCostModel().computeTraversalCost(traversedVertex,backPSE,this,traverseMode,options,(float)backSpeed,(float)speed);
+}
+ else {
+LOG.debug("Not computing turn cost for edge {}",this);
+realTurnCost=0;
+}
+if (!traverseMode.isDriving()) {
+s1.incrementWalkDistance(realTurnCost / 100);
+}
+long turnTime=(long)Math.ceil(realTurnCost);
+time+=turnTime;
+weight+=options.turnReluctance * realTurnCost;
+}
+if (walkingBike || TraverseMode.BICYCLE.equals(traverseMode)) {
+if (!(backWalkingBike || TraverseMode.BICYCLE.equals(backMode))) {
+s1.incrementTimeInSeconds(options.bikeSwitchTime);
+s1.incrementWeight(options.bikeSwitchCost);
+}
+}
+if (!traverseMode.isDriving()) {
+s1.incrementWalkDistance(getDistance());
+}
+int roundedTime=(int)Math.ceil(time);
+if (options.kissAndRide || options.parkAndRide) {
+if (options.arriveBy) {
+if (!s0.isCarParked()) s1.incrementPreTransitTime(roundedTime);
+}
+ else {
+if (!s0.isEverBoarded()) s1.incrementPreTransitTime(roundedTime);
+}
+if (s1.isMaxPreTransitTimeExceeded(options)) {
+if (options.softPreTransitLimiting) {
+weight+=calculateOverageWeight(s0.getPreTransitTime(),s1.getPreTransitTime(),options.maxPreTransitTime,options.preTransitPenalty,options.preTransitOverageRate);
+}
+ else return null;
+}
+}
+if (s1.weHaveWalkedTooFar(options)) {
+if (options.softWalkLimiting) {
+weight+=calculateOverageWeight(s0.getWalkDistance(),s1.getWalkDistance(),options.getMaxWalkDistance(),options.softWalkPenalty,options.softWalkOverageRate);
+}
+ else {
+LOG.debug("Too much walking. Bailing.");
+return null;
+}
+}
+s1.incrementTimeInSeconds(roundedTime);
+s1.incrementWeight(weight);
+return s1;
+}

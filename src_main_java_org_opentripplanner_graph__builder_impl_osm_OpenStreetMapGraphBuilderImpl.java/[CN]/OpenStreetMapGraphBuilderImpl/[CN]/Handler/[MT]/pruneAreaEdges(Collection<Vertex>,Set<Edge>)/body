@@ -1,7 +1,7 @@
 {
   if (edges.size() == 0)   return;
   TraverseMode mode;
-  PlainStreetEdge firstEdge=(PlainStreetEdge)edges.iterator().next();
+  StreetEdge firstEdge=(StreetEdge)edges.iterator().next();
   if (firstEdge.getPermission().allows(StreetTraversalPermission.PEDESTRIAN)) {
     mode=TraverseMode.WALK;
   }
