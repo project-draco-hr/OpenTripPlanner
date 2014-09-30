@@ -14,6 +14,9 @@
   if (permissionsBack.allowsAnything()) {
     backStreet=getEdgeForStreet(end,start,way,index,endNode,startNode,length,permissionsBack,backGeometry,true);
   }
+  if (street != null && backStreet != null) {
+    backStreet.shareData(street);
+  }
   if (way.isRoundabout()) {
     if (street != null)     street.setRoundabout(true);
     if (backStreet != null)     backStreet.setRoundabout(true);
