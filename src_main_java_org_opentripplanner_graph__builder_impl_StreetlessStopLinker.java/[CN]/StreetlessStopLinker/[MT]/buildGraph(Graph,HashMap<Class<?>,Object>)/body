@@ -1,7 +1,7 @@
 {
   StreetVertexIndexService index=new StreetVertexIndexServiceImpl(graph);
   GeometryFactory geometryFactory=GeometryUtils.getGeometryFactory();
-  for (  TransitStop ts : IterableLibrary.filter(graph.getVertices(),TransitStop.class)) {
+  for (  TransitStop ts : Iterables.filter(graph.getVertices(),TransitStop.class)) {
     Coordinate c=ts.getCoordinate();
     LOG.trace("linking stop {}",ts);
     int n=0;

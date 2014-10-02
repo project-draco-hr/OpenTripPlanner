@@ -1,6 +1,6 @@
 {
-  PlainStreetEdge e0=edge(v0,v1,50.0,StreetTraversalPermission.PEDESTRIAN);
-  PlainStreetEdge e1=edge(v1,v2,18.4,StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
+  StreetEdge e0=edge(v0,v1,50.0,StreetTraversalPermission.PEDESTRIAN);
+  StreetEdge e1=edge(v1,v2,18.4,StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
   v1.trafficLight=(true);
   RoutingRequest forward=proto.clone();
   forward.setMode(TraverseMode.BICYCLE);

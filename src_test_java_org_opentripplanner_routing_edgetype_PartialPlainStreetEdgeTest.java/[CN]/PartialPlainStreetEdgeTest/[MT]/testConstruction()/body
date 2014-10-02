@@ -1,6 +1,6 @@
 {
   StreetTraversalPermission perm=StreetTraversalPermission.ALL_DRIVING;
-  PartialPlainStreetEdge pEdge=new PartialPlainStreetEdge(e1,v1,v2,e1.getGeometry(),"partial e1",e1.getLength(),perm,true);
+  PartialStreetEdge pEdge=new PartialStreetEdge(e1,v1,v2,e1.getGeometry(),"partial e1",e1.getDistance(),perm,true);
   assertTrue(pEdge.isEquivalentTo(e1));
   assertTrue(pEdge.isPartial());
   assertTrue(pEdge.isBack());
@@ -9,7 +9,7 @@
   assertEquals(e1.getId(),pEdge.getId());
   assertEquals(perm,pEdge.getPermission());
   assertEquals(e1.getCarSpeed(),pEdge.getCarSpeed(),0.0);
-  pEdge=new PartialPlainStreetEdge(e1,v1,v2,e1.getGeometry(),"partial e1",e1.getLength());
+  pEdge=new PartialStreetEdge(e1,v1,v2,e1.getGeometry(),"partial e1",e1.getDistance());
   assertTrue(pEdge.isEquivalentTo(e1));
   assertTrue(pEdge.isPartial());
   assertFalse(pEdge.isBack());

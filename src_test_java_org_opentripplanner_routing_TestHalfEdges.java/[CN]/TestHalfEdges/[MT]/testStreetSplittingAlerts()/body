@@ -2,11 +2,12 @@
   HashSet<Edge> turns=new HashSet<Edge>();
   turns.add(left);
   turns.add(leftBack);
-  Set<Alert> alert=new HashSet<Alert>();
-  alert.add(Alert.createSimpleAlerts("This is the alert"));
-  left.setNote(alert);
-  leftBack.setNote(alert);
-  StreetLocation start=StreetLocation.createStreetLocation(graph,"start","start",cast(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()));
+  Alert alert=Alert.createSimpleAlerts("This is the alert");
+  Set<Alert> alerts=new HashSet<>();
+  alerts.add(alert);
+  graph.streetNotesService.addStaticNote(left,alert,StreetNotesService.ALWAYS_MATCHER);
+  graph.streetNotesService.addStaticNote(leftBack,alert,StreetNotesService.ALWAYS_MATCHER);
+  StreetLocation start=StreetLocation.createStreetLocation(graph,"start","start",filter(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()));
   RoutingRequest req=new RoutingRequest();
   req.setMaxWalkDistance(Double.MAX_VALUE);
   State traversedOne=new State((Vertex)start,req);
@@ -18,17 +19,18 @@
       break;
     }
   }
-  assertEquals(alert,traversedOne.getBackAlerts());
+  assertEquals(alerts,graph.streetNotesService.getNotes(traversedOne));
   assertNotSame(left,traversedOne.getBackEdge().getFromVertex());
   assertNotSame(leftBack,traversedOne.getBackEdge().getFromVertex());
-  Set<Alert> wheelchairAlert=new HashSet<Alert>();
-  wheelchairAlert.add(Alert.createSimpleAlerts("This is the wheelchair alert"));
-  left.setNote(null);
-  leftBack.setNote(null);
-  left.setWheelchairNote(wheelchairAlert);
-  leftBack.setWheelchairNote(wheelchairAlert);
+  Alert wheelchairAlert=Alert.createSimpleAlerts("This is the wheelchair alert");
+  Set<Alert> wheelchairAlerts=new HashSet<>();
+  wheelchairAlerts.add(wheelchairAlert);
+  graph.streetNotesService.removeStaticNotes(left);
+  graph.streetNotesService.removeStaticNotes(leftBack);
+  graph.streetNotesService.addStaticNote(left,wheelchairAlert,StreetNotesService.WHEELCHAIR_MATCHER);
+  graph.streetNotesService.addStaticNote(leftBack,wheelchairAlert,StreetNotesService.WHEELCHAIR_MATCHER);
   req.setWheelchairAccessible(true);
-  start=StreetLocation.createStreetLocation(graph,"start","start",cast(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()));
+  start=StreetLocation.createStreetLocation(graph,"start","start",filter(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()));
   traversedOne=new State((Vertex)start,req);
   for (  Edge e : start.getOutgoing()) {
     currentState=e.traverse(traversedOne);
@@ -37,7 +39,7 @@
       break;
     }
   }
-  assertEquals(wheelchairAlert,traversedOne.getBackAlerts());
+  assertEquals(wheelchairAlerts,graph.streetNotesService.getNotes(traversedOne));
   assertNotSame(left,traversedOne.getBackEdge().getFromVertex());
   assertNotSame(leftBack,traversedOne.getBackEdge().getFromVertex());
 }

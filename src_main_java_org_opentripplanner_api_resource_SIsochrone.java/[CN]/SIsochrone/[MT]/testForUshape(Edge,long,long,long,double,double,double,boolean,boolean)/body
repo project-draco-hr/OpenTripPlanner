@@ -5,7 +5,7 @@
   }
  else {
     double diffTo90Azimuths=360;
-    if (edge instanceof PlainStreetEdge) {
+    if (edge instanceof StreetEdge) {
       double firstSegmentAngle=DirectionUtils.getFirstAngle(edge.getGeometry());
       if (firstSegmentAngle < 0)       firstSegmentAngle=firstSegmentAngle + Math.PI;
       double firstToLastSegmentAngle=getFirstToLastSegmentAngle(edge.getGeometry());

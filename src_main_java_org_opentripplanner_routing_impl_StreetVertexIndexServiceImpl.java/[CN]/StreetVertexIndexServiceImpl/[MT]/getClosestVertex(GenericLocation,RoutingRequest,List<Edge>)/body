@@ -10,7 +10,7 @@
     }
  else {
       TraversalRequirements reqs=new TraversalRequirements(options);
-      for (      StreetEdge e : IterableLibrary.filter(options.arriveBy ? intersection.getIncoming() : intersection.getOutgoing(),StreetEdge.class)) {
+      for (      StreetEdge e : Iterables.filter(options.arriveBy ? intersection.getIncoming() : intersection.getOutgoing(),StreetEdge.class)) {
         if (reqs.canBeTraversed(e)) {
           canEscape=true;
           break;

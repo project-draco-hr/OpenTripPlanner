@@ -1,6 +1,6 @@
 {
-  if (state.getBackEdge() instanceof PlainStreetEdge) {
-    if (((PlainStreetEdge)state.getBackEdge()).isNoThruTraffic()) {
+  if (state.getBackEdge() instanceof StreetEdge) {
+    if (((StreetEdge)state.getBackEdge()).isNoThruTraffic()) {
       return NOTRAFFIC;
     }
  else {

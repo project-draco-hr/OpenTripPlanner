@@ -83,9 +83,9 @@
           elevationData.put(endEndpoint,elevation);
         }
       }
-      P2<PlainStreetEdge> streets=getEdgesForStreet(startEndpoint,endEndpoint,way,i,osmStartNode.getId(),osmEndNode.getId(),permissions,geometry);
-      PlainStreetEdge street=streets.getFirst();
-      PlainStreetEdge backStreet=streets.getSecond();
+      P2<StreetEdge> streets=getEdgesForStreet(startEndpoint,endEndpoint,way,i,osmStartNode.getId(),osmEndNode.getId(),permissions,geometry);
+      StreetEdge street=streets.getFirst();
+      StreetEdge backStreet=streets.getSecond();
       applyWayProperties(street,backStreet,wayData,way);
       applyEdgesToTurnRestrictions(way,startNode,endNode,street,backStreet);
       startNode=endNode;

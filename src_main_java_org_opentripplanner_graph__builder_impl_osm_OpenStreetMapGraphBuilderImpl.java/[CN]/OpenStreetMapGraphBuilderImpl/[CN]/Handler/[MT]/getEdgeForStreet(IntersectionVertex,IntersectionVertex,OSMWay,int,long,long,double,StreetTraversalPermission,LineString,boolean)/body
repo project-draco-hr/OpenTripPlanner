@@ -7,7 +7,7 @@
     length*=2;
   }
   float carSpeed=wayPropertySet.getCarSpeedForWay(way,back);
-  PlainStreetEdge street=edgeFactory.createEdge(_nodes.get(startNode),_nodes.get(endNode),way,start,end,geometry,name,length,permissions,back,carSpeed);
+  StreetEdge street=edgeFactory.createEdge(_nodes.get(startNode),_nodes.get(endNode),way,start,end,geometry,name,length,permissions,back,carSpeed);
   String highway=way.getTag("highway");
   int cls;
   if ("crossing".equals(highway) && !way.isTag("bicycle","designated")) {
@@ -28,8 +28,6 @@
     street.setHasBogusName(true);
   }
   street.setStairs(steps);
-  if (way.isTagTrue("toll") || way.isTagTrue("toll:motorcar"))   street.setToll(true);
- else   street.setToll(false);
   if (!ignoreWheelchairAccessibility && (way.isTagFalse("wheelchair") || (steps && !way.isTagTrue("wheelchair")))) {
     street.setWheelchairAccessible(false);
   }

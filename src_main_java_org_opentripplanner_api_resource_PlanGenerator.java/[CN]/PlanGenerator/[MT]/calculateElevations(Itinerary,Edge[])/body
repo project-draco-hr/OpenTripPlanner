@@ -1,7 +1,7 @@
 {
   for (  Edge edge : edges) {
-    if (!(edge instanceof EdgeWithElevation))     continue;
-    EdgeWithElevation edgeWithElevation=(EdgeWithElevation)edge;
+    if (!(edge instanceof StreetEdge))     continue;
+    StreetEdge edgeWithElevation=(StreetEdge)edge;
     ElevationProfileSegment profileSegment=edgeWithElevation.getElevationProfileSegment();
     if (profileSegment == null)     continue;
     PackedCoordinateSequence coordinates=profileSegment.getElevationProfile();

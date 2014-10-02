@@ -2,15 +2,15 @@
   Parser parser=new Parser();
 {
     List<Class<? extends Edge>> path=new ArrayList<Class<? extends Edge>>();
-    path.add(PlainStreetEdge.class);
-    path.add(PlainStreetEdge.class);
-    path.add(PlainStreetEdge.class);
-    path.add(PlainStreetEdge.class);
+    path.add(StreetEdge.class);
+    path.add(StreetEdge.class);
+    path.add(StreetEdge.class);
+    path.add(StreetEdge.class);
     assertTrue(parsePath(parser,path));
   }
 {
     List<Class<? extends Edge>> path=new ArrayList<Class<? extends Edge>>();
-    path.add(PlainStreetEdge.class);
+    path.add(StreetEdge.class);
     path.add(StreetTransitLink.class);
     path.add(PreBoardEdge.class);
     path.add(TransitBoardAlight.class);
@@ -18,7 +18,7 @@
     path.add(TransitBoardAlight.class);
     path.add(PreAlightEdge.class);
     path.add(StreetTransitLink.class);
-    path.add(PlainStreetEdge.class);
+    path.add(StreetEdge.class);
     assertTrue(parsePath(parser,path));
   }
 {
@@ -28,7 +28,7 @@
     path.add(TransitBoardAlight.class);
     path.add(PreAlightEdge.class);
     path.add(StreetTransitLink.class);
-    path.add(PlainStreetEdge.class);
+    path.add(StreetEdge.class);
     assertTrue(parsePath(parser,path));
   }
 {
@@ -41,7 +41,7 @@
   }
 {
     List<Class<? extends Edge>> path=new ArrayList<Class<? extends Edge>>();
-    path.add(PlainStreetEdge.class);
+    path.add(StreetEdge.class);
     path.add(StreetTransitLink.class);
     path.add(PreBoardEdge.class);
     path.add(TransitBoardAlight.class);
@@ -49,7 +49,7 @@
     path.add(TransitBoardAlight.class);
     path.add(PreAlightEdge.class);
     path.add(StreetTransitLink.class);
-    path.add(PlainStreetEdge.class);
+    path.add(StreetEdge.class);
     path.add(StreetTransitLink.class);
     path.add(PreBoardEdge.class);
     path.add(TransitBoardAlight.class);
@@ -57,12 +57,12 @@
     path.add(TransitBoardAlight.class);
     path.add(PreAlightEdge.class);
     path.add(StreetTransitLink.class);
-    path.add(PlainStreetEdge.class);
+    path.add(StreetEdge.class);
     assertFalse(parsePath(parser,path));
   }
 {
     List<Class<? extends Edge>> path=new ArrayList<Class<? extends Edge>>();
-    path.add(PlainStreetEdge.class);
+    path.add(StreetEdge.class);
     path.add(StreetTransitLink.class);
     path.add(PreBoardEdge.class);
     path.add(TransitBoardAlight.class);
@@ -76,12 +76,12 @@
     path.add(TransitBoardAlight.class);
     path.add(PreAlightEdge.class);
     path.add(StreetTransitLink.class);
-    path.add(PlainStreetEdge.class);
+    path.add(StreetEdge.class);
     assertTrue(parsePath(parser,path));
   }
 {
     List<Class<? extends Edge>> path=new ArrayList<Class<? extends Edge>>();
-    path.add(PlainStreetEdge.class);
+    path.add(StreetEdge.class);
     path.add(StreetTransitLink.class);
     path.add(PreBoardEdge.class);
     path.add(TransitBoardAlight.class);
@@ -96,12 +96,12 @@
     path.add(TransitBoardAlight.class);
     path.add(PreAlightEdge.class);
     path.add(StreetTransitLink.class);
-    path.add(PlainStreetEdge.class);
+    path.add(StreetEdge.class);
     assertFalse(parsePath(parser,path));
   }
 {
     List<Class<? extends Edge>> path=new ArrayList<Class<? extends Edge>>();
-    path.add(PlainStreetEdge.class);
+    path.add(StreetEdge.class);
     path.add(StreetTransitLink.class);
     path.add(PreBoardEdge.class);
     path.add(TransitBoardAlight.class);
@@ -115,12 +115,12 @@
     path.add(TransitBoardAlight.class);
     path.add(PreAlightEdge.class);
     path.add(StreetTransitLink.class);
-    path.add(PlainStreetEdge.class);
+    path.add(StreetEdge.class);
     assertTrue(parsePath(parser,path));
   }
 {
     List<Class<? extends Edge>> path=new ArrayList<Class<? extends Edge>>();
-    path.add(PlainStreetEdge.class);
+    path.add(StreetEdge.class);
     path.add(StreetTransitLink.class);
     path.add(PreBoardEdge.class);
     path.add(TransitBoardAlight.class);
@@ -132,12 +132,12 @@
     path.add(TransitBoardAlight.class);
     path.add(PreAlightEdge.class);
     path.add(StreetTransitLink.class);
-    path.add(PlainStreetEdge.class);
+    path.add(StreetEdge.class);
     assertTrue(parsePath(parser,path));
   }
 {
     List<Class<? extends Edge>> path=new ArrayList<Class<? extends Edge>>();
-    path.add(PlainStreetEdge.class);
+    path.add(StreetEdge.class);
     path.add(StreetTransitLink.class);
     path.add(PreBoardEdge.class);
     path.add(TransitBoardAlight.class);
@@ -162,7 +162,7 @@
     path.add(TransitBoardAlight.class);
     path.add(PreAlightEdge.class);
     path.add(StreetTransitLink.class);
-    path.add(PlainStreetEdge.class);
+    path.add(StreetEdge.class);
     assertTrue(parsePath(parser,path));
   }
 {
@@ -241,18 +241,18 @@
     path.add(TransitBoardAlight.class);
     path.add(PreAlightEdge.class);
     path.add(StreetTransitLink.class);
-    path.add(PlainStreetEdge.class);
-    path.add(PlainStreetEdge.class);
-    path.add(PlainStreetEdge.class);
+    path.add(StreetEdge.class);
+    path.add(StreetEdge.class);
+    path.add(StreetEdge.class);
     assertTrue(parsePath(parser,path));
   }
 {
     List<Class<? extends Edge>> path=new ArrayList<Class<? extends Edge>>();
     path.add(StationStopEdge.class);
     path.add(StreetTransitLink.class);
-    path.add(PlainStreetEdge.class);
-    path.add(PlainStreetEdge.class);
-    path.add(PlainStreetEdge.class);
+    path.add(StreetEdge.class);
+    path.add(StreetEdge.class);
+    path.add(StreetEdge.class);
     path.add(StreetTransitLink.class);
     path.add(StationStopEdge.class);
     assertTrue(parsePath(parser,path));

@@ -1,8 +1,8 @@
 {
   final State existing=states.get(s.getVertex());
   final Edge backEdge=existing.getBackEdge();
-  if (backEdge instanceof PlainStreetEdge) {
-    PlainStreetEdge pseBack=(PlainStreetEdge)backEdge;
+  if (backEdge instanceof StreetEdge) {
+    StreetEdge pseBack=(StreetEdge)backEdge;
     if (pseBack.hasExplicitTurnRestrictions()) {
       return true;
     }

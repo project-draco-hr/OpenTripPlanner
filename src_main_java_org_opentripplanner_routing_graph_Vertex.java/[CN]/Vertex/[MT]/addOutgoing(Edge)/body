@@ -1,8 +1,5 @@
 {
-  if (outgoing.contains(ee)) {
-    LOG.error("repeatedly added edge {} to vertex {}",ee,this);
-  }
- else {
-    outgoing.add(ee);
+synchronized (this) {
+    outgoing=addEdge(outgoing,edge);
   }
 }

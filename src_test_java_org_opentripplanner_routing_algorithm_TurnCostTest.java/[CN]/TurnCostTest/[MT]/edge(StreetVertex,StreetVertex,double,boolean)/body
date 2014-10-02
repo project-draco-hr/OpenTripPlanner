@@ -7,7 +7,7 @@
   coords[1]=vB.getCoordinate();
   LineString geom=GeometryUtils.getGeometryFactory().createLineString(coords);
   StreetTraversalPermission perm=StreetTraversalPermission.ALL;
-  PlainStreetEdge pse=new PlainStreetEdge(vA,vB,geom,name,length,perm,back);
+  StreetEdge pse=new StreetEdge(vA,vB,geom,name,length,perm,back);
   pse.setCarSpeed(1.0f);
   return pse;
 }

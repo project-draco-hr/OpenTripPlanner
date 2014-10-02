@@ -1,0 +1,17 @@
+{
+  Edge edge=state.getBackEdge();
+  Set<MatcherAndAlert> maas=new HashSet<MatcherAndAlert>();
+  for (  StreetNotesSource source : sources) {
+    Set<MatcherAndAlert> maas2=source.getNotes(edge);
+    if (maas2 != null)     maas.addAll(maas2);
+  }
+  if (maas == null || maas.isEmpty()) {
+    return null;
+  }
+  Set<Alert> notes=new HashSet<Alert>(maas.size());
+  for (  MatcherAndAlert maa : maas) {
+    if (maa.getMatcher().matches(state))     notes.add(maa.getNote());
+  }
+  if (notes.isEmpty())   return null;
+  return notes;
+}
