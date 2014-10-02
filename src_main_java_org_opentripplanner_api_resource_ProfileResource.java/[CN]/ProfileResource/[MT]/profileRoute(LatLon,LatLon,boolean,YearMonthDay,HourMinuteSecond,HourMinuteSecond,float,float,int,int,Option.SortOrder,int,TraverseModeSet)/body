@@ -22,6 +22,8 @@
   try {
     ProfileResponse response=router.route();
     if (req.analyst) {
+      surfaceCache.add(router.minSurface);
+      surfaceCache.add(router.maxSurface);
       List<TimeSurfaceShort> surfaceShorts=Lists.newArrayList();
       surfaceShorts.add(new TimeSurfaceShort(router.minSurface));
       surfaceShorts.add(new TimeSurfaceShort(router.maxSurface));
