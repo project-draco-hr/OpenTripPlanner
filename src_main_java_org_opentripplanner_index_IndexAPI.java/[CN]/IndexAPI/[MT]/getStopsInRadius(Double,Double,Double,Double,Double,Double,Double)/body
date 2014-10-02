@@ -13,7 +13,7 @@
     }
     List<StopShort> stops=Lists.newArrayList();
     Coordinate coord=new Coordinate(lon,lat);
-    for (    TransitStop stopVertex : index.stopSpatialIndex.query(lon,lat,radius)) {
+    for (    TransitStop stopVertex : streetIndex.getNearbyTransitStops(new Coordinate(lon,lat),radius)) {
       double distance=distanceLibrary.fastDistance(stopVertex.getCoordinate(),coord);
       if (distance < radius) {
         stops.add(new StopShort(stopVertex.getStop(),(int)distance));
@@ -29,8 +29,8 @@
       return Response.status(Status.BAD_REQUEST).entity(MSG_400).build();
     }
     List<StopShort> stops=Lists.newArrayList();
-    for (    TransitStop stopVertex : index.stopSpatialIndex.query(lon,lat,radius)) {
-      index.stopSpatialIndex.query(lon,lat,radius);
+    Envelope envelope=new Envelope(new Coordinate(minLon,minLat),new Coordinate(maxLon,maxLat));
+    for (    TransitStop stopVertex : streetIndex.getTransitStopForEnvelope(envelope)) {
       stops.add(new StopShort(stopVertex.getStop()));
     }
     return Response.status(Status.OK).entity(stops).build();
