@@ -1,5 +1,11 @@
 {
-  StreetEdge pse=new StreetEdge(startEndpoint,endEndpoint,geometry,name,length,permissions,back);
+  StreetEdge pse;
+  if (useElevationData) {
+    pse=new StreetWithElevationEdge(startEndpoint,endEndpoint,geometry,name,length,permissions,back);
+  }
+ else {
+    pse=new StreetEdge(startEndpoint,endEndpoint,geometry,name,length,permissions,back);
+  }
   pse.setCarSpeed(carSpeed);
   return pse;
 }
