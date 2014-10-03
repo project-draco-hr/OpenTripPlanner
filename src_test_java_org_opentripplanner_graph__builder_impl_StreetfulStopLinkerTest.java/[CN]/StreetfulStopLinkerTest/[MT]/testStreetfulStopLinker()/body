@@ -48,10 +48,10 @@
   LineString lineStringBC=new LineString(coordinatesBC,geometryFactory);
   LineString lineStringCD=new LineString(coordinatesCD,geometryFactory);
   LineString lineStringAD=new LineString(coordinatesAD,geometryFactory);
-  new StreetEdge(intersectionA,intersectionB,lineStringAB,"Edge AB",2 * speed,StreetTraversalPermission.ALL,false,0);
-  new StreetEdge(intersectionB,intersectionC,lineStringBC,"Edge BC",4 * speed,StreetTraversalPermission.ALL,false,0);
-  new StreetEdge(intersectionC,intersectionD,lineStringCD,"Edge CD",8 * speed,StreetTraversalPermission.ALL,false,0);
-  new StreetEdge(intersectionA,intersectionD,lineStringAD,"Edge AD",16 * speed,StreetTraversalPermission.ALL,false,0);
+  new StreetEdge(intersectionA,intersectionB,lineStringAB,"Edge AB",2 * speed,StreetTraversalPermission.ALL,false);
+  new StreetEdge(intersectionB,intersectionC,lineStringBC,"Edge BC",4 * speed,StreetTraversalPermission.ALL,false);
+  new StreetEdge(intersectionC,intersectionD,lineStringCD,"Edge CD",8 * speed,StreetTraversalPermission.ALL,false);
+  new StreetEdge(intersectionA,intersectionD,lineStringAD,"Edge AD",16 * speed,StreetTraversalPermission.ALL,false);
   StreetfulStopLinker streetfulStopLinker=new StreetfulStopLinker();
   assertEquals(9,graph.countVertices());
   assertEquals(9,graph.countEdges());
