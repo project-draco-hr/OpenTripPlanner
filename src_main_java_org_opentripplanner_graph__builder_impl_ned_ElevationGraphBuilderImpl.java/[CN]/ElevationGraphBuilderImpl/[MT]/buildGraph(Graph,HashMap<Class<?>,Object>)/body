@@ -8,8 +8,8 @@
   int nTotal=graph.countEdges();
   for (  Vertex gv : graph.getVertices()) {
     for (    Edge ee : gv.getOutgoing()) {
-      if (ee instanceof StreetEdge) {
-        StreetEdge edgeWithElevation=(StreetEdge)ee;
+      if (ee instanceof StreetWithElevationEdge) {
+        StreetWithElevationEdge edgeWithElevation=(StreetWithElevationEdge)ee;
         processEdge(graph,edgeWithElevation);
         if (edgeWithElevation.getElevationProfile() != null && !edgeWithElevation.isElevationFlattened()) {
           edgesWithElevation.add(edgeWithElevation);
