@@ -1,3 +1,32 @@
 {
-  this(v1,v2,geometry,name,length,permission,back,11.2f);
+  super(v1,v2);
+  this.setBack(back);
+  this.setGeometry(geometry);
+  this.length_mm=(int)(length * 1000);
+  this.bicycleSafetyFactor=1.0f;
+  this.name=name;
+  this.setPermission(permission);
+  this.setCarSpeed(DEFAULT_CAR_SPEED);
+  this.setWheelchairAccessible(true);
+  if (geometry != null) {
+    try {
+      for (      Coordinate c : geometry.getCoordinates()) {
+        if (Double.isNaN(c.x)) {
+          System.out.println("X DOOM");
+        }
+        if (Double.isNaN(c.y)) {
+          System.out.println("Y DOOM");
+        }
+      }
+      double angleRadians=DirectionUtils.getLastAngle(geometry);
+      outAngle=(byte)Math.round(angleRadians * 128 / Math.PI + 128);
+      angleRadians=DirectionUtils.getFirstAngle(geometry);
+      inAngle=(byte)Math.round(angleRadians * 128 / Math.PI + 128);
+    }
+ catch (    IllegalArgumentException iae) {
+      LOG.error("exception while determining street edge angles. setting to zero. there is probably something wrong with this street segment's geometry.");
+      inAngle=0;
+      outAngle=0;
+    }
+  }
 }
