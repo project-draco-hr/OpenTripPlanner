@@ -2,7 +2,7 @@
   if (finished)   return;
   for (int i=0; i < HEURISTIC_STEPS_PER_MAIN_STEP; ++i) {
     if (q.empty()) {
-      LOG.info("Emptied SSSP queue.");
+      LOG.debug("Emptied SSSP queue.");
       finished=true;
       break;
     }
