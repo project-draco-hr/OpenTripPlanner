@@ -58,7 +58,7 @@ time=elevationProfile.getSlopeSpeedFactor() * getDistance() / speed;
 }
 weight=time;
 if (traverseMode.equals(TraverseMode.WALK)) {
-double costs=ElevationUtils.getWalkCostsForSlope(getDistance(),elevationProfile.getMaxSlope());
+double costs=ElevationUtils.getWalkCostsForSlope(getDistance(),getMaxSlope());
 double elevationUtilsSpeed=4.0 / 3.0;
 weight=costs * (elevationUtilsSpeed / speed);
 time=weight;

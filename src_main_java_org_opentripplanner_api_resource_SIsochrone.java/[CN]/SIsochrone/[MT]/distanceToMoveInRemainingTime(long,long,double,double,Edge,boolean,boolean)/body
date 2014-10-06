@@ -5,7 +5,7 @@
   if (originalTravelSpeed < userSpeed) {
     if (edge instanceof StreetEdge) {
       StreetEdge pe=(StreetEdge)edge;
-      double maxSlope=pe.getElevationProfileSegment().getMaxSlope();
+      double maxSlope=pe.getMaxSlope();
       if (maxSlope > 0.06) {
         userSpeed=originalTravelSpeed;
       }
