@@ -3,7 +3,6 @@
   runState.rctx=options.getRoutingContext();
   runState.spt=new MultiShortestPathTree(runState.options);
   runState.heuristic=options.batch ? new TrivialRemainingWeightHeuristic() : runState.rctx.remainingWeightHeuristic;
-  runState.heuristic=new TrivialRemainingWeightHeuristic();
   State initialState=new State(options);
   runState.heuristic.initialize(initialState,runState.rctx.target,abortTime);
   if (abortTime < Long.MAX_VALUE && System.currentTimeMillis() > abortTime) {
