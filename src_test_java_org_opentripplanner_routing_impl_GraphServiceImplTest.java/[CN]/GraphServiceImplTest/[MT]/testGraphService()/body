@@ -1,0 +1,42 @@
+{
+  GraphServiceImpl graphService=new GraphServiceImpl();
+  Graph memoryA=new Graph();
+  graphService.registerGraph("memA",new MemoryGraphSource("memA",memoryA));
+  assertEquals(1,graphService.getRouterIds().size());
+  Graph graph=graphService.getGraph("memA");
+  assertNotNull(graph);
+  assertEquals(memoryA,graph);
+  assertEquals("memA",graph.routerId);
+  try {
+    graph=graphService.getGraph("inexistant");
+    assertTrue(false);
+  }
+ catch (  GraphNotFoundException e) {
+  }
+  graphService.setDefaultRouterId("memA");
+  graph=graphService.getGraph();
+  assertEquals(memoryA,graph);
+  Graph memoryB=new Graph();
+  graphService.registerGraph("memB",new MemoryGraphSource("memB",memoryB));
+  assertEquals(2,graphService.getRouterIds().size());
+  graph=graphService.getGraph("memB");
+  assertNotNull(graph);
+  assertEquals(memoryB,graph);
+  assertEquals("memB",graph.routerId);
+  graphService.evictGraph("memA");
+  assertEquals(1,graphService.getRouterIds().size());
+  try {
+    graph=graphService.getGraph("memA");
+    assertTrue(false);
+  }
+ catch (  GraphNotFoundException e) {
+  }
+  try {
+    graph=graphService.getGraph();
+    assertTrue(false);
+  }
+ catch (  GraphNotFoundException e) {
+  }
+  graphService.evictAll();
+  assertEquals(0,graphService.getRouterIds().size());
+}
