@@ -4,6 +4,10 @@
     LOG.error("routerId '{}' contains characters other than alphanumeric, underscore, and dash.",routerId);
     return false;
   }
+  if (graphSource.getGraph() == null) {
+    LOG.warn("Can't register router ID '{}', null graph.",routerId);
+    return false;
+  }
 synchronized (graphSources) {
     GraphSource oldSource=graphSources.get(routerId);
     if (oldSource != null) {
