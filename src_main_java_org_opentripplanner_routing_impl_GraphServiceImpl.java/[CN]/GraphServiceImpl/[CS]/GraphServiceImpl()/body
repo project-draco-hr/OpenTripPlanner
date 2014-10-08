@@ -1,2 +1,8 @@
 {
+  scanExecutor.scheduleWithFixedDelay(new Runnable(){
+    @Override public void run(){
+      autoReloadScan();
+    }
+  }
+,AUTOSCAN_PERIOD_SEC,AUTOSCAN_PERIOD_SEC,TimeUnit.SECONDS);
 }

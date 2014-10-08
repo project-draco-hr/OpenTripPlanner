@@ -1,3 +1,5 @@
 {
-  return graph;
+synchronized (preEvictMutex) {
+    return graph;
+  }
 }

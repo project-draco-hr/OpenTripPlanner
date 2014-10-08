@@ -1,11 +1,7 @@
 {
-  LOG.debug("Loading serialized graph for routerId {}",routerId);
-  String graphFileName=new File(path,GRAPH_FILENAME).getPath();
-  String configFileName=new File(path,CONFIG_FILENAME).getPath();
-  LOG.debug("Graph file for routerId '{}' is at {}",routerId,graphFileName);
-  InputStream is=getGraphInputStream(graphFileName);
+  InputStream is=getGraphInputStream();
   if (is == null) {
-    LOG.warn("Graph file not found or not openable for routerId '{}' under {}",routerId,graphFileName);
+    LOG.warn("Graph file not found or not openable for routerId '{}'",routerId);
     return null;
   }
   LOG.info("Loading graph...");
@@ -14,13 +10,13 @@
     graph=Graph.load(new ObjectInputStream(is),loadLevel,streetVertexIndexFactory);
   }
  catch (  Exception ex) {
-    LOG.error("Exception while loading graph from {}.",graphFileName);
+    LOG.error("Exception while loading graph '{}'.",routerId);
     ex.printStackTrace();
     return null;
   }
   graph.routerId=(routerId);
   try {
-    is=getConfigInputStream(configFileName);
+    is=getConfigInputStream();
     Preferences config=is == null ? null : new PropertiesPreferences(is);
     decorator.setupGraph(graph,config);
   }

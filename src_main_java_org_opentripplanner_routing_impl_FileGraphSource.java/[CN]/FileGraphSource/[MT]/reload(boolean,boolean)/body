@@ -1,0 +1,22 @@
+{
+synchronized (this) {
+    long lastModified=getLastModified();
+    boolean doReload=force ? true : checkAutoReload(lastModified);
+    if (!doReload)     return true;
+    if (preEvict) {
+synchronized (preEvictMutex) {
+        if (graph != null)         decorator.shutdownGraph(graph);
+        graph=null;
+        graph=loadGraph();
+      }
+    }
+ else {
+      Graph newGraph=loadGraph();
+      if (graph != null)       decorator.shutdownGraph(graph);
+      graph=newGraph;
+    }
+    if (graph == null)     graphLastModified=0L;
+ else     graphLastModified=lastModified;
+    return (graph != null);
+  }
+}

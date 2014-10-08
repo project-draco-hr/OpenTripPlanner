@@ -1,6 +1,7 @@
 {
   try {
-    File graphFile=new File(graphFileName);
+    File graphFile=new File(path,GRAPH_FILENAME);
+    LOG.info("Loading graph from file '{}'",graphFile.getPath());
     return new FileInputStream(graphFile);
   }
  catch (  IOException ex) {

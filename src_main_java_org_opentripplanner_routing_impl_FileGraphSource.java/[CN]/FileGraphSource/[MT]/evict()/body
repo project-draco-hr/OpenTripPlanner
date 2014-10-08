@@ -1,5 +1,7 @@
 {
-  if (graph != null) {
-    decorator.shutdownGraph(graph);
+synchronized (this) {
+    if (graph != null) {
+      decorator.shutdownGraph(graph);
+    }
   }
 }

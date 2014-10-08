@@ -3,18 +3,15 @@
     routerId=defaultRouterId;
     LOG.debug("routerId not specified, set to default of '{}'",routerId);
   }
-synchronized (graphSources) {
-    if (!graphSources.containsKey(routerId)) {
-      LOG.error("no graph registered with the routerId '{}'",routerId);
-      throw new GraphNotFoundException();
-    }
- else {
-      Graph graph=graphSources.get(routerId).getGraph();
-      if (graph == null) {
-        evictGraph(routerId);
-        throw new GraphNotFoundException();
-      }
-      return graph;
-    }
+  GraphSource graphSource=graphSources.get(routerId);
+  if (graphSource == null) {
+    LOG.error("no graph registered with the routerId '{}'",routerId);
+    throw new GraphNotFoundException();
   }
+  Graph graph=graphSource.getGraph();
+  if (graph == null) {
+    evictGraph(routerId);
+    throw new GraphNotFoundException();
+  }
+  return graph;
 }
