@@ -1,6 +1,6 @@
 {
-  StreetEdge e1=bestPair.getFirst();
-  StreetEdge e2=bestPair.getSecond();
+  StreetEdge e1=bestPair.first;
+  StreetEdge e2=bestPair.second;
   String name=e1.getName();
   StreetVertex e1v1=(StreetVertex)e1.getFromVertex();
   StreetVertex e1v2=(StreetVertex)e1.getToVertex();
@@ -15,8 +15,8 @@
     backGeometryPair=GeometryUtils.splitGeometryAtPoint(backGeometry,coordinate);
   }
   P2<LineString> forwardGeometryPair=GeometryUtils.splitGeometryAtPoint(forwardGeometry,coordinate);
-  LineString forward1Geom=forwardGeometryPair.getFirst();
-  LineString forward2Geom=forwardGeometryPair.getSecond();
+  LineString forward1Geom=forwardGeometryPair.first;
+  LineString forward2Geom=forwardGeometryPair.second;
   Coordinate midCoord=forward1Geom.getEndPoint().getCoordinate();
   double totalGeomLength=forwardGeometry.getLength();
   double lengthRatioIn=forward1Geom.getLength() / totalGeomLength;
@@ -50,8 +50,8 @@
   IntersectionVertex e2midpoint=null;
   if (e2 != null) {
     e2midpoint=new IntersectionVertex(linker.graph,"split 2 at " + label,midCoord.x,midCoord.y,name);
-    backward1=new StreetWithElevationEdge(e2v1,e2midpoint,backGeometryPair.getFirst(),name,lengthOut,e2.getPermission(),e2.isBack());
-    backward2=new StreetWithElevationEdge(e2midpoint,e2v2,backGeometryPair.getSecond(),name,lengthIn,e2.getPermission(),e2.isBack());
+    backward1=new StreetWithElevationEdge(e2v1,e2midpoint,backGeometryPair.first,name,lengthOut,e2.getPermission(),e2.isBack());
+    backward2=new StreetWithElevationEdge(e2midpoint,e2v2,backGeometryPair.second,name,lengthIn,e2.getPermission(),e2.isBack());
     if (e2 instanceof AreaEdge) {
       ((AreaEdge)e2).getArea().addVertex(e2midpoint,linker.graph);
     }

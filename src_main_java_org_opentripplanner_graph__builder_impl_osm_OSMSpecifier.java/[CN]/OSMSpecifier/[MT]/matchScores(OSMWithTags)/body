@@ -2,8 +2,8 @@
   int leftScore=0, rightScore=0;
   int leftMatches=0, rightMatches=0;
   for (  P2<String> pair : kvpairs) {
-    String tag=pair.getFirst().toLowerCase();
-    String value=pair.getSecond().toLowerCase();
+    String tag=pair.first.toLowerCase();
+    String value=pair.second.toLowerCase();
     String leftMatchValue=match.getTag(tag + ":left");
     String rightMatchValue=match.getTag(tag + ":right");
     String matchValue=match.getTag(tag);

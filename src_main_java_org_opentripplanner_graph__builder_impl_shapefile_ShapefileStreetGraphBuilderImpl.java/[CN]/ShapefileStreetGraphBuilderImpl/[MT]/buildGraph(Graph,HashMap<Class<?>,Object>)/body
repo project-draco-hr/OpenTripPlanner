@@ -72,9 +72,9 @@
         length+=JTS.orthodromicDistance(coordinates[i],coordinates[i + 1],worldCRS);
       }
       P2<StreetTraversalPermission> permissions=permissionConverter.convert(feature);
-      StreetEdge street=edgeFactory.createEdge(startIntersection,endIntersection,geom,name,length,permissions.getFirst(),false);
+      StreetEdge street=edgeFactory.createEdge(startIntersection,endIntersection,geom,name,length,permissions.first,false);
       LineString reversed=(LineString)geom.reverse();
-      StreetEdge backStreet=edgeFactory.createEdge(endIntersection,startIntersection,reversed,name,length,permissions.getSecond(),true);
+      StreetEdge backStreet=edgeFactory.createEdge(endIntersection,startIntersection,reversed,name,length,permissions.second,true);
       backStreet.shareData(street);
       if (noteConverter != null) {
         String note=noteConverter.convert(feature);
@@ -90,8 +90,8 @@
       if (safetyConverter != null) {
         P2<Double> safetyFactors=safetyConverter.convert(feature);
         if (safetyFactors != null) {
-          street.setBicycleSafetyFactor(safetyFactors.getFirst().floatValue());
-          backStreet.setBicycleSafetyFactor(safetyFactors.getSecond().floatValue());
+          street.setBicycleSafetyFactor(safetyFactors.first.floatValue());
+          backStreet.setBicycleSafetyFactor(safetyFactors.second.floatValue());
         }
       }
     }
