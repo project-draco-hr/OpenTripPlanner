@@ -34,7 +34,7 @@
   for (  String routerId : graphToLoad)   toLoadSb.append("[").append(routerId).append("]");
   LOG.debug("Found routers: {} - Must reload: {}",onDiskSb.toString(),toLoadSb.toString());
   for (  String routerId : graphToLoad) {
-    this.registerGraph(routerId,new FileGraphSource(routerId,basePath,LoadLevel.FULL));
+    this.registerGraph(routerId,new FileGraphSource(routerId,baseFile,LoadLevel.FULL));
   }
   for (  String routerId : getRouterIds()) {
     if (!graphOnDisk.contains(routerId)) {

@@ -15,7 +15,7 @@
     FileGraphSourceFactory graphSourceFactory=new FileGraphSourceFactory();
     graphService.graphSourceFactory=graphSourceFactory;
     if (params.graphDirectory != null) {
-      graphSourceFactory.basePath=params.graphDirectory;
+      graphSourceFactory.basePath=new File(params.graphDirectory);
     }
     if (params.routerIds.size() > 0) {
       GraphScanner graphScanner=new GraphScanner(graphService);

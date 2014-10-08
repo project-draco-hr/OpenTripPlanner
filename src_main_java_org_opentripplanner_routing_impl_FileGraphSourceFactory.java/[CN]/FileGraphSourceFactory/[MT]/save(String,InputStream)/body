@@ -1,29 +1,27 @@
 {
-  String graphFileName=createBaseFileName(routerId) + FileGraphSource.GRAPH_FILENAME;
+  File sourceFile=new File(getBasePath(routerId),FileGraphSource.GRAPH_FILENAME);
   try {
-    File sourceFile=new File(graphFileName);
     File directory=new File(sourceFile.getParentFile().getPath());
     if (!directory.exists()) {
       directory.mkdir();
     }
-    sourceFile=new File(graphFileName);
     File destFile=null;
     if (sourceFile.exists()) {
-      destFile=new File(graphFileName + ".bak");
+      destFile=new File(sourceFile.getPath() + ".bak");
       if (destFile.exists()) {
         destFile.delete();
       }
       sourceFile.renameTo(destFile);
     }
-    FileOutputStream os=new FileOutputStream(graphFileName);
+    FileOutputStream os=new FileOutputStream(sourceFile);
     ByteStreams.copy(is,os);
-    sourceFile=new File(graphFileName + ".bak");
+    sourceFile=new File(sourceFile.getPath() + ".bak");
     if (sourceFile.exists()) {
       sourceFile.delete();
     }
   }
  catch (  Exception ex) {
-    LOG.error("Exception while storing graph to {}.",graphFileName);
+    LOG.error("Exception while storing graph to {}.",sourceFile.getPath());
     ex.printStackTrace();
     return false;
   }

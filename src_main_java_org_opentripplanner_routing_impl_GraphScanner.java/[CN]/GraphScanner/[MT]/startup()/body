@@ -4,7 +4,7 @@
     LOG.info("attempting to automatically register routerIds {}",autoRegister);
     LOG.info("graph files will be sought in paths relative to {}",basePath);
     for (    String routerId : autoRegister) {
-      graphService.registerGraph(routerId,new FileGraphSource(routerId,createBaseFileName(routerId),loadLevel));
+      graphService.registerGraph(routerId,new FileGraphSource(routerId,getBasePath(routerId),loadLevel));
     }
   }
  else {
@@ -12,6 +12,6 @@
   }
   if (attemptRegisterDefault && !graphService.getRouterIds().contains(defaultRouterId)) {
     LOG.info("Attempting to load graph for default routerId '{}'.",defaultRouterId);
-    graphService.registerGraph(defaultRouterId,new FileGraphSource(defaultRouterId,createBaseFileName(defaultRouterId),loadLevel));
+    graphService.registerGraph(defaultRouterId,new FileGraphSource(defaultRouterId,getBasePath(defaultRouterId),loadLevel));
   }
 }
