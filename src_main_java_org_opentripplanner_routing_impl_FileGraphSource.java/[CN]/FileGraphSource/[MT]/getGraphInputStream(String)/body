@@ -1,0 +1,10 @@
+{
+  try {
+    File graphFile=new File(graphFileName);
+    return new FileInputStream(graphFile);
+  }
+ catch (  IOException ex) {
+    LOG.warn("Error creating graph input stream",ex);
+    return null;
+  }
+}
