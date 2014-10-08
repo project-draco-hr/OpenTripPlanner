@@ -10,7 +10,8 @@
   byte[] graphData=baos.toByteArray();
   graphSourceFactory.save("A",new ByteArrayInputStream(graphData));
   assertTrue(new File(new File(basePath,"A"),FileGraphSource.GRAPH_FILENAME).canRead());
-  graphService.registerGraph("A",graphSourceFactory.createGraphSource("A"));
+  boolean registered=graphService.registerGraph("A",graphSourceFactory.createGraphSource("A"));
+  assertTrue(registered);
   Graph graph=graphService.getGraph("A");
   assertNotNull(graph);
   assertEquals("A",graph.routerId);
@@ -29,6 +30,18 @@
   graph=graphService.getGraph("A");
   assertEquals(verticesCount,graph.getVertices().size());
   assertEquals(edgesCount,graph.getEdges().size());
-  graphService.evictGraph("A");
+  boolean deleted=new File(new File(basePath,"A"),FileGraphSource.GRAPH_FILENAME).delete();
+  assertTrue(deleted);
+  graphService.reloadGraphs(false);
+  assertEquals(0,graphService.getRouterIds().size());
+  registered=graphService.registerGraph("A",graphSourceFactory.createGraphSource("A"));
+  assertFalse(registered);
+  assertEquals(0,graphService.getRouterIds().size());
+  graphSourceFactory.save("A",new ByteArrayInputStream(graphData2));
+  registered=graphService.registerGraph("A",graphSourceFactory.createGraphSource("A"));
+  assertTrue(registered);
+  assertEquals(1,graphService.getRouterIds().size());
+  boolean evicted=graphService.evictGraph("A");
+  assertTrue(evicted);
   assertEquals(0,graphService.getRouterIds().size());
 }
