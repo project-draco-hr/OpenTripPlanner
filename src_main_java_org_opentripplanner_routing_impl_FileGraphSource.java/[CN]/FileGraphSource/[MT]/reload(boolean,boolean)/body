@@ -13,10 +13,19 @@ synchronized (preEvictMutex) {
  else {
       Graph newGraph=loadGraph();
       if (graph != null)       decorator.shutdownGraph(graph);
-      graph=newGraph;
+      if (newGraph != null) {
+        graph=newGraph;
+      }
+ else {
+        LOG.warn("Unable to load modified data for router '{}', keeping old data.",routerId);
+      }
     }
-    if (graph == null)     graphLastModified=0L;
- else     graphLastModified=lastModified;
+    if (graph == null) {
+      graphLastModified=0L;
+    }
+ else {
+      graphLastModified=lastModified;
+    }
     return (graph != null);
   }
 }
