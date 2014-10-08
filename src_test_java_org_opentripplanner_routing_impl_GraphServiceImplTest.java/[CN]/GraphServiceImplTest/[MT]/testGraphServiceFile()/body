@@ -1,0 +1,34 @@
+{
+  File basePath=new File("test_graphs");
+  if (!basePath.exists())   basePath.mkdir();
+  GraphServiceImpl graphService=new GraphServiceImpl();
+  FileGraphSourceFactory graphSourceFactory=new FileGraphSourceFactory();
+  graphSourceFactory.basePath=basePath;
+  Graph graphA=new Graph();
+  ByteArrayOutputStream baos=new ByteArrayOutputStream();
+  graphA.save(new ObjectOutputStream(baos));
+  byte[] graphData=baos.toByteArray();
+  graphSourceFactory.save("A",new ByteArrayInputStream(graphData));
+  assertTrue(new File(new File(basePath,"A"),FileGraphSource.GRAPH_FILENAME).canRead());
+  graphService.registerGraph("A",graphSourceFactory.createGraphSource("A"));
+  Graph graph=graphService.getGraph("A");
+  assertNotNull(graph);
+  assertEquals("A",graph.routerId);
+  assertEquals(0,graph.getVertices().size());
+  assertEquals(1,graphService.getRouterIds().size());
+  StreetVertex v1=new IntersectionVertex(graphA,"v1",0,0);
+  StreetVertex v2=new IntersectionVertex(graphA,"v2",0,0.1);
+  new StreetEdge(v1,v2,null,"v1v2",11000,StreetTraversalPermission.PEDESTRIAN,false);
+  int verticesCount=graphA.getVertices().size();
+  int edgesCount=graphA.getEdges().size();
+  baos=new ByteArrayOutputStream();
+  graphA.save(new ObjectOutputStream(baos));
+  byte[] graphData2=baos.toByteArray();
+  graphSourceFactory.save("A",new ByteArrayInputStream(graphData2));
+  graphService.reloadGraphs(false);
+  graph=graphService.getGraph("A");
+  assertEquals(verticesCount,graph.getVertices().size());
+  assertEquals(edgesCount,graph.getEdges().size());
+  graphService.evictGraph("A");
+  assertEquals(0,graphService.getRouterIds().size());
+}
