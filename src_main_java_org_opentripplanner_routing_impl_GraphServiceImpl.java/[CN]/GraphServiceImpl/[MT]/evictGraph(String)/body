@@ -1,3 +1,14 @@
 {
-  return decorated.evictGraph(routerId);
+  LOG.info("Evicting graph '{}'",routerId);
+synchronized (graphSources) {
+    GraphSource graphSource=graphSources.get(routerId);
+    graphSources.remove(routerId);
+    if (graphSource != null) {
+      graphSource.evict();
+      return true;
+    }
+ else {
+      return false;
+    }
+  }
 }

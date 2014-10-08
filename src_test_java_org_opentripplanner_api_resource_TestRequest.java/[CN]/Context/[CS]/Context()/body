@@ -1,6 +1,7 @@
 {
-  graphService.putGraph(null,makeSimpleGraph());
-  graphService.putGraph("portland",graph);
+  graphService.registerGraph("",new MemoryGraphSource(null,makeSimpleGraph()));
+  graphService.setDefaultRouterId("");
+  graphService.registerGraph("portland",new MemoryGraphSource("portland",graph));
   ShapefileStreetGraphBuilderImpl builder=new ShapefileStreetGraphBuilderImpl();
   FeatureSourceFactory factory=new ShapefileFeatureSourceFactoryImpl(new File("src/test/resources/portland/Streets_pdx.shp"));
   builder.setFeatureSourceFactory(factory);

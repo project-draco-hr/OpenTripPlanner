@@ -1,3 +1,13 @@
 {
-  return decorated.evictAll();
+  LOG.info("Evincting all graphs.");
+synchronized (graphSources) {
+    int n=0;
+    Collection<String> routerIds=new ArrayList<String>(getRouterIds());
+    for (    String routerId : routerIds) {
+      if (evictGraph(routerId)) {
+        n++;
+      }
+    }
+    return n;
+  }
 }

@@ -1,3 +1,15 @@
 {
-  return decorated.getGraph(routerId);
+  if (routerId == null || routerId.isEmpty() || routerId.equalsIgnoreCase("default")) {
+    routerId=defaultRouterId;
+    LOG.debug("routerId not specified, set to default of '{}'",routerId);
+  }
+synchronized (graphSources) {
+    if (!graphSources.containsKey(routerId)) {
+      LOG.error("no graph registered with the routerId '{}'",routerId);
+      throw new GraphNotFoundException();
+    }
+ else {
+      return graphSources.get(routerId).getGraph();
+    }
+  }
 }

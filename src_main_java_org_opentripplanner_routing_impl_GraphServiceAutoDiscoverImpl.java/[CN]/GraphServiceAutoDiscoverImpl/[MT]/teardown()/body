@@ -1,6 +1,5 @@
 {
   LOG.info("Cleaning-up auto-discover thread and graphs");
-  decorated.evictAll();
   scanExecutor.shutdown();
   try {
     boolean noTimeout=scanExecutor.awaitTermination(10,TimeUnit.SECONDS);
@@ -9,5 +8,4 @@
  catch (  InterruptedException e) {
     LOG.warn("Interrupted while waiting for scanner thread to finish",e);
   }
-  decorated.cleanupWebapp();
 }

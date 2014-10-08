@@ -4,7 +4,13 @@
     server.graphService.evictGraph(routerId);
   }
   LOG.debug("attempting to load graph from server's local filesystem.\n");
-  boolean success=server.graphService.registerGraph(routerId,preEvict);
-  if (success)   return Response.status(201).entity("graph registered.\n").build();
- else   return Response.status(404).entity("graph not found or other error.\n").build();
+  boolean exists=server.graphService.getGraph(routerId) != null;
+  if (exists) {
+    return Response.status(404).entity("graph already registered.\n").build();
+  }
+ else {
+    boolean success=server.graphService.registerGraph(routerId,server.graphService.getGraphSourceFactory().createGraphSource(routerId));
+    if (success)     return Response.status(201).entity("graph registered.\n").build();
+ else     return Response.status(404).entity("graph not found or other error.\n").build();
+  }
 }

@@ -7,7 +7,7 @@
   Graph graph;
   try {
     graph=Graph.load(is,level);
-    server.graphService.registerGraph(routerId,graph);
+    server.graphService.registerGraph(routerId,new MemoryGraphSource(routerId,graph));
     return Response.status(Status.CREATED).entity(graph.toString() + "\n").build();
   }
  catch (  Exception e) {

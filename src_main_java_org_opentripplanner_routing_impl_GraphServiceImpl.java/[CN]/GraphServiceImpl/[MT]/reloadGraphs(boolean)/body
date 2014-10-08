@@ -1,3 +1,10 @@
 {
-  return decorated.reloadGraphs(preEvict);
+  boolean allSucceeded=true;
+synchronized (graphSources) {
+    for (    GraphSource graphSource : graphSources.values()) {
+      boolean success=graphSource.reload(preEvict);
+      allSucceeded&=success;
+    }
+  }
+  return allSucceeded;
 }

@@ -1,10 +1,10 @@
 {
-  LOG.debug("Auto discovering graphs under {}",decorated.basePath);
+  LOG.debug("Auto discovering graphs under {}",basePath);
   Collection<String> graphOnDisk=new HashSet<String>();
   Collection<String> graphToLoad=new HashSet<String>();
   long validEndTime=System.currentTimeMillis() - loadDelaySec * 1000;
-  File baseFile=new File(decorated.basePath);
-  File rootGraphFile=new File(baseFile,GraphServiceFileImpl.GRAPH_FILENAME);
+  File baseFile=new File(basePath);
+  File rootGraphFile=new File(baseFile,FileGraphSource.GRAPH_FILENAME);
   if (rootGraphFile.exists() && rootGraphFile.canRead()) {
     graphOnDisk.add("");
     long lastModified=rootGraphFile.lastModified();
@@ -16,7 +16,7 @@
   for (  String sub : baseFile.list()) {
     File subFile=new File(baseFile,sub);
     if (subFile.isDirectory()) {
-      File graphFile=new File(subFile,GraphServiceFileImpl.GRAPH_FILENAME);
+      File graphFile=new File(subFile,FileGraphSource.GRAPH_FILENAME);
       if (graphFile.exists() && graphFile.canRead()) {
         graphOnDisk.add(sub);
         long lastModified=graphFile.lastModified();
@@ -34,16 +34,16 @@
   for (  String routerId : graphToLoad)   toLoadSb.append("[").append(routerId).append("]");
   LOG.debug("Found routers: {} - Must reload: {}",onDiskSb.toString(),toLoadSb.toString());
   for (  String routerId : graphToLoad) {
-    decorated.registerGraph(routerId,false);
+    this.registerGraph(routerId,new FileGraphSource(routerId,basePath,LoadLevel.FULL));
   }
   for (  String routerId : getRouterIds()) {
     if (!graphOnDisk.contains(routerId)) {
       LOG.warn("Auto-evicting routerId '{}', not present on disk anymore.",routerId);
-      decorated.evictGraph(routerId);
+      this.evictGraph(routerId);
     }
   }
-  if (!getRouterIds().contains(decorated.defaultRouterId)) {
-    LOG.warn("Default routerId '{}' not available!",decorated.defaultRouterId);
+  if (!getRouterIds().contains(defaultRouterId)) {
+    LOG.warn("Default routerId '{}' not available!",defaultRouterId);
     if (!getRouterIds().isEmpty()) {
       String defRouterId=null;
       if (getRouterIds().contains("")) {
@@ -55,7 +55,7 @@
         if (getRouterIds().size() > 1)         LOG.warn("Setting default routerId to arbitrary one '{}'",defRouterId);
  else         LOG.info("Setting default routerId to '{}'",defRouterId);
       }
-      decorated.defaultRouterId=(defRouterId);
+      defaultRouterId=(defRouterId);
     }
   }
   if (this.getRouterIds().isEmpty()) {
