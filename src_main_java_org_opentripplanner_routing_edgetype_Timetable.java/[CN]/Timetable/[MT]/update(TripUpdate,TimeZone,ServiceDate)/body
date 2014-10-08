@@ -13,7 +13,7 @@
       LOG.error("TripDescriptor object has no TripId field");
       return false;
     }
-    AgencyAndId tripId=new AgencyAndId(agencyId,tripDescriptor.getTripId());
+    String tripId=tripDescriptor.getTripId();
     int tripIndex=getTripIndex(tripId);
     if (tripIndex == -1) {
       LOG.info("tripId {} not found in pattern.",tripId);
@@ -148,6 +148,6 @@
     e.printStackTrace();
     return false;
   }
-  LOG.trace("A valid TripUpdate object was applied using the Timetable class update method.");
+  LOG.debug("A valid TripUpdate object was applied using the Timetable class update method.");
   return true;
 }
