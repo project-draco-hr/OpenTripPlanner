@@ -16,4 +16,7 @@
     FileGraphSource graphSource=new FileGraphSource(defaultRouterId,getBasePath(defaultRouterId),loadLevel);
     if (graphSource.getGraph() != null)     graphService.registerGraph(defaultRouterId,graphSource);
   }
+  if (scanExecutor != null) {
+    autoScan();
+  }
 }

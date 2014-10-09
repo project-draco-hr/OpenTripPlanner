@@ -1,0 +1,50 @@
+{
+  LOG.debug("Auto discovering graphs under {}",basePath);
+  Set<String> graphOnDisk=new HashSet<String>();
+  File rootGraphFile=new File(basePath,FileGraphSource.GRAPH_FILENAME);
+  if (rootGraphFile.exists() && rootGraphFile.canRead()) {
+    graphOnDisk.add("");
+  }
+  for (  String sub : basePath.list()) {
+    File subPath=new File(basePath,sub);
+    if (subPath.isDirectory()) {
+      File graphFile=new File(subPath,FileGraphSource.GRAPH_FILENAME);
+      if (graphFile.exists() && graphFile.canRead()) {
+        graphOnDisk.add(sub);
+      }
+    }
+  }
+  Set<String> graphRegistered=new HashSet<>(graphService.getRouterIds());
+  Set<String> graphToRegister=new HashSet<>(graphOnDisk);
+  graphToRegister.removeAll(graphRegistered);
+  if (!graphToRegister.isEmpty()) {
+    LOG.info("Found new routers to register: {}",Arrays.toString(graphToRegister.toArray()));
+    for (    String routerId : graphToRegister) {
+      FileGraphSource graphSource=new FileGraphSource(routerId,getBasePath(routerId),loadLevel);
+      if (graphSource.getGraph() != null) {
+        graphService.registerGraph(routerId,graphSource);
+      }
+    }
+  }
+  Collection<String> routerIds=graphService.getRouterIds();
+  if (routerIds.isEmpty()) {
+    LOG.warn("No graphs have been loaded/registered. " + "You must place one or more graphs before routing.");
+  }
+ else {
+    try {
+      graphService.getGraph();
+    }
+ catch (    GraphNotFoundException e) {
+      if (routerIds.contains("")) {
+        LOG.info("Setting default routerId to root graph ''");
+        graphService.setDefaultRouterId("");
+      }
+ else {
+        String defRouterId=routerIds.iterator().next();
+        if (routerIds.size() > 1)         LOG.warn("Setting default routerId to arbitrary one '{}'",defRouterId);
+ else         LOG.info("Setting default routerId to '{}'",defRouterId);
+        graphService.setDefaultRouterId(defRouterId);
+      }
+    }
+  }
+}
