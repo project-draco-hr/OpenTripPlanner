@@ -1,31 +1,29 @@
 {
+  GraphServiceImpl graphService=new GraphServiceImpl(params.autoReload);
+  this.graphService=graphService;
+  FileGraphSourceFactory graphSourceFactory=new FileGraphSourceFactory();
+  graphService.graphSourceFactory=graphSourceFactory;
+  if (params.graphDirectory != null) {
+    graphSourceFactory.basePath=new File(params.graphDirectory);
+  }
   if (graph != null && (params.inMemory || params.preFlight)) {
     try {
       FileInputStream graphConfiguration=new FileInputStream(params.graphConfigFile);
       Preferences config=new PropertiesPreferences(graphConfiguration);
-      this.graphService=new GraphServiceBeanImpl(graph,config);
+      this.graphService.registerGraph("",new MemoryGraphSource("",graph,config));
     }
  catch (    Exception e) {
       if (params.graphConfigFile != null)       LOG.error("Can't read config file",e);
-      this.graphService=new GraphServiceBeanImpl(graph,null);
+      this.graphService.registerGraph("",new MemoryGraphSource("",graph));
     }
   }
- else {
-    GraphServiceImpl graphService=new GraphServiceImpl(params.autoReload);
-    FileGraphSourceFactory graphSourceFactory=new FileGraphSourceFactory();
-    graphService.graphSourceFactory=graphSourceFactory;
-    if (params.graphDirectory != null) {
-      graphSourceFactory.basePath=new File(params.graphDirectory);
+  if (params.routerIds.size() > 0 || params.autoScan) {
+    GraphScanner graphScanner=new GraphScanner(graphService,params.autoScan);
+    graphScanner.basePath=graphSourceFactory.basePath;
+    if (params.routerIds.size() > 0) {
+      graphScanner.defaultRouterId=params.routerIds.get(0);
     }
-    if (params.routerIds.size() > 0 || params.autoScan) {
-      GraphScanner graphScanner=new GraphScanner(graphService,params.autoScan);
-      graphScanner.basePath=graphSourceFactory.basePath;
-      if (params.routerIds.size() > 0) {
-        graphScanner.defaultRouterId=params.routerIds.get(0);
-      }
-      graphScanner.autoRegister=params.routerIds;
-      graphScanner.startup();
-    }
-    this.graphService=graphService;
+    graphScanner.autoRegister=params.routerIds;
+    graphScanner.startup();
   }
 }
