@@ -2,11 +2,5 @@
   this.graphService=graphService;
   if (autoScan) {
     scanExecutor=Executors.newSingleThreadScheduledExecutor();
-    scanExecutor.scheduleWithFixedDelay(new Runnable(){
-      @Override public void run(){
-        autoScan();
-      }
-    }
-,AUTOSCAN_PERIOD_SEC,AUTOSCAN_PERIOD_SEC,TimeUnit.SECONDS);
   }
 }
