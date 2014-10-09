@@ -1,6 +1,3 @@
 {
-  this.graph=graph;
-  this.graph.routerId=routerId;
-  Preferences config=new PropertiesPreferences(new Properties());
-  decorator.setupGraph(graph,config);
+  this(routerId,graph,new PropertiesPreferences(new Properties()));
 }
