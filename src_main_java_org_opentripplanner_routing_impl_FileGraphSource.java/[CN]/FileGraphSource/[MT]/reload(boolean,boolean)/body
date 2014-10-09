@@ -12,13 +12,14 @@ synchronized (preEvictMutex) {
     }
  else {
       Graph newGraph=loadGraph();
-      if (graph != null)       decorator.shutdownGraph(graph);
       if (newGraph != null) {
+        if (graph != null)         decorator.shutdownGraph(graph);
         graph=newGraph;
       }
  else {
         if (force || graph == null) {
           LOG.warn("Unable to load data for router '{}'.",routerId);
+          if (graph != null)           decorator.shutdownGraph(graph);
           graph=null;
         }
  else {
