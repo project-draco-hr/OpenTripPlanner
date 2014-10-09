@@ -11,7 +11,7 @@
 synchronized (graphSources) {
     GraphSource oldSource=graphSources.get(routerId);
     if (oldSource != null) {
-      LOG.info("Graph '{}' already registered. Nothing to do.");
+      LOG.info("Graph '{}' already registered. Nothing to do.",routerId);
       return false;
     }
     graphSources.put(routerId,graphSource);

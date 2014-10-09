@@ -1,0 +1,11 @@
+{
+  if (autoReload) {
+    scanExecutor=Executors.newSingleThreadScheduledExecutor();
+    scanExecutor.scheduleWithFixedDelay(new Runnable(){
+      @Override public void run(){
+        autoReloadScan();
+      }
+    }
+,AUTORELOAD_PERIOD_SEC,AUTORELOAD_PERIOD_SEC,TimeUnit.SECONDS);
+  }
+}
