@@ -14,7 +14,7 @@
     LOG.error("Could not decode gtfs-rt message:",e);
   }
   if (updates != null && updates.size() > 0) {
-    TripUpdateGraphWriterRunnable runnable=new TripUpdateGraphWriterRunnable(updates,agencyId);
+    TripUpdateGraphWriterRunnable runnable=new TripUpdateGraphWriterRunnable(updates,feedId);
     updaterManager.execute(runnable);
   }
 }

@@ -1,32 +1,15 @@
 {
   Vertex sv=s.getVertex();
   double euclideanDistance=distanceLibrary.fastDistance(sv.getY(),sv.getX(),targetY,targetX);
-  if (useTransit) {
-    double streetSpeed=options.getStreetSpeedUpperBound();
-    if (euclideanDistance < target.getDistanceToNearestTransitStop()) {
-      return options.walkReluctance * euclideanDistance / streetSpeed;
+  if (transit) {
+    if (euclideanDistance < requiredWalkDistance) {
+      return walkReluctance * euclideanDistance / maxStreetSpeed;
     }
-    int boardCost;
-    if (s.isOnboard()) {
-      boardCost=0;
-    }
- else {
-      boardCost=options.getBoardCostLowerBound();
-      if (s.isEverBoarded()) {
-        boardCost+=options.transferPenalty;
-        if (localStreetService != null) {
-          if (options.getMaxWalkDistance() - s.getWalkDistance() < euclideanDistance && sv instanceof IntersectionVertex && !localStreetService.transferrable(sv)) {
-            return Double.POSITIVE_INFINITY;
-          }
-        }
-      }
-    }
-    double mandatoryWalkDistance=target.getDistanceToNearestTransitStop() + sv.getDistanceToNearestTransitStop();
-    double transitCost=(euclideanDistance - mandatoryWalkDistance) / maxSpeed + boardCost;
-    double transitStreetCost=mandatoryWalkDistance * options.walkReluctance / streetSpeed;
-    return Math.min(transitCost + transitStreetCost,options.walkReluctance * euclideanDistance / streetSpeed);
+    double transitWeight=(euclideanDistance - requiredWalkDistance) / maxTransitSpeed;
+    double streetWeight=walkReluctance * (requiredWalkDistance / maxStreetSpeed);
+    return transitWeight + streetWeight;
   }
  else {
-    return options.walkReluctance * euclideanDistance / maxSpeed;
+    return walkReluctance * euclideanDistance / maxStreetSpeed;
   }
 }

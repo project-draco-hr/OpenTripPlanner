@@ -6,7 +6,7 @@
   State initialState=new State(options);
   runState.heuristic.initialize(initialState,runState.rctx.target,abortTime);
   if (abortTime < Long.MAX_VALUE && System.currentTimeMillis() > abortTime) {
-    LOG.warn("Timeout during initialization of interleaved bidirectional heuristic.");
+    LOG.warn("Timeout during initialization of goal direction heuristic.");
     options.rctx.debugOutput.timedOut=true;
     runState=null;
     return;

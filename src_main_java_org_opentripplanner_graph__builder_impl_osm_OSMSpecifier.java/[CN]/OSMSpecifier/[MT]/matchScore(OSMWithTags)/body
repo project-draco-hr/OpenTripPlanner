@@ -2,8 +2,8 @@
   int score=0;
   int matches=0;
   for (  P2<String> pair : kvpairs) {
-    String tag=pair.getFirst().toLowerCase();
-    String value=pair.getSecond().toLowerCase();
+    String tag=pair.first.toLowerCase();
+    String value=pair.second.toLowerCase();
     String matchValue=match.getTag(tag);
     int tagScore=getTagScore(value,matchValue);
     score+=tagScore;

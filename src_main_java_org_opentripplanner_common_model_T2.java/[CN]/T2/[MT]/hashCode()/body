@@ -1,7 +1,3 @@
 {
-  final int prime=31;
-  int result=1;
-  result=prime * result + ((_first == null) ? 0 : _first.hashCode());
-  result=prime * result + ((_second == null) ? 0 : _second.hashCode());
-  return result;
+  return (first != null ? first.hashCode() : 0) + (second != null ? second.hashCode() : 0);
 }

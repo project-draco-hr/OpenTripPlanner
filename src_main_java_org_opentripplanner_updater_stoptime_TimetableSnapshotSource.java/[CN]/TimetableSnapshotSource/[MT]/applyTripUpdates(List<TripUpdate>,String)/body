@@ -28,30 +28,31 @@
     if (tripDescriptor.hasScheduleRelationship()) {
 switch (tripDescriptor.getScheduleRelationship()) {
 case SCHEDULED:
-        applied=handleScheduledTrip(tripUpdate,agencyId,serviceDate);
+        applied=handleScheduledTrip(tripUpdate,feedId,serviceDate);
       break;
 case ADDED:
-    applied=handleAddedTrip(tripUpdate,agencyId,serviceDate);
+    applied=handleAddedTrip(tripUpdate,feedId,serviceDate);
   break;
 case UNSCHEDULED:
-applied=handleUnscheduledTrip(tripUpdate,agencyId,serviceDate);
+applied=handleUnscheduledTrip(tripUpdate,feedId,serviceDate);
 break;
 case CANCELED:
-applied=handleCanceledTrip(tripUpdate,agencyId,serviceDate);
+applied=handleCanceledTrip(tripUpdate,feedId,serviceDate);
 break;
 case REPLACEMENT:
-applied=handleReplacementTrip(tripUpdate,agencyId,serviceDate);
+applied=handleReplacementTrip(tripUpdate,feedId,serviceDate);
 break;
 }
 }
  else {
-applied=handleScheduledTrip(tripUpdate,agencyId,serviceDate);
+applied=handleScheduledTrip(tripUpdate,feedId,serviceDate);
 }
 if (applied) {
 appliedBlockCount++;
 }
  else {
-LOG.warn("Failed to apply TripUpdate:\n{}",tripUpdate);
+LOG.warn("Failed to apply TripUpdate.");
+LOG.trace(" Contents: {}",tripUpdate);
 }
 if (appliedBlockCount % logFrequency == 0) {
 LOG.info("Applied {} trip updates.",appliedBlockCount);

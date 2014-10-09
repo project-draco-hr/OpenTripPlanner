@@ -1,21 +1,2 @@
 {
-  Routers routerApi=new Routers();
-  routerApi.server=Context.getInstance().otpServer;
-  RouterList routers=routerApi.getRouterIds();
-  assertEquals(2,routers.routerInfo.size());
-  RouterInfo router0=routers.routerInfo.get(0);
-  RouterInfo router1=routers.routerInfo.get(1);
-  RouterInfo otherRouter;
-  RouterInfo defaultRouter;
-  if (router0.routerId.equals("")) {
-    defaultRouter=router0;
-    otherRouter=router1;
-  }
- else {
-    defaultRouter=router1;
-    otherRouter=router0;
-  }
-  assertEquals("",defaultRouter.routerId);
-  assertEquals("portland",otherRouter.routerId);
-  assertTrue(otherRouter.polygon.getArea() > 0);
 }
