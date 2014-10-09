@@ -1,7 +1,6 @@
 {
   this.graphService=graphService;
   if (autoScan) {
-    attemptRegisterDefault=false;
     scanExecutor=Executors.newSingleThreadScheduledExecutor();
     scanExecutor.scheduleWithFixedDelay(new Runnable(){
       @Override public void run(){
