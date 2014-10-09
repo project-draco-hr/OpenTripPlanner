@@ -1,0 +1,36 @@
+{
+  GraphServiceImpl graphService=new GraphServiceImpl(false);
+  GraphScanner graphScanner=new GraphScanner(graphService,true);
+  graphScanner.basePath=basePath;
+  graphScanner.startup();
+  assertEquals(0,graphService.getRouterIds().size());
+  System.out.println("------------------------------------------");
+  FileGraphSourceFactory graphSourceFactory=new FileGraphSourceFactory();
+  graphSourceFactory.basePath=basePath;
+  graphSourceFactory.save("",new ByteArrayInputStream(smallGraphData));
+  graphService=new GraphServiceImpl(false);
+  graphScanner=new GraphScanner(graphService,true);
+  graphScanner.basePath=basePath;
+  graphScanner.startup();
+  assertEquals(1,graphService.getRouterIds().size());
+  assertEquals("",graphService.getGraph().routerId);
+  assertEquals("",graphService.getGraph("").routerId);
+  System.out.println("------------------------------------------");
+  graphSourceFactory.save("A",new ByteArrayInputStream(smallGraphData));
+  graphService=new GraphServiceImpl(false);
+  graphScanner=new GraphScanner(graphService,true);
+  graphScanner.basePath=basePath;
+  graphScanner.startup();
+  assertEquals(2,graphService.getRouterIds().size());
+  assertEquals("",graphService.getGraph().routerId);
+  assertEquals("A",graphService.getGraph("A").routerId);
+  System.out.println("------------------------------------------");
+  new File(basePath,FileGraphSource.GRAPH_FILENAME).delete();
+  graphService=new GraphServiceImpl(false);
+  graphScanner=new GraphScanner(graphService,true);
+  graphScanner.basePath=basePath;
+  graphScanner.startup();
+  assertEquals(1,graphService.getRouterIds().size());
+  assertEquals("A",graphService.getGraph().routerId);
+  assertEquals("A",graphService.getGraph("A").routerId);
+}
