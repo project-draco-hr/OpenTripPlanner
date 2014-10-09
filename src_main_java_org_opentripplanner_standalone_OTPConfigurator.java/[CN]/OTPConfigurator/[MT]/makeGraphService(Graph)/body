@@ -11,7 +11,7 @@
     }
   }
  else {
-    GraphServiceImpl graphService=new GraphServiceImpl(true);
+    GraphServiceImpl graphService=new GraphServiceImpl(params.autoReload);
     FileGraphSourceFactory graphSourceFactory=new FileGraphSourceFactory();
     graphService.graphSourceFactory=graphSourceFactory;
     if (params.graphDirectory != null) {
