@@ -1,0 +1,27 @@
+{
+  if (args.length < 1) {
+    System.err.println("Please specify a GTFS feed input file for parsing and extraction.");
+    System.exit(1);
+  }
+  try (Feed feed=new Feed(args[0])){
+    for (    Entry<String,Iterable<Map<String,String>>> entry : feed.entrySet()) {
+      CsvWriter csvWriter=new CsvWriter(entry.getKey(),',',UTF8);
+      Iterable<Map<String,String>> iterable=entry.getValue();
+      Set<String> set=iterable.iterator().next().keySet();
+      try {
+        csvWriter.writeRecord(set.toArray(new String[set.size()]));
+        for (        Map<String,String> map : iterable) {
+          Collection<String> collection=map.values();
+          csvWriter.writeRecord(collection.toArray(new String[collection.size()]));
+        }
+      }
+ catch (      Exception e) {
+        e.printStackTrace();
+        System.exit(2);
+      }
+ finally {
+        csvWriter.close();
+      }
+    }
+  }
+ }

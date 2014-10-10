@@ -1,0 +1,35 @@
+{
+  final ZipFile zipFile;
+  try {
+    zipFile=new ZipFile(filename);
+  }
+ catch (  RuntimeException e) {
+    throw e;
+  }
+catch (  Exception e) {
+    throw new RuntimeException(e);
+  }
+  autoCloseables.add(zipFile);
+  Map<String,Iterable<Map<String,String>>> map=Maps.newLinkedHashMap();
+  Enumeration<? extends ZipEntry> entries=zipFile.entries();
+  while (entries.hasMoreElements()) {
+    final ZipEntry zipEntry=entries.nextElement();
+    map.put(zipEntry.getName(),new Iterable<Map<String,String>>(){
+      @Override public Table iterator(){
+        try {
+          Table table=new Table(zipFile.getInputStream(zipEntry));
+          autoCloseables.addFirst(table);
+          return table;
+        }
+ catch (        RuntimeException e) {
+          throw e;
+        }
+catch (        Exception e) {
+          throw new RuntimeException(e);
+        }
+      }
+    }
+);
+  }
+  tables=Collections.unmodifiableMap(map);
+}
