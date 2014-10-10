@@ -1,6 +1,6 @@
 {
   csvReader=new CsvReader(inputStream,Charset.forName("UTF-8"));
-  Map<String,Integer> map=Maps.newLinkedHashMap();
+  Map<String,Integer> map=Maps.newHashMap();
   try {
     if (csvReader.readHeaders()) {
       final int count=csvReader.getHeaderCount();
