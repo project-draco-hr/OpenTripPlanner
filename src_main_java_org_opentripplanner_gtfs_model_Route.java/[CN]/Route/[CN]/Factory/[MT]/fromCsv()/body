@@ -1,14 +1,14 @@
 {
   Route r=new Route();
-  r.route_id=getStrField("route_id");
-  r.agency_id=getStrField("agency_id");
-  r.route_short_name=getStrField("route_short_name");
-  r.route_long_name=getStrField("route_long_name");
-  r.route_desc=getStrField("route_desc");
+  r.route_id=getStringField("route_id");
+  r.agency_id=getStringField("agency_id");
+  r.route_short_name=getStringField("route_short_name");
+  r.route_long_name=getStringField("route_long_name");
+  r.route_desc=getStringField("route_desc");
   r.route_type=getIntField("route_type");
-  r.route_url=getStrField("route_url");
-  r.route_color=getStrField("route_color");
-  r.route_text_color=getStrField("route_text_color");
+  r.route_url=getStringField("route_url");
+  r.route_color=getStringField("route_color");
+  r.route_text_color=getStringField("route_text_color");
   r.feedId="FEED";
   return r;
 }
