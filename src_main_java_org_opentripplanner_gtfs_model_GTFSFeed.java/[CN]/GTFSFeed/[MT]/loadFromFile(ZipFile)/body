@@ -1,2 +1,9 @@
 {
+  Entity.Factory factory;
+  factory=new Route.Factory();
+  factory.loadTable(zip,errors,routes);
+  factory=new Agency.Factory();
+  factory.loadTable(zip,errors,agency);
+  factory=new Stop.Factory();
+  factory.loadTable(zip,errors,stops);
 }
