@@ -3,7 +3,7 @@
   FileGraphSourceFactory graphSourceFactory=new FileGraphSourceFactory();
   graphSourceFactory.basePath=basePath;
   graphSourceFactory.save("A",new ByteArrayInputStream(emptyGraphData));
-  assertTrue(new File(new File(basePath,"A"),FileGraphSource.GRAPH_FILENAME).canRead());
+  assertTrue(new File(new File(basePath,"A"),InputStreamGraphSource.GRAPH_FILENAME).canRead());
   boolean registered=graphService.registerGraph("A",graphSourceFactory.createGraphSource("A"));
   assertTrue(registered);
   Graph graph=graphService.getGraph("A");
@@ -18,7 +18,7 @@
   graph=graphService.getGraph("A");
   assertEquals(verticesCount,graph.getVertices().size());
   assertEquals(edgesCount,graph.getEdges().size());
-  boolean deleted=new File(new File(basePath,"A"),FileGraphSource.GRAPH_FILENAME).delete();
+  boolean deleted=new File(new File(basePath,"A"),InputStreamGraphSource.GRAPH_FILENAME).delete();
   assertTrue(deleted);
   graphService.reloadGraphs(false);
   assertEquals(0,graphService.getRouterIds().size());

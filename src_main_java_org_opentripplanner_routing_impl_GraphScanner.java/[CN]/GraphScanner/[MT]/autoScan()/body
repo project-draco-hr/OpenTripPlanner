@@ -1,14 +1,14 @@
 {
   LOG.debug("Auto discovering graphs under {}",basePath);
   Set<String> graphOnDisk=new HashSet<String>();
-  File rootGraphFile=new File(basePath,FileGraphSource.GRAPH_FILENAME);
+  File rootGraphFile=new File(basePath,InputStreamGraphSource.GRAPH_FILENAME);
   if (rootGraphFile.exists() && rootGraphFile.canRead()) {
     graphOnDisk.add("");
   }
   for (  String sub : basePath.list()) {
     File subPath=new File(basePath,sub);
     if (subPath.isDirectory()) {
-      File graphFile=new File(subPath,FileGraphSource.GRAPH_FILENAME);
+      File graphFile=new File(subPath,InputStreamGraphSource.GRAPH_FILENAME);
       if (graphFile.exists() && graphFile.canRead()) {
         graphOnDisk.add(sub);
       }
@@ -20,7 +20,7 @@
   if (!graphToRegister.isEmpty()) {
     LOG.info("Found new routers to register: {}",Arrays.toString(graphToRegister.toArray()));
     for (    String routerId : graphToRegister) {
-      FileGraphSource graphSource=new FileGraphSource(routerId,getBasePath(routerId),loadLevel);
+      InputStreamGraphSource graphSource=InputStreamGraphSource.newFileGraphSource(routerId,getBasePath(routerId),loadLevel);
       if (graphSource.getGraph() != null) {
         graphService.registerGraph(routerId,graphSource);
       }
