@@ -3,7 +3,7 @@
     if (!isWheelchairAccessible()) {
       return false;
     }
-    if (elevationProfileSegment.getMaxSlope() > options.maxSlope) {
+    if (getElevationProfileSegment().getMaxSlope() > options.maxSlope) {
       return false;
     }
   }

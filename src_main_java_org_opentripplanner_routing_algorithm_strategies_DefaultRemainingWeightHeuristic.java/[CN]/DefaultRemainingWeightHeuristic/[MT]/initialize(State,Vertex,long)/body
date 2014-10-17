@@ -1,9 +1,10 @@
 {
-  this.options=s.getOptions();
-  this.useTransit=options.modes.isTransit();
-  this.maxSpeed=getMaxSpeed(options);
-  Graph graph=options.rctx.graph;
-  localStreetService=graph.getService(TransitLocalStreetService.class);
+  RoutingRequest req=s.getOptions();
+  this.transit=req.modes.isTransit();
+  maxStreetSpeed=req.getStreetSpeedUpperBound();
+  maxTransitSpeed=req.getTransitSpeedUpperBound();
   targetX=target.getX();
   targetY=target.getY();
+  requiredWalkDistance=determineRequiredWalkDistance(req);
+  walkReluctance=req.walkReluctance;
 }

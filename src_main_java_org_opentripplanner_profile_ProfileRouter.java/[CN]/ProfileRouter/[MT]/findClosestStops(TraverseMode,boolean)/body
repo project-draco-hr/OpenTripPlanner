@@ -16,7 +16,7 @@
   rr.setNumItineraries(1);
   StopFinderTraverseVisitor visitor=new StopFinderTraverseVisitor(mode);
   astar.setTraverseVisitor(visitor);
-  ShortestPathTree spt=astar.getShortestPathTree(rr,5);
+  astar.getShortestPathTree(rr,5);
   routingContexts.add(rr.rctx);
   return visitor.stopClustersFound.values();
 }

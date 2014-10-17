@@ -48,6 +48,9 @@ OpenStreetMapProvider osmProvider=new AnyFileBasedOpenStreetMapProviderImpl(osmF
 osmProviders.add(osmProvider);
 }
 OpenStreetMapGraphBuilderImpl osmBuilder=new OpenStreetMapGraphBuilderImpl(osmProviders);
+DefaultStreetEdgeFactory streetEdgeFactory=new DefaultStreetEdgeFactory();
+streetEdgeFactory.useElevationData=params.elevation;
+osmBuilder.edgeFactory=streetEdgeFactory;
 DefaultWayPropertySetSource defaultWayPropertySetSource=new DefaultWayPropertySetSource();
 osmBuilder.setDefaultWayPropertySetSource(defaultWayPropertySetSource);
 osmBuilder.skipVisibility=params.skipVisibility;

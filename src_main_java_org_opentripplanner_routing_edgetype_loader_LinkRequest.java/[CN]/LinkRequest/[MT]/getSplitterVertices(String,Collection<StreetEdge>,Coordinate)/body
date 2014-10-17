@@ -30,7 +30,7 @@
   P2<StreetEdge> bestPair=null;
   Point p=GeometryUtils.getGeometryFactory().createPoint(coordinate);
   for (  P2<StreetEdge> pair : replacement) {
-    StreetEdge e1=pair.getFirst();
+    StreetEdge e1=pair.first;
     double dist=e1.getGeometry().distance(p);
     if (dist < bestDist) {
       bestDist=dist;

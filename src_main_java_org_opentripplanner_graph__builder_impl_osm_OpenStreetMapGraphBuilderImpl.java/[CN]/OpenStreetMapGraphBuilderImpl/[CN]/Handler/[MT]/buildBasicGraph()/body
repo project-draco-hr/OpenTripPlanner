@@ -84,8 +84,8 @@
         }
       }
       P2<StreetEdge> streets=getEdgesForStreet(startEndpoint,endEndpoint,way,i,osmStartNode.getId(),osmEndNode.getId(),permissions,geometry);
-      StreetEdge street=streets.getFirst();
-      StreetEdge backStreet=streets.getSecond();
+      StreetEdge street=streets.first;
+      StreetEdge backStreet=streets.second;
       applyWayProperties(street,backStreet,wayData,way);
       applyEdgesToTurnRestrictions(way,startNode,endNode,street,backStreet);
       startNode=endNode;

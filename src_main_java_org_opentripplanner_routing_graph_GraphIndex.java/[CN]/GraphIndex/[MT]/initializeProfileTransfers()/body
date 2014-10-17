@@ -26,7 +26,7 @@
   LOG.info("Filtering out long series of transfers on trunks shared between patterns.");
   for (  P2<TripPattern> pair : transfers.keySet()) {
     ProfileTransfer.GoodTransferList list=transfers.get(pair);
-    TripPattern fromPattern=pair.getFirst();
+    TripPattern fromPattern=pair.first;
     Map<StopCluster,ProfileTransfer> transfersByFromCluster=Maps.newHashMap();
     for (    ProfileTransfer transfer : list.good) {
       transfersByFromCluster.put(transfer.sc1,transfer);

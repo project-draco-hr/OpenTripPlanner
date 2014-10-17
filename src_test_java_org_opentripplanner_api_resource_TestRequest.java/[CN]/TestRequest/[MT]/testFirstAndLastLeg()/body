@@ -1,10 +1,2 @@
 {
-  TestPlanner planner=new TestPlanner("portland","45.58,-122.68","45.48,-122.6");
-  Response response=planner.getFirstTrip();
-  Itinerary itinerary=response.getPlan().itinerary.get(0);
-  List<Leg> legs=itinerary.legs;
-  Leg firstLeg=legs.get(0);
-  Leg lastLeg=legs.get(legs.size() - 1);
-  assertEquals(itinerary.startTime,firstLeg.startTime);
-  assertEquals(itinerary.endTime,lastLeg.endTime);
 }
