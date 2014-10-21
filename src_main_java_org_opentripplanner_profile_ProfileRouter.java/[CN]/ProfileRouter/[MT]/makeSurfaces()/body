@@ -3,7 +3,7 @@
   RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
   rr.setMode(TraverseMode.WALK);
   rr.walkSpeed=request.walkSpeed;
-  int worstElapsedTime=request.accessTime * 60;
+  int worstElapsedTime=request.maxWalkTime * 60;
   rr.worstTime=(rr.dateTime + worstElapsedTime);
   rr.batch=(true);
   GenericAStar astar=new GenericAStar();

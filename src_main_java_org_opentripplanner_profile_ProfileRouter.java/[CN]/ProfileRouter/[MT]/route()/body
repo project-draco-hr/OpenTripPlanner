@@ -29,7 +29,9 @@
   for (  Entry<TripPattern,StopAtDistance> entry : fromStops.entrySet()) {
     TripPattern pattern=entry.getKey();
     StopAtDistance sd=entry.getValue();
-    if (!request.modes.contains(pattern.mode))     continue;
+    if (!request.modes.contains(pattern.mode)) {
+      continue;
+    }
     for (int i=0; i < pattern.getStops().size(); ++i) {
       if (sd.stop == graph.index.stopClusterForStop.get(pattern.getStops().get(i))) {
         Ride ride=initialRides.get(sd.stop);

@@ -1,7 +1,8 @@
 {
   RoutingRequest rr=new RoutingRequest(mode);
   if (mode == TraverseMode.CAR) {
-    rr.kissAndRide=true;
+    rr.parkAndRide=true;
+    rr.modes.setWalk(true);
   }
   rr.from=(new GenericLocation(request.from.lat,request.from.lon));
   rr.to=new GenericLocation(request.to.lat,request.to.lon);
@@ -9,12 +10,27 @@
   rr.setRoutingContext(graph);
   rr.batch=(true);
   rr.walkSpeed=request.walkSpeed;
-  long worstElapsedTime=request.accessTime * 60;
-  if (dest)   worstElapsedTime*=-1;
-  rr.worstTime=(rr.dateTime + worstElapsedTime);
+  int minAccessTime=0, maxAccessTime=0;
+  if (mode == TraverseMode.WALK) {
+    maxAccessTime=request.maxWalkTime;
+  }
+ else   if (mode == TraverseMode.BICYCLE) {
+    minAccessTime=request.minBikeTime;
+    maxAccessTime=request.maxBikeTime;
+  }
+ else   if (mode == TraverseMode.CAR) {
+    minAccessTime=request.minCarTime;
+    maxAccessTime=request.maxCarTime;
+  }
+ else {
+    LOG.warn("No modes matched when setting min/max travel times.");
+  }
+  long worstElapsedTimeSeconds=maxAccessTime * 60;
+  if (dest)   worstElapsedTimeSeconds*=-1;
+  rr.worstTime=(rr.dateTime + worstElapsedTimeSeconds);
   GenericAStar astar=new GenericAStar();
   rr.setNumItineraries(1);
-  StopFinderTraverseVisitor visitor=new StopFinderTraverseVisitor(mode);
+  StopFinderTraverseVisitor visitor=new StopFinderTraverseVisitor(mode,minAccessTime * 60);
   astar.setTraverseVisitor(visitor);
   astar.getShortestPathTree(rr,5);
   routingContexts.add(rr.rctx);
