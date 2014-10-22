@@ -1,24 +1,24 @@
 {
   long wayId=way.getId();
-  if (_ways.containsKey(wayId) || _areaWaysById.containsKey(wayId))   return;
-  if (_areaWayIds.contains(wayId)) {
-    _areaWaysById.put(wayId,way);
+  if (waysById.containsKey(wayId) || areaWaysById.containsKey(wayId))   return;
+  if (areaWayIds.contains(wayId)) {
+    areaWaysById.put(wayId,way);
   }
   getLevelsForWay(way);
   if (!(OSMFilter.isWayRoutable(way) || way.isParkAndRide())) {
     return;
   }
   if ((way.isTag("area","yes") || way.isTag("amenity","parking")) && way.getNodeRefs().size() > 2) {
-    if (!_areaWayIds.contains(wayId)) {
-      _singleWayAreas.add(way);
-      _areaWaysById.put(wayId,way);
-      _areaWayIds.add(wayId);
+    if (!areaWayIds.contains(wayId)) {
+      singleWayAreas.add(way);
+      areaWaysById.put(wayId,way);
+      areaWayIds.add(wayId);
       for (      Long node : way.getNodeRefs()) {
-        MapUtils.addToMapSet(_areasForNode,node,way);
+        MapUtils.addToMapSet(areasForNode,node,way);
       }
     }
     return;
   }
-  _ways.put(wayId,way);
-  if (_ways.size() % 10000 == 0)   LOG.debug("ways=" + _ways.size());
+  waysById.put(wayId,way);
+  if (waysById.size() % 10000 == 0)   LOG.debug("ways=" + waysById.size());
 }

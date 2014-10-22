@@ -1,9 +1,9 @@
 {
   StreetTraversalPermission permissions=OSMFilter.getPermissionsForEntity(area.parent,StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
   if (OSMFilter.isOsmEntityRoutable(area.parent) && permissions != StreetTraversalPermission.NONE) {
-    _walkableAreas.add(area);
+    walkableAreas.add(area);
   }
   if (area.parent.isParkAndRide()) {
-    _parkAndRideAreas.add(area);
+    parkAndRideAreas.add(area);
   }
 }

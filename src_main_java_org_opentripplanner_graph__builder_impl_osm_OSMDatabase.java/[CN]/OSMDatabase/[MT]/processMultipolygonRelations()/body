@@ -1,6 +1,6 @@
 {
-  RELATION:   for (  OSMRelation relation : _relations.values()) {
-    if (_processedAreas.contains(relation)) {
+  RELATION:   for (  OSMRelation relation : relationsById.values()) {
+    if (processedAreas.contains(relation)) {
       continue;
     }
     if (!(relation.isTag("type","multipolygon") && (OSMFilter.isOsmEntityRoutable(relation) || relation.isParkAndRide()))) {
@@ -10,15 +10,15 @@
     ArrayList<OSMWay> outerWays=new ArrayList<OSMWay>();
     for (    OSMRelationMember member : relation.getMembers()) {
       String role=member.getRole();
-      OSMWay way=_areaWaysById.get(member.getRef());
+      OSMWay way=areaWaysById.get(member.getRef());
       if (way == null) {
         continue RELATION;
       }
       for (      Long nodeId : way.getNodeRefs()) {
-        if (!_nodes.containsKey(nodeId)) {
+        if (!nodesById.containsKey(nodeId)) {
           continue RELATION;
         }
-        MapUtils.addToMapSet(_areasForNode,nodeId,way);
+        MapUtils.addToMapSet(areasForNode,nodeId,way);
       }
       if (role.equals("inner")) {
         innerWays.add(way);
@@ -30,18 +30,18 @@
         LOG.warn("Unexpected role " + role + " in multipolygon");
       }
     }
-    _processedAreas.add(relation);
+    processedAreas.add(relation);
     try {
-      newArea(new Area(relation,outerWays,innerWays,_nodes));
+      newArea(new Area(relation,outerWays,innerWays,nodesById));
     }
  catch (    Area.AreaConstructionException e) {
       continue;
     }
     for (    OSMRelationMember member : relation.getMembers()) {
-      if (!("way".equals(member.getType()) && _ways.containsKey(member.getRef()))) {
+      if (!("way".equals(member.getType()) && waysById.containsKey(member.getRef()))) {
         continue;
       }
-      OSMWithTags way=_ways.get(member.getRef());
+      OSMWithTags way=waysById.get(member.getRef());
       if (way == null) {
         continue;
       }

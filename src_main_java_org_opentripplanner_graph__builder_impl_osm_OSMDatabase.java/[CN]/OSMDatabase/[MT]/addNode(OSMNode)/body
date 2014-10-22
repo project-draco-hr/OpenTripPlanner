@@ -1,10 +1,10 @@
 {
   if (node.isTag("amenity","bicycle_rental")) {
-    _bikeRentalNodes.add(node);
+    bikeRentalNodes.add(node);
     return;
   }
-  if (!(_nodesWithNeighbors.contains(node.getId()) || _areaNodes.contains(node.getId()) || node.isStop()))   return;
-  if (_nodes.containsKey(node.getId()))   return;
-  _nodes.put(node.getId(),node);
-  if (_nodes.size() % 100000 == 0)   LOG.debug("nodes=" + _nodes.size());
+  if (!(waysNodeIds.contains(node.getId()) || areaNodeIds.contains(node.getId()) || node.isStop()))   return;
+  if (nodesById.containsKey(node.getId()))   return;
+  nodesById.put(node.getId(),node);
+  if (nodesById.size() % 100000 == 0)   LOG.debug("nodes=" + nodesById.size());
 }

@@ -1,9 +1,9 @@
 {
   for (  OSMRelationMember member : relation.getMembers()) {
-    if (!("way".equals(member.getType()) && _ways.containsKey(member.getRef()))) {
+    if (!("way".equals(member.getType()) && waysById.containsKey(member.getRef()))) {
       continue;
     }
-    OSMWithTags way=_ways.get(member.getRef());
+    OSMWithTags way=waysById.get(member.getRef());
     if (way == null) {
       continue;
     }

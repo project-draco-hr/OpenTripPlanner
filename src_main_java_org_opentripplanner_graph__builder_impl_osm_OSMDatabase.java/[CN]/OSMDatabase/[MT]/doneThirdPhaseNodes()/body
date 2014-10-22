@@ -1,19 +1,19 @@
 {
   processMultipolygonRelations();
-  AREA:   for (  OSMWay way : _singleWayAreas) {
-    if (_processedAreas.contains(way)) {
+  AREA:   for (  OSMWay way : singleWayAreas) {
+    if (processedAreas.contains(way)) {
       continue;
     }
     for (    Long nodeRef : way.getNodeRefs()) {
-      if (!_nodes.containsKey(nodeRef)) {
+      if (!nodesById.containsKey(nodeRef)) {
         continue AREA;
       }
     }
     try {
-      newArea(new Area(way,Arrays.asList(way),Collections.<OSMWay>emptyList(),_nodes));
+      newArea(new Area(way,Arrays.asList(way),Collections.<OSMWay>emptyList(),nodesById));
     }
  catch (    Area.AreaConstructionException e) {
     }
-    _processedAreas.add(way);
+    processedAreas.add(way);
   }
 }
