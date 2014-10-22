@@ -19,6 +19,7 @@
     toStopPaths=findClosestStops(true);
     toStops=findClosestPatterns(toStopPaths);
     for (    TraverseMode mode : ACCESS_MODES) {
+      LOG.info("Finding non-transit path for mode {}",mode);
       if (request.modes.contains(mode))       findStreetOption(mode);
     }
   }
