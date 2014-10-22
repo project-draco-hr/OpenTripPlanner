@@ -1,7 +1,7 @@
 {
   SimpleIsochrone.MinMap<TripPattern,StopAtDistance> closest=new SimpleIsochrone.MinMap<TripPattern,StopAtDistance>();
   for (  StopAtDistance stopDist : stopClusters.values()) {
-    http:     for (    Stop stop : stopDist.stop.children) {
+    for (    Stop stop : stopDist.stop.children) {
       for (      TripPattern pattern : graph.index.patternsForStop.get(stop)) {
         closest.putMin(pattern,stopDist);
       }
