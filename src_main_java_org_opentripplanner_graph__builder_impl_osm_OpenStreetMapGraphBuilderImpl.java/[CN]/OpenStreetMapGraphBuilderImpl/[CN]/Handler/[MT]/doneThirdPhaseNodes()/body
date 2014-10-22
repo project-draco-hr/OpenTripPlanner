@@ -10,7 +10,8 @@
       }
     }
     try {
-      newArea(new Area(way,Arrays.asList(way),Collections.<OSMWay>emptyList()));
+      setWayName(way);
+      newArea(new Area(way,Arrays.asList(way),Collections.<OSMWay>emptyList(),_nodes));
     }
  catch (    Area.AreaConstructionException e) {
     }

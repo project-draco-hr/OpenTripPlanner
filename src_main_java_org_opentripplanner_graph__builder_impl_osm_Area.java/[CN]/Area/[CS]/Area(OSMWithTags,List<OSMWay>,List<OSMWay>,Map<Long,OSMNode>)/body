@@ -1,6 +1,5 @@
 {
   this.parent=parent;
-  setWayName(parent);
   List<List<Long>> innerRingNodes=constructRings(innerRingWays);
   List<List<Long>> outerRingNodes=constructRings(outerRingWays);
   if (innerRingNodes == null || outerRingNodes == null) {
@@ -11,10 +10,10 @@
   List<Ring> innerRings=new ArrayList<Ring>();
   List<Ring> outerRings=new ArrayList<Ring>();
   for (  List<Long> ring : innerRingNodes) {
-    innerRings.add(new Ring(ring));
+    innerRings.add(new Ring(ring,_nodes));
   }
   for (  List<Long> ring : outerRingNodes) {
-    outerRings.add(new Ring(ring));
+    outerRings.add(new Ring(ring,_nodes));
   }
   OUTER:   for (  Ring outer : outerRings) {
     for (    Ring possibleContainer : outerRings) {

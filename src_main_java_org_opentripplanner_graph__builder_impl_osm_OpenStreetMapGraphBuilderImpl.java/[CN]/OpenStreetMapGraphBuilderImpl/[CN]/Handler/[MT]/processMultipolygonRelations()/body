@@ -32,7 +32,8 @@
     }
     _processedAreas.add(relation);
     try {
-      newArea(new Area(relation,outerWays,innerWays));
+      setWayName(relation);
+      newArea(new Area(relation,outerWays,innerWays,_nodes));
     }
  catch (    Area.AreaConstructionException e) {
       continue;
