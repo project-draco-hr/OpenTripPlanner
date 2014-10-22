@@ -16,7 +16,7 @@
   if (intersects.size() == 1) {
     Area area=intersects.get(0);
     OSMWithTags areaEntity=area.parent;
-    StreetTraversalPermission areaPermissions=getPermissionsForEntity(areaEntity,StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
+    StreetTraversalPermission areaPermissions=OSMFilter.getPermissionsForEntity(areaEntity,StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
     float carSpeed=wayPropertySet.getCarSpeedForWay(areaEntity,false);
     double length=distanceLibrary.distance(startEndpoint.getCoordinate(),endEndpoint.getCoordinate());
     int cls=StreetEdge.CLASS_OTHERPATH;

@@ -1,0 +1,6 @@
+{
+  processRelations();
+  HashSet<Long> _keep=new HashSet<Long>(_nodesWithNeighbors);
+  _keep.addAll(_areaNodes);
+  _nodes.keySet().retainAll(_keep);
+}

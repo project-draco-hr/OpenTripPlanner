@@ -3,7 +3,7 @@
   int n=0;
   BikeRentalStationService bikeRentalService=new BikeRentalStationService();
   graph.putService(BikeRentalStationService.class,bikeRentalService);
-  for (  OSMNode node : _bikeRentalNodes) {
+  for (  OSMNode node : osmdb.getBikeRentalNodes()) {
     n++;
     String creativeName=wayPropertySet.getCreativeNameForWay(node);
     int capacity=Integer.MAX_VALUE;

@@ -11,8 +11,9 @@
       if (!ring.toJtsPolygon().contains(area.toJTSMultiPolygon())) {
         continue;
       }
-      if (stopsInAreas.containsKey(area.parent)) {
-        for (        OSMNode node : stopsInAreas.get(area.parent)) {
+      Collection<OSMNode> nodes=osmdb.getStopsInArea(area.parent);
+      if (nodes != null) {
+        for (        OSMNode node : nodes) {
           addtoVisibilityAndStartSets(startingNodes,visibilityPoints,visibilityNodes,node);
         }
       }

@@ -18,7 +18,7 @@
     Double safety=wayData.getSafetyFeatures().first;
     namedArea.setBicycleSafetyMultiplier(safety);
     namedArea.setOriginalEdges(intersection);
-    StreetTraversalPermission permission=getPermissionsForEntity(areaEntity,StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
+    StreetTraversalPermission permission=OSMFilter.getPermissionsForEntity(areaEntity,StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
     namedArea.setPermission(permission);
     edgeList.addArea(namedArea);
   }

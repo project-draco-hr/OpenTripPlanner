@@ -1,6 +1,6 @@
 {
   LOG.info("Building P+R areas");
-  List<AreaGroup> areaGroups=groupAreas(_parkAndRideAreas);
+  List<AreaGroup> areaGroups=groupAreas(osmdb.getParkAndRideAreas());
   int n=0;
   for (  AreaGroup group : areaGroups) {
     if (buildParkAndRideAreasForGroup(group))     n++;

@@ -1,0 +1,62 @@
+{
+  RELATION:   for (  OSMRelation relation : _relations.values()) {
+    if (_processedAreas.contains(relation)) {
+      continue;
+    }
+    if (!(relation.isTag("type","multipolygon") && (OSMFilter.isOsmEntityRoutable(relation) || relation.isParkAndRide()))) {
+      continue;
+    }
+    ArrayList<OSMWay> innerWays=new ArrayList<OSMWay>();
+    ArrayList<OSMWay> outerWays=new ArrayList<OSMWay>();
+    for (    OSMRelationMember member : relation.getMembers()) {
+      String role=member.getRole();
+      OSMWay way=_areaWaysById.get(member.getRef());
+      if (way == null) {
+        continue RELATION;
+      }
+      for (      Long nodeId : way.getNodeRefs()) {
+        if (!_nodes.containsKey(nodeId)) {
+          continue RELATION;
+        }
+        MapUtils.addToMapSet(_areasForNode,nodeId,way);
+      }
+      if (role.equals("inner")) {
+        innerWays.add(way);
+      }
+ else       if (role.equals("outer")) {
+        outerWays.add(way);
+      }
+ else {
+        LOG.warn("Unexpected role " + role + " in multipolygon");
+      }
+    }
+    _processedAreas.add(relation);
+    try {
+      newArea(new Area(relation,outerWays,innerWays,_nodes));
+    }
+ catch (    Area.AreaConstructionException e) {
+      continue;
+    }
+    for (    OSMRelationMember member : relation.getMembers()) {
+      if (!("way".equals(member.getType()) && _ways.containsKey(member.getRef()))) {
+        continue;
+      }
+      OSMWithTags way=_ways.get(member.getRef());
+      if (way == null) {
+        continue;
+      }
+      String[] relationCopyTags={"highway","name","ref"};
+      for (      String tag : relationCopyTags) {
+        if (relation.hasTag(tag) && !way.hasTag(tag)) {
+          way.addTag(tag,relation.getTag(tag));
+        }
+      }
+      if (relation.isTag("railway","platform") && !way.hasTag("railway")) {
+        way.addTag("railway","platform");
+      }
+      if (relation.isTag("public_transport","platform") && !way.hasTag("public_transport")) {
+        way.addTag("public_transport","platform");
+      }
+    }
+  }
+}

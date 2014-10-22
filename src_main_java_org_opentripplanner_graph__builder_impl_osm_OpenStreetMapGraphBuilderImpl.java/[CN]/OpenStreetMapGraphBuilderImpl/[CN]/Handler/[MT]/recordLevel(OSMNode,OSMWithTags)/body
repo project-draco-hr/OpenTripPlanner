@@ -1,5 +1,5 @@
 {
-  OSMLevel level=wayLevels.get(way);
+  OSMLevel level=osmdb.getLevelForWay(way);
   HashMap<OSMLevel,IntersectionVertex> vertices;
   long nodeId=node.getId();
   if (multiLevelNodes.containsKey(nodeId)) {

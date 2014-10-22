@@ -1,11 +1,7 @@
 {
-  processRelations();
   if (staticBikeRental) {
     processBikeRentalNodes();
   }
-  HashSet<Long> _keep=new HashSet<Long>(_nodesWithNeighbors);
-  _keep.addAll(_areaNodes);
-  _nodes.keySet().retainAll(_keep);
   initIntersectionNodes();
   buildBasicGraph();
   if (skipVisibility) {
@@ -18,8 +14,8 @@
     buildParkAndRideAreas();
   }
   buildElevatorEdges(graph);
-  for (  Long fromWay : turnRestrictionsByFromWay.keySet()) {
-    for (    TurnRestrictionTag restrictionTag : turnRestrictionsByFromWay.get(fromWay)) {
+  for (  Long fromWay : osmdb.getTurnRestrictionWayIds()) {
+    for (    TurnRestrictionTag restrictionTag : osmdb.getFromWayTurnRestrictions(fromWay)) {
       if (restrictionTag.possibleFrom.isEmpty()) {
         LOG.warn("No from edge found for " + restrictionTag);
         continue;

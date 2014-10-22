@@ -1,0 +1,17 @@
+{
+  if (_relations.containsKey(relation.getId()))   return;
+  if (relation.isTag("type","multipolygon") && OSMFilter.isOsmEntityRoutable(relation)) {
+    if (!OSMFilter.isWayRoutable(relation) && !relation.isParkAndRide()) {
+      return;
+    }
+    for (    OSMRelationMember member : relation.getMembers()) {
+      _areaWayIds.add(member.getRef());
+    }
+    getLevelsForWay(relation);
+  }
+ else   if (!(relation.isTag("type","restriction")) && !(relation.isTag("type","route") && relation.isTag("route","road")) && !(relation.isTag("type","multipolygon") && OSMFilter.isOsmEntityRoutable(relation))&& !(relation.isTag("type","level_map"))&& !(relation.isTag("type","public_transport") && relation.isTag("public_transport","stop_area"))) {
+    return;
+  }
+  _relations.put(relation.getId(),relation);
+  if (_relations.size() % 100 == 0)   LOG.debug("relations=" + _relations.size());
+}

@@ -1,18 +1,19 @@
 {
   long wayIndex=0;
-  WAY:   for (  OSMWay way : _ways.values()) {
-    if (wayIndex % 10000 == 0)     LOG.debug("ways=" + wayIndex + "/"+ _ways.size());
+  long wayCount=osmdb.getWays().size();
+  WAY:   for (  OSMWay way : osmdb.getWays()) {
+    if (wayIndex % 10000 == 0)     LOG.debug("ways=" + wayIndex + "/"+ wayCount);
     wayIndex++;
     WayProperties wayData=wayPropertySet.getDataForWay(way);
     setWayName(way);
-    StreetTraversalPermission permissions=getPermissionsForWay(way,wayData.getPermission());
-    if (!isWayRoutable(way) || permissions.allowsNothing())     continue;
+    StreetTraversalPermission permissions=OSMFilter.getPermissionsForWay(way,wayData.getPermission());
+    if (!OSMFilter.isWayRoutable(way) || permissions.allowsNothing())     continue;
     ArrayList<Long> nodes=new ArrayList<Long>(way.getNodeRefs().size());
     long last=-1;
     double lastLat=-1, lastLon=-1;
     String lastLevel=null;
     for (    long nodeId : way.getNodeRefs()) {
-      OSMNode node=_nodes.get(nodeId);
+      OSMNode node=osmdb.getNode(nodeId);
       if (node == null)       continue WAY;
       boolean levelsDiffer=false;
       String level=node.getTag("level");
@@ -34,11 +35,10 @@
     }
     IntersectionVertex startEndpoint=null, endEndpoint=null;
     ArrayList<Coordinate> segmentCoordinates=new ArrayList<Coordinate>();
-    getLevelsForWay(way);
     Long startNode=null;
     OSMNode osmStartNode=null;
     for (int i=0; i < nodes.size() - 1; i++) {
-      OSMNode segmentStartOSMNode=_nodes.get(nodes.get(i));
+      OSMNode segmentStartOSMNode=osmdb.getNode(nodes.get(i));
       if (segmentStartOSMNode == null) {
         continue;
       }
@@ -47,7 +47,7 @@
         startNode=nodes.get(i);
         osmStartNode=segmentStartOSMNode;
       }
-      OSMNode osmEndNode=_nodes.get(endNode);
+      OSMNode osmEndNode=osmdb.getNode(endNode);
       if (osmStartNode == null || osmEndNode == null)       continue;
       LineString geometry;
       if (segmentCoordinates.size() == 0) {
@@ -89,7 +89,7 @@
       applyWayProperties(street,backStreet,wayData,way);
       applyEdgesToTurnRestrictions(way,startNode,endNode,street,backStreet);
       startNode=endNode;
-      osmStartNode=_nodes.get(startNode);
+      osmStartNode=osmdb.getNode(startNode);
     }
   }
 }

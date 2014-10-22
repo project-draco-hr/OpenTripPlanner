@@ -1,6 +1,6 @@
 {
   Set<Long> possibleIntersectionNodes=new HashSet<Long>();
-  for (  OSMWay way : _ways.values()) {
+  for (  OSMWay way : osmdb.getWays()) {
     List<Long> nodes=way.getNodeRefs();
     for (    long node : nodes) {
       if (possibleIntersectionNodes.contains(node)) {
@@ -11,20 +11,7 @@
       }
     }
   }
-  for (  Area area : _walkableAreas) {
-    for (    Ring outerRing : area.outermostRings) {
-      for (      OSMNode node : outerRing.nodes) {
-        long nodeId=node.getId();
-        if (possibleIntersectionNodes.contains(nodeId)) {
-          intersectionNodes.put(nodeId,null);
-        }
- else {
-          possibleIntersectionNodes.add(nodeId);
-        }
-      }
-    }
-  }
-  for (  Area area : _parkAndRideAreas) {
+  for (  Area area : Iterables.concat(osmdb.getWalkableAreas(),osmdb.getParkAndRideAreas())) {
     for (    Ring outerRing : area.outermostRings) {
       for (      OSMNode node : outerRing.nodes) {
         long nodeId=node.getId();

@@ -1,6 +1,6 @@
 {
   LOG.info("Building visibility graphs for walkable areas.");
-  List<AreaGroup> areaGroups=groupAreas(_walkableAreas);
+  List<AreaGroup> areaGroups=groupAreas(osmdb.getWalkableAreas());
   for (  AreaGroup group : areaGroups) {
     buildWalkableAreasForGroup(group);
   }
