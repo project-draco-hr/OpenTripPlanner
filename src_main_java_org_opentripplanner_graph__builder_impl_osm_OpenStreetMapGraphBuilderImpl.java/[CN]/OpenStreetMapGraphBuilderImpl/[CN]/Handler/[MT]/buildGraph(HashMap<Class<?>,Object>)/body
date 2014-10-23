@@ -2,6 +2,7 @@
   if (staticBikeRental) {
     processBikeRentalNodes();
   }
+  for (  Area area : Iterables.concat(osmdb.getWalkableAreas(),osmdb.getParkAndRideAreas()))   setWayName(area.parent);
   initIntersectionNodes();
   buildBasicGraph();
   if (skipVisibility) {
