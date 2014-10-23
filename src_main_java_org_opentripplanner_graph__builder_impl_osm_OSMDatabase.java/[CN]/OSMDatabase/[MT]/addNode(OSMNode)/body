@@ -1,6 +1,6 @@
 {
-  if (node.isTag("amenity","bicycle_rental")) {
-    bikeRentalNodes.add(node);
+  if (node.isBikeRental()) {
+    bikeRentalNodes.put(node.getId(),node);
     return;
   }
   if (!(waysNodeIds.contains(node.getId()) || areaNodeIds.contains(node.getId()) || node.isStop()))   return;
