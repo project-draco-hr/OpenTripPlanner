@@ -4,7 +4,7 @@
   if (areaWayIds.contains(wayId)) {
     areaWaysById.put(wayId,way);
   }
-  getLevelsForWay(way);
+  applyLevelsForWay(way);
   if (!(OSMFilter.isWayRoutable(way) || way.isParkAndRide())) {
     return;
   }
