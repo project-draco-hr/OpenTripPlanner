@@ -6,7 +6,7 @@
     return;
   }
   alreadyAddedEdges.add(nodePair);
-  IntersectionVertex startEndpoint=getVertexForOsmNode(node,area.parent);
-  IntersectionVertex endEndpoint=getVertexForOsmNode(nextNode,area.parent);
+  IntersectionVertex startEndpoint=__handler.getVertexForOsmNode(node,area.parent);
+  IntersectionVertex endEndpoint=__handler.getVertexForOsmNode(nextNode,area.parent);
   createSegments(node,nextNode,startEndpoint,endEndpoint,Arrays.asList(area),edgeList,edges);
 }

@@ -23,7 +23,7 @@
  else {
     cls=StreetEdge.CLASS_OTHERPATH;
   }
-  cls|=getStreetClasses(way);
+  cls|=OSMFilter.getStreetClasses(way);
   street.setStreetClass(cls);
   if (!way.hasTag("name") && !way.hasTag("ref")) {
     street.setHasBogusName(true);

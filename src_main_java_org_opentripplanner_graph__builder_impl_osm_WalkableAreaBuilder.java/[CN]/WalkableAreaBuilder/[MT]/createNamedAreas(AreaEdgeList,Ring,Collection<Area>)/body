@@ -8,11 +8,10 @@
     NamedArea namedArea=new NamedArea();
     OSMWithTags areaEntity=area.parent;
     int cls=StreetEdge.CLASS_OTHERPATH;
-    cls|=getStreetClasses(areaEntity);
+    cls|=OSMFilter.getStreetClasses(areaEntity);
     namedArea.setStreetClass(cls);
     String id="way (area) " + areaEntity.getId() + " (splitter linking)";
-    id=unique(id);
-    String name=getNameForWay(areaEntity,id);
+    String name=__handler.getNameForWay(areaEntity,id);
     namedArea.setName(name);
     WayProperties wayData=wayPropertySet.getDataForWay(areaEntity);
     Double safety=wayData.getSafetyFeatures().first;

@@ -14,6 +14,7 @@
   if (way.isBicycleDismountForced()) {
     permissions=permissions.remove(StreetTraversalPermission.BICYCLE);
     if (forceBikes) {
+      LOG.warn(graph.addBuilderAnnotation(new ConflictingBikeTags(way.getId())));
     }
   }
   return permissions;

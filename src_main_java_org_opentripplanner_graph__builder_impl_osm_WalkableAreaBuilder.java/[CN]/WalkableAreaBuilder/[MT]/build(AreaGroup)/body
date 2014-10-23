@@ -68,8 +68,8 @@
         OSMNode nodeJ=visibilityNodes.get(j);
         P2<OSMNode> nodePair=new P2<OSMNode>(nodeI,nodeJ);
         if (alreadyAddedEdges.contains(nodePair))         continue;
-        IntersectionVertex startEndpoint=getVertexForOsmNode(nodeI,areaEntity);
-        IntersectionVertex endEndpoint=getVertexForOsmNode(nodeJ,areaEntity);
+        IntersectionVertex startEndpoint=__handler.getVertexForOsmNode(nodeI,areaEntity);
+        IntersectionVertex endEndpoint=__handler.getVertexForOsmNode(nodeJ,areaEntity);
         Coordinate[] coordinates=new Coordinate[]{startEndpoint.getCoordinate(),endEndpoint.getCoordinate()};
         GeometryFactory geometryFactory=GeometryUtils.getGeometryFactory();
         LineString line=geometryFactory.createLineString(coordinates);

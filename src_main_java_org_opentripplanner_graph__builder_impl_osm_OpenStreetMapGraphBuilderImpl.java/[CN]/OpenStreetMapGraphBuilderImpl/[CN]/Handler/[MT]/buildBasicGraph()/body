@@ -6,7 +6,7 @@
     wayIndex++;
     WayProperties wayData=wayPropertySet.getDataForWay(way);
     setWayName(way);
-    StreetTraversalPermission permissions=OSMFilter.getPermissionsForWay(way,wayData.getPermission());
+    StreetTraversalPermission permissions=OSMFilter.getPermissionsForWay(way,wayData.getPermission(),graph);
     if (!OSMFilter.isWayRoutable(way) || permissions.allowsNothing())     continue;
     ArrayList<Long> nodes=new ArrayList<Long>(way.getNodeRefs().size());
     long last=-1;

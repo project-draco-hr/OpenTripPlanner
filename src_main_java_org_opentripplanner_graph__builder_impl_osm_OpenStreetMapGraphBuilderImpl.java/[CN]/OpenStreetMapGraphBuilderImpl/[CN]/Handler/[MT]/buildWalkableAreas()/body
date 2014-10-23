@@ -1,8 +1,9 @@
 {
   LOG.info("Building visibility graphs for walkable areas.");
   List<AreaGroup> areaGroups=groupAreas(osmdb.getWalkableAreas());
+  WalkableAreaBuilder walkableAreaBuilder=new WalkableAreaBuilder(graph,osmdb,wayPropertySet,edgeFactory,this);
   for (  AreaGroup group : areaGroups) {
-    buildWalkableAreasForGroup(group);
+    walkableAreaBuilder.build(group);
   }
   LOG.info("Done building visibility graphs for walkable areas.");
 }
