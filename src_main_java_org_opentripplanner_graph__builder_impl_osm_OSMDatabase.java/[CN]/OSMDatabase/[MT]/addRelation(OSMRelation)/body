@@ -1,6 +1,6 @@
 {
   if (relationsById.containsKey(relation.getId()))   return;
-  if (relation.isTag("type","multipolygon") && OSMFilter.isOsmEntityRoutable(relation)) {
+  if (relation.isTag("type","multipolygon") && (OSMFilter.isOsmEntityRoutable(relation) || relation.isParkAndRide())) {
     if (!OSMFilter.isWayRoutable(relation) && !relation.isParkAndRide()) {
       return;
     }
