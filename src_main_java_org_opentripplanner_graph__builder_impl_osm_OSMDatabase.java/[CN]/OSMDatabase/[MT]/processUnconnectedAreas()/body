@@ -1,0 +1,73 @@
+{
+  LOG.info("Intersecting unconnected areas...");
+class RingSegment {
+    Area area;
+    Ring ring;
+    OSMNode nA;
+    OSMNode nB;
+  }
+  HashGridSpatialIndex<RingSegment> spndx=new HashGridSpatialIndex<>();
+  for (  Area area : parkAndRideAreas) {
+    for (    Ring ring : area.outermostRings) {
+      for (int j=0; j < ring.nodes.size(); j++) {
+        RingSegment ringSegment=new RingSegment();
+        ringSegment.area=area;
+        ringSegment.ring=ring;
+        ringSegment.nA=ring.nodes.get(j);
+        ringSegment.nB=ring.nodes.get((j + 1) % ring.nodes.size());
+        Envelope env=new Envelope(ringSegment.nA.lon,ringSegment.nB.lon,ringSegment.nA.lat,ringSegment.nB.lat);
+        spndx.insert(env,ringSegment);
+      }
+    }
+  }
+  int nCreatedNodes=0;
+  for (  OSMWay way : waysById.values()) {
+    OSMLevel wayLevel=getLevelForWay(way);
+    for (int i=0; i < way.getNodeRefs().size() - 1; i++) {
+      OSMNode nA=nodesById.get(way.getNodeRefs().get(i));
+      OSMNode nB=nodesById.get(way.getNodeRefs().get(i + 1));
+      if (nA == null || nB == null) {
+        continue;
+      }
+      Envelope env=new Envelope(nA.lon,nB.lon,nA.lat,nB.lat);
+      List<RingSegment> ringSegments=spndx.query(env);
+      if (ringSegments.size() == 0)       continue;
+      LineString seg=GeometryUtils.makeLineString(nA.lon,nA.lat,nB.lon,nB.lat);
+      for (      RingSegment ringSegment : ringSegments) {
+        if (ringSegment.nA.getId() == nA.getId() || ringSegment.nA.getId() == nB.getId() || ringSegment.nB.getId() == nA.getId() || ringSegment.nB.getId() == nB.getId())         continue;
+        LineString seg2=GeometryUtils.makeLineString(ringSegment.nA.lon,ringSegment.nA.lat,ringSegment.nB.lon,ringSegment.nB.lat);
+        Geometry intersection=seg2.intersection(seg);
+        Point p=null;
+        if (intersection.isEmpty()) {
+          continue;
+        }
+ else         if (intersection instanceof Point) {
+          p=(Point)intersection;
+        }
+ else {
+          LOG.error("Alien intersection type between {} ({}--{}) and {} ({}--{}): ",way,nA,nB,ringSegment.area.parent,ringSegment.nA,ringSegment.nB,intersection);
+          continue;
+        }
+        OSMLevel areaLevel=getLevelForWay(ringSegment.area.parent);
+        if (!wayLevel.equals(areaLevel))         continue;
+        OSMNode virtualNode=createVirtualNode(p.getCoordinate());
+        nCreatedNodes++;
+        LOG.debug("Adding virtual {}, intersection of {} ({}--{}) and area {} ({}--{}) at {}.",virtualNode,way,nA,nB,ringSegment.area.parent,ringSegment.nA,ringSegment.nB,p);
+        way.addNodeRef(virtualNode.getId(),i + 1);
+        int j=ringSegment.ring.nodes.indexOf(ringSegment.nA);
+        ringSegment.ring.nodes.add(j,virtualNode);
+        RingSegment ringSegment2=new RingSegment();
+        ringSegment2.area=ringSegment.area;
+        ringSegment2.ring=ringSegment.ring;
+        ringSegment2.nA=virtualNode;
+        ringSegment2.nB=ringSegment.nB;
+        Envelope env2=new Envelope(ringSegment2.nA.lon,ringSegment2.nB.lon,ringSegment2.nA.lat,ringSegment2.nB.lat);
+        spndx.insert(env2,ringSegment2);
+        ringSegment.nB=virtualNode;
+        i--;
+        break;
+      }
+    }
+  }
+  LOG.info("Created {} virtual intersection nodes.",nCreatedNodes);
+}
