@@ -1,0 +1,21 @@
+{
+  LOG.info("Run WFS polling updater with hashcode: {}",this.hashCode());
+  notesForEdge=HashMultimap.create();
+  uniqueMatchers=new HashMap<>();
+  FeatureIterator<SimpleFeature> features=featureSource.getFeatures(query).features();
+  while (features.hasNext()) {
+    SimpleFeature feature=features.next();
+    if (feature.getDefaultGeometry() == null)     continue;
+    Alert alert=getNote(feature);
+    if (alert == null)     continue;
+    Geometry geom=(Geometry)feature.getDefaultGeometry();
+    Geometry searchArea=geom.buffer(SEARCH_RADIUS_DEG);
+    Collection<Edge> edges=graph.streetIndex.getEdgesForEnvelope(searchArea.getEnvelopeInternal());
+    for (    Edge edge : edges) {
+      if (edge instanceof StreetEdge && !searchArea.disjoint(edge.getGeometry())) {
+        addNote(edge,alert,NOTE_MATCHER);
+      }
+    }
+  }
+  updaterManager.execute(new WFSGraphWriter());
+}
