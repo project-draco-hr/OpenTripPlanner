@@ -1,0 +1,25 @@
+{
+  Graph gg=new Graph();
+  OpenStreetMapGraphBuilderImpl loader=new OpenStreetMapGraphBuilderImpl();
+  loader.setDefaultWayPropertySetSource(new DefaultWayPropertySetSource());
+  FileBasedOpenStreetMapProviderImpl provider=new FileBasedOpenStreetMapProviderImpl();
+  File file=new File(getClass().getResource("P+R.osm.gz").getFile());
+  provider.setPath(file);
+  loader.setProvider(provider);
+  loader.buildGraph(gg,new HashMap<Class<?>,Object>());
+  assertEquals(1,gg.getBuilderAnnotations().size());
+  int nParkAndRide=0;
+  int nParkAndRideLink=0;
+  for (  Vertex v : gg.getVertices()) {
+    if (v instanceof ParkAndRideVertex) {
+      nParkAndRide++;
+    }
+  }
+  for (  Edge e : gg.getEdges()) {
+    if (e instanceof ParkAndRideLinkEdge) {
+      nParkAndRideLink++;
+    }
+  }
+  assertEquals(2,nParkAndRide);
+  assertEquals(10,nParkAndRideLink);
+}

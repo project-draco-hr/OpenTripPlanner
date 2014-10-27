@@ -1,0 +1,10 @@
+{
+  OSMNode node=new OSMNode();
+  node.lon=c.x;
+  node.lat=c.y;
+  node.setId(virtualNodeId);
+  virtualNodeId--;
+  waysNodeIds.add(node.getId());
+  nodesById.put(node.getId(),node);
+  return node;
+}

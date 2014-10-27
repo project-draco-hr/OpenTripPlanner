@@ -5,7 +5,7 @@
   LineString backGeometry=(LineString)geometry.reverse();
   StreetEdge street=null, backStreet=null;
   double length=this.getGeometryLengthMeters(geometry);
-  P2<StreetTraversalPermission> permissionPair=getPermissions(permissions,way);
+  P2<StreetTraversalPermission> permissionPair=OSMFilter.getPermissions(permissions,way);
   StreetTraversalPermission permissionsFront=permissionPair.first;
   StreetTraversalPermission permissionsBack=permissionPair.second;
   if (permissionsFront.allowsAnything()) {

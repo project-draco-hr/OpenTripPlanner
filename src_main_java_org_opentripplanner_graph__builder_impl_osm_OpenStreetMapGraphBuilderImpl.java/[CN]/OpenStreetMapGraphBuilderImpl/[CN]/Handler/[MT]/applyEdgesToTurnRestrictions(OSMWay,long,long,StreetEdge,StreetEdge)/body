@@ -1,5 +1,5 @@
 {
-  Collection<TurnRestrictionTag> restrictionTags=turnRestrictionsByFromWay.get(way.getId());
+  Collection<TurnRestrictionTag> restrictionTags=osmdb.getFromWayTurnRestrictions(way.getId());
   if (restrictionTags != null) {
     for (    TurnRestrictionTag tag : restrictionTags) {
       if (tag.via == startNode) {
@@ -10,7 +10,7 @@
       }
     }
   }
-  restrictionTags=turnRestrictionsByToWay.get(way.getId());
+  restrictionTags=osmdb.getToWayTurnRestrictions(way.getId());
   if (restrictionTags != null) {
     for (    TurnRestrictionTag tag : restrictionTags) {
       if (tag.via == startNode) {

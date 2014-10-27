@@ -1,6 +1,6 @@
 {
   for (  Long nodeId : multiLevelNodes.keySet()) {
-    OSMNode node=_nodes.get(nodeId);
+    OSMNode node=osmdb.getNode(nodeId);
     HashMap<OSMLevel,IntersectionVertex> vertices=multiLevelNodes.get(nodeId);
     OSMLevel[] levels=vertices.keySet().toArray(new OSMLevel[0]);
     Arrays.sort(levels);

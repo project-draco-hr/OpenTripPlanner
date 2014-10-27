@@ -1,0 +1,17 @@
+{
+  LOG.debug("Processing relations...");
+  for (  OSMRelation relation : relationsById.values()) {
+    if (relation.isTag("type","restriction")) {
+      processRestriction(relation);
+    }
+ else     if (relation.isTag("type","level_map")) {
+      processLevelMap(relation);
+    }
+ else     if (relation.isTag("type","route")) {
+      processRoad(relation);
+    }
+ else     if (relation.isTag("type","public_transport")) {
+      processPublicTransportStopArea(relation);
+    }
+  }
+}

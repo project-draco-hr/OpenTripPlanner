@@ -1,8 +1,13 @@
 {
-  Handler handler=new Handler(graph);
+  OSMDatabase osmdb=new OSMDatabase();
+  Handler handler=new Handler(graph,osmdb);
   for (  OpenStreetMapProvider provider : _providers) {
     LOG.info("Gathering OSM from provider: " + provider);
-    provider.readOSM(handler);
+    provider.readOSM(osmdb);
+  }
+  osmdb.postLoad();
+  for (  GraphBuilderAnnotation annotation : osmdb.getAnnotations()) {
+    graph.addBuilderAnnotation(annotation);
   }
   LOG.info("Building street graph from OSM");
   handler.buildGraph(extra);
