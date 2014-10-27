@@ -1,0 +1,17 @@
+{
+  if (e instanceof StreetEdge) {
+    StreetEdge pse=(StreetEdge)e;
+    if (!pse.isWheelchairAccessible()) {
+      attrs.color=NO_WHEELCHAIR_COLOR;
+      attrs.label="wheelchair=no";
+    }
+ else {
+      attrs.color=slopePalette.getColor(pse.getMaxSlope());
+      attrs.label=String.format("%.02f",pse.getMaxSlope());
+    }
+  }
+ else {
+    return false;
+  }
+  return true;
+}
