@@ -1,0 +1,11 @@
+{
+  long validEndTime=System.currentTimeMillis() - LOAD_DELAY_SEC * 1000;
+  LOG.debug("checkAutoReload router '{}' validEndTime={} lastModified={} graphLastModified={}",routerId,validEndTime,lastModified,graphLastModified);
+  if (lastModified != graphLastModified && lastModified <= validEndTime) {
+    LOG.info("Router ID '{}' graph input modification detected, force reload.",routerId);
+    return true;
+  }
+ else {
+    return false;
+  }
+}
