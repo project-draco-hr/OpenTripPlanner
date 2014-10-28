@@ -8,7 +8,9 @@
     Arrays.fill(mins,TimeSurface.UNREACHABLE);
     Arrays.fill(maxs,TimeSurface.UNREACHABLE);
   }
-  LOG.info("modes: {}",request.modes);
+  LOG.info("access modes: {}",request.accessModes);
+  LOG.info("egress modes: {}",request.egressModes);
+  LOG.info("direct modes: {}",request.directModes);
   long searchBeginTime=System.currentTimeMillis();
   long abortTime=searchBeginTime + TIMEOUT * 1000;
   this.window=new TimeWindow(request.fromTime,request.toTime,graph.index.servicesRunning(request.date));
@@ -20,7 +22,7 @@
     toStops=findClosestPatterns(toStopPaths);
     for (    TraverseMode mode : ACCESS_MODES) {
       LOG.info("Finding non-transit path for mode {}",mode);
-      if (request.modes.contains(mode))       findStreetOption(mode);
+      if (request.directModes.contains(mode))       findStreetOption(mode);
     }
   }
   LOG.info("Done finding access/egress paths.");
@@ -30,7 +32,7 @@
   for (  Entry<TripPattern,StopAtDistance> entry : fromStops.entrySet()) {
     TripPattern pattern=entry.getKey();
     StopAtDistance sd=entry.getValue();
-    if (!request.modes.contains(pattern.mode)) {
+    if (!request.transitModes.contains(pattern.mode)) {
       continue;
     }
     for (int i=0; i < pattern.getStops().size(); ++i) {
@@ -88,7 +90,7 @@
       if (nRides >= MAX_RIDES)       continue;
       boolean penultimateRide=(nRides == MAX_RIDES - 1);
       for (      ProfileTransfer tr : graph.index.transfersFromStopCluster.get(r1.to)) {
-        if (!request.modes.contains(tr.tp2.mode))         continue;
+        if (!request.transitModes.contains(tr.tp2.mode))         continue;
         if (r1.containsPattern(tr.tp1)) {
           if (r1.pathContainsRoute(tr.tp2.route))           continue;
           if (tr.sc1 != tr.sc2 && r1.pathContainsStop(tr.sc2))           continue;
