@@ -5,7 +5,7 @@
   graphScanner.startup();
   assertEquals(0,graphService.getRouterIds().size());
   System.out.println("------------------------------------------");
-  FileGraphSourceFactory graphSourceFactory=new FileGraphSourceFactory();
+  InputStreamGraphSource.FileFactory graphSourceFactory=new InputStreamGraphSource.FileFactory();
   graphSourceFactory.basePath=basePath;
   graphSourceFactory.save("",new ByteArrayInputStream(smallGraphData));
   graphService=new GraphServiceImpl(false);
