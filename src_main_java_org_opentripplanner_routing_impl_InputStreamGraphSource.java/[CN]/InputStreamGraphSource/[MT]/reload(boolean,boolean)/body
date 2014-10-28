@@ -5,7 +5,7 @@ synchronized (this) {
     if (!doReload)     return true;
     if (preEvict) {
 synchronized (preEvictMutex) {
-        if (graph != null)         decorator.shutdownGraph(graph);
+        if (graph != null)         configurator.shutdownGraph(graph);
         graph=null;
         graph=loadGraph();
       }
@@ -13,13 +13,13 @@ synchronized (preEvictMutex) {
  else {
       Graph newGraph=loadGraph();
       if (newGraph != null) {
-        if (graph != null)         decorator.shutdownGraph(graph);
+        if (graph != null)         configurator.shutdownGraph(graph);
         graph=newGraph;
       }
  else {
         if (force || graph == null) {
           LOG.warn("Unable to load data for router '{}'.",routerId);
-          if (graph != null)           decorator.shutdownGraph(graph);
+          if (graph != null)           configurator.shutdownGraph(graph);
           graph=null;
         }
  else {
