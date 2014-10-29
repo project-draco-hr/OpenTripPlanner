@@ -1,7 +1,13 @@
 {
-  Hasher hasher=Hashing.murmur3_128().newHasher();
-  this.semanticHash(hasher,trip);
-  HashCode hashCode=hasher.hash();
-  String encodedHash=BaseEncoding.base64Url().omitPadding().encode(hashCode.asBytes());
-  return encodedHash;
+  HashFunction murmur=Hashing.murmur3_32();
+  BaseEncoding encoder=BaseEncoding.base64Url().omitPadding();
+  StringBuilder sb=new StringBuilder(50);
+  sb.append(encoder.encode(stopPattern.semanticHash(murmur).asBytes()));
+  if (trip != null) {
+    TripTimes tripTimes=scheduledTimetable.getTripTimes(trip);
+    if (tripTimes == null)     return null;
+    sb.append(':');
+    sb.append(encoder.encode(tripTimes.semanticHash(murmur).asBytes()));
+  }
+  return sb.toString();
 }

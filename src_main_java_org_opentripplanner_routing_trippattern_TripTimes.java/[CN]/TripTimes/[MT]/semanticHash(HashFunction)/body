@@ -1,0 +1,8 @@
+{
+  Hasher hasher=hashFunction.newHasher();
+  for (int s=0; s < scheduledArrivalTimes.length; s++) {
+    hasher.putInt(getScheduledArrivalTime(s));
+    hasher.putInt(getScheduledDepartureTime(s));
+  }
+  return hasher.hash();
+}
