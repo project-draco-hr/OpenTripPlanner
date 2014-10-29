@@ -1,5 +1,5 @@
 {
-  Hasher hasher=Hashing.goodFastHash(64).newHasher();
+  Hasher hasher=Hashing.murmur3_128().newHasher();
   this.semanticHash(hasher,trip);
   HashCode hashCode=hasher.hash();
   String encodedHash=BaseEncoding.base64Url().omitPadding().encode(hashCode.asBytes());
