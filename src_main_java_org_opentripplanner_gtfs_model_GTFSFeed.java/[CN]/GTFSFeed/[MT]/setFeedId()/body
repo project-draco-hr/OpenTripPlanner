@@ -1,0 +1,11 @@
+{
+  if (feedInfo.size() == 0) {
+    LOG.info("feed_info not supplied.");
+    return;
+  }
+ else   if (feedInfo.size() > 1) {
+    errors.add(new Error("More than one feed_info entry. Using only the first one."));
+  }
+  feedId=feedInfo.values().iterator().next().feed_id;
+  LOG.info("Feed ID is '{}'.",feedId);
+}

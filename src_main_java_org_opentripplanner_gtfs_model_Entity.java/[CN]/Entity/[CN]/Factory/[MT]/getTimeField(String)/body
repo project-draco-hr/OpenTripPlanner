@@ -1,0 +1,22 @@
+{
+  String str=null;
+  int val=-1;
+  try {
+    str=reader.get(column);
+    String[] fields=str.split(":");
+    if (fields.length != 3) {
+      errorList.add(new Error("Wrong number of subfields in time."));
+    }
+ else {
+      int hours=Integer.parseInt(fields[0]);
+      int minutes=Integer.parseInt(fields[1]);
+      int seconds=Integer.parseInt(fields[2]);
+      val=(hours * 60 * 60) + minutes * 60 + seconds;
+    }
+  }
+ catch (  NumberFormatException nfe) {
+    String msg=String.format("Error parsing int from time subfield in '%s' from column '%s' " + "at line number X. This does not look like an integer.",str,column);
+    errorList.add(new Error(msg));
+  }
+  return val;
+}

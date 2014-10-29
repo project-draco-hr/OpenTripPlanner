@@ -1,0 +1,13 @@
+{
+  StopTime st=new StopTime();
+  st.trip_id=getStringField("trip_id");
+  st.arrival_time=getTimeField("arrival_time");
+  st.departure_time=getTimeField("departure_time");
+  st.stop_id=getStringField("stop_id");
+  st.stop_sequence=getIntField("stop_sequence");
+  st.stop_headsign=getStringField("stop_headsign");
+  st.pickup_type=getIntField("pickup_type");
+  st.drop_off_type=getIntField("drop_off_type");
+  st.shape_dist_traveled=getDoubleField("shape_dist_traveled");
+  return st;
+}

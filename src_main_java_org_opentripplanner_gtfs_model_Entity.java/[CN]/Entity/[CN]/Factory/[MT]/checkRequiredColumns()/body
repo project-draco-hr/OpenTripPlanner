@@ -1,0 +1,10 @@
+{
+  boolean missing=false;
+  for (  String column : requiredColumns) {
+    if (reader.getIndex(column) == -1) {
+      errorList.add(new Error(String.format("Missing required column '%s' in table X.",column)));
+      missing=true;
+    }
+  }
+  return missing;
+}
