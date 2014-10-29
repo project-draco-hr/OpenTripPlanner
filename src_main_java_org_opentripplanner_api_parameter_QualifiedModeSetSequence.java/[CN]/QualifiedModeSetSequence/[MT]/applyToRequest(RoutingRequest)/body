@@ -8,6 +8,7 @@
   for (  QualifiedMode qMode : qModes) {
     if (qMode.mode == TraverseMode.BICYCLE) {
       if (qMode.qualifiers.contains(Qualifier.RENT)) {
+        req.modes.setMode(TraverseMode.WALK,true);
         req.allowBikeRental=true;
       }
       if (req.modes.isTransit()) {
