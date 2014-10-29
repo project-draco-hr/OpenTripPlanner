@@ -1,0 +1,8 @@
+{
+  TripTimes tripTimes=scheduledTimetable.getTripTimes(trip);
+  for (int s=0; s < tripTimes.getNumStops(); s++) {
+    hasher.putInt(tripTimes.getScheduledArrivalTime(s));
+    hasher.putInt(tripTimes.getScheduledDepartureTime(s));
+  }
+  stopPattern.semanticHash(hasher);
+}

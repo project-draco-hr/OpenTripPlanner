@@ -1,0 +1,7 @@
+{
+  Hasher hasher=Hashing.goodFastHash(64).newHasher();
+  this.semanticHash(hasher,trip);
+  HashCode hashCode=hasher.hash();
+  String encodedHash=BaseEncoding.base64Url().omitPadding().encode(hashCode.asBytes());
+  return encodedHash;
+}
