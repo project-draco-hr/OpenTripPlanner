@@ -5,7 +5,7 @@
     str=reader.get(column);
     String[] fields=str.split(":");
     if (fields.length != 3) {
-      errorList.add(new Error("Wrong number of subfields in time."));
+      errorList.add(new TimeParseError(tableName,row,column));
     }
  else {
       int hours=Integer.parseInt(fields[0]);
@@ -15,8 +15,7 @@
     }
   }
  catch (  NumberFormatException nfe) {
-    String msg=String.format("Error parsing int from time subfield in '%s' from column '%s' " + "at line number X. This does not look like an integer.",str,column);
-    errorList.add(new Error(msg));
+    errorList.add(new TimeParseError(tableName,row,column));
   }
   return val;
 }

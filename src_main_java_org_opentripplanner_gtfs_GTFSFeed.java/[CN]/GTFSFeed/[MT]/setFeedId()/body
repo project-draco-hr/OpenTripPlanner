@@ -1,0 +1,12 @@
+{
+  if (feedInfo.size() == 0) {
+    feedId=null;
+    LOG.info("feed_info missing, feed ID is undefined.");
+    return;
+  }
+ else   if (feedInfo.size() > 1) {
+    errors.add(new GeneralError("feed_info",2,null,"More than one entry in this table. Using only the first one."));
+  }
+  feedId=feedInfo.values().iterator().next().feed_id;
+  LOG.info("Feed ID is '{}'.",feedId);
+}
