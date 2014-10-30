@@ -28,6 +28,6 @@
   itinerary=response.getPlan().itinerary.get(0);
   assertFalse("190W1280".equals(itinerary.legs.get(1).tripId) && "751W1330".equals(itinerary.legs.get(3).tripId));
   applyUpdateToTripPattern(pattern,"120W1320","9756",22,41820,41820,ScheduleRelationship.SCHEDULED,0,serviceDate);
-  timedTransferEdge.detach();
+  timedTransferEdge.detach(graph);
   reset(graph);
 }

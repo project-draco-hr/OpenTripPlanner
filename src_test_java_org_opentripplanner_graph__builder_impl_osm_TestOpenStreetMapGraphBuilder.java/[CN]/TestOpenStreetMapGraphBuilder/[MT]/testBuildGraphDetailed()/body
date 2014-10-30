@@ -32,7 +32,7 @@
     edgeEndpoints.add(endpoints);
     StreetTraversalPermission perm=se.getPermission();
     assertEquals(perm.allows(StreetTraversalPermission.CAR),perm.allows(StreetTraversalPermission.CUSTOM_MOTOR_VEHICLE));
-    for (    TurnRestriction tr : se.getTurnRestrictions()) {
+    for (    TurnRestriction tr : gg.getTurnRestrictions(se)) {
       TraverseModeSet modes=tr.modes;
       assertEquals(modes.getCar(),modes.getCustomMotorVehicle());
     }
