@@ -12,7 +12,7 @@
     }
   }
  catch (  NumberFormatException nfe) {
-    errorList.add(new DoubleParseError(tableName,row,column));
+    errorList.add(new NumberParseError(tableName,row,column));
   }
   return val;
 }
