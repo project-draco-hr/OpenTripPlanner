@@ -1,7 +1,6 @@
 {
   GenericAStar aStar=new GenericAStar();
-  RoutingRequest options=new RoutingRequest("BICYCLE,WALK");
-  options.bikeParkAndRide=true;
+  RoutingRequest options=new RoutingRequest("BICYCLE_PARK,TRANSIT");
   options.freezeTraverseMode();
   options.setRoutingContext(graph,B,D);
   ShortestPathTree tree=aStar.getShortestPathTree(options);
@@ -18,16 +17,14 @@
   new StreetBikeParkLink(BPRC,C);
   new StreetBikeParkLink(C,BPRC);
   options=new RoutingRequest("BICYCLE");
-  options.bikeParkAndRide=false;
   options.setRoutingContext(graph,B,D);
   tree=aStar.getShortestPathTree(options);
   path=tree.getPath(D,false);
   assertNotNull(path);
   State s=tree.getState(D);
   assertFalse(s.isBikeParked());
-  assertTrue(s.isBackWalkingBike());
-  options=new RoutingRequest("BICYCLE,WALK");
-  options.bikeParkAndRide=true;
+  assertTrue(s.getBackMode() == TraverseMode.WALK);
+  options=new RoutingRequest("BICYCLE_PARK,WALK,TRANSIT");
   options.setRoutingContext(graph,B,D);
   tree=aStar.getShortestPathTree(options);
   path=tree.getPath(D,false);
