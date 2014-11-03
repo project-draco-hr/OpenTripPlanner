@@ -13,9 +13,10 @@
       }
       sourceFile.renameTo(destFile);
     }
-    FileOutputStream os=new FileOutputStream(sourceFile);
-    ByteStreams.copy(is,os);
-    sourceFile=new File(sourceFile.getPath() + ".bak");
+    try (FileOutputStream os=new FileOutputStream(sourceFile)){
+      ByteStreams.copy(is,os);
+    }
+     sourceFile=new File(sourceFile.getPath() + ".bak");
     if (sourceFile.exists()) {
       sourceFile.delete();
     }
