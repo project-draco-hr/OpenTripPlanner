@@ -1,6 +1,6 @@
 {
   RoutingRequest options=s0.getOptions();
-  if (s0.getNonTransitMode() != TraverseMode.BICYCLE || !options.isBikeParkAndRide() || !options.getModes().getWalk() || s0.isBikeRenting())   return null;
+  if (s0.getNonTransitMode() != TraverseMode.BICYCLE || !options.bikeParkAndRide || !options.modes.getWalk() || s0.isBikeRenting())   return null;
   BikeParkVertex bikeParkVertex=(BikeParkVertex)tov;
   if (bikeParkVertex.getSpacesAvailable() == 0) {
     return null;

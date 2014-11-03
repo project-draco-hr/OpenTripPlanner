@@ -51,7 +51,7 @@
     }
   }
   LOG.debug("Linking bike parks...");
-  for (  BikeParkVertex bpv : IterableLibrary.filter(vertices,BikeParkVertex.class)) {
+  for (  BikeParkVertex bpv : Iterables.filter(vertices,BikeParkVertex.class)) {
     if (!networkLinkerLibrary.connectVertexToStreets(bpv).getResult()) {
       LOG.warn(graph.addBuilderAnnotation(new BikeParkUnlinked(bpv)));
     }

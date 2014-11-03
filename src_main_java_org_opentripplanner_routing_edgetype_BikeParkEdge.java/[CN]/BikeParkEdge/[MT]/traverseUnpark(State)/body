@@ -1,6 +1,6 @@
 {
   RoutingRequest options=s0.getOptions();
-  if (s0.getNonTransitMode() != TraverseMode.WALK || !options.isBikeParkAndRide() || !options.getModes().getBicycle())   return null;
+  if (s0.getNonTransitMode() != TraverseMode.WALK || !options.bikeParkAndRide || !options.modes.getBicycle())   return null;
   StateEditor s1=s0.edit(this);
   s1.incrementWeight(options.bikeParkCost);
   s1.incrementTimeInSeconds(options.bikeParkTime);
