@@ -50,4 +50,10 @@
       LOG.warn(graph.addBuilderAnnotation(new BikeRentalStationUnlinked(brsv)));
     }
   }
+  LOG.debug("Linking bike P+R stations...");
+  for (  BikeParkVertex bprv : Iterables.filter(vertices,BikeParkVertex.class)) {
+    if (!networkLinkerLibrary.connectVertexToStreets(bprv).getResult()) {
+      LOG.warn(graph.addBuilderAnnotation(new BikeParkUnlinked(bprv)));
+    }
+  }
 }

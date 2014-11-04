@@ -1,0 +1,20 @@
+{
+  LOG.info("Processing bike P+R nodes...");
+  int n=0;
+  BikeRentalStationService bikeRentalService=graph.getService(BikeRentalStationService.class,true);
+  graph.putService(BikeRentalStationService.class,bikeRentalService);
+  for (  OSMNode node : osmdb.getBikeParkAndRideNodes()) {
+    n++;
+    String creativeName=wayPropertySet.getCreativeNameForWay(node);
+    if (creativeName == null)     creativeName="P+R";
+    BikePark bikePark=new BikePark();
+    bikePark.id="" + node.getId();
+    bikePark.name=creativeName;
+    bikePark.x=node.lon;
+    bikePark.y=node.lat;
+    bikeRentalService.addBikePark(bikePark);
+    BikeParkVertex parkVertex=new BikeParkVertex(graph,bikePark);
+    new BikeParkEdge(parkVertex);
+  }
+  LOG.info("Created " + n + " bike P+R.");
+}
