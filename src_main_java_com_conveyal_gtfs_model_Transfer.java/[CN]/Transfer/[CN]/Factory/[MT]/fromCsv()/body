@@ -4,5 +4,7 @@
   tr.to_stop_id=getStringField("to_stop_id",true);
   tr.transfer_type=getIntField("transfer_type",true);
   tr.min_transfer_time=getIntField("min_transfer_time",false);
+  getRefField("from_stop_id",true,feed.stops);
+  getRefField("to_stop_id",true,feed.stops);
   return tr;
 }

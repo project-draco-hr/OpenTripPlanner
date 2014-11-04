@@ -5,7 +5,7 @@
     str=reader.get(column);
     String[] fields=str.split(":");
     if (fields.length != 3) {
-      errorList.add(new TimeParseError(tableName,row,column));
+      feed.errors.add(new TimeParseError(tableName,row,column));
     }
  else {
       int hours=Integer.parseInt(fields[0]);
@@ -15,7 +15,7 @@
     }
   }
  catch (  NumberFormatException nfe) {
-    errorList.add(new TimeParseError(tableName,row,column));
+    feed.errors.add(new TimeParseError(tableName,row,column));
   }
   return val;
 }

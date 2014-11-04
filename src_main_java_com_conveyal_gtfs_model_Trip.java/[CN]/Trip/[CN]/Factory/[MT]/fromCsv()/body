@@ -10,5 +10,8 @@
   t.shape_id=getStringField("shape_id",false);
   t.bikes_allowed=getIntField("bikes_allowed",false);
   t.wheelchair_accessible=getIntField("wheelchair_accessible",false);
+  getRefField("route_id",true,feed.routes);
+  getRefField("service_id",true,feed.calendarDates);
+  getRefField("shape_id",false,feed.shapes);
   return t;
 }

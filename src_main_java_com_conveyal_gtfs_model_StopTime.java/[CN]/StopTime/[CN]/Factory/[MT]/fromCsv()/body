@@ -9,5 +9,7 @@
   st.pickup_type=getIntField("pickup_type",false);
   st.drop_off_type=getIntField("drop_off_type",false);
   st.shape_dist_traveled=getDoubleField("shape_dist_traveled",false);
+  getRefField("trip_id",true,feed.trips);
+  getRefField("stop_id",true,feed.stops);
   return st;
 }

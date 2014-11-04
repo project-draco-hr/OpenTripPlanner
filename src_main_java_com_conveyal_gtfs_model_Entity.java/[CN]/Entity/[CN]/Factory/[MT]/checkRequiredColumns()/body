@@ -2,7 +2,7 @@
   boolean missing=false;
   for (  String column : requiredColumns) {
     if (reader.getIndex(column) == -1) {
-      errorList.add(new MissingColumnError(tableName,column));
+      feed.errors.add(new MissingColumnError(tableName,column));
       missing=true;
     }
   }

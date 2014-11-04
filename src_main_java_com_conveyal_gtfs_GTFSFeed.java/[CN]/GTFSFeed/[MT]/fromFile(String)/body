@@ -5,7 +5,6 @@
     zip=new ZipFile(file);
     feed.loadFromFile(zip);
     zip.close();
-    feed.validate(new DefaultValidator());
     return feed;
   }
  catch (  Exception e) {

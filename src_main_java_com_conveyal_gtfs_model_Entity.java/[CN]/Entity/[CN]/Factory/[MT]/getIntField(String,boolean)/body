@@ -5,7 +5,7 @@
     str=reader.get(column);
     if (str == null || str.isEmpty()) {
       if (required) {
-        errorList.add(new EmptyFieldError(tableName,row,column));
+        feed.errors.add(new EmptyFieldError(tableName,row,column));
       }
  else {
         val=0;
@@ -16,7 +16,7 @@
     }
   }
  catch (  NumberFormatException nfe) {
-    errorList.add(new NumberParseError(tableName,row,column));
+    feed.errors.add(new NumberParseError(tableName,row,column));
   }
   return val;
 }

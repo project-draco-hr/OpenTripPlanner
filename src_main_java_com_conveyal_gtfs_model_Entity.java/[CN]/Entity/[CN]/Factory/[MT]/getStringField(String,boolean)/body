@@ -1,7 +1,7 @@
 {
   String str=reader.get(column);
   if (required && (str == null || str.isEmpty())) {
-    errorList.add(new EmptyFieldError(tableName,row,column));
+    feed.errors.add(new EmptyFieldError(tableName,row,column));
   }
   return str;
 }

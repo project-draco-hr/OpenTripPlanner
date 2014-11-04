@@ -1,0 +1,14 @@
+{
+  V val=null;
+  String str=reader.get(column);
+  if (required && (str == null || str.isEmpty())) {
+    feed.errors.add(new EmptyFieldError(tableName,row,column));
+  }
+ else {
+    val=target.get(str);
+    if (val == null) {
+      feed.errors.add(new ReferentialIntegrityError(tableName,row,column,str));
+    }
+  }
+  return val;
+}
