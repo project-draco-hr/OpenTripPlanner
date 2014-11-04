@@ -1,0 +1,10 @@
+{
+  FareAttribute fa=new FareAttribute();
+  fa.fare_id=getStringField("fare_id",true);
+  fa.price=getDoubleField("price",true);
+  fa.currency_type=getStringField("currency_type",true);
+  fa.payment_method=getIntField("payment_method",true);
+  fa.transfers=getIntField("transfers",false);
+  fa.transfer_duration=getIntField("transfer_duration",false);
+  feed.fareAttributes.put(fa.fare_id,fa);
+}
