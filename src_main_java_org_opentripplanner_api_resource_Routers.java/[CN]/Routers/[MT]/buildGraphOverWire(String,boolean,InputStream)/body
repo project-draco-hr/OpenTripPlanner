@@ -1,0 +1,134 @@
+{
+  if (preEvict) {
+    LOG.debug("Pre-evicting graph with routerId {} before building new graph",routerId);
+    server.graphService.evictGraph(routerId);
+  }
+  File tempDir=Files.createTempDir();
+  GraphBuilderTask graphBuilder=new GraphBuilderTask();
+  List<File> gtfsFiles=Lists.newArrayList();
+  List<File> osmFiles=Lists.newArrayList();
+  File configFile=null;
+  graphBuilder.setPath(tempDir);
+  ZipInputStream zis=new ZipInputStream(input);
+  ZipEntry next;
+  while (true) {
+    try {
+      next=zis.getNextEntry();
+    }
+ catch (    ZipException e) {
+      return Response.status(Status.BAD_REQUEST).entity("Could not read ZIP file").build();
+    }
+catch (    IOException e) {
+      return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Internal error saving ZIP file").build();
+    }
+    if (next == null)     break;
+    File outfile=new File(tempDir,next.getName());
+    FileOutputStream out;
+    try {
+      out=new FileOutputStream(outfile);
+    }
+ catch (    FileNotFoundException e1) {
+      return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Could not save member " + next.getName()).build();
+    }
+    int bufSize=10 * 1024;
+    byte[] buff=new byte[bufSize];
+    int readBytes;
+    while (true) {
+      try {
+        readBytes=zis.read(buff,0,bufSize);
+      }
+ catch (      ZipException e) {
+        try {
+          out.close();
+        }
+ catch (        IOException e1) {
+        }
+        return Response.status(Status.BAD_REQUEST).entity("Could not read ZIP entry " + next.getName()).build();
+      }
+catch (      IOException e) {
+        try {
+          out.close();
+        }
+ catch (        IOException e1) {
+        }
+        return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Internal error reading ZIP entry " + next.getName()).build();
+      }
+      if (readBytes == -1)       break;
+      try {
+        out.write(buff,0,readBytes);
+      }
+ catch (      IOException e) {
+        try {
+          out.close();
+        }
+ catch (        IOException e1) {
+        }
+        return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Internal error copying ZIP entry " + next.getName()).build();
+      }
+    }
+    try {
+      out.close();
+    }
+ catch (    IOException e1) {
+    }
+switch (InputFileType.forFile(outfile)) {
+case GTFS:
+      gtfsFiles.add(outfile);
+    break;
+case OSM:
+  osmFiles.add(outfile);
+break;
+case CONFIG:
+configFile=outfile;
+break;
+case OTHER:
+LOG.debug("Skipping file '{}'",next.getName());
+}
+}
+if (osmFiles.isEmpty() && gtfsFiles.isEmpty()) return Response.status(Status.BAD_REQUEST).entity("Found no files with which to build a graph").build();
+if (osmFiles.isEmpty()) LOG.warn("No OSM files provided in graph bundle; building a streetless graph.");
+if (gtfsFiles.isEmpty()) LOG.warn("No GTFS files provided in graph bundle; building a graph without transit.");
+if (!osmFiles.isEmpty()) {
+List<OpenStreetMapProvider> osmProviders=Lists.newArrayList();
+for (File osmFile : osmFiles) {
+osmProviders.add(new AnyFileBasedOpenStreetMapProviderImpl(osmFile));
+}
+OpenStreetMapGraphBuilderImpl osmBuilder=new OpenStreetMapGraphBuilderImpl(osmProviders);
+osmBuilder.edgeFactory=new DefaultStreetEdgeFactory();
+osmBuilder.setDefaultWayPropertySetSource(new DefaultWayPropertySetSource());
+graphBuilder.addGraphBuilder(osmBuilder);
+graphBuilder.addGraphBuilder(new PruneFloatingIslands());
+}
+if (!gtfsFiles.isEmpty()) {
+List<GtfsBundle> gtfs=Lists.newArrayList();
+for (File gtfsFile : gtfsFiles) {
+gtfs.add(new GtfsBundle(gtfsFile));
+}
+GtfsGraphBuilderImpl gtfsBuilder=new GtfsGraphBuilderImpl(gtfs);
+gtfsBuilder.setFareServiceFactory(new DefaultFareServiceFactory());
+graphBuilder.addGraphBuilder(gtfsBuilder);
+if (!osmFiles.isEmpty()) {
+graphBuilder.addGraphBuilder(new TransitToTaggedStopsGraphBuilderImpl());
+graphBuilder.addGraphBuilder(new TransitToStreetNetworkGraphBuilderImpl());
+graphBuilder.addGraphBuilder(new StreetfulStopLinker());
+}
+ else {
+graphBuilder.addGraphBuilder(new StreetlessStopLinker());
+}
+}
+if (configFile != null) {
+EmbeddedConfigGraphBuilderImpl embeddedConfigBuilder=new EmbeddedConfigGraphBuilderImpl();
+embeddedConfigBuilder.propertiesFile=configFile;
+graphBuilder.addGraphBuilder(embeddedConfigBuilder);
+}
+graphBuilder.serializeGraph=false;
+graphBuilder.run();
+for (File file : tempDir.listFiles()) {
+file.delete();
+}
+tempDir.delete();
+Graph graph=graphBuilder.getGraph();
+graph.index(new DefaultStreetVertexIndexFactory());
+server.graphService.registerGraph(routerId,new MemoryGraphSource(routerId,graph));
+return Response.status(Status.CREATED).entity(graph.toString() + "\n").build();
+}
