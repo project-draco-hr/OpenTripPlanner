@@ -1,6 +1,5 @@
 {
   LOG.info("Building bike parks from static source...");
-  NetworkLinkerLibrary networkLinkerLibrary=new NetworkLinkerLibrary(graph,extra);
   BikeRentalStationService service=graph.getService(BikeRentalStationService.class,true);
   if (!dataSource.update()) {
     LOG.warn("No bike parks found from the data source.");
@@ -11,9 +10,6 @@
     service.addBikePark(bikePark);
     BikeParkVertex bikeParkVertex=new BikeParkVertex(graph,bikePark);
     new BikeParkEdge(bikeParkVertex);
-    if (!networkLinkerLibrary.connectVertexToStreets(bikeParkVertex).getResult()) {
-      LOG.warn(graph.addBuilderAnnotation(new BikeParkUnlinked(bikeParkVertex)));
-    }
   }
   LOG.info("Created " + bikeParks.size() + " bike parks.");
 }
