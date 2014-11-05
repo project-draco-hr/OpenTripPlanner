@@ -7,8 +7,9 @@
   fi.feed_start_date=getDateField("feed_start_date",false);
   fi.feed_end_date=getDateField("feed_end_date",false);
   fi.feed_version=getStringField("feed_version",false);
+  fi.feed=feed;
   if (feed.feedInfo.isEmpty()) {
-    feed.feedInfo.put("ZERO",fi);
+    feed.feedInfo.put("NONE",fi);
     feed.feedId=fi.feed_id;
   }
  else {

@@ -1,7 +1,7 @@
 {
   Route r=new Route();
   r.route_id=getStringField("route_id",true);
-  r.agency_id=getStringField("agency_id",false);
+  r.agency=getRefField("agency_id",false,feed.agency);
   r.route_short_name=getStringField("route_short_name",false);
   r.route_long_name=getStringField("route_long_name",false);
   r.route_desc=getStringField("route_desc",false);
@@ -9,7 +9,6 @@
   r.route_url=getUrlField("route_url",false);
   r.route_color=getStringField("route_color",false);
   r.route_text_color=getStringField("route_text_color",false);
-  r.feedId="FEED";
-  getRefField("agency_id",false,feed.agency);
+  r.feed=feed;
   feed.routes.put(r.route_id,r);
 }
