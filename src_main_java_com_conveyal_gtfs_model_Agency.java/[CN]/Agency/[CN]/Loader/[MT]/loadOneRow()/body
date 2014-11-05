@@ -2,10 +2,10 @@
   Agency a=new Agency();
   a.agency_id=getStringField("agency_id",false);
   a.agency_name=getStringField("agency_name",true);
-  a.agency_url=getStringField("agency_url",true);
+  a.agency_url=getUrlField("agency_url",true);
   a.agency_lang=getStringField("agency_lang",false);
   a.agency_phone=getStringField("agency_phone",false);
   a.agency_timezone=getStringField("agency_timezone",true);
-  a.agency_fare_url=getStringField("agency_fare_url",false);
+  a.agency_fare_url=getUrlField("agency_fare_url",false);
   feed.agency.put(a.agency_id,a);
 }

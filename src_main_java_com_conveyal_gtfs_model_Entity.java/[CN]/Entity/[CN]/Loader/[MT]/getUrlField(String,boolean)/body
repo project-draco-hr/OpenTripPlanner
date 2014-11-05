@@ -1,0 +1,11 @@
+{
+  String str=getFieldCheckRequired(column,required);
+  URL url=null;
+  if (str != null)   try {
+    url=new URL(str);
+  }
+ catch (  MalformedURLException mue) {
+    feed.errors.add(new URLParseError(tableName,row,column));
+  }
+  return url;
+}
