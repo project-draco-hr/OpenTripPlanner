@@ -1,6 +1,6 @@
 {
   LinkRequest request=new LinkRequest(this);
-  request.connectVertexToStreets(v,new TraverseModeSet(TraverseMode.WALK,TraverseMode.BICYCLE),new StreetLinkFactory<BikeRentalStationVertex>(){
+  request.connectVertexToStreets(v,new TraverseModeSet(TraverseMode.WALK,TraverseMode.BICYCLE),new LinkRequest.StreetLinkFactory<BikeRentalStationVertex>(){
     @Override public Collection<? extends Edge> connect(    StreetVertex sv,    BikeRentalStationVertex v){
       return Arrays.asList(new StreetBikeRentalLink(sv,v),new StreetBikeRentalLink(v,sv));
     }
