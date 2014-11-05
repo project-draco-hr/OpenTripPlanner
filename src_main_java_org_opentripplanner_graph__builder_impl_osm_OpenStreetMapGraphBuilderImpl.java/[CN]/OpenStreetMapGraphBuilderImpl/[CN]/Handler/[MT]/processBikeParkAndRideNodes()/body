@@ -2,8 +2,7 @@
   LOG.info("Processing bike P+R nodes...");
   int n=0;
   BikeRentalStationService bikeRentalService=graph.getService(BikeRentalStationService.class,true);
-  graph.putService(BikeRentalStationService.class,bikeRentalService);
-  for (  OSMNode node : osmdb.getBikeParkAndRideNodes()) {
+  for (  OSMNode node : osmdb.getBikeParkingNodes()) {
     n++;
     String creativeName=wayPropertySet.getCreativeNameForWay(node);
     if (creativeName == null)     creativeName="P+R";

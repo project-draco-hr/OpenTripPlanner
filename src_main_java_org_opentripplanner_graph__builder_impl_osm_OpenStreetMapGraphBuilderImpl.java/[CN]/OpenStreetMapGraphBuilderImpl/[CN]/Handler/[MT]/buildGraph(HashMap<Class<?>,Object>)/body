@@ -5,7 +5,7 @@
   if (staticBikeParkAndRide) {
     processBikeParkAndRideNodes();
   }
-  for (  Area area : Iterables.concat(osmdb.getWalkableAreas(),osmdb.getParkAndRideAreas()))   setWayName(area.parent);
+  for (  Area area : Iterables.concat(osmdb.getWalkableAreas(),osmdb.getParkAndRideAreas(),osmdb.getBikeParkingAreas()))   setWayName(area.parent);
   initIntersectionNodes();
   buildBasicGraph();
   if (skipVisibility) {
@@ -16,6 +16,9 @@
   }
   if (staticParkAndRide) {
     buildParkAndRideAreas();
+  }
+  if (staticBikeParkAndRide) {
+    buildBikeParkAndRideAreas();
   }
   buildElevatorEdges(graph);
   unifyTurnRestrictions();
