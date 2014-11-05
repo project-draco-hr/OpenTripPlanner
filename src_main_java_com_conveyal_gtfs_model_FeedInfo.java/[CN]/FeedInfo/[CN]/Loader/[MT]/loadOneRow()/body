@@ -4,8 +4,8 @@
   fi.feed_publisher_name=getStringField("feed_publisher_name",true);
   fi.feed_publisher_url=getStringField("feed_publisher_url",true);
   fi.feed_lang=getStringField("feed_lang",true);
-  fi.feed_start_date=getStringField("feed_start_date",false);
-  fi.feed_end_date=getStringField("feed_end_date",false);
+  fi.feed_start_date=getDateField("feed_start_date",false);
+  fi.feed_end_date=getDateField("feed_end_date",false);
   fi.feed_version=getStringField("feed_version",false);
   if (feed.feedInfo.isEmpty()) {
     feed.feedInfo.put("ZERO",fi);

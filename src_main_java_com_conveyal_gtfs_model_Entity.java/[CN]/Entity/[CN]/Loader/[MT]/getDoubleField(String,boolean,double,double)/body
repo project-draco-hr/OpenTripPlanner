@@ -1,16 +1,9 @@
 {
-  String str=null;
-  double val=0;
-  try {
-    str=reader.get(column);
-    if (required && (str == null || str.isEmpty())) {
-      feed.errors.add(new EmptyFieldError(tableName,row,column));
-      val=-1;
-    }
- else {
-      val=Double.parseDouble(str);
-      checkRangeInclusive(min,max,val);
-    }
+  String str=getFieldCheckRequired(column,required);
+  double val=Double.NaN;
+  if (str != null)   try {
+    val=Double.parseDouble(str);
+    checkRangeInclusive(min,max,val);
   }
  catch (  NumberFormatException nfe) {
     feed.errors.add(new NumberParseError(tableName,row,column));

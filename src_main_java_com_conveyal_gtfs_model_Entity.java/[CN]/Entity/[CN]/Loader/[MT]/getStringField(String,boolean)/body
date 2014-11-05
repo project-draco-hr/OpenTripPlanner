@@ -1,7 +1,5 @@
 {
-  String str=reader.get(column);
-  if (required && (str == null || str.isEmpty())) {
-    feed.errors.add(new EmptyFieldError(tableName,row,column));
-  }
+  String str=getFieldCheckRequired(column,required);
+  str=deduplicator.deduplicateString(str);
   return str;
 }

@@ -1,20 +1,12 @@
 {
-  String str=null;
+  String str=getFieldCheckRequired(column,required);
   int val=INT_MISSING;
-  try {
-    str=reader.get(column);
-    if (str == null || str.isEmpty()) {
-      if (required) {
-        feed.errors.add(new EmptyFieldError(tableName,row,column));
-      }
- else {
-        val=0;
-      }
-    }
- else {
-      val=Integer.parseInt(str);
-      checkRangeInclusive(min,max,val);
-    }
+  if (str == null) {
+    val=0;
+  }
+ else   try {
+    val=Integer.parseInt(str);
+    checkRangeInclusive(min,max,val);
   }
  catch (  NumberFormatException nfe) {
     feed.errors.add(new NumberParseError(tableName,row,column));

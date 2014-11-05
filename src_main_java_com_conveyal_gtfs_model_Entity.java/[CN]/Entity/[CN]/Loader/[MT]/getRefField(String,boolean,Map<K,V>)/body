@@ -1,10 +1,7 @@
 {
+  String str=getFieldCheckRequired(column,required);
   V val=null;
-  String str=reader.get(column);
-  if (required && (str == null || str.isEmpty())) {
-    feed.errors.add(new EmptyFieldError(tableName,row,column));
-  }
- else {
+  if (str != null) {
     val=target.get(str);
     if (val == null) {
       feed.errors.add(new ReferentialIntegrityError(tableName,row,column,str));

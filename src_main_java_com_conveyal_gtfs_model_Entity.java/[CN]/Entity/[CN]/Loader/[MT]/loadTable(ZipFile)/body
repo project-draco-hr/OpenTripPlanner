@@ -14,7 +14,6 @@
   CsvReader reader=new CsvReader(zis,',',Charset.forName("UTF8"));
   this.reader=reader;
   reader.readHeaders();
-  checkRequiredColumns();
   while (reader.readRecord()) {
     if (++row % 500000 == 0) {
       LOG.info("Record number {}",human(row));
