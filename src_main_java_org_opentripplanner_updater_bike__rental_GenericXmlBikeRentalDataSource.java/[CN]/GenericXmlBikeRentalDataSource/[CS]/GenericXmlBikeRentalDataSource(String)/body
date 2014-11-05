@@ -1,7 +1,7 @@
 {
   xmlDownloader=new XmlDataListDownloader<BikeRentalStation>();
   xmlDownloader.setPath(path);
-  xmlDownloader.setDataFactory(new XmlDataFactory<BikeRentalStation>(){
+  xmlDownloader.setDataFactory(new XmlDataListDownloader.XmlDataFactory<BikeRentalStation>(){
     @Override public BikeRentalStation build(    Map<String,String> attributes){
       return makeStation(attributes);
     }
