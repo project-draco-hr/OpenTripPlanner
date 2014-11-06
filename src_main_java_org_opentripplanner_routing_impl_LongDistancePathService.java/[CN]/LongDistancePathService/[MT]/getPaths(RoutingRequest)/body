@@ -30,6 +30,9 @@
     LOG.warn("SPT was null.");
     return null;
   }
+  if (this.sptVisitor != null) {
+    this.sptVisitor.spt=spt;
+  }
   List<GraphPath> paths=spt.getPaths();
   Collections.sort(paths,new PathWeightComparator());
   return paths;
