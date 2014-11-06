@@ -3,7 +3,7 @@
   LOG.info("Base path is X, graphs are at {}",params.graphDirectory);
   HttpServer httpServer=new HttpServer();
   SSLContextConfigurator sslConfig=new SSLContextConfigurator();
-  sslConfig.setKeyStoreFile("/var/otp/ssh/keystore_server");
+  sslConfig.setKeyStoreFile("/var/otp/keystore");
   sslConfig.setKeyStorePass("opentrip");
   ThreadPoolConfig threadPoolConfig=ThreadPoolConfig.defaultConfig().setCorePoolSize(1).setMaxPoolSize(Runtime.getRuntime().availableProcessors());
   NetworkListener httpListener=new NetworkListener("otp_insecure",params.bindAddress,params.port);
