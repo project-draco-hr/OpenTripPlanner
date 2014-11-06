@@ -1,16 +1,15 @@
 {
   AgencyAndId shapeId=trip.getShapeId();
-  List<StopTime> stopTimes=_dao.getStopTimesForTrip(trip);
+  LineString[] geoms=new LineString[stopTimes.size() - 1];
   StopTime st0=stopTimes.get(0);
   boolean hasShapeDist=st0.isShapeDistTraveledSet();
   if (hasShapeDist) {
-    for (int i=0; i < hops.length; ++i) {
-      if (hops[i] == null)       continue;
+    for (int i=0; i < stopTimes.size() - 1; ++i) {
       st0=stopTimes.get(i);
       StopTime st1=stopTimes.get(i + 1);
-      hops[i].setGeometry(getHopGeometryViaShapeDistTraveled(graph,shapeId,st0,st1,hops[i].getFromVertex(),hops[i].getToVertex()));
+      geoms[i]=getHopGeometryViaShapeDistTraveled(graph,shapeId,st0,st1);
     }
-    return;
+    return geoms;
   }
   LineString shape=getLineStringForShapeId(shapeId);
   if (shape == null) {
@@ -18,9 +17,9 @@
       st0=stopTimes.get(i);
       StopTime st1=stopTimes.get(i + 1);
       LineString geometry=createSimpleGeometry(st0.getStop(),st1.getStop());
-      hops[i].setGeometry(geometry);
+      geoms[i]=geometry;
     }
-    return;
+    return geoms;
   }
   ArrayList<IndexedLineSegment> segments=new ArrayList<IndexedLineSegment>();
   for (int i=0; i < shape.getNumPoints() - 1; ++i) {
@@ -77,21 +76,19 @@
   List<LinearLocation> locations=getStopLocations(possibleSegmentsForStop,stopTimes,0,-1);
   if (locations == null) {
     for (int i=0; i < stopTimes.size() - 1; ++i) {
-      if (hops[i] == null)       continue;
       st0=stopTimes.get(i);
       StopTime st1=stopTimes.get(i + 1);
       LineString geometry=createSimpleGeometry(st0.getStop(),st1.getStop());
-      hops[i].setGeometry(geometry);
+      geoms[i]=geometry;
       LOG.warn(graph.addBuilderAnnotation(new BogusShapeGeometryCaught(shapeId,st0,st1)));
     }
-    return;
+    return geoms;
   }
   Iterator<LinearLocation> locationIt=locations.iterator();
   LinearLocation endLocation=locationIt.next();
   double distanceSoFar=0;
   int last=0;
-  for (int i=0; i < hops.length; ++i) {
-    if (hops[i] == null)     continue;
+  for (int i=0; i < stopTimes.size() - 1; ++i) {
     LinearLocation startLocation=endLocation;
     endLocation=locationIt.next();
     for (int j=last; j < startLocation.getSegmentIndex(); ++j) {
@@ -120,6 +117,7 @@
       CoordinateSequence sequence=new PackedCoordinateSequence.Double(geometry.getCoordinates(),2);
       geometry=_geometryFactory.createLineString(sequence);
     }
-    hops[i].setGeometry(geometry);
+    geoms[i]=geometry;
   }
+  return geoms;
 }
