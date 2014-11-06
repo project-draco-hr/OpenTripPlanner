@@ -19,7 +19,7 @@
     listener.getTransport().setWorkerThreadPoolConfig(threadPoolConfig);
     httpServer.addListener(listener);
   }
-  Application app=new OTPApplication(server);
+  Application app=new OTPApplication(server,!params.insecure);
   HttpHandler dynamicHandler=ContainerFactory.createContainer(HttpHandler.class,app);
   httpServer.getServerConfiguration().addHttpHandler(dynamicHandler,"/otp/");
   HttpHandler staticHandler=new CLStaticHttpHandler(GrizzlyServer.class.getClassLoader(),"/client/");
