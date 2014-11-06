@@ -110,7 +110,6 @@ graphBuilder.addGraphBuilder(gtfsBuilder);
 if (!osmFiles.isEmpty()) {
 graphBuilder.addGraphBuilder(new TransitToTaggedStopsGraphBuilderImpl());
 graphBuilder.addGraphBuilder(new TransitToStreetNetworkGraphBuilderImpl());
-graphBuilder.addGraphBuilder(new StreetfulStopLinker());
 }
  else {
 graphBuilder.addGraphBuilder(new StreetlessStopLinker());
