@@ -23,8 +23,8 @@
   assertNull(path);
   options.setRoutingContext(graph,near_a,near_e);
   spt=aStar.getShortestPathTree(options);
-  path=spt.getPath(near_c,false);
-  assertNull(path);
+  path=spt.getPath(near_e,false);
+  assertNotNull(path);
   GregorianCalendar time=new GregorianCalendar(2009,8,18,0,0,0);
   time.setTimeZone(TimeZone.getTimeZone("America/New_York"));
   options.dateTime=TestUtils.toSeconds(time);
