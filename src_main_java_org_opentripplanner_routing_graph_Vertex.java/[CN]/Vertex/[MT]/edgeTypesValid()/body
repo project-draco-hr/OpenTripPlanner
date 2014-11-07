@@ -1,7 +1,0 @@
-{
-  ValidEdgeTypes validOutgoingTypes=getValidOutgoingEdgeTypes();
-  for (  Edge e : getOutgoing())   if (!validOutgoingTypes.isValid(e))   return false;
-  ValidEdgeTypes validIncomingTypes=getValidIncomingEdgeTypes();
-  for (  Edge e : getIncoming())   if (!validIncomingTypes.isValid(e))   return false;
-  return true;
-}

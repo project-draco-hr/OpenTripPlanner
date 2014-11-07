@@ -1,7 +1,4 @@
 {
-  int nRemoved=0;
-  if (origin != null)   nRemoved+=origin.removeTemporaryEdges(graph);
-  if (target != null)   nRemoved+=target.removeTemporaryEdges(graph);
-  for (  Vertex v : intermediateVertices)   nRemoved+=v.removeTemporaryEdges(graph);
-  return nRemoved;
+  if (origin instanceof TemporaryVertex)   ((TemporaryVertex)origin).dispose();
+  if (target instanceof TemporaryVertex)   ((TemporaryVertex)target).dispose();
 }

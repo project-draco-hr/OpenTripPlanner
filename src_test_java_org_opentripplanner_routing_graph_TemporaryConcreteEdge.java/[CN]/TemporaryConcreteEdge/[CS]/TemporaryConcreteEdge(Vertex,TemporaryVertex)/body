@@ -1,0 +1,9 @@
+{
+  super(v1,(Vertex)v2);
+  if (v2.isEndVertex()) {
+    endEdge=true;
+  }
+ else {
+    throw new IllegalStateException("A temporary edge is directed towards a start vertex");
+  }
+}

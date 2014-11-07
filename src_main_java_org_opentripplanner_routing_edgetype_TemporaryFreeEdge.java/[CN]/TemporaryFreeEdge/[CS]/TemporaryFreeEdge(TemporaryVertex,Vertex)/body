@@ -1,0 +1,9 @@
+{
+  super((Vertex)from,to);
+  if (from.isEndVertex()) {
+    throw new IllegalStateException("A temporary edge is directed away from an end vertex");
+  }
+ else {
+    endEdge=false;
+  }
+}

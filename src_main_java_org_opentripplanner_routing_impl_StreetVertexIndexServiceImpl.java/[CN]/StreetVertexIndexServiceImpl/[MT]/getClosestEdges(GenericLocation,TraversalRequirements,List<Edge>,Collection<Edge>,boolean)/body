@@ -1,10 +1,6 @@
 {
   Coordinate coordinate=location.getCoordinate();
   Envelope envelope=new Envelope(coordinate);
-  Iterable<StreetEdge> extraStreets=Iterables.filter(graph.getTemporaryEdges(),StreetEdge.class);
-  if (extraEdges != null) {
-    extraStreets=Iterables.concat(Iterables.filter(extraEdges,StreetEdge.class),extraStreets);
-  }
   double envelopeGrowthAmount=0.001;
   double radius=0;
   CandidateEdgeBundle candidateEdges=new CandidateEdgeBundle();
@@ -15,9 +11,6 @@
       return candidateEdges;
     }
     Iterable<Edge> nearbyEdges=getEdgesForEnvelope(envelope);
-    if (nearbyEdges != null) {
-      nearbyEdges=Iterables.concat(nearbyEdges,extraStreets);
-    }
     for (    Edge e : nearbyEdges) {
       if (e == null || e.getFromVertex() == null || !(e instanceof StreetEdge)) {
         continue;

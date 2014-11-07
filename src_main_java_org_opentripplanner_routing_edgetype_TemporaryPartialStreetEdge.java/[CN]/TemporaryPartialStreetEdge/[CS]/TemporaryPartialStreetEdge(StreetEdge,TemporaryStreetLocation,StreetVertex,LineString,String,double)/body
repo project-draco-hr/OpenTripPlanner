@@ -1,0 +1,9 @@
+{
+  super(parentEdge,v1,v2,geometry,name,length);
+  if (v1.isEndVertex()) {
+    throw new IllegalStateException("A temporary edge is directed away from an end vertex");
+  }
+ else {
+    endEdge=false;
+  }
+}

@@ -2,11 +2,11 @@
   Coordinate nearestPoint=new Coordinate(0.5,2.0);
   List<StreetEdge> edges=new ArrayList<StreetEdge>();
   edges.add(e2);
-  StreetLocation intermediate=StreetLocation.createStreetLocation(_graph,"middle of e2","foo",edges,nearestPoint);
+  TemporaryStreetLocation end=StreetVertexIndexServiceImpl.createTemporaryStreetLocation(_graph,"middle of e2","foo",edges,nearestPoint,true);
+  TemporaryStreetLocation start=StreetVertexIndexServiceImpl.createTemporaryStreetLocation(_graph,"middle of e2","foo",edges,nearestPoint,false);
   RoutingRequest options=new RoutingRequest();
   options.setMode(TraverseMode.CAR);
   options.setRoutingContext(_graph,v1,v2);
-  intermediate.setTemporaryEdgeVisibility(options.rctx);
   double turnDurationSecs=10.0 * 60.0;
   options.traversalCostModel=(new DummyCostModel(turnDurationSecs));
   options.turnReluctance=(1.0);
@@ -14,10 +14,8 @@
   State s1=e1.traverse(s0);
   State s2=e2.traverse(s1);
   State s3=e3.traverse(s2);
-  Edge partialE2First=intermediate.getIncoming().iterator().next();
-  Edge partialE2Second=intermediate.getOutgoing().iterator().next();
-  System.out.println(intermediate.getIncoming());
-  System.out.println(intermediate.getOutgoing());
+  Edge partialE2First=end.getIncoming().iterator().next();
+  Edge partialE2Second=start.getOutgoing().iterator().next();
   State partialS0=new State(options);
   State partialS1=e1.traverse(partialS0);
   State partialS2A=partialE2First.traverse(partialS1);

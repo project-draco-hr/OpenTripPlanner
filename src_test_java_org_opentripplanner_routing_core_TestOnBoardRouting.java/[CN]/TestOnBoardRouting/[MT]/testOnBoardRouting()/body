@@ -86,8 +86,7 @@
     assertEquals(arrivalVertex2,destination);
     assertTrue(elapsedTime2 <= elapsedTime1);
     assertTrue(numBoardings2 < numBoardings1);
-    int nRemoved=onboardOrigin.removeTemporaryEdges(graph);
-    assertEquals(1,nRemoved);
+    onboardOrigin.removeAllEdges();
     n++;
     if (n > NTESTS)     break;
   }
