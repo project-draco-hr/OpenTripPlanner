@@ -1,0 +1,15 @@
+{
+  LOG.info("Building bike parks from static source...");
+  BikeRentalStationService service=graph.getService(BikeRentalStationService.class,true);
+  if (!dataSource.update()) {
+    LOG.warn("No bike parks found from the data source.");
+    return;
+  }
+  Collection<BikePark> bikeParks=dataSource.getBikeParks();
+  for (  BikePark bikePark : bikeParks) {
+    service.addBikePark(bikePark);
+    BikeParkVertex bikeParkVertex=new BikeParkVertex(graph,bikePark);
+    new BikeParkEdge(bikeParkVertex);
+  }
+  LOG.info("Created " + bikeParks.size() + " bike parks.");
+}

@@ -7,7 +7,7 @@ class RingSegment {
     OSMNode nB;
   }
   HashGridSpatialIndex<RingSegment> spndx=new HashGridSpatialIndex<>();
-  for (  Area area : parkAndRideAreas) {
+  for (  Area area : Iterables.concat(parkAndRideAreas,bikeParkingAreas)) {
     for (    Ring ring : area.outermostRings) {
       for (int j=0; j < ring.nodes.size(); j++) {
         RingSegment ringSegment=new RingSegment();

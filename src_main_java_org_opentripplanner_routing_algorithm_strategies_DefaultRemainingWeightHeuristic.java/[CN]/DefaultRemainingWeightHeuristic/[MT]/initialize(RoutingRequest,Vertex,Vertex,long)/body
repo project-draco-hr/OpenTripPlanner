@@ -1,0 +1,10 @@
+{
+  RoutingRequest req=options;
+  this.transit=req.modes.isTransit();
+  maxStreetSpeed=req.getStreetSpeedUpperBound();
+  maxTransitSpeed=req.getTransitSpeedUpperBound();
+  targetX=target.getX();
+  targetY=target.getY();
+  requiredWalkDistance=determineRequiredWalkDistance(req);
+  walkReluctance=req.walkReluctance;
+}

@@ -1,0 +1,9 @@
+{
+  RoutingRequest options=s0.getOptions();
+  if (options.arriveBy) {
+    return traverseUnpark(s0);
+  }
+ else {
+    return traversePark(s0);
+  }
+}

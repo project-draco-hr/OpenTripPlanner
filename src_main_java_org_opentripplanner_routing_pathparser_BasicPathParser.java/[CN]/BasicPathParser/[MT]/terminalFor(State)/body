@@ -18,6 +18,6 @@
   }
   if (v instanceof OnboardVertex)   return TRANSIT;
   if (v instanceof OffboardVertex)   return STATION;
-  if (v instanceof BikeRentalStationVertex || v instanceof ParkAndRideVertex)   return StreetEdge.CLASS_OTHERPATH;
+  if (v instanceof BikeRentalStationVertex || v instanceof ParkAndRideVertex || v instanceof BikeParkVertex)   return StreetEdge.CLASS_OTHERPATH;
  else   throw new RuntimeException("failed to tokenize path");
 }
