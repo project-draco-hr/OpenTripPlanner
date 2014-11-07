@@ -7,8 +7,9 @@
   ZipInputStream zis=new ZipInputStream(input);
   try {
     for (ZipEntry entry=zis.getNextEntry(); entry != null; entry=zis.getNextEntry()) {
-      if (entry.isDirectory())       continue;
+      if (entry.isDirectory())       return Response.status(Response.Status.BAD_REQUEST).entity("ZIP files containing directories are not supported").build();
       File file=new File(tempDir,entry.getName());
+      if (!file.getParentFile().equals(tempDir))       return Response.status(Response.Status.BAD_REQUEST).entity("ZIP files containing directories are not supported").build();
       OutputStream os=new FileOutputStream(file);
       ByteStreams.copy(zis,os);
       os.close();
