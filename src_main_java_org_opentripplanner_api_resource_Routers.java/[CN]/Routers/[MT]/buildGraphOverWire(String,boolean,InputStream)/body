@@ -5,13 +5,12 @@
   }
   File tempDir=Files.createTempDir();
   ZipInputStream zis=new ZipInputStream(input);
-  ZipEntry next;
   try {
     for (ZipEntry entry=zis.getNextEntry(); entry != null; entry=zis.getNextEntry()) {
       if (entry.isDirectory())       continue;
       File file=new File(tempDir,entry.getName());
       OutputStream os=new FileOutputStream(file);
-      long bytesExtracted=ByteStreams.copy(zis,os);
+      ByteStreams.copy(zis,os);
       os.close();
     }
   }
