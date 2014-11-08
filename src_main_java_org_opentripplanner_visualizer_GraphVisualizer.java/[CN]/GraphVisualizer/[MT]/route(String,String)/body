@@ -43,7 +43,7 @@
  else {
     sptService.setTraverseVisitor(new VisualTraverseVisitor(showGraph));
   }
-  ParetoPathService.SPTVisitor vis=pathservice.new SPTVisitor();
+  SPTVisitor vis=new SPTVisitor();
   pathservice.setSPTVisitor(vis);
   long t0=System.currentTimeMillis();
   List<GraphPath> paths=pathservice.getPaths(options);

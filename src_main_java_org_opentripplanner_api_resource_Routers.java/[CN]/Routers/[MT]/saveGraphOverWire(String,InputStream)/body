@@ -1,7 +1,7 @@
 {
   LOG.debug("save graph from POST data stream...");
   try {
-    boolean success=server.graphService.save(routerId,is);
+    boolean success=server.graphService.getGraphSourceFactory().save(routerId,is);
     if (success) {
       return Response.status(201).entity("graph saved.\n").build();
     }

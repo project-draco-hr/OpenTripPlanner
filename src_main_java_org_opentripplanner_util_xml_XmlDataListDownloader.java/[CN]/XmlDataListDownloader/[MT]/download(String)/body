@@ -1,0 +1,29 @@
+{
+  try {
+    InputStream inputStream;
+    URL url2=new URL(url);
+    String proto=url2.getProtocol();
+    if (proto.equals("http") || proto.equals("https")) {
+      inputStream=HttpUtils.getData(url);
+    }
+ else {
+      inputStream=url2.openStream();
+    }
+    if (inputStream == null) {
+      LOG.warn("Failed to get data from url " + url);
+      return null;
+    }
+    return parseXML(inputStream);
+  }
+ catch (  IOException e) {
+    LOG.warn("Error reading XML feed from " + url,e);
+    return null;
+  }
+catch (  ParserConfigurationException e) {
+    throw new RuntimeException(e);
+  }
+catch (  SAXException e) {
+    LOG.warn("Error parsing XML feed from " + url + "(bad XML of some sort)",e);
+    return null;
+  }
+}

@@ -1,0 +1,12 @@
+{
+  String str=getFieldCheckRequired(column,required);
+  double val=Double.NaN;
+  if (str != null)   try {
+    val=Double.parseDouble(str);
+    checkRangeInclusive(min,max,val);
+  }
+ catch (  NumberFormatException nfe) {
+    feed.errors.add(new NumberParseError(tableName,row,column));
+  }
+  return val;
+}

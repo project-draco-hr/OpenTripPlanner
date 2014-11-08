@@ -3,7 +3,6 @@
   edge=e;
   edgeCoords=e.getGeometry().getCoordinateSequence();
   numEdgeCoords=edgeCoords.size();
-  platform=calcPlatform(mode);
   nearestPointOnEdge=new Coordinate();
   distance=calcNearestPoint(loc.getCoordinate());
   endwiseVertex=calcEndwiseVertex();
@@ -17,5 +16,5 @@
     double absDiff=Math.abs(heading - directionOfEdge);
     directionDifference=Math.min(MAX_ABS_DIRECTION_DIFFERENCE - absDiff,absDiff);
   }
-  score=calcScore();
+  score=calcScore(mode);
 }

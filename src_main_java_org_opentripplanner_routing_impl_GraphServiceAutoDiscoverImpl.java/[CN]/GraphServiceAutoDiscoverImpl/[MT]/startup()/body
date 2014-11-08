@@ -1,9 +1,0 @@
-{
-  autoDiscoverGraphs();
-  scanExecutor.scheduleWithFixedDelay(new Runnable(){
-    @Override public void run(){
-      autoDiscoverGraphs();
-    }
-  }
-,autoScanPeriodSec,autoScanPeriodSec,TimeUnit.SECONDS);
-}

@@ -1,0 +1,5 @@
+{
+  File graphFile=new File(path,GRAPH_FILENAME);
+  LOG.debug("Loading graph from classpath at '{}'",graphFile.getPath());
+  return Thread.currentThread().getContextClassLoader().getResourceAsStream(graphFile.getPath());
+}

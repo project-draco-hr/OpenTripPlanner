@@ -1,0 +1,8 @@
+{
+  if (selected) {
+    this.pathservice=new LongDistancePathService(graphService,sptService);
+  }
+ else {
+    this.pathservice=new ParetoPathService(graphService,sptService);
+  }
+}
