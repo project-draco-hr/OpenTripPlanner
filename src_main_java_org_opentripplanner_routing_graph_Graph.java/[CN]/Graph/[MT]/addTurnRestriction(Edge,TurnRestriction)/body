@@ -1,0 +1,9 @@
+{
+  if (edge == null || turnRestriction == null)   return;
+  List<TurnRestriction> turnRestrictions=this.turnRestrictions.get(edge);
+  if (turnRestrictions == null) {
+    turnRestrictions=Lists.newArrayList();
+    this.turnRestrictions.put(edge,turnRestrictions);
+  }
+  turnRestrictions.add(turnRestriction);
+}

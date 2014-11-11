@@ -3,6 +3,6 @@
   StreetEdge e1=edge(v1,v2,18.4,StreetTraversalPermission.ALL);
   State state=new State(v2,0,proto.clone());
   state.getOptions().setArriveBy(true);
-  e1.addTurnRestriction(new TurnRestriction(e1,e0,null,TraverseModeSet.allModes()));
+  _graph.addTurnRestriction(e1,new TurnRestriction(e1,e0,null,TraverseModeSet.allModes()));
   assertNotNull(e0.traverse(e1.traverse(state)));
 }

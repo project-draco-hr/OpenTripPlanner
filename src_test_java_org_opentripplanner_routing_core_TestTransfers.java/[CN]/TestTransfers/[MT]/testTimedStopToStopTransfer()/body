@@ -38,6 +38,6 @@
   assertEquals("8.1",trips.get(0).getId().getId());
   assertEquals("4.3",trips.get(1).getId().getId());
   applyUpdateToTripPattern(pattern,"4.2","F",1,82800,82800,ScheduleRelationship.SCHEDULED,0,serviceDate);
-  timedTransferEdge.detach();
+  timedTransferEdge.detach(graph);
   reset(graph);
 }
