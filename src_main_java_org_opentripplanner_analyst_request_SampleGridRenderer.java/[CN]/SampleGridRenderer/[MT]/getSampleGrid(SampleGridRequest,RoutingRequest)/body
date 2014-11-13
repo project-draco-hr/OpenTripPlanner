@@ -6,7 +6,7 @@
   sptRequest.worstTime=(sptRequest.dateTime + (sptRequest.arriveBy ? -spgRequest.maxTimeSec - tOvershot : spgRequest.maxTimeSec + tOvershot));
   sptRequest.batch=(true);
   sptRequest.setRoutingContext(graphService.getGraph(sptRequest.routerId));
-  final ShortestPathTree spt=sptService.getShortestPathTree(sptRequest);
+  final ShortestPathTree spt=sptServiceFactory.instantiate().getShortestPathTree(sptRequest);
   long t1=System.currentTimeMillis();
   Coordinate coordinateOrigin=spgRequest.coordinateOrigin;
   if (coordinateOrigin == null)   coordinateOrigin=sptRequest.from.getCoordinate();
