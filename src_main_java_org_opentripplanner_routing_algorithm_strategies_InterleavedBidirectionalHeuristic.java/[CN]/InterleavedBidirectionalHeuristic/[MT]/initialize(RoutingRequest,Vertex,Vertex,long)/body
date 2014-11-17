@@ -6,7 +6,7 @@
   long start=System.currentTimeMillis();
   this.target=target;
   int nVertices=graph.countVertices();
-  weights=Maps.newHashMapWithExpectedSize(((int)Math.log(nVertices)) + 1);
+  weights=new TObjectDoubleHashMap((int)(Math.log(nVertices)) + 1,0.5f,Double.POSITIVE_INFINITY);
   this.options=options;
   this.origin=origin;
   options.softWalkLimiting=false;
