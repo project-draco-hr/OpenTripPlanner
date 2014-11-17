@@ -6,6 +6,7 @@ class RingSegment {
     OSMNode nA;
     OSMNode nB;
   }
+  Set<P2<Long>> commonSegments=new HashSet<P2<Long>>();
   HashGridSpatialIndex<RingSegment> spndx=new HashGridSpatialIndex<>();
   for (  Area area : Iterables.concat(parkAndRideAreas,bikeParkingAreas)) {
     for (    Ring ring : area.outermostRings) {
@@ -16,7 +17,13 @@ class RingSegment {
         ringSegment.nA=ring.nodes.get(j);
         ringSegment.nB=ring.nodes.get((j + 1) % ring.nodes.size());
         Envelope env=new Envelope(ringSegment.nA.lon,ringSegment.nB.lon,ringSegment.nA.lat,ringSegment.nB.lat);
-        spndx.insert(env,ringSegment);
+        P2<Long> key1=new P2<>(ringSegment.nA.getId(),ringSegment.nB.getId());
+        P2<Long> key2=new P2<>(ringSegment.nB.getId(),ringSegment.nA.getId());
+        if (!commonSegments.contains(key1) && !commonSegments.contains(key2)) {
+          spndx.insert(env,ringSegment);
+          commonSegments.add(key1);
+          commonSegments.add(key2);
+        }
       }
     }
   }
