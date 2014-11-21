@@ -5,7 +5,7 @@
   }
   SPTService sptService=this.sptServiceFactory.instantiate();
   if (options.rctx == null) {
-    options.setRoutingContext(graphService.getGraph(options.routerId));
+    options.setRoutingContext(graph);
     options.rctx.pathParsers=new PathParser[]{new Parser()};
   }
   LOG.debug("rreq={}",options);
