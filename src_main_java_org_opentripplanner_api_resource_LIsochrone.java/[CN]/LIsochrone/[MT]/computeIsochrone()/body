@@ -12,15 +12,6 @@
  else {
     isoChroneRequest.maxTimeSec=isoChroneRequest.maxCutoffSec;
   }
-  List<IsochroneData> isochrones;
-  if (algorithm == null || "accSampling".equals(algorithm)) {
-    isochrones=accSamplingRenderer.getIsochrones(isoChroneRequest,sptRequest);
-  }
- else   if ("recursiveGrid".equals(algorithm)) {
-    isochrones=recursiveGridRenderer.getIsochrones(isoChroneRequest,sptRequest);
-  }
- else {
-    throw new IllegalArgumentException("Unknown algorithm: " + algorithm);
-  }
-  return isochrones;
+  Router router=otpServer.getRouter(routerId);
+  return router.isoChroneSPTRenderer.getIsochrones(isoChroneRequest,sptRequest);
 }

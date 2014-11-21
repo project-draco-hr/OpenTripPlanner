@@ -5,8 +5,6 @@
   routingRequest=new RoutingRequest();
   sptServiceFactory=new GenericAStarFactory();
   if (params.analyst) {
-    sampleGridRenderer=new SampleGridRenderer(graphService,sptServiceFactory);
-    isoChroneSPTRenderer=new IsoChroneSPTRendererAccSampling(graphService,sptServiceFactory,sampleGridRenderer);
     surfaceCache=new SurfaceCache(30);
     pointSetCache=new DiskBackedPointSetCache(100,new File(params.pointSetDirectory));
   }

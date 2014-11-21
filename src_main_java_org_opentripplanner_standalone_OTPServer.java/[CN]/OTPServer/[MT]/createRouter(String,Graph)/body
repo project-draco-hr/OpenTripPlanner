@@ -17,6 +17,8 @@
     router.tileCache=new TileCache(router.graph);
     router.sptCache=new SPTCache(sptServiceFactory,graph);
     router.renderer=new Renderer(router.tileCache,router.sptCache);
+    router.sampleGridRenderer=new SampleGridRenderer(router.graph,sptServiceFactory);
+    router.isoChroneSPTRenderer=new IsoChroneSPTRendererAccSampling(router.sampleGridRenderer);
   }
   return router;
 }
