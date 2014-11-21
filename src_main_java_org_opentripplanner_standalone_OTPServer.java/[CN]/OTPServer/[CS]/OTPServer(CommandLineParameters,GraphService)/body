@@ -4,17 +4,6 @@
   graphService=gs;
   routingRequest=new RoutingRequest();
   sptServiceFactory=new GenericAStarFactory();
-  if (params.longDistance) {
-    LongDistancePathService pathService=new LongDistancePathService(graphService,sptServiceFactory);
-    pathService.timeout=10;
-    this.pathService=pathService;
-  }
- else {
-    RetryingPathServiceImpl pathService=new RetryingPathServiceImpl(graphService,sptServiceFactory);
-    pathService.setFirstPathTimeout(10.0);
-    pathService.setMultiPathTimeout(1.0);
-    this.pathService=pathService;
-  }
   tileRendererManager=new TileRendererManager(graphService);
   if (params.analyst) {
     tileCache=new TileCache(graphService);

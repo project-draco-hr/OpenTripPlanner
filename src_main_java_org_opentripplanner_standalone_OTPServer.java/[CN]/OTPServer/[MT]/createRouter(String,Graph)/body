@@ -1,5 +1,16 @@
 {
   Router router=new Router(routerId,graph);
-  router.planGenerator=new PlanGenerator(graph,pathService);
+  if (params.longDistance) {
+    LongDistancePathService pathService=new LongDistancePathService(graphService,sptServiceFactory);
+    pathService.timeout=10;
+    router.pathService=pathService;
+  }
+ else {
+    RetryingPathServiceImpl pathService=new RetryingPathServiceImpl(graphService,sptServiceFactory);
+    pathService.setFirstPathTimeout(10.0);
+    pathService.setMultiPathTimeout(1.0);
+    router.pathService=pathService;
+  }
+  router.planGenerator=new PlanGenerator(graph,router.pathService);
   return router;
 }
