@@ -3,5 +3,5 @@
   this.modes=Arrays.asList(new QualifiedModeSetSequence("WALK"));
   this.intermediatePlaces=intermediates;
   Router router=otpServer.getRouter(routerId);
-  tsp=new TravelingSalesmanPathService(otpServer.graphService,router.pathService);
+  tsp=new TravelingSalesmanPathService(otpServer.getGraphService(),router.pathService);
 }
