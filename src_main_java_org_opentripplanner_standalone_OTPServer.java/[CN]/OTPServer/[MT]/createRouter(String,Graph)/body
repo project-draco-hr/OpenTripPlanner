@@ -12,5 +12,6 @@
     router.pathService=pathService;
   }
   router.planGenerator=new PlanGenerator(graph,router.pathService);
+  router.tileRendererManager=new TileRendererManager(graph);
   return router;
 }
