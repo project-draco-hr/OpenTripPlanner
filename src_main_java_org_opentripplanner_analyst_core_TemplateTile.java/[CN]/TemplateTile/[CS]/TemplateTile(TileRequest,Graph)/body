@@ -15,7 +15,7 @@
         tr.transform(sourcePos,sourcePos);
         double lon=sourcePos.getOrdinate(0);
         double lat=sourcePos.getOrdinate(1);
-        Sample s=graphService.getGraph(req.routerId).getSampleFactory().getSample(lon,lat);
+        Sample s=graph.getSampleFactory().getSample(lon,lat);
         samples[i++]=s;
       }
     }

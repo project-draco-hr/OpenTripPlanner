@@ -13,5 +13,10 @@
   }
   router.planGenerator=new PlanGenerator(graph,router.pathService);
   router.tileRendererManager=new TileRendererManager(graph);
+  if (params.analyst) {
+    router.tileCache=new TileCache(router.graph);
+    router.sptCache=new SPTCache(sptServiceFactory,graph);
+    router.renderer=new Renderer(router.tileCache,router.sptCache);
+  }
   return router;
 }

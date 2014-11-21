@@ -5,9 +5,6 @@
   routingRequest=new RoutingRequest();
   sptServiceFactory=new GenericAStarFactory();
   if (params.analyst) {
-    tileCache=new TileCache(graphService);
-    sptCache=new SPTCache(sptServiceFactory,graphService);
-    renderer=new Renderer(tileCache,sptCache);
     sampleGridRenderer=new SampleGridRenderer(graphService,sptServiceFactory);
     isoChroneSPTRenderer=new IsoChroneSPTRendererAccSampling(graphService,sptServiceFactory,sampleGridRenderer);
     surfaceCache=new SurfaceCache(30);
