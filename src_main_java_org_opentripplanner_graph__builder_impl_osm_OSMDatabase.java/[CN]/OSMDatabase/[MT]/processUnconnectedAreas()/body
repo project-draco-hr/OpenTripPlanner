@@ -59,29 +59,16 @@ class RingSegment {
         if (!wayLevel.equals(areaLevel))         continue;
         OSMNode splitNode;
         double epsilon=0.0000001;
-        if (checkIntersectionDistance(p,ringSegment.nA,epsilon)) {
-          if (way.getNodeRefs().contains(ringSegment.nA.getId()))           continue;
-          way.addNodeRef(ringSegment.nA.getId(),i + 1);
-          if (checkDistance(ringSegment.nA,nA,epsilon) || checkDistance(ringSegment.nA,nB,epsilon))           LOG.info("Node {} in area {} is coincident but disconnected with way {}",ringSegment.nA.getId(),way.getId(),ringSegment.area.parent.getId(),way.getId());
-          i--;
-          break;
-        }
- else         if (checkIntersectionDistance(p,ringSegment.nB,epsilon)) {
-          if (way.getNodeRefs().contains(ringSegment.nB.getId()))           continue;
-          way.addNodeRef(ringSegment.nB.getId(),i + 1);
-          if (checkDistance(ringSegment.nB,nA,epsilon) || checkDistance(ringSegment.BA,nB,epsilon))           LOG.info("Node {} in area {} is coincident but disconnected with way {}",ringSegment.nB.getId(),way.getId(),ringSegment.area.parent.getId(),way.getId());
-          i--;
-          break;
-        }
- else         if (checkIntersectionDistance(p,nA,epsilon)) {
+        boolean wasNodeIdentical=false;
+        if (checkIntersectionDistance(p,nA,epsilon)) {
           splitNode=nA;
           if (ringSegment.ring.nodes.contains(splitNode))           continue;
-          if (checkDistance(ringSegment.nA,nA,epsilon) || checkDistance(ringSegment.nB,nA,epsilon))           LOG.info("Node {} in way {} is coincident but disconnected with area {}",nA.getId(),way.getId(),ringSegment.area.parent.getId());
+          wasNodeIdentical=checkDistance(ringSegment.nA,nA,epsilon) || checkDistance(ringSegment.nB,nA,epsilon);
         }
  else         if (checkIntersectionDistance(p,nB,epsilon)) {
           splitNode=nB;
           if (ringSegment.ring.nodes.contains(splitNode))           continue;
-          if (checkDistance(ringSegment.nA,nB,epsilon) || checkDistance(ringSegment.nB,nB,epsilon))           LOG.info("Node {} in way {} is coincident but disconnected with area {}",nB.getId(),way.getId(),ringSegment.area.parent.getId());
+          wasNodeIdentical=checkDistance(ringSegment.nA,nB,epsilon) || checkDistance(ringSegment.nB,nB,epsilon);
         }
  else {
           splitNode=createVirtualNode(p.getCoordinate());
@@ -100,6 +87,7 @@ class RingSegment {
         Envelope env2=new Envelope(ringSegment2.nA.lon,ringSegment2.nB.lon,ringSegment2.nA.lat,ringSegment2.nB.lat);
         spndx.insert(env2,ringSegment2);
         ringSegment.nB=splitNode;
+        if (wasNodeIdentical)         LOG.info("Node {} in way {} is coincident but disconnected with area {}",splitNode.getId(),way.getId(),ringSegment.area.parent.getId());
         break;
       }
     }
