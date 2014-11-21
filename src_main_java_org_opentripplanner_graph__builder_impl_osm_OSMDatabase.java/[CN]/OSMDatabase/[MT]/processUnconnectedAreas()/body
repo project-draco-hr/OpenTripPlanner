@@ -57,37 +57,21 @@ class RingSegment {
         }
         OSMLevel areaLevel=getLevelForWay(ringSegment.area.parent);
         if (!wayLevel.equals(areaLevel))         continue;
-        OSMNode splitNode;
-        double epsilon=0.0000001;
-        boolean wasNodeIdentical=false;
-        if (checkIntersectionDistance(p,nA,epsilon)) {
-          splitNode=nA;
-          if (ringSegment.ring.nodes.contains(splitNode))           continue;
-          wasNodeIdentical=checkDistance(ringSegment.nA,nA,epsilon) || checkDistance(ringSegment.nB,nA,epsilon);
-        }
- else         if (checkIntersectionDistance(p,nB,epsilon)) {
-          splitNode=nB;
-          if (ringSegment.ring.nodes.contains(splitNode))           continue;
-          wasNodeIdentical=checkDistance(ringSegment.nA,nB,epsilon) || checkDistance(ringSegment.nB,nB,epsilon);
-        }
- else {
-          splitNode=createVirtualNode(p.getCoordinate());
-          nCreatedNodes++;
-          LOG.debug("Adding virtual {}, intersection of {} ({}--{}) and area {} ({}--{}) at {}.",splitNode,way,nA,nB,ringSegment.area.parent,ringSegment.nA,ringSegment.nB,p);
-          way.addNodeRef(splitNode.getId(),i + 1);
-          i--;
-        }
-        int j=ringSegment.ring.nodes.indexOf(ringSegment.nB);
-        ringSegment.ring.nodes.add(j,splitNode);
+        OSMNode virtualNode=createVirtualNode(p.getCoordinate());
+        nCreatedNodes++;
+        LOG.debug("Adding virtual {}, intersection of {} ({}--{}) and area {} ({}--{}) at {}.",virtualNode,way,nA,nB,ringSegment.area.parent,ringSegment.nA,ringSegment.nB,p);
+        way.addNodeRef(virtualNode.getId(),i + 1);
+        int j=ringSegment.ring.nodes.indexOf(ringSegment.nA);
+        ringSegment.ring.nodes.add(j,virtualNode);
         RingSegment ringSegment2=new RingSegment();
         ringSegment2.area=ringSegment.area;
         ringSegment2.ring=ringSegment.ring;
-        ringSegment2.nA=splitNode;
+        ringSegment2.nA=virtualNode;
         ringSegment2.nB=ringSegment.nB;
         Envelope env2=new Envelope(ringSegment2.nA.lon,ringSegment2.nB.lon,ringSegment2.nA.lat,ringSegment2.nB.lat);
         spndx.insert(env2,ringSegment2);
-        ringSegment.nB=splitNode;
-        if (wasNodeIdentical)         LOG.info("Node {} in way {} is coincident but disconnected with area {}",splitNode.getId(),way.getId(),ringSegment.area.parent.getId());
+        ringSegment.nB=virtualNode;
+        i--;
         break;
       }
     }
