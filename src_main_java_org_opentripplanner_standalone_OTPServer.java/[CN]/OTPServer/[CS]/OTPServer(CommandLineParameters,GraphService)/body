@@ -15,7 +15,6 @@
     pathService.setMultiPathTimeout(1.0);
     this.pathService=pathService;
   }
-  planGenerator=new PlanGenerator(graphService,pathService);
   tileRendererManager=new TileRendererManager(graphService);
   if (params.analyst) {
     tileCache=new TileCache(graphService);

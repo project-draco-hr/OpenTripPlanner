@@ -3,7 +3,8 @@
   RoutingRequest request=null;
   try {
     request=super.buildRequest();
-    TripPlan plan=otpServer.planGenerator.generate(request);
+    Router router=otpServer.getRouter(request.routerId);
+    TripPlan plan=router.planGenerator.generate(request);
     response.setPlan(plan);
   }
  catch (  Exception e) {
