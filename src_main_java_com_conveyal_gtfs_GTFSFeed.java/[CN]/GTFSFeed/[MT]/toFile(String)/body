@@ -1,0 +1,14 @@
+{
+  try {
+    File out=new File(file);
+    OutputStream os=new FileOutputStream(out);
+    ZipOutputStream zip=new ZipOutputStream(os);
+    new Agency.Writer(this).writeTable(zip);
+    zip.close();
+    os.close();
+  }
+ catch (  Exception e) {
+    LOG.error("Error saving GTFS: {}",e.getMessage());
+    throw new RuntimeException(e);
+  }
+}
