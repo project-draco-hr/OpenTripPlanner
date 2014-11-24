@@ -3,7 +3,7 @@
   LOG.info("Starting up graph visualizer...");
   this.graphService=graphService;
   this.graph=graphService.getGraph();
-  this.pathservice=new ParetoPathService(graphService,sptServiceFactory);
+  this.pathservice=new ParetoPathService(graph,sptServiceFactory);
   setTitle("GraphVisualizer");
   init();
 }
