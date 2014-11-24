@@ -43,6 +43,8 @@ class RingSegment {
       for (      RingSegment ringSegment : ringSegments) {
         boolean wayWasSplit=false;
         if (ringSegment.nA.getId() == nA.getId() || ringSegment.nA.getId() == nB.getId() || ringSegment.nB.getId() == nA.getId() || ringSegment.nB.getId() == nB.getId())         continue;
+        OSMLevel areaLevel=getLevelForWay(ringSegment.area.parent);
+        if (!wayLevel.equals(areaLevel))         continue;
         LineString seg2=GeometryUtils.makeLineString(ringSegment.nA.lon,ringSegment.nA.lat,ringSegment.nB.lon,ringSegment.nB.lat);
         Geometry intersection=seg2.intersection(seg);
         Point p=null;
@@ -56,8 +58,6 @@ class RingSegment {
           LOG.error("Alien intersection type between {} ({}--{}) and {} ({}--{}): ",way,nA,nB,ringSegment.area.parent,ringSegment.nA,ringSegment.nB,intersection);
           continue;
         }
-        OSMLevel areaLevel=getLevelForWay(ringSegment.area.parent);
-        if (!wayLevel.equals(areaLevel))         continue;
         OSMNode splitNode;
         double epsilon=0.0000001;
         if (checkIntersectionDistance(p,nA,epsilon)) {
