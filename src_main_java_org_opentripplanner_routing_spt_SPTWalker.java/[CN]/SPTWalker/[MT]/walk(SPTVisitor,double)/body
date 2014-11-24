@@ -29,7 +29,6 @@
           if (mode != TraverseMode.CAR)           speed=speed * se.getDistance() / se.getSlopeSpeedEffectiveLength();
           double avgSpeed=se.getDistance() / Math.abs(s0.getTimeInMillis() - s1.getTimeInMillis()) * 1000;
           if (speed > avgSpeed)           speed=avgSpeed;
-          speed=avgSpeed;
         }
         double lineStringLen=distanceLibrary.fastLength(lineString);
         visitor.visit(e,vx0.getCoordinate(),s0,s1,0.0,lineStringLen,speed);
