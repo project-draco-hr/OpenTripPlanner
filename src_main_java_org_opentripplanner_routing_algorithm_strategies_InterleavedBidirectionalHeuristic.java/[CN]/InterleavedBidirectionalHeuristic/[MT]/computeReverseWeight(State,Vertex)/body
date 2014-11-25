@@ -4,13 +4,13 @@
   double weight=weights.get(v);
   if (v instanceof StreetVertex) {
     if (weight == -1 && s.isEverBoarded())     return Double.POSITIVE_INFINITY;
- else     if (weight < 0)     return 0;
- else     return weight;
+    if (weight < 0)     return 0;
+    return weight;
   }
- else   if (weight == Double.POSITIVE_INFINITY) {
+  if (weight == Double.POSITIVE_INFINITY) {
     double dist=distanceLibrary.fastDistance(v.getY(),v.getX(),target.getY(),target.getX());
     double time=dist / MAX_TRANSIT_SPEED;
     return Math.max(maxFound,time);
   }
- else   return weight;
+  return weight;
 }
