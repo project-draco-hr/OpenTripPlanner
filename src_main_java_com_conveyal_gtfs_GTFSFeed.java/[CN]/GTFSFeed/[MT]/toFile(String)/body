@@ -4,8 +4,16 @@
     OutputStream os=new FileOutputStream(out);
     ZipOutputStream zip=new ZipOutputStream(os);
     new Agency.Writer(this).writeTable(zip);
+    new Calendar.Writer(this).writeTable(zip);
+    new CalendarDate.Writer(this).writeTable(zip);
+    new Frequency.Writer(this).writeTable(zip);
+    new Route.Writer(this).writeTable(zip);
+    new Stop.Writer(this).writeTable(zip);
+    new Transfer.Writer(this).writeTable(zip);
+    new Trip.Writer(this).writeTable(zip);
+    new StopTime.Writer(this).writeTable(zip);
     zip.close();
-    os.close();
+    LOG.info("GTFS file written");
   }
  catch (  Exception e) {
     LOG.error("Error saving GTFS: {}",e.getMessage());

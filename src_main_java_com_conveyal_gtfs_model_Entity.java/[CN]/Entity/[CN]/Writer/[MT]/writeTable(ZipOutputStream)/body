@@ -2,7 +2,8 @@
   LOG.info("Writing GTFS table {}",tableName);
   ZipEntry zipEntry=new ZipEntry(tableName + ".txt");
   zip.putNextEntry(zipEntry);
-  this.writer=new CsvWriter(zip,',',Charset.forName("UTF8"));
+  OutputStream protectedOut=new UncloseableOutputStream(zip);
+  this.writer=new CsvWriter(protectedOut,',',Charset.forName("UTF8"));
   this.writeHeaders();
   row=0;
   Iterator<E> iter=this.iterator();
@@ -12,6 +13,7 @@
     }
     writeOneRow(iter.next());
   }
-  this.writer.close();
+  writer.flush();
+  zip.closeEntry();
   LOG.info("Wrote {} rows",human(row));
 }

@@ -1,0 +1,7 @@
+{
+  while (currentService == null || !currentService.hasNext()) {
+    if (!services.hasNext())     return false;
+    currentService=services.next().calendar_dates.values().iterator();
+  }
+  return true;
+}
