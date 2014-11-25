@@ -1,14 +1,10 @@
 {
   Graph graph=graphService.getGraph(routerId);
-synchronized (routers) {
-    if (graph == null) {
-      routers.remove(routerId);
-      return null;
-    }
-    Router router=routers.get(routerId);
-    if (router == null || router.graph != graph) {
+synchronized (graph) {
+    Router router=graph.getService(Router.class);
+    if (router == null) {
       router=createRouter(routerId,graph);
-      routers.put(routerId,router);
+      graph.putService(Router.class,router);
     }
     return router;
   }
