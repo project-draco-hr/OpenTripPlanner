@@ -7,7 +7,8 @@
   t.trip_short_name=getStringField("trip_short_name",false);
   t.direction_id=getIntField("direction_id",false,0,1);
   t.block_id=getStringField("block_id",false);
-  t.shape=getRefField("shape_id",false,feed.shapes);
+  t.shape_points=getRefField("shape_id",false,feed.shapes);
+  t.shape_id=getStringField("shape_id",false);
   t.bikes_allowed=getIntField("bikes_allowed",false,0,2);
   t.wheelchair_accessible=getIntField("wheelchair_accessible",false,0,2);
   t.feed=feed;
