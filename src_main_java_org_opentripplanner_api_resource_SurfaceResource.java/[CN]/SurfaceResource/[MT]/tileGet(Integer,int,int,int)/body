@@ -2,7 +2,7 @@
   Envelope2D env=SlippyTile.tile2Envelope(x,y,z);
   TimeSurface surfA=otpServer.surfaceCache.get(surfaceId);
   if (surfA == null)   return badRequest("Unrecognized surface ID.");
-  TileRequest tileRequest=new TileRequest(surfA.routerId,env,256,256);
+  TileRequest tileRequest=new TileRequest(env,256,256);
   MIMEImageFormat imageFormat=new MIMEImageFormat("image/png");
   RenderRequest renderRequest=new RenderRequest(imageFormat,Layer.TRAVELTIME,Style.COLOR30,true,false);
   Router router=otpServer.getRouter(surfA.routerId);
