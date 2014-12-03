@@ -10,6 +10,6 @@
   ABCD[3]=sampleGrid.getOrCreate(x + 1,y + 1);
   for (  ZSamplePoint<TZ> P : ABCD) {
     Coordinate C=sampleGrid.getCoordinates(P);
-    P.setZ(metric.cumulateSample(C0,C,z,P.getZ()));
+    P.setZ(metric.cumulateSample(C0,C,z,P.getZ(),offRoadSpeed));
   }
 }

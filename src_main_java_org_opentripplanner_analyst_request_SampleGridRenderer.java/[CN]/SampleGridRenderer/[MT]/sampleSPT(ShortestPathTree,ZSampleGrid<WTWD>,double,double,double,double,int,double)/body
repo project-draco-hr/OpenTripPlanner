@@ -1,12 +1,12 @@
 {
   final DistanceLibrary distanceLibrary=SphericalDistanceLibrary.getInstance();
   AccumulativeMetric<WTWD> accMetric=new AccumulativeMetric<WTWD>(){
-    @Override public WTWD cumulateSample(    Coordinate C0,    Coordinate Cs,    WTWD z,    WTWD zS){
+    @Override public WTWD cumulateSample(    Coordinate C0,    Coordinate Cs,    WTWD z,    WTWD zS,    double offRoadSpeed){
       double t=z.wTime / z.w;
       double b=z.wBoardings / z.w;
       double wd=z.wWalkDist / z.w;
       double d=distanceLibrary.fastDistance(C0,Cs,cosLat);
-      double dt=d / v0;
+      double dt=d / offRoadSpeed;
       double w=1 / ((d + d0) * (d + d0));
       if (zS == null) {
         zS=new WTWD();
@@ -58,26 +58,28 @@
     @Override public final boolean accept(    Edge e){
       return e instanceof StreetEdge;
     }
-    @Override public final void visit(    Coordinate c,    State s0,    State s1,    double d0,    double d1){
+    @Override public final void visit(    Edge e,    Coordinate c,    State s0,    State s1,    double d0,    double d1,    double speed){
       double wd0=s0.getWalkDistance() + d0;
       double wd1=s0.getWalkDistance() + d1;
-      double t0=wd0 > maxWalkDistance ? Double.POSITIVE_INFINITY : s0.getActiveTime() + d0 / v0;
-      double t1=wd1 > maxWalkDistance ? Double.POSITIVE_INFINITY : s1.getActiveTime() + d1 / v0;
-      if (!Double.isInfinite(t0) || !Double.isInfinite(t1)) {
-        WTWD z=new WTWD();
-        z.w=1.0;
-        z.d=0.0;
-        if (t0 < t1) {
-          z.wTime=t0;
-          z.wBoardings=s0.getNumBoardings();
-          z.wWalkDist=s0.getWalkDistance();
-        }
+      double t0=wd0 > maxWalkDistance ? Double.POSITIVE_INFINITY : s0.getActiveTime() + d0 / speed;
+      double t1=wd1 > maxWalkDistance ? Double.POSITIVE_INFINITY : s1.getActiveTime() + d1 / speed;
+      if (t0 < maxTimeSec || t1 < maxTimeSec) {
+        if (!Double.isInfinite(t0) || !Double.isInfinite(t1)) {
+          WTWD z=new WTWD();
+          z.w=1.0;
+          z.d=0.0;
+          if (t0 < t1) {
+            z.wTime=t0;
+            z.wBoardings=s0.getNumBoardings();
+            z.wWalkDist=s0.getWalkDistance() + d0;
+          }
  else {
-          z.wTime=t1;
-          z.wBoardings=s1.getNumBoardings();
-          z.wWalkDist=s1.getWalkDistance();
+            z.wTime=t1;
+            z.wBoardings=s1.getNumBoardings();
+            z.wWalkDist=s1.getWalkDistance() + d1;
+          }
+          gridSampler.addSamplingPoint(c,z,speed);
         }
-        gridSampler.addSamplingPoint(c,z);
       }
     }
   }
