@@ -6,7 +6,6 @@
   sptServiceFactory=new GenericAStarFactory();
   if (params.longDistance) {
     LongDistancePathService pathService=new LongDistancePathService(graphService,sptServiceFactory);
-    pathService.timeout=10;
     this.pathService=pathService;
   }
  else {
