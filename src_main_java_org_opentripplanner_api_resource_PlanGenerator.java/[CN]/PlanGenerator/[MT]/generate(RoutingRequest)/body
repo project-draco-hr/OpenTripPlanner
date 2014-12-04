@@ -17,7 +17,8 @@
   }
   options.rctx.debugOutput.finishedCalculating();
   if (paths == null || paths.size() == 0) {
-    LOG.info("Path not found: " + options.from + " : "+ options.to);
+    LOG.debug("Path not found: " + options.from + " : "+ options.to);
+    options.rctx.debugOutput.finishedRendering();
     throw new PathNotFoundException();
   }
   for (  GraphPath graphPath : paths) {
