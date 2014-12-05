@@ -1,0 +1,7 @@
+{
+  Set<Integer> ret=new HashSet<Integer>(size());
+  for (  Tuple2<String,Integer> t : wrapped.keySet()) {
+    ret.add(t.b);
+  }
+  return Collections.unmodifiableSet(ret);
+}

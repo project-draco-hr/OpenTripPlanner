@@ -2,6 +2,7 @@
   Route r=new Route();
   r.route_id=getStringField("route_id",true);
   r.agency=getRefField("agency_id",false,feed.agency);
+  if (r.agency == null && feed.agency.size() == 1)   r.agency=feed.agency.values().iterator().next();
   r.route_short_name=getStringField("route_short_name",false);
   r.route_long_name=getStringField("route_long_name",false);
   r.route_desc=getStringField("route_desc",false);
