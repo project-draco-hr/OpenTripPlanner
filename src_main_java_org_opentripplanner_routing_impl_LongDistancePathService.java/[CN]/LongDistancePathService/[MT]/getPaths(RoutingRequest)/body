@@ -6,9 +6,19 @@
   SPTService sptService=this.sptServiceFactory.instantiate();
   if (options.rctx == null) {
     options.setRoutingContext(graphService.getGraph(options.routerId));
+    options.rctx.pathParsers=new PathParser[]{new Parser()};
   }
   LOG.debug("rreq={}",options);
-  RemainingWeightHeuristic heuristic=new DefaultRemainingWeightHeuristic();
+  RemainingWeightHeuristic heuristic;
+  if (options.disableRemainingWeightHeuristic) {
+    heuristic=new TrivialRemainingWeightHeuristic();
+  }
+ else   if (options.modes.isTransit()) {
+    heuristic=new InterleavedBidirectionalHeuristic(options.rctx.graph);
+  }
+ else {
+    heuristic=new DefaultRemainingWeightHeuristic();
+  }
   options.rctx.remainingWeightHeuristic=heuristic;
   options.setMaxTransfers(4);
   if (options.maxWalkDistance == Double.MAX_VALUE)   options.maxWalkDistance=DEFAULT_MAX_WALK;
