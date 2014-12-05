@@ -25,6 +25,13 @@
         }
         TripPattern prevPattern=patternForTripTimes.get(prev);
         TripPattern currPattern=patternForTripTimes.get(curr);
+        Stop fromStop=prevPattern.getStop(prevPattern.getStops().size() - 1);
+        Stop toStop=currPattern.getStop(0);
+        double teleportationDistance=distanceLibrary.fastDistance(fromStop.getLat(),fromStop.getLon(),toStop.getLat(),toStop.getLon());
+        if (teleportationDistance > 250) {
+          LOG.error(graph.addBuilderAnnotation(new InterliningTeleport(prev.trip,(int)teleportationDistance,block.blockId)));
+          continue SERVICE_BLOCK;
+        }
         interlines.put(new P2<TripPattern>(prevPattern,currPattern),new P2<Trip>(prev.trip,curr.trip));
       }
       prev=curr;
