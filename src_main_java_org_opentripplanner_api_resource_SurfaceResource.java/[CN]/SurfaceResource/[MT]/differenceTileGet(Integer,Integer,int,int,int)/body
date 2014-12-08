@@ -1,0 +1,11 @@
+{
+  Envelope2D env=SlippyTile.tile2Envelope(x,y,z);
+  TimeSurface surfA=server.surfaceCache.get(surfaceId);
+  if (surfA == null)   return badRequest("Unrecognized surface ID.");
+  TimeSurface surfB=server.surfaceCache.get(compareTosurfaceId);
+  if (surfB == null)   return badRequest("Unrecognized surface ID.");
+  TileRequest tileRequest=new TileRequest(surfA.routerId,env,256,256);
+  MIMEImageFormat imageFormat=new MIMEImageFormat("image/png");
+  RenderRequest renderRequest=new RenderRequest(imageFormat,Layer.DIFFERENCE,Style.DIFFERENCE,true,false);
+  return server.renderer.getResponse(tileRequest,surfA,surfB,renderRequest);
+}
