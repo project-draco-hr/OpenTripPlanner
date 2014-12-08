@@ -7,6 +7,7 @@
   List<File> gtfsFiles=Lists.newArrayList();
   List<File> osmFiles=Lists.newArrayList();
   File configFile=null;
+  File demFile=null;
   for (  File dir : params.build) {
     LOG.info("Searching for graph builder input files in {}",dir);
     if (!dir.isDirectory() && dir.canRead()) {
@@ -23,6 +24,15 @@ case GTFS:
 case OSM:
   LOG.info("Found OSM file {}",file);
 osmFiles.add(file);
+break;
+case DEM:
+if (!params.elevation && demFile == null) {
+LOG.info("Found DEM file {}",file);
+demFile=file;
+}
+ else {
+LOG.info("Skipping DEM file {}",file);
+}
 break;
 case CONFIG:
 if (!params.noEmbedConfig) {
@@ -49,7 +59,7 @@ osmProviders.add(osmProvider);
 }
 OpenStreetMapGraphBuilderImpl osmBuilder=new OpenStreetMapGraphBuilderImpl(osmProviders);
 DefaultStreetEdgeFactory streetEdgeFactory=new DefaultStreetEdgeFactory();
-streetEdgeFactory.useElevationData=params.elevation;
+streetEdgeFactory.useElevationData=params.elevation || (demFile != null);
 osmBuilder.edgeFactory=streetEdgeFactory;
 DefaultWayPropertySetSource defaultWayPropertySetSource=new DefaultWayPropertySetSource();
 osmBuilder.setDefaultWayPropertySetSource(defaultWayPropertySetSource);
@@ -94,6 +104,11 @@ graphBuilder.addGraphBuilder(embeddedConfigBuilder);
 if (params.elevation) {
 File cacheDirectory=new File(params.cacheDirectory,"ned");
 ElevationGridCoverageFactory gcf=new NEDGridCoverageFactoryImpl(cacheDirectory);
+GraphBuilder elevationBuilder=new ElevationGraphBuilderImpl(gcf);
+graphBuilder.addGraphBuilder(elevationBuilder);
+}
+ else if (demFile != null) {
+ElevationGridCoverageFactory gcf=new GeotiffGridCoverageFactoryImpl(demFile);
 GraphBuilder elevationBuilder=new ElevationGraphBuilderImpl(gcf);
 graphBuilder.addGraphBuilder(elevationBuilder);
 }
