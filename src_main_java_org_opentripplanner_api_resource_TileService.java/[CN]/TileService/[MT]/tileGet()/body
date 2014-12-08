@@ -1,10 +1,11 @@
 {
   Envelope2D env=SlippyTile.tile2Envelope(x,y,z);
-  TileRequest tileRequest=new TileRequest("",env,256,256);
+  TileRequest tileRequest=new TileRequest(env,256,256);
   RoutingRequest sptRequestA=buildRequest(0);
   RoutingRequest sptRequestB=buildRequest(1);
   Layer layer=layers.get(0);
   Style style=styles.get(0);
   RenderRequest renderRequest=new RenderRequest(format,layer,style,true,false);
+  Router router=otpServer.getRouter(routerId);
   return null;
 }

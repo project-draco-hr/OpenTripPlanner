@@ -1,7 +1,7 @@
 {
   if (preEvict) {
     LOG.debug("Pre-evicting graph with routerId {} before building new graph",routerId);
-    server.graphService.evictGraph(routerId);
+    otpServer.getGraphService().evictGraph(routerId);
   }
   File tempDir=Files.createTempDir();
   ZipInputStream zis=new ZipInputStream(input);
@@ -18,7 +18,7 @@
  catch (  Exception ex) {
     return Response.status(Response.Status.BAD_REQUEST).entity("Could not extract zip file: " + ex.getMessage()).build();
   }
-  CommandLineParameters params=server.params.clone();
+  CommandLineParameters params=otpServer.params.clone();
   params.build=Lists.newArrayList();
   params.build.add(tempDir);
   params.inMemory=true;
@@ -30,6 +30,6 @@
   tempDir.delete();
   Graph graph=graphBuilder.getGraph();
   graph.index(new DefaultStreetVertexIndexFactory());
-  server.graphService.registerGraph(routerId,new MemoryGraphSource(routerId,graph));
+  otpServer.getGraphService().registerGraph(routerId,new MemoryGraphSource(routerId,graph));
   return Response.status(Status.CREATED).entity(graph.toString() + "\n").build();
 }
