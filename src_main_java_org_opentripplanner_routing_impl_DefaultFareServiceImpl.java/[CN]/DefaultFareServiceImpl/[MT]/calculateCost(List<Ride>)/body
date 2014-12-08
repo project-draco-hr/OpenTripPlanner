@@ -25,11 +25,11 @@
   float bestFare=Float.POSITIVE_INFINITY;
   long tripTime=lastRideStartTime - startTime;
   long journeyTime=lastRideEndTime - startTime;
-  for (  AgencyAndId fareId : fareAttributes.keySet()) {
+  for (  AgencyAndId fareId : fareRules.keySet()) {
     if (!fareId.getAgencyId().equals(feedId))     continue;
     FareRuleSet ruleSet=fareRules.get(fareId);
     if (ruleSet == null || ruleSet.matches(startZone,endZone,zones,routes)) {
-      FareAttribute attribute=fareAttributes.get(fareId);
+      FareAttribute attribute=fareRules.get(fareId).getFareAttribute();
       if (attribute.isTransfersSet() && attribute.getTransfers() < transfersUsed) {
         continue;
       }

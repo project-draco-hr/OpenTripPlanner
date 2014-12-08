@@ -5,8 +5,8 @@
   }
   Currency currency=null;
   WrappedCurrency wrappedCurrency=null;
-  if (fareAttributes.size() > 0) {
-    currency=Currency.getInstance(fareAttributes.values().iterator().next().getCurrencyType());
+  if (fareRules.size() > 0) {
+    currency=Currency.getInstance(fareRules.values().iterator().next().getFareAttribute().getCurrencyType());
     wrappedCurrency=new WrappedCurrency(currency);
   }
   float lowestCost=getLowestCost(rides);

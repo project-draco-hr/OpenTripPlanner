@@ -1,7 +1,35 @@
 {
-  readFareRules(dao);
-  Collection<FareAttribute> fA=dao.getAllFareAttributes();
-  for (  FareAttribute fare : fA) {
-    fareAttributes.put(fare.getId(),fare);
+  Collection<FareAttribute> fares=dao.getAllFareAttributes();
+  for (  FareAttribute fare : fares) {
+    AgencyAndId id=fare.getId();
+    FareRuleSet fareRule=fareRules.get(id);
+    if (fareRule == null) {
+      fareRule=new FareRuleSet(fare);
+      fareRules.put(id,fareRule);
+    }
+  }
+  Collection<FareRule> rules=dao.getAllFareRules();
+  for (  FareRule rule : rules) {
+    FareAttribute fare=rule.getFare();
+    AgencyAndId id=fare.getId();
+    FareRuleSet fareRule=fareRules.get(id);
+    if (fareRule == null) {
+      LOG.error("Inexistant fare ID in fare rule: " + id);
+      continue;
+    }
+    String contains=rule.getContainsId();
+    if (contains != null) {
+      fareRule.addContains(contains);
+    }
+    String origin=rule.getOriginId();
+    String destination=rule.getDestinationId();
+    if (origin != null || destination != null) {
+      fareRule.addOriginDestination(origin,destination);
+    }
+    Route route=rule.getRoute();
+    if (route != null) {
+      AgencyAndId routeId=route.getId();
+      fareRule.addRoute(routeId);
+    }
   }
 }
