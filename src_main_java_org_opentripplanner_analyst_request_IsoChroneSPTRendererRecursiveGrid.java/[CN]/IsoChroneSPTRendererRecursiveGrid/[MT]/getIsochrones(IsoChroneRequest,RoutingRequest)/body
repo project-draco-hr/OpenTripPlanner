@@ -3,7 +3,7 @@
   long t0=System.currentTimeMillis();
   sptRequest.worstTime=(sptRequest.dateTime + (sptRequest.arriveBy ? -isoChroneRequest.maxCutoffSec : isoChroneRequest.maxCutoffSec));
   sptRequest.batch=true;
-  sptRequest.setRoutingContext(graphService.getGraph(sptRequest.routerId));
+  sptRequest.setRoutingContext(graph);
   final ShortestPathTree spt=sptService.getShortestPathTree(sptRequest);
   sptRequest.cleanup();
   long t1=System.currentTimeMillis();

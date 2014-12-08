@@ -1,6 +1,6 @@
 {
   LOG.debug("spt cache miss : {}",req);
-  req.setRoutingContext(graphService.getGraph());
+  req.setRoutingContext(graph);
   long t0=System.currentTimeMillis();
   ShortestPathTree spt=sptServiceFactory.instantiate().getShortestPathTree(req);
   long t1=System.currentTimeMillis();
