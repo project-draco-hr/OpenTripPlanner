@@ -1,0 +1,7 @@
+{
+  FareAttribute mFare=createInternalFareAttribute(price);
+  FareRuleSet mFareRules=new FareRuleSet(mFare);
+  if (originZone != null && destZone != null)   mFareRules.addOriginDestination(originZone,destZone);
+  mFareRules.setAgency(agencyId);
+  fareRules.put(mFare.getId(),mFareRules);
+}

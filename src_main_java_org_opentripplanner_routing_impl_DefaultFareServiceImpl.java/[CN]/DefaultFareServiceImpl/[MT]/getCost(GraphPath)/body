@@ -14,7 +14,7 @@
       currency=Currency.getInstance(fareRules.iterator().next().getFareAttribute().getCurrencyType());
       wrappedCurrency=new WrappedCurrency(currency);
     }
-    float lowestCost=getLowestCost(rides,fareRules);
+    float lowestCost=getLowestCost(fareType,rides,fareRules);
     if (lowestCost != Float.POSITIVE_INFINITY) {
       int fractionDigits=2;
       if (currency != null)       fractionDigits=currency.getDefaultFractionDigits();

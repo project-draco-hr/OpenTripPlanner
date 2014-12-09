@@ -2,7 +2,7 @@
   float[][] resultTable=new float[rides.size()][rides.size()];
   for (int i=0; i < rides.size(); i++) {
     for (int j=0; j < rides.size() - i; j++) {
-      float cost=calculateCost(rides.subList(j,j + i + 1),fareRules);
+      float cost=calculateCost(fareType,rides.subList(j,j + i + 1),fareRules);
       if (cost < 0) {
         LOG.error("negative cost for a ride sequence");
         cost=Float.POSITIVE_INFINITY;

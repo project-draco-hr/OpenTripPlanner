@@ -10,7 +10,7 @@
     }
     currentRides.add(ride);
   }
-  LOG.info("============ Rides per agency ====================");
+  LOG.info("============ Rides for fare class {} ====================",fareType);
   for (  List<Ride> ridesForAgency : ridesPerAgency) {
     LOG.info("Ride for agency {} : {}",ridesForAgency.get(0).agency,Arrays.toString(ridesForAgency.toArray()));
   }
@@ -18,9 +18,18 @@
   float totalCost=0f;
   long lastStartSec=-1L;
   for (  List<Ride> ridesForAgency : ridesPerAgency) {
+    String agencyId=ridesForAgency.get(0).agency;
     long startSec=ridesForAgency.get(0).startTime;
-    float costForAgency=super.getLowestCost(ridesForAgency,fareRules);
-    LOG.info("Agency {} cost is {}",ridesForAgency.get(0).agency,costForAgency);
+    float costForAgency=super.getLowestCost(fareType,ridesForAgency,fareRules);
+    if (costForAgency == Float.POSITIVE_INFINITY) {
+      Float def=defaultFares.get(new T2<FareType,String>(fareType,agencyId));
+      if (def == null) {
+        LOG.error("No fares and no fallback for class {}, agency {}, rides {}",fareType,agencyId,ridesForAgency);
+        return Float.POSITIVE_INFINITY;
+      }
+      costForAgency=def;
+    }
+    LOG.info("Agency {} cost is {}",agencyId,costForAgency);
     if (lastStartSec == -1L || startSec < lastStartSec + TRANSFER_DURATION_SEC) {
       if (costForAgency > currentCost) {
         float deltaCost=costForAgency - currentCost;
