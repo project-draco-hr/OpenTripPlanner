@@ -19,7 +19,7 @@
   long lastStartSec=-1L;
   for (  List<Ride> ridesForAgency : ridesPerAgency) {
     long startSec=ridesForAgency.get(0).startTime;
-    float costForAgency=super.getLowestCost(ridesForAgency);
+    float costForAgency=super.getLowestCost(ridesForAgency,fareRules);
     LOG.info("Agency {} cost is {}",ridesForAgency.get(0).agency,costForAgency);
     if (lastStartSec == -1L || startSec < lastStartSec + TRANSFER_DURATION_SEC) {
       if (costForAgency > currentCost) {

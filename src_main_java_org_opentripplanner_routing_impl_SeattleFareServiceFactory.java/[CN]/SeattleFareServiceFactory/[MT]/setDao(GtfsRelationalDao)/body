@@ -35,6 +35,6 @@
     }
   }
   for (  Map.Entry<String,Set<FareAttribute>> kv : fareAttributesPerAgency.entrySet()) {
-    super.fillFareRules(kv.getKey(),kv.getValue(),fareRulesPerAgency.get(kv.getKey()),fareRules);
+    super.fillFareRules(kv.getKey(),kv.getValue(),fareRulesPerAgency.get(kv.getKey()),regularFareRules);
   }
 }

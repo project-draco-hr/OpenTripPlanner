@@ -1,3 +1,5 @@
 {
-  return new DefaultFareServiceImpl(fareRules.values());
+  DefaultFareServiceImpl fareService=new DefaultFareServiceImpl();
+  fareService.addFareRules(FareType.regular,regularFareRules.values());
+  return fareService;
 }

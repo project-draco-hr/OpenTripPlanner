@@ -17,7 +17,7 @@
     }
  else {
       if (bartBlock != null) {
-        cost+=calculateCost(bartBlock);
+        cost+=calculateCost(bartBlock,fareRules);
         bartBlock=null;
       }
       if (agencyId.equals("SFMTA")) {
@@ -46,7 +46,7 @@
     }
   }
   if (bartBlock != null) {
-    cost+=calculateCost(bartBlock);
+    cost+=calculateCost(bartBlock,fareRules);
   }
   return cost;
 }

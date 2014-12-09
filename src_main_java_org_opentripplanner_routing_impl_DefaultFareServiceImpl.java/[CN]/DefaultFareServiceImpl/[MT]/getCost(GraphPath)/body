@@ -3,22 +3,25 @@
   if (rides.size() == 0) {
     return null;
   }
-  Currency currency=null;
-  WrappedCurrency wrappedCurrency=null;
-  if (fareRules.size() > 0) {
-    currency=Currency.getInstance(fareRules.iterator().next().getFareAttribute().getCurrencyType());
-    wrappedCurrency=new WrappedCurrency(currency);
+  Fare fare=new Fare();
+  boolean hasFare=false;
+  for (  Map.Entry<FareType,Collection<FareRuleSet>> kv : fareRulesPerType.entrySet()) {
+    FareType fareType=kv.getKey();
+    Collection<FareRuleSet> fareRules=kv.getValue();
+    Currency currency=null;
+    WrappedCurrency wrappedCurrency=null;
+    if (fareRules.size() > 0) {
+      currency=Currency.getInstance(fareRules.iterator().next().getFareAttribute().getCurrencyType());
+      wrappedCurrency=new WrappedCurrency(currency);
+    }
+    float lowestCost=getLowestCost(rides,fareRules);
+    if (lowestCost != Float.POSITIVE_INFINITY) {
+      int fractionDigits=2;
+      if (currency != null)       fractionDigits=currency.getDefaultFractionDigits();
+      int cents=(int)Math.round(lowestCost * Math.pow(10,fractionDigits));
+      fare.addFare(fareType,wrappedCurrency,cents);
+      hasFare=true;
+    }
   }
-  float lowestCost=getLowestCost(rides);
-  if (lowestCost != Float.POSITIVE_INFINITY) {
-    int fractionDigits=2;
-    if (currency != null)     fractionDigits=currency.getDefaultFractionDigits();
-    int cents=(int)Math.round(lowestCost * Math.pow(10,fractionDigits));
-    Fare fare=new Fare();
-    fare.addFare(FareType.regular,wrappedCurrency,cents);
-    return fare;
-  }
- else {
-    return null;
-  }
+  return hasFare ? fare : null;
 }
