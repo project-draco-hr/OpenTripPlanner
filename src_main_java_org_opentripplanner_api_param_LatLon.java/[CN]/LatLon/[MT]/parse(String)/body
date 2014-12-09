@@ -1,5 +1,5 @@
 {
-  if (value == null || value.isEmpty())   return;
+  if (value == null || value.isEmpty())   throw new Exception("Null or empty latitude/longitude pair");
   String[] fields=value.split(",");
   lat=Double.parseDouble(fields[0]);
   lon=Double.parseDouble(fields[1]);
