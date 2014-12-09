@@ -1,6 +1,7 @@
 {
   Set<String> zones=new HashSet<String>();
   Set<AgencyAndId> routes=new HashSet<AgencyAndId>();
+  Set<String> agencies=new HashSet<String>();
   int transfersUsed=-1;
   Ride firstRide=rides.get(0);
   long startTime=firstRide.startTime;
@@ -17,6 +18,7 @@
     lastRideStartTime=ride.startTime;
     lastRideEndTime=ride.endTime;
     endZone=ride.endZone;
+    agencies.add(ride.agency);
     routes.add(ride.route);
     zones.addAll(ride.zones);
     transfersUsed+=1;
@@ -28,7 +30,7 @@
   for (  AgencyAndId fareId : fareRules.keySet()) {
     if (!fareId.getAgencyId().equals(feedId))     continue;
     FareRuleSet ruleSet=fareRules.get(fareId);
-    if (ruleSet == null || ruleSet.matches(startZone,endZone,zones,routes)) {
+    if (ruleSet == null || ruleSet.matches(agencies,startZone,endZone,zones,routes)) {
       FareAttribute attribute=fareRules.get(fareId).getFareAttribute();
       if (attribute.isTransfersSet() && attribute.getTransfers() < transfersUsed) {
         continue;
