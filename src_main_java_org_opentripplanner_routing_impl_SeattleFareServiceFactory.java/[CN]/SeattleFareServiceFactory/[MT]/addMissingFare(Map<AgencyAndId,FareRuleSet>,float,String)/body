@@ -1,0 +1,12 @@
+{
+  FareAttribute mFare=new FareAttribute();
+  mFare.setTransferDuration(SeattleFareServiceImpl.TRANSFER_DURATION_SEC);
+  mFare.setCurrencyType("USD");
+  mFare.setPrice(price);
+  mFare.setId(new AgencyAndId(SeattleFareServiceImpl.EOS_AGENCY_ID,"internal_" + internalFareId));
+  internalFareId++;
+  FareRuleSet mFareRules=new FareRuleSet(mFare);
+  mFareRules.setAgency(agencyId);
+  mFareRules.setHasRule(true);
+  fareRules.put(mFare.getId(),mFareRules);
+}

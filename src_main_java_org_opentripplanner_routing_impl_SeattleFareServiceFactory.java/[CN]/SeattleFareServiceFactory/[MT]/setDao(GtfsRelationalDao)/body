@@ -1,0 +1,30 @@
+{
+  String mainAgencyId=null;
+  for (  FareAttribute fareAttribute : dao.getAllFareAttributes()) {
+    mainAgencyId=fareAttribute.getId().getAgencyId();
+    break;
+  }
+  Set<FareAttribute> filteredFareAttributes=new HashSet<FareAttribute>();
+  Set<FareRule> filteredFareRules=new HashSet<FareRule>();
+  String fareAgencyId=null;
+  if (SeattleFareServiceImpl.EOS_AGENCY_ID.equals(mainAgencyId)) {
+    for (    FareAttribute fareAttribute : dao.getAllFareAttributes()) {
+      int id=Integer.parseInt(fareAttribute.getId().getId());
+      if (id < 10) {
+        fareAttribute.setTransferDuration(SeattleFareServiceImpl.TRANSFER_DURATION_SEC);
+        filteredFareAttributes.add(fareAttribute);
+      }
+    }
+    fareAgencyId=SeattleFareServiceImpl.KCM_AGENCY_ID;
+  }
+ else {
+    filteredFareAttributes.addAll(dao.getAllFareAttributes());
+    fareAgencyId=mainAgencyId;
+  }
+  for (  FareRule fareRule : dao.getAllFareRules()) {
+    if (filteredFareAttributes.contains(fareRule.getFare())) {
+      filteredFareRules.add(fareRule);
+    }
+  }
+  super.fillFareRules(fareAgencyId,filteredFareAttributes,filteredFareRules,fareRules);
+}

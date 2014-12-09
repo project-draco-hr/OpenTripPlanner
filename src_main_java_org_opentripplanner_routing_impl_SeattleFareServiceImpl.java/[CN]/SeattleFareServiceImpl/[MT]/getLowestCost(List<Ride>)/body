@@ -1,0 +1,46 @@
+{
+  for (  Ride ride : rides) {
+    if (ride.agency.equals(PT_ST_AGENCY_ID) || ride.agency.equals(ST_ST_AGENCY_ID))     ride.agency=ST_AGENCY_ID;
+  }
+  List<List<Ride>> ridesPerAgency=new ArrayList<List<Ride>>();
+  String lastAgency=null;
+  List<Ride> currentRides=null;
+  for (  Ride ride : rides) {
+    if (ride.agency != lastAgency) {
+      currentRides=new ArrayList<Ride>();
+      ridesPerAgency.add(currentRides);
+      lastAgency=ride.agency;
+    }
+    currentRides.add(ride);
+  }
+  LOG.info("============ Rides per agency ====================");
+  for (  List<Ride> ridesForAgency : ridesPerAgency) {
+    LOG.info("Ride for agency {} : {}",ridesForAgency.get(0).agency,Arrays.toString(ridesForAgency.toArray()));
+  }
+  float currentCost=0f;
+  float totalCost=0f;
+  long lastStartSec=-1L;
+  for (  List<Ride> ridesForAgency : ridesPerAgency) {
+    long startSec=ridesForAgency.get(0).startTime;
+    float costForAgency=super.getLowestCost(ridesForAgency);
+    LOG.info("Agency {} cost is {}",ridesForAgency.get(0).agency,costForAgency);
+    if (lastStartSec == -1L || startSec < lastStartSec + TRANSFER_DURATION_SEC) {
+      if (costForAgency > currentCost) {
+        float deltaCost=costForAgency - currentCost;
+        totalCost+=deltaCost;
+        currentCost=costForAgency;
+        LOG.info("Transfer, additional cost is {}, total is {}",deltaCost,totalCost);
+      }
+ else {
+        LOG.info("New ticket cost lower than current {}",currentCost);
+      }
+    }
+ else {
+      currentCost=costForAgency;
+      totalCost+=costForAgency;
+      LOG.info("New ticket, cost is {}, total is {}",costForAgency,totalCost);
+    }
+    lastStartSec=startSec;
+  }
+  return totalCost;
+}
