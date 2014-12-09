@@ -1,0 +1,8 @@
+{
+  layers=new ArrayList<>(renderers.size());
+  for (  Map.Entry<String,TileRenderer> layerInfo : renderers.entrySet()) {
+    String layer_key=layerInfo.getKey();
+    TileRenderer layer=layerInfo.getValue();
+    layers.add(new InspectorLayer(layer_key,layer.getName()));
+  }
+}

@@ -12,6 +12,7 @@
   double initialMaxWalk=maxWalk;
   long maxTime=options.arriveBy ? 0 : Long.MAX_VALUE;
   RoutingRequest currOptions;
+  SPTService sptService=this.sptServiceFactory.instantiate();
   while (paths.size() < options.numItineraries) {
     currOptions=optionQueue.poll();
     if (currOptions == null) {

@@ -27,11 +27,24 @@
       return RideType.ART_BUS;
     }
     if (agency_url.contains("vre.org")) {
-      return RideType.VRE_BUS;
+      return RideType.VRE_RAIL;
     }
     if (agency_url.contains("mtamaryland.com")) {
       if (route.getType() == 2)       return RideType.MARC_RAIL;
- else       return RideType.DASH_BUS;
+      int shortName;
+      try {
+        shortName=Integer.parseInt(route.getShortName());
+      }
+ catch (      NumberFormatException ex) {
+        return RideType.MTA_BUS_LOCAL;
+      }
+      if (shortName < 100) {
+        return RideType.MTA_BUS_LOCAL;
+      }
+ else       if (shortName < 200) {
+        return RideType.MTA_BUS_EXPRESS;
+      }
+      return RideType.MTA_BUS_COMMUTER;
     }
   }
   return null;

@@ -12,16 +12,23 @@
       return null;
     }
     State s=pq.extract_min();
-    Double w=s.getWeight();
+    double w=s.getWeight();
     Vertex v=s.getVertex();
-    if (v instanceof TransitStationStop) {
-      stopStates.add(s);
+    if (v instanceof TransitVertex) {
+      if (v instanceof TransitStationStop) {
+        stopStates.add(s);
+      }
       continue;
     }
-    if (!fromTarget)     weights.put(v,0.0);
+    if (!fromTarget) {
+      weights.put(v,-1);
+    }
  else {
-      Double old_weight=weights.get(v);
-      if (old_weight == null || old_weight > w) {
+      double old_weight=weights.get(v);
+      if (old_weight == -1) {
+        weights.put(v,-2);
+      }
+ else       if (w < old_weight) {
         weights.put(v,w);
       }
     }

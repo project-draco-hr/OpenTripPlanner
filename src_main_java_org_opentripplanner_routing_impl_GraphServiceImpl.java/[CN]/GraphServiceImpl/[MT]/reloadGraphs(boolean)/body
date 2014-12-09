@@ -1,3 +1,15 @@
 {
-  return decorated.reloadGraphs(preEvict);
+  boolean allSucceeded=true;
+synchronized (graphSources) {
+    Collection<String> routerIds=getRouterIds();
+    for (    String routerId : routerIds) {
+      GraphSource graphSource=graphSources.get(routerId);
+      boolean success=graphSource.reload(true,preEvict);
+      if (!success) {
+        evictGraph(routerId);
+      }
+      allSucceeded&=success;
+    }
+  }
+  return allSucceeded;
 }

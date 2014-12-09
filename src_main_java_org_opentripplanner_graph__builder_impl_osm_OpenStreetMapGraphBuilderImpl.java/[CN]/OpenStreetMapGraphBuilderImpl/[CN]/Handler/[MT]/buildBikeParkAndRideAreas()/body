@@ -1,0 +1,12 @@
+{
+  LOG.info("Building bike P+R areas");
+  List<AreaGroup> areaGroups=groupAreas(osmdb.getBikeParkingAreas());
+  int n=0;
+  for (  AreaGroup group : areaGroups) {
+    for (    Area area : group.areas) {
+      buildBikeParkAndRideForArea(area);
+      n++;
+    }
+  }
+  LOG.info("Created {} bike P+R areas.",n);
+}

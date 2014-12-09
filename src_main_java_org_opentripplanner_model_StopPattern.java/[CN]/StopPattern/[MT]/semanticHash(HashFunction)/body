@@ -1,0 +1,13 @@
+{
+  Hasher hasher=hashFunction.newHasher();
+  for (int s=0; s < size; s++) {
+    Stop stop=stops[s];
+    hasher.putLong((long)(stop.getLat() * 1000000));
+    hasher.putLong((long)(stop.getLon() * 1000000));
+  }
+  for (int hop=0; hop < size - 1; hop++) {
+    hasher.putInt(pickups[hop]);
+    hasher.putInt(dropoffs[hop + 1]);
+  }
+  return hasher.hash();
+}

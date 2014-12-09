@@ -2,6 +2,7 @@
   Vertex near_a=graph.getVertex("near_1_agency_A");
   Vertex near_b=graph.getVertex("near_1_agency_B");
   Vertex near_c=graph.getVertex("near_1_agency_C");
+  Vertex near_e=graph.getVertex("near_1_agency_E");
   Vertex stop_d=graph.getVertex("agency:D");
   Vertex split_d=null;
   for (  StreetTransitLink e : Iterables.filter(stop_d.getOutgoing(),StreetTransitLink.class)) {
@@ -20,6 +21,10 @@
   spt=aStar.getShortestPathTree(options);
   path=spt.getPath(near_c,false);
   assertNull(path);
+  options.setRoutingContext(graph,near_a,near_e);
+  spt=aStar.getShortestPathTree(options);
+  path=spt.getPath(near_e,false);
+  assertNotNull(path);
   GregorianCalendar time=new GregorianCalendar(2009,8,18,0,0,0);
   time.setTimeZone(TimeZone.getTimeZone("America/New_York"));
   options.dateTime=TestUtils.toSeconds(time);

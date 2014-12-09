@@ -1,5 +1,5 @@
 {
-  ShortestPathTree spt=sptService.getShortestPathTree(options);
+  ShortestPathTree spt=sptServiceFactory.instantiate().getShortestPathTree(options);
   if (spt == null) {
     return Collections.emptyList();
   }

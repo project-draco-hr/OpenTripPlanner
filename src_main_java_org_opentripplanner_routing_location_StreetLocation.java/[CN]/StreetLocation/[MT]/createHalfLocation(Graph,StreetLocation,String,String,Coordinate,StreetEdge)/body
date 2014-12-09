@@ -9,14 +9,14 @@
   double lengthOut=street.getDistance() * (1 - lengthRatioIn);
   StreetWithElevationEdge newLeft=new PartialStreetEdge(street,fromv,base,geometries.first,name,lengthIn);
   StreetWithElevationEdge newRight=new PartialStreetEdge(street,base,tov,geometries.second,name,lengthOut);
-  newLeft.setElevationProfile(street.getElevationProfile(0,lengthIn),false);
+  newLeft.setElevationProfile(ElevationUtils.getPartialElevationProfile(street.getElevationProfile(),0,lengthIn),false);
   newLeft.setNoThruTraffic(street.isNoThruTraffic());
   newLeft.setStreetClass(street.getStreetClass());
-  newRight.setElevationProfile(street.getElevationProfile(lengthIn,lengthIn + lengthOut),false);
+  newRight.setElevationProfile(ElevationUtils.getPartialElevationProfile(street.getElevationProfile(),lengthIn,lengthIn + lengthOut),false);
   newRight.setStreetClass(street.getStreetClass());
   newRight.setNoThruTraffic(street.isNoThruTraffic());
-  for (  TurnRestriction turnRestriction : street.getTurnRestrictions()) {
-    newRight.addTurnRestriction(turnRestriction);
+  for (  TurnRestriction turnRestriction : graph.getTurnRestrictions(street)) {
+    graph.addTurnRestriction(newRight,turnRestriction);
   }
   base.extra.add(newLeft);
   base.extra.add(newRight);

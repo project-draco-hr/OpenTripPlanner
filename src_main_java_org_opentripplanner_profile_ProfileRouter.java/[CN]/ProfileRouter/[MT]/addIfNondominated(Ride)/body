@@ -10,7 +10,7 @@
     if (oldRide.pathLength() < newRide.pathLength() && oldRide.durationLowerBound() < newRide.durationLowerBound() && oldRide.durationUpperBound() < newRide.durationUpperBound()) {
       return false;
     }
-    if (newRide.durationLowerBound() > oldRide.durationUpperBound()) {
+    if (newRide.durationLowerBound() > oldRide.durationUpperBound() + request.suboptimalMinutes) {
       return false;
     }
   }

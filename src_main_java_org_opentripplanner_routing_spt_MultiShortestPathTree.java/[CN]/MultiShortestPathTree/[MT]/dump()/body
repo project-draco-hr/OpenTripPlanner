@@ -1,0 +1,20 @@
+{
+  Multiset<Integer> histogram=HashMultiset.create();
+  int statesCount=0;
+  int maxSize=0;
+  for (  Map.Entry<Vertex,List<State>> kv : stateSets.entrySet()) {
+    List<State> states=kv.getValue();
+    int size=states.size();
+    histogram.add(size);
+    statesCount+=size;
+    if (size > maxSize) {
+      maxSize=size;
+    }
+  }
+  LOG.info("SPT: vertices: " + stateSets.size() + " states: total: "+ statesCount+ " per vertex max: "+ maxSize+ " avg: "+ (statesCount * 1.0 / stateSets.size()));
+  List<Integer> nStates=new ArrayList<Integer>(histogram.elementSet());
+  Collections.sort(nStates);
+  for (  Integer nState : nStates) {
+    LOG.info(nState + " states: " + histogram.count(nState)+ " vertices.");
+  }
+}

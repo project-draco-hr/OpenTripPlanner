@@ -1,5 +1,18 @@
 {
-  boolean checkPark=stateData.opt.parkAndRide || stateData.opt.kissAndRide;
-  if (stateData.opt.arriveBy)   return !isBikeRenting() && !(checkPark && isCarParked());
- else   return !isBikeRenting() && !(checkPark && !isCarParked());
+  boolean parkAndRide=stateData.opt.parkAndRide || stateData.opt.kissAndRide;
+  boolean bikeParkAndRide=stateData.opt.bikeParkAndRide;
+  boolean bikeRentingOk=false;
+  boolean bikeParkAndRideOk=false;
+  boolean carParkAndRideOk=false;
+  if (stateData.opt.arriveBy) {
+    bikeRentingOk=!isBikeRenting();
+    bikeParkAndRideOk=!bikeParkAndRide || !isBikeParked();
+    carParkAndRideOk=!parkAndRide || !isCarParked();
+  }
+ else {
+    bikeRentingOk=!isBikeRenting();
+    bikeParkAndRideOk=!bikeParkAndRide || isBikeParked();
+    carParkAndRideOk=!parkAndRide || isCarParked();
+  }
+  return bikeRentingOk && bikeParkAndRideOk && carParkAndRideOk;
 }

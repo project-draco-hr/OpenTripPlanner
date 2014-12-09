@@ -10,7 +10,7 @@
         permission=permission.remove(StreetTraversalPermission.BICYCLE);
         if (permission == StreetTraversalPermission.NONE) {
           graph.streetNotesService.removeStaticNotes(pse);
-          pse.detach();
+          pse.detach(graph);
         }
  else {
           pse.setPermission(permission);
@@ -30,7 +30,7 @@
     edges.addAll(v.getIncoming());
     for (    Edge e : edges) {
       if (e instanceof StreetTransitLink) {
-        e.detach();
+        e.detach(graph);
       }
     }
   }

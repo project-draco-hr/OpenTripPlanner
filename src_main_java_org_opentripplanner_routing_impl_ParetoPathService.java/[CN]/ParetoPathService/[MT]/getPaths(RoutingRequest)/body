@@ -1,4 +1,5 @@
 {
+  SPTService sptService=this.sptServiceFactory.instantiate();
   ArrayList<GraphPath> paths=new ArrayList<GraphPath>();
   if (options.rctx == null) {
     options.setRoutingContext(graphService.getGraph(options.routerId));

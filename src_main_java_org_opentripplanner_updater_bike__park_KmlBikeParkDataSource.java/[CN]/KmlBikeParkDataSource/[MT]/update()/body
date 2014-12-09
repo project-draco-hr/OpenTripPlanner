@@ -1,0 +1,10 @@
+{
+  List<BikePark> newBikeParks=xmlDownloader.download(url);
+  if (newBikeParks != null) {
+synchronized (this) {
+      bikeParks=newBikeParks;
+    }
+    return true;
+  }
+  return false;
+}

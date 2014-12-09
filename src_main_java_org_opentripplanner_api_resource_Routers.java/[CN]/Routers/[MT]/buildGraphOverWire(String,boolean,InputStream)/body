@@ -1,0 +1,35 @@
+{
+  if (preEvict) {
+    LOG.debug("Pre-evicting graph with routerId {} before building new graph",routerId);
+    server.graphService.evictGraph(routerId);
+  }
+  File tempDir=Files.createTempDir();
+  ZipInputStream zis=new ZipInputStream(input);
+  try {
+    for (ZipEntry entry=zis.getNextEntry(); entry != null; entry=zis.getNextEntry()) {
+      if (entry.isDirectory())       return Response.status(Response.Status.BAD_REQUEST).entity("ZIP files containing directories are not supported").build();
+      File file=new File(tempDir,entry.getName());
+      if (!file.getParentFile().equals(tempDir))       return Response.status(Response.Status.BAD_REQUEST).entity("ZIP files containing directories are not supported").build();
+      OutputStream os=new FileOutputStream(file);
+      ByteStreams.copy(zis,os);
+      os.close();
+    }
+  }
+ catch (  Exception ex) {
+    return Response.status(Response.Status.BAD_REQUEST).entity("Could not extract zip file: " + ex.getMessage()).build();
+  }
+  CommandLineParameters params=server.params.clone();
+  params.build=Lists.newArrayList();
+  params.build.add(tempDir);
+  params.inMemory=true;
+  GraphBuilderTask graphBuilder=new OTPConfigurator(params).builderFromParameters();
+  graphBuilder.run();
+  for (  File file : tempDir.listFiles()) {
+    file.delete();
+  }
+  tempDir.delete();
+  Graph graph=graphBuilder.getGraph();
+  graph.index(new DefaultStreetVertexIndexFactory());
+  server.graphService.registerGraph(routerId,new MemoryGraphSource(routerId,graph));
+  return Response.status(Status.CREATED).entity(graph.toString() + "\n").build();
+}

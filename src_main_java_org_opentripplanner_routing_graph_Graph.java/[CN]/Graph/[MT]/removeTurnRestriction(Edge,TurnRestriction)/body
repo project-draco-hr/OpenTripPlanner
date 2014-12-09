@@ -1,0 +1,12 @@
+{
+  if (edge == null || turnRestriction == null)   return;
+  List<TurnRestriction> turnRestrictions=this.turnRestrictions.get(edge);
+  if (turnRestrictions != null && turnRestrictions.contains(turnRestriction)) {
+    if (turnRestrictions.size() < 2) {
+      this.turnRestrictions.remove(edge);
+    }
+ else {
+      turnRestrictions.remove(turnRestriction);
+    }
+  }
+}

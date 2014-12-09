@@ -72,7 +72,7 @@ break;
 case MARC_RAIL:
 fare=MARC.lookup(from,to);
 break;
-case VRE_BUS:
+case VRE_RAIL:
 fare=VRE.lookup(from,to);
 break;
 case MCRO_BUS_LOCAL:
@@ -111,7 +111,7 @@ setFare(7.50,false);
 break;
 case PRTC_BUS:
 routeName=route.getLongName();
-if (prevType == RideType.VRE_BUS) {
+if (prevType == RideType.VRE_RAIL) {
 setFare(0.00,true);
 }
  else if (routeName.contains("omniride")) {
@@ -122,6 +122,125 @@ setFare(1.30,false);
 }
  else if (routeName.contains("metro direct")) {
 setFare(2.90,false);
+}
+break;
+case MTA_BUS_LOCAL:
+setFare(1.60,false);
+break;
+case MTA_BUS_EXPRESS:
+setFare(2.00,false);
+break;
+case MTA_BUS_COMMUTER:
+String shortName=route.getShortName();
+double mtaDefault=0;
+switch (shortName) {
+case "201":
+case "202":
+case "203":
+case "204":
+case "240":
+setFare(5.00,false);
+break;
+case "230":
+case "260":
+case "335":
+case "345":
+case "610":
+case "620":
+case "630":
+case "640":
+case "650":
+setFare(4.25,false);
+break;
+case "310":
+case "410":
+setFare(3.50,false);
+break;
+case "220":
+if (MTA_KENT_ISLAND.containsStop(from) || MTA_KENT_ISLAND.containsStop(to)) {
+setFare(5.00,false);
+}
+ else if (MTA_ANNAPOLIS.containsStop(from) || MTA_ANNAPOLIS.containsStop(to)) {
+setFare(4.25,false);
+}
+ else {
+setFare(mtaDefault,false);
+}
+break;
+case "250":
+if (MTA_KENT_ISLAND.containsStop(from) || MTA_KENT_ISLAND.containsStop(to)) {
+setFare(5.00,false);
+}
+ else if (MTA_DAVIDSONVILLE.containsStop(from) || MTA_DAVIDSONVILLE.containsStop(to)) {
+setFare(4.25,false);
+}
+ else {
+setFare(mtaDefault,false);
+}
+break;
+case "305":
+case "315":
+case "325":
+if (MTA_DC.containsStop(from) || MTA_DC.containsStop(to)) {
+setFare(4.25,false);
+}
+ else if (MTA_SILVER_SPRING.containsStop(from) || MTA_SILVER_SPRING.containsStop(to)) {
+setFare(3.50,false);
+}
+ else {
+setFare(mtaDefault,false);
+}
+break;
+case "902":
+if (MTA_DUNKIRK.containsStop(from) || MTA_DUNKIRK.containsStop(to)) {
+setFare(3.50,false);
+}
+ else if (MTA_SUNDERLAND.containsStop(from) || MTA_SUNDERLAND.containsStop(to)) {
+setFare(4.25,false);
+}
+ else if (MTA_ST_LEONARD.containsStop(from) || MTA_ST_LEONARD.containsStop(to)) {
+setFare(5.00,false);
+}
+ else {
+setFare(mtaDefault,false);
+}
+break;
+case "903":
+if (MTA_DC.containsStop(from) || MTA_DC.containsStop(to)) {
+setFare(4.25,false);
+}
+ else if (MTA_SUITLAND.containsStop(from) || MTA_SUITLAND.containsStop(to)) {
+setFare(3.50,false);
+}
+ else {
+setFare(mtaDefault,false);
+}
+break;
+case "904":
+if (MTA_PINDELL.containsStop(from) || MTA_PINDELL.containsStop(to)) {
+setFare(3.50,false);
+}
+ else if (MTA_OWINGS_NORTH_BEACH.containsStop(from) || MTA_OWINGS_NORTH_BEACH.containsStop(to)) {
+setFare(4.25,false);
+}
+ else {
+setFare(mtaDefault,false);
+}
+break;
+case "905":
+case "909":
+if (MTA_CHARLOTTE_HALL_WALDORF.containsStop(from) || MTA_CHARLOTTE_HALL_WALDORF.containsStop(to)) {
+setFare(4.25,false);
+}
+ else if (MTA_CALIFORNIA.containsStop(from) || MTA_CALIFORNIA.containsStop(to)) {
+setFare(5.75,false);
+}
+ else {
+setFare(mtaDefault,false);
+}
+break;
+default :
+setFare(mtaDefault,false);
 }
 break;
 default :
