@@ -1,30 +1,40 @@
 {
-  String mainAgencyId=null;
+  Map<String,Set<FareAttribute>> fareAttributesPerAgency=new HashMap<String,Set<FareAttribute>>();
+  Map<String,Set<FareRule>> fareRulesPerAgency=new HashMap<String,Set<FareRule>>();
   for (  FareAttribute fareAttribute : dao.getAllFareAttributes()) {
-    mainAgencyId=fareAttribute.getId().getAgencyId();
-    break;
-  }
-  Set<FareAttribute> filteredFareAttributes=new HashSet<FareAttribute>();
-  Set<FareRule> filteredFareRules=new HashSet<FareRule>();
-  String fareAgencyId=null;
-  if (SeattleFareServiceImpl.EOS_AGENCY_ID.equals(mainAgencyId)) {
-    for (    FareAttribute fareAttribute : dao.getAllFareAttributes()) {
+    String fareAgencyId;
+    String mainAgencyId=fareAttribute.getId().getAgencyId();
+    if (SeattleFareServiceImpl.KCM_EOS_AGENCY_ID.equals(mainAgencyId)) {
       int id=Integer.parseInt(fareAttribute.getId().getId());
       if (id < 10) {
+        fareAgencyId=SeattleFareServiceImpl.KCM_KCM_AGENCY_ID;
         fareAttribute.setTransferDuration(SeattleFareServiceImpl.TRANSFER_DURATION_SEC);
-        filteredFareAttributes.add(fareAttribute);
       }
-    }
-    fareAgencyId=SeattleFareServiceImpl.KCM_AGENCY_ID;
-  }
  else {
-    filteredFareAttributes.addAll(dao.getAllFareAttributes());
-    fareAgencyId=mainAgencyId;
-  }
-  for (  FareRule fareRule : dao.getAllFareRules()) {
-    if (filteredFareAttributes.contains(fareRule.getFare())) {
-      filteredFareRules.add(fareRule);
+        fareAgencyId=SeattleFareServiceImpl.KCM_ST_AGENCY_ID;
+        fareAttribute.setTransferDuration(SeattleFareServiceImpl.TRANSFER_DURATION_SEC);
+      }
+      fareAgencyId=SeattleFareServiceImpl.KCM_KCM_AGENCY_ID;
+    }
+ else {
+      fareAgencyId=mainAgencyId;
+    }
+    Set<FareAttribute> fareAttributes=fareAttributesPerAgency.get(fareAgencyId);
+    if (fareAttributes == null) {
+      fareAttributes=new HashSet<>();
+      fareAttributesPerAgency.put(fareAgencyId,fareAttributes);
+    }
+    fareAttributes.add(fareAttribute);
+    for (    FareRule fareRule : dao.getFareRulesForFareAttribute(fareAttribute)) {
+      Set<FareRule> fareRules=fareRulesPerAgency.get(fareAgencyId);
+      if (fareRules == null) {
+        fareRules=new HashSet<>();
+        fareRulesPerAgency.put(fareAgencyId,fareRules);
+      }
+      fareRules.add(fareRule);
     }
   }
-  super.fillFareRules(fareAgencyId,filteredFareAttributes,filteredFareRules,fareRules);
+  for (  Map.Entry<String,Set<FareAttribute>> kv : fareAttributesPerAgency.entrySet()) {
+    super.fillFareRules(kv.getKey(),kv.getValue(),fareRulesPerAgency.get(kv.getKey()),fareRules);
+  }
 }
