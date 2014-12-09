@@ -1,5 +1,8 @@
 {
   if (!hasRule)   return false;
+  if (agency != null) {
+    if (agencies.size() != 1 || !agencies.contains(agency))     return false;
+  }
   if (originDestinations.size() > 0) {
     P2<String> od=new P2<String>(startZone,endZone);
     if (!originDestinations.contains(od)) {
@@ -21,9 +24,6 @@
     if (!routes.containsAll(routesVisited)) {
       return false;
     }
-  }
-  if (agency != null) {
-    if (agencies.size() != 1 || !agencies.contains(agency))     return false;
   }
   return true;
 }
