@@ -32,6 +32,9 @@
  else           if (type.equals("example-polling-updater")) {
             updater=new ExamplePollingGraphUpdater();
           }
+ else           if (type.equals("winkki-polling-updater")) {
+            updater=new WinkkiPollingGraphUpdater();
+          }
         }
         try {
           if (updater == null) {
