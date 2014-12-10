@@ -16,7 +16,7 @@
   }
   float currentCost=0f;
   float totalCost=0f;
-  long lastStartSec=-1L;
+  long lastStartSec=0L;
   for (  List<Ride> ridesForAgency : ridesPerAgency) {
     String agencyId=ridesForAgency.get(0).agency;
     long startSec=ridesForAgency.get(0).startTime;
@@ -30,7 +30,7 @@
       costForAgency=def;
     }
     LOG.debug("Agency {} cost is {}",agencyId,costForAgency);
-    if (lastStartSec == -1L || startSec < lastStartSec + TRANSFER_DURATION_SEC) {
+    if (startSec < lastStartSec + TRANSFER_DURATION_SEC) {
       if (costForAgency > currentCost) {
         float deltaCost=costForAgency - currentCost;
         totalCost+=deltaCost;
