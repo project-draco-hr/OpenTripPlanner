@@ -10,9 +10,9 @@
     }
     currentRides.add(ride);
   }
-  LOG.info("============ Rides for fare class {} ====================",fareType);
+  LOG.debug("=== Rides for fare class {} ===",fareType);
   for (  List<Ride> ridesForAgency : ridesPerAgency) {
-    LOG.info("Ride for agency {} : {}",ridesForAgency.get(0).agency,Arrays.toString(ridesForAgency.toArray()));
+    LOG.debug("Ride for agency {} : {}",ridesForAgency.get(0).agency,Arrays.toString(ridesForAgency.toArray()));
   }
   float currentCost=0f;
   float totalCost=0f;
@@ -29,22 +29,22 @@
       }
       costForAgency=def;
     }
-    LOG.info("Agency {} cost is {}",agencyId,costForAgency);
+    LOG.debug("Agency {} cost is {}",agencyId,costForAgency);
     if (lastStartSec == -1L || startSec < lastStartSec + TRANSFER_DURATION_SEC) {
       if (costForAgency > currentCost) {
         float deltaCost=costForAgency - currentCost;
         totalCost+=deltaCost;
         currentCost=costForAgency;
-        LOG.info("Transfer, additional cost is {}, total is {}",deltaCost,totalCost);
+        LOG.debug("Transfer, additional cost is {}, total is {}",deltaCost,totalCost);
       }
  else {
-        LOG.info("New ticket cost lower than current {}",currentCost);
+        LOG.debug("New ticket cost lower than current {}",currentCost);
       }
     }
  else {
       currentCost=costForAgency;
       totalCost+=costForAgency;
-      LOG.info("New ticket, cost is {}, total is {}",costForAgency,totalCost);
+      LOG.debug("New ticket, cost is {}, total is {}",costForAgency,totalCost);
     }
     lastStartSec=startSec;
   }
