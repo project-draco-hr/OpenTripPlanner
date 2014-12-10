@@ -1,6 +1,10 @@
 {
   if (graph.index.transfersFromStopCluster == null) {
-    graph.index.initializeProfileTransfers();
+synchronized (graph.index) {
+      if (graph.index.transfersFromStopCluster == null) {
+        graph.index.initializeProfileTransfers();
+      }
+    }
   }
   if (request.analyst) {
     mins=new int[Vertex.getMaxIndex()];
