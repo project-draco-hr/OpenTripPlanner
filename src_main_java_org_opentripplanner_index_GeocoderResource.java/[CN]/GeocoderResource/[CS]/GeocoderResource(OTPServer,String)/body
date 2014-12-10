@@ -1,5 +1,6 @@
 {
-  GraphIndex graphIndex=otpServer.graphService.getGraph(routerId).index;
+  Router router=otpServer.getRouter(routerId);
+  GraphIndex graphIndex=router.graph.index;
 synchronized (graphIndex) {
     if (graphIndex.luceneIndex == null) {
       graphIndex.luceneIndex=new LuceneIndex(graphIndex,false);

@@ -1,4 +1,5 @@
 {
-  InspectorLayersList layersList=new InspectorLayersList(otpServer.tileRendererManager.getRenderers());
+  Router router=otpServer.getRouter(routerId);
+  InspectorLayersList layersList=new InspectorLayersList(router.tileRendererManager.getRenderers());
   return layersList;
 }

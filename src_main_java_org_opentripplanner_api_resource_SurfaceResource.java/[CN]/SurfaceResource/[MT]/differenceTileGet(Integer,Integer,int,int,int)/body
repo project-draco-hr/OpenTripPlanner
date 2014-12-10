@@ -1,0 +1,15 @@
+{
+  Envelope2D env=SlippyTile.tile2Envelope(x,y,z);
+  TimeSurface surfA=otpServer.surfaceCache.get(surfaceId);
+  if (surfA == null)   return badRequest("Unrecognized surface ID.");
+  TimeSurface surfB=otpServer.surfaceCache.get(compareToSurfaceId);
+  if (surfB == null)   return badRequest("Unrecognized surface ID.");
+  if (!surfA.routerId.equals(surfB.routerId)) {
+    return badRequest("Both surfaces must be from the same router to perform subtraction.");
+  }
+  TileRequest tileRequest=new TileRequest(env,256,256);
+  MIMEImageFormat imageFormat=new MIMEImageFormat("image/png");
+  RenderRequest renderRequest=new RenderRequest(imageFormat,Layer.DIFFERENCE,Style.DIFFERENCE,true,false);
+  Router router=otpServer.getRouter(surfA.routerId);
+  return router.renderer.getResponse(tileRequest,surfA,surfB,renderRequest);
+}

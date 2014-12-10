@@ -1,12 +1,8 @@
 {
   try {
     RoutingRequest req=buildRequest(0);
-    Graph graph;
-    if (routerId == null || routerId.isEmpty()) {
-      graph=server.graphService.getGraph();
-    }
- else     graph=server.graphService.getGraph(routerId);
-    req.setRoutingContext(graph);
+    Router router=otpServer.getRouter(routerId);
+    req.setRoutingContext(router.graph);
     EarliestArrivalSPTService sptService=new EarliestArrivalSPTService();
     sptService.maxDuration=(60 * cutoffMinutes);
     ShortestPathTree spt=sptService.getShortestPathTree(req);
@@ -18,7 +14,7 @@
         surface.params.put(e.getKey(),e.getValue().get(0));
       }
       surface.cutoffMinutes=cutoffMinutes;
-      server.surfaceCache.add(surface);
+      otpServer.surfaceCache.add(surface);
       return Response.ok().entity(new TimeSurfaceShort(surface)).build();
     }
  else {

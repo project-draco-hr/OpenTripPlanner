@@ -72,7 +72,7 @@
     }
     tripPattern.setServiceCodes(graph.serviceCodes);
   }
-  interline(tripPatterns.values());
+  interline(tripPatterns.values(),graph);
   loadTransfers(graph);
   for (  TripPattern tableTripPattern : tripPatterns.values()) {
     tableTripPattern.scheduledTimetable.finish();

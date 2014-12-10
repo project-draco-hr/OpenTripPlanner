@@ -73,16 +73,17 @@
  else {
     LOG.debug("performing only angle based test to detect u-shapes");
   }
+  Router router=otpServer.getRouter(routerId);
   try {
-    sptRequestA.setRoutingContext(graphService.getGraph());
+    sptRequestA.setRoutingContext(router.graph);
   }
  catch (  Exception e) {
     LOG.debug("cannot set RoutingContext: " + e.toString());
     LOG.debug("cannot set RoutingContext: setting mode=WALK");
     sptRequestA.setMode(TraverseMode.WALK);
-    sptRequestA.setRoutingContext(graphService.getGraph());
+    sptRequestA.setRoutingContext(router.graph);
   }
-  ShortestPathTree sptA=sptService.getShortestPathTree(sptRequestA);
+  ShortestPathTree sptA=router.sptServiceFactory.instantiate().getShortestPathTree(sptRequestA);
   StreetLocation origin=(StreetLocation)sptRequestA.rctx.fromVertex;
   sptRequestA.cleanup();
   Coordinate pathToStreetCoords[]=new Coordinate[2];
