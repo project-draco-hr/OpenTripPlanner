@@ -3,6 +3,7 @@
   this.graphService=graphService;
   InputStreamGraphSource.FileFactory graphSourceFactory=new InputStreamGraphSource.FileFactory();
   graphService.graphSourceFactory=graphSourceFactory;
+  graphService.routerLifecycleManager=routerLifecycleManager;
   if (params.graphDirectory != null) {
     graphSourceFactory.basePath=new File(params.graphDirectory);
   }
@@ -10,15 +11,15 @@
     try {
       FileInputStream graphConfiguration=new FileInputStream(params.graphConfigFile);
       Preferences config=new PropertiesPreferences(graphConfiguration);
-      this.graphService.registerGraph("",new MemoryGraphSource("",graph,config));
+      this.graphService.registerGraph("",new MemoryGraphSource("",graph,routerLifecycleManager,config));
     }
  catch (    Exception e) {
       if (params.graphConfigFile != null)       LOG.error("Can't read config file",e);
-      this.graphService.registerGraph("",new MemoryGraphSource("",graph));
+      this.graphService.registerGraph("",new MemoryGraphSource("",graph,routerLifecycleManager));
     }
   }
-  if (params.routerIds.size() > 0 || params.autoScan) {
-    GraphScanner graphScanner=new GraphScanner(graphService,params.autoScan);
+  if ((params.routerIds != null && params.routerIds.size() > 0) || params.autoScan) {
+    GraphScanner graphScanner=new GraphScanner(graphService,params.autoScan,routerLifecycleManager);
     graphScanner.basePath=graphSourceFactory.basePath;
     if (params.routerIds.size() > 0) {
       graphScanner.defaultRouterId=params.routerIds.get(0);

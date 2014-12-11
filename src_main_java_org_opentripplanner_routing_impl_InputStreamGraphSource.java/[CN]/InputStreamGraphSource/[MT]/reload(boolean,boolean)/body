@@ -5,34 +5,40 @@ synchronized (this) {
     if (!doReload)     return true;
     if (preEvict) {
 synchronized (preEvictMutex) {
-        if (graph != null)         configurator.shutdownGraph(graph);
-        graph=null;
-        graph=loadGraph();
+        if (router != null && routerLifecycleManager != null) {
+          routerLifecycleManager.shutdownRouter(router);
+        }
+        router=null;
+        router=loadGraph();
       }
     }
  else {
-      Graph newGraph=loadGraph();
-      if (newGraph != null) {
-        if (graph != null)         configurator.shutdownGraph(graph);
-        graph=newGraph;
+      Router newRouter=loadGraph();
+      if (newRouter != null) {
+        if (router != null && routerLifecycleManager != null) {
+          routerLifecycleManager.shutdownRouter(router);
+        }
+        router=newRouter;
       }
  else {
-        if (force || graph == null) {
+        if (force || router == null) {
           LOG.warn("Unable to load data for router '{}'.",routerId);
-          if (graph != null)           configurator.shutdownGraph(graph);
-          graph=null;
+          if (router != null && routerLifecycleManager != null) {
+            routerLifecycleManager.shutdownRouter(router);
+          }
+          router=null;
         }
  else {
           LOG.warn("Unable to load data for router '{}', keeping old data.",routerId);
         }
       }
     }
-    if (graph == null) {
+    if (router == null) {
       graphLastModified=0L;
     }
  else {
       graphLastModified=lastModified;
     }
-    return (graph != null);
+    return (router != null);
   }
 }

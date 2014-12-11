@@ -4,7 +4,7 @@ synchronized (graphSources) {
     int n=0;
     Collection<String> routerIds=new ArrayList<String>(getRouterIds());
     for (    String routerId : routerIds) {
-      if (evictGraph(routerId)) {
+      if (evictRouter(routerId)) {
         n++;
       }
     }

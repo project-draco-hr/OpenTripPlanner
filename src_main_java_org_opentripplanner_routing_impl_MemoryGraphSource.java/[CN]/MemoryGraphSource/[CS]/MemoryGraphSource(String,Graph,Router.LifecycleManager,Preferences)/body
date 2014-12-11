@@ -1,0 +1,8 @@
+{
+  router=new Router(routerId,graph);
+  router.graph.routerId=routerId;
+  this.routerLifecycleManager=routerLifecycleManager;
+  if (this.routerLifecycleManager != null) {
+    this.routerLifecycleManager.startupRouter(router,config);
+  }
+}

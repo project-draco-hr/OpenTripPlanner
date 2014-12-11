@@ -1,11 +1,11 @@
 {
-  LOG.info("Registering new graph '{}'",routerId);
+  LOG.info("Registering new router '{}'",routerId);
   if (!routerIdLegal(routerId)) {
     LOG.error("routerId '{}' contains characters other than alphanumeric, underscore, and dash.",routerId);
     return false;
   }
-  if (graphSource.getGraph() == null) {
-    LOG.warn("Can't register router ID '{}', null graph.",routerId);
+  if (graphSource.getRouter() == null) {
+    LOG.warn("Can't register router ID '{}', no graph.",routerId);
     return false;
   }
 synchronized (graphSources) {

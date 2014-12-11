@@ -1,6 +1,7 @@
 {
-  graphService.registerGraph("",new MemoryGraphSource("",makeSimpleGraph()));
-  graphService.registerGraph("portland",new MemoryGraphSource("portland",graph));
+  GraphService graphService=otpServer.getGraphService();
+  graphService.registerGraph("",new MemoryGraphSource("",makeSimpleGraph(),graphService.routerLifecycleManager));
+  graphService.registerGraph("portland",new MemoryGraphSource("portland",graph,graphService.routerLifecycleManager));
   ShapefileStreetGraphBuilderImpl builder=new ShapefileStreetGraphBuilderImpl();
   FeatureSourceFactory factory=new ShapefileFeatureSourceFactoryImpl(new File("src/test/resources/portland/Streets_pdx.shp"));
   builder.setFeatureSourceFactory(factory);

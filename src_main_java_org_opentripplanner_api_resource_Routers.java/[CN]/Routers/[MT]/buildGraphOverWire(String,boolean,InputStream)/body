@@ -1,7 +1,7 @@
 {
   if (preEvict) {
     LOG.debug("Pre-evicting graph with routerId {} before building new graph",routerId);
-    otpServer.getGraphService().evictGraph(routerId);
+    otpServer.getGraphService().evictRouter(routerId);
   }
   File tempDir=Files.createTempDir();
   ZipInputStream zis=new ZipInputStream(input);
@@ -30,6 +30,7 @@
   tempDir.delete();
   Graph graph=graphBuilder.getGraph();
   graph.index(new DefaultStreetVertexIndexFactory());
-  otpServer.getGraphService().registerGraph(routerId,new MemoryGraphSource(routerId,graph));
+  GraphService graphService=otpServer.getGraphService();
+  graphService.registerGraph(routerId,new MemoryGraphSource(routerId,graph,graphService.routerLifecycleManager));
   return Response.status(Status.CREATED).entity(graph.toString() + "\n").build();
 }

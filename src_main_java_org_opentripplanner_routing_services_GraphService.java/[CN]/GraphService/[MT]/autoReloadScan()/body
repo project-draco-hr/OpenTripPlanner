@@ -5,7 +5,7 @@ synchronized (graphSources) {
       GraphSource graphSource=graphSources.get(routerId);
       boolean success=graphSource.reload(false,AUTORELOAD_PREEVICT);
       if (!success) {
-        evictGraph(routerId);
+        evictRouter(routerId);
       }
     }
   }

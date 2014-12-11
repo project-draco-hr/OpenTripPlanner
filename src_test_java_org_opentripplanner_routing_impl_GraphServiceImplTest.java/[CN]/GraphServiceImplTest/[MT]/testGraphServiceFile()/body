@@ -6,7 +6,7 @@
   assertTrue(new File(new File(basePath,"A"),InputStreamGraphSource.GRAPH_FILENAME).canRead());
   boolean registered=graphService.registerGraph("A",graphSourceFactory.createGraphSource("A"));
   assertTrue(registered);
-  Graph graph=graphService.getGraph("A");
+  Graph graph=graphService.getRouter("A").graph;
   assertNotNull(graph);
   assertEquals("A",graph.routerId);
   assertEquals(0,graph.getVertices().size());
@@ -15,7 +15,7 @@
   int edgesCount=smallGraph.getEdges().size();
   graphSourceFactory.save("A",new ByteArrayInputStream(smallGraphData));
   graphService.reloadGraphs(false);
-  graph=graphService.getGraph("A");
+  graph=graphService.getRouter("A").graph;
   assertEquals(verticesCount,graph.getVertices().size());
   assertEquals(edgesCount,graph.getEdges().size());
   boolean deleted=new File(new File(basePath,"A"),InputStreamGraphSource.GRAPH_FILENAME).delete();
@@ -29,7 +29,7 @@
   registered=graphService.registerGraph("A",graphSourceFactory.createGraphSource("A"));
   assertTrue(registered);
   assertEquals(1,graphService.getRouterIds().size());
-  boolean evicted=graphService.evictGraph("A");
+  boolean evicted=graphService.evictRouter("A");
   assertTrue(evicted);
   assertEquals(0,graphService.getRouterIds().size());
 }
