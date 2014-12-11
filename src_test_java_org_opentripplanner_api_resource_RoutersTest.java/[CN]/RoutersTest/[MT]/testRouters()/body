@@ -1,5 +1,5 @@
 {
-  OTPServer otpServer=new OTPServer(new CommandLineParameters(),new GraphServiceImpl());
+  OTPServer otpServer=new OTPServer(new CommandLineParameters(),new GraphService());
   otpServer.getGraphService().registerGraph("",new MemoryGraphSource(null,new Graph()));
   otpServer.getGraphService().registerGraph("A",new MemoryGraphSource("",new Graph()));
   otpServer.getGraphService().getGraph("A").addVertex(new ExitVertex(null,"A",0,0));

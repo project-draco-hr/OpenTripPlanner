@@ -1,5 +1,5 @@
 {
-  GraphServiceImpl graphService=new GraphServiceImpl();
+  GraphService graphService=new GraphService();
   graphService.registerGraph("A",new MemoryGraphSource("A",emptyGraph));
   assertEquals(1,graphService.getRouterIds().size());
   Graph graph=graphService.getGraph("A");
