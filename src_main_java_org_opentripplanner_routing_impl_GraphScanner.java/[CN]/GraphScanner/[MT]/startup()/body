@@ -9,8 +9,8 @@
     LOG.info("Attempting to automatically register routerIds {}",autoRegister);
     LOG.info("Graph files will be sought in paths relative to {}",basePath);
     for (    String routerId : routerIds) {
-      InputStreamGraphSource graphSource=InputStreamGraphSource.newFileGraphSource(routerId,getBasePath(routerId),loadLevel,routerLifecycleManager);
-      if (graphSource.getRouter() != null)       graphService.registerGraph(routerId,graphSource);
+      InputStreamGraphSource graphSource=InputStreamGraphSource.newFileGraphSource(routerId,getBasePath(routerId),loadLevel);
+      graphService.registerGraph(routerId,graphSource);
     }
   }
  else {

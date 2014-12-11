@@ -1,6 +1,6 @@
 {
   GraphService graphService=new GraphService(false);
-  GraphScanner graphScanner=new GraphScanner(graphService,true,null);
+  GraphScanner graphScanner=new GraphScanner(graphService,true);
   graphScanner.basePath=basePath;
   graphScanner.startup();
   assertEquals(0,graphService.getRouterIds().size());
@@ -9,7 +9,7 @@
   graphSourceFactory.basePath=basePath;
   graphSourceFactory.save("",new ByteArrayInputStream(smallGraphData));
   graphService=new GraphService(false);
-  graphScanner=new GraphScanner(graphService,true,null);
+  graphScanner=new GraphScanner(graphService,true);
   graphScanner.basePath=basePath;
   graphScanner.startup();
   assertEquals(1,graphService.getRouterIds().size());
@@ -18,7 +18,7 @@
   System.out.println("------------------------------------------");
   graphSourceFactory.save("A",new ByteArrayInputStream(smallGraphData));
   graphService=new GraphService(false);
-  graphScanner=new GraphScanner(graphService,true,null);
+  graphScanner=new GraphScanner(graphService,true);
   graphScanner.basePath=basePath;
   graphScanner.startup();
   assertEquals(2,graphService.getRouterIds().size());
@@ -27,7 +27,7 @@
   System.out.println("------------------------------------------");
   new File(basePath,InputStreamGraphSource.GRAPH_FILENAME).delete();
   graphService=new GraphService(false);
-  graphScanner=new GraphScanner(graphService,true,null);
+  graphScanner=new GraphScanner(graphService,true);
   graphScanner.basePath=basePath;
   graphScanner.startup();
   assertEquals(1,graphService.getRouterIds().size());

@@ -20,7 +20,7 @@
     Preferences config=is == null ? null : new PropertiesPreferences(is);
     Router newRouter=new Router(routerId,newGraph);
     if (routerLifecycleManager != null) {
-      routerLifecycleManager.startupRouter(router,config);
+      routerLifecycleManager.startupRouter(newRouter,config);
     }
     return newRouter;
   }

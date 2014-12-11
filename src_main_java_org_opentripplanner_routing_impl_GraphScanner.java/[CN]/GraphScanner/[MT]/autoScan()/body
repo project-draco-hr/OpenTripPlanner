@@ -20,10 +20,8 @@
   if (!graphToRegister.isEmpty()) {
     LOG.info("Found new routers to register: {}",Arrays.toString(graphToRegister.toArray()));
     for (    String routerId : graphToRegister) {
-      InputStreamGraphSource graphSource=InputStreamGraphSource.newFileGraphSource(routerId,getBasePath(routerId),loadLevel,routerLifecycleManager);
-      if (graphSource.getRouter() != null) {
-        graphService.registerGraph(routerId,graphSource);
-      }
+      InputStreamGraphSource graphSource=InputStreamGraphSource.newFileGraphSource(routerId,getBasePath(routerId),loadLevel);
+      graphService.registerGraph(routerId,graphSource);
     }
   }
   Collection<String> routerIds=graphService.getRouterIds();
