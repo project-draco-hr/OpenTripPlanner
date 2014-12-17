@@ -7,19 +7,19 @@
       }
     }
   }
-  if (closest.size() > 500) {
-    LOG.warn("Truncating long list of patterns.");
+  final int MAX_PATTERNS=1000;
+  if (closest.size() > MAX_PATTERNS) {
+    LOG.warn("Truncating excessively long list of patterns. {} patterns, max allowed is {}.",closest.size(),MAX_PATTERNS);
     Multimap<StopAtDistance,TripPattern> busPatterns=TreeMultimap.create(Ordering.natural(),Ordering.arbitrary());
     Multimap<StopAtDistance,TripPattern> otherPatterns=TreeMultimap.create(Ordering.natural(),Ordering.arbitrary());
-    Multimap<StopAtDistance,TripPattern> patterns;
     for (    TripPattern pattern : closest.keySet()) {
-      patterns=(pattern.mode == TraverseMode.BUS) ? busPatterns : otherPatterns;
+      Multimap<StopAtDistance,TripPattern> patterns=(pattern.mode == TraverseMode.BUS) ? busPatterns : otherPatterns;
       patterns.put(closest.get(pattern),pattern);
     }
     closest.clear();
     Iterator<StopAtDistance> iterBus=busPatterns.keySet().iterator();
     Iterator<StopAtDistance> iterOther=otherPatterns.keySet().iterator();
-    while (closest.size() < 50) {
+    while (closest.size() < MAX_PATTERNS) {
       StopAtDistance sd;
       if (iterBus.hasNext()) {
         sd=iterBus.next();
