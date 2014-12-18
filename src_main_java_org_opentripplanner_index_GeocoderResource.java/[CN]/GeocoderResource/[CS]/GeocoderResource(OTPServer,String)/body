@@ -3,7 +3,7 @@
   GraphIndex graphIndex=router.graph.index;
 synchronized (graphIndex) {
     if (graphIndex.luceneIndex == null) {
-      graphIndex.luceneIndex=new LuceneIndex(graphIndex,false);
+      graphIndex.luceneIndex=new LuceneIndex(graphIndex,otpServer.basePath,false);
     }
     index=graphIndex.luceneIndex;
   }

@@ -1,7 +1,6 @@
 {
   GraphServiceImpl graphService=new GraphServiceImpl();
-  InputStreamGraphSource.FileFactory graphSourceFactory=new InputStreamGraphSource.FileFactory();
-  graphSourceFactory.basePath=basePath;
+  InputStreamGraphSource.FileFactory graphSourceFactory=new InputStreamGraphSource.FileFactory(basePath);
   graphSourceFactory.save("A",new ByteArrayInputStream(emptyGraphData));
   assertTrue(new File(new File(basePath,"A"),InputStreamGraphSource.GRAPH_FILENAME).canRead());
   boolean registered=graphService.registerGraph("A",graphSourceFactory.createGraphSource("A"));
