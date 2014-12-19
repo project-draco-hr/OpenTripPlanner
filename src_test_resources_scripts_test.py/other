@@ -1,0 +1,13 @@
+router = otp.getRouter()
+req = otp.createRequest()
+req.setDateTime(2013, 6, 15, 10, 0, 0)
+req.setMaxTimeSec(3600)
+grid = otp.createSyntheticRasterPopulation(47.04, 47.07, (-0.9), (-0.85), 10, 10)
+lycees = otp.loadCSVPopulation('lycees.csv')
+for origin in grid:
+    req.setOrigin(origin)
+    spt = router.plan(req)
+    times = spt.evalTime(lycees)
+    minTime = min(times)
+    n = len([1 for time in times if (time < 1800)])
+    print origin, minTime, n
