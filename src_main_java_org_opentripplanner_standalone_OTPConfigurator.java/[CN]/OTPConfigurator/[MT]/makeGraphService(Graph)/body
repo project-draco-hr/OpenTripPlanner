@@ -1,10 +1,10 @@
 {
   GraphServiceImpl graphService=new GraphServiceImpl(params.autoReload);
   this.graphService=graphService;
-  InputStreamGraphSource.FileFactory graphSourceFactory=new InputStreamGraphSource.FileFactory();
+  InputStreamGraphSource.FileFactory graphSourceFactory=new InputStreamGraphSource.FileFactory(params.graphDirectory);
   graphService.graphSourceFactory=graphSourceFactory;
   if (params.graphDirectory != null) {
-    graphSourceFactory.basePath=new File(params.graphDirectory);
+    graphSourceFactory.basePath=params.graphDirectory;
   }
   if (graph != null && (params.inMemory || params.preFlight)) {
     try {
@@ -18,7 +18,7 @@
     }
   }
   if (params.routerIds.size() > 0 || params.autoScan) {
-    GraphScanner graphScanner=new GraphScanner(graphService,params.autoScan);
+    GraphScanner graphScanner=new GraphScanner(graphService,params.graphDirectory,params.autoScan);
     graphScanner.basePath=graphSourceFactory.basePath;
     if (params.routerIds.size() > 0) {
       graphScanner.defaultRouterId=params.routerIds.get(0);
