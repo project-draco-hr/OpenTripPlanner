@@ -1,3 +1,4 @@
 {
-  return otpServer.graphService.getGraph(routerId).getMetadata();
+  Router router=otpServer.getRouter(routerId);
+  return router.graph.getMetadata();
 }

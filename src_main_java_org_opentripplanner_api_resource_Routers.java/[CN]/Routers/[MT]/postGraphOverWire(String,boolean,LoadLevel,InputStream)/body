@@ -1,13 +1,13 @@
 {
   if (preEvict) {
     LOG.debug("pre-evicting graph");
-    server.graphService.evictGraph(routerId);
+    otpServer.getGraphService().evictGraph(routerId);
   }
   LOG.debug("deserializing graph from POST data stream...");
   Graph graph;
   try {
     graph=Graph.load(is,level);
-    server.graphService.registerGraph(routerId,new MemoryGraphSource(routerId,graph));
+    otpServer.getGraphService().registerGraph(routerId,new MemoryGraphSource(routerId,graph));
     return Response.status(Status.CREATED).entity(graph.toString() + "\n").build();
   }
  catch (  Exception e) {

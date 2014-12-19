@@ -7,14 +7,8 @@
     String d=get(date,n,null);
     String t=get(time,n,null);
     TimeZone tz;
-    if (otpServer.graphService != null) {
-      tz=otpServer.graphService.getGraph(request.routerId).getTimeZone();
-    }
- else {
-      LOG.warn("No graph service available, using default time zone.");
-      tz=TimeZone.getDefault();
-      LOG.info("Time zone set to {}",tz);
-    }
+    Router router=otpServer.getRouter(request.routerId);
+    tz=router.graph.getTimeZone();
     if (d == null && t != null) {
       LOG.debug("parsing ISO datetime {}",t);
       try {

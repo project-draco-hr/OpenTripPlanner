@@ -1,0 +1,10 @@
+{
+  LOG.info("Setup WFS polling updater");
+  HashMap<String,Object> connectionParameters=new HashMap<>();
+  connectionParameters.put(WFSDataStoreFactory.URL.key,url);
+  WFSDataStore data=(new WFSDataStoreFactory()).createDataStore(connectionParameters);
+  query=new Query(featureType);
+  query.setCoordinateSystem(CRS.decode("EPSG:4326",true));
+  featureSource=data.getFeatureSource(featureType);
+  graph.streetNotesService.addNotesSource(notesSource);
+}

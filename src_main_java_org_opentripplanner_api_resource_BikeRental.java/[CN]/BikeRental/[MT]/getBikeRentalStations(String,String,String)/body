@@ -1,7 +1,7 @@
 {
-  Graph graph=server.graphService.getGraph(routerId);
-  if (graph == null)   return null;
-  BikeRentalStationService bikeRentalService=graph.getService(BikeRentalStationService.class);
+  Router router=otpServer.getRouter(routerId);
+  if (router == null)   return null;
+  BikeRentalStationService bikeRentalService=router.graph.getService(BikeRentalStationService.class);
   if (bikeRentalService == null)   return new BikeRentalStationList();
   Envelope envelope;
   if (lowerLeft != null) {

@@ -1,5 +1,5 @@
 {
-  final TimeSurface surf=server.surfaceCache.get(surfaceId);
+  final TimeSurface surf=otpServer.surfaceCache.get(surfaceId);
   if (surf == null)   return badRequest("Invalid TimeSurface ID.");
   if (spacing < 1)   spacing=5;
   List<IsochroneData> isochrones=getIsochronesAccumulative(surf,spacing);

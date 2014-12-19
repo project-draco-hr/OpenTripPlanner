@@ -1,0 +1,24 @@
+{
+  Router router=new Router(routerId,graph);
+  router.sptServiceFactory=new GenericAStarFactory();
+  if (params.longDistance) {
+    LongDistancePathService pathService=new LongDistancePathService(router.graph,router.sptServiceFactory);
+    router.pathService=pathService;
+  }
+ else {
+    RetryingPathServiceImpl pathService=new RetryingPathServiceImpl(router.graph,router.sptServiceFactory);
+    pathService.setFirstPathTimeout(10.0);
+    pathService.setMultiPathTimeout(1.0);
+    router.pathService=pathService;
+  }
+  router.planGenerator=new PlanGenerator(graph,router.pathService);
+  router.tileRendererManager=new TileRendererManager(graph);
+  if (params.analyst) {
+    router.tileCache=new TileCache(router.graph);
+    router.sptCache=new SPTCache(router.sptServiceFactory,graph);
+    router.renderer=new Renderer(router.tileCache,router.sptCache);
+    router.sampleGridRenderer=new SampleGridRenderer(router.graph,router.sptServiceFactory);
+    router.isoChroneSPTRenderer=new IsoChroneSPTRendererAccSampling(router.sampleGridRenderer);
+  }
+  return router;
+}
