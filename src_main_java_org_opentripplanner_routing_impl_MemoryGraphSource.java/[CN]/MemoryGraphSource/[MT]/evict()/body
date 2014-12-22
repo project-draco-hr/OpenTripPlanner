@@ -1,6 +1,8 @@
 {
-  if (graph != null) {
-    decorator.shutdownGraph(graph);
+  if (router != null) {
+    if (routerLifecycleManager != null) {
+      routerLifecycleManager.shutdownRouter(router);
+    }
   }
-  graph=null;
+  router=null;
 }
