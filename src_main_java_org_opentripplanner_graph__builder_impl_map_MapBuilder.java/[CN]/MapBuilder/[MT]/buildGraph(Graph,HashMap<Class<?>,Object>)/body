@@ -1,4 +1,5 @@
 {
+  graph.index(new DefaultStreetVertexIndexFactory());
   StreetMatcher matcher=new StreetMatcher(graph);
   EdgesForRoute edgesForRoute=new EdgesForRoute();
   extra.put(EdgesForRoute.class,edgesForRoute);
@@ -6,9 +7,9 @@
   for (  Route route : graph.index.routeForId.values()) {
     for (    TripPattern pattern : graph.index.patternsForRoute.get(route)) {
       if (pattern.mode == TraverseMode.BUS) {
-        log.debug("Matching {} ncoords={}",pattern,pattern.geometry.getNumPoints());
+        log.debug("Matching {} ncoords={}",pattern,pattern.getGeometry().getNumPoints());
         List<Edge> edges=matcher.match(pattern.geometry);
-        if (edges == null) {
+        if (edges == null || edges.isEmpty()) {
           log.warn("Could not match to street network: {}",pattern);
           continue;
         }
