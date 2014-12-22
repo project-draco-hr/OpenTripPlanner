@@ -88,6 +88,7 @@ graphBuilder.addGraphBuilder(new StreetlessStopLinker());
 }
 }
 if (hasOSM) {
+graphBuilder.addGraphBuilder(new MapBuilder());
 graphBuilder.addGraphBuilder(new TransitToTaggedStopsGraphBuilderImpl());
 graphBuilder.addGraphBuilder(new TransitToStreetNetworkGraphBuilderImpl());
 if (params.longDistance && params.useStreetsForLinking && !params.useTransfersTxt) {
