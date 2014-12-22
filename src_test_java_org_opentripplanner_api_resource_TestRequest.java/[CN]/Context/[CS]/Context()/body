@@ -1,4 +1,5 @@
 {
+  GraphService graphService=otpServer.getGraphService();
   graphService.registerGraph("",new MemoryGraphSource("",makeSimpleGraph()));
   graphService.registerGraph("portland",new MemoryGraphSource("portland",graph));
   ShapefileStreetGraphBuilderImpl builder=new ShapefileStreetGraphBuilderImpl();
