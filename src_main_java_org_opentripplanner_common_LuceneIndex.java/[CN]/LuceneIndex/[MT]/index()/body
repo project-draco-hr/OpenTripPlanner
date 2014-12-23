@@ -1,7 +1,7 @@
 {
   try {
     long startTime=System.currentTimeMillis();
-    directory=FSDirectory.open(new File("/var/otp/lucene"));
+    directory=FSDirectory.open(new File(basePath,"lucene"));
     IndexWriterConfig config=new IndexWriterConfig(Version.LUCENE_47,analyzer).setOpenMode(OpenMode.CREATE);
     final IndexWriter writer=new IndexWriter(directory,config);
     for (    Stop stop : graphIndex.stopForId.values()) {

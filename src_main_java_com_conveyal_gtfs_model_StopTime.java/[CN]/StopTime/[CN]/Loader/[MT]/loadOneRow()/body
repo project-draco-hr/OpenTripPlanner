@@ -1,0 +1,16 @@
+{
+  String trip_id=getStringField("trip_id",true);
+  int arrival_time=getTimeField("arrival_time");
+  int departure_time=getTimeField("departure_time");
+  String stop_id=getStringField("stop_id",true);
+  int stop_sequence=getIntField("stop_sequence",true,0,Integer.MAX_VALUE);
+  String stop_headsign=getStringField("stop_headsign",false);
+  int pickup_type=getIntField("pickup_type",false,0,3);
+  int drop_off_type=getIntField("drop_off_type",false,0,3);
+  double shape_dist_traveled=getDoubleField("shape_dist_traveled",false,0D,Double.MAX_VALUE);
+  StopTime st=new StopTime(trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type,shape_dist_traveled);
+  st.feed=null;
+  feed.stop_times.put(new Fun.Tuple2(st.trip_id,st.stop_sequence),st);
+  getRefField("trip_id",true,feed.trips);
+  getRefField("stop_id",true,feed.stops);
+}

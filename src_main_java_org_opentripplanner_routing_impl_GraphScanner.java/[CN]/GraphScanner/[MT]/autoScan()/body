@@ -21,9 +21,7 @@
     LOG.info("Found new routers to register: {}",Arrays.toString(graphToRegister.toArray()));
     for (    String routerId : graphToRegister) {
       InputStreamGraphSource graphSource=InputStreamGraphSource.newFileGraphSource(routerId,getBasePath(routerId),loadLevel);
-      if (graphSource.getGraph() != null) {
-        graphService.registerGraph(routerId,graphSource);
-      }
+      graphService.registerGraph(routerId,graphSource);
     }
   }
   Collection<String> routerIds=graphService.getRouterIds();
@@ -32,7 +30,7 @@
   }
  else {
     try {
-      graphService.getGraph();
+      graphService.getRouter();
     }
  catch (    GraphNotFoundException e) {
       if (routerIds.contains("")) {

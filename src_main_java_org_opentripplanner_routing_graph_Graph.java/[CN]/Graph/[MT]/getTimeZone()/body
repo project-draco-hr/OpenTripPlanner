@@ -3,7 +3,7 @@
     Collection<String> agencyIds=this.getAgencyIds();
     if (agencyIds.size() == 0) {
       timeZone=TimeZone.getTimeZone("GMT");
-      LOG.warn("graph contains no agencies; API request times will be interpreted as GMT.");
+      LOG.warn("graph contains no agencies (yet); API request times will be interpreted as GMT.");
     }
  else {
       CalendarService cs=this.getCalendarService();

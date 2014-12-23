@@ -15,8 +15,8 @@
   newRight.setElevationProfile(ElevationUtils.getPartialElevationProfile(street.getElevationProfile(),lengthIn,lengthIn + lengthOut),false);
   newRight.setStreetClass(street.getStreetClass());
   newRight.setNoThruTraffic(street.isNoThruTraffic());
-  for (  TurnRestriction turnRestriction : street.getTurnRestrictions()) {
-    newRight.addTurnRestriction(turnRestriction);
+  for (  TurnRestriction turnRestriction : graph.getTurnRestrictions(street)) {
+    graph.addTurnRestriction(newRight,turnRestriction);
   }
   base.extra.add(newLeft);
   base.extra.add(newRight);

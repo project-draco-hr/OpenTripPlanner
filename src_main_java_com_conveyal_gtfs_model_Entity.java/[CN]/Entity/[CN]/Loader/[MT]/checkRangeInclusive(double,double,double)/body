@@ -1,0 +1,7 @@
+{
+  if (actual < min || actual > max) {
+    feed.errors.add(new RangeError(tableName,row,null,min,max,actual));
+    return false;
+  }
+  return true;
+}

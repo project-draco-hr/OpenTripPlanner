@@ -19,6 +19,7 @@
   }
   int freqCount=0;
   int nonFreqCount=0;
+  Map<TripPattern,LineString[]> geometriesByTripPattern=Maps.newHashMap();
   TRIP:   for (  Trip trip : trips) {
     if (++tripCount % 100000 == 0) {
       LOG.debug("loading trips {}/{}",tripCount,trips.size());
@@ -54,21 +55,24 @@
       tripPattern.add(tripTimes);
       nonFreqCount++;
     }
+    if (!geometriesByTripPattern.containsKey(tripPattern) && trip.getShapeId() != null && trip.getShapeId().getId() != null && !trip.getShapeId().getId().equals("")) {
+      geometriesByTripPattern.put(tripPattern,createGeometry(graph,trip,stopTimes));
+    }
   }
   LOG.info("Added {} frequency-based and {} single-trip timetable entries.",freqCount,nonFreqCount);
   TripPattern.generateUniqueNames(tripPatterns.values());
   TripPattern.generateUniqueIds(tripPatterns.values());
   for (  TripPattern tripPattern : tripPatterns.values()) {
     tripPattern.makePatternVerticesAndEdges(graph,context);
-    tripPattern.setServiceCodes(graph.serviceCodes);
-    for (    Trip trip : tripPattern.getTrips()) {
-      if (trip.getShapeId() != null && trip.getShapeId().getId() != null && !trip.getShapeId().getId().equals("")) {
-        createGeometry(graph,trip,tripPattern.hopEdges);
-        break;
+    LineString[] geom=geometriesByTripPattern.get(tripPattern);
+    if (geom != null) {
+      for (int i=0; i < tripPattern.hopEdges.length; i++) {
+        tripPattern.hopEdges[i].setGeometry(geom[i]);
       }
     }
+    tripPattern.setServiceCodes(graph.serviceCodes);
   }
-  interline(tripPatterns.values());
+  interline(tripPatterns.values(),graph);
   loadTransfers(graph);
   for (  TripPattern tableTripPattern : tripPatterns.values()) {
     tableTripPattern.scheduledTimetable.finish();

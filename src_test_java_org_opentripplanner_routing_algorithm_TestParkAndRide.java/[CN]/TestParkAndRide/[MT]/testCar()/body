@@ -1,0 +1,35 @@
+{
+  GenericAStar aStar=new GenericAStar();
+  RoutingRequest options=new RoutingRequest(new TraverseModeSet("WALK"));
+  options.setRoutingContext(graph,A,C);
+  ShortestPathTree tree=aStar.getShortestPathTree(options);
+  GraphPath path=tree.getPath(C,false);
+  assertNull(path);
+  options=new RoutingRequest("WALK,CAR");
+  options.freezeTraverseMode();
+  options.setRoutingContext(graph,A,C);
+  tree=aStar.getShortestPathTree(options);
+  path=tree.getPath(C,false);
+  assertNull(path);
+  ParkAndRideVertex PRB=new ParkAndRideVertex(graph,"P+R","P+R.B",0.001,45.00001,"P+R B");
+  new ParkAndRideEdge(PRB);
+  new ParkAndRideLinkEdge(PRB,B);
+  new ParkAndRideLinkEdge(B,PRB);
+  options=new RoutingRequest("WALK");
+  options.freezeTraverseMode();
+  options.setRoutingContext(graph,A,C);
+  tree=aStar.getShortestPathTree(options);
+  path=tree.getPath(C,false);
+  assertNull(path);
+  options=new RoutingRequest("CAR");
+  options.freezeTraverseMode();
+  options.setRoutingContext(graph,A,C);
+  tree=aStar.getShortestPathTree(options);
+  path=tree.getPath(C,false);
+  assertNull(path);
+  options=new RoutingRequest("WALK,CAR_PARK,TRANSIT");
+  options.setRoutingContext(graph,A,C);
+  tree=aStar.getShortestPathTree(options);
+  path=tree.getPath(C,false);
+  assertNotNull(path);
+}

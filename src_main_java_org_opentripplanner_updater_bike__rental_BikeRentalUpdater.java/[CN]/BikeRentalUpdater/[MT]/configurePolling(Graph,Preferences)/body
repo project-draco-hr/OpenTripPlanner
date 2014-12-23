@@ -1,12 +1,13 @@
 {
   String sourceType=preferences.get("sourceType",null);
+  String apiKey=preferences.get("apiKey",null);
   BikeRentalDataSource source=null;
   if (sourceType != null) {
     if (sourceType.equals("jcdecaux")) {
       source=new JCDecauxBikeRentalDataSource();
     }
  else     if (sourceType.equals("b-cycle")) {
-      source=new BCycleBikeRentalDataSource();
+      source=new BCycleBikeRentalDataSource(apiKey);
     }
  else     if (sourceType.equals("bixi")) {
       source=new BixiBikeRentalDataSource();
@@ -33,6 +34,6 @@
   LOG.info("Setting up bike rental updater.");
   this.graph=graph;
   this.source=source;
-  this.network=(preferences.get("networks",DEFAULT_NETWORK_LIST));
+  this.network=preferences.get("networks",DEFAULT_NETWORK_LIST);
   LOG.info("Creating bike-rental updater running every {} seconds : {}",frequencySec,source);
 }

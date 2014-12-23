@@ -1,0 +1,9 @@
+{
+  if (edge != null) {
+    List<TurnRestriction> turnRestrictions=this.turnRestrictions.get(edge);
+    if (turnRestrictions != null) {
+      return ImmutableList.copyOf(turnRestrictions);
+    }
+  }
+  return Collections.emptyList();
+}

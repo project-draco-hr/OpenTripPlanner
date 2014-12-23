@@ -1,7 +1,8 @@
 {
   rangeCheckParameters();
   request=buildRequest(0);
-  Graph graph=otpServer.graphService.getGraph();
+  Router router=otpServer.getRouter(routerId);
+  Graph graph=router.graph;
   Coordinate originCoord=request.from.getCoordinate();
   if (originCoord == null)   return null;
   List<TransitStop> stops=graph.streetIndex.getNearbyTransitStops(originCoord,radiusMeters);

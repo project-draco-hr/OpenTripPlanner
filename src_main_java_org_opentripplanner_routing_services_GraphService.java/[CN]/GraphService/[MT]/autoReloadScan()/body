@@ -1,0 +1,12 @@
+{
+synchronized (graphSources) {
+    Collection<String> routerIds=getRouterIds();
+    for (    String routerId : routerIds) {
+      GraphSource graphSource=graphSources.get(routerId);
+      boolean success=graphSource.reload(false,AUTORELOAD_PREEVICT);
+      if (!success) {
+        evictRouter(routerId);
+      }
+    }
+  }
+}

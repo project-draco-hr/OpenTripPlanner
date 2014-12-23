@@ -1,5 +1,5 @@
 {
-  Envelope2D envelope=null;
+  Envelope envelope=new Envelope();
   List<IntersectionVertex> accessVertexes=new ArrayList<IntersectionVertex>();
   String creativeName=null;
   long osmId=0L;
@@ -8,8 +8,7 @@
     if (creativeName == null || area.parent.getTag("name") != null)     creativeName=wayPropertySet.getCreativeNameForWay(area.parent);
     for (    Ring ring : area.outermostRings) {
       for (      OSMNode node : ring.nodes) {
-        if (envelope == null)         envelope=new Envelope2D(null,node.lon,node.lat,0,0);
- else         envelope.add(node.lon,node.lat);
+        envelope.expandToInclude(new Coordinate(node.lon,node.lat));
         IntersectionVertex accessVertex=getVertexForOsmNode(node,area.parent);
         if (accessVertex.getIncoming().isEmpty() || accessVertex.getOutgoing().isEmpty())         continue;
         accessVertexes.add(accessVertex);
@@ -46,7 +45,7 @@
   if (!walkAccessibleIn || !carAccessibleOut) {
     LOG.warn("P+R '{}' ({}) is not walk-accessible");
   }
-  ParkAndRideVertex parkAndRideVertex=new ParkAndRideVertex(graph,"P+R" + osmId,"P+R_" + osmId,envelope.getCenterX(),envelope.getCenterY(),creativeName);
+  ParkAndRideVertex parkAndRideVertex=new ParkAndRideVertex(graph,"P+R" + osmId,"P+R_" + osmId,(envelope.getMinX() + envelope.getMaxX()) / 2,(envelope.getMinY() + envelope.getMaxY()) / 2,creativeName);
   new ParkAndRideEdge(parkAndRideVertex);
   for (  IntersectionVertex accessVertex : accessVertexes) {
     new ParkAndRideLinkEdge(parkAndRideVertex,accessVertex);

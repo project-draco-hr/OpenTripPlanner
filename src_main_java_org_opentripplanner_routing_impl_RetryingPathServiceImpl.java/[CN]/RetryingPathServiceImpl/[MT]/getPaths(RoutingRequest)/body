@@ -1,7 +1,7 @@
 {
   ArrayList<GraphPath> paths=new ArrayList<GraphPath>();
   if (options.rctx == null) {
-    options.setRoutingContext(graphService.getGraph(options.routerId));
+    options.setRoutingContext(graph);
     options.rctx.pathParsers=new PathParser[]{new BasicPathParser(),new NoThruTrafficPathParser()};
   }
   long searchBeginTime=System.currentTimeMillis();
@@ -12,6 +12,7 @@
   double initialMaxWalk=maxWalk;
   long maxTime=options.arriveBy ? 0 : Long.MAX_VALUE;
   RoutingRequest currOptions;
+  SPTService sptService=this.sptServiceFactory.instantiate();
   while (paths.size() < options.numItineraries) {
     currOptions=optionQueue.poll();
     if (currOptions == null) {

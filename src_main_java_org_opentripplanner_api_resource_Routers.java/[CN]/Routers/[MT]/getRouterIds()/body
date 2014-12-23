@@ -1,7 +1,10 @@
 {
   RouterList routerList=new RouterList();
-  for (  String id : server.graphService.getRouterIds()) {
-    routerList.routerInfo.add(getRouterInfo(id));
+  for (  String id : otpServer.getRouterIds()) {
+    RouterInfo routerInfo=getRouterInfo(id);
+    if (routerInfo != null) {
+      routerList.routerInfo.add(routerInfo);
+    }
   }
   return routerList;
 }

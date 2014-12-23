@@ -1,0 +1,6 @@
+{
+  if (routingContexts.size() > 0) {
+    LOG.error("RoutingContexts were observed in the ProfileRouter finalizer: this is a memory leak.");
+    cleanup();
+  }
+}

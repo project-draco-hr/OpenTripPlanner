@@ -1,0 +1,10 @@
+{
+  this.graphIndex=graphIndex;
+  this.basePath=basePath;
+  if (background) {
+    new BackgroundIndexer().start();
+  }
+ else {
+    new BackgroundIndexer().run();
+  }
+}

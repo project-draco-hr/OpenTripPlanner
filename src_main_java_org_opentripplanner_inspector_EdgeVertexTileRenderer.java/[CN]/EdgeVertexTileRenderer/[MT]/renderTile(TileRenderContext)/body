@@ -40,6 +40,7 @@
     Geometry midLineGeom=context.transform.transform(edgeGeom);
     OffsetCurveBuilder offsetBuilder=new OffsetCurveBuilder(new PrecisionModel(),bufParams);
     Coordinate[] coords=offsetBuilder.getOffsetCurve(midLineGeom.getCoordinates(),lineWidth * 0.4);
+    if (coords.length < 2)     continue;
     LineString offsetLine=geomFactory.createLineString(coords);
     Shape midLineShape=shapeWriter.toShape(midLineGeom);
     Shape offsetShape=shapeWriter.toShape(offsetLine);

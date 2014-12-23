@@ -1,9 +1,14 @@
 {
-  Graph graph=server.graphService.getGraph(routerId);
-  if (graph == null)   return null;
-  RouterInfo routerInfo=new RouterInfo();
-  routerInfo.routerId=routerId;
-  routerInfo.polygon=graph.getHull();
-  routerInfo.buildTime=graph.buildTime;
-  return routerInfo;
+  try {
+    Router router=otpServer.getRouter(routerId);
+    Graph graph=router.graph;
+    RouterInfo routerInfo=new RouterInfo();
+    routerInfo.routerId=routerId;
+    routerInfo.polygon=graph.getHull();
+    routerInfo.buildTime=graph.buildTime;
+    return routerInfo;
+  }
+ catch (  GraphNotFoundException e) {
+    return null;
+  }
 }

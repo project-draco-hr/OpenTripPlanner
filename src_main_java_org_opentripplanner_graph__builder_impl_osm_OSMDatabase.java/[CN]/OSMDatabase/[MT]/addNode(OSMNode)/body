@@ -3,6 +3,10 @@
     bikeRentalNodes.put(node.getId(),node);
     return;
   }
+  if (node.isBikeParking()) {
+    bikeParkingNodes.put(node.getId(),node);
+    return;
+  }
   if (!(waysNodeIds.contains(node.getId()) || areaNodeIds.contains(node.getId()) || node.isStop()))   return;
   if (nodesById.containsKey(node.getId()))   return;
   nodesById.put(node.getId(),node);

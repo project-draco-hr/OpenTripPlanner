@@ -7,8 +7,7 @@
     }
   }
 ;
-  context.graph=graphService.getGraph(tileRequest.routerId);
-  if (context.graph == null)   throw new IllegalArgumentException("Unknown routerId: " + tileRequest.routerId);
+  context.graph=graph;
   TileRenderer renderer=renderers.get(layer);
   if (renderer == null)   throw new IllegalArgumentException("Unknown layer: " + layer);
   BufferedImage image=new BufferedImage(tileRequest.width,tileRequest.height,renderer.getColorModel());

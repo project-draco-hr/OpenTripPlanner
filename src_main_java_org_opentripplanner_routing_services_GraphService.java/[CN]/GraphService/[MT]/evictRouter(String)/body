@@ -1,0 +1,14 @@
+{
+  LOG.info("Evicting router '{}'",routerId);
+synchronized (graphSources) {
+    GraphSource graphSource=graphSources.get(routerId);
+    graphSources.remove(routerId);
+    if (graphSource != null) {
+      graphSource.evict();
+      return true;
+    }
+ else {
+      return false;
+    }
+  }
+}

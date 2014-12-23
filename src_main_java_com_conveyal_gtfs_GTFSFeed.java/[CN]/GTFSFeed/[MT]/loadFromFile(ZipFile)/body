@@ -1,18 +1,21 @@
 {
-  new FeedInfo.Factory().loadTable(zip,errors,feedInfo);
-  setFeedId();
-  new Agency.Factory().loadTable(zip,errors,agency);
-  new Calendar.Factory().loadTable(zip,errors,calendars);
-  new CalendarDate.Factory().loadTable(zip,errors,calendarDates);
-  new FareAttribute.Factory().loadTable(zip,errors,fareAttributes);
-  new FareRule.Factory().loadTable(zip,errors,fareRules);
-  new Frequency.Factory().loadTable(zip,errors,frequencies);
-  new Route.Factory().loadTable(zip,errors,routes);
-  new Shape.Factory().loadTable(zip,errors,shapes);
-  new Stop.Factory().loadTable(zip,errors,stops);
-  new Transfer.Factory().loadTable(zip,errors,transfers);
-  new Trip.Factory().loadTable(zip,errors,trips);
-  new StopTime.Factory().loadTable(zip,errors,stop_times);
+  new FeedInfo.Loader(this).loadTable(zip);
+  if (feedId == null) {
+    LOG.info("Feed ID is undefined.");
+  }
+  LOG.info("Feed ID is '{}'.",feedId);
+  new Agency.Loader(this).loadTable(zip);
+  new Calendar.Loader(this).loadTable(zip);
+  new CalendarDate.Loader(this).loadTable(zip);
+  new FareAttribute.Loader(this).loadTable(zip);
+  new FareRule.Loader(this).loadTable(zip);
+  new Route.Loader(this).loadTable(zip);
+  new Shape.Loader(this).loadTable(zip);
+  new Stop.Loader(this).loadTable(zip);
+  new Transfer.Loader(this).loadTable(zip);
+  new Trip.Loader(this).loadTable(zip);
+  new Frequency.Loader(this).loadTable(zip);
+  new StopTime.Loader(this).loadTable(zip);
   LOG.info("{} errors",errors.size());
   for (  GTFSError error : errors) {
     LOG.info("{}",error);

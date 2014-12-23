@@ -3,7 +3,7 @@
   OpenStreetMapGraphBuilderImpl loader=new OpenStreetMapGraphBuilderImpl();
   loader.setDefaultWayPropertySetSource(new DefaultWayPropertySetSource());
   FileBasedOpenStreetMapProviderImpl provider=new FileBasedOpenStreetMapProviderImpl();
-  File file=new File(getClass().getResource("NYC_small.osm.gz").getFile());
+  File file=new File(URLDecoder.decode(getClass().getResource("NYC_small.osm.gz").getFile(),"UTF-8"));
   provider.setPath(file);
   loader.setProvider(provider);
   loader.buildGraph(gg,extra);
@@ -32,7 +32,7 @@
     edgeEndpoints.add(endpoints);
     StreetTraversalPermission perm=se.getPermission();
     assertEquals(perm.allows(StreetTraversalPermission.CAR),perm.allows(StreetTraversalPermission.CUSTOM_MOTOR_VEHICLE));
-    for (    TurnRestriction tr : se.getTurnRestrictions()) {
+    for (    TurnRestriction tr : gg.getTurnRestrictions(se)) {
       TraverseModeSet modes=tr.modes;
       assertEquals(modes.getCar(),modes.getCustomMotorVehicle());
     }
