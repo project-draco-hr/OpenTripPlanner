@@ -1,0 +1,11 @@
+{
+  if (stopClusterSpatialIndex == null) {
+    clusterStops();
+    LOG.info("Creating a spatial index for stop clusters.");
+    stopClusterSpatialIndex=new HashGridSpatialIndex<StopCluster>();
+    for (    StopCluster cluster : stopClusterForId.values()) {
+      Envelope envelope=new Envelope(new Coordinate(cluster.lon,cluster.lat));
+      stopClusterSpatialIndex.insert(envelope,cluster);
+    }
+  }
+}
