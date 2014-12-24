@@ -45,6 +45,20 @@
         }
       }
     }
+    if (!graph.hasDirectTransfers) {
+      throw new RuntimeException("Requires the SimpleTransfers generated in long distance mode.");
+    }
+    for (    Stop stop : Lists.newArrayList(stopsUpdated)) {
+      Collection<Edge> outgoingEdges=graph.index.stopVertexForStop.get(stop).getOutgoing();
+      for (      SimpleTransfer transfer : Iterables.filter(outgoingEdges,SimpleTransfer.class)) {
+        Stop targetStop=((TransitStop)transfer.getToVertex()).getStop();
+        double walkTime=transfer.getDistance() / request.walkSpeed;
+        TimeRange rangeAfterTransfer=times.get(stop).shift((int)walkTime);
+        if (times.add(targetStop,rangeAfterTransfer)) {
+          stopsUpdated.add(targetStop);
+        }
+      }
+    }
   }
   LOG.info("Done with transit.");
   for (  Stop stop : times) {
