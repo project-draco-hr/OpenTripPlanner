@@ -1,0 +1,15 @@
+{
+  TimeSurface minSurface=new TimeSurface(profileRouter);
+  TimeSurface avgSurface=new TimeSurface(profileRouter);
+  TimeSurface maxSurface=new TimeSurface(profileRouter);
+  for (  Map.Entry<Vertex,TimeRange> vtr : profileRouter.propagatedTimes.entrySet()) {
+    Vertex v=vtr.getKey();
+    TimeRange tr=vtr.getValue();
+    minSurface.times.put(v,tr.min);
+    avgSurface.times.put(v,tr.avg);
+    maxSurface.times.put(v,tr.max);
+  }
+  profileRouter.minSurface=minSurface;
+  profileRouter.avgSurface=avgSurface;
+  profileRouter.maxSurface=maxSurface;
+}

@@ -1,0 +1,11 @@
+{
+  TIntList times=timesForCluster.get(stopCluster);
+  if (times == null) {
+    times=new TIntArrayList();
+    timesForCluster.put(stopCluster,times);
+  }
+  times.add(time);
+  if (sort) {
+    times.sort();
+  }
+}

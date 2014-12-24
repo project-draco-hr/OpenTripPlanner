@@ -1,0 +1,11 @@
+{
+  TimeRange propagatedRange=range0.shift((int)state.getElapsedTimeSeconds());
+  Vertex vertex=state.getVertex();
+  TimeRange existing=propagatedTimes.get(vertex);
+  if (existing == null) {
+    propagatedTimes.put(vertex,propagatedRange);
+  }
+ else {
+    existing.mergeIn(propagatedRange);
+  }
+}

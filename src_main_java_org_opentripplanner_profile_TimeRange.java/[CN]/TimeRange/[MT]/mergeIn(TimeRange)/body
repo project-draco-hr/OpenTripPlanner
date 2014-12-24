@@ -1,0 +1,21 @@
+{
+  if (other.min < this.min || other.max < this.max || other.avg < this.avg) {
+    if (other.min < this.min && other.max < this.max && other.avg < this.avg) {
+      this.min=other.min;
+      this.max=other.max;
+      this.avg=other.avg;
+      this.n=other.n;
+      return true;
+    }
+    if (other.min < this.min)     this.min=other.min;
+    if (other.max < this.max)     this.max=other.max;
+    double newAverage=this.avg * this.n + other.avg * other.n;
+    this.n+=other.n;
+    newAverage/=this.n;
+    this.avg=(int)newAverage;
+    return true;
+  }
+ else {
+    return false;
+  }
+}
