@@ -19,6 +19,7 @@
   ArrayList<Edge> hops=new ArrayList<Edge>(2);
   RoutingContext routingContext=new RoutingContext(routingRequest,graph,null,arrive);
   AgencyAndId agencyAndId=new AgencyAndId("Agency","ID");
+  Agency agency=new Agency();
   Route route=new Route();
   ArrayList<StopTime> stopTimes=new ArrayList<StopTime>(3);
   StopTime stopDepartTime=new StopTime();
@@ -29,7 +30,9 @@
   Stop stopArrive=new Stop();
   Trip trip=new Trip();
   routingContext.serviceDays=new ArrayList<ServiceDay>(Collections.singletonList(serviceDay));
+  agency.setId(agencyAndId.getAgencyId());
   route.setId(agencyAndId);
+  route.setAgency(agency);
   stopDepart.setId(agencyAndId);
   stopDwell.setId(agencyAndId);
   stopArrive.setId(agencyAndId);
@@ -45,6 +48,7 @@
   stopTimes.add(stopArriveTime);
   trip.setId(agencyAndId);
   trip.setTripHeadsign("The right");
+  trip.setRoute(route);
   TripTimes tripTimes=new TripTimes(trip,stopTimes,new Deduplicator());
   StopPattern stopPattern=new StopPattern(stopTimes);
   TripPattern tripPattern=new TripPattern(route,stopPattern);
