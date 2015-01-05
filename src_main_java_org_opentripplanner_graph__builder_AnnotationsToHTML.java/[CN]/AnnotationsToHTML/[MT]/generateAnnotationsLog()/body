@@ -1,5 +1,21 @@
 {
-  writer.println("<html><head><title>Graph report for " + path + "</title>");
+  if (graph == null) {
+    LOG.error("No graph file found");
+    return;
+  }
+  if (outPath == null) {
+    LOG.error("Saving folder is empty!");
+    return;
+  }
+  try {
+    writer=new HTMLWriter(outPath);
+  }
+ catch (  FileNotFoundException ex) {
+    LOG.error("Output folder not found:{} {}",outPath,ex);
+    return;
+  }
+  LOG.info("Creating Annotations log");
+  writer.println("<html><head><title>Graph report for " + outPath.getParentFile() + "Graph.obj</title>");
   writer.println("\t<meta charset=\"utf-8\">");
   writer.println("<meta name='viewport' content='width=device-width, initial-scale=1'>");
   writer.println("<script src='http://code.jquery.com/jquery-1.11.1.js'></script>");
@@ -8,6 +24,7 @@
   writer.println(css);
   writer.println("</head><body>");
   writer.println("<h1>OpenTripPlanner annotations log</h1>");
+  writer.println("<h2>Graph report for " + outPath.getParentFile() + "Graph.obj</h2>");
   writer.println("<div id=\"buttons\"></div><ul id=\"log\"></ul>");
   for (  GraphBuilderAnnotation annotation : graph.getBuilderAnnotations()) {
     writer.addAnnotation(annotation);
@@ -18,4 +35,6 @@
   writer.println(js);
   writer.println("\t</script>");
   writer.println("</body></html>");
+  LOG.info("Annotated log is in {}",outPath);
+  writer.close();
 }
