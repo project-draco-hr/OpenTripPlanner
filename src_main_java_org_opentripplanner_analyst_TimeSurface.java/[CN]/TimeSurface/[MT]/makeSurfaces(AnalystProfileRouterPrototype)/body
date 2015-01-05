@@ -9,7 +9,12 @@
     avgSurface.times.put(v,tr.avg);
     maxSurface.times.put(v,tr.max);
   }
-  profileRouter.minSurface=minSurface;
-  profileRouter.avgSurface=avgSurface;
-  profileRouter.maxSurface=maxSurface;
+  RangeSet result=new RangeSet();
+  minSurface.description="Travel times assuming best luck (never waiting for a transfer).";
+  avgSurface.description="Expected travel times (average wait for every transfer).";
+  maxSurface.description="Travel times assuming worst luck (maximum wait for every transfer).";
+  result.min=minSurface;
+  result.avg=avgSurface;
+  result.max=maxSurface;
+  return result;
 }

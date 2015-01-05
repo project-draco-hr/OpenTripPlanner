@@ -61,6 +61,7 @@
     }
   }
   LOG.info("Done with transit.");
+  LOG.info("Propagating from transit stops to the street network...");
   for (  Stop stop : times) {
     TransitStop tstop=graph.index.stopVertexForStop.get(stop);
     RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
@@ -77,7 +78,7 @@
     rr.cleanup();
   }
   LOG.info("Done with propagation.");
-  TimeSurface.makeSurfaces(this);
+  TimeSurface.RangeSet result=TimeSurface.makeSurfaces(this);
   LOG.info("Done making time surfaces.");
-  return null;
+  return result;
 }
