@@ -26,6 +26,7 @@
     }
     if (!_calendarService.getServiceIds().contains(trip.getServiceId())) {
       LOG.warn(graph.addBuilderAnnotation(new TripUndefinedService(trip)));
+      continue TRIP;
     }
     List<StopTime> stopTimes=new ArrayList<StopTime>(_dao.getStopTimesForTrip(trip));
     if (removeRepeatedStops(stopTimes)) {
