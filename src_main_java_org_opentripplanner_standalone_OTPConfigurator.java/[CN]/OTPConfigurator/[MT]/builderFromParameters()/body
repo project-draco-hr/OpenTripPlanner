@@ -81,7 +81,9 @@ gtfsBundles.add(gtfsBundle);
 GtfsGraphBuilderImpl gtfsBuilder=new GtfsGraphBuilderImpl(gtfsBundles);
 graphBuilder.addGraphBuilder(gtfsBuilder);
 if (hasOSM) {
+if (params.matchBusRoutesToStreets) {
 graphBuilder.addGraphBuilder(new BusRouteStreetMatcher());
+}
 graphBuilder.addGraphBuilder(new TransitToTaggedStopsGraphBuilderImpl());
 graphBuilder.addGraphBuilder(new TransitToStreetNetworkGraphBuilderImpl());
 }
