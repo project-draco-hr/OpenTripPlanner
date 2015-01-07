@@ -1,7 +1,4 @@
 {
-  if (geometry != null) {
-    return geometry;
-  }
   CoordinateArrayListSequence coordinates=new CoordinateArrayListSequence();
   if (patternHops != null && patternHops.length > 0) {
     for (int i=0; i < patternHops.length; i++) {
@@ -15,10 +12,7 @@
         }
       }
     }
-    this.geometry=GeometryUtils.getGeometryFactory().createLineString(coordinates);
-    return this.geometry;
-  }
- else {
-    return null;
+    PackedCoordinateSequence packedCoords=new PackedCoordinateSequence.Double(coordinates.toCoordinateArray(),2);
+    this.geometry=GeometryUtils.getGeometryFactory().createLineString(packedCoords);
   }
 }

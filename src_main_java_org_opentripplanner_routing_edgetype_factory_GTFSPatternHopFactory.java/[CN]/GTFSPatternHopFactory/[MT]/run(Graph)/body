@@ -70,6 +70,7 @@
         tripPattern.hopEdges[i].setGeometry(geom[i]);
       }
     }
+    tripPattern.makeGeometry();
     tripPattern.setServiceCodes(graph.serviceCodes);
   }
   interline(tripPatterns.values(),graph);
