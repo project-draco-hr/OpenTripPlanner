@@ -1,5 +1,4 @@
 {
-  graph.index.clusterStopsAsNeeded();
   LOG.info("access modes: {}",request.accessModes);
   LOG.info("egress modes: {}",request.egressModes);
   LOG.info("direct modes: {}",request.directModes);
@@ -62,20 +61,27 @@
   }
   LOG.info("Done with transit.");
   LOG.info("Propagating from transit stops to the street network...");
+  StopTreeCache stopTreeCache=graph.index.getStopTreeCache();
   for (  Stop stop : times) {
     TransitStop tstop=graph.index.stopVertexForStop.get(stop);
-    RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
-    rr.batch=(true);
-    rr.setRoutingContext(graph,tstop,tstop);
-    rr.walkSpeed=request.walkSpeed;
-    rr.worstTime=(rr.dateTime + request.maxWalkTime * 60);
-    GenericAStar astar=new GenericAStar();
-    rr.longDistance=true;
-    rr.setNumItineraries(1);
-    ExtremaPropagationTraverseVisitor visitor=new ExtremaPropagationTraverseVisitor(times.get(stop));
-    astar.setTraverseVisitor(visitor);
-    astar.getShortestPathTree(rr,5);
-    rr.cleanup();
+    TimeRange rangeAtTransitStop=times.get(stop);
+    TObjectIntMap<Vertex> distanceToVertex=stopTreeCache.getDistancesForStop(tstop);
+    for (TObjectIntIterator<Vertex> iter=distanceToVertex.iterator(); iter.hasNext(); ) {
+      iter.advance();
+      Vertex vertex=iter.key();
+      int egressWalkTime=(int)(iter.value() / request.walkSpeed);
+      if (egressWalkTime > request.maxWalkTime) {
+        continue;
+      }
+      TimeRange propagatedRange=rangeAtTransitStop.shift(egressWalkTime);
+      TimeRange existingTimeRange=propagatedTimes.get(vertex);
+      if (existingTimeRange == null) {
+        propagatedTimes.put(vertex,propagatedRange);
+      }
+ else {
+        existingTimeRange.mergeIn(propagatedRange);
+      }
+    }
   }
   LOG.info("Done with propagation.");
   TimeSurface.RangeSet result=TimeSurface.makeSurfaces(this);
