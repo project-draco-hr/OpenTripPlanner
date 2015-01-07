@@ -2,6 +2,13 @@
   LOG.debug("Looking for/making a vertex near {}",location);
   Coordinate coord=location.getCoordinate();
   StreetVertex intersection=getIntersectionAt(coord,MAX_CORNER_DISTANCE);
+  Locale locale;
+  if (options == null) {
+    locale=new Locale("en");
+  }
+ else {
+    locale=options.getLocale();
+  }
   String calculatedName=location.getName();
   if (intersection != null) {
     boolean canEscape=false;
@@ -21,13 +28,6 @@
       if (!location.hasName()) {
         LOG.debug("found intersection {}. not splitting.",intersection);
         Set<String> uniqueNameSet=new HashSet<String>();
-        Locale locale;
-        if (options == null) {
-          locale=new Locale("en");
-        }
- else {
-          locale=options.getLocale();
-        }
         for (        Edge e : intersection.getOutgoing()) {
           if (e instanceof StreetEdge) {
             uniqueNameSet.add(e.getName(locale));
@@ -75,9 +75,9 @@
     closestStreetDistance=distanceLibrary.distance(coord,nearestPoint);
     LOG.debug("best street: {} dist: {}",bestStreet.toString(),closestStreetDistance);
     if (calculatedName == null || "".equals(calculatedName)) {
-      calculatedName=bestStreet.getName();
+      calculatedName=bestStreet.getName(locale);
     }
-    String closestName=String.format("%s_%s",bestStreet.getName(),location.toString());
+    String closestName=String.format("%s_%s",bestStreet.getName(locale),location.toString());
     closestStreet=StreetLocation.createStreetLocation(graph,closestName,new NonLocalizedString(calculatedName),bundle.toEdgeList(),nearestPoint,coord);
   }
   if (closestStreet == null) {
