@@ -1,11 +1,8 @@
 {
   TripPattern pattern=index.patternForId.get(patternIdString);
   if (pattern != null) {
-    Collection<EncodedPolylineBean> geometries=new ArrayList<>();
-    for (    PatternHop edge : pattern.hopEdges) {
-      geometries.add(PolylineEncoder.createEncodings(edge.getGeometry()));
-    }
-    return Response.status(Status.OK).entity(geometries).build();
+    EncodedPolylineBean geometry=PolylineEncoder.createEncodings(pattern.geometry);
+    return Response.status(Status.OK).entity(geometry).build();
   }
  else {
     return Response.status(Status.NOT_FOUND).entity(MSG_404).build();
