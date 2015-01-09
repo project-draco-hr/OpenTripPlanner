@@ -1,6 +1,11 @@
 {
-  RoutingRequest req2=req.req.clone();
-  req2.setRoutingContext(router.graph);
-  ShortestPathTree spt=router.sptServiceFactory.instantiate().getShortestPathTree(req2);
-  return new OtpsSPT(spt,router.graph.getSampleFactory());
+  try {
+    RoutingRequest req2=req.req.clone();
+    req2.setRoutingContext(router.graph);
+    ShortestPathTree spt=router.sptServiceFactory.instantiate().getShortestPathTree(req2);
+    return new OtpsSPT(spt,router.graph.getSampleFactory());
+  }
+ catch (  VertexNotFoundException e) {
+    return null;
+  }
 }
