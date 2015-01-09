@@ -1,0 +1,11 @@
+{
+  try {
+    if (!otpServer.scriptingService.enableScriptingWebService)     return Response.status(Status.FORBIDDEN).entity("Scripting web-service is desactivated for security reasons.\n").build();
+    String scriptContent=IOUtils.toString(uploadedInputStream,Charsets.UTF_8.name());
+    Object retval=otpServer.scriptingService.runScript(fileDetail.getFileName(),scriptContent);
+    return Response.ok().entity(retval).build();
+  }
+ catch (  Exception e) {
+    return Response.serverError().entity(e.toString()).build();
+  }
+}
