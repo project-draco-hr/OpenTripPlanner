@@ -9,10 +9,8 @@
     }
     if (other.min < this.min)     this.min=other.min;
     if (other.max < this.max)     this.max=other.max;
-    double newAverage=this.avg * this.n + other.avg * other.n;
-    this.n+=other.n;
-    newAverage/=this.n;
-    this.avg=(int)newAverage;
+    this.avg=(int)(((double)this.min + (double)this.max) / 2.0d);
+    checkCoherent();
     return true;
   }
  else {
