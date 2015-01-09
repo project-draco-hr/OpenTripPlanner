@@ -1,0 +1,15 @@
+{
+  if (idIndexMap == null) {
+    idIndexMap=new TObjectIntHashMap<String>(this.capacity,1f,-1);
+    for (int i=0; i < this.capacity; i++) {
+      if (ids[i] != null) {
+        if (idIndexMap.containsKey(ids[i])) {
+          LOG.error("Duplicate ID {} in pointset.",ids[i]);
+        }
+ else {
+          idIndexMap.put(ids[i],i);
+        }
+      }
+    }
+  }
+}
