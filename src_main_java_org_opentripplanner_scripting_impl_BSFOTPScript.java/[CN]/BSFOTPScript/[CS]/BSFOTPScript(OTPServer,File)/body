@@ -1,4 +1,7 @@
 {
   this.otpServer=otpServer;
-  this.scriptFile=scriptFile;
+  this.scriptPath=scriptFile.getAbsolutePath();
+  this.scriptLang=BSFManager.getLangFromFilename(scriptFile.getAbsolutePath());
+  byte[] encoded=Files.readAllBytes(Paths.get(scriptFile.getAbsolutePath()));
+  scriptContent=new String(encoded,StandardCharsets.UTF_8);
 }

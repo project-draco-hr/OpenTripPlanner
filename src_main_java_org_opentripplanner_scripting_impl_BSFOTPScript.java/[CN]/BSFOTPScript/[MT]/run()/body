@@ -1,10 +1,9 @@
 {
-  LOG.info("Running script {}",scriptFile);
+  LOG.info("Running script {}",scriptPath);
   BSFManager manager=new BSFManager();
-  String lang=BSFManager.getLangFromFilename(scriptFile.getAbsolutePath());
-  manager.declareBean("otp",new OtpsEntryPoint(otpServer),OtpsEntryPoint.class);
-  byte[] encoded=Files.readAllBytes(Paths.get(scriptFile.getAbsolutePath()));
-  String scriptContent=new String(encoded,StandardCharsets.UTF_8);
-  manager.exec(lang,scriptFile.getAbsolutePath(),0,0,scriptContent);
-  LOG.info("Script {} done",scriptFile);
+  OtpsEntryPoint otpsEntryPoint=new OtpsEntryPoint(otpServer);
+  manager.declareBean("otp",otpsEntryPoint,OtpsEntryPoint.class);
+  manager.exec(scriptLang,scriptPath,0,0,scriptContent);
+  LOG.info("Script {} done",scriptPath);
+  return otpsEntryPoint.getRetval();
 }

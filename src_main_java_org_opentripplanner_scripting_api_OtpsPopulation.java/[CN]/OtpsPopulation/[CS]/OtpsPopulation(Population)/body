@@ -1,8 +1,6 @@
 {
-  individuals=new ArrayList<>(population.size());
-  int index=0;
-  for (  Individual individual : population) {
-    individuals.add(new OtpsIndividual(index,individual));
-    index++;
+  individuals=new ArrayList<>();
+  for (  Individual ind : population) {
+    addIndividual(ind.lat,ind.lon);
   }
 }

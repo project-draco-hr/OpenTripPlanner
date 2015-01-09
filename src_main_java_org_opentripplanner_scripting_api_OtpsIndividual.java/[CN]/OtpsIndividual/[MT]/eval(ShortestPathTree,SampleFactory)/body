@@ -1,0 +1,12 @@
+{
+  Graph sptGraph=spt.getOptions().getRoutingContext().graph;
+  if (!isSampleSet || graph != sptGraph) {
+    cachedSample=sampleFactory.getSample(lon,lat);
+    graph=sptGraph;
+    isSampleSet=true;
+  }
+  if (cachedSample == null)   return null;
+  long time=cachedSample.eval(spt);
+  if (time == Long.MAX_VALUE)   return null;
+  return new OtpsEvaluatedIndividual(this,time);
+}
