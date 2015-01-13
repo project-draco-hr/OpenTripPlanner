@@ -1,0 +1,40 @@
+{
+  long now=System.currentTimeMillis() / 1000;
+  List<StopTimesInPattern> ret=new ArrayList<>();
+  TimetableResolver timetableResolver=graph.timetableSnapshotSource.getTimetableSnapshot();
+  ServiceDate[] serviceDates={new ServiceDate().previous(),new ServiceDate(),new ServiceDate().next()};
+  for (  TripPattern pattern : patternsForStop.get(stop)) {
+    PriorityQueue<TripTimeShort> pq=new PriorityQueue<TripTimeShort>(numberOfDepartures){
+      @Override protected boolean lessThan(      TripTimeShort tripTimeShort,      TripTimeShort t1){
+        return (tripTimeShort.serviceDay + tripTimeShort.realtimeDeparture) > (t1.serviceDay + t1.realtimeDeparture);
+      }
+    }
+;
+    for (    ServiceDate serviceDate : serviceDates) {
+      ServiceDay sd=new ServiceDay(graph,serviceDate,calendarService,pattern.route.getAgency().getId());
+      Timetable tt=timetableResolver.resolve(pattern,serviceDate);
+      if (!tt.temporallyViable(sd,now,timeRange,true))       continue;
+      int secondsSinceMidnight=sd.secondsSinceMidnight(now);
+      int sidx=0;
+      for (      Stop currStop : pattern.stopPattern.stops) {
+        if (currStop == stop) {
+          for (          TripTimes t : tt.tripTimes) {
+            if (!sd.serviceRunning(t.serviceCode))             continue;
+            if (t.getDepartureTime(sidx) != -1 && t.getDepartureTime(sidx) >= secondsSinceMidnight) {
+              pq.insertWithOverflow(new TripTimeShort(t,sidx,stop,sd));
+            }
+          }
+        }
+        sidx++;
+      }
+    }
+    if (pq.size() != 0) {
+      StopTimesInPattern stopTimes=new StopTimesInPattern(pattern);
+      while (pq.size() != 0) {
+        stopTimes.times.add(0,pq.pop());
+      }
+      ret.add(stopTimes);
+    }
+  }
+  return ret;
+}
