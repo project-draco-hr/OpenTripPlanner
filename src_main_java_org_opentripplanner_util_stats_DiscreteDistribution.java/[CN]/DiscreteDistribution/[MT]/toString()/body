@@ -1,0 +1,18 @@
+{
+  StringBuffer sb=new StringBuffer();
+  int totCount=distribution.size();
+  int minCount=Integer.MAX_VALUE;
+  int maxCount=0;
+  for (  Multiset.Entry<K> e : distribution.entrySet()) {
+    int count=e.getCount();
+    if (count < minCount)     minCount=count;
+    if (count > maxCount)     maxCount=count;
+  }
+  sb.append(String.format("K: Total: %.02f, avg: %.02f, min: %s, max: %s\n",totK,totK * 1.0 / totCount,distribution.firstEntry().getElement(),distribution.lastEntry().getElement()));
+  sb.append(String.format("C: Total: %d, min: %d, max: %d\n",totCount,minCount,maxCount));
+  for (  Multiset.Entry<K> e : distribution.entrySet()) {
+    sb.append(MessageFormat.format("{0} : {1} {2}\n",e.getElement().toString(),chart(e.getCount(),maxCount,60),e.getCount()));
+  }
+  sb.append("----------------------------------------------------------------");
+  return sb.toString();
+}

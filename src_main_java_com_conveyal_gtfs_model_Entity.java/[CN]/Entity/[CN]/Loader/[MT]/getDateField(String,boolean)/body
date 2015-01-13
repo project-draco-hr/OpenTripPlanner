@@ -1,0 +1,13 @@
+{
+  String str=getFieldCheckRequired(column,required);
+  DateTime dateTime=null;
+  if (str != null)   try {
+    DateTimeFormatter formatter=DateTimeFormat.forPattern("yyyyMMdd");
+    dateTime=formatter.parseDateTime(str);
+    checkRangeInclusive(2000,2100,dateTime.getYear());
+  }
+ catch (  IllegalArgumentException iae) {
+    feed.errors.add(new DateParseError(tableName,row,column));
+  }
+  return dateTime;
+}

@@ -1,0 +1,21 @@
+{
+  char[] indent=new char[depth * INDENT_WIDTH];
+  Arrays.fill(indent,' ');
+  StringBuilder sb=new StringBuilder();
+  for (  Map.Entry<String,String> entry : entries.entrySet()) {
+    sb.append(indent);
+    sb.append(entry.getKey());
+    sb.append(" ");
+    sb.append(entry.getValue());
+    sb.append("\n");
+  }
+  for (  Map.Entry<String,OTPConfigPreferences> child : children.entrySet()) {
+    sb.append(indent);
+    sb.append(child.getKey());
+    sb.append(" {\n");
+    sb.append(child.getValue().toString(depth + 1));
+    sb.append(indent);
+    sb.append("}\n");
+  }
+  return sb.toString();
+}

@@ -1,0 +1,10 @@
+{
+  T2<NoteMatcher,Alert> key=new T2<>(noteMatcher,note);
+  MatcherAndAlert interned=uniqueMatchers.get(key);
+  if (interned != null) {
+    return interned;
+  }
+  MatcherAndAlert ret=new MatcherAndAlert(noteMatcher,note);
+  uniqueMatchers.put(key,ret);
+  return ret;
+}

@@ -1,0 +1,18 @@
+{
+  CoordinateSequence elev1=c == null ? null : new PackedCoordinateSequence.Double(c);
+  byte[] packed=CompactElevationProfile.compactElevationProfile(elev1);
+  CoordinateSequence elev2=CompactElevationProfile.uncompactElevationProfile(packed);
+  if (elev1 == null) {
+    assertNull(elev2);
+    return;
+  }
+  assertEquals(elev1.size(),elev2.size());
+  for (int i=0; i < elev1.size(); i++) {
+    Coordinate c1=elev1.getCoordinate(i);
+    Coordinate c2=elev2.getCoordinate(i);
+    double dx=Math.abs(c1.x - c2.x);
+    double dy=Math.abs(c1.y - c2.y);
+    assertTrue("Too large arc length delta",dx <= 1e-2);
+    assertTrue("Too large elevation delta",dy <= 1e-2);
+  }
+}

@@ -1,0 +1,31 @@
+{
+  final Graph newGraph;
+  try (InputStream is=graphInputStream.getGraphInputStream()){
+    LOG.info("Loading graph...");
+    try {
+      newGraph=Graph.load(new ObjectInputStream(is),loadLevel,streetVertexIndexFactory);
+    }
+ catch (    Exception ex) {
+      LOG.error("Exception while loading graph '{}'.",routerId);
+      ex.printStackTrace();
+      return null;
+    }
+    newGraph.routerId=(routerId);
+  }
+ catch (  IOException e) {
+    LOG.warn("Graph file not found or not openable for routerId '{}': {}",routerId,e);
+    return null;
+  }
+  try (InputStream is=graphInputStream.getConfigInputStream()){
+    Preferences config=is == null ? null : new PropertiesPreferences(is);
+    Router newRouter=new Router(routerId,newGraph);
+    if (routerLifecycleManager != null) {
+      routerLifecycleManager.startupRouter(newRouter,config);
+    }
+    return newRouter;
+  }
+ catch (  IOException e) {
+    LOG.error("Can't read config file",e);
+    return null;
+  }
+}

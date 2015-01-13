@@ -1,0 +1,7 @@
+{
+  if (!servicesRunning.get(serviceCode))   return 0;
+  if (from2 > to || to2 < from)   return 0;
+  int max_from=Math.max(from,from2);
+  int min_to=Math.min(to,to2);
+  return min_to - max_from;
+}

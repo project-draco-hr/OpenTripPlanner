@@ -5,11 +5,11 @@
   HashSet<Edge> turns=new HashSet<Edge>();
   turns.add(left);
   turns.add(leftBack);
-  StreetLocation start=StreetLocation.createStreetLocation(graph,"start","start",cast(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()));
+  StreetLocation start=StreetLocation.createStreetLocation(graph,"start","start",filter(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()));
   HashSet<Edge> endTurns=new HashSet<Edge>();
   endTurns.add(right);
   endTurns.add(rightBack);
-  StreetLocation end=StreetLocation.createStreetLocation(graph,"end","end",cast(endTurns,StreetEdge.class),new LinearLocation(0,0.8).getCoordinate(right.getGeometry()));
+  StreetLocation end=StreetLocation.createStreetLocation(graph,"end","end",filter(endTurns,StreetEdge.class),new LinearLocation(0,0.8).getCoordinate(right.getGeometry()));
   assertTrue(start.getX() < end.getX());
   assertTrue(start.getY() < end.getY());
   List<Edge> extra=end.getExtra();
@@ -47,8 +47,8 @@
   assertEquals(nVertices,graph.getVertices().size());
   assertEquals(nEdges,graph.getEdges().size());
   options=new RoutingRequest(new TraverseModeSet(TraverseMode.BICYCLE));
-  start=StreetLocation.createStreetLocation(graph,"start1","start1",cast(turns,StreetEdge.class),new LinearLocation(0,0.95).getCoordinate(top.getGeometry()));
-  end=StreetLocation.createStreetLocation(graph,"end1","end1",cast(turns,StreetEdge.class),new LinearLocation(0,0.95).getCoordinate(bottom.getGeometry()));
+  start=StreetLocation.createStreetLocation(graph,"start1","start1",filter(turns,StreetEdge.class),new LinearLocation(0,0.95).getCoordinate(top.getGeometry()));
+  end=StreetLocation.createStreetLocation(graph,"end1","end1",filter(turns,StreetEdge.class),new LinearLocation(0,0.95).getCoordinate(bottom.getGeometry()));
   options.setRoutingContext(graph,start,end);
   spt=aStar.getShortestPathTree(options);
   path=spt.getPath(start,false);
@@ -60,8 +60,8 @@
   options.cleanup();
   assertEquals(nVertices,graph.getVertices().size());
   assertEquals(nEdges,graph.getEdges().size());
-  start=StreetLocation.createStreetLocation(graph,"start2","start2",cast(turns,StreetEdge.class),new LinearLocation(0,0.55).getCoordinate(top.getGeometry()));
-  end=StreetLocation.createStreetLocation(graph,"end2","end2",cast(turns,StreetEdge.class),new LinearLocation(0,0.55).getCoordinate(bottom.getGeometry()));
+  start=StreetLocation.createStreetLocation(graph,"start2","start2",filter(turns,StreetEdge.class),new LinearLocation(0,0.55).getCoordinate(top.getGeometry()));
+  end=StreetLocation.createStreetLocation(graph,"end2","end2",filter(turns,StreetEdge.class),new LinearLocation(0,0.55).getCoordinate(bottom.getGeometry()));
   options.setRoutingContext(graph,start,end);
   spt=aStar.getShortestPathTree(options);
   path=spt.getPath(start,false);

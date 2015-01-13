@@ -1,0 +1,15 @@
+{
+  basePath=new File("test_graphs");
+  if (!basePath.exists())   basePath.mkdir();
+  emptyGraph=new Graph();
+  ByteArrayOutputStream baos=new ByteArrayOutputStream();
+  emptyGraph.save(new ObjectOutputStream(baos));
+  emptyGraphData=baos.toByteArray();
+  smallGraph=new Graph();
+  StreetVertex v1=new IntersectionVertex(smallGraph,"v1",0,0);
+  StreetVertex v2=new IntersectionVertex(smallGraph,"v2",0,0.1);
+  new StreetEdge(v1,v2,null,"v1v2",11000,StreetTraversalPermission.PEDESTRIAN,false);
+  baos=new ByteArrayOutputStream();
+  smallGraph.save(new ObjectOutputStream(baos));
+  smallGraphData=baos.toByteArray();
+}

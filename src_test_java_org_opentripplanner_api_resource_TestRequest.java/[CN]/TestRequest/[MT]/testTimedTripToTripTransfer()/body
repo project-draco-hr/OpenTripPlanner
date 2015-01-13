@@ -6,8 +6,6 @@
   when(graph.getTransferTable()).thenReturn(table);
   Response response=planner.getItineraries();
   Itinerary itinerary=response.getPlan().itinerary.get(0);
-  assertEquals("751W1320",itinerary.legs.get(1).tripId);
-  assertEquals("91W1350",itinerary.legs.get(3).tripId);
   addTripToTripTransferTimeToTable(table,"7528","9756","75","12","750W1300","120W1320",StopTransfer.TIMED_TRANSFER);
   Vertex fromVertex=graph.getVertex("TriMet:7528_arrive");
   Vertex toVertex=graph.getVertex("TriMet:9756_depart");
@@ -24,6 +22,6 @@
   assertEquals("750W1300",itinerary.legs.get(1).tripId);
   assertEquals("120W1320",itinerary.legs.get(3).tripId);
   applyUpdateToTripPattern(pattern,"120W1320","9756",22,41820,41820,ScheduleRelationship.SCHEDULED,0,serviceDate);
-  timedTransferEdge.detach();
+  timedTransferEdge.detach(graph);
   reset(graph);
 }

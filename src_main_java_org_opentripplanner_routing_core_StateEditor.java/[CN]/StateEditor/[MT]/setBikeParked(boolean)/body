@@ -1,0 +1,10 @@
+{
+  cloneStateDataAsNeeded();
+  child.stateData.bikeParked=bikeParked;
+  if (bikeParked) {
+    child.stateData.nonTransitMode=TraverseMode.WALK;
+  }
+ else {
+    child.stateData.nonTransitMode=TraverseMode.BICYCLE;
+  }
+}

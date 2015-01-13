@@ -1,0 +1,13 @@
+{
+  String shape_id=getStringField("shape_id",true);
+  double shape_pt_lat=getDoubleField("shape_pt_lat",true,-90D,90D);
+  double shape_pt_lon=getDoubleField("shape_pt_lon",true,-180D,180D);
+  int shape_pt_sequence=getIntField("shape_pt_sequence",true,0,Integer.MAX_VALUE);
+  double shape_dist_traveled=getDoubleField("shape_dist_traveled",false,0D,Double.MAX_VALUE);
+  Shape s=new Shape(shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled);
+  s.feed=null;
+  feed.shapePoints.put(new Tuple2<String,Integer>(s.shape_id,s.shape_pt_sequence),s);
+  if (!feed.shapes.containsKey(s.shape_id)) {
+    feed.shapes.put(s.shape_id,new ShapeMap(feed.shapePoints,s.shape_id));
+  }
+}

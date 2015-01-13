@@ -17,6 +17,9 @@
           if (type.equals("bike-rental")) {
             updater=new BikeRentalUpdater();
           }
+ else           if (type.equals("bike-park")) {
+            updater=new BikeParkUpdater();
+          }
  else           if (type.equals("stop-time-updater")) {
             updater=new PollingStoptimeUpdater();
           }
@@ -31,6 +34,9 @@
           }
  else           if (type.equals("example-polling-updater")) {
             updater=new ExamplePollingGraphUpdater();
+          }
+ else           if (type.equals("winkki-polling-updater")) {
+            updater=new WinkkiPollingGraphUpdater();
           }
         }
         try {

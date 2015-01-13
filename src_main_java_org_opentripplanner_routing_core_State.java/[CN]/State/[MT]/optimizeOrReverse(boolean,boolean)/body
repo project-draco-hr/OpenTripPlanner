@@ -14,7 +14,9 @@
         ret=((TransitBoardAlight)edge).traverse(ret,orig.getBackState().getTimeSeconds());
         newInitialWaitTime=ret.stateData.initialWaitTime;
       }
- else       ret=edge.traverse(ret);
+ else {
+        ret=edge.traverse(ret);
+      }
       if (ret != null && ret.getBackMode() != null && orig.getBackMode() != null && ret.getBackMode() != orig.getBackMode()) {
         ret=ret.next;
       }
@@ -33,9 +35,9 @@
       editor.incrementWalkDistance(orig.getWalkDistanceDelta());
       editor.incrementPreTransitTime(orig.getPreTransitTimeDelta());
       editor.setBackMode(orig.getBackMode());
-      editor.addAlerts(orig.getBackAlerts());
       if (orig.isBikeRenting() != orig.getBackState().isBikeRenting())       editor.setBikeRenting(!orig.isBikeRenting());
       if (orig.isCarParked() != orig.getBackState().isCarParked())       editor.setCarParked(!orig.isCarParked());
+      if (orig.isBikeParked() != orig.getBackState().isBikeParked())       editor.setBikeParked(!orig.isBikeParked());
       editor.setNumBoardings(getNumBoardings() - orig.getNumBoardings());
       ret=editor.makeState();
     }

@@ -1,4 +1,5 @@
 {
+  graph.clearTimeZone();
   MultiCalendarServiceImpl service=new MultiCalendarServiceImpl();
   GtfsStopContext stopContext=new GtfsStopContext();
   try {
@@ -35,4 +36,5 @@
   CalendarServiceData data=service.getData();
   graph.putService(CalendarServiceData.class,data);
   graph.updateTransitFeedValidity(data);
+  graph.hasTransit=true;
 }

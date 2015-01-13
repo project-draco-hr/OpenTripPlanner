@@ -9,13 +9,13 @@
   }
   uIds.retainAll(vIds);
   Set<Integer> overlappingIds=uIds;
-  Set<PlainStreetEdge> overlap=new HashSet<PlainStreetEdge>();
+  Set<StreetEdge> overlap=new HashSet<StreetEdge>();
   for (  Integer id : overlappingIds) {
     Edge e=graph.getEdgeById(id);
-    if (e == null || !(e instanceof PlainStreetEdge)) {
+    if (e == null || !(e instanceof StreetEdge)) {
       continue;
     }
-    overlap.add((PlainStreetEdge)e);
+    overlap.add((StreetEdge)e);
   }
   return overlap;
 }

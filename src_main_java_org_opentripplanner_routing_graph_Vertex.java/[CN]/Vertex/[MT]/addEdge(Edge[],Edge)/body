@@ -1,0 +1,13 @@
+{
+  Edge[] copy=new Edge[existing.length + 1];
+  int i;
+  for (i=0; i < existing.length; i++) {
+    if (existing[i] == e) {
+      LOG.error("repeatedly added edge {}",e);
+      return existing;
+    }
+    copy[i]=existing[i];
+  }
+  copy[i]=e;
+  return copy;
+}

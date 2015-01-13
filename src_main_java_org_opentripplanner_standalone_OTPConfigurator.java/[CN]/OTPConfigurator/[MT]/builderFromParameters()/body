@@ -7,6 +7,7 @@
   List<File> gtfsFiles=Lists.newArrayList();
   List<File> osmFiles=Lists.newArrayList();
   File configFile=null;
+  File demFile=null;
   for (  File dir : params.build) {
     LOG.info("Searching for graph builder input files in {}",dir);
     if (!dir.isDirectory() && dir.canRead()) {
@@ -23,6 +24,15 @@ case GTFS:
 case OSM:
   LOG.info("Found OSM file {}",file);
 osmFiles.add(file);
+break;
+case DEM:
+if (!params.elevation && demFile == null) {
+LOG.info("Found DEM file {}",file);
+demFile=file;
+}
+ else {
+LOG.info("Skipping DEM file {}",file);
+}
 break;
 case CONFIG:
 if (!params.noEmbedConfig) {
@@ -48,6 +58,9 @@ OpenStreetMapProvider osmProvider=new AnyFileBasedOpenStreetMapProviderImpl(osmF
 osmProviders.add(osmProvider);
 }
 OpenStreetMapGraphBuilderImpl osmBuilder=new OpenStreetMapGraphBuilderImpl(osmProviders);
+DefaultStreetEdgeFactory streetEdgeFactory=new DefaultStreetEdgeFactory();
+streetEdgeFactory.useElevationData=params.elevation || (demFile != null);
+osmBuilder.edgeFactory=streetEdgeFactory;
 DefaultWayPropertySetSource defaultWayPropertySetSource=new DefaultWayPropertySetSource();
 osmBuilder.setDefaultWayPropertySetSource(defaultWayPropertySetSource);
 osmBuilder.skipVisibility=params.skipVisibility;
@@ -67,19 +80,15 @@ gtfsBundles.add(gtfsBundle);
 }
 GtfsGraphBuilderImpl gtfsBuilder=new GtfsGraphBuilderImpl(gtfsBundles);
 graphBuilder.addGraphBuilder(gtfsBuilder);
-if ((!hasOSM) || params.longDistance) {
-if (!params.useTransfersTxt) {
-if (!hasOSM || !params.useStreetsForLinking) {
-graphBuilder.addGraphBuilder(new StreetlessStopLinker());
-}
-}
-}
 if (hasOSM) {
+if (params.matchBusRoutesToStreets) {
+graphBuilder.addGraphBuilder(new BusRouteStreetMatcher());
+}
 graphBuilder.addGraphBuilder(new TransitToTaggedStopsGraphBuilderImpl());
 graphBuilder.addGraphBuilder(new TransitToStreetNetworkGraphBuilderImpl());
-if (params.longDistance && params.useStreetsForLinking && !params.useTransfersTxt) {
-graphBuilder.addGraphBuilder(new StreetfulStopLinker());
 }
+if (params.longDistance && !params.useTransfersTxt) {
+graphBuilder.addGraphBuilder(new DirectTransferGenerator());
 }
 gtfsBuilder.setFareServiceFactory(new DefaultFareServiceFactory());
 }
@@ -91,6 +100,11 @@ graphBuilder.addGraphBuilder(embeddedConfigBuilder);
 if (params.elevation) {
 File cacheDirectory=new File(params.cacheDirectory,"ned");
 ElevationGridCoverageFactory gcf=new NEDGridCoverageFactoryImpl(cacheDirectory);
+GraphBuilder elevationBuilder=new ElevationGraphBuilderImpl(gcf);
+graphBuilder.addGraphBuilder(elevationBuilder);
+}
+ else if (demFile != null) {
+ElevationGridCoverageFactory gcf=new GeotiffGridCoverageFactoryImpl(demFile);
 GraphBuilder elevationBuilder=new ElevationGraphBuilderImpl(gcf);
 graphBuilder.addGraphBuilder(elevationBuilder);
 }

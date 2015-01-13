@@ -1,0 +1,15 @@
+{
+  Stop stopJ=graph.index.stopForId.get(new AgencyAndId("agency","J"));
+  Stop stopL=graph.index.stopForId.get(new AgencyAndId("agency","L"));
+  Stop stopM=graph.index.stopForId.get(new AgencyAndId("agency","M"));
+  TransitStop stopvJ=graph.index.stopVertexForStop.get(stopJ);
+  TransitStop stopvL=graph.index.stopVertexForStop.get(stopL);
+  TransitStop stopvM=graph.index.stopVertexForStop.get(stopM);
+  Envelope env=new Envelope(new Coordinate(stopJ.getLon(),stopJ.getLat()));
+  env.expandBy(SphericalDistanceLibrary.metersToLonDegrees(100,stopJ.getLat()),SphericalDistanceLibrary.metersToDegrees(100));
+  List<TransitStop> stops=graph.index.stopSpatialIndex.query(env);
+  assertTrue(stops.contains(stopvJ));
+  assertTrue(stops.contains(stopvL));
+  assertTrue(stops.contains(stopvM));
+  assertTrue(stops.size() >= 3);
+}

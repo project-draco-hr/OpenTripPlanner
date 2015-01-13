@@ -1,0 +1,27 @@
+{
+  graph.index(new DefaultStreetVertexIndexFactory());
+  StreetMatcher matcher=new StreetMatcher(graph);
+  EdgesForRoute edgesForRoute=new EdgesForRoute();
+  extra.put(EdgesForRoute.class,edgesForRoute);
+  log.info("Finding corresponding street edges for trip patterns...");
+  for (  Route route : graph.index.routeForId.values()) {
+    for (    TripPattern pattern : graph.index.patternsForRoute.get(route)) {
+      if (pattern.mode == TraverseMode.BUS) {
+        log.info("Matching {}",pattern);
+        List<Edge> edges=matcher.match(pattern.geometry);
+        if (edges == null || edges.isEmpty()) {
+          log.warn("Could not match to street network: {}",pattern);
+          continue;
+        }
+        List<Coordinate> coordinates=new ArrayList<Coordinate>();
+        for (        Edge e : edges) {
+          coordinates.addAll(Arrays.asList(e.getGeometry().getCoordinates()));
+          edgesForRoute.edgesForRoute.put(route,e);
+        }
+        Coordinate[] coordinateArray=new Coordinate[coordinates.size()];
+        LineString ls=GeometryUtils.getGeometryFactory().createLineString(coordinates.toArray(coordinateArray));
+        pattern.geometry=ls;
+      }
+    }
+  }
+}

@@ -3,7 +3,7 @@
   OpenStreetMapGraphBuilderImpl loader=new OpenStreetMapGraphBuilderImpl();
   loader.setDefaultWayPropertySetSource(new DefaultWayPropertySetSource());
   FileBasedOpenStreetMapProviderImpl provider=new FileBasedOpenStreetMapProviderImpl();
-  File file=new File(getClass().getResource("map.osm.gz").getFile());
+  File file=new File(URLDecoder.decode(getClass().getResource("map.osm.gz").getFile(),"UTF-8"));
   provider.setPath(file);
   loader.setProvider(provider);
   loader.buildGraph(gg,extra);

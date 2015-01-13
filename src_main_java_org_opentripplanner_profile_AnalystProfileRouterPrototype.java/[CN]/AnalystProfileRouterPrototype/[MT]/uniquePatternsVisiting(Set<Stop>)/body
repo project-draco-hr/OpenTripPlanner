@@ -1,0 +1,9 @@
+{
+  Set<TripPattern> patterns=Sets.newHashSet();
+  for (  Stop stop : stops) {
+    for (    TripPattern pattern : graph.index.patternsForStop.get(stop)) {
+      patterns.add(pattern);
+    }
+  }
+  return patterns;
+}

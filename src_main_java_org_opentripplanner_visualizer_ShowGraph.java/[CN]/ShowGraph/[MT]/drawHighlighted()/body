@@ -3,8 +3,12 @@
   stroke(200,200,000,16);
   strokeWeight(8);
   if (drawHighlighted && highlightedEdges != null) {
-    for (    Edge e : highlightedEdges) {
-      drawEdge(e);
+    try {
+      for (      Edge e : highlightedEdges) {
+        drawEdge(e);
+      }
+    }
+ catch (    ConcurrentModificationException cme) {
     }
   }
   if (highlightedGraphPath != null) {

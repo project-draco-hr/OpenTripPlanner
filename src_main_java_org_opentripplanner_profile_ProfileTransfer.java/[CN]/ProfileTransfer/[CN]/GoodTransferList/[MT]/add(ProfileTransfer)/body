@@ -1,0 +1,14 @@
+{
+  boolean removed=false;
+  Iterator<ProfileTransfer> iter=good.iterator();
+  while (iter.hasNext()) {
+    ProfileTransfer curr=iter.next();
+    if (xfer.distance > curr.distance * SLOP) {
+      return;
+    }
+    if (curr.distance > xfer.distance * SLOP) {
+      iter.remove();
+    }
+  }
+  good.add(xfer);
+}

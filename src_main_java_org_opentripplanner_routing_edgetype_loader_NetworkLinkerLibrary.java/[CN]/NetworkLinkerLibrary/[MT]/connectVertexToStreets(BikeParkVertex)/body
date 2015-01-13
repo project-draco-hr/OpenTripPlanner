@@ -1,0 +1,10 @@
+{
+  LinkRequest request=new LinkRequest(this);
+  request.connectVertexToStreets(v,new TraverseModeSet(TraverseMode.WALK,TraverseMode.BICYCLE),new LinkRequest.StreetLinkFactory<BikeParkVertex>(){
+    @Override public Collection<? extends Edge> connect(    StreetVertex sv,    BikeParkVertex v){
+      return Arrays.asList(new StreetBikeParkLink(sv,v),new StreetBikeParkLink(v,sv));
+    }
+  }
+);
+  return request;
+}

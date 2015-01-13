@@ -1,0 +1,26 @@
+{
+  Set<T2<Alert,NoteMatcher>> notes=wayPropertySet.getNoteForWay(way);
+  boolean noThruTraffic=way.isThroughTrafficExplicitlyDisallowed();
+  if (street != null) {
+    double safety=wayData.getSafetyFeatures().first;
+    street.setBicycleSafetyFactor((float)safety);
+    if (safety < bestBikeSafety) {
+      bestBikeSafety=(float)safety;
+    }
+    if (notes != null) {
+      for (      T2<Alert,NoteMatcher> note : notes)       graph.streetNotesService.addStaticNote(street,note.first,note.second);
+    }
+    street.setNoThruTraffic(noThruTraffic);
+  }
+  if (backStreet != null) {
+    double safety=wayData.getSafetyFeatures().second;
+    if (safety < bestBikeSafety) {
+      bestBikeSafety=(float)safety;
+    }
+    backStreet.setBicycleSafetyFactor((float)safety);
+    if (notes != null) {
+      for (      T2<Alert,NoteMatcher> note : notes)       graph.streetNotesService.addStaticNote(backStreet,note.first,note.second);
+    }
+    backStreet.setNoThruTraffic(noThruTraffic);
+  }
+}

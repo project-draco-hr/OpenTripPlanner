@@ -1,0 +1,21 @@
+{
+  Stats stats=new Stats();
+  stats.num=0;
+  for (  PatternRide patternRide : patternRides) {
+    for (    FrequencyEntry freq : patternRide.pattern.scheduledTimetable.frequencyEntries) {
+      if (freq.exactTimes) {
+        LOG.error("Exact times not yet supported in profile routing.");
+        return null;
+      }
+      int overlap=window.overlap(freq.startTime,freq.endTime,freq.tripTimes.serviceCode);
+      if (overlap > 0) {
+        if (freq.headway > stats.max)         stats.max=freq.headway;
+        stats.avg+=(freq.headway / 2) * overlap;
+        stats.num+=overlap;
+      }
+    }
+  }
+  if (stats.num == 0)   return null;
+  stats.avg/=stats.num;
+  return stats;
+}

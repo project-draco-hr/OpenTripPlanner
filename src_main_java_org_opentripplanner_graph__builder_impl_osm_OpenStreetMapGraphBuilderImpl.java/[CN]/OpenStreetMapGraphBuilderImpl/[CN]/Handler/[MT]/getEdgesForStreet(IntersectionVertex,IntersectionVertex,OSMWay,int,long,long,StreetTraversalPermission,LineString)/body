@@ -1,22 +1,25 @@
 {
   if (permissions.allowsNothing()) {
-    return new P2<PlainStreetEdge>(null,null);
+    return new P2<StreetEdge>(null,null);
   }
   LineString backGeometry=(LineString)geometry.reverse();
-  PlainStreetEdge street=null, backStreet=null;
+  StreetEdge street=null, backStreet=null;
   double length=this.getGeometryLengthMeters(geometry);
-  P2<StreetTraversalPermission> permissionPair=getPermissions(permissions,way);
-  StreetTraversalPermission permissionsFront=permissionPair.getFirst();
-  StreetTraversalPermission permissionsBack=permissionPair.getSecond();
+  P2<StreetTraversalPermission> permissionPair=OSMFilter.getPermissions(permissions,way);
+  StreetTraversalPermission permissionsFront=permissionPair.first;
+  StreetTraversalPermission permissionsBack=permissionPair.second;
   if (permissionsFront.allowsAnything()) {
     street=getEdgeForStreet(start,end,way,index,startNode,endNode,length,permissionsFront,geometry,false);
   }
   if (permissionsBack.allowsAnything()) {
     backStreet=getEdgeForStreet(end,start,way,index,endNode,startNode,length,permissionsBack,backGeometry,true);
   }
+  if (street != null && backStreet != null) {
+    backStreet.shareData(street);
+  }
   if (way.isRoundabout()) {
     if (street != null)     street.setRoundabout(true);
     if (backStreet != null)     backStreet.setRoundabout(true);
   }
-  return new P2<PlainStreetEdge>(street,backStreet);
+  return new P2<StreetEdge>(street,backStreet);
 }

@@ -1,0 +1,10 @@
+{
+  id=samples1.pset.id + "_" + surface1.id+ "_"+ surface2.id+ "_delta";
+  this.times=samples1.eval(surface1);
+  this.times2=samples2.eval(surface2);
+  this.delta=new int[times2.length];
+  for (int i=0; i < this.times.length; i++) {
+    if (this.times[i] > 0 && this.times2[i] > 0)     this.delta[i]=this.times[i] - times2[i];
+  }
+  buildDeltaHistograms(samples1.pset);
+}

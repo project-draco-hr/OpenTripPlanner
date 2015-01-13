@@ -1,16 +1,16 @@
 {
   runState=new RunState(options,terminationStrategy);
   runState.rctx=options.getRoutingContext();
-  runState.spt=new MultiShortestPathTree(runState.options);
+  runState.spt=options.longDistance ? new WeightOnlyShortestPathTree(runState.options) : new MultiShortestPathTree(runState.options);
   runState.heuristic=options.batch ? new TrivialRemainingWeightHeuristic() : runState.rctx.remainingWeightHeuristic;
-  State initialState=new State(options);
-  runState.heuristic.initialize(initialState,runState.rctx.target,abortTime);
+  runState.heuristic.initialize(runState.options,runState.rctx.origin,runState.rctx.target,abortTime);
   if (abortTime < Long.MAX_VALUE && System.currentTimeMillis() > abortTime) {
-    LOG.warn("Timeout during initialization of interleaved bidirectional heuristic.");
+    LOG.warn("Timeout during initialization of goal direction heuristic.");
     options.rctx.debugOutput.timedOut=true;
     runState=null;
     return;
   }
+  State initialState=new State(options);
   runState.spt.add(initialState);
   int initialSize=runState.rctx.graph.getVertices().size();
   initialSize=(int)Math.ceil(2 * (Math.sqrt((double)initialSize + 1)));

@@ -19,5 +19,5 @@
   tripUpdateBuilder.setTrip(tripDescriptorBuilder);
   tripUpdateBuilder.addStopTimeUpdate(0,stopTimeUpdateBuilder);
   TripUpdate tripUpdate=tripUpdateBuilder.build();
-  assertTrue(timetable.update(tripUpdate,"TriMet",timeZone,serviceDate));
+  assertTrue(timetable.update(tripUpdate,timeZone,serviceDate));
 }

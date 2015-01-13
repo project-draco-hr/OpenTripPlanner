@@ -1,0 +1,16 @@
+{
+  LOG.info("Building bike rental stations from static source...");
+  BikeRentalStationService service=graph.getService(BikeRentalStationService.class,true);
+  if (!dataSource.update()) {
+    LOG.warn("No bike rental found from the data source.");
+    return;
+  }
+  Collection<BikeRentalStation> stations=dataSource.getStations();
+  for (  BikeRentalStation station : stations) {
+    service.addBikeRentalStation(station);
+    BikeRentalStationVertex vertex=new BikeRentalStationVertex(graph,station);
+    new RentABikeOnEdge(vertex,vertex,station.networks);
+    if (station.allowDropoff)     new RentABikeOffEdge(vertex,vertex,station.networks);
+  }
+  LOG.info("Created " + stations.size() + " bike rental stations.");
+}

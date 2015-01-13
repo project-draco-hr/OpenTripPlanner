@@ -1,0 +1,18 @@
+{
+  if (elev == null || elev.size() < 2) {
+    return false;
+  }
+  if (super.isSlopeOverride() && !computed) {
+    return false;
+  }
+  boolean slopeLimit=getPermission().allows(StreetTraversalPermission.CAR);
+  SlopeCosts costs=ElevationUtils.getSlopeCosts(elev,slopeLimit);
+  packedElevationProfile=CompactElevationProfile.compactElevationProfile(elev);
+  slopeSpeedFactor=(float)costs.slopeSpeedFactor;
+  slopeWorkFactor=(float)costs.slopeWorkFactor;
+  maxSlope=(float)costs.maxSlope;
+  flattened=costs.flattened;
+  bicycleSafetyFactor*=costs.lengthMultiplier;
+  bicycleSafetyFactor+=costs.slopeSafetyCost / getDistance();
+  return costs.flattened;
+}

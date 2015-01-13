@@ -3,13 +3,13 @@
   Coverage gridCov=gridCoverageFactory.getGridCoverage();
   coverage=(gridCov instanceof GridCoverage2D) ? Interpolator2D.create((GridCoverage2D)gridCov,new InterpolationBilinear()) : gridCov;
   log.info("setting street elevation profiles from NED data...");
-  List<EdgeWithElevation> edgesWithElevation=new ArrayList<EdgeWithElevation>();
+  List<StreetEdge> edgesWithElevation=new ArrayList<StreetEdge>();
   int nProcessed=0;
   int nTotal=graph.countEdges();
   for (  Vertex gv : graph.getVertices()) {
     for (    Edge ee : gv.getOutgoing()) {
-      if (ee instanceof EdgeWithElevation) {
-        EdgeWithElevation edgeWithElevation=(EdgeWithElevation)ee;
+      if (ee instanceof StreetWithElevationEdge) {
+        StreetWithElevationEdge edgeWithElevation=(StreetWithElevationEdge)ee;
         processEdge(graph,edgeWithElevation);
         if (edgeWithElevation.getElevationProfile() != null && !edgeWithElevation.isElevationFlattened()) {
           edgesWithElevation.add(edgeWithElevation);

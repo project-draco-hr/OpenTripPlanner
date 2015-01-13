@@ -1,0 +1,8 @@
+{
+  PointSet points=PointSet.fromGeoJson(new File("src/test/resources/pointset/population.geo.json"));
+  assertNotNull(points);
+  assertEquals(points.capacity,2);
+  assertEquals(1,points.getIndexForFeature(points.ids[1]));
+  assertEquals(0,points.getIndexForFeature(points.ids[0]));
+  assertEquals(-1,points.getIndexForFeature("THIS FEATURE DOES NOT EXIST."));
+}

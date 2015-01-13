@@ -10,9 +10,9 @@
         int time_on_bike=(int)(state.getTimeSeconds() - start);
         int ride_cost=-1;
         for (        P2<Integer> bracket : pricing_by_second) {
-          int time=bracket.getFirst();
+          int time=bracket.first;
           if (time_on_bike < time) {
-            ride_cost=bracket.getSecond();
+            ride_cost=bracket.second;
             break;
           }
         }

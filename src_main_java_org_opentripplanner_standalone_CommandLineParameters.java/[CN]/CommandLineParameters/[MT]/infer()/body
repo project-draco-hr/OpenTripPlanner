@@ -1,9 +1,13 @@
 {
   server|=(inMemory || preFlight || port != null);
-  if (graphDirectory == null)   graphDirectory=DEFAULT_GRAPH_DIRECTORY;
-  if (routerIds == null)   routerIds=Arrays.asList(DEFAULT_ROUTER_ID);
-  if (cacheDirectory == null)   cacheDirectory=DEFAULT_CACHE_DIRECTORY;
-  if (pointSetDirectory == null)   pointSetDirectory=DEFAULT_POINTSET_DIRECTORY;
+  if (basePath == null)   basePath=DEFAULT_BASE_PATH;
+  if (routerIds == null) {
+    if (autoScan || inMemory || preFlight)     routerIds=Collections.emptyList();
+ else     routerIds=Arrays.asList(DEFAULT_ROUTER_ID);
+  }
+  if (cacheDirectory == null)   cacheDirectory=new File(basePath,"cache");
+  if (graphDirectory == null)   graphDirectory=new File(basePath,"graphs");
+  if (pointSetDirectory == null)   pointSetDirectory=new File(basePath,"pointsets");
   if (server && port == null) {
     port=DEFAULT_PORT;
     new AvailablePort().validate(port);

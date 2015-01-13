@@ -1,0 +1,10 @@
+{
+  if (edge instanceof PartialStreetEdge) {
+    edge=((PartialStreetEdge)edge).getParentEdge();
+  }
+  Set<MatcherAndAlert> maas=notesForEdge.get(edge);
+  if (maas == null || maas.isEmpty()) {
+    return null;
+  }
+  return maas;
+}

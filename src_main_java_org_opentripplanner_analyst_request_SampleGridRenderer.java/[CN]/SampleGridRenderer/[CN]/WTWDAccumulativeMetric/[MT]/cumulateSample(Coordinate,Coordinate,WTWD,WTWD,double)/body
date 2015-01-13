@@ -1,0 +1,18 @@
+{
+  double t=z.wTime / z.w;
+  double b=z.wBoardings / z.w;
+  double wd=z.wWalkDist / z.w;
+  double d=distanceLibrary.fastDistance(C0,Cs,cosLat);
+  double dt=d / offRoadSpeed;
+  double w=1 / ((d + d0) * (d + d0));
+  if (zS == null) {
+    zS=new WTWD();
+    zS.d=Double.MAX_VALUE;
+  }
+  zS.w=zS.w + w;
+  zS.wTime=zS.wTime + w * (t + dt);
+  zS.wBoardings=zS.wBoardings + w * b;
+  zS.wWalkDist=zS.wWalkDist + w * (wd + d);
+  if (d < zS.d)   zS.d=d;
+  return zS;
+}

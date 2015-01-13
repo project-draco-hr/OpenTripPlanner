@@ -1,0 +1,24 @@
+{
+  Collection<TurnRestrictionTag> restrictionTags=osmdb.getFromWayTurnRestrictions(way.getId());
+  if (restrictionTags != null) {
+    for (    TurnRestrictionTag tag : restrictionTags) {
+      if (tag.via == startNode) {
+        tag.possibleFrom.add(backStreet);
+      }
+ else       if (tag.via == endNode) {
+        tag.possibleFrom.add(street);
+      }
+    }
+  }
+  restrictionTags=osmdb.getToWayTurnRestrictions(way.getId());
+  if (restrictionTags != null) {
+    for (    TurnRestrictionTag tag : restrictionTags) {
+      if (tag.via == startNode) {
+        tag.possibleTo.add(street);
+      }
+ else       if (tag.via == endNode) {
+        tag.possibleTo.add(backStreet);
+      }
+    }
+  }
+}

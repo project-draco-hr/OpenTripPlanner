@@ -1,7 +1,7 @@
 {
   transfersFromStopCluster=HashMultimap.create();
   final double TRANSFER_RADIUS=500.0;
-  SimpleIsochrone.MinMap<P2<TripPattern>,ProfileTransfer> bestTransfers=new SimpleIsochrone.MinMap<P2<TripPattern>,ProfileTransfer>();
+  Map<P2<TripPattern>,ProfileTransfer.GoodTransferList> transfers=Maps.newHashMap();
   LOG.info("Finding transfers...");
   for (  StopCluster sc0 : stopClusterForId.values()) {
     Set<TripPattern> tripPatterns0=patternsForStopCluster(sc0);
@@ -12,13 +12,41 @@
       for (      TripPattern tp0 : tripPatterns0) {
         for (        TripPattern tp1 : tripPatterns1) {
           if (tp0 == tp1)           continue;
-          bestTransfers.putMin(new P2<TripPattern>(tp0,tp1),new ProfileTransfer(tp0,tp1,sc0,sc1,(int)distance));
+          P2<TripPattern> pair=new P2<TripPattern>(tp0,tp1);
+          ProfileTransfer.GoodTransferList list=transfers.get(pair);
+          if (list == null) {
+            list=new ProfileTransfer.GoodTransferList();
+            transfers.put(pair,list);
+          }
+          list.add(new ProfileTransfer(tp0,tp1,sc0,sc1,(int)distance));
         }
       }
     }
   }
-  for (  ProfileTransfer tr : bestTransfers.values()) {
-    transfersFromStopCluster.put(tr.sc1,tr);
+  LOG.info("Filtering out long series of transfers on trunks shared between patterns.");
+  for (  P2<TripPattern> pair : transfers.keySet()) {
+    ProfileTransfer.GoodTransferList list=transfers.get(pair);
+    TripPattern fromPattern=pair.first;
+    Map<StopCluster,ProfileTransfer> transfersByFromCluster=Maps.newHashMap();
+    for (    ProfileTransfer transfer : list.good) {
+      transfersByFromCluster.put(transfer.sc1,transfer);
+    }
+    List<ProfileTransfer> retainedTransfers=Lists.newArrayList();
+    boolean inSeries=false;
+    for (    Stop stop : fromPattern.stopPattern.stops) {
+      StopCluster cluster=this.stopClusterForStop.get(stop);
+      ProfileTransfer transfer=transfersByFromCluster.get(cluster);
+      if (transfer == null) {
+        inSeries=false;
+        continue;
+      }
+      if (inSeries)       continue;
+      retainedTransfers.add(transfer);
+      inSeries=true;
+    }
+    for (    ProfileTransfer tr : retainedTransfers) {
+      transfersFromStopCluster.put(tr.sc1,tr);
+    }
   }
   LOG.info("Done finding transfers.");
 }

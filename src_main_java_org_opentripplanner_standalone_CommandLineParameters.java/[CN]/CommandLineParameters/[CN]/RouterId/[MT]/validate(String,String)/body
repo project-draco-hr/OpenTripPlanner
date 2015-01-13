@@ -1,7 +1,5 @@
 {
-  Pattern routerIdPattern=GraphServiceFileImpl.routerIdPattern;
-  Matcher m=routerIdPattern.matcher(value);
-  if (!m.matches()) {
+  if (!GraphService.routerIdLegal(value)) {
     String msg=String.format("%s: '%s' is not a valid router ID.",name,value);
     throw new ParameterException(msg);
   }

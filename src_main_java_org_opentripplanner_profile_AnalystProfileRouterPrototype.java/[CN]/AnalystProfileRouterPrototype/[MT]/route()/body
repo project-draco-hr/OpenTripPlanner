@@ -1,0 +1,90 @@
+{
+  LOG.info("access modes: {}",request.accessModes);
+  LOG.info("egress modes: {}",request.egressModes);
+  LOG.info("direct modes: {}",request.directModes);
+  searchBeginTime=System.currentTimeMillis();
+  abortTime=searchBeginTime + TIMEOUT * 1000;
+  this.window=new TimeWindow(request.fromTime,request.toTime,graph.index.servicesRunning(request.date));
+  fromStops=findClosestStops(TraverseMode.WALK);
+  LOG.info("From patterns/stops: {}",fromStops);
+  TimeRange.Tracker times=new TimeRange.Tracker();
+  for (  Stop stop : fromStops.keySet()) {
+    times.set(stop,fromStops.get(stop));
+  }
+  Set<Stop> stopsUpdated=fromStops.keySet();
+  for (int round=0; round < MAX_RIDES; round++) {
+    Set<TripPattern> patternsUpdated=uniquePatternsVisiting(stopsUpdated);
+    LOG.info("ROUND {} : {} stops and {} patterns to explore.",round,stopsUpdated.size(),patternsUpdated.size());
+    stopsUpdated=Sets.newHashSet();
+    for (    TripPattern pattern : patternsUpdated) {
+      TimeRange rangeBeingPropagated=null;
+      List<Stop> stops=pattern.getStops();
+      FrequencyEntry freq=pattern.getSingleFrequencyEntry();
+      if (freq == null)       continue;
+      TripTimes tt=freq.tripTimes;
+      int headway=freq.headway;
+      for (int sidx=0; sidx < stops.size(); sidx++) {
+        Stop stop=stops.get(sidx);
+        TimeRange existingRange=times.get(stop);
+        TimeRange reBoardRange=(existingRange != null) ? existingRange.wait(headway) : null;
+        if (rangeBeingPropagated == null) {
+          if (reBoardRange != null) {
+            rangeBeingPropagated=reBoardRange;
+          }
+        }
+ else {
+          TimeRange arrivalRange=rangeBeingPropagated.shift(tt.getRunningTime(sidx - 1));
+          if (times.add(stop,arrivalRange)) {
+            stopsUpdated.add(stop);
+          }
+          rangeBeingPropagated=arrivalRange.shift(tt.getDwellTime(sidx));
+          if (reBoardRange != null) {
+            rangeBeingPropagated.mergeIn(reBoardRange);
+          }
+        }
+      }
+    }
+    if (!graph.hasDirectTransfers) {
+      throw new RuntimeException("Requires the SimpleTransfers generated in long distance mode.");
+    }
+    for (    Stop stop : Lists.newArrayList(stopsUpdated)) {
+      Collection<Edge> outgoingEdges=graph.index.stopVertexForStop.get(stop).getOutgoing();
+      for (      SimpleTransfer transfer : Iterables.filter(outgoingEdges,SimpleTransfer.class)) {
+        Stop targetStop=((TransitStop)transfer.getToVertex()).getStop();
+        double walkTime=transfer.getDistance() / request.walkSpeed;
+        TimeRange rangeAfterTransfer=times.get(stop).shift((int)walkTime);
+        if (times.add(targetStop,rangeAfterTransfer)) {
+          stopsUpdated.add(targetStop);
+        }
+      }
+    }
+  }
+  LOG.info("Done with transit.");
+  LOG.info("Propagating from transit stops to the street network...");
+  StopTreeCache stopTreeCache=graph.index.getStopTreeCache();
+  for (  Stop stop : times) {
+    TransitStop tstop=graph.index.stopVertexForStop.get(stop);
+    TimeRange rangeAtTransitStop=times.get(stop);
+    TObjectIntMap<Vertex> distanceToVertex=stopTreeCache.getDistancesForStop(tstop);
+    for (TObjectIntIterator<Vertex> iter=distanceToVertex.iterator(); iter.hasNext(); ) {
+      iter.advance();
+      Vertex vertex=iter.key();
+      int egressWalkTimeSeconds=(int)(iter.value() / request.walkSpeed);
+      if (egressWalkTimeSeconds > request.maxWalkTime * 60) {
+        continue;
+      }
+      TimeRange propagatedRange=rangeAtTransitStop.shift(egressWalkTimeSeconds);
+      TimeRange existingTimeRange=propagatedTimes.get(vertex);
+      if (existingTimeRange == null) {
+        propagatedTimes.put(vertex,propagatedRange);
+      }
+ else {
+        existingTimeRange.mergeIn(propagatedRange);
+      }
+    }
+  }
+  LOG.info("Done with propagation.");
+  TimeSurface.RangeSet result=TimeSurface.makeSurfaces(this);
+  LOG.info("Done making time surfaces.");
+  return result;
+}

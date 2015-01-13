@@ -1,0 +1,10 @@
+{
+  StreetEdge pse;
+  if (useElevationData) {
+    pse=new StreetWithElevationEdge(startEndpoint,endEndpoint,geometry,name,length,permissions,back);
+  }
+ else {
+    pse=new StreetEdge(startEndpoint,endEndpoint,geometry,name,length,permissions,back);
+  }
+  return pse;
+}

@@ -1,5 +1,8 @@
 {
   long t0=System.currentTimeMillis();
+  if (surf.sampleGrid == null) {
+    surf.makeSampleGridWithoutSPT();
+  }
   DelaunayIsolineBuilder<WTWD> isolineBuilder=new DelaunayIsolineBuilder<WTWD>(surf.sampleGrid.delaunayTriangulate(),new WTWD.IsolineMetric());
   List<IsochroneData> isochrones=new ArrayList<IsochroneData>();
   for (int minutes=spacing; minutes <= surf.cutoffMinutes; minutes+=spacing) {
@@ -12,6 +15,6 @@
     isochrones.add(isochrone);
   }
   long t1=System.currentTimeMillis();
-  LOG.debug("Computed {} isochrones in {}msec",isochrones.size(),(int)(t1 - t0));
+  LOG.debug("Computed {} isochrones in {} msec",isochrones.size(),(int)(t1 - t0));
   return isochrones;
 }

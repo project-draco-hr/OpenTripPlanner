@@ -6,15 +6,13 @@
   }
   this.routerId=routerId;
   long t0=System.currentTimeMillis();
-  times=new int[Vertex.getMaxIndex()];
-  Arrays.fill(times,UNREACHABLE);
   for (  State state : spt.getAllStates()) {
     Vertex vertex=state.getVertex();
     if (vertex instanceof StreetVertex || vertex instanceof TransitStop) {
-      int i=vertex.getIndex();
+      int existing=times.get(vertex);
       int t=(int)state.getActiveTime();
-      if (times[i] == UNREACHABLE || times[i] > t) {
-        times[i]=t;
+      if (existing == UNREACHABLE || existing > t) {
+        times.put(vertex,t);
       }
     }
   }

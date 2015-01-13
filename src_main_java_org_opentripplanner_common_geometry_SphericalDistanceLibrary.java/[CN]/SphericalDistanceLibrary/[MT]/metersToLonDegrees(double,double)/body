@@ -1,0 +1,11 @@
+{
+  double dLatDeg=360 * distanceMeters / (2 * Math.PI * RADIUS_OF_EARTH_IN_M);
+  double minCosLat;
+  if (latDeg > 0) {
+    minCosLat=FastMath.cos(FastMath.toRadians(latDeg + dLatDeg));
+  }
+ else {
+    minCosLat=FastMath.cos(FastMath.toRadians(latDeg - dLatDeg));
+  }
+  return dLatDeg / minCosLat;
+}

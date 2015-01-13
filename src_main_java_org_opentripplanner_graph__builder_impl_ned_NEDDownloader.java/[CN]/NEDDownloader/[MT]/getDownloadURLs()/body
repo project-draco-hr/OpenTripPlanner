@@ -4,6 +4,7 @@
   log.info("Getting urls from request validation service");
   String RTendpointURL="http://extract.cr.usgs.gov/requestValidationService/services/RequestValidationService";
   try {
+    int nd=0;
     for (    String payload : payloads) {
       sleep(2000);
       Service RTservice=new Service();
@@ -25,7 +26,8 @@
       for (int i=0; i < nodes.getLength(); ++i) {
         Node node=nodes.item(i);
         String urlString=node.getTextContent().trim();
-        log.debug("Adding NED URL:" + urlString);
+        log.info("Getting URL {}/{}",++nd,payloads.size());
+        log.debug("Adding NED URL: " + urlString);
         urlString=urlString.replaceAll(" ","+");
         URL url=new URL(urlString);
         urls.add(url);

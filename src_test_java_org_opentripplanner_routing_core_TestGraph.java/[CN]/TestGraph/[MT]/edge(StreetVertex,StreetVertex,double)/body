@@ -7,5 +7,5 @@
   coords[1]=vB.getCoordinate();
   LineString geom=GeometryUtils.getGeometryFactory().createLineString(coords);
   StreetTraversalPermission perm=StreetTraversalPermission.ALL;
-  return new PlainStreetEdge(vA,vB,geom,name,length,perm,false);
+  return new StreetEdge(vA,vB,geom,name,length,perm,false);
 }

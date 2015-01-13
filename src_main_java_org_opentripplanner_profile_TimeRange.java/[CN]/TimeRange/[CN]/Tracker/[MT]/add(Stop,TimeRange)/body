@@ -1,0 +1,8 @@
+{
+  TimeRange existingRange=ranges.get(stop);
+  if (existingRange == null) {
+    ranges.put(stop,newRange);
+    return true;
+  }
+  return existingRange.mergeIn(newRange);
+}

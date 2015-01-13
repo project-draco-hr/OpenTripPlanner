@@ -1,0 +1,8 @@
+{
+  List<TransitStop> transitStops=transitStopTree.query(envelope);
+  for (Iterator<TransitStop> its=transitStops.iterator(); its.hasNext(); ) {
+    TransitStop ts=its.next();
+    if (!envelope.intersects(new Coordinate(ts.getLon(),ts.getLat())))     its.remove();
+  }
+  return transitStops;
+}

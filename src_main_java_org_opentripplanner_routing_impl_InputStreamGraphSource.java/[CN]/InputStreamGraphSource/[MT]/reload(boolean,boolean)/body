@@ -1,0 +1,44 @@
+{
+synchronized (this) {
+    long lastModified=graphInputStream.getLastModified();
+    boolean doReload=force ? true : checkAutoReload(lastModified);
+    if (!doReload)     return true;
+    if (preEvict) {
+synchronized (preEvictMutex) {
+        if (router != null && routerLifecycleManager != null) {
+          routerLifecycleManager.shutdownRouter(router);
+        }
+        router=null;
+        router=loadGraph();
+      }
+    }
+ else {
+      Router newRouter=loadGraph();
+      if (newRouter != null) {
+        if (router != null && routerLifecycleManager != null) {
+          routerLifecycleManager.shutdownRouter(router);
+        }
+        router=newRouter;
+      }
+ else {
+        if (force || router == null) {
+          LOG.warn("Unable to load data for router '{}'.",routerId);
+          if (router != null && routerLifecycleManager != null) {
+            routerLifecycleManager.shutdownRouter(router);
+          }
+          router=null;
+        }
+ else {
+          LOG.warn("Unable to load data for router '{}', keeping old data.",routerId);
+        }
+      }
+    }
+    if (router == null) {
+      graphLastModified=0L;
+    }
+ else {
+      graphLastModified=lastModified;
+    }
+    return (router != null);
+  }
+}

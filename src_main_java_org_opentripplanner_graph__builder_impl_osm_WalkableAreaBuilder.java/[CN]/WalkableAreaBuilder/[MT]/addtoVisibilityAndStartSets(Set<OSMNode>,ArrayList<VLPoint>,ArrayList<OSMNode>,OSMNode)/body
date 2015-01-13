@@ -1,0 +1,10 @@
+{
+  if (osmdb.isNodeBelongsToWay(node.getId()) || osmdb.isNodeSharedByMultipleAreas(node.getId()) || node.isStop()) {
+    startingNodes.add(node);
+    VLPoint point=new VLPoint(node.lon,node.lat);
+    if (!visibilityPoints.contains(point)) {
+      visibilityPoints.add(point);
+      visibilityNodes.add(node);
+    }
+  }
+}

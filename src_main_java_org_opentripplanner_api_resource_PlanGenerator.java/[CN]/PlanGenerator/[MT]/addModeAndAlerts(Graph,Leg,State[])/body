@@ -1,7 +1,7 @@
 {
   for (  State state : states) {
     TraverseMode mode=state.getBackMode();
-    Set<Alert> alerts=state.getBackAlerts();
+    Set<Alert> alerts=graph.streetNotesService.getNotes(state);
     Edge edge=state.getBackEdge();
     if (mode != null) {
       leg.mode=mode.toString();

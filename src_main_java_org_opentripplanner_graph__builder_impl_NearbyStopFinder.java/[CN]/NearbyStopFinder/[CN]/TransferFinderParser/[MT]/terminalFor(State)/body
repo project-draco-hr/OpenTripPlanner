@@ -1,0 +1,6 @@
+{
+  Edge edge=state.getBackEdge();
+  if (edge instanceof StreetEdge)   return STREET;
+  if (edge instanceof StreetTransitLink)   return LINK;
+  return OTHER;
+}

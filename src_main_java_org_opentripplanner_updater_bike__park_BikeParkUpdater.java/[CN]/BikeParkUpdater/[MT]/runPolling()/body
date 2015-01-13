@@ -1,0 +1,10 @@
+{
+  LOG.debug("Updating bike parks from " + source);
+  if (!source.update()) {
+    LOG.debug("No updates");
+    return;
+  }
+  List<BikePark> bikeParks=source.getBikeParks();
+  BikeParkGraphWriterRunnable graphWriterRunnable=new BikeParkGraphWriterRunnable(bikeParks);
+  updaterManager.execute(graphWriterRunnable);
+}

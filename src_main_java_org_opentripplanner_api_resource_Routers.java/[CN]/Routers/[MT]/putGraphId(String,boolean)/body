@@ -1,10 +1,16 @@
 {
-  if (preEvict) {
-    LOG.debug("pre-evicting graph");
-    server.graphService.evictGraph(routerId);
+  LOG.debug("Attempting to load graph '{}' from server's local filesystem.",routerId);
+  try {
+    otpServer.getGraphService().getRouter(routerId);
+    return Response.status(404).entity("graph already registered.\n").build();
   }
-  LOG.debug("attempting to load graph from server's local filesystem.\n");
-  boolean success=server.graphService.registerGraph(routerId,preEvict);
-  if (success)   return Response.status(201).entity("graph registered.\n").build();
- else   return Response.status(404).entity("graph not found or other error.\n").build();
+ catch (  GraphNotFoundException e) {
+    if (preEvict) {
+      LOG.debug("Pre-evicting graph '{}'",routerId);
+      otpServer.getGraphService().evictRouter(routerId);
+    }
+    boolean success=otpServer.getGraphService().registerGraph(routerId,otpServer.getGraphService().getGraphSourceFactory().createGraphSource(routerId));
+    if (success)     return Response.status(201).entity("graph registered.\n").build();
+ else     return Response.status(404).entity("graph not found or other error.\n").build();
+  }
 }

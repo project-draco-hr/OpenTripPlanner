@@ -3,9 +3,9 @@
     return null;
   }
   HashSet<StreetEdge> edgeSet=new HashSet<StreetEdge>(edges);
-  LinkedList<P2<PlainStreetEdge>> replacement=linker.replacements.get(edgeSet);
+  LinkedList<P2<StreetEdge>> replacement=linker.replacements.get(edgeSet);
   if (replacement == null) {
-    replacement=new LinkedList<P2<PlainStreetEdge>>();
+    replacement=new LinkedList<P2<StreetEdge>>();
     Iterator<StreetEdge> iter=edges.iterator();
     StreetEdge first=iter.next();
     StreetEdge second=null;
@@ -15,22 +15,22 @@
         second=edge;
       }
     }
-    PlainStreetEdge secondClone;
+    StreetEdge secondClone;
     if (second == null) {
       secondClone=null;
     }
  else {
-      secondClone=((PlainStreetEdge)second).clone();
+      secondClone=((StreetEdge)second).clone();
     }
-    P2<PlainStreetEdge> newEdges=new P2<PlainStreetEdge>(((PlainStreetEdge)first).clone(),secondClone);
+    P2<StreetEdge> newEdges=new P2<StreetEdge>(((StreetEdge)first).clone(),secondClone);
     replacement.add(newEdges);
     linker.replacements.put(edgeSet,replacement);
   }
   double bestDist=Double.MAX_VALUE;
-  P2<PlainStreetEdge> bestPair=null;
+  P2<StreetEdge> bestPair=null;
   Point p=GeometryUtils.getGeometryFactory().createPoint(coordinate);
-  for (  P2<PlainStreetEdge> pair : replacement) {
-    PlainStreetEdge e1=pair.getFirst();
+  for (  P2<StreetEdge> pair : replacement) {
+    StreetEdge e1=pair.first;
     double dist=e1.getGeometry().distance(p);
     if (dist < bestDist) {
       bestDist=dist;

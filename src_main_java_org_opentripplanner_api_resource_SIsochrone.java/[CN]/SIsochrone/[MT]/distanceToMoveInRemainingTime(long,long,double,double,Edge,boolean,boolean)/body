@@ -3,9 +3,9 @@
   String msg="";
   double originalTravelSpeed=edge.getDistance() / traverseTime;
   if (originalTravelSpeed < userSpeed) {
-    if (edge instanceof PlainStreetEdge) {
-      PlainStreetEdge pe=(PlainStreetEdge)edge;
-      double maxSlope=pe.getElevationProfileSegment().getMaxSlope();
+    if (edge instanceof StreetEdge) {
+      StreetEdge pe=(StreetEdge)edge;
+      double maxSlope=pe.getMaxSlope();
       if (maxSlope > 0.06) {
         userSpeed=originalTravelSpeed;
       }
@@ -27,8 +27,8 @@
     }
   }
   if (usesCar) {
-    if (edge instanceof PlainStreetEdge) {
-      PlainStreetEdge pe=(PlainStreetEdge)edge;
+    if (edge instanceof StreetEdge) {
+      StreetEdge pe=(StreetEdge)edge;
       userSpeed=pe.getCarSpeed();
       if ((isTooFast == true) && (originalTravelSpeed > userSpeed) && (hasUshape == false)) {
         this.tooFastTraversedEdgeGeoms.add(edge.getGeometry());

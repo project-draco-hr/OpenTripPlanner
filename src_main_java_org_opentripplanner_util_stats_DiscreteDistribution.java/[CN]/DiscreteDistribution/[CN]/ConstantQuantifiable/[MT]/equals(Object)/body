@@ -1,0 +1,7 @@
+{
+  if (another instanceof ConstantQuantifiable) {
+    @SuppressWarnings("unchecked") ConstantQuantifiable<K> other=(ConstantQuantifiable<K>)another;
+    return other.k.equals(this.k);
+  }
+  return false;
+}

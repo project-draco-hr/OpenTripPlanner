@@ -9,8 +9,8 @@
     OSMSpecifier specifier=picker.getSpecifier();
     WayProperties wayProperties=picker.getProperties();
     P2<Integer> score=specifier.matchScores(way);
-    int leftScore=score.getFirst();
-    int rightScore=score.getSecond();
+    int leftScore=score.first;
+    int rightScore=score.second;
     if (picker.isSafetyMixin()) {
       if (leftScore > 0) {
         leftMixins.add(wayProperties);
@@ -31,7 +31,7 @@
     }
   }
   WayProperties result=rightResult.clone();
-  result.setSafetyFeatures(new P2<Double>(rightResult.getSafetyFeatures().getFirst(),leftResult.getSafetyFeatures().getSecond()));
+  result.setSafetyFeatures(new P2<Double>(rightResult.getSafetyFeatures().first,leftResult.getSafetyFeatures().second));
   if (leftMixins.size() > 0) {
     applyMixins(result,leftMixins,false);
   }

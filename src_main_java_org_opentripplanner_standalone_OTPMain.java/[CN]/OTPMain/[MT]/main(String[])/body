@@ -17,7 +17,14 @@
   GraphBuilderTask graphBuilder=configurator.builderFromParameters();
   if (graphBuilder != null) {
     graphBuilder.run();
-    if (params.inMemory || params.preFlight)     configurator.makeGraphService(graphBuilder.getGraph());
+    if (params.inMemory || params.preFlight) {
+      graphBuilder.getGraph().index(new DefaultStreetVertexIndexFactory());
+      configurator.makeGraphService(graphBuilder.getGraph());
+    }
+    if (params.htmlAnnotations) {
+      AnnotationsToHTML annotationsToHTML=new AnnotationsToHTML(graphBuilder.getGraph(),new File(params.build.get(0),"report.html"));
+      annotationsToHTML.generateAnnotationsLog();
+    }
   }
   GraphVisualizer graphVisualizer=configurator.visualizerFromParameters();
   if (graphVisualizer != null) {

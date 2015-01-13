@@ -38,12 +38,12 @@
   System.out.println("\tOptions: " + options);
   options.numItineraries=(Integer.parseInt(this.nPaths.getText()));
   if (dontUseGraphicalCallbackCheckBox.isSelected()) {
-    sptService.setTraverseVisitor(null);
+    sptServiceFactory.setTraverseVisitor(null);
   }
  else {
-    sptService.setTraverseVisitor(new VisualTraverseVisitor(showGraph));
+    sptServiceFactory.setTraverseVisitor(new VisualTraverseVisitor(showGraph));
   }
-  ParetoPathService.SPTVisitor vis=pathservice.new SPTVisitor();
+  SPTVisitor vis=new SPTVisitor();
   pathservice.setSPTVisitor(vis);
   long t0=System.currentTimeMillis();
   List<GraphPath> paths=pathservice.getPaths(options);
