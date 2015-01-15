@@ -33,6 +33,18 @@
               pq.insertWithOverflow(new TripTimeShort(t,sidx,stop,sd));
             }
           }
+          for (          FrequencyEntry freq : tt.frequencyEntries) {
+            if (!sd.serviceRunning(freq.tripTimes.serviceCode))             continue;
+            int departureTime=freq.nextDepartureTime(sidx,secondsSinceMidnight);
+            if (departureTime == -1)             continue;
+            int lastDeparture=freq.endTime + freq.tripTimes.getArrivalTime(sidx) - freq.tripTimes.getDepartureTime(0);
+            int i=0;
+            while (departureTime <= lastDeparture && i < numberOfDepartures) {
+              pq.insertWithOverflow(new TripTimeShort(freq.materialize(sidx,departureTime,true),sidx,stop,sd));
+              departureTime+=freq.headway;
+              i++;
+            }
+          }
         }
         sidx++;
       }
