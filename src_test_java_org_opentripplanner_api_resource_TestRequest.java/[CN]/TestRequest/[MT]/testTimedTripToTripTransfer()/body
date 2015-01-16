@@ -22,6 +22,6 @@
   assertEquals("750W1300",itinerary.legs.get(1).tripId);
   assertEquals("120W1320",itinerary.legs.get(3).tripId);
   applyUpdateToTripPattern(pattern,"120W1320","9756",22,41820,41820,ScheduleRelationship.SCHEDULED,0,serviceDate);
-  timedTransferEdge.detach(graph);
+  graph.removeEdge(timedTransferEdge);
   reset(graph);
 }
