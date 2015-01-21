@@ -1,0 +1,9 @@
+{
+  Document doc=new Document();
+  doc.add(new TextField("name",stopCluster.name,Field.Store.YES));
+  doc.add(new DoubleField("lat",stopCluster.lat,Field.Store.YES));
+  doc.add(new DoubleField("lon",stopCluster.lon,Field.Store.YES));
+  doc.add(new StringField("id",stopCluster.id,Field.Store.YES));
+  doc.add(new StringField("category",Category.CLUSTER.name(),Field.Store.YES));
+  iwriter.addDocument(doc);
+}
