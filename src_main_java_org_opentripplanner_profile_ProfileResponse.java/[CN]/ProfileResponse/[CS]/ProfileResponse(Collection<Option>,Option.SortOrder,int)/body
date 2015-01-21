@@ -1,7 +1,7 @@
 {
   List<Option> transitOptions=Lists.newArrayList();
-  for (  Option option : options) {
-    if (option.transit == null || option.transit.isEmpty())     this.options.add(option);
+  for (  Option option : allOptions) {
+    if (option.transit == null || option.transit.isEmpty())     options.add(option);
  else     transitOptions.add(option);
   }
   Comparator<Option> c;
