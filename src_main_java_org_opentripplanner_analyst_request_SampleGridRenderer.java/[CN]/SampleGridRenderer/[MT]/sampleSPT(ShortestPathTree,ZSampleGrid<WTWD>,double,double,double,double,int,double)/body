@@ -1,16 +1,16 @@
 {
-  AccumulativeMetric<WTWD> accMetric=new WTWDAccumulativeMetric(cosLat,d0,v0,gridSizeMeters);
+  AccumulativeMetric<WTWD> accMetric=new WTWDAccumulativeMetric(cosLat,d0,offRoadSpeed,gridSizeMeters);
   final AccumulativeGridSampler<WTWD> gridSampler=new AccumulativeGridSampler<WTWD>(sampleGrid,accMetric);
   SPTWalker johnny=new SPTWalker(spt);
   johnny.walk(new SPTVisitor(){
     @Override public final boolean accept(    Edge e){
       return e instanceof StreetEdge;
     }
-    @Override public final void visit(    Edge e,    Coordinate c,    State s0,    State s1,    double d0,    double d1,    double speed){
+    @Override public final void visit(    Edge e,    Coordinate c,    State s0,    State s1,    double d0,    double d1,    double speedAlongEdge){
       double wd0=s0.getWalkDistance() + d0;
       double wd1=s0.getWalkDistance() + d1;
-      double t0=wd0 > maxWalkDistance ? Double.POSITIVE_INFINITY : s0.getActiveTime() + d0 / speed;
-      double t1=wd1 > maxWalkDistance ? Double.POSITIVE_INFINITY : s1.getActiveTime() + d1 / speed;
+      double t0=wd0 > maxWalkDistance ? Double.POSITIVE_INFINITY : s0.getActiveTime() + d0 / speedAlongEdge;
+      double t1=wd1 > maxWalkDistance ? Double.POSITIVE_INFINITY : s1.getActiveTime() + d1 / speedAlongEdge;
       if (t0 < maxTimeSec || t1 < maxTimeSec) {
         if (!Double.isInfinite(t0) || !Double.isInfinite(t1)) {
           WTWD z=new WTWD();
@@ -26,7 +26,7 @@
             z.wBoardings=s1.getNumBoardings();
             z.wWalkDist=s1.getWalkDistance() + d1;
           }
-          gridSampler.addSamplingPoint(c,z,speed);
+          gridSampler.addSamplingPoint(c,z,offRoadSpeed);
         }
       }
     }

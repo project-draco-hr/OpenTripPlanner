@@ -1,12 +1,18 @@
 {
   int nTotal=0, nSkippedDupEdge=0, nSkippedNoGeometry=0;
   Collection<? extends State> allStates=spt.getAllStates();
-  Set<Edge> processedEdges=new HashSet<Edge>(allStates.size());
-  for (  State s0 : allStates) {
+  Set<Vertex> allVertices=new HashSet<Vertex>(spt.getVertexCount());
+  for (  State s : allStates) {
+    allVertices.add(s.getVertex());
+  }
+  Set<Edge> processedEdges=new HashSet<Edge>(allVertices.size());
+  for (  Vertex v : allVertices) {
+    State s0=spt.getState(v);
+    if (s0 == null || !s0.isFinal())     continue;
     for (    Edge e : s0.getVertex().getIncoming()) {
       if (e != null && visitor.accept(e)) {
         State s1=spt.getState(e.getFromVertex());
-        if (s1 == null)         continue;
+        if (s1 == null || !s1.isFinal())         continue;
         if (e.getFromVertex() != null && e.getToVertex() != null) {
           if (processedEdges.contains(e)) {
             nSkippedDupEdge++;
@@ -21,18 +27,19 @@
           nSkippedNoGeometry++;
           continue;
         }
-        double speed=spt.getOptions().walkSpeed;
+        double speedAlongEdge=spt.getOptions().walkSpeed;
         if (e instanceof StreetEdge) {
           StreetEdge se=(StreetEdge)e;
           TraverseMode mode=s0.getNonTransitMode();
-          speed=se.calculateSpeed(spt.getOptions(),mode);
-          if (mode != TraverseMode.CAR)           speed=speed * se.getDistance() / se.getSlopeSpeedEffectiveLength();
+          speedAlongEdge=se.calculateSpeed(spt.getOptions(),mode);
+          if (mode != TraverseMode.CAR)           speedAlongEdge=speedAlongEdge * se.getDistance() / se.getSlopeSpeedEffectiveLength();
           double avgSpeed=se.getDistance() / Math.abs(s0.getTimeInMillis() - s1.getTimeInMillis()) * 1000;
-          if (speed > avgSpeed)           speed=avgSpeed;
+          if (avgSpeed < 1e-10)           avgSpeed=1e-10;
+          if (speedAlongEdge > avgSpeed)           speedAlongEdge=avgSpeed;
         }
         double lineStringLen=distanceLibrary.fastLength(lineString);
-        visitor.visit(e,vx0.getCoordinate(),s0,s1,0.0,lineStringLen,speed);
-        visitor.visit(e,vx1.getCoordinate(),s0,s1,lineStringLen,0.0,speed);
+        visitor.visit(e,vx0.getCoordinate(),s0,s1,0.0,lineStringLen,speedAlongEdge);
+        visitor.visit(e,vx1.getCoordinate(),s0,s1,lineStringLen,0.0,speedAlongEdge);
         nTotal+=2;
         Coordinate[] pList=lineString.getCoordinates();
         boolean reverse=vx1.getCoordinate().equals(pList[0]);
@@ -49,7 +56,7 @@
             while (curLen - startLen < segLen) {
               double k=(curLen - startLen) / segLen;
               Coordinate p=new Coordinate(p0.x * (1 - k) + p1.x * k,p0.y * (1 - k) + p1.y * k);
-              visitor.visit(e,p,reverse ? s1 : s0,reverse ? s0 : s1,curLen,lineStringLen - curLen,speed);
+              visitor.visit(e,p,reverse ? s1 : s0,reverse ? s0 : s1,curLen,lineStringLen - curLen,speedAlongEdge);
               nTotal++;
               curLen+=stepLen;
               ns++;
@@ -61,5 +68,5 @@
       }
     }
   }
-  LOG.info("SPTWalker: Generated {} points ({} dup edges, {} no geometry) from {} states.",nTotal,nSkippedDupEdge,nSkippedNoGeometry,allStates.size());
+  LOG.info("SPTWalker: Generated {} points ({} dup edges, {} no geometry) from {} vertices / {} states.",nTotal,nSkippedDupEdge,nSkippedNoGeometry,allVertices.size(),allStates.size());
 }
