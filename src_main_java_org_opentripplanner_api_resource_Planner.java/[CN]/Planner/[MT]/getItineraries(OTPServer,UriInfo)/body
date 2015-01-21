@@ -14,7 +14,9 @@
   }
  finally {
     if (request != null) {
-      response.debugOutput=request.rctx.debugOutput;
+      if (request.rctx != null) {
+        response.debugOutput=request.rctx.debugOutput;
+      }
       request.cleanup();
     }
   }

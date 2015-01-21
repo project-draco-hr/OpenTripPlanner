@@ -74,8 +74,6 @@
   if (intermediatePlaces != null && intermediatePlaces.size() > 0 && !intermediatePlaces.get(0).equals("")) {
     request.setIntermediatePlacesFromStrings(intermediatePlaces);
   }
-  if (intermediatePlacesOrdered == null)   intermediatePlacesOrdered=request.intermediatePlacesOrdered;
-  request.intermediatePlacesOrdered=intermediatePlacesOrdered;
   request.setPreferredRoutes(get(preferredRoutes,n,request.getPreferredRouteStr()));
   request.setOtherThanPreferredRoutesPenalty(get(otherThanPreferredRoutesPenalty,n,request.otherThanPreferredRoutesPenalty));
   request.setPreferredAgencies(get(preferredAgencies,n,request.getPreferredAgenciesStr()));
@@ -115,7 +113,6 @@
   final long NOW_THRESHOLD_MILLIS=15 * 60 * 60* 1000;
   boolean tripPlannedForNow=Math.abs(request.getDateTime().getTime() - new Date().getTime()) < NOW_THRESHOLD_MILLIS;
   request.useBikeRentalAvailabilityInformation=(tripPlannedForNow);
-  if (request.intermediatePlaces != null && (request.modes.isTransit() || (request.modes.getWalk() && request.modes.getBicycle())))   throw new UnsupportedOperationException("TSP is not supported for transit or bike share trips");
   String startTransitStopId=get(this.startTransitStopId,n,AgencyAndId.convertToString(request.startingTransitStopId));
   if (startTransitStopId != null && !"".equals(startTransitStopId)) {
     request.startingTransitStopId=(AgencyAndId.convertFromString(startTransitStopId));

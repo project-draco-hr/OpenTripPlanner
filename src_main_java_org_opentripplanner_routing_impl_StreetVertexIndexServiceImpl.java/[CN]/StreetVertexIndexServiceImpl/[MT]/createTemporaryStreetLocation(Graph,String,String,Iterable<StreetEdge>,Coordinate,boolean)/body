@@ -1,0 +1,34 @@
+{
+  boolean wheelchairAccessible=false;
+  TemporaryStreetLocation location=new TemporaryStreetLocation(label,nearestPoint,name,endVertex);
+  for (  StreetEdge street : edges) {
+    Vertex fromv=street.getFromVertex();
+    Vertex tov=street.getToVertex();
+    wheelchairAccessible|=((StreetEdge)street).isWheelchairAccessible();
+    Vertex edgeLocation;
+    if (distanceLibrary.distance(nearestPoint,fromv.getCoordinate()) < 1) {
+      edgeLocation=fromv;
+      if (endVertex) {
+        new TemporaryFreeEdge(edgeLocation,location);
+      }
+ else {
+        new TemporaryFreeEdge(location,edgeLocation);
+      }
+    }
+ else     if (distanceLibrary.distance(nearestPoint,tov.getCoordinate()) < 1) {
+      edgeLocation=tov;
+      if (endVertex) {
+        new TemporaryFreeEdge(edgeLocation,location);
+      }
+ else {
+        new TemporaryFreeEdge(location,edgeLocation);
+      }
+    }
+ else {
+      edgeLocation=location;
+      createHalfLocation(location,name,nearestPoint,street,endVertex);
+    }
+  }
+  location.setWheelchairAccessible(wheelchairAccessible);
+  return location;
+}

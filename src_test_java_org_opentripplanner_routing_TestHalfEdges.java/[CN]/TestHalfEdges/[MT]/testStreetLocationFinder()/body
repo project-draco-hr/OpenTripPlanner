@@ -2,30 +2,34 @@
   StreetVertexIndexServiceImpl finder=new StreetVertexIndexServiceImpl(graph);
   GenericLocation loc=new GenericLocation(40.01,-74.005000001);
   assertTrue(finder.getNearbyTransitStops(loc.getCoordinate(),100).size() > 0);
-  StreetLocation some=(StreetLocation)finder.getVertexForLocation(new GenericLocation(40.00,-74.00),null);
+  TemporaryStreetLocation some=(TemporaryStreetLocation)finder.getVertexForLocation(new GenericLocation(40.00,-74.00),null,true);
   assertNotNull(some);
-  StreetLocation start=(StreetLocation)finder.getVertexForLocation(new GenericLocation(40.004,-74.01),null);
+  some.dispose();
+  TemporaryStreetLocation start=(TemporaryStreetLocation)finder.getVertexForLocation(new GenericLocation(40.004,-74.01),null,false);
   assertNotNull(start);
   assertTrue("wheelchair accessibility is correctly set (splitting)",start.isWheelchairAccessible());
-  List<Edge> extras=start.getExtra();
-  assertEquals(4,extras.size());
+  Collection<Edge> edges=start.getOutgoing();
+  start.dispose();
+  assertEquals(2,edges.size());
   RoutingRequest biking=new RoutingRequest(new TraverseModeSet(TraverseMode.BICYCLE));
-  StreetLocation end=(StreetLocation)finder.getVertexForLocation(new GenericLocation(40.008,-74.0),biking);
+  TemporaryStreetLocation end=(TemporaryStreetLocation)finder.getVertexForLocation(new GenericLocation(40.008,-74.0),biking,true);
   assertNotNull(end);
-  extras=end.getExtra();
-  assertEquals(4,extras.size());
-  StreetLocation location=(StreetLocation)finder.getVertexForLocation(new GenericLocation(40.00999,-74.004999),new RoutingRequest());
+  edges=end.getIncoming();
+  end.dispose();
+  assertEquals(2,edges.size());
+  TemporaryStreetLocation location=(TemporaryStreetLocation)finder.getVertexForLocation(new GenericLocation(40.00999,-74.004999),new RoutingRequest(),false);
   assertTrue(location.isWheelchairAccessible());
   boolean found=false;
-  for (  Edge extra : location.getExtra()) {
-    if (extra instanceof FreeEdge && ((FreeEdge)extra).getToVertex().equals(station1)) {
+  for (  Edge edge : location.getOutgoing()) {
+    if (edge instanceof TemporaryFreeEdge && edge.getToVertex().equals(station1)) {
       found=true;
     }
   }
   assertTrue(found);
+  location.dispose();
   RoutingRequest walking=new RoutingRequest(TraverseMode.WALK);
-  start=(StreetLocation)finder.getVertexForLocation(new GenericLocation(40.004,-74.0),walking);
-  end=(StreetLocation)finder.getVertexForLocation(new GenericLocation(40.008,-74.0),walking);
+  start=(TemporaryStreetLocation)finder.getVertexForLocation(new GenericLocation(40.004,-74.0),walking,false);
+  end=(TemporaryStreetLocation)finder.getVertexForLocation(new GenericLocation(40.008,-74.0),walking,true);
   assertNotNull(end);
   walking.setRoutingContext(graph,start,end);
   ShortestPathTree spt=aStar.getShortestPathTree(walking);
@@ -33,4 +37,5 @@
   for (  State s : path.states) {
     assertFalse(s.getBackEdge() == top);
   }
+  walking.cleanup();
 }

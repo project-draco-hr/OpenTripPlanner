@@ -1,0 +1,11 @@
+{
+  Coordinate c=loc.getCoordinate();
+  if (c != null) {
+    return getClosestVertex(loc,options,endVertex);
+  }
+  String place=loc.place;
+  if (place == null) {
+    return null;
+  }
+  return graph.getVertex(place);
+}
