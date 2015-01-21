@@ -17,10 +17,19 @@ default :
 c=new Option.MinComparator();
 }
 Collections.sort(transitOptions,c);
-if (limit > 0 && limit <= transitOptions.size()) {
-transitOptions=transitOptions.subList(0,limit);
+ListMultimap<TraverseMode,Option> transitOptionsByAccessMode=ArrayListMultimap.create();
+for (Option option : transitOptions) {
+for (StreetSegment segment : option.access) {
+transitOptionsByAccessMode.put(segment.mode,option);
 }
-this.options.addAll(transitOptions);
+}
+for (Collection<Option> singleModeOptions : transitOptionsByAccessMode.asMap().values()) {
+int n=0;
+for (Option option : singleModeOptions) {
+options.add(option);
+if (limit > 0 && ++n >= limit) break;
+}
+}
 for (Option option : this.options) {
 LOG.info("{} {}",option.stats,option.summary);
 }
