@@ -2,7 +2,7 @@
   BooleanQuery query=new BooleanQuery();
   BooleanQuery termQuery=new BooleanQuery();
   for (  String term : queryString.split(" ")) {
-    if (autoComplete) {
+    if (autocomplete) {
       termQuery.add(new PrefixQuery(new Term("name",term)),BooleanClause.Occur.SHOULD);
     }
  else {
@@ -11,15 +11,15 @@
     termQuery.add(new TermQuery(new Term("code",term)),BooleanClause.Occur.SHOULD);
   }
   query.add(termQuery,BooleanClause.Occur.MUST);
-  if (showStops || showClusters || showCorners) {
+  if (stops || clusters || corners) {
     BooleanQuery typeQuery=new BooleanQuery();
-    if (showStops) {
+    if (stops) {
       typeQuery.add(new TermQuery(new Term("category",Category.STOP.name())),BooleanClause.Occur.SHOULD);
     }
-    if (showClusters) {
+    if (clusters) {
       typeQuery.add(new TermQuery(new Term("category",Category.CLUSTER.name())),BooleanClause.Occur.SHOULD);
     }
-    if (showCorners) {
+    if (corners) {
       typeQuery.add(new TermQuery(new Term("category",Category.CORNER.name())),BooleanClause.Occur.SHOULD);
     }
     query.add(typeQuery,BooleanClause.Occur.MUST);
