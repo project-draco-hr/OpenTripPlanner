@@ -1,0 +1,7 @@
+{
+  if (o instanceof PointFeature) {
+    PointFeature f=(PointFeature)o;
+    return f.lat == this.lat && f.lon == this.lon && (f.geom == this.geom || f.geom != null && f.geom.equals(this.geom)) && (f.id == this.id || f.id != null && f.id.equals(this.id)) && this.properties.equals(f.properties);
+  }
+  return false;
+}
