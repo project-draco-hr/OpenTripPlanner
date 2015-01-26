@@ -7,7 +7,7 @@
     brstation.id=station.getString("id");
     brstation.x=station.getLong("lng") / 1000000.0;
     brstation.y=station.getLong("lat") / 1000000.0;
-    brstation.name=station.getString("name");
+    brstation.raw_name=new NonLocalizedString(station.getString("name"));
     brstation.bikesAvailable=station.getInt("bikes");
     brstation.spacesAvailable=station.getInt("free");
     if (brstation != null)     out.add(brstation);
