@@ -1,10 +1,10 @@
 {
   BikeRental bikeRental=new BikeRental();
   bikeRental.setGraphService(Context.getInstance().graphService);
-  BikeRentalStationList stations=bikeRental.getBikeRentalStations(null,null,null);
+  BikeRentalStationList stations=bikeRental.getBikeRentalStations(null,null,null,"en_US");
   assertEquals(0,stations.stations.size());
-  stations=bikeRental.getBikeRentalStations("55.5,-122.7","65.6,-122.6","portland");
+  stations=bikeRental.getBikeRentalStations("55.5,-122.7","65.6,-122.6","portland","en_US");
   assertEquals(0,stations.stations.size());
-  stations=bikeRental.getBikeRentalStations("45.5,-122.7","45.6,-122.6","portland");
+  stations=bikeRental.getBikeRentalStations("45.5,-122.7","45.6,-122.6","portland","en_US");
   assertEquals(1,stations.stations.size());
 }

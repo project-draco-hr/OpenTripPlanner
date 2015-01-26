@@ -53,5 +53,5 @@
   propset.addCreativeNamer(new OSMSpecifier("railway=platform;highway=footway;footway=sidewalk"),namer);
   namer=new CreativeNamer("sidewalk");
   propset.addCreativeNamer(new OSMSpecifier("highway=footway;footway=sidewalk"),namer);
-  assertEquals("sidewalk",propset.getCreativeNameForWay(way));
+  assertEquals("sidewalk",propset.getCreativeNameForWay(way).toString());
 }
