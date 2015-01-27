@@ -3,7 +3,6 @@
   if (graph == null)   return null;
   Locale locale;
   locale=ResourceBundleSingleton.INSTANCE.getLocale(locale_param);
-  ResourceBundle resources_names=ResourceBundle.getBundle("WayProperties",locale);
   BikeRentalStationService bikeRentalService=graph.getService(BikeRentalStationService.class);
   if (bikeRentalService == null)   return new BikeRentalStationList();
   Envelope envelope;
