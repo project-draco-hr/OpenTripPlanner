@@ -37,9 +37,8 @@
           }
         }
         List<String> uniqueNames=new ArrayList<String>(uniqueNameSet);
-        String fmt=ResourceBundleSingleton.INSTANCE.localize("corner",locale);
         if (uniqueNames.size() > 1) {
-          calculatedName=new NonLocalizedString(String.format(fmt,uniqueNames.get(0),uniqueNames.get(1)));
+          calculatedName=new LocalizedString("corner",new String[]{uniqueNames.get(0),uniqueNames.get(1)});
         }
  else         if (uniqueNames.size() == 1) {
           calculatedName=new NonLocalizedString(uniqueNames.get(0));
