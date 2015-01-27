@@ -4,7 +4,7 @@
   }
   String translation=ResourceBundleSingleton.INSTANCE.localize(this.key,locale);
   if (this.params != null) {
-    translation=pattern.matcher(translation).replaceFirst("%s");
+    translation=patternMatcher.matcher(translation).replaceFirst("%s");
     return String.format(translation,(Object[])params);
   }
  else {
