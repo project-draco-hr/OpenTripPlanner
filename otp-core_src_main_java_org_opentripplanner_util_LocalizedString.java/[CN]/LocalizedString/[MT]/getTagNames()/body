@@ -1,15 +1,14 @@
 {
-  if (key_params.containsKey(key)) {
-    return key_params.get(key);
+  if (key_tag_names.containsKey(key)) {
+    return key_tag_names.get(key);
   }
+  List<String> tag_names=new ArrayList<String>(4);
   String english_trans=ResourceBundleSingleton.INSTANCE.localize(this.key,Locale.ENGLISH);
   Matcher matcher=patternMatcher.matcher(english_trans);
-  int lastEnd=0;
   while (matcher.find()) {
-    lastEnd=matcher.end();
-    String m_key=matcher.group(1);
-    key_params.put(key,m_key);
-    return m_key;
+    String tag_name=matcher.group(1);
+    key_tag_names.put(key,tag_name);
+    tag_names.add(tag_name);
   }
-  return null;
+  return tag_names;
 }
