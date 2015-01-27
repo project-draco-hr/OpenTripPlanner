@@ -2,46 +2,28 @@
   Graph graph=graphService.getGraph(routerId);
   if (graph == null)   return null;
   Locale locale;
-  if (locale_param == null || locale_param.isEmpty()) {
-    locale=new Locale("en","US");
+  locale=ResourceBundleSingleton.INSTANCE.getLocale(locale_param);
+  ResourceBundle resources_names=ResourceBundle.getBundle("WayProperties",locale);
+  BikeRentalStationService bikeRentalService=graph.getService(BikeRentalStationService.class);
+  if (bikeRentalService == null)   return new BikeRentalStationList();
+  Envelope envelope;
+  if (lowerLeft != null) {
+    envelope=GraphInternals.getEnvelope(lowerLeft,upperRight);
   }
  else {
-    String[] localeSpecParts=locale_param.split("_");
-switch (localeSpecParts.length) {
-case 1:
-      locale=new Locale(localeSpecParts[0]);
-    break;
-case 2:
-  locale=new Locale(localeSpecParts[0]);
-break;
-case 3:
-locale=new Locale(localeSpecParts[0]);
-break;
-default :
-locale=new Locale("en");
-}
-}
-ResourceBundle resources_names=ResourceBundle.getBundle("WayProperties",locale);
-BikeRentalStationService bikeRentalService=graph.getService(BikeRentalStationService.class);
-if (bikeRentalService == null) return new BikeRentalStationList();
-Envelope envelope;
-if (lowerLeft != null) {
-envelope=GraphInternals.getEnvelope(lowerLeft,upperRight);
-}
- else {
-envelope=new Envelope(-180,180,-90,90);
-}
-Collection<BikeRentalStation> stations=bikeRentalService.getStations();
-List<BikeRentalStation> out=new ArrayList<BikeRentalStation>();
-for (BikeRentalStation station : stations) {
-if (envelope.contains(station.x,station.y)) {
-if (station.raw_name != null) {
-station.name=station.raw_name.toString(locale);
-}
-out.add(station);
-}
-}
-BikeRentalStationList brsl=new BikeRentalStationList();
-brsl.stations=out;
-return brsl;
+    envelope=new Envelope(-180,180,-90,90);
+  }
+  Collection<BikeRentalStation> stations=bikeRentalService.getStations();
+  List<BikeRentalStation> out=new ArrayList<BikeRentalStation>();
+  for (  BikeRentalStation station : stations) {
+    if (envelope.contains(station.x,station.y)) {
+      if (station.raw_name != null) {
+        station.name=station.raw_name.toString(locale);
+      }
+      out.add(station);
+    }
+  }
+  BikeRentalStationList brsl=new BikeRentalStationList();
+  brsl.stations=out;
+  return brsl;
 }
