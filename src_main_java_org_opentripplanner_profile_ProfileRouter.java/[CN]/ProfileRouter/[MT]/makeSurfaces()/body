@@ -1,21 +1,36 @@
 {
-  LOG.info("Propagating profile router result to street vertices.");
-  RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
-  rr.setMode(TraverseMode.WALK);
-  rr.walkSpeed=request.walkSpeed;
-  int worstElapsedTime=request.maxWalkTime * 60;
-  rr.worstTime=(rr.dateTime + worstElapsedTime);
-  rr.batch=(true);
-  GenericAStar astar=new GenericAStar();
-  rr.setNumItineraries(1);
-  for (  TransitStop tstop : graph.index.stopVertexForStop.values()) {
-    int index=tstop.getIndex();
-    if (mins[index] == TimeSurface.UNREACHABLE || maxs[index] == TimeSurface.UNREACHABLE)     continue;
-    rr.setRoutingContext(graph,tstop,null);
-    astar.setTraverseVisitor(new ExtremaPropagationTraverseVisitor(mins[index],maxs[index]));
-    ShortestPathTree spt=astar.getShortestPathTree(rr,5);
-    rr.rctx.destroy();
+  LOG.info("Propagating from transit stops to the street network...");
+  TObjectIntMap<Vertex> lbs=new TObjectIntHashMap<>(1000000,0.5f,TimeSurface.UNREACHABLE);
+  TObjectIntMap<Vertex> ubs=new TObjectIntHashMap<>(1000000,0.5f,TimeSurface.UNREACHABLE);
+  StopTreeCache stopTreeCache=graph.index.getStopTreeCache();
+  for (  Entry<StopCluster,Ride> entry : retainedRides.entries()) {
+    StopCluster cluster=entry.getKey();
+    Ride ride=entry.getValue();
+    int lb0=ride.durationLowerBound();
+    int ub0=ride.durationUpperBound();
+    for (    Stop stop : cluster.children) {
+      TransitStop tstop=graph.index.stopVertexForStop.get(stop);
+      TObjectIntMap<Vertex> distanceToVertex=stopTreeCache.getDistancesForStop(tstop);
+      for (TObjectIntIterator<Vertex> iter=distanceToVertex.iterator(); iter.hasNext(); ) {
+        iter.advance();
+        Vertex vertex=iter.key();
+        int egressWalkTimeSeconds=(int)(iter.value() / request.walkSpeed);
+        if (egressWalkTimeSeconds > request.maxWalkTime * 60) {
+          continue;
+        }
+        int propagated_lb=lb0 + egressWalkTimeSeconds;
+        int propagated_ub=ub0 + egressWalkTimeSeconds;
+        int existing_lb=lbs.get(vertex);
+        int existing_ub=ubs.get(vertex);
+        if (existing_lb == TimeSurface.UNREACHABLE || existing_lb > propagated_lb) {
+          lbs.put(vertex,propagated_lb);
+        }
+        if (existing_ub == TimeSurface.UNREACHABLE || existing_ub > propagated_ub) {
+          ubs.put(vertex,propagated_ub);
+        }
+      }
+    }
   }
-  LOG.info("done making timesurfaces.");
-  return new P2<TimeSurface>(minSurface,maxSurface);
+  LOG.info("Done with propagation.");
+  timeSurfaceRangeSet=TimeSurface.makeSurfaces(this,lbs,ubs);
 }
