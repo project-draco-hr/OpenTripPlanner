@@ -11,7 +11,7 @@
   tree=aStar.getShortestPathTree(options);
   path=tree.getPath(C,false);
   assertNull(path);
-  ParkAndRideVertex PRB=new ParkAndRideVertex(graph,"P+R","P+R.B",0.001,45.00001,"P+R B");
+  ParkAndRideVertex PRB=new ParkAndRideVertex(graph,"P+R","P+R.B",0.001,45.00001,new NonLocalizedString("P+R B"));
   new ParkAndRideEdge(PRB);
   new ParkAndRideLinkEdge(PRB,B);
   new ParkAndRideLinkEdge(B,PRB);
