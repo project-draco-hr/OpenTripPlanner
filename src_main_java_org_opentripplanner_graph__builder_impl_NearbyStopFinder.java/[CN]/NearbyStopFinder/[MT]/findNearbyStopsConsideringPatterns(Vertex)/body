@@ -1,10 +1,10 @@
 {
-  Map<TripPattern,StopAtDistance> closestStopForPattern=new SimpleIsochrone.MinMap<TripPattern,NearbyStopFinder.StopAtDistance>();
+  SimpleIsochrone.MinMap<TripPattern,StopAtDistance> closestStopForPattern=new SimpleIsochrone.MinMap<TripPattern,StopAtDistance>();
   for (  NearbyStopFinder.StopAtDistance stopAtDistance : findNearbyStops(vertex)) {
     TransitStop ts1=stopAtDistance.tstop;
     if (!ts1.isStreetLinkable())     continue;
     for (    TripPattern pattern : graph.index.patternsForStop.get(ts1.getStop())) {
-      closestStopForPattern.put(pattern,stopAtDistance);
+      closestStopForPattern.putMin(pattern,stopAtDistance);
     }
   }
   Set<StopAtDistance> uniqueStops=Sets.newHashSet();
