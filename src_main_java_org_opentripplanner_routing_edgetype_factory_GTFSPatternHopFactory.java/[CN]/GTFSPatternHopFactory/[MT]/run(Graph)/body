@@ -61,6 +61,8 @@
     }
   }
   LOG.info("Added {} frequency-based and {} single-trip timetable entries.",freqCount,nonFreqCount);
+  graph.hasFrequencyService=graph.hasFrequencyService || freqCount > 0;
+  graph.hasScheduledService=graph.hasScheduledService || nonFreqCount > 0;
   TripPattern.generateUniqueNames(tripPatterns.values());
   TripPattern.generateUniqueIds(tripPatterns.values());
   for (  TripPattern tripPattern : tripPatterns.values()) {
