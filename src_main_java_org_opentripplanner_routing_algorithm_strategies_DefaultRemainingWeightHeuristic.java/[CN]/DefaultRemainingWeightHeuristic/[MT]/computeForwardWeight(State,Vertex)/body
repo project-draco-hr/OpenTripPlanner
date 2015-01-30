@@ -1,6 +1,6 @@
 {
   Vertex sv=s.getVertex();
-  double euclideanDistance=distanceLibrary.fastDistance(sv.getY(),sv.getX(),targetY,targetX);
+  double euclideanDistance=distanceLibrary.fastDistance(sv.getLat(),sv.getLon(),lat,lon);
   if (transit) {
     if (euclideanDistance < requiredWalkDistance) {
       return walkReluctance * euclideanDistance / maxStreetSpeed;
