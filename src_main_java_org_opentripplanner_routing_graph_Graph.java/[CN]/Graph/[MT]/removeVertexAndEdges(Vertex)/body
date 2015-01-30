@@ -2,6 +2,11 @@
   if (!containsVertex(vertex)) {
     throw new IllegalStateException("attempting to remove vertex that is not in graph.");
   }
-  vertex.removeAllEdges();
+  List<Edge> edges=new ArrayList<Edge>(vertex.getDegreeIn() + vertex.getDegreeOut());
+  edges.addAll(vertex.getIncoming());
+  edges.addAll(vertex.getOutgoing());
+  for (  Edge edge : edges) {
+    removeEdge(edge);
+  }
   this.remove(vertex);
 }
