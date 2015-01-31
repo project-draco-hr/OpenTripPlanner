@@ -35,7 +35,7 @@
     pathService=new LongDistancePathService(null,genericAStar);
   }
  else {
-    pathService=new RetryingPathServiceImpl(null,genericAStar);
+    pathService=null;
   }
   planGenerator=new PlanGenerator(null,pathService);
 }
