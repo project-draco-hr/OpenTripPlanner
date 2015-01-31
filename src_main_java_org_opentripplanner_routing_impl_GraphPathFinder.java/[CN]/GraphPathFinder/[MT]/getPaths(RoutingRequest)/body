@@ -17,7 +17,7 @@
     heuristic=new InterleavedBidirectionalHeuristic(options.rctx.graph);
   }
  else {
-    heuristic=new DefaultRemainingWeightHeuristic();
+    heuristic=new EuclideanRemainingWeightHeuristic();
   }
   options.rctx.remainingWeightHeuristic=heuristic;
   options.setMaxTransfers(4);
