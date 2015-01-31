@@ -32,7 +32,7 @@
   }
   genericAStar=new GenericAStarFactory();
   if (isLongDistance()) {
-    pathService=new LongDistancePathService(null,genericAStar);
+    pathService=new GraphPathFinder(null,genericAStar);
   }
  else {
     pathService=null;

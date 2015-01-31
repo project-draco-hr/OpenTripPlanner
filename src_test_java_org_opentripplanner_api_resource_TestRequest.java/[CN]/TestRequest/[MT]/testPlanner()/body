@@ -1,5 +1,5 @@
 {
-  TestPlanner planner=new TestPlanner("portland","From::NE 43RD AVE at NE GLISAN ST","To::NE 43RD AVE at NE ROYAL CT");
+  TestPlannerResource planner=new TestPlannerResource("portland","From::NE 43RD AVE at NE GLISAN ST","To::NE 43RD AVE at NE ROYAL CT");
   Response response=planner.getItineraries();
   Itinerary itinerary=response.getPlan().itinerary.get(0);
   Leg leg=itinerary.legs.get(0);

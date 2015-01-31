@@ -1,6 +1,6 @@
 {
   ServiceDate serviceDate=new ServiceDate(2009,10,01);
-  TestPlanner planner=new TestPlanner("portland","45.506077,-122.621139","45.464637,-122.706061");
+  TestPlannerResource planner=new TestPlannerResource("portland","45.506077,-122.621139","45.464637,-122.706061");
   TransferTable table=new TransferTable();
   Graph graph=Context.getInstance().graph;
   when(graph.getTransferTable()).thenReturn(table);

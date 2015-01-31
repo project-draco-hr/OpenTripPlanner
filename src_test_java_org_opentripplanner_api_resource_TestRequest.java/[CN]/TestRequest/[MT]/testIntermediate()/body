@@ -7,7 +7,7 @@
   assertNotNull(v2);
   assertNotNull(v3);
   assertNotNull(v4);
-  TestPlanner planner=new TestPlanner("portland",v1.getLabel(),v4.getLabel(),Arrays.asList(v2.getLabel(),v3.getLabel()));
+  TestPlannerResource planner=new TestPlannerResource("portland",v1.getLabel(),v4.getLabel(),Arrays.asList(v2.getLabel(),v3.getLabel()));
   TripPlan plan=planner.getItineraries().getPlan();
   Itinerary itinerary=plan.itinerary.get(0);
   assertTrue(itinerary.legs.size() == 3);
