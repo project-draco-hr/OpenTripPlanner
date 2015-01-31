@@ -87,7 +87,7 @@ graphBuilder.addGraphBuilder(new BusRouteStreetMatcher());
 graphBuilder.addGraphBuilder(new TransitToTaggedStopsGraphBuilderImpl());
 graphBuilder.addGraphBuilder(new TransitToStreetNetworkGraphBuilderImpl());
 }
-if (!params.useTransfersTxt) {
+if (params.longDistance && !params.useTransfersTxt) {
 graphBuilder.addGraphBuilder(new DirectTransferGenerator());
 }
 gtfsBuilder.setFareServiceFactory(new DefaultFareServiceFactory());
