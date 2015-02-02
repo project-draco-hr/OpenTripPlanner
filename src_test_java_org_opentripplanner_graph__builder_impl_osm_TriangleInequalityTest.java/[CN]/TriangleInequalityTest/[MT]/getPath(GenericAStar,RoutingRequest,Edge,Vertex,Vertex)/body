@@ -1,7 +1,7 @@
 {
   RoutingRequest options=proto.clone();
   options.setRoutingContext(_graph,startBackEdge,u,v);
-  ShortestPathTree tree=sptService.getShortestPathTree(options);
+  ShortestPathTree tree=aStar.getShortestPathTree(options);
   GraphPath path=tree.getPath(v,false);
   options.cleanup();
   return path;

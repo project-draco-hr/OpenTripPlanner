@@ -3,7 +3,7 @@
     LOG.error("PathService was passed a null routing request.");
     return null;
   }
-  SPTService sptService=new GenericAStar();
+  GenericAStar aStar=new GenericAStar();
   if (options.rctx == null) {
     options.setRoutingContext(graph);
     options.rctx.pathParsers=new PathParser[]{new Parser()};
@@ -30,7 +30,7 @@
   Set<AgencyAndId> bannedTrips=Sets.newHashSet();
   while (paths.size() < options.numItineraries && paths.size() < timeouts.length) {
     double timeout=searchBeginTime + (timeouts[paths.size()] * 1000) - System.currentTimeMillis();
-    ShortestPathTree spt=sptService.getShortestPathTree(options,timeout);
+    ShortestPathTree spt=aStar.getShortestPathTree(options,timeout);
     if (spt == null) {
       LOG.warn("SPT was null.");
       return null;

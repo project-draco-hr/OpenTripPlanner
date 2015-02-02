@@ -2,7 +2,7 @@
   LOG.debug("calling origin : {}",oi);
   RoutingRequest req=buildRequest(oi);
   if (req != null) {
-    ShortestPathTree spt=sptService.getShortestPathTree(req);
+    ShortestPathTree spt=new GenericAStar().getShortestPathTree(req);
     ResultSet results=ResultSet.forTravelTimes(destinations,spt);
     req.cleanup();
 switch (mode) {
