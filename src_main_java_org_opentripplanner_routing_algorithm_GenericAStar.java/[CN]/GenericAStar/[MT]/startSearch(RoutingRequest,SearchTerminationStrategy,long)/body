@@ -3,7 +3,7 @@
   runState.rctx=options.getRoutingContext();
   runState.spt=options.longDistance ? new WeightOnlyShortestPathTree(runState.options) : new MultiShortestPathTree(runState.options);
   runState.heuristic=options.batch ? new TrivialRemainingWeightHeuristic() : runState.rctx.remainingWeightHeuristic;
-  runState.heuristic.initialize(runState.options,runState.rctx.origin,runState.rctx.target,abortTime);
+  runState.heuristic.initialize(runState.options,abortTime);
   if (abortTime < Long.MAX_VALUE && System.currentTimeMillis() > abortTime) {
     LOG.warn("Timeout during initialization of goal direction heuristic.");
     options.rctx.debugOutput.timedOut=true;

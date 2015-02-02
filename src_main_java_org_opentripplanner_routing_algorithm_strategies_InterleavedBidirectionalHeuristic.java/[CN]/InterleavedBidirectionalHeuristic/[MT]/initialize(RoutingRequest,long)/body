@@ -1,6 +1,7 @@
 {
+  Vertex target=options.rctx.target;
   if (target == this.target) {
-    LOG.debug("reusing existing heuristic");
+    LOG.debug("Reusing existing heuristic, the target vertex has not changed.");
     return;
   }
   long start=System.currentTimeMillis();

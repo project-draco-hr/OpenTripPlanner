@@ -20,7 +20,7 @@
       if (traverseVisitor != null) {
         traverseVisitor.visitEdge(edge,v);
       }
-      double remaining_w=computeRemainingWeight(runState.heuristic,v,runState.rctx.target,runState.options);
+      double remaining_w=runState.heuristic.estimateRemainingWeight(v);
       if (remaining_w < 0 || Double.isInfinite(remaining_w)) {
         continue;
       }

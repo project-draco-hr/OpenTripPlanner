@@ -1,5 +1,6 @@
 {
   RoutingRequest req=options;
+  Vertex target=req.rctx.target;
   this.transit=req.modes.isTransit();
   maxStreetSpeed=req.getStreetSpeedUpperBound();
   maxTransitSpeed=req.getTransitSpeedUpperBound();
