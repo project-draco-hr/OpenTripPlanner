@@ -83,7 +83,7 @@
     sptRequestA.setMode(TraverseMode.WALK);
     sptRequestA.setRoutingContext(router.graph);
   }
-  ShortestPathTree sptA=router.sptServiceFactory.instantiate().getShortestPathTree(sptRequestA);
+  ShortestPathTree sptA=new GenericAStar().getShortestPathTree(sptRequestA);
   StreetLocation origin=(StreetLocation)sptRequestA.rctx.fromVertex;
   sptRequestA.cleanup();
   Coordinate pathToStreetCoords[]=new Coordinate[2];

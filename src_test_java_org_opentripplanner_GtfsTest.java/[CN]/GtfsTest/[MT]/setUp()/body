@@ -31,11 +31,4 @@
  catch (  Exception exception) {
   }
   genericAStar=new GenericAStarFactory();
-  if (isLongDistance()) {
-    pathService=new GraphPathFinder(null,genericAStar);
-  }
- else {
-    pathService=null;
-  }
-  planGenerator=new PlanGenerator(null,pathService);
 }

@@ -12,7 +12,7 @@
       request.to=to;
       request.rctx=null;
       request.setRoutingContext(graph);
-      List<GraphPath> partialPaths=pathService.getPaths(request);
+      List<GraphPath> partialPaths=getPaths(request);
       if (partialPaths == null || partialPaths.size() == 0) {
         return null;
       }
@@ -24,6 +24,6 @@
     return Arrays.asList(joinPaths(paths));
   }
  else {
-    return pathService.getPaths(request);
+    return getPaths(request);
   }
 }

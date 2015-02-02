@@ -3,7 +3,7 @@
     LOG.error("PathService was passed a null routing request.");
     return null;
   }
-  SPTService sptService=this.sptServiceFactory.instantiate();
+  SPTService sptService=new GenericAStar();
   if (options.rctx == null) {
     options.setRoutingContext(graph);
     options.rctx.pathParsers=new PathParser[]{new Parser()};

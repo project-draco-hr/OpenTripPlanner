@@ -44,7 +44,6 @@
     sptServiceFactory.setTraverseVisitor(new VisualTraverseVisitor(showGraph));
   }
   SPTVisitor vis=new SPTVisitor();
-  pathservice.setSPTVisitor(vis);
   long t0=System.currentTimeMillis();
   List<GraphPath> paths=pathservice.getPaths(options);
   long dt=System.currentTimeMillis() - t0;
