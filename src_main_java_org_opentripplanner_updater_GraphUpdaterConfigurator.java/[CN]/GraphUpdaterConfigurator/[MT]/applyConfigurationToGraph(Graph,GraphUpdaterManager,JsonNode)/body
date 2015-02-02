@@ -1,0 +1,49 @@
+{
+  for (  JsonNode configItem : config) {
+    String type=configItem.path("type").asText();
+    GraphUpdater updater=null;
+    if (type != null) {
+      if (type.equals("bike-rental")) {
+        updater=new BikeRentalUpdater();
+      }
+ else       if (type.equals("bike-park")) {
+        updater=new BikeParkUpdater();
+      }
+ else       if (type.equals("stop-time-updater")) {
+        updater=new PollingStoptimeUpdater();
+      }
+ else       if (type.equals("websocket-gtfs-rt-updater")) {
+        updater=new WebsocketGtfsRealtimeUpdater();
+      }
+ else       if (type.equals("real-time-alerts")) {
+        updater=new GtfsRealtimeAlertsUpdater();
+      }
+ else       if (type.equals("example-updater")) {
+        updater=new ExampleGraphUpdater();
+      }
+ else       if (type.equals("example-polling-updater")) {
+        updater=new ExamplePollingGraphUpdater();
+      }
+ else       if (type.equals("winkki-polling-updater")) {
+        updater=new WinkkiPollingGraphUpdater();
+      }
+    }
+    try {
+      if (updater == null) {
+        LOG.error("Unknown updater type: " + type);
+      }
+ else {
+        updater.setGraphUpdaterManager(updaterManager);
+        if (updater instanceof JsonConfigurable) {
+          ((JsonConfigurable)updater).configure(graph,configItem);
+        }
+        updaterManager.addUpdater(updater);
+        LOG.info("Configured GraphUpdater: {}",updater);
+      }
+    }
+ catch (    Exception e) {
+      LOG.error("Can't configure: " + configItem.asText(),e);
+    }
+  }
+  return updaterManager;
+}

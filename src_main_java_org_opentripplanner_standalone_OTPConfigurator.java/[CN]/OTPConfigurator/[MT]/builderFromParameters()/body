@@ -92,11 +92,6 @@ graphBuilder.addGraphBuilder(new DirectTransferGenerator());
 }
 gtfsBuilder.setFareServiceFactory(new DefaultFareServiceFactory());
 }
-if (configFile != null) {
-EmbeddedConfigGraphBuilderImpl embeddedConfigBuilder=new EmbeddedConfigGraphBuilderImpl();
-embeddedConfigBuilder.propertiesFile=configFile;
-graphBuilder.addGraphBuilder(embeddedConfigBuilder);
-}
 if (params.elevation) {
 File cacheDirectory=new File(params.cacheDirectory,"ned");
 ElevationGridCoverageFactory gcf=new NEDGridCoverageFactoryImpl(cacheDirectory);

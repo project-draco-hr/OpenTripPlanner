@@ -1,6 +1,6 @@
 {
 synchronized (this) {
-    long lastModified=graphInputStream.getLastModified();
+    long lastModified=streams.getLastModified();
     boolean doReload=force ? true : checkAutoReload(lastModified);
     if (!doReload)     return true;
     if (preEvict) {

@@ -14,6 +14,6 @@
   if (name.endsWith(".osm"))   return OSM;
   if (name.endsWith(".osm.xml"))   return OSM;
   if (name.endsWith(".tif"))   return DEM;
-  if (name.equals("Embed.properties"))   return CONFIG;
+  if (name.equals(InputStreamGraphSource.CONFIG_FILENAME))   return CONFIG;
   return OTHER;
 }

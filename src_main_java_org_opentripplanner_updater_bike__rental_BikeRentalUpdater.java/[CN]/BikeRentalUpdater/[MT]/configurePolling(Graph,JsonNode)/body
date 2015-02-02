@@ -1,0 +1,39 @@
+{
+  String sourceType=config.path("sourceType").asText();
+  String apiKey=config.path("apiKey").asText();
+  BikeRentalDataSource source=null;
+  if (sourceType != null) {
+    if (sourceType.equals("jcdecaux")) {
+      source=new JCDecauxBikeRentalDataSource();
+    }
+ else     if (sourceType.equals("b-cycle")) {
+      source=new BCycleBikeRentalDataSource(apiKey);
+    }
+ else     if (sourceType.equals("bixi")) {
+      source=new BixiBikeRentalDataSource();
+    }
+ else     if (sourceType.equals("keolis-rennes")) {
+      source=new KeolisRennesBikeRentalDataSource();
+    }
+ else     if (sourceType.equals("ov-fiets")) {
+      source=new OVFietsKMLDataSource();
+    }
+ else     if (sourceType.equals("city-bikes")) {
+      source=new CityBikesBikeRentalDataSource();
+    }
+ else     if (sourceType.equals("vcub")) {
+      source=new VCubDataSource();
+    }
+  }
+  if (source == null) {
+    throw new IllegalArgumentException("Unknown bike rental source type: " + sourceType);
+  }
+ else   if (source instanceof JsonConfigurable) {
+    ((JsonConfigurable)source).configure(graph,config);
+  }
+  LOG.info("Setting up bike rental updater.");
+  this.graph=graph;
+  this.source=source;
+  this.network=config.path("networks").asText(DEFAULT_NETWORK_LIST);
+  LOG.info("Creating bike-rental updater running every {} seconds : {}",frequencySec,source);
+}

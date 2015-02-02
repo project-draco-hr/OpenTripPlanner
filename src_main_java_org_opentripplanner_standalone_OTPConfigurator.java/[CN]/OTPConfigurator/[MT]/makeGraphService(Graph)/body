@@ -9,8 +9,11 @@
   }
   if (graph != null && (params.inMemory || params.preFlight)) {
     try {
-      FileInputStream graphConfiguration=new FileInputStream(params.graphConfigFile);
-      Preferences config=new PropertiesPreferences(graphConfiguration);
+      FileInputStream graphConfigurationStream=new FileInputStream(params.graphConfigFile);
+      ObjectMapper mapper=new ObjectMapper();
+      mapper.configure(JsonParser.Feature.ALLOW_COMMENTS,true);
+      mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES,true);
+      JsonNode config=mapper.readTree(graphConfigurationStream);
       this.graphService.registerGraph("",new MemoryGraphSource("",graph,config));
     }
  catch (    Exception e) {

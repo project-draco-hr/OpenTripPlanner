@@ -1,0 +1,12 @@
+{
+  GraphUpdaterManager updaterManager=new GraphUpdaterManager(graph);
+  JsonNode embeddedConfig=graph.embeddedPreferences;
+  LOG.info("Using configurations: " + (mainConfig == null ? "" : "[main]") + " "+ (embeddedConfig == null ? "" : "[embedded]"));
+  updaterManager=applyConfigurationToGraph(graph,updaterManager,mainConfig);
+  if (updaterManager.size() == 0) {
+    updaterManager.stop();
+  }
+ else {
+    graph.updaterManager=updaterManager;
+  }
+}

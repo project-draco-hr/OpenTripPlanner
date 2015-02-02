@@ -1,0 +1,7 @@
+{
+  String url=config.path("url").asText();
+  if (url == null) {
+    throw new IllegalArgumentException("Missing mandatory 'url' configuration.");
+  }
+  setUrl(url);
+}
