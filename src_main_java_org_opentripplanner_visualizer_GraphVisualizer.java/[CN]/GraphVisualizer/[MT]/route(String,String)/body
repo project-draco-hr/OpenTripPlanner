@@ -37,12 +37,6 @@
   System.out.println("\tModes: " + modeSet);
   System.out.println("\tOptions: " + options);
   options.numItineraries=(Integer.parseInt(this.nPaths.getText()));
-  if (dontUseGraphicalCallbackCheckBox.isSelected()) {
-    sptServiceFactory.setTraverseVisitor(null);
-  }
- else {
-    sptServiceFactory.setTraverseVisitor(new VisualTraverseVisitor(showGraph));
-  }
   SPTVisitor vis=new SPTVisitor();
   long t0=System.currentTimeMillis();
   List<GraphPath> paths=pathservice.getPaths(options);
