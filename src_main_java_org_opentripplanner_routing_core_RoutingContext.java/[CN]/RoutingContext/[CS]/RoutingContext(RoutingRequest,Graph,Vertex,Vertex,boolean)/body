@@ -68,7 +68,7 @@
   target=opt.arriveBy ? fromVertex : toVertex;
   transferTable=graph.getTransferTable();
   if (opt.batch)   remainingWeightHeuristic=new TrivialRemainingWeightHeuristic();
- else   remainingWeightHeuristic=heuristicFactory.getInstanceForSearch(opt);
+ else   remainingWeightHeuristic=new EuclideanRemainingWeightHeuristic();
   if (this.origin != null) {
     LOG.debug("Origin vertex inbound edges {}",this.origin.getIncoming());
     LOG.debug("Origin vertex outbound edges {}",this.origin.getOutgoing());
