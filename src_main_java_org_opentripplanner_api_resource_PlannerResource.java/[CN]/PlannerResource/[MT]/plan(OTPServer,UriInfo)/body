@@ -6,7 +6,7 @@
     Router router=otpServer.getRouter(request.routerId);
     GraphPathFinder gpFinder=new GraphPathFinder(router.graph);
     List<GraphPath> paths=gpFinder.graphPathFinderEntryPoint(request);
-    TripPlan plan=PlanGenerator.generatePlan(paths,request);
+    TripPlan plan=GraphPathToTripPlanConverter.generatePlan(paths,request);
     response.setPlan(plan);
   }
  catch (  Exception e) {

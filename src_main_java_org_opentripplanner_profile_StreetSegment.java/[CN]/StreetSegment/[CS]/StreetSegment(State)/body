@@ -14,7 +14,7 @@
   }
   Geometry geom=GeometryUtils.getGeometryFactory().createLineString(coordinates);
   this.geometry=PolylineEncoder.createEncodings(geom);
-  Itinerary itin=PlanGenerator.generateItinerary(path,false);
+  Itinerary itin=GraphPathToTripPlanConverter.generateItinerary(path,false);
   for (  Leg leg : itin.legs) {
     walkSteps.addAll(leg.walkSteps);
   }
