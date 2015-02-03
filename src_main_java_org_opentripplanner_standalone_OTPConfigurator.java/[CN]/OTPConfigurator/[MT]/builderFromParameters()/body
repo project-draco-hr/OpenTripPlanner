@@ -6,7 +6,7 @@
   GraphBuilderTask graphBuilder=new GraphBuilderTask();
   List<File> gtfsFiles=Lists.newArrayList();
   List<File> osmFiles=Lists.newArrayList();
-  JsonNode graphConfig=null;
+  JsonNode builderConfig=null;
   JsonNode routerConfig=null;
   File demFile=null;
   File dir=params.build;
@@ -16,8 +16,8 @@
     return null;
   }
   graphBuilder.setPath(dir);
-  graphConfig=loadJson(new File(dir,GRAPH_CONFIG_FILENAME));
-  GraphBuilderParameters builderParams=new GraphBuilderParameters(graphConfig);
+  builderConfig=loadJson(new File(dir,BUILDER_CONFIG_FILENAME));
+  GraphBuilderParameters builderParams=new GraphBuilderParameters(builderConfig);
   routerConfig=loadJson(new File(dir,ROUTER_CONFIG_FILENAME));
   RouterParameters routerParams=new RouterParameters(routerConfig);
   LOG.info(dumpFields(builderParams));
@@ -102,9 +102,10 @@ ElevationGridCoverageFactory gcf=new GeotiffGridCoverageFactoryImpl(demFile);
 GraphBuilder elevationBuilder=new ElevationGraphBuilderImpl(gcf);
 graphBuilder.addGraphBuilder(elevationBuilder);
 }
-graphBuilder.serializeGraph=(!params.inMemory) || params.preFlight;
+graphBuilder.addGraphBuilder(new EmbedConfig(builderConfig,routerConfig));
 if (builderParams.htmlAnnotations) {
-AnnotationsToHTML annotationsToHTML=new AnnotationsToHTML(graphBuilder.getGraph(),new File(params.build,"report.html"));
+graphBuilder.addGraphBuilder(new AnnotationsToHTML(new File(params.build,"report.html")));
 }
+graphBuilder.serializeGraph=(!params.inMemory) || params.preFlight;
 return graphBuilder;
 }

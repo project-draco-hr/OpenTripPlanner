@@ -1,0 +1,10 @@
+{
+  ObjectMapper mapper=new ObjectMapper();
+  try {
+    graph.builderConfig=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(builderConfig);
+    graph.routerConfig=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(routerConfig);
+  }
+ catch (  Exception ex) {
+    throw new RuntimeException(ex);
+  }
+}
