@@ -8,18 +8,7 @@
     graphSourceFactory.basePath=params.graphDirectory;
   }
   if (graph != null && (params.inMemory || params.preFlight)) {
-    try {
-      FileInputStream graphConfigurationStream=new FileInputStream(params.graphConfigFile);
-      ObjectMapper mapper=new ObjectMapper();
-      mapper.configure(JsonParser.Feature.ALLOW_COMMENTS,true);
-      mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES,true);
-      JsonNode config=mapper.readTree(graphConfigurationStream);
-      this.graphService.registerGraph("",new MemoryGraphSource("",graph,config));
-    }
- catch (    Exception e) {
-      if (params.graphConfigFile != null)       LOG.error("Can't read config file",e);
-      this.graphService.registerGraph("",new MemoryGraphSource("",graph));
-    }
+    this.graphService.registerGraph("",new MemoryGraphSource("",graph,MissingNode.getInstance()));
   }
   if ((params.routerIds != null && params.routerIds.size() > 0) || params.autoScan) {
     GraphScanner graphScanner=new GraphScanner(graphService,params.graphDirectory,params.autoScan);

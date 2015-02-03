@@ -1,32 +1,37 @@
 {
-  if (params.build == null || params.build.isEmpty()) {
+  if (params.build == null) {
     return null;
   }
   LOG.info("Wiring up and configuring graph builder task.");
   GraphBuilderTask graphBuilder=new GraphBuilderTask();
   List<File> gtfsFiles=Lists.newArrayList();
   List<File> osmFiles=Lists.newArrayList();
-  File configFile=null;
+  JsonNode graphConfig=null;
+  JsonNode routerConfig=null;
   File demFile=null;
-  for (  File dir : params.build) {
-    LOG.info("Searching for graph builder input files in {}",dir);
-    if (!dir.isDirectory() && dir.canRead()) {
-      LOG.error("'{}' is not a readable directory.",dir);
-      continue;
-    }
-    graphBuilder.setPath(dir);
-    for (    File file : dir.listFiles()) {
+  File dir=params.build;
+  LOG.info("Searching for graph builder input files in {}",dir);
+  if (!dir.isDirectory() && dir.canRead()) {
+    LOG.error("'{}' is not a readable directory.",dir);
+    return null;
+  }
+  graphBuilder.setPath(dir);
+  graphConfig=loadJson(new File(dir,GRAPH_CONFIG_FILENAME));
+  GraphBuilderParameters builderParams=new GraphBuilderParameters(graphConfig);
+  routerConfig=loadJson(new File(dir,ROUTER_CONFIG_FILENAME));
+  RouterParameters routerParams=new RouterParameters(routerConfig);
+  for (  File file : dir.listFiles()) {
 switch (InputFileType.forFile(file)) {
 case GTFS:
-        LOG.info("Found GTFS file {}",file);
-      gtfsFiles.add(file);
-    break;
+      LOG.info("Found GTFS file {}",file);
+    gtfsFiles.add(file);
+  break;
 case OSM:
-  LOG.info("Found OSM file {}",file);
+LOG.info("Found OSM file {}",file);
 osmFiles.add(file);
 break;
 case DEM:
-if (!params.elevation && demFile == null) {
+if (!builderParams.elevation && demFile == null) {
 LOG.info("Found DEM file {}",file);
 demFile=file;
 }
@@ -34,19 +39,12 @@ demFile=file;
 LOG.info("Skipping DEM file {}",file);
 }
 break;
-case CONFIG:
-if (!params.noEmbedConfig) {
-LOG.info("Found CONFIG file {}",file);
-configFile=file;
-}
-break;
 case OTHER:
 LOG.debug("Skipping file '{}'",file);
 }
 }
-}
-boolean hasOSM=!(osmFiles.isEmpty() || params.noStreets);
-boolean hasGTFS=!(gtfsFiles.isEmpty() || params.noTransit);
+boolean hasOSM=builderParams.streets && !osmFiles.isEmpty();
+boolean hasGTFS=builderParams.transit && !gtfsFiles.isEmpty();
 if (!(hasOSM || hasGTFS)) {
 LOG.error("Found no input files from which to build a graph in {}",params.build.toString());
 return null;
@@ -59,11 +57,11 @@ osmProviders.add(osmProvider);
 }
 OpenStreetMapGraphBuilderImpl osmBuilder=new OpenStreetMapGraphBuilderImpl(osmProviders);
 DefaultStreetEdgeFactory streetEdgeFactory=new DefaultStreetEdgeFactory();
-streetEdgeFactory.useElevationData=params.elevation || (demFile != null);
+streetEdgeFactory.useElevationData=builderParams.elevation || (demFile != null);
 osmBuilder.edgeFactory=streetEdgeFactory;
 DefaultWayPropertySetSource defaultWayPropertySetSource=new DefaultWayPropertySetSource();
 osmBuilder.setDefaultWayPropertySetSource(defaultWayPropertySetSource);
-osmBuilder.skipVisibility=params.skipVisibility;
+osmBuilder.skipVisibility=!builderParams.areaVisibility;
 graphBuilder.addGraphBuilder(osmBuilder);
 graphBuilder.addGraphBuilder(new PruneFloatingIslands());
 }
@@ -71,28 +69,28 @@ if (hasGTFS) {
 List<GtfsBundle> gtfsBundles=Lists.newArrayList();
 for (File gtfsFile : gtfsFiles) {
 GtfsBundle gtfsBundle=new GtfsBundle(gtfsFile);
-gtfsBundle.setTransfersTxtDefinesStationPaths(params.useTransfersTxt);
-if (!params.noParentStopLinking) {
+gtfsBundle.setTransfersTxtDefinesStationPaths(builderParams.useTransfersTxt);
+if (builderParams.parentStopLinking) {
 gtfsBundle.linkStopsToParentStations=true;
 }
-gtfsBundle.parentStationTransfers=params.parentStationTransfers;
+gtfsBundle.parentStationTransfers=builderParams.parentStationTransfers;
 gtfsBundles.add(gtfsBundle);
 }
 GtfsGraphBuilderImpl gtfsBuilder=new GtfsGraphBuilderImpl(gtfsBundles);
 graphBuilder.addGraphBuilder(gtfsBuilder);
 if (hasOSM) {
-if (params.matchBusRoutesToStreets) {
+if (builderParams.matchBusRoutesToStreets) {
 graphBuilder.addGraphBuilder(new BusRouteStreetMatcher());
 }
 graphBuilder.addGraphBuilder(new TransitToTaggedStopsGraphBuilderImpl());
 graphBuilder.addGraphBuilder(new TransitToStreetNetworkGraphBuilderImpl());
 }
-if (params.longDistance && !params.useTransfersTxt) {
+if (!builderParams.useTransfersTxt) {
 graphBuilder.addGraphBuilder(new DirectTransferGenerator());
 }
 gtfsBuilder.setFareServiceFactory(new DefaultFareServiceFactory());
 }
-if (params.elevation) {
+if (builderParams.elevation) {
 File cacheDirectory=new File(params.cacheDirectory,"ned");
 ElevationGridCoverageFactory gcf=new NEDGridCoverageFactoryImpl(cacheDirectory);
 GraphBuilder elevationBuilder=new ElevationGraphBuilderImpl(gcf);
@@ -104,5 +102,8 @@ GraphBuilder elevationBuilder=new ElevationGraphBuilderImpl(gcf);
 graphBuilder.addGraphBuilder(elevationBuilder);
 }
 graphBuilder.serializeGraph=(!params.inMemory) || params.preFlight;
+if (builderParams.htmlAnnotations) {
+AnnotationsToHTML annotationsToHTML=new AnnotationsToHTML(graphBuilder.getGraph(),new File(params.build,"report.html"));
+}
 return graphBuilder;
 }

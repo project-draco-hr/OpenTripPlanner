@@ -1,0 +1,19 @@
+{
+  try (FileInputStream jsonStream=new FileInputStream(file)){
+    ObjectMapper mapper=new ObjectMapper();
+    mapper.configure(JsonParser.Feature.ALLOW_COMMENTS,true);
+    mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES,true);
+    JsonNode config=mapper.readTree(jsonStream);
+    LOG.info("Found and loaded JSON configuration file '{}'",file);
+    return config;
+  }
+ catch (  FileNotFoundException ex) {
+    LOG.info("File '{}' is not present. Using default configuration.",file);
+    return MissingNode.getInstance();
+  }
+catch (  Exception ex) {
+    LOG.error("Error while parsing JSON config file '{}': {}",file,ex.getMessage());
+    System.exit(42);
+    return null;
+  }
+}
