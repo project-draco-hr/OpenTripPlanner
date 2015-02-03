@@ -1,0 +1,20 @@
+{
+  StringBuilder sb=new StringBuilder();
+  Class clazz=object.getClass();
+  sb.append("Summarizing all public fields of an instance of class ");
+  sb.append(clazz);
+  sb.append('\n');
+  for (  Field field : clazz.getFields()) {
+    sb.append(field.getName());
+    sb.append(" = ");
+    try {
+      String value=field.get(object).toString();
+      sb.append(value);
+    }
+ catch (    IllegalAccessException ex) {
+      sb.append("(non-public)");
+    }
+    sb.append('\n');
+  }
+  return sb.toString();
+}

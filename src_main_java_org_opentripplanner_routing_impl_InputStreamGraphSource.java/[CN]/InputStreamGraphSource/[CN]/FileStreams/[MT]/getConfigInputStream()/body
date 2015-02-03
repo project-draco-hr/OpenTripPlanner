@@ -1,5 +1,5 @@
 {
-  File configFile=new File(path,CONFIG_FILENAME);
+  File configFile=new File(path,OTPConfigurator.ROUTER_CONFIG_FILENAME);
   if (configFile.canRead()) {
     LOG.debug("Loading config from file '{}'",configFile.getPath());
     return new FileInputStream(configFile);
