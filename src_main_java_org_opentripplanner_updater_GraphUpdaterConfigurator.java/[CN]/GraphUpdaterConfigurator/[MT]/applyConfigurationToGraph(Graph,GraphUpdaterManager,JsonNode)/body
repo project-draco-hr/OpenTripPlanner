@@ -1,5 +1,5 @@
 {
-  for (  JsonNode configItem : config) {
+  for (  JsonNode configItem : config.path("updaters")) {
     String type=configItem.path("type").asText();
     GraphUpdater updater=null;
     if (type != null) {
