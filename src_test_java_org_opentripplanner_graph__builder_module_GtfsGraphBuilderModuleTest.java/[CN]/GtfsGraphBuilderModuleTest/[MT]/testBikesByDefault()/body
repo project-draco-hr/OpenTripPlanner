@@ -2,9 +2,9 @@
   MockGtfs gtfs=getSimpleGtfs();
   gtfs.putTrips(2,"r0","sid0","bikes_allowed=0,2");
   gtfs.putStopTimes("t0,t1","s0,s1");
-  GtfsBundles bundles=getGtfsAsBundles(gtfs);
-  bundles.getBundles().get(0).setDefaultBikesAllowed(true);
-  _builder.setGtfsBundles(bundles);
+  List<GtfsBundle> bundleList=getGtfsAsBundleList(gtfs);
+  bundleList.get(0).setDefaultBikesAllowed(true);
+  _builder=new GtfsModule(bundleList);
   Graph graph=new Graph();
   _builder.buildGraph(graph,_extra);
   graph.index(new DefaultStreetVertexIndexFactory());

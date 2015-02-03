@@ -3,7 +3,7 @@
   MultiCalendarServiceImpl service=new MultiCalendarServiceImpl();
   GtfsStopContext stopContext=new GtfsStopContext();
   try {
-    for (    GtfsBundle gtfsBundle : _gtfsBundles.getBundles()) {
+    for (    GtfsBundle gtfsBundle : gtfsBundles) {
       if (cacheDirectory != null && gtfsBundle.cacheDirectory == null)       gtfsBundle.cacheDirectory=cacheDirectory;
       if (useCached != null && gtfsBundle.useCached == null)       gtfsBundle.useCached=useCached;
       GtfsMutableRelationalDao dao=new GtfsRelationalDaoImpl();
