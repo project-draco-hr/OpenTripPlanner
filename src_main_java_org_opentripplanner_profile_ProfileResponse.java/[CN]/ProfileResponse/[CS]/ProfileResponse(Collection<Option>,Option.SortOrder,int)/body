@@ -1,7 +1,7 @@
 {
   List<Option> transitOptions=Lists.newArrayList();
-  for (  Option option : options) {
-    if (option.transit == null || option.transit.isEmpty())     this.options.add(option);
+  for (  Option option : allOptions) {
+    if (option.transit == null || option.transit.isEmpty())     options.add(option);
  else     transitOptions.add(option);
   }
   Comparator<Option> c;
@@ -17,10 +17,19 @@ default :
 c=new Option.MinComparator();
 }
 Collections.sort(transitOptions,c);
-if (limit > 0 && limit <= transitOptions.size()) {
-transitOptions=transitOptions.subList(0,limit);
+ListMultimap<TraverseMode,Option> transitOptionsByAccessMode=ArrayListMultimap.create();
+for (Option option : transitOptions) {
+for (StreetSegment segment : option.access) {
+transitOptionsByAccessMode.put(segment.mode,option);
 }
-this.options.addAll(transitOptions);
+}
+for (Collection<Option> singleModeOptions : transitOptionsByAccessMode.asMap().values()) {
+int n=0;
+for (Option option : singleModeOptions) {
+options.add(option);
+if (limit > 0 && ++n >= limit) break;
+}
+}
 for (Option option : this.options) {
 LOG.info("{} {}",option.stats,option.summary);
 }

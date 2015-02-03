@@ -1,16 +1,11 @@
 {
+  graph.index.clusterStopsAsNeeded();
   if (graph.index.transfersFromStopCluster == null) {
 synchronized (graph.index) {
       if (graph.index.transfersFromStopCluster == null) {
         graph.index.initializeProfileTransfers();
       }
     }
-  }
-  if (request.analyst) {
-    mins=new int[Vertex.getMaxIndex()];
-    maxs=new int[Vertex.getMaxIndex()];
-    Arrays.fill(mins,TimeSurface.UNREACHABLE);
-    Arrays.fill(maxs,TimeSurface.UNREACHABLE);
   }
   LOG.info("access modes: {}",request.accessModes);
   LOG.info("egress modes: {}",request.egressModes);
@@ -80,16 +75,6 @@ synchronized (graph.index) {
         continue;
       }
       if (!addIfNondominated(r1))       continue;
-      if (request.analyst) {
-        for (        Stop s : r1.to.children) {
-          TransitStop tstop=graph.index.stopVertexForStop.get(s);
-          int tsidx=tstop.getIndex();
-          int lb=r1.durationLowerBound();
-          int ub=r1.durationUpperBound();
-          if (mins[tsidx] == TimeSurface.UNREACHABLE || mins[tsidx] > lb)           mins[tsidx]=lb;
-          if (maxs[tsidx] == TimeSurface.UNREACHABLE || maxs[tsidx] > ub)           maxs[tsidx]=ub;
-        }
-      }
       int nRides=r1.pathLength();
       if (nRides >= MAX_RIDES)       continue;
       boolean penultimateRide=(nRides == MAX_RIDES - 1);

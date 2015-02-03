@@ -5,8 +5,20 @@
   LOG.debug("writing out shapefile {}",shapeFile);
   ShapefileDataStore outStore=new ShapefileDataStore(shapeFile.toURI().toURL());
   outStore.createSchema(contourSchema);
+  Transaction transaction=new DefaultTransaction("create");
   SimpleFeatureStore featureStore=(SimpleFeatureStore)outStore.getFeatureSource();
-  featureStore.addFeatures(contourFeatures);
+  featureStore.setTransaction(transaction);
+  try {
+    featureStore.addFeatures(contourFeatures);
+    transaction.commit();
+  }
+ catch (  Exception e) {
+    transaction.rollback();
+    throw e;
+  }
+ finally {
+    transaction.close();
+  }
   shapeDir.deleteOnExit();
   for (  File f : shapeDir.listFiles())   f.deleteOnExit();
   StreamingOutput output=new DirectoryZipper(shapeDir);

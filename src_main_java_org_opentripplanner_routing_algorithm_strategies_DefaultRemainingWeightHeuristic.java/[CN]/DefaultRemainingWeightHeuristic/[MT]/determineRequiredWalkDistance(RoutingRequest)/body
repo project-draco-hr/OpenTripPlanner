@@ -1,7 +1,10 @@
 {
-  if (!req.modes.isTransit())   return 0;
-  GenericDijkstra gd=new GenericDijkstra(req);
-  State s=new State(req.rctx.target,req);
+  if (!transit)   return 0;
+  RoutingRequest options=req.clone();
+  options.setArriveBy(!req.arriveBy);
+  options.setRoutingContext(req.rctx.graph,req.rctx.fromVertex,req.rctx.toVertex);
+  GenericDijkstra gd=new GenericDijkstra(options);
+  State s=new State(options);
   gd.setHeuristic(new TrivialRemainingWeightHeuristic());
   final ClosestStopTraverseVisitor visitor=new ClosestStopTraverseVisitor();
   gd.traverseVisitor=visitor;

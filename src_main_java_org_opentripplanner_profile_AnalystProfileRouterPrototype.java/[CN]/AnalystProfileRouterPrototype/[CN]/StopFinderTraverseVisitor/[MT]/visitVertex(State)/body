@@ -1,0 +1,8 @@
+{
+  Vertex vertex=state.getVertex();
+  if (vertex instanceof TransitStop) {
+    Stop stop=((TransitStop)vertex).getStop();
+    if (stopsFound.containsKey(stop))     return;
+    stopsFound.put(stop,(int)state.getElapsedTimeSeconds());
+  }
+}

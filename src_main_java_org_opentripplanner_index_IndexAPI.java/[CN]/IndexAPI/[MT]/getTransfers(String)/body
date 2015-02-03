@@ -1,0 +1,22 @@
+{
+  Stop stop=index.stopForId.get(GtfsLibrary.convertIdFromString(stopIdString));
+  if (stop != null) {
+    TransitStop v=index.stopVertexForStop.get(stop);
+    Collection<Edge> transfers=Collections2.filter(v.getOutgoing(),new Predicate<Edge>(){
+      @Override public boolean apply(      Edge edge){
+        return edge instanceof SimpleTransfer;
+      }
+    }
+);
+    Collection<Transfer> out=Collections2.transform(transfers,new Function<Edge,Transfer>(){
+      @Override public Transfer apply(      Edge edge){
+        return new Transfer((SimpleTransfer)edge);
+      }
+    }
+);
+    return Response.status(Status.OK).entity(out).build();
+  }
+ else {
+    return Response.status(Status.NOT_FOUND).entity(MSG_404).build();
+  }
+}

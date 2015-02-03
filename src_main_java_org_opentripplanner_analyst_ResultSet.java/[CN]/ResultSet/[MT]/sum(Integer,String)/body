@@ -1,0 +1,15 @@
+{
+  if (categories.length == 0)   categories=histograms.keySet().toArray(new String[histograms.keySet().size()]);
+  long value=0l;
+  int maxMinutes;
+  if (timeLimit != null)   maxMinutes=timeLimit / 60;
+ else   maxMinutes=Integer.MAX_VALUE;
+  for (  String k : categories) {
+    int minute=0;
+    for (    int v : histograms.get(k).sums) {
+      if (minute < maxMinutes)       value+=v;
+      minute++;
+    }
+  }
+  return value;
+}

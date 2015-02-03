@@ -3,8 +3,14 @@
   this.transit=req.modes.isTransit();
   maxStreetSpeed=req.getStreetSpeedUpperBound();
   maxTransitSpeed=req.getTransitSpeedUpperBound();
-  targetX=target.getX();
-  targetY=target.getY();
+  if (target.getDegreeIn() == 1) {
+    Edge edge=Iterables.getOnlyElement(target.getIncoming());
+    if (edge instanceof FreeEdge) {
+      target=edge.getFromVertex();
+    }
+  }
+  lat=target.getLat();
+  lon=target.getLon();
   requiredWalkDistance=determineRequiredWalkDistance(req);
   walkReluctance=req.walkReluctance;
 }

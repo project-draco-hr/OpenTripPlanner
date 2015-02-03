@@ -4,8 +4,8 @@
     rr.parkAndRide=true;
     rr.modes.setWalk(true);
   }
-  rr.from=(new GenericLocation(request.from.lat,request.from.lon));
-  rr.to=new GenericLocation(request.to.lat,request.to.lon);
+  rr.from=(new GenericLocation(request.fromLat,request.fromLon));
+  rr.to=new GenericLocation(request.toLat,request.toLon);
   rr.setArriveBy(dest);
   rr.setRoutingContext(graph);
   rr.batch=(true);

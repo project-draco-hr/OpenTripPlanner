@@ -1,7 +1,7 @@
 {
   if (params.visualize) {
     getServer();
-    GraphVisualizer visualizer=new GraphVisualizer(getGraphService().getGraph());
+    GraphVisualizer visualizer=new GraphVisualizer(getGraphService().getRouter().graph);
     return visualizer;
   }
  else   return null;

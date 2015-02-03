@@ -5,7 +5,7 @@
   routingRequest=new RoutingRequest();
   if (params.analyst) {
     surfaceCache=new SurfaceCache(30);
-    pointSetCache=new DiskBackedPointSetCache(100,new File(params.pointSetDirectory));
+    pointSetCache=new DiskBackedPointSetCache(100,params.pointSetDirectory);
   }
   scriptingService=new ScriptingService(this);
   scriptingService.enableScriptingWebService=params.enableScriptingWebService;

@@ -9,7 +9,7 @@
   if (req.arriveBy)   req.to=latLon;
  else   req.from=latLon;
   try {
-    req.setRoutingContext(graphService.getGraph(req.routerId));
+    req.setRoutingContext(graphService.getRouter(req.routerId).graph);
     return req;
   }
  catch (  VertexNotFoundException vnfe) {

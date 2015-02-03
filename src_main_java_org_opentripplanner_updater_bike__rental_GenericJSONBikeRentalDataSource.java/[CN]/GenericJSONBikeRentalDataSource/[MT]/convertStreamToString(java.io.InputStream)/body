@@ -1,4 +1,13 @@
 {
-  java.util.Scanner s=new java.util.Scanner(is).useDelimiter("\\A");
-  return s.hasNext() ? s.next() : "";
+  java.util.Scanner scanner=null;
+  String result="";
+  try {
+    scanner=new java.util.Scanner(is).useDelimiter("\\A");
+    result=scanner.hasNext() ? scanner.next() : "";
+    scanner.close();
+  }
+  finally {
+    if (scanner != null)     scanner.close();
+  }
+  return result;
 }

@@ -1,0 +1,13 @@
+{
+  Timetable table=this.scheduledTimetable;
+  List<FrequencyEntry> freqs=this.scheduledTimetable.frequencyEntries;
+  if (!table.tripTimes.isEmpty()) {
+    LOG.debug("Timetable has {} non-frequency entries and {} frequency entries.",table.tripTimes.size(),table.frequencyEntries.size());
+    return null;
+  }
+  if (freqs.isEmpty()) {
+    LOG.debug("Timetable has no frequency entries.");
+    return null;
+  }
+  return freqs.get(0);
+}

@@ -26,6 +26,7 @@
     }
     if (!_calendarService.getServiceIds().contains(trip.getServiceId())) {
       LOG.warn(graph.addBuilderAnnotation(new TripUndefinedService(trip)));
+      continue TRIP;
     }
     List<StopTime> stopTimes=new ArrayList<StopTime>(_dao.getStopTimesForTrip(trip));
     if (removeRepeatedStops(stopTimes)) {
@@ -60,6 +61,8 @@
     }
   }
   LOG.info("Added {} frequency-based and {} single-trip timetable entries.",freqCount,nonFreqCount);
+  graph.hasFrequencyService=graph.hasFrequencyService || freqCount > 0;
+  graph.hasScheduledService=graph.hasScheduledService || nonFreqCount > 0;
   TripPattern.generateUniqueNames(tripPatterns.values());
   TripPattern.generateUniqueIds(tripPatterns.values());
   for (  TripPattern tripPattern : tripPatterns.values()) {
@@ -69,6 +72,7 @@
       for (int i=0; i < tripPattern.hopEdges.length; i++) {
         tripPattern.hopEdges[i].setGeometry(geom[i]);
       }
+      tripPattern.makeGeometry();
     }
     tripPattern.setServiceCodes(graph.serviceCodes);
   }

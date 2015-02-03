@@ -3,11 +3,11 @@
   List<GraphPath> paths=null;
   boolean tooSloped=false;
   try {
-    paths=pathService.getPaths(options);
+    paths=getPaths(options);
     if (paths == null && options.wheelchairAccessible) {
       options.maxSlope=Double.MAX_VALUE;
       options.maxWalkDistance=originalOptions.maxWalkDistance;
-      paths=pathService.getPaths(options);
+      paths=getPaths(options);
       tooSloped=true;
     }
   }

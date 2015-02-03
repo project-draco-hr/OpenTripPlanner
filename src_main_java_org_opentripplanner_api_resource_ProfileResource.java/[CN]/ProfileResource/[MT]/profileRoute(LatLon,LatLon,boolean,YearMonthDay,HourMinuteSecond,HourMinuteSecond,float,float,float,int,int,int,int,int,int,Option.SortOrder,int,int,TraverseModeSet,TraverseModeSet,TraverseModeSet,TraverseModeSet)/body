@@ -11,8 +11,11 @@
   QueryParameter.checkRangeInclusive(minCarTime,0,maxCarTime);
   QueryParameter.checkRangeInclusive(suboptimalMinutes,0,30);
   ProfileRequest req=new ProfileRequest();
-  req.from=from;
-  req.to=to;
+  req.fromLat=from.lat;
+  req.fromLon=from.lon;
+  if (to == null)   to=from;
+  req.toLat=to.lat;
+  req.toLon=to.lon;
   req.fromTime=fromTime.toSeconds();
   req.toTime=toTime.toSeconds();
   req.walkSpeed=walkSpeed;
@@ -33,22 +36,39 @@
   req.minBikeTime=minBikeTime;
   req.minCarTime=minCarTime;
   req.suboptimalMinutes=suboptimalMinutes;
-  ProfileRouter router=new ProfileRouter(graph,req);
-  try {
-    ProfileResponse response=router.route();
-    if (req.analyst) {
-      surfaceCache.add(router.minSurface);
-      surfaceCache.add(router.maxSurface);
-      List<TimeSurfaceShort> surfaceShorts=Lists.newArrayList();
-      surfaceShorts.add(new TimeSurfaceShort(router.minSurface));
-      surfaceShorts.add(new TimeSurfaceShort(router.maxSurface));
-      return Response.status(Status.OK).entity(surfaceShorts).build();
+  if (req.analyst) {
+    if (surfaceCache == null) {
+      LOG.error("You must run OTP with the --analyst option to enable spatial analysis features.");
+    }
+    TimeSurface.RangeSet result;
+    if (graph.hasFrequencyService && !graph.hasScheduledService) {
+      AnalystProfileRouterPrototype router=new AnalystProfileRouterPrototype(graph,req);
+      result=router.route();
     }
  else {
+      ProfileRouter router=new ProfileRouter(graph,req);
+      try {
+        router.route();
+        result=router.timeSurfaceRangeSet;
+      }
+  finally {
+        router.cleanup();
+      }
+    }
+    Map<String,Integer> idForSurface=Maps.newHashMap();
+    idForSurface.put("min",surfaceCache.add(result.min));
+    idForSurface.put("avg",surfaceCache.add(result.avg));
+    idForSurface.put("max",surfaceCache.add(result.max));
+    return Response.status(Status.OK).entity(idForSurface).build();
+  }
+ else {
+    ProfileRouter router=new ProfileRouter(graph,req);
+    try {
+      ProfileResponse response=router.route();
       return Response.status(Status.OK).entity(response).build();
     }
-  }
   finally {
-    router.cleanup();
+      router.cleanup();
+    }
   }
 }

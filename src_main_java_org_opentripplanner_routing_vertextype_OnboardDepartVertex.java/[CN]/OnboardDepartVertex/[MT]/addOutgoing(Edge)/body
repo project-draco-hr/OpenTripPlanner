@@ -1,0 +1,8 @@
+{
+  if (edge instanceof TemporaryEdge) {
+    super.addOutgoing(edge);
+  }
+ else {
+    throw new UnsupportedOperationException("Can't add permanent edge to temporary vertex");
+  }
+}

@@ -2,7 +2,7 @@
   SimpleFeatureTypeBuilder tbuilder=new SimpleFeatureTypeBuilder();
   tbuilder.setName("contours");
   tbuilder.setCRS(DefaultGeographicCRS.WGS84);
-  tbuilder.add("Geometry",MultiPolygon.class);
-  tbuilder.add("Time",Integer.class);
+  tbuilder.add("the_geom",MultiPolygon.class);
+  tbuilder.add("time",Integer.class);
   return tbuilder.buildFeatureType();
 }

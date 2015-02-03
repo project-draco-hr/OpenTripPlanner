@@ -6,10 +6,7 @@
     BikeParkVertex bikeParkVertex=verticesByPark.get(bikePark);
     if (bikeParkVertex == null) {
       bikeParkVertex=new BikeParkVertex(graph,bikePark);
-      LinkRequest request=networkLinkerLibrary.connectVertexToStreets(bikeParkVertex);
-      for (      Edge e : request.getEdgesAdded()) {
-        graph.addTemporaryEdge(e);
-      }
+      networkLinkerLibrary.connectVertexToStreets(bikeParkVertex);
       verticesByPark.put(bikePark,bikeParkVertex);
       new BikeParkEdge(bikeParkVertex);
     }

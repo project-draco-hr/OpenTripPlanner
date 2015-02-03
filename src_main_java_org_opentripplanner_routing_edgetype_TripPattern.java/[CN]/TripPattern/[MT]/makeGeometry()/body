@@ -1,0 +1,18 @@
+{
+  CoordinateArrayListSequence coordinates=new CoordinateArrayListSequence();
+  if (patternHops != null && patternHops.length > 0) {
+    for (int i=0; i < patternHops.length; i++) {
+      LineString geometry=patternHops[i].getGeometry();
+      if (geometry != null) {
+        if (coordinates.size() == 0) {
+          coordinates.extend(geometry.getCoordinates());
+        }
+ else {
+          coordinates.extend(geometry.getCoordinates(),1);
+        }
+      }
+    }
+    PackedCoordinateSequence packedCoords=new PackedCoordinateSequence.Double(coordinates.toCoordinateArray(),2);
+    this.geometry=GeometryUtils.getGeometryFactory().createLineString(packedCoords);
+  }
+}
