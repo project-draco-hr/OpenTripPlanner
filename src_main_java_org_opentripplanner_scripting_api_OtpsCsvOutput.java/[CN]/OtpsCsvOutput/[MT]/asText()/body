@@ -1,0 +1,10 @@
+{
+  ByteArrayOutputStream baos=new ByteArrayOutputStream();
+  CsvWriter csvWriter=new CsvWriter(baos,',',Charsets.UTF_8);
+  if (headers != null)   csvWriter.writeRecord(headers);
+  for (  List<String> row : data) {
+    csvWriter.writeRecord(row.toArray(new String[row.size()]));
+  }
+  csvWriter.close();
+  return new String(baos.toByteArray(),Charsets.UTF_8);
+}

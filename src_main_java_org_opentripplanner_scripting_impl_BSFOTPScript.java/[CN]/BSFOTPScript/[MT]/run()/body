@@ -1,0 +1,9 @@
+{
+  LOG.info("Running script {}",scriptPath);
+  BSFManager manager=new BSFManager();
+  OtpsEntryPoint otpsEntryPoint=new OtpsEntryPoint(otpServer);
+  manager.declareBean("otp",otpsEntryPoint,OtpsEntryPoint.class);
+  manager.exec(scriptLang,scriptPath,0,0,scriptContent);
+  LOG.info("Script {} done",scriptPath);
+  return otpsEntryPoint.getRetval();
+}
