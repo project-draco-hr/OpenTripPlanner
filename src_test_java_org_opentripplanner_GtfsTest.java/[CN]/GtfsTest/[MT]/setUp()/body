@@ -3,7 +3,7 @@
   File gtfsRealTime=new File("src/test/resources/" + getFeedName() + ".pb");
   GtfsBundle gtfsBundle=new GtfsBundle(gtfs);
   List<GtfsBundle> gtfsBundleList=Collections.singletonList(gtfsBundle);
-  GtfsGraphBuilderImpl gtfsGraphBuilderImpl=new GtfsGraphBuilderImpl(gtfsBundleList);
+  GtfsModule gtfsGraphBuilderImpl=new GtfsModule(gtfsBundleList);
   alertsUpdateHandler=new AlertsUpdateHandler();
   graph=new Graph();
   gtfsBundle.setTransfersTxtDefinesStationPaths(true);

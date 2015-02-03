@@ -3,7 +3,7 @@
     return null;
   }
   LOG.info("Wiring up and configuring graph builder task.");
-  GraphBuilderTask graphBuilder=new GraphBuilderTask();
+  GraphBuilder graphBuilder=new GraphBuilder();
   List<File> gtfsFiles=Lists.newArrayList();
   List<File> osmFiles=Lists.newArrayList();
   JsonNode builderConfig=null;
@@ -56,7 +56,7 @@ for (File osmFile : osmFiles) {
 OpenStreetMapProvider osmProvider=new AnyFileBasedOpenStreetMapProviderImpl(osmFile);
 osmProviders.add(osmProvider);
 }
-OpenStreetMapGraphBuilderImpl osmBuilder=new OpenStreetMapGraphBuilderImpl(osmProviders);
+OpenStreetMapModule osmBuilder=new OpenStreetMapModule(osmProviders);
 DefaultStreetEdgeFactory streetEdgeFactory=new DefaultStreetEdgeFactory();
 streetEdgeFactory.useElevationData=builderParams.elevation || (demFile != null);
 osmBuilder.edgeFactory=streetEdgeFactory;
@@ -77,14 +77,14 @@ gtfsBundle.linkStopsToParentStations=true;
 gtfsBundle.parentStationTransfers=builderParams.parentStationTransfers;
 gtfsBundles.add(gtfsBundle);
 }
-GtfsGraphBuilderImpl gtfsBuilder=new GtfsGraphBuilderImpl(gtfsBundles);
+GtfsModule gtfsBuilder=new GtfsModule(gtfsBundles);
 graphBuilder.addGraphBuilder(gtfsBuilder);
 if (hasOSM) {
 if (builderParams.matchBusRoutesToStreets) {
 graphBuilder.addGraphBuilder(new BusRouteStreetMatcher());
 }
-graphBuilder.addGraphBuilder(new TransitToTaggedStopsGraphBuilderImpl());
-graphBuilder.addGraphBuilder(new TransitToStreetNetworkGraphBuilderImpl());
+graphBuilder.addGraphBuilder(new TransitToTaggedStopsModule());
+graphBuilder.addGraphBuilder(new TransitToStreetNetworkModule());
 }
 if (!builderParams.useTransfersTxt) {
 graphBuilder.addGraphBuilder(new DirectTransferGenerator());
@@ -94,12 +94,12 @@ gtfsBuilder.setFareServiceFactory(new DefaultFareServiceFactory());
 if (builderParams.elevation) {
 File cacheDirectory=new File(params.cacheDirectory,"ned");
 ElevationGridCoverageFactory gcf=new NEDGridCoverageFactoryImpl(cacheDirectory);
-GraphBuilder elevationBuilder=new ElevationGraphBuilderImpl(gcf);
+GraphBuilderModule elevationBuilder=new ElevationModule(gcf);
 graphBuilder.addGraphBuilder(elevationBuilder);
 }
  else if (demFile != null) {
 ElevationGridCoverageFactory gcf=new GeotiffGridCoverageFactoryImpl(demFile);
-GraphBuilder elevationBuilder=new ElevationGraphBuilderImpl(gcf);
+GraphBuilderModule elevationBuilder=new ElevationModule(gcf);
 graphBuilder.addGraphBuilder(elevationBuilder);
 }
 graphBuilder.addGraphBuilder(new EmbedConfig(builderConfig,routerConfig));

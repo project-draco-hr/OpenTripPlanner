@@ -14,7 +14,7 @@
     System.exit(1);
   }
   OTPConfigurator configurator=new OTPConfigurator(params);
-  GraphBuilderTask graphBuilder=configurator.builderFromParameters();
+  GraphBuilder graphBuilder=configurator.builderFromParameters();
   if (graphBuilder != null) {
     graphBuilder.run();
     if (params.inMemory || params.preFlight) {

@@ -23,7 +23,7 @@
   perms.addPermission("A",StreetTraversalPermission.PEDESTRIAN,StreetTraversalPermission.ALL);
   perms.addPermission("T",StreetTraversalPermission.ALL,StreetTraversalPermission.ALL);
   schema.setPermissionConverter(perms);
-  ShapefileStreetGraphBuilderImpl loader=new ShapefileStreetGraphBuilderImpl();
+  ShapefileStreetModule loader=new ShapefileStreetModule();
   loader.setFeatureSourceFactory(factory);
   loader.setSchema(schema);
   loader.buildGraph(gg,new HashMap<Class<?>,Object>());

@@ -1,5 +1,5 @@
 {
-  GtfsGraphBuilderImpl gtfsBuilder=new GtfsGraphBuilderImpl();
+  GtfsModule gtfsBuilder=new GtfsModule();
   GtfsBundle bundle=new GtfsBundle();
   bundle.setPath(new File("src/test/resources/google_transit.zip"));
   ArrayList<GtfsBundle> bundleList=new ArrayList<GtfsBundle>();
@@ -9,6 +9,6 @@
   gtfsBuilder.setGtfsBundles(bundles);
   HashMap<Class<?>,Object> extra=new HashMap<Class<?>,Object>();
   gtfsBuilder.buildGraph(graph,extra);
-  TransitToStreetNetworkGraphBuilderImpl linker=new TransitToStreetNetworkGraphBuilderImpl();
+  TransitToStreetNetworkModule linker=new TransitToStreetNetworkModule();
   linker.buildGraph(graph,extra);
 }

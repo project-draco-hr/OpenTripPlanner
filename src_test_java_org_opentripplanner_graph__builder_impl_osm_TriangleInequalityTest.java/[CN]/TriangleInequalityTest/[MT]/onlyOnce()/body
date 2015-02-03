@@ -1,7 +1,7 @@
 {
   extra=new HashMap<Class<?>,Object>();
   _graph=new Graph();
-  OpenStreetMapGraphBuilderImpl loader=new OpenStreetMapGraphBuilderImpl();
+  OpenStreetMapModule loader=new OpenStreetMapModule();
   loader.setDefaultWayPropertySetSource(new DefaultWayPropertySetSource());
   FileBasedOpenStreetMapProviderImpl provider=new FileBasedOpenStreetMapProviderImpl();
   File file=new File(URLDecoder.decode(TriangleInequalityTest.class.getResource("NYC_small.osm.gz").getFile(),"UTF-8"));

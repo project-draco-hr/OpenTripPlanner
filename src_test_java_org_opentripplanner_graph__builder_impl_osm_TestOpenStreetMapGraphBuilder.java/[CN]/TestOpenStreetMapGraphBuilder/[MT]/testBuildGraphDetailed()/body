@@ -1,6 +1,6 @@
 {
   Graph gg=new Graph();
-  OpenStreetMapGraphBuilderImpl loader=new OpenStreetMapGraphBuilderImpl();
+  OpenStreetMapModule loader=new OpenStreetMapModule();
   loader.setDefaultWayPropertySetSource(new DefaultWayPropertySetSource());
   FileBasedOpenStreetMapProviderImpl provider=new FileBasedOpenStreetMapProviderImpl();
   File file=new File(URLDecoder.decode(getClass().getResource("NYC_small.osm.gz").getFile(),"UTF-8"));
