@@ -1,0 +1,23 @@
+{
+  OtpsPopulation ret=new OtpsPopulation();
+  CsvReader reader=new CsvReader(filename,',',Charset.forName("UTF8"));
+  reader.readHeaders();
+  List<String> dataHeaders=new ArrayList<>(reader.getHeaderCount());
+  for (  String header : reader.getHeaders()) {
+    if (header.equals(latColName) || header.equals(lonColName))     continue;
+    dataHeaders.add(header);
+  }
+  ret.setHeaders(dataHeaders.toArray(new String[dataHeaders.size()]));
+  while (reader.readRecord()) {
+    double lat=Double.parseDouble(reader.get(latColName));
+    double lon=Double.parseDouble(reader.get(lonColName));
+    List<String> data=new ArrayList<String>();
+    for (    String header : dataHeaders) {
+      data.add(reader.get(header));
+    }
+    OtpsIndividual individual=new OtpsIndividual(lat,lon,data.toArray(new String[data.size()]),ret);
+    ret.individuals.add(individual);
+  }
+  reader.close();
+  return ret;
+}

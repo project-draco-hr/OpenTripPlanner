@@ -1,0 +1,15 @@
+{
+  if (cachedSample == null)   return null;
+  for (  Edge e : cachedSample.v0.getOutgoingStreetEdges()) {
+    if (e.getToVertex().equals(cachedSample.v1) && e.getGeometry() != null) {
+      LineString geom=e.getGeometry();
+      LengthIndexedLine liline=new LengthIndexedLine(geom);
+      int t=cachedSample.t0 + cachedSample.t1;
+      double k=t == 0 ? 0.0 : 1.0 * cachedSample.t0 / t;
+      double x=liline.getStartIndex() + (liline.getEndIndex() - liline.getStartIndex()) * k;
+      Coordinate p=liline.extractPoint(x);
+      return new OtpsLatLon(p.y,p.x);
+    }
+  }
+  return getLocation();
+}
