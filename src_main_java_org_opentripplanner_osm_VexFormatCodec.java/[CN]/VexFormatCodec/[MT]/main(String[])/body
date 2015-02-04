@@ -1,0 +1,12 @@
+{
+  final String INPUT="/var/otp/graphs/trimet/portland.osm.pbf";
+  Converter converter=new VexFormatCodec().new Converter();
+  try {
+    converter.streamBegin();
+    converter.parse(INPUT);
+    converter.streamEnd();
+  }
+ catch (  IOException ex) {
+    throw new RuntimeException(ex);
+  }
+}

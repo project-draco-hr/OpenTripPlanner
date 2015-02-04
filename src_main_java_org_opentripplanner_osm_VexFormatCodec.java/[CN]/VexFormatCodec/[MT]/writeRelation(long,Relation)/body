@@ -1,0 +1,9 @@
+{
+  writeTagged(id,relation);
+  vout.writeUInt32NoTag(relation.members.size());
+  for (  Relation.Member member : relation.members) {
+    vout.writeSInt64NoTag(member.id);
+    vout.writeUInt32NoTag(member.type.ordinal());
+    vout.writeStringNoTag(member.role);
+  }
+}

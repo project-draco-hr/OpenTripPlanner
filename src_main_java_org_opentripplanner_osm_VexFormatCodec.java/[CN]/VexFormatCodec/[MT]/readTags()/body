@@ -1,0 +1,14 @@
+{
+  StringBuilder sb=new StringBuilder();
+  int nTags=vin.readUInt32();
+  for (int i=0; i < nTags; i++) {
+    if (i > 0) {
+      sb.append(';');
+    }
+    sb.append(vin.readString());
+    sb.append('=');
+    sb.append(vin.readString());
+  }
+  if (sb.length() == 0)   return null;
+  return sb.toString();
+}

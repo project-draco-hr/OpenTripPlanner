@@ -1,5 +1,17 @@
 {
   OSM osm=OSM.fromPBF(INPUT);
+  try (OutputStream fout=new FileOutputStream("/home/abyrd/test.vex")){
+    LOG.info("begin writing vex");
+    new VexFormatCodec().writeVex(osm,fout);
+    LOG.info("end writing vex");
+  }
+ catch (  FileNotFoundException ex) {
+    LOG.error("FNFEX");
+  }
+catch (  IOException ex) {
+    LOG.error("IOEX");
+  }
+  System.exit(0);
   List<Edge> edges=makeEdges(osm);
   PrintStream ps;
   try {

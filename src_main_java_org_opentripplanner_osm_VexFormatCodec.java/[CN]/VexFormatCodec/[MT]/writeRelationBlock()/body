@@ -1,0 +1,10 @@
+{
+  beginWriteBlock(VEX_RELATION);
+  int n=0;
+  for (  Map.Entry<Long,Relation> entry : osm.relations.entrySet()) {
+    writeRelation(entry.getKey(),entry.getValue());
+    n++;
+  }
+  endWriteBlock(n);
+  return n;
+}

@@ -1,0 +1,8 @@
+{
+  Relation relation=new Relation();
+  long idDelta=vin.readSInt64();
+  if (idDelta == 0)   return true;
+  id+=idDelta;
+  osm.relations.put(id,relation);
+  return false;
+}
