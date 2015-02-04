@@ -1,7 +1,7 @@
 {
   runState=new RunState(options,terminationStrategy);
   runState.rctx=options.getRoutingContext();
-  runState.spt=options.longDistance ? new SingleStateShortestPathTree(runState.options,new DominanceFunction.MinimumWeight()) : new MultiStateShortestPathTree(runState.options);
+  runState.spt=options.getNewShortestPathTree();
   runState.heuristic=options.batch ? new TrivialRemainingWeightHeuristic() : runState.rctx.remainingWeightHeuristic;
   runState.heuristic.initialize(runState.options,abortTime);
   if (abortTime < Long.MAX_VALUE && System.currentTimeMillis() > abortTime) {
