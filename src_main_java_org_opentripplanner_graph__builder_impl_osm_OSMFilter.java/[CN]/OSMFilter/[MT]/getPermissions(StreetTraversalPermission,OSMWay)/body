@@ -20,6 +20,12 @@
       permissionsBack=permissionsBack.add(StreetTraversalPermission.BICYCLE);
     }
   }
+  if (way.isForwardDirectionSidepath()) {
+    permissionsFront=permissionsFront.remove(StreetTraversalPermission.BICYCLE);
+  }
+  if (way.isReverseDirectionSidepath()) {
+    permissionsBack=permissionsBack.remove(StreetTraversalPermission.BICYCLE);
+  }
   if (way.isOpposableCycleway()) {
     permissionsBack=permissionsBack.add(StreetTraversalPermission.BICYCLE);
   }
