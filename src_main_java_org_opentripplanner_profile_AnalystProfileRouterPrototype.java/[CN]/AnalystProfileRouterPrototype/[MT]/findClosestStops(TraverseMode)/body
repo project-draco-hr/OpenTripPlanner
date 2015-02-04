@@ -9,7 +9,7 @@
   int minAccessTime=0;
   int maxAccessTime=request.maxWalkTime;
   rr.worstTime=(rr.dateTime + maxAccessTime * 60);
-  GenericAStar astar=new GenericAStar();
+  AStar astar=new AStar();
   rr.longDistance=true;
   rr.setNumItineraries(1);
   StopFinderTraverseVisitor visitor=new StopFinderTraverseVisitor(mode,minAccessTime * 60);

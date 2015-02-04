@@ -28,7 +28,7 @@
   long worstElapsedTimeSeconds=maxAccessTime * 60;
   if (dest)   worstElapsedTimeSeconds*=-1;
   rr.worstTime=(rr.dateTime + worstElapsedTimeSeconds);
-  GenericAStar astar=new GenericAStar();
+  AStar astar=new AStar();
   rr.setNumItineraries(1);
   StopFinderTraverseVisitor visitor=new StopFinderTraverseVisitor(mode,minAccessTime * 60);
   astar.setTraverseVisitor(visitor);

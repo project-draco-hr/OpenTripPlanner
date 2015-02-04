@@ -2,7 +2,7 @@
   RoutingRequest options=new RoutingRequest();
   options.walkSpeed=1.0;
   options.setRoutingContext(_graph,_graph.getVertex("56th_24th"),_graph.getVertex("leary_20th"));
-  ShortestPathTree tree=new GenericAStar().getShortestPathTree(options);
+  ShortestPathTree tree=new AStar().getShortestPathTree(options);
   GraphPath path=tree.getPath(_graph.getVertex("leary_20th"),false);
   List<State> states=path.states;
   assertEquals(7,states.size());

@@ -7,7 +7,7 @@
   TemporaryStreetLocation to=new TemporaryStreetLocation("near_56th_20th",new Coordinate(-122.382347,47.669518),"near_56th_20th",true);
   new TemporaryConcreteEdge(_graph.getVertex("56th_20th"),to);
   options.setRoutingContext(_graph,from,to);
-  ShortestPathTree tree=new GenericAStar().getShortestPathTree(options);
+  ShortestPathTree tree=new AStar().getShortestPathTree(options);
   options.cleanup();
   GraphPath path=tree.getPath(from,false);
   List<State> states=path.states;

@@ -7,7 +7,7 @@
   sptRequest.batch=(true);
   sptRequest.setRoutingContext(graph);
   sptRequest.rctx.pathParsers=new PathParser[]{new BasicPathParser(),new NoThruTrafficPathParser()};
-  final ShortestPathTree spt=new GenericAStar().getShortestPathTree(sptRequest);
+  final ShortestPathTree spt=new AStar().getShortestPathTree(sptRequest);
   long t1=System.currentTimeMillis();
   Coordinate coordinateOrigin=spgRequest.coordinateOrigin;
   if (coordinateOrigin == null)   coordinateOrigin=sptRequest.from.getCoordinate();

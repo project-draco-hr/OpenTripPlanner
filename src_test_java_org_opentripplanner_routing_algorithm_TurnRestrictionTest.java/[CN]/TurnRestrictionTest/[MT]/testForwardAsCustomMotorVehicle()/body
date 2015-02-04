@@ -2,7 +2,7 @@
   RoutingRequest options=new RoutingRequest(TraverseMode.CUSTOM_MOTOR_VEHICLE);
   options.carSpeed=1.0;
   options.setRoutingContext(_graph,topRight,bottomLeft);
-  ShortestPathTree tree=new GenericAStar().getShortestPathTree(options);
+  ShortestPathTree tree=new AStar().getShortestPathTree(options);
   GraphPath path=tree.getPath(bottomLeft,false);
   assertNotNull(path);
   List<State> states=path.states;
