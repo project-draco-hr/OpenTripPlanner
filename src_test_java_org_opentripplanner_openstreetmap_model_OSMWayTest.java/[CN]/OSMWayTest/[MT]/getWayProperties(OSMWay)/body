@@ -1,0 +1,6 @@
+{
+  WayPropertySet wayPropertySet=new WayPropertySet();
+  WayProperties wayData=wayPropertySet.getDataForWay(way);
+  StreetTraversalPermission permissions=OSMFilter.getPermissionsForWay(way,wayData.getPermission(),null);
+  return OSMFilter.getPermissions(permissions,way);
+}
