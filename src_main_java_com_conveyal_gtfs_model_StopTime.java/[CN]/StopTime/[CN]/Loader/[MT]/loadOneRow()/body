@@ -9,6 +9,7 @@
   st.pickup_type=getIntField("pickup_type",false,0,3);
   st.drop_off_type=getIntField("drop_off_type",false,0,3);
   st.shape_dist_traveled=getDoubleField("shape_dist_traveled",false,0D,Double.MAX_VALUE);
+  st.timepoint=getIntField("timepoint",false,0,1);
   st.feed=null;
   feed.stop_times.put(new Fun.Tuple2(st.trip_id,st.stop_sequence),st);
   getRefField("trip_id",true,feed.trips);
