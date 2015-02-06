@@ -1,0 +1,28 @@
+{
+  try {
+    URL banoUrl=getBanoGeocoderUrl(address,bbox);
+    URLConnection conn=banoUrl.openConnection();
+    InputStream in=conn.getInputStream();
+    FeatureCollection featureCollection=mapper.readValue(in,FeatureCollection.class);
+    in.close();
+    List<GeocoderResult> geocoderResults=new ArrayList<GeocoderResult>();
+    for (    Feature feature : featureCollection.getFeatures()) {
+      GeoJsonObject geom=feature.getGeometry();
+      if (geom instanceof Point) {
+        Point p=(Point)geom;
+        GeocoderResult res=new GeocoderResult();
+        res.setLat(p.getCoordinates().getLatitude());
+        res.setLng(p.getCoordinates().getLongitude());
+        res.setDescription(feature.getProperties().get("label").toString());
+        geocoderResults.add(res);
+      }
+ else {
+      }
+    }
+    return new GeocoderResults(geocoderResults);
+  }
+ catch (  IOException e) {
+    e.printStackTrace();
+    return new GeocoderResults(e.getLocalizedMessage());
+  }
+}
