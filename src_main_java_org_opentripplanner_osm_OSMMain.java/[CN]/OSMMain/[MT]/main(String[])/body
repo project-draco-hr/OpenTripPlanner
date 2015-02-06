@@ -1,6 +1,6 @@
 {
-  OSM osm=OSM.fromPBF(INPUT);
-  try (OutputStream fout=new FileOutputStream("/home/abyrd/test.vex")){
+  OSM osm=OSM.fromPBF(args[0]);
+  try (OutputStream fout=new FileOutputStream("test.vex")){
     LOG.info("begin writing vex");
     new VexFormatCodec().writeVex(osm,fout);
     LOG.info("end writing vex");
