@@ -1,7 +1,7 @@
 {
   String service_id=getStringField("service_id",true);
   Service service=feed.getOrCreateService(service_id);
-  DateTime date=getDateField("date",true);
+  LocalDate date=getDateField("date",true);
   if (service.calendar_dates.containsKey(date)) {
     feed.errors.add(new DuplicateKeyError(tableName,row,"(service_id, date)"));
   }
