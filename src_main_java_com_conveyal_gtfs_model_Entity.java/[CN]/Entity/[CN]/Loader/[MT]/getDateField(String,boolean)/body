@@ -1,9 +1,9 @@
 {
   String str=getFieldCheckRequired(column,required);
-  DateTime dateTime=null;
+  LocalDate dateTime=null;
   if (str != null)   try {
     DateTimeFormatter formatter=DateTimeFormat.forPattern("yyyyMMdd");
-    dateTime=formatter.parseDateTime(str);
+    dateTime=formatter.parseLocalDate(str);
     checkRangeInclusive(2000,2100,dateTime.getYear());
   }
  catch (  IllegalArgumentException iae) {

@@ -1,4 +1,8 @@
 {
+  if (secsSinceMidnight == INT_MISSING) {
+    writeStringField("");
+    return;
+  }
   int seconds=secsSinceMidnight % 60;
   secsSinceMidnight-=seconds;
   int minutes=(secsSinceMidnight % 3600);

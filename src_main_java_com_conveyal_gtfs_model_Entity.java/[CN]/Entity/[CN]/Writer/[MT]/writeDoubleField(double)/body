@@ -1,3 +1,4 @@
 {
-  writeStringField(String.format("%.7f",val));
+  if (Double.isNaN(val))   writeStringField("");
+ else   writeStringField(String.format("%.7f",val));
 }
