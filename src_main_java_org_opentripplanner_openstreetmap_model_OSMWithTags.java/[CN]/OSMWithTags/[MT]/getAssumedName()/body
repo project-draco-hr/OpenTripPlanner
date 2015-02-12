@@ -1,5 +1,5 @@
 {
-  if (_tags.containsKey("name"))   return TranslatedString.getI18NString(getTagsByPrefix("name",true));
+  if (_tags.containsKey("name"))   return TranslatedString.getI18NString(TemplateLibrary.generateI18N("{name}",this));
   if (_tags.containsKey("otp:route_name"))   return new NonLocalizedString(_tags.get("otp:route_name"));
   if (this.creativeName != null)   return this.creativeName;
   if (_tags.containsKey("otp:route_ref"))   return new NonLocalizedString(_tags.get("otp:route_ref"));
