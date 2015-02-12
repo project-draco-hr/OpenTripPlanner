@@ -3,5 +3,5 @@
   if (locale != null) {
     language=locale.getLanguage().toLowerCase();
   }
-  return translations.containsKey(language) ? translations.get(language) : translations.get(null);
+  return translations.containsKey(language) ? translations.get(language) : toString();
 }
