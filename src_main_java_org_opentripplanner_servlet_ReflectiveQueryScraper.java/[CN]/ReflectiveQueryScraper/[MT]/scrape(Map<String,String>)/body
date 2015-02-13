@@ -1,0 +1,13 @@
+{
+  T obj=null;
+  try {
+    obj=targetClass.newInstance();
+    for (    Target t : targets.values()) {
+      t.apply(pairs,obj);
+    }
+  }
+ catch (  Exception ex) {
+    LOG.warn("exception {} while scraping {}",ex,targetClass);
+  }
+  return obj;
+}

@@ -1,16 +1,15 @@
 {
   this.targetClass=targetClass;
-  targets=new HashSet<Target>();
   for (  Field field : targetClass.getFields()) {
     Target target=FieldTarget.instanceFor(field);
-    if (target != null)     targets.add(target);
+    if (target != null)     targets.put(target.name,target);
   }
   for (  Method method : targetClass.getMethods()) {
     Target target=MethodTarget.instanceFor(method);
-    if (target != null)     targets.add(target);
+    if (target != null)     targets.put(target.name,target);
   }
   LOG.info("initialized query scraper for: {}",targetClass);
-  for (  Target t : targets) {
+  for (  Target t : targets.values()) {
     LOG.info("-- {}",t);
   }
 }
