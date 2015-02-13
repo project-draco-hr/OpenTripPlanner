@@ -3,6 +3,7 @@
   if (value == null)   return false;
   try {
     apply0(obj,constructor.newInstance(value));
+    LOG.info("Initialized '{}' with value {}.",name,value);
     return true;
   }
  catch (  Exception e) {

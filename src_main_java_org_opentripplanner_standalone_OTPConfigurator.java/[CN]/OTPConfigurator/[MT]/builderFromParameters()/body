@@ -19,7 +19,6 @@
   builderConfig=loadJson(new File(dir,BUILDER_CONFIG_FILENAME));
   GraphBuilderParameters builderParams=new GraphBuilderParameters(builderConfig);
   routerConfig=loadJson(new File(dir,ROUTER_CONFIG_FILENAME));
-  RouterParameters routerParams=new RouterParameters(routerConfig);
   LOG.info(dumpFields(builderParams));
   for (  File file : dir.listFiles()) {
 switch (InputFileType.forFile(file)) {
