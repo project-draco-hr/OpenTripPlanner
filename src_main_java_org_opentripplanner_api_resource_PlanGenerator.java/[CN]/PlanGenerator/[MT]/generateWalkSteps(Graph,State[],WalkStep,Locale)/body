@@ -182,7 +182,7 @@
       distance+=edge.getDistance();
     }
     step.distance+=edge.getDistance();
-    step.addAlerts(graph.streetNotesService.getNotes(forwardState));
+    step.addAlerts(graph.streetNotesService.getNotes(forwardState),wantedLocale);
     lastAngle=DirectionUtils.getLastAngle(geom);
   }
   return steps;

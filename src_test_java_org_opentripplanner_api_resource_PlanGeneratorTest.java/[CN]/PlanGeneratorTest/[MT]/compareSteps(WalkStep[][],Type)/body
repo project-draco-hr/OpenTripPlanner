@@ -75,7 +75,7 @@
   assertNull(steps[6][0].alerts);
   assertFalse(steps[6][0].area);
   assertNull(steps[6][0].exit);
-  assertEquals(alertsExample,steps[7][0].alerts.get(0).alertHeaderText.toString());
+  assertEquals(alertsExample,steps[7][0].alerts.get(0).getAlertHeaderText());
   assertEquals(AbsoluteDirection.SOUTH,steps[7][0].absoluteDirection);
   assertEquals(RelativeDirection.CONTINUE,steps[7][0].relativeDirection);
   assertEquals(SOUTH,steps[7][0].angle,EPSILON);

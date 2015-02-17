@@ -9,7 +9,7 @@
   WalkStep step1=steps.get(1);
   assertNotNull(step0.alerts);
   assertEquals(1,step0.alerts.size());
-  assertEquals("SE",step0.alerts.get(0).alertHeaderText.toString());
+  assertEquals("SE",step0.alerts.get(0).getAlertHeaderText());
   assertEquals(1,step1.alerts.size());
-  assertEquals("NE",step1.alerts.get(0).alertHeaderText.toString());
+  assertEquals("NE",step1.alerts.get(0).getAlertHeaderText());
 }
