@@ -20,6 +20,9 @@
     startDate_=other.startDate_;
     onChanged();
   }
+  if (other.hasDirectionId()) {
+    setDirectionId(other.getDirectionId());
+  }
   if (other.hasScheduleRelationship()) {
     setScheduleRelationship(other.getScheduleRelationship());
   }

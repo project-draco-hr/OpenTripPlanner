@@ -11,11 +11,14 @@
   if (((bitField0_ & 0x00000008) == 0x00000008)) {
     size+=com.google.protobuf.CodedOutputStream.computeBytesSize(3,getStartDateBytes());
   }
-  if (((bitField0_ & 0x00000010) == 0x00000010)) {
+  if (((bitField0_ & 0x00000020) == 0x00000020)) {
     size+=com.google.protobuf.CodedOutputStream.computeEnumSize(4,scheduleRelationship_.getNumber());
   }
   if (((bitField0_ & 0x00000002) == 0x00000002)) {
     size+=com.google.protobuf.CodedOutputStream.computeBytesSize(5,getRouteIdBytes());
+  }
+  if (((bitField0_ & 0x00000010) == 0x00000010)) {
+    size+=com.google.protobuf.CodedOutputStream.computeUInt32Size(6,directionId_);
   }
   size+=extensionsSerializedSize();
   size+=getUnknownFields().getSerializedSize();

@@ -43,7 +43,7 @@ if (value == null) {
 unknownFields.mergeVarintField(4,rawValue);
 }
  else {
-bitField0_|=0x00000010;
+bitField0_|=0x00000020;
 scheduleRelationship_=value;
 }
 break;
@@ -52,6 +52,12 @@ case 42:
 {
 bitField0_|=0x00000002;
 routeId_=input.readBytes();
+break;
+}
+case 48:
+{
+bitField0_|=0x00000010;
+directionId_=input.readUInt32();
 break;
 }
 }
