@@ -1,0 +1,42 @@
+{
+  if (geoJsonGeom instanceof org.geojson.Point) {
+    org.geojson.Point geoJsonPoint=(org.geojson.Point)geoJsonGeom;
+    return gf.createPoint(new Coordinate(geoJsonPoint.getCoordinates().getLongitude(),geoJsonPoint.getCoordinates().getLatitude()));
+  }
+ else   if (geoJsonGeom instanceof org.geojson.Polygon) {
+    org.geojson.Polygon geoJsonPolygon=(org.geojson.Polygon)geoJsonGeom;
+    LinearRing shell=gf.createLinearRing(convertPath(geoJsonPolygon.getExteriorRing()));
+    LinearRing[] holes=new LinearRing[geoJsonPolygon.getInteriorRings().size()];
+    int i=0;
+    for (    List<LngLatAlt> hole : geoJsonPolygon.getInteriorRings()) {
+      holes[i++]=gf.createLinearRing(convertPath(hole));
+    }
+    return gf.createPolygon(shell,holes);
+  }
+ else   if (geoJsonGeom instanceof org.geojson.MultiPolygon) {
+    org.geojson.MultiPolygon geoJsonMultiPolygon=(org.geojson.MultiPolygon)geoJsonGeom;
+    Polygon[] jtsPolygons=new Polygon[geoJsonMultiPolygon.getCoordinates().size()];
+    int i=0;
+    for (    List<List<LngLatAlt>> geoJsonRings : geoJsonMultiPolygon.getCoordinates()) {
+      org.geojson.Polygon geoJsonPoly=new org.geojson.Polygon();
+      for (      List<LngLatAlt> geoJsonRing : geoJsonRings)       geoJsonPoly.add(geoJsonRing);
+      jtsPolygons[i++]=(Polygon)convertGeoJsonToJtsGeometry(geoJsonPoly);
+    }
+    return gf.createMultiPolygon(jtsPolygons);
+  }
+ else   if (geoJsonGeom instanceof org.geojson.LineString) {
+    org.geojson.LineString geoJsonLineString=(org.geojson.LineString)geoJsonGeom;
+    return gf.createLineString(convertPath(geoJsonLineString.getCoordinates()));
+  }
+ else   if (geoJsonGeom instanceof org.geojson.MultiLineString) {
+    org.geojson.MultiLineString geoJsonMultiLineString=(org.geojson.MultiLineString)geoJsonGeom;
+    LineString[] jtsLineStrings=new LineString[geoJsonMultiLineString.getCoordinates().size()];
+    int i=0;
+    for (    List<LngLatAlt> geoJsonPath : geoJsonMultiLineString.getCoordinates()) {
+      org.geojson.LineString geoJsonLineString=new org.geojson.LineString(geoJsonPath.toArray(new LngLatAlt[geoJsonPath.size()]));
+      jtsLineStrings[i++]=(LineString)convertGeoJsonToJtsGeometry(geoJsonLineString);
+    }
+    return gf.createMultiLineString(jtsLineStrings);
+  }
+  throw new UnsupportedGeometryException(geoJsonGeom.getClass().toString());
+}

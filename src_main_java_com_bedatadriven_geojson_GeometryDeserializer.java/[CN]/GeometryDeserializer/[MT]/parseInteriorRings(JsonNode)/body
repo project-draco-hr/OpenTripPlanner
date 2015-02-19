@@ -1,7 +1,0 @@
-{
-  LinearRing rings[]=new LinearRing[arrayOfRings.size() - 1];
-  for (int i=1; i < arrayOfRings.size(); ++i) {
-    rings[i - 1]=gf.createLinearRing(parseLineString(arrayOfRings.get(i)));
-  }
-  return rings;
-}

@@ -1,0 +1,23 @@
+{
+  PointSet points1=PointSet.fromGeoJson(new File("src/test/resources/pointset/population.geo.json"));
+  File tempFile=File.createTempFile("population","geo.json");
+  tempFile.deleteOnExit();
+  OutputStream out=new FileOutputStream(tempFile);
+  points1.writeJson(out);
+  out.close();
+  PointSet points2=PointSet.fromGeoJson(tempFile);
+  assertEquals(points1.id,points2.id);
+  assertEquals(points1.label,points2.label);
+  assertEquals(points1.featureCount(),points2.featureCount());
+  for (int i=0; i < points1.featureCount(); i++) {
+    PointFeature p1=points1.getFeature(i);
+    PointFeature p2=points2.getFeature(i);
+    assertEquals(p1.getId(),p1.getId());
+    assertEquals(p1.getLat(),p2.getLat());
+    assertEquals(p1.getLon(),p2.getLon());
+    assertEquals(p1.getProperties().size(),p2.getProperties().size());
+    for (    Map.Entry<String,Integer> kv : p1.getProperties().entrySet()) {
+      assertEquals(kv.getValue(),new Integer(p2.getProperty(kv.getKey())));
+    }
+  }
+}

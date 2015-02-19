@@ -1,6 +1,5 @@
 {
-  GeometryFactory geometryFactory=new GeometryFactory(new PrecisionModel());
-  GeometrySerializer geomSerializer=new GeometrySerializer();
+  ObjectMapper geomSerializer=new ObjectMapper();
   jgen.writeStartObject();
 {
     jgen.writeStringField("id",ids[i]);
@@ -8,11 +7,17 @@
     jgen.writeFieldName("geometry");
 {
       if (!forcePoints && polygons != null && polygons.length >= i && polygons[i] != null) {
-        geomSerializer.writeGeometry(jgen,polygons[i]);
+        org.geojson.Polygon p=new org.geojson.Polygon();
+        List<LngLatAlt> shell=new ArrayList<LngLatAlt>();
+        for (        Coordinate c : polygons[i].getExteriorRing().getCoordinates()) {
+          shell.add(new LngLatAlt(c.x,c.y));
+        }
+        p.add(shell);
+        geomSerializer.writeValue(jgen,p);
       }
  else {
-        Point p=geometryFactory.createPoint(new Coordinate(lons[i],lats[i]));
-        geomSerializer.writeGeometry(jgen,p);
+        org.geojson.Point p=new org.geojson.Point(lons[i],lats[i]);
+        geomSerializer.writeValue(jgen,p);
       }
     }
     jgen.writeObjectFieldStart("properties");
