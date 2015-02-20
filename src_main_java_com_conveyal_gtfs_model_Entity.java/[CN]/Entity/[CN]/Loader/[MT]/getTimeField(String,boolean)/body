@@ -1,0 +1,25 @@
+{
+  String str=getFieldCheckRequired(column,required);
+  int val=INT_MISSING;
+  if (str != null) {
+    String[] fields=str.split(":");
+    if (fields.length != 3) {
+      feed.errors.add(new TimeParseError(tableName,row,column));
+    }
+ else {
+      try {
+        int hours=Integer.parseInt(fields[0]);
+        int minutes=Integer.parseInt(fields[1]);
+        int seconds=Integer.parseInt(fields[2]);
+        checkRangeInclusive(0,72,hours);
+        checkRangeInclusive(0,59,minutes);
+        checkRangeInclusive(0,59,seconds);
+        val=(hours * 60 * 60) + minutes * 60 + seconds;
+      }
+ catch (      NumberFormatException nfe) {
+        feed.errors.add(new TimeParseError(tableName,row,column));
+      }
+    }
+  }
+  return val;
+}

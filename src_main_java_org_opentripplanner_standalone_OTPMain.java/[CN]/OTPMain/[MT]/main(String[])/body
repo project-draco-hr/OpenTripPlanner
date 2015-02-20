@@ -26,6 +26,19 @@
   if (graphVisualizer != null) {
     graphVisualizer.run();
   }
+  OTPScript otpScript=null;
+  try {
+    otpScript=configurator.scriptFromParameters();
+    if (otpScript != null) {
+      Object retval=otpScript.run();
+      if (retval != null) {
+        LOG.warn("Your script returned something, no idea what to do with it: {}",retval);
+      }
+    }
+  }
+ catch (  Exception e) {
+    throw new RuntimeException(e);
+  }
   GrizzlyServer grizzlyServer=configurator.serverFromParameters();
   if (grizzlyServer != null) {
     while (true) {
@@ -39,8 +52,7 @@
       }
     }
   }
-  if (graphBuilder == null && graphVisualizer == null && grizzlyServer == null) {
+  if (graphBuilder == null && graphVisualizer == null && grizzlyServer == null && otpScript == null) {
     LOG.info("Nothing to do. Use --help to see available tasks.");
-    ;
   }
 }

@@ -24,6 +24,11 @@
   httpServer.getServerConfiguration().addHttpHandler(dynamicHandler,"/otp/");
   HttpHandler staticHandler=new CLStaticHttpHandler(GrizzlyServer.class.getClassLoader(),"/client/");
   httpServer.getServerConfiguration().addHttpHandler(staticHandler,"/");
+  if (params.clientDirectory != null) {
+    StaticHttpHandler localHandler=new StaticHttpHandler(params.clientDirectory.getAbsolutePath());
+    localHandler.setFileCacheEnabled(false);
+    httpServer.getServerConfiguration().addHttpHandler(localHandler,"/local");
+  }
   try {
     httpServer.start();
     LOG.info("Grizzly server running.");

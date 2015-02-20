@@ -1,0 +1,25 @@
+router = otp.getRouter()
+req = otp.createRequest()
+req.setDateTime(2015, 1, 15, 10, 0, 0)
+req.setMaxTimeSec(1800)
+grid = otp.createGridPopulation(43.201, 43.359, 5.284, 5.483, 20, 20)
+colleges = otp.loadCSVPopulation('colleges.csv', 'Y', 'X')
+population = otp.loadCSVPopulation('insee.csv', 'y', 'x')
+grid30Csv = otp.createCSVOutput()
+grid30Csv.setHeader(['lat', 'lon', 'min_college_time', 'n_colleges_30', 'n_pop_30'])
+for origin in grid:
+    print 'Processing: ', origin
+    req.setOrigin(origin)
+    spt = router.plan(req)
+    if (spt is None):
+        continue
+    res = spt.eval(colleges)
+    if (len(res) == 0):
+        minTime = (-1)
+    else:
+        minTime = min([r.getTime() for r in res])
+    nCollege30 = sum([1 for r in res if (r.getTime() < 1800)])
+    res = spt.eval(population)
+    nPop30 = sum([r.getIndividual().getFloatData('ind') for r in res if (r.getTime() < 1800)])
+    grid30Csv.addRow([spt.getSnappedOrigin().getLat(), spt.getSnappedOrigin().getLon(), minTime, nCollege30, nPop30])
+grid30Csv.save('grid30.csv')

@@ -72,8 +72,8 @@
       for (int i=0; i < tripPattern.hopEdges.length; i++) {
         tripPattern.hopEdges[i].setGeometry(geom[i]);
       }
+      tripPattern.makeGeometry();
     }
-    tripPattern.makeGeometry();
     tripPattern.setServiceCodes(graph.serviceCodes);
   }
   interline(tripPatterns.values(),graph);
