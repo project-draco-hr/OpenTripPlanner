@@ -1,0 +1,15 @@
+{
+  Way way=new Way();
+  long idDelta=vin.readSInt64();
+  id+=idDelta;
+  if (idDelta == 0)   return true;
+  way.tags=readTags();
+  int nNodes=vin.readUInt32();
+  way.nodes=new long[nNodes];
+  for (int i=0; i < nNodes; i++) {
+    ref+=vin.readSInt64();
+    way.nodes[i]=ref;
+  }
+  osm.ways.put(id,way);
+  return false;
+}

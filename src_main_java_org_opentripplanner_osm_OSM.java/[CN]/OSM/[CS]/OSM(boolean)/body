@@ -1,7 +1,7 @@
 {
   if (diskBacked) {
     LOG.info("OSM backed by temporary file.");
-    DB db=DBMaker.newTempFileDB().transactionDisable().asyncWriteEnable().compressionEnable().make();
+    DB db=DBMaker.newFileDB(new File("/mnt/ssd2/vex/osmdb")).transactionDisable().asyncWriteEnable().compressionEnable().make();
     nodes=db.getTreeMap("nodes");
     ways=db.getTreeMap("ways");
     relations=db.getTreeMap("relations");

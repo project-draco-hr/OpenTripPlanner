@@ -1,0 +1,10 @@
+{
+  beginWriteBlock(VEX_WAY);
+  int n=0;
+  for (  Map.Entry<Long,Way> entry : osm.ways.entrySet()) {
+    writeWay(entry.getKey(),entry.getValue());
+    n++;
+  }
+  endWriteBlock(n);
+  return n;
+}
