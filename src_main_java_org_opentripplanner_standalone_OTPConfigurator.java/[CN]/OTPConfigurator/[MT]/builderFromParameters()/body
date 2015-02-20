@@ -19,7 +19,7 @@
   builderConfig=loadJson(new File(dir,BUILDER_CONFIG_FILENAME));
   GraphBuilderParameters builderParams=new GraphBuilderParameters(builderConfig);
   routerConfig=loadJson(new File(dir,ROUTER_CONFIG_FILENAME));
-  LOG.info(dumpFields(builderParams));
+  LOG.info(ReflectionLibrary.dumpFields(builderParams));
   for (  File file : dir.listFiles()) {
 switch (InputFileType.forFile(file)) {
 case GTFS:
