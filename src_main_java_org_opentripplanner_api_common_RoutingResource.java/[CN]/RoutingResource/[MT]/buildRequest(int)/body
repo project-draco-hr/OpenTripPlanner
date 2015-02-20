@@ -1,6 +1,6 @@
 {
   Router router=otpServer.getRouter(routerId);
-  RoutingRequest request=router.prototypeRoutingRequest.clone();
+  RoutingRequest request=router.defaultRoutingRequest.clone();
   request.setFromString(get(fromPlace,n,request.getFromPlace().getRepresentation()));
   request.setToString(get(toPlace,n,request.getToPlace().getRepresentation()));
   request.routerId=routerId;
