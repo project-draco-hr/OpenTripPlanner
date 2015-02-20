@@ -1,0 +1,21 @@
+{
+  if (b.weight == 0) {
+    return false;
+  }
+  if (a.isBikeRenting() != b.isBikeRenting())   return false;
+  if (a.isCarParked() != b.isCarParked())   return false;
+  if (a.isBikeParked() != b.isBikeParked())   return false;
+  Graph graph=a.getOptions().rctx.graph;
+  if (a.backEdge != b.getBackEdge() && ((a.backEdge instanceof StreetEdge) && (!graph.getTurnRestrictions(a.backEdge).isEmpty())))   return false;
+  if (a.routeSequenceSubset(b)) {
+    return a.weight <= b.weight && a.getElapsedTimeSeconds() <= b.getElapsedTimeSeconds();
+  }
+  boolean walkDistanceIsHopeful=a.walkDistance / b.getWalkDistance() < 1 + WALK_DIST_EPSILON;
+  double weightRatio=a.weight / b.weight;
+  boolean weightIsHopeful=(weightRatio < 1 + WEIGHT_EPSILON && a.weight - b.weight < WEIGHT_DIFF_MARGIN);
+  double t1=(double)a.getElapsedTimeSeconds();
+  double t2=(double)b.getElapsedTimeSeconds();
+  double timeRatio=t1 / t2;
+  boolean timeIsHopeful=(timeRatio < 1 + TIME_EPSILON) && (t1 - t2 <= TIME_DIFF_MARGIN);
+  return walkDistanceIsHopeful && weightIsHopeful && timeIsHopeful;
+}

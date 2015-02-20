@@ -1,9 +1,0 @@
-{
-  final Graph graph=s.getOptions().rctx.graph;
-  final State existing=states.get(s.getVertex());
-  final Edge backEdge=existing.getBackEdge();
-  if (!graph.getTurnRestrictions(backEdge).isEmpty()) {
-    return true;
-  }
-  return (s == existing);
-}

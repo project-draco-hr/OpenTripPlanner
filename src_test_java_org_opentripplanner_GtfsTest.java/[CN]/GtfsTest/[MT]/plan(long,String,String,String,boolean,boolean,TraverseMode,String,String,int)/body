@@ -26,7 +26,8 @@
   routingRequest.setOtherThanPreferredRoutesPenalty(0);
   routingRequest.setWaitReluctance(1);
   routingRequest.setWalkBoardCost(30);
-  TripPlan tripPlan=planGenerator.generate(routingRequest);
+  List<GraphPath> paths=new GraphPathFinder(graph).getPaths(routingRequest);
+  TripPlan tripPlan=GraphPathToTripPlanConverter.generatePlan(paths,routingRequest);
   itinerary=tripPlan.itinerary.get(0);
   assertEquals(legCount,itinerary.legs.size());
   return itinerary.legs.toArray(new Leg[legCount]);

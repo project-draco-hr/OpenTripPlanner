@@ -4,7 +4,7 @@
   sptRequest.worstTime=(sptRequest.dateTime + (sptRequest.arriveBy ? -isoChroneRequest.maxCutoffSec : isoChroneRequest.maxCutoffSec));
   sptRequest.batch=true;
   sptRequest.setRoutingContext(graph);
-  final ShortestPathTree spt=sptService.getShortestPathTree(sptRequest);
+  final ShortestPathTree spt=new AStar().getShortestPathTree(sptRequest);
   sptRequest.cleanup();
   long t1=System.currentTimeMillis();
   List<Coordinate> initialPoints=computeInitialPoints(spt);

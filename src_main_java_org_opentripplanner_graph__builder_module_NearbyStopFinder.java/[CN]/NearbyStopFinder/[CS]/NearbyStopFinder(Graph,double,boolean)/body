@@ -4,8 +4,8 @@
   this.radius=radius;
   if (useStreets) {
     parsers=new PathParser[]{new TransferFinderParser()};
-    earliestArrivalSPTService=new EarliestArrivalSPTService();
-    earliestArrivalSPTService.maxDuration=(int)radius;
+    earliestArrivalSearch=new EarliestArrivalSearch();
+    earliestArrivalSearch.maxDuration=(int)radius;
   }
  else {
     streetIndex=new StreetVertexIndexServiceImpl(graph);

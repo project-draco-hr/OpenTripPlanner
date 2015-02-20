@@ -9,7 +9,7 @@
   targets.add(_graph.getVertex("56th_20th"));
   targets.add(_graph.getVertex("leary_20th"));
   SearchTerminationStrategy strategy=new MultiTargetTerminationStrategy(targets);
-  ShortestPathTree tree=new GenericAStar().getShortestPathTree(options,-1,strategy);
+  ShortestPathTree tree=new AStar().getShortestPathTree(options,-1,strategy);
   for (  Vertex v : targets) {
     GraphPath path=tree.getPath(v,false);
     assertNotNull("No path found for target " + v.getLabel(),path);

@@ -8,7 +8,7 @@
   rr.worstTime=(rr.dateTime + worstElapsedTime);
   rr.walkSpeed=request.walkSpeed;
   rr.bikeSpeed=request.bikeSpeed;
-  GenericAStar astar=new GenericAStar();
+  AStar astar=new AStar();
   rr.setNumItineraries(1);
   ShortestPathTree spt=astar.getShortestPathTree(rr,System.currentTimeMillis() + 5000);
   State state=spt.getState(rr.rctx.target);

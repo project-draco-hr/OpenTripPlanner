@@ -30,12 +30,4 @@
   }
  catch (  Exception exception) {
   }
-  genericAStar=new GenericAStarFactory();
-  if (isLongDistance()) {
-    pathService=new LongDistancePathService(null,genericAStar);
-  }
- else {
-    pathService=new RetryingPathServiceImpl(null,genericAStar);
-  }
-  planGenerator=new PlanGenerator(null,pathService);
 }
