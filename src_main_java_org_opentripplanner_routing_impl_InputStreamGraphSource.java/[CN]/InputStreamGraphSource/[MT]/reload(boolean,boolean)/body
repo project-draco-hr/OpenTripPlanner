@@ -5,8 +5,8 @@ synchronized (this) {
     if (!doReload)     return true;
     if (preEvict) {
 synchronized (preEvictMutex) {
-        if (router != null && routerLifecycleManager != null) {
-          routerLifecycleManager.shutdownRouter(router);
+        if (router != null) {
+          router.shutdown();
         }
         router=null;
         router=loadGraph();
@@ -15,16 +15,16 @@ synchronized (preEvictMutex) {
  else {
       Router newRouter=loadGraph();
       if (newRouter != null) {
-        if (router != null && routerLifecycleManager != null) {
-          routerLifecycleManager.shutdownRouter(router);
+        if (router != null) {
+          router.shutdown();
         }
         router=newRouter;
       }
  else {
         if (force || router == null) {
           LOG.warn("Unable to load data for router '{}'.",routerId);
-          if (router != null && routerLifecycleManager != null) {
-            routerLifecycleManager.shutdownRouter(router);
+          if (router != null) {
+            router.shutdown();
           }
           router=null;
         }

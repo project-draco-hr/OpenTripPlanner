@@ -1,0 +1,43 @@
+{
+  this.tileRendererManager=new TileRendererManager(this.graph);
+{
+    this.tileCache=new TileCache(this.graph);
+    this.renderer=new Renderer(this.tileCache);
+    this.sampleGridRenderer=new SampleGridRenderer(this.graph);
+    this.isoChroneSPTRenderer=new IsoChroneSPTRendererAccSampling(this.sampleGridRenderer);
+  }
+  JsonNode routingDefaultsNode=config.get("routingDefaults");
+  if (routingDefaultsNode != null) {
+    LOG.info("Loading default routing parameters from JSON:");
+    ReflectiveInitializer<RoutingRequest> scraper=new ReflectiveInitializer(RoutingRequest.class);
+    this.defaultRoutingRequest=scraper.scrape(routingDefaultsNode);
+  }
+ else {
+    LOG.info("No default routing parameters were found in the router config JSON. Using built-in OTP defaults.");
+    this.defaultRoutingRequest=new RoutingRequest();
+  }
+  JsonNode timeout=config.get("timeout");
+  if (timeout != null) {
+    if (timeout.isNumber()) {
+      this.timeouts=new double[]{timeout.doubleValue()};
+    }
+ else {
+      LOG.error("The 'timeout' configuration option should be a number of seconds.");
+    }
+  }
+  JsonNode timeouts=config.get("timeouts");
+  if (timeouts != null) {
+    if (timeouts.isArray() && timeouts.size() > 0) {
+      this.timeouts=new double[timeouts.size()];
+      int i=0;
+      for (      JsonNode node : timeouts) {
+        this.timeouts[i++]=node.doubleValue();
+      }
+    }
+ else {
+      LOG.error("The 'timeouts' configuration option should be an array of values in seconds.");
+    }
+  }
+  LOG.info("Timeouts for router '{}': {}",this.id,this.timeouts);
+  GraphUpdaterConfigurator.setupGraph(this.graph,config);
+}

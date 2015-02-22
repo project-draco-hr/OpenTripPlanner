@@ -25,9 +25,7 @@
       config=mapper.readTree(is);
     }
     Router newRouter=new Router(routerId,newGraph);
-    if (routerLifecycleManager != null) {
-      routerLifecycleManager.startupRouter(newRouter,config);
-    }
+    newRouter.startup(config);
     return newRouter;
   }
  catch (  IOException e) {
