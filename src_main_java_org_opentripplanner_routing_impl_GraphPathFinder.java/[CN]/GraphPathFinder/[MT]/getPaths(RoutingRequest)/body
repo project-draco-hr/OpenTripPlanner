@@ -28,16 +28,30 @@
   LOG.debug("BEGIN SEARCH");
   List<GraphPath> paths=Lists.newArrayList();
   Set<AgencyAndId> bannedTrips=Sets.newHashSet();
-  while (paths.size() < options.numItineraries && paths.size() < router.timeouts.length) {
-    double timeout=searchBeginTime + (router.timeouts[paths.size()] * 1000) - System.currentTimeMillis();
+  while (paths.size() < options.numItineraries) {
+    int timeoutIndex=paths.size();
+    if (timeoutIndex >= router.timeouts.length) {
+      timeoutIndex=router.timeouts.length - 1;
+    }
+    double timeout=searchBeginTime + (router.timeouts[timeoutIndex] * 1000);
+    timeout-=System.currentTimeMillis();
+    timeout/=1000;
+    if (timeout <= 0) {
+      options.rctx.aborted=true;
+      break;
+    }
     ShortestPathTree spt=aStar.getShortestPathTree(options,timeout);
     if (spt == null) {
       LOG.warn("SPT was null.");
       return null;
     }
-    if (options.rctx.aborted)     break;
+    if (options.rctx.aborted) {
+      break;
+    }
     List<GraphPath> newPaths=spt.getPaths();
-    if (newPaths.isEmpty())     break;
+    if (newPaths.isEmpty()) {
+      break;
+    }
     for (    GraphPath path : newPaths) {
       for (      State state : path.states) {
         AgencyAndId tripId=state.getTripId();
