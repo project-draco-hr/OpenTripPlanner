@@ -6,6 +6,7 @@
   GtfsModule gtfsGraphBuilderImpl=new GtfsModule(gtfsBundleList);
   alertsUpdateHandler=new AlertsUpdateHandler();
   graph=new Graph();
+  router=new Router("TEST",graph);
   gtfsBundle.setTransfersTxtDefinesStationPaths(true);
   gtfsGraphBuilderImpl.buildGraph(graph,null);
   agencyId=graph.getAgencyIds().iterator().next();

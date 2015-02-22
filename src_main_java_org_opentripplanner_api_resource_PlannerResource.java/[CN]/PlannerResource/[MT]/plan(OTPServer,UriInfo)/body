@@ -4,7 +4,7 @@
   try {
     request=super.buildRequest();
     Router router=otpServer.getRouter(request.routerId);
-    GraphPathFinder gpFinder=new GraphPathFinder(router.graph);
+    GraphPathFinder gpFinder=new GraphPathFinder(router);
     List<GraphPath> paths=gpFinder.graphPathFinderEntryPoint(request);
     TripPlan plan=GraphPathToTripPlanConverter.generatePlan(paths,request);
     response.setPlan(plan);

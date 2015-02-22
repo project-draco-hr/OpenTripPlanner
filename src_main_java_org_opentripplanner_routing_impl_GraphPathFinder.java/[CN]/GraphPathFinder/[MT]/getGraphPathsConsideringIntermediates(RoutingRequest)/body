@@ -11,7 +11,7 @@
       request.from=from;
       request.to=to;
       request.rctx=null;
-      request.setRoutingContext(graph);
+      request.setRoutingContext(router.graph);
       List<GraphPath> partialPaths=getPaths(request);
       if (partialPaths == null || partialPaths.size() == 0) {
         return null;
