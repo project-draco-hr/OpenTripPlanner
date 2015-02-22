@@ -1,7 +1,7 @@
 {
   LOG.info("Wiring up and configuring server.");
   this.params=params;
-  graphService=gs;
+  this.graphService=gs;
   if (params.analyst) {
     surfaceCache=new SurfaceCache(30);
     pointSetCache=new DiskBackedPointSetCache(100,params.pointSetDirectory);

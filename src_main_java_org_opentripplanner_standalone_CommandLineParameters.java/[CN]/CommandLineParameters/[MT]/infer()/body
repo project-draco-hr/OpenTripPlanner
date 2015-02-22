@@ -1,10 +1,6 @@
 {
   server|=(inMemory || preFlight || port != null);
   if (basePath == null)   basePath=DEFAULT_BASE_PATH;
-  if (routerIds == null) {
-    if (autoScan || inMemory || preFlight)     routerIds=Collections.emptyList();
- else     routerIds=Arrays.asList(DEFAULT_ROUTER_ID);
-  }
   if (cacheDirectory == null)   cacheDirectory=new File(basePath,"cache");
   if (graphDirectory == null)   graphDirectory=new File(basePath,"graphs");
   if (pointSetDirectory == null)   pointSetDirectory=new File(basePath,"pointsets");

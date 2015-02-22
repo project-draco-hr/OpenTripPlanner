@@ -4,11 +4,10 @@
   @SuppressWarnings("unused") JCommander jc=new JCommander(params,args);
   params.analyst=true;
   params.infer();
-  OTPConfigurator configurator=new OTPConfigurator(params);
-  if (configurator.builderFromParameters() != null)   throw new IllegalArgumentException("Building from script is not supported.");
-  if (configurator.scriptFromParameters() != null)   throw new IllegalArgumentException("Scripting from script is not supported.");
-  if (configurator.visualizerFromParameters() != null)   throw new IllegalArgumentException("Vizualizer from script is not supported.");
-  if (configurator.serverFromParameters() != null)   throw new IllegalArgumentException("Server from script is not supported.");
-  OTPServer otpServer=configurator.getServer();
-  return new OtpsEntryPoint(otpServer);
+  OTPMain otpMain=new OTPMain(params);
+  if (params.build != null)   throw new IllegalArgumentException("Building from script is not yet supported.");
+  if (params.scriptFile != null)   throw new IllegalArgumentException("Scripting from script is not supported.");
+  if (params.visualize)   throw new IllegalArgumentException("Vizualizer from script is not supported.");
+  if (params.server)   throw new IllegalArgumentException("Server from script is not supported.");
+  return new OtpsEntryPoint(otpMain.otpServer);
 }

@@ -13,46 +13,10 @@
     LOG.error("Parameter error: {}",pex.getMessage());
     System.exit(1);
   }
-  OTPConfigurator configurator=new OTPConfigurator(params);
-  GraphBuilder graphBuilder=configurator.builderFromParameters();
-  if (graphBuilder != null) {
-    graphBuilder.run();
-    if (params.inMemory || params.preFlight) {
-      graphBuilder.getGraph().index(new DefaultStreetVertexIndexFactory());
-      configurator.makeGraphService(graphBuilder.getGraph());
-    }
-  }
-  GraphVisualizer graphVisualizer=configurator.visualizerFromParameters();
-  if (graphVisualizer != null) {
-    graphVisualizer.run();
-  }
-  OTPScript otpScript=null;
-  try {
-    otpScript=configurator.scriptFromParameters();
-    if (otpScript != null) {
-      Object retval=otpScript.run();
-      if (retval != null) {
-        LOG.warn("Your script returned something, no idea what to do with it: {}",retval);
-      }
-    }
-  }
- catch (  Exception e) {
-    throw new RuntimeException(e);
-  }
-  GrizzlyServer grizzlyServer=configurator.serverFromParameters();
-  if (grizzlyServer != null) {
-    while (true) {
-      try {
-        grizzlyServer.run();
-        return;
-      }
- catch (      Throwable throwable) {
-        throwable.printStackTrace();
-        LOG.error("An uncaught {} occurred inside OTP. Restarting server.",throwable.getClass().getSimpleName());
-      }
-    }
-  }
-  if (graphBuilder == null && graphVisualizer == null && grizzlyServer == null && otpScript == null) {
+  if (params.build == null && !params.visualize && !params.server && params.scriptFile == null) {
     LOG.info("Nothing to do. Use --help to see available tasks.");
+    System.exit(-1);
   }
+  OTPMain main=new OTPMain(params);
+  main.run();
 }

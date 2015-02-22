@@ -1,0 +1,9 @@
+{
+  graphService=new GraphService(params.autoReload);
+  InputStreamGraphSource.FileFactory graphSourceFactory=new InputStreamGraphSource.FileFactory(params.graphDirectory);
+  graphService.graphSourceFactory=graphSourceFactory;
+  graphService.routerLifecycleManager=routerLifecycleManager;
+  if (params.graphDirectory != null) {
+    graphSourceFactory.basePath=params.graphDirectory;
+  }
+}

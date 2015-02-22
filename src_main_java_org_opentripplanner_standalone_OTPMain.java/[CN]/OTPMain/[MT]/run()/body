@@ -1,0 +1,59 @@
+{
+  makeGraphService();
+  otpServer=new OTPServer(params,graphService);
+  if (params.build != null) {
+    GraphBuilder graphBuilder=builderFromParameters();
+    if (graphBuilder != null) {
+      graphBuilder.run();
+      if (params.inMemory || params.preFlight) {
+        Graph graph=graphBuilder.getGraph();
+        graph.index(new DefaultStreetVertexIndexFactory());
+        graphService.registerGraph("",new MemoryGraphSource("",graph,MissingNode.getInstance()));
+      }
+    }
+ else {
+      LOG.error("An error occurred while building the graph. Exiting.");
+      System.exit(-1);
+    }
+  }
+  if ((params.routerIds != null && params.routerIds.size() > 0) || params.autoScan) {
+    GraphScanner graphScanner=new GraphScanner(graphService,params.graphDirectory,params.autoScan);
+    graphScanner.basePath=params.graphDirectory;
+    if (params.routerIds.size() > 0) {
+      graphScanner.defaultRouterId=params.routerIds.get(0);
+    }
+    graphScanner.autoRegister=params.routerIds;
+    graphScanner.startup();
+  }
+  if (params.visualize) {
+    GraphVisualizer visualizer=new GraphVisualizer(graphService.getRouter().graph);
+    visualizer.run();
+  }
+  if (params.scriptFile != null) {
+    try {
+      OTPScript otpScript=new BSFOTPScript(otpServer,params.scriptFile);
+      if (otpScript != null) {
+        Object retval=otpScript.run();
+        if (retval != null) {
+          LOG.warn("Your script returned something, no idea what to do with it: {}",retval);
+        }
+      }
+    }
+ catch (    Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+  if (params.server) {
+    GrizzlyServer grizzlyServer=new GrizzlyServer(params,otpServer);
+    while (true) {
+      try {
+        grizzlyServer.run();
+        return;
+      }
+ catch (      Throwable throwable) {
+        throwable.printStackTrace();
+        LOG.error("An uncaught {} occurred inside OTP. Restarting server.",throwable.getClass().getSimpleName());
+      }
+    }
+  }
+}
