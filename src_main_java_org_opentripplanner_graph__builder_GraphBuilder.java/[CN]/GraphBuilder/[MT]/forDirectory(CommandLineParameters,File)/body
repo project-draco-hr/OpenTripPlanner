@@ -6,16 +6,15 @@
   JsonNode builderConfig=null;
   JsonNode routerConfig=null;
   File demFile=null;
-  File dir=params.build;
   LOG.info("Searching for graph builder input files in {}",dir);
   if (!dir.isDirectory() && dir.canRead()) {
     LOG.error("'{}' is not a readable directory.",dir);
     return null;
   }
   graphBuilder.setPath(dir);
-  builderConfig=loadJson(new File(dir,BUILDER_CONFIG_FILENAME));
+  builderConfig=OTPMain.loadJson(new File(dir,BUILDER_CONFIG_FILENAME));
   GraphBuilderParameters builderParams=new GraphBuilderParameters(builderConfig);
-  routerConfig=loadJson(new File(dir,ROUTER_CONFIG_FILENAME));
+  OTPMain.loadJson(new File(dir,Router.ROUTER_CONFIG_FILENAME));
   LOG.info(ReflectionLibrary.dumpFields(builderParams));
   for (  File file : dir.listFiles()) {
 switch (InputFileType.forFile(file)) {
@@ -43,7 +42,7 @@ LOG.debug("Skipping file '{}'",file);
 boolean hasOSM=builderParams.streets && !osmFiles.isEmpty();
 boolean hasGTFS=builderParams.transit && !gtfsFiles.isEmpty();
 if (!(hasOSM || hasGTFS)) {
-LOG.error("Found no input files from which to build a graph in {}",params.build.toString());
+LOG.error("Found no input files from which to build a graph in {}",dir);
 return null;
 }
 if (hasOSM) {

@@ -21,7 +21,7 @@
   CommandLineParameters params=otpServer.params.clone();
   params.build=tempDir;
   params.inMemory=true;
-  GraphBuilder graphBuilder=new OTPMain(params).builderFromParameters();
+  GraphBuilder graphBuilder=GraphBuilder.forDirectory(params,tempDir);
   graphBuilder.run();
   for (  File file : tempDir.listFiles()) {
     file.delete();
