@@ -27,7 +27,7 @@ LOG.info("Found OSM file {}",file);
 osmFiles.add(file);
 break;
 case DEM:
-if (!builderParams.elevation && demFile == null) {
+if (!builderParams.fetchElevationUS && demFile == null) {
 LOG.info("Found DEM file {}",file);
 demFile=file;
 }
@@ -53,7 +53,7 @@ osmProviders.add(osmProvider);
 }
 OpenStreetMapModule osmBuilder=new OpenStreetMapModule(osmProviders);
 DefaultStreetEdgeFactory streetEdgeFactory=new DefaultStreetEdgeFactory();
-streetEdgeFactory.useElevationData=builderParams.elevation || (demFile != null);
+streetEdgeFactory.useElevationData=builderParams.fetchElevationUS || (demFile != null);
 osmBuilder.edgeFactory=streetEdgeFactory;
 DefaultWayPropertySetSource defaultWayPropertySetSource=new DefaultWayPropertySetSource();
 osmBuilder.setDefaultWayPropertySetSource(defaultWayPropertySetSource);
@@ -87,7 +87,7 @@ graphBuilder.addGraphBuilder(new DirectTransferGenerator());
 }
 gtfsBuilder.setFareServiceFactory(new DefaultFareServiceFactory());
 }
-if (builderParams.elevation) {
+if (builderParams.fetchElevationUS) {
 File cacheDirectory=new File(params.cacheDirectory,"ned");
 ElevationGridCoverageFactory gcf=new NEDGridCoverageFactoryImpl(cacheDirectory);
 GraphBuilderModule elevationBuilder=new ElevationModule(gcf);
