@@ -1,7 +1,7 @@
 {
   ArrayList<Vertex> vertices=new ArrayList<Vertex>();
   vertices.addAll(graph.getVertices());
-  LOG.debug("Linking bike rental stations...");
+  LOG.info("Linking bike rental stations...");
   for (  BikeRentalStationVertex brsv : Iterables.filter(vertices,BikeRentalStationVertex.class)) {
     if (!networkLinkerLibrary.connectVertexToStreets(brsv).getResult()) {
       LOG.warn(graph.addBuilderAnnotation(new BikeRentalStationUnlinked(brsv)));
