@@ -8,7 +8,7 @@
       if (params.inMemory || params.preFlight) {
         Graph graph=graphBuilder.getGraph();
         graph.index(new DefaultStreetVertexIndexFactory());
-        graphService.registerGraph("",new MemoryGraphSource("",graph,MissingNode.getInstance()));
+        graphService.registerGraph("",new MemoryGraphSource("",graph,graphBuilder.routerConfig));
       }
     }
  else {
