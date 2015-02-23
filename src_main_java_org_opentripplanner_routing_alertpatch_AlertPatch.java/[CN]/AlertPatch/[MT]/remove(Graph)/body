@@ -22,7 +22,7 @@
       if (direction != null && !direction.equals(tripPattern.getDirection())) {
         continue;
       }
-      if (directionId != null && !directionId.equals(tripPattern.getTrip(0).getDirectionId())) {
+      if (directionId != -1 && directionId != tripPattern.directionId) {
         continue;
       }
       for (int i=0; i < tripPattern.stopPattern.stops.length; i++) {

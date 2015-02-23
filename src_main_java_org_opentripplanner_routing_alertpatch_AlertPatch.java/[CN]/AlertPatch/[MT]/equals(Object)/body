@@ -13,15 +13,8 @@
       return false;
     }
   }
-  if (directionId == null) {
-    if (other.directionId != null) {
-      return false;
-    }
-  }
- else {
-    if (!directionId.equals(other.directionId)) {
-      return false;
-    }
+  if (directionId != other.directionId) {
+    return false;
   }
   if (agency == null) {
     if (other.agency != null) {
