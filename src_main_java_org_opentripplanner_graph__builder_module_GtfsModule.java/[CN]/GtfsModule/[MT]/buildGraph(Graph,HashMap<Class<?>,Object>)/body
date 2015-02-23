@@ -17,7 +17,7 @@
       csfactory.setGtfsDao(dao);
       CalendarServiceData data=csfactory.createData();
       service.addData(data,dao);
-      hf.setDefaultStreetToStopTime(gtfsBundle.getDefaultStreetToStopTime());
+      hf.subwayAccessTime=gtfsBundle.subwayAccessTime;
       hf.run(graph);
       if (gtfsBundle.doesTransfersTxtDefineStationPaths()) {
         hf.createTransfersTxtTransfers();

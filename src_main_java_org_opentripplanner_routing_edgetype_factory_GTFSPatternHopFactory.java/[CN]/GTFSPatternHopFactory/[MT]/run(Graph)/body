@@ -75,6 +75,13 @@
       tripPattern.makeGeometry();
     }
     tripPattern.setServiceCodes(graph.serviceCodes);
+    TraverseMode mode=GtfsLibrary.getTraverseMode(tripPattern.route);
+    for (    TransitStop tstop : tripPattern.stopVertices) {
+      tstop.addMode(mode);
+      if (mode == TraverseMode.SUBWAY) {
+        tstop.setStreetToStopTime(subwayAccessTime);
+      }
+    }
   }
   interline(tripPatterns.values(),graph);
   loadTransfers(graph);

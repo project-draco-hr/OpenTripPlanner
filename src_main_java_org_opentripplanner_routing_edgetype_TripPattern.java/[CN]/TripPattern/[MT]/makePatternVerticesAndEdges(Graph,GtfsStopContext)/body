@@ -16,8 +16,8 @@
     hopEdges[stop]=new PatternHop(pdv0,pav1,s0,s1,stop);
     TransitStopDepart stopDepart=getStopOrParent(context.stopDepartNodes,s0,graph);
     TransitStopArrive stopArrive=getStopOrParent(context.stopArriveNodes,s1,graph);
-    TraverseMode mode=GtfsLibrary.getTraverseMode(this.route);
-    stopArrive.getStopVertex().addMode(mode);
+    stopVertices[stop]=stopDepart.getStopVertex();
+    stopVertices[stop + 1]=stopArrive.getStopVertex();
     if (this.canBoard(stop)) {
       boardEdges[stop]=new TransitBoardAlight(stopDepart,pdv0,stop,mode);
     }
