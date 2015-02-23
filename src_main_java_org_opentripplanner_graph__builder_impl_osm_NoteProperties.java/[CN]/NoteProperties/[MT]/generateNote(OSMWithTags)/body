@@ -1,6 +1,6 @@
 {
   Alert note=new Alert();
-  if (Pattern.compile("\\{(.*?)\\}").matcher(notePattern).matches()) {
+  if (patternMatcher.matcher(notePattern).matches()) {
     Map<String,String> noteText=TemplateLibrary.generateI18N(notePattern,way);
     note.alertHeaderText=TranslatedString.getI18NString(noteText);
   }
