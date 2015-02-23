@@ -1,5 +1,11 @@
 {
   LOG.info("Linking transit stops to streets...");
-  NetworkLinker linker=new NetworkLinker(graph,extra);
-  linker.createLinkage();
+  this.networkLinkerLibrary=new NetworkLinkerLibrary(graph,extra);
+  this.graph=graph;
+  if (graph.hasStreets && graph.hasTransit) {
+    linkTransit();
+    linkBikeRentalStations();
+    linkParkRideStations();
+    cleanGraph();
+  }
 }
