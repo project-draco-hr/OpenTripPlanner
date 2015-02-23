@@ -36,7 +36,7 @@ LOG.info("Skipping DEM file {}",file);
 }
 break;
 case OTHER:
-LOG.debug("Skipping file '{}'",file);
+LOG.warn("Skipping unrecognized file '{}'",file);
 }
 }
 boolean hasOSM=builderParams.streets && !osmFiles.isEmpty();
