@@ -19,15 +19,19 @@
     request.rctx.debugOutput.finishedRendering();
     throw new PathNotFoundException();
   }
-  for (  GraphPath graphPath : paths) {
+  Iterator<GraphPath> gpi=paths.iterator();
+  while (gpi.hasNext()) {
+    GraphPath graphPath=gpi.next();
     if (request.arriveBy) {
       if (graphPath.states.getLast().getTimeSeconds() > request.dateTime) {
         LOG.error("A graph path arrives after the requested time. This implies a bug.");
+        gpi.remove();
       }
     }
  else {
       if (graphPath.states.getFirst().getTimeSeconds() < request.dateTime) {
         LOG.error("A graph path leaves before the requested time. This implies a bug.");
+        gpi.remove();
       }
     }
   }
