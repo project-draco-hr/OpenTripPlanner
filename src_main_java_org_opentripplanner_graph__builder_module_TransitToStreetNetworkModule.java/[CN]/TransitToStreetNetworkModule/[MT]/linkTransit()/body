@@ -1,9 +1,7 @@
 {
   LOG.info("Linking transit stops to streets...");
-  ArrayList<Vertex> vertices=new ArrayList<Vertex>();
-  vertices.addAll(graph.getVertices());
   int nUnlinked=0;
-  for (  TransitStop ts : Iterables.filter(vertices,TransitStop.class)) {
+  for (  TransitStop ts : stopVertices) {
     boolean alreadyLinked=false;
     for (    Edge e : ts.getOutgoing()) {
       if (e instanceof StreetTransitLink) {
