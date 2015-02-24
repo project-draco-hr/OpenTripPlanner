@@ -7,7 +7,7 @@
   step.lat=en.getFromVertex().getY();
   step.elevation=encodeElevationProfile(s.getBackEdge(),0);
   step.bogusName=en.hasBogusName();
-  step.addAlerts(graph.streetNotesService.getNotes(s));
+  step.addAlerts(graph.streetNotesService.getNotes(s),wantedLocale);
   step.angle=DirectionUtils.getFirstAngle(s.getBackEdge().getGeometry());
   if (s.getBackEdge() instanceof AreaEdge) {
     step.area=true;

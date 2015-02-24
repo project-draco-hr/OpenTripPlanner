@@ -1,6 +1,6 @@
 {
   Alert alert=Alert.createSimpleAlerts("winkki:" + feature.getAttribute("licence_type"));
-  alert.alertDescriptionText=feature.getAttribute("event_description") == null ? new TranslatedString("") : new TranslatedString(feature.getAttribute("event_description").toString());
+  alert.alertDescriptionText=feature.getAttribute("event_description") == null ? new NonLocalizedString("") : new NonLocalizedString(feature.getAttribute("event_description").toString());
   alert.effectiveStartDate=feature.getAttribute("licence_startdate") == null ? (Date)feature.getAttribute("event_startdate") : (Date)feature.getAttribute("licence_startdate");
   return alert;
 }

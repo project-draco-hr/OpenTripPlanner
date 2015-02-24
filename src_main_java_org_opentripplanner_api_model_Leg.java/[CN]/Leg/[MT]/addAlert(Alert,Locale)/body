@@ -1,0 +1,11 @@
+{
+  if (alerts == null) {
+    alerts=new ArrayList<>();
+  }
+  for (  LocalizedAlert a : alerts) {
+    if (a.alert.equals(alert)) {
+      return;
+    }
+  }
+  alerts.add(new LocalizedAlert(alert,locale));
+}
