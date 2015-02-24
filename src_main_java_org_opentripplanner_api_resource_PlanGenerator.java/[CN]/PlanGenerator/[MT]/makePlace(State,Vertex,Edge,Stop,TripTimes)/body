@@ -1,6 +1,6 @@
 {
   boolean endOfLeg=(edge == null);
-  Place place=new Place(vertex.getX(),vertex.getY(),vertex.getName(),makeCalendar(state),makeCalendar(state));
+  Place place=new Place(vertex.getX(),vertex.getY(),vertex.getName(this.requestedLocale),makeCalendar(state),makeCalendar(state));
   if (endOfLeg)   edge=state.getBackEdge();
   if (vertex instanceof TransitVertex && edge instanceof OnboardEdge) {
     place.stopId=stop.getId();
