@@ -8,6 +8,10 @@
     options.setRoutingContext(router.graph);
     options.rctx.pathParsers=new PathParser[]{new Parser()};
   }
+  if (!options.modes.isTransit()) {
+    options.numItineraries=1;
+  }
+  options.dominanceFunction=new DominanceFunction.MinimumWeight();
   LOG.debug("rreq={}",options);
   RemainingWeightHeuristic heuristic;
   if (options.disableRemainingWeightHeuristic) {
