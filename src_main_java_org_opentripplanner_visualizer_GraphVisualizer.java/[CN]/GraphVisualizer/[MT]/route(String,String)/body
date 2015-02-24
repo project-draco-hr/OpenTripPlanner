@@ -37,14 +37,11 @@
   System.out.println("\tModes: " + modeSet);
   System.out.println("\tOptions: " + options);
   options.numItineraries=(Integer.parseInt(this.nPaths.getText()));
-  SPTVisitor vis=new SPTVisitor();
+  GraphPathFinder finder=new GraphPathFinder(router);
   long t0=System.currentTimeMillis();
-  List<GraphPath> paths=pathservice.getPaths(options);
+  List<GraphPath> paths=finder.graphPathFinderEntryPoint(options);
   long dt=System.currentTimeMillis() - t0;
   searchTimeElapsedLabel.setText("search time elapsed: " + dt + "ms");
-  spt=vis.spt;
-  showGraph.setSPT(spt);
-  System.out.println("got spt:" + spt);
   if (paths == null) {
     System.out.println("no path");
     showGraph.highlightGraphPath(null);

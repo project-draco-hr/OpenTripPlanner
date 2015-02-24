@@ -8,6 +8,9 @@
     options.setRoutingContext(router.graph);
     options.rctx.pathParsers=new PathParser[]{new Parser()};
   }
+  if (router.graphVisualizer != null) {
+    aStar.setTraverseVisitor(router.graphVisualizer.traverseVisitor);
+  }
   if (!options.modes.isTransit()) {
     options.numItineraries=1;
   }

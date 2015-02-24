@@ -3,6 +3,7 @@
   pane.setLayout(new BorderLayout());
   showGraph=new ShowGraph(this,getGraph());
   pane.add(showGraph,BorderLayout.CENTER);
+  traverseVisitor=new VisualTraverseVisitor(showGraph);
   leftPanel=new JPanel();
   leftPanel.setLayout(new BorderLayout());
   pane.add(leftPanel,BorderLayout.LINE_START);

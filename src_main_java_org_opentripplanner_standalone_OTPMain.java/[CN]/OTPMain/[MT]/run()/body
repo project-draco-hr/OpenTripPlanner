@@ -26,8 +26,10 @@
     graphScanner.startup();
   }
   if (params.visualize) {
-    GraphVisualizer visualizer=new GraphVisualizer(graphService.getRouter().graph);
-    visualizer.run();
+    Router defaultRouter=graphService.getRouter();
+    defaultRouter.graphVisualizer=new GraphVisualizer(defaultRouter);
+    defaultRouter.graphVisualizer.run();
+    defaultRouter.timeouts=new double[]{60};
   }
   if (params.scriptFile != null) {
     try {
