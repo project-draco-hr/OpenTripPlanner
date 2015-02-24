@@ -1,5 +1,5 @@
 {
-  List<BikePark> newBikeParks=xmlDownloader.download(url);
+  List<BikePark> newBikeParks=xmlDownloader.download(url,zip);
   if (newBikeParks != null) {
 synchronized (this) {
       bikeParks=newBikeParks;
