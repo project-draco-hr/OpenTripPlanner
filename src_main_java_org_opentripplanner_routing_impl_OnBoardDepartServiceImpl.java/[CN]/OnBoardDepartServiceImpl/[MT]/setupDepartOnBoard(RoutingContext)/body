@@ -1,5 +1,4 @@
 {
-  DistanceLibrary distanceLibrary=SphericalDistanceLibrary.getInstance();
   RoutingRequest opt=ctx.opt;
   opt.rctx=ctx;
   AgencyAndId tripId=opt.startingTransitTripId;
@@ -23,7 +22,7 @@
     double minDist=Double.MAX_VALUE;
     for (    PatternHop hop : hops) {
       LineString line=hop.getGeometry();
-      double dist=distanceLibrary.fastDistance(point,line);
+      double dist=SphericalDistanceLibrary.fastDistance(point,line);
       if (dist < minDist) {
         minDist=dist;
         bestHop=hop;
@@ -34,8 +33,8 @@
     LineString geometry=bestHop.getGeometry();
     P2<LineString> geomPair=GeometryUtils.splitGeometryAtPoint(geometry,point);
     geomRemaining=geomPair.second;
-    double total=distanceLibrary.fastLength(geometry);
-    double remaining=distanceLibrary.fastLength(geomRemaining);
+    double total=SphericalDistanceLibrary.fastLength(geometry);
+    double remaining=SphericalDistanceLibrary.fastLength(geomRemaining);
     fractionCovered=total > 0.0 ? (double)(1.0 - remaining / total) : 0.0;
     nextStop=(PatternStopVertex)bestHop.getToVertex();
     bestStopIndex=bestHop.getStopIndex();

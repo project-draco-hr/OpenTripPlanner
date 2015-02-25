@@ -24,10 +24,10 @@
         }
         Coordinate geometryStartCoord=geometryCoordinates[0];
         Coordinate geometryEndCoord=geometryCoordinates[geometryCoordinates.length - 1];
-        if (getDistanceLibrary().distance(edgeStartCoord,geometryStartCoord) > MAX_VERTEX_SHAPE_ERROR) {
+        if (SphericalDistanceLibrary.distance(edgeStartCoord,geometryStartCoord) > MAX_VERTEX_SHAPE_ERROR) {
           LOG.warn(graph.addBuilderAnnotation(new VertexShapeError(e)));
         }
- else         if (getDistanceLibrary().distance(edgeEndCoord,geometryEndCoord) > MAX_VERTEX_SHAPE_ERROR) {
+ else         if (SphericalDistanceLibrary.distance(edgeEndCoord,geometryEndCoord) > MAX_VERTEX_SHAPE_ERROR) {
           LOG.warn(graph.addBuilderAnnotation(new VertexShapeError(e)));
         }
       }

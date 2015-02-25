@@ -8,7 +8,7 @@
     return weight;
   }
   if (weight == Double.POSITIVE_INFINITY) {
-    double dist=distanceLibrary.fastDistance(v.getY(),v.getX(),target.getY(),target.getX());
+    double dist=SphericalDistanceLibrary.fastDistance(v.getY(),v.getX(),target.getY(),target.getX());
     double time=dist / MAX_TRANSIT_SPEED;
     return Math.max(maxFound,time);
   }

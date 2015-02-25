@@ -27,7 +27,7 @@
         TripPattern currPattern=patternForTripTimes.get(curr);
         Stop fromStop=prevPattern.getStop(prevPattern.getStops().size() - 1);
         Stop toStop=currPattern.getStop(0);
-        double teleportationDistance=distanceLibrary.fastDistance(fromStop.getLat(),fromStop.getLon(),toStop.getLat(),toStop.getLon());
+        double teleportationDistance=SphericalDistanceLibrary.fastDistance(fromStop.getLat(),fromStop.getLon(),toStop.getLat(),toStop.getLon());
         if (teleportationDistance > 200) {
         }
  else {

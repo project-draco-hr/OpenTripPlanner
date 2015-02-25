@@ -37,7 +37,7 @@
           if (avgSpeed < 1e-10)           avgSpeed=1e-10;
           if (speedAlongEdge > avgSpeed)           speedAlongEdge=avgSpeed;
         }
-        double lineStringLen=distanceLibrary.fastLength(lineString);
+        double lineStringLen=SphericalDistanceLibrary.fastLength(lineString);
         visitor.visit(e,vx0.getCoordinate(),s0,s1,0.0,lineStringLen,speedAlongEdge);
         visitor.visit(e,vx1.getCoordinate(),s0,s1,lineStringLen,0.0,speedAlongEdge);
         nTotal+=2;
@@ -52,7 +52,7 @@
           for (int i=0; i < pList.length - 1; i++) {
             Coordinate p0=pList[i];
             Coordinate p1=pList[i + 1];
-            double segLen=distanceLibrary.fastDistance(p0,p1);
+            double segLen=SphericalDistanceLibrary.fastDistance(p0,p1);
             while (curLen - startLen < segLen) {
               double k=(curLen - startLen) / segLen;
               Coordinate p=new Coordinate(p0.x * (1 - k) + p1.x * k,p0.y * (1 - k) + p1.y * k);

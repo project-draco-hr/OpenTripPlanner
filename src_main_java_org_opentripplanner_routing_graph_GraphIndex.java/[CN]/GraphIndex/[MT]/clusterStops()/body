@@ -9,7 +9,7 @@
     env.expandBy(SphericalDistanceLibrary.metersToLonDegrees(CLUSTER_RADIUS,s0.getLat()),SphericalDistanceLibrary.metersToDegrees(CLUSTER_RADIUS));
     for (    TransitStop ts1 : stopSpatialIndex.query(env)) {
       Stop s1=ts1.getStop();
-      double geoDistance=SphericalDistanceLibrary.getInstance().fastDistance(s0.getLat(),s0.getLon(),s1.getLat(),s1.getLon());
+      double geoDistance=SphericalDistanceLibrary.fastDistance(s0.getLat(),s0.getLon(),s1.getLat(),s1.getLon());
       if (geoDistance < CLUSTER_RADIUS) {
         String s1normalizedName=StopNameNormalizer.normalize(s1.getName());
         if (s1normalizedName.equals(s0normalizedName)) {

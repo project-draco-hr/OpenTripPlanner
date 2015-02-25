@@ -18,7 +18,7 @@
     OSMWithTags areaEntity=area.parent;
     StreetTraversalPermission areaPermissions=OSMFilter.getPermissionsForEntity(areaEntity,StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
     float carSpeed=wayPropertySet.getCarSpeedForWay(areaEntity,false);
-    double length=distanceLibrary.distance(startEndpoint.getCoordinate(),endEndpoint.getCoordinate());
+    double length=SphericalDistanceLibrary.distance(startEndpoint.getCoordinate(),endEndpoint.getCoordinate());
     int cls=StreetEdge.CLASS_OTHERPATH;
     cls|=OSMFilter.getStreetClasses(areaEntity);
     String label="way (area) " + areaEntity.getId() + " from "+ startEndpoint.getLabel()+ " to "+ endEndpoint.getLabel();

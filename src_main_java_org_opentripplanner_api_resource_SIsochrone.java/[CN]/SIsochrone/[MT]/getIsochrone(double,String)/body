@@ -90,7 +90,7 @@
   pathToStreetCoords[0]=dropPoint;
   pathToStreetCoords[1]=origin.getCoordinate();
   LineString pathToStreet=gf.createLineString(pathToStreetCoords);
-  double distanceToRoad=this.distanceLibrary.distance(origin.getY(),origin.getX(),dropPoint.y,dropPoint.x);
+  double distanceToRoad=SphericalDistanceLibrary.distance(origin.getY(),origin.getX(),dropPoint.y,dropPoint.x);
   long offRoadTimeCorrection=(long)(distanceToRoad / this.offRoadWalkspeed);
   Set<Coordinate> visitedCoords=new HashSet<Coordinate>();
   ArrayList<Edge> allConnectingEdges=new ArrayList<Edge>();

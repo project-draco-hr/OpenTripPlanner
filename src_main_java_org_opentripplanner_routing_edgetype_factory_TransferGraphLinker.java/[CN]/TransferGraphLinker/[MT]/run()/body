@@ -10,7 +10,7 @@
   for (  TransferTable.Transfer transfer : graph.getTransferTable().getAllFirstSpecificTransfers()) {
     TransitStationStop fromVertex=stopNodes.get(transfer.fromStopId);
     TransitStationStop toVertex=stopNodes.get(transfer.toStopId);
-    double distance=distanceLibrary.distance(fromVertex.getCoordinate(),toVertex.getCoordinate());
+    double distance=SphericalDistanceLibrary.distance(fromVertex.getCoordinate(),toVertex.getCoordinate());
     TransferEdge edge=null;
 switch (transfer.seconds) {
 case StopTransfer.FORBIDDEN_TRANSFER:

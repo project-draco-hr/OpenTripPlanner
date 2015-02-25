@@ -1,7 +1,6 @@
 {
-  DistanceLibrary distanceLibrary=SphericalDistanceLibrary.getInstance();
   Coordinate fromc=fromv.getCoordinate();
   Coordinate toc=tov.getCoordinate();
   geometry=GeometryUtils.getGeometryFactory().createLineString(new Coordinate[]{fromc,toc});
-  linkDistance=distanceLibrary.distance(fromc,toc);
+  linkDistance=SphericalDistanceLibrary.distance(fromc,toc);
 }

@@ -12,7 +12,7 @@
     if (e.getGeometry() != null) {
       LineString geometry=e.getGeometry();
       geomSizeDistribution.add(new NumberQuantifiable<Integer>(geometry.getNumPoints()));
-      double lenMeters=distanceLibrary.fastLength(geometry);
+      double lenMeters=SphericalDistanceLibrary.fastLength(geometry);
       geomLenDistribution.add(new LogQuantifiable<Double>(lenMeters,5.0));
     }
   }

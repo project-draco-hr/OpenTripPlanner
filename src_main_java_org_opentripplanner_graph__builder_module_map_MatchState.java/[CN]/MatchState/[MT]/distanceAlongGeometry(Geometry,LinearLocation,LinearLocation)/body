@@ -10,7 +10,7 @@
   index=it.getLocation();
   while (index.compareTo(endIndex) < 0) {
     Coordinate thisCoordinate=index.getCoordinate(geometry);
-    double distance=distanceLibrary.fastDistance(previousCoordinate,thisCoordinate);
+    double distance=SphericalDistanceLibrary.fastDistance(previousCoordinate,thisCoordinate);
     total+=distance;
     previousCoordinate=thisCoordinate;
     if (!it.hasNext())     break;
@@ -18,6 +18,6 @@
     index=it.getLocation();
   }
   Coordinate finalCoordinate=endIndex.getCoordinate(geometry);
-  total+=distanceLibrary.distance(previousCoordinate,finalCoordinate);
+  total+=SphericalDistanceLibrary.distance(previousCoordinate,finalCoordinate);
   return total;
 }

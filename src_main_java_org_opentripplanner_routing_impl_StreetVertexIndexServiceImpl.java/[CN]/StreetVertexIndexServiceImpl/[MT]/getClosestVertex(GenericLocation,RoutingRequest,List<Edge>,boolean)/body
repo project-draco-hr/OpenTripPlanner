@@ -61,7 +61,7 @@
   if (options != null && options.modes.isTransit()) {
     for (    TransitStop v : getNearbyTransitStops(coord,1000)) {
       if (!v.isStreetLinkable())       continue;
-      double d=distanceLibrary.distance(v.getCoordinate(),coord);
+      double d=SphericalDistanceLibrary.distance(v.getCoordinate(),coord);
       if (d < closestStopDistance) {
         closestStopDistance=d;
         closestStop=v;
@@ -76,7 +76,7 @@
   if (candidate != null) {
     StreetEdge bestStreet=candidate.edge;
     Coordinate nearestPoint=candidate.nearestPointOnEdge;
-    closestStreetDistance=distanceLibrary.distance(coord,nearestPoint);
+    closestStreetDistance=SphericalDistanceLibrary.distance(coord,nearestPoint);
     LOG.debug("best street: {} dist: {}",bestStreet.toString(),closestStreetDistance);
     if (calculatedName == null || "".equals(calculatedName)) {
       calculatedName=bestStreet.getName();
