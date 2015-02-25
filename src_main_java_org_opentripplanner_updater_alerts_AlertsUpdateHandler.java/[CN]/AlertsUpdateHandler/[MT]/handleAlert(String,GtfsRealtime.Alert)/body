@@ -23,6 +23,11 @@
     periods.add(new TimePeriod(0,Long.MAX_VALUE));
   }
   for (  EntitySelector informed : alert.getInformedEntityList()) {
+    if (fuzzyTripMatcher != null && informed.hasTrip()) {
+      String agency=informed.hasAgencyId() ? informed.getAgencyId() : defaultAgencyId;
+      TripDescriptor trip=fuzzyTripMatcher.match(agency,informed.getTrip());
+      informed=informed.toBuilder().setTrip(trip).build();
+    }
     String patchId=createId(id,informed);
     String routeId=null;
     if (informed.hasRouteId()) {

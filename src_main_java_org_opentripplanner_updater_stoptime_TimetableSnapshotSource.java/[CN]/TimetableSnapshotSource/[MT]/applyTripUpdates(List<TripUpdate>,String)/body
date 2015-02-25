@@ -6,6 +6,10 @@
   LOG.debug("message contains {} trip updates",updates.size());
   int uIndex=0;
   for (  TripUpdate tripUpdate : updates) {
+    if (fuzzyTripMatcher != null && tripUpdate.hasTrip()) {
+      TripDescriptor trip=fuzzyTripMatcher.match(feedId,tripUpdate.getTrip());
+      tripUpdate=tripUpdate.toBuilder().setTrip(trip).build();
+    }
     if (!tripUpdate.hasTrip()) {
       LOG.warn("Missing TripDescriptor in gtfs-rt trip update: \n{}",tripUpdate);
       continue;
