@@ -27,7 +27,7 @@
     heuristic=new EuclideanRemainingWeightHeuristic();
   }
   options.rctx.remainingWeightHeuristic=heuristic;
-  options.setMaxTransfers(4);
+  options.maxTransfers=4;
   options.longDistance=true;
   if (options.maxWalkDistance == Double.MAX_VALUE)   options.maxWalkDistance=DEFAULT_MAX_WALK;
   if (options.maxWalkDistance > CLAMP_MAX_WALK)   options.maxWalkDistance=CLAMP_MAX_WALK;
