@@ -1,6 +1,6 @@
 {
   try {
-    RoutingRequest req=buildRequest(0);
+    RoutingRequest req=buildRequest();
     Router router=otpServer.getRouter(routerId);
     req.setRoutingContext(router.graph);
     EarliestArrivalSearch sptService=new EarliestArrivalSearch();
