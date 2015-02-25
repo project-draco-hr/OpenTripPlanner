@@ -3,7 +3,7 @@
   if (entity.isGeneralAccessDenied()) {
     permission=StreetTraversalPermission.NONE;
     if (entity.isMotorcarExplicitlyAllowed()) {
-      permission=permission.add(StreetTraversalPermission.ALL_DRIVING);
+      permission=permission.add(StreetTraversalPermission.CAR);
     }
     if (entity.isBicycleExplicitlyAllowed()) {
       permission=permission.add(StreetTraversalPermission.BICYCLE);
@@ -16,10 +16,10 @@
     permission=def;
   }
   if (entity.isMotorcarExplicitlyDenied()) {
-    permission=permission.remove(StreetTraversalPermission.ALL_DRIVING);
+    permission=permission.remove(StreetTraversalPermission.CAR);
   }
  else   if (entity.hasTag("motorcar")) {
-    permission=permission.add(StreetTraversalPermission.ALL_DRIVING);
+    permission=permission.add(StreetTraversalPermission.CAR);
   }
   if (entity.isBicycleExplicitlyDenied()) {
     permission=permission.remove(StreetTraversalPermission.BICYCLE);

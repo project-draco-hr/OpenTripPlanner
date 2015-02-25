@@ -1,7 +1,7 @@
 {
-  StreetTraversalPermission perm1=StreetTraversalPermission.ALL_DRIVING;
+  StreetTraversalPermission perm1=StreetTraversalPermission.BICYCLE_AND_CAR;
   assertTrue(perm1.allows(TraverseModeSet.allModes()));
   assertTrue(perm1.allows(new TraverseModeSet(TraverseMode.CAR,TraverseMode.BICYCLE)));
-  assertTrue(perm1.allows(new TraverseModeSet(TraverseMode.CUSTOM_MOTOR_VEHICLE,TraverseMode.TRAINISH,TraverseMode.FERRY)));
-  assertFalse(perm1.allows(new TraverseModeSet(TraverseMode.BICYCLE,TraverseMode.TRAINISH,TraverseMode.FERRY)));
+  assertTrue(perm1.allows(new TraverseModeSet(TraverseMode.BICYCLE,TraverseMode.TRAINISH,TraverseMode.FERRY)));
+  assertFalse(perm1.allows(new TraverseModeSet(TraverseMode.WALK)));
 }

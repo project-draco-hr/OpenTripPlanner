@@ -2,10 +2,10 @@
   StreetTraversalPermission permissionsFront=permissions;
   StreetTraversalPermission permissionsBack=permissions;
   if (way.isOneWayForwardDriving() || way.isRoundabout()) {
-    permissionsBack=permissionsBack.remove(StreetTraversalPermission.BICYCLE_AND_DRIVING);
+    permissionsBack=permissionsBack.remove(StreetTraversalPermission.BICYCLE_AND_CAR);
   }
   if (way.isOneWayReverseDriving()) {
-    permissionsFront=permissionsFront.remove(StreetTraversalPermission.BICYCLE_AND_DRIVING);
+    permissionsFront=permissionsFront.remove(StreetTraversalPermission.BICYCLE_AND_CAR);
   }
   if (way.isOneWayForwardBicycle()) {
     permissionsBack=permissionsBack.remove(StreetTraversalPermission.BICYCLE);
