@@ -1,0 +1,15 @@
+{
+  if (diskPath != null) {
+    LOG.info("OSM backed by file.");
+    DB db=DBMaker.newFileDB(new File(diskPath)).transactionDisable().asyncWriteEnable().compressionEnable().make();
+    nodes=db.getTreeMap("nodes");
+    ways=db.getTreeMap("ways");
+    relations=db.getTreeMap("relations");
+    index=db.getTreeSet("spatial_index");
+  }
+ else {
+    nodes=Maps.newHashMap();
+    ways=Maps.newHashMap();
+    relations=Maps.newHashMap();
+  }
+}

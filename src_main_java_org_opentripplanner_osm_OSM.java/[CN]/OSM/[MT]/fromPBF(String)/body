@@ -1,6 +1,6 @@
 {
   LOG.info("Reading entire PBF file '{}'",pbfFile);
-  FullParser fp=new FullParser();
-  fp.parse(pbfFile);
-  return fp.osm;
+  Parser parser=new Parser(null);
+  parser.parse(pbfFile);
+  return parser.osm;
 }

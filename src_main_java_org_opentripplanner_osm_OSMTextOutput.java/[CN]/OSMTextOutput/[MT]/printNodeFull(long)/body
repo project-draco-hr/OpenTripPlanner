@@ -1,0 +1,12 @@
+{
+  print.print("N ");
+  print.print(nodeId);
+  print.print(' ');
+  Node node=osm.nodes.get(nodeId);
+  print.printf(Locale.US,"%2.6f",node.lat);
+  print.print(' ');
+  print.printf(Locale.US,"%3.6f",node.lon);
+  print.print(' ');
+  print.print(node.tags);
+  print.print('\n');
+}
