@@ -6,8 +6,7 @@
   node.tags=readTags();
   lat+=vin.readSInt64() * 1000000d;
   lon+=vin.readSInt64() * 1000000d;
-  node.lat=(float)lat;
-  node.lon=(float)lon;
+  node.setLatLon(lat,lon);
   osm.nodes.put(id,node);
   return false;
 }

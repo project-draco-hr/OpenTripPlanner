@@ -11,6 +11,10 @@
     if (minLat >= maxLat || minLon >= maxLon) {
       throw new IllegalArgumentException();
     }
+    if (request.getMethod() == Method.HEAD) {
+      response.setStatus(HttpStatus.OK_200);
+      return;
+    }
     VexPbfParser.WebMercatorTile minTile=new VexPbfParser.WebMercatorTile(minLat,minLon);
     VexPbfParser.WebMercatorTile maxTile=new VexPbfParser.WebMercatorTile(maxLat,maxLon);
     int minX=minTile.xtile;

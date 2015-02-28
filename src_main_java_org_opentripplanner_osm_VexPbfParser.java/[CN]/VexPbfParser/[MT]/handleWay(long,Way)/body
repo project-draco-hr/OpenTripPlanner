@@ -14,7 +14,7 @@
     LOG.error("A way referenced a node that was not yet included in the input.");
   }
  else {
-    WebMercatorTile tile=new WebMercatorTile(firstNode.lat,firstNode.lon);
+    WebMercatorTile tile=new WebMercatorTile(firstNode.getLat(),firstNode.getLon());
     osm.index.add(new Tuple3(tile.xtile,tile.ytile,wayId));
   }
   super.handleWay(wayId,way);
