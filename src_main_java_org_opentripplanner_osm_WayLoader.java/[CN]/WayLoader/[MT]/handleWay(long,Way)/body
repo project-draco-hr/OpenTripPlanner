@@ -1,5 +1,5 @@
 {
-  if (way.tagless())   return;
+  if (way.hasNoTags())   return;
   boolean found=false;
   for (  long node : way.nodes) {
     if (nodesInGeom.contains(node)) {
