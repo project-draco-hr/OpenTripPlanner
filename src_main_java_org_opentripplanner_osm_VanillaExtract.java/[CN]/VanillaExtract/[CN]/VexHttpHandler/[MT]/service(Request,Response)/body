@@ -15,6 +15,7 @@
       response.setStatus(HttpStatus.OK_200);
       return;
     }
+    boolean buildings=coords.length > 4 && "buildings".equalsIgnoreCase(coords[4]);
     VexPbfParser.WebMercatorTile minTile=new VexPbfParser.WebMercatorTile(minLat,minLon);
     VexPbfParser.WebMercatorTile maxTile=new VexPbfParser.WebMercatorTile(maxLat,maxLon);
     int minX=minTile.xtile;
