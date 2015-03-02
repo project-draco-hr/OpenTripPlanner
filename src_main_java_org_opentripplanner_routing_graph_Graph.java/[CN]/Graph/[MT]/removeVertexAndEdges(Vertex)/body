@@ -2,7 +2,7 @@
   if (!containsVertex(vertex)) {
     throw new IllegalStateException("attempting to remove vertex that is not in graph.");
   }
-  List<Edge> edges=new ArrayList<Edge>(vertex.getDegreeIn() + vertex.getDegreeOut());
+  Set<Edge> edges=new HashSet<Edge>(vertex.getDegreeIn() + vertex.getDegreeOut());
   edges.addAll(vertex.getIncoming());
   edges.addAll(vertex.getOutgoing());
   for (  Edge edge : edges) {
