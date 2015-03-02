@@ -4,6 +4,10 @@
     while (true) {
       try {
         runPolling();
+        if (frequencySec < 0) {
+          LOG.info("As requested in configuration, updater {} has run only once and will now stop.",this.getClass().getSimpleName());
+          break;
+        }
       }
  catch (      InterruptedException e) {
         throw e;
