@@ -4,6 +4,7 @@
   rr.to=new GenericLocation(request.toLat,request.toLon);
   rr.setArriveBy(false);
   rr.setRoutingContext(graph);
+  rr.dominanceFunction=new DominanceFunction.EarliestArrival();
   int worstElapsedTime=request.streetTime * 60;
   rr.worstTime=(rr.dateTime + worstElapsedTime);
   rr.walkSpeed=request.walkSpeed;
