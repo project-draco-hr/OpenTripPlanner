@@ -11,7 +11,7 @@
       ch.qos.logback.classic.Logger mavenVersionLogger=(ch.qos.logback.classic.Logger)LoggerFactory.getLogger(MavenVersion.class);
       mavenVersionLogger.setLevel(Level.OFF);
       MavenVersion version=MavenVersion.VERSION;
-      System.out.println(version.getVersion(params.versionFragment));
+      System.out.println(version.getVersion());
       System.exit(0);
     }
     params.infer();
