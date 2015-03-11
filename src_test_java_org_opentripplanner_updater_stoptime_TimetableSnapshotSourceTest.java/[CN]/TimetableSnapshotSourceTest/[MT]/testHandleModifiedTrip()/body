@@ -18,7 +18,7 @@
   arrivalBuilder.setDelay(1);
   departureBuilder.setDelay(1);
   TripUpdate tripUpdate=tripUpdateBuilder.build();
-  updater.applyTripUpdates(Arrays.asList(tripUpdate),"agency");
+  updater.applyTripUpdates(graph,Arrays.asList(tripUpdate),"agency");
   TimetableResolver resolver=updater.getTimetableSnapshot();
   Timetable forToday=resolver.resolve(pattern,serviceDate);
   Timetable schedule=resolver.resolve(pattern,null);

@@ -1,9 +1,9 @@
 {
-  updater.applyTripUpdates(Arrays.asList(TripUpdate.parseFrom(cancellation)),"agency");
+  updater.applyTripUpdates(graph,Arrays.asList(TripUpdate.parseFrom(cancellation)),"agency");
   TimetableResolver resolver=updater.getTimetableSnapshot();
   assertNotNull(resolver);
   assertSame(resolver,updater.getTimetableSnapshot());
-  updater.applyTripUpdates(Arrays.asList(TripUpdate.parseFrom(cancellation)),"agency");
+  updater.applyTripUpdates(graph,Arrays.asList(TripUpdate.parseFrom(cancellation)),"agency");
   assertSame(resolver,updater.getTimetableSnapshot());
   updater.maxSnapshotFrequency=(-1);
   TimetableResolver newResolver=updater.getTimetableSnapshot();

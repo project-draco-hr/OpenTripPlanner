@@ -31,7 +31,7 @@ case SCHEDULED:
         applied=handleScheduledTrip(tripUpdate,feedId,serviceDate);
       break;
 case ADDED:
-    applied=handleAddedTrip(tripUpdate,feedId,serviceDate);
+    applied=handleAddedTrip(graph,tripUpdate,serviceDate);
   break;
 case UNSCHEDULED:
 applied=handleUnscheduledTrip(tripUpdate,feedId,serviceDate);

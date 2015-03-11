@@ -1,7 +1,7 @@
 {
   TimetableSnapshotSource snapshotSource=graph.timetableSnapshotSource;
   if (snapshotSource != null) {
-    snapshotSource.applyTripUpdates(updates,feedId);
+    snapshotSource.applyTripUpdates(graph,updates,feedId);
   }
  else {
     LOG.error("Could not find realtime data snapshot source in graph." + " The following updates are not applied: {}",updates);
