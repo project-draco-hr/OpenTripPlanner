@@ -13,6 +13,7 @@
   }
   RoutingRequest options=new RoutingRequest(mode);
   options.setDummyRoutingContext(graph);
+  options.dominanceFunction=new DominanceFunction.EarliestArrival();
   GenericDijkstra search=new GenericDijkstra(options);
   search.setSkipEdgeStrategy(new ListedEdgesOnly(edges));
   Set<Edge> usedEdges=new HashSet<Edge>();

@@ -9,6 +9,7 @@
   prototypeOptions.walkSpeed=1.0;
   prototypeOptions.bikeSpeed=1.0;
   prototypeOptions.traversalCostModel=(new ConstantIntersectionTraversalCostModel(10.0));
+  prototypeOptions.dominanceFunction=new DominanceFunction.EarliestArrival();
   if (traverseModes != null) {
     prototypeOptions.setModes(traverseModes);
   }
