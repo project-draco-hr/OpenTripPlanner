@@ -13,15 +13,36 @@
     LOG.warn("Graph already contains trip id of ADDED trip, skipping.");
     return false;
   }
+  if (!tripDescriptor.hasStartDate()) {
+    LOG.warn("ADDED trip doesn't have a start date in TripDescriptor, skipping.");
+    return false;
+  }
   if (tripUpdate.getStopTimeUpdateCount() < 2) {
     LOG.warn("ADDED trip has less then two stops, skipping.");
     return false;
   }
+  Integer previousStopSequence=null;
   Long previousTime=null;
   List<StopTimeUpdate> stopTimeUpdates=tripUpdate.getStopTimeUpdateList();
   List<Stop> stops=new ArrayList<>(stopTimeUpdates.size());
   for (int index=0; index < stopTimeUpdates.size(); ++index) {
     StopTimeUpdate stopTimeUpdate=stopTimeUpdates.get(index);
+    if (stopTimeUpdate.hasStopSequence()) {
+      Integer stopSequence=stopTimeUpdate.getStopSequence();
+      if (stopSequence < 0) {
+        LOG.warn("ADDED trip contains negative stop sequence, skipping.");
+        return false;
+      }
+      if (previousStopSequence != null && previousStopSequence > stopSequence) {
+        LOG.warn("ADDED trip contains decreasing stop sequence, skipping.");
+        return false;
+      }
+      previousStopSequence=stopSequence;
+    }
+ else {
+      LOG.warn("ADDED trip misses some stop sequences, skipping.");
+      return false;
+    }
     if (stopTimeUpdate.hasStopId()) {
       Stop stop=getStopForStopId(stopTimeUpdate.getStopId());
       if (stop != null) {

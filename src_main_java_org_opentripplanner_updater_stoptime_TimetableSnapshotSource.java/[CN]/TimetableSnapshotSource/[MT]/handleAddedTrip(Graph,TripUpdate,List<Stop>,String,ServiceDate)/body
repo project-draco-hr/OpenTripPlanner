@@ -1,6 +1,53 @@
 {
   Preconditions.checkNotNull(stops);
   Preconditions.checkArgument(tripUpdate.getStopTimeUpdateCount() == stops.size(),"number of stop should match the number of stop time updates");
-  LOG.warn("Added trips are currently unsupported. Skipping TripUpdate.");
-  return false;
+  Route route=null;
+  Trip trip=new Trip();
+  trip.setId(new AgencyAndId("",tripUpdate.getTrip().getTripId()));
+  trip.setRoute(route);
+  trip.setServiceId(null);
+  Calendar serviceCalendar=serviceDate.getAsCalendar(graph.getTimeZone());
+  final long midnightSecondsSinceEpoch=serviceCalendar.getTimeInMillis() / MILLIS_PER_SECOND;
+  List<StopTime> stopTimes=new ArrayList<>(tripUpdate.getStopTimeUpdateCount());
+  for (int index=0; index < tripUpdate.getStopTimeUpdateCount(); ++index) {
+    StopTimeUpdate stopTimeUpdate=tripUpdate.getStopTimeUpdate(index);
+    Stop stop=stops.get(index);
+    StopTime stopTime=new StopTime();
+    stopTime.setTrip(trip);
+    stopTime.setStop(stop);
+    if (stopTimeUpdate.hasArrival() && stopTimeUpdate.getArrival().hasTime()) {
+      long arrivalTime=stopTimeUpdate.getArrival().getTime() - midnightSecondsSinceEpoch;
+      if (arrivalTime < 0 || arrivalTime > MAX_ARRIVAL_DEPARTURE_TIME) {
+        LOG.warn("ADDED trip has invalid arrival time (compared to start date in " + "TripDescriptor), skipping.");
+        return false;
+      }
+      stopTime.setArrivalTime((int)arrivalTime);
+    }
+    if (stopTimeUpdate.hasDeparture() && stopTimeUpdate.getDeparture().hasTime()) {
+      long departureTime=stopTimeUpdate.getDeparture().getTime() - midnightSecondsSinceEpoch;
+      if (departureTime < 0 || departureTime > MAX_ARRIVAL_DEPARTURE_TIME) {
+        LOG.warn("ADDED trip has invalid departure time (compared to start date in " + "TripDescriptor), skipping.");
+        return false;
+      }
+      stopTime.setDepartureTime((int)departureTime);
+    }
+    stopTime.setTimepoint(1);
+    stopTime.setStopSequence(stopTimeUpdate.getStopSequence());
+    if (index == tripUpdate.getStopTimeUpdateCount() - 1) {
+      stopTime.setPickupType(1);
+    }
+ else {
+      stopTime.setPickupType(0);
+    }
+    if (index == 0) {
+      stopTime.setDropOffType(1);
+    }
+ else {
+      stopTime.setDropOffType(0);
+    }
+    stopTimes.add(stopTime);
+  }
+  StopPattern stopPattern=new StopPattern(stopTimes);
+  TripPattern tripPattern=new TripPattern(trip.getRoute(),stopPattern);
+  return true;
 }
