@@ -1,0 +1,14 @@
+{
+  if (graphIndex.tripForIdWithoutAgency == null) {
+    Map<String,Trip> map=Maps.newHashMap();
+    for (    Trip trip : graphIndex.tripForId.values()) {
+      Trip previousValue=map.put(trip.getId().getId(),trip);
+      if (previousValue != null) {
+        LOG.warn("Duplicate trip id detected when agency is ignored for realtime updates: {}",tripId);
+      }
+    }
+    graphIndex.tripForIdWithoutAgency=map;
+  }
+  Trip trip=graphIndex.tripForIdWithoutAgency.get(tripId);
+  return trip;
+}

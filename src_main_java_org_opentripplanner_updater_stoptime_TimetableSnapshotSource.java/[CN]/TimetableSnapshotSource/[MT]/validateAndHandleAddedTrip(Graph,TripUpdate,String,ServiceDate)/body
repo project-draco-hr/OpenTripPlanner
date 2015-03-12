@@ -1,19 +1,41 @@
 {
+  Preconditions.checkNotNull(graph);
+  Preconditions.checkNotNull(tripUpdate);
+  Preconditions.checkNotNull(serviceDate);
   TripDescriptor tripDescriptor=tripUpdate.getTrip();
   if (!tripDescriptor.hasTripId()) {
     LOG.warn("No trip id found for ADDED trip, skipping.");
     return false;
   }
   String tripId=tripDescriptor.getTripId();
-  if (graph.index.tripForId.containsKey(tripId)) {
+  Trip trip=getTripForTripId(tripId);
+  if (trip != null) {
     LOG.warn("Graph already contains trip id of ADDED trip, skipping.");
+    return false;
+  }
+  if (tripUpdate.getStopTimeUpdateCount() < 2) {
+    LOG.warn("ADDED trip has less then two stops, skipping.");
     return false;
   }
   Long previousTime=null;
   List<StopTimeUpdate> stopTimeUpdates=tripUpdate.getStopTimeUpdateList();
-  List<TransitStop> transitStops=new ArrayList<>(stopTimeUpdates.size());
+  List<Stop> stops=new ArrayList<>(stopTimeUpdates.size());
   for (int index=0; index < stopTimeUpdates.size(); ++index) {
     StopTimeUpdate stopTimeUpdate=stopTimeUpdates.get(index);
+    if (stopTimeUpdate.hasStopId()) {
+      Stop stop=getStopForStopId(stopTimeUpdate.getStopId());
+      if (stop != null) {
+        stops.add(stop);
+      }
+ else {
+        LOG.warn("Graph doesn't contain stop id \"{}\" of ADDED trip, skipping.",stopTimeUpdate.getStopId());
+        return false;
+      }
+    }
+ else {
+      LOG.warn("ADDED trip misses some stop ids, skipping.");
+      return false;
+    }
     if (stopTimeUpdate.hasArrival() && stopTimeUpdate.getArrival().hasTime()) {
       Long time=stopTimeUpdate.getArrival().getTime();
       if (previousTime != null && previousTime > time) {
@@ -47,6 +69,6 @@
       return false;
     }
   }
-  LOG.warn("Added trips are currently unsupported. Skipping TripUpdate.");
-  return false;
+  boolean success=handleAddedTrip(graph,tripUpdate,stops,feedId,serviceDate);
+  return success;
 }

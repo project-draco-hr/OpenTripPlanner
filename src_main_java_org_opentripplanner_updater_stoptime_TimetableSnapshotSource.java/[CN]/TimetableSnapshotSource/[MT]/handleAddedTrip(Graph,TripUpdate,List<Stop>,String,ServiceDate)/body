@@ -1,0 +1,6 @@
+{
+  Preconditions.checkNotNull(stops);
+  Preconditions.checkArgument(tripUpdate.getStopTimeUpdateCount() == stops.size(),"number of stop should match the number of stop time updates");
+  LOG.warn("Added trips are currently unsupported. Skipping TripUpdate.");
+  return false;
+}

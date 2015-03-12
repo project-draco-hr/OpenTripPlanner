@@ -1,0 +1,14 @@
+{
+  if (graphIndex.stopForIdWithoutAgency == null) {
+    Map<String,Stop> map=Maps.newHashMap();
+    for (    Stop stop : graphIndex.stopForId.values()) {
+      Stop previousValue=map.put(stop.getId().getId(),stop);
+      if (previousValue != null) {
+        LOG.warn("Duplicate stop id detected when agency is ignored for realtime updates: {}",stopId);
+      }
+    }
+    graphIndex.stopForIdWithoutAgency=map;
+  }
+  Stop stop=graphIndex.stopForIdWithoutAgency.get(stopId);
+  return stop;
+}
