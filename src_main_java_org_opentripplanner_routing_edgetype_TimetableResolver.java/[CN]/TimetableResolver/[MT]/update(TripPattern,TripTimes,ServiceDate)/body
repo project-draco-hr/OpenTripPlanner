@@ -1,4 +1,6 @@
 {
+  Preconditions.checkNotNull(pattern);
+  Preconditions.checkNotNull(serviceDate);
 synchronized (this) {
     if (dirty == null)     throw new ConcurrentModificationException("This TimetableResolver is read-only.");
     Timetable tt=resolve(pattern,serviceDate);
@@ -19,19 +21,13 @@ synchronized (this) {
       timetables.put(pattern,sortedTimetables);
       dirty.add(tt);
     }
-    TripTimes updatedTripTimes=tt.createUpdatedTripTimes(tripUpdate,timeZone,serviceDate);
-    if (updatedTripTimes != null) {
-      String tripId=tripUpdate.getTrip().getTripId();
-      int tripIndex=tt.getTripIndex(tripId);
-      if (tripIndex == -1) {
-        LOG.info("tripId {} not found in pattern.",tripId);
-        return false;
-      }
-      tt.setTripTimes(tripIndex,updatedTripTimes);
-      return true;
+    int tripIndex=tt.getTripIndex(updatedTripTimes.trip.getId());
+    if (tripIndex == -1) {
+      tt.addTripTimes(updatedTripTimes);
     }
  else {
-      return false;
+      tt.setTripTimes(tripIndex,updatedTripTimes);
     }
+    return true;
   }
 }

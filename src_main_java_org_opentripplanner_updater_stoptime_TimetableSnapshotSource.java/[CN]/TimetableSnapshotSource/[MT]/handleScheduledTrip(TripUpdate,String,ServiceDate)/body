@@ -10,5 +10,7 @@
     LOG.warn("TripUpdate contains no updates, skipping.");
     return false;
   }
-  return buffer.update(pattern,tripUpdate,feedId,timeZone,serviceDate);
+  TripTimes updatedTripTimes=pattern.scheduledTimetable.createUpdatedTripTimes(tripUpdate,timeZone,serviceDate);
+  boolean success=buffer.update(pattern,updatedTripTimes,serviceDate);
+  return success;
 }

@@ -3,7 +3,7 @@
   Preconditions.checkArgument(tripUpdate.getStopTimeUpdateCount() == stops.size(),"number of stop should match the number of stop time updates");
   Route route=null;
   Trip trip=new Trip();
-  trip.setId(new AgencyAndId("",tripUpdate.getTrip().getTripId()));
+  trip.setId(new AgencyAndId(feedId,tripUpdate.getTrip().getTripId()));
   trip.setRoute(route);
   trip.setServiceId(null);
   Calendar serviceCalendar=serviceDate.getAsCalendar(timeZone);
@@ -50,6 +50,7 @@
   StopPattern stopPattern=new StopPattern(stopTimes);
   TripPattern pattern=new TripPattern(trip.getRoute(),stopPattern);
   pattern.makePatternVerticesAndEdges(graph,graphIndex.stopVertexForStop);
-  boolean success=buffer.update(pattern,tripUpdate,feedId,timeZone,serviceDate);
+  TripTimes newTripTimes=new TripTimes(trip,stopTimes,graph.deduplicator);
+  boolean success=buffer.update(pattern,newTripTimes,serviceDate);
   return success;
 }
