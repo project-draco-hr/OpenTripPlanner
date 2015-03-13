@@ -19,6 +19,19 @@ synchronized (this) {
       timetables.put(pattern,sortedTimetables);
       dirty.add(tt);
     }
-    return tt.update(tripUpdate,timeZone,serviceDate);
+    TripTimes updatedTripTimes=tt.createUpdatedTripTimes(tripUpdate,timeZone,serviceDate);
+    if (updatedTripTimes != null) {
+      String tripId=tripUpdate.getTrip().getTripId();
+      int tripIndex=tt.getTripIndex(tripId);
+      if (tripIndex == -1) {
+        LOG.info("tripId {} not found in pattern.",tripId);
+        return false;
+      }
+      tt.setTripTimes(tripIndex,updatedTripTimes);
+      return true;
+    }
+ else {
+      return false;
+    }
   }
 }
