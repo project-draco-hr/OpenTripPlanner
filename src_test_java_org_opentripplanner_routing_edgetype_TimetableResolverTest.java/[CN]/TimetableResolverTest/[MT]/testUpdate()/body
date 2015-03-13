@@ -10,14 +10,14 @@
   TripUpdate.Builder tripUpdateBuilder=TripUpdate.newBuilder();
   tripUpdateBuilder.setTrip(tripDescriptorBuilder);
   TripUpdate tripUpdate=tripUpdateBuilder.build();
-  resolver.update(pattern,tripUpdate,"agency",timeZone,today);
+  updateResolver(resolver,pattern,tripUpdate,"agency",today);
   Timetable updatedNow=resolver.resolve(pattern,today);
   assertNotSame(origNow,updatedNow);
-  resolver.update(pattern,tripUpdate,"agency",timeZone,today);
+  updateResolver(resolver,pattern,tripUpdate,"agency",today);
   assertEquals(updatedNow,resolver.resolve(pattern,today));
-  resolver.update(pattern,tripUpdate,"agency",timeZone,yesterday);
+  updateResolver(resolver,pattern,tripUpdate,"agency",yesterday);
   assertNotSame(origNow,resolver.resolve(pattern,yesterday));
   assertNotSame(updatedNow,resolver.resolve(pattern,yesterday));
   TimetableResolver snapshot=resolver.commit();
-  snapshot.update(pattern,tripUpdate,"agency",timeZone,yesterday);
+  updateResolver(snapshot,pattern,tripUpdate,"agency",yesterday);
 }
