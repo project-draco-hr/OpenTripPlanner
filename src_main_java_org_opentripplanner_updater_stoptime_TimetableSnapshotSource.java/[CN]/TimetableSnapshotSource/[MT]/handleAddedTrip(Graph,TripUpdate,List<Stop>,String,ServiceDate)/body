@@ -6,7 +6,7 @@
   trip.setId(new AgencyAndId("",tripUpdate.getTrip().getTripId()));
   trip.setRoute(route);
   trip.setServiceId(null);
-  Calendar serviceCalendar=serviceDate.getAsCalendar(graph.getTimeZone());
+  Calendar serviceCalendar=serviceDate.getAsCalendar(timeZone);
   final long midnightSecondsSinceEpoch=serviceCalendar.getTimeInMillis() / MILLIS_PER_SECOND;
   List<StopTime> stopTimes=new ArrayList<>(tripUpdate.getStopTimeUpdateCount());
   for (int index=0; index < tripUpdate.getStopTimeUpdateCount(); ++index) {
@@ -48,6 +48,8 @@
     stopTimes.add(stopTime);
   }
   StopPattern stopPattern=new StopPattern(stopTimes);
-  TripPattern tripPattern=new TripPattern(trip.getRoute(),stopPattern);
-  return true;
+  TripPattern pattern=new TripPattern(trip.getRoute(),stopPattern);
+  pattern.makePatternVerticesAndEdges(graph,graphIndex.stopVertexForStop);
+  boolean success=buffer.update(pattern,tripUpdate,feedId,timeZone,serviceDate);
+  return success;
 }
