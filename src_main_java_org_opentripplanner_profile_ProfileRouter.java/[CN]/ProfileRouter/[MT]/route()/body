@@ -19,9 +19,9 @@ synchronized (graph.index) {
   if (!request.analyst) {
     toStopPaths=findClosestStops(true);
     toStops=findClosestPatterns(toStopPaths);
-    for (    TraverseMode mode : ACCESS_MODES) {
-      LOG.info("Finding non-transit path for mode {}",mode);
-      if (request.directModes.contains(mode))       findStreetOption(mode);
+    for (    QualifiedMode qmode : request.directModes.qModes) {
+      LOG.info("Finding non-transit path for mode {}",qmode);
+      findDirectOption(qmode);
     }
   }
   LOG.info("Done finding access/egress paths.");

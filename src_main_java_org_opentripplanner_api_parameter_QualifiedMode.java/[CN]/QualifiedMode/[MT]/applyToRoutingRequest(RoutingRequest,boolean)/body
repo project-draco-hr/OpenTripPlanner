@@ -1,0 +1,21 @@
+{
+  req.modes.setMode(this.mode,true);
+  if (this.mode == TraverseMode.BICYCLE) {
+    if (this.qualifiers.contains(Qualifier.RENT)) {
+      req.modes.setMode(TraverseMode.WALK,true);
+      req.allowBikeRental=true;
+    }
+    if (usingTransit) {
+      req.bikeParkAndRide=this.qualifiers.contains(Qualifier.PARK);
+    }
+  }
+  if (usingTransit && this.mode == TraverseMode.CAR) {
+    if (this.qualifiers.contains(Qualifier.PARK)) {
+      req.parkAndRide=true;
+    }
+ else {
+      req.kissAndRide=true;
+    }
+    req.modes.setWalk(true);
+  }
+}

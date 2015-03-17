@@ -1,0 +1,36 @@
+{
+  RoutingRequest rr=new RoutingRequest();
+  qmode.applyToRoutingRequest(rr,request.transitModes.isTransit());
+  rr.from=(new GenericLocation(request.fromLat,request.fromLon));
+  rr.to=new GenericLocation(request.toLat,request.toLon);
+  rr.setArriveBy(dest);
+  rr.setRoutingContext(graph);
+  rr.batch=(true);
+  rr.walkSpeed=request.walkSpeed;
+  rr.dominanceFunction=new DominanceFunction.EarliestArrival();
+  int minAccessTime=0;
+  int maxAccessTime=request.maxWalkTime;
+  if (qmode.mode == TraverseMode.BICYCLE) {
+    rr.bikeSpeed=request.bikeSpeed;
+    minAccessTime=request.minBikeTime;
+    maxAccessTime=request.maxBikeTime;
+  }
+ else   if (qmode.mode == TraverseMode.CAR) {
+    rr.carSpeed=request.carSpeed;
+    minAccessTime=request.minCarTime;
+    maxAccessTime=request.maxCarTime;
+  }
+ else {
+    LOG.warn("No modes matched when setting min/max travel times.");
+  }
+  long worstElapsedTimeSeconds=maxAccessTime * 60;
+  if (dest)   worstElapsedTimeSeconds*=-1;
+  rr.worstTime=(rr.dateTime + worstElapsedTimeSeconds);
+  AStar astar=new AStar();
+  rr.setNumItineraries(1);
+  StopFinderTraverseVisitor visitor=new StopFinderTraverseVisitor(qmode,minAccessTime * 60);
+  astar.setTraverseVisitor(visitor);
+  astar.getShortestPathTree(rr,5);
+  routingContexts.add(rr.rctx);
+  return visitor.stopClustersFound.values();
+}
