@@ -8,6 +8,22 @@
       walkSteps.get(0).newMode=legMode;
       lastMode=legMode;
     }
+    if (legMode == "BICYCLE") {
+      Edge firstEdge=legsStates[i][0].backEdge;
+      if (firstEdge.getFromVertex() instanceof BikeRentalStationVertex) {
+        walkSteps.get(0).bikeRentalOnStation=new BikeRentalStationInfo((BikeRentalStationVertex)firstEdge.getFromVertex());
+      }
+ else       if (firstEdge.getToVertex() instanceof BikeRentalStationVertex) {
+        walkSteps.get(0).bikeRentalOnStation=new BikeRentalStationInfo((BikeRentalStationVertex)firstEdge.getToVertex());
+      }
+      Edge lastEdge=legsStates[i][legsStates[i].length - 1].backEdge;
+      if (lastEdge.getFromVertex() instanceof BikeRentalStationVertex) {
+        walkSteps.get(walkSteps.size() - 1).bikeRentalOffStation=new BikeRentalStationInfo((BikeRentalStationVertex)lastEdge.getFromVertex());
+      }
+ else       if (lastEdge.getToVertex() instanceof BikeRentalStationVertex) {
+        walkSteps.get(walkSteps.size() - 1).bikeRentalOffStation=new BikeRentalStationInfo((BikeRentalStationVertex)lastEdge.getToVertex());
+      }
+    }
     legs.get(i).walkSteps=walkSteps;
     if (walkSteps.size() > 0) {
       previousStep=walkSteps.get(walkSteps.size() - 1);
