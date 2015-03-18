@@ -184,6 +184,7 @@
     step.distance+=edge.getDistance();
     step.addAlerts(graph.streetNotesService.getNotes(forwardState));
     lastAngle=DirectionUtils.getLastAngle(geom);
+    step.edges.add(edge);
   }
   return steps;
 }
