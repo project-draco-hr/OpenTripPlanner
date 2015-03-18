@@ -1,0 +1,9 @@
+{
+  TripPattern tripPattern=cache.get(stopPattern);
+  if (tripPattern == null) {
+    tripPattern=new TripPattern(route,stopPattern);
+    tripPattern.makePatternVerticesAndEdges(graph,graph.index.stopVertexForStop);
+    cache.put(stopPattern,tripPattern);
+  }
+  return tripPattern;
+}

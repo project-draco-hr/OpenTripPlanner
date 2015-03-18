@@ -1,7 +1,9 @@
 {
   Preconditions.checkNotNull(stops);
   Preconditions.checkArgument(tripUpdate.getStopTimeUpdateCount() == stops.size(),"number of stop should match the number of stop time updates");
-  Route route=null;
+  Route route=new Route();
+  route.setId(new AgencyAndId(feedId,tripUpdate.getTrip().getTripId()));
+  route.setType(3);
   Trip trip=new Trip();
   trip.setId(new AgencyAndId(feedId,tripUpdate.getTrip().getTripId()));
   trip.setRoute(route);
@@ -48,8 +50,7 @@
     stopTimes.add(stopTime);
   }
   StopPattern stopPattern=new StopPattern(stopTimes);
-  TripPattern pattern=new TripPattern(trip.getRoute(),stopPattern);
-  pattern.makePatternVerticesAndEdges(graph,graphIndex.stopVertexForStop);
+  TripPattern pattern=tripPatternCache.getOrCreateTripPattern(stopPattern,trip.getRoute(),graph);
   TripTimes newTripTimes=new TripTimes(trip,stopTimes,graph.deduplicator);
   boolean success=buffer.update(pattern,newTripTimes,serviceDate);
   return success;
