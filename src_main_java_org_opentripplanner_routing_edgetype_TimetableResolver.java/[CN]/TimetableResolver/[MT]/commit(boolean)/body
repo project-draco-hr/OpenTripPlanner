@@ -9,6 +9,7 @@ synchronized (this) {
       tt.finish();
     }
     ret.timetables=(HashMap<TripPattern,SortedSet<Timetable>>)this.timetables.clone();
+    ret.lastAddedTripPattern=(HashMap<TripIdAndServiceDate,TripPattern>)this.lastAddedTripPattern.clone();
     this.dirty.clear();
   }
   ret.dirty=null;

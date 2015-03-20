@@ -24,6 +24,9 @@ synchronized (this) {
     int tripIndex=tt.getTripIndex(updatedTripTimes.trip.getId());
     if (tripIndex == -1) {
       tt.addTripTimes(updatedTripTimes);
+      String tripId=updatedTripTimes.trip.getId().getId();
+      TripIdAndServiceDate tripIdAndServiceDate=new TripIdAndServiceDate(tripId,serviceDate);
+      lastAddedTripPattern.put(tripIdAndServiceDate,pattern);
     }
  else {
       tt.setTripTimes(tripIndex,updatedTripTimes);

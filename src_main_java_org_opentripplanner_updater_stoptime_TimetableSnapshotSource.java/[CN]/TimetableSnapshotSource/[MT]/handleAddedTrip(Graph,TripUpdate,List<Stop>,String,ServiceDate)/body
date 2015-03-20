@@ -1,13 +1,38 @@
 {
   Preconditions.checkNotNull(stops);
   Preconditions.checkArgument(tripUpdate.getStopTimeUpdateCount() == stops.size(),"number of stop should match the number of stop time updates");
+  String tripId=tripUpdate.getTrip().getTripId();
+{
+    TripPattern pattern=buffer.getLastAddedTripPattern(tripId,serviceDate);
+    if (pattern != null) {
+      Timetable timetable=buffer.resolve(pattern,serviceDate);
+      int tripIndex=timetable.getTripIndex(tripId);
+      if (tripIndex == -1) {
+        LOG.warn("Could not cancel previously added trip {}",tripId);
+      }
+ else {
+        TripTimes newTripTimes=new TripTimes(timetable.getTripTimes(tripIndex));
+        newTripTimes.cancel();
+        buffer.update(pattern,newTripTimes,serviceDate);
+      }
+    }
+  }
   Route route=new Route();
-  route.setId(new AgencyAndId(feedId,tripUpdate.getTrip().getTripId()));
+  route.setId(new AgencyAndId(feedId,tripId));
+  route.setAgency(dummyAgency);
   route.setType(3);
+  route.setLongName(tripId);
   Trip trip=new Trip();
   trip.setId(new AgencyAndId(feedId,tripUpdate.getTrip().getTripId()));
   trip.setRoute(route);
-  trip.setServiceId(null);
+  Set<AgencyAndId> serviceIds=graph.getCalendarService().getServiceIdsOnDate(serviceDate);
+  if (serviceIds.isEmpty()) {
+    LOG.warn("ADDED trip has service date for which no service id is available, skipping.");
+    return false;
+  }
+ else {
+    trip.setServiceId(serviceIds.iterator().next());
+  }
   Calendar serviceCalendar=serviceDate.getAsCalendar(timeZone);
   final long midnightSecondsSinceEpoch=serviceCalendar.getTimeInMillis() / MILLIS_PER_SECOND;
   List<StopTime> stopTimes=new ArrayList<>(tripUpdate.getStopTimeUpdateCount());
@@ -51,7 +76,14 @@
   }
   StopPattern stopPattern=new StopPattern(stopTimes);
   TripPattern pattern=tripPatternCache.getOrCreateTripPattern(stopPattern,trip.getRoute(),graph);
+  int serviceCode=graph.serviceCodes.get(trip.getServiceId());
+  pattern.getServices().set(serviceCode);
   TripTimes newTripTimes=new TripTimes(trip,stopTimes,graph.deduplicator);
+  for (int stopIndex=0; stopIndex < newTripTimes.getNumStops(); stopIndex++) {
+    newTripTimes.updateArrivalTime(stopIndex,newTripTimes.getScheduledArrivalTime(stopIndex));
+    newTripTimes.updateDepartureTime(stopIndex,newTripTimes.getScheduledDepartureTime(stopIndex));
+  }
+  newTripTimes.serviceCode=serviceCode;
   boolean success=buffer.update(pattern,newTripTimes,serviceDate);
   return success;
 }
