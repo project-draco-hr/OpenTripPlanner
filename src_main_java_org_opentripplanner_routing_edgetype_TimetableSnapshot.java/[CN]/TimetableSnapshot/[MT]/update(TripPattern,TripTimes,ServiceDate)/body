@@ -2,7 +2,7 @@
   Preconditions.checkNotNull(pattern);
   Preconditions.checkNotNull(serviceDate);
 synchronized (this) {
-    if (dirty == null)     throw new ConcurrentModificationException("This TimetableResolver is read-only.");
+    if (dirty == null)     throw new ConcurrentModificationException("This TimetableSnapshot is read-only.");
     Timetable tt=resolve(pattern,serviceDate);
     if (!dirty.contains(tt)) {
       Timetable old=tt;

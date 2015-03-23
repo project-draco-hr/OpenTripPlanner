@@ -1,8 +1,8 @@
 {
-  TimetableResolver ret=new TimetableResolver();
+  TimetableSnapshot ret=new TimetableSnapshot();
 synchronized (this) {
     if (dirty == null) {
-      throw new ConcurrentModificationException("This TimetableResolver is read-only.");
+      throw new ConcurrentModificationException("This TimetableSnapshot is read-only.");
     }
     if (!force && !this.isDirty())     return null;
     for (    Timetable tt : dirty) {

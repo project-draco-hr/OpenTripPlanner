@@ -6,9 +6,9 @@
   int tripIndex=pattern.scheduledTimetable.getTripIndex(tripId);
   int tripIndex2=pattern.scheduledTimetable.getTripIndex(tripId2);
   updater.applyTripUpdates(graph,Arrays.asList(TripUpdate.parseFrom(cancellation)),"agency");
-  TimetableResolver resolver=updater.getTimetableSnapshot();
-  Timetable forToday=resolver.resolve(pattern,serviceDate);
-  Timetable schedule=resolver.resolve(pattern,null);
+  TimetableSnapshot snapshot=updater.getTimetableSnapshot();
+  Timetable forToday=snapshot.resolve(pattern,serviceDate);
+  Timetable schedule=snapshot.resolve(pattern,null);
   assertNotSame(forToday,schedule);
   assertNotSame(forToday.getTripTimes(tripIndex),schedule.getTripTimes(tripIndex));
   assertSame(forToday.getTripTimes(tripIndex2),schedule.getTripTimes(tripIndex2));

@@ -1,15 +1,15 @@
 {
   List<StopTimesInPattern> ret=new ArrayList<>();
-  TimetableResolver timetableResolver=null;
+  TimetableSnapshot snapshot=null;
   if (graph.timetableSnapshotSource != null) {
-    timetableResolver=graph.timetableSnapshotSource.getTimetableSnapshot();
+    snapshot=graph.timetableSnapshotSource.getTimetableSnapshot();
   }
   Collection<TripPattern> patterns=patternsForStop.get(stop);
   for (  TripPattern pattern : patterns) {
     StopTimesInPattern stopTimes=new StopTimesInPattern(pattern);
     Timetable tt;
-    if (timetableResolver != null) {
-      tt=timetableResolver.resolve(pattern,serviceDate);
+    if (snapshot != null) {
+      tt=snapshot.resolve(pattern,serviceDate);
     }
  else {
       tt=pattern.scheduledTimetable;

@@ -3,7 +3,7 @@
   ServiceDate yesterday=today.previous();
   ServiceDate tomorrow=today.next();
   TripPattern pattern=patternIndex.get(new AgencyAndId("agency","1.1"));
-  TimetableResolver resolver=new TimetableResolver();
+  TimetableSnapshot resolver=new TimetableSnapshot();
   Timetable scheduled=resolver.resolve(pattern,today);
   assertEquals(scheduled,resolver.resolve(pattern,null));
   TripDescriptor.Builder tripDescriptorBuilder=TripDescriptor.newBuilder();
