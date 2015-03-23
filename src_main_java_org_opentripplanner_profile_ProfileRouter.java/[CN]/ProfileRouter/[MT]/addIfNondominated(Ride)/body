@@ -5,13 +5,17 @@
     newRide=newRide.previous;
   }
   if (newRide.durationLowerBound() > MAX_DURATION)   return false;
-  for (  Ride oldRide : retainedRides.get(cluster)) {
+  for (Iterator<Ride> it=retainedRides.get(cluster).iterator(); it.hasNext(); ) {
+    Ride oldRide=it.next();
     if (oldRide.to == null)     oldRide=oldRide.previous;
     if (oldRide.pathLength() < newRide.pathLength() && oldRide.durationLowerBound() < newRide.durationLowerBound() && oldRide.durationUpperBound() < newRide.durationUpperBound()) {
       return false;
     }
     if (newRide.durationLowerBound() > oldRide.durationUpperBound() + request.suboptimalMinutes) {
       return false;
+    }
+    if (oldRide.durationLowerBound() > newRide.durationUpperBound() + request.suboptimalMinutes) {
+      it.remove();
     }
   }
   retainedRides.put(cluster,newRide);
