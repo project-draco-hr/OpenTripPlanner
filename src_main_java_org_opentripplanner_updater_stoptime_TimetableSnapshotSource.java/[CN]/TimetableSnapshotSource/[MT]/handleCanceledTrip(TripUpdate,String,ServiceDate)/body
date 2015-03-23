@@ -2,11 +2,16 @@
   TripDescriptor tripDescriptor=tripUpdate.getTrip();
   String tripId=tripDescriptor.getTripId();
   TripPattern pattern=getPatternForTripId(tripId);
-  if (pattern == null) {
-    LOG.warn("No pattern found for tripId {}, skipping TripUpdate.",tripId);
-    return false;
+  boolean success;
+  if (pattern != null) {
+    TripTimes updatedTripTimes=pattern.scheduledTimetable.createUpdatedTripTimes(tripUpdate,timeZone,serviceDate);
+    success=buffer.update(pattern,updatedTripTimes,serviceDate);
   }
-  TripTimes updatedTripTimes=pattern.scheduledTimetable.createUpdatedTripTimes(tripUpdate,timeZone,serviceDate);
-  boolean success=buffer.update(pattern,updatedTripTimes,serviceDate);
+ else {
+    success=cancelPreviouslyAddedTrip(tripId,serviceDate);
+    if (!success) {
+      LOG.warn("No pattern found for tripId {}, skipping TripUpdate.",tripId);
+    }
+  }
   return success;
 }
