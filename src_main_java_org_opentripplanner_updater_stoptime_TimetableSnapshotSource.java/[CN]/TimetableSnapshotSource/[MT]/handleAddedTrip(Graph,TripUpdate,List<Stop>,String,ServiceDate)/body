@@ -3,11 +3,22 @@
   Preconditions.checkArgument(tripUpdate.getStopTimeUpdateCount() == stops.size(),"number of stop should match the number of stop time updates");
   String tripId=tripUpdate.getTrip().getTripId();
   cancelPreviouslyAddedTrip(tripId,serviceDate);
-  Route route=new Route();
-  route.setId(new AgencyAndId(feedId,tripId));
-  route.setAgency(dummyAgency);
-  route.setType(3);
-  route.setLongName(tripId);
+  Route route=null;
+  if (tripUpdate.getTrip().hasRouteId()) {
+    route=getRouteForRouteId(tripUpdate.getTrip().getRouteId());
+  }
+  if (route == null) {
+    route=new Route();
+    if (tripUpdate.getTrip().hasRouteId()) {
+      route.setId(new AgencyAndId(feedId,tripUpdate.getTrip().getRouteId()));
+    }
+ else {
+      route.setId(new AgencyAndId(feedId,tripId));
+    }
+    route.setAgency(dummyAgency);
+    route.setType(3);
+    route.setLongName(tripId);
+  }
   Trip trip=new Trip();
   trip.setId(new AgencyAndId(feedId,tripUpdate.getTrip().getTripId()));
   trip.setRoute(route);

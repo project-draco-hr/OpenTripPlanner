@@ -4,7 +4,7 @@
     for (    Trip trip : graphIndex.tripForId.values()) {
       Trip previousValue=map.put(trip.getId().getId(),trip);
       if (previousValue != null) {
-        LOG.warn("Duplicate trip id detected when agency is ignored for realtime updates: {}",tripId);
+        LOG.warn("Duplicate trip id detected when agency is ignored for realtime" + "updates: {}",trip.getId().getId());
       }
     }
     graphIndex.tripForIdWithoutAgency=map;
