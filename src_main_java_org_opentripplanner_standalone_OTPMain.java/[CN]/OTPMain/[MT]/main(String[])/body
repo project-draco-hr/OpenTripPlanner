@@ -7,6 +7,11 @@
       jc.usage();
       System.exit(0);
     }
+    if (params.version) {
+      MavenVersion version=MavenVersion.VERSION;
+      System.out.println(version.getVersion());
+      System.exit(0);
+    }
     params.infer();
   }
  catch (  ParameterException pex) {
