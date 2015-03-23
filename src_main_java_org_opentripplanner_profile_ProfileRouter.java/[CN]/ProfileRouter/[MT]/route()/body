@@ -52,6 +52,7 @@ synchronized (graph.index) {
   }
   while (!queue.empty()) {
     Ride ride=queue.extract_min();
+    if (!retainedRides.get(ride.from).contains(ride) && !ride.equals(initialRides.get(ride.from)))     continue;
     if (ride.to != null)     throw new AssertionError("Ride should be unfinished.");
     Map<StopCluster,Ride> rides=Maps.newHashMap();
     PR:     for (    PatternRide pr : ride.patternRides) {
