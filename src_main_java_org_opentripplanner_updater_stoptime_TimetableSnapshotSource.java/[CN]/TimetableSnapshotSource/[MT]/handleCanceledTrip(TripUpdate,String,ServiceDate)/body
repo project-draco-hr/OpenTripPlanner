@@ -1,17 +1,17 @@
 {
-  TripDescriptor tripDescriptor=tripUpdate.getTrip();
-  String tripId=tripDescriptor.getTripId();
-  TripPattern pattern=getPatternForTripId(tripId);
-  boolean success;
-  if (pattern != null) {
-    TripTimes updatedTripTimes=pattern.scheduledTimetable.createUpdatedTripTimes(tripUpdate,timeZone,serviceDate);
-    success=buffer.update(pattern,updatedTripTimes,serviceDate);
-  }
- else {
-    success=cancelPreviouslyAddedTrip(tripId,serviceDate);
+  boolean success=false;
+  if (tripUpdate.getTrip().hasTripId()) {
+    String tripId=tripUpdate.getTrip().getTripId();
+    success=cancelScheduledTrip(tripId,serviceDate);
+    if (!success) {
+      success=cancelPreviouslyAddedTrip(tripId,serviceDate);
+    }
     if (!success) {
       LOG.warn("No pattern found for tripId {}, skipping TripUpdate.",tripId);
     }
+  }
+ else {
+    LOG.warn("No trip id in CANCELED trip update, skipping TripUpdate.");
   }
   return success;
 }

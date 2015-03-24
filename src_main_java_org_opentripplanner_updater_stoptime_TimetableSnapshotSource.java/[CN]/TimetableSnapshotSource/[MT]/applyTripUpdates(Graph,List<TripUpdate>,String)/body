@@ -19,7 +19,7 @@
           serviceDate=ServiceDate.parseString(tripDescriptor.getStartDate());
         }
  catch (        ParseException e) {
-          LOG.warn("Failed to parse startDate in gtfs-rt trip update: \n{}",tripUpdate);
+          LOG.warn("Failed to parse start date in gtfs-rt trip update: \n{}",tripUpdate);
           continue;
         }
       }
@@ -27,16 +27,16 @@
       LOG.debug("trip update #{} ({} updates) :",uIndex,tripUpdate.getStopTimeUpdateCount());
       LOG.trace("{}",tripUpdate);
       boolean applied=false;
-      if (tripDescriptor.hasScheduleRelationship()) {
-switch (tripDescriptor.getScheduleRelationship()) {
+      final TripDescriptor.ScheduleRelationship tripScheduleRelationship=determineTripScheduleRelationship(tripUpdate);
+switch (tripScheduleRelationship) {
 case SCHEDULED:
-          applied=handleScheduledTrip(tripUpdate,feedId,serviceDate);
-        break;
+        applied=handleScheduledTrip(tripUpdate,feedId,serviceDate);
+      break;
 case ADDED:
-      applied=validateAndHandleAddedTrip(graph,tripUpdate,feedId,serviceDate);
-    break;
+    applied=validateAndHandleAddedTrip(graph,tripUpdate,feedId,serviceDate);
+  break;
 case UNSCHEDULED:
-  applied=handleUnscheduledTrip(tripUpdate,feedId,serviceDate);
+applied=handleUnscheduledTrip(tripUpdate,feedId,serviceDate);
 break;
 case CANCELED:
 applied=handleCanceledTrip(tripUpdate,feedId,serviceDate);
@@ -44,10 +44,6 @@ break;
 case MODIFIED:
 applied=handleModifiedTrip(tripUpdate,feedId,serviceDate);
 break;
-}
-}
- else {
-applied=handleScheduledTrip(tripUpdate,feedId,serviceDate);
 }
 if (applied) {
 appliedBlockCount++;
