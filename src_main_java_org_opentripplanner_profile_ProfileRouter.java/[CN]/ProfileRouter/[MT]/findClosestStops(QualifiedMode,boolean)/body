@@ -1,6 +1,5 @@
 {
-  RoutingRequest rr=new RoutingRequest();
-  rr.setModes(new TraverseModeSet());
+  RoutingRequest rr=new RoutingRequest(new TraverseModeSet());
   qmode.applyToRoutingRequest(rr,request.transitModes.isTransit());
   rr.from=(new GenericLocation(request.fromLat,request.fromLon));
   rr.to=new GenericLocation(request.toLat,request.toLon);
