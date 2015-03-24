@@ -42,7 +42,7 @@ case CANCELED:
 applied=handleCanceledTrip(tripUpdate,feedId,serviceDate);
 break;
 case MODIFIED:
-applied=handleModifiedTrip(tripUpdate,feedId,serviceDate);
+applied=validateAndHandleModifiedTrip(graph,tripUpdate,feedId,serviceDate);
 break;
 }
 if (applied) {

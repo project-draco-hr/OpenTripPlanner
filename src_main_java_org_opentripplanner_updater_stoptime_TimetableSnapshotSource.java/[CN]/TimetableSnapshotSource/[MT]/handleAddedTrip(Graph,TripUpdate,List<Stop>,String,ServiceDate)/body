@@ -30,6 +30,6 @@
  else {
     trip.setServiceId(serviceIds.iterator().next());
   }
-  boolean success=addTripToGraphAndBuffer(trip,tripUpdate,stops,serviceDate,graph);
+  boolean success=addTripToGraphAndBuffer(graph,trip,tripUpdate,stops,serviceDate);
   return success;
 }
