@@ -5,7 +5,7 @@
   Iterator<Integer> departureIterator=departures.iterator();
   int departure=departureIterator.next();
   ARRIVAL:   for (  int arrival : arrivals) {
-    int boardTime=arrival + accessTime + ProfileRouter.SLACK;
+    int boardTime=arrival + accessStats.min + ProfileRouter.SLACK;
     while (departure <= boardTime) {
       if (!departureIterator.hasNext())       break ARRIVAL;
       departure=departureIterator.next();

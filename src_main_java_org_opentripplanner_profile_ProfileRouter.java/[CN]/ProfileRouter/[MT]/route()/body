@@ -28,22 +28,31 @@ synchronized (graph.index) {
   LOG.info("From patterns/stops: {}",fromStops);
   LOG.info("To patterns/stops: {}",toStops);
   Map<StopCluster,Ride> initialRides=Maps.newHashMap();
-  for (  Entry<TripPattern,StopAtDistance> entry : fromStops.entrySet()) {
-    TripPattern pattern=entry.getKey();
-    StopAtDistance sd=entry.getValue();
+  for (  TripPattern pattern : fromStops.keySet()) {
     if (!request.transitModes.contains(pattern.mode)) {
       continue;
     }
-    for (int i=0; i < pattern.getStops().size(); ++i) {
-      if (sd.stop == graph.index.stopClusterForStop.get(pattern.getStops().get(i))) {
-        Ride ride=initialRides.get(sd.stop);
-        if (ride == null) {
-          ride=new Ride(sd.stop,null);
-          ride.accessTime=sd.etime;
-          ride.accessDist=0;
-          initialRides.put(sd.stop,ride);
+    Collection<StopAtDistance> sds=fromStops.get(pattern);
+    for (    StopAtDistance sd : sds) {
+      Ride ride=initialRides.get(sd.stop);
+      if (ride == null) {
+        ride=new Ride(sd.stop,null);
+        ride.accessStats=new Stats();
+        ride.accessStats.min=Integer.MAX_VALUE;
+        ride.accessDist=(int)sd.state.getWalkDistance();
+        initialRides.put(sd.stop,ride);
+      }
+      ride.accessStats.merge(sd.etime);
+      STOP_INDEX:       for (int i=0; i < pattern.getStops().size(); ++i) {
+        if (sd.stop == graph.index.stopClusterForStop.get(pattern.getStops().get(i))) {
+          PatternRide newPatternRide=new PatternRide(pattern,i);
+          for (          PatternRide existingPatternRide : ride.patternRides) {
+            if (existingPatternRide.pattern == newPatternRide.pattern && existingPatternRide.fromIndex == newPatternRide.fromIndex) {
+              continue STOP_INDEX;
+            }
+          }
+          ride.patternRides.add(newPatternRide);
         }
-        ride.patternRides.add(new PatternRide(pattern,i));
       }
     }
   }
@@ -91,7 +100,7 @@ synchronized (graph.index) {
               if (r2 == null) {
                 r2=new Ride(tr.sc2,r1);
                 r2.accessDist=tr.distance;
-                r2.accessTime=(int)(tr.distance / request.walkSpeed);
+                r2.accessStats=new Stats((int)(tr.distance / request.walkSpeed));
                 xferRides.put(tr.sc2,r2);
               }
               for (              PatternRide pr : r2.patternRides) {
@@ -117,10 +126,11 @@ synchronized (graph.index) {
   for (  StopCluster cluster : toStopPaths.keySet()) {
     for (    Ride ride : retainedRides.get(cluster)) {
       PATTERN:       for (      PatternRide pr : ride.patternRides) {
-        StopAtDistance clusterForPattern=toStops.get(pr.pattern);
-        if (clusterForPattern != null && clusterForPattern.stop == cluster) {
-          targetRides.add(ride);
-          break PATTERN;
+        for (        StopAtDistance clusterForPattern : toStops.get(pr.pattern)) {
+          if (clusterForPattern != null && clusterForPattern.stop == cluster) {
+            targetRides.add(ride);
+            break PATTERN;
+          }
         }
       }
     }
@@ -128,7 +138,6 @@ synchronized (graph.index) {
   LOG.info("{} nondominated rides stop near the destination.",targetRides.size());
   List<Option> options=Lists.newArrayList();
   for (  Ride ride : targetRides) {
-    int dist=toStops.get(ride.patternRides.get(0).pattern).etime;
     Collection<StopAtDistance> accessPaths=fromStopPaths.get(ride.getAccessStopCluster());
     Collection<StopAtDistance> egressPaths=toStopPaths.get(ride.getEgressStopCluster());
     Option option=new Option(ride,accessPaths,egressPaths);

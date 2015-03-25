@@ -4,10 +4,12 @@
   stats.add(access);
   stats.add(egress);
   List<Ride> rides=Lists.newArrayList();
-  for (Ride ride=tail; ride != null; ride=ride.previous)   rides.add(ride);
+  for (Ride ride=tail; ride != null; ride=ride.previous) {
+    rides.add(ride);
+  }
   if (!rides.isEmpty()) {
     Collections.reverse(rides);
-    rides.get(0).accessTime=0;
+    rides.get(0).accessStats=new Stats();
     rides.get(0).accessDist=0;
     transit=Lists.newArrayList();
     for (    Ride ride : rides) {

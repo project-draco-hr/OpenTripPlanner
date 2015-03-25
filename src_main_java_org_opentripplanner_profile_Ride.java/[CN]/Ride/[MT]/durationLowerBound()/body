@@ -4,7 +4,7 @@
   while (ride != null) {
     ret+=ride.rideStats.min;
     ret+=ride.waitStats.min;
-    ret+=ride.accessTime;
+    ret+=ride.accessStats.min;
     ride=ride.previous;
   }
   return ret;

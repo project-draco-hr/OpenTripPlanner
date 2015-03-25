@@ -20,9 +20,6 @@
     minAccessTime=request.minCarTime;
     maxAccessTime=request.maxCarTime;
   }
- else {
-    LOG.warn("No modes matched when setting min/max travel times.");
-  }
   long worstElapsedTimeSeconds=maxAccessTime * 60;
   if (dest)   worstElapsedTimeSeconds*=-1;
   rr.worstTime=(rr.dateTime + worstElapsedTimeSeconds);

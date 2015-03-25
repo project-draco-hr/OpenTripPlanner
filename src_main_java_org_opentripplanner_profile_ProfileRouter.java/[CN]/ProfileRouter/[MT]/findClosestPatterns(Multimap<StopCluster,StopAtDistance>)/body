@@ -1,35 +1,19 @@
 {
-  SimpleIsochrone.MinMap<TripPattern,StopAtDistance> closest=new SimpleIsochrone.MinMap<TripPattern,StopAtDistance>();
+  SimpleIsochrone.MinMap<T2<TripPattern,QualifiedMode>,StopAtDistance> closest=new SimpleIsochrone.MinMap<>();
   for (  StopAtDistance stopDist : stopClusters.values()) {
     for (    Stop stop : stopDist.stop.children) {
       for (      TripPattern pattern : graph.index.patternsForStop.get(stop)) {
-        closest.putMin(pattern,stopDist);
+        closest.putMin(new T2(pattern,stopDist.qmode),stopDist);
       }
     }
+  }
+  Multimap<TripPattern,StopAtDistance> result=ArrayListMultimap.create();
+  for (  Entry<T2<TripPattern,QualifiedMode>,StopAtDistance> entry : closest.entrySet()) {
+    result.put(entry.getKey().first,entry.getValue());
   }
   final int MAX_PATTERNS=1000;
-  if (closest.size() > MAX_PATTERNS) {
-    LOG.warn("Truncating excessively long list of patterns. {} patterns, max allowed is {}.",closest.size(),MAX_PATTERNS);
-    Multimap<StopAtDistance,TripPattern> busPatterns=TreeMultimap.create(Ordering.natural(),Ordering.arbitrary());
-    Multimap<StopAtDistance,TripPattern> otherPatterns=TreeMultimap.create(Ordering.natural(),Ordering.arbitrary());
-    for (    TripPattern pattern : closest.keySet()) {
-      Multimap<StopAtDistance,TripPattern> patterns=(pattern.mode == TraverseMode.BUS) ? busPatterns : otherPatterns;
-      patterns.put(closest.get(pattern),pattern);
-    }
-    closest.clear();
-    Iterator<StopAtDistance> iterBus=busPatterns.keySet().iterator();
-    Iterator<StopAtDistance> iterOther=otherPatterns.keySet().iterator();
-    while (closest.size() < MAX_PATTERNS) {
-      StopAtDistance sd;
-      if (iterBus.hasNext()) {
-        sd=iterBus.next();
-        for (        TripPattern tp : busPatterns.get(sd))         closest.put(tp,sd);
-      }
-      if (iterOther.hasNext()) {
-        sd=iterOther.next();
-        for (        TripPattern tp : otherPatterns.get(sd))         closest.put(tp,sd);
-      }
-    }
+  if (result.size() > MAX_PATTERNS) {
+    LOG.warn("Excessively long list of patterns. {} patterns, max allowed is {}.",closest.size(),MAX_PATTERNS);
   }
-  return closest;
+  return result;
 }
