@@ -21,74 +21,9 @@
     LOG.warn("ADDED trip has less then two stops, skipping.");
     return false;
   }
-  Integer previousStopSequence=null;
-  Long previousTime=null;
-  List<StopTimeUpdate> stopTimeUpdates=tripUpdate.getStopTimeUpdateList();
-  List<Stop> stops=new ArrayList<>(stopTimeUpdates.size());
-  for (int index=0; index < stopTimeUpdates.size(); ++index) {
-    StopTimeUpdate stopTimeUpdate=stopTimeUpdates.get(index);
-    if (stopTimeUpdate.hasStopSequence()) {
-      Integer stopSequence=stopTimeUpdate.getStopSequence();
-      if (stopSequence < 0) {
-        LOG.warn("ADDED trip contains negative stop sequence, skipping.");
-        return false;
-      }
-      if (previousStopSequence != null && previousStopSequence > stopSequence) {
-        LOG.warn("ADDED trip contains decreasing stop sequence, skipping.");
-        return false;
-      }
-      previousStopSequence=stopSequence;
-    }
- else {
-      LOG.warn("ADDED trip misses some stop sequences, skipping.");
-      return false;
-    }
-    if (stopTimeUpdate.hasStopId()) {
-      Stop stop=getStopForStopId(stopTimeUpdate.getStopId());
-      if (stop != null) {
-        stops.add(stop);
-      }
- else {
-        LOG.warn("Graph doesn't contain stop id \"{}\" of ADDED trip, skipping.",stopTimeUpdate.getStopId());
-        return false;
-      }
-    }
- else {
-      LOG.warn("ADDED trip misses some stop ids, skipping.");
-      return false;
-    }
-    if (stopTimeUpdate.hasArrival() && stopTimeUpdate.getArrival().hasTime()) {
-      Long time=stopTimeUpdate.getArrival().getTime();
-      if (previousTime != null && previousTime > time) {
-        LOG.warn("ADDED trip contains decreasing times, skipping.");
-        return false;
-      }
-      previousTime=time;
-    }
- else {
-      if (index > 0) {
-        LOG.warn("ADDED trip misses arrival time, skipping.");
-        return false;
-      }
-    }
-    if (stopTimeUpdate.hasDeparture() && stopTimeUpdate.getDeparture().hasTime()) {
-      Long time=stopTimeUpdate.getDeparture().getTime();
-      if (previousTime != null && previousTime > time) {
-        LOG.warn("ADDED trip contains decreasing times, skipping.");
-        return false;
-      }
-      previousTime=time;
-    }
- else {
-      if (index < stopTimeUpdates.size() - 1) {
-        LOG.warn("ADDED trip misses departure time, skipping.");
-        return false;
-      }
-    }
-    if (stopTimeUpdate.hasScheduleRelationship() && stopTimeUpdate.getScheduleRelationship() != ScheduleRelationship.SCHEDULED) {
-      LOG.warn("ADDED trip has invalid schedule relationship, skipping.");
-      return false;
-    }
+  List<Stop> stops=checkNewStopTimeUpdatesAndFindStops(tripUpdate);
+  if (stops == null) {
+    return false;
   }
   boolean success=handleAddedTrip(graph,tripUpdate,stops,feedId,serviceDate);
   return success;

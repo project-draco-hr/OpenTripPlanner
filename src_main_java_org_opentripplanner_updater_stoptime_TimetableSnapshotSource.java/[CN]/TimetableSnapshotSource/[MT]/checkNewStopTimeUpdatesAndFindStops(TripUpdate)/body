@@ -1,0 +1,68 @@
+{
+  Integer previousStopSequence=null;
+  Long previousTime=null;
+  List<StopTimeUpdate> stopTimeUpdates=tripUpdate.getStopTimeUpdateList();
+  List<Stop> stops=new ArrayList<>(stopTimeUpdates.size());
+  for (int index=0; index < stopTimeUpdates.size(); ++index) {
+    StopTimeUpdate stopTimeUpdate=stopTimeUpdates.get(index);
+    if (stopTimeUpdate.hasStopSequence()) {
+      Integer stopSequence=stopTimeUpdate.getStopSequence();
+      if (stopSequence < 0) {
+        LOG.warn("Trip update contains negative stop sequence, skipping.");
+        return null;
+      }
+      if (previousStopSequence != null && previousStopSequence > stopSequence) {
+        LOG.warn("Trip update contains decreasing stop sequence, skipping.");
+        return null;
+      }
+      previousStopSequence=stopSequence;
+    }
+ else {
+      LOG.warn("Trip update misses some stop sequences, skipping.");
+      return null;
+    }
+    if (stopTimeUpdate.hasStopId()) {
+      Stop stop=getStopForStopId(stopTimeUpdate.getStopId());
+      if (stop != null) {
+        stops.add(stop);
+      }
+ else {
+        LOG.warn("Graph doesn't contain stop id \"{}\" of trip update, skipping.",stopTimeUpdate.getStopId());
+        return null;
+      }
+    }
+ else {
+      LOG.warn("Trip update misses some stop ids, skipping.");
+      return null;
+    }
+    if (stopTimeUpdate.hasArrival() && stopTimeUpdate.getArrival().hasTime()) {
+      Long time=stopTimeUpdate.getArrival().getTime();
+      if (previousTime != null && previousTime > time) {
+        LOG.warn("Trip update contains decreasing times, skipping.");
+        return null;
+      }
+      previousTime=time;
+    }
+ else {
+      if (index > 0) {
+        LOG.warn("Trip update misses arrival time, skipping.");
+        return null;
+      }
+    }
+    if (stopTimeUpdate.hasDeparture() && stopTimeUpdate.getDeparture().hasTime()) {
+      Long time=stopTimeUpdate.getDeparture().getTime();
+      if (previousTime != null && previousTime > time) {
+        LOG.warn("Trip update contains decreasing times, skipping.");
+        return null;
+      }
+      previousTime=time;
+    }
+ else {
+      if (index < stopTimeUpdates.size() - 1) {
+        LOG.warn("Trip update misses departure time, skipping.");
+        return null;
+      }
+    }
+  }
+  return stops;
+}

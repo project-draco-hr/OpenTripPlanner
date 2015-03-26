@@ -1,4 +1,37 @@
 {
-  LOG.warn("Modified trips are currently unsupported. Skipping TripUpdate.");
-  return false;
+  Preconditions.checkNotNull(graph);
+  Preconditions.checkNotNull(tripUpdate);
+  Preconditions.checkNotNull(serviceDate);
+  TripDescriptor tripDescriptor=tripUpdate.getTrip();
+  if (!tripDescriptor.hasTripId()) {
+    LOG.warn("No trip id found for MODIFIED trip, skipping.");
+    return false;
+  }
+  String tripId=tripDescriptor.getTripId();
+  Trip trip=getTripForTripId(tripId);
+  if (trip == null) {
+    LOG.warn("Graph does not contain trip id of MODIFIED trip, skipping.");
+    return false;
+  }
+  if (!tripDescriptor.hasStartDate()) {
+    LOG.warn("MODIFIED trip doesn't have a start date in TripDescriptor, skipping.");
+    return false;
+  }
+ else {
+    Set<AgencyAndId> serviceIds=graph.getCalendarService().getServiceIdsOnDate(serviceDate);
+    if (!serviceIds.contains(trip.getServiceId())) {
+      LOG.warn("MODIFIED trip has a service date that is not served by trip, skipping.");
+      return false;
+    }
+  }
+  if (tripUpdate.getStopTimeUpdateCount() < 2) {
+    LOG.warn("MODIFIED trip has less then two stops, skipping.");
+    return false;
+  }
+  List<Stop> stops=checkNewStopTimeUpdatesAndFindStops(tripUpdate);
+  if (stops == null) {
+    return false;
+  }
+  boolean success=handleModifiedTrip(graph,trip,tripUpdate,stops,feedId,serviceDate);
+  return success;
 }
