@@ -5,6 +5,9 @@
   }
   bufferLock.lock();
   try {
+    if (fullDataset) {
+      buffer.clear();
+    }
     LOG.debug("message contains {} trip updates",updates.size());
     int uIndex=0;
     for (    TripUpdate tripUpdate : updates) {

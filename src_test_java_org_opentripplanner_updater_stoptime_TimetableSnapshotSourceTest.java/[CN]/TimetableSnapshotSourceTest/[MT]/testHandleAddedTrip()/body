@@ -61,7 +61,7 @@
     }
     tripUpdate=tripUpdateBuilder.build();
   }
-  updater.applyTripUpdates(graph,Arrays.asList(tripUpdate),"agency");
+  updater.applyTripUpdates(graph,fullDataset,Arrays.asList(tripUpdate),"agency");
   Stop stopA=graph.index.stopForId.get(new AgencyAndId("agency","A"));
   TransitStopDepart transitStopDepartA=graph.index.stopVertexForStop.get(stopA).departVertex;
   List<Edge> outgoingEdges=(List<Edge>)transitStopDepartA.getOutgoing();

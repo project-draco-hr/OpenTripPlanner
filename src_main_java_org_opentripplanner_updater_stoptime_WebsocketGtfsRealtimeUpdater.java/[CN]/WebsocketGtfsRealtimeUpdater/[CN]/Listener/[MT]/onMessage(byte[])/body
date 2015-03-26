@@ -2,9 +2,13 @@
   FeedMessage feedMessage=null;
   List<FeedEntity> feedEntityList=null;
   List<TripUpdate> updates=null;
+  boolean fullDataset=true;
   try {
     feedMessage=FeedMessage.PARSER.parseFrom(message);
     feedEntityList=feedMessage.getEntityList();
+    if (feedMessage.hasHeader() && feedMessage.getHeader().hasIncrementality() && feedMessage.getHeader().getIncrementality().equals(GtfsRealtime.FeedHeader.Incrementality.DIFFERENTIAL)) {
+      fullDataset=false;
+    }
     updates=new ArrayList<TripUpdate>(feedEntityList.size());
     for (    FeedEntity feedEntity : feedEntityList) {
       if (feedEntity.hasTripUpdate())       updates.add(feedEntity.getTripUpdate());
@@ -14,7 +18,7 @@
     LOG.error("Could not decode gtfs-rt message:",e);
   }
   if (updates != null && updates.size() > 0) {
-    TripUpdateGraphWriterRunnable runnable=new TripUpdateGraphWriterRunnable(updates,feedId);
+    TripUpdateGraphWriterRunnable runnable=new TripUpdateGraphWriterRunnable(fullDataset,updates,feedId);
     updaterManager.execute(runnable);
   }
 }
