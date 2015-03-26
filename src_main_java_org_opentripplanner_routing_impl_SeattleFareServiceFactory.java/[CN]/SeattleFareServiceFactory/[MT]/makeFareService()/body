@@ -1,0 +1,36 @@
+{
+  addMissingFare(youthFareRules,1.25f,SeattleFareServiceImpl.KCM_KCM_AGENCY_ID);
+  addMissingFare(seniorFareRules,0.75f,SeattleFareServiceImpl.KCM_KCM_AGENCY_ID);
+  addMissingFare(regularFareRules,2.50f,SeattleFareServiceImpl.KCM_EOS_AGENCY_ID);
+  addMissingFare(youthFareRules,1.25f,SeattleFareServiceImpl.KCM_EOS_AGENCY_ID);
+  addMissingFare(seniorFareRules,0.75f,SeattleFareServiceImpl.KCM_EOS_AGENCY_ID);
+  addMissingFare(regularFareRules,2.50f,SeattleFareServiceImpl.KCM_ST_AGENCY_ID);
+  addMissingFare(youthFareRules,1.25f,SeattleFareServiceImpl.KCM_ST_AGENCY_ID);
+  addMissingFare(seniorFareRules,0.75f,SeattleFareServiceImpl.KCM_ST_AGENCY_ID);
+  addMissingFare(regularFareRules,2.50f,SeattleFareServiceImpl.PT_ST_AGENCY_ID);
+  addMissingFare(youthFareRules,1.25f,SeattleFareServiceImpl.PT_ST_AGENCY_ID);
+  addMissingFare(seniorFareRules,0.75f,SeattleFareServiceImpl.PT_ST_AGENCY_ID);
+  addMissingFare(youthFareRules,1.25f,SeattleFareServiceImpl.PT_ST_AGENCY_ID,"TLZ","TLZ");
+  addMissingFare(seniorFareRules,0.75f,SeattleFareServiceImpl.PT_ST_AGENCY_ID,"TLZ","TLZ");
+  addMissingFare(regularFareRules,2.00f,SeattleFareServiceImpl.PT_PT_AGENCY_ID);
+  addMissingFare(youthFareRules,0.75f,SeattleFareServiceImpl.PT_PT_AGENCY_ID);
+  addMissingFare(seniorFareRules,0.75f,SeattleFareServiceImpl.PT_PT_AGENCY_ID);
+  addMissingFare(regularFareRules,2.00f,SeattleFareServiceImpl.CT_CT_AGENCY_ID);
+  addMissingFare(youthFareRules,1.50f,SeattleFareServiceImpl.CT_CT_AGENCY_ID);
+  addMissingFare(seniorFareRules,1.00f,SeattleFareServiceImpl.CT_CT_AGENCY_ID);
+  AgencyAndId fare30=new AgencyAndId(SeattleFareServiceImpl.ST_ST_AGENCY_ID,"30");
+  AgencyAndId fare36=new AgencyAndId(SeattleFareServiceImpl.ST_ST_AGENCY_ID,"36");
+  for (  FareRuleSet fareRule : regularFareRules.values()) {
+    if (fareRule.getFareAttribute().getId().equals(fare30)) {
+      duplicateFareRuleSet(youthFareRules,fareRule,1.25f);
+      duplicateFareRuleSet(seniorFareRules,fareRule,0.75f);
+    }
+ else     if (fareRule.getFareAttribute().getId().equals(fare36)) {
+      duplicateFareRuleSet(youthFareRules,fareRule,2.50f);
+      duplicateFareRuleSet(seniorFareRules,fareRule,1.50f);
+    }
+  }
+  SeattleFareServiceImpl fareService=new SeattleFareServiceImpl(regularFareRules.values(),youthFareRules.values(),seniorFareRules.values());
+  fareService.addDefaultFare(FareType.regular,SeattleFareServiceImpl.KCM_KCM_AGENCY_ID,2.50f);
+  return fareService;
+}

@@ -1,7 +1,3 @@
 {
-  readFareRules(dao);
-  Collection<FareAttribute> fA=dao.getAllFareAttributes();
-  for (  FareAttribute fare : fA) {
-    fareAttributes.put(fare.getId(),fare);
-  }
+  fillFareRules(null,dao.getAllFareAttributes(),dao.getAllFareRules(),regularFareRules);
 }

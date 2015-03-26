@@ -10,6 +10,7 @@
       rides.add(ride);
       ride.startZone=hEdge.getBeginStop().getZoneId();
       ride.zones.add(ride.startZone);
+      ride.agency=state.getBackTrip().getRoute().getAgency().getId();
       ride.route=state.getRoute();
       ride.startTime=state.getBackState().getTimeSeconds();
       ride.firstStop=hEdge.getBeginStop();
