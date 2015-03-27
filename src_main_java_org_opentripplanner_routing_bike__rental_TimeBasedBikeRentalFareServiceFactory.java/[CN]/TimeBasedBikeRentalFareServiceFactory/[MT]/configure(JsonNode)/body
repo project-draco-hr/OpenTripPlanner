@@ -1,5 +1,4 @@
 {
-  nextFactory=DefaultFareServiceFactory.fromConfig(config.path("next"));
   String currencyStr=config.path("currency").asText(null);
   if (currencyStr == null)   throw new IllegalArgumentException("Missing mandatory 'currency' configuration.");
   currency=Currency.getInstance(currencyStr);
