@@ -2,7 +2,7 @@
   if (fareServiceFactory == null) {
     fareServiceFactory=new DefaultFareServiceFactory();
   }
-  fareServiceFactory.setDao(_dao);
+  fareServiceFactory.processGtfs(_dao);
   loadStops(graph);
   loadPathways(graph);
   loadAgencies(graph);
