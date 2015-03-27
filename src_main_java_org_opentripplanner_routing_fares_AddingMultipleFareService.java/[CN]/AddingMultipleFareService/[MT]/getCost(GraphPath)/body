@@ -6,9 +6,10 @@
       continue;
     }
     if (fare == null) {
-      fare=subFare;
+      fare=new Fare(subFare);
     }
  else {
+      Fare newFare=new Fare(fare);
       for (      FareType fareType : FareType.values()) {
         Money cost=fare.getFare(fareType);
         Money subCost=subFare.getFare(fareType);
@@ -19,15 +20,16 @@
           subCost=subFare.getFare(FareType.regular);
         }
  else         if (cost == null && subCost != null) {
-          cost=subFare.getFare(FareType.regular);
+          cost=fare.getFare(FareType.regular);
         }
         if (cost != null && subCost != null) {
-          fare.addFare(fareType,cost.getCurrency(),cost.getCents() + subCost.getCents());
+          newFare.addFare(fareType,cost.getCurrency(),cost.getCents() + subCost.getCents());
         }
  else         if (cost == null && subCost != null) {
-          fare.addFare(fareType,subCost.getCurrency(),subCost.getCents());
+          newFare.addFare(fareType,subCost.getCurrency(),subCost.getCents());
         }
       }
+      fare=newFare;
     }
   }
   return fare;
