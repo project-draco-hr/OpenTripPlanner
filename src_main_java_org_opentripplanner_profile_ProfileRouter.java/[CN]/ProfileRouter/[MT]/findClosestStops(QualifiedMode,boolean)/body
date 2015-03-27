@@ -1,5 +1,5 @@
 {
-  RoutingRequest rr=new RoutingRequest();
+  RoutingRequest rr=new RoutingRequest(new TraverseModeSet());
   qmode.applyToRoutingRequest(rr,request.transitModes.isTransit());
   rr.from=(new GenericLocation(request.fromLat,request.fromLon));
   rr.to=new GenericLocation(request.toLat,request.toLon);
@@ -19,9 +19,6 @@
     rr.carSpeed=request.carSpeed;
     minAccessTime=request.minCarTime;
     maxAccessTime=request.maxCarTime;
-  }
- else {
-    LOG.warn("No modes matched when setting min/max travel times.");
   }
   long worstElapsedTimeSeconds=maxAccessTime * 60;
   if (dest)   worstElapsedTimeSeconds*=-1;
