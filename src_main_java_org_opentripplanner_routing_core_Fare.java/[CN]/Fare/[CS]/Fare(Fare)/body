@@ -1,0 +1,8 @@
+{
+  this();
+  if (aFare != null) {
+    for (    Map.Entry<FareType,Money> kv : aFare.fare.entrySet()) {
+      fare.put(kv.getKey(),new Money(kv.getValue().getCurrency(),kv.getValue().getCents()));
+    }
+  }
+}
