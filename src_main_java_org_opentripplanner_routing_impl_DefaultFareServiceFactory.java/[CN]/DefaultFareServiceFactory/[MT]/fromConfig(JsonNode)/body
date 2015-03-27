@@ -1,0 +1,23 @@
+{
+  String type=config == null ? null : config.path("type").asText(null);
+  if (type == null)   type="default";
+  FareServiceFactory retval;
+switch (type) {
+case "default":
+    retval=new DefaultFareServiceFactory();
+  break;
+case "san-francisco":
+retval=new SFBayFareServiceFactory();
+break;
+case "new-york":
+retval=new NycFareServiceFactory();
+break;
+case "seattle":
+retval=new SeattleFareServiceFactory();
+break;
+default :
+throw new IllegalArgumentException(String.format("Unknown fare type: '%s'",type));
+}
+retval.configure(config);
+return retval;
+}
