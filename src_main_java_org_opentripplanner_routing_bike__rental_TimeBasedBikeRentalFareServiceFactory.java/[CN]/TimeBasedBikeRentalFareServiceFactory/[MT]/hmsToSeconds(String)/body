@@ -1,0 +1,10 @@
+{
+  String[] hms=hmsStr.split(":");
+  int seconds=0;
+  for (  String field : hms) {
+    seconds*=60;
+    int fieldValue=Integer.parseInt(field);
+    seconds+=fieldValue;
+  }
+  return seconds;
+}
