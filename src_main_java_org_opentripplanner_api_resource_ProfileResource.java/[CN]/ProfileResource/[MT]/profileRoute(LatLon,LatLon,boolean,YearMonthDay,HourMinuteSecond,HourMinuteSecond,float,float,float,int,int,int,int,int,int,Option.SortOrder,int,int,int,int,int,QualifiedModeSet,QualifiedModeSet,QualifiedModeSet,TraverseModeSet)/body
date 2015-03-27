@@ -10,6 +10,9 @@
   QueryParameter.checkRangeInclusive(minBikeTime,0,maxBikeTime);
   QueryParameter.checkRangeInclusive(minCarTime,0,maxCarTime);
   QueryParameter.checkRangeInclusive(suboptimalMinutes,0,30);
+  QueryParameter.checkRangeInclusive(bikeSafe,0,1000);
+  QueryParameter.checkRangeInclusive(bikeSlope,0,1000);
+  QueryParameter.checkRangeInclusive(bikeTime,0,1000);
   ProfileRequest req=new ProfileRequest();
   req.fromLat=from.lat;
   req.fromLon=from.lon;
@@ -35,6 +38,9 @@
   req.maxCarTime=maxCarTime;
   req.minBikeTime=minBikeTime;
   req.minCarTime=minCarTime;
+  req.bikeSafe=bikeSafe;
+  req.bikeSlope=bikeSlope;
+  req.bikeTime=bikeTime;
   req.suboptimalMinutes=suboptimalMinutes;
   if (req.analyst) {
     if (surfaceCache == null) {
