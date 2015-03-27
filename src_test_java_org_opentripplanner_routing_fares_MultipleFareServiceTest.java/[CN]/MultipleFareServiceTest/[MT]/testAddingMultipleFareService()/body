@@ -16,6 +16,10 @@
   fare=mfs.getCost(null);
   assertEquals(100,fare.getFare(FareType.regular).getCents());
   assertEquals(null,fare.getFare(FareType.student));
+  mfs=new AddingMultipleFareService(Arrays.asList(fs2));
+  fare=mfs.getCost(null);
+  assertEquals(140,fare.getFare(FareType.regular).getCents());
+  assertEquals(120,fare.getFare(FareType.student).getCents());
   mfs=new AddingMultipleFareService(Arrays.asList(fs1,fs2));
   fare=mfs.getCost(null);
   assertEquals(240,fare.getFare(FareType.regular).getCents());
@@ -28,4 +32,12 @@
   fare=mfs.getCost(null);
   assertEquals(100,fare.getFare(FareType.regular).getCents());
   assertEquals(180,fare.getFare(FareType.student).getCents());
+  mfs=new AddingMultipleFareService(Arrays.asList(fs3,fs1));
+  fare=mfs.getCost(null);
+  assertEquals(100,fare.getFare(FareType.regular).getCents());
+  assertEquals(180,fare.getFare(FareType.student).getCents());
+  mfs=new AddingMultipleFareService(Arrays.asList(fs1,fs2,fs3));
+  fare=mfs.getCost(null);
+  assertEquals(240,fare.getFare(FareType.regular).getCents());
+  assertEquals(300,fare.getFare(FareType.student).getCents());
 }
