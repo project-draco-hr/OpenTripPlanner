@@ -1,0 +1,34 @@
+{
+  Fare fare=null;
+  for (  FareService subService : subServices) {
+    Fare subFare=subService.getCost(path);
+    if (subFare == null) {
+      continue;
+    }
+    if (fare == null) {
+      fare=subFare;
+    }
+ else {
+      for (      FareType fareType : FareType.values()) {
+        Money cost=fare.getFare(fareType);
+        Money subCost=subFare.getFare(fareType);
+        if (cost == null && subCost == null) {
+          continue;
+        }
+        if (cost != null && subCost == null) {
+          subCost=subFare.getFare(FareType.regular);
+        }
+ else         if (cost == null && subCost != null) {
+          cost=subFare.getFare(FareType.regular);
+        }
+        if (cost != null && subCost != null) {
+          fare.addFare(fareType,cost.getCurrency(),cost.getCents() + subCost.getCents());
+        }
+ else         if (cost == null && subCost != null) {
+          fare.addFare(fareType,subCost.getCurrency(),subCost.getCents());
+        }
+      }
+    }
+  }
+  return fare;
+}
