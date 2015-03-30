@@ -1,15 +1,11 @@
 {
 switch (value) {
 case 0:
-    return UNKNOWN_CONGESTION_LEVEL;
+    return INCOMING_AT;
 case 1:
-  return RUNNING_SMOOTHLY;
+  return STOPPED_AT;
 case 2:
-return STOP_AND_GO;
-case 3:
-return CONGESTION;
-case 4:
-return SEVERE_CONGESTION;
+return IN_TRANSIT_TO;
 default :
 return null;
 }
