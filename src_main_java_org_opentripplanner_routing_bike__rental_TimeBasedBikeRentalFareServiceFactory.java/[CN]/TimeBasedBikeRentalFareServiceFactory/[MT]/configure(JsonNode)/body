@@ -5,7 +5,7 @@
   pricingBySecond=new ArrayList<>();
   for (Iterator<Map.Entry<String,JsonNode>> i=config.path("prices").fields(); i.hasNext(); ) {
     Map.Entry<String,JsonNode> kv=i.next();
-    int maxTimeSec=hmsToSeconds(kv.getKey());
+    int maxTimeSec=hmToMinutes(kv.getKey()) * 60;
     int priceCent=(int)Math.round(kv.getValue().asDouble() * 100);
     pricingBySecond.add(new P2<>(maxTimeSec,priceCent));
   }
