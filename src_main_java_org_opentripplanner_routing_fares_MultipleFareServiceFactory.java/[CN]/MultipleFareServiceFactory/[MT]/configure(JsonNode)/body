@@ -13,4 +13,7 @@
     }
   }
   if (subFactories.isEmpty())   throw new IllegalArgumentException("Empty fare composite. Please specify either a 'fares' array or a list of 'fareXxx' properties");
+  if (subFactories.size() == 1) {
+    log.warn("Fare composite has only ONE fare to combine. This is allowed, but useless. Did you forgot to define a second fare to combine?");
+  }
 }
