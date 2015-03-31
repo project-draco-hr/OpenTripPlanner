@@ -19,7 +19,7 @@
     return null;
   }
  else {
-    LOG.trace("tripId {} found at index {} in scheduled timetable.",tripId,tripIndex);
+    LOG.trace("tripId {} found at index {} in timetable.",tripId,tripIndex);
   }
   TripTimes newTimes=new TripTimes(getTripTimes(tripIndex));
   if (tripDescriptor.hasScheduleRelationship() && tripDescriptor.getScheduleRelationship() == TripDescriptor.ScheduleRelationship.CANCELED) {
@@ -47,7 +47,7 @@
       if (match) {
         StopTimeUpdate.ScheduleRelationship scheduleRelationship=update.hasScheduleRelationship() ? update.getScheduleRelationship() : StopTimeUpdate.ScheduleRelationship.SCHEDULED;
         if (scheduleRelationship == StopTimeUpdate.ScheduleRelationship.SKIPPED) {
-          LOG.warn("Partially canceled trips are currently unsupported." + " Skipping TripUpdate.");
+          LOG.warn("Partially canceled trips are unsupported by this method." + " Skipping TripUpdate.");
           return null;
         }
  else         if (scheduleRelationship == StopTimeUpdate.ScheduleRelationship.NO_DATA) {
