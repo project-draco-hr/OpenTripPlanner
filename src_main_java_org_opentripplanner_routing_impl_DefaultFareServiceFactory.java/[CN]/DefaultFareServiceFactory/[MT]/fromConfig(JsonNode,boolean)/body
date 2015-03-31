@@ -19,7 +19,10 @@ type="composite:" + combinationStrategy;
  else if (config.has("type")) {
 type=config.path("type").asText(null);
 }
-if (type == null) type="default";
+if (type == null) {
+if (fallbackToDefault) type="default";
+ else return null;
+}
 FareServiceFactory retval;
 switch (type) {
 case "default":

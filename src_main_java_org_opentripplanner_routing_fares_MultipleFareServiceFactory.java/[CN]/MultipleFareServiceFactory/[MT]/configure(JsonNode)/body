@@ -1,6 +1,6 @@
 {
   subFactories=new ArrayList<>();
   for (  JsonNode pConfig : config.path("fares")) {
-    subFactories.add(DefaultFareServiceFactory.fromConfig(pConfig));
+    subFactories.add(DefaultFareServiceFactory.fromConfig(pConfig,true));
   }
 }
