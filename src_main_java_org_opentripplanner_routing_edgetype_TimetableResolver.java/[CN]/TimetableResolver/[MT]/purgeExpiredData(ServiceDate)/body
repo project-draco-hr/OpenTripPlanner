@@ -23,6 +23,13 @@ synchronized (this) {
         timetables.put(pattern,toKeepTimetables);
       }
     }
+    for (Iterator<Entry<TripIdAndServiceDate,TripPattern>> iterator=lastAddedTripPattern.entrySet().iterator(); iterator.hasNext(); ) {
+      TripIdAndServiceDate tripIdAndServiceDate=iterator.next().getKey();
+      if (serviceDate.compareTo(tripIdAndServiceDate.getServiceDate()) >= 0) {
+        iterator.remove();
+        modified=true;
+      }
+    }
     return modified;
   }
 }

@@ -5,7 +5,7 @@
   TripPattern pattern=graph.index.patternForTrip.get(trip);
   int tripIndex=pattern.scheduledTimetable.getTripIndex(tripId);
   int tripIndex2=pattern.scheduledTimetable.getTripIndex(tripId2);
-  updater.applyTripUpdates(Arrays.asList(TripUpdate.parseFrom(cancellation)),"agency");
+  updater.applyTripUpdates(graph,Arrays.asList(TripUpdate.parseFrom(cancellation)),"agency");
   TimetableResolver resolver=updater.getTimetableSnapshot();
   Timetable forToday=resolver.resolve(pattern,serviceDate);
   Timetable schedule=resolver.resolve(pattern,null);

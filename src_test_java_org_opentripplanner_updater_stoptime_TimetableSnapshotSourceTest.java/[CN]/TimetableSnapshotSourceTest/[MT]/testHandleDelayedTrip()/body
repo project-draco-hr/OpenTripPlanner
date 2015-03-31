@@ -1,0 +1,30 @@
+{
+  AgencyAndId tripId=new AgencyAndId("agency","1.1");
+  AgencyAndId tripId2=new AgencyAndId("agency","1.2");
+  Trip trip=graph.index.tripForId.get(tripId);
+  TripPattern pattern=graph.index.patternForTrip.get(trip);
+  int tripIndex=pattern.scheduledTimetable.getTripIndex(tripId);
+  int tripIndex2=pattern.scheduledTimetable.getTripIndex(tripId2);
+  TripDescriptor.Builder tripDescriptorBuilder=TripDescriptor.newBuilder();
+  tripDescriptorBuilder.setTripId("1.1");
+  tripDescriptorBuilder.setScheduleRelationship(TripDescriptor.ScheduleRelationship.SCHEDULED);
+  TripUpdate.Builder tripUpdateBuilder=TripUpdate.newBuilder();
+  tripUpdateBuilder.setTrip(tripDescriptorBuilder);
+  StopTimeUpdate.Builder stopTimeUpdateBuilder=tripUpdateBuilder.addStopTimeUpdateBuilder();
+  stopTimeUpdateBuilder.setScheduleRelationship(StopTimeUpdate.ScheduleRelationship.SCHEDULED);
+  stopTimeUpdateBuilder.setStopSequence(2);
+  StopTimeEvent.Builder arrivalBuilder=stopTimeUpdateBuilder.getArrivalBuilder();
+  StopTimeEvent.Builder departureBuilder=stopTimeUpdateBuilder.getDepartureBuilder();
+  arrivalBuilder.setDelay(1);
+  departureBuilder.setDelay(1);
+  TripUpdate tripUpdate=tripUpdateBuilder.build();
+  updater.applyTripUpdates(graph,Arrays.asList(tripUpdate),"agency");
+  TimetableResolver resolver=updater.getTimetableSnapshot();
+  Timetable forToday=resolver.resolve(pattern,serviceDate);
+  Timetable schedule=resolver.resolve(pattern,null);
+  assertNotSame(forToday,schedule);
+  assertNotSame(forToday.getTripTimes(tripIndex),schedule.getTripTimes(tripIndex));
+  assertSame(forToday.getTripTimes(tripIndex2),schedule.getTripTimes(tripIndex2));
+  assertEquals(1,forToday.getTripTimes(tripIndex).getArrivalDelay(1));
+  assertEquals(1,forToday.getTripTimes(tripIndex).getDepartureDelay(1));
+}

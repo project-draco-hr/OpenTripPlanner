@@ -18,5 +18,9 @@
   tripUpdateBuilder.setTrip(tripDescriptorBuilder);
   tripUpdateBuilder.addStopTimeUpdate(0,stopTimeUpdateBuilder);
   TripUpdate tripUpdate=tripUpdateBuilder.build();
-  assertTrue(timetable.update(tripUpdate,timeZone,serviceDate));
+  TripTimes updatedTripTimes=timetable.createUpdatedTripTimes(tripUpdate,timeZone,serviceDate);
+  assertNotNull(updatedTripTimes);
+  int tripIndex=timetable.getTripIndex(tripId);
+  assertTrue(tripIndex != -1);
+  timetable.setTripTimes(tripIndex,updatedTripTimes);
 }

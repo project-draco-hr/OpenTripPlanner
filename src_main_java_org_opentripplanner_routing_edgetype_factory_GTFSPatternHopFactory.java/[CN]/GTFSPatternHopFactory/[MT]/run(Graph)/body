@@ -70,7 +70,7 @@
   TripPattern.generateUniqueNames(tripPatterns.values());
   TripPattern.generateUniqueIds(tripPatterns.values());
   for (  TripPattern tripPattern : tripPatterns.values()) {
-    tripPattern.makePatternVerticesAndEdges(graph,context);
+    tripPattern.makePatternVerticesAndEdges(graph,context.stationStopNodes);
     LineString[] geom=geometriesByTripPattern.get(tripPattern);
     if (geom != null) {
       for (int i=0; i < tripPattern.hopEdges.length; i++) {

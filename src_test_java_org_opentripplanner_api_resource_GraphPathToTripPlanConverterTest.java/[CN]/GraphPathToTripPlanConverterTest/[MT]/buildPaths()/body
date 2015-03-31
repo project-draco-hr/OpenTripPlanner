@@ -332,7 +332,8 @@
   TimetableResolver resolver=new TimetableResolver();
   TimetableSnapshotSource timetableSnapshotSource=mock(TimetableSnapshotSource.class);
   when(timetableSnapshotSource.getTimetableSnapshot()).thenReturn(resolver);
-  timetableSnapshotSource.getTimetableSnapshot().update(thirdTripPattern,tripUpdate,"Ferry",timeZone,serviceDate);
+  TripTimes updatedTripTimes=thirdTripPattern.scheduledTimetable.createUpdatedTripTimes(tripUpdate,timeZone,serviceDate);
+  timetableSnapshotSource.getTimetableSnapshot().update(thirdTripPattern,updatedTripTimes,serviceDate);
   graph.putService(CalendarServiceData.class,calendarServiceData);
   graph.putService(FareService.class,fareServiceStub);
   graph.addAgency(trainAgency);

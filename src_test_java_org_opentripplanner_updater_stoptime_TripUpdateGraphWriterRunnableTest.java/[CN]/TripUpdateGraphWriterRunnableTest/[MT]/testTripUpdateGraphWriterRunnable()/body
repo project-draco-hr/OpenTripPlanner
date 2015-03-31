@@ -6,5 +6,5 @@
   TimetableSnapshotSource timetableSnapshotSource=mock(TimetableSnapshotSource.class);
   graph.timetableSnapshotSource=timetableSnapshotSource;
   tripUpdateGraphWriterRunnable.run(graph);
-  verify(timetableSnapshotSource).applyTripUpdates(updates,agencyId);
+  verify(timetableSnapshotSource).applyTripUpdates(graph,updates,agencyId);
 }

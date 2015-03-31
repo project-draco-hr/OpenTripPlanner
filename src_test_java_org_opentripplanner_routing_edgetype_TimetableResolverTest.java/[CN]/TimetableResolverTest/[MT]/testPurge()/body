@@ -9,8 +9,8 @@
   tripUpdateBuilder.setTrip(tripDescriptorBuilder);
   TripUpdate tripUpdate=tripUpdateBuilder.build();
   TimetableResolver resolver=new TimetableResolver();
-  resolver.update(pattern,tripUpdate,"agency",timeZone,today);
-  resolver.update(pattern,tripUpdate,"agency",timeZone,yesterday);
+  updateResolver(resolver,pattern,tripUpdate,"agency",today);
+  updateResolver(resolver,pattern,tripUpdate,"agency",yesterday);
   assertNotSame(resolver.resolve(pattern,yesterday),resolver.resolve(pattern,null));
   assertNotSame(resolver.resolve(pattern,today),resolver.resolve(pattern,null));
   assertNotNull(resolver.commit());

@@ -12,13 +12,13 @@
   TripUpdate.Builder tripUpdateBuilder=TripUpdate.newBuilder();
   tripUpdateBuilder.setTrip(tripDescriptorBuilder);
   TripUpdate tripUpdate=tripUpdateBuilder.build();
-  resolver.update(pattern,tripUpdate,"agency",timeZone,today);
+  updateResolver(resolver,pattern,tripUpdate,"agency",today);
   Timetable forNow=resolver.resolve(pattern,today);
   assertEquals(scheduled,resolver.resolve(pattern,yesterday));
   assertNotSame(scheduled,forNow);
   assertEquals(scheduled,resolver.resolve(pattern,tomorrow));
   assertEquals(scheduled,resolver.resolve(pattern,null));
-  resolver.update(pattern,tripUpdate,"agency",timeZone,yesterday);
+  updateResolver(resolver,pattern,tripUpdate,"agency",yesterday);
   Timetable forYesterday=resolver.resolve(pattern,yesterday);
   assertNotSame(scheduled,forYesterday);
   assertNotSame(scheduled,forNow);

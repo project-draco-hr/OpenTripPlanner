@@ -1,0 +1,14 @@
+{
+  if (graphIndex.routeForIdWithoutAgency == null) {
+    Map<String,Route> map=Maps.newHashMap();
+    for (    Route route : graphIndex.routeForId.values()) {
+      Route previousValue=map.put(route.getId().getId(),route);
+      if (previousValue != null) {
+        LOG.warn("Duplicate route id detected when agency is ignored for " + "realtime updates: {}",route.getId().getId());
+      }
+    }
+    graphIndex.routeForIdWithoutAgency=map;
+  }
+  Route route=graphIndex.routeForIdWithoutAgency.get(routeId);
+  return route;
+}
