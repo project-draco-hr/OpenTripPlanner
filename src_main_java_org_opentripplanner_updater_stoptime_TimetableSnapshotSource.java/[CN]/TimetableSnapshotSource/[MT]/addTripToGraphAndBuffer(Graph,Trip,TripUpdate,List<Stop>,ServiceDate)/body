@@ -7,7 +7,8 @@
   for (int index=0; index < tripUpdate.getStopTimeUpdateCount(); ++index) {
     StopTimeUpdate stopTimeUpdate=tripUpdate.getStopTimeUpdate(index);
     Stop stop=stops.get(index);
-    if (!(stopTimeUpdate.hasScheduleRelationship() && stopTimeUpdate.getScheduleRelationship().equals(StopTimeUpdate.ScheduleRelationship.SKIPPED))) {
+    boolean skippedStop=stopTimeUpdate.hasScheduleRelationship() && stopTimeUpdate.getScheduleRelationship().equals(StopTimeUpdate.ScheduleRelationship.SKIPPED);
+    if (!skippedStop) {
       StopTime stopTime=new StopTime();
       stopTime.setTrip(trip);
       stopTime.setStop(stop);
@@ -47,9 +48,11 @@
   StopPattern stopPattern=new StopPattern(stopTimes);
   TripPattern pattern=tripPatternCache.getOrCreateTripPattern(stopPattern,trip.getRoute(),graph);
   int serviceCode=graph.serviceCodes.get(trip.getServiceId());
-  BitSet services=(BitSet)pattern.getServices().clone();
-  services.set(serviceCode);
-  pattern.setServices(services);
+  if (!pattern.getServices().get(serviceCode)) {
+    BitSet services=(BitSet)pattern.getServices().clone();
+    services.set(serviceCode);
+    pattern.setServices(services);
+  }
   TripTimes newTripTimes=new TripTimes(trip,stopTimes,graph.deduplicator);
   for (int stopIndex=0; stopIndex < newTripTimes.getNumStops(); stopIndex++) {
     newTripTimes.updateArrivalTime(stopIndex,newTripTimes.getScheduledArrivalTime(stopIndex));
