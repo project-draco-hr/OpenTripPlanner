@@ -18,10 +18,10 @@
   arrivalBuilder.setDelay(1);
   departureBuilder.setDelay(1);
   TripUpdate tripUpdate=tripUpdateBuilder.build();
-  updater.applyTripUpdates(graph,Arrays.asList(tripUpdate),"agency");
-  TimetableResolver resolver=updater.getTimetableSnapshot();
-  Timetable forToday=resolver.resolve(pattern,serviceDate);
-  Timetable schedule=resolver.resolve(pattern,null);
+  updater.applyTripUpdates(graph,fullDataset,Arrays.asList(tripUpdate),"agency");
+  TimetableSnapshot snapshot=updater.getTimetableSnapshot();
+  Timetable forToday=snapshot.resolve(pattern,serviceDate);
+  Timetable schedule=snapshot.resolve(pattern,null);
   assertNotSame(forToday,schedule);
   assertNotSame(forToday.getTripTimes(tripIndex),schedule.getTripTimes(tripIndex));
   assertSame(forToday.getTripTimes(tripIndex2),schedule.getTripTimes(tripIndex2));

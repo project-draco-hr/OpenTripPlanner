@@ -1,0 +1,8 @@
+{
+  if (activePeriodBuilder_ != null) {
+    return activePeriodBuilder_.getMessageOrBuilderList();
+  }
+ else {
+    return java.util.Collections.unmodifiableList(activePeriod_);
+  }
+}

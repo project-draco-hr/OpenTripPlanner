@@ -1,0 +1,43 @@
+{
+  super.clear();
+  if (activePeriodBuilder_ == null) {
+    activePeriod_=java.util.Collections.emptyList();
+    bitField0_=(bitField0_ & ~0x00000001);
+  }
+ else {
+    activePeriodBuilder_.clear();
+  }
+  if (informedEntityBuilder_ == null) {
+    informedEntity_=java.util.Collections.emptyList();
+    bitField0_=(bitField0_ & ~0x00000002);
+  }
+ else {
+    informedEntityBuilder_.clear();
+  }
+  cause_=com.google.transit.realtime.GtfsRealtime.Alert.Cause.UNKNOWN_CAUSE;
+  bitField0_=(bitField0_ & ~0x00000004);
+  effect_=com.google.transit.realtime.GtfsRealtime.Alert.Effect.UNKNOWN_EFFECT;
+  bitField0_=(bitField0_ & ~0x00000008);
+  if (urlBuilder_ == null) {
+    url_=com.google.transit.realtime.GtfsRealtime.TranslatedString.getDefaultInstance();
+  }
+ else {
+    urlBuilder_.clear();
+  }
+  bitField0_=(bitField0_ & ~0x00000010);
+  if (headerTextBuilder_ == null) {
+    headerText_=com.google.transit.realtime.GtfsRealtime.TranslatedString.getDefaultInstance();
+  }
+ else {
+    headerTextBuilder_.clear();
+  }
+  bitField0_=(bitField0_ & ~0x00000020);
+  if (descriptionTextBuilder_ == null) {
+    descriptionText_=com.google.transit.realtime.GtfsRealtime.TranslatedString.getDefaultInstance();
+  }
+ else {
+    descriptionTextBuilder_.clear();
+  }
+  bitField0_=(bitField0_ & ~0x00000040);
+  return this;
+}

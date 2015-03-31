@@ -1,0 +1,32 @@
+{
+  if (other == com.google.transit.realtime.GtfsRealtime.TripDescriptor.getDefaultInstance())   return this;
+  if (other.hasTripId()) {
+    bitField0_|=0x00000001;
+    tripId_=other.tripId_;
+    onChanged();
+  }
+  if (other.hasRouteId()) {
+    bitField0_|=0x00000002;
+    routeId_=other.routeId_;
+    onChanged();
+  }
+  if (other.hasDirectionId()) {
+    setDirectionId(other.getDirectionId());
+  }
+  if (other.hasStartTime()) {
+    bitField0_|=0x00000008;
+    startTime_=other.startTime_;
+    onChanged();
+  }
+  if (other.hasStartDate()) {
+    bitField0_|=0x00000010;
+    startDate_=other.startDate_;
+    onChanged();
+  }
+  if (other.hasScheduleRelationship()) {
+    setScheduleRelationship(other.getScheduleRelationship());
+  }
+  this.mergeExtensionFields(other);
+  this.mergeUnknownFields(other.getUnknownFields());
+  return this;
+}

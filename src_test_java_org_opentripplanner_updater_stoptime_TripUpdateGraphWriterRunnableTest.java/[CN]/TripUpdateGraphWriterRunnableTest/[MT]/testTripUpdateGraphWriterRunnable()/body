@@ -1,10 +1,11 @@
 {
+  final boolean fullDataset=false;
   final String agencyId="Agency ID";
   final List<TripUpdate> updates=Collections.singletonList(TripUpdate.newBuilder().buildPartial());
-  final TripUpdateGraphWriterRunnable tripUpdateGraphWriterRunnable=new TripUpdateGraphWriterRunnable(updates,agencyId);
+  final TripUpdateGraphWriterRunnable tripUpdateGraphWriterRunnable=new TripUpdateGraphWriterRunnable(fullDataset,updates,agencyId);
   Graph graph=mock(Graph.class);
   TimetableSnapshotSource timetableSnapshotSource=mock(TimetableSnapshotSource.class);
   graph.timetableSnapshotSource=timetableSnapshotSource;
   tripUpdateGraphWriterRunnable.run(graph);
-  verify(timetableSnapshotSource).applyTripUpdates(graph,updates,agencyId);
+  verify(timetableSnapshotSource).applyTripUpdates(graph,fullDataset,updates,agencyId);
 }

@@ -1,0 +1,16 @@
+{
+  if (tripBuilder_ == null) {
+    if (((bitField0_ & 0x00000001) == 0x00000001) && trip_ != com.google.transit.realtime.GtfsRealtime.TripDescriptor.getDefaultInstance()) {
+      trip_=com.google.transit.realtime.GtfsRealtime.TripDescriptor.newBuilder(trip_).mergeFrom(value).buildPartial();
+    }
+ else {
+      trip_=value;
+    }
+    onChanged();
+  }
+ else {
+    tripBuilder_.mergeFrom(value);
+  }
+  bitField0_|=0x00000001;
+  return this;
+}

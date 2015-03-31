@@ -1,0 +1,63 @@
+{
+  com.google.transit.realtime.GtfsRealtime.Alert result=new com.google.transit.realtime.GtfsRealtime.Alert(this);
+  int from_bitField0_=bitField0_;
+  int to_bitField0_=0;
+  if (activePeriodBuilder_ == null) {
+    if (((bitField0_ & 0x00000001) == 0x00000001)) {
+      activePeriod_=java.util.Collections.unmodifiableList(activePeriod_);
+      bitField0_=(bitField0_ & ~0x00000001);
+    }
+    result.activePeriod_=activePeriod_;
+  }
+ else {
+    result.activePeriod_=activePeriodBuilder_.build();
+  }
+  if (informedEntityBuilder_ == null) {
+    if (((bitField0_ & 0x00000002) == 0x00000002)) {
+      informedEntity_=java.util.Collections.unmodifiableList(informedEntity_);
+      bitField0_=(bitField0_ & ~0x00000002);
+    }
+    result.informedEntity_=informedEntity_;
+  }
+ else {
+    result.informedEntity_=informedEntityBuilder_.build();
+  }
+  if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+    to_bitField0_|=0x00000001;
+  }
+  result.cause_=cause_;
+  if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+    to_bitField0_|=0x00000002;
+  }
+  result.effect_=effect_;
+  if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+    to_bitField0_|=0x00000004;
+  }
+  if (urlBuilder_ == null) {
+    result.url_=url_;
+  }
+ else {
+    result.url_=urlBuilder_.build();
+  }
+  if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+    to_bitField0_|=0x00000008;
+  }
+  if (headerTextBuilder_ == null) {
+    result.headerText_=headerText_;
+  }
+ else {
+    result.headerText_=headerTextBuilder_.build();
+  }
+  if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+    to_bitField0_|=0x00000010;
+  }
+  if (descriptionTextBuilder_ == null) {
+    result.descriptionText_=descriptionText_;
+  }
+ else {
+    result.descriptionText_=descriptionTextBuilder_.build();
+  }
+  result.bitField0_=to_bitField0_;
+  onBuilt();
+  return result;
+}

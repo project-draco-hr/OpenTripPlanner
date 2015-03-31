@@ -1,0 +1,11 @@
+{
+  if (translationBuilder_ == null) {
+    ensureTranslationIsMutable();
+    translation_.remove(index);
+    onChanged();
+  }
+ else {
+    translationBuilder_.remove(index);
+  }
+  return this;
+}

@@ -1,0 +1,12 @@
+{
+  if (!hasLatitude()) {
+    return false;
+  }
+  if (!hasLongitude()) {
+    return false;
+  }
+  if (!extensionsAreInitialized()) {
+    return false;
+  }
+  return true;
+}

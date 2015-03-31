@@ -1,0 +1,11 @@
+{
+  if (activePeriodBuilder_ == null) {
+    ensureActivePeriodIsMutable();
+    activePeriod_.add(builderForValue.build());
+    onChanged();
+  }
+ else {
+    activePeriodBuilder_.addMessage(builderForValue.build());
+  }
+  return this;
+}

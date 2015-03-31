@@ -1,0 +1,16 @@
+{
+  if (descriptionTextBuilder_ == null) {
+    if (((bitField0_ & 0x00000040) == 0x00000040) && descriptionText_ != com.google.transit.realtime.GtfsRealtime.TranslatedString.getDefaultInstance()) {
+      descriptionText_=com.google.transit.realtime.GtfsRealtime.TranslatedString.newBuilder(descriptionText_).mergeFrom(value).buildPartial();
+    }
+ else {
+      descriptionText_=value;
+    }
+    onChanged();
+  }
+ else {
+    descriptionTextBuilder_.mergeFrom(value);
+  }
+  bitField0_|=0x00000040;
+  return this;
+}

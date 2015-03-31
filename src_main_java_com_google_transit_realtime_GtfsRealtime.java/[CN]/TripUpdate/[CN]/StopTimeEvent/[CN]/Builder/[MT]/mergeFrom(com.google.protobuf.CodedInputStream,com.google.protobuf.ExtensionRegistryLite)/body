@@ -1,0 +1,16 @@
+{
+  com.google.transit.realtime.GtfsRealtime.TripUpdate.StopTimeEvent parsedMessage=null;
+  try {
+    parsedMessage=PARSER.parsePartialFrom(input,extensionRegistry);
+  }
+ catch (  com.google.protobuf.InvalidProtocolBufferException e) {
+    parsedMessage=(com.google.transit.realtime.GtfsRealtime.TripUpdate.StopTimeEvent)e.getUnfinishedMessage();
+    throw e;
+  }
+ finally {
+    if (parsedMessage != null) {
+      mergeFrom(parsedMessage);
+    }
+  }
+  return this;
+}

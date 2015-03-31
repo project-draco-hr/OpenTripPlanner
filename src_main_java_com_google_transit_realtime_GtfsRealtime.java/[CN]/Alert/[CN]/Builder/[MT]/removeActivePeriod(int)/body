@@ -1,0 +1,11 @@
+{
+  if (activePeriodBuilder_ == null) {
+    ensureActivePeriodIsMutable();
+    activePeriod_.remove(index);
+    onChanged();
+  }
+ else {
+    activePeriodBuilder_.remove(index);
+  }
+  return this;
+}

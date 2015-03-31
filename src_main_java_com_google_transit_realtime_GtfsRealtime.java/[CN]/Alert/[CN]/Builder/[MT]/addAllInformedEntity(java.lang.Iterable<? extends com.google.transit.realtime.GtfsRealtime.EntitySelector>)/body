@@ -1,0 +1,11 @@
+{
+  if (informedEntityBuilder_ == null) {
+    ensureInformedEntityIsMutable();
+    super.addAll(values,informedEntity_);
+    onChanged();
+  }
+ else {
+    informedEntityBuilder_.addAllMessages(values);
+  }
+  return this;
+}

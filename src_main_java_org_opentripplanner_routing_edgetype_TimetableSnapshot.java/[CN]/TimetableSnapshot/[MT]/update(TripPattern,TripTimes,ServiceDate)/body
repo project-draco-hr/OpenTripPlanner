@@ -1,0 +1,36 @@
+{
+  Preconditions.checkNotNull(pattern);
+  Preconditions.checkNotNull(serviceDate);
+  if (dirty == null) {
+    throw new ConcurrentModificationException("This TimetableSnapshot is read-only.");
+  }
+  Timetable tt=resolve(pattern,serviceDate);
+  if (!dirty.contains(tt)) {
+    Timetable old=tt;
+    tt=new Timetable(tt,serviceDate);
+    SortedSet<Timetable> sortedTimetables=timetables.get(pattern);
+    if (sortedTimetables == null) {
+      sortedTimetables=new TreeSet<Timetable>(new SortedTimetableComparator());
+    }
+ else {
+      SortedSet<Timetable> temp=new TreeSet<Timetable>(new SortedTimetableComparator());
+      temp.addAll(sortedTimetables);
+      sortedTimetables=temp;
+    }
+    if (old.serviceDate != null)     sortedTimetables.remove(old);
+    sortedTimetables.add(tt);
+    timetables.put(pattern,sortedTimetables);
+    dirty.add(tt);
+  }
+  int tripIndex=tt.getTripIndex(updatedTripTimes.trip.getId());
+  if (tripIndex == -1) {
+    tt.addTripTimes(updatedTripTimes);
+    String tripId=updatedTripTimes.trip.getId().getId();
+    TripIdAndServiceDate tripIdAndServiceDate=new TripIdAndServiceDate(tripId,serviceDate);
+    lastAddedTripPattern.put(tripIdAndServiceDate,pattern);
+  }
+ else {
+    tt.setTripTimes(tripIndex,updatedTripTimes);
+  }
+  return true;
+}

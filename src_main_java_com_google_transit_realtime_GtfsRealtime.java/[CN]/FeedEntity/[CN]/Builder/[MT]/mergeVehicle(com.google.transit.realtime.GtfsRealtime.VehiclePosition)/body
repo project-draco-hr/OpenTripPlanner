@@ -1,0 +1,16 @@
+{
+  if (vehicleBuilder_ == null) {
+    if (((bitField0_ & 0x00000008) == 0x00000008) && vehicle_ != com.google.transit.realtime.GtfsRealtime.VehiclePosition.getDefaultInstance()) {
+      vehicle_=com.google.transit.realtime.GtfsRealtime.VehiclePosition.newBuilder(vehicle_).mergeFrom(value).buildPartial();
+    }
+ else {
+      vehicle_=value;
+    }
+    onChanged();
+  }
+ else {
+    vehicleBuilder_.mergeFrom(value);
+  }
+  bitField0_|=0x00000008;
+  return this;
+}

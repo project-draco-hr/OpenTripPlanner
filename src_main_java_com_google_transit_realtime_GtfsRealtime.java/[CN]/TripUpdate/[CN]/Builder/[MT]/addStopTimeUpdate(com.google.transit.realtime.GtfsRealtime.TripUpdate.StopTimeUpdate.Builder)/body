@@ -1,0 +1,11 @@
+{
+  if (stopTimeUpdateBuilder_ == null) {
+    ensureStopTimeUpdateIsMutable();
+    stopTimeUpdate_.add(builderForValue.build());
+    onChanged();
+  }
+ else {
+    stopTimeUpdateBuilder_.addMessage(builderForValue.build());
+  }
+  return this;
+}

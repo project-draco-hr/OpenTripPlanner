@@ -1,0 +1,14 @@
+{
+  if (informedEntityBuilder_ == null) {
+    if (value == null) {
+      throw new NullPointerException();
+    }
+    ensureInformedEntityIsMutable();
+    informedEntity_.add(index,value);
+    onChanged();
+  }
+ else {
+    informedEntityBuilder_.addMessage(index,value);
+  }
+  return this;
+}

@@ -1,6 +1,0 @@
-{
-  Timetable orig=new Timetable(null);
-  Timetable a=new Timetable(orig,new ServiceDate().previous());
-  Timetable b=new Timetable(orig,new ServiceDate());
-  assertEquals(-1,(new TimetableResolver.SortedTimetableComparator()).compare(a,b));
-}

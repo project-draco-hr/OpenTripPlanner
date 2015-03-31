@@ -1,0 +1,12 @@
+{
+  if (other == com.google.transit.realtime.GtfsRealtime.TimeRange.getDefaultInstance())   return this;
+  if (other.hasStart()) {
+    setStart(other.getStart());
+  }
+  if (other.hasEnd()) {
+    setEnd(other.getEnd());
+  }
+  this.mergeExtensionFields(other);
+  this.mergeUnknownFields(other.getUnknownFields());
+  return this;
+}

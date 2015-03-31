@@ -1,0 +1,11 @@
+{
+  if (informedEntityBuilder_ == null) {
+    ensureInformedEntityIsMutable();
+    informedEntity_.add(index,builderForValue.build());
+    onChanged();
+  }
+ else {
+    informedEntityBuilder_.addMessage(index,builderForValue.build());
+  }
+  return this;
+}

@@ -1,0 +1,27 @@
+{
+  ServiceDate today=new ServiceDate();
+  ServiceDate yesterday=today.previous();
+  TripPattern pattern=patternIndex.get(new AgencyAndId("agency","1.1"));
+  TimetableSnapshot resolver=new TimetableSnapshot();
+  TimetableSnapshot snapshot=resolver.commit();
+  assertNull(snapshot);
+  TripDescriptor.Builder tripDescriptorBuilder=TripDescriptor.newBuilder();
+  tripDescriptorBuilder.setTripId("1.1");
+  tripDescriptorBuilder.setScheduleRelationship(ScheduleRelationship.CANCELED);
+  TripUpdate.Builder tripUpdateBuilder=TripUpdate.newBuilder();
+  tripUpdateBuilder.setTrip(tripDescriptorBuilder);
+  TripUpdate tripUpdate=tripUpdateBuilder.build();
+  assertTrue(updateResolver(resolver,pattern,tripUpdate,"agency",today));
+  snapshot=resolver.commit();
+  assertEquals(snapshot.resolve(pattern,today),resolver.resolve(pattern,today));
+  assertEquals(snapshot.resolve(pattern,yesterday),resolver.resolve(pattern,yesterday));
+  assertTrue(updateResolver(resolver,pattern,tripUpdate,"agency",today));
+  assertNotSame(snapshot.resolve(pattern,today),resolver.resolve(pattern,today));
+  assertEquals(snapshot.resolve(pattern,yesterday),resolver.resolve(pattern,yesterday));
+  assertTrue(updateResolver(resolver,pattern,tripUpdate,"agency",yesterday));
+  assertNotSame(snapshot.resolve(pattern,yesterday),resolver.resolve(pattern,yesterday));
+  snapshot=resolver.commit();
+  assertEquals(snapshot.resolve(pattern,today),resolver.resolve(pattern,today));
+  assertEquals(snapshot.resolve(pattern,yesterday),resolver.resolve(pattern,yesterday));
+  snapshot.commit();
+}

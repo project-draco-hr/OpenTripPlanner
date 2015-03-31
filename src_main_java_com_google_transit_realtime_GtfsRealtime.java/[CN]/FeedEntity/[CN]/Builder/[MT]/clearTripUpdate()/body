@@ -1,0 +1,11 @@
+{
+  if (tripUpdateBuilder_ == null) {
+    tripUpdate_=com.google.transit.realtime.GtfsRealtime.TripUpdate.getDefaultInstance();
+    onChanged();
+  }
+ else {
+    tripUpdateBuilder_.clear();
+  }
+  bitField0_=(bitField0_ & ~0x00000004);
+  return this;
+}

@@ -1,0 +1,33 @@
+{
+  if (dirty == null) {
+    throw new ConcurrentModificationException("This TimetableSnapshot is read-only.");
+  }
+  boolean modified=false;
+  for (Iterator<TripPattern> it=timetables.keySet().iterator(); it.hasNext(); ) {
+    TripPattern pattern=it.next();
+    SortedSet<Timetable> sortedTimetables=timetables.get(pattern);
+    SortedSet<Timetable> toKeepTimetables=new TreeSet<Timetable>(new SortedTimetableComparator());
+    for (    Timetable timetable : sortedTimetables) {
+      if (serviceDate.compareTo(timetable.serviceDate) < 0) {
+        toKeepTimetables.add(timetable);
+      }
+ else {
+        modified=true;
+      }
+    }
+    if (toKeepTimetables.isEmpty()) {
+      it.remove();
+    }
+ else {
+      timetables.put(pattern,toKeepTimetables);
+    }
+  }
+  for (Iterator<Entry<TripIdAndServiceDate,TripPattern>> iterator=lastAddedTripPattern.entrySet().iterator(); iterator.hasNext(); ) {
+    TripIdAndServiceDate tripIdAndServiceDate=iterator.next().getKey();
+    if (serviceDate.compareTo(tripIdAndServiceDate.getServiceDate()) >= 0) {
+      iterator.remove();
+      modified=true;
+    }
+  }
+  return modified;
+}

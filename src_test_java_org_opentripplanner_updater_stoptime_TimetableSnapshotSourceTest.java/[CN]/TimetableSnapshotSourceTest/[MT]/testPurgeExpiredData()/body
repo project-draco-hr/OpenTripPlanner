@@ -5,8 +5,8 @@
   TripPattern pattern=graph.index.patternForTrip.get(trip);
   updater.maxSnapshotFrequency=(0);
   updater.purgeExpiredData=(false);
-  updater.applyTripUpdates(graph,Arrays.asList(TripUpdate.parseFrom(cancellation)),"agency");
-  TimetableResolver resolverA=updater.getTimetableSnapshot();
+  updater.applyTripUpdates(graph,fullDataset,Arrays.asList(TripUpdate.parseFrom(cancellation)),"agency");
+  TimetableSnapshot snapshotA=updater.getTimetableSnapshot();
   updater.purgeExpiredData=(true);
   TripDescriptor.Builder tripDescriptorBuilder=TripDescriptor.newBuilder();
   tripDescriptorBuilder.setTripId("1.1");
@@ -15,11 +15,11 @@
   TripUpdate.Builder tripUpdateBuilder=TripUpdate.newBuilder();
   tripUpdateBuilder.setTrip(tripDescriptorBuilder);
   TripUpdate tripUpdate=tripUpdateBuilder.build();
-  updater.applyTripUpdates(graph,Arrays.asList(tripUpdate),"agency");
-  TimetableResolver resolverB=updater.getTimetableSnapshot();
-  assertNotSame(resolverA,resolverB);
-  assertSame(resolverA.resolve(pattern,null),resolverB.resolve(pattern,null));
-  assertSame(resolverA.resolve(pattern,serviceDate),resolverB.resolve(pattern,serviceDate));
-  assertNotSame(resolverA.resolve(pattern,null),resolverA.resolve(pattern,serviceDate));
-  assertSame(resolverB.resolve(pattern,null),resolverB.resolve(pattern,previously));
+  updater.applyTripUpdates(graph,fullDataset,Arrays.asList(tripUpdate),"agency");
+  TimetableSnapshot snapshotB=updater.getTimetableSnapshot();
+  assertNotSame(snapshotA,snapshotB);
+  assertSame(snapshotA.resolve(pattern,null),snapshotB.resolve(pattern,null));
+  assertSame(snapshotA.resolve(pattern,serviceDate),snapshotB.resolve(pattern,serviceDate));
+  assertNotSame(snapshotA.resolve(pattern,null),snapshotA.resolve(pattern,serviceDate));
+  assertSame(snapshotB.resolve(pattern,null),snapshotB.resolve(pattern,previously));
 }

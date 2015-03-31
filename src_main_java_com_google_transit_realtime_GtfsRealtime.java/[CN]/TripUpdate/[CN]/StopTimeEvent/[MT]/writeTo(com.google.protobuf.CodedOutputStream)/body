@@ -1,0 +1,15 @@
+{
+  getSerializedSize();
+  com.google.protobuf.GeneratedMessage.ExtendableMessage<com.google.transit.realtime.GtfsRealtime.TripUpdate.StopTimeEvent>.ExtensionWriter extensionWriter=newExtensionWriter();
+  if (((bitField0_ & 0x00000001) == 0x00000001)) {
+    output.writeInt32(1,delay_);
+  }
+  if (((bitField0_ & 0x00000002) == 0x00000002)) {
+    output.writeInt64(2,time_);
+  }
+  if (((bitField0_ & 0x00000004) == 0x00000004)) {
+    output.writeInt32(3,uncertainty_);
+  }
+  extensionWriter.writeUntil(2000,output);
+  getUnknownFields().writeTo(output);
+}

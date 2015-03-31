@@ -1,0 +1,14 @@
+{
+  if (alertBuilder_ == null) {
+    if (value == null) {
+      throw new NullPointerException();
+    }
+    alert_=value;
+    onChanged();
+  }
+ else {
+    alertBuilder_.setMessage(value);
+  }
+  bitField0_|=0x00000010;
+  return this;
+}
