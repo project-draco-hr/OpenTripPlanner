@@ -1,6 +1,15 @@
 {
   subFactories=new ArrayList<>();
   for (  JsonNode pConfig : config.path("fares")) {
-    subFactories.add(DefaultFareServiceFactory.fromConfig(pConfig,true));
+    subFactories.add(DefaultFareServiceFactory.fromConfig(pConfig));
+  }
+  for (Iterator<Map.Entry<String,JsonNode>> i=config.fields(); i.hasNext(); ) {
+    Map.Entry<String,JsonNode> kv=i.next();
+    String key=kv.getKey();
+    if (key.startsWith("fare") && !key.equals("fares")) {
+      JsonNode node=kv.getValue();
+      FareServiceFactory fareFactory=DefaultFareServiceFactory.fromConfig(node);
+      if (fareFactory != null)       subFactories.add(fareFactory);
+    }
   }
 }
