@@ -2,11 +2,12 @@
   boolean success=false;
   if (tripUpdate.getTrip().hasTripId()) {
     String tripId=tripUpdate.getTrip().getTripId();
-    success=cancelScheduledTrip(tripId,serviceDate);
-    if (!success) {
-      success=cancelPreviouslyAddedTrip(tripId,serviceDate);
+    boolean cancelScheduledSuccess=cancelScheduledTrip(tripId,serviceDate);
+    boolean cancelPreviouslyAddedSuccess=cancelPreviouslyAddedTrip(tripId,serviceDate);
+    if (cancelScheduledSuccess || cancelPreviouslyAddedSuccess) {
+      success=true;
     }
-    if (!success) {
+ else {
       LOG.warn("No pattern found for tripId {}, skipping TripUpdate.",tripId);
     }
   }
