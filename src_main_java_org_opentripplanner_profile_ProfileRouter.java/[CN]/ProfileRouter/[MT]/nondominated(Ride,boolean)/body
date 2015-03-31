@@ -4,7 +4,7 @@
     cluster=newRide.from;
     newRide=newRide.previous;
   }
-  if (newRide.durationLowerBound() > MAX_DURATION)   return false;
+  if (newRide.durationLowerBound() > MAX_DURATION || newRide.durationUpperBound() > MAX_UPPER_BOUND)   return false;
   for (Iterator<Ride> it=retainedRides.get(cluster).iterator(); it.hasNext(); ) {
     Ride oldRide=it.next();
     if (oldRide.to == null)     oldRide=oldRide.previous;
@@ -14,10 +14,10 @@
     if (newRide.durationLowerBound() > oldRide.durationUpperBound() + request.suboptimalMinutes) {
       return false;
     }
-    if (oldRide.durationLowerBound() > newRide.durationUpperBound() + request.suboptimalMinutes) {
+    if (add && oldRide.durationLowerBound() > newRide.durationUpperBound() + request.suboptimalMinutes) {
       it.remove();
     }
   }
-  retainedRides.put(cluster,newRide);
+  if (add)   retainedRides.put(cluster,newRide);
   return true;
 }
