@@ -3,9 +3,10 @@
   if (currencyStr == null)   throw new IllegalArgumentException("Missing mandatory 'currency' configuration.");
   currency=Currency.getInstance(currencyStr);
   pricingBySecond=new ArrayList<>();
-  for (  JsonNode pConfig : config.path("prices")) {
-    int maxTimeSec=hmsToSeconds(pConfig.get("maxTime").asText());
-    int priceCent=pConfig.get("priceCents").asInt();
+  for (Iterator<Map.Entry<String,JsonNode>> i=config.path("prices").fields(); i.hasNext(); ) {
+    Map.Entry<String,JsonNode> kv=i.next();
+    int maxTimeSec=hmsToSeconds(kv.getKey());
+    int priceCent=(int)Math.round(kv.getValue().asDouble() * 100);
     pricingBySecond.add(new P2<>(maxTimeSec,priceCent));
   }
   if (pricingBySecond.isEmpty())   throw new IllegalArgumentException("Missing or empty mandatory 'prices' array.");
