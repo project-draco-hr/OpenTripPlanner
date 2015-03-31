@@ -39,11 +39,7 @@
       continue TRIP;
     }
     StopPattern stopPattern=new StopPattern(stopTimes);
-    TripPattern tripPattern=tripPatterns.get(stopPattern);
-    if (tripPattern == null) {
-      tripPattern=new TripPattern(trip.getRoute(),stopPattern);
-      tripPatterns.put(stopPattern,tripPattern);
-    }
+    TripPattern tripPattern=findOrCreateTripPattern(stopPattern,trip.getRoute());
     TripTimes tripTimes=new TripTimes(trip,stopTimes,graph.deduplicator);
     List<Frequency> frequencies=frequenciesForTrip.get(trip);
     if (frequencies != null && !(frequencies.isEmpty())) {
