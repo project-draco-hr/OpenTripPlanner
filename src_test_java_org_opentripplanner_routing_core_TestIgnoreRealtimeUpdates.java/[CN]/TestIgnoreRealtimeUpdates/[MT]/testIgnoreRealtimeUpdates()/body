@@ -8,9 +8,9 @@
   stop2.setId(new AgencyAndId("agency","stop2"));
   Vertex from=new TransitStop(graph,stop1);
   Vertex to=new TransitStop(graph,stop2);
-  TimetableResolver resolver=new TimetableResolver();
+  TimetableSnapshot snapshot=new TimetableSnapshot();
   TimetableSnapshotSource source=mock(TimetableSnapshotSource.class);
-  when(source.getTimetableSnapshot()).thenReturn(resolver);
+  when(source.getTimetableSnapshot()).thenReturn(snapshot);
   graph.timetableSnapshotSource=(source);
   RoutingContext rctx=new RoutingContext(options,graph,from,to);
   assertNotNull(rctx.timetableSnapshot);

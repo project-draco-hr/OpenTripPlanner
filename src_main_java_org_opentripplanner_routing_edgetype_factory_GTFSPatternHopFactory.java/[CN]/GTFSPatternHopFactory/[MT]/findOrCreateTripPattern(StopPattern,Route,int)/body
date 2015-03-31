@@ -1,0 +1,11 @@
+{
+  for (  TripPattern tripPattern : tripPatterns.get(stopPattern)) {
+    if (tripPattern.route.equals(route) && tripPattern.directionId == directionId) {
+      return tripPattern;
+    }
+  }
+  TripPattern tripPattern=new TripPattern(route,stopPattern);
+  tripPattern.directionId=directionId;
+  tripPatterns.put(stopPattern,tripPattern);
+  return tripPattern;
+}

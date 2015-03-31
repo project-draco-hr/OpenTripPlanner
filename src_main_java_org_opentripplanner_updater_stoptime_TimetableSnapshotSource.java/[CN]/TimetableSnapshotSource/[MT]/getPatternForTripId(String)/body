@@ -1,12 +1,5 @@
 {
-  if (graphIndex.tripForIdWithoutAgency == null) {
-    Map<String,Trip> map=Maps.newHashMap();
-    for (    Trip trip : graphIndex.tripForId.values()) {
-      map.put(trip.getId().getId(),trip);
-    }
-    graphIndex.tripForIdWithoutAgency=map;
-  }
-  Trip trip=graphIndex.tripForIdWithoutAgency.get(tripIdWithoutAgency);
+  Trip trip=getTripForTripId(tripIdWithoutAgency);
   TripPattern pattern=graphIndex.patternForTrip.get(trip);
   return pattern;
 }

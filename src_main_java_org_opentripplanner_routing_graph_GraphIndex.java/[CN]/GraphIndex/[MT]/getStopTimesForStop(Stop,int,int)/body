@@ -1,9 +1,9 @@
 {
   long now=System.currentTimeMillis() / 1000;
   List<StopTimesInPattern> ret=new ArrayList<>();
-  TimetableResolver timetableResolver=null;
+  TimetableSnapshot snapshot=null;
   if (graph.timetableSnapshotSource != null) {
-    timetableResolver=graph.timetableSnapshotSource.getTimetableSnapshot();
+    snapshot=graph.timetableSnapshotSource.getTimetableSnapshot();
   }
   ServiceDate[] serviceDates={new ServiceDate().previous(),new ServiceDate(),new ServiceDate().next()};
   for (  TripPattern pattern : patternsForStop.get(stop)) {
@@ -16,8 +16,8 @@
     for (    ServiceDate serviceDate : serviceDates) {
       ServiceDay sd=new ServiceDay(graph,serviceDate,calendarService,pattern.route.getAgency().getId());
       Timetable tt;
-      if (timetableResolver != null) {
-        tt=timetableResolver.resolve(pattern,serviceDate);
+      if (snapshot != null) {
+        tt=snapshot.resolve(pattern,serviceDate);
       }
  else {
         tt=pattern.scheduledTimetable;

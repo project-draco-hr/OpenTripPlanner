@@ -49,6 +49,19 @@
     to_bitField0_|=0x00000080;
   }
   result.congestionLevel_=congestionLevel_;
+  if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+    to_bitField0_|=0x00000100;
+  }
+  result.occupancyStatus_=occupancyStatus_;
+  if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+    to_bitField0_|=0x00000200;
+  }
+  if (ovapiVehiclePositionBuilder_ == null) {
+    result.ovapiVehiclePosition_=ovapiVehiclePosition_;
+  }
+ else {
+    result.ovapiVehiclePosition_=ovapiVehiclePositionBuilder_.build();
+  }
   result.bitField0_=to_bitField0_;
   onBuilt();
   return result;

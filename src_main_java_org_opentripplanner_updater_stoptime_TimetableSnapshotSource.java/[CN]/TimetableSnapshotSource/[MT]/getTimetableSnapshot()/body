@@ -1,3 +1,15 @@
 {
-  return getTimetableSnapshot(false);
+  TimetableSnapshot snapshotToReturn;
+  if (bufferLock.tryLock()) {
+    try {
+      snapshotToReturn=getTimetableSnapshot(false);
+    }
+  finally {
+      bufferLock.unlock();
+    }
+  }
+ else {
+    snapshotToReturn=snapshot;
+  }
+  return snapshotToReturn;
 }

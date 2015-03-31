@@ -19,6 +19,7 @@
   alertsUpdateHandler.setAlertPatchService(alertPatchServiceImpl);
   alertsUpdateHandler.setDefaultAgencyId("MMRI");
   try {
+    final boolean fullDataset=false;
     InputStream inputStream=new FileInputStream(gtfsRealTime);
     FeedMessage feedMessage=FeedMessage.PARSER.parseFrom(inputStream);
     List<FeedEntity> feedEntityList=feedMessage.getEntityList();
@@ -26,7 +27,7 @@
     for (    FeedEntity feedEntity : feedEntityList) {
       updates.add(feedEntity.getTripUpdate());
     }
-    timetableSnapshotSource.applyTripUpdates(updates,agencyId);
+    timetableSnapshotSource.applyTripUpdates(graph,fullDataset,updates,agencyId);
     alertsUpdateHandler.update(feedMessage);
   }
  catch (  Exception exception) {

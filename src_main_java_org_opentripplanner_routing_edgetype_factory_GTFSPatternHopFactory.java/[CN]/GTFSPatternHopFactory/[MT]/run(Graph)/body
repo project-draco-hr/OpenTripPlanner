@@ -38,12 +38,16 @@
       LOG.warn(graph.addBuilderAnnotation(new TripDegenerate(trip)));
       continue TRIP;
     }
-    StopPattern stopPattern=new StopPattern(stopTimes);
-    TripPattern tripPattern=tripPatterns.get(stopPattern);
-    if (tripPattern == null) {
-      tripPattern=new TripPattern(trip.getRoute(),stopPattern);
-      tripPatterns.put(stopPattern,tripPattern);
+    int directionId;
+    try {
+      directionId=Integer.parseInt(trip.getDirectionId());
     }
+ catch (    NumberFormatException e) {
+      LOG.debug("Trip {} does not have direction id, defaults to -1");
+      directionId=-1;
+    }
+    StopPattern stopPattern=new StopPattern(stopTimes);
+    TripPattern tripPattern=findOrCreateTripPattern(stopPattern,trip.getRoute(),directionId);
     TripTimes tripTimes=new TripTimes(trip,stopTimes,graph.deduplicator);
     List<Frequency> frequencies=frequenciesForTrip.get(trip);
     if (frequencies != null && !(frequencies.isEmpty())) {
@@ -66,7 +70,7 @@
   TripPattern.generateUniqueNames(tripPatterns.values());
   TripPattern.generateUniqueIds(tripPatterns.values());
   for (  TripPattern tripPattern : tripPatterns.values()) {
-    tripPattern.makePatternVerticesAndEdges(graph,context);
+    tripPattern.makePatternVerticesAndEdges(graph,context.stationStopNodes);
     LineString[] geom=geometriesByTripPattern.get(tripPattern);
     if (geom != null) {
       for (int i=0; i < tripPattern.hopEdges.length; i++) {

@@ -9,8 +9,8 @@
   createSimpleTransfer("agency:K","agency:F",100);
   createSimpleTransfer("agency:P","agency:U",100);
   createSimpleTransfer("agency:V","agency:I",100);
-  TimetableResolver resolver=new TimetableResolver();
+  TimetableSnapshot snapshot=new TimetableSnapshot();
   TimetableSnapshotSource timetableSnapshotSource=mock(TimetableSnapshotSource.class);
-  when(timetableSnapshotSource.getTimetableSnapshot()).thenReturn(resolver);
+  when(timetableSnapshotSource.getTimetableSnapshot()).thenReturn(snapshot);
   graph.timetableSnapshotSource=(timetableSnapshotSource);
 }
