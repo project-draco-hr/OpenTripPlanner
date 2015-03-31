@@ -7,9 +7,9 @@
   this.window=new TimeWindow(request.fromTime,request.toTime,graph.index.servicesRunning(request.date));
   fromStops=findClosestStops(TraverseMode.WALK);
   LOG.info("From patterns/stops: {}",fromStops);
-  TimeRange.Tracker times=new TimeRange.Tracker();
+  Multimap<Stop,TimeRange> times=HashMultimap.create();
   for (  Stop stop : fromStops.keySet()) {
-    times.set(stop,fromStops.get(stop));
+    times.put(stop,new TimeRange(fromStops.get(stop)));
   }
   Set<Stop> stopsUpdated=fromStops.keySet();
   for (int round=0; round < MAX_RIDES; round++) {
@@ -25,7 +25,7 @@
       int headway=freq.headway;
       for (int sidx=0; sidx < stops.size(); sidx++) {
         Stop stop=stops.get(sidx);
-        TimeRange existingRange=times.get(stop);
+        Collection<TimeRange> ranges=times.get(stop);
         TimeRange reBoardRange=(existingRange != null) ? existingRange.wait(headway) : null;
         if (rangeBeingPropagated == null) {
           if (reBoardRange != null) {

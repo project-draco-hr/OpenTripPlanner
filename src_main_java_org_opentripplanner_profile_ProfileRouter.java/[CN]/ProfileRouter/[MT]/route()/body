@@ -84,7 +84,7 @@ synchronized (graph.index) {
       if (r1.waitStats == null) {
         continue;
       }
-      if (!nondominated(r1,false))       continue;
+      if (!nondominated(r1,true))       continue;
       int nRides=r1.pathLength();
       if (nRides >= MAX_RIDES)       continue;
       boolean penultimateRide=(nRides == MAX_RIDES - 1);
@@ -114,7 +114,7 @@ synchronized (graph.index) {
       }
     }
     for (    Ride r : xferRides.values()) {
-      if (nondominated(r,true))       queue.insert(r,r.previous.durationLowerBound());
+      if (nondominated(r,false))       queue.insert(r,r.previous.durationLowerBound());
     }
     if (System.currentTimeMillis() > abortTime)     throw new RuntimeException("TIMEOUT");
   }

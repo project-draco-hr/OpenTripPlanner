@@ -4,7 +4,7 @@
     cluster=newRide.from;
     newRide=newRide.previous;
   }
-  if (newRide.durationLowerBound() > MAX_DURATION || newRide.durationUpperBound() > MAX_UPPER_BOUND)   return false;
+  if (newRide.durationLowerBound() > MAX_DURATION)   return false;
   for (Iterator<Ride> it=retainedRides.get(cluster).iterator(); it.hasNext(); ) {
     Ride oldRide=it.next();
     if (oldRide.to == null)     oldRide=oldRide.previous;
