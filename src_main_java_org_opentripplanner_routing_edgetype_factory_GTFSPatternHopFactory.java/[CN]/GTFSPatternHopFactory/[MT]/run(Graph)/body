@@ -38,8 +38,16 @@
       LOG.warn(graph.addBuilderAnnotation(new TripDegenerate(trip)));
       continue TRIP;
     }
+    int directionId;
+    try {
+      directionId=Integer.parseInt(trip.getDirectionId());
+    }
+ catch (    NumberFormatException e) {
+      LOG.debug("Trip {} does not have direction id, defaults to -1");
+      directionId=-1;
+    }
     StopPattern stopPattern=new StopPattern(stopTimes);
-    TripPattern tripPattern=findOrCreateTripPattern(stopPattern,trip.getRoute());
+    TripPattern tripPattern=findOrCreateTripPattern(stopPattern,trip.getRoute(),directionId);
     TripTimes tripTimes=new TripTimes(trip,stopTimes,graph.deduplicator);
     List<Frequency> frequencies=frequenciesForTrip.get(trip);
     if (frequencies != null && !(frequencies.isEmpty())) {

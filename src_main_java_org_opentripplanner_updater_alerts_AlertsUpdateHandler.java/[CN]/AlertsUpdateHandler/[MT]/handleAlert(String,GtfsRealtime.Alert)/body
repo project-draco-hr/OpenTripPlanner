@@ -28,6 +28,13 @@
     if (informed.hasRouteId()) {
       routeId=informed.getRouteId();
     }
+    int direction;
+    if (informed.hasTrip() && informed.getTrip().hasDirectionId()) {
+      direction=informed.getTrip().getDirectionId();
+    }
+ else {
+      direction=-1;
+    }
     String tripId=null;
     if (informed.hasTrip() && informed.getTrip().hasTripId()) {
       tripId=informed.getTrip().getTripId();
@@ -50,6 +57,9 @@
     AlertPatch patch=new AlertPatch();
     if (routeId != null) {
       patch.setRoute(new AgencyAndId(agencyId,routeId));
+      if (direction != -1) {
+        patch.setDirectionId(direction);
+      }
     }
     if (tripId != null) {
       patch.setTrip(new AgencyAndId(agencyId,tripId));

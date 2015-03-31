@@ -22,6 +22,9 @@
       if (direction != null && !direction.equals(tripPattern.getDirection())) {
         continue;
       }
+      if (directionId != -1 && directionId != tripPattern.directionId) {
+        continue;
+      }
       for (int i=0; i < tripPattern.stopPattern.stops.length; i++) {
         if (stop == null || stop.equals(tripPattern.stopPattern.stops[i])) {
           graph.removeAlertPatch(tripPattern.boardEdges[i],this);
