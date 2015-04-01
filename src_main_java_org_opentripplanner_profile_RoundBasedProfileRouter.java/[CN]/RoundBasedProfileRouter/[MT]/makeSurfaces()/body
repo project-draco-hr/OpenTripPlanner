@@ -1,0 +1,42 @@
+{
+  LOG.info("Propagating from transit stops to the street network...");
+  TimeSurface minSurface=new TimeSurface(this);
+  TimeSurface avgSurface=new TimeSurface(this);
+  TimeSurface maxSurface=new TimeSurface(this);
+  StopTreeCache stopTreeCache=graph.index.getStopTreeCache();
+  for (  Entry<TransitStop,ProfileState> entry : retainedStates.entries()) {
+    ProfileState ps=entry.getValue();
+    int lb0=ps.lowerBound;
+    int ub0=ps.upperBound;
+    TransitStop tstop=entry.getKey();
+    TObjectIntMap<Vertex> distanceToVertex=stopTreeCache.getDistancesForStop(tstop);
+    for (TObjectIntIterator<Vertex> iter=distanceToVertex.iterator(); iter.hasNext(); ) {
+      iter.advance();
+      Vertex vertex=iter.key();
+      int egressWalkTimeSeconds=(int)(iter.value() / request.walkSpeed);
+      if (egressWalkTimeSeconds > request.maxWalkTime * 60) {
+        continue;
+      }
+      int propagated_min=lb0 + egressWalkTimeSeconds;
+      int propagated_max=ub0 + egressWalkTimeSeconds;
+      int propagated_avg=(int)(((long)propagated_min + propagated_max) / 2);
+      int existing_min=minSurface.times.get(vertex);
+      int existing_max=maxSurface.times.get(vertex);
+      int existing_avg=avgSurface.times.get(vertex);
+      if (existing_min == TimeSurface.UNREACHABLE || existing_min > propagated_min) {
+        minSurface.times.put(vertex,propagated_min);
+      }
+      if (existing_max == TimeSurface.UNREACHABLE || existing_max > propagated_max) {
+        maxSurface.times.put(vertex,propagated_max);
+      }
+      if (existing_avg == TimeSurface.UNREACHABLE || existing_avg > propagated_avg) {
+        avgSurface.times.put(vertex,propagated_avg);
+      }
+    }
+  }
+  LOG.info("Done with propagation.");
+  timeSurfaceRangeSet=new TimeSurface.RangeSet();
+  timeSurfaceRangeSet.min=minSurface;
+  timeSurfaceRangeSet.max=maxSurface;
+  timeSurfaceRangeSet.avg=avgSurface;
+}

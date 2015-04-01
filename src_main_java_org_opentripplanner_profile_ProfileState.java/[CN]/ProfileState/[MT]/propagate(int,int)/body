@@ -1,0 +1,13 @@
+{
+  ProfileState ret;
+  try {
+    ret=(ProfileState)this.clone();
+  }
+ catch (  CloneNotSupportedException e) {
+    throw new RuntimeException(e);
+  }
+  ret.previous=this;
+  ret.lowerBound+=deltaMin;
+  ret.upperBound+=deltaMax;
+  return ret;
+}

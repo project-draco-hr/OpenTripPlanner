@@ -1,0 +1,11 @@
+{
+  int minUpperBound=Integer.MAX_VALUE;
+  for (  ProfileState ps : original) {
+    if (ps.upperBound < minUpperBound)     minUpperBound=ps.upperBound;
+  }
+  for (Iterator<ProfileState> it=original.iterator(); it.hasNext(); ) {
+    ProfileState ps=it.next();
+    if (ps.lowerBound > minUpperBound || ps.lowerBound > CUTOFF_SECONDS)     it.remove();
+  }
+  return original;
+}
