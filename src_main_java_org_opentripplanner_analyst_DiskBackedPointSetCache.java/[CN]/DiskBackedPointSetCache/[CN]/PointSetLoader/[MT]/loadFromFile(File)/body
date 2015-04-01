@@ -11,7 +11,8 @@
       return pset;
     }
  catch (    IOException ioex) {
-      LOG.warn("Exception while loading pointset: {}",ioex);
+      LOG.warn("Exception while loading pointset.");
+      ioex.printStackTrace();
     }
   }
  else   if (name.endsWith(".json")) {
