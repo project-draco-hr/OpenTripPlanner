@@ -10,9 +10,10 @@ synchronized (graph.index) {
   LOG.info("access modes: {}",request.accessModes);
   LOG.info("egress modes: {}",request.egressModes);
   LOG.info("direct modes: {}",request.directModes);
+  this.window=new TimeWindow(request.fromTime,request.toTime,graph.index.servicesRunning(request.date));
+  indexTripPatternTravelTimeRanges();
   long searchBeginTime=System.currentTimeMillis();
   long abortTime=searchBeginTime + TIMEOUT * 1000;
-  this.window=new TimeWindow(request.fromTime,request.toTime,graph.index.servicesRunning(request.date));
   LOG.info("Finding access/egress paths.");
   fromStopPaths=findClosestStops(false);
   fromStops=findClosestPatterns(fromStopPaths);
@@ -61,14 +62,14 @@ synchronized (graph.index) {
   }
   while (!queue.empty()) {
     Ride ride=queue.extract_min();
-    if (!retainedRides.get(ride.from).contains(ride.previous) && !retainedRides.get(ride.from).contains(ride) && !ride.equals(initialRides.get(ride.from)))     continue;
+    if (!ride.equals(initialRides.get(ride.from)) && (ride.previous == null || !retainedRides.get(ride.previous.to).contains(ride.previous)))     continue;
     if (ride.to != null)     throw new AssertionError("Ride should be unfinished.");
     Map<StopCluster,Ride> rides=Maps.newHashMap();
     PR:     for (    PatternRide pr : ride.patternRides) {
       List<Stop> stops=pr.pattern.getStops();
       for (int s=pr.fromIndex + 1; s < stops.size(); ++s) {
         StopCluster cluster=graph.index.stopClusterForStop.get(stops.get(s));
-        PatternRide pr2=pr.extendToIndex(s,window);
+        PatternRide pr2=extendToIndex(pr,ride.from,s,window);
         if (pr2 == null)         continue PR;
         Ride ride2=rides.get(cluster);
         if (ride2 == null) {

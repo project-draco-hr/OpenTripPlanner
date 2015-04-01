@@ -1,0 +1,22 @@
+{
+  LOG.info("Caching travel time ranges for all patterns");
+  TRIPPATTERN:   for (  TripPattern tp : graph.index.patternForId.values()) {
+    List<Stop> stops=tp.getStops();
+    for (int i=0; i < stops.size(); i++) {
+      StopCluster clusterI=graph.index.stopClusterForStop.get(stops.get(i));
+      ReachableStopSet reachableStops=new ReachableStopSet(stops.size() - i);
+      reachableStops.num=1;
+      for (int j=i + 1; j < stops.size(); j++) {
+        StopCluster clusterJ=graph.index.stopClusterForStop.get(stops.get(j));
+        reachableStops.stopCluster[j - i - 1]=clusterJ;
+        Stats s=Stats.create(tp,i,j,window);
+        if (s == null)         continue;
+        reachableStops.min[j - i - 1]=s.min;
+        reachableStops.max[j - i - 1]=s.max;
+        reachableStops.num=s.num;
+      }
+      travelTimeCache.put(new Tuple2(clusterI,tp),reachableStops);
+    }
+  }
+  LOG.info("Done caching travel time ranges for all patterns");
+}
