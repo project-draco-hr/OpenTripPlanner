@@ -2,7 +2,7 @@
   LOG.debug("Attempting to load graph '{}' from server's local filesystem.",routerId);
   GraphService graphService=otpServer.getGraphService();
   if (graphService.getRouterIds().contains(routerId)) {
-    boolean success=graphService.reloadGraph(routerId,preEvict);
+    boolean success=graphService.reloadGraph(routerId,preEvict,false);
     if (success)     return Response.status(201).entity("graph already registered, reloaded.\n").build();
  else     return Response.status(404).entity("graph already registered, but reload failed.\n").build();
   }

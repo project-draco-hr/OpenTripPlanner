@@ -4,7 +4,7 @@ synchronized (graphSources) {
     if (graphSource == null) {
       return false;
     }
-    boolean success=graphSource.reload(true,preEvict);
+    boolean success=graphSource.reload(force,preEvict);
     if (!success) {
       evictRouter(routerId);
     }
