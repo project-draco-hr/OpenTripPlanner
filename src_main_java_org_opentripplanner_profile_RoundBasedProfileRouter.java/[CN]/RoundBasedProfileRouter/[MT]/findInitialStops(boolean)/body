@@ -2,7 +2,7 @@
   double lat=dest ? request.toLat : request.fromLat;
   double lon=dest ? request.toLon : request.fromLon;
   QualifiedModeSet modes=dest ? request.accessModes : request.egressModes;
-  Multimap<TransitStop,ProfileState> stops=ArrayListMultimap.create();
+  Map<TransitStop,ProfileState> stops=Maps.newHashMap();
   RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
   rr.dominanceFunction=new DominanceFunction.EarliestArrival();
   rr.batch=true;
