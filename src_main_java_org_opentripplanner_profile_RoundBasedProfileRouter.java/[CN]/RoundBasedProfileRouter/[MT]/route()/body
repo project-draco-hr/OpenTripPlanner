@@ -38,7 +38,7 @@
       STOPS:       for (int i=0; i < pattern.stopVertices.length; i++) {
         if (!previousStops.containsKey(pattern.stopVertices[i]))         continue STOPS;
         if (round == 0 && optimalBoardingLocation.get(pattern) != pattern.stopVertices[i])         continue STOPS;
-        Collection<ProfileState> statesToPropagate=nondominated(previousStops.get(pattern.stopVertices[i]));
+        Collection<ProfileState> statesToPropagate=nondominated(previousStops.get(pattern.stopVertices[i]),pattern.stopVertices[i]);
         statesToPropagate=Collections2.filter(statesToPropagate,new Predicate<ProfileState>(){
           @Override public boolean apply(          ProfileState input){
             return !input.containsPattern(pattern) && (input.targetPatterns == null || input.targetPatterns.contains(pattern));
@@ -94,7 +94,7 @@
     LOG.info("Round completed, merging similar states");
     Set<TransitStop> touchedStopVertices=new HashSet<TransitStop>(touchedStops.keySet());
     for (    TransitStop tstop : touchedStopVertices) {
-      Collection<ProfileState> pss=nondominated(touchedStops.get(tstop));
+      Collection<ProfileState> pss=nondominated(touchedStops.get(tstop),tstop);
       if (pss.isEmpty())       continue;
       if (!RETAIN_PATTERNS) {
         ProfileState st=ProfileState.merge(pss,false);
@@ -131,7 +131,7 @@
           accessTimes.add(new Tuple2((TransitStop)e.getToVertex(),time));
         }
       }
-      Collection<ProfileState> statesAtStop=nondominated(touchedStops.get(tstop));
+      Collection<ProfileState> statesAtStop=nondominated(touchedStops.get(tstop),tstop);
       minBoardTime=new TObjectIntHashMap<TripPattern>(1000,.75f,Integer.MAX_VALUE);
       Map<TripPattern,ProfileState> optimalBoardState=Maps.newHashMap();
       List<ProfileState> xferStates=Lists.newArrayList();
