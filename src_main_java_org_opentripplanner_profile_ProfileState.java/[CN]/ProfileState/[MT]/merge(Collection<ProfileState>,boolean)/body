@@ -1,0 +1,15 @@
+{
+  ProfileState ret=new ProfileState();
+  ret.lowerBound=ret.upperBound=Integer.MAX_VALUE;
+  if (retainPatterns)   ret.patterns=new TripPattern[states.size()];
+{
+    int i=0;
+    for (Iterator<ProfileState> it=states.iterator(); it.hasNext(); i++) {
+      ProfileState state=it.next();
+      if (state.lowerBound < ret.lowerBound)       ret.lowerBound=state.lowerBound;
+      if (state.upperBound < ret.upperBound)       ret.upperBound=state.upperBound;
+      if (retainPatterns)       ret.patterns[i]=state.patterns[0];
+    }
+  }
+  return ret;
+}
