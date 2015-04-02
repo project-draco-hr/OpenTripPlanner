@@ -4,6 +4,7 @@
   Stop currentStop=pattern.getStop(stopIndex);
   int bestTime=boarding ? Integer.MAX_VALUE : Integer.MIN_VALUE;
   for (  TripTimes tt : tripTimes) {
+    if (tt.isCanceled())     continue;
     if (!serviceDay.serviceRunning(tt.serviceCode))     continue;
     if (!tt.tripAcceptable(s0,stopIndex))     continue;
     int adjustedTime=adjustTimeForTransfer(s0,currentStop,tt.trip,boarding,serviceDay,time);
@@ -28,6 +29,7 @@
   FrequencyEntry bestFreq=null;
   for (  FrequencyEntry freq : frequencyEntries) {
     TripTimes tt=freq.tripTimes;
+    if (tt.isCanceled())     continue;
     if (!serviceDay.serviceRunning(tt.serviceCode))     continue;
     if (!tt.tripAcceptable(s0,stopIndex))     continue;
     int adjustedTime=adjustTimeForTransfer(s0,currentStop,tt.trip,boarding,serviceDay,time);

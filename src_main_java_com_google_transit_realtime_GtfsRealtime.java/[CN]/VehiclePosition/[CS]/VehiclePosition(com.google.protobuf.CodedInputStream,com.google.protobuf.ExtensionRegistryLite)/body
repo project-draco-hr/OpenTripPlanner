@@ -103,6 +103,33 @@ vehicle_=subBuilder.buildPartial();
 bitField0_|=0x00000002;
 break;
 }
+case 72:
+{
+int rawValue=input.readEnum();
+com.google.transit.realtime.GtfsRealtime.VehiclePosition.OccupancyStatus value=com.google.transit.realtime.GtfsRealtime.VehiclePosition.OccupancyStatus.valueOf(rawValue);
+if (value == null) {
+unknownFields.mergeVarintField(9,rawValue);
+}
+ else {
+bitField0_|=0x00000100;
+occupancyStatus_=value;
+}
+break;
+}
+case 8026:
+{
+com.google.transit.realtime.GtfsRealtime.OVapiVehiclePosition.Builder subBuilder=null;
+if (((bitField0_ & 0x00000200) == 0x00000200)) {
+subBuilder=ovapiVehiclePosition_.toBuilder();
+}
+ovapiVehiclePosition_=input.readMessage(com.google.transit.realtime.GtfsRealtime.OVapiVehiclePosition.PARSER,extensionRegistry);
+if (subBuilder != null) {
+subBuilder.mergeFrom(ovapiVehiclePosition_);
+ovapiVehiclePosition_=subBuilder.buildPartial();
+}
+bitField0_|=0x00000200;
+break;
+}
 }
 }
 }

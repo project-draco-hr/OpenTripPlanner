@@ -1,0 +1,19 @@
+{
+  subFactories=new ArrayList<>();
+  for (  JsonNode pConfig : config.path("fares")) {
+    subFactories.add(DefaultFareServiceFactory.fromConfig(pConfig));
+  }
+  for (Iterator<Map.Entry<String,JsonNode>> i=config.fields(); i.hasNext(); ) {
+    Map.Entry<String,JsonNode> kv=i.next();
+    String key=kv.getKey();
+    if (key.startsWith("fare") && !key.equals("fares")) {
+      JsonNode node=kv.getValue();
+      FareServiceFactory fareFactory=DefaultFareServiceFactory.fromConfig(node);
+      if (fareFactory != null)       subFactories.add(fareFactory);
+    }
+  }
+  if (subFactories.isEmpty())   throw new IllegalArgumentException("Empty fare composite. Please specify either a 'fares' array or a list of 'fareXxx' properties");
+  if (subFactories.size() == 1) {
+    log.warn("Fare composite has only ONE fare to combine. This is allowed, but useless. Did you forgot to define a second fare to combine?");
+  }
+}

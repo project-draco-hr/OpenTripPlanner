@@ -1,4 +1,9 @@
 {
+  for (int i=0; i < getActivePeriodCount(); i++) {
+    if (!getActivePeriod(i).isInitialized()) {
+      return false;
+    }
+  }
   for (int i=0; i < getInformedEntityCount(); i++) {
     if (!getInformedEntity(i).isInitialized()) {
       return false;

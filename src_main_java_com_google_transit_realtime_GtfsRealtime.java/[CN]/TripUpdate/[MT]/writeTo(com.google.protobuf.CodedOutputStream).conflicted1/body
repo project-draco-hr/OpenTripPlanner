@@ -13,6 +13,9 @@
   if (((bitField0_ & 0x00000004) == 0x00000004)) {
     output.writeUInt64(4,timestamp_);
   }
+  if (((bitField0_ & 0x00000008) == 0x00000008)) {
+    output.writeInt32(5,delay_);
+  }
   extensionWriter.writeUntil(2000,output);
   getUnknownFields().writeTo(output);
 }

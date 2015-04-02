@@ -10,13 +10,16 @@
     routeId_=other.routeId_;
     onChanged();
   }
+  if (other.hasDirectionId()) {
+    setDirectionId(other.getDirectionId());
+  }
   if (other.hasStartTime()) {
-    bitField0_|=0x00000004;
+    bitField0_|=0x00000008;
     startTime_=other.startTime_;
     onChanged();
   }
   if (other.hasStartDate()) {
-    bitField0_|=0x00000008;
+    bitField0_|=0x00000010;
     startDate_=other.startDate_;
     onChanged();
   }

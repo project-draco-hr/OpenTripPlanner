@@ -1,0 +1,30 @@
+{
+  Preconditions.checkNotNull(graph);
+  Preconditions.checkNotNull(tripUpdate);
+  Preconditions.checkNotNull(serviceDate);
+  TripDescriptor tripDescriptor=tripUpdate.getTrip();
+  if (!tripDescriptor.hasTripId()) {
+    LOG.warn("No trip id found for ADDED trip, skipping.");
+    return false;
+  }
+  String tripId=tripDescriptor.getTripId();
+  Trip trip=getTripForTripId(tripId);
+  if (trip != null) {
+    LOG.warn("Graph already contains trip id of ADDED trip, skipping.");
+    return false;
+  }
+  if (!tripDescriptor.hasStartDate()) {
+    LOG.warn("ADDED trip doesn't have a start date in TripDescriptor, skipping.");
+    return false;
+  }
+  if (tripUpdate.getStopTimeUpdateCount() < 2) {
+    LOG.warn("ADDED trip has less then two stops, skipping.");
+    return false;
+  }
+  List<Stop> stops=checkNewStopTimeUpdatesAndFindStops(tripUpdate);
+  if (stops == null) {
+    return false;
+  }
+  boolean success=handleAddedTrip(graph,tripUpdate,stops,feedId,serviceDate);
+  return success;
+}

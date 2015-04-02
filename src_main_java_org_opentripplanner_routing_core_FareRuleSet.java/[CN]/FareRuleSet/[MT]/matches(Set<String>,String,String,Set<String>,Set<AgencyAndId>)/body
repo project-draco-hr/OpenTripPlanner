@@ -1,0 +1,28 @@
+{
+  if (agency != null) {
+    if (agencies.size() != 1 || !agencies.contains(agency))     return false;
+  }
+  if (originDestinations.size() > 0) {
+    P2<String> od=new P2<String>(startZone,endZone);
+    if (!originDestinations.contains(od)) {
+      P2<String> od2=new P2<String>(od.first,null);
+      if (!originDestinations.contains(od2)) {
+        od2=new P2<String>(null,od.first);
+        if (!originDestinations.contains(od2)) {
+          return false;
+        }
+      }
+    }
+  }
+  if (contains.size() > 0) {
+    if (!zonesVisited.equals(contains)) {
+      return false;
+    }
+  }
+  if (routes.size() != 0) {
+    if (!routes.containsAll(routesVisited)) {
+      return false;
+    }
+  }
+  return true;
+}

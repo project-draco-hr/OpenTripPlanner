@@ -1,0 +1,12 @@
+{
+  AgencyAndId routeId=tripPattern.route.getId();
+  String direction=tripPattern.directionId != -1 ? String.valueOf(tripPattern.directionId) : "";
+  if (counter == Integer.MAX_VALUE) {
+    counter=0;
+  }
+ else {
+    counter++;
+  }
+  String code=String.format("%s:%s:%s:rt#%d",routeId.getAgencyId(),routeId.getId(),direction,counter);
+  return code;
+}

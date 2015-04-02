@@ -1,6 +1,10 @@
 {
   RoutingRequest rr=new RoutingRequest(new TraverseModeSet());
   qmode.applyToRoutingRequest(rr,false);
+  if (qmode.mode == TraverseMode.BICYCLE) {
+    rr.optimize=OptimizeType.TRIANGLE;
+    rr.setTriangleNormalized(request.bikeSafe,request.bikeSlope,request.bikeTime);
+  }
   rr.from=(new GenericLocation(request.fromLat,request.fromLon));
   rr.to=new GenericLocation(request.toLat,request.toLon);
   rr.setArriveBy(false);

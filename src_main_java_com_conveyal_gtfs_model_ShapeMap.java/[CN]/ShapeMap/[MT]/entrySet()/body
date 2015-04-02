@@ -1,7 +1,0 @@
-{
-  HashSet<Map.Entry<Integer,Shape>> ret=new HashSet<Map.Entry<Integer,Shape>>(size());
-  for (  Map.Entry<Tuple2<String,Integer>,Shape> e : wrapped.entrySet()) {
-    ret.add(new AbstractMap.SimpleImmutableEntry<Integer,Shape>(e.getKey().b,e.getValue()));
-  }
-  return Collections.unmodifiableSet(ret);
-}

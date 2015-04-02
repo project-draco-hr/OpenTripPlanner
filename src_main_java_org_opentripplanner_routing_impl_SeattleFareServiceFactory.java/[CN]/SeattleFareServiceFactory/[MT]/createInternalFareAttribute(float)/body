@@ -1,0 +1,9 @@
+{
+  FareAttribute fare=new FareAttribute();
+  fare.setTransferDuration(SeattleFareServiceImpl.TRANSFER_DURATION_SEC);
+  fare.setCurrencyType("USD");
+  fare.setPrice(price);
+  fare.setId(new AgencyAndId(SeattleFareServiceImpl.KCM_EOS_AGENCY_ID,"internal_" + internalFareId));
+  internalFareId++;
+  return fare;
+}

@@ -5,9 +5,17 @@
   }
   for (  File file : pointSetPath.listFiles()) {
     if (file.getName().toLowerCase().startsWith(pointSetId.toLowerCase())) {
+      LOG.info("Attempting to load pointset from '{}'.",file);
       PointSet pointSet=this.loadFromFile(file);
-      if (pointSet != null)       return pointSet;
+      if (pointSet == null) {
+        LOG.error("Pointset loading function returned null.");
+        return null;
+      }
+ else {
+        return pointSet;
+      }
     }
   }
+  LOG.error("No file was found with the given pointset name.");
   return null;
 }

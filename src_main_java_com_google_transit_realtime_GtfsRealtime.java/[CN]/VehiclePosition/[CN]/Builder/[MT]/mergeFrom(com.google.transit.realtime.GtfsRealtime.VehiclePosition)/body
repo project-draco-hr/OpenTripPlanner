@@ -26,6 +26,12 @@
   if (other.hasCongestionLevel()) {
     setCongestionLevel(other.getCongestionLevel());
   }
+  if (other.hasOccupancyStatus()) {
+    setOccupancyStatus(other.getOccupancyStatus());
+  }
+  if (other.hasOvapiVehiclePosition()) {
+    mergeOvapiVehiclePosition(other.getOvapiVehiclePosition());
+  }
   this.mergeExtensionFields(other);
   this.mergeUnknownFields(other.getUnknownFields());
   return this;

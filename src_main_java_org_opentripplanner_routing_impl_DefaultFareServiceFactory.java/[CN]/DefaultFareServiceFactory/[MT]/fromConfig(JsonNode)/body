@@ -1,0 +1,50 @@
+{
+  String type=null;
+  if (config == null) {
+    type=null;
+  }
+ else   if (config.isTextual()) {
+    type=config.asText();
+  }
+ else   if (config.has("combinationStrategy")) {
+    String combinationStrategy=config.path("combinationStrategy").asText();
+switch (combinationStrategy) {
+case "additive":
+      break;
+default :
+    throw new IllegalArgumentException("Unknown fare combinationStrategy: " + combinationStrategy);
+}
+type="composite:" + combinationStrategy;
+}
+ else if (config.has("type")) {
+type=config.path("type").asText(null);
+}
+if (type == null) {
+type="default";
+}
+FareServiceFactory retval;
+switch (type) {
+case "default":
+retval=new DefaultFareServiceFactory();
+break;
+case "composite:additive":
+retval=new MultipleFareServiceFactory.AddingMultipleFareServiceFactory();
+break;
+case "bike-rental-time-based":
+retval=new TimeBasedBikeRentalFareServiceFactory();
+break;
+case "san-francisco":
+retval=new SFBayFareServiceFactory();
+break;
+case "new-york":
+retval=new NycFareServiceFactory();
+break;
+case "seattle":
+retval=new SeattleFareServiceFactory();
+break;
+default :
+throw new IllegalArgumentException(String.format("Unknown fare type: '%s'",type));
+}
+retval.configure(config);
+return retval;
+}

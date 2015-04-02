@@ -1,10 +1,12 @@
 {
   getSerializedSize();
+  com.google.protobuf.GeneratedMessage.ExtendableMessage<com.google.transit.realtime.GtfsRealtime.TimeRange>.ExtensionWriter extensionWriter=newExtensionWriter();
   if (((bitField0_ & 0x00000001) == 0x00000001)) {
     output.writeUInt64(1,start_);
   }
   if (((bitField0_ & 0x00000002) == 0x00000002)) {
     output.writeUInt64(2,end_);
   }
+  extensionWriter.writeUntil(2000,output);
   getUnknownFields().writeTo(output);
 }

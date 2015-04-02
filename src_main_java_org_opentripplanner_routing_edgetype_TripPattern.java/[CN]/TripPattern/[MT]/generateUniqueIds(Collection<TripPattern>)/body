@@ -1,10 +1,11 @@
 {
-  Multimap<Route,TripPattern> patternsForRoute=HashMultimap.create();
+  Multimap<String,TripPattern> patternsForRoute=HashMultimap.create();
   for (  TripPattern pattern : tripPatterns) {
     AgencyAndId routeId=pattern.route.getId();
-    patternsForRoute.put(pattern.route,pattern);
-    int count=patternsForRoute.get(pattern.route).size();
-    String id=String.format("%s:%s:%02d",routeId.getAgencyId(),routeId.getId(),count);
+    String direction=pattern.directionId != -1 ? String.valueOf(pattern.directionId) : "";
+    patternsForRoute.put(routeId.getId() + ":" + direction,pattern);
+    int count=patternsForRoute.get(routeId.getId() + ":" + direction).size();
+    String id=String.format("%s:%s:%s:%02d",routeId.getAgencyId(),routeId.getId(),direction,count);
     pattern.code=(id);
   }
 }

@@ -11,6 +11,7 @@
   when(graph.getTimeZone()).thenReturn(TimeZone.getTimeZone("GMT"));
   ArrayList<Edge> hops=new ArrayList<Edge>(2);
   RoutingContext routingContext=new RoutingContext(routingRequest,graph,null,arrive);
+  Agency agency=new Agency();
   AgencyAndId agencyAndId=new AgencyAndId("Agency","ID");
   Route route=new Route();
   ArrayList<StopTime> stopTimes=new ArrayList<StopTime>(2);
@@ -22,7 +23,9 @@
   Stop stopArrive=new Stop();
   Trip trip=new Trip();
   routingContext.serviceDays=new ArrayList<ServiceDay>(Collections.singletonList(serviceDay));
+  agency.setId(agencyAndId.getAgencyId());
   route.setId(agencyAndId);
+  route.setAgency(agency);
   stopDepart.setId(new AgencyAndId("Station","0"));
   stopDwell.setId(new AgencyAndId("Station","1"));
   stopArrive.setId(new AgencyAndId("Station","2"));
@@ -37,6 +40,7 @@
   stopTimes.add(stopDwellTime);
   stopTimes.add(stopArriveTime);
   trip.setId(agencyAndId);
+  trip.setRoute(route);
   TripTimes tripTimes=new TripTimes(trip,stopTimes,new Deduplicator());
   StopPattern stopPattern=new StopPattern(stopTimes);
   TripPattern tripPattern=new TripPattern(route,stopPattern);
