@@ -6,6 +6,7 @@ synchronized (this) {
     if (preEvict) {
 synchronized (preEvictMutex) {
         if (router != null) {
+          LOG.info("Reloading '{}': pre-evicting router",routerId);
           router.shutdown();
         }
         router=null;
@@ -16,6 +17,7 @@ synchronized (preEvictMutex) {
       Router newRouter=loadGraph();
       if (newRouter != null) {
         if (router != null) {
+          LOG.info("Reloading '{}': post-evicting router",routerId);
           router.shutdown();
         }
         router=newRouter;
