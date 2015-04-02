@@ -41,7 +41,7 @@
         Collection<ProfileState> statesToPropagate=nondominated(previousStops.get(pattern.stopVertices[i]));
         statesToPropagate=Collections2.filter(statesToPropagate,new Predicate<ProfileState>(){
           @Override public boolean apply(          ProfileState input){
-            return !input.patterns.contains(pattern) && (input.targetPatterns == null || input.targetPatterns.contains(pattern));
+            return !input.containsPattern(pattern) && (input.targetPatterns == null || input.targetPatterns.contains(pattern));
           }
         }
 );
@@ -80,12 +80,12 @@
             if (t < minRideTime)             minRideTime=t;
             if (t > maxRideTime)             maxRideTime=t;
           }
+          if (minWaitTime == Integer.MAX_VALUE || maxWaitTime == Integer.MIN_VALUE || minRideTime == Integer.MAX_VALUE || maxRideTime == Integer.MIN_VALUE)           continue DESTSTOPS;
           for (          ProfileState ps : statesToPropagate) {
             ProfileState ps2=ps.propagate(minWaitTime + minRideTime,maxWaitTime + maxRideTime);
             ps2.stop=pattern.stopVertices[j];
             ps2.accessType=Type.TRANSIT;
-            ps2.clearPatterns();
-            ps2.patterns.add(pattern);
+            ps2.patterns=new TripPattern[]{pattern};
             touchedStops.put(ps2.stop,ps2);
           }
         }
@@ -96,14 +96,21 @@
     for (    TransitStop tstop : touchedStopVertices) {
       Collection<ProfileState> pss=nondominated(touchedStops.get(tstop));
       if (pss.isEmpty())       continue;
-      Map<ProfileState,ProfileState> foundStates=Maps.newHashMap();
+      if (!RETAIN_PATTERNS) {
+        ProfileState st=ProfileState.merge(pss,false);
+        pss.clear();
+        pss.add(st);
+        continue;
+      }
+      Multimap<ProfileState,ProfileState> foundStates=ArrayListMultimap.create();
       for (Iterator<ProfileState> it=pss.iterator(); it.hasNext(); ) {
         ProfileState ps=it.next();
-        if (foundStates.containsKey(ps.previous)) {
-          it.remove();
-          foundStates.get(ps.previous).mergeIn(ps);
-        }
- else         foundStates.put(ps.previous,ps);
+        foundStates.put(ps.previous,ps);
+      }
+      pss.clear();
+      for (      Collection<ProfileState> states : foundStates.asMap().values()) {
+        if (states.size() == 1)         pss.addAll(states);
+ else         pss.add(ProfileState.merge(states,true));
       }
     }
     for (    Entry<TransitStop,ProfileState> e : touchedStops.entries()) {
