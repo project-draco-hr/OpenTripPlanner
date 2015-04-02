@@ -91,27 +91,7 @@
       }
     }
     LOG.info("Round completed, merging similar states");
-    Set<TransitStop> touchedStopVertices=new HashSet<TransitStop>(touchedStops.keySet());
-    for (    TransitStop tstop : touchedStopVertices) {
-      Collection<ProfileState> pss=nondominated(touchedStops.get(tstop),tstop);
-      if (pss.isEmpty())       continue;
-      if (!RETAIN_PATTERNS) {
-        ProfileState st=ProfileState.merge(pss,false);
-        pss.clear();
-        pss.add(st);
-        continue;
-      }
-      Multimap<ProfileState,ProfileState> foundStates=ArrayListMultimap.create();
-      for (Iterator<ProfileState> it=pss.iterator(); it.hasNext(); ) {
-        ProfileState ps=it.next();
-        foundStates.put(ps.previous,ps);
-      }
-      pss.clear();
-      for (      Collection<ProfileState> states : foundStates.asMap().values()) {
-        if (states.size() == 1)         pss.addAll(states);
- else         pss.add(ProfileState.merge(states,true));
-      }
-    }
+    mergeStates(touchedStops);
     for (    Entry<TransitStop,ProfileState> e : touchedStops.entries()) {
       retainedStates.put(e.getKey(),e.getValue());
     }
@@ -134,12 +114,14 @@
       minBoardTime=new TObjectIntHashMap<TripPattern>(1000,.75f,Integer.MAX_VALUE);
       Map<TripPattern,ProfileState> optimalBoardState=Maps.newHashMap();
       List<ProfileState> xferStates=Lists.newArrayList();
+      HashSet<TripPattern> patternsAtSource=new HashSet<TripPattern>(graph.index.patternsForStop.get(tstop.getStop()));
       for (      ProfileState ps : statesAtStop) {
         for (        Tuple2<TransitStop,Integer> atime : accessTimes) {
           ProfileState ps2=ps.propagate(atime.b);
           ps2.accessType=Type.TRANSFER;
           ps2.stop=atime.a;
-          for (          TripPattern patt : graph.index.patternsForStop.get(tstop.getStop())) {
+          for (          TripPattern patt : graph.index.patternsForStop.get(atime.a.getStop())) {
+            if (patternsAtSource.contains(patt))             continue;
             if (atime.b < minBoardTime.get(patt)) {
               minBoardTime.put(patt,atime.b);
               optimalBoardState.put(patt,ps2);
@@ -158,6 +140,10 @@
           touchedStops.put(ps.stop,ps);
         }
       }
+    }
+    if (!RETAIN_PATTERNS) {
+      LOG.info("Merging transfer states into direct states");
+      mergeStates(touchedStops);
     }
     LOG.info("Finished round {} in {} seconds",round,(System.currentTimeMillis() - roundStart) / 1000);
   }
