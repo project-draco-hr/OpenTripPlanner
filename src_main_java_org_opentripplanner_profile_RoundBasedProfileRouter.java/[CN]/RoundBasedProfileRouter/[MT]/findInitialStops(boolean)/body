@@ -25,5 +25,19 @@
       stops.put(tstop,ps);
     }
   }
+  Map<TripPattern,ProfileState> optimalBoardingLocation=Maps.newHashMap();
+  TObjectIntMap<TripPattern> minBoardTime=new TObjectIntHashMap<TripPattern>(100,0.75f,Integer.MAX_VALUE);
+  for (  ProfileState ps : stops.values()) {
+    for (    TripPattern pattern : graph.index.patternsForStop.get(ps.stop.getStop())) {
+      if (ps.lowerBound < minBoardTime.get(pattern))       optimalBoardingLocation.put(pattern,ps);
+    }
+    ps.targetPatterns=Sets.newHashSet();
+  }
+  for (  Entry<TripPattern,ProfileState> e : optimalBoardingLocation.entrySet()) {
+    e.getValue().targetPatterns.add(e.getKey());
+  }
+  for (Iterator<ProfileState> it=stops.values().iterator(); it.hasNext(); ) {
+    if (it.next().targetPatterns.isEmpty())     it.remove();
+  }
   return stops;
 }

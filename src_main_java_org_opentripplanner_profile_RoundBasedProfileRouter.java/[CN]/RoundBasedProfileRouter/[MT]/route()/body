@@ -37,7 +37,6 @@
     PATTERNS:     for (    final TripPattern pattern : patternsToExplore) {
       STOPS:       for (int i=0; i < pattern.stopVertices.length; i++) {
         if (!previousStops.containsKey(pattern.stopVertices[i]))         continue STOPS;
-        if (round == 0 && optimalBoardingLocation.get(pattern) != pattern.stopVertices[i])         continue STOPS;
         Collection<ProfileState> statesToPropagate=nondominated(previousStops.get(pattern.stopVertices[i]),pattern.stopVertices[i]);
         statesToPropagate=Collections2.filter(statesToPropagate,new Predicate<ProfileState>(){
           @Override public boolean apply(          ProfileState input){
