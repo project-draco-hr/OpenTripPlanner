@@ -1,42 +1,36 @@
 {
   LOG.info("Propagating from transit stops to the street network...");
-  TimeSurface minSurface=new TimeSurface(this);
-  TimeSurface avgSurface=new TimeSurface(this);
-  TimeSurface maxSurface=new TimeSurface(this);
-  StopTreeCache stopTreeCache=graph.index.getStopTreeCache();
-  for (  Entry<TransitStop,ProfileState> entry : retainedStates.entries()) {
-    ProfileState ps=entry.getValue();
-    int lb0=ps.lowerBound;
-    int ub0=ps.upperBound;
-    TransitStop tstop=entry.getKey();
-    TObjectIntMap<Vertex> distanceToVertex=stopTreeCache.getDistancesForStop(tstop);
-    for (TObjectIntIterator<Vertex> iter=distanceToVertex.iterator(); iter.hasNext(); ) {
-      iter.advance();
-      Vertex vertex=iter.key();
-      int egressWalkTimeSeconds=(int)(iter.value() / request.walkSpeed);
-      if (egressWalkTimeSeconds > request.maxWalkTime * 60) {
-        continue;
-      }
-      int propagated_min=lb0 + egressWalkTimeSeconds;
-      int propagated_max=ub0 + egressWalkTimeSeconds;
-      int propagated_avg=(int)(((long)propagated_min + propagated_max) / 2);
-      int existing_min=minSurface.times.get(vertex);
-      int existing_max=maxSurface.times.get(vertex);
-      int existing_avg=avgSurface.times.get(vertex);
-      if (existing_min == TimeSurface.UNREACHABLE || existing_min > propagated_min) {
-        minSurface.times.put(vertex,propagated_min);
-      }
-      if (existing_max == TimeSurface.UNREACHABLE || existing_max > propagated_max) {
-        maxSurface.times.put(vertex,propagated_max);
-      }
-      if (existing_avg == TimeSurface.UNREACHABLE || existing_avg > propagated_avg) {
-        avgSurface.times.put(vertex,propagated_avg);
-      }
+  List<State> lower=Lists.newArrayList();
+  List<State> upper=Lists.newArrayList();
+  List<State> avg=Lists.newArrayList();
+  RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
+  rr.batch=(true);
+  rr.from=new GenericLocation(request.fromLat,request.fromLon);
+  rr.setRoutingContext(graph);
+  rr.longDistance=true;
+  rr.dominanceFunction=new DominanceFunction.EarliestArrival();
+  rr.setNumItineraries(1);
+  long startTime=rr.dateTime / 1000;
+  for (  Collection<ProfileState> pss : retainedStates.asMap().values()) {
+    TransitStop tstop=null;
+    int lowerBound=Integer.MAX_VALUE;
+    int upperBound=Integer.MAX_VALUE;
+    for (    ProfileState ps : pss) {
+      if (tstop == null)       tstop=ps.stop;
+      if (ps.lowerBound < lowerBound)       lowerBound=ps.lowerBound;
+      if (ps.upperBound < upperBound)       upperBound=ps.upperBound;
     }
+    if (lowerBound == Integer.MAX_VALUE || upperBound == Integer.MAX_VALUE)     throw new IllegalStateException("Invalid bound!");
+    lower.add(new State(tstop,null,lowerBound + startTime,startTime,rr));
+    upper.add(new State(tstop,null,upperBound + startTime,startTime,rr));
+    avg.add(new State(tstop,null,(upperBound + lowerBound) / 2 + startTime,startTime,rr));
   }
-  LOG.info("Done with propagation.");
   timeSurfaceRangeSet=new TimeSurface.RangeSet();
-  timeSurfaceRangeSet.min=minSurface;
-  timeSurfaceRangeSet.max=maxSurface;
-  timeSurfaceRangeSet.avg=avgSurface;
+  AStar astar=new AStar();
+  timeSurfaceRangeSet.min=new TimeSurface(astar.getShortestPathTree(rr,20,null,lower),false);
+  astar=new AStar();
+  timeSurfaceRangeSet.max=new TimeSurface(astar.getShortestPathTree(rr,20,null,upper),false);
+  astar=new AStar();
+  timeSurfaceRangeSet.avg=new TimeSurface(astar.getShortestPathTree(rr,20,null,avg),false);
+  LOG.info("Done with propagation.");
 }

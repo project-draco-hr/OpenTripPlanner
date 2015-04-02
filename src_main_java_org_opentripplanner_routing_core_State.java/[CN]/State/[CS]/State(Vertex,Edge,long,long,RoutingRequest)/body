@@ -1,0 +1,26 @@
+{
+  this.weight=0;
+  this.vertex=vertex;
+  this.backEdge=backEdge;
+  this.backState=null;
+  this.stateData=new StateData(options);
+  this.stateData.opt=options;
+  this.stateData.startTime=startTime;
+  this.stateData.usingRentedBike=false;
+  if (options.parkAndRide || options.kissAndRide) {
+    this.stateData.carParked=options.arriveBy;
+    this.stateData.nonTransitMode=this.stateData.carParked ? TraverseMode.WALK : TraverseMode.CAR;
+  }
+ else   if (options.bikeParkAndRide) {
+    this.stateData.bikeParked=options.arriveBy;
+    this.stateData.nonTransitMode=this.stateData.bikeParked ? TraverseMode.WALK : TraverseMode.BICYCLE;
+  }
+  this.walkDistance=0;
+  this.preTransitTime=0;
+  this.time=timeSeconds * 1000;
+  if (options.rctx != null) {
+    this.pathParserStates=new int[options.rctx.pathParsers.length];
+    Arrays.fill(this.pathParserStates,AutomatonState.START);
+  }
+  stateData.routeSequence=new AgencyAndId[0];
+}
