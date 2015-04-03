@@ -25,8 +25,8 @@ synchronized (graph.index) {
     }
   }
   LOG.info("Done finding access/egress paths.");
-  LOG.info("From patterns/stops: {}",fromStops);
-  LOG.info("To patterns/stops: {}",toStops);
+  printStopsForPatterns("from",fromStops);
+  printStopsForPatterns("to",toStops);
   Map<StopCluster,Ride> initialRides=Maps.newHashMap();
   for (  TripPattern pattern : fromStops.keySet()) {
     if (!request.transitModes.contains(pattern.mode)) {
@@ -34,17 +34,17 @@ synchronized (graph.index) {
     }
     Collection<StopAtDistance> sds=fromStops.get(pattern);
     for (    StopAtDistance sd : sds) {
-      Ride ride=initialRides.get(sd.stop);
+      Ride ride=initialRides.get(sd.stopCluster);
       if (ride == null) {
-        ride=new Ride(sd.stop,null);
+        ride=new Ride(sd.stopCluster,null);
         ride.accessStats=new Stats();
         ride.accessStats.min=Integer.MAX_VALUE;
         ride.accessDist=(int)sd.state.getWalkDistance();
-        initialRides.put(sd.stop,ride);
+        initialRides.put(sd.stopCluster,ride);
       }
       ride.accessStats.merge(sd.etime);
       STOP_INDEX:       for (int i=0; i < pattern.getStops().size(); ++i) {
-        if (sd.stop == graph.index.stopClusterForStop.get(pattern.getStops().get(i))) {
+        if (sd.stopCluster == graph.index.stopClusterForStop.get(pattern.getStops().get(i))) {
           PatternRide newPatternRide=new PatternRide(pattern,i);
           for (          PatternRide existingPatternRide : ride.patternRides) {
             if (existingPatternRide.pattern == newPatternRide.pattern && existingPatternRide.fromIndex == newPatternRide.fromIndex) {
@@ -56,11 +56,18 @@ synchronized (graph.index) {
       }
     }
   }
+  LOG.info("Created these initial rides:");
   for (  Ride ride : initialRides.values()) {
+    LOG.info("{}",ride.toString());
+    LOG.info("    {}",ride.accessStats);
+    for (    PatternRide pr : ride.patternRides) {
+      LOG.info("    {} {}",pr.pattern.route,pr);
+    }
     queue.insert(ride,0);
   }
   while (!queue.empty()) {
     Ride ride=queue.extract_min();
+    if (!retainedRides.get(ride.from).contains(ride))     continue;
     if (ride.to != null)     throw new AssertionError("Ride should be unfinished.");
     Map<StopCluster,Ride> rides=Maps.newHashMap();
     PR:     for (    PatternRide pr : ride.patternRides) {
@@ -127,7 +134,7 @@ synchronized (graph.index) {
     for (    Ride ride : retainedRides.get(cluster)) {
       PATTERN:       for (      PatternRide pr : ride.patternRides) {
         for (        StopAtDistance clusterForPattern : toStops.get(pr.pattern)) {
-          if (clusterForPattern != null && clusterForPattern.stop == cluster) {
+          if (clusterForPattern != null && clusterForPattern.stopCluster == cluster) {
             targetRides.add(ride);
             break PATTERN;
           }
