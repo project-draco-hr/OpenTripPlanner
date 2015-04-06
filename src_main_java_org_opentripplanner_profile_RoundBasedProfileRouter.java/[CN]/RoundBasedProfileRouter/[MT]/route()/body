@@ -86,6 +86,10 @@
             if (t > maxRideTime)             maxRideTime=t;
           }
           if (minWaitTime == Integer.MAX_VALUE || maxWaitTime == Integer.MIN_VALUE || minRideTime == Integer.MAX_VALUE || maxRideTime == Integer.MIN_VALUE)           continue DESTSTOPS;
+          if (minRideTime < 0 || maxRideTime < 0) {
+            LOG.error("Pattern {} travels backwards in time between stop {} and {}",pattern,pattern.stopVertices[i].getStop(),pattern.stopVertices[j].getStop());
+            continue DESTSTOPS;
+          }
           if (RETAIN_PATTERNS) {
             for (            ProfileState ps : statesToPropagate) {
               ProfileState ps2=ps.propagate(minWaitTime + minRideTime,maxWaitTime + maxRideTime);
