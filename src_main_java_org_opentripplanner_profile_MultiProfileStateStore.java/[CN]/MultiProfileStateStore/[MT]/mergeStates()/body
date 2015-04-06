@@ -1,14 +1,7 @@
 {
-  Set<TransitStop> touchedStopVertices=new HashSet<TransitStop>(touchedStops.keySet());
+  Set<TransitStop> touchedStopVertices=new HashSet<TransitStop>(states.keySet());
   for (  TransitStop tstop : touchedStopVertices) {
-    Collection<ProfileState> pss=nondominated(touchedStops.get(tstop),tstop);
-    if (pss.isEmpty())     continue;
-    if (!RETAIN_PATTERNS) {
-      ProfileState st=ProfileState.merge(pss,false);
-      pss.clear();
-      pss.add(st);
-      continue;
-    }
+    Collection<ProfileState> pss=states.get(tstop);
     Multimap<ProfileState,ProfileState> foundStates=ArrayListMultimap.create();
     for (Iterator<ProfileState> it=pss.iterator(); it.hasNext(); ) {
       ProfileState ps=it.next();

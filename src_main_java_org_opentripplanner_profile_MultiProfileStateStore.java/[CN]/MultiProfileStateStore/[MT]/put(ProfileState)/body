@@ -1,0 +1,17 @@
+{
+  if (ps.lowerBound < minUpperBounds.get(ps.stop)) {
+    states.put(ps.stop,ps);
+    if (ps.upperBound < minUpperBounds.get(ps.stop)) {
+      minUpperBounds.put(ps.stop,ps.upperBound);
+      for (Iterator<ProfileState> it=states.get(ps.stop).iterator(); it.hasNext(); ) {
+        if (it.next().lowerBound >= ps.upperBound) {
+          it.remove();
+        }
+      }
+    }
+    return true;
+  }
+ else {
+    return false;
+  }
+}

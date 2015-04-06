@@ -10,7 +10,8 @@
   rr.longDistance=true;
   rr.dominanceFunction=new DominanceFunction.EarliestArrival();
   rr.setNumItineraries(1);
-  long startTime=rr.dateTime / 1000;
+  rr.worstTime=rr.dateTime + CUTOFF_SECONDS;
+  long startTime=rr.dateTime;
   State origin=new State(rr);
   for (  Collection<ProfileState> pss : retainedStates.asMap().values()) {
     TransitStop tstop=null;

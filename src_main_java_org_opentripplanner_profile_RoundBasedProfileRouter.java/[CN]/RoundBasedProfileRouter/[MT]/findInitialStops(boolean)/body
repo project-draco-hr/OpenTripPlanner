@@ -2,7 +2,7 @@
   double lat=dest ? request.toLat : request.fromLat;
   double lon=dest ? request.toLon : request.fromLon;
   QualifiedModeSet modes=dest ? request.accessModes : request.egressModes;
-  Map<TransitStop,ProfileState> stops=Maps.newHashMap();
+  List<ProfileState> stops=Lists.newArrayList();
   RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
   rr.dominanceFunction=new DominanceFunction.EarliestArrival();
   rr.batch=true;
@@ -22,12 +22,12 @@
       ps.lowerBound=ps.upperBound=(int)s.getElapsedTimeSeconds();
       ps.stop=tstop;
       ps.accessType=Type.STREET;
-      stops.put(tstop,ps);
+      stops.add(ps);
     }
   }
   Map<TripPattern,ProfileState> optimalBoardingLocation=Maps.newHashMap();
   TObjectIntMap<TripPattern> minBoardTime=new TObjectIntHashMap<TripPattern>(100,0.75f,Integer.MAX_VALUE);
-  for (  ProfileState ps : stops.values()) {
+  for (  ProfileState ps : stops) {
     for (    TripPattern pattern : graph.index.patternsForStop.get(ps.stop.getStop())) {
       if (ps.lowerBound < minBoardTime.get(pattern))       optimalBoardingLocation.put(pattern,ps);
     }
@@ -37,7 +37,7 @@
   for (  Entry<TripPattern,ProfileState> e : optimalBoardingLocation.entrySet()) {
     e.getValue().targetPatterns.add(e.getKey());
   }
-  for (Iterator<ProfileState> it=stops.values().iterator(); it.hasNext(); ) {
+  for (Iterator<ProfileState> it=stops.iterator(); it.hasNext(); ) {
     if (it.next().targetPatterns.isEmpty())     it.remove();
   }
   rr.cleanup();
