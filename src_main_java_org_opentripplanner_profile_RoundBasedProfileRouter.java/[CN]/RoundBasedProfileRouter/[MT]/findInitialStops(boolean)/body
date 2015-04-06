@@ -33,11 +33,13 @@
     }
     ps.targetPatterns=Sets.newHashSet();
   }
+  LOG.info("Found {} reachable stops, filtering to only board at closest stops",stops.size());
   for (  Entry<TripPattern,ProfileState> e : optimalBoardingLocation.entrySet()) {
     e.getValue().targetPatterns.add(e.getKey());
   }
   for (Iterator<ProfileState> it=stops.values().iterator(); it.hasNext(); ) {
     if (it.next().targetPatterns.isEmpty())     it.remove();
   }
+  rr.cleanup();
   return stops;
 }

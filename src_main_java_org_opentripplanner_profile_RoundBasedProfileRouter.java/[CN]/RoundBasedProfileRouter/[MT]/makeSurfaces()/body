@@ -11,6 +11,7 @@
   rr.dominanceFunction=new DominanceFunction.EarliestArrival();
   rr.setNumItineraries(1);
   long startTime=rr.dateTime / 1000;
+  State origin=new State(rr);
   for (  Collection<ProfileState> pss : retainedStates.asMap().values()) {
     TransitStop tstop=null;
     int lowerBound=Integer.MAX_VALUE;
@@ -25,6 +26,9 @@
     upper.add(new State(tstop,null,upperBound + startTime,startTime,rr));
     avg.add(new State(tstop,null,(upperBound + lowerBound) / 2 + startTime,startTime,rr));
   }
+  lower.add(origin);
+  upper.add(origin);
+  avg.add(origin);
   timeSurfaceRangeSet=new TimeSurface.RangeSet();
   AStar astar=new AStar();
   timeSurfaceRangeSet.min=new TimeSurface(astar.getShortestPathTree(rr,20,null,lower),false);
@@ -32,5 +36,6 @@
   timeSurfaceRangeSet.max=new TimeSurface(astar.getShortestPathTree(rr,20,null,upper),false);
   astar=new AStar();
   timeSurfaceRangeSet.avg=new TimeSurface(astar.getShortestPathTree(rr,20,null,avg),false);
+  rr.cleanup();
   LOG.info("Done with propagation.");
 }
