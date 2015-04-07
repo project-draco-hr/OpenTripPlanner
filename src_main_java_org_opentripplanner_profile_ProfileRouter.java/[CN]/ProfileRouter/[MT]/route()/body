@@ -25,8 +25,6 @@ synchronized (graph.index) {
     }
   }
   LOG.info("Done finding access/egress paths.");
-  printStopsForPatterns("from",fromStops);
-  printStopsForPatterns("to",toStops);
   Map<StopCluster,Ride> initialRides=Maps.newHashMap();
   for (  TripPattern pattern : fromStops.keySet()) {
     if (!request.transitModes.contains(pattern.mode)) {
@@ -56,18 +54,12 @@ synchronized (graph.index) {
       }
     }
   }
-  LOG.info("Created these initial rides:");
   for (  Ride ride : initialRides.values()) {
-    LOG.info("{}",ride.toString());
-    LOG.info("    {}",ride.accessStats);
-    for (    PatternRide pr : ride.patternRides) {
-      LOG.info("    {} {}",pr.pattern.route,pr);
-    }
     queue.insert(ride,0);
   }
   while (!queue.empty()) {
     Ride ride=queue.extract_min();
-    if (!retainedRides.get(ride.from).contains(ride))     continue;
+    if (dominated(ride,ride.from))     continue;
     if (ride.to != null)     throw new AssertionError("Ride should be unfinished.");
     Map<StopCluster,Ride> rides=Maps.newHashMap();
     PR:     for (    PatternRide pr : ride.patternRides) {
@@ -90,7 +82,8 @@ synchronized (graph.index) {
       if (r1.waitStats == null) {
         continue;
       }
-      if (!addIfNondominated(r1))       continue;
+      if (dominated(r1,r1.to))       continue;
+      retainedRides.put(r1.to,r1);
       int nRides=r1.pathLength();
       if (nRides >= MAX_RIDES)       continue;
       boolean penultimateRide=(nRides == MAX_RIDES - 1);
@@ -120,7 +113,9 @@ synchronized (graph.index) {
       }
     }
     for (    Ride r : xferRides.values()) {
-      if (addIfNondominated(r))       queue.insert(r,r.previous.durationLowerBound());
+      if (!dominated(r,r.from)) {
+        queue.insert(r,r.durationLowerBound());
+      }
     }
     if (System.currentTimeMillis() > abortTime)     throw new RuntimeException("TIMEOUT");
   }

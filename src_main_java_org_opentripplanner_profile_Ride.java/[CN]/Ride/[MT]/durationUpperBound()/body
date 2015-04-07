@@ -1,6 +1,9 @@
 {
   int ret=0;
   Ride ride=this;
+  if (ride.to == null) {
+    ride=ride.previous;
+  }
   while (ride != null) {
     ret+=ride.rideStats.max;
     ret+=ride.waitStats.max;

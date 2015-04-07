@@ -1,0 +1,15 @@
+{
+  StopCluster sc1=r1.getAccessStopCluster();
+  StopCluster sc2=r2.getAccessStopCluster();
+  Collection<StopAtDistance> sds1=fromStopPaths.get(sc1);
+  Collection<StopAtDistance> sds2=fromStopPaths.get(sc2);
+  RIDE2:   for (  StopAtDistance sd2 : sds2) {
+    for (    StopAtDistance sd1 : sds1) {
+      if (sd1.qmode.equals(sd2.qmode)) {
+        continue RIDE2;
+      }
+      return false;
+    }
+  }
+  return true;
+}
