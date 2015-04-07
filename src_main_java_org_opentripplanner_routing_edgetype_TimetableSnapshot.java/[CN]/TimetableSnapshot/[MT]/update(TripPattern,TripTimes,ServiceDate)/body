@@ -1,11 +1,11 @@
 {
   Preconditions.checkNotNull(pattern);
   Preconditions.checkNotNull(serviceDate);
-  if (dirty == null) {
+  if (readOnly) {
     throw new ConcurrentModificationException("This TimetableSnapshot is read-only.");
   }
   Timetable tt=resolve(pattern,serviceDate);
-  if (!dirty.contains(tt)) {
+  if (!dirtyTimetables.contains(tt)) {
     Timetable old=tt;
     tt=new Timetable(tt,serviceDate);
     SortedSet<Timetable> sortedTimetables=timetables.get(pattern);
@@ -20,7 +20,8 @@
     if (old.serviceDate != null)     sortedTimetables.remove(old);
     sortedTimetables.add(tt);
     timetables.put(pattern,sortedTimetables);
-    dirty.add(tt);
+    dirtyTimetables.add(tt);
+    dirty=true;
   }
   int tripIndex=tt.getTripIndex(updatedTripTimes.trip.getId());
   if (tripIndex == -1) {
