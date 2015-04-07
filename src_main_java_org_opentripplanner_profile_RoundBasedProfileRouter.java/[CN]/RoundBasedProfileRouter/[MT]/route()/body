@@ -96,61 +96,44 @@
       break ROUNDS;
     }
     LOG.info("Finding transfers . . .");
-    if (RETAIN_PATTERNS) {
-      Set<TransitStop> touchedStopKeys=new HashSet<TransitStop>(store.keys());
-      for (      TransitStop tstop : touchedStopKeys) {
-        List<Tuple2<TransitStop,Integer>> accessTimes=Lists.newArrayList();
-        for (        Edge e : tstop.getOutgoing()) {
-          if (e instanceof SimpleTransfer) {
-            SimpleTransfer t=(SimpleTransfer)e;
-            int time=(int)(t.getDistance() / request.walkSpeed);
-            accessTimes.add(new Tuple2((TransitStop)e.getToVertex(),time));
-          }
-        }
-        Collection<ProfileState> statesAtStop=store.get(tstop);
-        TObjectIntHashMap<TripPattern> minBoardTime=new TObjectIntHashMap<TripPattern>(1000,.75f,Integer.MAX_VALUE);
-        Map<TripPattern,ProfileState> optimalBoardState=Maps.newHashMap();
-        List<ProfileState> xferStates=Lists.newArrayList();
-        HashSet<TripPattern> patternsAtSource=new HashSet<TripPattern>(graph.index.patternsForStop.get(tstop.getStop()));
-        for (        ProfileState ps : statesAtStop) {
-          for (          Tuple2<TransitStop,Integer> atime : accessTimes) {
-            ProfileState ps2=ps.propagate(atime.b);
-            ps2.accessType=Type.TRANSFER;
-            ps2.stop=atime.a;
-            for (            TripPattern patt : graph.index.patternsForStop.get(atime.a.getStop())) {
-              if (patternsAtSource.contains(patt))               continue;
-              if (atime.b < minBoardTime.get(patt)) {
-                minBoardTime.put(patt,atime.b);
-                optimalBoardState.put(patt,ps2);
-              }
-            }
-            xferStates.add(ps2);
-          }
-        }
-        for (        Entry<TripPattern,ProfileState> e : optimalBoardState.entrySet()) {
-          ProfileState ps=e.getValue();
-          if (ps.targetPatterns == null)           ps.targetPatterns=Sets.newHashSet();
-          ps.targetPatterns.add(e.getKey());
-        }
-        for (        ProfileState ps : xferStates) {
-          if (ps.targetPatterns != null && !ps.targetPatterns.isEmpty()) {
-            store.put(ps);
-          }
+    Set<TransitStop> touchedStopKeys=new HashSet<TransitStop>(store.keys());
+    for (    TransitStop tstop : touchedStopKeys) {
+      List<Tuple2<TransitStop,Integer>> accessTimes=Lists.newArrayList();
+      for (      Edge e : tstop.getOutgoing()) {
+        if (e instanceof SimpleTransfer) {
+          SimpleTransfer t=(SimpleTransfer)e;
+          int time=(int)(t.getDistance() / request.walkSpeed);
+          accessTimes.add(new Tuple2((TransitStop)e.getToVertex(),time));
         }
       }
-    }
- else {
-      Set<TransitStop> touchedStopKeys=new HashSet<TransitStop>(store.keys());
-      for (      TransitStop tstop : touchedStopKeys) {
-        ProfileState ps=((List<ProfileState>)store.get(tstop)).get(0);
-        for (        Edge e : tstop.getOutgoing()) {
-          if (e instanceof SimpleTransfer) {
-            SimpleTransfer t=(SimpleTransfer)e;
-            int time=(int)(t.getDistance() / request.walkSpeed);
-            ProfileState ps2=ps.propagate(time);
-            ps2.stop=(TransitStop)t.getToVertex();
-            store.put(ps2);
+      Collection<ProfileState> statesAtStop=store.get(tstop);
+      TObjectIntHashMap<TripPattern> minBoardTime=new TObjectIntHashMap<TripPattern>(1000,.75f,Integer.MAX_VALUE);
+      Map<TripPattern,ProfileState> optimalBoardState=Maps.newHashMap();
+      List<ProfileState> xferStates=Lists.newArrayList();
+      HashSet<TripPattern> patternsAtSource=new HashSet<TripPattern>(graph.index.patternsForStop.get(tstop.getStop()));
+      for (      ProfileState ps : statesAtStop) {
+        for (        Tuple2<TransitStop,Integer> atime : accessTimes) {
+          ProfileState ps2=ps.propagate(atime.b);
+          ps2.accessType=Type.TRANSFER;
+          ps2.stop=atime.a;
+          for (          TripPattern patt : graph.index.patternsForStop.get(atime.a.getStop())) {
+            if (patternsAtSource.contains(patt))             continue;
+            if (atime.b < minBoardTime.get(patt)) {
+              minBoardTime.put(patt,atime.b);
+              optimalBoardState.put(patt,ps2);
+            }
           }
+          xferStates.add(ps2);
+        }
+      }
+      for (      Entry<TripPattern,ProfileState> e : optimalBoardState.entrySet()) {
+        ProfileState ps=e.getValue();
+        if (ps.targetPatterns == null)         ps.targetPatterns=Sets.newHashSet();
+        ps.targetPatterns.add(e.getKey());
+      }
+      for (      ProfileState ps : xferStates) {
+        if (ps.targetPatterns != null && !ps.targetPatterns.isEmpty()) {
+          store.put(ps);
         }
       }
     }

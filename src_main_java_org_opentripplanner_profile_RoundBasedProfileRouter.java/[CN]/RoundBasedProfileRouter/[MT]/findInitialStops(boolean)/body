@@ -29,7 +29,10 @@
   TObjectIntMap<TripPattern> minBoardTime=new TObjectIntHashMap<TripPattern>(100,0.75f,Integer.MAX_VALUE);
   for (  ProfileState ps : stops) {
     for (    TripPattern pattern : graph.index.patternsForStop.get(ps.stop.getStop())) {
-      if (ps.lowerBound < minBoardTime.get(pattern))       optimalBoardingLocation.put(pattern,ps);
+      if (ps.lowerBound < minBoardTime.get(pattern)) {
+        optimalBoardingLocation.put(pattern,ps);
+        minBoardTime.put(pattern,ps.lowerBound);
+      }
     }
     ps.targetPatterns=Sets.newHashSet();
   }
