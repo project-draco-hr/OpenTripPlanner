@@ -1,5 +1,6 @@
 {
   if (ps.lowerBound >= minUpperBounds.get(ps.stop))   return false;
+  ps.previous=null;
   if (ps.upperBound < minUpperBounds.get(ps.stop))   minUpperBounds.put(ps.stop,ps.upperBound);
   if (states.containsKey(ps.stop)) {
     ProfileState o=states.get(ps.stop);
