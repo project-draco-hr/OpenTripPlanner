@@ -4,7 +4,7 @@
     if (ps.upperBound < minUpperBounds.get(ps.stop)) {
       minUpperBounds.put(ps.stop,ps.upperBound);
       for (Iterator<ProfileState> it=states.get(ps.stop).iterator(); it.hasNext(); ) {
-        if (it.next().lowerBound >= ps.upperBound) {
+        if (it.next().lowerBound > ps.upperBound) {
           it.remove();
         }
       }
