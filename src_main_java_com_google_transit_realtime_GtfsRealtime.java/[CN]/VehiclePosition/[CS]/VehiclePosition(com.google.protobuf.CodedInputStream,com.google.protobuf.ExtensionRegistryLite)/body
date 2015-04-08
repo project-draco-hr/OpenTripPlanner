@@ -116,20 +116,6 @@ occupancyStatus_=value;
 }
 break;
 }
-case 8026:
-{
-com.google.transit.realtime.GtfsRealtime.OVapiVehiclePosition.Builder subBuilder=null;
-if (((bitField0_ & 0x00000200) == 0x00000200)) {
-subBuilder=ovapiVehiclePosition_.toBuilder();
-}
-ovapiVehiclePosition_=input.readMessage(com.google.transit.realtime.GtfsRealtime.OVapiVehiclePosition.PARSER,extensionRegistry);
-if (subBuilder != null) {
-subBuilder.mergeFrom(ovapiVehiclePosition_);
-ovapiVehiclePosition_=subBuilder.buildPartial();
-}
-bitField0_|=0x00000200;
-break;
-}
 }
 }
 }

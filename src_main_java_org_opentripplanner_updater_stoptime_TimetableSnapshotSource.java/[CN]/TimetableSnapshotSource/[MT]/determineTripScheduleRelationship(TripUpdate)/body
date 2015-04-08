@@ -8,7 +8,7 @@
     for (    StopTimeUpdate stopTimeUpdate : tripUpdate.getStopTimeUpdateList()) {
       if (stopTimeUpdate.hasScheduleRelationship()) {
         StopTimeUpdate.ScheduleRelationship stopScheduleRelationship=stopTimeUpdate.getScheduleRelationship();
-        if (stopScheduleRelationship.equals(StopTimeUpdate.ScheduleRelationship.ADDED) || stopScheduleRelationship.equals(StopTimeUpdate.ScheduleRelationship.SKIPPED)) {
+        if (stopScheduleRelationship.equals(StopTimeUpdate.ScheduleRelationship.SKIPPED)) {
           hasModifiedStops=true;
         }
       }
