@@ -1,6 +1,6 @@
 {
   StringBuilder sb=new StringBuilder();
-  Class clazz=object.getClass();
+  Class<?> clazz=object.getClass();
   sb.append("Summarizing ");
   sb.append(clazz.getSimpleName());
   sb.append('\n');
@@ -8,7 +8,8 @@
     sb.append(field.getName());
     sb.append(" = ");
     try {
-      String value=field.get(object).toString();
+      Object fieldValue=field.get(object);
+      String value=fieldValue == null ? "null" : fieldValue.toString();
       sb.append(value);
     }
  catch (    IllegalAccessException ex) {
