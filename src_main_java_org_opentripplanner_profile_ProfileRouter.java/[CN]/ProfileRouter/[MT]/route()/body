@@ -82,6 +82,9 @@ synchronized (graph.index) {
       if (r1.waitStats == null) {
         continue;
       }
+ else {
+        r1.recomputeBounds();
+      }
       if (dominated(r1,r1.to))       continue;
       retainedRides.put(r1.to,r1);
       int nRides=r1.pathLength();
@@ -101,6 +104,7 @@ synchronized (graph.index) {
                 r2=new Ride(tr.sc2,r1);
                 r2.accessDist=tr.distance;
                 r2.accessStats=new Stats((int)(tr.distance / request.walkSpeed));
+                r2.recomputeBounds();
                 xferRides.put(tr.sc2,r2);
               }
               for (              PatternRide pr : r2.patternRides) {
