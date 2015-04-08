@@ -15,7 +15,6 @@
       StopTimeUpdate.Builder stopTimeUpdateBuilder=tripUpdateBuilder.addStopTimeUpdateBuilder();
       stopTimeUpdateBuilder.setScheduleRelationship(StopTimeUpdate.ScheduleRelationship.SCHEDULED);
       stopTimeUpdateBuilder.setStopId("A");
-      stopTimeUpdateBuilder.setStopSequence(10);
 {
         StopTimeEvent.Builder arrivalBuilder=stopTimeUpdateBuilder.getArrivalBuilder();
         arrivalBuilder.setTime(midnightSecondsSinceEpoch + (8 * 3600) + (30 * 60));
@@ -31,7 +30,6 @@
       StopTimeUpdate.Builder stopTimeUpdateBuilder=tripUpdateBuilder.addStopTimeUpdateBuilder();
       stopTimeUpdateBuilder.setScheduleRelationship(StopTimeUpdate.ScheduleRelationship.SCHEDULED);
       stopTimeUpdateBuilder.setStopId("C");
-      stopTimeUpdateBuilder.setStopSequence(30);
 {
         StopTimeEvent.Builder arrivalBuilder=stopTimeUpdateBuilder.getArrivalBuilder();
         arrivalBuilder.setTime(midnightSecondsSinceEpoch + (8 * 3600) + (40 * 60));
@@ -47,7 +45,6 @@
       StopTimeUpdate.Builder stopTimeUpdateBuilder=tripUpdateBuilder.addStopTimeUpdateBuilder();
       stopTimeUpdateBuilder.setScheduleRelationship(StopTimeUpdate.ScheduleRelationship.SCHEDULED);
       stopTimeUpdateBuilder.setStopId("E");
-      stopTimeUpdateBuilder.setStopSequence(50);
 {
         StopTimeEvent.Builder arrivalBuilder=stopTimeUpdateBuilder.getArrivalBuilder();
         arrivalBuilder.setTime(midnightSecondsSinceEpoch + (8 * 3600) + (55 * 60));
