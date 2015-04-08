@@ -1,13 +1,11 @@
 {
-  int dlb=ride.durationLowerBound();
-  int dub=ride.durationUpperBound();
-  if (dlb > MAX_DURATION)   return true;
+  if (ride.dlb > MAX_DURATION)   return true;
   for (  Ride oldRide : retainedRides.get(atCluster)) {
     if (oldRide.to == null)     throw new AssertionError("no retained rides should be unfinished");
-    if (oldRide.pathLength() < ride.pathLength() && oldRide.durationLowerBound() < dlb && oldRide.durationUpperBound() < dub && accessModeSuperset(oldRide,ride)) {
+    if (oldRide.pathLength() < ride.pathLength() && oldRide.dlb < ride.dlb && oldRide.dub < ride.dub && accessModeSuperset(oldRide,ride)) {
       return true;
     }
-    if (dlb > oldRide.durationUpperBound() + request.suboptimalMinutes) {
+    if (ride.dlb > oldRide.dub + request.suboptimalMinutes) {
       return true;
     }
   }

@@ -1,0 +1,19 @@
+{
+  dlb=0;
+  dub=0;
+  pathLength=0;
+  Ride ride=this;
+  if (ride.to == null) {
+    ride=ride.previous;
+  }
+  while (ride != null) {
+    pathLength+=1;
+    dlb+=ride.rideStats.min;
+    dlb+=ride.waitStats.min;
+    dlb+=ride.accessStats.min;
+    dub+=ride.rideStats.max;
+    dub+=ride.waitStats.max;
+    dub+=ride.accessStats.max;
+    ride=ride.previous;
+  }
+}

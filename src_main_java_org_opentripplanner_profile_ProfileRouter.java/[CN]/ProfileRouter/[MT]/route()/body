@@ -114,7 +114,7 @@ synchronized (graph.index) {
     }
     for (    Ride r : xferRides.values()) {
       if (!dominated(r,r.from)) {
-        queue.insert(r,r.durationLowerBound());
+        queue.insert(r,r.dlb);
       }
     }
     if (System.currentTimeMillis() > abortTime)     throw new RuntimeException("TIMEOUT");

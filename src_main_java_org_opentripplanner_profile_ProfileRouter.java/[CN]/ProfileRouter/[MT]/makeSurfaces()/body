@@ -7,8 +7,6 @@
   for (  Entry<StopCluster,Ride> entry : retainedRides.entries()) {
     StopCluster cluster=entry.getKey();
     Ride ride=entry.getValue();
-    int lb0=ride.durationLowerBound();
-    int ub0=ride.durationUpperBound();
     for (    Stop stop : cluster.children) {
       TransitStop tstop=graph.index.stopVertexForStop.get(stop);
       TObjectIntMap<Vertex> distanceToVertex=stopTreeCache.getDistancesForStop(tstop);
@@ -19,8 +17,8 @@
         if (egressWalkTimeSeconds > request.maxWalkTime * 60) {
           continue;
         }
-        int propagated_min=lb0 + egressWalkTimeSeconds;
-        int propagated_max=ub0 + egressWalkTimeSeconds;
+        int propagated_min=ride.dlb + egressWalkTimeSeconds;
+        int propagated_max=ride.dub + egressWalkTimeSeconds;
         int propagated_avg=(int)(((long)propagated_min + propagated_max) / 2);
         int existing_min=minSurface.times.get(vertex);
         int existing_max=maxSurface.times.get(vertex);
