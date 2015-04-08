@@ -2,7 +2,7 @@
   if (ride.dlb > MAX_DURATION)   return true;
   for (  Ride oldRide : retainedRides.get(atCluster)) {
     if (oldRide.to == null)     throw new AssertionError("no retained rides should be unfinished");
-    if (oldRide.pathLength() < ride.pathLength() && oldRide.dlb < ride.dlb && oldRide.dub < ride.dub && accessModeSuperset(oldRide,ride)) {
+    if (oldRide.pathLength < ride.pathLength && oldRide.dlb < ride.dlb && oldRide.dub < ride.dub && accessModeSuperset(oldRide,ride)) {
       return true;
     }
     if (ride.dlb > oldRide.dub + request.suboptimalMinutes) {

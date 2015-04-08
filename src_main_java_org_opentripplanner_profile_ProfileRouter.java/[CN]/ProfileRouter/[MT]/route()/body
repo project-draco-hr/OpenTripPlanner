@@ -87,7 +87,7 @@ synchronized (graph.index) {
       }
       if (dominated(r1,r1.to))       continue;
       retainedRides.put(r1.to,r1);
-      int nRides=r1.pathLength();
+      int nRides=r1.pathLength;
       if (nRides >= MAX_RIDES)       continue;
       boolean penultimateRide=(nRides == MAX_RIDES - 1);
       for (      ProfileTransfer tr : graph.index.transfersFromStopCluster.get(r1.to)) {
