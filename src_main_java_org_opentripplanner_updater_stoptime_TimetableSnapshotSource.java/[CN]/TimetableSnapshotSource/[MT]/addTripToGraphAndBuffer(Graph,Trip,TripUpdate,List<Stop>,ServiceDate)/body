@@ -7,7 +7,7 @@
   for (int index=0; index < tripUpdate.getStopTimeUpdateCount(); ++index) {
     StopTimeUpdate stopTimeUpdate=tripUpdate.getStopTimeUpdate(index);
     Stop stop=stops.get(index);
-    boolean skippedStop=stopTimeUpdate.hasScheduleRelationship() && stopTimeUpdate.getScheduleRelationship().equals(StopTimeUpdate.ScheduleRelationship.SKIPPED);
+    boolean skippedStop=isStopSkipped(stopTimeUpdate);
     if (!skippedStop) {
       StopTime stopTime=new StopTime();
       stopTime.setTrip(trip);
@@ -29,7 +29,9 @@
         stopTime.setDepartureTime((int)departureTime);
       }
       stopTime.setTimepoint(1);
-      stopTime.setStopSequence(stopTimeUpdate.getStopSequence());
+      if (stopTimeUpdate.hasStopSequence()) {
+        stopTime.setStopSequence(stopTimeUpdate.getStopSequence());
+      }
       if (index == tripUpdate.getStopTimeUpdateCount() - 1) {
         stopTime.setPickupType(1);
       }
