@@ -5,7 +5,7 @@
     if (oldRide.pathLength < ride.pathLength && oldRide.dlb < ride.dlb && oldRide.dub < ride.dub && accessModeSuperset(oldRide,ride)) {
       return true;
     }
-    if (ride.dlb > oldRide.dub + request.suboptimalMinutes) {
+    if (ride.dlb > oldRide.dub + request.suboptimalMinutes * 60) {
       return true;
     }
   }
