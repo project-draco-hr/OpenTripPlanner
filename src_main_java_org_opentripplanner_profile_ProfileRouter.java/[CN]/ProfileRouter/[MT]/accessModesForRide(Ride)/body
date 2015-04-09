@@ -1,0 +1,8 @@
+{
+  Collection<StopAtDistance> sds=fromStopPaths.get(ride.getAccessStopCluster());
+  Set<QualifiedMode> qmodes=Sets.newHashSetWithExpectedSize(sds.size());
+  for (  StopAtDistance sd : sds) {
+    qmodes.add(sd.qmode);
+  }
+  return qmodes;
+}
