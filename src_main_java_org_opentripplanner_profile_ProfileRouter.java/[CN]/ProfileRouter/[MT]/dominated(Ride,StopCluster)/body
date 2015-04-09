@@ -2,7 +2,6 @@
   if (newRide.dlb > MAX_DURATION)   return true;
   Set<QualifiedMode> newRideAccessModes=accessModesForRide(newRide);
   for (  Ride oldRide : retainedRides.get(atCluster)) {
-    if (oldRide.to == null)     throw new AssertionError("no retained rides should be unfinished");
     if (oldRide.pathLength < newRide.pathLength && oldRide.dlb < newRide.dlb && oldRide.dub < newRide.dub && accessModesForRide(oldRide).containsAll(newRideAccessModes)) {
       return true;
     }

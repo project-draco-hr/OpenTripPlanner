@@ -128,22 +128,26 @@ synchronized (graph.index) {
     makeSurfaces();
     return null;
   }
-  Set<Ride> targetRides=Sets.newHashSet();
+  final StopCluster DESTINATION=new StopCluster("The Destination","The Destination");
   for (  StopCluster cluster : toStopPaths.keySet()) {
+    Stats egressStats=new Stats();
+    egressStats.min=Integer.MAX_VALUE;
+    for (    StopAtDistance sd : toStopPaths.get(cluster)) {
+      egressStats.merge(sd.etime);
+    }
     for (    Ride ride : retainedRides.get(cluster)) {
-      PATTERN:       for (      PatternRide pr : ride.patternRides) {
-        for (        StopAtDistance clusterForPattern : toStops.get(pr.pattern)) {
-          if (clusterForPattern != null && clusterForPattern.stopCluster == cluster) {
-            targetRides.add(ride);
-            break PATTERN;
-          }
-        }
+      Ride rideAtDestination=new Ride(DESTINATION,ride);
+      rideAtDestination.accessStats=egressStats;
+      rideAtDestination.recomputeBounds();
+      if (!dominated(rideAtDestination,DESTINATION)) {
+        retainedRides.put(DESTINATION,rideAtDestination);
       }
     }
   }
-  LOG.info("{} nondominated rides stop near the destination.",targetRides.size());
+  LOG.info("{} nondominated rides reach the destination.",retainedRides.get(DESTINATION).size());
   List<Option> options=Lists.newArrayList();
-  for (  Ride ride : targetRides) {
+  for (  Ride ride : retainedRides.get(DESTINATION)) {
+    ride=ride.previous;
     Collection<StopAtDistance> accessPaths=fromStopPaths.get(ride.getAccessStopCluster());
     Collection<StopAtDistance> egressPaths=toStopPaths.get(ride.getEgressStopCluster());
     Option option=new Option(ride,accessPaths,egressPaths);
