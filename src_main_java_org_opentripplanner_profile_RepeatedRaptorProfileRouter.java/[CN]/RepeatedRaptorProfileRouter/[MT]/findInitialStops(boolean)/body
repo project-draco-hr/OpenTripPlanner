@@ -1,0 +1,26 @@
+{
+  double lat=dest ? request.toLat : request.fromLat;
+  double lon=dest ? request.toLon : request.fromLon;
+  QualifiedModeSet modes=dest ? request.accessModes : request.egressModes;
+  List<State> stops=Lists.newArrayList();
+  RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
+  rr.dominanceFunction=new DominanceFunction.EarliestArrival();
+  rr.batch=true;
+  rr.from=new GenericLocation(lat,lon);
+  rr.walkSpeed=request.walkSpeed;
+  rr.to=rr.from;
+  rr.setRoutingContext(graph);
+  rr.worstTime=(rr.dateTime + request.maxWalkTime * 60);
+  AStar astar=new AStar();
+  rr.longDistance=true;
+  rr.setNumItineraries(1);
+  ShortestPathTree spt=astar.getShortestPathTree(rr,5);
+  for (  TransitStop tstop : graph.index.stopVertexForStop.values()) {
+    State s=spt.getState(tstop);
+    if (s != null) {
+      stops.add(s);
+    }
+  }
+  rr.cleanup();
+  return stops;
+}

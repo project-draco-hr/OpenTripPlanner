@@ -1,0 +1,12 @@
+{
+  PATTERNS:   for (  TripPattern tp : options.rctx.graph.index.patternForId.values()) {
+    STOPS:     for (int i=0; i < tp.stopVertices.length; i++) {
+      State s=store.getPrev(tp.stopVertices[i]);
+      if (s == null)       continue STOPS;
+      propagate(s,tp,i);
+    }
+  }
+  store.proceed();
+  findTransfers();
+  return true;
+}

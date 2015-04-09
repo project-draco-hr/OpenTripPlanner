@@ -1,0 +1,35 @@
+{
+  LOG.info("Propagating from transit stops to the street network...");
+  List<State> lower=Lists.newArrayList();
+  List<State> upper=Lists.newArrayList();
+  List<State> avg=Lists.newArrayList();
+  RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
+  rr.batch=(true);
+  rr.from=new GenericLocation(request.fromLat,request.fromLon);
+  rr.setRoutingContext(graph);
+  rr.longDistance=true;
+  rr.dominanceFunction=new DominanceFunction.EarliestArrival();
+  rr.setNumItineraries(1);
+  rr.worstTime=rr.dateTime + 2 * 60 * 60;
+  long startTime=rr.dateTime;
+  State origin=new State(rr);
+  for (  Vertex v : mins.keySet()) {
+    if (maxs.get(v) > 60 * 999)     continue;
+    lower.add(new State(v,null,mins.get(v) + startTime,startTime,rr));
+    upper.add(new State(v,null,maxs.get(v) + startTime,startTime,rr));
+    long average=accumulator.get(v) / counts.get(v);
+    avg.add(new State(v,null,average + startTime,startTime,rr));
+  }
+  lower.add(origin);
+  upper.add(origin);
+  avg.add(origin);
+  timeSurfaceRangeSet=new TimeSurface.RangeSet();
+  AStar astar=new AStar();
+  timeSurfaceRangeSet.min=new TimeSurface(astar.getShortestPathTree(rr,20,null,lower),false);
+  astar=new AStar();
+  timeSurfaceRangeSet.max=new TimeSurface(astar.getShortestPathTree(rr,20,null,upper),false);
+  astar=new AStar();
+  timeSurfaceRangeSet.avg=new TimeSurface(astar.getShortestPathTree(rr,20,null,avg),false);
+  rr.cleanup();
+  LOG.info("Done with propagation.");
+}

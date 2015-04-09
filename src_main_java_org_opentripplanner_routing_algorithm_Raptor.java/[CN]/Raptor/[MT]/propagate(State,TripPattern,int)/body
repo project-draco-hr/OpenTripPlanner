@@ -1,0 +1,35 @@
+{
+  PreBoardEdge pbe=null;
+  TransitBoardAlight tbe=null;
+  TSTOP_OUTGOING:   for (  Edge e : state.getVertex().getOutgoing()) {
+    if (e instanceof PreBoardEdge) {
+      DEPART_OUTGOING:       for (      Edge e2 : e.getToVertex().getOutgoing()) {
+        if (e2 instanceof TransitBoardAlight && ((TransitBoardAlight)e2).getPattern() == tripPattern) {
+          pbe=(PreBoardEdge)e;
+          tbe=(TransitBoardAlight)e2;
+          break TSTOP_OUTGOING;
+        }
+      }
+    }
+  }
+  if (tbe == null)   return;
+  state=pbe.traverse(state);
+  if (state == null)   return;
+  state=tbe.traverse(state);
+  if (state == null)   return;
+  List<State> states=Lists.newArrayList();
+  states.add(state);
+  while (!states.isEmpty()) {
+    State s0=states.remove(states.size() - 1);
+    for (    Edge e : s0.getVertex().getOutgoing()) {
+      State s1=e.traverse(s0);
+      if (s1 == null)       continue;
+      if (s1.getVertex() instanceof TransitStop) {
+        store.put(s1);
+      }
+ else {
+        states.add(s1);
+      }
+    }
+  }
+}

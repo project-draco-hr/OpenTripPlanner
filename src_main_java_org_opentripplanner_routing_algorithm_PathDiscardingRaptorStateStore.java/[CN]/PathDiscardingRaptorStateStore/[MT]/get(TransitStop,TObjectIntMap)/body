@@ -1,0 +1,6 @@
+{
+  if (!which.containsKey(t))   return null;
+  int elapsedTimeSecs=which.get(t);
+  long startTime=options.dateTime;
+  return new State(t,null,elapsedTimeSecs + startTime,startTime,options);
+}

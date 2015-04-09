@@ -1,0 +1,44 @@
+{
+  long computationStartTime=System.currentTimeMillis();
+  LOG.info("Begin profile request");
+  LOG.info("Finding initial stops");
+  Collection<State> states=findInitialStops(false);
+  LOG.info("Found {} initial stops",states.size());
+  final RoutingRequest rr=new RoutingRequest();
+  rr.batch=true;
+  rr.maxTransfers=3;
+  rr.arriveBy=false;
+  rr.modes=new TraverseModeSet("WALK,TRANSIT");
+  rr.from=new GenericLocation(request.fromLat,request.fromLon);
+  rr.to=request.analyst ? new GenericLocation(request.fromLat,request.fromLon) : new GenericLocation(request.toLat,request.toLon);
+  rr.dateTime=request.date.toDateMidnight(DateTimeZone.forTimeZone(graph.getTimeZone())).getMillis() / 1000 + request.fromTime;
+  rr.setRoutingContext(graph);
+  int i=1;
+  for (int startTime=request.toTime; startTime >= request.fromTime; startTime-=60) {
+    final long startTimeEpoch=request.date.toDateMidnight(DateTimeZone.forTimeZone(graph.getTimeZone())).getMillis() / 1000 + startTime;
+    rr.dateTime=startTimeEpoch;
+    Collection<State> raptorStates=Collections2.transform(states,new Function<State,State>(){
+      @Override public State apply(      State input){
+        return new State(input.getVertex(),null,input.getElapsedTimeSeconds() + startTimeEpoch,startTimeEpoch,rr);
+      }
+    }
+);
+    Raptor raptor=new Raptor(raptorStates,rr);
+    raptor.run();
+    for (Iterator<State> it=raptor.iterator(); it.hasNext(); ) {
+      State state=it.next();
+      int et=(int)state.getElapsedTimeSeconds();
+      Vertex v=state.getVertex();
+      if (et < mins.get(v))       mins.put(v,et);
+      if (et > maxs.get(v))       maxs.put(v,et);
+      accumulator.putIfAbsent(v,0);
+      counts.putIfAbsent(v,0);
+      accumulator.adjustValue(v,et);
+      counts.increment(v);
+    }
+  }
+  LOG.info("Profile request complete, propagating to the street network");
+  makeSurfaces();
+  LOG.info("Profile request finished in {} seconds",(System.currentTimeMillis() - computationStartTime) / 1000.0);
+  rr.cleanup();
+}

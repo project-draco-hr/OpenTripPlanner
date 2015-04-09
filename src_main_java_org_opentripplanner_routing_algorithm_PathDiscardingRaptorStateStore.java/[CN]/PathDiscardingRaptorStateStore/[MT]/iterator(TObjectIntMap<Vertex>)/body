@@ -1,0 +1,17 @@
+{
+  return new Iterator<State>(){
+    private TObjectIntIterator<Vertex> baseIterator=map.iterator();
+    @Override public boolean hasNext(){
+      return baseIterator.hasNext();
+    }
+    @Override public State next(){
+      baseIterator.advance();
+      long startTime=options.dateTime;
+      return new State(baseIterator.key(),null,baseIterator.value() + startTime,startTime,options);
+    }
+    @Override public void remove(){
+      baseIterator.remove();
+    }
+  }
+;
+}

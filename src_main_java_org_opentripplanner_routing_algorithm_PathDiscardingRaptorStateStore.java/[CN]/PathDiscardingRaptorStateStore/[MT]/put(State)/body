@@ -1,0 +1,11 @@
+{
+  Vertex v=s.getVertex();
+  if (!(v instanceof TransitStop))   throw new UnsupportedOperationException("Vertex is not a transit stop!");
+  TransitStop t=(TransitStop)v;
+  int elapsedTime=(int)s.getElapsedTimeSeconds();
+  if (elapsedTime < current.get(t)) {
+    current.put(t,elapsedTime);
+    return true;
+  }
+  return false;
+}
