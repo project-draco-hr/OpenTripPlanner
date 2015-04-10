@@ -14,7 +14,8 @@
   rr.dateTime=request.date.toDateMidnight(DateTimeZone.forTimeZone(graph.getTimeZone())).getMillis() / 1000 + request.fromTime;
   rr.setRoutingContext(graph);
   int i=1;
-  for (int startTime=request.toTime; startTime >= request.fromTime; startTime-=60) {
+  for (int startTime=request.toTime - 60; startTime >= request.fromTime; startTime-=60) {
+    if (++i % 30 == 0)     LOG.info("Completed {} RAPTOR searches",i);
     final long startTimeEpoch=request.date.toDateMidnight(DateTimeZone.forTimeZone(graph.getTimeZone())).getMillis() / 1000 + startTime;
     rr.dateTime=startTimeEpoch;
     Collection<State> raptorStates=Collections2.transform(states,new Function<State,State>(){

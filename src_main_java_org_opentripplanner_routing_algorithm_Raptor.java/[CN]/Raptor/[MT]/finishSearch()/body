@@ -1,0 +1,9 @@
+{
+  Collection<State> states=Lists.newArrayList();
+  for (Iterator<State> it=store.currentIterator(); it.hasNext(); ) {
+    states.add(it.next());
+  }
+  states.add(new State(options));
+  AStar astar=new AStar();
+  return astar.getShortestPathTree(options,10,null,states);
+}

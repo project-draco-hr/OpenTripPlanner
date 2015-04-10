@@ -1,0 +1,13 @@
+{
+  RoutingRequest rr=options.clone();
+  rr.modes=rr.modes.clone();
+  rr.modes.setTransit(false);
+  rr.worstTime=rr.dateTime + (long)(rr.maxWalkDistance / rr.walkSpeed);
+  rr.batch=true;
+  AStar astar=new AStar();
+  ShortestPathTree spt=astar.getShortestPathTree(rr);
+  for (  TransitStop tstop : rr.rctx.graph.index.stopVertexForStop.values()) {
+    State s=spt.getState(tstop);
+    if (s != null)     store.put(s);
+  }
+}
