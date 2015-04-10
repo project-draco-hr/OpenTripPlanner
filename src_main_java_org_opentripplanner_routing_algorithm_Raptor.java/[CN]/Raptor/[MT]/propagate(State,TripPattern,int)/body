@@ -25,7 +25,10 @@
       State s1=e.traverse(s0);
       if (s1 == null)       continue;
       if (s1.getVertex() instanceof TransitStop) {
-        store.put(s1);
+        if (store.put(s1)) {
+          markedPatterns.addAll(options.rctx.graph.index.patternsForStop.get(((TransitStop)s1.getVertex()).getStop()));
+        }
+        ;
       }
  else {
         states.add(s1);

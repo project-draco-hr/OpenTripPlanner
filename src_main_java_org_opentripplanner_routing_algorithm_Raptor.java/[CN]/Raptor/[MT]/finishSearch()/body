@@ -1,9 +1,15 @@
 {
   Collection<State> states=Lists.newArrayList();
   for (Iterator<State> it=store.currentIterator(); it.hasNext(); ) {
-    states.add(it.next());
+    State s=it.next();
+    states.add(s);
   }
+  TraverseModeSet oldModes=options.modes;
+  options.modes.clone();
+  options.modes.setTransit(false);
   states.add(new State(options));
   AStar astar=new AStar();
-  return astar.getShortestPathTree(options,10,null,states);
+  ShortestPathTree spt=astar.getShortestPathTree(options,10,null,states);
+  options.modes=oldModes;
+  return spt;
 }

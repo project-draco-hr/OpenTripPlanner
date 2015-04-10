@@ -4,7 +4,11 @@
     for (    Edge e : s0.getVertex().getOutgoing()) {
       if (e instanceof SimpleTransfer) {
         State s1=e.traverse(s0);
-        if (s1 != null)         store.put(s1);
+        if (s1 != null) {
+          if (store.put(s1)) {
+            markedPatterns.addAll(options.rctx.graph.index.patternsForStop.get(((TransitStop)s1.getVertex()).getStop()));
+          }
+        }
       }
     }
   }

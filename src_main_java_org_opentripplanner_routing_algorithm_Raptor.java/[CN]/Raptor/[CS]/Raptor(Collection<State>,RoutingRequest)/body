@@ -3,5 +3,6 @@
   this.options=options;
   for (  State state : states) {
     store.put(state);
+    markedPatterns.addAll(options.rctx.graph.index.patternsForStop.get(((TransitStop)state.getVertex()).getStop()));
   }
 }
