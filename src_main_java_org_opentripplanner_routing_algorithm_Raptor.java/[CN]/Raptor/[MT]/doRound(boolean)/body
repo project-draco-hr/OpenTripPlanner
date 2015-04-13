@@ -9,7 +9,9 @@
       propagate(time,tp,i);
     }
   }
-  store.proceed();
-  findTransfers();
+  if (!isLast) {
+    store.proceed();
+    findTransfers();
+  }
   return !markedPatterns.isEmpty();
 }
