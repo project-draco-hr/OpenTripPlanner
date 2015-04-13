@@ -1,13 +1,11 @@
 {
-  for (Iterator<State> stateIt=store.prevIterator(); stateIt.hasNext(); ) {
-    State s0=stateIt.next();
-    for (    Edge e : s0.getVertex().getOutgoing()) {
+  for (TObjectIntIterator<TransitStop> stateIt=store.prevIterator(); stateIt.hasNext(); ) {
+    stateIt.advance();
+    for (    Edge e : stateIt.key().getOutgoing()) {
       if (e instanceof SimpleTransfer) {
-        State s1=e.traverse(s0);
-        if (s1 != null) {
-          if (store.put(s1)) {
-            markedPatterns.addAll(options.rctx.graph.index.patternsForStop.get(((TransitStop)s1.getVertex()).getStop()));
-          }
+        TransitStop to=(TransitStop)e.getToVertex();
+        if (store.put(to,(int)(stateIt.value() + e.getDistance() / options.walkSpeed))) {
+          markedPatterns.addAll(options.rctx.graph.index.patternsForStop.get(to.getStop()));
         }
       }
     }

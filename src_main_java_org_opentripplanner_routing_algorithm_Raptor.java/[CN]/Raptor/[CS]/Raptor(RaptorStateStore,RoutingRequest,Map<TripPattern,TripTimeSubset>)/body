@@ -1,0 +1,9 @@
+{
+  this.options=options;
+  this.store=store;
+  this.times=times;
+  for (TObjectIntIterator<TransitStop> it=store.currentIterator(); it.hasNext(); ) {
+    it.advance();
+    markedPatterns.addAll(options.rctx.graph.index.patternsForStop.get(it.key().getStop()));
+  }
+}

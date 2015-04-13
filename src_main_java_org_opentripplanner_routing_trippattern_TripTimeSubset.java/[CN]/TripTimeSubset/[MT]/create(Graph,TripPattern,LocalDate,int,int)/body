@@ -1,0 +1,27 @@
+{
+  List<TripTimes> tripTimes=Lists.newArrayList();
+  for (  TripTimes tt : tp.scheduledTimetable.tripTimes) {
+    if (!graph.index.servicesRunning(date).get(tt.serviceCode))     continue;
+    if (tt.scheduledArrivalTimes[0] + tt.timeShift <= endTime && tt.scheduledDepartureTimes[tt.scheduledDepartureTimes.length - 1] + tt.timeShift >= startTime)     tripTimes.add(tt);
+  }
+  if (tripTimes.isEmpty())   return null;
+  Collections.sort(tripTimes,new Comparator<TripTimes>(){
+    @Override public int compare(    TripTimes o1,    TripTimes o2){
+      return (o1.scheduledArrivalTimes[0] + o1.timeShift) - (o2.scheduledArrivalTimes[0] + o2.timeShift);
+    }
+  }
+);
+  TripTimeSubset tts=new TripTimeSubset();
+  tts.tripCount=tripTimes.size();
+  tts.tripLength=tripTimes.get(0).scheduledArrivalTimes.length;
+  tts.times=new int[tts.tripCount * tts.tripLength * 2];
+  int tripIdx=0;
+  for (  TripTimes tt : tripTimes) {
+    for (int stopIdx=0; stopIdx < tts.tripLength; stopIdx++) {
+      tts.times[(tripIdx * tts.tripLength + stopIdx) * 2]=tt.scheduledArrivalTimes[stopIdx] + tt.timeShift;
+      tts.times[(tripIdx * tts.tripLength + stopIdx) * 2 + 1]=tt.scheduledDepartureTimes[stopIdx] + tt.timeShift;
+    }
+    tripIdx++;
+  }
+  return tts;
+}
