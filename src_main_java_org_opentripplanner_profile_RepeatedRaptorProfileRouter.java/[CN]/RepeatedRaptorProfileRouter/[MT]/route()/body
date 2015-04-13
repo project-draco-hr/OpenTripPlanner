@@ -22,7 +22,7 @@
       rss.put((TransitStop)state.getVertex(),(int)(state.getElapsedTimeSeconds() + startTime));
     }
     if (++i % 30 == 0)     LOG.info("Completed {} RAPTOR searches",i);
-    Raptor raptor=new Raptor(rss,rr,timetables);
+    Raptor raptor=new Raptor(rss,rr,request.date,timetables);
     raptor.run();
     for (TObjectIntIterator<TransitStop> it=raptor.iterator(); it.hasNext(); ) {
       it.advance();

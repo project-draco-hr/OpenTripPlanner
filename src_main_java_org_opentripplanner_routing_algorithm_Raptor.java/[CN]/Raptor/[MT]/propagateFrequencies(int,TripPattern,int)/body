@@ -3,6 +3,7 @@
   int bestFreqBoardTime=Integer.MAX_VALUE;
   FrequencyEntry bestFreq=null;
   for (  FrequencyEntry freq : tripPattern.scheduledTimetable.frequencyEntries) {
+    if (!options.rctx.graph.index.servicesRunning(date).get(freq.tripTimes.serviceCode))     continue;
     foundFrequencyEntry=true;
     int offsetSecs=freq.tripTimes.getScheduledDepartureTime(stopIndex);
     if (freq.endTime + offsetSecs < time)     continue;
