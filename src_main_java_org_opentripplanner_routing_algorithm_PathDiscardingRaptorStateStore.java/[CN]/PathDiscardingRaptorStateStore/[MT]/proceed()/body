@@ -1,4 +1,4 @@
 {
-  prev=new TObjectIntHashMap<TransitStop>(1000,0.75f,Integer.MAX_VALUE);
-  prev.putAll(current);
+  matrix[current + 1].putAll(matrix[current]);
+  current++;
 }
