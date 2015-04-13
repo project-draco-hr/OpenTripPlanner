@@ -1,35 +1,41 @@
 {
   LOG.info("Propagating from transit stops to the street network...");
-  List<State> lower=Lists.newArrayList();
-  List<State> upper=Lists.newArrayList();
-  List<State> avg=Lists.newArrayList();
-  RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
-  rr.batch=(true);
-  rr.from=new GenericLocation(request.fromLat,request.fromLon);
-  rr.setRoutingContext(graph);
-  rr.longDistance=true;
-  rr.dominanceFunction=new DominanceFunction.EarliestArrival();
-  rr.setNumItineraries(1);
-  rr.worstTime=rr.dateTime + 2 * 60 * 60;
-  long startTime=rr.dateTime;
-  State origin=new State(rr);
-  for (  Vertex v : mins.keySet()) {
-    if (maxs.get(v) > 60 * 999)     continue;
-    lower.add(new State(v,null,mins.get(v) + startTime,startTime,rr));
-    upper.add(new State(v,null,maxs.get(v) + startTime,startTime,rr));
-    long average=accumulator.get(v) / counts.get(v);
-    avg.add(new State(v,null,average + startTime,startTime,rr));
+  TimeSurface minSurface=new TimeSurface(this);
+  TimeSurface avgSurface=new TimeSurface(this);
+  TimeSurface maxSurface=new TimeSurface(this);
+  StopTreeCache stopTreeCache=graph.index.getStopTreeCache();
+  for (  TransitStop tstop : mins.keySet()) {
+    int lb0=mins.get(tstop);
+    int ub0=maxs.get(tstop);
+    int avg0=(int)(accumulator.get(tstop) / counts.get(tstop));
+    TObjectIntMap<Vertex> distanceToVertex=stopTreeCache.getDistancesForStop(tstop);
+    for (TObjectIntIterator<Vertex> iter=distanceToVertex.iterator(); iter.hasNext(); ) {
+      iter.advance();
+      Vertex vertex=iter.key();
+      int egressWalkTimeSeconds=(int)(iter.value() / request.walkSpeed);
+      if (egressWalkTimeSeconds > request.maxWalkTime * 60) {
+        continue;
+      }
+      int propagated_min=lb0 + egressWalkTimeSeconds;
+      int propagated_max=ub0 + egressWalkTimeSeconds;
+      int propagated_avg=avg0 + egressWalkTimeSeconds;
+      int existing_min=minSurface.times.get(vertex);
+      int existing_max=maxSurface.times.get(vertex);
+      int existing_avg=avgSurface.times.get(vertex);
+      if (existing_min == TimeSurface.UNREACHABLE || existing_min > propagated_min) {
+        minSurface.times.put(vertex,propagated_min);
+      }
+      if (existing_max == TimeSurface.UNREACHABLE || existing_max > propagated_max) {
+        maxSurface.times.put(vertex,propagated_max);
+      }
+      if (existing_avg == TimeSurface.UNREACHABLE || existing_avg > propagated_avg) {
+        avgSurface.times.put(vertex,propagated_avg);
+      }
+    }
   }
-  lower.add(origin);
-  upper.add(origin);
-  avg.add(origin);
-  timeSurfaceRangeSet=new TimeSurface.RangeSet();
-  AStar astar=new AStar();
-  timeSurfaceRangeSet.min=new TimeSurface(astar.getShortestPathTree(rr,20,null,lower),false);
-  astar=new AStar();
-  timeSurfaceRangeSet.max=new TimeSurface(astar.getShortestPathTree(rr,20,null,upper),false);
-  astar=new AStar();
-  timeSurfaceRangeSet.avg=new TimeSurface(astar.getShortestPathTree(rr,20,null,avg),false);
-  rr.cleanup();
   LOG.info("Done with propagation.");
+  timeSurfaceRangeSet=new TimeSurface.RangeSet();
+  timeSurfaceRangeSet.min=minSurface;
+  timeSurfaceRangeSet.max=maxSurface;
+  timeSurfaceRangeSet.avg=avgSurface;
 }

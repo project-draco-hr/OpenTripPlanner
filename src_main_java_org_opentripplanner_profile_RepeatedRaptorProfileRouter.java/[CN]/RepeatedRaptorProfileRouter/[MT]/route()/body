@@ -15,7 +15,7 @@
   rr.setRoutingContext(graph);
   Map<TripPattern,TripTimeSubset> timetables=TripTimeSubset.indexGraph(graph,request.date,request.fromTime,request.toTime + 120 * 60);
   int i=1;
-  PathDiscardingRaptorStateStore rss=new PathDiscardingRaptorStateStore(rr.maxTransfers + 3);
+  PathDiscardingRaptorStateStore rss=new PathDiscardingRaptorStateStore(rr.maxTransfers + 3,request.toTime + 120 * 60);
   for (int startTime=request.toTime - 60; startTime >= request.fromTime; startTime-=60) {
     rss.restart();
     for (    State state : states) {
@@ -27,7 +27,7 @@
     for (TObjectIntIterator<TransitStop> it=raptor.iterator(); it.hasNext(); ) {
       it.advance();
       int et=it.value() - startTime;
-      Vertex v=it.key();
+      TransitStop v=it.key();
       if (et < mins.get(v))       mins.put(v,et);
       if (et > maxs.get(v))       maxs.put(v,et);
       accumulator.putIfAbsent(v,0);
