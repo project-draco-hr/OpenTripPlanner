@@ -1,0 +1,16 @@
+{
+  TripTimeSubset tts=times.get(tripPattern);
+  if (tts == null)   return;
+  int tripIndex=tts.findTripAfter(stopIndex,time);
+  if (tripIndex == -1)   return;
+  for (int reachedIdx=stopIndex + 1; reachedIdx < tripPattern.stopVertices.length; reachedIdx++) {
+    TransitStop v=tripPattern.stopVertices[reachedIdx];
+    int arrTime=tts.getArrivalTime(tripIndex,reachedIdx);
+    if (store.put(v,arrTime)) {
+      for (      TripPattern tp : options.rctx.graph.index.patternsForStop.get(v.getStop())) {
+        if (tp != tripPattern)         markedPatterns.add(tp);
+      }
+      markedStops.add(v);
+    }
+  }
+}

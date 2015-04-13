@@ -1,0 +1,31 @@
+{
+  boolean foundFrequencyEntry=false;
+  int bestFreqBoardTime=Integer.MAX_VALUE;
+  FrequencyEntry bestFreq=null;
+  for (  FrequencyEntry freq : tripPattern.scheduledTimetable.frequencyEntries) {
+    foundFrequencyEntry=true;
+    int offsetSecs=freq.tripTimes.getScheduledDepartureTime(stopIndex);
+    if (freq.endTime + offsetSecs < time)     continue;
+    int boardTime=time + freq.headway;
+    if (freq.startTime + offsetSecs > time) {
+      boardTime+=freq.startTime + offsetSecs - time;
+    }
+    if (boardTime < bestFreqBoardTime) {
+      bestFreqBoardTime=boardTime;
+      bestFreq=freq;
+    }
+  }
+  if (bestFreq == null)   return foundFrequencyEntry;
+  int boardOffset=bestFreq.tripTimes.getScheduledDepartureTime(stopIndex);
+  for (int reachedIdx=stopIndex + 1; reachedIdx < bestFreq.tripTimes.getNumStops(); reachedIdx++) {
+    TransitStop v=tripPattern.stopVertices[reachedIdx];
+    int arrTime=bestFreqBoardTime + bestFreq.tripTimes.getScheduledArrivalTime(reachedIdx) - boardOffset;
+    if (store.put(v,arrTime)) {
+      for (      TripPattern tp : options.rctx.graph.index.patternsForStop.get(v.getStop())) {
+        if (tp != tripPattern)         markedPatterns.add(tp);
+      }
+      markedStops.add(v);
+    }
+  }
+  return foundFrequencyEntry;
+}
