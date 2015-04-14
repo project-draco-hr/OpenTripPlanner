@@ -2,6 +2,7 @@
   this.graph=graph;
   this.cache=CacheBuilder.newBuilder().maximumSize(1000).build(new CacheLoader<CacheKey,Map<TripPattern,TripTimeSubset>>(){
     @Override public Map<TripPattern,TripTimeSubset> load(    CacheKey key) throws Exception {
+      LOG.info("Compacted and filtered timetables not found for key {}, making them...",key);
       return TripTimeSubset.indexGraph(graph,key.servicesRunning,key.startTime,key.endTime);
     }
   }
