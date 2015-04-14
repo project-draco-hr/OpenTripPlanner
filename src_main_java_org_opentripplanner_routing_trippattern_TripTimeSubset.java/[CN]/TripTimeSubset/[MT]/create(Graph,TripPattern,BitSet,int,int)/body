@@ -1,7 +1,7 @@
 {
   List<TripTimes> tripTimes=Lists.newArrayList();
   for (  TripTimes tt : tp.scheduledTimetable.tripTimes) {
-    if (!graph.index.servicesRunning(date).get(tt.serviceCode))     continue;
+    if (!servicesRunning.get(tt.serviceCode))     continue;
     if (tt.scheduledArrivalTimes[0] + tt.timeShift <= endTime && tt.scheduledDepartureTimes[tt.scheduledDepartureTimes.length - 1] + tt.timeShift >= startTime)     tripTimes.add(tt);
   }
   if (tripTimes.isEmpty())   return null;

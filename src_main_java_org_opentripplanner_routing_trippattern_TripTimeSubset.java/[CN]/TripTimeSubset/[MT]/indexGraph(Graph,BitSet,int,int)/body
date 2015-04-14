@@ -1,0 +1,8 @@
+{
+  Map<TripPattern,TripTimeSubset> ret=Maps.newHashMap();
+  for (  TripPattern tp : graph.index.patternForId.values()) {
+    TripTimeSubset tts=create(graph,tp,servicesRunning,startTime,endTime);
+    if (tts != null)     ret.put(tp,tts);
+  }
+  return ret;
+}
