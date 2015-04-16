@@ -2,7 +2,7 @@
   StreetTraversalPermission permission=null;
   if (entity.isGeneralAccessDenied()) {
     permission=StreetTraversalPermission.NONE;
-    if (entity.isMotorcarExplicitlyAllowed()) {
+    if (entity.isMotorcarExplicitlyAllowed() || entity.isMotorVehicleExplicitlyAllowed()) {
       permission=permission.add(StreetTraversalPermission.CAR);
     }
     if (entity.isBicycleExplicitlyAllowed()) {
@@ -15,10 +15,10 @@
  else {
     permission=def;
   }
-  if (entity.isMotorcarExplicitlyDenied()) {
+  if (entity.isMotorcarExplicitlyDenied() || entity.isMotorVehicleExplicitlyDenied()) {
     permission=permission.remove(StreetTraversalPermission.CAR);
   }
- else   if (entity.hasTag("motorcar")) {
+ else   if (entity.hasTag("motorcar") || entity.hasTag("motor_vehicle")) {
     permission=permission.add(StreetTraversalPermission.CAR);
   }
   if (entity.isBicycleExplicitlyDenied()) {
