@@ -23,12 +23,6 @@
   if (nUnlinked > 0) {
     LOG.warn("{} transit stops were not close enough to the street network to be connected to it.",nUnlinked);
   }
-  for (  HashSet<StreetEdge> toRemove : networkLinkerLibrary.replacements.keySet()) {
-    for (    StreetEdge edge : toRemove) {
-      edge.getFromVertex().removeOutgoing(edge);
-      edge.getToVertex().removeIncoming(edge);
-    }
-  }
   for (  LinkedList<P2<StreetEdge>> toAdd : networkLinkerLibrary.replacements.values()) {
     for (    P2<StreetEdge> edges : toAdd) {
       StreetEdge edge1=edges.first;
