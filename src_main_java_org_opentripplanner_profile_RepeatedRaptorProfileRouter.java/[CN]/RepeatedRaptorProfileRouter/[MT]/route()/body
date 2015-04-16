@@ -2,26 +2,13 @@
   long computationStartTime=System.currentTimeMillis();
   LOG.info("Begin profile request");
   LOG.info("Finding initial stops");
-  Collection<State> states=findInitialStops(false);
-  LOG.info("Found {} initial stops",states.size());
-  final RoutingRequest rr=new RoutingRequest();
-  rr.batch=true;
-  rr.maxTransfers=5;
-  rr.arriveBy=false;
-  rr.modes=new TraverseModeSet("WALK,TRANSIT");
-  rr.from=new GenericLocation(request.fromLat,request.fromLon);
-  rr.to=request.analyst ? new GenericLocation(request.fromLat,request.fromLon) : new GenericLocation(request.toLat,request.toLon);
-  rr.dateTime=request.date.toDateMidnight(DateTimeZone.forTimeZone(graph.getTimeZone())).getMillis() / 1000 + request.fromTime;
-  rr.setRoutingContext(graph);
+  TObjectIntMap<TransitStop> accessTimes=findInitialStops(false);
+  LOG.info("Found {} initial stops",accessTimes.size());
   Map<TripPattern,TripTimeSubset> timetables=TripTimeSubset.indexGraph(graph,request.date,request.fromTime,request.toTime + MAX_DURATION);
   int i=1;
   for (int startTime=request.toTime - 60; startTime >= request.fromTime; startTime-=60) {
-    PathDiscardingRaptorStateStore rss=new PathDiscardingRaptorStateStore(rr.maxTransfers + 2,startTime + MAX_DURATION);
-    for (    State state : states) {
-      rss.put((TransitStop)state.getVertex(),(int)(state.getElapsedTimeSeconds() + startTime));
-    }
     if (++i % 30 == 0)     LOG.info("Completed {} RAPTOR searches",i);
-    Raptor raptor=new Raptor(rss,rr,request.date,timetables);
+    Raptor raptor=new Raptor(graph,3,request.walkSpeed,accessTimes,startTime,request.date,timetables);
     raptor.run();
     for (TObjectIntIterator<TransitStop> it=raptor.iterator(); it.hasNext(); ) {
       it.advance();

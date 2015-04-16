@@ -3,7 +3,7 @@
   int bestFreqBoardTime=Integer.MAX_VALUE;
   FrequencyEntry bestFreq=null;
   for (  FrequencyEntry freq : tripPattern.scheduledTimetable.frequencyEntries) {
-    if (!options.rctx.graph.index.servicesRunning(date).get(freq.tripTimes.serviceCode))     continue;
+    if (!graph.index.servicesRunning(date).get(freq.tripTimes.serviceCode))     continue;
     foundFrequencyEntry=true;
     int offsetSecs=freq.tripTimes.getScheduledDepartureTime(stopIndex);
     if (freq.endTime + offsetSecs < time)     continue;
@@ -21,11 +21,12 @@
   for (int reachedIdx=stopIndex + 1; reachedIdx < bestFreq.tripTimes.getNumStops(); reachedIdx++) {
     TransitStop v=tripPattern.stopVertices[reachedIdx];
     int arrTime=bestFreqBoardTime + bestFreq.tripTimes.getScheduledArrivalTime(reachedIdx) - boardOffset;
-    if (store.put(v,arrTime)) {
-      for (      TripPattern tp : options.rctx.graph.index.patternsForStop.get(v.getStop())) {
+    if (arrTime < bestFinalTimes.get(v)) {
+      bestFinalTimes.put(v,arrTime);
+      markedStops.add(v);
+      for (      TripPattern tp : graph.index.patternsForStop.get(v.getStop())) {
         if (tp != tripPattern)         markedPatterns.add(tp);
       }
-      markedStops.add(v);
     }
   }
   return foundFrequencyEntry;

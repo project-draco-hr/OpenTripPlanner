@@ -2,7 +2,6 @@
   double lat=dest ? request.toLat : request.fromLat;
   double lon=dest ? request.toLon : request.fromLon;
   QualifiedModeSet modes=dest ? request.accessModes : request.egressModes;
-  List<State> stops=Lists.newArrayList();
   RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
   rr.dominanceFunction=new DominanceFunction.EarliestArrival();
   rr.batch=true;
@@ -15,10 +14,11 @@
   rr.longDistance=true;
   rr.setNumItineraries(1);
   ShortestPathTree spt=astar.getShortestPathTree(rr,5);
+  TObjectIntMap<TransitStop> accessTimes=new TObjectIntHashMap<TransitStop>();
   for (  TransitStop tstop : graph.index.stopVertexForStop.values()) {
     State s=spt.getState(tstop);
     if (s != null) {
-      stops.add(s);
+      accessTimes.put(tstop,(int)s.getElapsedTimeSeconds());
     }
   }
   timeSurfaceRangeSet=new TimeSurface.RangeSet();
@@ -26,5 +26,5 @@
   timeSurfaceRangeSet.max=new TimeSurface(spt,false);
   timeSurfaceRangeSet.avg=new TimeSurface(spt,false);
   rr.cleanup();
-  return stops;
+  return accessTimes;
 }
