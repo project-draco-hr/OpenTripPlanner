@@ -6,7 +6,7 @@
   LOG.info("Found {} initial stops",states.size());
   final RoutingRequest rr=new RoutingRequest();
   rr.batch=true;
-  rr.maxTransfers=3;
+  rr.maxTransfers=5;
   rr.arriveBy=false;
   rr.modes=new TraverseModeSet("WALK,TRANSIT");
   rr.from=new GenericLocation(request.fromLat,request.fromLon);
@@ -15,9 +15,8 @@
   rr.setRoutingContext(graph);
   Map<TripPattern,TripTimeSubset> timetables=graph.tripTimeSubsetCache.getOrMake(request.date,request.fromTime,request.toTime + 120 * 60);
   int i=1;
-  PathDiscardingRaptorStateStore rss=new PathDiscardingRaptorStateStore(rr.maxTransfers + 2,request.toTime + 120 * 60);
   for (int startTime=request.toTime - 60; startTime >= request.fromTime; startTime-=60) {
-    rss.restart();
+    PathDiscardingRaptorStateStore rss=new PathDiscardingRaptorStateStore(rr.maxTransfers + 2,startTime + 120 * 60);
     for (    State state : states) {
       rss.put((TransitStop)state.getVertex(),(int)(state.getElapsedTimeSeconds() + startTime));
     }

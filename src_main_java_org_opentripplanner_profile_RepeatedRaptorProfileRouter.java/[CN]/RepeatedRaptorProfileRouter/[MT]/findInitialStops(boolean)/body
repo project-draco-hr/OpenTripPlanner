@@ -21,6 +21,10 @@
       stops.add(s);
     }
   }
+  timeSurfaceRangeSet=new TimeSurface.RangeSet();
+  timeSurfaceRangeSet.min=new TimeSurface(spt,false);
+  timeSurfaceRangeSet.max=new TimeSurface(spt,false);
+  timeSurfaceRangeSet.avg=new TimeSurface(spt,false);
   rr.cleanup();
   return stops;
 }
