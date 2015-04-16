@@ -1,9 +1,0 @@
-{
-  if (this == o)   return true;
-  if (o == null || getClass() != o.getClass())   return false;
-  CacheKey cacheKey=(CacheKey)o;
-  if (endTime != cacheKey.endTime)   return false;
-  if (startTime != cacheKey.startTime)   return false;
-  if (!servicesRunning.equals(cacheKey.servicesRunning))   return false;
-  return true;
-}

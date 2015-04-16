@@ -13,7 +13,7 @@
   rr.to=request.analyst ? new GenericLocation(request.fromLat,request.fromLon) : new GenericLocation(request.toLat,request.toLon);
   rr.dateTime=request.date.toDateMidnight(DateTimeZone.forTimeZone(graph.getTimeZone())).getMillis() / 1000 + request.fromTime;
   rr.setRoutingContext(graph);
-  Map<TripPattern,TripTimeSubset> timetables=graph.tripTimeSubsetCache.getOrMake(request.date,request.fromTime,request.toTime + 120 * 60);
+  Map<TripPattern,TripTimeSubset> timetables=TripTimeSubset.indexGraph(graph,request.date,request.fromTime,request.toTime + 120 * 60);
   int i=1;
   PathDiscardingRaptorStateStore rss=new PathDiscardingRaptorStateStore(rr.maxTransfers + 2,request.toTime + 120 * 60);
   for (int startTime=request.toTime - 60; startTime >= request.fromTime; startTime-=60) {
