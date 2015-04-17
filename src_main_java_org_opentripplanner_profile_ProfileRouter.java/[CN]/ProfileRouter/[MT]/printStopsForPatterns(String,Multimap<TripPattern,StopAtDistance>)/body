@@ -1,0 +1,8 @@
+{
+  for (  TripPattern tp : stopClustersByPattern.keySet()) {
+    LOG.info("{} {}",prefix,tp.code);
+    for (    StopAtDistance sd : stopClustersByPattern.get(tp)) {
+      LOG.info("    {}",sd);
+    }
+  }
+}

@@ -11,6 +11,9 @@
     return false;
   }
   TripTimes updatedTripTimes=pattern.scheduledTimetable.createUpdatedTripTimes(tripUpdate,timeZone,serviceDate);
+  if (updatedTripTimes == null) {
+    return false;
+  }
   boolean success=buffer.update(pattern,updatedTripTimes,serviceDate);
   return success;
 }

@@ -1,0 +1,10 @@
+{
+  boolean allSucceeded=true;
+synchronized (graphSources) {
+    Collection<String> routerIds=getRouterIds();
+    for (    String routerId : routerIds) {
+      allSucceeded&=reloadGraph(routerId,preEvict,force);
+    }
+  }
+  return allSucceeded;
+}

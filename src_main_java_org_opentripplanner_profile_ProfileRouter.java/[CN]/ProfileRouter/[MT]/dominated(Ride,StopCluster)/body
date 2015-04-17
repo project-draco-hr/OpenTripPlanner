@@ -1,0 +1,13 @@
+{
+  if (newRide.dlb > MAX_DURATION)   return true;
+  Set<QualifiedMode> newRideAccessModes=accessModesForRide(newRide);
+  for (  Ride oldRide : retainedRides.get(atCluster)) {
+    if (oldRide.pathLength < newRide.pathLength && oldRide.dlb < newRide.dlb && oldRide.dub < newRide.dub && accessModesForRide(oldRide).containsAll(newRideAccessModes)) {
+      return true;
+    }
+    if (newRide.dlb > oldRide.dub + request.suboptimalMinutes * 60) {
+      return true;
+    }
+  }
+  return false;
+}

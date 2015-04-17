@@ -11,4 +11,5 @@
   matchBusRoutesToStreets=config.path("matchBusRoutesToStreets").asBoolean(false);
   fetchElevationUS=config.path("fetchElevationUS").asBoolean(false);
   fareServiceFactory=DefaultFareServiceFactory.fromConfig(config.path("fares"));
+  customNamer=CustomNamer.CustomNamerFactory.fromConfig(config.path("osmNaming"));
 }

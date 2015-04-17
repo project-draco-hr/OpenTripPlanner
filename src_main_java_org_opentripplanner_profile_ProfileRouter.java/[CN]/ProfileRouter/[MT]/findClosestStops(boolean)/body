@@ -4,7 +4,7 @@
   for (  QualifiedMode qmode : qModes.qModes) {
     LOG.info("{} mode {}",dest ? "egress" : "access",qmode);
     for (    StopAtDistance sd : findClosestStops(qmode,dest)) {
-      pathsByStop.put(sd.stop,sd);
+      pathsByStop.put(sd.stopCluster,sd);
     }
   }
   return pathsByStop;

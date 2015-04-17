@@ -1,10 +1,11 @@
 {
   Stats stats=new Stats();
   stats.min=0;
-  List<Integer> departures=getSortedStoptimes(window,false);
+  TIntList departures=getSortedStoptimes(window,false);
   int last=window.from;
   double avgAccumulated=0.0;
-  for (  int dep : departures) {
+  for (TIntIterator it=departures.iterator(); it.hasNext(); ) {
+    int dep=it.next();
     int maxWait=dep - last;
     if (maxWait > stats.max)     stats.max=maxWait;
     avgAccumulated+=(maxWait / 2.0) * maxWait;

@@ -5,7 +5,7 @@
   List<Stop> stops=new ArrayList<>(stopTimeUpdates.size());
   for (int index=0; index < stopTimeUpdates.size(); ++index) {
     StopTimeUpdate stopTimeUpdate=stopTimeUpdates.get(index);
-    boolean skippedStop=stopTimeUpdate.hasScheduleRelationship() && stopTimeUpdate.getScheduleRelationship().equals(StopTimeUpdate.ScheduleRelationship.SKIPPED);
+    boolean skippedStop=isStopSkipped(stopTimeUpdate);
     if (stopTimeUpdate.hasStopSequence()) {
       Integer stopSequence=stopTimeUpdate.getStopSequence();
       if (stopSequence < 0) {
@@ -19,8 +19,6 @@
       previousStopSequence=stopSequence;
     }
  else {
-      LOG.warn("Trip update misses some stop sequences, skipping.");
-      return null;
     }
     if (stopTimeUpdate.hasStopId()) {
       Stop stop=getStopForStopId(stopTimeUpdate.getStopId());
@@ -49,9 +47,13 @@
         previousTime=time;
       }
  else {
-        if (index > 0) {
-          LOG.warn("Trip update misses arrival time, skipping.");
-          return null;
+        for (int earlierIndex=0; earlierIndex < index; earlierIndex++) {
+          StopTimeUpdate earlierStopTimeUpdate=stopTimeUpdates.get(earlierIndex);
+          boolean earlierSkippedStop=isStopSkipped(earlierStopTimeUpdate);
+          if (!earlierSkippedStop) {
+            LOG.warn("Trip update misses arrival time, skipping.");
+            return null;
+          }
         }
       }
       if (stopTimeUpdate.hasDeparture() && stopTimeUpdate.getDeparture().hasTime()) {
@@ -63,9 +65,13 @@
         previousTime=time;
       }
  else {
-        if (index < stopTimeUpdates.size() - 1) {
-          LOG.warn("Trip update misses departure time, skipping.");
-          return null;
+        for (int laterIndex=stopTimeUpdates.size() - 1; laterIndex > index; laterIndex--) {
+          StopTimeUpdate laterStopTimeUpdate=stopTimeUpdates.get(laterIndex);
+          boolean laterSkippedStop=isStopSkipped(laterStopTimeUpdate);
+          if (!laterSkippedStop) {
+            LOG.warn("Trip update misses departure time, skipping.");
+            return null;
+          }
         }
       }
     }

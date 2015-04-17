@@ -3,8 +3,8 @@
   if (vertex instanceof TransitStop) {
     StopAtDistance sd=new StopAtDistance(state,qmode);
     if (qmode.mode == TraverseMode.CAR && sd.etime < minTravelTimeSeconds)     return;
-    if (stopClustersFound.containsKey(sd.stop))     return;
+    if (stopClustersFound.containsKey(sd.stopCluster))     return;
     LOG.debug("found stop cluster: {}",sd);
-    stopClustersFound.put(sd.stop,sd);
+    stopClustersFound.put(sd.stopCluster,sd);
   }
 }

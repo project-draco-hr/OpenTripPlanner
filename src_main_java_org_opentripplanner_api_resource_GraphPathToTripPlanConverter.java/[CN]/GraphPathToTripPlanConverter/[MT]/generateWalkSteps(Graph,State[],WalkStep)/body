@@ -4,10 +4,13 @@
   double lastAngle=0, distance=0;
   int roundaboutExit=0;
   String roundaboutPreviousStreet=null;
+  State onBikeRentalState=null, offBikeRentalState=null;
   for (int i=0; i < states.length - 1; i++) {
     State backState=states[i];
     State forwardState=states[i + 1];
     Edge edge=forwardState.getBackEdge();
+    if (edge instanceof RentABikeOnEdge)     onBikeRentalState=forwardState;
+    if (edge instanceof RentABikeOffEdge)     offBikeRentalState=forwardState;
     boolean createdNewStep=false, disableZagRemovalForThisStep=false;
     if (edge instanceof FreeEdge) {
       continue;
@@ -185,6 +188,12 @@
     step.addAlerts(graph.streetNotesService.getNotes(forwardState));
     lastAngle=DirectionUtils.getLastAngle(geom);
     step.edges.add(edge);
+  }
+  if (onBikeRentalState != null && !steps.isEmpty()) {
+    steps.get(steps.size() - 1).bikeRentalOnStation=new BikeRentalStationInfo((BikeRentalStationVertex)onBikeRentalState.getBackEdge().getToVertex());
+  }
+  if (offBikeRentalState != null && !steps.isEmpty()) {
+    steps.get(0).bikeRentalOffStation=new BikeRentalStationInfo((BikeRentalStationVertex)offBikeRentalState.getBackEdge().getFromVertex());
   }
   return steps;
 }

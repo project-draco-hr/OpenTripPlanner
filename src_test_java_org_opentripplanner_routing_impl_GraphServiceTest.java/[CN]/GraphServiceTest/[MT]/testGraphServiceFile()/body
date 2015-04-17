@@ -13,13 +13,13 @@
   int verticesCount=smallGraph.getVertices().size();
   int edgesCount=smallGraph.getEdges().size();
   graphSourceFactory.save("A",new ByteArrayInputStream(smallGraphData));
-  graphService.reloadGraphs(false);
+  graphService.reloadGraphs(false,true);
   graph=graphService.getRouter("A").graph;
   assertEquals(verticesCount,graph.getVertices().size());
   assertEquals(edgesCount,graph.getEdges().size());
   boolean deleted=new File(new File(basePath,"A"),InputStreamGraphSource.GRAPH_FILENAME).delete();
   assertTrue(deleted);
-  graphService.reloadGraphs(false);
+  graphService.reloadGraphs(false,true);
   assertEquals(0,graphService.getRouterIds().size());
   registered=graphService.registerGraph("A",graphSourceFactory.createGraphSource("A"));
   assertFalse(registered);

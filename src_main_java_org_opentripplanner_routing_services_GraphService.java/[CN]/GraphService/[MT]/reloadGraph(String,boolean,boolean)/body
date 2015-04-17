@@ -1,0 +1,13 @@
+{
+synchronized (graphSources) {
+    GraphSource graphSource=graphSources.get(routerId);
+    if (graphSource == null) {
+      return false;
+    }
+    boolean success=graphSource.reload(force,preEvict);
+    if (!success) {
+      evictRouter(routerId);
+    }
+    return success;
+  }
+}
