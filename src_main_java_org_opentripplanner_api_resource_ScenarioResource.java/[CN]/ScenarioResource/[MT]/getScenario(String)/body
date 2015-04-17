@@ -1,0 +1,9 @@
+{
+  Scenario scenario=scenarioStore.scenarios.get(scenarioId);
+  if (scenario == null) {
+    return javax.ws.rs.core.Response.status(Response.Status.NOT_FOUND).entity(MSG_404).build();
+  }
+ else {
+    return javax.ws.rs.core.Response.status(javax.ws.rs.core.Response.Status.OK).entity(scenario).build();
+  }
+}

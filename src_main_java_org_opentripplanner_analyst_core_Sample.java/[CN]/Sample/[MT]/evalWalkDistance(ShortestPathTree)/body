@@ -3,8 +3,7 @@
   State s1=spt.getState(v1);
   double m0=Double.NaN;
   double m1=Double.NaN;
-  double walkSpeed=spt.getOptions().walkSpeed;
-  if (s0 != null)   m0=(s0.getWalkDistance() + t0 * walkSpeed);
-  if (s1 != null)   m1=(s1.getWalkDistance() + t1 * walkSpeed);
+  if (s0 != null)   m0=(s0.getWalkDistance() + d0);
+  if (s1 != null)   m1=(s1.getWalkDistance() + d1);
   return (m0 < m1) ? m0 : m1;
 }
