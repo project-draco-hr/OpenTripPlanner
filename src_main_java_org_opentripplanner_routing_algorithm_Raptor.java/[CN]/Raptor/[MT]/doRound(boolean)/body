@@ -4,13 +4,13 @@
   markedStops.clear();
   PATTERNS:   for (  TripPattern tp : oldMarkedPatterns) {
     STOPS:     for (int i=0; i < tp.stopVertices.length; i++) {
-      int time=transferStops.get(tp.stopVertices[i]);
+      int time=store.getPrev(tp.stopVertices[i]);
       if (time == Integer.MAX_VALUE)       continue STOPS;
       propagate(time,tp,i);
     }
   }
   if (!isLast) {
-    transferStops.clear();
+    store.proceed();
     findTransfers();
   }
   return !markedPatterns.isEmpty();

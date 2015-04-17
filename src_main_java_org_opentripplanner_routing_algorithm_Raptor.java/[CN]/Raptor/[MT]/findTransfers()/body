@@ -1,13 +1,11 @@
 {
   for (  TransitStop tstop : markedStops) {
-    int timeAtOriginStop=bestFinalTimes.get(tstop);
-    if (timeAtOriginStop < transferStops.get(tstop))     transferStops.put(tstop,timeAtOriginStop);
+    int timeAtOriginStop=store.getTime(tstop);
     for (    Edge e : tstop.getOutgoing()) {
       if (e instanceof SimpleTransfer) {
         TransitStop to=(TransitStop)e.getToVertex();
-        int timeAtDestStop=(int)(bestFinalTimes.get(tstop) + e.getDistance() / walkSpeed);
-        if (timeAtDestStop < bestFinalTimes.get(to) && timeAtDestStop < transferStops.get(to)) {
-          transferStops.put(to,timeAtDestStop);
+        int timeAtDestStop=(int)(timeAtOriginStop + e.getDistance() / walkSpeed);
+        if (store.put(to,timeAtDestStop,true)) {
           markedPatterns.addAll(graph.index.patternsForStop.get(to.getStop()));
         }
       }

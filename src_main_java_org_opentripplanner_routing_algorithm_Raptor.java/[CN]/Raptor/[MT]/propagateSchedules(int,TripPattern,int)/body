@@ -6,8 +6,7 @@
   for (int reachedIdx=stopIndex + 1; reachedIdx < tripPattern.stopVertices.length; reachedIdx++) {
     TransitStop v=tripPattern.stopVertices[reachedIdx];
     int arrTime=tts.getArrivalTime(tripIndex,reachedIdx);
-    if (arrTime < bestFinalTimes.get(v)) {
-      bestFinalTimes.put(v,arrTime);
+    if (store.put(v,arrTime,false)) {
       for (      TripPattern tp : graph.index.patternsForStop.get(v.getStop())) {
         if (tp != tripPattern)         markedPatterns.add(tp);
       }

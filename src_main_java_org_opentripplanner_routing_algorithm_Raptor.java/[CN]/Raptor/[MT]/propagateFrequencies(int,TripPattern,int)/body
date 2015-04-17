@@ -21,8 +21,7 @@
   for (int reachedIdx=stopIndex + 1; reachedIdx < bestFreq.tripTimes.getNumStops(); reachedIdx++) {
     TransitStop v=tripPattern.stopVertices[reachedIdx];
     int arrTime=bestFreqBoardTime + bestFreq.tripTimes.getScheduledArrivalTime(reachedIdx) - boardOffset;
-    if (arrTime < bestFinalTimes.get(v)) {
-      bestFinalTimes.put(v,arrTime);
+    if (store.put(v,arrTime,false)) {
       markedStops.add(v);
       for (      TripPattern tp : graph.index.patternsForStop.get(v.getStop())) {
         if (tp != tripPattern)         markedPatterns.add(tp);
