@@ -1,0 +1,24 @@
+{
+  CoordinateArrayListSequence coords=new CoordinateArrayListSequence();
+  int i=0;
+  for (  String coord : coordinateSequence.split(";")) {
+    String[] fields=coord.split(",");
+    if (fields.length < 2) {
+      warnings.add("coordinate has too few fields: " + coord);
+      continue;
+    }
+    boolean isStop=true;
+    if (fields.length > 2) {
+      isStop=Boolean.parseBoolean(fields[2]);
+    }
+    double lat=Double.parseDouble(fields[0]);
+    double lon=Double.parseDouble(fields[1]);
+    coords.add(new Coordinate(lat,lon));
+    if (isStop) {
+      stops.set(i);
+    }
+    i++;
+  }
+  GeometryFactory gf=new GeometryFactory();
+  this.alignment=gf.createLineString(coords);
+}
