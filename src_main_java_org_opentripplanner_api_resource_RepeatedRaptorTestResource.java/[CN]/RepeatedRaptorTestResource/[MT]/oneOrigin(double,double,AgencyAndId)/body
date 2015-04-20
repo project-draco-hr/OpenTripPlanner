@@ -1,0 +1,62 @@
+{
+  ProfileRequest req=new ProfileRequest();
+  req.fromLat=lat;
+  req.fromLon=lon;
+  req.fromTime=8 * 60 * 60;
+  req.toTime=req.fromTime + 61;
+  req.walkSpeed=2;
+  req.bikeSpeed=4;
+  req.carSpeed=8;
+  req.date=new LocalDate(2015,04,20);
+  req.maxWalkTime=20;
+  req.accessModes=new QualifiedModeSet("WALK");
+  req.egressModes=new QualifiedModeSet("WALK");
+  req.transitModes=new TraverseModeSet("TRANSIT");
+  req.analyst=true;
+  if (surfaceCache == null) {
+    LOG.error("You must run OTP with the --analyst option to enable spatial analysis features.");
+  }
+  final RepeatedRaptorProfileRouter router_a=new RepeatedRaptorProfileRouter(graph,req);
+  final RepeatedRaptorProfileRouter router_b=new RepeatedRaptorProfileRouter(graph,req);
+  router_b.banRoute=banRoute;
+  try {
+    router_a.route();
+    router_b.route();
+  }
+ catch (  VertexNotFoundException ex) {
+    LOG.error("vertex not found");
+    return;
+  }
+  System.out.printf("stop, min_a, min_b, min_diff, max_a, max_b, max_diff\n");
+  boolean decreased=false;
+  for (  TransitStop destVertex : graph.index.stopVertexForStop.values()) {
+    int min_a=router_a.mins.get(destVertex);
+    int max_a=router_a.maxs.get(destVertex);
+    int min_b=router_b.mins.get(destVertex);
+    int max_b=router_b.maxs.get(destVertex);
+    long min_diff=(long)min_b - min_a;
+    long max_diff=(long)max_b - max_a;
+    if (min_b == Integer.MAX_VALUE) {
+      min_diff=Integer.MAX_VALUE;
+    }
+    if (max_b == Integer.MIN_VALUE) {
+      max_diff=Integer.MAX_VALUE;
+    }
+    n_total+=1;
+    if (min_diff < 0 || max_diff < 0) {
+      n_decrease+=1;
+      System.out.printf("\"%s\",%d,%d,%d,%d,%d,%d\n",destVertex.getStop().getId(),min_a,min_b,min_diff,max_a,max_b,max_diff);
+      decreased=true;
+    }
+ else     if (min_diff > 0 || max_diff > 0) {
+      n_increase+=1;
+    }
+ else {
+      n_same+=1;
+    }
+  }
+  if (decreased) {
+    LOG.error("Decreases happened at this origin!");
+  }
+  LOG.info("{} increased, {} decreased out of {} destinations total",n_increase,n_decrease,n_total);
+}

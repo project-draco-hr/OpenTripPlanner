@@ -5,9 +5,19 @@
   TObjectIntMap<TransitStop> accessTimes=findInitialStops(false);
   LOG.info("Found {} initial stops",accessTimes.size());
   Map<TripPattern,TripTimeSubset> timetables=TripTimeSubset.indexGraph(graph,request.date,request.fromTime,request.toTime + MAX_DURATION);
+  if (banRoute != null) {
+    Route route=graph.index.routeForId.get(banRoute);
+    LOG.info("Banning route {}",route);
+    int n=0;
+    for (    TripPattern pattern : graph.index.patternsForRoute.get(route)) {
+      timetables.remove(pattern);
+      n++;
+    }
+    LOG.info("Removed {} patterns.",n);
+  }
   PathDiscardingRaptorStateStore rss=new PathDiscardingRaptorStateStore(5);
   int i=1;
-  for (int startTime=request.toTime - 60; startTime >= request.fromTime; startTime-=60) {
+  for (int startTime=request.fromTime; ; ) {
     if (++i % 30 == 0)     LOG.info("Completed {} RAPTOR searches",i);
     rss.maxTime=startTime + 120 * 60;
     rss.restart();
@@ -29,8 +39,7 @@
       accumulator.adjustValue(v,et);
       counts.increment(v);
     }
+    break;
   }
-  LOG.info("Profile request complete, propagating to the street network");
-  makeSurfaces();
   LOG.info("Profile request finished in {} seconds",(System.currentTimeMillis() - computationStartTime) / 1000.0);
 }
