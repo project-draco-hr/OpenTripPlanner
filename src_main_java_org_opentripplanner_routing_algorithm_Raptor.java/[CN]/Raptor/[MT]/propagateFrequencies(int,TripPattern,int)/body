@@ -9,7 +9,7 @@
     if (freq.endTime + offsetSecs < time)     continue;
     int boardTime=time + freq.headway;
     if (freq.startTime + offsetSecs > time) {
-      boardTime+=freq.startTime + offsetSecs - time;
+      boardTime=freq.startTime + offsetSecs + freq.headway;
     }
     if (boardTime < bestFreqBoardTime) {
       bestFreqBoardTime=boardTime;
