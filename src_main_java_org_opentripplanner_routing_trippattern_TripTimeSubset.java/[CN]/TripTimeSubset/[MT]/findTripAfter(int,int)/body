@@ -1,3 +1,6 @@
 {
-  return findTripAfter(stop,time,0,tripCount);
+  for (int idx=0; idx < tripCount; idx++) {
+    if (getDepartureTime(idx,stop) >= time)     return idx;
+  }
+  return -1;
 }

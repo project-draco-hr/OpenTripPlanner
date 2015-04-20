@@ -1,8 +1,13 @@
 {
-  if (time < matrix[current].get(t) && time < bestStops.get(t) && time < maxTime) {
+  boolean stored=false;
+  if (time > maxTime)   return false;
+  if (time < matrix[current].get(t)) {
     matrix[current].put(t,time);
-    if (!transfer)     bestStops.put(t,time);
-    return true;
+    stored=true;
   }
-  return false;
+  if (!transfer && time < bestStops.get(t)) {
+    bestStops.put(t,time);
+    stored=true;
+  }
+  return stored;
 }
