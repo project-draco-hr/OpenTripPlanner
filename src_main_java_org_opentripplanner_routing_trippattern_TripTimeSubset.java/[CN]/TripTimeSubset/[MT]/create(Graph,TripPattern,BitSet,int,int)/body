@@ -29,6 +29,14 @@
           LOG.warn("Overtaking/duplicate departure times on trip pattern {}, trip {} at stop {}," + " trashing this pattern.",tp,tripIdx,stopIdx);
           return null;
         }
+        if (stopIdx > 0 && tts.times[(tripIdx * tts.tripLength + stopIdx) * 2] - tts.times[(tripIdx * tts.tripLength + stopIdx) * 2 - 1] < 0) {
+          LOG.warn("Negative hop time on trip pattern {}, trip {} at stop {}, trashing pattern",tp,tripIdx,stopIdx);
+          return null;
+        }
+        if (tts.times[(tripIdx * tts.tripLength + stopIdx) * 2 + 1] - tts.times[(tripIdx * tts.tripLength + stopIdx) * 2] < 0) {
+          LOG.warn("Negative dwell time on trip pattern {}, trip {} at stop {}, trashing pattern",tp,tripIdx,stopIdx);
+          return null;
+        }
       }
     }
     tripIdx++;

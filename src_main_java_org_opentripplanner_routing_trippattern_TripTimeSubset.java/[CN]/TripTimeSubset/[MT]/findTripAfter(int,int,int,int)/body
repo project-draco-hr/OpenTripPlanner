@@ -1,9 +1,0 @@
-{
-  int idx=(minInclusive + maxExclusive) / 2;
-  if (idx == 0 || idx == tripCount - 1) {
-    return getArrivalTime(idx,stop) < time ? -1 : idx;
-  }
-  if (getArrivalTime(idx,stop) >= time && getArrivalTime(idx - 1,stop) < time)   return idx;
-  if (getArrivalTime(idx,stop) >= time)   return findTripAfter(stop,time,minInclusive,idx);
- else   return findTripAfter(stop,time,idx + 1,maxExclusive);
-}
