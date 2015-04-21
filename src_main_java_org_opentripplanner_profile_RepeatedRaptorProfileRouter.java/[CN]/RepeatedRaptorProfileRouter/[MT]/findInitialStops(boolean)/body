@@ -26,17 +26,5 @@
   timeSurfaceRangeSet.max=new TimeSurface(spt,false);
   timeSurfaceRangeSet.avg=new TimeSurface(spt,false);
   rr.cleanup();
-  TransitStop bestStop=null;
-  int bestTime=Integer.MAX_VALUE;
-  for (  TransitStop stop : accessTimes.keySet()) {
-    int etime=accessTimes.get(stop);
-    if (etime < bestTime) {
-      bestTime=etime;
-      bestStop=stop;
-    }
-  }
-  LOG.info("{} at {} sec",bestStop,bestTime);
-  accessTimes.clear();
-  accessTimes.put(bestStop,bestTime);
   return accessTimes;
 }
