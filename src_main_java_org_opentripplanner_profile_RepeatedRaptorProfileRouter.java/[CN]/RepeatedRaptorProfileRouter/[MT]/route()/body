@@ -20,7 +20,6 @@
     for (TObjectIntIterator<TransitStop> it=raptor.iterator(); it.hasNext(); ) {
       it.advance();
       int et=it.value() - startTime;
-      if (et > 120 * 60)       continue;
       TransitStop v=it.key();
       if (et < mins.get(v))       mins.put(v,et);
       if (et > maxs.get(v))       maxs.put(v,et);
