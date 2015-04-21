@@ -21,6 +21,7 @@
     if (++i % 30 == 0) {
       LOG.info("Completed {} RAPTOR searches",i);
     }
+    rss.maxTime=startTime + MAX_DURATION;
     rss.restart();
     for (TObjectIntIterator<TransitStop> it=accessTimes.iterator(); it.hasNext(); ) {
       it.advance();
