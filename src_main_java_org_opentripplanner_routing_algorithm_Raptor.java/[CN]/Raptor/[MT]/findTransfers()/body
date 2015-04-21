@@ -1,6 +1,6 @@
 {
   for (  TransitStop tstop : markedStops) {
-    int timeAtOriginStop=store.getTime(tstop);
+    int timeAtOriginStop=store.getPrev(tstop);
     for (    Edge e : tstop.getOutgoing()) {
       if (e instanceof SimpleTransfer) {
         TransitStop to=(TransitStop)e.getToVertex();
