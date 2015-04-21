@@ -29,26 +29,23 @@
   }
   System.out.printf("stop, min_a, min_b, min_diff, max_a, max_b, max_diff\n");
   boolean decreased=false;
-  decreased=false;
-  TimeSurface.RangeSet timeSurfaces_a=router_a.timeSurfaceRangeSet;
-  TimeSurface.RangeSet timeSurfaces_b=router_b.timeSurfaceRangeSet;
-  for (  Vertex destVertex : timeSurfaces_a.min.times.keySet()) {
-    int min_a=timeSurfaces_a.min.getTime(destVertex);
-    int max_a=timeSurfaces_a.max.getTime(destVertex);
-    int min_b=timeSurfaces_b.min.getTime(destVertex);
-    int max_b=timeSurfaces_b.max.getTime(destVertex);
+  for (  TransitStop destVertex : graph.index.stopVertexForStop.values()) {
+    int min_a=router_a.mins.get(destVertex);
+    int max_a=router_a.maxs.get(destVertex);
+    int min_b=router_b.mins.get(destVertex);
+    int max_b=router_b.maxs.get(destVertex);
     long min_diff=(long)min_b - min_a;
     long max_diff=(long)max_b - max_a;
-    if (min_b == TimeSurface.UNREACHABLE) {
+    if (min_b == Integer.MAX_VALUE) {
       min_diff=Integer.MAX_VALUE;
     }
-    if (max_b == TimeSurface.UNREACHABLE) {
+    if (max_b == Integer.MIN_VALUE) {
       max_diff=Integer.MAX_VALUE;
     }
     n_total+=1;
     if (min_diff < 0 || max_diff < 0) {
       n_decrease+=1;
-      System.out.printf("\"%s\",%d,%d,%d,%d,%d,%d\n",destVertex.getName(),min_a,min_b,min_diff,max_a,max_b,max_diff);
+      System.out.printf("\"%s\",%d,%d,%d,%d,%d,%d\n",destVertex.getStop().getId(),min_a,min_b,min_diff,max_a,max_b,max_diff);
       decreased=true;
     }
  else     if (min_diff > 0 || max_diff > 0) {
@@ -58,8 +55,8 @@
       n_same+=1;
     }
   }
-  LOG.info("Street Vertices: {} increased, {} decreased out of {} destinations total",n_increase,n_decrease,n_total);
   if (decreased) {
     LOG.error("Decreases happened at this origin!");
   }
+  LOG.info("Stop Vertices: {} increased, {} decreased out of {} destinations total",n_increase,n_decrease,n_total);
 }

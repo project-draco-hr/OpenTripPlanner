@@ -16,8 +16,8 @@
     }
     LOG.info("Removed {} patterns.",n);
   }
-  PathDiscardingRaptorStateStore rss=new PathDiscardingRaptorStateStore(MAX_TRANSFERS + 2);
   for (int startTime=request.toTime - 60; startTime >= request.fromTime; startTime-=60) {
+    PathDiscardingRaptorStateStore rss=new PathDiscardingRaptorStateStore(MAX_TRANSFERS + 2);
     if (++i % 30 == 0) {
       LOG.info("Completed {} RAPTOR searches",i);
     }
@@ -41,7 +41,5 @@
       counts.increment(v);
     }
   }
-  LOG.info("Profile request complete, propagating to the street network");
-  makeSurfaces();
   LOG.info("Profile request finished in {} seconds",(System.currentTimeMillis() - computationStartTime) / 1000.0);
 }
