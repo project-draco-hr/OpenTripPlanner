@@ -1,6 +1,5 @@
 {
   Vertex v=state.getVertex();
-  if (v instanceof IntersectionVertex)   return STREET;
- else   if (v instanceof TransitStop)   return TRANSITSTOP;
- else   return OTHER;
+  if (v instanceof TransitStop)   return TRANSITSTOP;
+ else   return STREET;
 }
