@@ -5,6 +5,7 @@
     RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
     rr.batch=(true);
     rr.setRoutingContext(graph,tstop,tstop);
+    rr.rctx.pathParsers=new PathParser[]{new ProfilePropagationPathParser()};
     rr.worstTime=(rr.dateTime + timeCutoffMinutes * 60);
     AStar astar=new AStar();
     rr.longDistance=true;
@@ -15,6 +16,7 @@
     int i=0;
     for (    Vertex vertex : spt.getVertices()) {
       State state=spt.getState(vertex);
+      if (state == null)       continue;
       distances[i++]=vertex.getIndex();
       distances[i++]=(int)state.getWalkDistance();
     }
