@@ -18,7 +18,7 @@
       }
     }
   }
-  PathDiscardingRaptorStateStore rss=new PathDiscardingRaptorStateStore(MAX_TRANSFERS * 2 + 1);
+  PathDiscardingRaptorStateStore rss=new PathDiscardingRaptorStateStore((MAX_TRANSFERS + 1) * 2 + 1);
   PropagatedTimesStore windowSummary=new PropagatedTimesStore(graph);
   for (int i=0, departureTime=request.toTime - 60 * stepMinutes; departureTime >= request.fromTime; departureTime-=60 * stepMinutes) {
     if (++i % 5 == 0) {
