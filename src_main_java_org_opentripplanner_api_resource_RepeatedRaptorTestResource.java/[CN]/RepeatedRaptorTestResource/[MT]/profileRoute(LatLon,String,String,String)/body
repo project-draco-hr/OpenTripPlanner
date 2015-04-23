@@ -1,8 +1,6 @@
 {
-  String[] banFields=banRouteString.split(":");
-  AgencyAndId banRoute=new AgencyAndId(banFields[0],banFields[1]);
   if (from != null) {
-    oneOrigin(from.lat,from.lon,banRoute);
+    oneOrigin(from.lat,from.lon,banAgency);
   }
  else {
     Collection<Stop> originStops=new ArrayList<>();
@@ -16,7 +14,7 @@
     LOG.info("from stops {}",originStops);
     for (    Stop stop : originStops) {
       LOG.info("{}/{}: {}",0,originStops.size(),stop);
-      oneOrigin(stop.getLat(),stop.getLon(),banRoute);
+      oneOrigin(stop.getLat() + 0.001,stop.getLon() + 0.001,banAgency);
     }
   }
   return Response.ok().entity("OK\n").build();
