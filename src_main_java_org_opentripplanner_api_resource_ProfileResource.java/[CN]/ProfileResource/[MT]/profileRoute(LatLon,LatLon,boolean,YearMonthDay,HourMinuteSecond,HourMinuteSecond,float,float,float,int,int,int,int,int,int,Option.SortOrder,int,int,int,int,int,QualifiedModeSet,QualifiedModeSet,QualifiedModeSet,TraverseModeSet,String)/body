@@ -48,6 +48,7 @@
     }
     TimeSurface.RangeSet result;
     RepeatedRaptorProfileRouter router=new RepeatedRaptorProfileRouter(graph,req);
+    router.banAgency=banAgency;
     router.route();
     result=router.timeSurfaceRangeSet;
     Map<String,Integer> idForSurface=Maps.newHashMap();
