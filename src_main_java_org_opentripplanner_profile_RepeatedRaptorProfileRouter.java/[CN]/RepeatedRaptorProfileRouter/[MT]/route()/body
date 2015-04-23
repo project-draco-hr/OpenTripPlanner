@@ -19,7 +19,8 @@
     }
   }
   PathDiscardingRaptorStateStore rss=new PathDiscardingRaptorStateStore((MAX_TRANSFERS + 1) * 2 + 1);
-  PropagatedTimesStore windowSummary=new PropagatedTimesStore(graph);
+  int iterations=(request.toTime - request.fromTime) / 60 * stepMinutes + 1;
+  TIntObjectMap<int[]> timesAtStops=new TIntObjectHashMap<int[]>();
   for (int i=0, departureTime=request.toTime - 60 * stepMinutes; departureTime >= request.fromTime; departureTime-=60 * stepMinutes) {
     if (++i % 5 == 0) {
       LOG.info("Completed {} RAPTOR searches",i);
@@ -32,20 +33,25 @@
     }
     Raptor raptor=new Raptor(graph,MAX_TRANSFERS,request.walkSpeed,rss,departureTime,request.date,timetables);
     raptor.run();
-    StopTreeCache stopTreeCache=graph.index.getStopTreeCache();
-    TObjectIntIterator<TransitStop> resultIterator=raptor.iterator();
-    int[] minsPerVertex=new int[Vertex.getMaxIndex()];
-    while (resultIterator.hasNext()) {
-      resultIterator.advance();
-      TransitStop transitStop=resultIterator.key();
-      int arrivalTime=resultIterator.value();
-      if (arrivalTime == Integer.MAX_VALUE)       continue;
-      int elapsedTime=arrivalTime - departureTime;
-      stopTreeCache.propagateStop(transitStop,elapsedTime,request.walkSpeed,minsPerVertex);
+    for (TObjectIntIterator<TransitStop> it=rss.iterator(); it.hasNext(); ) {
+      it.advance();
+      int time=it.value();
+      int tsidx=it.key().getIndex();
+      if (time == Integer.MAX_VALUE)       continue;
+      time-=departureTime;
+      int[] times;
+      if (timesAtStops.containsKey(tsidx)) {
+        times=timesAtStops.get(tsidx);
+      }
+ else {
+        times=new int[iterations];
+        Arrays.fill(times,Integer.MAX_VALUE);
+        timesAtStops.put(tsidx,times);
+      }
+      times[i]=time;
     }
-    windowSummary.mergeIn(minsPerVertex);
   }
   LOG.info("Profile request complete, creating time surfaces.");
-  windowSummary.makeSurfaces(timeSurfaceRangeSet);
+  makeSurfaces(timesAtStops,iterations);
   LOG.info("Profile request finished in {} seconds",(System.currentTimeMillis() - computationStartTime) / 1000.0);
 }
