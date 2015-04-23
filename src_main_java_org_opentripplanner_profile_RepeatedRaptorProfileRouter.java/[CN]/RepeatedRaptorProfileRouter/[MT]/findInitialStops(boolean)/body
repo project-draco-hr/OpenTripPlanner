@@ -23,10 +23,7 @@
       accessTimes.put(tstop,(int)s.getElapsedTimeSeconds());
     }
   }
-  timeSurfaceRangeSet=new TimeSurface.RangeSet();
-  timeSurfaceRangeSet.min=new TimeSurface(spt,false);
-  timeSurfaceRangeSet.max=new TimeSurface(spt,false);
-  timeSurfaceRangeSet.avg=new TimeSurface(spt,false);
+  this.walkOnlySpt=spt;
   rr.cleanup();
   return accessTimes;
 }

@@ -35,6 +35,14 @@
     StopTreeCache stopTreeCache=graph.index.getStopTreeCache();
     TObjectIntIterator<TransitStop> resultIterator=raptor.iterator();
     int[] minsPerVertex=new int[Vertex.getMaxIndex()];
+    for (    State s : walkOnlySpt.getAllStates()) {
+      Vertex v=s.getVertex();
+      int time=(int)(s.getWalkDistance() / request.walkSpeed);
+      int existing=minsPerVertex[v.getIndex()];
+      if (existing == 0 || existing > time) {
+        minsPerVertex[v.getIndex()]=time;
+      }
+    }
     while (resultIterator.hasNext()) {
       resultIterator.advance();
       TransitStop transitStop=resultIterator.key();
@@ -46,6 +54,10 @@
     windowSummary.mergeIn(minsPerVertex);
   }
   LOG.info("Profile request complete, creating time surfaces.");
+  timeSurfaceRangeSet=new TimeSurface.RangeSet();
+  timeSurfaceRangeSet.min=new TimeSurface(this);
+  timeSurfaceRangeSet.max=new TimeSurface(this);
+  timeSurfaceRangeSet.avg=new TimeSurface(this);
   windowSummary.makeSurfaces(timeSurfaceRangeSet);
   LOG.info("Profile request finished in {} seconds",(System.currentTimeMillis() - computationStartTime) / 1000.0);
 }
