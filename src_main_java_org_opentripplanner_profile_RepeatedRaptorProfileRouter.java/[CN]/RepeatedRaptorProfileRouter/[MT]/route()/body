@@ -4,42 +4,48 @@
   LOG.info("Finding initial stops");
   TObjectIntMap<TransitStop> accessTimes=findInitialStops(false);
   LOG.info("Found {} initial transit stops",accessTimes.size());
-  int i=1;
   Map<TripPattern,TripTimeSubset> timetables=TripTimeSubset.indexGraph(graph,request.date,request.fromTime,request.toTime + MAX_DURATION);
-  if (banRoute != null) {
-    Route route=graph.index.routeForId.get(banRoute);
-    LOG.info("Banning route {}",route);
-    int n=0;
-    for (    TripPattern pattern : graph.index.patternsForRoute.get(route)) {
-      timetables.remove(pattern);
-      n++;
+  if (banAgency != null) {
+    for (    Route route : graph.index.routeForId.values()) {
+      if (route.getAgency().getId().equals(banAgency)) {
+        LOG.info("Banning route {}",route);
+        int n=0;
+        for (        TripPattern pattern : graph.index.patternsForRoute.get(route)) {
+          timetables.remove(pattern);
+          n++;
+        }
+        LOG.info("Removed {} patterns.",n);
+      }
     }
-    LOG.info("Removed {} patterns.",n);
   }
-  for (int startTime=request.toTime - 60; startTime >= request.fromTime; startTime-=60) {
-    PathDiscardingRaptorStateStore rss=new PathDiscardingRaptorStateStore(MAX_TRANSFERS + 2);
-    if (++i % 30 == 0) {
+  PathDiscardingRaptorStateStore rss=new PathDiscardingRaptorStateStore(MAX_TRANSFERS * 2 + 1);
+  PropagatedTimesStore windowSummary=new PropagatedTimesStore(graph);
+  for (int i=0, departureTime=request.toTime - 60 * stepMinutes; departureTime >= request.fromTime; departureTime-=60 * stepMinutes) {
+    if (++i % 5 == 0) {
       LOG.info("Completed {} RAPTOR searches",i);
     }
-    rss.maxTime=startTime + MAX_DURATION;
+    rss.maxTime=departureTime + MAX_DURATION;
     rss.restart();
     for (TObjectIntIterator<TransitStop> it=accessTimes.iterator(); it.hasNext(); ) {
       it.advance();
-      rss.put(it.key(),startTime + it.value(),true);
+      rss.put(it.key(),departureTime + it.value(),true);
     }
-    Raptor raptor=new Raptor(graph,MAX_TRANSFERS,request.walkSpeed,rss,startTime,request.date,timetables);
+    Raptor raptor=new Raptor(graph,MAX_TRANSFERS,request.walkSpeed,rss,departureTime,request.date,timetables);
     raptor.run();
-    for (TObjectIntIterator<TransitStop> it=raptor.iterator(); it.hasNext(); ) {
-      it.advance();
-      int et=it.value() - startTime;
-      TransitStop v=it.key();
-      if (et < mins.get(v))       mins.put(v,et);
-      if (et > maxs.get(v))       maxs.put(v,et);
-      accumulator.putIfAbsent(v,0);
-      counts.putIfAbsent(v,0);
-      accumulator.adjustValue(v,et);
-      counts.increment(v);
+    StopTreeCache stopTreeCache=graph.index.getStopTreeCache();
+    TObjectIntIterator<TransitStop> resultIterator=raptor.iterator();
+    int[] minsPerVertex=new int[Vertex.getMaxIndex()];
+    while (resultIterator.hasNext()) {
+      resultIterator.advance();
+      TransitStop transitStop=resultIterator.key();
+      int arrivalTime=resultIterator.value();
+      if (arrivalTime == Integer.MAX_VALUE)       continue;
+      int elapsedTime=arrivalTime - departureTime;
+      stopTreeCache.propagateStop(transitStop,elapsedTime,request.walkSpeed,minsPerVertex);
     }
+    windowSummary.mergeIn(minsPerVertex);
   }
+  LOG.info("Profile request complete, creating time surfaces.");
+  windowSummary.makeSurfaces(timeSurfaceRangeSet);
   LOG.info("Profile request finished in {} seconds",(System.currentTimeMillis() - computationStartTime) / 1000.0);
 }

@@ -65,7 +65,7 @@
   for (  Stop stop : times) {
     TransitStop tstop=graph.index.stopVertexForStop.get(stop);
     TimeRange rangeAtTransitStop=times.get(stop);
-    TObjectIntMap<Vertex> distanceToVertex=stopTreeCache.getDistancesForStop(tstop);
+    TObjectIntMap<Vertex> distanceToVertex=null;
     for (TObjectIntIterator<Vertex> iter=distanceToVertex.iterator(); iter.hasNext(); ) {
       iter.advance();
       Vertex vertex=iter.key();
