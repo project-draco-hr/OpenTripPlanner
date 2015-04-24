@@ -13,6 +13,7 @@
     initialStops.put(stopIndex,accessTime);
   }
   PropagatedTimesStore propagatedTimesStore=new PropagatedTimesStore(graph);
+  PropagatedHistogramsStore propagatedHistogramsStore=new PropagatedHistogramsStore(90);
   for (int departureTime=9 * 60 * 60, n=0; departureTime >= 8 * 60 * 60; departureTime-=60, n++) {
     if (n % 15 == 0) {
       LOG.info("minute {}",n);
@@ -36,7 +37,7 @@
         }
       }
     }
-    propagatedTimesStore.mergeIn(timesOnStreets);
+    propagatedHistogramsStore.mergeIn(timesOnStreets);
   }
   LOG.info("calc time {}sec",(System.currentTimeMillis() - beginCalcTime) / 1000.0);
   return propagatedTimesStore;
