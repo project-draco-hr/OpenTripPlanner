@@ -1,4 +1,7 @@
 {
+  coordinate=(Coordinate)coordinate.clone();
+  coordinate.x=((int)(coordinate.x * 1e5)) / (double)1e5;
+  coordinate.y=((int)(coordinate.y * 1e5)) / (double)1e5;
   double dLon=SphericalDistanceLibrary.metersToLonDegrees(MAX_CORNER_DISTANCE_METERS,coordinate.y);
   double dLat=SphericalDistanceLibrary.metersToDegrees(MAX_CORNER_DISTANCE_METERS);
   Envelope envelope=new Envelope(coordinate);
@@ -8,6 +11,7 @@
   double bestDistanceMeter=Double.POSITIVE_INFINITY;
   for (  Vertex v : nearby) {
     if (v instanceof StreetVertex) {
+      if (!v.getLabel().startsWith("osm:"))       continue;
       double distanceMeter=SphericalDistanceLibrary.fastDistance(coordinate,v.getCoordinate());
       if (distanceMeter < MAX_CORNER_DISTANCE_METERS) {
         if (distanceMeter < bestDistanceMeter) {
