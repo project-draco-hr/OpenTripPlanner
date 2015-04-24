@@ -1,0 +1,64 @@
+{
+  int totalPatterns=graph.index.patternForId.size();
+  int totalStops=graph.index.stopForId.size();
+  timetablesForPattern=new ArrayList<RaptorWorkerTimetable>(totalPatterns);
+  List<TripPattern> patternForIndex=Lists.newArrayList(totalPatterns);
+  TObjectIntMap<TripPattern> indexForPattern=new TObjectIntHashMap<>(totalPatterns,0.75f,-1);
+  indexForStop=new TObjectIntHashMap<>(totalStops,0.75f,-1);
+  List<Stop> stopForIndex=new ArrayList<>(totalStops);
+  for (  TripPattern pattern : graph.index.patternForId.values()) {
+    RaptorWorkerTimetable timetable=RaptorWorkerTimetable.forPattern(graph,pattern,window);
+    if (timetable == null) {
+      continue;
+    }
+    timetablesForPattern.add(timetable);
+    indexForPattern.put(pattern,patternForIndex.size());
+    patternForIndex.add(pattern);
+    patternNames.add(pattern.code);
+    TIntCollection stopIndexesForPattern=new TIntArrayList();
+    for (    Stop stop : pattern.getStops()) {
+      int stopIndex=indexForStop.get(stop);
+      if (stopIndex == -1) {
+        stopIndex=indexForStop.size();
+        indexForStop.put(stop,stopIndex);
+        stopForIndex.add(stop);
+        stopNames.add(stop.getName());
+      }
+      stopIndexesForPattern.add(stopIndex);
+    }
+    stopsForPattern.appendRow(stopIndexesForPattern);
+  }
+  for (  Stop stop : stopForIndex) {
+    TIntList patterns=new TIntArrayList();
+    for (    TripPattern pattern : graph.index.patternsForStop.get(stop)) {
+      int patternIndex=indexForPattern.get(pattern);
+      if (patternIndex != -1) {
+        patterns.add(patternIndex);
+      }
+    }
+    patternsForStop.appendRow(patterns);
+  }
+  for (  Stop stop : stopForIndex) {
+    TIntList transfers=new TIntArrayList();
+    TransitStop tstop=graph.index.stopVertexForStop.get(stop);
+    for (    SimpleTransfer simpleTransfer : Iterables.filter(tstop.getOutgoing(),SimpleTransfer.class)) {
+      int targetStopIndex=indexForStop.get(((TransitStop)simpleTransfer.getToVertex()).getStop());
+      if (targetStopIndex != -1) {
+        transfers.add(targetStopIndex);
+        transfers.add((int)(simpleTransfer.getDistance()));
+      }
+    }
+    transfersForStop.appendRow(transfers);
+  }
+  StopTreeCache stc=graph.index.getStopTreeCache();
+  for (  Stop stop : stopForIndex) {
+    TransitStop tstop=graph.index.stopVertexForStop.get(stop);
+    reachableIntersectionsForStop.appendRow(stc.distancesForStop.get(tstop));
+  }
+  stopsForPattern.finish();
+  patternsForStop.finish();
+  transfersForStop.finish();
+  reachableIntersectionsForStop.finish();
+  nStops=stopForIndex.size();
+  nPatterns=patternForIndex.size();
+}

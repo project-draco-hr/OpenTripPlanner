@@ -4,6 +4,16 @@
   LOG.info("Finding initial stops");
   TObjectIntMap<TransitStop> accessTimes=findInitialStops(false);
   LOG.info("Found {} initial transit stops",accessTimes.size());
+  LOG.info("Make data...",accessTimes.size());
+  TimeWindow window=new TimeWindow(request.fromTime,request.toTime,graph.index.servicesRunning(request.date));
+  RaptorWorkerData raptorWorkerData=new RaptorWorkerData(graph,window);
+  LOG.info("Done.",accessTimes.size());
+  RaptorWorker worker=new RaptorWorker(raptorWorkerData);
+  PropagatedTimesStore propagatedTimesStore=worker.runRaptor(graph,accessTimes);
+  propagatedTimesStore.makeSurfaces(timeSurfaceRangeSet);
+  if (true) {
+    return;
+  }
   Map<TripPattern,TripTimeSubset> timetables=TripTimeSubset.indexGraph(graph,request.date,request.fromTime,request.toTime + MAX_DURATION);
   if (banAgency != null) {
     for (    Route route : graph.index.routeForId.values()) {

@@ -1,0 +1,43 @@
+{
+  long beginCalcTime=System.currentTimeMillis();
+  TIntIntMap initialStops=new TIntIntHashMap();
+  TObjectIntIterator<TransitStop> initialIterator=accessTimes.iterator();
+  while (initialIterator.hasNext()) {
+    initialIterator.advance();
+    TransitStop tstop=initialIterator.key();
+    int accessTime=initialIterator.value();
+    int stopIndex=data.indexForStop.get(tstop.getStop());
+    if (stopIndex == -1) {
+      continue;
+    }
+    initialStops.put(stopIndex,accessTime);
+  }
+  PropagatedTimesStore propagatedTimesStore=new PropagatedTimesStore(graph);
+  for (int departureTime=9 * 60 * 60, n=0; departureTime >= 8 * 60 * 60; departureTime-=60, n++) {
+    if (n % 15 == 0) {
+      LOG.info("minute {}",n);
+    }
+    this.runRaptor(initialStops,departureTime);
+    int[] timesOnStreets=new int[Vertex.getMaxIndex()];
+    for (int s=0; s < data.nStops; s++) {
+      int baseTimeSeconds=bestTimes[s];
+      if (baseTimeSeconds != UNREACHED) {
+        baseTimeSeconds-=departureTime;
+        TIntIterator intersectionIterator=data.reachableIntersectionsForStop.rowIterator(s);
+        while (intersectionIterator.hasNext()) {
+          int streetVertexIndex=intersectionIterator.next();
+          int distance=intersectionIterator.next();
+          int egressWalkTimeSeconds=distance;
+          int propagated_time=baseTimeSeconds + egressWalkTimeSeconds;
+          int existing_min=timesOnStreets[streetVertexIndex];
+          if (existing_min == 0 || existing_min > propagated_time) {
+            timesOnStreets[streetVertexIndex]=propagated_time;
+          }
+        }
+      }
+    }
+    propagatedTimesStore.mergeIn(timesOnStreets);
+  }
+  LOG.info("calc time {}sec",(System.currentTimeMillis() - beginCalcTime) / 1000.0);
+  return propagatedTimesStore;
+}

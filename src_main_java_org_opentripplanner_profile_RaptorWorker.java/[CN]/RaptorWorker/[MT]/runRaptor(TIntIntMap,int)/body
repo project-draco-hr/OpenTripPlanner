@@ -1,0 +1,17 @@
+{
+  max_time=departureTime + MAX_DURATION;
+  round=0;
+  advance();
+  patternsTouched.clear();
+  TIntIntIterator iterator=initialStops.iterator();
+  while (iterator.hasNext()) {
+    iterator.advance();
+    int stopIndex=iterator.key();
+    int time=iterator.value() + departureTime;
+    bestTimes[stopIndex]=time;
+    markPatternsForStop(stopIndex);
+  }
+  while (round <= MAX_ROUNDS && doOneRound()) {
+    advance();
+  }
+}

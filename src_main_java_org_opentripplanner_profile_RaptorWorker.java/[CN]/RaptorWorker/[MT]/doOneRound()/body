@@ -1,0 +1,36 @@
+{
+  stopsTouched.clear();
+  for (int p=patternsTouched.nextSetBit(0); p >= 0; p=patternsTouched.nextSetBit(p + 1)) {
+    int onTrip=-1;
+    RaptorWorkerTimetable timetable=data.timetablesForPattern.get(p);
+    TIntIterator stopIterator=data.stopsForPattern.rowIterator(p);
+    for (int stopPositionInPattern=0; stopIterator.hasNext(); stopPositionInPattern++) {
+      int stopIndex=stopIterator.next();
+      if (onTrip == -1) {
+        if (bestTimes[stopIndex] == UNREACHED) {
+          continue;
+        }
+        onTrip=timetable.findDepartureAfter(stopPositionInPattern,bestTimes[stopIndex]);
+        continue;
+      }
+ else {
+        int arrivalTime=timetable.getArrival(onTrip,stopPositionInPattern);
+        if (arrivalTime < max_time && arrivalTime < bestTimes[stopIndex]) {
+          bestTimes[stopIndex]=arrivalTime;
+          stopsTouched.set(stopIndex);
+        }
+        while (onTrip > 0) {
+          int departureOnPreviousTrip=timetable.getDeparture(onTrip - 1,stopPositionInPattern);
+          if (departureOnPreviousTrip > bestTimes[stopIndex]) {
+            onTrip--;
+          }
+ else {
+            break;
+          }
+        }
+      }
+    }
+  }
+  doTransfers();
+  return !patternsTouched.isEmpty();
+}

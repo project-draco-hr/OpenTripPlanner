@@ -1,0 +1,8 @@
+{
+  for (int trip=0; trip < dx; trip++) {
+    if (getDeparture(trip,stop) > time + 60) {
+      return trip;
+    }
+  }
+  return -1;
+}
