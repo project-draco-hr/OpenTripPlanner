@@ -1,0 +1,18 @@
+{
+  for (int i=0; i < vTimes.dx; i++) {
+    for (int v=0; v < size; v++) {
+      int newValue=vTimes.get(i,v);
+      if (newValue == 0) {
+        continue;
+      }
+      if (mins[v] > newValue) {
+        mins[v]=newValue;
+      }
+      if (maxs[v] < newValue) {
+        maxs[v]=newValue;
+      }
+      sums[v]+=newValue;
+      counts[v]+=1;
+    }
+  }
+}

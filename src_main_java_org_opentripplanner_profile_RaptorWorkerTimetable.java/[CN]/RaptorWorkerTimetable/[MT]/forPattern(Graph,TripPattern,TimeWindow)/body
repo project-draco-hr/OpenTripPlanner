@@ -1,7 +1,7 @@
 {
   BitSet servicesRunning=window.servicesRunning;
   List<TripTimes> tripTimes=Lists.newArrayList();
-  for (  TripTimes tt : pattern.scheduledTimetable.tripTimes) {
+  TT:   for (  TripTimes tt : pattern.scheduledTimetable.tripTimes) {
     if (servicesRunning.get(tt.serviceCode) && tt.getScheduledArrivalTime(0) < window.to && tt.getScheduledDepartureTime(tt.getNumStops() - 1) >= window.from) {
       tripTimes.add(tt);
     }

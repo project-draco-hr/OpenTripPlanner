@@ -53,12 +53,12 @@
   StopTreeCache stc=graph.index.getStopTreeCache();
   for (  Stop stop : stopForIndex) {
     TransitStop tstop=graph.index.stopVertexForStop.get(stop);
-    reachableIntersectionsForStop.appendRow(stc.distancesForStop.get(tstop));
+    targetsForStop.appendRow(stc.distancesForStop.get(tstop));
   }
   stopsForPattern.finish();
   patternsForStop.finish();
   transfersForStop.finish();
-  reachableIntersectionsForStop.finish();
+  targetsForStop.finish();
   nStops=stopForIndex.size();
   nPatterns=patternForIndex.size();
 }

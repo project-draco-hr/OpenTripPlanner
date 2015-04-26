@@ -1,5 +1,6 @@
 {
   long beginCalcTime=System.currentTimeMillis();
+  long totalPropagationTime=0;
   TIntIntMap initialStops=new TIntIntHashMap();
   TObjectIntIterator<TransitStop> initialIterator=accessTimes.iterator();
   while (initialIterator.hasNext()) {
@@ -13,32 +14,34 @@
     initialStops.put(stopIndex,accessTime);
   }
   PropagatedTimesStore propagatedTimesStore=new PropagatedTimesStore(graph);
-  PropagatedHistogramsStore propagatedHistogramsStore=new PropagatedHistogramsStore(90);
-  for (int departureTime=9 * 60 * 60, n=0; departureTime >= 8 * 60 * 60; departureTime-=60, n++) {
+  Contiguous2DIntArray vTimes=new Contiguous2DIntArray(60,StreetVertex.getMaxIndex());
+  for (int departureTime=9 * 60 * 60 - 60, n=0; departureTime >= 8 * 60 * 60; departureTime-=60, n++) {
     if (n % 15 == 0) {
       LOG.info("minute {}",n);
     }
     this.runRaptor(initialStops,departureTime);
-    int[] timesOnStreets=new int[Vertex.getMaxIndex()];
+    long beginPropagationTime=System.currentTimeMillis();
     for (int s=0; s < data.nStops; s++) {
       int baseTimeSeconds=bestTimes[s];
       if (baseTimeSeconds != UNREACHED) {
         baseTimeSeconds-=departureTime;
-        TIntIterator intersectionIterator=data.reachableIntersectionsForStop.rowIterator(s);
+        TIntIterator intersectionIterator=data.targetsForStop.rowIterator(s);
         while (intersectionIterator.hasNext()) {
           int streetVertexIndex=intersectionIterator.next();
           int distance=intersectionIterator.next();
           int egressWalkTimeSeconds=distance;
           int propagated_time=baseTimeSeconds + egressWalkTimeSeconds;
-          int existing_min=timesOnStreets[streetVertexIndex];
-          if (existing_min == 0 || existing_min > propagated_time) {
-            timesOnStreets[streetVertexIndex]=propagated_time;
-          }
+          vTimes.setIfLess(n,streetVertexIndex,propagated_time);
         }
       }
     }
-    propagatedHistogramsStore.mergeIn(timesOnStreets);
+    totalPropagationTime+=(System.currentTimeMillis() - beginPropagationTime);
   }
-  LOG.info("calc time {}sec",(System.currentTimeMillis() - beginCalcTime) / 1000.0);
+  long calcTime=System.currentTimeMillis() - beginCalcTime;
+  LOG.info("calc time {}sec",calcTime / 1000.0);
+  LOG.info("  propagation {}sec",totalPropagationTime / 1000.0);
+  LOG.info("  raptor {}sec",(calcTime - totalPropagationTime) / 1000.0);
+  vTimes.dumpVariableByte();
+  propagatedTimesStore.setFromBytes(vTimes);
   return propagatedTimesStore;
 }

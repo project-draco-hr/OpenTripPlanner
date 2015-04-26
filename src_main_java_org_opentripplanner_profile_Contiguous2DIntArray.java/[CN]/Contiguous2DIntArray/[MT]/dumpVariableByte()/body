@@ -1,0 +1,16 @@
+{
+  try {
+    FileOutputStream fos=new FileOutputStream("/Users/abyrd/results.dat");
+    CodedOutputStream cos=CodedOutputStream.newInstance(fos);
+    for (    int val : values) {
+      cos.writeUInt32NoTag(val);
+    }
+    fos.close();
+  }
+ catch (  FileNotFoundException e) {
+    e.printStackTrace();
+  }
+catch (  IOException e) {
+    e.printStackTrace();
+  }
+}
