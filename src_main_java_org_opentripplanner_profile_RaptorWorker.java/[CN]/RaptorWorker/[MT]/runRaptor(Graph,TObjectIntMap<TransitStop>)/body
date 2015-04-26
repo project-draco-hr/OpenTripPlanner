@@ -25,10 +25,10 @@
       int baseTimeSeconds=bestTimes[s];
       if (baseTimeSeconds != UNREACHED) {
         baseTimeSeconds-=departureTime;
-        TIntIterator intersectionIterator=data.targetsForStop.rowIterator(s);
-        while (intersectionIterator.hasNext()) {
-          int streetVertexIndex=intersectionIterator.next();
-          int distance=intersectionIterator.next();
+        int[] targets=data.targetsForStop.get(s);
+        for (int i=0; i < targets.length; i++) {
+          int streetVertexIndex=targets[i++];
+          int distance=targets[i];
           int egressWalkTimeSeconds=distance;
           int propagated_time=baseTimeSeconds + egressWalkTimeSeconds;
           vTimes.setIfLess(n,streetVertexIndex,propagated_time);

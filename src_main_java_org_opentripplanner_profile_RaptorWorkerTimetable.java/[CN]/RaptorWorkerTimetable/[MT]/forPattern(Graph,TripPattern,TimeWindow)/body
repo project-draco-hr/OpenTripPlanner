@@ -18,13 +18,14 @@
   RaptorWorkerTimetable rwtt=new RaptorWorkerTimetable(tripTimes.size(),pattern.getStops().size() * 2);
   int t=0;
   for (  TripTimes tt : tripTimes) {
+    int[] times=new int[rwtt.nStops];
     for (int s=0; s < pattern.getStops().size(); s++) {
       int arrival=tt.getScheduledArrivalTime(s);
       int departure=tt.getScheduledDepartureTime(s);
-      rwtt.set(t,s * 2,arrival);
-      rwtt.set(t,s * 2 + 1,departure);
+      times[s * 2]=arrival;
+      times[s * 2 + 1]=departure;
     }
-    t++;
+    rwtt.timesPerTrip[t++]=times;
   }
   return rwtt;
 }

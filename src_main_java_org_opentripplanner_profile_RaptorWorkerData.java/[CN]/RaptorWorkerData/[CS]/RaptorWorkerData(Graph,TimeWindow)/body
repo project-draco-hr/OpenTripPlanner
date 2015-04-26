@@ -15,7 +15,7 @@
     indexForPattern.put(pattern,patternForIndex.size());
     patternForIndex.add(pattern);
     patternNames.add(pattern.code);
-    TIntCollection stopIndexesForPattern=new TIntArrayList();
+    TIntList stopIndexesForPattern=new TIntArrayList();
     for (    Stop stop : pattern.getStops()) {
       int stopIndex=indexForStop.get(stop);
       if (stopIndex == -1) {
@@ -26,7 +26,7 @@
       }
       stopIndexesForPattern.add(stopIndex);
     }
-    stopsForPattern.appendRow(stopIndexesForPattern);
+    stopsForPattern.add(stopIndexesForPattern.toArray());
   }
   for (  Stop stop : stopForIndex) {
     TIntList patterns=new TIntArrayList();
@@ -36,7 +36,7 @@
         patterns.add(patternIndex);
       }
     }
-    patternsForStop.appendRow(patterns);
+    patternsForStop.add(patterns.toArray());
   }
   for (  Stop stop : stopForIndex) {
     TIntList transfers=new TIntArrayList();
@@ -48,17 +48,13 @@
         transfers.add((int)(simpleTransfer.getDistance()));
       }
     }
-    transfersForStop.appendRow(transfers);
+    transfersForStop.add(transfers.toArray());
   }
   StopTreeCache stc=graph.index.getStopTreeCache();
   for (  Stop stop : stopForIndex) {
     TransitStop tstop=graph.index.stopVertexForStop.get(stop);
-    targetsForStop.appendRow(stc.distancesForStop.get(tstop));
+    targetsForStop.add(stc.distancesForStop.get(tstop));
   }
-  stopsForPattern.finish();
-  patternsForStop.finish();
-  transfersForStop.finish();
-  targetsForStop.finish();
   nStops=stopForIndex.size();
   nPatterns=patternForIndex.size();
 }

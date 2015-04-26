@@ -1,7 +1,6 @@
 {
-  TIntIterator patternIterator=data.patternsForStop.rowIterator(stop);
-  while (patternIterator.hasNext()) {
-    int pattern=patternIterator.next();
+  int[] patterns=data.patternsForStop.get(stop);
+  for (  int pattern : patterns) {
     patternsTouched.set(pattern);
   }
 }

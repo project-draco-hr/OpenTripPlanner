@@ -3,10 +3,10 @@
   for (int stop=stopsTouched.nextSetBit(0); stop >= 0; stop=stopsTouched.nextSetBit(stop + 1)) {
     markPatternsForStop(stop);
     int fromTime=bestTimes[stop];
-    TIntIterator transferIterator=data.transfersForStop.rowIterator(stop);
-    while (transferIterator.hasNext()) {
-      int toStop=transferIterator.next();
-      int distance=transferIterator.next();
+    int[] transfers=data.transfersForStop.get(stop);
+    for (int i=0; i < transfers.length; i++) {
+      int toStop=transfers[i++];
+      int distance=transfers[i];
       int toTime=fromTime + distance;
       if (toTime < max_time && toTime < bestTimes[toStop]) {
         bestTimes[toStop]=toTime;
