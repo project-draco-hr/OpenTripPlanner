@@ -2,8 +2,12 @@
   try {
     FileOutputStream fos=new FileOutputStream("/Users/abyrd/results.dat");
     CodedOutputStream cos=CodedOutputStream.newInstance(fos);
-    for (    int val : values) {
-      cos.writeUInt32NoTag(val);
+    cos.writeUInt32NoTag(array.length);
+    for (    int[] subArray : array) {
+      cos.writeUInt32NoTag(subArray.length);
+      for (      int val : subArray) {
+        cos.writeInt32NoTag(val);
+      }
     }
     fos.close();
   }

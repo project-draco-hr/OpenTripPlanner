@@ -14,24 +14,27 @@
     initialStops.put(stopIndex,accessTime);
   }
   PropagatedTimesStore propagatedTimesStore=new PropagatedTimesStore(graph);
-  Contiguous2DIntArray vTimes=new Contiguous2DIntArray(60,StreetVertex.getMaxIndex());
+  int[][] timesAtTargetsEachMinute=new int[60][StreetVertex.getMaxIndex()];
   for (int departureTime=9 * 60 * 60 - 60, n=0; departureTime >= 8 * 60 * 60; departureTime-=60, n++) {
     if (n % 15 == 0) {
       LOG.info("minute {}",n);
     }
     this.runRaptor(initialStops,departureTime);
     long beginPropagationTime=System.currentTimeMillis();
+    int[] timesAtTargets=timesAtTargetsEachMinute[n];
     for (int s=0; s < data.nStops; s++) {
       int baseTimeSeconds=bestTimes[s];
       if (baseTimeSeconds != UNREACHED) {
         baseTimeSeconds-=departureTime;
         int[] targets=data.targetsForStop.get(s);
         for (int i=0; i < targets.length; i++) {
-          int streetVertexIndex=targets[i++];
+          int targetIndex=targets[i++];
           int distance=targets[i];
           int egressWalkTimeSeconds=distance;
           int propagated_time=baseTimeSeconds + egressWalkTimeSeconds;
-          vTimes.setIfLess(n,streetVertexIndex,propagated_time);
+          if (timesAtTargets[targetIndex] == 0 || timesAtTargets[targetIndex] > propagated_time) {
+            timesAtTargets[targetIndex]=propagated_time;
+          }
         }
       }
     }
@@ -41,7 +44,7 @@
   LOG.info("calc time {}sec",calcTime / 1000.0);
   LOG.info("  propagation {}sec",totalPropagationTime / 1000.0);
   LOG.info("  raptor {}sec",(calcTime - totalPropagationTime) / 1000.0);
-  vTimes.dumpVariableByte();
-  propagatedTimesStore.setFromBytes(vTimes);
+  dumpVariableByte(timesAtTargetsEachMinute);
+  propagatedTimesStore.setFromArray(timesAtTargetsEachMinute);
   return propagatedTimesStore;
 }
