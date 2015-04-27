@@ -37,7 +37,7 @@
           int distance=targets[i];
           int egressWalkTimeSeconds=(int)(distance / req.walkSpeed);
           int propagated_time=baseTimeSeconds + egressWalkTimeSeconds;
-          if (timesAtTargets[targetIndex] == 0 || timesAtTargets[targetIndex] > propagated_time) {
+          if (timesAtTargets[targetIndex] > propagated_time) {
             timesAtTargets[targetIndex]=propagated_time;
           }
         }
