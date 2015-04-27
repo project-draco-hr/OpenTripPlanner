@@ -1,0 +1,8 @@
+{
+  SampleFactory sfac=graph.getSampleFactory();
+  Sample s=sfac.getSample(coordinate.x,coordinate.y);
+  SampleVertex v=new SampleVertex(graph,coordinate);
+  new SampleEdge(v,s.v0,s.d0);
+  new SampleEdge(v,s.v1,s.d1);
+  return v;
+}
