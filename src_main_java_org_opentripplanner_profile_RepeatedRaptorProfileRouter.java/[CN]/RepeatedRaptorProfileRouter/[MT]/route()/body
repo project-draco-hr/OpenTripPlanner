@@ -10,64 +10,20 @@
   LOG.info("Done.");
   RaptorWorker worker=new RaptorWorker(raptorWorkerData);
   PropagatedTimesStore propagatedTimesStore=worker.runRaptor(graph,accessTimes);
-  propagatedTimesStore.makeSurfaces(timeSurfaceRangeSet);
-  if (true) {
-    return;
-  }
-  Map<TripPattern,TripTimeSubset> timetables=TripTimeSubset.indexGraph(graph,request.date,request.fromTime,request.toTime + MAX_DURATION);
-  if (banAgency != null) {
-    for (    Route route : graph.index.routeForId.values()) {
-      if (route.getAgency().getId().equals(banAgency)) {
-        LOG.info("Banning route {}",route);
-        int n=0;
-        for (        TripPattern pattern : graph.index.patternsForRoute.get(route)) {
-          timetables.remove(pattern);
-          n++;
-        }
-        LOG.info("Removed {} patterns.",n);
-      }
-    }
-  }
-  PathDiscardingRaptorStateStore rss=new PathDiscardingRaptorStateStore((MAX_TRANSFERS + 1) * 2 + 1);
-  PropagatedTimesStore windowSummary=new PropagatedTimesStore(graph);
-  for (int i=0, departureTime=request.toTime - 60 * stepMinutes; departureTime >= request.fromTime; departureTime-=60 * stepMinutes) {
-    if (++i % 5 == 0) {
-      LOG.info("Completed {} RAPTOR searches",i);
-    }
-    rss.maxTime=departureTime + MAX_DURATION;
-    rss.restart();
-    for (TObjectIntIterator<TransitStop> it=accessTimes.iterator(); it.hasNext(); ) {
-      it.advance();
-      rss.put(it.key(),departureTime + it.value(),true);
-    }
-    Raptor raptor=new Raptor(graph,MAX_TRANSFERS,request.walkSpeed,rss,departureTime,request.date,timetables);
-    raptor.run();
-    StopTreeCache stopTreeCache=graph.index.getStopTreeCache();
-    TObjectIntIterator<TransitStop> resultIterator=raptor.iterator();
-    int[] minsPerVertex=new int[Vertex.getMaxIndex()];
-    for (    State s : walkOnlySpt.getAllStates()) {
-      Vertex v=s.getVertex();
-      int time=(int)(s.getWalkDistance() / request.walkSpeed);
-      int existing=minsPerVertex[v.getIndex()];
-      if (existing == 0 || existing > time) {
-        minsPerVertex[v.getIndex()]=time;
-      }
-    }
-    while (resultIterator.hasNext()) {
-      resultIterator.advance();
-      TransitStop transitStop=resultIterator.key();
-      int arrivalTime=resultIterator.value();
-      if (arrivalTime == Integer.MAX_VALUE)       continue;
-      int elapsedTime=arrivalTime - departureTime;
-      stopTreeCache.propagateStop(transitStop,elapsedTime,request.walkSpeed,minsPerVertex);
-    }
-    windowSummary.mergeIn(minsPerVertex);
-  }
-  LOG.info("Profile request complete, creating time surfaces.");
   timeSurfaceRangeSet=new TimeSurface.RangeSet();
   timeSurfaceRangeSet.min=new TimeSurface(this);
-  timeSurfaceRangeSet.max=new TimeSurface(this);
   timeSurfaceRangeSet.avg=new TimeSurface(this);
-  windowSummary.makeSurfaces(timeSurfaceRangeSet);
+  timeSurfaceRangeSet.max=new TimeSurface(this);
+  propagatedTimesStore.makeSurfaces(timeSurfaceRangeSet);
+  for (  State state : walkOnlySpt.getAllStates()) {
+    int time=(int)state.getElapsedTimeSeconds();
+    Vertex v=state.getVertex();
+    int emin=timeSurfaceRangeSet.min.getTime(v);
+    if (emin == TimeSurface.UNREACHABLE || time < emin)     timeSurfaceRangeSet.min.times.put(v,time);
+    int emax=timeSurfaceRangeSet.max.getTime(v);
+    if (emax == TimeSurface.UNREACHABLE || time < emax)     timeSurfaceRangeSet.max.times.put(v,time);
+    int eavg=timeSurfaceRangeSet.avg.getTime(v);
+    if (eavg == TimeSurface.UNREACHABLE || time < eavg)     timeSurfaceRangeSet.avg.times.put(v,time);
+  }
   LOG.info("Profile request finished in {} seconds",(System.currentTimeMillis() - computationStartTime) / 1000.0);
 }
