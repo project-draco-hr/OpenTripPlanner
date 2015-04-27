@@ -7,7 +7,7 @@
     for (int i=0; i < transfers.length; i++) {
       int toStop=transfers[i++];
       int distance=transfers[i];
-      int toTime=fromTime + distance;
+      int toTime=fromTime + (int)(distance / req.walkSpeed);
       if (toTime < max_time && toTime < bestTimes[toStop]) {
         bestTimes[toStop]=toTime;
         markPatternsForStop(toStop);
