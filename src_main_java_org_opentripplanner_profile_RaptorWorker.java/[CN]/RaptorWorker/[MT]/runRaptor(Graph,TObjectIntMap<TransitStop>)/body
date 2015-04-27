@@ -14,8 +14,9 @@
     initialStops.put(stopIndex,accessTime);
   }
   PropagatedTimesStore propagatedTimesStore=new PropagatedTimesStore(graph);
-  int[][] timesAtTargetsEachMinute=new int[60][StreetVertex.getMaxIndex()];
-  for (int departureTime=9 * 60 * 60 - 60, n=0; departureTime >= 8 * 60 * 60; departureTime-=60, n++) {
+  int iterations=(req.toTime - req.fromTime - 60) / 60 + 1;
+  int[][] timesAtTargetsEachMinute=new int[iterations][StreetVertex.getMaxIndex()];
+  for (int departureTime=req.toTime - 60, n=0; departureTime >= req.fromTime; departureTime-=60, n++) {
     if (n % 15 == 0) {
       LOG.info("minute {}",n);
     }
