@@ -1,0 +1,31 @@
+{
+  BitSet servicesRunning=window.servicesRunning;
+  List<TripTimes> tripTimes=Lists.newArrayList();
+  TT:   for (  TripTimes tt : pattern.scheduledTimetable.tripTimes) {
+    if (servicesRunning.get(tt.serviceCode) && tt.getScheduledArrivalTime(0) < window.to && tt.getScheduledDepartureTime(tt.getNumStops() - 1) >= window.from) {
+      tripTimes.add(tt);
+    }
+  }
+  if (tripTimes.isEmpty()) {
+    return null;
+  }
+  Collections.sort(tripTimes,new Comparator<TripTimes>(){
+    @Override public int compare(    TripTimes tt1,    TripTimes tt2){
+      return (tt1.getScheduledArrivalTime(0) - tt2.getScheduledArrivalTime(0));
+    }
+  }
+);
+  RaptorWorkerTimetable rwtt=new RaptorWorkerTimetable(tripTimes.size(),pattern.getStops().size() * 2);
+  int t=0;
+  for (  TripTimes tt : tripTimes) {
+    int[] times=new int[rwtt.nStops];
+    for (int s=0; s < pattern.getStops().size(); s++) {
+      int arrival=tt.getScheduledArrivalTime(s);
+      int departure=tt.getScheduledDepartureTime(s);
+      times[s * 2]=arrival;
+      times[s * 2 + 1]=departure;
+    }
+    rwtt.timesPerTrip[t++]=times;
+  }
+  return rwtt;
+}
