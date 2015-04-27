@@ -1,4 +1,5 @@
 {
+  int[] newBestTimes=bestTimes.clone();
   patternsTouched.clear();
   for (int stop=stopsTouched.nextSetBit(0); stop >= 0; stop=stopsTouched.nextSetBit(stop + 1)) {
     markPatternsForStop(stop);
@@ -8,10 +9,11 @@
       int toStop=transfers[i++];
       int distance=transfers[i];
       int toTime=fromTime + (int)(distance / req.walkSpeed);
-      if (toTime < max_time && toTime < bestTimes[toStop]) {
-        bestTimes[toStop]=toTime;
+      if (toTime < max_time && toTime < newBestTimes[toStop]) {
+        newBestTimes[toStop]=toTime;
         markPatternsForStop(toStop);
       }
     }
+    bestTimes=newBestTimes;
   }
 }

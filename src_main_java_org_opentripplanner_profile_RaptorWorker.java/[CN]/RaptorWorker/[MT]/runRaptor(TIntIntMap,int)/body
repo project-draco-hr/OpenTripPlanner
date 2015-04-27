@@ -8,10 +8,10 @@
     iterator.advance();
     int stopIndex=iterator.key();
     int time=iterator.value() + departureTime;
-    bestTimes[stopIndex]=time;
+    bestTimes[stopIndex]=Math.min(time,bestTimes[stopIndex]);
     markPatternsForStop(stopIndex);
   }
-  while (round <= MAX_ROUNDS && doOneRound()) {
+  while (doOneRound()) {
     advance();
   }
 }
