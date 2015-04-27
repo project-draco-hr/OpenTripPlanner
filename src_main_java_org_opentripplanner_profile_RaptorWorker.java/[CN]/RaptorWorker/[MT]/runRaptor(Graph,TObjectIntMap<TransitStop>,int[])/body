@@ -15,7 +15,7 @@
   }
   PropagatedTimesStore propagatedTimesStore=new PropagatedTimesStore(graph);
   int iterations=(req.toTime - req.fromTime - 60) / 60 + 1;
-  int[][] timesAtTargetsEachMinute=new int[iterations][StreetVertex.getMaxIndex()];
+  int[][] timesAtTargetsEachMinute=new int[iterations][walkTimes.length];
   for (int departureTime=req.toTime - 60, n=0; departureTime >= req.fromTime; departureTime-=60, n++) {
     if (n % 15 == 0) {
       LOG.info("minute {}",n);
@@ -23,6 +23,9 @@
     this.runRaptor(initialStops,departureTime);
     long beginPropagationTime=System.currentTimeMillis();
     int[] timesAtTargets=timesAtTargetsEachMinute[n];
+    for (int i=0; i < timesAtTargets.length; i++) {
+      timesAtTargets[i]=walkTimes[i];
+    }
     for (int s=0; s < data.nStops; s++) {
       int baseTimeSeconds=bestTimes[s];
       if (baseTimeSeconds != UNREACHED) {
@@ -31,7 +34,7 @@
         for (int i=0; i < targets.length; i++) {
           int targetIndex=targets[i++];
           int distance=targets[i];
-          int egressWalkTimeSeconds=distance;
+          int egressWalkTimeSeconds=(int)(distance / req.walkSpeed);
           int propagated_time=baseTimeSeconds + egressWalkTimeSeconds;
           if (timesAtTargets[targetIndex] == 0 || timesAtTargets[targetIndex] > propagated_time) {
             timesAtTargets[targetIndex]=propagated_time;
