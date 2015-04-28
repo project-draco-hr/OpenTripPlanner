@@ -23,7 +23,7 @@
         }
         while (onTrip > 0) {
           int departureOnPreviousTrip=timetable.getDeparture(onTrip - 1,stopPositionInPattern);
-          if (departureOnPreviousTrip > bestNonTransferTimes[stopIndex]) {
+          if (departureOnPreviousTrip > bestTimes[stopIndex]) {
             onTrip--;
           }
  else {

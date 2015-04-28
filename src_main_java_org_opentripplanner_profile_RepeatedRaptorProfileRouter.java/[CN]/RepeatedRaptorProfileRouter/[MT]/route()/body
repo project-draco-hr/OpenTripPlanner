@@ -5,7 +5,7 @@
   TObjectIntMap<TransitStop> accessTimes=findInitialStops(false);
   LOG.info("Found {} initial transit stops",accessTimes.size());
   LOG.info("Make data...");
-  TimeWindow window=new TimeWindow(request.fromTime,request.toTime,graph.index.servicesRunning(request.date));
+  TimeWindow window=new TimeWindow(request.fromTime,request.toTime + RaptorWorker.MAX_DURATION,graph.index.servicesRunning(request.date));
   RaptorWorkerData raptorWorkerData=new RaptorWorkerData(graph,window);
   LOG.info("Done.");
   int[] walkTimes=new int[Vertex.getMaxIndex()];
