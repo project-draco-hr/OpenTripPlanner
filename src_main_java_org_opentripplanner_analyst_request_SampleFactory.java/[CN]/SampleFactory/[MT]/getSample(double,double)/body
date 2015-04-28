@@ -1,4 +1,6 @@
 {
+  lon=((int)(lon * 1e6)) / 1e6;
+  lat=((int)(lat * 1e6)) / 1e6;
   Coordinate c=new Coordinate(lon,lat);
   Envelope env=new Envelope(c);
   double xscale=Math.cos(c.y * Math.PI / 180);
