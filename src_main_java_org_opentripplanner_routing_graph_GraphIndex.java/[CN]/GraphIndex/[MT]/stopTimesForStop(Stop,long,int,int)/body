@@ -1,5 +1,7 @@
 {
-  long now=System.currentTimeMillis() / 1000;
+  if (startTime == 0) {
+    startTime=System.currentTimeMillis() / 1000;
+  }
   List<StopTimesInPattern> ret=new ArrayList<>();
   TimetableSnapshot snapshot=null;
   if (graph.timetableSnapshotSource != null) {
@@ -22,8 +24,8 @@
  else {
         tt=pattern.scheduledTimetable;
       }
-      if (!tt.temporallyViable(sd,now,timeRange,true))       continue;
-      int secondsSinceMidnight=sd.secondsSinceMidnight(now);
+      if (!tt.temporallyViable(sd,startTime,timeRange,true))       continue;
+      int secondsSinceMidnight=sd.secondsSinceMidnight(startTime);
       int sidx=0;
       for (      Stop currStop : pattern.stopPattern.stops) {
         if (currStop == stop) {
