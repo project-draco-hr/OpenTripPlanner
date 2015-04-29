@@ -1,0 +1,15 @@
+{
+  OSMWay way=new OSMWay();
+  way.addTag("highway","residential");
+  P2<StreetTraversalPermission> permissionPair=getWayProperties(way);
+  assertTrue(permissionPair.first.allows(StreetTraversalPermission.ALL));
+  way.addTag("motorcar","no");
+  permissionPair=getWayProperties(way);
+  assertTrue(permissionPair.first.allows(StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE));
+  way.addTag("bicycle","no");
+  permissionPair=getWayProperties(way);
+  assertTrue(permissionPair.first.allows(StreetTraversalPermission.PEDESTRIAN));
+  way.addTag("foot","no");
+  permissionPair=getWayProperties(way);
+  assertTrue(permissionPair.first.allowsNothing());
+}
