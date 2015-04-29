@@ -12,6 +12,6 @@
     e.printStackTrace();
     throw new RuntimeException(e);
   }
-  NetworkLinker nl=new NetworkLinker(portlandGraph);
-  nl.createLinkage();
+  TransitToStreetNetworkModule ttsnm=new TransitToStreetNetworkModule();
+  ttsnm.buildGraph(portlandGraph,new HashMap<Class<?>,Object>());
 }
