@@ -1,0 +1,8 @@
+{
+  LOG.info("Linking bike rental stations...");
+  for (  BikeRentalStationVertex brsv : bikeRentalVertices) {
+    if (!networkLinkerLibrary.connectVertexToStreets(brsv).getResult()) {
+      LOG.warn(graph.addBuilderAnnotation(new BikeRentalStationUnlinked(brsv)));
+    }
+  }
+}
