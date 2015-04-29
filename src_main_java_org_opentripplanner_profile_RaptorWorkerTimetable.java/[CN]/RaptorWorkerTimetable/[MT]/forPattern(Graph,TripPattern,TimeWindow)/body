@@ -6,7 +6,17 @@
       tripTimes.add(tt);
     }
   }
-  if (tripTimes.isEmpty()) {
+  List<FrequencyEntry> freqs=Lists.newArrayList();
+  for (  FrequencyEntry fe : pattern.scheduledTimetable.frequencyEntries) {
+    if (servicesRunning.get(fe.tripTimes.serviceCode) && fe.getMinDeparture() < window.to && fe.getMaxArrival() > window.from) {
+      if (fe.exactTimes) {
+        LOG.warn("Exact-times frequency trips not yet supported");
+        continue;
+      }
+      freqs.add(fe);
+    }
+  }
+  if (tripTimes.isEmpty() && freqs.isEmpty()) {
     return null;
   }
   Collections.sort(tripTimes,new Comparator<TripTimes>(){
@@ -26,6 +36,24 @@
       times[s * 2 + 1]=departure;
     }
     rwtt.timesPerTrip[t++]=times;
+  }
+  rwtt.frequencyTrips=new int[freqs.size()][pattern.getStops().size() * 2];
+  rwtt.endTimes=new int[freqs.size()];
+  rwtt.startTimes=new int[freqs.size()];
+  rwtt.headwaySecs=new int[freqs.size()];
+{
+    int i=0;
+    for (    FrequencyEntry fe : freqs) {
+      rwtt.headwaySecs[i]=fe.headway;
+      rwtt.startTimes[i]=fe.startTime;
+      rwtt.endTimes[i]=fe.endTime;
+      int[] times=rwtt.frequencyTrips[i];
+      for (int s=0; s < fe.tripTimes.getNumStops(); s++) {
+        times[s * 2]=fe.tripTimes.getScheduledArrivalTime(s);
+        times[s * 2 + 1]=fe.tripTimes.getScheduledDepartureTime(s);
+      }
+      i++;
+    }
   }
   return rwtt;
 }

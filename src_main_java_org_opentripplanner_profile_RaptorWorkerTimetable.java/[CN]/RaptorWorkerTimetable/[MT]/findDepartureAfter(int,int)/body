@@ -1,6 +1,6 @@
 {
   for (int trip=0; trip < timesPerTrip.length; trip++) {
-    if (getDeparture(trip,stop) > time + 60) {
+    if (getDeparture(trip,stop) > time + MIN_BOARD_TIME_SECONDS) {
       return trip;
     }
   }
