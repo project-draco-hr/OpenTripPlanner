@@ -12,7 +12,7 @@
     StreetEdge street1=new StreetEdge(front,back,GeometryUtils.makeLineString(stop.getX() + 0.0001,stop.getY() + 0.0001,stop.getX() - 0.0001,stop.getY() - 0.0001),"street",100,StreetTraversalPermission.ALL,false);
     StreetEdge street2=new StreetEdge(back,front,GeometryUtils.makeLineString(stop.getX() - 0.0001,stop.getY() - 0.0001,stop.getX() + 0.0001,stop.getY() + 0.0001),"street",100,StreetTraversalPermission.ALL,true);
   }
-  TransitToStreetNetworkModule ttsnm=new TransitToStreetNetworkModule();
+  StreetLinkerModule ttsnm=new StreetLinkerModule();
   graph.hasStreets=true;
   graph.hasTransit=true;
   ttsnm.buildGraph(graph,new HashMap<Class<?>,Object>());

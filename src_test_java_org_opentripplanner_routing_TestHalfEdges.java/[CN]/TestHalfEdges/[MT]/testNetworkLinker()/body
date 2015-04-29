@@ -1,6 +1,6 @@
 {
   int numVerticesBefore=graph.getVertices().size();
-  TransitToStreetNetworkModule ttsnm=new TransitToStreetNetworkModule();
+  StreetLinkerModule ttsnm=new StreetLinkerModule();
   ttsnm.buildGraph(graph,new HashMap<Class<?>,Object>());
   int numVerticesAfter=graph.getVertices().size();
   assertEquals(4,numVerticesAfter - numVerticesBefore);

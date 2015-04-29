@@ -51,16 +51,16 @@ for (File osmFile : osmFiles) {
 OpenStreetMapProvider osmProvider=new AnyFileBasedOpenStreetMapProviderImpl(osmFile);
 osmProviders.add(osmProvider);
 }
-OpenStreetMapModule osmBuilder=new OpenStreetMapModule(osmProviders);
+OpenStreetMapModule osmModule=new OpenStreetMapModule(osmProviders);
 DefaultStreetEdgeFactory streetEdgeFactory=new DefaultStreetEdgeFactory();
 streetEdgeFactory.useElevationData=builderParams.fetchElevationUS || (demFile != null);
-osmBuilder.edgeFactory=streetEdgeFactory;
-osmBuilder.customNamer=builderParams.customNamer;
+osmModule.edgeFactory=streetEdgeFactory;
+osmModule.customNamer=builderParams.customNamer;
 DefaultWayPropertySetSource defaultWayPropertySetSource=new DefaultWayPropertySetSource();
-osmBuilder.setDefaultWayPropertySetSource(defaultWayPropertySetSource);
-osmBuilder.skipVisibility=!builderParams.areaVisibility;
-graphBuilder.addGraphBuilder(osmBuilder);
-graphBuilder.addGraphBuilder(new PruneFloatingIslands());
+osmModule.setDefaultWayPropertySetSource(defaultWayPropertySetSource);
+osmModule.skipVisibility=!builderParams.areaVisibility;
+graphBuilder.addModule(osmModule);
+graphBuilder.addModule(new PruneFloatingIslands());
 }
 if (hasGTFS) {
 List<GtfsBundle> gtfsBundles=Lists.newArrayList();
@@ -74,36 +74,36 @@ gtfsBundle.parentStationTransfers=builderParams.stationTransfers;
 gtfsBundle.subwayAccessTime=(int)(builderParams.subwayAccessTime * 60);
 gtfsBundles.add(gtfsBundle);
 }
-GtfsModule gtfsBuilder=new GtfsModule(gtfsBundles);
+GtfsModule gtfsModule=new GtfsModule(gtfsBundles);
 if (hasOSM) {
 if (builderParams.matchBusRoutesToStreets) {
-graphBuilder.addGraphBuilder(new BusRouteStreetMatcher());
+graphBuilder.addModule(new BusRouteStreetMatcher());
 }
-graphBuilder.addGraphBuilder(new TransitToTaggedStopsModule());
+graphBuilder.addModule(new TransitToTaggedStopsModule());
 }
-gtfsBuilder.setFareServiceFactory(builderParams.fareServiceFactory);
-graphBuilder.addGraphBuilder(gtfsBuilder);
+gtfsModule.setFareServiceFactory(builderParams.fareServiceFactory);
+graphBuilder.addModule(gtfsModule);
 }
-graphBuilder.addGraphBuilder(new TransitToStreetNetworkModule());
+graphBuilder.addModule(new StreetLinkerModule());
 if (hasGTFS) {
 if (!builderParams.useTransfersTxt) {
-graphBuilder.addGraphBuilder(new DirectTransferGenerator());
+graphBuilder.addModule(new DirectTransferGenerator());
 }
 }
 if (builderParams.fetchElevationUS) {
 File cacheDirectory=new File(params.cacheDirectory,"ned");
 ElevationGridCoverageFactory gcf=new NEDGridCoverageFactoryImpl(cacheDirectory);
 GraphBuilderModule elevationBuilder=new ElevationModule(gcf);
-graphBuilder.addGraphBuilder(elevationBuilder);
+graphBuilder.addModule(elevationBuilder);
 }
  else if (demFile != null) {
 ElevationGridCoverageFactory gcf=new GeotiffGridCoverageFactoryImpl(demFile);
 GraphBuilderModule elevationBuilder=new ElevationModule(gcf);
-graphBuilder.addGraphBuilder(elevationBuilder);
+graphBuilder.addModule(elevationBuilder);
 }
-graphBuilder.addGraphBuilder(new EmbedConfig(builderConfig,routerConfig));
+graphBuilder.addModule(new EmbedConfig(builderConfig,routerConfig));
 if (builderParams.htmlAnnotations) {
-graphBuilder.addGraphBuilder(new AnnotationsToHTML(new File(params.build,"report.html")));
+graphBuilder.addModule(new AnnotationsToHTML(new File(params.build,"report.html")));
 }
 graphBuilder.serializeGraph=(!params.inMemory) || params.preFlight;
 return graphBuilder;
