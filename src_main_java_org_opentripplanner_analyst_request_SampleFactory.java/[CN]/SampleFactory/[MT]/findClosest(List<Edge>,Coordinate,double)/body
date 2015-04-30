@@ -16,7 +16,7 @@
       c.frac=GeometryUtils.segmentFraction(x0,y0,x1,y1,pt.x,pt.y,xscale);
       c.x=x0 + c.frac * (x1 - x0);
       c.y=y0 + c.frac * (y1 - y0);
-      double dx=c.x - pt.x;
+      double dx=(c.x - pt.x) * xscale;
       double dy=c.y - pt.y;
       c.dist2=dx * dx + dy * dy;
       if (c.dist2 < best.dist2) {
