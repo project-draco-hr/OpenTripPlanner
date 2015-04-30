@@ -6,22 +6,34 @@
   LOG.info("Found {} initial transit stops",accessTimes.size());
   LOG.info("Make data...");
   TimeWindow window=new TimeWindow(request.fromTime,request.toTime + RaptorWorker.MAX_DURATION,graph.index.servicesRunning(request.date));
-  RaptorWorkerData raptorWorkerData=new RaptorWorkerData(graph,window);
+  RaptorWorkerData raptorWorkerData;
+  if (sampleSet == null)   raptorWorkerData=new RaptorWorkerData(graph,window);
+ else   raptorWorkerData=new RaptorWorkerData(graph,window,sampleSet);
   LOG.info("Done.");
-  int[] walkTimes=new int[Vertex.getMaxIndex()];
-  Arrays.fill(walkTimes,RaptorWorker.UNREACHED);
-  for (  State state : walkOnlySpt.getAllStates()) {
-    int time=(int)state.getElapsedTimeSeconds();
-    int vidx=state.getVertex().getIndex();
-    int otime=walkTimes[vidx];
-    if (otime == RaptorWorker.UNREACHED || otime > time)     walkTimes[vidx]=time;
+  int[] walkTimes;
+  if (sampleSet == null) {
+    walkTimes=new int[Vertex.getMaxIndex()];
+    Arrays.fill(walkTimes,RaptorWorker.UNREACHED);
+    for (    State state : walkOnlySpt.getAllStates()) {
+      int time=(int)state.getElapsedTimeSeconds();
+      int vidx=state.getVertex().getIndex();
+      int otime=walkTimes[vidx];
+      if (otime == RaptorWorker.UNREACHED || otime > time)       walkTimes[vidx]=time;
+    }
+  }
+ else {
+    TimeSurface walk=new TimeSurface(walkOnlySpt,false);
+    ResultSet walkRs=new ResultSet(sampleSet,walk,true);
+    walkTimes=walkRs.times;
   }
   RaptorWorker worker=new RaptorWorker(raptorWorkerData,request);
-  PropagatedTimesStore propagatedTimesStore=worker.runRaptor(graph,accessTimes,walkTimes);
-  timeSurfaceRangeSet=new TimeSurface.RangeSet();
-  timeSurfaceRangeSet.min=new TimeSurface(this);
-  timeSurfaceRangeSet.avg=new TimeSurface(this);
-  timeSurfaceRangeSet.max=new TimeSurface(this);
-  propagatedTimesStore.makeSurfaces(timeSurfaceRangeSet);
+  propagatedTimesStore=worker.runRaptor(graph,accessTimes,walkTimes);
+  if (sampleSet == null) {
+    timeSurfaceRangeSet=new TimeSurface.RangeSet();
+    timeSurfaceRangeSet.min=new TimeSurface(this);
+    timeSurfaceRangeSet.avg=new TimeSurface(this);
+    timeSurfaceRangeSet.max=new TimeSurface(this);
+    propagatedTimesStore.makeSurfaces(timeSurfaceRangeSet);
+  }
   LOG.info("Profile request finished in {} seconds",(System.currentTimeMillis() - computationStartTime) / 1000.0);
 }
