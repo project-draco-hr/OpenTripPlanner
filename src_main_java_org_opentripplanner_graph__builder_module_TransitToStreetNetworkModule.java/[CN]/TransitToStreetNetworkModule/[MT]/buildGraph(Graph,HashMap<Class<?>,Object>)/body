@@ -1,27 +1,5 @@
 {
   LOG.info("Linking transit stops to streets...");
-  double radius=0.01;
-  graph.index(new DefaultStreetVertexIndexFactory());
-  for (  TransitStop tstop : Iterables.filter(graph.getVertices(),TransitStop.class)) {
-    Envelope envelope=new Envelope(tstop.getCoordinate());
-    envelope.expandBy(radius);
-    Collection<Vertex> nearby=graph.streetIndex.getVerticesForEnvelope(envelope);
-    double radiusErsatz=radius * radius;
-    double bestErsatz=Double.POSITIVE_INFINITY;
-    Vertex best=null;
-    for (    OsmVertex v : Iterables.filter(nearby,OsmVertex.class)) {
-      double dx=v.getLat() - tstop.getLat();
-      double dy=v.getLon() - tstop.getLon();
-      double ersatz=dx * dx + dy * dy;
-      if (ersatz > radiusErsatz)       continue;
-      if (ersatz < bestErsatz) {
-        best=v;
-        bestErsatz=ersatz;
-      }
-    }
-    if (best != null) {
-      new FreeEdge(best,tstop);
-      new FreeEdge(tstop,best);
-    }
-  }
+  NetworkLinker linker=new NetworkLinker(graph,extra);
+  linker.createLinkage();
 }
