@@ -1,5 +1,5 @@
 {
   LOG.info("Linking transit stops to streets...");
-  NetworkLinker linker=new NetworkLinker(graph,extra);
-  linker.createLinkage();
+  SampleStopLinker linker=new SampleStopLinker(graph);
+  linker.link(true);
 }
