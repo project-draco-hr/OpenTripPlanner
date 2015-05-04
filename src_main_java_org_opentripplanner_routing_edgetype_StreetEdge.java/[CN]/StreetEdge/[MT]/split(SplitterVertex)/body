@@ -1,0 +1,24 @@
+{
+  P2<LineString> geoms=GeometryUtils.splitGeometryAtPoint(getGeometry(),v.getCoordinate());
+  StreetEdge e1=new StreetEdge((StreetVertex)fromv,v,geoms.first,name,0,permission,this.isBack());
+  StreetEdge e2=new StreetEdge(v,(StreetVertex)tov,geoms.second,name,0,permission,this.isBack());
+  e1.calculateLengthFromGeometry();
+  e2.calculateLengthFromGeometry();
+  double frac=(double)e1.length_mm / (e1.length_mm + e2.length_mm);
+  e1.length_mm=(int)(length_mm * frac);
+  e2.length_mm=length_mm - e1.length_mm;
+  if (e2.length_mm < 0) {
+    e1.tov.removeIncoming(e1);
+    e1.fromv.removeOutgoing(e1);
+    e2.tov.removeIncoming(e2);
+    e2.fromv.removeOutgoing(e2);
+    throw new IllegalStateException("Split street is longer than original street!");
+  }
+  for (  StreetEdge e : new StreetEdge[]{e1,e2}) {
+    e.setBicycleSafetyFactor(getBicycleSafetyFactor());
+    e.setHasBogusName(hasBogusName());
+    e.setStairs(isStairs());
+    e.setWheelchairAccessible(isWheelchairAccessible());
+  }
+  return new P2<StreetEdge>(e1,e2);
+}

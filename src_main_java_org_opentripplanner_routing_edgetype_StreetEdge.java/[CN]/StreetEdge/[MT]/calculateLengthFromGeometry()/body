@@ -1,0 +1,8 @@
+{
+  double accumulatedMeters=0;
+  LineString geom=getGeometry();
+  for (int i=1; i < geom.getNumPoints(); i++) {
+    accumulatedMeters+=SphericalDistanceLibrary.distance(geom.getCoordinateN(i - 1),geom.getCoordinateN(i));
+  }
+  length_mm=(int)(accumulatedMeters * 1000);
+}

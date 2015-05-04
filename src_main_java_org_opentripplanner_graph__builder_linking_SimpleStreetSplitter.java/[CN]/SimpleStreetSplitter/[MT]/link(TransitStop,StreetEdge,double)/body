@@ -1,0 +1,36 @@
+{
+  LineString orig=edge.getGeometry();
+  LineString transformed=equirectangularProject(orig,xscale);
+  LocationIndexedLine il=new LocationIndexedLine(transformed);
+  LinearLocation ll=il.project(new Coordinate(tstop.getLon() * xscale,tstop.getLat()));
+  if (ll.getSegmentIndex() == 0 && ll.getSegmentFraction() < 0.05) {
+    makeLinkEdges(tstop,(StreetVertex)edge.getFromVertex());
+    return;
+  }
+ else   if (ll.getSegmentIndex() == orig.getNumPoints()) {
+    makeLinkEdges(tstop,(StreetVertex)edge.getToVertex());
+    return;
+  }
+ else   if (ll.getSegmentIndex() == orig.getNumPoints() - 1 && ll.getSegmentFraction() > 0.95) {
+    makeLinkEdges(tstop,(StreetVertex)edge.getToVertex());
+  }
+  SplitterVertex v0=split(edge,ll);
+  Vertex fromv=edge.getFromVertex();
+  if (fromv instanceof SplitterVertex)   fromv=((SplitterVertex)fromv).opposite;
+  Vertex tov=edge.getToVertex();
+  if (tov instanceof SplitterVertex)   tov=((SplitterVertex)tov).opposite;
+  if (fromv != null && tov != null) {
+    for (    StreetEdge back : Iterables.filter(tov.getOutgoing(),StreetEdge.class)) {
+      if (back.getToVertex() == fromv) {
+        orig=back.getGeometry();
+        transformed=equirectangularProject(orig,xscale);
+        il=new LocationIndexedLine(transformed);
+        ll=il.project(new Coordinate(tstop.getLon() * xscale,tstop.getLat()));
+        SplitterVertex v1=split(back,ll);
+        v1.opposite=v0;
+        v0.opposite=v1;
+      }
+    }
+  }
+  makeLinkEdges(tstop,v0);
+}
