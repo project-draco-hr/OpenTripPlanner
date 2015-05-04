@@ -11,6 +11,7 @@
     double bestEdgeDist=Double.POSITIVE_INFINITY;
     StreetEdge bestEdge=null;
     for (    StreetEdge edge : idx.query(env)) {
+      if (!edge.canTraverse(new TraverseModeSet(TraverseMode.WALK)))       continue;
       if (!edge.getToVertex().getIncoming().contains(edge))       continue;
       double dist=distance(tstop,edge,xscale);
       if (dist < radiusDeg && dist < bestEdgeDist) {
