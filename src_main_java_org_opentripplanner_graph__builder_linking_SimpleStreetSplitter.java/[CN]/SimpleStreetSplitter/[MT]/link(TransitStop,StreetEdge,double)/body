@@ -7,11 +7,11 @@
     makeLinkEdges(tstop,(StreetVertex)edge.getFromVertex());
     return;
   }
- else   if (ll.getSegmentIndex() == orig.getNumPoints()) {
+ else   if (ll.getSegmentIndex() == orig.getNumPoints() - 1) {
     makeLinkEdges(tstop,(StreetVertex)edge.getToVertex());
     return;
   }
- else   if (ll.getSegmentIndex() == orig.getNumPoints() - 1 && ll.getSegmentFraction() > 0.95) {
+ else   if (ll.getSegmentIndex() == orig.getNumPoints() - 2 && ll.getSegmentFraction() > 0.95) {
     makeLinkEdges(tstop,(StreetVertex)edge.getToVertex());
   }
   SplitterVertex v0=split(edge,ll);
