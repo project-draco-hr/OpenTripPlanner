@@ -1,7 +1,7 @@
 {
   idx=new HashGridSpatialIndex<StreetEdge>();
   for (  StreetEdge se : Iterables.filter(graph.getEdges(),StreetEdge.class)) {
-    if (true || !se.isBack()) {
+    if (!se.isBack()) {
       idx.insert(se.getGeometry().getEnvelopeInternal(),se);
     }
   }
