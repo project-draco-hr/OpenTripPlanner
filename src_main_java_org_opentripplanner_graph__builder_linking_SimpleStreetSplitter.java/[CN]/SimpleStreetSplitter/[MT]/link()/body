@@ -1,7 +1,9 @@
 {
   idx=new HashGridSpatialIndex<StreetEdge>();
   for (  StreetEdge se : Iterables.filter(graph.getEdges(),StreetEdge.class)) {
-    idx.insert(se.getGeometry().getEnvelopeInternal(),se);
+    if (true || !se.isBack()) {
+      idx.insert(se.getGeometry().getEnvelopeInternal(),se);
+    }
   }
   for (  TransitStop tstop : Iterables.filter(graph.getVertices(),TransitStop.class)) {
     double radiusDeg=SphericalDistanceLibrary.metersToDegrees(MAX_SEARCH_RADIUS_METERS);

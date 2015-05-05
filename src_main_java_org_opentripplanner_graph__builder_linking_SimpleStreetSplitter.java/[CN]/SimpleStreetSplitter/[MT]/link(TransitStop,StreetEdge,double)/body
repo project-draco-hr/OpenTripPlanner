@@ -21,7 +21,7 @@
     StreetEdge back=null;
     if (fromv != null && tov != null) {
       for (      StreetEdge other : Iterables.filter(tov.getOutgoing(),StreetEdge.class)) {
-        if (other.getToVertex() == fromv) {
+        if (other.getToVertex() == fromv && other.getDistance() == edge.getDistance()) {
           back=other;
           break;
         }
