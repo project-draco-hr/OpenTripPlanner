@@ -14,28 +14,6 @@
   }
  else {
     SplitterVertex v0=split(edge,ll);
-    Vertex fromv=edge.getFromVertex();
-    if (fromv instanceof SplitterVertex)     fromv=((SplitterVertex)fromv).opposite;
-    Vertex tov=edge.getToVertex();
-    if (tov instanceof SplitterVertex)     tov=((SplitterVertex)tov).opposite;
-    StreetEdge back=null;
-    if (fromv != null && tov != null) {
-      for (      StreetEdge other : Iterables.filter(tov.getOutgoing(),StreetEdge.class)) {
-        if (other.getToVertex() == fromv && other.getDistance() == edge.getDistance()) {
-          back=other;
-          break;
-        }
-      }
-    }
-    if (back != null) {
-      orig=back.getGeometry();
-      transformed=equirectangularProject(orig,xscale);
-      il=new LocationIndexedLine(transformed);
-      ll=il.project(new Coordinate(tstop.getLon() * xscale,tstop.getLat()));
-      SplitterVertex v1=split(back,ll);
-      v1.opposite=v0;
-      v0.opposite=v1;
-    }
     makeLinkEdges(tstop,v0);
   }
 }

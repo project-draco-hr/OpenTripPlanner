@@ -1,11 +1,7 @@
 {
+  for (  StreetTransitLink e : Iterables.filter(tstop.getOutgoing(),StreetTransitLink.class)) {
+    if (e.getToVertex() == v)     return;
+  }
   new StreetTransitLink(tstop,v,tstop.hasWheelchairEntrance());
   new StreetTransitLink(v,tstop,tstop.hasWheelchairEntrance());
-  if (v instanceof SplitterVertex) {
-    SplitterVertex sv=(SplitterVertex)v;
-    if (sv.opposite != null) {
-      new StreetTransitLink(tstop,sv.opposite,tstop.hasWheelchairEntrance());
-      new StreetTransitLink(sv.opposite,tstop,tstop.hasWheelchairEntrance());
-    }
-  }
 }
