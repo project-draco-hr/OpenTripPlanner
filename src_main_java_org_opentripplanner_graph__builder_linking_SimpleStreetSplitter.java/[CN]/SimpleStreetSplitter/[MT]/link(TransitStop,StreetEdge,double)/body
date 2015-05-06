@@ -3,13 +3,13 @@
   LineString transformed=equirectangularProject(orig,xscale);
   LocationIndexedLine il=new LocationIndexedLine(transformed);
   LinearLocation ll=il.project(new Coordinate(tstop.getLon() * xscale,tstop.getLat()));
-  if (ll.getSegmentIndex() == 0 && ll.getSegmentFraction() < 0.05) {
+  if (ll.getSegmentIndex() == 0 && ll.getSegmentFraction() < 1e-8) {
     makeLinkEdges(tstop,(StreetVertex)edge.getFromVertex());
   }
  else   if (ll.getSegmentIndex() == orig.getNumPoints() - 1) {
     makeLinkEdges(tstop,(StreetVertex)edge.getToVertex());
   }
- else   if (ll.getSegmentIndex() == orig.getNumPoints() - 2 && ll.getSegmentFraction() > 0.95) {
+ else   if (ll.getSegmentIndex() == orig.getNumPoints() - 2 && ll.getSegmentFraction() > 1 - 1e-8) {
     makeLinkEdges(tstop,(StreetVertex)edge.getToVertex());
   }
  else {
