@@ -3,15 +3,15 @@
   double lon=dest ? request.toLon : request.fromLon;
   QualifiedModeSet modes=dest ? request.accessModes : request.egressModes;
   RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
-  rr.dominanceFunction=new DominanceFunction.EarliestArrival();
+  rr.dominanceFunction=new DominanceFunction.LeastWalk();
   rr.batch=true;
   rr.from=new GenericLocation(lat,lon);
-  rr.walkSpeed=request.walkSpeed;
   rr.to=rr.from;
   rr.setRoutingContext(graph);
   rr.rctx.pathParsers=new PathParser[]{new InitialStopSearchPathParser()};
   rr.dateTime=request.date.toDateMidnight(DateTimeZone.forTimeZone(graph.getTimeZone())).getMillis() / 1000 + request.fromTime;
-  rr.worstTime=(rr.dateTime + request.maxWalkTime * 60);
+  rr.maxWalkDistance=2000;
+  rr.softWalkLimiting=false;
   AStar astar=new AStar();
   rr.longDistance=true;
   rr.setNumItineraries(1);
@@ -20,7 +20,7 @@
   for (  TransitStop tstop : graph.index.stopVertexForStop.values()) {
     State s=spt.getState(tstop);
     if (s != null) {
-      accessTimes.put(tstop,(int)s.getElapsedTimeSeconds());
+      accessTimes.put(tstop,(int)(s.getWalkDistance() / request.walkSpeed));
     }
   }
   this.walkOnlySpt=spt;
