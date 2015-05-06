@@ -1,16 +1,17 @@
 {
-  this.timeCutoffMinutes=timeCutoffMinutes;
+  this.maxWalkMeters=maxWalkMeters;
   LOG.info("Caching distances to nearby street intersections from each transit stop...");
   for (  TransitStop tstop : graph.index.stopVertexForStop.values()) {
     RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
     rr.batch=(true);
     rr.setRoutingContext(graph,tstop,tstop);
     rr.rctx.pathParsers=new PathParser[]{new ProfilePropagationPathParser()};
-    rr.worstTime=(rr.dateTime + timeCutoffMinutes * 60);
     AStar astar=new AStar();
     rr.longDistance=true;
     rr.dominanceFunction=new DominanceFunction.LeastWalk();
     rr.setNumItineraries(1);
+    rr.maxWalkDistance=maxWalkMeters;
+    rr.softWalkLimiting=false;
     ShortestPathTree spt=astar.getShortestPathTree(rr,5);
     int[] distances=new int[spt.getVertexCount() * 2];
     int i=0;
