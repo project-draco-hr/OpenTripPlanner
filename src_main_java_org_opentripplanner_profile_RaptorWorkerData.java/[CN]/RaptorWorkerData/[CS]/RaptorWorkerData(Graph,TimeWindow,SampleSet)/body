@@ -70,13 +70,15 @@
         sampleIndex.put(v0,list);
       }
       list.add(new HalfSample(i,sampleSet.d0s[i]));
-      int v1=sampleSet.v1s[i].getIndex();
-      if (sampleIndex.containsKey(v1))       list=sampleIndex.get(v1);
+      if (sampleSet.v1s[i] != null) {
+        int v1=sampleSet.v1s[i].getIndex();
+        if (sampleIndex.containsKey(v1))         list=sampleIndex.get(v1);
  else {
-        list=new ArrayList<HalfSample>();
-        sampleIndex.put(v1,list);
+          list=new ArrayList<HalfSample>();
+          sampleIndex.put(v1,list);
+        }
+        list.add(new HalfSample(i,sampleSet.d1s[i]));
       }
-      list.add(new HalfSample(i,sampleSet.d1s[i]));
     }
     TIntList out=new TIntArrayList();
     STOP:     for (    Stop stop : stopForIndex) {
@@ -88,8 +90,10 @@
         int d=distancesForStop[i];
         if (!sampleIndex.containsKey(v))         continue STREET;
         SAMPLE:         for (        HalfSample s : sampleIndex.get(v)) {
+          int distance=Math.round(d + s.distance);
+          if (distance > stc.maxWalkMeters)           continue;
           out.add(s.index);
-          out.add(Math.round(d + s.distance));
+          out.add(distance);
         }
       }
       targetsForStop.add(out.toArray());
