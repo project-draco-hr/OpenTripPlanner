@@ -1,0 +1,9 @@
+{
+  OSMWay way=new OSMWay();
+  way.addTag("highway","unclassified");
+  P2<StreetTraversalPermission> permissionPair=getWayProperties(way);
+  assertTrue(permissionPair.first.allows(StreetTraversalPermission.ALL));
+  way.addTag("bicycle","designated");
+  permissionPair=getWayProperties(way);
+  assertTrue(permissionPair.first.allows(StreetTraversalPermission.ALL));
+}

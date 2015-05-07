@@ -1,0 +1,16 @@
+{
+  if (config == null || config.isMissingNode()) {
+    return null;
+  }
+  S3BucketConfig bucketConfig=new S3BucketConfig();
+  try {
+    bucketConfig.accessKey=config.get("accessKey").asText();
+    bucketConfig.secretKey=config.get("secretKey").asText();
+    bucketConfig.bucketName=config.get("bucketName").asText();
+  }
+ catch (  NullPointerException ex) {
+    LOG.error("You must specify an accessKey, a secretKey, and a bucketName when configuring S3 download.");
+    throw ex;
+  }
+  return bucketConfig;
+}
