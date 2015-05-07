@@ -10,21 +10,20 @@
   if (sampleSet == null)   raptorWorkerData=new RaptorWorkerData(graph,window);
  else   raptorWorkerData=new RaptorWorkerData(graph,window,sampleSet);
   LOG.info("Done.");
+  int[] timesAtVertices=new int[Vertex.getMaxIndex()];
+  Arrays.fill(timesAtVertices,TimeSurface.UNREACHABLE);
+  for (  State state : walkOnlySpt.getAllStates()) {
+    int time=(int)(state.getWalkDistance() / request.walkSpeed);
+    int vidx=state.getVertex().getIndex();
+    int otime=timesAtVertices[vidx];
+    if (otime == TimeSurface.UNREACHABLE || otime > time)     timesAtVertices[vidx]=time;
+  }
   int[] walkTimes;
   if (sampleSet == null) {
-    walkTimes=new int[Vertex.getMaxIndex()];
-    Arrays.fill(walkTimes,RaptorWorker.UNREACHED);
-    for (    State state : walkOnlySpt.getAllStates()) {
-      int time=(int)state.getElapsedTimeSeconds();
-      int vidx=state.getVertex().getIndex();
-      int otime=walkTimes[vidx];
-      if (otime == RaptorWorker.UNREACHED || otime > time)       walkTimes[vidx]=time;
-    }
+    walkTimes=timesAtVertices;
   }
  else {
-    TimeSurface walk=new TimeSurface(walkOnlySpt,false);
-    ResultSet walkRs=new ResultSet(sampleSet,walk,true);
-    walkTimes=walkRs.times;
+    walkTimes=sampleSet.eval(timesAtVertices);
   }
   RaptorWorker worker=new RaptorWorker(raptorWorkerData,request);
   propagatedTimesStore=worker.runRaptor(graph,accessTimes,walkTimes);
