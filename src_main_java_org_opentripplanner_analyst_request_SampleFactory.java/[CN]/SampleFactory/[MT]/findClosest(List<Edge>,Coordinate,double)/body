@@ -4,6 +4,7 @@
   for (  Edge edge : edges) {
     c.edge=edge;
     LineString ls=(LineString)(edge.getGeometry());
+    if (!edge.getFromVertex().getLabel().startsWith("osm:node:") || (edge instanceof StreetEdge && ((StreetEdge)edge).isBack()))     continue;
     CoordinateSequence coordSeq=ls.getCoordinateSequence();
     int numCoords=coordSeq.size();
     for (int seg=0; seg < numCoords - 1; seg++) {
@@ -25,11 +26,11 @@
   }
   if (best.edge != null) {
     Vertex v0=best.edge.getFromVertex();
-    Vertex v1=best.edge.getToVertex();
+    Vertex v1=v0;
     double d=best.distanceTo(pt);
     if (d > searchRadiusM)     return null;
     double d0=d + best.distanceAlong();
-    double d1=d + best.distanceToEnd();
+    double d1=d0;
     Sample s=new Sample(v0,(int)d0,v1,(int)d1);
     return s;
   }
