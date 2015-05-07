@@ -31,10 +31,11 @@
     if (candidateEdges.isEmpty() || distances.get(candidateEdges.get(0).getId()) > radiusDeg)     continue STOPS;
     double bestDist=distances.get(candidateEdges.get(0).getId());
     List<StreetEdge> bestEdges=Lists.newArrayList();
-    for (    StreetEdge e : candidateEdges) {
-      if (distances.get(e.getId()) > bestDist + duplicateDeg)       break;
-      bestEdges.add(e);
+    int i=0;
+    do {
+      bestEdges.add(candidateEdges.get(i++));
     }
+ while (i < candidateEdges.size() && distances.get(candidateEdges.get(i).getId()) - distances.get(candidateEdges.get(i - 1).getId()) < duplicateDeg);
     for (    StreetEdge edge : bestEdges) {
       link(tstop,edge,xscale);
     }
