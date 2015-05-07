@@ -9,7 +9,7 @@
   if (edge.getName().contains("sidewalk")) {
     myScore/=SIDEWALK_PREFERENCE;
   }
-  if (modes.getDriving() && edge.getPermission().allows(StreetTraversalPermission.CAR) || (edge.getStreetClass() & platform) != 0) {
+  if (modes.getCar() && edge.getPermission().allows(StreetTraversalPermission.CAR) || (edge.getStreetClass() & platform) != 0) {
     myScore-=CAR_PREFERENCE;
   }
   if (heading != null) {

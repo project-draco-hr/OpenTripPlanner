@@ -1,0 +1,12 @@
+{
+  if (qModes.isEmpty())   return;
+  TraverseModeSet modes=new TraverseModeSet();
+  req.setModes(modes);
+  for (  QualifiedMode qMode : qModes) {
+    modes.setMode(qMode.mode,true);
+  }
+  boolean usingTransit=modes.isTransit();
+  for (  QualifiedMode qMode : qModes) {
+    qMode.applyToRoutingRequest(req,usingTransit);
+  }
+}

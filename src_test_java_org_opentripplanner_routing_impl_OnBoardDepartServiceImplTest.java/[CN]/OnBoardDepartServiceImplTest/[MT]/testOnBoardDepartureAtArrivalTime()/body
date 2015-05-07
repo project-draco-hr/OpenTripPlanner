@@ -16,6 +16,7 @@
   when(station1.getY()).thenReturn(coordinates[1].y);
   RoutingContext routingContext=new RoutingContext(routingRequest,graph,null,arrive);
   AgencyAndId agencyAndId=new AgencyAndId("Agency","ID");
+  Agency agency=new Agency();
   Route route=new Route();
   ArrayList<StopTime> stopTimes=new ArrayList<StopTime>(2);
   StopTime stopDepartTime=new StopTime();
@@ -24,7 +25,9 @@
   Stop stopArrive=new Stop();
   Trip trip=new Trip();
   routingContext.serviceDays=new ArrayList<ServiceDay>(Collections.singletonList(serviceDay));
+  agency.setId(agencyAndId.getAgencyId());
   route.setId(agencyAndId);
+  route.setAgency(agency);
   stopDepart.setId(new AgencyAndId("Station","0"));
   stopArrive.setId(new AgencyAndId("Station","1"));
   stopDepartTime.setStop(stopDepart);
@@ -34,6 +37,7 @@
   stopTimes.add(stopDepartTime);
   stopTimes.add(stopArriveTime);
   trip.setId(agencyAndId);
+  trip.setRoute(route);
   TripTimes tripTimes=new TripTimes(trip,stopTimes,new Deduplicator());
   StopPattern stopPattern=new StopPattern(stopTimes);
   TripPattern tripPattern=new TripPattern(route,stopPattern);

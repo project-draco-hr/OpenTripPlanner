@@ -1,0 +1,35 @@
+{
+  Preconditions.checkNotNull(stops);
+  Preconditions.checkArgument(tripUpdate.getStopTimeUpdateCount() == stops.size(),"number of stop should match the number of stop time updates");
+  String tripId=tripUpdate.getTrip().getTripId();
+  cancelPreviouslyAddedTrip(tripId,serviceDate);
+  Route route=null;
+  if (tripUpdate.getTrip().hasRouteId()) {
+    route=getRouteForRouteId(tripUpdate.getTrip().getRouteId());
+  }
+  if (route == null) {
+    route=new Route();
+    if (tripUpdate.getTrip().hasRouteId()) {
+      route.setId(new AgencyAndId(feedId,tripUpdate.getTrip().getRouteId()));
+    }
+ else {
+      route.setId(new AgencyAndId(feedId,tripId));
+    }
+    route.setAgency(dummyAgency);
+    route.setType(3);
+    route.setLongName(tripId);
+  }
+  Trip trip=new Trip();
+  trip.setId(new AgencyAndId(feedId,tripUpdate.getTrip().getTripId()));
+  trip.setRoute(route);
+  Set<AgencyAndId> serviceIds=graph.getCalendarService().getServiceIdsOnDate(serviceDate);
+  if (serviceIds.isEmpty()) {
+    LOG.warn("ADDED trip has service date for which no service id is available, skipping.");
+    return false;
+  }
+ else {
+    trip.setServiceId(serviceIds.iterator().next());
+  }
+  boolean success=addTripToGraphAndBuffer(graph,trip,tripUpdate,stops,serviceDate);
+  return success;
+}

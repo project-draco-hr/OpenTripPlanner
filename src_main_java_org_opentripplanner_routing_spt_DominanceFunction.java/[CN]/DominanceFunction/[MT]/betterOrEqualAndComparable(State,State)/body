@@ -1,0 +1,17 @@
+{
+  if (a.isBikeRenting() != b.isBikeRenting()) {
+    return false;
+  }
+  if (a.isCarParked() != b.isCarParked()) {
+    return false;
+  }
+  if (a.isBikeParked() != b.isBikeParked()) {
+    return false;
+  }
+  if (a.backEdge != b.getBackEdge() && (a.backEdge instanceof StreetEdge)) {
+    if (!a.getOptions().getRoutingContext().graph.getTurnRestrictions(a.backEdge).isEmpty()) {
+      return false;
+    }
+  }
+  return betterOrEqual(a,b);
+}

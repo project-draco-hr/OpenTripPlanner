@@ -1,11 +1,10 @@
 {
   Multimap<StopCluster,StopAtDistance> pathsByStop=ArrayListMultimap.create();
-  for (  TraverseMode mode : (dest ? EGRESS_MODES : ACCESS_MODES)) {
-    if ((dest ? request.egressModes : request.accessModes).contains(mode)) {
-      LOG.info("{} mode {}",dest ? "egress" : "access",mode);
-      for (      StopAtDistance sd : findClosestStops(mode,dest)) {
-        pathsByStop.put(sd.stop,sd);
-      }
+  QualifiedModeSet qModes=dest ? request.egressModes : request.accessModes;
+  for (  QualifiedMode qmode : qModes.qModes) {
+    LOG.info("{} mode {}",dest ? "egress" : "access",qmode);
+    for (    StopAtDistance sd : findClosestStops(qmode,dest)) {
+      pathsByStop.put(sd.stopCluster,sd);
     }
   }
   return pathsByStop;

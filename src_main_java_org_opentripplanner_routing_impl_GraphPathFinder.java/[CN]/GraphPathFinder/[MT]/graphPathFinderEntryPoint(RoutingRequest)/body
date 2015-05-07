@@ -1,0 +1,39 @@
+{
+  List<GraphPath> paths=null;
+  try {
+    paths=getGraphPathsConsideringIntermediates(request);
+    if (paths == null && request.wheelchairAccessible) {
+      RoutingRequest relaxedRequest=request.clone();
+      relaxedRequest.maxSlope=Double.MAX_VALUE;
+      request.rctx.slopeRestrictionRemoved=true;
+      paths=getGraphPathsConsideringIntermediates(relaxedRequest);
+    }
+    request.rctx.debugOutput.finishedCalculating();
+  }
+ catch (  VertexNotFoundException e) {
+    LOG.info("Vertex not found: " + request.from + " : "+ request.to);
+    throw e;
+  }
+  if (paths == null || paths.size() == 0) {
+    LOG.debug("Path not found: " + request.from + " : "+ request.to);
+    request.rctx.debugOutput.finishedRendering();
+    throw new PathNotFoundException();
+  }
+  Iterator<GraphPath> gpi=paths.iterator();
+  while (gpi.hasNext()) {
+    GraphPath graphPath=gpi.next();
+    if (request.arriveBy) {
+      if (graphPath.states.getLast().getTimeSeconds() > request.dateTime) {
+        LOG.error("A graph path arrives after the requested time. This implies a bug.");
+        gpi.remove();
+      }
+    }
+ else {
+      if (graphPath.states.getFirst().getTimeSeconds() < request.dateTime) {
+        LOG.error("A graph path leaves before the requested time. This implies a bug.");
+        gpi.remove();
+      }
+    }
+  }
+  return paths;
+}

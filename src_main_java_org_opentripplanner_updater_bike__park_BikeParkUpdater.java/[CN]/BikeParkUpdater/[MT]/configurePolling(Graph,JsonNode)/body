@@ -1,0 +1,18 @@
+{
+  String sourceType=config.path("sourceType").asText();
+  BikeParkDataSource source=null;
+  if (sourceType != null) {
+    if (sourceType.equals("kml-placemarks")) {
+      source=new KmlBikeParkDataSource();
+    }
+  }
+  if (source == null) {
+    throw new IllegalArgumentException("Unknown bike rental source type: " + sourceType);
+  }
+ else   if (source instanceof JsonConfigurable) {
+    ((JsonConfigurable)source).configure(graph,config);
+  }
+  this.graph=graph;
+  this.source=source;
+  LOG.info("Creating bike-park updater running every {} seconds : {}",frequencySec,source);
+}

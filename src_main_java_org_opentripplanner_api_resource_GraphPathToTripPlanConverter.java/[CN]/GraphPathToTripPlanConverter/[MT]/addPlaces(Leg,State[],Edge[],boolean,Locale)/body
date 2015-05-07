@@ -1,0 +1,29 @@
+{
+  Vertex firstVertex=states[0].getVertex();
+  Vertex lastVertex=states[states.length - 1].getVertex();
+  Stop firstStop=firstVertex instanceof TransitVertex ? ((TransitVertex)firstVertex).getStop() : null;
+  Stop lastStop=lastVertex instanceof TransitVertex ? ((TransitVertex)lastVertex).getStop() : null;
+  TripTimes tripTimes=states[states.length - 1].getTripTimes();
+  leg.from=makePlace(states[0],firstVertex,edges[0],firstStop,tripTimes,requestedLocale);
+  leg.from.arrival=null;
+  leg.to=makePlace(states[states.length - 1],lastVertex,null,lastStop,tripTimes,requestedLocale);
+  leg.to.departure=null;
+  if (showIntermediateStops) {
+    leg.stop=new ArrayList<Place>();
+    Stop previousStop=null;
+    Stop currentStop;
+    for (int i=1; i < edges.length; i++) {
+      Vertex vertex=states[i].getVertex();
+      if (!(vertex instanceof TransitVertex))       continue;
+      currentStop=((TransitVertex)vertex).getStop();
+      if (currentStop == firstStop)       continue;
+      if (currentStop == previousStop) {
+        leg.stop.get(leg.stop.size() - 1).departure=makeCalendar(states[i]);
+        continue;
+      }
+      previousStop=currentStop;
+      if (currentStop == lastStop)       break;
+      leg.stop.add(makePlace(states[i],vertex,edges[i],currentStop,tripTimes,requestedLocale));
+    }
+  }
+}

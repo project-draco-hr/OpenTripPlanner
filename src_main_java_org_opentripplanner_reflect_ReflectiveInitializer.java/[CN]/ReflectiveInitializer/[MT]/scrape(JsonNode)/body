@@ -1,0 +1,9 @@
+{
+  Map<String,String> pairs=Maps.newHashMap();
+  Iterator<Map.Entry<String,JsonNode>> fieldIterator=rootNode.fields();
+  while (fieldIterator.hasNext()) {
+    Map.Entry<String,JsonNode> field=fieldIterator.next();
+    pairs.put(field.getKey(),field.getValue().asText());
+  }
+  return scrape(pairs);
+}

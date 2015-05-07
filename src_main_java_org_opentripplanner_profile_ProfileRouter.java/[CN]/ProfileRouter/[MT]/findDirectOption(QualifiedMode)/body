@@ -1,0 +1,26 @@
+{
+  RoutingRequest rr=new RoutingRequest(new TraverseModeSet());
+  qmode.applyToRoutingRequest(rr,false);
+  if (qmode.mode == TraverseMode.BICYCLE) {
+    rr.optimize=OptimizeType.TRIANGLE;
+    rr.setTriangleNormalized(request.bikeSafe,request.bikeSlope,request.bikeTime);
+  }
+  rr.from=(new GenericLocation(request.fromLat,request.fromLon));
+  rr.to=new GenericLocation(request.toLat,request.toLon);
+  rr.setArriveBy(false);
+  rr.setRoutingContext(graph);
+  rr.dominanceFunction=new DominanceFunction.MinimumWeight();
+  int worstElapsedTime=request.streetTime * 60;
+  rr.worstTime=(rr.dateTime + worstElapsedTime);
+  rr.walkSpeed=request.walkSpeed;
+  rr.bikeSpeed=request.bikeSpeed;
+  AStar astar=new AStar();
+  rr.setNumItineraries(1);
+  ShortestPathTree spt=astar.getShortestPathTree(rr,5);
+  State state=spt.getState(rr.rctx.target);
+  if (state != null) {
+    LOG.info("Found non-transit option for {}",qmode);
+    directPaths.add(new StopAtDistance(state,qmode));
+  }
+  routingContexts.add(rr.rctx);
+}

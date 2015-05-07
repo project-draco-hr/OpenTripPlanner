@@ -1,8 +1,6 @@
 {
   if (router != null) {
-    if (routerLifecycleManager != null) {
-      routerLifecycleManager.shutdownRouter(router);
-    }
+    router.shutdown();
   }
   router=null;
 }

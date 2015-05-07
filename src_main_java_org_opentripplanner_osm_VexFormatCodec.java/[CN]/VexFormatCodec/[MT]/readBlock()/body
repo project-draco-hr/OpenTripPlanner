@@ -1,0 +1,25 @@
+{
+  lat=lon=id=ref=0;
+  int blockType=vin.readUInt32();
+  if (blockType == VEX_NONE)   return true;
+  boolean blockEnd=false;
+  int nRead=0;
+  while (!blockEnd) {
+switch (blockType) {
+case VEX_NODE:
+      blockEnd=readNode();
+    break;
+case VEX_WAY:
+  blockEnd=readWay();
+break;
+case VEX_RELATION:
+blockEnd=readRelation();
+break;
+}
+nRead+=1;
+}
+if (vin.readUInt32() != nRead) {
+throw new IOException("Block length mismatch.");
+}
+return false;
+}

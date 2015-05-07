@@ -1,0 +1,9 @@
+{
+  writeTagged(id,node);
+  long fixedLat=(long)(node.fixedLat);
+  long fixedLon=(long)(node.fixedLon);
+  vout.writeSInt64NoTag(prevFixedLat - fixedLat);
+  vout.writeSInt64NoTag(prevFixedLon - fixedLon);
+  prevFixedLat=fixedLat;
+  prevFixedLon=fixedLon;
+}

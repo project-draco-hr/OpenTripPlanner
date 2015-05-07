@@ -1,5 +1,5 @@
 {
-  List<Integer> times=Lists.newArrayList();
+  TIntList times=new TIntArrayList();
   for (  PatternRide patternRide : patternRides) {
     for (    TripTimes tt : patternRide.pattern.scheduledTimetable.tripTimes) {
       if (window.servicesRunning.get(tt.serviceCode)) {
@@ -8,6 +8,6 @@
       }
     }
   }
-  Collections.sort(times);
+  times.sort();
   return times;
 }

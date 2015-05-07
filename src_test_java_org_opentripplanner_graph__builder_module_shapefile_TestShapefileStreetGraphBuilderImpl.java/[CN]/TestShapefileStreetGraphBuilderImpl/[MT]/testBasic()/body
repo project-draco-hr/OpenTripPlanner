@@ -1,0 +1,88 @@
+{
+  Graph gg=new Graph();
+  URL resource=getClass().getResource("nyc_streets/streets.shp");
+  File file=null;
+  if (resource != null) {
+    file=new File(resource.getFile());
+  }
+  if (file == null || !file.exists()) {
+    System.out.println("No New York City basemap; skipping; see comment here for details");
+    return;
+  }
+  ShapefileFeatureSourceFactoryImpl factory=new ShapefileFeatureSourceFactoryImpl(file);
+  ShapefileStreetSchema schema=new ShapefileStreetSchema();
+  schema.setIdAttribute("SegmentID");
+  schema.setNameAttribute("Street");
+  CaseBasedBooleanConverter selector=new CaseBasedBooleanConverter("FeatureTyp",false);
+  HashMap<String,Boolean> streets=new HashMap<String,Boolean>();
+  streets.put("0",true);
+  selector.setValues(streets);
+  schema.setFeatureSelector(selector);
+  CaseBasedTraversalPermissionConverter perms=new CaseBasedTraversalPermissionConverter("TrafDir",StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE);
+  perms.addPermission("W",StreetTraversalPermission.ALL,StreetTraversalPermission.PEDESTRIAN);
+  perms.addPermission("A",StreetTraversalPermission.PEDESTRIAN,StreetTraversalPermission.ALL);
+  perms.addPermission("T",StreetTraversalPermission.ALL,StreetTraversalPermission.ALL);
+  schema.setPermissionConverter(perms);
+  ShapefileStreetModule loader=new ShapefileStreetModule();
+  loader.setFeatureSourceFactory(factory);
+  loader.setSchema(schema);
+  loader.buildGraph(gg,new HashMap<Class<?>,Object>());
+  Vertex start=null;
+  Vertex end=null;
+  Vertex carlton=null;
+  Coordinate vanderbiltAtPark=new Coordinate(-73.969178,40.676785);
+  Coordinate grandAtLafayette=new Coordinate(-73.999095,40.720005);
+  Coordinate carltonAtPark=new Coordinate(-73.972347,40.677447);
+  for (  Vertex v : gg.getVertices()) {
+    if (v.getCoordinate().distance(vanderbiltAtPark) < 0.00005) {
+      int numParks=0;
+      int numCarltons=0;
+      for (      Edge e : v.getOutgoing()) {
+        if (e.getToVertex().getName().contains("PARK")) {
+          numParks++;
+        }
+        if (e.getToVertex().getName().contains("CARLTON")) {
+          numCarltons++;
+        }
+      }
+      if (numCarltons != 2 || numParks != 1) {
+        continue;
+      }
+      start=v;
+    }
+ else     if (v.getCoordinate().distance(grandAtLafayette) < 0.0001) {
+      end=v;
+    }
+ else     if (v.getCoordinate().distance(carltonAtPark) < 0.00005) {
+      int numFlatbushes=0;
+      int numParks=0;
+      for (      Edge e : v.getOutgoing()) {
+        if (e.getToVertex().getName().contains("FLATBUSH")) {
+          numFlatbushes++;
+        }
+        if (e.getToVertex().getName().contains("PARK")) {
+          numParks++;
+        }
+      }
+      if (numFlatbushes != 2 || numParks != 1) {
+        continue;
+      }
+      carlton=v;
+    }
+  }
+  assertNotNull(start);
+  assertNotNull(end);
+  assertNotNull(carlton);
+  assertEquals(3,start.getDegreeOut());
+  assertEquals(3,start.getDegreeIn());
+  AStar aStar=new AStar();
+  RoutingRequest opt=new RoutingRequest();
+  opt.setRoutingContext(gg,start,end);
+  ShortestPathTree spt=aStar.getShortestPathTree(opt);
+  assertNotNull(spt);
+  opt=new RoutingRequest(new TraverseModeSet(TraverseMode.BICYCLE));
+  opt.bikeSpeed=2;
+  opt.setRoutingContext(gg,start,carlton);
+  spt=aStar.getShortestPathTree(opt);
+  assertNotNull(spt);
+}

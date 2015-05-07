@@ -17,8 +17,6 @@
   pane.add(transitCheckBox);
   carCheckBox=new JCheckBox("car");
   pane.add(carCheckBox);
-  cmvCheckBox=new JCheckBox("custom vehicle");
-  pane.add(cmvCheckBox);
   JLabel arriveByLabel=new JLabel("Arrive by?:");
   pane.add(arriveByLabel);
   arriveByCheckBox=new JCheckBox("arrive by");
@@ -116,16 +114,5 @@
   optimizeTypePane.add(opFlat);
   optimizeTypePane.add(opGreenways);
   pane.add(optimizeTypePane);
-  ItemListener onChangeLongDistanceMode=new ItemListener(){
-    @Override public void itemStateChanged(    ItemEvent e){
-      JCheckBox item=(JCheckBox)e.getItem();
-      setLongDistanceMode(item.isSelected());
-    }
-  }
-;
-  longDistanceModeCheckbox=new JCheckBox("long distance mode");
-  longDistanceModeCheckbox.setSelected(false);
-  longDistanceModeCheckbox.addItemListener(onChangeLongDistanceMode);
-  pane.add(longDistanceModeCheckbox);
   return pane;
 }

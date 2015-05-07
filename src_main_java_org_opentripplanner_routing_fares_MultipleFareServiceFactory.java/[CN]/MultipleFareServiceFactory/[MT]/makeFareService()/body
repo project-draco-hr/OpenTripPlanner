@@ -1,0 +1,5 @@
+{
+  List<FareService> subServices=new ArrayList<>();
+  for (  FareServiceFactory subFactory : subFactories)   subServices.add(subFactory.makeFareService());
+  return makeMultipleFareService(subServices);
+}

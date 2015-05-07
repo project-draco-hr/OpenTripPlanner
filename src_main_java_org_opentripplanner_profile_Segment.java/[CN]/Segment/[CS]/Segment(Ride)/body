@@ -15,7 +15,7 @@
   for (  PatternRide pr : ride.patternRides) {
     if (pr.pattern.mode != mode)     LOG.warn("Segment contains patterns using more than one mode.");
   }
-  walkTime=ride.accessTime;
+  walkTime=ride.accessStats.min;
   walkDistance=ride.accessDist;
   waitStats=ride.waitStats;
   this.routes=RouteShort.list(routes);

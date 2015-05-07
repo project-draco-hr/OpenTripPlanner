@@ -1,0 +1,123 @@
+{
+  LOG.info("Wiring up and configuring graph builder task.");
+  GraphBuilder graphBuilder=new GraphBuilder();
+  List<File> gtfsFiles=Lists.newArrayList();
+  List<File> osmFiles=Lists.newArrayList();
+  JsonNode builderConfig=null;
+  JsonNode routerConfig=null;
+  File demFile=null;
+  LOG.info("Searching for graph builder input files in {}",dir);
+  if (!dir.isDirectory() && dir.canRead()) {
+    LOG.error("'{}' is not a readable directory.",dir);
+    return null;
+  }
+  graphBuilder.setPath(dir);
+  builderConfig=OTPMain.loadJson(new File(dir,BUILDER_CONFIG_FILENAME));
+  GraphBuilderParameters builderParams=new GraphBuilderParameters(builderConfig);
+  graphBuilder.routerConfig=OTPMain.loadJson(new File(dir,Router.ROUTER_CONFIG_FILENAME));
+  LOG.info(ReflectionLibrary.dumpFields(builderParams));
+  for (  File file : dir.listFiles()) {
+switch (InputFileType.forFile(file)) {
+case GTFS:
+      LOG.info("Found GTFS file {}",file);
+    gtfsFiles.add(file);
+  break;
+case OSM:
+LOG.info("Found OSM file {}",file);
+osmFiles.add(file);
+break;
+case DEM:
+if (!builderParams.fetchElevationUS && demFile == null) {
+LOG.info("Found DEM file {}",file);
+demFile=file;
+}
+ else {
+LOG.info("Skipping DEM file {}",file);
+}
+break;
+case OTHER:
+LOG.warn("Skipping unrecognized file '{}'",file);
+}
+}
+boolean hasOSM=builderParams.streets && !osmFiles.isEmpty();
+boolean hasGTFS=builderParams.transit && !gtfsFiles.isEmpty();
+if (!(hasOSM || hasGTFS)) {
+LOG.error("Found no input files from which to build a graph in {}",dir);
+return null;
+}
+if (hasOSM) {
+List<OpenStreetMapProvider> osmProviders=Lists.newArrayList();
+for (File osmFile : osmFiles) {
+OpenStreetMapProvider osmProvider=new AnyFileBasedOpenStreetMapProviderImpl(osmFile);
+osmProviders.add(osmProvider);
+}
+OpenStreetMapModule osmModule=new OpenStreetMapModule(osmProviders);
+DefaultStreetEdgeFactory streetEdgeFactory=new DefaultStreetEdgeFactory();
+streetEdgeFactory.useElevationData=builderParams.fetchElevationUS || (demFile != null);
+osmModule.edgeFactory=streetEdgeFactory;
+osmModule.customNamer=builderParams.customNamer;
+DefaultWayPropertySetSource defaultWayPropertySetSource=new DefaultWayPropertySetSource();
+osmModule.setDefaultWayPropertySetSource(defaultWayPropertySetSource);
+osmModule.skipVisibility=!builderParams.areaVisibility;
+graphBuilder.addModule(osmModule);
+graphBuilder.addModule(new PruneFloatingIslands());
+}
+if (hasGTFS) {
+List<GtfsBundle> gtfsBundles=Lists.newArrayList();
+for (File gtfsFile : gtfsFiles) {
+GtfsBundle gtfsBundle=new GtfsBundle(gtfsFile);
+gtfsBundle.setTransfersTxtDefinesStationPaths(builderParams.useTransfersTxt);
+if (builderParams.parentStopLinking) {
+gtfsBundle.linkStopsToParentStations=true;
+}
+gtfsBundle.parentStationTransfers=builderParams.stationTransfers;
+gtfsBundle.subwayAccessTime=(int)(builderParams.subwayAccessTime * 60);
+gtfsBundles.add(gtfsBundle);
+}
+GtfsModule gtfsModule=new GtfsModule(gtfsBundles);
+if (hasOSM) {
+if (builderParams.matchBusRoutesToStreets) {
+graphBuilder.addModule(new BusRouteStreetMatcher());
+}
+graphBuilder.addModule(new TransitToTaggedStopsModule());
+}
+gtfsModule.setFareServiceFactory(builderParams.fareServiceFactory);
+graphBuilder.addModule(gtfsModule);
+}
+graphBuilder.addModule(new StreetLinkerModule());
+if (hasGTFS) {
+if (!builderParams.useTransfersTxt) {
+graphBuilder.addModule(new DirectTransferGenerator());
+}
+}
+if (builderParams.elevationBucket != null) {
+S3BucketConfig bucketConfig=builderParams.elevationBucket;
+File cacheDirectory=new File(params.cacheDirectory,"ned");
+DegreeGridNEDTileSource awsTileSource=new DegreeGridNEDTileSource();
+awsTileSource=new DegreeGridNEDTileSource();
+awsTileSource.awsAccessKey=bucketConfig.accessKey;
+awsTileSource.awsSecretKey=bucketConfig.secretKey;
+awsTileSource.awsBucketName=bucketConfig.bucketName;
+NEDGridCoverageFactoryImpl gcf=new NEDGridCoverageFactoryImpl(cacheDirectory);
+gcf.tileSource=awsTileSource;
+GraphBuilderModule elevationBuilder=new ElevationModule(gcf);
+graphBuilder.addModule(elevationBuilder);
+}
+ else if (builderParams.fetchElevationUS) {
+File cacheDirectory=new File(params.cacheDirectory,"ned");
+ElevationGridCoverageFactory gcf=new NEDGridCoverageFactoryImpl(cacheDirectory);
+GraphBuilderModule elevationBuilder=new ElevationModule(gcf);
+graphBuilder.addModule(elevationBuilder);
+}
+ else if (demFile != null) {
+ElevationGridCoverageFactory gcf=new GeotiffGridCoverageFactoryImpl(demFile);
+GraphBuilderModule elevationBuilder=new ElevationModule(gcf);
+graphBuilder.addModule(elevationBuilder);
+}
+graphBuilder.addModule(new EmbedConfig(builderConfig,routerConfig));
+if (builderParams.htmlAnnotations) {
+graphBuilder.addModule(new AnnotationsToHTML(new File(params.build,"report.html")));
+}
+graphBuilder.serializeGraph=(!params.inMemory) || params.preFlight;
+return graphBuilder;
+}

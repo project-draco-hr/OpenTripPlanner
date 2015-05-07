@@ -1,0 +1,9 @@
+{
+  File pbfFile=new File(pbfFilePath);
+  if (!pbfFile.isFile()) {
+    throw new RuntimeException("The specified PBF file is not a 'normal file'.");
+  }
+  if (!new File(pbfFilePath).canRead()) {
+    throw new RuntimeException("The specified PBF file is not readable.");
+  }
+}

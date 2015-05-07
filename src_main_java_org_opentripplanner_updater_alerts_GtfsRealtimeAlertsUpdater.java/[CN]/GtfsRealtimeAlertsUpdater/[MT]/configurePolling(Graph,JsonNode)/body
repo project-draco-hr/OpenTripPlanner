@@ -1,0 +1,15 @@
+{
+  AlertPatchService alertPatchService=new AlertPatchServiceImpl(graph);
+  this.alertPatchService=alertPatchService;
+  String url=config.path("url").asText();
+  if (url == null) {
+    throw new IllegalArgumentException("Missing mandatory 'url' parameter");
+  }
+  this.url=url;
+  this.earlyStart=config.path("earlyStartSec").asInt(0);
+  this.defaultAgencyId=config.path("defaultAgencyId").asText();
+  if (config.path("fuzzyTripMatching").asBoolean(false)) {
+    this.fuzzyTripMatcher=new GtfsRealtimeFuzzyTripMatcher(graph.index);
+  }
+  LOG.info("Creating real-time alert updater running every {} seconds : {}",frequencySec,url);
+}

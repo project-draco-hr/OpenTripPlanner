@@ -1,5 +1,17 @@
 {
-  OSM osm=OSM.fromPBF(INPUT);
+  OSM osm=OSM.fromPBF(args[0]);
+  try (OutputStream fout=new FileOutputStream("test.vex")){
+    LOG.info("begin writing vex");
+    new VexFormatCodec().writeVex(osm,fout);
+    LOG.info("end writing vex");
+  }
+ catch (  FileNotFoundException ex) {
+    LOG.error("FNFEX");
+  }
+catch (  IOException ex) {
+    LOG.error("IOEX");
+  }
+  System.exit(0);
   List<Edge> edges=makeEdges(osm);
   PrintStream ps;
   try {
@@ -7,7 +19,7 @@
     for (    Edge edge : edges) {
       Node fromNode=osm.nodes.get(edge.from);
       Node toNode=osm.nodes.get(edge.to);
-      ps.printf("LINESTRING(%f %f,%f %f))\n",fromNode.lon,fromNode.lat,toNode.lon,toNode.lat);
+      ps.printf("LINESTRING(%f %f,%f %f))\n",fromNode.getLon(),fromNode.getLat(),toNode.getLon(),toNode.getLat());
     }
   }
  catch (  FileNotFoundException e1) {

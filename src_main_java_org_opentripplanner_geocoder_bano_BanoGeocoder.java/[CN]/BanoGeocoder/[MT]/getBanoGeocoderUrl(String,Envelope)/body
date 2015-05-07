@@ -1,0 +1,11 @@
+{
+  UriBuilder uriBuilder=UriBuilder.fromUri(BANO_URL);
+  uriBuilder.queryParam("q",address);
+  uriBuilder.queryParam("limit",CLAMP_RESULTS);
+  if (bbox != null) {
+    uriBuilder.queryParam("lat",bbox.centre().y);
+    uriBuilder.queryParam("lon",bbox.centre().x);
+  }
+  URI uri=uriBuilder.build();
+  return new URL(uri.toString());
+}

@@ -20,7 +20,7 @@ Collections.sort(transitOptions,c);
 ListMultimap<TraverseMode,Option> transitOptionsByAccessMode=ArrayListMultimap.create();
 for (Option option : transitOptions) {
 for (StreetSegment segment : option.access) {
-transitOptionsByAccessMode.put(segment.mode,option);
+transitOptionsByAccessMode.put(segment.mode.mode,option);
 }
 }
 for (Collection<Option> singleModeOptions : transitOptionsByAccessMode.asMap().values()) {

@@ -1,10 +1,14 @@
 {
   LOG.info("Wiring up and configuring server.");
   this.params=params;
-  graphService=gs;
-  routingRequest=new RoutingRequest();
+  this.graphService=gs;
   if (params.analyst) {
     surfaceCache=new SurfaceCache(30);
     pointSetCache=new DiskBackedPointSetCache(100,params.pointSetDirectory);
+  }
+  scriptingService=new ScriptingService(this);
+  scriptingService.enableScriptingWebService=params.enableScriptingWebService;
+  if (params.enableScriptingWebService) {
+    LOG.warn("WARNING: scripting web-service is activated. For public-facing server this is a SERIOUS SECURITY RISK!");
   }
 }

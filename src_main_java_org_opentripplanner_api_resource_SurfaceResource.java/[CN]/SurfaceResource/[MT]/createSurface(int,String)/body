@@ -1,9 +1,9 @@
 {
   try {
-    RoutingRequest req=buildRequest(0);
+    RoutingRequest req=buildRequest();
     Router router=otpServer.getRouter(routerId);
     req.setRoutingContext(router.graph);
-    EarliestArrivalSPTService sptService=new EarliestArrivalSPTService();
+    EarliestArrivalSearch sptService=new EarliestArrivalSearch();
     sptService.maxDuration=(60 * cutoffMinutes);
     ShortestPathTree spt=sptService.getShortestPathTree(req);
     req.cleanup();

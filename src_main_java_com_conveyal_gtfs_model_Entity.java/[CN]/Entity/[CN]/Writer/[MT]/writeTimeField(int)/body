@@ -1,7 +1,0 @@
-{
-  int seconds=secsSinceMidnight % 60;
-  secsSinceMidnight-=seconds;
-  int minutes=(secsSinceMidnight % 3600);
-  secsSinceMidnight-=minutes;
-  writeStringField(String.format("%02d:%02d:%02d",secsSinceMidnight / 3600,minutes / 60,seconds));
-}

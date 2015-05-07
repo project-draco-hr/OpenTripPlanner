@@ -14,7 +14,7 @@
     List<StopShort> stops=Lists.newArrayList();
     Coordinate coord=new Coordinate(lon,lat);
     for (    TransitStop stopVertex : streetIndex.getNearbyTransitStops(new Coordinate(lon,lat),radius)) {
-      double distance=distanceLibrary.fastDistance(stopVertex.getCoordinate(),coord);
+      double distance=SphericalDistanceLibrary.fastDistance(stopVertex.getCoordinate(),coord);
       if (distance < radius) {
         stops.add(new StopShort(stopVertex.getStop(),(int)distance));
       }

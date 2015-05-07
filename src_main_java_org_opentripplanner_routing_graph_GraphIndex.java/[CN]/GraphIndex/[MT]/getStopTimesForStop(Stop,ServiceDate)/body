@@ -1,17 +1,26 @@
 {
   List<StopTimesInPattern> ret=new ArrayList<>();
-  TimetableResolver timetableResolver=graph.timetableSnapshotSource.getTimetableSnapshot();
+  TimetableSnapshot snapshot=null;
+  if (graph.timetableSnapshotSource != null) {
+    snapshot=graph.timetableSnapshotSource.getTimetableSnapshot();
+  }
   Collection<TripPattern> patterns=patternsForStop.get(stop);
   for (  TripPattern pattern : patterns) {
     StopTimesInPattern stopTimes=new StopTimesInPattern(pattern);
-    Timetable tt=timetableResolver.resolve(pattern,serviceDate);
+    Timetable tt;
+    if (snapshot != null) {
+      tt=snapshot.resolve(pattern,serviceDate);
+    }
+ else {
+      tt=pattern.scheduledTimetable;
+    }
     ServiceDay sd=new ServiceDay(graph,serviceDate,calendarService,pattern.route.getAgency().getId());
     int sidx=0;
     for (    Stop currStop : pattern.stopPattern.stops) {
       if (currStop == stop) {
         for (        TripTimes t : tt.tripTimes) {
           if (!sd.serviceRunning(t.serviceCode))           continue;
-          stopTimes.times.add(new TripTimeShort(t,sidx,stop));
+          stopTimes.times.add(new TripTimeShort(t,sidx,stop,sd));
         }
       }
       sidx++;

@@ -1,0 +1,7 @@
+{
+  this.edgeId=edge.getId();
+  this.distance=(int)edge.getDistance();
+  if (edge.getGeometry() != null) {
+    this.geometry=PolylineEncoder.createEncodings(edge.getGeometry());
+  }
+}

@@ -1,7 +1,7 @@
 {
   Router router=otpServer.getRouter(routerId);
   if (precisionMeters < 10)   throw new IllegalArgumentException("Too small precisionMeters: " + precisionMeters);
-  RoutingRequest sptRequest=buildRequest(0);
+  RoutingRequest sptRequest=buildRequest();
   SampleGridRequest tgRequest=new SampleGridRequest();
   tgRequest.maxTimeSec=maxTimeSec;
   tgRequest.precisionMeters=precisionMeters;

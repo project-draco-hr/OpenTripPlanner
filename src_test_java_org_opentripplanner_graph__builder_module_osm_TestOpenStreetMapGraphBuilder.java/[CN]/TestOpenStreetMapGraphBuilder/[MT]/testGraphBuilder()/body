@@ -1,0 +1,35 @@
+{
+  Graph gg=new Graph();
+  OpenStreetMapModule loader=new OpenStreetMapModule();
+  loader.setDefaultWayPropertySetSource(new DefaultWayPropertySetSource());
+  FileBasedOpenStreetMapProviderImpl provider=new FileBasedOpenStreetMapProviderImpl();
+  File file=new File(URLDecoder.decode(getClass().getResource("map.osm.gz").getFile(),"UTF-8"));
+  provider.setPath(file);
+  loader.setProvider(provider);
+  loader.buildGraph(gg,extra);
+  Vertex v1=gg.getVertex("osm:node:280592578");
+  Vertex v2=gg.getVertex("osm:node:288969929");
+  Vertex v3=gg.getVertex("osm:node:280107802");
+  Vertex v4=gg.getVertex("osm:node:288970952");
+  assertNotNull(v1);
+  assertNotNull(v2);
+  assertNotNull(v3);
+  assertNotNull(v4);
+  Edge e1=null, e2=null, e3=null;
+  for (  Edge e : v2.getOutgoing()) {
+    if (e.getToVertex() == v1) {
+      e1=e;
+    }
+ else     if (e.getToVertex() == v3) {
+      e2=e;
+    }
+ else     if (e.getToVertex() == v4) {
+      e3=e;
+    }
+  }
+  assertNotNull(e1);
+  assertNotNull(e2);
+  assertNotNull(e3);
+  assertTrue("name of e1 must be like \"Kamiennog\u00F3rska\"; was " + e1.getName(),e1.getName().contains("Kamiennog\u00F3rska"));
+  assertTrue("name of e2 must be like \"Mariana Smoluchowskiego\"; was " + e2.getName(),e2.getName().contains("Mariana Smoluchowskiego"));
+}

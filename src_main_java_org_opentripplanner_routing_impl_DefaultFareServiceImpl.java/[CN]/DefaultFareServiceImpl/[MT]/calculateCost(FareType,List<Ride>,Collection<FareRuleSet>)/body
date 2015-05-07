@@ -1,0 +1,55 @@
+{
+  Set<String> zones=new HashSet<String>();
+  Set<AgencyAndId> routes=new HashSet<AgencyAndId>();
+  Set<String> agencies=new HashSet<String>();
+  int transfersUsed=-1;
+  Ride firstRide=rides.get(0);
+  long startTime=firstRide.startTime;
+  String startZone=firstRide.startZone;
+  String endZone=firstRide.endZone;
+  String feedId=firstRide.firstStop.getId().getAgencyId();
+  long lastRideStartTime=firstRide.startTime;
+  long lastRideEndTime=firstRide.endTime;
+  for (  Ride ride : rides) {
+    if (!ride.firstStop.getId().getAgencyId().equals(feedId)) {
+      LOG.debug("skipped multi-feed ride sequence {}",rides);
+      return Float.POSITIVE_INFINITY;
+    }
+    lastRideStartTime=ride.startTime;
+    lastRideEndTime=ride.endTime;
+    endZone=ride.endZone;
+    agencies.add(ride.agency);
+    routes.add(ride.route);
+    zones.addAll(ride.zones);
+    transfersUsed+=1;
+  }
+  FareAttribute bestAttribute=null;
+  float bestFare=Float.POSITIVE_INFINITY;
+  long tripTime=lastRideStartTime - startTime;
+  long journeyTime=lastRideEndTime - startTime;
+  for (  FareRuleSet ruleSet : fareRules) {
+    FareAttribute attribute=ruleSet.getFareAttribute();
+    if (!ruleSet.hasAgencyDefined() && !attribute.getId().getAgencyId().equals(feedId))     continue;
+    if (ruleSet.matches(agencies,startZone,endZone,zones,routes)) {
+      if (attribute.isTransfersSet() && attribute.getTransfers() < transfersUsed) {
+        continue;
+      }
+      if (attribute.isTransferDurationSet() && tripTime > attribute.getTransferDuration()) {
+        continue;
+      }
+      if (attribute.isJourneyDurationSet() && journeyTime > attribute.getJourneyDuration()) {
+        continue;
+      }
+      float newFare=attribute.getPrice();
+      if (newFare < bestFare) {
+        bestAttribute=attribute;
+        bestFare=newFare;
+      }
+    }
+  }
+  LOG.debug("{} best for {}",bestAttribute,rides);
+  if (bestFare == Float.POSITIVE_INFINITY) {
+    LOG.debug("No fare for a ride sequence: {}",rides);
+  }
+  return bestFare;
+}

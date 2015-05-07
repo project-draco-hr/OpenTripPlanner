@@ -4,12 +4,6 @@
   assertTrue(request.modes.getCar());
   request.removeMode(CAR);
   assertFalse(request.modes.getCar());
-  request.addMode(CUSTOM_MOTOR_VEHICLE);
-  assertFalse(request.modes.getCar());
-  assertTrue(request.modes.getDriving());
-  request.removeMode(CUSTOM_MOTOR_VEHICLE);
-  assertFalse(request.modes.getCar());
-  assertFalse(request.modes.getDriving());
   request.setModes(new TraverseModeSet("BICYCLE,WALK"));
   assertFalse(request.modes.getCar());
   assertTrue(request.modes.getBicycle());

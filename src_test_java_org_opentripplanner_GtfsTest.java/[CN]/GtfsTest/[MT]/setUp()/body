@@ -3,9 +3,10 @@
   File gtfsRealTime=new File("src/test/resources/" + getFeedName() + ".pb");
   GtfsBundle gtfsBundle=new GtfsBundle(gtfs);
   List<GtfsBundle> gtfsBundleList=Collections.singletonList(gtfsBundle);
-  GtfsGraphBuilderImpl gtfsGraphBuilderImpl=new GtfsGraphBuilderImpl(gtfsBundleList);
+  GtfsModule gtfsGraphBuilderImpl=new GtfsModule(gtfsBundleList);
   alertsUpdateHandler=new AlertsUpdateHandler();
   graph=new Graph();
+  router=new Router("TEST",graph);
   gtfsBundle.setTransfersTxtDefinesStationPaths(true);
   gtfsGraphBuilderImpl.buildGraph(graph,null);
   agencyId=graph.getAgencyIds().iterator().next();
@@ -18,6 +19,7 @@
   alertsUpdateHandler.setAlertPatchService(alertPatchServiceImpl);
   alertsUpdateHandler.setDefaultAgencyId("MMRI");
   try {
+    final boolean fullDataset=false;
     InputStream inputStream=new FileInputStream(gtfsRealTime);
     FeedMessage feedMessage=FeedMessage.PARSER.parseFrom(inputStream);
     List<FeedEntity> feedEntityList=feedMessage.getEntityList();
@@ -25,17 +27,9 @@
     for (    FeedEntity feedEntity : feedEntityList) {
       updates.add(feedEntity.getTripUpdate());
     }
-    timetableSnapshotSource.applyTripUpdates(updates,agencyId);
+    timetableSnapshotSource.applyTripUpdates(graph,fullDataset,updates,agencyId);
     alertsUpdateHandler.update(feedMessage);
   }
  catch (  Exception exception) {
   }
-  genericAStar=new GenericAStarFactory();
-  if (isLongDistance()) {
-    pathService=new LongDistancePathService(null,genericAStar);
-  }
- else {
-    pathService=new RetryingPathServiceImpl(null,genericAStar);
-  }
-  planGenerator=new PlanGenerator(null,pathService);
 }

@@ -1,0 +1,12 @@
+{
+  this.vout=CodedOutputStream.newInstance(new GZIPOutputStream(gzVexStream));
+  this.osm=osm;
+  vout.writeRawBytes(HEADER.getBytes());
+  long nEntities=0;
+  nEntities+=writeNodeBlock();
+  nEntities+=writeWayBlock();
+  nEntities+=writeRelationBlock();
+  beginWriteBlock(VEX_NONE);
+  endWriteBlock(0);
+  vout.writeUInt64NoTag(nEntities);
+}

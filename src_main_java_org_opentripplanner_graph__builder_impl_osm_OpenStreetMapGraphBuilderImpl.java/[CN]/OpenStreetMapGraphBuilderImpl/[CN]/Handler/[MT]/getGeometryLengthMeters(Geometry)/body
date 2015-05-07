@@ -1,8 +1,0 @@
-{
-  Coordinate[] coordinates=geometry.getCoordinates();
-  double d=0;
-  for (int i=1; i < coordinates.length; ++i) {
-    d+=distanceLibrary.distance(coordinates[i - 1],coordinates[i]);
-  }
-  return d;
-}

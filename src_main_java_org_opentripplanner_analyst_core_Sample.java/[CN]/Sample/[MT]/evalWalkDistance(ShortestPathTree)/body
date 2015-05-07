@@ -1,0 +1,9 @@
+{
+  State s0=spt.getState(v0);
+  State s1=spt.getState(v1);
+  double m0=Double.NaN;
+  double m1=Double.NaN;
+  if (s0 != null)   m0=(s0.getWalkDistance() + d0);
+  if (s1 != null)   m1=(s1.getWalkDistance() + d1);
+  return (m0 < m1) ? m0 : m1;
+}

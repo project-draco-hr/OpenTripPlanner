@@ -13,8 +13,7 @@
     lastId=id;
     lastLat=lat;
     lastLon=lon;
-    node.lat=(float)parseLat(lat);
-    node.lon=(float)parseLon(lon);
+    node.setLatLon(parseLat(lat),parseLon(lon));
     if (nodes.getKeysValsCount() > 0) {
       sb.setLength(0);
       while (nodes.getKeysVals(kv) != 0) {

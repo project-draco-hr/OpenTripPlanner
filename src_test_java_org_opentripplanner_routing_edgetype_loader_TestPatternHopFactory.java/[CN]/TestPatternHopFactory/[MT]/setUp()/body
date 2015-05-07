@@ -4,7 +4,7 @@
   GTFSPatternHopFactory factory=new GTFSPatternHopFactory(context);
   factory.run(graph);
   graph.putService(CalendarServiceData.class,GtfsLibrary.createCalendarServiceData(context.getDao()));
-  String[] stops={"agency:A","agency:B","agency:C","agency:D","agency:E"};
+  String[] stops={"agency:A","agency:B","agency:C","agency:D","agency:E","agency:entrance_a","agency:entrance_b"};
   for (int i=0; i < stops.length; ++i) {
     TransitStop stop=(TransitStop)(graph.getVertex(stops[i]));
     IntersectionVertex front=new IntersectionVertex(graph,"near_1_" + stop.getStopId(),stop.getX() + 0.0001,stop.getY() + 0.0001);
@@ -12,6 +12,8 @@
     StreetEdge street1=new StreetEdge(front,back,GeometryUtils.makeLineString(stop.getX() + 0.0001,stop.getY() + 0.0001,stop.getX() - 0.0001,stop.getY() - 0.0001),"street",100,StreetTraversalPermission.ALL,false);
     StreetEdge street2=new StreetEdge(back,front,GeometryUtils.makeLineString(stop.getX() - 0.0001,stop.getY() - 0.0001,stop.getX() + 0.0001,stop.getY() + 0.0001),"street",100,StreetTraversalPermission.ALL,true);
   }
-  NetworkLinker nl=new NetworkLinker(graph);
-  nl.createLinkage();
+  StreetLinkerModule ttsnm=new StreetLinkerModule();
+  graph.hasStreets=true;
+  graph.hasTransit=true;
+  ttsnm.buildGraph(graph,new HashMap<Class<?>,Object>());
 }

@@ -1,0 +1,22 @@
+{
+  DBMaker dbMaker;
+  if (diskPath == null) {
+    LOG.info("OSM will be stored in a temporary file.");
+    dbMaker=DBMaker.newTempFileDB();
+  }
+ else {
+    if (diskPath.equals("__MEMORY__")) {
+      LOG.info("OSM will be stored in memory.");
+      dbMaker=DBMaker.newMemoryDB();
+    }
+ else {
+      LOG.info("OSM will be stored in file {}.",diskPath);
+      dbMaker=DBMaker.newFileDB(new File(diskPath));
+    }
+  }
+  db=dbMaker.transactionDisable().asyncWriteEnable().compressionEnable().make();
+  nodes=db.getTreeMap("nodes");
+  ways=db.getTreeMap("ways");
+  relations=db.getTreeMap("relations");
+  index=db.getTreeSet("spatial_index");
+}

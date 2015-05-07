@@ -1,0 +1,22 @@
+{
+  RoutingRequest routingRequest=new RoutingRequest(TraverseMode.WALK);
+  routingRequest.clampInitialWait=(0L);
+  routingRequest.setRoutingContext(graph,originVertex,null);
+  routingRequest.rctx.pathParsers=parsers;
+  ShortestPathTree spt=earliestArrivalSearch.getShortestPathTree(routingRequest);
+  List<StopAtDistance> stopsFound=Lists.newArrayList();
+  if (spt != null) {
+    for (    State state : spt.getAllStates()) {
+      Vertex targetVertex=state.getVertex();
+      if (targetVertex == originVertex)       continue;
+      if (targetVertex instanceof TransitStop) {
+        stopsFound.add(stopAtDistanceForState(state));
+      }
+    }
+  }
+  if (originVertex instanceof TransitStop) {
+    stopsFound.add(new StopAtDistance((TransitStop)originVertex,0));
+  }
+  routingRequest.cleanup();
+  return stopsFound;
+}

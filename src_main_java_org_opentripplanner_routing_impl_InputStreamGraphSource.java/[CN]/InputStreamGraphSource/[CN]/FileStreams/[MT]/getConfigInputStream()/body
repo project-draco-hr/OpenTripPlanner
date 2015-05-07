@@ -1,0 +1,10 @@
+{
+  File configFile=new File(path,Router.ROUTER_CONFIG_FILENAME);
+  if (configFile.canRead()) {
+    LOG.debug("Loading config from file '{}'",configFile.getPath());
+    return new FileInputStream(configFile);
+  }
+ else {
+    return null;
+  }
+}

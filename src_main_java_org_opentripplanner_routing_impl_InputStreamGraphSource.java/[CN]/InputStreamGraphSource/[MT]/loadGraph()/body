@@ -1,6 +1,6 @@
 {
   final Graph newGraph;
-  try (InputStream is=graphInputStream.getGraphInputStream()){
+  try (InputStream is=streams.getGraphInputStream()){
     LOG.info("Loading graph...");
     try {
       newGraph=Graph.load(new ObjectInputStream(is),loadLevel,streetVertexIndexFactory);
@@ -16,16 +16,21 @@
     LOG.warn("Graph file not found or not openable for routerId '{}': {}",routerId,e);
     return null;
   }
-  try (InputStream is=graphInputStream.getConfigInputStream()){
-    Preferences config=is == null ? null : new PropertiesPreferences(is);
-    Router newRouter=new Router(routerId,newGraph);
-    if (routerLifecycleManager != null) {
-      routerLifecycleManager.startupRouter(newRouter,config);
+  try (InputStream is=streams.getConfigInputStream()){
+    JsonNode config=MissingNode.getInstance();
+    if (is != null) {
+      ObjectMapper mapper=new ObjectMapper();
+      mapper.configure(JsonParser.Feature.ALLOW_COMMENTS,true);
+      mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES,true);
+      config=mapper.readTree(is);
     }
+    Router newRouter=new Router(routerId,newGraph);
+    newRouter.startup(config);
     return newRouter;
   }
  catch (  IOException e) {
-    LOG.error("Can't read config file",e);
+    LOG.error("Can't read config file.");
+    LOG.error(e.getMessage());
     return null;
   }
 }

@@ -1,0 +1,8 @@
+{
+  Map<Integer,String> ret=Maps.newTreeMap();
+  int i=0;
+  for (  GraphUpdater updater : updaterList) {
+    ret.put(i++,updater.toString());
+  }
+  return ret;
+}

@@ -1,0 +1,13 @@
+{
+  if (args == null)   args=new String[0];
+  CommandLineParameters params=new CommandLineParameters();
+  @SuppressWarnings("unused") JCommander jc=new JCommander(params,args);
+  params.analyst=true;
+  params.infer();
+  OTPMain otpMain=new OTPMain(params);
+  if (params.build != null)   throw new IllegalArgumentException("Building from script is not yet supported.");
+  if (params.scriptFile != null)   throw new IllegalArgumentException("Scripting from script is not supported.");
+  if (params.visualize)   throw new IllegalArgumentException("Vizualizer from script is not supported.");
+  if (params.server)   throw new IllegalArgumentException("Server from script is not supported.");
+  return new OtpsEntryPoint(otpMain.otpServer);
+}

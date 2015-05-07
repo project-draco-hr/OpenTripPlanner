@@ -4,13 +4,13 @@
   if (v0 != null) {
     int s0=surf.getTime(v0);
     if (s0 != TimeSurface.UNREACHABLE) {
-      m0=(int)(s0 + t0);
+      m0=(int)(s0 + d0 / surf.walkSpeed);
     }
   }
   if (v1 != null) {
     int s1=surf.getTime(v1);
     if (s1 != TimeSurface.UNREACHABLE) {
-      m1=(int)(s1 + t1);
+      m1=(int)(s1 + d1 / surf.walkSpeed);
     }
   }
   return (m0 < m1) ? m0 : m1;

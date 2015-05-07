@@ -1,0 +1,39 @@
+{
+  Graph g=new Graph();
+  OpenStreetMapModule loader=new OpenStreetMapModule();
+  loader.setDefaultWayPropertySetSource(new DefaultWayPropertySetSource());
+  FileBasedOpenStreetMapProviderImpl provider=new FileBasedOpenStreetMapProviderImpl();
+  File file=new File(getClass().getResource(fn).getFile());
+  provider.setPath(file);
+  loader.setProvider(provider);
+  loader.buildGraph(g,new HashMap<Class<?>,Object>());
+  Vertex pr=null;
+  int nParkAndRide=0;
+  int nParkAndRideLink=0;
+  for (  Vertex v : g.getVertices()) {
+    if (v instanceof ParkAndRideVertex) {
+      nParkAndRide++;
+      pr=v;
+    }
+  }
+  for (  Edge e : g.getEdges()) {
+    if (e instanceof ParkAndRideLinkEdge) {
+      nParkAndRideLink++;
+    }
+  }
+  assertEquals(prCount,nParkAndRide);
+  assertEquals(prlCount,nParkAndRideLink);
+  assertNotNull(pr);
+  List<String> connections=new ArrayList<String>();
+  for (  Edge e : pr.getOutgoing()) {
+    if (e instanceof ParkAndRideEdge)     continue;
+    assertTrue(e instanceof ParkAndRideLinkEdge);
+    connections.add(e.getToVertex().getLabel());
+  }
+  for (  Edge e : pr.getIncoming()) {
+    if (e instanceof ParkAndRideEdge)     continue;
+    assertTrue(e instanceof ParkAndRideLinkEdge);
+    assertTrue(connections.contains(e.getFromVertex().getLabel()));
+  }
+  return connections;
+}

@@ -20,14 +20,14 @@
     for (    TripTimes curr : blockTripTimes) {
       if (prev != null) {
         if (prev.getDepartureTime(prev.getNumStops() - 1) > curr.getArrivalTime(0)) {
-          LOG.error("Trip times within block {} on service {} are not increasing on service {} after trip {}.",block.blockId,block.serviceId,prev.trip.getId());
+          LOG.error("Trip times within block {} are not increasing on service {} after trip {}.",block.blockId,block.serviceId,prev.trip.getId());
           continue SERVICE_BLOCK;
         }
         TripPattern prevPattern=patternForTripTimes.get(prev);
         TripPattern currPattern=patternForTripTimes.get(curr);
         Stop fromStop=prevPattern.getStop(prevPattern.getStops().size() - 1);
         Stop toStop=currPattern.getStop(0);
-        double teleportationDistance=distanceLibrary.fastDistance(fromStop.getLat(),fromStop.getLon(),toStop.getLat(),toStop.getLon());
+        double teleportationDistance=SphericalDistanceLibrary.fastDistance(fromStop.getLat(),fromStop.getLon(),toStop.getLat(),toStop.getLon());
         if (teleportationDistance > 200) {
         }
  else {

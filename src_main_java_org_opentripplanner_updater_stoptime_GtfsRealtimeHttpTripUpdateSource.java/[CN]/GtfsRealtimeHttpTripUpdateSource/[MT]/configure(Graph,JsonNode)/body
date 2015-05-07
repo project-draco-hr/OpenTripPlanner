@@ -1,0 +1,8 @@
+{
+  String url=config.path("url").asText();
+  if (url == null) {
+    throw new IllegalArgumentException("Missing mandatory 'url' parameter");
+  }
+  this.url=url;
+  this.agencyId=config.path("defaultAgencyId").asText();
+}

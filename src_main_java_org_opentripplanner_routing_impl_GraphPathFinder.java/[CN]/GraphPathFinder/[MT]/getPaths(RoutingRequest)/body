@@ -1,0 +1,74 @@
+{
+  if (options == null) {
+    LOG.error("PathService was passed a null routing request.");
+    return null;
+  }
+  AStar aStar=new AStar();
+  if (options.rctx == null) {
+    options.setRoutingContext(router.graph);
+    options.rctx.pathParsers=new PathParser[]{new Parser()};
+  }
+  if (router.graphVisualizer != null) {
+    aStar.setTraverseVisitor(router.graphVisualizer.traverseVisitor);
+  }
+  if (!options.modes.isTransit()) {
+    options.numItineraries=1;
+  }
+  options.dominanceFunction=new DominanceFunction.MinimumWeight();
+  LOG.debug("rreq={}",options);
+  RemainingWeightHeuristic heuristic;
+  if (options.disableRemainingWeightHeuristic) {
+    heuristic=new TrivialRemainingWeightHeuristic();
+  }
+ else   if (options.modes.isTransit()) {
+    heuristic=new InterleavedBidirectionalHeuristic(options.rctx.graph);
+  }
+ else {
+    heuristic=new EuclideanRemainingWeightHeuristic();
+  }
+  options.rctx.remainingWeightHeuristic=heuristic;
+  options.maxTransfers=4;
+  options.longDistance=true;
+  if (options.maxWalkDistance == Double.MAX_VALUE)   options.maxWalkDistance=DEFAULT_MAX_WALK;
+  if (options.maxWalkDistance > CLAMP_MAX_WALK)   options.maxWalkDistance=CLAMP_MAX_WALK;
+  long searchBeginTime=System.currentTimeMillis();
+  LOG.debug("BEGIN SEARCH");
+  List<GraphPath> paths=Lists.newArrayList();
+  Set<AgencyAndId> bannedTrips=Sets.newHashSet();
+  while (paths.size() < options.numItineraries) {
+    int timeoutIndex=paths.size();
+    if (timeoutIndex >= router.timeouts.length) {
+      timeoutIndex=router.timeouts.length - 1;
+    }
+    double timeout=searchBeginTime + (router.timeouts[timeoutIndex] * 1000);
+    timeout-=System.currentTimeMillis();
+    timeout/=1000;
+    if (timeout <= 0) {
+      options.rctx.aborted=true;
+      break;
+    }
+    ShortestPathTree spt=aStar.getShortestPathTree(options,timeout);
+    if (spt == null) {
+      LOG.warn("SPT was null.");
+      return null;
+    }
+    if (options.rctx.aborted) {
+      break;
+    }
+    List<GraphPath> newPaths=spt.getPaths();
+    if (newPaths.isEmpty()) {
+      break;
+    }
+    for (    GraphPath path : newPaths) {
+      for (      State state : path.states) {
+        AgencyAndId tripId=state.getTripId();
+        if (tripId != null)         options.banTrip(tripId);
+      }
+    }
+    paths.addAll(newPaths);
+    LOG.debug("we have {} paths",paths.size());
+  }
+  LOG.debug("END SEARCH ({} msec)",System.currentTimeMillis() - searchBeginTime);
+  Collections.sort(paths,new PathWeightComparator());
+  return paths;
+}

@@ -1,0 +1,9 @@
+{
+  String url=config.path("url").asText();
+  if (url == null) {
+    throw new IllegalArgumentException("Missing mandatory 'url' configuration.");
+  }
+  this.url=url;
+  this.namePrefix=config.path("namePrefix").asText();
+  this.zip="true".equals(config.path("zip").asText());
+}

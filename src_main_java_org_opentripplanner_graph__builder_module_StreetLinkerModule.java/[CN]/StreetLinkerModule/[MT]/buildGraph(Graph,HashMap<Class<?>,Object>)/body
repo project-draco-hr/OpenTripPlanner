@@ -1,0 +1,26 @@
+{
+  this.networkLinkerLibrary=new NetworkLinkerLibrary(graph,extra);
+  this.graph=graph;
+  if (graph.hasStreets) {
+    stopVertices=new ArrayList<>();
+    bikeRentalVertices=new ArrayList<>();
+    bikeParkVertices=new ArrayList<>();
+    for (    Vertex v : graph.getVertices()) {
+      if (v instanceof TransitStop) {
+        stopVertices.add((TransitStop)v);
+      }
+ else       if (v instanceof BikeRentalStationVertex) {
+        bikeRentalVertices.add((BikeRentalStationVertex)v);
+      }
+ else       if (v instanceof BikeParkVertex) {
+        bikeParkVertices.add((BikeParkVertex)v);
+      }
+    }
+    if (graph.hasTransit) {
+      linkTransit();
+    }
+    linkBikeRentalStations();
+    linkParkRideStations();
+    cleanGraph();
+  }
+}

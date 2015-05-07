@@ -19,10 +19,9 @@
     return Response.status(Response.Status.BAD_REQUEST).entity("Could not extract zip file: " + ex.getMessage()).build();
   }
   CommandLineParameters params=otpServer.params.clone();
-  params.build=Lists.newArrayList();
-  params.build.add(tempDir);
+  params.build=tempDir;
   params.inMemory=true;
-  GraphBuilderTask graphBuilder=new OTPConfigurator(params).builderFromParameters();
+  GraphBuilder graphBuilder=GraphBuilder.forDirectory(params,tempDir);
   graphBuilder.run();
   for (  File file : tempDir.listFiles()) {
     file.delete();

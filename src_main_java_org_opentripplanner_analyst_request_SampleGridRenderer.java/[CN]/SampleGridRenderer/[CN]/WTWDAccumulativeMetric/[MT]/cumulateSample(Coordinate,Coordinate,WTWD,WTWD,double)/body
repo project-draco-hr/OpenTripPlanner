@@ -2,7 +2,7 @@
   double t=z.wTime / z.w;
   double b=z.wBoardings / z.w;
   double wd=z.wWalkDist / z.w;
-  double d=distanceLibrary.fastDistance(C0,Cs,cosLat);
+  double d=SphericalDistanceLibrary.fastDistance(C0,Cs,cosLat);
   double dt=d / offRoadSpeed;
   double w=1 / ((d + d0) * (d + d0));
   if (zS == null) {

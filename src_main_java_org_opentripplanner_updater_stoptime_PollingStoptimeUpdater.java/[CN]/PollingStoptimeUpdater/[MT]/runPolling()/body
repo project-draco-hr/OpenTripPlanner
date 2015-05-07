@@ -1,7 +1,8 @@
 {
   List<TripUpdate> updates=updateSource.getUpdates();
-  if (updates != null && updates.size() > 0) {
-    TripUpdateGraphWriterRunnable runnable=new TripUpdateGraphWriterRunnable(updates,agencyId);
+  boolean fullDataset=updateSource.getFullDatasetValueOfLastUpdates();
+  if (updates != null) {
+    TripUpdateGraphWriterRunnable runnable=new TripUpdateGraphWriterRunnable(fullDataset,updates,agencyId);
     updaterManager.execute(runnable);
   }
 }

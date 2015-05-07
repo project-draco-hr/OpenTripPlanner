@@ -1,0 +1,8 @@
+{
+  CsvWriter csvWriter=new CsvWriter(file,',',Charsets.UTF_8);
+  if (headers != null)   csvWriter.writeRecord(headers);
+  for (  List<String> row : data) {
+    csvWriter.writeRecord(row.toArray(new String[row.size()]));
+  }
+  csvWriter.close();
+}

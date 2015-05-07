@@ -4,7 +4,7 @@
   List<TransitStop> nearby=getTransitStopForEnvelope(env);
   List<TransitStop> results=new ArrayList<TransitStop>();
   for (  TransitStop v : nearby) {
-    if (distanceLibrary.distance(v.getCoordinate(),coordinate) <= radius) {
+    if (SphericalDistanceLibrary.distance(v.getCoordinate(),coordinate) <= radius) {
       results.add(v);
     }
   }

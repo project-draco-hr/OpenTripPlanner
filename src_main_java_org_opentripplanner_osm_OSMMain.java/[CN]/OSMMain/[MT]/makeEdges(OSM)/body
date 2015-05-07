@@ -1,5 +1,4 @@
 {
-  osm.findIntersections();
   LOG.info("Making edges from Ways.");
   List<Edge> edges=Lists.newArrayList();
   for (  Entry<Long,Way> e : osm.ways.entrySet()) {
@@ -12,8 +11,6 @@
       if (n == (way.nodes.length - 1)) {
         edge.to=node;
         edges.add(edge);
-      }
- else       if (osm.intersections.contains(node)) {
         edge.to=node;
         edges.add(edge);
         edge=new Edge();

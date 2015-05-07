@@ -1,0 +1,26 @@
+{
+  if (e != null) {
+synchronized (alertPatches) {
+      alertPatches.remove(e);
+    }
+    turnRestrictions.remove(e);
+    streetNotesService.removeStaticNotes(e);
+    edgeById.remove(e.getId());
+    if (e instanceof EdgeWithCleanup)     ((EdgeWithCleanup)e).detach();
+    if (e.fromv != null) {
+      e.fromv.removeOutgoing(e);
+      for (      Edge otherEdge : e.fromv.getIncoming()) {
+        for (        TurnRestriction turnRestriction : getTurnRestrictions(otherEdge)) {
+          if (turnRestriction.to == e) {
+            removeTurnRestriction(otherEdge,turnRestriction);
+          }
+        }
+      }
+      e.fromv=null;
+    }
+    if (e.tov != null) {
+      e.tov.removeIncoming(e);
+      e.tov=null;
+    }
+  }
+}

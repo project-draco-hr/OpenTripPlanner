@@ -1,12 +1,13 @@
 {
 synchronized (this) {
-    long lastModified=graphInputStream.getLastModified();
+    long lastModified=streams.getLastModified();
     boolean doReload=force ? true : checkAutoReload(lastModified);
     if (!doReload)     return true;
     if (preEvict) {
 synchronized (preEvictMutex) {
-        if (router != null && routerLifecycleManager != null) {
-          routerLifecycleManager.shutdownRouter(router);
+        if (router != null) {
+          LOG.info("Reloading '{}': pre-evicting router",routerId);
+          router.shutdown();
         }
         router=null;
         router=loadGraph();
@@ -15,16 +16,17 @@ synchronized (preEvictMutex) {
  else {
       Router newRouter=loadGraph();
       if (newRouter != null) {
-        if (router != null && routerLifecycleManager != null) {
-          routerLifecycleManager.shutdownRouter(router);
+        if (router != null) {
+          LOG.info("Reloading '{}': post-evicting router",routerId);
+          router.shutdown();
         }
         router=newRouter;
       }
  else {
         if (force || router == null) {
           LOG.warn("Unable to load data for router '{}'.",routerId);
-          if (router != null && routerLifecycleManager != null) {
-            routerLifecycleManager.shutdownRouter(router);
+          if (router != null) {
+            router.shutdown();
           }
           router=null;
         }

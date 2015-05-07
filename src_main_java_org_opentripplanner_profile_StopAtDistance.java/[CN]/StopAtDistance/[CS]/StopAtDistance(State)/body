@@ -1,9 +1,0 @@
-{
-  this.state=state;
-  etime=(int)state.getElapsedTimeSeconds();
-  mode=state.getNonTransitMode();
-  if (state.getVertex() instanceof TransitStop) {
-    TransitStop tstop=(TransitStop)state.getVertex();
-    stop=state.getOptions().rctx.graph.index.stopClusterForStop.get(tstop.getStop());
-  }
-}

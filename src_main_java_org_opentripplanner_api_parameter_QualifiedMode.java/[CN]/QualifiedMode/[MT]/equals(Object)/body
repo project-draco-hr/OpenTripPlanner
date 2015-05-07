@@ -1,0 +1,7 @@
+{
+  if (other instanceof QualifiedMode) {
+    QualifiedMode qmOther=(QualifiedMode)other;
+    return qmOther.mode.equals(this.mode) && qmOther.qualifiers.equals(this.qualifiers);
+  }
+  return false;
+}

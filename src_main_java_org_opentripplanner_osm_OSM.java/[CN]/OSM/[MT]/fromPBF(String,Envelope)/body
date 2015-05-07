@@ -1,6 +1,6 @@
 {
   LOG.info("Reading PBF file '{}' filtering with envelope {}",pbfFile,env);
-  OSM osm=new OSM(true);
+  OSM osm=new OSM("/var/vex/osm");
   LOG.info("Finding nodes within the bounding geometry.");
   NodeGeomFilter ngf=new NodeGeomFilter(env);
   ngf.parse(pbfFile);

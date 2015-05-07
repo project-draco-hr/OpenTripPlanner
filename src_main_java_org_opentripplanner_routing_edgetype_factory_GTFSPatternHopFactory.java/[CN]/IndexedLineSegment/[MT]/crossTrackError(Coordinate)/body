@@ -1,5 +1,5 @@
 {
-  double distanceFromStart=distanceLibrary.fastDistance(start,coord);
+  double distanceFromStart=SphericalDistanceLibrary.fastDistance(start,coord);
   double bearingToCoord=bearing(start,coord);
   double bearingToEnd=bearing(start,end);
   return FastMath.asin(FastMath.sin(distanceFromStart / RADIUS) * FastMath.sin(bearingToCoord - bearingToEnd)) * RADIUS;

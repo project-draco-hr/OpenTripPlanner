@@ -1,0 +1,74 @@
+{
+  if (!file.exists())   throw new RuntimeException("Shapefile does not exist.");
+  FileDataStore store=FileDataStoreFinder.getDataStore(file);
+  SimpleFeatureSource featureSource=store.getFeatureSource();
+  CoordinateReferenceSystem sourceCRS=featureSource.getInfo().getCRS();
+  CoordinateReferenceSystem WGS84=CRS.decode("EPSG:4326",true);
+  Query query=new Query();
+  query.setCoordinateSystem(sourceCRS);
+  query.setCoordinateSystemReproject(WGS84);
+  SimpleFeatureCollection featureCollection=featureSource.getFeatures(query);
+  SimpleFeatureIterator it=featureCollection.features();
+  SimpleFeature protoFt=it.next();
+  if (propertyFields == null) {
+    propertyFields=new ArrayList<String>();
+    for (    Property p : protoFt.getProperties()) {
+      propertyFields.add(p.getName().toString());
+    }
+    if (originIDField != null && propertyFields.contains(originIDField)) {
+      propertyFields.remove(originIDField);
+    }
+  }
+  it=featureCollection.features();
+  PointSet ret=new PointSet(featureCollection.size());
+  int i=0;
+  while (it.hasNext()) {
+    SimpleFeature feature=it.next();
+    Geometry geom=(Geometry)feature.getDefaultGeometry();
+    PointFeature ft=new PointFeature();
+    ft.setGeom(geom);
+    if (originIDField == null) {
+      ft.setId(Integer.toString(i));
+    }
+ else {
+      ft.setId(feature.getProperty(originIDField).getValue().toString());
+    }
+    for (    Property prop : feature.getProperties()) {
+      String propName=prop.getName().toString();
+      if (propertyFields.contains(propName)) {
+        Object binding=prop.getType().getBinding();
+        int val;
+        if (binding.equals(Integer.class)) {
+          val=(Integer)prop.getValue();
+        }
+ else         if (binding.equals(Long.class)) {
+          val=((Long)prop.getValue()).intValue();
+        }
+ else         if (binding.equals(String.class)) {
+          try {
+            val=Integer.parseInt((String)prop.getValue());
+          }
+ catch (          NumberFormatException ex) {
+            continue;
+          }
+        }
+ else {
+          LOG.debug("Property {} of feature {} could not be interpreted as int, skipping",prop.getName().toString(),ft.getId());
+          continue;
+        }
+        ft.addAttribute(propName,val);
+      }
+ else {
+        LOG.debug("Property {} not requested; igoring",propName);
+      }
+    }
+    ret.addFeature(ft,i);
+    i++;
+  }
+  ArrayList<String> IDlist=new ArrayList<String>();
+  for (  String id : ret.ids) {
+    IDlist.add(id);
+  }
+  LOG.debug("Created PointSet from shapefile with IDs {}",IDlist);
+  return ret;
+}

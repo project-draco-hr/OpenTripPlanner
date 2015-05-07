@@ -2,7 +2,12 @@
   CommandLineParameters params=new CommandLineParameters();
   try {
     JCommander jc=new JCommander(params,args);
+    if (params.version) {
+      System.out.println(MavenVersion.VERSION.getLongVersionString());
+      System.exit(0);
+    }
     if (params.help) {
+      System.out.println(MavenVersion.VERSION.getShortVersionString());
       jc.setProgramName("java -Xmx[several]G -jar otp.jar");
       jc.usage();
       System.exit(0);
@@ -10,41 +15,14 @@
     params.infer();
   }
  catch (  ParameterException pex) {
+    System.out.println(MavenVersion.VERSION.getShortVersionString());
     LOG.error("Parameter error: {}",pex.getMessage());
     System.exit(1);
   }
-  OTPConfigurator configurator=new OTPConfigurator(params);
-  GraphBuilderTask graphBuilder=configurator.builderFromParameters();
-  if (graphBuilder != null) {
-    graphBuilder.run();
-    if (params.inMemory || params.preFlight) {
-      graphBuilder.getGraph().index(new DefaultStreetVertexIndexFactory());
-      configurator.makeGraphService(graphBuilder.getGraph());
-    }
-    if (params.htmlAnnotations) {
-      AnnotationsToHTML annotationsToHTML=new AnnotationsToHTML(graphBuilder.getGraph(),new File(params.build.get(0),"report.html"));
-      annotationsToHTML.generateAnnotationsLog();
-    }
-  }
-  GraphVisualizer graphVisualizer=configurator.visualizerFromParameters();
-  if (graphVisualizer != null) {
-    graphVisualizer.run();
-  }
-  GrizzlyServer grizzlyServer=configurator.serverFromParameters();
-  if (grizzlyServer != null) {
-    while (true) {
-      try {
-        grizzlyServer.run();
-        return;
-      }
- catch (      Throwable throwable) {
-        throwable.printStackTrace();
-        LOG.error("An uncaught {} occurred inside OTP. Restarting server.",throwable.getClass().getSimpleName());
-      }
-    }
-  }
-  if (graphBuilder == null && graphVisualizer == null && grizzlyServer == null) {
+  if (params.build == null && !params.visualize && !params.server && params.scriptFile == null) {
     LOG.info("Nothing to do. Use --help to see available tasks.");
-    ;
+    System.exit(-1);
   }
+  OTPMain main=new OTPMain(params);
+  main.run();
 }

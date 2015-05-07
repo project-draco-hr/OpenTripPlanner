@@ -1,11 +1,12 @@
 {
-  List<Integer> arrivals=previous.getSortedStoptimes(window,true);
-  List<Integer> departures=this.getSortedStoptimes(window,false);
+  TIntList arrivals=previous.getSortedStoptimes(window,true);
+  TIntList departures=this.getSortedStoptimes(window,false);
   List<Integer> waits=Lists.newArrayList();
-  Iterator<Integer> departureIterator=departures.iterator();
+  TIntIterator departureIterator=departures.iterator();
   int departure=departureIterator.next();
-  ARRIVAL:   for (  int arrival : arrivals) {
-    int boardTime=arrival + accessTime + ProfileRouter.SLACK;
+  ARRIVAL:   for (TIntIterator arrivalsIterator=arrivals.iterator(); arrivalsIterator.hasNext(); ) {
+    int arrival=arrivalsIterator.next();
+    int boardTime=arrival + accessStats.min + ProfileRouter.SLACK;
     while (departure <= boardTime) {
       if (!departureIterator.hasNext())       break ARRIVAL;
       departure=departureIterator.next();

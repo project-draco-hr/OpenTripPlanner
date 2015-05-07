@@ -1,0 +1,19 @@
+{
+  if (!transit)   return 0;
+  RoutingRequest options=req.clone();
+  options.setArriveBy(!req.arriveBy);
+  options.setRoutingContext(req.rctx.graph,req.rctx.fromVertex,req.rctx.toVertex);
+  GenericDijkstra gd=new GenericDijkstra(options);
+  State s=new State(options);
+  gd.setHeuristic(new TrivialRemainingWeightHeuristic());
+  final ClosestStopTraverseVisitor visitor=new ClosestStopTraverseVisitor();
+  gd.traverseVisitor=visitor;
+  gd.searchTerminationStrategy=new SearchTerminationStrategy(){
+    @Override public boolean shouldSearchTerminate(    Vertex origin,    Vertex target,    State current,    ShortestPathTree spt,    RoutingRequest traverseOptions){
+      return visitor.distanceToClosestStop != Double.POSITIVE_INFINITY;
+    }
+  }
+;
+  gd.getShortestPathTree(s);
+  return visitor.distanceToClosestStop;
+}

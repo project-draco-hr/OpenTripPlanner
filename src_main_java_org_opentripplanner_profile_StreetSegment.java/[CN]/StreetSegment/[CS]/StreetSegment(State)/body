@@ -12,12 +12,29 @@
       }
     }
   }
-  Geometry geom=GeometryUtils.getGeometryFactory().createLineString(coordinates);
-  this.geometry=PolylineEncoder.createEncodings(geom);
-  PlanGenerator pgen=new PlanGenerator(null,null);
-  Itinerary itin=pgen.generateItinerary(path,false);
+  Itinerary itin=GraphPathToTripPlanConverter.generateItinerary(path,false,new Locale("en"));
   for (  Leg leg : itin.legs) {
-    walkSteps.addAll(leg.walkSteps);
+    for (    WalkStep walkStep : leg.walkSteps) {
+      int i=0;
+      for (      Edge edge : walkStep.edges) {
+        StreetEdgeInfo edgeInfo=new StreetEdgeInfo(edge);
+        if (i == 0) {
+          edgeInfo.mode=walkStep.newMode;
+          edgeInfo.streetName=walkStep.streetName;
+          edgeInfo.absoluteDirection=walkStep.absoluteDirection;
+          edgeInfo.relativeDirection=walkStep.relativeDirection;
+          edgeInfo.stayOn=walkStep.stayOn;
+          edgeInfo.area=walkStep.area;
+          edgeInfo.bogusName=walkStep.bogusName;
+          edgeInfo.bikeRentalOffStation=walkStep.bikeRentalOffStation;
+        }
+        if (i == walkStep.edges.size() - 1) {
+          edgeInfo.bikeRentalOnStation=walkStep.bikeRentalOnStation;
+        }
+        streetEdges.add(edgeInfo);
+        i++;
+      }
+    }
   }
   time=(int)(state.getElapsedTimeSeconds());
 }

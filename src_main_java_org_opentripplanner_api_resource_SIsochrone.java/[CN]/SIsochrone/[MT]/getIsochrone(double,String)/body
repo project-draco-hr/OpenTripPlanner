@@ -1,7 +1,7 @@
 {
   this.debugGeoms=new ArrayList();
   this.tooFastTraversedEdgeGeoms=new ArrayList();
-  RoutingRequest sptRequestA=buildRequest(0);
+  RoutingRequest sptRequestA=buildRequest();
   String from=sptRequestA.from.toString();
   int pos=1;
   float lat=0;
@@ -59,7 +59,7 @@
  else     if (modes.getBicycle()) {
       this.maxUserSpeed=sptRequestA.bikeSpeed;
     }
- else     if (modes.getDriving()) {
+ else     if (modes.getCar()) {
       this.maxUserSpeed=sptRequestA.carSpeed;
       this.usesCar=true;
     }
@@ -83,14 +83,14 @@
     sptRequestA.setMode(TraverseMode.WALK);
     sptRequestA.setRoutingContext(router.graph);
   }
-  ShortestPathTree sptA=router.sptServiceFactory.instantiate().getShortestPathTree(sptRequestA);
+  ShortestPathTree sptA=new AStar().getShortestPathTree(sptRequestA);
   StreetLocation origin=(StreetLocation)sptRequestA.rctx.fromVertex;
   sptRequestA.cleanup();
   Coordinate pathToStreetCoords[]=new Coordinate[2];
   pathToStreetCoords[0]=dropPoint;
   pathToStreetCoords[1]=origin.getCoordinate();
   LineString pathToStreet=gf.createLineString(pathToStreetCoords);
-  double distanceToRoad=this.distanceLibrary.distance(origin.getY(),origin.getX(),dropPoint.y,dropPoint.x);
+  double distanceToRoad=SphericalDistanceLibrary.distance(origin.getY(),origin.getX(),dropPoint.y,dropPoint.x);
   long offRoadTimeCorrection=(long)(distanceToRoad / this.offRoadWalkspeed);
   Set<Coordinate> visitedCoords=new HashSet<Coordinate>();
   ArrayList<Edge> allConnectingEdges=new ArrayList<Edge>();

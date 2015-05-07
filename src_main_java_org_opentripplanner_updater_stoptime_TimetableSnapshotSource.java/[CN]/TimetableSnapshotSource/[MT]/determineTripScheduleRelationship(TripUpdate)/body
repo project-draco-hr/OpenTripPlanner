@@ -1,0 +1,21 @@
+{
+  TripDescriptor.ScheduleRelationship tripScheduleRelationship=TripDescriptor.ScheduleRelationship.SCHEDULED;
+  if (tripUpdate.hasTrip() && tripUpdate.getTrip().hasScheduleRelationship()) {
+    tripScheduleRelationship=tripUpdate.getTrip().getScheduleRelationship();
+  }
+  if (tripScheduleRelationship.equals(TripDescriptor.ScheduleRelationship.SCHEDULED)) {
+    boolean hasModifiedStops=false;
+    for (    StopTimeUpdate stopTimeUpdate : tripUpdate.getStopTimeUpdateList()) {
+      if (stopTimeUpdate.hasScheduleRelationship()) {
+        StopTimeUpdate.ScheduleRelationship stopScheduleRelationship=stopTimeUpdate.getScheduleRelationship();
+        if (stopScheduleRelationship.equals(StopTimeUpdate.ScheduleRelationship.SKIPPED)) {
+          hasModifiedStops=true;
+        }
+      }
+    }
+    if (hasModifiedStops) {
+      tripScheduleRelationship=TripDescriptor.ScheduleRelationship.MODIFIED;
+    }
+  }
+  return tripScheduleRelationship;
+}

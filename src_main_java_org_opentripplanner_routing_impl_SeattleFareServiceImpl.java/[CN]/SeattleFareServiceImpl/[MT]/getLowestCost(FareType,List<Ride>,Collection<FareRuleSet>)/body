@@ -1,0 +1,52 @@
+{
+  List<List<Ride>> ridesPerAgency=new ArrayList<List<Ride>>();
+  String lastAgency=null;
+  List<Ride> currentRides=null;
+  for (  Ride ride : rides) {
+    if (ride.agency != lastAgency) {
+      currentRides=new ArrayList<Ride>();
+      ridesPerAgency.add(currentRides);
+      lastAgency=ride.agency;
+    }
+    currentRides.add(ride);
+  }
+  LOG.debug("=== Rides for fare class {} ===",fareType);
+  for (  List<Ride> ridesForAgency : ridesPerAgency) {
+    LOG.debug("Ride for agency {} : {}",ridesForAgency.get(0).agency,Arrays.toString(ridesForAgency.toArray()));
+  }
+  float currentCost=0f;
+  float totalCost=0f;
+  long lastStartSec=0L;
+  for (  List<Ride> ridesForAgency : ridesPerAgency) {
+    String agencyId=ridesForAgency.get(0).agency;
+    long startSec=ridesForAgency.get(0).startTime;
+    float costForAgency=super.getLowestCost(fareType,ridesForAgency,fareRules);
+    if (costForAgency == Float.POSITIVE_INFINITY) {
+      Float def=defaultFares.get(new T2<FareType,String>(fareType,agencyId));
+      if (def == null) {
+        LOG.error("No fares and no fallback for class {}, agency {}, rides {}",fareType,agencyId,ridesForAgency);
+        return Float.POSITIVE_INFINITY;
+      }
+      costForAgency=def;
+    }
+    LOG.debug("Agency {} cost is {}",agencyId,costForAgency);
+    if (startSec < lastStartSec + TRANSFER_DURATION_SEC) {
+      if (costForAgency > currentCost) {
+        float deltaCost=costForAgency - currentCost;
+        totalCost+=deltaCost;
+        currentCost=costForAgency;
+        LOG.debug("Transfer, additional cost is {}, total is {}",deltaCost,totalCost);
+      }
+ else {
+        LOG.debug("New ticket cost lower than current {}",currentCost);
+      }
+    }
+ else {
+      currentCost=costForAgency;
+      totalCost+=costForAgency;
+      LOG.debug("New ticket, cost is {}, total is {}",costForAgency,totalCost);
+      lastStartSec=startSec;
+    }
+  }
+  return totalCost;
+}

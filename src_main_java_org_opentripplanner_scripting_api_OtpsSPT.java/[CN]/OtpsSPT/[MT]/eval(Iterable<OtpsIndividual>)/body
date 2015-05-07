@@ -1,0 +1,8 @@
+{
+  List<OtpsEvaluatedIndividual> retval=new ArrayList<>();
+  for (  OtpsIndividual individual : population) {
+    OtpsEvaluatedIndividual evaluated=eval(individual);
+    if (evaluated != null)     retval.add(evaluated);
+  }
+  return retval;
+}

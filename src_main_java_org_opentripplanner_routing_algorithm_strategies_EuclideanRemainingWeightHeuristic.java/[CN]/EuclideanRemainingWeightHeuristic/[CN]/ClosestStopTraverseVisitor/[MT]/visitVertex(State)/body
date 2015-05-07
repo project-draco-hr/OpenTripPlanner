@@ -1,0 +1,12 @@
+{
+  Edge backEdge=state.getBackEdge();
+  if (backEdge instanceof StreetTransitLink) {
+    Vertex backVertex=state.getBackState().getVertex();
+    distanceToClosestStop=SphericalDistanceLibrary.fastDistance(backVertex.getLat(),backVertex.getLon(),lat,lon);
+    LOG.debug("Found closest stop to search target: {} at {}m",state.getVertex(),(int)distanceToClosestStop);
+  }
+ else   if (state.getVertex() instanceof TransitStationStop && backEdge == null) {
+    LOG.debug("Search target is a transit stop, no walking is required at end of trip");
+    distanceToClosestStop=0;
+  }
+}

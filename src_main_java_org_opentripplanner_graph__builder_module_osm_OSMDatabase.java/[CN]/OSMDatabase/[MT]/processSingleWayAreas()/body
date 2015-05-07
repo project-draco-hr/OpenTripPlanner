@@ -1,0 +1,20 @@
+{
+  AREA:   for (  OSMWay way : singleWayAreas) {
+    if (processedAreas.contains(way)) {
+      continue;
+    }
+    for (    Long nodeRef : way.getNodeRefs()) {
+      if (!nodesById.containsKey(nodeRef)) {
+        continue AREA;
+      }
+    }
+    try {
+      newArea(new Area(way,Arrays.asList(way),Collections.<OSMWay>emptyList(),nodesById));
+    }
+ catch (    Area.AreaConstructionException e) {
+    }
+catch (    IllegalArgumentException iae) {
+    }
+    processedAreas.add(way);
+  }
+}

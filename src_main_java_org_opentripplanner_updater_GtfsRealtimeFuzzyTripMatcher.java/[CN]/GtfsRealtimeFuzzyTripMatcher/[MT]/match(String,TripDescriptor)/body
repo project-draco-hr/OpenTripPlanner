@@ -1,0 +1,32 @@
+{
+  if (trip.hasTripId()) {
+    return trip;
+  }
+  if (!trip.hasRouteId() || !trip.hasDirectionId() || !trip.hasStartTime()|| !trip.hasStartDate()) {
+    return trip;
+  }
+  AgencyAndId routeId=new AgencyAndId(agency,trip.getRouteId());
+  int time=StopTimeFieldMappingFactory.getStringAsSeconds(trip.getStartTime());
+  ServiceDate date;
+  try {
+    date=ServiceDate.parseString(trip.getStartDate());
+  }
+ catch (  ParseException e) {
+    return trip;
+  }
+  Route route=index.routeForId.get(routeId);
+  if (route == null) {
+    return trip;
+  }
+  int direction=trip.getDirectionId();
+  Trip matchedTrip=getTrip(route,direction,time,date);
+  if (matchedTrip == null) {
+    date=date.previous();
+    time+=24 * 60 * 60;
+    matchedTrip=getTrip(route,direction,time,date);
+  }
+  if (matchedTrip == null) {
+    return trip;
+  }
+  return trip.toBuilder().setTripId(matchedTrip.getId().getId()).build();
+}

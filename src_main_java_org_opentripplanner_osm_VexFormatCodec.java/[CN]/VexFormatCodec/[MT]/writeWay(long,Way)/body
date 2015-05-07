@@ -1,0 +1,8 @@
+{
+  writeTagged(id,way);
+  vout.writeUInt32NoTag(way.nodes.length);
+  for (  long ref : way.nodes) {
+    vout.writeSInt64NoTag(prevRef - ref);
+    prevRef=ref;
+  }
+}

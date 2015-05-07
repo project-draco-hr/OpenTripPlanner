@@ -26,6 +26,9 @@
   if (other.hasCongestionLevel()) {
     setCongestionLevel(other.getCongestionLevel());
   }
+  if (other.hasOccupancyStatus()) {
+    setOccupancyStatus(other.getOccupancyStatus());
+  }
   this.mergeExtensionFields(other);
   this.mergeUnknownFields(other.getUnknownFields());
   return this;

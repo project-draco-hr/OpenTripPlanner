@@ -1,0 +1,15 @@
+{
+  Vertex sv=s.getVertex();
+  double euclideanDistance=SphericalDistanceLibrary.fastDistance(sv.getLat(),sv.getLon(),lat,lon);
+  if (transit) {
+    if (euclideanDistance < requiredWalkDistance) {
+      return walkReluctance * euclideanDistance / maxStreetSpeed;
+    }
+    double transitWeight=(euclideanDistance - requiredWalkDistance) / maxTransitSpeed;
+    double streetWeight=walkReluctance * (requiredWalkDistance / maxStreetSpeed);
+    return transitWeight + streetWeight;
+  }
+ else {
+    return walkReluctance * euclideanDistance / maxStreetSpeed;
+  }
+}

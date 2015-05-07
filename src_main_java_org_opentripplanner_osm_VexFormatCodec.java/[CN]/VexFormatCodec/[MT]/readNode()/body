@@ -1,0 +1,12 @@
+{
+  Node node=new Node();
+  long idDelta=vin.readSInt64();
+  id+=idDelta;
+  if (idDelta == 0)   return true;
+  node.tags=readTags();
+  lat+=vin.readSInt64() * 1000000d;
+  lon+=vin.readSInt64() * 1000000d;
+  node.setLatLon(lat,lon);
+  osm.nodes.put(id,node);
+  return false;
+}
