@@ -1,5 +1,5 @@
 {
-  networkLinkerLibrary=new NetworkLinkerLibrary(graph,Collections.<Class<?>,Object>emptyMap());
+  linker=new SimpleStreetSplitter(graph);
   updaterManager.executeBlocking(new GraphWriterRunnable(){
     @Override public void run(    Graph graph){
       service=graph.getService(BikeRentalStationService.class,true);

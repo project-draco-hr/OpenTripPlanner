@@ -1,0 +1,7 @@
+{
+  for (  ParkAndRideLinkEdge prle : Iterables.filter(from.getOutgoing(),ParkAndRideLinkEdge.class)) {
+    if (prle.getToVertex() == to)     return;
+  }
+  new ParkAndRideLinkEdge(from,to);
+  new ParkAndRideLinkEdge(to,from);
+}
