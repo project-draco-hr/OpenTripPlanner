@@ -1,11 +1,6 @@
 {
-  Envelope envelope=new Envelope();
+  envelope=new Envelope();
   for (  Vertex v : graph.getVertices()) {
-    for (    Edge e : v.getOutgoing()) {
-      if (e instanceof PatternHop) {
-        transitModes.add(((PatternHop)e).getMode());
-      }
-    }
     Coordinate c=v.getCoordinate();
     envelope.expandToInclude(c);
   }
@@ -13,6 +8,7 @@
   setUpperRightLongitude(envelope.getMaxX());
   setLowerLeftLatitude(envelope.getMinY());
   setUpperRightLatitude(envelope.getMaxY());
+  newEnvelope=new Envelope(envelope);
   setCenterLatitude((upperRightLatitude + lowerLeftLatitude) / 2);
   setCenterLongitude((upperRightLongitude + lowerLeftLongitude) / 2);
 }

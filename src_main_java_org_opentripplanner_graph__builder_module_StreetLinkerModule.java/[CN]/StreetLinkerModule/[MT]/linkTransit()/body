@@ -2,6 +2,9 @@
   LOG.info("Linking transit stops to streets...");
   int nUnlinked=0;
   for (  TransitStop ts : stopVertices) {
+    if (!graph.containsInOSM(ts.getCoordinate())) {
+      continue;
+    }
     boolean alreadyLinked=false;
     for (    Edge e : ts.getOutgoing()) {
       if (e instanceof StreetTransitLink) {
