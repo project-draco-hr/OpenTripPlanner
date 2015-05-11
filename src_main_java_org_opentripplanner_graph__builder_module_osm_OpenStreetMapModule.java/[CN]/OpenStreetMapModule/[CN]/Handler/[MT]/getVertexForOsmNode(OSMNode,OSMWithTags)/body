@@ -25,6 +25,10 @@
         iv=tsv;
       }
     }
+    if (node.isBollard()) {
+      BarrierVertex bv=new BarrierVertex(graph,label,coordinate.x,coordinate.y);
+      iv=bv;
+    }
     if (iv == null) {
       iv=new IntersectionVertex(graph,label,coordinate.x,coordinate.y,label);
       if (node.hasTrafficLight()) {
