@@ -1,0 +1,19 @@
+{
+  if (hasTransit) {
+    TDoubleList latitudes=new TDoubleLinkedList();
+    TDoubleList longitudes=new TDoubleLinkedList();
+    Median median=new Median();
+    for (    Vertex v : getVertices()) {
+      if (v instanceof TransitStop) {
+        latitudes.add(v.getLat());
+        longitudes.add(v.getLon());
+      }
+    }
+    median.setData(latitudes.toArray());
+    double medianLatitude=median.evaluate();
+    median=new Median();
+    median.setData(longitudes.toArray());
+    double medianLongitude=median.evaluate();
+    this.center=new Coordinate(medianLongitude,medianLatitude);
+  }
+}

@@ -41,6 +41,13 @@
     setUpperRightLatitude(Math.max(rightEnv.getMaxY(),leftEnv.getMaxY()));
     setLowerLeftLatitude(Math.min(rightEnv.getMinY(),leftEnv.getMinY()));
   }
-  setCenterLatitude((upperRightLatitude + lowerLeftLatitude) / 2);
-  setCenterLongitude((upperRightLongitude + lowerLeftLongitude) / 2);
+  Coordinate center=graph.getCenter();
+  if (center != null) {
+    setCenterLongitude(center.x);
+    setCenterLatitude(center.y);
+  }
+ else {
+    setCenterLatitude((upperRightLatitude + lowerLeftLatitude) / 2);
+    setCenterLongitude((upperRightLongitude + lowerLeftLongitude) / 2);
+  }
 }
