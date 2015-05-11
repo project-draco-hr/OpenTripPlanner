@@ -7,7 +7,7 @@
   indexForStop=new TObjectIntHashMap<>(totalStops,0.75f,-1);
   List<Stop> stopForIndex=new ArrayList<>(totalStops);
   for (  TripPattern pattern : graph.index.patternForId.values()) {
-    RaptorWorkerTimetable timetable=RaptorWorkerTimetable.forPattern(graph,pattern,window);
+    RaptorWorkerTimetable timetable=RaptorWorkerTimetable.forPattern(graph,pattern,window,bannedRoutes);
     if (timetable == null) {
       continue;
     }

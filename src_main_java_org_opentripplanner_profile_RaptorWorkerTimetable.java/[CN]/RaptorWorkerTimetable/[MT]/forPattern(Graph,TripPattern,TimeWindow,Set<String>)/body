@@ -3,12 +3,16 @@
   List<TripTimes> tripTimes=Lists.newArrayList();
   TT:   for (  TripTimes tt : pattern.scheduledTimetable.tripTimes) {
     if (servicesRunning.get(tt.serviceCode) && tt.getScheduledArrivalTime(0) < window.to && tt.getScheduledDepartureTime(tt.getNumStops() - 1) >= window.from) {
+      AgencyAndId routeId=tt.trip.getRoute().getId();
+      if (bannedRoutes != null && bannedRoutes.contains(routeId.getAgencyId() + "_" + routeId.getId()))       continue;
       tripTimes.add(tt);
     }
   }
   List<FrequencyEntry> freqs=Lists.newArrayList();
   for (  FrequencyEntry fe : pattern.scheduledTimetable.frequencyEntries) {
     if (servicesRunning.get(fe.tripTimes.serviceCode) && fe.getMinDeparture() < window.to && fe.getMaxArrival() > window.from) {
+      AgencyAndId routeId=fe.tripTimes.trip.getRoute().getId();
+      if (bannedRoutes != null && bannedRoutes.contains(routeId.getAgencyId() + "_" + routeId.getId()))       continue;
       if (fe.exactTimes) {
         LOG.warn("Exact-times frequency trips not yet supported");
         continue;
