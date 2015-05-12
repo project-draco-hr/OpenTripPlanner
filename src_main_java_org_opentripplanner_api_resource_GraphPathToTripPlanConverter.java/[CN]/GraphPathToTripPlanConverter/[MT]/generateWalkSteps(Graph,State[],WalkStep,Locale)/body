@@ -23,21 +23,21 @@
       continue;
     }
     if (edge instanceof ElevatorAlightEdge) {
-      step=createWalkStep(graph,forwardState,wantedLocale);
+      step=createWalkStep(graph,forwardState,requestedLocale);
       createdNewStep=true;
       disableZagRemovalForThisStep=true;
-      step.streetName=((ElevatorAlightEdge)edge).getName(wantedLocale);
+      step.streetName=((ElevatorAlightEdge)edge).getName(requestedLocale);
       step.relativeDirection=RelativeDirection.ELEVATOR;
       steps.add(step);
       continue;
     }
-    String streetName=edge.getName(wantedLocale);
+    String streetName=edge.getName(requestedLocale);
     int idx=streetName.indexOf('(');
     String streetNameNoParens;
     if (idx > 0)     streetNameNoParens=streetName.substring(0,idx - 1);
  else     streetNameNoParens=streetName;
     if (step == null) {
-      step=createWalkStep(graph,forwardState,wantedLocale);
+      step=createWalkStep(graph,forwardState,requestedLocale);
       createdNewStep=true;
       steps.add(step);
       double thisAngle=DirectionUtils.getFirstAngle(geom);
@@ -58,12 +58,12 @@
         }
         roundaboutExit=0;
       }
-      step=createWalkStep(graph,forwardState,wantedLocale);
+      step=createWalkStep(graph,forwardState,requestedLocale);
       createdNewStep=true;
       steps.add(step);
       if (edge.isRoundabout()) {
         roundaboutExit=1;
-        roundaboutPreviousStreet=backState.getBackEdge().getName(wantedLocale);
+        roundaboutPreviousStreet=backState.getBackEdge().getName(requestedLocale);
         idx=roundaboutPreviousStreet.indexOf('(');
         if (idx > 0)         roundaboutPreviousStreet=roundaboutPreviousStreet.substring(0,idx - 1);
       }
@@ -87,7 +87,7 @@
         if (edge instanceof StreetEdge) {
           double angleDiff=getAbsoluteAngleDiff(thisAngle,lastAngle);
           for (          Edge alternative : backState.getVertex().getOutgoingStreetEdges()) {
-            if (alternative.getName(wantedLocale).equals(streetName)) {
+            if (alternative.getName(requestedLocale).equals(streetName)) {
               continue;
             }
             double altAngle=DirectionUtils.getFirstAngle(alternative.getGeometry());
@@ -108,7 +108,7 @@
               continue;
             }
             alternative=alternatives.get(0);
-            if (alternative.getName(wantedLocale).equals(streetName)) {
+            if (alternative.getName(requestedLocale).equals(streetName)) {
               continue;
             }
             double altAngle=DirectionUtils.getFirstAngle(alternative.getGeometry());
@@ -120,7 +120,7 @@
           }
         }
         if (shouldGenerateContinue) {
-          step=createWalkStep(graph,forwardState,wantedLocale);
+          step=createWalkStep(graph,forwardState,requestedLocale);
           createdNewStep=true;
           steps.add(step);
           step.setDirections(lastAngle,thisAngle,false);
@@ -185,7 +185,7 @@
       distance+=edge.getDistance();
     }
     step.distance+=edge.getDistance();
-    step.addAlerts(graph.streetNotesService.getNotes(forwardState),wantedLocale);
+    step.addAlerts(graph.streetNotesService.getNotes(forwardState),requestedLocale);
     lastAngle=DirectionUtils.getLastAngle(geom);
     step.edges.add(edge);
   }
