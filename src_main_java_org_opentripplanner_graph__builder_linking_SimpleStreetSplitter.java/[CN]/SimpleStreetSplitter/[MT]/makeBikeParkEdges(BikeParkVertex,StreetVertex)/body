@@ -1,0 +1,7 @@
+{
+  for (  StreetBikeParkLink sbpl : Iterables.filter(from.getOutgoing(),StreetBikeParkLink.class)) {
+    if (sbpl.getToVertex() == to)     return;
+  }
+  new StreetBikeParkLink(from,to);
+  new StreetBikeParkLink(to,from);
+}

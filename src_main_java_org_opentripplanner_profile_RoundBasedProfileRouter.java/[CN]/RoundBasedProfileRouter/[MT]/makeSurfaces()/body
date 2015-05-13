@@ -1,0 +1,42 @@
+{
+  LOG.info("Propagating from transit stops to the street network...");
+  List<State> lower=Lists.newArrayList();
+  List<State> upper=Lists.newArrayList();
+  List<State> avg=Lists.newArrayList();
+  RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
+  rr.batch=(true);
+  rr.from=new GenericLocation(request.fromLat,request.fromLon);
+  rr.setRoutingContext(graph);
+  rr.longDistance=true;
+  rr.dominanceFunction=new DominanceFunction.EarliestArrival();
+  rr.setNumItineraries(1);
+  rr.worstTime=rr.dateTime + CUTOFF_SECONDS;
+  long startTime=rr.dateTime;
+  State origin=new State(rr);
+  for (  Collection<ProfileState> pss : retainedStates.asMap().values()) {
+    TransitStop tstop=null;
+    int lowerBound=Integer.MAX_VALUE;
+    int upperBound=Integer.MAX_VALUE;
+    for (    ProfileState ps : pss) {
+      if (tstop == null)       tstop=ps.stop;
+      if (ps.lowerBound < lowerBound)       lowerBound=ps.lowerBound;
+      if (ps.upperBound < upperBound)       upperBound=ps.upperBound;
+    }
+    if (lowerBound == Integer.MAX_VALUE || upperBound == Integer.MAX_VALUE)     throw new IllegalStateException("Invalid bound!");
+    lower.add(new State(tstop,null,lowerBound + startTime,startTime,rr));
+    upper.add(new State(tstop,null,upperBound + startTime,startTime,rr));
+    avg.add(new State(tstop,null,(upperBound + lowerBound) / 2 + startTime,startTime,rr));
+  }
+  lower.add(origin);
+  upper.add(origin);
+  avg.add(origin);
+  timeSurfaceRangeSet=new TimeSurface.RangeSet();
+  AStar astar=new AStar();
+  timeSurfaceRangeSet.min=new TimeSurface(astar.getShortestPathTree(rr,20,null,lower),false);
+  astar=new AStar();
+  timeSurfaceRangeSet.max=new TimeSurface(astar.getShortestPathTree(rr,20,null,upper),false);
+  astar=new AStar();
+  timeSurfaceRangeSet.avg=new TimeSurface(astar.getShortestPathTree(rr,20,null,avg),false);
+  rr.cleanup();
+  LOG.info("Done with propagation.");
+}

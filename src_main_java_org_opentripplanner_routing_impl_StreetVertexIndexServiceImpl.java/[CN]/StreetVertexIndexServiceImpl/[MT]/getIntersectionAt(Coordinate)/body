@@ -8,6 +8,7 @@
   double bestDistanceMeter=Double.POSITIVE_INFINITY;
   for (  Vertex v : nearby) {
     if (v instanceof StreetVertex) {
+      v.getLabel().startsWith("osm:");
       double distanceMeter=SphericalDistanceLibrary.fastDistance(coordinate,v.getCoordinate());
       if (distanceMeter < MAX_CORNER_DISTANCE_METERS) {
         if (distanceMeter < bestDistanceMeter) {

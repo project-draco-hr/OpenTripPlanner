@@ -1,0 +1,14 @@
+{
+  for (  TransitStop tstop : markedStops) {
+    int timeAtOriginStop=store.getPrev(tstop);
+    for (    Edge e : tstop.getOutgoing()) {
+      if (e instanceof SimpleTransfer) {
+        TransitStop to=(TransitStop)e.getToVertex();
+        int timeAtDestStop=(int)(timeAtOriginStop + e.getDistance() / walkSpeed);
+        if (store.put(to,timeAtDestStop,true)) {
+          markedPatterns.addAll(graph.index.patternsForStop.get(to.getStop()));
+        }
+      }
+    }
+  }
+}

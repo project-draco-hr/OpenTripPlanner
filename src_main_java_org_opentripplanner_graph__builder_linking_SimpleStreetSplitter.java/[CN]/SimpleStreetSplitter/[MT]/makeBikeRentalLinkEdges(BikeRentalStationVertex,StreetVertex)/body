@@ -1,0 +1,7 @@
+{
+  for (  StreetBikeRentalLink sbrl : Iterables.filter(from.getOutgoing(),StreetBikeRentalLink.class)) {
+    if (sbrl.getToVertex() == to)     return;
+  }
+  new StreetBikeRentalLink(from,to);
+  new StreetBikeRentalLink(to,from);
+}

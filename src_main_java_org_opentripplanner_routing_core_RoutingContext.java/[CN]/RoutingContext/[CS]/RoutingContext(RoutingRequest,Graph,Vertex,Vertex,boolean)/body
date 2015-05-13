@@ -22,28 +22,32 @@
   Edge fromBackEdge=null;
   Edge toBackEdge=null;
   if (findPlaces) {
-    if (!opt.batch || opt.arriveBy) {
+    if (opt.batch) {
+      if (opt.arriveBy) {
+        toVertex=graph.streetIndex.getSampleVertexAt(opt.to.getCoordinate());
+        fromVertex=null;
+      }
+ else {
+        fromVertex=graph.streetIndex.getSampleVertexAt(opt.from.getCoordinate());
+        toVertex=null;
+      }
+    }
+ else {
       toVertex=graph.streetIndex.getVertexForLocation(opt.to,opt,true);
       if (opt.to.hasEdgeId()) {
         toBackEdge=graph.getEdgeById(opt.to.edgeId);
       }
-    }
- else {
-      toVertex=null;
-    }
-    if (opt.startingTransitTripId != null && !opt.arriveBy) {
-      OnBoardDepartService onBoardDepartService=graph.getService(OnBoardDepartService.class);
-      if (onBoardDepartService == null)       throw new UnsupportedOperationException("Missing OnBoardDepartService");
-      fromVertex=onBoardDepartService.setupDepartOnBoard(this);
-    }
- else     if (!opt.batch || !opt.arriveBy) {
-      fromVertex=graph.streetIndex.getVertexForLocation(opt.from,opt,false);
-      if (opt.from.hasEdgeId()) {
-        fromBackEdge=graph.getEdgeById(opt.from.edgeId);
+      if (opt.startingTransitTripId != null && !opt.arriveBy) {
+        OnBoardDepartService onBoardDepartService=graph.getService(OnBoardDepartService.class);
+        if (onBoardDepartService == null)         throw new UnsupportedOperationException("Missing OnBoardDepartService");
+        fromVertex=onBoardDepartService.setupDepartOnBoard(this);
       }
-    }
  else {
-      fromVertex=null;
+        fromVertex=graph.streetIndex.getVertexForLocation(opt.from,opt,false);
+        if (opt.from.hasEdgeId()) {
+          fromBackEdge=graph.getEdgeById(opt.from.edgeId);
+        }
+      }
     }
   }
  else {

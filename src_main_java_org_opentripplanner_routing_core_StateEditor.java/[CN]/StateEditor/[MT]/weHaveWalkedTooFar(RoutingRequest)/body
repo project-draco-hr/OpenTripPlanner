@@ -1,4 +1,4 @@
 {
-  if (!options.modes.isTransit())   return false;
-  return child.walkDistance >= options.maxWalkDistance;
+  if (options.modes.isTransit() || !options.softWalkLimiting && options.batch)   return child.walkDistance >= options.maxWalkDistance;
+  return false;
 }

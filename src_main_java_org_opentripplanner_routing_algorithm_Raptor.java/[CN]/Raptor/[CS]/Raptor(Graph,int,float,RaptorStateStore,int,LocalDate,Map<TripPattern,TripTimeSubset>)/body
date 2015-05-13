@@ -1,0 +1,11 @@
+{
+  this.graph=graph;
+  this.maxTransfers=maxTransfers;
+  this.times=timetables;
+  this.walkSpeed=walkSpeed;
+  this.date=date;
+  this.store=store;
+  for (  TransitStop tstop : store.getTouchedStopsIncludingTransfers()) {
+    markedPatterns.addAll(graph.index.patternsForStop.get(tstop.getStop()));
+  }
+}

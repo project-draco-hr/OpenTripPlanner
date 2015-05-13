@@ -1,0 +1,11 @@
+{
+  Graph gg=new Graph();
+  OpenStreetMapModule loader=new OpenStreetMapModule();
+  loader.setDefaultWayPropertySetSource(new DefaultWayPropertySetSource());
+  AnyFileBasedOpenStreetMapProviderImpl provider=new AnyFileBasedOpenStreetMapProviderImpl();
+  File file=new File(URLDecoder.decode(getClass().getResource("columbus.osm.pbf").getFile(),"UTF-8"));
+  provider.setPath(file);
+  loader.setProvider(provider);
+  loader.buildGraph(gg,new HashMap<Class<?>,Object>());
+  return gg;
+}
