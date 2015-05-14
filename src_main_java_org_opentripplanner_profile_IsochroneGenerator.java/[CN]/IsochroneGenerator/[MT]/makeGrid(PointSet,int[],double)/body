@@ -1,12 +1,11 @@
 {
-  ZSampleGrid grid=null;
   final double D0=0.8 * GRID_SIZE_METERS;
   final double V0=walkSpeed;
   Coordinate coordinateOrigin=pointSet.getCoordinate(0);
   final double cosLat=FastMath.cos(toRadians(coordinateOrigin.y));
   double dY=Math.toDegrees(GRID_SIZE_METERS / SphericalDistanceLibrary.RADIUS_OF_EARTH_IN_M);
   double dX=dY / cosLat;
-  grid=new SparseMatrixZSampleGrid<WTWD>(16,times.length,dX,dY,coordinateOrigin);
+  ZSampleGrid grid=new SparseMatrixZSampleGrid<WTWD>(16,times.length,dX,dY,coordinateOrigin);
   AccumulativeGridSampler.AccumulativeMetric<WTWD> metric=new SampleGridRenderer.WTWDAccumulativeMetric(cosLat,D0,V0,GRID_SIZE_METERS);
   AccumulativeGridSampler<WTWD> sampler=new AccumulativeGridSampler<>(grid,metric);
   for (int p=0; p < times.length; p++) {
