@@ -1,0 +1,7 @@
+{
+  Map<String,int[]> ret=Maps.newHashMap();
+  for (  Entry<TransitStop,int[]> e : c.distancesForStop.entrySet()) {
+    ret.put(e.getKey().getLabel(),e.getValue());
+  }
+  return ret;
+}

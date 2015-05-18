@@ -1,0 +1,7 @@
+{
+  if (other instanceof VertexPair) {
+    VertexPair vpo=(VertexPair)other;
+    return vpo.v1 == v1 && vpo.v2 == v2 || vpo.v2 == v1 && vpo.v1 == v2;
+  }
+  return false;
+}

@@ -1,0 +1,39 @@
+{
+  Graph g1=buildGraphNoTransit();
+  addRegularStopGrid(g1);
+  link(g1);
+  Graph g2=buildGraphNoTransit();
+  addExtraStops(g2);
+  addRegularStopGrid(g2);
+  link(g2);
+  for (  TransitStop ts : Iterables.filter(g1.getVertices(),TransitStop.class)) {
+    Collection<Edge> stls=stls(ts.getOutgoing());
+    assertTrue(stls.size() >= 1);
+    StreetTransitLink exemplar=(StreetTransitLink)stls.iterator().next();
+    TransitStop other=(TransitStop)g2.getVertex(ts.getLabel());
+    Collection<Edge> ostls=stls(other.getOutgoing());
+    assertEquals("Unequal number of links from stop " + ts,stls.size(),ostls.size());
+    StreetTransitLink oe=(StreetTransitLink)ostls.iterator().next();
+    assertEquals(exemplar.getToVertex().getLat(),oe.getToVertex().getLat(),1e-10);
+    assertEquals(exemplar.getToVertex().getLon(),oe.getToVertex().getLon(),1e-10);
+  }
+  g1.index(new DefaultStreetVertexIndexFactory());
+  g2.index(new DefaultStreetVertexIndexFactory());
+  g1.rebuildVertexAndEdgeIndices();
+  g2.rebuildVertexAndEdgeIndices();
+  StopTreeCache s1=g1.index.getStopTreeCache();
+  StopTreeCache s2=g2.index.getStopTreeCache();
+  Map<String,int[]> l1=cacheByLabel(s1);
+  Map<String,int[]> l2=cacheByLabel(s2);
+  for (  Entry<String,int[]> e : l1.entrySet()) {
+    assertTrue(l2.containsKey(e.getKey()));
+    TObjectIntMap<String> g1t=jaggedArrayToVertexMap(e.getValue(),g1);
+    TObjectIntMap<String> g2t=jaggedArrayToVertexMap(l2.get(e.getKey()),g2);
+    for (TObjectIntIterator<String> it=g1t.iterator(); it.hasNext(); ) {
+      it.advance();
+      assertTrue(g2t.containsKey(it.key()));
+      int newv=g2t.get(it.key());
+      assertTrue("At " + it.key() + " from stop "+ g1.getVertex(e.getKey())+ ", difference in walk distances: "+ it.value()+ "m without extra stops,"+ newv+ "m with",Math.abs(it.value() - newv) <= EPSILON);
+    }
+  }
+}

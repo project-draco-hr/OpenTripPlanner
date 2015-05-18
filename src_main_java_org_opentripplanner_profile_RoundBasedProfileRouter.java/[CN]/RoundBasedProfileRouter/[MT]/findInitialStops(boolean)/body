@@ -1,0 +1,48 @@
+{
+  double lat=dest ? request.toLat : request.fromLat;
+  double lon=dest ? request.toLon : request.fromLon;
+  QualifiedModeSet modes=dest ? request.accessModes : request.egressModes;
+  List<ProfileState> stops=Lists.newArrayList();
+  RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
+  rr.dominanceFunction=new DominanceFunction.EarliestArrival();
+  rr.batch=true;
+  rr.from=new GenericLocation(lat,lon);
+  rr.walkSpeed=request.walkSpeed;
+  rr.to=rr.from;
+  rr.setRoutingContext(graph);
+  rr.worstTime=(rr.dateTime + request.maxWalkTime * 60);
+  AStar astar=new AStar();
+  rr.longDistance=true;
+  rr.setNumItineraries(1);
+  ShortestPathTree spt=astar.getShortestPathTree(rr,5);
+  for (  TransitStop tstop : graph.index.stopVertexForStop.values()) {
+    State s=spt.getState(tstop);
+    if (s != null) {
+      ProfileState ps=new ProfileState();
+      ps.lowerBound=ps.upperBound=(int)s.getElapsedTimeSeconds();
+      ps.stop=tstop;
+      ps.accessType=Type.STREET;
+      stops.add(ps);
+    }
+  }
+  Map<TripPattern,ProfileState> optimalBoardingLocation=Maps.newHashMap();
+  TObjectIntMap<TripPattern> minBoardTime=new TObjectIntHashMap<TripPattern>(100,0.75f,Integer.MAX_VALUE);
+  for (  ProfileState ps : stops) {
+    for (    TripPattern pattern : graph.index.patternsForStop.get(ps.stop.getStop())) {
+      if (ps.lowerBound < minBoardTime.get(pattern)) {
+        optimalBoardingLocation.put(pattern,ps);
+        minBoardTime.put(pattern,ps.lowerBound);
+      }
+    }
+    ps.targetPatterns=Sets.newHashSet();
+  }
+  LOG.info("Found {} reachable stops, filtering to only board at closest stops",stops.size());
+  for (  Entry<TripPattern,ProfileState> e : optimalBoardingLocation.entrySet()) {
+    e.getValue().targetPatterns.add(e.getKey());
+  }
+  for (Iterator<ProfileState> it=stops.iterator(); it.hasNext(); ) {
+    if (it.next().targetPatterns.isEmpty())     it.remove();
+  }
+  rr.cleanup();
+  return stops;
+}

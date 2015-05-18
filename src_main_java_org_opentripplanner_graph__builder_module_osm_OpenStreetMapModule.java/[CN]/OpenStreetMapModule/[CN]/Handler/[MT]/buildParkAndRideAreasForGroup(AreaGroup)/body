@@ -1,6 +1,6 @@
 {
   Envelope envelope=new Envelope();
-  List<IntersectionVertex> accessVertexes=new ArrayList<IntersectionVertex>();
+  List<OsmVertex> accessVertexes=new ArrayList<OsmVertex>();
   I18NString creativeName=null;
   long osmId=0L;
   for (  Area area : group.areas) {
@@ -9,7 +9,7 @@
     for (    Ring ring : area.outermostRings) {
       for (      OSMNode node : ring.nodes) {
         envelope.expandToInclude(new Coordinate(node.lon,node.lat));
-        IntersectionVertex accessVertex=getVertexForOsmNode(node,area.parent);
+        OsmVertex accessVertex=getVertexForOsmNode(node,area.parent);
         if (accessVertex.getIncoming().isEmpty() || accessVertex.getOutgoing().isEmpty())         continue;
         accessVertexes.add(accessVertex);
       }
@@ -21,7 +21,7 @@
   boolean carAccessibleIn=false;
   boolean walkAccessibleOut=false;
   boolean carAccessibleOut=false;
-  for (  IntersectionVertex accessVertex : accessVertexes) {
+  for (  OsmVertex accessVertex : accessVertexes) {
     for (    Edge incoming : accessVertex.getIncoming()) {
       if (incoming instanceof StreetEdge) {
         if (walkReq.canBeTraversed((StreetEdge)incoming))         walkAccessibleIn=true;
@@ -47,7 +47,7 @@
   }
   ParkAndRideVertex parkAndRideVertex=new ParkAndRideVertex(graph,"P+R" + osmId,"P+R_" + osmId,(envelope.getMinX() + envelope.getMaxX()) / 2,(envelope.getMinY() + envelope.getMaxY()) / 2,creativeName);
   new ParkAndRideEdge(parkAndRideVertex);
-  for (  IntersectionVertex accessVertex : accessVertexes) {
+  for (  OsmVertex accessVertex : accessVertexes) {
     new ParkAndRideLinkEdge(parkAndRideVertex,accessVertex);
     new ParkAndRideLinkEdge(accessVertex,parkAndRideVertex);
   }

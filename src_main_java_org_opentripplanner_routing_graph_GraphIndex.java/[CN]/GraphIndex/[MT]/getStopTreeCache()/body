@@ -1,7 +1,9 @@
 {
+  if (stopTreeCache == null) {
 synchronized (this) {
-    if (stopTreeCache == null) {
-      stopTreeCache=new StopTreeCache(graph,20);
+      if (stopTreeCache == null) {
+        stopTreeCache=new StopTreeCache(graph,2000);
+      }
     }
   }
   return stopTreeCache;

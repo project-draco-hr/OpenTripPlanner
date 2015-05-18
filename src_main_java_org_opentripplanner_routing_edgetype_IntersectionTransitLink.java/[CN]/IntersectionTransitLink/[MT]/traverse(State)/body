@@ -1,0 +1,9 @@
+{
+  RoutingRequest options=s0.getOptions();
+  StateEditor s1=s0.edit(this);
+  boolean cycling=options.modes.contains(TraverseMode.BICYCLE) && !options.walkingBike;
+  double speed=cycling ? options.bikeSpeed : options.walkSpeed;
+  s1.incrementTimeInMilliseconds((long)(length_mm / speed));
+  if (!cycling)   s1.incrementWalkDistance(length_mm / 1000d);
+  return s1.makeState();
+}

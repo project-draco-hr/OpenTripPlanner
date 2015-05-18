@@ -1,0 +1,145 @@
+{
+  LOG.info("access modes: {}",request.accessModes);
+  LOG.info("egress modes: {}",request.egressModes);
+  LOG.info("direct modes: {}",request.directModes);
+  this.window=new TimeWindow(request.fromTime,request.toTime,graph.index.servicesRunning(request.date));
+  long searchBeginTime=System.currentTimeMillis();
+  long abortTime=searchBeginTime + TIMEOUT * 1000;
+  LOG.info("Finding access/egress paths.");
+  ProfileStateStore store=RETAIN_PATTERNS ? new MultiProfileStateStore() : new SingleProfileStateStore();
+  for (  ProfileState ps : findInitialStops(false)) {
+    store.put(ps);
+  }
+  LOG.info("Found {} initial stops",store.size());
+  ROUNDS:   for (int round=0; round < MAX_ROUNDS; round++) {
+    long roundStart=System.currentTimeMillis();
+    LOG.info("Begin round {}; {} stops to explore",round,store.size());
+    ProfileStateStore previousStore=store;
+    store=RETAIN_PATTERNS ? new MultiProfileStateStore((MultiProfileStateStore)store) : new SingleProfileStateStore((SingleProfileStateStore)store);
+    Set<TripPattern> patternsToExplore=Sets.newHashSet();
+    for (    TransitStop tstop : previousStore.keys()) {
+      Collection<TripPattern> patterns=graph.index.patternsForStop.get(tstop.getStop());
+      patternsToExplore.addAll(patterns);
+    }
+    LOG.info("Exploring {} patterns",patternsToExplore.size());
+    PATTERNS:     for (    final TripPattern pattern : patternsToExplore) {
+      STOPS:       for (int i=0; i < pattern.stopVertices.length; i++) {
+        if (!previousStore.containsKey(pattern.stopVertices[i]))         continue STOPS;
+        Collection<ProfileState> statesToPropagate;
+        statesToPropagate=previousStore.get(pattern.stopVertices[i]);
+        statesToPropagate=Collections2.filter(statesToPropagate,new Predicate<ProfileState>(){
+          @Override public boolean apply(          ProfileState input){
+            return !input.containsPattern(pattern) && (input.targetPatterns == null || input.targetPatterns.contains(pattern));
+          }
+        }
+);
+        if (statesToPropagate.isEmpty())         continue STOPS;
+        int minWaitTime=Integer.MAX_VALUE;
+        int maxWaitTime=Integer.MIN_VALUE;
+        for (        FrequencyEntry freq : pattern.scheduledTimetable.frequencyEntries) {
+          if (freq.exactTimes) {
+            throw new IllegalStateException("Exact times not yet supported in profile routing.");
+          }
+          int overlap=window.overlap(freq.startTime,freq.endTime,freq.tripTimes.serviceCode);
+          if (overlap > 0) {
+            if (freq.headway > maxWaitTime)             maxWaitTime=freq.headway;
+            minWaitTime=0;
+          }
+        }
+        DESTSTOPS:         for (int j=i + 1; j < pattern.stopVertices.length; j++) {
+          int minRideTime=Integer.MAX_VALUE;
+          int maxRideTime=Integer.MIN_VALUE;
+          for (          TripTimes tripTimes : pattern.scheduledTimetable.tripTimes) {
+            int depart=tripTimes.getDepartureTime(i);
+            int arrive=tripTimes.getArrivalTime(j);
+            if (window.includes(depart) && window.includes(arrive) && window.servicesRunning.get(tripTimes.serviceCode)) {
+              int t=arrive - depart;
+              if (t < minRideTime)               minRideTime=t;
+              if (t > maxRideTime)               maxRideTime=t;
+            }
+          }
+          for (          FrequencyEntry freq : pattern.scheduledTimetable.frequencyEntries) {
+            TripTimes tt=freq.tripTimes;
+            int overlap=window.overlap(freq.startTime,freq.endTime,tt.serviceCode);
+            if (overlap == 0)             continue;
+            int depart=tt.getDepartureTime(i);
+            int arrive=tt.getArrivalTime(j);
+            int t=arrive - depart;
+            if (t < minRideTime)             minRideTime=t;
+            if (t > maxRideTime)             maxRideTime=t;
+          }
+          if (minWaitTime == Integer.MAX_VALUE || maxWaitTime == Integer.MIN_VALUE || minRideTime == Integer.MAX_VALUE || maxRideTime == Integer.MIN_VALUE)           continue DESTSTOPS;
+          if (minRideTime < 0 || maxRideTime < 0) {
+            LOG.error("Pattern {} travels backwards in time between stop {} and {}",pattern,pattern.stopVertices[i].getStop(),pattern.stopVertices[j].getStop());
+            continue DESTSTOPS;
+          }
+          for (          ProfileState ps : statesToPropagate) {
+            ProfileState ps2=ps.propagate(minWaitTime + minRideTime,maxWaitTime + maxRideTime);
+            if (ps2.upperBound > CUTOFF_SECONDS)             continue;
+            ps2.stop=pattern.stopVertices[j];
+            ps2.accessType=Type.TRANSIT;
+            if (RETAIN_PATTERNS)             ps2.patterns=new TripPattern[]{pattern};
+            store.put(ps2);
+          }
+        }
+      }
+    }
+    if (RETAIN_PATTERNS) {
+      LOG.info("Round completed, merging similar states");
+      ((MultiProfileStateStore)store).mergeStates();
+    }
+    for (    ProfileState ps : store.getAll()) {
+      retainedStates.put(ps.stop,ps);
+    }
+    if (round == MAX_ROUNDS - 1) {
+      LOG.info("Finished round {} in {} seconds",round,(System.currentTimeMillis() - roundStart) / 1000);
+      break ROUNDS;
+    }
+    LOG.info("Finding transfers . . .");
+    Set<TransitStop> touchedStopKeys=new HashSet<TransitStop>(store.keys());
+    for (    TransitStop tstop : touchedStopKeys) {
+      List<Tuple2<TransitStop,Integer>> accessTimes=Lists.newArrayList();
+      for (      Edge e : tstop.getOutgoing()) {
+        if (e instanceof SimpleTransfer) {
+          SimpleTransfer t=(SimpleTransfer)e;
+          int time=(int)(t.getDistance() / request.walkSpeed);
+          accessTimes.add(new Tuple2((TransitStop)e.getToVertex(),time));
+        }
+      }
+      Collection<ProfileState> statesAtStop=store.get(tstop);
+      TObjectIntHashMap<TripPattern> minBoardTime=new TObjectIntHashMap<TripPattern>(1000,.75f,Integer.MAX_VALUE);
+      Map<TripPattern,ProfileState> optimalBoardState=Maps.newHashMap();
+      List<ProfileState> xferStates=Lists.newArrayList();
+      HashSet<TripPattern> patternsAtSource=new HashSet<TripPattern>(graph.index.patternsForStop.get(tstop.getStop()));
+      for (      ProfileState ps : statesAtStop) {
+        for (        Tuple2<TransitStop,Integer> atime : accessTimes) {
+          ProfileState ps2=ps.propagate(atime.b);
+          ps2.accessType=Type.TRANSFER;
+          ps2.stop=atime.a;
+          for (          TripPattern patt : graph.index.patternsForStop.get(atime.a.getStop())) {
+            if (patternsAtSource.contains(patt))             continue;
+            if (atime.b < minBoardTime.get(patt)) {
+              minBoardTime.put(patt,atime.b);
+              optimalBoardState.put(patt,ps2);
+            }
+          }
+          xferStates.add(ps2);
+        }
+      }
+      for (      Entry<TripPattern,ProfileState> e : optimalBoardState.entrySet()) {
+        ProfileState ps=e.getValue();
+        if (ps.targetPatterns == null)         ps.targetPatterns=Sets.newHashSet();
+        ps.targetPatterns.add(e.getKey());
+      }
+      for (      ProfileState ps : xferStates) {
+        if (ps.targetPatterns != null && !ps.targetPatterns.isEmpty()) {
+          store.put(ps);
+        }
+      }
+    }
+    LOG.info("Finished round {} in {} seconds",round,(System.currentTimeMillis() - roundStart) / 1000);
+  }
+  LOG.info("Finished profile routing in {} seconds",(System.currentTimeMillis() - searchBeginTime) / 1000);
+  makeSurfaces();
+  LOG.info("Finished analyst request in {} seconds total",(System.currentTimeMillis() - searchBeginTime) / 1000);
+}
