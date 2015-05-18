@@ -15,7 +15,10 @@
   for (  Vertex input : vertices) {
     if (!(input instanceof OsmVertex && distances.get(input.getIndex()) < searchRadiusLat * searchRadiusLat))     continue;
     for (    StreetEdge e : Iterables.filter(input.getOutgoing(),StreetEdge.class)) {
-      if (e.canTraverse(new TraverseModeSet(TraverseMode.WALK)))       sorted.add(input);
+      if (e.canTraverse(new TraverseModeSet(TraverseMode.WALK))) {
+        sorted.add(input);
+        break;
+      }
     }
   }
   Collections.sort(sorted,new Comparator<Vertex>(){
