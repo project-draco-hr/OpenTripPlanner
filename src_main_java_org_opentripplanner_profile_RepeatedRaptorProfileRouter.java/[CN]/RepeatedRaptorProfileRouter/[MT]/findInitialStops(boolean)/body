@@ -1,17 +1,23 @@
 {
   double lat=dest ? request.toLat : request.fromLat;
   double lon=dest ? request.toLon : request.fromLon;
-  QualifiedModeSet modes=dest ? request.accessModes : request.egressModes;
-  RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
+  QualifiedModeSet modes=dest ? request.egressModes : request.accessModes;
+  RoutingRequest rr=new RoutingRequest(modes);
   rr.batch=true;
   rr.from=new GenericLocation(lat,lon);
   rr.to=rr.from;
   rr.setRoutingContext(graph);
   rr.rctx.pathParsers=new PathParser[]{new InitialStopSearchPathParser()};
   rr.dateTime=request.date.toDateMidnight(DateTimeZone.forTimeZone(graph.getTimeZone())).getMillis() / 1000 + request.fromTime;
-  rr.maxWalkDistance=2000;
-  rr.softWalkLimiting=false;
-  rr.dominanceFunction=new DominanceFunction.LeastWalk();
+  if (rr.modes.contains(TraverseMode.BICYCLE)) {
+    rr.dominanceFunction=new DominanceFunction.EarliestArrival();
+    rr.worstTime=rr.dateTime + request.maxBikeTime * 60;
+  }
+ else {
+    rr.maxWalkDistance=2000;
+    rr.softWalkLimiting=false;
+    rr.dominanceFunction=new DominanceFunction.LeastWalk();
+  }
   AStar astar=new AStar();
   rr.longDistance=true;
   rr.setNumItineraries(1);
