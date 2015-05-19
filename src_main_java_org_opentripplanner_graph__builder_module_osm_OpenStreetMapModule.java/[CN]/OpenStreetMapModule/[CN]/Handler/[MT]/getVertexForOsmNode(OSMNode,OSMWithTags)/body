@@ -1,5 +1,5 @@
 {
-  IntersectionVertex iv=null;
+  OsmVertex iv=null;
   if (node.isMultiLevel()) {
     return recordLevel(node,way);
   }
@@ -30,7 +30,7 @@
       iv=bv;
     }
     if (iv == null) {
-      iv=new IntersectionVertex(graph,label,coordinate.x,coordinate.y,label);
+      iv=new OsmVertex(graph,label,coordinate.x,coordinate.y,label);
       if (node.hasTrafficLight()) {
         iv.trafficLight=(true);
       }

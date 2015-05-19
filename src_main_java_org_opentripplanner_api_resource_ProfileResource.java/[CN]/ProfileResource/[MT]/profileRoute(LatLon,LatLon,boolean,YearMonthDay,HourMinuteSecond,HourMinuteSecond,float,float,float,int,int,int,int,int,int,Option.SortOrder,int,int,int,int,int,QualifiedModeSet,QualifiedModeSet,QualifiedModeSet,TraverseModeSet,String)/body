@@ -1,0 +1,74 @@
+{
+  QueryParameter.checkRangeInclusive(limit,0,Integer.MAX_VALUE);
+  QueryParameter.checkRangeInclusive(walkSpeed,1,7);
+  QueryParameter.checkRangeInclusive(bikeSpeed,1,21);
+  QueryParameter.checkRangeInclusive(carSpeed,1,36);
+  QueryParameter.checkRangeInclusive(streetTime,1,480);
+  QueryParameter.checkRangeInclusive(maxWalkTime,1,480);
+  QueryParameter.checkRangeInclusive(maxBikeTime,1,480);
+  QueryParameter.checkRangeInclusive(maxCarTime,1,480);
+  QueryParameter.checkRangeInclusive(minBikeTime,0,maxBikeTime);
+  QueryParameter.checkRangeInclusive(minCarTime,0,maxCarTime);
+  QueryParameter.checkRangeInclusive(suboptimalMinutes,0,30);
+  QueryParameter.checkRangeInclusive(bikeSafe,0,1000);
+  QueryParameter.checkRangeInclusive(bikeSlope,0,1000);
+  QueryParameter.checkRangeInclusive(bikeTime,0,1000);
+  ProfileRequest req=new ProfileRequest();
+  req.fromLat=from.lat;
+  req.fromLon=from.lon;
+  if (to == null)   to=from;
+  req.toLat=to.lat;
+  req.toLon=to.lon;
+  req.fromTime=fromTime.toSeconds();
+  req.toTime=toTime.toSeconds();
+  req.walkSpeed=walkSpeed;
+  req.bikeSpeed=bikeSpeed;
+  req.carSpeed=carSpeed;
+  req.date=date.toJoda();
+  req.orderBy=orderBy;
+  req.limit=limit;
+  req.accessModes=accessModes;
+  req.egressModes=egressModes;
+  req.directModes=directModes;
+  req.transitModes=transitModes;
+  req.analyst=analyst;
+  req.streetTime=streetTime;
+  req.maxWalkTime=maxWalkTime;
+  req.maxBikeTime=maxBikeTime;
+  req.maxCarTime=maxCarTime;
+  req.minBikeTime=minBikeTime;
+  req.minCarTime=minCarTime;
+  req.bikeSafe=bikeSafe;
+  req.bikeSlope=bikeSlope;
+  req.bikeTime=bikeTime;
+  req.suboptimalMinutes=suboptimalMinutes;
+  if (req.analyst) {
+    if (surfaceCache == null) {
+      LOG.error("You must run OTP with the --analyst option to enable spatial analysis features.");
+    }
+    TimeSurface.RangeSet result;
+    RepeatedRaptorProfileRouter router=new RepeatedRaptorProfileRouter(graph,req);
+    router.banAgency=banAgency;
+    router.route();
+    result=router.timeSurfaceRangeSet;
+    Map<String,Integer> idForSurface=Maps.newHashMap();
+    idForSurface.put("min",surfaceCache.add(result.min));
+    idForSurface.put("avg",surfaceCache.add(result.avg));
+    idForSurface.put("max",surfaceCache.add(result.max));
+    return Response.status(Status.OK).entity(idForSurface).build();
+  }
+ else {
+    ProfileRouter router=new ProfileRouter(graph,req);
+    try {
+      ProfileResponse response=router.route();
+      return Response.status(Status.OK).entity(response).build();
+    }
+ catch (    Throwable throwable) {
+      throwable.printStackTrace();
+      return Response.status(Status.INTERNAL_SERVER_ERROR).entity(throwable.toString()).build();
+    }
+ finally {
+      router.cleanup();
+    }
+  }
+}

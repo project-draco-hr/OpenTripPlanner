@@ -1,18 +1,34 @@
 {
-  int tmpCounts[]=new int[1000];
-  int tmpSums[]=new int[1000];
-  int uppperBound=0;
-  for (int i=0; i < times.length; i++) {
-    if (times[i] < 0 || times[i] == Integer.MAX_VALUE)     continue;
-    int minuteBin=(int)Math.floor(times[i] / 60.0);
-    tmpCounts[minuteBin]+=1;
-    tmpSums[minuteBin]+=weights[i];
-    if (minuteBin > uppperBound)     uppperBound=minuteBin;
+  int size=weightingFunctions.length;
+  int maxSecs=Integer.MIN_VALUE;
+  for (  int time : times) {
+    if (time == Integer.MAX_VALUE)     continue;
+    if (time > maxSecs)     maxSecs=time;
   }
-  counts=new int[uppperBound];
-  sums=new int[uppperBound];
-  for (int i=0; i < uppperBound; i++) {
-    counts[i]=tmpCounts[i];
-    sums[i]=tmpSums[i];
+  int[] binnedCounts=new int[maxSecs + 1];
+  int[] binnedWeights=new int[maxSecs + 1];
+  for (int i=0; i < times.length; i++) {
+    if (times[i] == Integer.MAX_VALUE)     continue;
+    binnedCounts[times[i]]+=1;
+    binnedWeights[times[i]]+=weight[i];
+  }
+  double[] tmpCounts=new double[size];
+  double[] tmpSums=new double[size];
+  for (int i=0; i < binnedCounts.length; i++) {
+    for (int j=0; j < weightingFunctions.length; j++) {
+      double w=weightingFunctions[j].getWeight(i);
+      tmpCounts[j]+=w * binnedCounts[i];
+      tmpSums[j]+=w * binnedWeights[i];
+    }
+  }
+  counts=new int[size];
+  sums=new int[size];
+  for (int i=0; i < weightingFunctions.length; i++) {
+    counts[i]=(int)Math.round(tmpCounts[i]);
+    sums[i]=(int)Math.round(tmpSums[i]);
+  }
+  for (int i=weightingFunctions.length - 1; i > 0; i--) {
+    counts[i]-=counts[i - 1];
+    sums[i]-=sums[i - 1];
   }
 }

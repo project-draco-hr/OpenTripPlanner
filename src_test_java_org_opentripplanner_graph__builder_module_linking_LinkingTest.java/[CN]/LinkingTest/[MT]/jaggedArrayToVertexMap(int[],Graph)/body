@@ -1,0 +1,9 @@
+{
+  TObjectIntMap<String> ret=new TObjectIntHashMap<String>();
+  for (int i=0; i < value.length; i++) {
+    Vertex v=g.getVertexById(value[i++]);
+    if (!v.getLabel().startsWith("osm:node"))     continue;
+    ret.put(v.getLabel(),value[i]);
+  }
+  return ret;
+}

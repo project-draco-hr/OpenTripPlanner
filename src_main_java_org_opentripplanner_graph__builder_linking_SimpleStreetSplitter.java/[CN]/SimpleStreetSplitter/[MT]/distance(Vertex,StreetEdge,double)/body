@@ -1,0 +1,4 @@
+{
+  LineString transformed=equirectangularProject(edge.getGeometry(),xscale);
+  return transformed.distance(geometryFactory.createPoint(new Coordinate(tstop.getLon() * xscale,tstop.getLat())));
+}

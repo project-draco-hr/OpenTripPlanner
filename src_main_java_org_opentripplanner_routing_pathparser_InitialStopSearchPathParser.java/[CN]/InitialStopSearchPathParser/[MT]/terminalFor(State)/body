@@ -1,0 +1,6 @@
+{
+  Vertex v=state.getVertex();
+  if (v instanceof IntersectionVertex || v instanceof ElevatorOffboardVertex || v instanceof ElevatorOnboardVertex)   return STREET;
+ else   if (v instanceof TransitStop)   return TRANSITSTOP;
+ else   return OTHER;
+}
