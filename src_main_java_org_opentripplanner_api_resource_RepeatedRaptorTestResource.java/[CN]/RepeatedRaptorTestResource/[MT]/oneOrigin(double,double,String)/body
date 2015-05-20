@@ -1,0 +1,65 @@
+{
+  ProfileRequest req=new ProfileRequest();
+  req.fromLat=lat;
+  req.fromLon=lon;
+  req.fromTime=60 * 60 * 8;
+  req.toTime=60 * 60 * 9;
+  req.walkSpeed=2;
+  req.bikeSpeed=4;
+  req.carSpeed=8;
+  req.date=new LocalDate(2015,04,20);
+  req.maxWalkTime=20;
+  req.accessModes=new QualifiedModeSet("WALK");
+  req.egressModes=new QualifiedModeSet("WALK");
+  req.transitModes=new TraverseModeSet("TRANSIT");
+  req.analyst=true;
+  if (surfaceCache == null) {
+    LOG.error("You must run OTP with the --analyst option to enable spatial analysis features.");
+  }
+  final RepeatedRaptorProfileRouter router_a=new RepeatedRaptorProfileRouter(graph,req);
+  final RepeatedRaptorProfileRouter router_b=new RepeatedRaptorProfileRouter(graph,req);
+  router_b.banAgency=banAgency;
+  try {
+    router_a.route();
+    router_b.route();
+  }
+ catch (  VertexNotFoundException ex) {
+    LOG.error("vertex not found");
+    return;
+  }
+  System.out.printf("stop, min_a, min_b, min_diff, max_a, max_b, max_diff\n");
+  boolean decreased=false;
+  decreased=false;
+  TimeSurface.RangeSet timeSurfaces_a=router_a.timeSurfaceRangeSet;
+  TimeSurface.RangeSet timeSurfaces_b=router_b.timeSurfaceRangeSet;
+  for (  Vertex destVertex : timeSurfaces_a.min.times.keySet()) {
+    int min_a=timeSurfaces_a.min.getTime(destVertex);
+    int max_a=timeSurfaces_a.max.getTime(destVertex);
+    int avg_a=timeSurfaces_a.avg.getTime(destVertex);
+    int min_b=timeSurfaces_b.min.getTime(destVertex);
+    int max_b=timeSurfaces_b.max.getTime(destVertex);
+    int avg_b=timeSurfaces_b.avg.getTime(destVertex);
+    long min_diff=(long)min_b - min_a;
+    long max_diff=(long)max_b - max_a;
+    long avg_diff=(long)avg_b - avg_a;
+    if (min_b == TimeSurface.UNREACHABLE) {
+      min_diff=Integer.MAX_VALUE;
+      max_diff=Integer.MAX_VALUE;
+      avg_diff=Integer.MAX_VALUE;
+    }
+    n_total+=1;
+    if (min_diff < 0 || max_diff < 0 || avg_diff < 0) {
+      n_decrease+=1;
+      sum_decrease+=max_diff;
+      System.out.printf("\"%s\",%d,%d,%d,%d,%d,%d\n",destVertex.getName(),min_a,min_b,min_diff,max_a,max_b,max_diff);
+      decreased=true;
+    }
+ else     if (avg_diff > 0) {
+      n_increase+=1;
+    }
+  }
+  if (decreased) {
+    LOG.error("Decreases happened at propagated street vertices for this origin!");
+  }
+  LOG.info("Street Vertices: {} increased, {} decreased out of {} destinations total",n_increase,n_decrease,n_total);
+}

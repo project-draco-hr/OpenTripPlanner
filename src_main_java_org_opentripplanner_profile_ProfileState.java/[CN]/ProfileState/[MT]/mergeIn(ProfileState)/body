@@ -1,0 +1,5 @@
+{
+  if (this.lowerBound < 0 || other.lowerBound < 0 || this.upperBound < 0 || other.upperBound < 0)   throw new IllegalStateException("Invalid bound");
+  this.lowerBound=Math.min(this.lowerBound,other.lowerBound);
+  this.upperBound=Math.min(this.upperBound,other.upperBound);
+}

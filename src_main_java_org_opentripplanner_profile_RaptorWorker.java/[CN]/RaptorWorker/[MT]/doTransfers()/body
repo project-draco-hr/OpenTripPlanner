@@ -1,0 +1,17 @@
+{
+  patternsTouched.clear();
+  for (int stop=stopsTouched.nextSetBit(0); stop >= 0; stop=stopsTouched.nextSetBit(stop + 1)) {
+    markPatternsForStop(stop);
+    int fromTime=bestNonTransferTimes[stop];
+    int[] transfers=data.transfersForStop.get(stop);
+    for (int i=0; i < transfers.length; i++) {
+      int toStop=transfers[i++];
+      int distance=transfers[i];
+      int toTime=fromTime + (int)(distance / req.walkSpeed);
+      if (toTime < max_time && toTime < bestTimes[toStop]) {
+        bestTimes[toStop]=toTime;
+        markPatternsForStop(toStop);
+      }
+    }
+  }
+}

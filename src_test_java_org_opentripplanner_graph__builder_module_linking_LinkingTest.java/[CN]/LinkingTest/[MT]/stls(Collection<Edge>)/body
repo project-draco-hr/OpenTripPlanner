@@ -1,0 +1,8 @@
+{
+  return Collections2.filter(edges,new Predicate<Edge>(){
+    @Override public boolean apply(    Edge input){
+      return input instanceof StreetTransitLink;
+    }
+  }
+);
+}

@@ -1,0 +1,7 @@
+{
+  for (  StreetTransitLink e : Iterables.filter(tstop.getOutgoing(),StreetTransitLink.class)) {
+    if (e.getToVertex() == v)     return;
+  }
+  new StreetTransitLink(tstop,v,tstop.hasWheelchairEntrance());
+  new StreetTransitLink(v,tstop,tstop.hasWheelchairEntrance());
+}

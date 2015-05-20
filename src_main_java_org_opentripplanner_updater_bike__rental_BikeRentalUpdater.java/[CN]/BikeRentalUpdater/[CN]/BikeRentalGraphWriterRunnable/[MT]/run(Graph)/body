@@ -10,7 +10,9 @@
     BikeRentalStationVertex vertex=verticesByStation.get(station);
     if (vertex == null) {
       vertex=new BikeRentalStationVertex(graph,station);
-      LinkRequest request=networkLinkerLibrary.connectVertexToStreets(vertex);
+      if (!linker.link(vertex)) {
+        LOG.warn("{} not near any streets; it will not be usable.",station);
+      }
       verticesByStation.put(station,vertex);
       new RentABikeOnEdge(vertex,vertex,station.networks);
       if (station.allowDropoff)       new RentABikeOffEdge(vertex,vertex,station.networks);
