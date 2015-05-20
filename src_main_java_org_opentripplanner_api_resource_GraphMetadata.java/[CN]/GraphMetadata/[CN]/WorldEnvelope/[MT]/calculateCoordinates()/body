@@ -1,0 +1,30 @@
+{
+  if (coordinatesCalculated) {
+    return;
+  }
+  if (this.leftEnv.getArea() == 0) {
+    this.lowerLeftLongitude=rightEnv.getMinX();
+    this.upperRightLongitude=rightEnv.getMaxX();
+    this.lowerLeftLatitude=rightEnv.getMinY();
+    this.upperRightLatitude=rightEnv.getMaxY();
+  }
+ else   if (this.rightEnv.getArea() == 0) {
+    this.lowerLeftLongitude=leftEnv.getMinX();
+    this.upperRightLongitude=leftEnv.getMaxX();
+    this.lowerLeftLatitude=leftEnv.getMinY();
+    this.upperRightLatitude=leftEnv.getMaxY();
+  }
+ else {
+    if (aRightCoordinate < 90) {
+      this.lowerLeftLongitude=leftEnv.getMinX();
+      this.upperRightLongitude=rightEnv.getMaxX();
+    }
+ else {
+      this.lowerLeftLongitude=leftEnv.getMaxX();
+      this.upperRightLongitude=rightEnv.getMinX();
+    }
+    this.upperRightLatitude=Math.max(rightEnv.getMaxY(),leftEnv.getMaxY());
+    this.lowerLeftLatitude=Math.min(rightEnv.getMinY(),leftEnv.getMinY());
+  }
+  coordinatesCalculated=true;
+}

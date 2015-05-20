@@ -1,14 +1,14 @@
 {
-  envelope=new Envelope();
+  envelope=new WorldEnvelope();
   for (  Vertex v : graph.getVertices()) {
     Coordinate c=v.getCoordinate();
     envelope.expandToInclude(c);
   }
-  setLowerLeftLongitude(envelope.getMinX());
-  setUpperRightLongitude(envelope.getMaxX());
-  setLowerLeftLatitude(envelope.getMinY());
-  setUpperRightLatitude(envelope.getMaxY());
-  newEnvelope=new Envelope(envelope);
+  setLowerLeftLongitude(envelope.getLowerLeftLongitude());
+  setUpperRightLongitude(envelope.getUpperRightLongitude());
+  setLowerLeftLatitude(envelope.getLowerLeftLatitude());
+  setUpperRightLatitude(envelope.getUpperRightLatitude());
+  newEnvelope=new WorldEnvelope(envelope);
   setCenterLatitude((upperRightLatitude + lowerLeftLatitude) / 2);
   setCenterLongitude((upperRightLongitude + lowerLeftLongitude) / 2);
 }
