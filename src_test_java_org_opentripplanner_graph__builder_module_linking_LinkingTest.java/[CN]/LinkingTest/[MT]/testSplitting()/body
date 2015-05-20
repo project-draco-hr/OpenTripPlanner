@@ -1,0 +1,24 @@
+{
+  GeometryFactory gf=GeometryUtils.getGeometryFactory();
+  double x=-122.123;
+  double y=37.363;
+  for (double delta=0; delta <= 2; delta+=0.005) {
+    StreetVertex v0=new IntersectionVertex(null,"zero",x,y);
+    StreetVertex v1=new IntersectionVertex(null,"one",x + delta,y + delta);
+    LineString geom=gf.createLineString(new Coordinate[]{v0.getCoordinate(),v1.getCoordinate()});
+    double dist=SphericalDistanceLibrary.distance(v0.getCoordinate(),v1.getCoordinate());
+    StreetEdge s0=new StreetEdge(v0,v1,geom,"test",dist,StreetTraversalPermission.ALL,false);
+    StreetEdge s1=new StreetEdge(v1,v0,(LineString)geom.reverse(),"back",dist,StreetTraversalPermission.ALL,true);
+    double splitVal=Math.random() * 0.95 + 0.025;
+    SplitterVertex sv0=new SplitterVertex(null,"split",x + delta * splitVal,y + delta * splitVal);
+    SplitterVertex sv1=new SplitterVertex(null,"split",x + delta * splitVal,y + delta * splitVal);
+    P2<StreetEdge> sp0=s0.split(sv0);
+    P2<StreetEdge> sp1=s1.split(sv1);
+    assertEquals(sp0.first.getDistance(),sp1.second.getDistance(),0.0000001);
+    assertEquals(sp0.second.getDistance(),sp1.first.getDistance(),0.0000001);
+    assertFalse(sp0.first.isBack());
+    assertFalse(sp0.second.isBack());
+    assertTrue(sp1.first.isBack());
+    assertTrue(sp1.second.isBack());
+  }
+}

@@ -1,0 +1,17 @@
+{
+  DelaunayIsolineBuilder<WTWD> isolineBuilder=new DelaunayIsolineBuilder<>(grid.delaunayTriangulate(),new WTWD.IsolineMetric());
+  List<IsochroneData> isochrones=new ArrayList<>();
+  for (int minutes=spacingMinutes, n=0; minutes <= cutoffMinutes && n < nMax; minutes+=spacingMinutes, n++) {
+    int seconds=minutes * 60;
+    SampleGridRenderer.WTWD z0=new SampleGridRenderer.WTWD();
+    z0.w=1.0;
+    z0.wTime=seconds;
+    z0.d=GRID_SIZE_METERS;
+    IsochroneData isochrone=new IsochroneData(seconds,isolineBuilder.computeIsoline(z0));
+    isochrones.add(isochrone);
+    if (++n >= nMax) {
+      break;
+    }
+  }
+  return isochrones;
+}

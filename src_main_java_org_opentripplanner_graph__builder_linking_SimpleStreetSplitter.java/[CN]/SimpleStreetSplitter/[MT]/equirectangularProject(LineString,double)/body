@@ -1,0 +1,10 @@
+{
+  Coordinate[] coords=new Coordinate[geometry.getNumPoints()];
+  for (int i=0; i < coords.length; i++) {
+    Coordinate c=geometry.getCoordinateN(i);
+    c=(Coordinate)c.clone();
+    c.x*=xscale;
+    coords[i]=c;
+  }
+  return geometryFactory.createLineString(coords);
+}

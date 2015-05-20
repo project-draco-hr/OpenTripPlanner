@@ -1,0 +1,28 @@
+{
+  if (makeTransfers)   links=HashMultimap.create();
+  SampleFactory sf=graph.getSampleFactory();
+  for (  TransitStop tstop : Iterables.filter(graph.getVertices(),TransitStop.class)) {
+    Sample s=sf.getSample(tstop.getLon(),tstop.getLat());
+    if (s == null)     continue;
+    new IntersectionTransitLink(tstop,(OsmVertex)s.v0,s.d0);
+    new IntersectionTransitLink((OsmVertex)s.v0,tstop,s.d0);
+    new IntersectionTransitLink(tstop,(OsmVertex)s.v1,s.d1);
+    new IntersectionTransitLink((OsmVertex)s.v1,tstop,s.d1);
+    if (makeTransfers) {
+      VertexPair vp=new VertexPair(s.v0,s.v1);
+      links.put(vp,tstop);
+    }
+  }
+  if (makeTransfers) {
+    for (    Collection<TransitStop> tss : links.asMap().values()) {
+      for (      TransitStop ts0 : tss) {
+        for (        TransitStop ts1 : tss) {
+          GeometryFactory gf=GeometryUtils.getGeometryFactory();
+          LineString geom=gf.createLineString(new Coordinate[]{ts0.getCoordinate(),ts1.getCoordinate()});
+          double dist=SphericalDistanceLibrary.distance(ts0.getLat(),ts0.getLon(),ts1.getLat(),ts1.getLon());
+          new SimpleTransfer(ts1,ts1,dist,geom);
+        }
+      }
+    }
+  }
+}

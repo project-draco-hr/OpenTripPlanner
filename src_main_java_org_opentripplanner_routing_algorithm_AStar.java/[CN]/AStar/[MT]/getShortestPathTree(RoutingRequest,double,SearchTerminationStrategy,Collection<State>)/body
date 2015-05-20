@@ -1,0 +1,14 @@
+{
+  ShortestPathTree spt=null;
+  long abortTime=DateUtils.absoluteTimeout(relTimeoutSeconds);
+  startSearch(options,terminationStrategy,abortTime,false);
+  if (runState != null) {
+    for (    State state : initialStates) {
+      runState.spt.add(state);
+      runState.pq.insert(state,state.getElapsedTimeSeconds());
+    }
+    runSearch(abortTime);
+    spt=runState.spt;
+  }
+  return spt;
+}

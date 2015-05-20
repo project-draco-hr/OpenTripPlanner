@@ -3,11 +3,12 @@
   Envelope envelope=new Envelope(coordinate);
   double envelopeGrowthAmount=0.001;
   double radius=0;
+  double xscale=Math.cos(coordinate.y * Math.PI / 180);
   CandidateEdgeBundle candidateEdges=new CandidateEdgeBundle();
   while (candidateEdges.size() == 0) {
-    envelope.expandBy(envelopeGrowthAmount);
+    envelope.expandBy(envelopeGrowthAmount / xscale,envelopeGrowthAmount);
     radius+=envelopeGrowthAmount;
-    if (radius > MAX_DISTANCE_FROM_STREET) {
+    if (radius > MAX_DISTANCE_FROM_STREET_DEGREES) {
       return candidateEdges;
     }
     Iterable<Edge> nearbyEdges=getEdgesForEnvelope(envelope);

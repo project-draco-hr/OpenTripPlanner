@@ -1,12 +1,12 @@
 {
   for (  Long nodeId : multiLevelNodes.keySet()) {
     OSMNode node=osmdb.getNode(nodeId);
-    HashMap<OSMLevel,IntersectionVertex> vertices=multiLevelNodes.get(nodeId);
+    HashMap<OSMLevel,OsmVertex> vertices=multiLevelNodes.get(nodeId);
     OSMLevel[] levels=vertices.keySet().toArray(new OSMLevel[0]);
     Arrays.sort(levels);
     ArrayList<Vertex> onboardVertices=new ArrayList<Vertex>();
     for (    OSMLevel level : levels) {
-      IntersectionVertex sourceVertex=vertices.get(level);
+      OsmVertex sourceVertex=vertices.get(level);
       String sourceVertexLabel=sourceVertex.getLabel();
       String levelName=level.longName;
       ElevatorOffboardVertex offboardVertex=new ElevatorOffboardVertex(graph,sourceVertexLabel + "_offboard",sourceVertex.getX(),sourceVertex.getY(),levelName);

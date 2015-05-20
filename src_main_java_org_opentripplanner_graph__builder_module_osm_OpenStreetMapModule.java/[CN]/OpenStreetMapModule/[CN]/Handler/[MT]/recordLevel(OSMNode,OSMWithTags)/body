@@ -1,18 +1,18 @@
 {
   OSMLevel level=osmdb.getLevelForWay(way);
-  HashMap<OSMLevel,IntersectionVertex> vertices;
+  HashMap<OSMLevel,OsmVertex> vertices;
   long nodeId=node.getId();
   if (multiLevelNodes.containsKey(nodeId)) {
     vertices=multiLevelNodes.get(nodeId);
   }
  else {
-    vertices=new HashMap<OSMLevel,IntersectionVertex>();
+    vertices=new HashMap<OSMLevel,OsmVertex>();
     multiLevelNodes.put(nodeId,vertices);
   }
   if (!vertices.containsKey(level)) {
     Coordinate coordinate=getCoordinate(node);
     String label=this.getLevelNodeLabel(node,level);
-    IntersectionVertex vertex=new IntersectionVertex(graph,label,coordinate.x,coordinate.y,label);
+    OsmVertex vertex=new OsmVertex(graph,label,coordinate.x,coordinate.y,label);
     vertices.put(level,vertex);
     endpoints.add(vertex);
     return vertex;
