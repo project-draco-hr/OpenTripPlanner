@@ -16,12 +16,6 @@
     }
     return null;
   }
-  if (traverseMode == TraverseMode.CAR) {
-    if (fromv instanceof BarrierVertex || tov instanceof BarrierVertex) {
-      LOG.info("Can't traverse over barrier: {}",getName());
-      return null;
-    }
-  }
   double speed=calculateSpeed(options,traverseMode);
   double time=getDistance() / speed;
   double weight;
