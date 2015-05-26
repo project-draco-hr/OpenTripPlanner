@@ -1,0 +1,9 @@
+{
+  if (this.isochrones == null)   return;
+  FeatureJSON fj=new FeatureJSON();
+  FeatureCollection fc=LIsochrone.makeContourFeatures(Arrays.asList(isochrones));
+  StringWriter sw=new StringWriter();
+  fj.writeFeatureCollection(fc,sw);
+  String json=sw.toString();
+  jgen.writeRaw(json.substring(1,json.length() - 1));
+}
