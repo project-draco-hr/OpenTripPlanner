@@ -4,11 +4,11 @@
   BikeRentalStationService bikeRentalService=graph.getService(BikeRentalStationService.class,true);
   for (  OSMNode node : osmdb.getBikeParkingNodes()) {
     n++;
-    String creativeName=wayPropertySet.getCreativeNameForWay(node);
-    if (creativeName == null)     creativeName="P+R";
+    I18NString creativeName=wayPropertySet.getCreativeNameForWay(node);
+    if (creativeName == null)     creativeName=new NonLocalizedString("P+R");
     BikePark bikePark=new BikePark();
     bikePark.id="" + node.getId();
-    bikePark.name=creativeName;
+    bikePark.name=creativeName.toString();
     bikePark.x=node.lon;
     bikePark.y=node.lat;
     bikeRentalService.addBikePark(bikePark);
