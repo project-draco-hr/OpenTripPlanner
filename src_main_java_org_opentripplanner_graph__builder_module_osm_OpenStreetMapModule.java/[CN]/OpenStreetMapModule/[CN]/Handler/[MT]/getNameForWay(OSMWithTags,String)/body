@@ -1,10 +1,10 @@
 {
-  String name=way.getAssumedName();
+  I18NString name=way.getAssumedName();
   if (customNamer != null) {
-    name=customNamer.name(way,name);
+    name=new NonLocalizedString(customNamer.name(way,name.toString()));
   }
   if (name == null) {
-    name=id;
+    name=new NonLocalizedString(id);
   }
   return name;
 }

@@ -22,7 +22,7 @@
     int cls=StreetEdge.CLASS_OTHERPATH;
     cls|=OSMFilter.getStreetClasses(areaEntity);
     String label="way (area) " + areaEntity.getId() + " from "+ startEndpoint.getLabel()+ " to "+ endEndpoint.getLabel();
-    String name=__handler.getNameForWay(areaEntity,label);
+    I18NString name=__handler.getNameForWay(areaEntity,label);
     AreaEdge street=edgeFactory.createAreaEdge(startEndpoint,endEndpoint,line,name,length,areaPermissions,false,edgeList);
     street.setCarSpeed(carSpeed);
     if (!areaEntity.hasTag("name") && !areaEntity.hasTag("ref")) {

@@ -3,8 +3,8 @@
   HashSet<Edge> turns=new HashSet<Edge>();
   turns.add(left);
   turns.add(leftBack);
-  TemporaryStreetLocation start=StreetVertexIndexServiceImpl.createTemporaryStreetLocation(graph,"start","start",filter(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()),false);
-  TemporaryStreetLocation end=StreetVertexIndexServiceImpl.createTemporaryStreetLocation(graph,"end","end",filter(turns,StreetEdge.class),new LinearLocation(0,0.8).getCoordinate(left.getGeometry()),true);
+  TemporaryStreetLocation start=StreetVertexIndexServiceImpl.createTemporaryStreetLocation(graph,"start",new NonLocalizedString("start"),filter(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()),false);
+  TemporaryStreetLocation end=StreetVertexIndexServiceImpl.createTemporaryStreetLocation(graph,"end",new NonLocalizedString("end"),filter(turns,StreetEdge.class),new LinearLocation(0,0.8).getCoordinate(left.getGeometry()),true);
   assertEquals(start.getX(),end.getX());
   assertTrue(start.getY() < end.getY());
   Collection<Edge> edges=end.getIncoming();

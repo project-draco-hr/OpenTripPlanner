@@ -1,9 +1,9 @@
 {
-  TranslatedString result=new TranslatedString();
+  Map<String,String> translations=new HashMap<>();
   for (  GtfsRealtime.TranslatedString.Translation translation : input.getTranslationList()) {
     String language=translation.getLanguage();
     String string=translation.getText();
-    result.addTranslation(language,string);
+    translations.put(language,string);
   }
-  return result;
+  return translations.isEmpty() ? null : TranslatedString.getI18NString(translations);
 }

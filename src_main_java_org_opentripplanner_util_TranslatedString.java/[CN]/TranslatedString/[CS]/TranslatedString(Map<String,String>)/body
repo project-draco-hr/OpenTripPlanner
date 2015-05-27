@@ -1,0 +1,10 @@
+{
+  for (  Map.Entry<String,String> i : translations.entrySet()) {
+    if (i.getKey() == null) {
+      this.translations.put(null,i.getValue());
+    }
+ else {
+      this.translations.put(i.getKey().toLowerCase(),i.getValue());
+    }
+  }
+}

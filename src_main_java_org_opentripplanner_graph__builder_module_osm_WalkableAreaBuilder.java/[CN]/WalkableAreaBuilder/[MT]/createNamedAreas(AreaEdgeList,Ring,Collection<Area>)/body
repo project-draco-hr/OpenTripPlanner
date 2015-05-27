@@ -11,7 +11,7 @@
     cls|=OSMFilter.getStreetClasses(areaEntity);
     namedArea.setStreetClass(cls);
     String id="way (area) " + areaEntity.getId() + " (splitter linking)";
-    String name=__handler.getNameForWay(areaEntity,id);
+    I18NString name=__handler.getNameForWay(areaEntity,id);
     namedArea.setName(name);
     WayProperties wayData=wayPropertySet.getDataForWay(areaEntity);
     Double safety=wayData.getSafetyFeatures().first;
