@@ -99,23 +99,6 @@
   if (reverseOptimizeOnTheFly != null)   request.reverseOptimizeOnTheFly=reverseOptimizeOnTheFly;
   if (ignoreRealtimeUpdates != null)   request.ignoreRealtimeUpdates=ignoreRealtimeUpdates;
   if (disableRemainingWeightHeuristic != null)   request.disableRemainingWeightHeuristic=disableRemainingWeightHeuristic;
-  String localeSpec=locale != null ? locale : "en";
-  String[] localeSpecParts=localeSpec.split("_");
-  Locale locale;
-switch (localeSpecParts.length) {
-case 1:
-    locale=new Locale(localeSpecParts[0]);
-  break;
-case 2:
-locale=new Locale(localeSpecParts[0]);
-break;
-case 3:
-locale=new Locale(localeSpecParts[0]);
-break;
-default :
-LOG.debug("Bogus locale " + localeSpec + ", defaulting to en");
-locale=new Locale("en");
-}
-request.locale=locale;
-return request;
+  request.locale=ResourceBundleSingleton.INSTANCE.getLocale(locale);
+  return request;
 }

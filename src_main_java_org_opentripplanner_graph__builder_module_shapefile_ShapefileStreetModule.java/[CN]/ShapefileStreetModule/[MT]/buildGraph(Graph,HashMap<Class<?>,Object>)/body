@@ -59,12 +59,12 @@
       String endIntersectionName=getIntersectionName(coordinateToStreetNames,intersectionNameToId,endCoordinate);
       IntersectionVertex startIntersection=intersectionsByLocation.get(startCoordinate);
       if (startIntersection == null) {
-        startIntersection=new IntersectionVertex(graph,startIntersectionName,startCoordinate.x,startCoordinate.y,startIntersectionName);
+        startIntersection=new IntersectionVertex(graph,startIntersectionName,startCoordinate.x,startCoordinate.y,new NonLocalizedString(startIntersectionName));
         intersectionsByLocation.put(startCoordinate,startIntersection);
       }
       IntersectionVertex endIntersection=intersectionsByLocation.get(endCoordinate);
       if (endIntersection == null) {
-        endIntersection=new IntersectionVertex(graph,endIntersectionName,endCoordinate.x,endCoordinate.y,endIntersectionName);
+        endIntersection=new IntersectionVertex(graph,endIntersectionName,endCoordinate.x,endCoordinate.y,new NonLocalizedString(endIntersectionName));
         intersectionsByLocation.put(endCoordinate,endIntersection);
       }
       double length=0;
@@ -72,9 +72,9 @@
         length+=JTS.orthodromicDistance(coordinates[i],coordinates[i + 1],worldCRS);
       }
       P2<StreetTraversalPermission> permissions=permissionConverter.convert(feature);
-      StreetEdge street=edgeFactory.createEdge(startIntersection,endIntersection,geom,name,length,permissions.first,false);
+      StreetEdge street=edgeFactory.createEdge(startIntersection,endIntersection,geom,new NonLocalizedString(name),length,permissions.first,false);
       LineString reversed=(LineString)geom.reverse();
-      StreetEdge backStreet=edgeFactory.createEdge(endIntersection,startIntersection,reversed,name,length,permissions.second,true);
+      StreetEdge backStreet=edgeFactory.createEdge(endIntersection,startIntersection,reversed,new NonLocalizedString(name),length,permissions.second,true);
       backStreet.shareData(street);
       if (noteConverter != null) {
         String note=noteConverter.convert(feature);

@@ -2,7 +2,7 @@
   BikeRentalStationService bikeRentalService=graph.getService(BikeRentalStationService.class,true);
   Envelope envelope=new Envelope();
   long osmId=area.parent.getId();
-  String creativeName=wayPropertySet.getCreativeNameForWay(area.parent);
+  I18NString creativeName=wayPropertySet.getCreativeNameForWay(area.parent);
   for (  Ring ring : area.outermostRings) {
     for (    OSMNode node : ring.nodes) {
       envelope.expandToInclude(new Coordinate(node.lon,node.lat));
@@ -10,7 +10,7 @@
   }
   BikePark bikePark=new BikePark();
   bikePark.id="" + osmId;
-  bikePark.name=creativeName;
+  bikePark.name=creativeName.toString();
   bikePark.x=(envelope.getMinX() + envelope.getMaxX()) / 2;
   bikePark.y=(envelope.getMinY() + envelope.getMaxY()) / 2;
   bikeRentalService.addBikePark(bikePark);
