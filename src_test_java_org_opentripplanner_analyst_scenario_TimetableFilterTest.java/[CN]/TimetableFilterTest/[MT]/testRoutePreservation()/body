@@ -1,0 +1,7 @@
+{
+  RemoveTrips rt=new RemoveTrips();
+  rt.agencyId=agency.getId();
+  rt.routeId=Arrays.asList("SOMETHING ELSE");
+  assertEquals(times,rt.apply(trip,pattern,times));
+  assertEquals(frequencyEntry,rt.apply(trip,pattern,frequencyEntry));
+}
