@@ -1,46 +1,14 @@
 {
-  Envelope leftEnv=new Envelope();
-  Envelope rightEnv=new Envelope();
-  double aRightCoordinate=0;
+  envelope=new WorldEnvelope();
   for (  Vertex v : graph.getVertices()) {
-    for (    Edge e : v.getOutgoing()) {
-      if (e instanceof PatternHop) {
-        transitModes.add(((PatternHop)e).getMode());
-      }
-    }
     Coordinate c=v.getCoordinate();
-    if (c.x < 0) {
-      leftEnv.expandToInclude(c);
-    }
- else {
-      rightEnv.expandToInclude(c);
-      aRightCoordinate=c.x;
-    }
+    envelope.expandToInclude(c);
   }
-  if (leftEnv.getArea() == 0) {
-    setLowerLeftLongitude(rightEnv.getMinX());
-    setUpperRightLongitude(rightEnv.getMaxX());
-    setLowerLeftLatitude(rightEnv.getMinY());
-    setUpperRightLatitude(rightEnv.getMaxY());
-  }
- else   if (rightEnv.getArea() == 0) {
-    setLowerLeftLongitude(leftEnv.getMinX());
-    setUpperRightLongitude(leftEnv.getMaxX());
-    setLowerLeftLatitude(leftEnv.getMinY());
-    setUpperRightLatitude(leftEnv.getMaxY());
-  }
- else {
-    if (aRightCoordinate < 90) {
-      setLowerLeftLongitude(leftEnv.getMinX());
-      setUpperRightLongitude(rightEnv.getMaxX());
-    }
- else {
-      setLowerLeftLongitude(leftEnv.getMaxX());
-      setUpperRightLongitude(rightEnv.getMinX());
-    }
-    setUpperRightLatitude(Math.max(rightEnv.getMaxY(),leftEnv.getMaxY()));
-    setLowerLeftLatitude(Math.min(rightEnv.getMinY(),leftEnv.getMinY()));
-  }
+  setLowerLeftLongitude(envelope.getLowerLeftLongitude());
+  setUpperRightLongitude(envelope.getUpperRightLongitude());
+  setLowerLeftLatitude(envelope.getLowerLeftLatitude());
+  setUpperRightLatitude(envelope.getUpperRightLatitude());
+  newEnvelope=new WorldEnvelope(envelope);
   setCenterLatitude((upperRightLatitude + lowerLeftLatitude) / 2);
   setCenterLongitude((upperRightLongitude + lowerLeftLongitude) / 2);
 }
