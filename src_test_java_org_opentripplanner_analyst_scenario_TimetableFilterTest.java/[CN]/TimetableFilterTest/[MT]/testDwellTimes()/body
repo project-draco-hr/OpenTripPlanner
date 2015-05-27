@@ -6,6 +6,7 @@
   adt.dwellTime=60;
   TripTimes tt2=adt.apply(trip,pattern,times);
   assertNotNull(tt2);
+  assertEquals(times.getArrivalTime(0),tt2.getArrivalTime(0));
   assertEquals(60,tt2.getDepartureTime(0) - tt2.getArrivalTime(0));
   assertEquals(30,tt2.getDepartureTime(1) - tt2.getArrivalTime(1));
   assertEquals(60,tt2.getDepartureTime(2) - tt2.getArrivalTime(2));
@@ -19,4 +20,21 @@
   assertEquals(60,tt2.getDepartureTime(2) - tt2.getArrivalTime(2));
   assertEquals(30,tt2.getDepartureTime(3) - tt2.getArrivalTime(3));
   assertEquals(30,frequencyEntry.tripTimes.getDepartureTime(2) - frequencyEntry.tripTimes.getArrivalTime(2));
+  adt.stopId=null;
+  tt2=adt.apply(trip,pattern,times);
+  assertNotNull(tt2);
+  assertEquals(times.getArrivalTime(0),tt2.getArrivalTime(0));
+  assertEquals(60,tt2.getDepartureTime(0) - tt2.getArrivalTime(0));
+  assertEquals(60,tt2.getDepartureTime(1) - tt2.getArrivalTime(1));
+  assertEquals(60,tt2.getDepartureTime(2) - tt2.getArrivalTime(2));
+  assertEquals(60,tt2.getDepartureTime(3) - tt2.getArrivalTime(3));
+  adt.stopId=Arrays.asList(stops[2].getId().getId());
+  adt.dwellTime=17;
+  tt2=adt.apply(trip,pattern,tt2);
+  assertNotNull(tt2);
+  assertEquals(times.getArrivalTime(0),tt2.getArrivalTime(0));
+  assertEquals(60,tt2.getDepartureTime(0) - tt2.getArrivalTime(0));
+  assertEquals(60,tt2.getDepartureTime(1) - tt2.getArrivalTime(1));
+  assertEquals(17,tt2.getDepartureTime(2) - tt2.getArrivalTime(2));
+  assertEquals(60,tt2.getDepartureTime(3) - tt2.getArrivalTime(3));
 }
