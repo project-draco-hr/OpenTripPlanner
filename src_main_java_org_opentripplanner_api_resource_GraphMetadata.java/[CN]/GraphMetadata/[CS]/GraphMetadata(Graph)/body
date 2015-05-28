@@ -10,12 +10,5 @@
   setUpperRightLatitude(envelope.getUpperRightLatitude());
   newEnvelope=new WorldEnvelope(envelope);
   Optional<Coordinate> centerOptional=graph.getCenter();
-  if (centerOptional.isPresent()) {
-    setCenterLongitude(centerOptional.get().x);
-    setCenterLatitude(centerOptional.get().y);
-  }
- else {
-    setCenterLatitude((upperRightLatitude + lowerLeftLatitude) / 2);
-    setCenterLongitude((upperRightLongitude + lowerLeftLongitude) / 2);
-  }
+  addCenter(centerOptional);
 }
