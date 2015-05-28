@@ -12,12 +12,12 @@
  else   raptorWorkerData=new RaptorWorkerData(graph,window,bannedRoutes,sampleSet);
   LOG.info("Done.");
   int[] timesAtVertices=new int[Vertex.getMaxIndex()];
-  Arrays.fill(timesAtVertices,TimeSurface.UNREACHABLE);
+  Arrays.fill(timesAtVertices,Integer.MAX_VALUE);
   for (  State state : walkOnlySpt.getAllStates()) {
     int time=(int)(state.getWalkDistance() / request.walkSpeed);
     int vidx=state.getVertex().getIndex();
     int otime=timesAtVertices[vidx];
-    if (otime == TimeSurface.UNREACHABLE || otime > time)     timesAtVertices[vidx]=time;
+    if (otime > time)     timesAtVertices[vidx]=time;
   }
   int[] walkTimes;
   if (sampleSet == null) {

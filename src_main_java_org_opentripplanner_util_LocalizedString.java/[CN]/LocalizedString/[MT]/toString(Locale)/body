@@ -1,0 +1,13 @@
+{
+  if (this.key == null) {
+    return null;
+  }
+  String translation=ResourceBundleSingleton.INSTANCE.localize(this.key,locale);
+  if (this.params != null) {
+    translation=patternMatcher.matcher(translation).replaceAll("%s");
+    return String.format(translation,(Object[])params);
+  }
+ else {
+    return translation;
+  }
+}

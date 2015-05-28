@@ -1,0 +1,16 @@
+{
+  if (intern.containsKey(translations)) {
+    return intern.get(translations);
+  }
+ else {
+    I18NString ret;
+    if (new HashSet<>(translations.values()).size() < 2) {
+      ret=new NonLocalizedString(translations.values().iterator().next());
+    }
+ else {
+      ret=new TranslatedString(translations);
+    }
+    intern.put(translations,ret);
+    return ret;
+  }
+}
