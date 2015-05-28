@@ -1,0 +1,20 @@
+{
+  I18NString calculatedName=null;
+  Set<String> uniqueNameSet=new HashSet<String>();
+  for (  Edge e : getOutgoing()) {
+    if (e instanceof StreetEdge) {
+      uniqueNameSet.add(e.getName(locale));
+    }
+  }
+  List<String> uniqueNames=new ArrayList<String>(uniqueNameSet);
+  if (uniqueNames.size() > 1) {
+    calculatedName=new LocalizedString("corner",new String[]{uniqueNames.get(0),uniqueNames.get(1)});
+  }
+ else   if (uniqueNames.size() == 1) {
+    calculatedName=new NonLocalizedString(uniqueNames.get(0));
+  }
+ else {
+    calculatedName=new LocalizedString("unnamedStreet",(String[])null);
+  }
+  return calculatedName;
+}
