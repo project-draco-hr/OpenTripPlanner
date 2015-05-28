@@ -6,13 +6,14 @@
       if (scenario != null && scenario.modifications != null) {
         for (        TripFilter filter : Iterables.filter(scenario.modifications,TripFilter.class)) {
           tt=filter.apply(tt.trip,pattern,tt);
+          if (tt == null)           continue TT;
         }
       }
-      if (tt != null)       tripTimes.add(tt);
+      tripTimes.add(tt);
     }
   }
   List<FrequencyEntry> freqs=Lists.newArrayList();
-  for (  FrequencyEntry fe : pattern.scheduledTimetable.frequencyEntries) {
+  FREQUENCIES:   for (  FrequencyEntry fe : pattern.scheduledTimetable.frequencyEntries) {
     if (servicesRunning.get(fe.tripTimes.serviceCode) && fe.getMinDeparture() < window.to && fe.getMaxArrival() > window.from) {
       if (fe.exactTimes) {
         LOG.warn("Exact-times frequency trips not yet supported");
@@ -21,9 +22,10 @@
       if (scenario != null && scenario.modifications != null) {
         for (        TripFilter filter : Iterables.filter(scenario.modifications,TripFilter.class)) {
           fe=filter.apply(fe.tripTimes.trip,pattern,fe);
+          if (fe == null)           continue FREQUENCIES;
         }
       }
-      if (fe != null)       freqs.add(fe);
+      freqs.add(fe);
     }
   }
   if (tripTimes.isEmpty() && freqs.isEmpty()) {
