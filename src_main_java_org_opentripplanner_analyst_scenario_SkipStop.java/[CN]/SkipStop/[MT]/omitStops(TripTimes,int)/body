@@ -16,5 +16,7 @@
     stopTime.setTimepoint(tt.isTimepoint(i) ? 1 : 0);
     newSts.add(stopTime);
   }
-  return new TripTimes(tt.trip,newSts,new Deduplicator());
+  TripTimes newtt=new TripTimes(tt.trip,newSts,new Deduplicator());
+  newtt.serviceCode=tt.serviceCode;
+  return newtt;
 }
