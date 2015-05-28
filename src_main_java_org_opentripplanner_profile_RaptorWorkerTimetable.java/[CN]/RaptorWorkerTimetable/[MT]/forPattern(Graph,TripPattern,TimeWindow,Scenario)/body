@@ -4,7 +4,7 @@
   TT:   for (  TripTimes tt : pattern.scheduledTimetable.tripTimes) {
     if (servicesRunning.get(tt.serviceCode) && tt.getArrivalTime(0) < window.to && tt.getDepartureTime(tt.getNumStops() - 1) >= window.from) {
       if (scenario != null && scenario.modifications != null) {
-        for (        TimetableFilter filter : Iterables.filter(scenario.modifications,TimetableFilter.class)) {
+        for (        TripFilter filter : Iterables.filter(scenario.modifications,TripFilter.class)) {
           tt=filter.apply(tt.trip,pattern,tt);
         }
       }
@@ -19,7 +19,7 @@
         continue;
       }
       if (scenario != null && scenario.modifications != null) {
-        for (        TimetableFilter filter : Iterables.filter(scenario.modifications,TimetableFilter.class)) {
+        for (        TripFilter filter : Iterables.filter(scenario.modifications,TripFilter.class)) {
           fe=filter.apply(fe.tripTimes.trip,pattern,fe);
         }
       }

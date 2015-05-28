@@ -6,31 +6,46 @@
   TObjectIntMap<TripPattern> indexForPattern=new TObjectIntHashMap<>(totalPatterns,0.75f,-1);
   indexForStop=new TObjectIntHashMap<>(totalStops,0.75f,-1);
   List<Stop> stopForIndex=new ArrayList<>(totalStops);
-  for (  TripPattern pattern : graph.index.patternForId.values()) {
-    RaptorWorkerTimetable timetable=RaptorWorkerTimetable.forPattern(graph,pattern,window,scenario);
-    if (timetable == null) {
-      continue;
-    }
-    timetablesForPattern.add(timetable);
-    indexForPattern.put(pattern,patternForIndex.size());
-    patternForIndex.add(pattern);
-    patternNames.add(pattern.code);
-    TIntList stopIndexesForPattern=new TIntArrayList();
-    for (    Stop stop : pattern.getStops()) {
-      int stopIndex=indexForStop.get(stop);
-      if (stopIndex == -1) {
-        stopIndex=indexForStop.size();
-        indexForStop.put(stop,stopIndex);
-        stopForIndex.add(stop);
-        stopNames.add(stop.getName());
+  Multimap<Stop,TripPattern> patternsForStopObject=HashMultimap.create();
+  for (  TripPattern originalPattern : graph.index.patternForId.values()) {
+    Collection<TripPattern> patterns=Arrays.asList(originalPattern);
+    if (scenario != null && scenario.modifications != null) {
+      for (      TripPatternFilter filter : Iterables.filter(scenario.modifications,TripPatternFilter.class)) {
+        Collection<TripPattern> modifiedPatterns=Lists.newArrayList();
+        for (        TripPattern pattern : patterns) {
+          Collection<TripPattern> result=filter.apply(pattern);
+          if (result != null)           modifiedPatterns.addAll(result);
+        }
+        patterns=modifiedPatterns;
       }
-      stopIndexesForPattern.add(stopIndex);
     }
-    stopsForPattern.add(stopIndexesForPattern.toArray());
+    for (    TripPattern pattern : patterns) {
+      RaptorWorkerTimetable timetable=RaptorWorkerTimetable.forPattern(graph,pattern,window,scenario);
+      if (timetable == null) {
+        continue;
+      }
+      timetablesForPattern.add(timetable);
+      indexForPattern.put(pattern,patternForIndex.size());
+      patternForIndex.add(pattern);
+      patternNames.add(pattern.code);
+      TIntList stopIndexesForPattern=new TIntArrayList();
+      for (      Stop stop : pattern.getStops()) {
+        int stopIndex=indexForStop.get(stop);
+        if (stopIndex == -1) {
+          stopIndex=indexForStop.size();
+          indexForStop.put(stop,stopIndex);
+          stopForIndex.add(stop);
+          stopNames.add(stop.getName());
+        }
+        stopIndexesForPattern.add(stopIndex);
+        patternsForStopObject.put(stop,pattern);
+      }
+      stopsForPattern.add(stopIndexesForPattern.toArray());
+    }
   }
   for (  Stop stop : stopForIndex) {
     TIntList patterns=new TIntArrayList();
-    for (    TripPattern pattern : graph.index.patternsForStop.get(stop)) {
+    for (    TripPattern pattern : patternsForStopObject.get(stop)) {
       int patternIndex=indexForPattern.get(pattern);
       if (patternIndex != -1) {
         patterns.add(patternIndex);
