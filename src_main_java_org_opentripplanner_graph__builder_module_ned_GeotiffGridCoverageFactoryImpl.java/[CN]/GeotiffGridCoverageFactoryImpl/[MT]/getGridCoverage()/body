@@ -1,12 +1,10 @@
 {
-  GeoTiffFormat format=new GeoTiffFormat();
-  GeoTiffReader reader=null;
   try {
-    if (path == null) {
-      throw new RuntimeException("Path not set");
-    }
-    reader=format.getReader(path);
+    Hints forceLongLat=new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER,Boolean.TRUE);
+    GeoTiffFormat format=new GeoTiffFormat();
+    GeoTiffReader reader=format.getReader(path,forceLongLat);
     coverage=reader.read(null);
+    LOG.info("Elevation model CRS is: {}",coverage.getCoordinateReferenceSystem2D());
   }
  catch (  IOException e) {
     throw new RuntimeException("Error getting coverage automatically. ",e);
