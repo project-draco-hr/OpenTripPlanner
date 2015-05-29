@@ -1,6 +1,10 @@
 {
   boolean endOfLeg=(edge == null);
-  Place place=new Place(vertex.getX(),vertex.getY(),vertex.getName(requestedLocale),makeCalendar(state),makeCalendar(state));
+  String name=vertex.getName(requestedLocale);
+  if (vertex instanceof StreetVertex && !(vertex instanceof TemporaryStreetLocation)) {
+    name=((StreetVertex)vertex).getIntersectionName(requestedLocale).toString(requestedLocale);
+  }
+  Place place=new Place(vertex.getX(),vertex.getY(),name,makeCalendar(state),makeCalendar(state));
   if (endOfLeg)   edge=state.getBackEdge();
   if (vertex instanceof TransitVertex && edge instanceof OnboardEdge) {
     place.stopId=stop.getId();
