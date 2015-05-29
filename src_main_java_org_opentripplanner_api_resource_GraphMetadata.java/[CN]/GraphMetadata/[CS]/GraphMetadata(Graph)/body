@@ -9,6 +9,6 @@
   setLowerLeftLatitude(envelope.getLowerLeftLatitude());
   setUpperRightLatitude(envelope.getUpperRightLatitude());
   newEnvelope=new WorldEnvelope(envelope);
-  setCenterLatitude((upperRightLatitude + lowerLeftLatitude) / 2);
-  setCenterLongitude((upperRightLongitude + lowerLeftLongitude) / 2);
+  Optional<Coordinate> centerOptional=graph.getCenter();
+  addCenter(centerOptional);
 }
