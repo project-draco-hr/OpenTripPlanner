@@ -78,14 +78,14 @@ gtfsBundle.subwayAccessTime=(int)(builderParams.subwayAccessTime * 60);
 gtfsBundles.add(gtfsBundle);
 }
 GtfsModule gtfsModule=new GtfsModule(gtfsBundles);
+gtfsModule.setFareServiceFactory(builderParams.fareServiceFactory);
+graphBuilder.addModule(gtfsModule);
 if (hasOSM) {
 if (builderParams.matchBusRoutesToStreets) {
 graphBuilder.addModule(new BusRouteStreetMatcher());
 }
 graphBuilder.addModule(new TransitToTaggedStopsModule());
 }
-gtfsModule.setFareServiceFactory(builderParams.fareServiceFactory);
-graphBuilder.addModule(gtfsModule);
 }
 graphBuilder.addModule(new StreetLinkerModule());
 if (hasGTFS) {
