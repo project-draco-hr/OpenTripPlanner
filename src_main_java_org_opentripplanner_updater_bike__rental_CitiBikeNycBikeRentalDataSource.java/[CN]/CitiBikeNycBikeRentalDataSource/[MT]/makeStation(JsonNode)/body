@@ -1,0 +1,16 @@
+{
+  if (!stationNode.path("statusValue").asText().equals("In Service")) {
+    return null;
+  }
+  if (stationNode.path("testStation").asText().equals("true")) {
+    return null;
+  }
+  BikeRentalStation brstation=new BikeRentalStation();
+  brstation.id=stationNode.path("id").toString();
+  brstation.x=stationNode.path("longitude").asDouble();
+  brstation.y=stationNode.path("latitude").asDouble();
+  brstation.name=new NonLocalizedString(stationNode.path("stationName").asText());
+  brstation.bikesAvailable=stationNode.path("availableBikes").asInt();
+  brstation.spacesAvailable=stationNode.path("availableDocks").asInt();
+  return brstation;
+}
