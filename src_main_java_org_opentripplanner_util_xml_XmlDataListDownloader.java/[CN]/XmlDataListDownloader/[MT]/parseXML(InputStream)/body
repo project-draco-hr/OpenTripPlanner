@@ -19,13 +19,23 @@
     }
     HashMap<String,String> attributes=new HashMap<String,String>();
     Node child=node.getFirstChild();
-    while (child != null) {
-      if (!(child instanceof Element)) {
-        child=child.getNextSibling();
-        continue;
+    if (readAttributes) {
+      NamedNodeMap attrs=node.getAttributes();
+      int lastAttr=attrs.getLength() - 1;
+      for (int j=lastAttr; j-- > 0; ) {
+        Attr attr=(Attr)attrs.item(j);
+        attributes.put(attr.getNodeName(),attr.getNodeValue());
       }
-      attributes.put(child.getNodeName(),child.getTextContent());
-      child=child.getNextSibling();
+    }
+ else {
+      while (child != null) {
+        if (!(child instanceof Element)) {
+          child=child.getNextSibling();
+          continue;
+        }
+        attributes.put(child.getNodeName(),child.getTextContent());
+        child=child.getNextSibling();
+      }
     }
     T t=dataFactory.build(attributes);
     if (t != null)     out.add(t);

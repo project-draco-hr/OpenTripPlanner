@@ -27,6 +27,9 @@
  else     if (sourceType.equals("citi-bike-nyc")) {
       source=new CitiBikeNycBikeRentalDataSource();
     }
+ else     if (sourceType.equals("next-bike")) {
+      source=new NextBikeRentalDataSource();
+    }
   }
   if (source == null) {
     throw new IllegalArgumentException("Unknown bike rental source type: " + sourceType);
