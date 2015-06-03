@@ -1,0 +1,13 @@
+{
+  if (!workOffline) {
+    if (s3CredentialsFilename != null) {
+      AWSCredentials creds=new ProfileCredentialsProvider(s3CredentialsFilename,"default").getCredentials();
+      s3=new AmazonS3Client(creds);
+    }
+ else {
+      s3=new AmazonS3Client();
+    }
+    this.graphBucket=bucket;
+  }
+  this.workOffline=workOffline;
+}

@@ -1,0 +1,29 @@
+{
+  GRAPH_DIR.mkdirs();
+  if (!graphMap.containsKey(graphId)) {
+    try {
+      if (!bucketCached(graphId)) {
+        if (!workOffline) {
+          downloadGraphSourceFiles(graphId,GRAPH_DIR);
+        }
+      }
+    }
+ catch (    IOException e) {
+      e.printStackTrace();
+    }
+    CommandLineParameters params=new CommandLineParameters();
+    params.build=new File(GRAPH_DIR,graphId);
+    params.inMemory=true;
+    GraphBuilder gbt=GraphBuilder.forDirectory(params,params.build);
+    gbt.run();
+    Graph g=gbt.getGraph();
+    g.routerId=graphId;
+    g.index(new DefaultStreetVertexIndexFactory());
+    g.index.clusterStopsAsNeeded();
+    Router r=new Router(graphId,g);
+    return r;
+  }
+ else {
+    return graphMap.get(graphId);
+  }
+}
