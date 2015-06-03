@@ -12,7 +12,7 @@
   if (!vertices.containsKey(level)) {
     Coordinate coordinate=getCoordinate(node);
     String label=this.getLevelNodeLabel(node,level);
-    OsmVertex vertex=new OsmVertex(graph,label,coordinate.x,coordinate.y,node.getId(),label);
+    OsmVertex vertex=new OsmVertex(graph,label,coordinate.x,coordinate.y,node.getId(),new NonLocalizedString(label));
     vertices.put(level,vertex);
     endpoints.add(vertex);
     return vertex;

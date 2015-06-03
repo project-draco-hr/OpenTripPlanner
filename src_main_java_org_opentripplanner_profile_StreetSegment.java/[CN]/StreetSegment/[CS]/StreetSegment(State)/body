@@ -12,7 +12,7 @@
       }
     }
   }
-  Itinerary itin=GraphPathToTripPlanConverter.generateItinerary(path,false);
+  Itinerary itin=GraphPathToTripPlanConverter.generateItinerary(path,false,new Locale("en"));
   for (  Leg leg : itin.legs) {
     for (    WalkStep walkStep : leg.walkSteps) {
       int i=0;

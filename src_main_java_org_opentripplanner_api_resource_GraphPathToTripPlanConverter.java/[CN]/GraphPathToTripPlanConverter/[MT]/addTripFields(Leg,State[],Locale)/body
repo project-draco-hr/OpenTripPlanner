@@ -1,0 +1,28 @@
+{
+  Trip trip=states[states.length - 1].getBackTrip();
+  if (trip != null) {
+    Route route=trip.getRoute();
+    Agency agency=route.getAgency();
+    ServiceDay serviceDay=states[states.length - 1].getServiceDay();
+    leg.agencyId=agency.getId();
+    leg.agencyName=agency.getName();
+    leg.agencyUrl=agency.getUrl();
+    leg.headsign=states[states.length - 1].getBackDirection();
+    leg.route=states[states.length - 1].getBackEdge().getName(requestedLocale);
+    leg.routeColor=route.getColor();
+    leg.routeId=route.getId().getId();
+    leg.routeLongName=route.getLongName();
+    leg.routeShortName=route.getShortName();
+    leg.routeTextColor=route.getTextColor();
+    leg.routeType=route.getType();
+    leg.tripId=trip.getId().getId();
+    leg.tripShortName=trip.getTripShortName();
+    leg.tripBlockId=trip.getBlockId();
+    if (serviceDay != null) {
+      leg.serviceDate=serviceDay.getServiceDate().getAsString();
+    }
+    if (leg.headsign == null) {
+      leg.headsign=trip.getTripHeadsign();
+    }
+  }
+}

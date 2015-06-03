@@ -26,7 +26,7 @@
       }
     }
     if (iv == null) {
-      iv=new OsmVertex(graph,label,coordinate.x,coordinate.y,node.getId(),label);
+      iv=new OsmVertex(graph,label,coordinate.x,coordinate.y,node.getId(),new NonLocalizedString(label));
       if (node.hasTrafficLight()) {
         iv.trafficLight=(true);
       }

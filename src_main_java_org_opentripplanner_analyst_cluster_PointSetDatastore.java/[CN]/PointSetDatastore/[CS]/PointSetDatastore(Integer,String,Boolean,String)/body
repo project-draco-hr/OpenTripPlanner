@@ -1,0 +1,15 @@
+{
+  super();
+  this.workOffline=workOffline;
+  this.pointsetBucket=pointsetBucket;
+  if (!this.workOffline) {
+    if (s3CredentialsFilename != null) {
+      AWSCredentials creds=new ProfileCredentialsProvider(s3CredentialsFilename,"default").getCredentials();
+      s3=new AmazonS3Client(creds);
+    }
+ else {
+      s3=new AmazonS3Client();
+    }
+  }
+  this.pointSets=CacheBuilder.newBuilder().maximumSize(maxCacheSize).build(new S3PointSetLoader(workOffline,s3,pointsetBucket));
+}

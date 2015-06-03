@@ -59,6 +59,9 @@ osmModule.customNamer=builderParams.customNamer;
 DefaultWayPropertySetSource defaultWayPropertySetSource=new DefaultWayPropertySetSource();
 osmModule.setDefaultWayPropertySetSource(defaultWayPropertySetSource);
 osmModule.skipVisibility=!builderParams.areaVisibility;
+osmModule.staticBikeRental=builderParams.staticBikeRental;
+osmModule.staticBikeParkAndRide=builderParams.staticBikeParkAndRide;
+osmModule.staticParkAndRide=builderParams.staticParkAndRide;
 graphBuilder.addModule(osmModule);
 graphBuilder.addModule(new PruneFloatingIslands());
 }
@@ -75,21 +78,16 @@ gtfsBundle.subwayAccessTime=(int)(builderParams.subwayAccessTime * 60);
 gtfsBundles.add(gtfsBundle);
 }
 GtfsModule gtfsModule=new GtfsModule(gtfsBundles);
+gtfsModule.setFareServiceFactory(builderParams.fareServiceFactory);
+graphBuilder.addModule(gtfsModule);
 if (hasOSM) {
 if (builderParams.matchBusRoutesToStreets) {
 graphBuilder.addModule(new BusRouteStreetMatcher());
 }
 graphBuilder.addModule(new TransitToTaggedStopsModule());
 }
-gtfsModule.setFareServiceFactory(builderParams.fareServiceFactory);
-graphBuilder.addModule(gtfsModule);
 }
 graphBuilder.addModule(new StreetLinkerModule());
-if (hasGTFS) {
-if (!builderParams.useTransfersTxt) {
-graphBuilder.addModule(new DirectTransferGenerator());
-}
-}
 if (builderParams.elevationBucket != null) {
 S3BucketConfig bucketConfig=builderParams.elevationBucket;
 File cacheDirectory=new File(params.cacheDirectory,"ned");
@@ -113,6 +111,11 @@ graphBuilder.addModule(elevationBuilder);
 ElevationGridCoverageFactory gcf=new GeotiffGridCoverageFactoryImpl(demFile);
 GraphBuilderModule elevationBuilder=new ElevationModule(gcf);
 graphBuilder.addModule(elevationBuilder);
+}
+if (hasGTFS) {
+if (!builderParams.useTransfersTxt) {
+graphBuilder.addModule(new DirectTransferGenerator());
+}
 }
 graphBuilder.addModule(new EmbedConfig(builderConfig,routerConfig));
 if (builderParams.htmlAnnotations) {

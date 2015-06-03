@@ -1,0 +1,21 @@
+{
+  ZipFile zipFile=new ZipFile(graphZipFile);
+  Enumeration<? extends ZipEntry> entries=zipFile.entries();
+  while (entries.hasMoreElements()) {
+    ZipEntry entry=entries.nextElement();
+    File entryDestination=new File(extractedGraphDir,entry.getName());
+    entryDestination.getParentFile().mkdirs();
+    if (entry.isDirectory())     entryDestination.mkdirs();
+ else {
+      InputStream entryFileIn=zipFile.getInputStream(entry);
+      OutputStream entryFileOut=new FileOutputStream(entryDestination);
+      IOUtils.copy(entryFileIn,entryFileOut);
+      IOUtils.closeQuietly(entryFileIn);
+      IOUtils.closeQuietly(entryFileOut);
+    }
+  }
+  zipFile.close();
+  if (delete) {
+    graphZipFile.delete();
+  }
+}
