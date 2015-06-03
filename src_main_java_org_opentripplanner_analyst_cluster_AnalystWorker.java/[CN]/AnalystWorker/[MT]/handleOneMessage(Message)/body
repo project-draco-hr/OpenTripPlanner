@@ -9,7 +9,6 @@
       RepeatedRaptorProfileRouter router=new RepeatedRaptorProfileRouter(graph,profileRequest);
       TimeSurface.RangeSet result=router.timeSurfaceRangeSet;
       Map<String,Integer> idForSurface=Maps.newHashMap();
-      sqs.deleteMessage(lastQueueUrl,message.getReceiptHandle());
     }
  else {
       RoutingRequest routingRequest=objectMapper.readValue(message.getBody(),RoutingRequest.class);
