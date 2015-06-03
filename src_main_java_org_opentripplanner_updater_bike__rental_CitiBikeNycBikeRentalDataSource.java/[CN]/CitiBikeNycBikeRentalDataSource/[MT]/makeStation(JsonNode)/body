@@ -6,6 +6,8 @@
     return null;
   }
   BikeRentalStation brstation=new BikeRentalStation();
+  brstation.networks=new HashSet<String>();
+  brstation.networks.add(this.networkName);
   brstation.id=stationNode.path("id").toString();
   brstation.x=stationNode.path("longitude").asDouble();
   brstation.y=stationNode.path("latitude").asDouble();
