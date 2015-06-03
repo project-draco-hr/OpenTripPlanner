@@ -1,0 +1,8 @@
+{
+  if (speed < 0)   throw new UnsupportedOperationException("negative speeds do not exist.");
+  if (speed > 65535 / 100d) {
+    LOG.warn("Speed is greater than 2359.26 kilometers per hour, clamping. However, are you certain that there is a road with a speed this fast?");
+    return Short.MAX_VALUE;
+  }
+  return (short)(speed * 100 - Short.MIN_VALUE);
+}

@@ -1,0 +1,14 @@
+{
+  if (traverseMode == null) {
+    return Double.NaN;
+  }
+ else   if (traverseMode.isDriving()) {
+    StreetSpeedSource source=options.getRoutingContext().graph.streetSpeedSource;
+    if (source != null) {
+      double congestedSpeed=source.getSpeed(this,traverseMode,timeMillis);
+      if (congestedSpeed != Double.NaN)       return congestedSpeed;
+    }
+    return calculateCarSpeed(options);
+  }
+  return options.getSpeed(traverseMode);
+}

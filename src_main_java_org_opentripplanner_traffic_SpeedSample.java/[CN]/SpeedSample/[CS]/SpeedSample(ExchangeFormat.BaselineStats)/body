@@ -1,0 +1,16 @@
+{
+  this.average=encodeSpeed(stats.getAverageSpeed());
+  int count=stats.getHourOfWeekAveragesCount();
+  if (count == 7 * 24) {
+    hourBins=new short[count];
+    for (int i=0; i < count; i++) {
+      float speed=stats.getHourOfWeekAverages(i);
+      if (speed != Float.NaN)       hourBins[i]=encodeSpeed(speed);
+ else       hourBins[i]=encodeSpeed(average);
+    }
+  }
+ else {
+    if (count > 0)     LOG.error("Expected {} hours in speed sample, found {}",7 * 24,count);
+    hourBins=null;
+  }
+}
