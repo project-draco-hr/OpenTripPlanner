@@ -5,5 +5,7 @@
   objectMapper=new ObjectMapper();
   objectMapper.configure(JsonParser.Feature.ALLOW_COMMENTS,true);
   objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES,true);
+  objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
   clusterGraphBuilder=new ClusterGraphBuilder();
+  pointSetDatastore=new PointSetDatastore(10,null,false,pointsetBucket);
 }

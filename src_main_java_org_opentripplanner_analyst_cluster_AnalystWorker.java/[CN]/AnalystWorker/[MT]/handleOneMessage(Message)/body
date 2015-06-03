@@ -1,17 +1,20 @@
 {
   try {
+    LOG.info("Handling message {}",message.getBody());
     AnalystClusterRequest clusterRequest=objectMapper.readValue(message.getBody(),AnalystClusterRequest.class);
     Graph graph=clusterGraphBuilder.getGraph(clusterRequest.graphId);
+    graphId=clusterRequest.graphId;
     if (clusterRequest.profile) {
       ProfileRequest profileRequest=objectMapper.readValue(message.getBody(),ProfileRequest.class);
       RepeatedRaptorProfileRouter router=new RepeatedRaptorProfileRouter(graph,profileRequest);
       TimeSurface.RangeSet result=router.timeSurfaceRangeSet;
       Map<String,Integer> idForSurface=Maps.newHashMap();
+      sqs.deleteMessage(lastQueueUrl,message.getReceiptHandle());
     }
  else {
       RoutingRequest routingRequest=objectMapper.readValue(message.getBody(),RoutingRequest.class);
     }
-    if (clusterRequest.destinationPointsetId.isEmpty()) {
+    if (clusterRequest.destinationPointsetId == null) {
     }
  else {
     }
@@ -20,14 +23,10 @@
     LOG.error("JSON processing exception while parsing incoming message: {}",e);
     LOG.error("Deleting this message as it will likely confuse all workers that attempt to read it.");
     e.printStackTrace();
-    sqs.deleteMessage(lastQueueUrl,message.getReceiptHandle());
-    return false;
   }
 catch (  IOException e) {
     LOG.error("IO exception while parsing incoming message: {}",e);
     LOG.error("Leaving this message alive for later consumption by another worker.");
     e.printStackTrace();
-    return false;
   }
-  return true;
 }
