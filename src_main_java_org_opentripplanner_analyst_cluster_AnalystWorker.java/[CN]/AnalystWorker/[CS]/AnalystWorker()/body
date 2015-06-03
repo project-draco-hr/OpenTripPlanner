@@ -1,0 +1,9 @@
+{
+  startupTime=System.currentTimeMillis() / 1000;
+  sqs=new AmazonSQSClient();
+  sqs.setRegion(awsRegion);
+  objectMapper=new ObjectMapper();
+  objectMapper.configure(JsonParser.Feature.ALLOW_COMMENTS,true);
+  objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES,true);
+  clusterGraphBuilder=new ClusterGraphBuilder();
+}
