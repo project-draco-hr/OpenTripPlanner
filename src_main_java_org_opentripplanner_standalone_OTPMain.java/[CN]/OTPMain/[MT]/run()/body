@@ -45,6 +45,16 @@
       throw new RuntimeException(e);
     }
   }
+  if (params.worker) {
+    Thread analystWorkerThread=new Thread(new AnalystWorker());
+    analystWorkerThread.start();
+    try {
+      analystWorkerThread.join();
+    }
+ catch (    InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
   if (params.server) {
     GrizzlyServer grizzlyServer=new GrizzlyServer(params,otpServer);
     while (true) {

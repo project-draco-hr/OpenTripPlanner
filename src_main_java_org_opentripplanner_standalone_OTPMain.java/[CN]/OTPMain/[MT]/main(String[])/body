@@ -19,7 +19,7 @@
     LOG.error("Parameter error: {}",pex.getMessage());
     System.exit(1);
   }
-  if (params.build == null && !params.visualize && !params.server && params.scriptFile == null) {
+  if (params.build == null && !params.visualize && !params.server && !params.worker && params.scriptFile == null) {
     LOG.info("Nothing to do. Use --help to see available tasks.");
     System.exit(-1);
   }
