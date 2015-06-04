@@ -3,10 +3,12 @@
     return Double.NaN;
   }
  else   if (traverseMode.isDriving()) {
-    StreetSpeedSource source=options.getRoutingContext().graph.streetSpeedSource;
-    if (source != null) {
-      double congestedSpeed=source.getSpeed(this,traverseMode,timeMillis);
-      if (!Double.isNaN(congestedSpeed))       return congestedSpeed;
+    if (options.useTraffic) {
+      StreetSpeedSource source=options.getRoutingContext().graph.streetSpeedSource;
+      if (source != null) {
+        double congestedSpeed=source.getSpeed(this,traverseMode,timeMillis);
+        if (!Double.isNaN(congestedSpeed))         return congestedSpeed;
+      }
     }
     return calculateCarSpeed(options);
   }
