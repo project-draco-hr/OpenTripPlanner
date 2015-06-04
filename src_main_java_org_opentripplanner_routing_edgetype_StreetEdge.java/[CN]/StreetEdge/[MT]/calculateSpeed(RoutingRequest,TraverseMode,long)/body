@@ -6,7 +6,7 @@
     StreetSpeedSource source=options.getRoutingContext().graph.streetSpeedSource;
     if (source != null) {
       double congestedSpeed=source.getSpeed(this,traverseMode,timeMillis);
-      if (congestedSpeed != Double.NaN)       return congestedSpeed;
+      if (!Double.isNaN(congestedSpeed))       return congestedSpeed;
     }
     return calculateCarSpeed(options);
   }

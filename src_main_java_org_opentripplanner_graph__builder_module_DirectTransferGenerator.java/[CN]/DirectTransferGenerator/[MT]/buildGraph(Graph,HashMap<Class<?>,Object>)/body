@@ -1,2 +1,41 @@
 {
+  if (graph.index == null) {
+    graph.index=new GraphIndex(graph);
+  }
+  NearbyStopFinder nearbyStopFinder=new NearbyStopFinder(graph,maxDuration);
+  if (nearbyStopFinder.useStreets) {
+    LOG.info("Creating direct transfer edges between stops using the street network from OSM...");
+  }
+ else {
+    LOG.info("Creating direct transfer edges between stops using straight line distance (not streets)...");
+  }
+  int nTransfersTotal=0;
+  int nLinkableStops=0;
+  for (  TransitStop ts0 : Iterables.filter(graph.getVertices(),TransitStop.class)) {
+    if (!ts0.isStreetLinkable())     continue;
+    nLinkableStops+=1;
+    LOG.debug("Linking stop '{}' {}",ts0.getStop(),ts0);
+    Set<TransitStop> pathwayDestinations=new HashSet<TransitStop>();
+    for (    Edge e : ts0.getOutgoing()) {
+      if (e instanceof PathwayEdge || e instanceof SimpleTransfer) {
+        if (e.getToVertex() instanceof TransitStop) {
+          TransitStop to=(TransitStop)e.getToVertex();
+          pathwayDestinations.add(to);
+        }
+      }
+    }
+    int n=0;
+    for (    NearbyStopFinder.StopAtDistance sd : nearbyStopFinder.findNearbyStopsConsideringPatterns(ts0)) {
+      if (sd.tstop == ts0 || pathwayDestinations.contains(sd.tstop))       continue;
+      new SimpleTransfer(ts0,sd.tstop,sd.dist,sd.geom);
+      n+=1;
+    }
+    LOG.debug("Linked stop {} to {} nearby stops on other patterns.",ts0.getStop(),n);
+    if (n == 0) {
+      LOG.debug(graph.addBuilderAnnotation(new StopNotLinkedForTransfers(ts0)));
+    }
+    nTransfersTotal+=n;
+  }
+  LOG.info("Done connecting stops to one another. Created a total of {} transfers from {} stops.",nTransfersTotal,nLinkableStops);
+  graph.hasDirectTransfers=true;
 }
