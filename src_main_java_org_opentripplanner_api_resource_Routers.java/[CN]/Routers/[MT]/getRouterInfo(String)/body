@@ -1,12 +1,7 @@
 {
   try {
     Router router=otpServer.getRouter(routerId);
-    Graph graph=router.graph;
-    RouterInfo routerInfo=new RouterInfo();
-    routerInfo.routerId=routerId;
-    routerInfo.polygon=graph.getConvexHull();
-    routerInfo.buildTime=graph.buildTime;
-    return routerInfo;
+    return new RouterInfo(routerId,router.graph);
   }
  catch (  GraphNotFoundException e) {
     return null;
