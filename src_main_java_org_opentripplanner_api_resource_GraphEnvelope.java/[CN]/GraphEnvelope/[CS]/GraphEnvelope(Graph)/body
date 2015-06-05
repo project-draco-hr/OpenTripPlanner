@@ -1,0 +1,8 @@
+{
+  envelope=new WorldEnvelope();
+  for (  Vertex v : graph.getVertices()) {
+    Coordinate c=v.getCoordinate();
+    envelope.expandToInclude(c);
+  }
+  newEnvelope=new WorldEnvelope(envelope);
+}
