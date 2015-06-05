@@ -1,6 +1,6 @@
 {
   if (traverseMode != TraverseMode.CAR)   return Double.NaN;
-  SpeedSample sample=samples.get(new Segment(edge));
+  SegmentSpeedSample sample=samples.get(new Segment(edge));
   if (sample == null)   return Double.NaN;
   return sample.getSpeed(timeMillis);
 }

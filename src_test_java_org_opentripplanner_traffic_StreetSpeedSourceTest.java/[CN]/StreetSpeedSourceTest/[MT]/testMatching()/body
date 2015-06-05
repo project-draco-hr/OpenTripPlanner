@@ -4,8 +4,8 @@
   OsmVertex v2=new OsmVertex(g,"v2",0,0.01,6l);
   StreetEdge se=new StreetEdge(v1,v2,null,"test",1000,StreetTraversalPermission.CAR,false);
   se.wayId=10;
-  SpeedSample s=getSpeedSample();
-  Map<Segment,SpeedSample> speeds=Maps.newHashMap();
+  SegmentSpeedSample s=getSpeedSample();
+  Map<Segment,SegmentSpeedSample> speeds=Maps.newHashMap();
   Segment seg=new Segment(10l,5l,6l);
   speeds.put(seg,s);
   g.streetSpeedSource=new StreetSpeedSource();
