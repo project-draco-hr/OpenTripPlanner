@@ -2,4 +2,9 @@
   this.routerId=routerId;
   this.polygon=graph.getConvexHull();
   this.buildTime=graph.buildTime;
+  GraphMetadata graphMetadata=graph.getMetadata();
+  this.transitModes=graphMetadata.getTransitModes();
+  this.centerLatitude=graphMetadata.getCenterLatitude();
+  this.centerLongitude=graphMetadata.getCenterLongitude();
+  this.envelope=graphMetadata.getEnvelope();
 }
