@@ -1,0 +1,16 @@
+{
+switch (key) {
+case BEST_CASE:
+    return this.bestCase;
+case WORST_CASE:
+  return this.worstCase;
+case POINT_ESTIMATE:
+return this.pointEstimate;
+case SPREAD:
+return this.spread;
+case AVERAGE:
+return this.avgCase;
+default :
+throw new IllegalStateException("Invalid result type!");
+}
+}
