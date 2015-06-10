@@ -17,6 +17,8 @@
       timetableSnapshot=timetableSnapshotSource.getTimetableSnapshot();
     }
   }
+  if (graph.streetSpeedSource != null)   this.streetSpeedSnapshot=graph.streetSpeedSource.getSnapshot();
+ else   this.streetSpeedSnapshot=null;
   calendarService=graph.getCalendarService();
   setServiceDays();
   Edge fromBackEdge=null;

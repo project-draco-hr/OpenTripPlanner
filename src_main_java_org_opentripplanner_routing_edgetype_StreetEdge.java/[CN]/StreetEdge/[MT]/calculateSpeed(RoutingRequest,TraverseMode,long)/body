@@ -4,7 +4,7 @@
   }
  else   if (traverseMode.isDriving()) {
     if (options.useTraffic) {
-      StreetSpeedSource source=options.getRoutingContext().graph.streetSpeedSource;
+      StreetSpeedSnapshot source=options.getRoutingContext().streetSpeedSnapshot;
       if (source != null) {
         double congestedSpeed=source.getSpeed(this,traverseMode,timeMillis);
         if (!Double.isNaN(congestedSpeed))         return congestedSpeed;
