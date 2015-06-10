@@ -1,0 +1,35 @@
+{
+  String graphId=graphFile.getName();
+  if (graphId.endsWith(".zip"))   graphId=graphId.substring(0,graphId.length() - 4);
+  File graphDir=new File(GRAPH_DIR,graphId);
+  if (graphDir.exists()) {
+    if (graphDir.list().length == 0) {
+      graphDir.delete();
+    }
+ else {
+      return;
+    }
+  }
+  graphDir.mkdirs();
+  File graphDataZip=new File(GRAPH_DIR,graphId + ".zip");
+  if (graphFile.isDirectory()) {
+    FileUtils.copyDirectory(graphFile,graphDir);
+    zipGraphDir(graphDir,graphDataZip);
+  }
+ else   if (graphFile.getName().endsWith(".zip")) {
+    FileUtils.copyFile(graphFile,graphDataZip);
+    unpackGraphZip(graphDataZip,graphDir,false);
+  }
+ else {
+    graphDataZip=null;
+  }
+  if (!workOffline && graphDataZip != null) {
+    try {
+      s3.getObject(graphBucket,graphId + ".zip");
+    }
+ catch (    AmazonServiceException e) {
+      s3.putObject(graphBucket,graphId + ".zip",graphDataZip);
+    }
+  }
+  graphDataZip.delete();
+}

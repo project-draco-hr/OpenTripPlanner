@@ -1,0 +1,16 @@
+{
+  if (newAlerts == null) {
+    return;
+  }
+  if (alerts == null) {
+    alerts=new ArrayList<>();
+  }
+  ALERT:   for (  Alert newAlert : newAlerts) {
+    for (    LocalizedAlert alert : alerts) {
+      if (alert.alert.equals(newAlert)) {
+        break ALERT;
+      }
+    }
+    alerts.add(new LocalizedAlert(newAlert,locale));
+  }
+}
