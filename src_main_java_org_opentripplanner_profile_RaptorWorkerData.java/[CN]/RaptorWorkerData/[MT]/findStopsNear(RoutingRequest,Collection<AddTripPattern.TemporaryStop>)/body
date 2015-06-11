@@ -1,0 +1,37 @@
+{
+  AStar astar=new AStar();
+  rr.longDistance=true;
+  rr.setNumItineraries(1);
+  Graph graph=rr.rctx.graph;
+  ShortestPathTree spt=astar.getShortestPathTree(rr,5);
+  TIntIntMap accessTimes=new TIntIntHashMap();
+  for (  TransitStop tstop : graph.index.stopVertexForStop.values()) {
+    State s=spt.getState(tstop);
+    if (s != null) {
+      accessTimes.put(tstop.getIndex(),(int)(s.getWalkDistance() / 1.3f));
+    }
+  }
+  for (  AddTripPattern.TemporaryStop tstop : additionalStops) {
+    if (tstop.sample == null) {
+      LOG.warn("Temporary stop unlinked: {}",tstop);
+      continue;
+    }
+    double dist=Double.POSITIVE_INFINITY;
+    if (tstop.sample.v0 != null) {
+      State s0=spt.getState(tstop.sample.v0);
+      if (s0 != null) {
+        dist=s0.getWalkDistance() + tstop.sample.d0;
+      }
+    }
+    if (tstop.sample.v1 != null) {
+      State s1=spt.getState(tstop.sample.v1);
+      if (s1 != null) {
+        dist=Math.min(s1.getWalkDistance() + tstop.sample.d1,dist);
+      }
+    }
+    if (Double.isInfinite(dist))     continue;
+    accessTimes.put(tstop.index,(int)(dist / 1.3f));
+  }
+  rr.cleanup();
+  return accessTimes;
+}

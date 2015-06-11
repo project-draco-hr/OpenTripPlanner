@@ -1,11 +1,18 @@
 {
   long computationStartTime=System.currentTimeMillis();
   LOG.info("Begin profile request");
+  int i=Vertex.getMaxIndex() + 1;
+  if (request.scenario != null && request.scenario.modifications != null) {
+    for (    AddTripPattern atp : Iterables.filter(request.scenario.modifications,AddTripPattern.class)) {
+      atp.materialize(graph);
+    }
+  }
   LOG.info("Finding initial stops");
-  TObjectIntMap<TransitStop> accessTimes=findInitialStops(false);
+  TIntIntMap accessTimes=findInitialStops(false);
   LOG.info("Found {} initial transit stops",accessTimes.size());
   LOG.info("Make data...");
-  TimeWindow window=new TimeWindow(request.fromTime,request.toTime + RaptorWorker.MAX_DURATION,graph.index.servicesRunning(request.date));
+  DayOfWeek dayOfWeek=DayOfWeek.of(request.date.getDayOfWeek());
+  TimeWindow window=new TimeWindow(request.fromTime,request.toTime + RaptorWorker.MAX_DURATION,graph.index.servicesRunning(request.date),dayOfWeek);
   RaptorWorkerData raptorWorkerData;
   if (sampleSet == null)   raptorWorkerData=new RaptorWorkerData(graph,window,request.scenario);
  else   raptorWorkerData=new RaptorWorkerData(graph,window,request.scenario,sampleSet);

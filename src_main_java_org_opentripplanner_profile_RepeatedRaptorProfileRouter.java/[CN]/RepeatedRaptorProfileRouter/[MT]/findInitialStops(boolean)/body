@@ -18,18 +18,17 @@
     rr.softWalkLimiting=false;
     rr.dominanceFunction=new DominanceFunction.LeastWalk();
   }
-  AStar astar=new AStar();
-  rr.longDistance=true;
-  rr.setNumItineraries(1);
-  ShortestPathTree spt=astar.getShortestPathTree(rr,5);
-  TObjectIntMap<TransitStop> accessTimes=new TObjectIntHashMap<TransitStop>();
-  for (  TransitStop tstop : graph.index.stopVertexForStop.values()) {
-    State s=spt.getState(tstop);
-    if (s != null) {
-      accessTimes.put(tstop,(int)(s.getWalkDistance() / request.walkSpeed));
+  Collection<AddTripPattern.TemporaryStop> stops;
+  if (request.scenario != null && request.scenario.modifications != null) {
+    stops=Lists.newArrayList();
+    for (    AddTripPattern atp : Iterables.filter(request.scenario.modifications,AddTripPattern.class)) {
+      for (      AddTripPattern.TemporaryStop tstop : atp.temporaryStops) {
+        stops.add(tstop);
+      }
     }
   }
-  this.walkOnlySpt=spt;
-  rr.cleanup();
-  return accessTimes;
+ else {
+    stops=Collections.emptyList();
+  }
+  return RaptorWorkerData.findStopsNear(rr,stops);
 }
