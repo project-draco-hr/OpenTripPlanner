@@ -18,6 +18,8 @@
     rr.softWalkLimiting=false;
     rr.dominanceFunction=new DominanceFunction.LeastWalk();
   }
+  rr.numItineraries=1;
+  rr.longDistance=true;
   Collection<AddTripPattern.TemporaryStop> stops;
   if (request.scenario != null && request.scenario.modifications != null) {
     stops=Lists.newArrayList();
@@ -30,5 +32,7 @@
  else {
     stops=Collections.emptyList();
   }
-  return RaptorWorkerData.findStopsNear(rr,stops);
+  AStar aStar=new AStar();
+  walkOnlySpt=aStar.getShortestPathTree(rr,5);
+  return data.findStopsNear(walkOnlySpt,graph);
 }

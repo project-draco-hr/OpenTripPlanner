@@ -1,17 +1,15 @@
 {
-  AStar astar=new AStar();
-  rr.longDistance=true;
-  rr.setNumItineraries(1);
-  Graph graph=rr.rctx.graph;
-  ShortestPathTree spt=astar.getShortestPathTree(rr,5);
   TIntIntMap accessTimes=new TIntIntHashMap();
   for (  TransitStop tstop : graph.index.stopVertexForStop.values()) {
     State s=spt.getState(tstop);
     if (s != null) {
-      accessTimes.put(tstop.getIndex(),(int)(s.getWalkDistance() / 1.3f));
+      int stopIndex=indexForStop.get(tstop.getIndex());
+      if (stopIndex != -1)       accessTimes.put(stopIndex,(int)(s.getWalkDistance() / 1.3f));
     }
   }
-  for (  AddTripPattern.TemporaryStop tstop : additionalStops) {
+  for (TObjectIntIterator<AddTripPattern.TemporaryStop> it=addedStops.iterator(); it.hasNext(); ) {
+    it.advance();
+    AddTripPattern.TemporaryStop tstop=it.key();
     if (tstop.sample == null) {
       LOG.warn("Temporary stop unlinked: {}",tstop);
       continue;
@@ -26,12 +24,12 @@
     if (tstop.sample.v1 != null) {
       State s1=spt.getState(tstop.sample.v1);
       if (s1 != null) {
-        dist=Math.min(s1.getWalkDistance() + tstop.sample.d1,dist);
+        double d1=s1.getWalkDistance() + tstop.sample.d1;
+        dist=Double.isInfinite(dist) ? d1 : Math.min(d1,dist);
       }
     }
     if (Double.isInfinite(dist))     continue;
-    accessTimes.put(tstop.index,(int)(dist / 1.3f));
+    accessTimes.put(it.value(),(int)(dist / 1.3f));
   }
-  rr.cleanup();
   return accessTimes;
 }

@@ -1,0 +1,5 @@
+{
+  EncodedPolylineBean bean=new EncodedPolylineBean(jsonParser.getValueAsString(),null,0);
+  List<Coordinate> coords=PolylineEncoder.decode(bean);
+  return GeometryUtils.getGeometryFactory().createLineString(coords.toArray(new Coordinate[coords.size()]));
+}

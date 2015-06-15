@@ -5,12 +5,8 @@
   TIntIntIterator initialIterator=accessTimes.iterator();
   while (initialIterator.hasNext()) {
     initialIterator.advance();
-    int tstop=initialIterator.key();
+    int stopIndex=initialIterator.key();
     int accessTime=initialIterator.value();
-    int stopIndex=data.indexForStop.get(tstop);
-    if (stopIndex == -1) {
-      continue;
-    }
     initialStops.put(stopIndex,accessTime);
   }
   PropagatedTimesStore propagatedTimesStore=new PropagatedTimesStore(graph,data.nTargets);
@@ -23,7 +19,7 @@
     this.runRaptor(initialStops,departureTime);
     long beginPropagationTime=System.currentTimeMillis();
     int[] timesAtTargets=timesAtTargetsEachMinute[n];
-    System.arraycopy(walkTimes,0,timesAtTargets,0,walkTimes.length);
+    System.arraycopy(walkTimes,0,timesAtTargets,0,timesAtTargets.length);
     for (int s=0; s < data.nStops; s++) {
       int baseTimeSeconds=bestNonTransferTimes[s];
       if (baseTimeSeconds != UNREACHED) {
