@@ -1,0 +1,15 @@
+{
+  AddTripPattern.PatternTimetable tt=new AddTripPattern.PatternTimetable();
+  tt.days=new BitSet();
+  tt.days.set(2);
+  tt.dwellTimes=new int[]{30,30,30,30,30};
+  tt.hopTimes=new int[]{90,90,90,90};
+  tt.frequency=frequency;
+  if (frequency) {
+    tt.startTime=4 * 3600;
+    tt.endTime=22 * 3600;
+    tt.headwaySecs=600;
+  }
+ else   tt.startTime=7 * 3600;
+  return tt;
+}
