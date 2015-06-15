@@ -1,6 +1,6 @@
 {
   AddTripPattern atp=getAddTripPattern(RouteSelector.BROAD_HIGH);
-  atp.timetables.add(getTimetable(true));
+  atp.timetables.add(getTimetable(false));
   Graph g=buildGraphNoTransit();
   link(g);
   g.index(new DefaultStreetVertexIndexFactory());
@@ -25,5 +25,5 @@
   ShortestPathTree spt=aStar.getShortestPathTree(rr);
   TIntIntMap stops=data.findStopsNear(spt,g);
   assertFalse(stops.isEmpty());
-  assertEquals(4 * 3600 + 600 + 30,data.timetablesForPattern.get(0).getFrequencyDeparture(0,0,39 * 360,true));
+  assertEquals(7 * 3600 + 30,data.timetablesForPattern.get(0).getDeparture(0,0));
 }
