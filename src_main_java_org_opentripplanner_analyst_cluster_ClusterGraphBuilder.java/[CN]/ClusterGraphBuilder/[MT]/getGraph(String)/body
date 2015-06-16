@@ -4,7 +4,7 @@
     LOG.info("GraphID has not changed. Reusing the last graph that was built.");
     return currGraph;
   }
-  File graphDataDirectory=new File(GRAPH_DIR,graphId);
+  File graphDataDirectory=new File(GRAPH_CACHE_DIR,graphId);
   if (!graphDataDirectory.exists()) {
     LOG.info("Downloading graph input files.");
     graphDataDirectory.mkdirs();
@@ -32,7 +32,7 @@
     LOG.info("Graph input files were found locally. Using these files from the cache.");
   }
   CommandLineParameters params=new CommandLineParameters();
-  params.build=new File(GRAPH_DIR,graphId);
+  params.build=new File(GRAPH_CACHE_DIR,graphId);
   params.inMemory=true;
   GraphBuilder graphBuilder=GraphBuilder.forDirectory(params,params.build);
   graphBuilder.run();
