@@ -1,6 +1,5 @@
 {
-  String url="http://localhost:9001";
-  url+="/jobs/userA/graphA/jobA";
+  String url=BROKER_BASE_URL + "/jobs/userA/graphA/jobA";
   HttpGet httpGet=new HttpGet(url);
   HttpResponse response=null;
   try {
@@ -12,7 +11,7 @@
     if (entity == null) {
       return null;
     }
-    return objectMapper.readValue(entity.getContent(),new TypeReference<Map<Integer,AnalystClusterRequest>>(){
+    return objectMapper.readValue(entity.getContent(),new TypeReference<List<AnalystClusterRequest>>(){
     }
 );
   }
