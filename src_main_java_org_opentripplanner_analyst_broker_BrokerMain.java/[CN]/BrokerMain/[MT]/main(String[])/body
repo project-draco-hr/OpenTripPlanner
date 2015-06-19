@@ -1,0 +1,25 @@
+{
+  LOG.info("Starting qbroker on port {} of interface {}",PORT,BIND_ADDRESS);
+  HttpServer httpServer=new HttpServer();
+  NetworkListener networkListener=new NetworkListener("qbroker",BIND_ADDRESS,PORT);
+  networkListener.getTransport().setIOStrategy(SameThreadIOStrategy.getInstance());
+  httpServer.addListener(networkListener);
+  Broker broker=new Broker();
+  httpServer.getServerConfiguration().addHttpHandler(new BrokerHttpHandler(broker),"/*");
+  try {
+    httpServer.start();
+    LOG.info("Broker running.");
+    broker.run();
+    Thread.currentThread().join();
+  }
+ catch (  BindException be) {
+    LOG.error("Cannot bind to port {}. Is it already in use?",PORT);
+  }
+catch (  IOException ioe) {
+    LOG.error("IO exception while starting server.");
+  }
+catch (  InterruptedException ie) {
+    LOG.info("Interrupted, shutting down.");
+  }
+  httpServer.shutdown();
+}

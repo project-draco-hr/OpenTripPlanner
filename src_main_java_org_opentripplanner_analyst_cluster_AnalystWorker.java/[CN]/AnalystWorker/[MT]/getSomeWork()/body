@@ -1,0 +1,37 @@
+{
+  String url=BROKER_BASE_URL + "/jobs/userA/graphA/jobA";
+  HttpGet httpGet=new HttpGet(url);
+  HttpResponse response=null;
+  try {
+    response=httpClient.execute(httpGet);
+    if (response.getStatusLine().getStatusCode() != 200) {
+      return null;
+    }
+    HttpEntity entity=response.getEntity();
+    if (entity == null) {
+      return null;
+    }
+    return objectMapper.readValue(entity.getContent(),new TypeReference<List<AnalystClusterRequest>>(){
+    }
+);
+  }
+ catch (  JsonProcessingException e) {
+    LOG.error("JSON processing exception while getting work: {}",e.getMessage());
+  }
+catch (  SocketTimeoutException stex) {
+    LOG.error("Socket timeout while waiting to receive work.");
+  }
+catch (  HttpHostConnectException ce) {
+    LOG.error("Broker refused connection. Sleeping before retry.");
+    try {
+      Thread.currentThread().sleep(5000);
+    }
+ catch (    InterruptedException e) {
+    }
+  }
+catch (  IOException e) {
+    LOG.error("IO exception while getting work.");
+    e.printStackTrace();
+  }
+  return null;
+}

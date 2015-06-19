@@ -1,13 +1,17 @@
 {
   startupTime=System.currentTimeMillis() / 1000;
-  sqs=new AmazonSQSClient();
-  sqs.setRegion(awsRegion);
   s3=new AmazonS3Client();
   s3.setRegion(awsRegion);
   objectMapper=new ObjectMapper();
   objectMapper.configure(JsonParser.Feature.ALLOW_COMMENTS,true);
   objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES,true);
   objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
-  clusterGraphBuilder=new ClusterGraphBuilder();
-  pointSetDatastore=new PointSetDatastore(10,null,false,"analyst-dev-pointsets");
+  objectMapper.registerModule(AgencyAndIdSerializer.makeModule());
+  clusterGraphBuilder=new ClusterGraphBuilder(s3Prefix + "-graphs");
+  pointSetDatastore=new PointSetDatastore(10,null,false,s3Prefix + "-pointsets");
+  HttpParams httpParams=new BasicHttpParams();
+  HttpConnectionParams.setConnectionTimeout(httpParams,POLL_TIMEOUT);
+  HttpConnectionParams.setSoTimeout(httpParams,POLL_TIMEOUT);
+  HttpConnectionParams.setSoKeepalive(httpParams,true);
+  httpClient.setParams(httpParams);
 }

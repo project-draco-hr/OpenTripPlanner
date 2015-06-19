@@ -1,0 +1,15 @@
+{
+  Node<T> newNode=new Node<>();
+  newNode.element=element;
+  if (head == null) {
+    newNode.next=newNode;
+    newNode.prev=newNode;
+    head=newNode;
+  }
+ else {
+    newNode.prev=head.prev;
+    newNode.next=head;
+    head.prev.next=newNode;
+    head.prev=newNode;
+  }
+}

@@ -1,0 +1,13 @@
+{
+  String url=BROKER_BASE_URL + String.format("/jobs/%s/%s/%s/%s",clusterRequest.userId,clusterRequest.graphId,clusterRequest.jobId,clusterRequest.taskId);
+  HttpDelete httpDelete=new HttpDelete(url);
+  try {
+    HttpResponse response=httpClient.execute(httpDelete);
+    EntityUtils.consumeQuietly(response.getEntity());
+    return (response.getStatusLine().getStatusCode() == 200);
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+    return false;
+  }
+}

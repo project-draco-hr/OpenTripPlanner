@@ -1,0 +1,11 @@
+{
+  while (true) {
+    try {
+      deliverTasksForOneJob();
+    }
+ catch (    InterruptedException e) {
+      LOG.warn("Task pump thread was interrupted.");
+      return;
+    }
+  }
+}
