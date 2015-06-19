@@ -1,0 +1,13 @@
+{
+  for (  Job job : jobs) {
+    if (job.jobId.equals(jobId)) {
+      return job;
+    }
+  }
+  if (create) {
+    Job job=new Job(jobId);
+    jobs.insertAtTail(job);
+    return job;
+  }
+  return null;
+}

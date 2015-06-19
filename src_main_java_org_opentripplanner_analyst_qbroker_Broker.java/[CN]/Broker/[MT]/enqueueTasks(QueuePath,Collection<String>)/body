@@ -1,0 +1,19 @@
+{
+  User user=findUser(queuePath.userId,true);
+  Job job=user.findJob(queuePath.jobId,true);
+  if (job.graphId == null) {
+    job.graphId=queuePath.graphId;
+  }
+ else {
+    if (!job.graphId.equals(queuePath.graphId)) {
+      LOG.warn("Job associated with a different graphId");
+    }
+  }
+  LOG.debug("Queue {}",queuePath);
+  for (  String taskBody : taskBodies) {
+    int taskId=job.addTask(taskBody);
+    nUndeliveredTasks+=1;
+    LOG.debug("Enqueued task id {} with body {}",taskId,taskBody);
+  }
+  notify();
+}

@@ -1,0 +1,8 @@
+{
+  int result=queueType != null ? queueType.hashCode() : 0;
+  result=31 * result + (userId != null ? userId.hashCode() : 0);
+  result=31 * result + (graphId != null ? graphId.hashCode() : 0);
+  result=31 * result + (jobId != null ? jobId.hashCode() : 0);
+  result=31 * result + taskId;
+  return result;
+}

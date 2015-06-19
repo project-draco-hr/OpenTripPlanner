@@ -1,0 +1,18 @@
+{
+  String[] pathComponents=uri.split("/");
+  if (pathComponents.length > 1 && !pathComponents[1].isEmpty()) {
+    queueType=pathComponents[1];
+  }
+  if (pathComponents.length > 2 && !pathComponents[2].isEmpty()) {
+    userId=pathComponents[2];
+  }
+  if (pathComponents.length > 3 && !pathComponents[3].isEmpty()) {
+    graphId=pathComponents[3];
+  }
+  if (pathComponents.length > 4 && !pathComponents[4].isEmpty()) {
+    jobId=pathComponents[4];
+  }
+  if (pathComponents.length > 5 && !pathComponents[5].isEmpty()) {
+    taskId=Integer.parseInt(pathComponents[5]);
+  }
+}

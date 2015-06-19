@@ -1,0 +1,13 @@
+{
+  for (  User user : users) {
+    if (user.userId.equals(userId)) {
+      return user;
+    }
+  }
+  if (create) {
+    User user=new User(userId);
+    users.insertAtTail(user);
+    return user;
+  }
+  return null;
+}

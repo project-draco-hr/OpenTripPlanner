@@ -1,0 +1,11 @@
+{
+  User user=findUser(queuePath.userId,false);
+  if (user == null) {
+    return false;
+  }
+  Job job=user.findJob(queuePath.jobId,false);
+  if (job == null) {
+    return false;
+  }
+  return job.invisibleTasks.remove(queuePath.taskId) != null;
+}

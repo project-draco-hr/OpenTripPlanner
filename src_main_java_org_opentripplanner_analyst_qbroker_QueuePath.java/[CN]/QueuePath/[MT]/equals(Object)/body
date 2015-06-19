@@ -1,0 +1,11 @@
+{
+  if (this == o)   return true;
+  if (o == null || getClass() != o.getClass())   return false;
+  QueuePath queuePath=(QueuePath)o;
+  if (taskId != queuePath.taskId)   return false;
+  if (graphId != null ? !graphId.equals(queuePath.graphId) : queuePath.graphId != null)   return false;
+  if (jobId != null ? !jobId.equals(queuePath.jobId) : queuePath.jobId != null)   return false;
+  if (queueType != null ? !queueType.equals(queuePath.queueType) : queuePath.queueType != null)   return false;
+  if (userId != null ? !userId.equals(queuePath.userId) : queuePath.userId != null)   return false;
+  return true;
+}

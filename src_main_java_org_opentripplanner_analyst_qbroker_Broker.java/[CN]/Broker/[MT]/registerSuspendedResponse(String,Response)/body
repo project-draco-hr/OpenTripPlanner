@@ -1,0 +1,10 @@
+{
+  Deque<Response> deque=connectionsForGraph.get(graphId);
+  if (deque == null) {
+    deque=new ArrayDeque<>();
+    connectionsForGraph.put(graphId,deque);
+  }
+  deque.addLast(response);
+  nWaitingConsumers+=1;
+  notify();
+}

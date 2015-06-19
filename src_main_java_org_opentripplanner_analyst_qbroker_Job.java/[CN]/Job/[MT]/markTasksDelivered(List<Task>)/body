@@ -1,0 +1,7 @@
+{
+  long deliveryTime=System.currentTimeMillis();
+  for (  Task task : tasks) {
+    task.invisibleUntil=deliveryTime + 60000;
+    invisibleTasks.put(task.taskId,task);
+  }
+}

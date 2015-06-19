@@ -1,0 +1,11 @@
+{
+  Node<T> start=head;
+  do {
+    T currElement=advance();
+    if (predicate.test(currElement)) {
+      return currElement;
+    }
+  }
+ while (head != start);
+  return null;
+}
