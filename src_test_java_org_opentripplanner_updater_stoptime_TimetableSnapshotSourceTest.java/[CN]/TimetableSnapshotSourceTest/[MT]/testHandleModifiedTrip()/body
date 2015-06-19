@@ -1,7 +1,6 @@
 {
   ServiceDate serviceDate=new ServiceDate(Calendar.getInstance());
   String modifiedTripId="10.1";
-  String modifiedTripAgency="agency";
   TripUpdate tripUpdate;
 {
     TripDescriptor.Builder tripDescriptorBuilder=TripDescriptor.newBuilder();
@@ -78,10 +77,10 @@
     }
     tripUpdate=tripUpdateBuilder.build();
   }
-  updater.applyTripUpdates(graph,fullDataset,Arrays.asList(tripUpdate),modifiedTripAgency);
+  updater.applyTripUpdates(graph,fullDataset,Arrays.asList(tripUpdate),feedId);
   TimetableSnapshot snapshot=updater.getTimetableSnapshot();
 {
-    AgencyAndId tripId=new AgencyAndId(modifiedTripAgency,modifiedTripId);
+    AgencyAndId tripId=new AgencyAndId(feedId,modifiedTripId);
     Trip trip=graph.index.tripForId.get(tripId);
     TripPattern originalTripPattern=graph.index.patternForTrip.get(trip);
     Timetable originalTimetableForToday=snapshot.resolve(originalTripPattern,serviceDate);

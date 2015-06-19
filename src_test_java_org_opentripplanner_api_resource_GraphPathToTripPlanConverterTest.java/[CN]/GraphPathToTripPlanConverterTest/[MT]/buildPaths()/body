@@ -334,10 +334,11 @@
   when(timetableSnapshotSource.getTimetableSnapshot()).thenReturn(snapshot);
   TripTimes updatedTripTimes=thirdTripPattern.scheduledTimetable.createUpdatedTripTimes(tripUpdate,timeZone,serviceDate);
   timetableSnapshotSource.getTimetableSnapshot().update(thirdTripPattern,updatedTripTimes,serviceDate);
+  String feedId="FEED";
   graph.putService(CalendarServiceData.class,calendarServiceData);
   graph.putService(FareService.class,fareServiceStub);
-  graph.addAgency(trainAgency);
-  graph.addAgency(ferryAgency);
+  graph.addAgency(feedId,trainAgency);
+  graph.addAgency(feedId,ferryAgency);
   graph.timetableSnapshotSource=(timetableSnapshotSource);
   graph.addAlertPatch(e29,alertPatch);
   ServiceDay serviceDay=new ServiceDay(graph,0,calendarServiceImpl,null);

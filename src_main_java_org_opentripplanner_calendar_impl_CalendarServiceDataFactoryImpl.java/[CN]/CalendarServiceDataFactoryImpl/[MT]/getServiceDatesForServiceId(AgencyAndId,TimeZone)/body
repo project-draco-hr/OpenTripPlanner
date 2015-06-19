@@ -1,0 +1,11 @@
+{
+  Set<ServiceDate> activeDates=new HashSet<ServiceDate>();
+  ServiceCalendar c=_dao.getCalendarForServiceId(serviceId);
+  if (c != null) {
+    addDatesFromCalendar(c,serviceIdTimeZone,activeDates);
+  }
+  for (  ServiceCalendarDate cd : _dao.getCalendarDatesForServiceId(serviceId)) {
+    addAndRemoveDatesFromCalendarDate(cd,serviceIdTimeZone,activeDates);
+  }
+  return activeDates;
+}

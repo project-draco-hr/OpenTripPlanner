@@ -52,6 +52,7 @@
   TripTimes tripTimes=new TripTimes(trip,stopTimes,new Deduplicator());
   StopPattern stopPattern=new StopPattern(stopTimes);
   TripPattern tripPattern=new TripPattern(route,stopPattern);
+  TripPattern.generateUniqueIds(Arrays.asList(tripPattern));
   when(depart.getTripPattern()).thenReturn(tripPattern);
   when(dwell.getTripPattern()).thenReturn(tripPattern);
   PatternHop patternHop0=new PatternHop(depart,dwell,stopDepart,stopDwell,0);

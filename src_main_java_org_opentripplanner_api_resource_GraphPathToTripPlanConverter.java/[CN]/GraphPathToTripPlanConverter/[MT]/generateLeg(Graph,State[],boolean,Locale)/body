@@ -8,7 +8,6 @@
     edges[i]=states[i + 1].getBackEdge();
     leg.distance+=edges[i].getDistance();
   }
-  addModeAndAlerts(graph,leg,states,requestedLocale);
   TimeZone timeZone=leg.startTime.getTimeZone();
   leg.agencyTimeZoneOffset=timeZone.getOffset(leg.startTime.getTimeInMillis());
   addTripFields(leg,states,requestedLocale);
@@ -20,5 +19,6 @@
   leg.interlineWithPreviousLeg=states[0].getBackEdge() instanceof PatternInterlineDwell;
   addFrequencyFields(states,leg);
   leg.rentedBike=states[0].isBikeRenting() && states[states.length - 1].isBikeRenting();
+  addModeAndAlerts(graph,leg,states,requestedLocale);
   return leg;
 }

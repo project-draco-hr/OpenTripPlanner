@@ -1,0 +1,9 @@
+{
+  for (  Agency agency : _dao.getAllAgencies()) {
+    TimeZone timeZone=TimeZone.getTimeZone(agency.getTimezone());
+    if (timeZone.getID().equals("GMT") && !agency.getTimezone().toUpperCase().equals("GMT")) {
+      throw new UnknownAgencyTimezoneException(agency.getName(),agency.getTimezone());
+    }
+    data.putTimeZoneForAgencyId(agency.getId(),timeZone);
+  }
+}

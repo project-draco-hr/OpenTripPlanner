@@ -1,0 +1,19 @@
+{
+  CalendarServiceData data=new CalendarServiceData();
+  setTimeZonesForAgencies(data);
+  List<AgencyAndId> serviceIds=_dao.getAllServiceIds();
+  int index=0;
+  for (  AgencyAndId serviceId : serviceIds) {
+    index++;
+    _log.debug("serviceId=" + serviceId + " ("+ index+ "/"+ serviceIds.size()+ ")");
+    TimeZone serviceIdTimeZone=data.getTimeZoneForAgencyId(serviceId.getAgencyId());
+    if (serviceIdTimeZone == null) {
+      serviceIdTimeZone=TimeZone.getDefault();
+    }
+    Set<ServiceDate> activeDates=getServiceDatesForServiceId(serviceId,serviceIdTimeZone);
+    List<ServiceDate> serviceDates=new ArrayList<ServiceDate>(activeDates);
+    Collections.sort(serviceDates);
+    data.putServiceDatesForServiceId(serviceId,serviceDates);
+  }
+  return data;
+}

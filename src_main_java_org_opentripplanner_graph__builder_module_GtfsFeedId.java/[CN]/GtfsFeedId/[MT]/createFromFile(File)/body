@@ -1,0 +1,8 @@
+{
+  String feedId=path.getName();
+  int pos=feedId.lastIndexOf('.');
+  if (pos > 0) {
+    feedId=feedId.substring(0,pos);
+  }
+  return new GtfsFeedId(feedId);
+}

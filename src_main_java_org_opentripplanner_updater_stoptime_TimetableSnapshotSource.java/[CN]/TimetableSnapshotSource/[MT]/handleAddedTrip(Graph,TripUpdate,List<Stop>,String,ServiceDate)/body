@@ -5,7 +5,7 @@
   cancelPreviouslyAddedTrip(tripId,serviceDate);
   Route route=null;
   if (tripUpdate.getTrip().hasRouteId()) {
-    route=getRouteForRouteId(tripUpdate.getTrip().getRouteId());
+    route=getRouteForRouteId(feedId,tripUpdate.getTrip().getRouteId());
   }
   if (route == null) {
     route=new Route();

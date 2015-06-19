@@ -13,7 +13,14 @@
     }
     for (    AlertPatch alertPatch : graph.getAlertPatches(edge)) {
       if (alertPatch.displayDuring(state)) {
-        leg.addAlert(alertPatch.getAlert(),requestedLocale);
+        if (alertPatch.hasTrip()) {
+          if (alertPatch.getTrip().equals(new AgencyAndId(alertPatch.getFeedId(),leg.tripId))) {
+            leg.addAlert(alertPatch.getAlert(),requestedLocale);
+          }
+        }
+ else {
+          leg.addAlert(alertPatch.getAlert(),requestedLocale);
+        }
       }
     }
   }

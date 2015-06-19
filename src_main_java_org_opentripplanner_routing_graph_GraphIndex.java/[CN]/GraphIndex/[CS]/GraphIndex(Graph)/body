@@ -1,7 +1,11 @@
 {
   LOG.info("Indexing graph...");
-  for (  Agency a : graph.getAgencies()) {
-    agencyForId.put(a.getId(),a);
+  for (  String feedId : graph.getFeedIds()) {
+    for (    Agency agency : graph.getAgencies(feedId)) {
+      Map<String,Agency> agencyForId=agenciesForFeedId.getOrDefault(feedId,new HashMap<>());
+      agencyForId.put(agency.getId(),agency);
+      this.agenciesForFeedId.put(feedId,agencyForId);
+    }
   }
   Collection<Edge> edges=graph.getEdges();
   Set<Vertex> vertices=Sets.newHashSet();
@@ -29,7 +33,16 @@
     stopSpatialIndex.insert(envelope,stopVertex);
   }
   for (  TripPattern pattern : patternForId.values()) {
+    String feedId=pattern.code.substring(0,pattern.code.indexOf(':'));
+    Multimap<Agency,TripPattern> patternsForAgency;
+    if (!agencyPatternsForFeedId.containsKey(feedId)) {
+      patternsForAgency=ArrayListMultimap.create();
+    }
+ else {
+      patternsForAgency=agencyPatternsForFeedId.get(feedId);
+    }
     patternsForAgency.put(pattern.route.getAgency(),pattern);
+    agencyPatternsForFeedId.put(feedId,patternsForAgency);
     patternsForRoute.put(pattern.route,pattern);
     for (    Trip trip : pattern.getTrips()) {
       patternForTrip.put(trip,pattern);

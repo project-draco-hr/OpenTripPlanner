@@ -2,7 +2,7 @@
   boolean success=false;
   if (tripUpdate.getTrip().hasTripId()) {
     String tripId=tripUpdate.getTrip().getTripId();
-    boolean cancelScheduledSuccess=cancelScheduledTrip(tripId,serviceDate);
+    boolean cancelScheduledSuccess=cancelScheduledTrip(feedId,tripId,serviceDate);
     boolean cancelPreviouslyAddedSuccess=cancelPreviouslyAddedTrip(tripId,serviceDate);
     if (cancelScheduledSuccess || cancelPreviouslyAddedSuccess) {
       success=true;

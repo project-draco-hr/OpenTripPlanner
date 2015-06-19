@@ -1,7 +1,8 @@
 {
   Graph graph=ConstantsForTests.getInstance().getPortlandGraph();
-  Vertex start=graph.getVertex("TriMet:8371");
-  Vertex end=graph.getVertex("TriMet:8374");
+  String feedId=graph.getFeedIds().iterator().next();
+  Vertex start=graph.getVertex(feedId + ":8371");
+  Vertex end=graph.getVertex(feedId + ":8374");
   RoutingRequest options=new RoutingRequest();
   long startTime=TestUtils.dateInSeconds("America/Los_Angeles",2009,11,1,12,34,25);
   options.dateTime=startTime;

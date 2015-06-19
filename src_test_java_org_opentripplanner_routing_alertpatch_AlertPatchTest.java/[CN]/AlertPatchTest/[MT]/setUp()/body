@@ -1,4 +1,5 @@
 {
+  aStar=new AStar();
   GtfsContext context=GtfsLibrary.readGtfs(new File(ConstantsForTests.FAKE_GTFS));
   options=new RoutingRequest();
   graph=new Graph();
@@ -6,4 +7,5 @@
   factory.run(graph);
   graph.putService(CalendarServiceData.class,GtfsLibrary.createCalendarServiceData(context.getDao()));
   graph.index(new DefaultStreetVertexIndexFactory());
+  feedId=context.getFeedId().getId();
 }
