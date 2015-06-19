@@ -1,8 +1,8 @@
 {
-  Deque<Response> deque=connectionsForGraph.get(graphId);
+  Deque<Response> deque=consumersByGraph.get(graphId);
   if (deque == null) {
     deque=new ArrayDeque<>();
-    connectionsForGraph.put(graphId,deque);
+    consumersByGraph.put(graphId,deque);
   }
   deque.addLast(response);
   nWaitingConsumers+=1;
