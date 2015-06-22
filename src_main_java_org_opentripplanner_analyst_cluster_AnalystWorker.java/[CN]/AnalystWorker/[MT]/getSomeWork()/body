@@ -4,11 +4,12 @@
   HttpResponse response=null;
   try {
     response=httpClient.execute(httpGet);
-    if (response.getStatusLine().getStatusCode() != 200) {
-      return null;
-    }
     HttpEntity entity=response.getEntity();
     if (entity == null) {
+      return null;
+    }
+    if (response.getStatusLine().getStatusCode() != 200) {
+      EntityUtils.consumeQuietly(entity);
       return null;
     }
     return objectMapper.readValue(entity.getContent(),new TypeReference<List<AnalystClusterRequest>>(){
