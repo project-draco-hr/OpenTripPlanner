@@ -13,8 +13,8 @@
       avgs[i]=sum / count;
     }
   }
-  ret.min=new ResultSet(mins,ss.pset,includeTimes);
-  ret.avg=new ResultSet(avgs,ss.pset,includeTimes);
-  ret.max=new ResultSet(maxs,ss.pset,includeTimes);
+  ret.min=new ResultSet(mins,ss.pset,includeTimes,includeHistograms,includeIsochrones);
+  ret.avg=new ResultSet(avgs,ss.pset,includeTimes,includeHistograms,includeIsochrones);
+  ret.max=new ResultSet(maxs,ss.pset,includeTimes,includeHistograms,includeIsochrones);
   return ret;
 }
