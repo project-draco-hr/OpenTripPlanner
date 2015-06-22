@@ -1,5 +1,7 @@
 {
   task.taskId=nextTaskId++;
-  priorityTasks.add(task);
-  priorityResponses.put(task.taskId,response);
+  highPriorityTasks.add(task);
+  highPriorityResponses.put(task.taskId,response);
+  nUndeliveredTasks+=1;
+  notify();
 }

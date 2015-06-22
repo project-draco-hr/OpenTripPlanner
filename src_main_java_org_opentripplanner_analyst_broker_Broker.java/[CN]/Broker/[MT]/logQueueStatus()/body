@@ -1,3 +1,4 @@
 {
-  LOG.info("{} priority, {} undelivered, {} consumers waiting.",priorityTasks.size(),nUndeliveredTasks,nWaitingConsumers);
+  LOG.info("{} undelivered, of which {} high-priority",nUndeliveredTasks,highPriorityTasks.size());
+  LOG.info("{} producers waiting, {} consumers waiting",highPriorityResponses.size(),nWaitingConsumers);
 }

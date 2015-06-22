@@ -1,13 +1,18 @@
 {
-  String url=BROKER_BASE_URL + String.format("/jobs/%s/%s/%s/%s",clusterRequest.userId,clusterRequest.graphId,clusterRequest.jobId,clusterRequest.taskId);
+  String url=BROKER_BASE_URL + String.format("/tasks/%s",clusterRequest.taskId);
   HttpDelete httpDelete=new HttpDelete(url);
   try {
     HttpResponse response=httpClient.execute(httpDelete);
     EntityUtils.consumeQuietly(response.getEntity());
-    return (response.getStatusLine().getStatusCode() == 200);
+    if (response.getStatusLine().getStatusCode() == 200) {
+      LOG.info("Successfully deleted task {}.",clusterRequest.taskId);
+    }
+ else {
+      LOG.info("Failed to delete task {}.",clusterRequest.taskId);
+    }
   }
  catch (  Exception e) {
     e.printStackTrace();
-    return false;
+    LOG.info("Failed to delete task {}",clusterRequest.taskId);
   }
 }
