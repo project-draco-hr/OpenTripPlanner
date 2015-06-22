@@ -12,7 +12,6 @@
   leg.agencyTimeZoneOffset=timeZone.getOffset(leg.startTime.getTimeInMillis());
   addTripFields(leg,states,requestedLocale);
   addPlaces(leg,states,edges,showIntermediateStops,requestedLocale);
-  if (leg.isTransitLeg())   addRealTimeData(leg,states);
   CoordinateArrayListSequence coordinates=makeCoordinates(edges);
   Geometry geometry=GeometryUtils.getGeometryFactory().createLineString(coordinates);
   leg.legGeometry=PolylineEncoder.createEncodings(geometry);
@@ -20,5 +19,6 @@
   addFrequencyFields(states,leg);
   leg.rentedBike=states[0].isBikeRenting() && states[states.length - 1].isBikeRenting();
   addModeAndAlerts(graph,leg,states,requestedLocale);
+  if (leg.isTransitLeg())   addRealTimeData(leg,states);
   return leg;
 }
