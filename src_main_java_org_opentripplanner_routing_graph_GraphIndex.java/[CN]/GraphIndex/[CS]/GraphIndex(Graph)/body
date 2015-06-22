@@ -34,15 +34,7 @@
   }
   for (  TripPattern pattern : patternForId.values()) {
     String feedId=pattern.code.substring(0,pattern.code.indexOf(':'));
-    Multimap<Agency,TripPattern> patternsForAgency;
-    if (!agencyPatternsForFeedId.containsKey(feedId)) {
-      patternsForAgency=ArrayListMultimap.create();
-    }
- else {
-      patternsForAgency=agencyPatternsForFeedId.get(feedId);
-    }
-    patternsForAgency.put(pattern.route.getAgency(),pattern);
-    agencyPatternsForFeedId.put(feedId,patternsForAgency);
+    patternsForFeedId.put(feedId,pattern);
     patternsForRoute.put(pattern.route,pattern);
     for (    Trip trip : pattern.getTrips()) {
       patternForTrip.put(trip,pattern);

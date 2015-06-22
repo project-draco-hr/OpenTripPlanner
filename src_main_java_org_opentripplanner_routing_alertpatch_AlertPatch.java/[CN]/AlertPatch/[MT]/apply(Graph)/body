@@ -20,10 +20,7 @@
       tripPatterns=graph.index.patternsForRoute.get(route);
     }
  else {
-      Multimap<Agency,TripPattern> patternsForAgency=graph.index.agencyPatternsForFeedId.get(feedId);
-      if (patternsForAgency != null) {
-        tripPatterns=patternsForAgency.get(agency);
-      }
+      tripPatterns=graph.index.patternsForFeedId.get(feedId);
     }
     if (tripPatterns != null) {
       for (      TripPattern tripPattern : tripPatterns) {
