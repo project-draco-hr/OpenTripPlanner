@@ -33,8 +33,7 @@
     stopSpatialIndex.insert(envelope,stopVertex);
   }
   for (  TripPattern pattern : patternForId.values()) {
-    String feedId=pattern.code.substring(0,pattern.code.indexOf(':'));
-    patternsForFeedId.put(feedId,pattern);
+    patternsForFeedId.put(pattern.getFeedId(),pattern);
     patternsForRoute.put(pattern.route,pattern);
     for (    Trip trip : pattern.getTrips()) {
       patternForTrip.put(trip,pattern);
