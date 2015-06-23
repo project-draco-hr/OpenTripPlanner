@@ -1,6 +1,6 @@
 {
   boolean success=false;
-  TripPattern pattern=buffer.getLastAddedTripPattern(tripId,serviceDate);
+  TripPattern pattern=buffer.getLastAddedTripPattern(feedId,tripId,serviceDate);
   if (pattern != null) {
     Timetable timetable=buffer.resolve(pattern,serviceDate);
     int tripIndex=timetable.getTripIndex(tripId);
@@ -10,7 +10,7 @@
  else {
       TripTimes newTripTimes=new TripTimes(timetable.getTripTimes(tripIndex));
       newTripTimes.cancel();
-      buffer.update(pattern,newTripTimes,serviceDate);
+      buffer.update(feedId,pattern,newTripTimes,serviceDate);
       success=true;
     }
   }

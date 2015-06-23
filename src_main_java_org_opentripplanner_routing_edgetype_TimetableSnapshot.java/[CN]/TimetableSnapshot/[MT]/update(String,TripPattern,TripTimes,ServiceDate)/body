@@ -27,7 +27,7 @@
   if (tripIndex == -1) {
     tt.addTripTimes(updatedTripTimes);
     String tripId=updatedTripTimes.trip.getId().getId();
-    TripIdAndServiceDate tripIdAndServiceDate=new TripIdAndServiceDate(tripId,serviceDate);
+    TripIdAndServiceDate tripIdAndServiceDate=new TripIdAndServiceDate(feedId,tripId,serviceDate);
     lastAddedTripPattern.put(tripIdAndServiceDate,pattern);
   }
  else {

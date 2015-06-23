@@ -6,7 +6,7 @@
   bufferLock.lock();
   try {
     if (fullDataset) {
-      buffer.clear();
+      buffer.clear(feedId);
     }
     LOG.info("message contains {} trip updates",updates.size());
     int uIndex=0;

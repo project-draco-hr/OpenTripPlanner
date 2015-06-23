@@ -61,6 +61,6 @@
     newTripTimes.updateDepartureTime(stopIndex,newTripTimes.getScheduledDepartureTime(stopIndex));
   }
   newTripTimes.serviceCode=serviceCode;
-  boolean success=buffer.update(pattern,newTripTimes,serviceDate);
+  boolean success=buffer.update(feedId,pattern,newTripTimes,serviceDate);
   return success;
 }

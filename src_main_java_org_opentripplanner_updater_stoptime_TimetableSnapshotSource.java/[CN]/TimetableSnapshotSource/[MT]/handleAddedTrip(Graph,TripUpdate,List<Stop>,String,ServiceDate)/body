@@ -2,7 +2,7 @@
   Preconditions.checkNotNull(stops);
   Preconditions.checkArgument(tripUpdate.getStopTimeUpdateCount() == stops.size(),"number of stop should match the number of stop time updates");
   String tripId=tripUpdate.getTrip().getTripId();
-  cancelPreviouslyAddedTrip(tripId,serviceDate);
+  cancelPreviouslyAddedTrip(feedId,tripId,serviceDate);
   Route route=null;
   if (tripUpdate.getTrip().hasRouteId()) {
     route=getRouteForRouteId(feedId,tripUpdate.getTrip().getRouteId());
@@ -30,6 +30,6 @@
  else {
     trip.setServiceId(serviceIds.iterator().next());
   }
-  boolean success=addTripToGraphAndBuffer(graph,trip,tripUpdate,stops,serviceDate);
+  boolean success=addTripToGraphAndBuffer(feedId,graph,trip,tripUpdate,stops,serviceDate);
   return success;
 }
