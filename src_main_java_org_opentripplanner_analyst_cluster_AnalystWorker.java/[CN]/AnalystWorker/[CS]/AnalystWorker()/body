@@ -9,6 +9,7 @@
   objectMapper.registerModule(AgencyAndIdSerializer.makeModule());
   objectMapper.registerModule(QualifiedModeSetSerializer.makeModule());
   objectMapper.registerModule(JodaLocalDateSerializer.makeModule());
+  objectMapper.registerModule(TraverseModeSetSerializer.makeModule());
   clusterGraphBuilder=new ClusterGraphBuilder(s3Prefix + "-graphs");
   pointSetDatastore=new PointSetDatastore(10,null,false,s3Prefix + "-pointsets");
   HttpParams httpParams=new BasicHttpParams();
