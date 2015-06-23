@@ -7,6 +7,7 @@
   objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES,true);
   objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
   objectMapper.registerModule(AgencyAndIdSerializer.makeModule());
+  objectMapper.registerModule(QualifiedModeSetSerializer.makeModule());
   clusterGraphBuilder=new ClusterGraphBuilder(s3Prefix + "-graphs");
   pointSetDatastore=new PointSetDatastore(10,null,false,s3Prefix + "-pointsets");
   HttpParams httpParams=new BasicHttpParams();
