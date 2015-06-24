@@ -23,5 +23,8 @@
   LOG.debug("Delivery of {} tasks succeeded.",tasks.size());
   nUndeliveredTasks-=tasks.size();
   job.markTasksDelivered(tasks);
+  for (  AnalystClusterRequest task : tasks) {
+    deliveredTasks.put(task.taskId,task);
+  }
   return true;
 }

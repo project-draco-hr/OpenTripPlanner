@@ -12,9 +12,5 @@
   objectMapper.registerModule(TraverseModeSetSerializer.makeModule());
   clusterGraphBuilder=new ClusterGraphBuilder(s3Prefix + "-graphs");
   pointSetDatastore=new PointSetDatastore(10,null,false,s3Prefix + "-pointsets");
-  HttpParams httpParams=new BasicHttpParams();
-  HttpConnectionParams.setConnectionTimeout(httpParams,POLL_TIMEOUT);
-  HttpConnectionParams.setSoTimeout(httpParams,POLL_TIMEOUT);
-  HttpConnectionParams.setSoKeepalive(httpParams,true);
-  httpClient.setParams(httpParams);
+  int timeout=10 * 1000;
 }
