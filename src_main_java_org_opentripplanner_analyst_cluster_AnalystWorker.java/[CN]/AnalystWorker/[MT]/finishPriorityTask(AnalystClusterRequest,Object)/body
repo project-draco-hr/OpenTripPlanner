@@ -1,5 +1,5 @@
 {
-  String url=BROKER_BASE_URL + String.format("/priority/%s",clusterRequest.taskId);
+  String url=BROKER_BASE_URL + String.format("/complete/priority/%s",clusterRequest.taskId);
   HttpPost httpPost=new HttpPost(url);
   try {
     byte[] serializedResult=objectMapper.writeValueAsBytes(result);
@@ -13,7 +13,7 @@
       LOG.info("Task {} was not marked as completed because it doesn't exist.",clusterRequest.taskId);
     }
  else {
-      LOG.info("Failed to mark task {} as completed.",clusterRequest.taskId);
+      LOG.info("Failed to mark task {} as completed, ({}).",clusterRequest.taskId,response.getStatusLine());
     }
   }
  catch (  Exception e) {

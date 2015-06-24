@@ -1,9 +1,9 @@
 {
-  String url=BROKER_BASE_URL + "/" + graphId;
-  HttpGet httpGet=new HttpGet(url);
+  String url=BROKER_BASE_URL + "/dequeue/" + graphId;
+  HttpPost httpPost=new HttpPost(url);
   HttpResponse response=null;
   try {
-    response=httpClient.execute(httpGet);
+    response=httpClient.execute(httpPost);
     HttpEntity entity=response.getEntity();
     if (entity == null) {
       return null;
