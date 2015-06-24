@@ -10,6 +10,7 @@
   objectMapper.registerModule(QualifiedModeSetSerializer.makeModule());
   objectMapper.registerModule(JodaLocalDateSerializer.makeModule());
   objectMapper.registerModule(TraverseModeSetSerializer.makeModule());
+  objectMapper.registerModule(new GeoJsonModule());
   clusterGraphBuilder=new ClusterGraphBuilder(s3Prefix + "-graphs");
   pointSetDatastore=new PointSetDatastore(10,null,false,s3Prefix + "-pointsets");
   int timeout=10 * 1000;
