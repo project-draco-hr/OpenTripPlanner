@@ -1,0 +1,8 @@
+{
+  WorkerObservation observation=new WorkerObservation(workerId,graphAffinity);
+  WorkerObservation oldObservation=observationsByWorkerId.put(workerId,observation);
+  if (oldObservation != null) {
+    workersByGraph.remove(oldObservation.graphAffinity,workerId);
+  }
+  workersByGraph.put(graphAffinity,workerId);
+}
