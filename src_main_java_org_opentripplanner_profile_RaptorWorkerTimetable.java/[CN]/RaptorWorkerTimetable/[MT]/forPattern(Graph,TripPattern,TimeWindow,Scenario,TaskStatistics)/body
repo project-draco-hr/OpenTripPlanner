@@ -49,6 +49,7 @@
     }
     rwtt.timesPerTrip[t++]=times;
   }
+  ts.scheduledTripCount+=rwtt.timesPerTrip.length;
   rwtt.frequencyTrips=new int[freqs.size()][pattern.getStops().size() * 2];
   rwtt.endTimes=new int[freqs.size()];
   rwtt.startTimes=new int[freqs.size()];
@@ -59,6 +60,7 @@
       rwtt.headwaySecs[i]=fe.headway;
       rwtt.startTimes[i]=fe.startTime;
       rwtt.endTimes[i]=fe.endTime;
+      ts.frequencyTripCount+=fe.numTrips();
       int[] times=rwtt.frequencyTrips[i];
       int startTime=fe.tripTimes.getArrivalTime(0);
       for (int s=0; s < fe.tripTimes.getNumStops(); s++) {
@@ -68,5 +70,6 @@
       i++;
     }
   }
+  ts.frequencyEntryCount+=rwtt.getFrequencyTripCount();
   return rwtt;
 }

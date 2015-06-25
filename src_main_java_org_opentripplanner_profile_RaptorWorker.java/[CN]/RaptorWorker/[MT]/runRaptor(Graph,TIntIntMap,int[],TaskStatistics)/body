@@ -11,7 +11,9 @@
   }
   PropagatedTimesStore propagatedTimesStore=new PropagatedTimesStore(graph,data.nTargets);
   int iterations=(req.toTime - req.fromTime - 60) / 60 + 1;
+  ts.searchCount=iterations;
   int[][] timesAtTargetsEachMinute=new int[iterations][data.nTargets];
+  ts.timeStep=60;
   for (int departureTime=req.toTime - 60, n=0; departureTime >= req.fromTime; departureTime-=60, n++) {
     if (n % 15 == 0) {
       LOG.info("minute {}",n);
@@ -42,6 +44,8 @@
   LOG.info("calc time {}sec",calcTime / 1000.0);
   LOG.info("  propagation {}sec",totalPropagationTime / 1000.0);
   LOG.info("  raptor {}sec",(calcTime - totalPropagationTime) / 1000.0);
+  ts.propagation=(int)totalPropagationTime;
+  ts.transitSearch=(int)(calcTime - totalPropagationTime);
   propagatedTimesStore.setFromArray(timesAtTargetsEachMinute);
   return propagatedTimesStore;
 }

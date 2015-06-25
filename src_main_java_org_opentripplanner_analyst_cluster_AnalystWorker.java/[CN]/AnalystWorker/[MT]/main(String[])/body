@@ -1,3 +1,10 @@
 {
-  new AnalystWorker().run();
+  TaskStatisticsStore tss;
+  if (args.length == 1)   tss=new SQSTaskStatisticsStore(args[0]);
+ else   tss=new TaskStatisticsStore(){
+    @Override public void store(    TaskStatistics ts){
+    }
+  }
+;
+  new AnalystWorker(tss).run();
 }

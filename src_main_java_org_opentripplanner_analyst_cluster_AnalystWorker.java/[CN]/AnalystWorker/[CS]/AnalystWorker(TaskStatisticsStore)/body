@@ -13,5 +13,6 @@
   objectMapper.registerModule(new GeoJsonModule());
   clusterGraphBuilder=new ClusterGraphBuilder(s3Prefix + "-graphs");
   pointSetDatastore=new PointSetDatastore(10,null,false,s3Prefix + "-pointsets");
-  int timeout=10 * 1000;
+  this.statsStore=statsStore;
+  instanceType=getInstanceType();
 }
