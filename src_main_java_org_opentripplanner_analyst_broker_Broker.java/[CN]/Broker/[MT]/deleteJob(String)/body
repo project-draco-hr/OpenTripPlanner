@@ -1,0 +1,6 @@
+{
+  Job job=findJob(jobId);
+  if (job == null)   return false;
+  nUndeliveredTasks-=job.visibleTasks.size();
+  return jobs.remove(job);
+}
