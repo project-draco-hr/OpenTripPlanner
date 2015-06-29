@@ -9,7 +9,6 @@
   assertEquals(2,places[7].length);
   assertEquals(2,places[8].length);
   if (type == Type.FORWARD || type == Type.BACKWARD) {
-    assertEquals("Vertex 0",places[0][0].name);
     assertEquals(0,places[0][0].lon,0.0);
     assertEquals(0,places[0][0].lat,0.0);
     assertNull(places[0][0].stopIndex);
@@ -199,7 +198,6 @@
   assertNull(places[6][0].orig);
   assertEquals(53000L,places[6][0].arrival.getTimeInMillis());
   assertEquals(53000L,places[6][0].departure.getTimeInMillis());
-  assertEquals("Vertex 50",places[6][1].name);
   assertEquals(90,places[6][1].lon,0.0);
   assertEquals(90,places[6][1].lat,0.0);
   assertNull(places[6][1].stopIndex);
@@ -210,7 +208,6 @@
   assertNull(places[6][1].orig);
   assertEquals(55000L,places[6][1].arrival.getTimeInMillis());
   assertEquals(55000L,places[6][1].departure.getTimeInMillis());
-  assertEquals("Vertex 52",places[7][0].name);
   assertEquals(90,places[7][0].lon,0.0);
   assertEquals(90,places[7][0].lat,0.0);
   assertNull(places[7][0].stopIndex);
@@ -243,7 +240,6 @@
   assertNull(places[8][0].orig);
   assertEquals(57000L,places[8][0].arrival.getTimeInMillis());
   assertEquals(57000L,places[8][0].departure.getTimeInMillis());
-  assertEquals("Vertex 60",places[8][1].name);
   assertEquals(0,places[8][1].lon,0.0);
   assertEquals(90,places[8][1].lat,0.0);
   assertNull(places[8][1].stopIndex);

@@ -1,0 +1,7 @@
+{
+  Map<String,String> descriptionForScenarioId=new HashMap<>();
+  for (  String scenarioId : scenarios.keySet()) {
+    descriptionForScenarioId.put(scenarioId,scenarios.get(scenarioId).description);
+  }
+  return descriptionForScenarioId;
+}

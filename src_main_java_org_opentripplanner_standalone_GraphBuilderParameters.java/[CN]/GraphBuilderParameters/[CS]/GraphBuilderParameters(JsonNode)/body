@@ -3,13 +3,17 @@
   transit=config.path("transit").asBoolean(true);
   useTransfersTxt=config.path("useTransfersTxt").asBoolean(false);
   parentStopLinking=config.path("parentStopLinking").asBoolean(false);
-  stationTransfers=config.path("parentStationTransfers").asBoolean(false);
+  stationTransfers=config.path("stationTransfers").asBoolean(false);
   subwayAccessTime=config.path("subwayAccessTime").asDouble(DEFAULT_SUBWAY_ACCESS_TIME);
   streets=config.path("streets").asBoolean(true);
   embedRouterConfig=config.path("embedRouterConfig").asBoolean(true);
   areaVisibility=config.path("areaVisibility").asBoolean(false);
   matchBusRoutesToStreets=config.path("matchBusRoutesToStreets").asBoolean(false);
   fetchElevationUS=config.path("fetchElevationUS").asBoolean(false);
+  elevationBucket=S3BucketConfig.fromConfig(config.path("elevationBucket"));
   fareServiceFactory=DefaultFareServiceFactory.fromConfig(config.path("fares"));
   customNamer=CustomNamer.CustomNamerFactory.fromConfig(config.path("osmNaming"));
+  staticBikeRental=config.path("staticBikeRental").asBoolean(false);
+  staticParkAndRide=config.path("staticParkAndRide").asBoolean(true);
+  staticBikeParkAndRide=config.path("staticBikeParkAndRide").asBoolean(false);
 }

@@ -1,0 +1,39 @@
+{
+  long computationStartTime=System.currentTimeMillis();
+  LOG.info("Begin profile request");
+  LOG.info("Finding initial stops");
+  TObjectIntMap<TransitStop> accessTimes=findInitialStops(false);
+  LOG.info("Found {} initial transit stops",accessTimes.size());
+  LOG.info("Make data...");
+  TimeWindow window=new TimeWindow(request.fromTime,request.toTime + RaptorWorker.MAX_DURATION,graph.index.servicesRunning(request.date));
+  Set<String> bannedRoutes=request.bannedRoutes == null ? null : new HashSet<String>(request.bannedRoutes);
+  RaptorWorkerData raptorWorkerData;
+  if (sampleSet == null)   raptorWorkerData=new RaptorWorkerData(graph,window,bannedRoutes);
+ else   raptorWorkerData=new RaptorWorkerData(graph,window,bannedRoutes,sampleSet);
+  LOG.info("Done.");
+  int[] timesAtVertices=new int[Vertex.getMaxIndex()];
+  Arrays.fill(timesAtVertices,Integer.MAX_VALUE);
+  for (  State state : walkOnlySpt.getAllStates()) {
+    int time=(int)(state.getWalkDistance() / request.walkSpeed);
+    int vidx=state.getVertex().getIndex();
+    int otime=timesAtVertices[vidx];
+    if (otime > time)     timesAtVertices[vidx]=time;
+  }
+  int[] walkTimes;
+  if (sampleSet == null) {
+    walkTimes=timesAtVertices;
+  }
+ else {
+    walkTimes=sampleSet.eval(timesAtVertices);
+  }
+  RaptorWorker worker=new RaptorWorker(raptorWorkerData,request);
+  propagatedTimesStore=worker.runRaptor(graph,accessTimes,walkTimes);
+  if (sampleSet == null) {
+    timeSurfaceRangeSet=new TimeSurface.RangeSet();
+    timeSurfaceRangeSet.min=new TimeSurface(this);
+    timeSurfaceRangeSet.avg=new TimeSurface(this);
+    timeSurfaceRangeSet.max=new TimeSurface(this);
+    propagatedTimesStore.makeSurfaces(timeSurfaceRangeSet);
+  }
+  LOG.info("Profile request finished in {} seconds",(System.currentTimeMillis() - computationStartTime) / 1000.0);
+}

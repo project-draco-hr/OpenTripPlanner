@@ -1,8 +1,8 @@
 {
-  if (!modes.isTransit()) {
-    return Double.MAX_VALUE;
+  if (modes.isTransit() || (batch && !softWalkLimiting)) {
+    return maxWalkDistance;
   }
  else {
-    return maxWalkDistance;
+    return Double.MAX_VALUE;
   }
 }

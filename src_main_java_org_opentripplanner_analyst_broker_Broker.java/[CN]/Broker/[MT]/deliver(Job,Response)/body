@@ -1,0 +1,27 @@
+{
+  if (!response.getRequest().getRequest().getConnection().isOpen()) {
+    LOG.debug("Consumer connection was closed. It will be removed.");
+    return false;
+  }
+  List<AnalystClusterRequest> tasks=new ArrayList<>();
+  while (tasks.size() < 4 && !job.visibleTasks.isEmpty()) {
+    tasks.add(job.visibleTasks.poll());
+  }
+  try {
+    response.setStatus(HttpStatus.OK_200);
+    OutputStream out=response.getOutputStream();
+    mapper.writeValue(out,tasks);
+    response.resume();
+  }
+ catch (  IOException e) {
+    LOG.debug("Consumer connection caused IO error, it will be removed.");
+    response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR_500);
+    response.resume();
+    job.visibleTasks.addAll(tasks);
+    return false;
+  }
+  LOG.debug("Delivery of {} tasks succeeded.",tasks.size());
+  nUndeliveredTasks-=tasks.size();
+  job.markTasksDelivered(tasks);
+  return true;
+}

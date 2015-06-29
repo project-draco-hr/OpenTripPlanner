@@ -1,0 +1,11 @@
+{
+  LineString geometry=edge.getGeometry();
+  Coordinate splitPoint=ll.getCoordinate(geometry);
+  SplitterVertex v=new SplitterVertex(graph,"split from " + edge.getId(),splitPoint.x,splitPoint.y);
+  P2<StreetEdge> edges=edge.split(v);
+  idx.insert(edges.first.getGeometry().getEnvelopeInternal(),edges.first);
+  idx.insert(edges.second.getGeometry().getEnvelopeInternal(),edges.second);
+  edge.getToVertex().removeIncoming(edge);
+  edge.getFromVertex().removeOutgoing(edge);
+  return v;
+}

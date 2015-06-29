@@ -1,0 +1,6 @@
+{
+  if (!(e instanceof TemporaryEdge)) {
+    throw new UnsupportedOperationException("Can't add permanent edge to temporary sample vertex.");
+  }
+  super.addOutgoing(e);
+}

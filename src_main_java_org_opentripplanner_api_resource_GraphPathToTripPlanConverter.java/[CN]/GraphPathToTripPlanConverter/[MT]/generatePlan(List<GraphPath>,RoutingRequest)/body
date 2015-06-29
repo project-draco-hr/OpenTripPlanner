@@ -1,9 +1,10 @@
 {
+  Locale requestedLocale=request.locale;
   GraphPath exemplar=paths.get(0);
   Vertex tripStartVertex=exemplar.getStartVertex();
   Vertex tripEndVertex=exemplar.getEndVertex();
-  String startName=tripStartVertex.getName();
-  String endName=tripEndVertex.getName();
+  String startName=tripStartVertex.getName(requestedLocale);
+  String endName=tripEndVertex.getName(requestedLocale);
   if (startName == null) {
     startName=tripStartVertex.getLabel();
   }
@@ -16,7 +17,7 @@
   to.orig=request.to.name;
   TripPlan plan=new TripPlan(from,to,request.getDateTime());
   for (  GraphPath path : paths) {
-    Itinerary itinerary=generateItinerary(path,request.showIntermediateStops);
+    Itinerary itinerary=generateItinerary(path,request.showIntermediateStops,requestedLocale);
     itinerary=adjustItinerary(request,itinerary);
     plan.addItinerary(itinerary);
   }

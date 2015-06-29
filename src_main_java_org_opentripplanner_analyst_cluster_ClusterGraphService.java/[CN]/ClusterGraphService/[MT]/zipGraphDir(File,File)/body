@@ -1,0 +1,18 @@
+{
+  FileOutputStream fileOutputStream=new FileOutputStream(zipGraphFile);
+  ZipOutputStream zipOutputStream=new ZipOutputStream(fileOutputStream);
+  byte[] buffer=new byte[1024];
+  for (  File f : graphDirectory.listFiles()) {
+    if (f.isDirectory())     continue;
+    ZipEntry zipEntry=new ZipEntry(f.getName());
+    zipOutputStream.putNextEntry(zipEntry);
+    FileInputStream fileInput=new FileInputStream(f);
+    int len;
+    while ((len=fileInput.read(buffer)) > 0) {
+      zipOutputStream.write(buffer,0,len);
+    }
+    fileInput.close();
+    zipOutputStream.closeEntry();
+  }
+  zipOutputStream.close();
+}

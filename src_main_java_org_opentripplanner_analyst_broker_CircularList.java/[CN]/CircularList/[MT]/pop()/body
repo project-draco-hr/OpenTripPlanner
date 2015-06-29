@@ -1,0 +1,15 @@
+{
+  if (head == null) {
+    return null;
+  }
+  T element=head.element;
+  if (head == head.next) {
+    head=null;
+  }
+ else {
+    head.prev.next=head.next;
+    head.next.prev=head.prev;
+    head=head.next;
+  }
+  return element;
+}

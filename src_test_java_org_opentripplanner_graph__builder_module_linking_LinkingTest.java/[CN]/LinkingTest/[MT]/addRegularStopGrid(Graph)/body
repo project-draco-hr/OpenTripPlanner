@@ -1,0 +1,17 @@
+{
+  int count=0;
+  for (double lat=39.9058; lat < 40.0281; lat+=0.005) {
+    for (double lon=-83.1341; lon < -82.8646; lon+=0.005) {
+      String id="" + count++;
+      AgencyAndId aid=new AgencyAndId("TEST",id);
+      Stop stop=new Stop();
+      stop.setLat(lat);
+      stop.setLon(lon);
+      stop.setName(id);
+      stop.setCode(id);
+      stop.setId(aid);
+      new TransitStop(g,stop);
+      count++;
+    }
+  }
+}

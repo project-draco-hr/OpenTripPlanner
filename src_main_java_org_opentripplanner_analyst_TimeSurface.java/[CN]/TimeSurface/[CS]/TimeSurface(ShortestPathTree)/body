@@ -1,27 +1,3 @@
 {
-  params=spt.getOptions().parameters;
-  String routerId=spt.getOptions().routerId;
-  if (routerId == null || routerId.isEmpty() || routerId.equalsIgnoreCase("default")) {
-    routerId="default";
-  }
-  this.routerId=routerId;
-  long t0=System.currentTimeMillis();
-  for (  State state : spt.getAllStates()) {
-    Vertex vertex=state.getVertex();
-    if (vertex instanceof StreetVertex || vertex instanceof TransitStop) {
-      int existing=times.get(vertex);
-      int t=(int)state.getActiveTime();
-      if (existing == UNREACHABLE || existing > t) {
-        times.put(vertex,t);
-      }
-    }
-  }
-  GenericLocation from=spt.getOptions().from;
-  this.lon=from.lng;
-  this.lat=from.lat;
-  this.id=makeUniqueId();
-  this.dateTime=spt.getOptions().dateTime;
-  long t1=System.currentTimeMillis();
-  LOG.info("Made TimeSurface from SPT in {} msec.",(int)(t1 - t0));
-  makeSampleGrid(spt);
+  this(spt,true);
 }

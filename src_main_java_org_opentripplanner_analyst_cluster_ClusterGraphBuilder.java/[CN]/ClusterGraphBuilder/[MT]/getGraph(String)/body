@@ -1,0 +1,46 @@
+{
+  LOG.info("Finding a graph for ID {}",graphId);
+  if (graphId.equals(currGraphId)) {
+    LOG.info("GraphID has not changed. Reusing the last graph that was built.");
+    return currGraph;
+  }
+  File graphDataDirectory=new File(GRAPH_CACHE_DIR,graphId);
+  if (!graphDataDirectory.exists()) {
+    LOG.info("Downloading graph input files.");
+    graphDataDirectory.mkdirs();
+    S3Object graphDataZipObject=s3.getObject(graphBucket,graphId + ".zip");
+    ZipInputStream zis=new ZipInputStream(graphDataZipObject.getObjectContent());
+    try {
+      ZipEntry entry;
+      while ((entry=zis.getNextEntry()) != null) {
+        File entryDestination=new File(graphDataDirectory,entry.getName());
+        entryDestination.getParentFile().mkdirs();
+        if (entry.isDirectory())         entryDestination.mkdirs();
+ else {
+          OutputStream entryFileOut=new FileOutputStream(entryDestination);
+          IOUtils.copy(zis,entryFileOut);
+          entryFileOut.close();
+        }
+      }
+      zis.close();
+    }
+ catch (    Exception e) {
+      e.printStackTrace();
+    }
+  }
+ else {
+    LOG.info("Graph input files were found locally. Using these files from the cache.");
+  }
+  CommandLineParameters params=new CommandLineParameters();
+  params.build=new File(GRAPH_CACHE_DIR,graphId);
+  params.inMemory=true;
+  GraphBuilder graphBuilder=GraphBuilder.forDirectory(params,params.build);
+  graphBuilder.run();
+  Graph graph=graphBuilder.getGraph();
+  graph.routerId=graphId;
+  graph.index(new DefaultStreetVertexIndexFactory());
+  graph.index.clusterStopsAsNeeded();
+  this.currGraphId=graphId;
+  this.currGraph=graph;
+  return graph;
+}

@@ -2,7 +2,7 @@
   gridCoverageFactory.setGraph(graph);
   Coverage gridCov=gridCoverageFactory.getGridCoverage();
   coverage=(gridCov instanceof GridCoverage2D) ? Interpolator2D.create((GridCoverage2D)gridCov,new InterpolationBilinear()) : gridCov;
-  log.info("setting street elevation profiles from NED data...");
+  log.info("Setting street elevation profiles from digital elevation model...");
   List<StreetEdge> edgesWithElevation=new ArrayList<StreetEdge>();
   int nProcessed=0;
   int nTotal=graph.countEdges();
@@ -15,7 +15,14 @@
           edgesWithElevation.add(edgeWithElevation);
         }
         nProcessed+=1;
-        if (nProcessed % 50000 == 0)         log.info("set elevation on {}/{} edges",nProcessed,nTotal);
+        if (nProcessed % 50000 == 0) {
+          log.info("set elevation on {}/{} edges",nProcessed,nTotal);
+          double failurePercentage=nPointsOutsideDEM / nPointsEvaluated * 100;
+          if (failurePercentage > 50) {
+            log.warn("Fetching elevation failed at {}/{} points ({}%)",nPointsOutsideDEM,nPointsEvaluated,failurePercentage);
+            log.warn("Elevation is missing at a large number of points. DEM may be for the wrong region. " + "If it is unprojected, perhaps the axes are not in (longitude, latitude) order.");
+          }
+        }
       }
     }
   }
