@@ -7,11 +7,13 @@
     }
   }
   LOG.info("Make data...");
+  long startData=System.currentTimeMillis();
   DayOfWeek dayOfWeek=DayOfWeek.of(request.date.getDayOfWeek());
   TimeWindow window=new TimeWindow(request.fromTime,request.toTime + RaptorWorker.MAX_DURATION,graph.index.servicesRunning(request.date),dayOfWeek);
   RaptorWorkerData raptorWorkerData;
   if (sampleSet == null)   raptorWorkerData=new RaptorWorkerData(graph,window,request.scenario,ts);
  else   raptorWorkerData=new RaptorWorkerData(graph,window,request.scenario,sampleSet,ts);
+  ts.raptorData=(int)(System.currentTimeMillis() - startData);
   LOG.info("Done.");
   long initialStopStart=System.currentTimeMillis();
   LOG.info("Finding initial stops");
