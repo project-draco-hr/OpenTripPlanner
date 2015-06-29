@@ -4,10 +4,10 @@
   if (areaWayIds.contains(wayId)) {
     areaWaysById.put(wayId,way);
   }
-  applyLevelsForWay(way);
   if (!(OSMFilter.isWayRoutable(way) || way.isParkAndRide() || way.isBikeParking())) {
     return;
   }
+  applyLevelsForWay(way);
   if ((way.isTag("area","yes") || way.isTag("amenity","parking") || way.isTag("amenity","bicycle_parking")) && way.getNodeRefs().size() > 2) {
     if (!areaWayIds.contains(wayId)) {
       singleWayAreas.add(way);
