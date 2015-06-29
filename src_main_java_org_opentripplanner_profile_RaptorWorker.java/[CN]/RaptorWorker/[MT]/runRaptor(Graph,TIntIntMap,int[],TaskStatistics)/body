@@ -22,7 +22,15 @@
     long beginPropagationTime=System.currentTimeMillis();
     int[] timesAtTargets=timesAtTargetsEachMinute[n];
     System.arraycopy(walkTimes,0,timesAtTargets,0,timesAtTargets.length);
-    for (int s=0; s < data.nStops; s++) {
+    if (n > 0) {
+      int[] timesAtTargetsNextMinute=timesAtTargetsEachMinute[n - 1];
+      for (int i=0; i < timesAtTargets.length; i++) {
+        if (timesAtTargetsNextMinute[i] != UNREACHED && timesAtTargetsNextMinute[i] + 60 < timesAtTargets[i]) {
+          timesAtTargets[i]=timesAtTargetsNextMinute[i] + 60;
+        }
+      }
+    }
+    for (int s=allStopsTouched.nextSetBit(0); s >= 0; s=allStopsTouched.nextSetBit(s + 1)) {
       int baseTimeSeconds=bestNonTransferTimes[s];
       if (baseTimeSeconds != UNREACHED) {
         baseTimeSeconds-=departureTime;

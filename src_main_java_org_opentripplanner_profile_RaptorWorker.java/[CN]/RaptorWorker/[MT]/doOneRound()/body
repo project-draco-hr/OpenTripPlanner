@@ -32,6 +32,7 @@
         if (bestNonTransferTimes[stopIndex] > remainOnBoardTime) {
           bestNonTransferTimes[stopIndex]=remainOnBoardTime;
           stopsTouched.set(stopIndex);
+          allStopsTouched.set(stopIndex);
           if (bestTimes[stopIndex] > remainOnBoardTime)           bestTimes[stopIndex]=remainOnBoardTime;
         }
       }
@@ -52,6 +53,7 @@
         if (arrivalTime < max_time && arrivalTime < bestNonTransferTimes[stopIndex]) {
           bestNonTransferTimes[stopIndex]=arrivalTime;
           stopsTouched.set(stopIndex);
+          allStopsTouched.set(stopIndex);
           if (arrivalTime < bestTimes[stopIndex])           bestTimes[stopIndex]=arrivalTime;
         }
         while (onTrip > 0) {
