@@ -1,0 +1,18 @@
+{
+  Map<String,ResultEnvelope> exploded=new HashMap<String,ResultEnvelope>();
+  for (  String attr : (pointEstimate != null ? pointEstimate : avgCase).histograms.keySet()) {
+    ResultEnvelope env=new ResultEnvelope();
+    for (    Which which : Which.values()) {
+      ResultSet orig=this.get(which);
+      if (orig != null) {
+        ResultSet rs=new ResultSet();
+        rs.id=orig.id;
+        rs.histograms.put(attr,orig.histograms.get(attr));
+        env.put(which,rs);
+        env.id=this.id;
+      }
+    }
+    exploded.put(attr,env);
+  }
+  return exploded;
+}

@@ -13,7 +13,9 @@
   int nLinkableStops=0;
   for (  TransitStop ts0 : Iterables.filter(graph.getVertices(),TransitStop.class)) {
     if (!ts0.isStreetLinkable())     continue;
-    nLinkableStops+=1;
+    if (++nLinkableStops % 1000 == 0) {
+      LOG.info("Linked {} stops",nLinkableStops);
+    }
     LOG.debug("Linking stop '{}' {}",ts0.getStop(),ts0);
     Set<TransitStop> pathwayDestinations=new HashSet<TransitStop>();
     for (    Edge e : ts0.getOutgoing()) {

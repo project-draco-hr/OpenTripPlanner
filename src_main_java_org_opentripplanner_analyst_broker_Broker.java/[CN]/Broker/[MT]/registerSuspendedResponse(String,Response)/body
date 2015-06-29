@@ -1,0 +1,18 @@
+{
+  String workerId=response.getRequest().getHeader(AnalystWorker.WORKER_ID_HEADER);
+  if (workerId != null && !workerId.isEmpty()) {
+    workerCatalog.catalog(workerId,graphId);
+  }
+ else {
+    LOG.error("Worker did not supply a unique ID for itself . Ignoring it.");
+    return;
+  }
+  Deque<Response> deque=consumersByGraph.get(graphId);
+  if (deque == null) {
+    deque=new ArrayDeque<>();
+    consumersByGraph.put(graphId,deque);
+  }
+  deque.addLast(response);
+  nWaitingConsumers+=1;
+  notify();
+}

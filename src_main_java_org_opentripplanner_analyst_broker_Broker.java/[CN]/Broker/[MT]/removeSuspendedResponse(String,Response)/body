@@ -1,0 +1,13 @@
+{
+  Deque<Response> deque=consumersByGraph.get(graphId);
+  if (deque == null) {
+    return false;
+  }
+  if (deque.remove(response)) {
+    nWaitingConsumers-=1;
+    LOG.debug("Removed closed connection from queue.");
+    logQueueStatus();
+    return true;
+  }
+  return false;
+}
