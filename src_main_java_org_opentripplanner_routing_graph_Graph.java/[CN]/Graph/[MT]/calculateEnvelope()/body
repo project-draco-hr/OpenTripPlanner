@@ -1,0 +1,7 @@
+{
+  this.envelope=new WorldEnvelope();
+  for (  Vertex v : this.getVertices()) {
+    Coordinate c=v.getCoordinate();
+    this.envelope.expandToInclude(c);
+  }
+}
