@@ -1,0 +1,26 @@
+{
+  String routeColor=route.getColor();
+  if (routeColor == null) {
+    return;
+  }
+  String textColor=route.getTextColor();
+  if (textColor != null) {
+    return;
+  }
+  Color routeColorColor=Color.decode("#" + routeColor);
+  float[] colorComponents=routeColorColor.getRGBColorComponents(null);
+  double newRed=0.299 * Math.pow(colorComponents[0],2.0);
+  double newGreen=0.587 * Math.pow(colorComponents[1],2.0);
+  double newBlue=0.114 * Math.pow(colorComponents[2],2.0);
+  double luminance=Math.sqrt(newRed + newGreen + newBlue);
+  if (luminance > 0.5) {
+    textColor="000000";
+  }
+ else {
+    textColor="FFFFFF";
+  }
+  if (!textColor.equals(route.getTextColor())) {
+    LOG.error("Generated text color is: {}, previous is: {}",textColor,route.getTextColor());
+  }
+  route.setTextColor(textColor);
+}
