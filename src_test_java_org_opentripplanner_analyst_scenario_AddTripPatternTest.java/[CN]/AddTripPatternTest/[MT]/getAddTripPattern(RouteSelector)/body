@@ -1,0 +1,13 @@
+{
+  AddTripPattern atp=new AddTripPattern();
+  WKTReader wr=new WKTReader();
+  atp.geometry=sel.getGeometry();
+  atp.name="Broad High Express";
+  atp.stops=new BitSet();
+  for (int i=0; i < 6; i++) {
+    if (i == 3)     atp.stops.clear(i);
+ else     atp.stops.set(i);
+  }
+  atp.timetables=Lists.newArrayList();
+  return atp;
+}

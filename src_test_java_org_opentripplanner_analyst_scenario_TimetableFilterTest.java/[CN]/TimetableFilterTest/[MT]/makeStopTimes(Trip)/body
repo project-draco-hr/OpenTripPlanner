@@ -1,0 +1,18 @@
+{
+  StopTime[] stopTimes=new StopTime[stops.length];
+  int cumulativeTime=7 * 3600;
+  for (int i=0; i < stops.length; i++) {
+    Stop stop=stops[i];
+    StopTime st=new StopTime();
+    st.setStop(stop);
+    st.setArrivalTime(cumulativeTime);
+    cumulativeTime+=30;
+    st.setDepartureTime(cumulativeTime);
+    cumulativeTime+=120;
+    st.setPickupType(StopPattern.PICKDROP_SCHEDULED);
+    st.setDropOffType(StopPattern.PICKDROP_SCHEDULED);
+    st.setTrip(trip);
+    stopTimes[i]=st;
+  }
+  return Arrays.asList(stopTimes);
+}

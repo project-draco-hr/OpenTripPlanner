@@ -1,0 +1,31 @@
+{
+  agency=new Agency();
+  agency.setId("AGENCY");
+  route=new Route();
+  route.setShortName("T");
+  route.setLongName("TEST");
+  route.setAgency(agency);
+  route.setId(new AgencyAndId(agency.getId(),"TEST"));
+  trip=new Trip();
+  trip.setRoute(route);
+  trip.setId(new AgencyAndId(agency.getId(),"TRIP"));
+  trip2=new Trip();
+  trip2.setRoute(route);
+  trip2.setId(new AgencyAndId(agency.getId(),"TRIP2"));
+  stops=new Stop[4];
+  for (int i=0; i < stops.length; i++) {
+    Stop s=new Stop();
+    s.setLat(-122.123);
+    s.setLon(37.363 + i * 0.001);
+    s.setId(new AgencyAndId(agency.getId(),"" + i));
+    stops[i]=s;
+  }
+  StopPattern sp=new StopPattern(makeStopTimes(trip));
+  pattern=new TripPattern(route,sp);
+  times=makeTripTimes(trip);
+  pattern.scheduledTimetable.addTripTimes(times);
+  pattern.scheduledTimetable.addTripTimes(makeTripTimes(trip2));
+  frequencyEntry=new FrequencyEntry(7 * 3600,12 * 3600,600,false,makeTripTimes(trip));
+  pattern.scheduledTimetable.addFrequencyEntry(frequencyEntry);
+  pattern.scheduledTimetable.addFrequencyEntry(new FrequencyEntry(7 * 3600,12 * 3600,600,false,makeTripTimes(trip2)));
+}

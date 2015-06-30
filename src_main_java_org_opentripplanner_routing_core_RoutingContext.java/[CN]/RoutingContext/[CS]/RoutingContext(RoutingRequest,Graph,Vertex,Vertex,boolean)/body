@@ -30,11 +30,11 @@
   if (findPlaces) {
     if (opt.batch) {
       if (opt.arriveBy) {
-        toVertex=graph.streetIndex.getSampleVertexAt(opt.to.getCoordinate());
+        toVertex=graph.streetIndex.getSampleVertexAt(opt.to.getCoordinate(),true);
         fromVertex=null;
       }
  else {
-        fromVertex=graph.streetIndex.getSampleVertexAt(opt.from.getCoordinate());
+        fromVertex=graph.streetIndex.getSampleVertexAt(opt.from.getCoordinate(),false);
         toVertex=null;
       }
     }
