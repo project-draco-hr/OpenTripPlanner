@@ -1,6 +1,7 @@
 {
   String url=BROKER_BASE_URL + "/" + graphId;
   HttpGet httpGet=new HttpGet(url);
+  httpGet.setHeader(new BasicHeader(WORKER_ID_HEADER,workerId));
   HttpResponse response=null;
   try {
     response=httpClient.execute(httpGet);

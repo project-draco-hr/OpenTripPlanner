@@ -11,6 +11,7 @@
   Graph graph=mock(Graph.class);
   RoutingRequest routingRequest=mock(RoutingRequest.class);
   ServiceDay serviceDay=mock(ServiceDay.class);
+  routingRequest.modes=new TraverseModeSet("WALK,TRANSIT");
   when(graph.getTimeZone()).thenReturn(TimeZone.getTimeZone("GMT"));
   GeometryFactory geometryFactory=GeometryUtils.getGeometryFactory();
   CoordinateSequenceFactory coordinateSequenceFactory=geometryFactory.getCoordinateSequenceFactory();
