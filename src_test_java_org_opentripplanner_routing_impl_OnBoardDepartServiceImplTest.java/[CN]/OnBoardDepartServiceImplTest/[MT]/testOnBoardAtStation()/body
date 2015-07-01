@@ -8,6 +8,7 @@
   Graph graph=mock(Graph.class);
   RoutingRequest routingRequest=mock(RoutingRequest.class);
   ServiceDay serviceDay=mock(ServiceDay.class);
+  routingRequest.modes=new TraverseModeSet("WALK,TRANSIT");
   when(graph.getTimeZone()).thenReturn(TimeZone.getTimeZone("GMT"));
   ArrayList<Edge> hops=new ArrayList<Edge>(2);
   RoutingContext routingContext=new RoutingContext(routingRequest,graph,null,arrive);

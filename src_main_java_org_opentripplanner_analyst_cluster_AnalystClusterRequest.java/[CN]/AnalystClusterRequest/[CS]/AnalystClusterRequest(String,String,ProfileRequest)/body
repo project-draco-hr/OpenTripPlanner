@@ -1,0 +1,13 @@
+{
+  this(destinationPointsetId,graphId);
+  routingRequest=null;
+  try {
+    profileRequest=req.clone();
+  }
+ catch (  CloneNotSupportedException e) {
+    throw new AssertionError();
+  }
+  profileRequest.analyst=true;
+  profileRequest.toLat=profileRequest.fromLat;
+  profileRequest.toLon=profileRequest.fromLon;
+}

@@ -1,0 +1,29 @@
+{
+  AddTripPattern atp=getAddTripPattern(RouteSelector.BROAD_HIGH);
+  atp.timetables.add(getTimetable(true));
+  Graph g=buildGraphNoTransit();
+  link(g);
+  g.index(new DefaultStreetVertexIndexFactory());
+  atp.materialize(g);
+  assertEquals(5,atp.temporaryStops.length);
+  for (int i=0; i < atp.temporaryStops.length; i++) {
+    assertNotNull(atp.temporaryStops[i].sample);
+    assertNotNull(atp.temporaryStops[i].sample.v0);
+    assertNotNull(atp.temporaryStops[i].sample.v1);
+  }
+  TimeWindow window=new TimeWindow(7 * 3600,9 * 3600,new BitSet(),DayOfWeek.WEDNESDAY);
+  Scenario scenario=new Scenario(0);
+  scenario.modifications=Lists.newArrayList(atp);
+  RaptorWorkerData data=new RaptorWorkerData(g,window,scenario);
+  assertEquals(5,data.nStops);
+  AStar aStar=new AStar();
+  RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
+  rr.from=new GenericLocation(39.963417,-82.980799);
+  rr.batch=true;
+  rr.setRoutingContext(g);
+  rr.batch=true;
+  ShortestPathTree spt=aStar.getShortestPathTree(rr);
+  TIntIntMap stops=data.findStopsNear(spt,g);
+  assertFalse(stops.isEmpty());
+  assertEquals(4 * 3600 + 600 + 30,data.timetablesForPattern.get(0).getFrequencyDeparture(0,0,39 * 360,true));
+}

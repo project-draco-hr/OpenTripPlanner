@@ -1,0 +1,27 @@
+{
+  if (pointSetId == null)   throw new NullPointerException("null point set id");
+  File renamedPointSetFile=new File(POINT_DIR,pointSetId + ".json");
+  if (renamedPointSetFile.exists())   return pointSetId;
+  FileUtils.copyFile(pointSetFile,renamedPointSetFile);
+  if (!this.workOffline) {
+    try {
+      s3.getObjectMetadata(pointsetBucket,pointSetId + ".json.gz");
+    }
+ catch (    AmazonServiceException e) {
+      FileInputStream fis=new FileInputStream(pointSetFile);
+      File tempFile=File.createTempFile(pointSetId,".json.gz");
+      FileOutputStream fos=new FileOutputStream(tempFile);
+      GZIPOutputStream gos=new GZIPOutputStream(fos);
+      try {
+        ByteStreams.copy(fis,gos);
+      }
+  finally {
+        gos.close();
+        fis.close();
+      }
+      s3.putObject(pointsetBucket,pointSetId + ".json.gz",tempFile);
+      tempFile.delete();
+    }
+  }
+  return pointSetId;
+}

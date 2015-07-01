@@ -1,0 +1,7 @@
+{
+  jsonGenerator.writeStartArray();
+  for (int i=0; i < bitSet.cardinality(); i++) {
+    jsonGenerator.writeBoolean(bitSet.get(i));
+  }
+  jsonGenerator.writeEndArray();
+}

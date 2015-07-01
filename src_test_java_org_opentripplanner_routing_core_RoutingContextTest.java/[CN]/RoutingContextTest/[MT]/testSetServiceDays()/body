@@ -3,6 +3,7 @@
   Graph graph=mock(Graph.class);
   RoutingRequest routingRequest=mock(RoutingRequest.class);
   CalendarService calendarService=mock(CalendarService.class);
+  routingRequest.modes=new TraverseModeSet("WALK,TRANSIT");
   when(graph.getTimeZone()).thenReturn(TimeZone.getTimeZone("Europe/Budapest"));
   when(graph.getCalendarService()).thenReturn(calendarService);
   when(graph.getAgencyIds()).thenReturn(Collections.<String>singletonList(agencyId));

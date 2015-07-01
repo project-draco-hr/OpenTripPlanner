@@ -1,0 +1,16 @@
+{
+  double gridSizeLat=SphericalDistanceLibrary.metersToDegrees(gridSizeMeters);
+  double gridSizeLon=SphericalDistanceLibrary.metersToLonDegrees(gridSizeMeters,(envelope.getMaxY() + envelope.getMinY()) / 2);
+  int npts=(int)(envelope.getHeight() / gridSizeLat + 1) * (int)(envelope.getWidth() / gridSizeLon + 1);
+  PointSet ret=new PointSet(npts);
+  int idx=0;
+  for (double lon=envelope.getMinX(); lon < envelope.getMaxX(); lon+=gridSizeLon) {
+    for (double lat=envelope.getMinY(); lat < envelope.getMaxY(); lat+=gridSizeLat) {
+      PointFeature pf=new PointFeature("" + idx);
+      pf.setLat(lat);
+      pf.setLon(lon);
+      ret.addFeature(pf,idx++);
+    }
+  }
+  return ret;
+}

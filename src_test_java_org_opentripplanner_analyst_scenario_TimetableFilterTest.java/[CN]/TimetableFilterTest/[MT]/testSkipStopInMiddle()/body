@@ -1,0 +1,18 @@
+{
+  SkipStop ss=new SkipStop();
+  ss.routeId=Arrays.asList(route.getId().getId());
+  ss.agencyId=agency.getId();
+  ss.stopId=Arrays.asList(stops[2].getId().getId());
+  Collection<TripPattern> result=ss.apply(pattern);
+  assertEquals(1,result.size());
+  TripPattern newtp=result.iterator().next();
+  assertNotSame(pattern,newtp);
+  assertEquals(2,newtp.scheduledTimetable.tripTimes.size());
+  assertEquals(2,newtp.scheduledTimetable.frequencyEntries.size());
+  assertEquals(3,newtp.stopPattern.size);
+  assertEquals(pattern.scheduledTimetable.tripTimes.get(0).getDepartureTime(0),newtp.scheduledTimetable.tripTimes.get(0).getDepartureTime(0));
+  assertEquals(pattern.scheduledTimetable.tripTimes.get(0).getDepartureTime(3) - 30,newtp.scheduledTimetable.tripTimes.get(0).getDepartureTime(2));
+  assertEquals(pattern.stopPattern.stops[3],newtp.stopPattern.stops[2]);
+  assertEquals(pattern.scheduledTimetable.frequencyEntries.get(0).tripTimes.getDepartureTime(0),newtp.scheduledTimetable.frequencyEntries.get(0).tripTimes.getDepartureTime(0));
+  assertEquals(pattern.scheduledTimetable.frequencyEntries.get(0).tripTimes.getDepartureTime(3) - 30,newtp.scheduledTimetable.frequencyEntries.get(0).tripTimes.getDepartureTime(2));
+}

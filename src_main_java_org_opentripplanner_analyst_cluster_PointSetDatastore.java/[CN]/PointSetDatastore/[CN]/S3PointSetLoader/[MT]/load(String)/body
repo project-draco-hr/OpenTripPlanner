@@ -1,0 +1,22 @@
+{
+  File cachedFile;
+  if (!workOffline) {
+    cachedFile=new File(POINT_DIR,pointSetId + ".json");
+    if (!cachedFile.exists()) {
+      POINT_DIR.mkdirs();
+      S3Object obj=s3.getObject(pointsetBucket,pointSetId + ".json.gz");
+      ObjectMetadata objMet=obj.getObjectMetadata();
+      FileOutputStream fos=new FileOutputStream(cachedFile);
+      GZIPInputStream gis=new GZIPInputStream(obj.getObjectContent());
+      try {
+        ByteStreams.copy(gis,fos);
+      }
+  finally {
+        fos.close();
+        gis.close();
+      }
+    }
+  }
+ else   cachedFile=new File(POINT_DIR,pointSetId + ".json");
+  return PointSet.fromGeoJson(cachedFile);
+}

@@ -1,0 +1,11 @@
+{
+  AdjustHeadway ah=new AdjustHeadway();
+  ah.agencyId=agency.getId();
+  ah.routeId=Arrays.asList(route.getId().getId());
+  ah.headway=120;
+  assertEquals(times,ah.apply(trip,pattern,times));
+  FrequencyEntry fe2=ah.apply(trip,pattern,frequencyEntry);
+  assertNotNull(fe2);
+  assertEquals(120,fe2.headway);
+  assertEquals(600,frequencyEntry.headway);
+}

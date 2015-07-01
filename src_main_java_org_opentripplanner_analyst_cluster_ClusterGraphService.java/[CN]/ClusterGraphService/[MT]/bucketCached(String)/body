@@ -1,0 +1,10 @@
+{
+  File graphData=new File(GRAPH_DIR,graphId);
+  if (!graphData.exists()) {
+    File graphDataZip=new File(GRAPH_DIR,graphId + ".zip");
+    if (graphDataZip.exists()) {
+      zipGraphDir(graphData,graphDataZip);
+    }
+  }
+  return graphData.exists() && graphData.isDirectory();
+}

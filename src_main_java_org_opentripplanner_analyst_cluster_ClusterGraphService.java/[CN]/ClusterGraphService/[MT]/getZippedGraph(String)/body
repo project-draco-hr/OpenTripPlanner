@@ -1,0 +1,23 @@
+{
+  File graphDataDir=new File(GRAPH_DIR,graphId);
+  File graphZipFile=new File(GRAPH_DIR,graphId + ".zip");
+  if (!graphDataDir.exists() && graphDataDir.isDirectory()) {
+    FileOutputStream fileOutputStream=new FileOutputStream(graphZipFile);
+    ZipOutputStream zipOutputStream=new ZipOutputStream(fileOutputStream);
+    byte[] buffer=new byte[1024];
+    for (    File f : graphDataDir.listFiles()) {
+      ZipEntry zipEntry=new ZipEntry(f.getName());
+      zipOutputStream.putNextEntry(zipEntry);
+      FileInputStream fileInput=new FileInputStream(f);
+      int len;
+      while ((len=fileInput.read(buffer)) > 0) {
+        zipOutputStream.write(buffer,0,len);
+      }
+      fileInput.close();
+      zipOutputStream.closeEntry();
+    }
+    zipOutputStream.close();
+    return graphZipFile;
+  }
+  return null;
+}
