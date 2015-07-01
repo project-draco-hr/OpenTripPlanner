@@ -3,8 +3,12 @@
   double tMin=Double.MAX_VALUE;
   double bMin=Double.MAX_VALUE;
   double wdMin=Double.MAX_VALUE;
-  for (  WTWD z : new WTWD[]{zUp,zDown,zRight,zLeft}) {
-    if (z == null)     continue;
+  List<WTWD> zz=new ArrayList<>(4);
+  if (point.up() != null)   zz.add(point.up().getZ());
+  if (point.down() != null)   zz.add(point.down().getZ());
+  if (point.right() != null)   zz.add(point.right().getZ());
+  if (point.left() != null)   zz.add(point.left().getZ());
+  for (  WTWD z : zz) {
     if (z.d < dMin)     dMin=z.d;
     double t=z.wTime / z.w;
     if (t < tMin)     tMin=t;
@@ -19,5 +23,6 @@
   z.wBoardings=bMin;
   z.wWalkDist=wdMin + gridSizeMeters;
   z.d=dMin + gridSizeMeters;
-  return z;
+  point.setZ(z);
+  return dMin > offRoadDistanceMeters;
 }

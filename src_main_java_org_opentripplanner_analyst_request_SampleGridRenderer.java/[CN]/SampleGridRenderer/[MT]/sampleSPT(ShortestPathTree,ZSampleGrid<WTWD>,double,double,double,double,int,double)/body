@@ -1,6 +1,7 @@
 {
-  AccumulativeMetric<WTWD> accMetric=new WTWDAccumulativeMetric(cosLat,d0,offRoadSpeed,gridSizeMeters);
+  AccumulativeMetric<WTWD> accMetric=new WTWDAccumulativeMetric(cosLat,offRoadDistanceMeters,offRoadWalkSpeedMps,gridSizeMeters);
   final AccumulativeGridSampler<WTWD> gridSampler=new AccumulativeGridSampler<WTWD>(sampleGrid,accMetric);
+  double walkerSplitDistanceMeters=gridSizeMeters * 0.5;
   SPTWalker johnny=new SPTWalker(spt);
   johnny.walk(new SPTVisitor(){
     @Override public final boolean accept(    Edge e){
@@ -26,11 +27,11 @@
             z.wBoardings=s1.getNumBoardings();
             z.wWalkDist=s1.getWalkDistance() + d1;
           }
-          gridSampler.addSamplingPoint(c,z,offRoadSpeed);
+          gridSampler.addSamplingPoint(c,z,offRoadWalkSpeedMps);
         }
       }
     }
   }
-,d0);
+,walkerSplitDistanceMeters);
   gridSampler.close();
 }
