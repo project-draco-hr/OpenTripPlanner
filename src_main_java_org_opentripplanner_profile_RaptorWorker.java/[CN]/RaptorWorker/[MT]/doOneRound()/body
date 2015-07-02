@@ -56,14 +56,11 @@
           allStopsTouched.set(stopIndex);
           if (arrivalTime < bestTimes[stopIndex])           bestTimes[stopIndex]=arrivalTime;
         }
-        while (onTrip > 0) {
-          int departureOnPreviousTrip=timetable.getDeparture(onTrip - 1,stopPositionInPattern);
-          if (departureOnPreviousTrip > bestTimes[stopIndex]) {
-            onTrip--;
-          }
- else {
-            break;
-          }
+        int bestTimeAtStop=Math.min(arrivalTime,bestTimes[stopIndex]);
+        int alternateTrip=timetable.findDepartureAfter(stopPositionInPattern,bestTimeAtStop);
+        if (alternateTrip != -1) {
+          int newDeparture=timetable.getDeparture(alternateTrip,stopPositionInPattern);
+          if (newDeparture < timetable.getDeparture(onTrip,stopPositionInPattern))           onTrip=alternateTrip;
         }
       }
     }

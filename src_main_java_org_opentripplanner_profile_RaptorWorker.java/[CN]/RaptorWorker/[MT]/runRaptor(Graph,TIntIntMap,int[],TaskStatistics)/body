@@ -34,6 +34,10 @@
       int baseTimeSeconds=bestNonTransferTimes[s];
       if (baseTimeSeconds != UNREACHED) {
         baseTimeSeconds-=departureTime;
+        if (baseTimeSeconds < 0) {
+          LOG.error("Arrival at a transit stop before search departure!");
+          continue;
+        }
         int[] targets=data.targetsForStop.get(s);
         for (int i=0; i < targets.length; i++) {
           int targetIndex=targets[i++];
