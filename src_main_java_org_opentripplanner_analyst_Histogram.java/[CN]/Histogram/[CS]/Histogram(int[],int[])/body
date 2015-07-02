@@ -1,19 +1,24 @@
 {
   int size=weightingFunctions.length;
+  int maxSecs=Integer.MIN_VALUE;
+  for (  int time : times) {
+    if (time == Integer.MAX_VALUE)     continue;
+    if (time > maxSecs)     maxSecs=time;
+  }
+  int[] binnedCounts=new int[maxSecs + 1];
+  int[] binnedWeights=new int[maxSecs + 1];
+  for (int i=0; i < times.length; i++) {
+    if (times[i] == Integer.MAX_VALUE)     continue;
+    binnedCounts[times[i]]+=1;
+    binnedWeights[times[i]]+=weight[i];
+  }
   double[] tmpCounts=new double[size];
   double[] tmpSums=new double[size];
-  for (int i=0; i < times.length; i++) {
+  for (int i=0; i < binnedCounts.length; i++) {
     for (int j=0; j < weightingFunctions.length; j++) {
-      double w=weightingFunctions[j].getWeight(times[i]);
-      if (w < 1e-10)       continue;
-      if (w < 1 - 1e-10) {
-        tmpCounts[j]+=w;
-        tmpSums[j]+=w * weights[i];
-      }
- else {
-        tmpCounts[j]+=1;
-        tmpSums[j]+=weights[i];
-      }
+      double w=weightingFunctions[j].getWeight(i);
+      tmpCounts[j]+=w * binnedCounts[i];
+      tmpSums[j]+=w * binnedWeights[i];
     }
   }
   counts=new int[size];
