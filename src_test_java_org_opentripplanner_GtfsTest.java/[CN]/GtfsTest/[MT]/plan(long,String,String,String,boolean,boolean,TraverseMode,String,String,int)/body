@@ -5,23 +5,23 @@
   routingRequest.setArriveBy(dateTime < 0);
   routingRequest.dateTime=Math.abs(dateTime);
   if (fromVertex != null && !fromVertex.isEmpty()) {
-    routingRequest.from=(new GenericLocation(null,agencyId + ":" + fromVertex));
+    routingRequest.from=(new GenericLocation(null,feedId.getId() + ":" + fromVertex));
   }
   if (toVertex != null && !toVertex.isEmpty()) {
-    routingRequest.to=new GenericLocation(null,agencyId + ":" + toVertex);
+    routingRequest.to=new GenericLocation(null,feedId.getId() + ":" + toVertex);
   }
   if (onTripId != null && !onTripId.isEmpty()) {
-    routingRequest.startingTransitTripId=(new AgencyAndId(agencyId,onTripId));
+    routingRequest.startingTransitTripId=(new AgencyAndId(feedId.getId(),onTripId));
   }
   routingRequest.setRoutingContext(graph);
   routingRequest.setWheelchairAccessible(wheelchairAccessible);
   routingRequest.transferPenalty=(preferLeastTransfers ? 300 : 0);
   routingRequest.setModes(new TraverseModeSet(TraverseMode.WALK,mode));
   if (excludedRoute != null && !excludedRoute.isEmpty()) {
-    routingRequest.setBannedRoutes(agencyId + "__" + excludedRoute);
+    routingRequest.setBannedRoutes(feedId.getId() + "__" + excludedRoute);
   }
   if (excludedStop != null && !excludedStop.isEmpty()) {
-    routingRequest.setBannedStopsHard(agencyId + ":" + excludedStop);
+    routingRequest.setBannedStopsHard(feedId.getId() + ":" + excludedStop);
   }
   routingRequest.setOtherThanPreferredRoutesPenalty(0);
   routingRequest.setWaitReluctance(1);

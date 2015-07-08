@@ -8,9 +8,11 @@
     LOG.warn("RoutingContext has no CalendarService. Transit will never be boarded.");
     return;
   }
-  for (  String agency : graph.getAgencyIds()) {
-    addIfNotExists(this.serviceDays,new ServiceDay(graph,serviceDate.previous(),calendarService,agency));
-    addIfNotExists(this.serviceDays,new ServiceDay(graph,serviceDate,calendarService,agency));
-    addIfNotExists(this.serviceDays,new ServiceDay(graph,serviceDate.next(),calendarService,agency));
+  for (  String feedId : graph.getFeedIds()) {
+    for (    Agency agency : graph.getAgencies(feedId)) {
+      addIfNotExists(this.serviceDays,new ServiceDay(graph,serviceDate.previous(),calendarService,agency.getId()));
+      addIfNotExists(this.serviceDays,new ServiceDay(graph,serviceDate,calendarService,agency.getId()));
+      addIfNotExists(this.serviceDays,new ServiceDay(graph,serviceDate.next(),calendarService,agency.getId()));
+    }
   }
 }

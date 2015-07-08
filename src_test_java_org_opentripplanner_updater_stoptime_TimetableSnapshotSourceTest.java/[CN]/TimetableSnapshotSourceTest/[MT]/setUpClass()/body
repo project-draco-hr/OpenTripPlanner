@@ -1,5 +1,31 @@
 {
   context=GtfsLibrary.readGtfs(new File(ConstantsForTests.FAKE_GTFS));
+  GtfsRelationalDao dao=context.getDao();
+  feedId=context.getFeedId().getId();
+  for (  ShapePoint shapePoint : dao.getAllEntitiesForType(ShapePoint.class)) {
+    shapePoint.getShapeId().setAgencyId(feedId);
+  }
+  for (  Route route : dao.getAllEntitiesForType(Route.class)) {
+    route.getId().setAgencyId(feedId);
+  }
+  for (  Stop stop : dao.getAllEntitiesForType(Stop.class)) {
+    stop.getId().setAgencyId(feedId);
+  }
+  for (  Trip trip : dao.getAllEntitiesForType(Trip.class)) {
+    trip.getId().setAgencyId(feedId);
+  }
+  for (  ServiceCalendar serviceCalendar : dao.getAllEntitiesForType(ServiceCalendar.class)) {
+    serviceCalendar.getServiceId().setAgencyId(feedId);
+  }
+  for (  ServiceCalendarDate serviceCalendarDate : dao.getAllEntitiesForType(ServiceCalendarDate.class)) {
+    serviceCalendarDate.getServiceId().setAgencyId(feedId);
+  }
+  for (  FareAttribute fareAttribute : dao.getAllEntitiesForType(FareAttribute.class)) {
+    fareAttribute.getId().setAgencyId(feedId);
+  }
+  for (  Pathway pathway : dao.getAllEntitiesForType(Pathway.class)) {
+    pathway.getId().setAgencyId(feedId);
+  }
   GTFSPatternHopFactory factory=new GTFSPatternHopFactory(context);
   factory.run(graph);
   graph.index(new DefaultStreetVertexIndexFactory());

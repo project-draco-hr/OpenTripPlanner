@@ -1,0 +1,39 @@
+{
+  Date startDate=getServiceDateAsNoon(calendar.getStartDate(),timeZone);
+  Date endDate=getServiceDateAsNoon(calendar.getEndDate(),timeZone);
+  java.util.Calendar c=java.util.Calendar.getInstance(timeZone);
+  c.setTime(startDate);
+  while (true) {
+    Date date=c.getTime();
+    if (date.after(endDate))     break;
+    int day=c.get(java.util.Calendar.DAY_OF_WEEK);
+    boolean active=false;
+switch (day) {
+case java.util.Calendar.MONDAY:
+      active=calendar.getMonday() == 1;
+    break;
+case java.util.Calendar.TUESDAY:
+  active=calendar.getTuesday() == 1;
+break;
+case java.util.Calendar.WEDNESDAY:
+active=calendar.getWednesday() == 1;
+break;
+case java.util.Calendar.THURSDAY:
+active=calendar.getThursday() == 1;
+break;
+case java.util.Calendar.FRIDAY:
+active=calendar.getFriday() == 1;
+break;
+case java.util.Calendar.SATURDAY:
+active=calendar.getSaturday() == 1;
+break;
+case java.util.Calendar.SUNDAY:
+active=calendar.getSunday() == 1;
+break;
+}
+if (active) {
+addServiceDate(activeDates,new ServiceDate(c),timeZone);
+}
+c.add(java.util.Calendar.DAY_OF_YEAR,1);
+}
+}

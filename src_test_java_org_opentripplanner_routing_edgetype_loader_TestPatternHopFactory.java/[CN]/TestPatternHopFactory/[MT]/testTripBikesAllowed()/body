@@ -1,8 +1,8 @@
 {
-  Vertex stop_a=graph.getVertex("agency:A");
-  Vertex stop_b=graph.getVertex("agency:B");
-  Vertex stop_c=graph.getVertex("agency:C");
-  Vertex stop_d=graph.getVertex("agency:D");
+  Vertex stop_a=graph.getVertex(feedId + ":A");
+  Vertex stop_b=graph.getVertex(feedId + ":B");
+  Vertex stop_c=graph.getVertex(feedId + ":C");
+  Vertex stop_d=graph.getVertex(feedId + ":D");
   RoutingRequest options=new RoutingRequest();
   options.modes.setWalk(false);
   options.modes.setBicycle(true);

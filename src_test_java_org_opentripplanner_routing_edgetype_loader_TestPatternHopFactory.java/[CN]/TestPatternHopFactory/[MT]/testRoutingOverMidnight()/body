@@ -1,6 +1,6 @@
 {
-  Vertex stop_g=graph.getVertex("agency:G_depart");
-  Vertex stop_h=graph.getVertex("agency:H_arrive");
+  Vertex stop_g=graph.getVertex(feedId + ":G_depart");
+  Vertex stop_h=graph.getVertex(feedId + ":H_arrive");
   ShortestPathTree spt;
   GraphPath path;
   RoutingRequest options=new RoutingRequest();

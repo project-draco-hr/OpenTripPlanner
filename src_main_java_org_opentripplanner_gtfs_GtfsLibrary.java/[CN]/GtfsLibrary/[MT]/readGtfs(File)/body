@@ -1,3 +1,11 @@
 {
-  return readGtfs(path,null);
+  GtfsRelationalDaoImpl dao=new GtfsRelationalDaoImpl();
+  GtfsReader reader=new GtfsReader();
+  reader.setInputLocation(path);
+  reader.setEntityStore(dao);
+  GtfsFeedId feedId=new GtfsFeedId.Builder().fromGtfsFeed(reader.getInputSource()).build();
+  reader.setDefaultAgencyId(feedId.getId());
+  reader.run();
+  CalendarService calendarService=createCalendarService(dao);
+  return new GtfsContextImpl(feedId,dao,calendarService);
 }

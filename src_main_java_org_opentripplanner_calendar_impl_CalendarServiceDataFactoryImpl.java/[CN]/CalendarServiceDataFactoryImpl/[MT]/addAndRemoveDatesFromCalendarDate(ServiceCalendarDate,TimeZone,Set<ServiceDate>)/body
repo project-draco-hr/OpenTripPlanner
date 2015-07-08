@@ -1,0 +1,17 @@
+{
+  ServiceDate serviceDate=calendarDate.getDate();
+  Date targetDate=calendarDate.getDate().getAsDate();
+  Calendar c=Calendar.getInstance();
+  c.setTime(targetDate);
+switch (calendarDate.getExceptionType()) {
+case ServiceCalendarDate.EXCEPTION_TYPE_ADD:
+    addServiceDate(activeDates,serviceDate,serviceIdTimeZone);
+  break;
+case ServiceCalendarDate.EXCEPTION_TYPE_REMOVE:
+activeDates.remove(serviceDate);
+break;
+default :
+_log.warn("unknown CalendarDate exception type: " + calendarDate.getExceptionType());
+break;
+}
+}

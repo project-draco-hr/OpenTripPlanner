@@ -3,6 +3,6 @@
   if (obj == null)   return false;
   if (getClass() != obj.getClass())   return false;
   TripIdAndServiceDate other=(TripIdAndServiceDate)obj;
-  boolean result=Objects.equals(this.tripId,other.tripId) && Objects.equals(this.serviceDate,other.serviceDate);
+  boolean result=Objects.equals(this.tripId,other.tripId) && Objects.equals(this.serviceDate,other.serviceDate) && Objects.equals(this.feedId,other.feedId);
   return result;
 }

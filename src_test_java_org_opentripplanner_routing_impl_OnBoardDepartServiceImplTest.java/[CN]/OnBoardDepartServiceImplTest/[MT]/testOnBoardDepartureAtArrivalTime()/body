@@ -42,6 +42,7 @@
   TripTimes tripTimes=new TripTimes(trip,stopTimes,new Deduplicator());
   StopPattern stopPattern=new StopPattern(stopTimes);
   TripPattern tripPattern=new TripPattern(route,stopPattern);
+  TripPattern.generateUniqueIds(Arrays.asList(tripPattern));
   when(depart.getTripPattern()).thenReturn(tripPattern);
   PatternHop patternHop=new PatternHop(depart,arrive,stopDepart,stopArrive,0);
   when(graph.getEdges()).thenReturn(Collections.<Edge>singletonList(patternHop));

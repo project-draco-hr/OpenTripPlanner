@@ -7,7 +7,7 @@
   }
   this.url=url;
   this.earlyStart=config.path("earlyStartSec").asInt(0);
-  this.defaultAgencyId=config.path("defaultAgencyId").asText();
+  this.feedId=config.path("feedId").asText();
   if (config.path("fuzzyTripMatching").asBoolean(false)) {
     this.fuzzyTripMatcher=new GtfsRealtimeFuzzyTripMatcher(graph.index);
   }

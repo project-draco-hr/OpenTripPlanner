@@ -86,5 +86,15 @@
       return false;
     }
   }
+  if (feedId == null) {
+    if (other.feedId != null) {
+      return false;
+    }
+  }
+ else {
+    if (!feedId.equals(other.feedId)) {
+      return false;
+    }
+  }
   return true;
 }
