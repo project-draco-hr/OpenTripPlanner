@@ -45,5 +45,6 @@
   calendarService=graph.getCalendarService();
   serviceCodes=graph.serviceCodes;
   this.graph=graph;
+  graphQLSchema=new IndexGraphQLSchema(this).indexSchema;
   LOG.info("Done indexing graph.");
 }

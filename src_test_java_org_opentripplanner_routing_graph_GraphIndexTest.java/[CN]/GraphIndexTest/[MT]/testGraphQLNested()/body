@@ -1,0 +1,5 @@
+{
+  String query="query Agency{\n" + "    agency(id: \"agency\"){\n" + "        name\n"+ "        routes{\n"+ "            shortName"+ "        }"+ "    }\n"+ "}\n";
+  Object result=new GraphQL(graph.index.graphQLSchema,query).execute();
+  assertEquals(18,((List)((Map)((Map)result).get("agency")).get("routes")).size());
+}
