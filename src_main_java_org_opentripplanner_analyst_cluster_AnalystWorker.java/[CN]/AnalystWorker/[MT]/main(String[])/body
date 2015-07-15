@@ -1,12 +1,16 @@
 {
-  TaskStatisticsStore tss;
-  if (args.length == 2)   tss=new SQSTaskStatisticsStore(args[1]);
- else   tss=new TaskStatisticsStore(){
-    @Override public void store(    TaskStatistics ts){
-    }
+  Properties config=new Properties();
+  try {
+    File cfg;
+    if (args.length > 0)     cfg=new File(args[0]);
+ else     cfg=new File("worker.conf");
+    InputStream cfgis=new FileInputStream(cfg);
+    config.load(cfgis);
+    cfgis.close();
   }
-;
-  AnalystWorker w=new AnalystWorker(tss);
-  if (args.length > 0)   w.BROKER_BASE_URL=args[0];
-  w.run();
+ catch (  Exception e) {
+    LOG.info("Error loading worker configuration",e);
+    return;
+  }
+  new AnalystWorker(config).run();
 }

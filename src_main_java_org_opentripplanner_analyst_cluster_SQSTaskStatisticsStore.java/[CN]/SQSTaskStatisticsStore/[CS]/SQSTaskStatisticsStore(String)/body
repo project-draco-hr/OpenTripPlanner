@@ -1,4 +1,9 @@
 {
-  queueUrl=sqs.getQueueUrl(queueName).getQueueUrl();
+  try {
+    queueUrl=sqs.getQueueUrl(queueName).getQueueUrl();
+  }
+ catch (  Exception e) {
+    LOG.error("Unable to initialize statistics store",e);
+  }
   LOG.info("Sending statistics to SQS queue {}",queueName);
 }
