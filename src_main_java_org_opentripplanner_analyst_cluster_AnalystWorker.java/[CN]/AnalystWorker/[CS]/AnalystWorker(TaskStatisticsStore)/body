@@ -1,5 +1,6 @@
 {
-  startupTime=System.currentTimeMillis() / 1000;
+  startupTime=System.currentTimeMillis();
+  nextShutdownCheckTime=startupTime + 55 * 60 * 1000;
   s3=new AmazonS3Client();
   s3.setRegion(awsRegion);
   objectMapper=new ObjectMapper();
