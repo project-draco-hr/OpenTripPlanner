@@ -1,0 +1,15 @@
+{
+  this.config=config;
+  workerConfig=new Properties();
+  workerConfig.setProperty("broker-address",addr);
+  workerConfig.setProperty("broker-port","" + port);
+  if (config.getProperty("statistics-queue") != null)   workerConfig.setProperty("statistics-queue",config.getProperty("statistics-queue"));
+  workerConfig.setProperty("graphs-bucket",config.getProperty("graphs-bucket"));
+  workerConfig.setProperty("pointsets-bucket",config.getProperty("pointsets-bucket"));
+  workerConfig.setProperty("auto-shutdown","true");
+  Boolean workOffline=Boolean.parseBoolean(config.getProperty("work-offline"));
+  if (workOffline == null)   workOffline=true;
+  this.workOffline=workOffline;
+  this.maxWorkers=config.getProperty("max-workers") != null ? Integer.parseInt(config.getProperty("max-workers")) : 20;
+  ec2=new AmazonEC2Client();
+}

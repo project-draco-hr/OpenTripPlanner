@@ -1,0 +1,37 @@
+{
+  if (workOffline)   LOG.info("Work offline enabled, not creating workers for job {}",job);
+  workerCatalog.purgeDeadWorkers();
+  String clientToken=UUID.randomUUID().toString().replaceAll("-","");
+  if (workerCatalog.workersByGraph.get(job.graphId).isEmpty() && workerCatalog.observationsByWorkerId.size() < maxWorkers) {
+    int nWorkers=1;
+    LOG.info("Starting {} workers as there are none on graph {}",nWorkers,job.graphId);
+    RunInstancesRequest req=new RunInstancesRequest();
+    req.setImageId(config.getProperty("ami-id"));
+    req.setInstanceType(InstanceType.valueOf(config.getProperty("worker-type")));
+    req.setSubnetId(config.getProperty("subnet-id"));
+    req.setMinCount(1);
+    req.setMaxCount(nWorkers);
+    workerConfig.setProperty("initial-graph-id",job.graphId);
+    ByteArrayOutputStream cfg=new ByteArrayOutputStream();
+    try {
+      workerConfig.store(cfg,"Worker config");
+      cfg.close();
+    }
+ catch (    Exception e) {
+      throw new RuntimeException(e);
+    }
+    String userData=Base64.getEncoder().encode(cfg.toByteArray()).toString();
+    req.setUserData(userData);
+    req.setClientToken(clientToken);
+    req.setInstanceInitiatedShutdownBehavior(ShutdownBehavior.Terminate);
+    RunInstancesResult res=ec2.runInstances(req);
+    res.getReservation().getInstances();
+    LOG.info("Requesting {} workers",nWorkers);
+  }
+ else   if (workerCatalog.observationsByWorkerId.size() >= maxWorkers) {
+    LOG.warn("{} workers already started, not starting more; job {} will not complete",maxWorkers,job);
+  }
+ else {
+    LOG.info("Workers exist on graph {}, not starting new workers",job.graphId);
+  }
+}

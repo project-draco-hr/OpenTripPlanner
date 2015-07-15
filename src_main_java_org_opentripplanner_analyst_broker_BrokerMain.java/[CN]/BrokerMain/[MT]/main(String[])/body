@@ -1,10 +1,28 @@
 {
-  LOG.info("Starting qbroker on port {} of interface {}",PORT,BIND_ADDRESS);
+  File cfg;
+  if (args.length > 0)   cfg=new File(args[0]);
+ else   cfg=new File("broker.conf");
+  if (!cfg.exists()) {
+    LOG.error("Broker configuration file {} not found",cfg);
+    return;
+  }
+  try {
+    FileInputStream is=new FileInputStream(cfg);
+    config.load(is);
+    is.close();
+  }
+ catch (  IOException e) {
+    LOG.error("Error reading config file {}",e);
+    return;
+  }
+  int port=config.getProperty("port") != null ? Integer.parseInt(config.getProperty("port")) : DEFAULT_PORT;
+  String addr=config.getProperty("bindAddress") != null ? config.getProperty("bindAddress") : DEFAULT_BIND_ADDRESS;
+  LOG.info("Starting qbroker on port {} of interface {}",port,addr);
   HttpServer httpServer=new HttpServer();
-  NetworkListener networkListener=new NetworkListener("qbroker",BIND_ADDRESS,PORT);
+  NetworkListener networkListener=new NetworkListener("qbroker",addr,port);
   networkListener.getTransport().setIOStrategy(SameThreadIOStrategy.getInstance());
   httpServer.addListener(networkListener);
-  Broker broker=new Broker();
+  Broker broker=new Broker(config,addr,port);
   httpServer.getServerConfiguration().addHttpHandler(new BrokerHttpHandler(broker),"/*");
   try {
     httpServer.start();
@@ -13,7 +31,7 @@
     Thread.currentThread().join();
   }
  catch (  BindException be) {
-    LOG.error("Cannot bind to port {}. Is it already in use?",PORT);
+    LOG.error("Cannot bind to port {}. Is it already in use?",port);
   }
 catch (  IOException ioe) {
     LOG.error("IO exception while starting server.");

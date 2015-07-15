@@ -4,7 +4,7 @@
     return false;
   }
   List<AnalystClusterRequest> tasks=new ArrayList<>();
-  while (tasks.size() < 4 && !job.visibleTasks.isEmpty()) {
+  while (tasks.size() < MAX_TASKS_PER_WORKER && !job.visibleTasks.isEmpty()) {
     tasks.add(job.visibleTasks.poll());
   }
   try {
