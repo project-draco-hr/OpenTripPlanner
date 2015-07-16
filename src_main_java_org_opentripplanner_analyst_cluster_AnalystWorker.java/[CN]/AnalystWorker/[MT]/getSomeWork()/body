@@ -1,7 +1,7 @@
 {
   String url=BROKER_BASE_URL + "/dequeue/" + graphId;
   HttpPost httpPost=new HttpPost(url);
-  httpPost.setHeader(new BasicHeader(WORKER_ID_HEADER,workerId));
+  httpPost.setHeader(new BasicHeader(WORKER_ID_HEADER,machineId));
   HttpResponse response=null;
   try {
     response=httpClient.execute(httpPost);
