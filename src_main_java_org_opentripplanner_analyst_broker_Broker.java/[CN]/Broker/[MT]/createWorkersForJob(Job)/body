@@ -22,6 +22,7 @@
     }
     String userData=Base64.getEncoder().encode(cfg.toByteArray()).toString();
     req.setUserData(userData);
+    if (config.getProperty("worker-iam-role") != null)     req.setIamInstanceProfile(new IamInstanceProfileSpecification().withArn(config.getProperty("worker-iam-role")));
     if (config.getProperty("subnet") != null)     req.setSubnetId(config.getProperty("subnet"));
     req.setClientToken(clientToken);
     req.setInstanceInitiatedShutdownBehavior(ShutdownBehavior.Terminate);
