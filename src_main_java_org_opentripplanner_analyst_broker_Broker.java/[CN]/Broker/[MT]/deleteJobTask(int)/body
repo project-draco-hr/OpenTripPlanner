@@ -3,6 +3,6 @@
   if (task == null)   return false;
   Job job=findJob(task.jobId);
   if (job == null)   return true;
-  job.markTasksCompleted(task);
+  job.markTaskCompleted(task.taskId);
   return true;
 }

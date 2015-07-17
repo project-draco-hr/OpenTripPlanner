@@ -1,8 +1,7 @@
 {
   long deliveryTime=System.currentTimeMillis();
-  long visibleAt=deliveryTime + 60000;
+  long visibleAt=deliveryTime + 60 * 1000;
   for (  AnalystClusterRequest task : tasks) {
     invisibleUntil.put(task.taskId,visibleAt);
-    invisibleTasks.put(task.taskId,task);
   }
 }

@@ -1,0 +1,8 @@
+{
+  if (System.currentTimeMillis() > nextRedeliveryCheckTime) {
+    nextRedeliveryCheckTime+=REDELIVERY_INTERVAL_SEC * 1000;
+    for (    Job job : jobs) {
+      nUndeliveredTasks+=job.redeliver();
+    }
+  }
+}
