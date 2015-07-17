@@ -1,5 +1,8 @@
 {
-  if (workOffline)   LOG.info("Work offline enabled, not creating workers for graph {}",graphId);
+  if (workOffline) {
+    LOG.info("Work offline enabled, not creating workers for graph {}",graphId);
+    return;
+  }
   workerCatalog.purgeDeadWorkers();
   String clientToken=UUID.randomUUID().toString().replaceAll("-","");
   if (workerCatalog.workersByGraph.get(graphId).isEmpty() && workerCatalog.observationsByWorkerId.size() < maxWorkers && (!recentlyRequestedWorkers.containsKey(graphId) || recentlyRequestedWorkers.get(graphId) < System.currentTimeMillis() - WORKER_STARTUP_TIME)) {
