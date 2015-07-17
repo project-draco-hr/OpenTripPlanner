@@ -1,8 +1,0 @@
-{
-  AnalystClusterRequest task=deliveredTasks.remove(taskId);
-  if (task == null)   return false;
-  Job job=findJob(task.jobId);
-  if (job == null)   return true;
-  job.markTaskCompleted(task.taskId);
-  return true;
-}
