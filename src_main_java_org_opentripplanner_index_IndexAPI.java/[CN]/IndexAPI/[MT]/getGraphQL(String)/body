@@ -1,17 +1,15 @@
 {
-  Object result;
-  Boolean success=false;
-  try {
-    result=new GraphQL(index.graphQLSchema,query).execute().getResult();
-    success=true;
-  }
- catch (  Exception e) {
-    result=e.getMessage();
-  }
-  if (success) {
-    return Response.status(Status.OK).entity(result).build();
+  ExecutionResult result;
+  if (uriInfo.getQueryParameters().isEmpty()) {
+    result=index.graphQL.execute(query);
   }
  else {
-    return Response.status(Status.INTERNAL_SERVER_ERROR).entity(result).build();
+    result=index.graphQL.execute(query,null,new HashMap<>(uriInfo.getQueryParameters()));
+  }
+  if (result.getValidationErrors().isEmpty()) {
+    return Response.status(Status.OK).entity(result.getResult()).build();
+  }
+ else {
+    return Response.status(Status.BAD_REQUEST).entity(result.getValidationErrors()).build();
   }
 }
