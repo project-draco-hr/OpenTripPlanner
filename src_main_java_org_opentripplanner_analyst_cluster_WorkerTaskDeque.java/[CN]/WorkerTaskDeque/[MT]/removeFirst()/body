@@ -1,0 +1,8 @@
+{
+  if (this.size() < minSize) {
+synchronized (this) {
+      notify();
+    }
+  }
+  return super.removeFirst();
+}
