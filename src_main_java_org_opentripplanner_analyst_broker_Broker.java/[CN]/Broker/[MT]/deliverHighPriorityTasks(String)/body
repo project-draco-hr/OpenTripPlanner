@@ -5,11 +5,12 @@
   if (!wrs.isEmpty()) {
     WrappedResponse wr=wrs.iterator().next();
     try {
-      wr.response.resume();
       wr.response.setContentType("application/json");
       OutputStream os=wr.response.getOutputStream();
       mapper.writeValue(os,tasks);
       os.close();
+      wr.response.resume();
+      newHighPriorityTasks.removeAll(graphId);
       return;
     }
  catch (    Exception e) {
@@ -21,4 +22,6 @@
   }
   stalledHighPriorityTasks.putAll(graphId,tasks);
   LOG.info("No side channel available for graph {}, delivering {} tasks via normal channel",graphId,tasks.size());
+  nUndeliveredTasks+=tasks.size();
+  notify();
 }

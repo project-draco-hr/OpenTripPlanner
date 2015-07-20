@@ -1,2 +1,13 @@
 {
+  task.taskId=nextTaskId++;
+  newHighPriorityTasks.put(task.graphId,task);
+  highPriorityResponses.put(task.taskId,response);
+  nUndeliveredTasks+=1;
+  createWorkersForGraph(task.graphId);
+  timer.schedule(new TimerTask(){
+    @Override public void run(){
+      deliverHighPriorityTasks(task.graphId);
+    }
+  }
+,100);
 }
