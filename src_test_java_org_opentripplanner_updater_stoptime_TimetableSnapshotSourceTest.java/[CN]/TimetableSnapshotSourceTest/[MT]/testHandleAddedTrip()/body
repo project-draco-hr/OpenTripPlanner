@@ -1,57 +1,57 @@
 {
-  ServiceDate serviceDate=new ServiceDate(Calendar.getInstance());
-  String addedTripId="added_trip";
+  final ServiceDate serviceDate=new ServiceDate(Calendar.getInstance());
+  final String addedTripId="added_trip";
   TripUpdate tripUpdate;
 {
-    TripDescriptor.Builder tripDescriptorBuilder=TripDescriptor.newBuilder();
+    final TripDescriptor.Builder tripDescriptorBuilder=TripDescriptor.newBuilder();
     tripDescriptorBuilder.setTripId(addedTripId);
     tripDescriptorBuilder.setScheduleRelationship(TripDescriptor.ScheduleRelationship.ADDED);
     tripDescriptorBuilder.setStartDate(serviceDate.getAsString());
-    Calendar calendar=serviceDate.getAsCalendar(graph.getTimeZone());
-    long midnightSecondsSinceEpoch=calendar.getTimeInMillis() / 1000;
-    TripUpdate.Builder tripUpdateBuilder=TripUpdate.newBuilder();
+    final Calendar calendar=serviceDate.getAsCalendar(graph.getTimeZone());
+    final long midnightSecondsSinceEpoch=calendar.getTimeInMillis() / 1000;
+    final TripUpdate.Builder tripUpdateBuilder=TripUpdate.newBuilder();
     tripUpdateBuilder.setTrip(tripDescriptorBuilder);
 {
-      StopTimeUpdate.Builder stopTimeUpdateBuilder=tripUpdateBuilder.addStopTimeUpdateBuilder();
+      final StopTimeUpdate.Builder stopTimeUpdateBuilder=tripUpdateBuilder.addStopTimeUpdateBuilder();
       stopTimeUpdateBuilder.setScheduleRelationship(StopTimeUpdate.ScheduleRelationship.SCHEDULED);
       stopTimeUpdateBuilder.setStopId("A");
 {
-        StopTimeEvent.Builder arrivalBuilder=stopTimeUpdateBuilder.getArrivalBuilder();
+        final StopTimeEvent.Builder arrivalBuilder=stopTimeUpdateBuilder.getArrivalBuilder();
         arrivalBuilder.setTime(midnightSecondsSinceEpoch + (8 * 3600) + (30 * 60));
         arrivalBuilder.setDelay(0);
       }
 {
-        StopTimeEvent.Builder departureBuilder=stopTimeUpdateBuilder.getDepartureBuilder();
+        final StopTimeEvent.Builder departureBuilder=stopTimeUpdateBuilder.getDepartureBuilder();
         departureBuilder.setTime(midnightSecondsSinceEpoch + (8 * 3600) + (30 * 60));
         departureBuilder.setDelay(0);
       }
     }
 {
-      StopTimeUpdate.Builder stopTimeUpdateBuilder=tripUpdateBuilder.addStopTimeUpdateBuilder();
+      final StopTimeUpdate.Builder stopTimeUpdateBuilder=tripUpdateBuilder.addStopTimeUpdateBuilder();
       stopTimeUpdateBuilder.setScheduleRelationship(StopTimeUpdate.ScheduleRelationship.SCHEDULED);
       stopTimeUpdateBuilder.setStopId("C");
 {
-        StopTimeEvent.Builder arrivalBuilder=stopTimeUpdateBuilder.getArrivalBuilder();
+        final StopTimeEvent.Builder arrivalBuilder=stopTimeUpdateBuilder.getArrivalBuilder();
         arrivalBuilder.setTime(midnightSecondsSinceEpoch + (8 * 3600) + (40 * 60));
         arrivalBuilder.setDelay(0);
       }
 {
-        StopTimeEvent.Builder departureBuilder=stopTimeUpdateBuilder.getDepartureBuilder();
+        final StopTimeEvent.Builder departureBuilder=stopTimeUpdateBuilder.getDepartureBuilder();
         departureBuilder.setTime(midnightSecondsSinceEpoch + (8 * 3600) + (45 * 60));
         departureBuilder.setDelay(0);
       }
     }
 {
-      StopTimeUpdate.Builder stopTimeUpdateBuilder=tripUpdateBuilder.addStopTimeUpdateBuilder();
+      final StopTimeUpdate.Builder stopTimeUpdateBuilder=tripUpdateBuilder.addStopTimeUpdateBuilder();
       stopTimeUpdateBuilder.setScheduleRelationship(StopTimeUpdate.ScheduleRelationship.SCHEDULED);
       stopTimeUpdateBuilder.setStopId("E");
 {
-        StopTimeEvent.Builder arrivalBuilder=stopTimeUpdateBuilder.getArrivalBuilder();
+        final StopTimeEvent.Builder arrivalBuilder=stopTimeUpdateBuilder.getArrivalBuilder();
         arrivalBuilder.setTime(midnightSecondsSinceEpoch + (8 * 3600) + (55 * 60));
         arrivalBuilder.setDelay(0);
       }
 {
-        StopTimeEvent.Builder departureBuilder=stopTimeUpdateBuilder.getDepartureBuilder();
+        final StopTimeEvent.Builder departureBuilder=stopTimeUpdateBuilder.getDepartureBuilder();
         departureBuilder.setTime(midnightSecondsSinceEpoch + (8 * 3600) + (55 * 60));
         departureBuilder.setDelay(0);
       }
@@ -59,15 +59,18 @@
     tripUpdate=tripUpdateBuilder.build();
   }
   updater.applyTripUpdates(graph,fullDataset,Arrays.asList(tripUpdate),"agency");
-  Stop stopA=graph.index.stopForId.get(new AgencyAndId("agency","A"));
-  TransitStopDepart transitStopDepartA=graph.index.stopVertexForStop.get(stopA).departVertex;
-  List<Edge> outgoingEdges=(List<Edge>)transitStopDepartA.getOutgoing();
-  TripPattern tripPattern=((TransitBoardAlight)outgoingEdges.get(outgoingEdges.size() - 1)).getPattern();
+  final Stop stopA=graph.index.stopForId.get(new AgencyAndId("agency","A"));
+  final TransitStopDepart transitStopDepartA=graph.index.stopVertexForStop.get(stopA).departVertex;
+  final List<Edge> outgoingEdges=(List<Edge>)transitStopDepartA.getOutgoing();
+  final TripPattern tripPattern=((TransitBoardAlight)outgoingEdges.get(outgoingEdges.size() - 1)).getPattern();
   assertNotNull("Added trip pattern should be found",tripPattern);
-  TimetableSnapshot snapshot=updater.getTimetableSnapshot();
-  Timetable forToday=snapshot.resolve(tripPattern,serviceDate);
-  Timetable schedule=snapshot.resolve(tripPattern,null);
+  final TimetableSnapshot snapshot=updater.getTimetableSnapshot();
+  final Timetable forToday=snapshot.resolve(tripPattern,serviceDate);
+  final Timetable schedule=snapshot.resolve(tripPattern,null);
   assertNotSame(forToday,schedule);
-  assertTrue("Added trip should be found in time table for service date",forToday.getTripIndex(addedTripId) > -1);
-  assertEquals("Added trip should not be found in scheduled time table",-1,schedule.getTripIndex(addedTripId));
+  final int forTodayAddedTripIndex=forToday.getTripIndex(addedTripId);
+  assertTrue("Added trip should be found in time table for service date",forTodayAddedTripIndex > -1);
+  assertEquals(RealTimeState.ADDED,forToday.getTripTimes(forTodayAddedTripIndex).getRealTimeState());
+  final int scheduleTripIndex=schedule.getTripIndex(addedTripId);
+  assertEquals("Added trip should not be found in scheduled time table",-1,scheduleTripIndex);
 }

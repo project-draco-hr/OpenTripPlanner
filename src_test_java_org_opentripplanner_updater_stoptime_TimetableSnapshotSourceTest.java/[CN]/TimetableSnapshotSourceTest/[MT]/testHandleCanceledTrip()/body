@@ -1,20 +1,21 @@
 {
-  AgencyAndId tripId=new AgencyAndId("agency","1.1");
-  AgencyAndId tripId2=new AgencyAndId("agency","1.2");
-  Trip trip=graph.index.tripForId.get(tripId);
-  TripPattern pattern=graph.index.patternForTrip.get(trip);
-  int tripIndex=pattern.scheduledTimetable.getTripIndex(tripId);
-  int tripIndex2=pattern.scheduledTimetable.getTripIndex(tripId2);
+  final AgencyAndId tripId=new AgencyAndId("agency","1.1");
+  final AgencyAndId tripId2=new AgencyAndId("agency","1.2");
+  final Trip trip=graph.index.tripForId.get(tripId);
+  final TripPattern pattern=graph.index.patternForTrip.get(trip);
+  final int tripIndex=pattern.scheduledTimetable.getTripIndex(tripId);
+  final int tripIndex2=pattern.scheduledTimetable.getTripIndex(tripId2);
   updater.applyTripUpdates(graph,fullDataset,Arrays.asList(TripUpdate.parseFrom(cancellation)),"agency");
-  TimetableSnapshot snapshot=updater.getTimetableSnapshot();
-  Timetable forToday=snapshot.resolve(pattern,serviceDate);
-  Timetable schedule=snapshot.resolve(pattern,null);
+  final TimetableSnapshot snapshot=updater.getTimetableSnapshot();
+  final Timetable forToday=snapshot.resolve(pattern,serviceDate);
+  final Timetable schedule=snapshot.resolve(pattern,null);
   assertNotSame(forToday,schedule);
   assertNotSame(forToday.getTripTimes(tripIndex),schedule.getTripTimes(tripIndex));
   assertSame(forToday.getTripTimes(tripIndex2),schedule.getTripTimes(tripIndex2));
-  TripTimes tripTimes=forToday.getTripTimes(tripIndex);
+  final TripTimes tripTimes=forToday.getTripTimes(tripIndex);
   for (int i=0; i < tripTimes.getNumStops(); i++) {
     assertEquals(TripTimes.UNAVAILABLE,tripTimes.getDepartureTime(i));
     assertEquals(TripTimes.UNAVAILABLE,tripTimes.getArrivalTime(i));
   }
+  assertEquals(RealTimeState.CANCELED,tripTimes.getRealTimeState());
 }

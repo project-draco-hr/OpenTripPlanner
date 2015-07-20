@@ -1,7 +1,7 @@
 {
   Preconditions.checkNotNull(stops);
   Preconditions.checkArgument(tripUpdate.getStopTimeUpdateCount() == stops.size(),"number of stop should match the number of stop time updates");
-  String tripId=tripUpdate.getTrip().getTripId();
+  final String tripId=tripUpdate.getTrip().getTripId();
   cancelPreviouslyAddedTrip(tripId,serviceDate);
   Route route=null;
   if (tripUpdate.getTrip().hasRouteId()) {
@@ -19,10 +19,10 @@
     route.setType(3);
     route.setLongName(tripId);
   }
-  Trip trip=new Trip();
+  final Trip trip=new Trip();
   trip.setId(new AgencyAndId(feedId,tripUpdate.getTrip().getTripId()));
   trip.setRoute(route);
-  Set<AgencyAndId> serviceIds=graph.getCalendarService().getServiceIdsOnDate(serviceDate);
+  final Set<AgencyAndId> serviceIds=graph.getCalendarService().getServiceIdsOnDate(serviceDate);
   if (serviceIds.isEmpty()) {
     LOG.warn("ADDED trip has service date for which no service id is available, skipping.");
     return false;
@@ -30,6 +30,6 @@
  else {
     trip.setServiceId(serviceIds.iterator().next());
   }
-  boolean success=addTripToGraphAndBuffer(graph,trip,tripUpdate,stops,serviceDate);
+  final boolean success=addTripToGraphAndBuffer(graph,trip,tripUpdate,stops,serviceDate,RealTimeState.ADDED);
   return success;
 }

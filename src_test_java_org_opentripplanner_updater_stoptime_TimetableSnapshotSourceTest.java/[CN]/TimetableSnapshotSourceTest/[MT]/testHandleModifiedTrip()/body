@@ -1,77 +1,77 @@
 {
-  ServiceDate serviceDate=new ServiceDate(Calendar.getInstance());
-  String modifiedTripId="10.1";
-  String modifiedTripAgency="agency";
+  final ServiceDate serviceDate=new ServiceDate(Calendar.getInstance());
+  final String modifiedTripId="10.1";
+  final String modifiedTripAgency="agency";
   TripUpdate tripUpdate;
 {
-    TripDescriptor.Builder tripDescriptorBuilder=TripDescriptor.newBuilder();
+    final TripDescriptor.Builder tripDescriptorBuilder=TripDescriptor.newBuilder();
     tripDescriptorBuilder.setTripId(modifiedTripId);
     tripDescriptorBuilder.setScheduleRelationship(TripDescriptor.ScheduleRelationship.MODIFIED);
     tripDescriptorBuilder.setStartDate(serviceDate.getAsString());
-    Calendar calendar=serviceDate.getAsCalendar(graph.getTimeZone());
-    long midnightSecondsSinceEpoch=calendar.getTimeInMillis() / 1000;
-    TripUpdate.Builder tripUpdateBuilder=TripUpdate.newBuilder();
+    final Calendar calendar=serviceDate.getAsCalendar(graph.getTimeZone());
+    final long midnightSecondsSinceEpoch=calendar.getTimeInMillis() / 1000;
+    final TripUpdate.Builder tripUpdateBuilder=TripUpdate.newBuilder();
     tripUpdateBuilder.setTrip(tripDescriptorBuilder);
 {
-      StopTimeUpdate.Builder stopTimeUpdateBuilder=tripUpdateBuilder.addStopTimeUpdateBuilder();
+      final StopTimeUpdate.Builder stopTimeUpdateBuilder=tripUpdateBuilder.addStopTimeUpdateBuilder();
       stopTimeUpdateBuilder.setScheduleRelationship(StopTimeUpdate.ScheduleRelationship.SCHEDULED);
       stopTimeUpdateBuilder.setStopId("O");
       stopTimeUpdateBuilder.setStopSequence(10);
 {
-        StopTimeEvent.Builder arrivalBuilder=stopTimeUpdateBuilder.getArrivalBuilder();
+        final StopTimeEvent.Builder arrivalBuilder=stopTimeUpdateBuilder.getArrivalBuilder();
         arrivalBuilder.setTime(midnightSecondsSinceEpoch + (12 * 3600) + (30 * 60));
         arrivalBuilder.setDelay(0);
       }
 {
-        StopTimeEvent.Builder departureBuilder=stopTimeUpdateBuilder.getDepartureBuilder();
+        final StopTimeEvent.Builder departureBuilder=stopTimeUpdateBuilder.getDepartureBuilder();
         departureBuilder.setTime(midnightSecondsSinceEpoch + (12 * 3600) + (30 * 60));
         departureBuilder.setDelay(0);
       }
     }
 {
-      StopTimeUpdate.Builder stopTimeUpdateBuilder=tripUpdateBuilder.addStopTimeUpdateBuilder();
+      final StopTimeUpdate.Builder stopTimeUpdateBuilder=tripUpdateBuilder.addStopTimeUpdateBuilder();
       stopTimeUpdateBuilder.setScheduleRelationship(StopTimeUpdate.ScheduleRelationship.SCHEDULED);
       stopTimeUpdateBuilder.setStopId("C");
       stopTimeUpdateBuilder.setStopSequence(30);
 {
-        StopTimeEvent.Builder arrivalBuilder=stopTimeUpdateBuilder.getArrivalBuilder();
+        final StopTimeEvent.Builder arrivalBuilder=stopTimeUpdateBuilder.getArrivalBuilder();
         arrivalBuilder.setTime(midnightSecondsSinceEpoch + (12 * 3600) + (40 * 60));
         arrivalBuilder.setDelay(0);
       }
 {
-        StopTimeEvent.Builder departureBuilder=stopTimeUpdateBuilder.getDepartureBuilder();
+        final StopTimeEvent.Builder departureBuilder=stopTimeUpdateBuilder.getDepartureBuilder();
         departureBuilder.setTime(midnightSecondsSinceEpoch + (12 * 3600) + (45 * 60));
         departureBuilder.setDelay(0);
       }
     }
 {
-      StopTimeUpdate.Builder stopTimeUpdateBuilder=tripUpdateBuilder.addStopTimeUpdateBuilder();
+      final StopTimeUpdate.Builder stopTimeUpdateBuilder=tripUpdateBuilder.addStopTimeUpdateBuilder();
       stopTimeUpdateBuilder.setScheduleRelationship(StopTimeUpdate.ScheduleRelationship.SKIPPED);
       stopTimeUpdateBuilder.setStopId("D");
       stopTimeUpdateBuilder.setStopSequence(40);
 {
-        StopTimeEvent.Builder arrivalBuilder=stopTimeUpdateBuilder.getArrivalBuilder();
+        final StopTimeEvent.Builder arrivalBuilder=stopTimeUpdateBuilder.getArrivalBuilder();
         arrivalBuilder.setTime(midnightSecondsSinceEpoch + (12 * 3600) + (50 * 60));
         arrivalBuilder.setDelay(0);
       }
 {
-        StopTimeEvent.Builder departureBuilder=stopTimeUpdateBuilder.getDepartureBuilder();
+        final StopTimeEvent.Builder departureBuilder=stopTimeUpdateBuilder.getDepartureBuilder();
         departureBuilder.setTime(midnightSecondsSinceEpoch + (12 * 3600) + (51 * 60));
         departureBuilder.setDelay(0);
       }
     }
 {
-      StopTimeUpdate.Builder stopTimeUpdateBuilder=tripUpdateBuilder.addStopTimeUpdateBuilder();
+      final StopTimeUpdate.Builder stopTimeUpdateBuilder=tripUpdateBuilder.addStopTimeUpdateBuilder();
       stopTimeUpdateBuilder.setScheduleRelationship(StopTimeUpdate.ScheduleRelationship.SCHEDULED);
       stopTimeUpdateBuilder.setStopId("P");
       stopTimeUpdateBuilder.setStopSequence(50);
 {
-        StopTimeEvent.Builder arrivalBuilder=stopTimeUpdateBuilder.getArrivalBuilder();
+        final StopTimeEvent.Builder arrivalBuilder=stopTimeUpdateBuilder.getArrivalBuilder();
         arrivalBuilder.setTime(midnightSecondsSinceEpoch + (12 * 3600) + (55 * 60));
         arrivalBuilder.setDelay(0);
       }
 {
-        StopTimeEvent.Builder departureBuilder=stopTimeUpdateBuilder.getDepartureBuilder();
+        final StopTimeEvent.Builder departureBuilder=stopTimeUpdateBuilder.getDepartureBuilder();
         departureBuilder.setTime(midnightSecondsSinceEpoch + (12 * 3600) + (55 * 60));
         departureBuilder.setDelay(0);
       }
@@ -79,30 +79,34 @@
     tripUpdate=tripUpdateBuilder.build();
   }
   updater.applyTripUpdates(graph,fullDataset,Arrays.asList(tripUpdate),modifiedTripAgency);
-  TimetableSnapshot snapshot=updater.getTimetableSnapshot();
+  final TimetableSnapshot snapshot=updater.getTimetableSnapshot();
 {
-    AgencyAndId tripId=new AgencyAndId(modifiedTripAgency,modifiedTripId);
-    Trip trip=graph.index.tripForId.get(tripId);
-    TripPattern originalTripPattern=graph.index.patternForTrip.get(trip);
-    Timetable originalTimetableForToday=snapshot.resolve(originalTripPattern,serviceDate);
-    Timetable originalTimetableScheduled=snapshot.resolve(originalTripPattern,null);
+    final AgencyAndId tripId=new AgencyAndId(modifiedTripAgency,modifiedTripId);
+    final Trip trip=graph.index.tripForId.get(tripId);
+    final TripPattern originalTripPattern=graph.index.patternForTrip.get(trip);
+    final Timetable originalTimetableForToday=snapshot.resolve(originalTripPattern,serviceDate);
+    final Timetable originalTimetableScheduled=snapshot.resolve(originalTripPattern,null);
     assertNotSame(originalTimetableForToday,originalTimetableScheduled);
-    int originalTripIndexScheduled=originalTimetableScheduled.getTripIndex(modifiedTripId);
+    final int originalTripIndexScheduled=originalTimetableScheduled.getTripIndex(modifiedTripId);
     assertTrue("Original trip should be found in scheduled time table",originalTripIndexScheduled > -1);
-    TripTimes originalTripTimesScheduled=originalTimetableScheduled.getTripTimes(originalTripIndexScheduled);
+    final TripTimes originalTripTimesScheduled=originalTimetableScheduled.getTripTimes(originalTripIndexScheduled);
     assertFalse("Original trip times should not be canceled in scheduled time table",originalTripTimesScheduled.isCanceled());
-    int originalTripIndexForToday=originalTimetableForToday.getTripIndex(modifiedTripId);
+    assertEquals(RealTimeState.SCHEDULED,originalTripTimesScheduled.getRealTimeState());
+    final int originalTripIndexForToday=originalTimetableForToday.getTripIndex(modifiedTripId);
     assertTrue("Original trip should be found in time table for service date",originalTripIndexForToday > -1);
-    TripTimes originalTripTimesForToday=originalTimetableForToday.getTripTimes(originalTripIndexForToday);
+    final TripTimes originalTripTimesForToday=originalTimetableForToday.getTripTimes(originalTripIndexForToday);
     assertTrue("Original trip times should be canceled in time table for service date",originalTripTimesForToday.isCanceled());
+    assertEquals(RealTimeState.CANCELED,originalTripTimesForToday.getRealTimeState());
   }
 {
-    TripPattern newTripPattern=snapshot.getLastAddedTripPattern(modifiedTripId,serviceDate);
+    final TripPattern newTripPattern=snapshot.getLastAddedTripPattern(modifiedTripId,serviceDate);
     assertNotNull("New trip pattern should be found",newTripPattern);
-    Timetable newTimetableForToday=snapshot.resolve(newTripPattern,serviceDate);
-    Timetable newTimetableScheduled=snapshot.resolve(newTripPattern,null);
+    final Timetable newTimetableForToday=snapshot.resolve(newTripPattern,serviceDate);
+    final Timetable newTimetableScheduled=snapshot.resolve(newTripPattern,null);
     assertNotSame(newTimetableForToday,newTimetableScheduled);
-    assertTrue("New trip should be found in time table for service date",newTimetableForToday.getTripIndex(modifiedTripId) > -1);
+    final int newTimetableForTodayModifiedTripIndex=newTimetableForToday.getTripIndex(modifiedTripId);
+    assertTrue("New trip should be found in time table for service date",newTimetableForTodayModifiedTripIndex > -1);
+    assertEquals(RealTimeState.MODIFIED,newTimetableForToday.getTripTimes(newTimetableForTodayModifiedTripIndex).getRealTimeState());
     assertEquals("New trip should not be found in scheduled time table",-1,newTimetableScheduled.getTripIndex(modifiedTripId));
   }
 }

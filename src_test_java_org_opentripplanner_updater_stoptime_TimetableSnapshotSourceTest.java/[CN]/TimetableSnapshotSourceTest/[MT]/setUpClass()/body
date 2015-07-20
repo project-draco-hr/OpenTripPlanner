@@ -1,12 +1,12 @@
 {
   context=GtfsLibrary.readGtfs(new File(ConstantsForTests.FAKE_GTFS));
-  GTFSPatternHopFactory factory=new GTFSPatternHopFactory(context);
+  final GTFSPatternHopFactory factory=new GTFSPatternHopFactory(context);
   factory.run(graph);
   graph.index(new DefaultStreetVertexIndexFactory());
-  TripDescriptor.Builder tripDescriptorBuilder=TripDescriptor.newBuilder();
+  final TripDescriptor.Builder tripDescriptorBuilder=TripDescriptor.newBuilder();
   tripDescriptorBuilder.setTripId("1.1");
   tripDescriptorBuilder.setScheduleRelationship(TripDescriptor.ScheduleRelationship.CANCELED);
-  TripUpdate.Builder tripUpdateBuilder=TripUpdate.newBuilder();
+  final TripUpdate.Builder tripUpdateBuilder=TripUpdate.newBuilder();
   tripUpdateBuilder.setTrip(tripDescriptorBuilder);
   cancellation=tripUpdateBuilder.build().toByteArray();
 }
