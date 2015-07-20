@@ -1,0 +1,24 @@
+{
+  Collection<AnalystClusterRequest> tasks=newHighPriorityTasks.get(graphId);
+  if (tasks.isEmpty())   return;
+  Collection<WrappedResponse> wrs=singlePointChannels.get(graphId);
+  if (!wrs.isEmpty()) {
+    WrappedResponse wr=wrs.iterator().next();
+    try {
+      wr.response.resume();
+      wr.response.setContentType("application/json");
+      OutputStream os=wr.response.getOutputStream();
+      mapper.writeValue(os,tasks);
+      os.close();
+      return;
+    }
+ catch (    Exception e) {
+      LOG.info("Failed to deliver single point job via side channel, reverting to normal channel",e);
+    }
+ finally {
+      removeSinglePointChannel(graphId,wr);
+    }
+  }
+  stalledHighPriorityTasks.putAll(graphId,tasks);
+  LOG.info("No side channel available for graph {}, delivering {} tasks via normal channel",graphId,tasks.size());
+}

@@ -1,5 +1,5 @@
 {
-  LOG.info("{} undelivered, of which {} high-priority",nUndeliveredTasks,highPriorityTasks.size());
+  LOG.info("{} undelivered, of which {} high-priority",nUndeliveredTasks,stalledHighPriorityTasks.size());
   LOG.info("{} producers waiting, {} consumers waiting",highPriorityResponses.size(),nWaitingConsumers);
   LOG.info("{} total workers",workerCatalog.size());
 }
