@@ -18,8 +18,15 @@
     if (binnedCounts[i] == 0)     continue;
     for (int j=0; j < weightingFunctions.length; j++) {
       double w=weightingFunctions[j].getWeight(i);
-      tmpCounts[j]+=w * binnedCounts[i];
-      tmpSums[j]+=w * binnedWeights[i];
+      if (w == 0)       continue;
+ else       if (w == 1) {
+        tmpCounts[j]+=binnedCounts[i];
+        tmpSums[j]+=binnedWeights[i];
+      }
+ else {
+        tmpCounts[j]+=w * binnedCounts[i];
+        tmpSums[j]+=w * binnedWeights[i];
+      }
     }
   }
   counts=new int[size];
