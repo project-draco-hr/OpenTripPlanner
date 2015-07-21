@@ -47,7 +47,6 @@
     reader.close();
   }
  catch (  Exception e) {
-    LOG.error("exception while loading individuals from CSV file:");
-    e.printStackTrace();
+    LOG.error("exception while loading individuals from CSV file",e);
   }
 }

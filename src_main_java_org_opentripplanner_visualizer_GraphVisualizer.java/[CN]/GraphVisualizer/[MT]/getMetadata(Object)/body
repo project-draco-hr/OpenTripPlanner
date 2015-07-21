@@ -17,10 +17,10 @@
         value="" + field.get(selected);
       }
  catch (      IllegalArgumentException e1) {
-        e1.printStackTrace();
+        LOG.error("IllegalArgumentException",e1);
       }
 catch (      IllegalAccessException e1) {
-        e1.printStackTrace();
+        LOG.error("IllegalAccessException",e1);
       }
       metadataModel.addElement(name + ": " + value);
     }

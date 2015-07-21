@@ -20,7 +20,7 @@
 );
   }
  catch (  JsonProcessingException e) {
-    LOG.error("JSON processing exception while getting work: {}",e.getMessage());
+    LOG.error("JSON processing exception while getting work",e);
   }
 catch (  SocketTimeoutException stex) {
     LOG.error("Socket timeout while waiting to receive work.");
@@ -34,8 +34,7 @@ catch (  HttpHostConnectException ce) {
     }
   }
 catch (  IOException e) {
-    LOG.error("IO exception while getting work.");
-    e.printStackTrace();
+    LOG.error("IO exception while getting work",e);
   }
   return null;
 }

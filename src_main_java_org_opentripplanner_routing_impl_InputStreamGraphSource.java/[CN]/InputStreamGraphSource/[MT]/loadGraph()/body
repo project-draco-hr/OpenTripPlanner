@@ -6,8 +6,7 @@
       newGraph=Graph.load(new ObjectInputStream(is),loadLevel,streetVertexIndexFactory);
     }
  catch (    Exception ex) {
-      LOG.error("Exception while loading graph '{}'.",routerId);
-      ex.printStackTrace();
+      LOG.error("Exception while loading graph '{}'.",routerId,ex);
       return null;
     }
     newGraph.routerId=(routerId);
