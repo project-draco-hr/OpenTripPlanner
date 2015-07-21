@@ -1,0 +1,22 @@
+{
+  int len=countsPerSecond.length / 60;
+  int frontier=0;
+  int valueAtFrontier=0;
+  int[] ret=new int[len];
+  for (int i=0; i < len; i++) {
+    int newFrontier=Math.max(0,(i * 60) + rolloffMin);
+    for (int j=frontier; j < newFrontier; j++) {
+      valueAtFrontier+=countsPerSecond[j];
+    }
+    double sum=valueAtFrontier;
+    for (int k=newFrontier; k < i * 60 + rolloffMax + 1 && k < countsPerSecond.length; k++) {
+      sum+=weights[k - (i * 60) - rolloffMin] * countsPerSecond[k];
+    }
+    ret[i]=(int)sum;
+    frontier=newFrontier;
+  }
+  for (int i=ret.length - 1; i > 0; i--) {
+    ret[i]-=ret[i - 1];
+  }
+  return ret;
+}
