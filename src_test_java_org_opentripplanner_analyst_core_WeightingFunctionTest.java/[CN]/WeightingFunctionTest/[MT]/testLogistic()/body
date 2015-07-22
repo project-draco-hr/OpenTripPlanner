@@ -1,0 +1,11 @@
+{
+  double slope=-2.0 / 60;
+  int[] output=new WeightingFunction.Logistic(slope).apply(weights);
+  int cumulative=0;
+  assertEquals(output.length,120);
+  for (int min=0; min < output.length; min++) {
+    int sec=min * 60 - 3601;
+    cumulative+=output[min];
+    assertTrue(String.format("minute %s",min),Math.abs((int)(1 / (1 + Math.exp(slope * sec)) * 1000) - cumulative) <= 1);
+  }
+}
