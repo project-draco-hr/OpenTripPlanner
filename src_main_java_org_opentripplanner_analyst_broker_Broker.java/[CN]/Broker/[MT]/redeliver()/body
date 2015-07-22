@@ -1,8 +1,14 @@
 {
   if (System.currentTimeMillis() > nextRedeliveryCheckTime) {
     nextRedeliveryCheckTime+=REDELIVERY_INTERVAL_SEC * 1000;
+    LOG.info("Scanning for redelivery...");
+    int nRedelivered=0;
+    int nInvisible=0;
     for (    Job job : jobs) {
-      nUndeliveredTasks+=job.redeliver();
+      nInvisible+=job.invisibleUntil.size();
+      nRedelivered+=job.redeliver();
     }
+    LOG.info("{} tasks enqueued for redelivery out of {} invisible tasks.",nRedelivered,nInvisible);
+    nUndeliveredTasks+=nRedelivered;
   }
 }
