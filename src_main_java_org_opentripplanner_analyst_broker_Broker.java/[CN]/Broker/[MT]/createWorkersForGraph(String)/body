@@ -1,42 +1,41 @@
 {
+  String clientToken=UUID.randomUUID().toString().replaceAll("-","");
   if (workOffline) {
     LOG.info("Work offline enabled, not creating workers for graph {}",graphId);
     return;
   }
-  workerCatalog.purgeDeadWorkers();
-  String clientToken=UUID.randomUUID().toString().replaceAll("-","");
-  if (workerCatalog.workersByGraph.get(graphId).isEmpty() && workerCatalog.observationsByWorkerId.size() < maxWorkers && (!recentlyRequestedWorkers.containsKey(graphId) || recentlyRequestedWorkers.get(graphId) < System.currentTimeMillis() - WORKER_STARTUP_TIME)) {
-    int nWorkers=1;
-    LOG.info("Starting {} workers as there are none on graph {}",nWorkers,graphId);
-    RunInstancesRequest req=new RunInstancesRequest();
-    req.setImageId(config.getProperty("ami-id"));
-    req.setInstanceType(InstanceType.valueOf(config.getProperty("worker-type")));
-    req.setSubnetId(config.getProperty("subnet-id"));
-    req.setMinCount(1);
-    req.setMaxCount(nWorkers);
-    workerConfig.setProperty("initial-graph-id",graphId);
-    ByteArrayOutputStream cfg=new ByteArrayOutputStream();
-    try {
-      workerConfig.store(cfg,"Worker config");
-      cfg.close();
-    }
- catch (    Exception e) {
-      throw new RuntimeException(e);
-    }
-    String userData=new String(Base64.getEncoder().encode(cfg.toByteArray()));
-    req.setUserData(userData);
-    if (config.getProperty("worker-iam-role") != null)     req.setIamInstanceProfile(new IamInstanceProfileSpecification().withArn(config.getProperty("worker-iam-role")));
-    if (config.getProperty("subnet") != null)     req.setSubnetId(config.getProperty("subnet"));
-    req.setClientToken(clientToken);
-    req.setInstanceInitiatedShutdownBehavior(ShutdownBehavior.Terminate);
-    RunInstancesResult res=ec2.runInstances(req);
-    res.getReservation().getInstances();
-    LOG.info("Requesting {} workers",nWorkers);
-  }
- else   if (workerCatalog.observationsByWorkerId.size() >= maxWorkers) {
+  if (workerCatalog.observationsByWorkerId.size() >= maxWorkers) {
     LOG.warn("{} workers already started, not starting more; jobs on graph {} will not complete",maxWorkers,graphId);
+    return;
   }
- else {
-    LOG.info("Workers exist on graph {}, not starting new workers",graphId);
+  if (recentlyRequestedWorkers.containsKey(graphId) && recentlyRequestedWorkers.get(graphId) >= System.currentTimeMillis() - WORKER_STARTUP_TIME) {
+    LOG.info("workers still starting on graph {}, not starting more",graphId);
+    return;
   }
+  int nWorkers=1;
+  LOG.info("Starting {} workers as there are none on graph {}",nWorkers,graphId);
+  RunInstancesRequest req=new RunInstancesRequest();
+  req.setImageId(config.getProperty("ami-id"));
+  req.setInstanceType(InstanceType.valueOf(config.getProperty("worker-type")));
+  req.setSubnetId(config.getProperty("subnet-id"));
+  req.setMinCount(1);
+  req.setMaxCount(nWorkers);
+  workerConfig.setProperty("initial-graph-id",graphId);
+  ByteArrayOutputStream cfg=new ByteArrayOutputStream();
+  try {
+    workerConfig.store(cfg,"Worker config");
+    cfg.close();
+  }
+ catch (  Exception e) {
+    throw new RuntimeException(e);
+  }
+  String userData=new String(Base64.getEncoder().encode(cfg.toByteArray()));
+  req.setUserData(userData);
+  if (config.getProperty("worker-iam-role") != null)   req.setIamInstanceProfile(new IamInstanceProfileSpecification().withArn(config.getProperty("worker-iam-role")));
+  if (config.getProperty("subnet") != null)   req.setSubnetId(config.getProperty("subnet"));
+  req.setClientToken(clientToken);
+  req.setInstanceInitiatedShutdownBehavior(ShutdownBehavior.Terminate);
+  RunInstancesResult res=ec2.runInstances(req);
+  res.getReservation().getInstances();
+  LOG.info("Requesting {} workers",nWorkers);
 }
