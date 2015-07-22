@@ -1,6 +1,6 @@
 {
   Job job=findJob(tasks.get(0));
-  createWorkersForGraph(job.graphId);
+  if (!workersAvailableForGraph(job.graphId))   createWorkersForGraph(job.graphId);
   for (  AnalystClusterRequest task : tasks) {
     task.taskId=nextTaskId++;
     job.addTask(task);

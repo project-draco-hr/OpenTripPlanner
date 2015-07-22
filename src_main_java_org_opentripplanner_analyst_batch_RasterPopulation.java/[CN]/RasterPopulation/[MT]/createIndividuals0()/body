@@ -5,8 +5,7 @@
     tr=CRS.findMathTransform(coverageCRS,WGS84);
   }
  catch (  Exception e) {
-    LOG.equals("error creating CRS transform.");
-    e.printStackTrace();
+    LOG.error("error creating CRS transform.",e);
     return;
   }
   GridCoordinates2D coord=new GridCoordinates2D();
@@ -26,8 +25,7 @@
         this.addIndividual(individual);
       }
  catch (      Exception e) {
-        LOG.error("error creating individuals for raster");
-        e.printStackTrace();
+        LOG.error("error creating individuals for raster",e);
         return;
       }
     }

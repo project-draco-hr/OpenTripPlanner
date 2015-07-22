@@ -17,7 +17,6 @@
     }
   }
  catch (  Exception e) {
-    e.printStackTrace();
-    LOG.info("Failed to mark task {} as completed.",clusterRequest.taskId);
+    LOG.warn("Failed to mark task {} as completed.",clusterRequest.taskId,e);
   }
 }
