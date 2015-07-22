@@ -8,7 +8,7 @@
     long timeout=invisibleIterator.value();
     if (now > timeout) {
       invisibleIterator.remove();
-      visibleTasks.add(tasksById.get(taskId));
+      tasksAwaitingDelivery.add(tasksById.get(taskId));
       LOG.warn("Task {} was of job {} was not completed in time, queueing it for re-delivery.",taskId,jobId);
       nRedelivered+=1;
     }

@@ -1,6 +1,6 @@
 {
   this.complete=job.getCompletedTaskCount();
   this.inFlight=job.invisibleUntil.size();
-  this.remaining=job.visibleTasks.size();
+  this.remaining=job.tasksAwaitingDelivery.size();
   this.jobId=job.jobId;
 }
