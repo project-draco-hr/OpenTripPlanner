@@ -2,6 +2,15 @@
   int timeToReachStop=frequencyTrips[trip][stop * 2 + 1];
   if (timeToReachStop + startTimes[trip] > time)   time=timeToReachStop + startTimes[trip];
   if (time > timeToReachStop + endTimes[trip])   return -1;
-  if (worstCase)   time+=headwaySecs[trip];
-  return time;
+switch (boardingAssumption) {
+case BEST_CASE:
+    break;
+case WORST_CASE:
+  time+=headwaySecs[trip];
+break;
+case HALF_HEADWAY:
+time+=headwaySecs[trip] / 2;
+break;
+}
+return time;
 }

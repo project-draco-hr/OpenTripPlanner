@@ -25,5 +25,5 @@
   ShortestPathTree spt=aStar.getShortestPathTree(rr);
   TIntIntMap stops=data.findStopsNear(spt,g);
   assertFalse(stops.isEmpty());
-  assertEquals(4 * 3600 + 600 + 30,data.timetablesForPattern.get(0).getFrequencyDeparture(0,0,39 * 360,true));
+  assertEquals(4 * 3600 + 600 + 30,data.timetablesForPattern.get(0).getFrequencyDeparture(0,0,39 * 360,RaptorWorkerTimetable.BoardingAssumption.WORST_CASE));
 }

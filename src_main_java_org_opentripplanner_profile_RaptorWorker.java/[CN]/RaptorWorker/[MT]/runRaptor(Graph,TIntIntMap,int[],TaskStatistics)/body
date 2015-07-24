@@ -35,6 +35,7 @@
       if (baseTimeSeconds != UNREACHED) {
         baseTimeSeconds-=departureTime;
         int[] targets=data.targetsForStop.get(s);
+        if (targets == null)         continue;
         for (int i=0; i < targets.length; i++) {
           int targetIndex=targets[i++];
           int distance=targets[i];
