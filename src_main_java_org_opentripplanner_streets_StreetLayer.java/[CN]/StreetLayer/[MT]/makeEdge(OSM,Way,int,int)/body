@@ -15,13 +15,13 @@
     LOG.warn("Street segment was too long, skipping.");
     return;
   }
-  int forwardEdgeIndex=nextEdgeIndex++;
+  int forwardEdgeIndex=nEdges++;
   StreetSegment fwdSeg=edges.get(forwardEdgeIndex);
   fwdSeg.setFromVertex(beginVertexIndex);
   fwdSeg.setToVertex(endVertexIndex);
   fwdSeg.setLength(lengthMeters);
   fwdSeg.setSpeed(DEFAULT_SPEED_KPH);
-  int backwardEdgeIndex=nextEdgeIndex++;
+  int backwardEdgeIndex=nEdges++;
   StreetSegment backSeg=edges.get(backwardEdgeIndex);
   backSeg.setFromVertex(endVertexIndex);
   backSeg.setToVertex(beginVertexIndex);
