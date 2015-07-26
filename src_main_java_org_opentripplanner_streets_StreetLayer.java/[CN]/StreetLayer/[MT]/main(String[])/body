@@ -7,6 +7,15 @@
   streetLayer.loadFromOsm(osm);
   osm.close();
   streetLayer.buildEdgeLists();
+  try {
+    OutputStream outputStream=new BufferedOutputStream(new FileOutputStream("test.out"));
+    streetLayer.write(outputStream);
+    InputStream inputStream=new BufferedInputStream(new FileInputStream("test.out"));
+    streetLayer=StreetLayer.read(inputStream);
+  }
+ catch (  Exception e) {
+    throw new RuntimeException(e);
+  }
   streetLayer.testRouting(false);
   streetLayer.testRouting(true);
 }

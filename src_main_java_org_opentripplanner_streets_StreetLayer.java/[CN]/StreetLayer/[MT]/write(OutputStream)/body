@@ -1,0 +1,7 @@
+{
+  LOG.info("Writing street layer...");
+  FSTObjectOutput out=new FSTObjectOutput(stream);
+  out.writeObject(this,StreetLayer.class);
+  out.close();
+  LOG.info("Done writing.");
+}
