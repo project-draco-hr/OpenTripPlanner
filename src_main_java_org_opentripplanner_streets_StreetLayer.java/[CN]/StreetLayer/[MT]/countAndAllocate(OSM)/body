@@ -1,0 +1,23 @@
+{
+  LOG.info("Counting edges before allocating storage...");
+  int nEdges=0;
+  for (  Way way : osm.ways.values()) {
+    if (!way.hasTag("highway")) {
+      continue;
+    }
+    nEdges+=2;
+    registerIntersection(way.nodes[0]);
+    registerIntersection(way.nodes[way.nodes.length - 1]);
+    for (int n=1; n < way.nodes.length - 1; n++) {
+      if (osm.intersectionNodes.contains(way.nodes[n])) {
+        registerIntersection(way.nodes[n]);
+        nEdges+=2;
+      }
+    }
+  }
+  int nVertices=vertexIndexForOsmNode.size();
+  LOG.info("Allocating storage for {} vertices and {} edges.",nVertices,nEdges);
+  FSTStructAllocator structAllocator=new FSTStructAllocator(1024 * 1024,new MallocBytezAllocator());
+  edges=structAllocator.newArray(nEdges,new StreetSegment());
+  vertices=structAllocator.newArray(nVertices,new StreetIntersection());
+}

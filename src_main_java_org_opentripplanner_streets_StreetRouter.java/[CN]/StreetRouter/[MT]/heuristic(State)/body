@@ -1,0 +1,6 @@
+{
+  StreetIntersection intersection=streetLayer.vertices.get(s.vertex);
+  double lat=intersection.getLat();
+  double lon=intersection.getLon();
+  return (int)SphericalDistanceLibrary.fastDistance(lat,lon,targetLat,targetLon);
+}

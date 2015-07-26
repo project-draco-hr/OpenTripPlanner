@@ -1,0 +1,19 @@
+{
+  LOG.info("Building edge lists from edges...");
+  int nVertices=vertexIndexForOsmNode.size();
+  outgoingEdges=new ArrayList<>(nVertices);
+  incomingEdges=new ArrayList<>(nVertices);
+  for (int v=0; v < nVertices; v++) {
+    outgoingEdges.add(new TIntArrayList(4));
+    incomingEdges.add(new TIntArrayList(4));
+  }
+  Iterator<StreetSegment> edgeIterator=edges.iterator();
+  int e=0;
+  while (edgeIterator.hasNext()) {
+    StreetSegment segment=edgeIterator.next();
+    outgoingEdges.get(segment.getFromVertex()).add(e);
+    incomingEdges.get(segment.getToVertex()).add(e);
+    e+=1;
+  }
+  LOG.info("Done building edge lists.");
+}

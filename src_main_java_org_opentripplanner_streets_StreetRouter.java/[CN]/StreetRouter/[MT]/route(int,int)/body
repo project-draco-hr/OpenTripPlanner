@@ -1,0 +1,61 @@
+{
+  long startTime=System.currentTimeMillis();
+  bestStates.clear();
+  queue.reset();
+  State startState=new State(fromVertex);
+  bestStates.put(fromVertex,startState);
+  queue.insert(startState,0);
+  PrintStream printStream;
+  if (DEBUG_OUTPUT) {
+    File debugFile=new File(String.format("%d-%d.csv",fromVertex,toVertex));
+    OutputStream outputStream;
+    try {
+      outputStream=new BufferedOutputStream(new FileOutputStream(debugFile));
+    }
+ catch (    FileNotFoundException e) {
+      throw new RuntimeException(e);
+    }
+    printStream=new PrintStream(outputStream);
+    printStream.println("lat,lon,weight");
+  }
+  if (toVertex > 0) {
+    goalDirection=true;
+    StreetIntersection intersection=streetLayer.vertices.get(toVertex);
+    targetLat=intersection.getLat();
+    targetLon=intersection.getLon();
+  }
+  while (!queue.empty()) {
+    State s0=queue.extract_min();
+    if (bestStates.get(s0.vertex) != s0) {
+      continue;
+    }
+    int v0=s0.vertex;
+    if (goalDirection && v0 == toVertex) {
+      LOG.debug("Found destination vertex. Tree size is {}.",bestStates.size());
+      break;
+    }
+    if (DEBUG_OUTPUT) {
+      StreetIntersection intersection=streetLayer.vertices.get(v0);
+      printStream.printf("%f,%f,%d\n",intersection.getLat(),intersection.getLon(),s0.weight);
+    }
+    TIntList edgeList=streetLayer.outgoingEdges.get(v0);
+    TIntIterator edgeIterator=edgeList.iterator();
+    while (edgeIterator.hasNext()) {
+      int edgeIndex=edgeIterator.next();
+      StreetSegment segment=streetLayer.edges.get(edgeIndex);
+      State s1=segment.traverse(s0);
+      if (!goalDirection && s1.weight > distanceLimitMeters) {
+        continue;
+      }
+      State existingBest=bestStates.get(s1.vertex);
+      if (existingBest == null || existingBest.weight > s1.weight) {
+        bestStates.put(s1.vertex,s1);
+        int remainingWeight=goalDirection ? heuristic(s1) : 0;
+        queue.insert(s1,s1.weight + remainingWeight);
+      }
+    }
+  }
+  if (DEBUG_OUTPUT) {
+    printStream.close();
+  }
+}

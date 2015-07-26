@@ -1,0 +1,31 @@
+{
+  long beginOsmNodeId=way.nodes[beginIdx];
+  long endOsmNodeId=way.nodes[endIdx];
+  int beginVertexIndex=vertexIndexForOsmNode.get(beginOsmNodeId);
+  int endVertexIndex=vertexIndexForOsmNode.get(endOsmNodeId);
+  Node prevNode=osm.nodes.get(beginOsmNodeId);
+  double lengthMeters=0;
+  for (int n=beginIdx; n <= endIdx; n++) {
+    long nodeId=way.nodes[n];
+    Node node=osm.nodes.get(nodeId);
+    lengthMeters+=SphericalDistanceLibrary.fastDistance(prevNode.getLat(),prevNode.getLon(),node.getLat(),node.getLon());
+    prevNode=node;
+  }
+  if (lengthMeters * 1000 > Integer.MAX_VALUE) {
+    LOG.warn("Street segment was too long, skipping.");
+    return;
+  }
+  int forwardEdgeIndex=nextEdgeIndex++;
+  StreetSegment fwdSeg=edges.get(forwardEdgeIndex);
+  fwdSeg.setFromVertex(beginVertexIndex);
+  fwdSeg.setToVertex(endVertexIndex);
+  fwdSeg.setLength(lengthMeters);
+  fwdSeg.setSpeed(DEFAULT_SPEED_KPH);
+  int backwardEdgeIndex=nextEdgeIndex++;
+  StreetSegment backSeg=edges.get(backwardEdgeIndex);
+  backSeg.setFromVertex(endVertexIndex);
+  backSeg.setToVertex(beginVertexIndex);
+  backSeg.setLength(lengthMeters);
+  backSeg.setSpeed(DEFAULT_SPEED_KPH);
+  backSeg.setFlag(StreetSegment.Flag.BACKWARD);
+}

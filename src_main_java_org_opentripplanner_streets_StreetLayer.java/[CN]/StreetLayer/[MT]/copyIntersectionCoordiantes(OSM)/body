@@ -1,0 +1,14 @@
+{
+  LOG.info("Copying OSM node coordinates for street intersections...");
+  TLongIntIterator iter=vertexIndexForOsmNode.iterator();
+  while (iter.hasNext()) {
+    iter.advance();
+    long osmNodeId=iter.key();
+    int vertexIndex=iter.value();
+    Node node=osm.nodes.get(osmNodeId);
+    StreetIntersection intersection=vertices.get(vertexIndex);
+    intersection.setLat(node.getLat());
+    intersection.setLon(node.getLon());
+  }
+  LOG.info("Done copying coordinates.");
+}

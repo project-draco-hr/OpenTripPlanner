@@ -1,0 +1,12 @@
+{
+  String osmSourceFile=args[0];
+  OSM osm=new OSM(null);
+  osm.intersectionDetection=true;
+  osm.readFromFile(osmSourceFile);
+  StreetLayer streetLayer=new StreetLayer();
+  streetLayer.loadFromOsm(osm);
+  osm.close();
+  streetLayer.buildEdgeLists();
+  streetLayer.testRouting(false);
+  streetLayer.testRouting(true);
+}

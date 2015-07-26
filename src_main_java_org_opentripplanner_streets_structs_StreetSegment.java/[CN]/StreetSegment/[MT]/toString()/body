@@ -1,0 +1,11 @@
+{
+  StringBuilder sb=new StringBuilder();
+  sb.append(String.format("Edge from %d to %d. Length %f meters, speed %d kph.",fromVertex,toVertex,length_mm / 1000D,speed));
+  for (  Flag flag : Flag.values()) {
+    if (getFlag(flag)) {
+      sb.append(" ");
+      sb.append(flag.toString());
+    }
+  }
+  return sb.toString();
+}
