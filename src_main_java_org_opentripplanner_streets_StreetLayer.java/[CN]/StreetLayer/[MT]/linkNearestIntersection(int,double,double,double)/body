@@ -7,7 +7,8 @@
   envelope.expandBy(radiusDegreesLon,radiusDegreesLat);
   double squaredRadiusDegreesLat=radiusDegreesLat * radiusDegreesLat;
   TIntSet candidateVertices=spatialIndex.query(envelope);
-  TIntList nearby=new TIntArrayList();
+  int closestVertex=-1;
+  double closestDistance=Double.POSITIVE_INFINITY;
   TIntIterator vertexIterator=candidateVertices.iterator();
   while (vertexIterator.hasNext()) {
     int v=vertexIterator.next();
@@ -17,9 +18,20 @@
     dx*=cosLat;
     double squaredDistanceDegreesLat=dx * dx + dy * dy;
     if (squaredDistanceDegreesLat <= squaredRadiusDegreesLat) {
-      LOG.info("Intersection {} at {} meters.",v,(int)(FastMath.sqrt(squaredDistanceDegreesLat) * metersPerDegreeLat));
-      nearby.add(v);
+      if (squaredDistanceDegreesLat < closestDistance) {
+        closestVertex=v;
+        closestDistance=squaredDistanceDegreesLat;
+      }
     }
   }
-  return nearby;
+  if (closestVertex >= 0) {
+    closestDistance=FastMath.sqrt(closestDistance) * metersPerDegreeLat;
+    int edgeId=nEdges++;
+    StreetSegment segment=edges.get(edgeId);
+    segment.setFlag(StreetSegment.Flag.TRANSIT_LINK);
+    segment.setFromVertex(closestVertex);
+    segment.setToVertex(stopIndex);
+    outgoingEdges.get(closestVertex).add(edgeId);
+    incomingEdges.get(closestVertex).add(edgeId);
+  }
 }
