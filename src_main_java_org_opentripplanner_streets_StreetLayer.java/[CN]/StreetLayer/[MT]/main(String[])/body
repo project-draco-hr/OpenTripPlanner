@@ -10,8 +10,10 @@
   try {
     OutputStream outputStream=new BufferedOutputStream(new FileOutputStream("test.out"));
     streetLayer.write(outputStream);
+    outputStream.close();
     InputStream inputStream=new BufferedInputStream(new FileInputStream("test.out"));
     streetLayer=StreetLayer.read(inputStream);
+    inputStream.close();
   }
  catch (  Exception e) {
     throw new RuntimeException(e);

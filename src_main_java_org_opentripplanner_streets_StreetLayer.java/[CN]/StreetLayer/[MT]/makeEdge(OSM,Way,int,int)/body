@@ -11,6 +11,7 @@
     lengthMeters+=SphericalDistanceLibrary.fastDistance(prevNode.getLat(),prevNode.getLon(),node.getLat(),node.getLon());
     prevNode=node;
   }
+  pointsPerEdgeHistogram.add(endIdx - beginIdx + 1);
   if (lengthMeters * 1000 > Integer.MAX_VALUE) {
     LOG.warn("Street segment was too long, skipping.");
     return;

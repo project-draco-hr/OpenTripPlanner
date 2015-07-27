@@ -15,4 +15,12 @@
     e+=1;
   }
   LOG.info("Done building edge lists.");
+  Histogram edgesPerListHistogram=new Histogram("Number of edges per edge list");
+  for (  TIntList edgeList : outgoingEdges) {
+    edgesPerListHistogram.add(edgeList.size());
+  }
+  for (  TIntList edgeList : incomingEdges) {
+    edgesPerListHistogram.add(edgeList.size());
+  }
+  edgesPerListHistogram.display();
 }
