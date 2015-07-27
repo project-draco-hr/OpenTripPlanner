@@ -10,4 +10,5 @@
   streetLayer.indexStreets();
   String gtfsSourceFile=args[1];
   TransitLayer transitLayer=TransitLayer.fromGtfs(gtfsSourceFile);
+  transitLayer.findStreets(streetLayer);
 }

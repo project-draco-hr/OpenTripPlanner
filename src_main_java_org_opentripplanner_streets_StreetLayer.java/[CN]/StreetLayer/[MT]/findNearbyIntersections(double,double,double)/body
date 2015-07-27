@@ -1,0 +1,25 @@
+{
+  final double metersPerDegreeLat=111111.111;
+  double cosLat=FastMath.cos(FastMath.toRadians(lat));
+  double radiusDegreesLat=radiusMeters / metersPerDegreeLat;
+  double radiusDegreesLon=radiusDegreesLat * cosLat;
+  Envelope envelope=new Envelope(lon,lon,lat,lat);
+  envelope.expandBy(radiusDegreesLon,radiusDegreesLat);
+  double squaredRadiusDegreesLat=radiusDegreesLat * radiusDegreesLat;
+  TIntSet candidateVertices=spatialIndex.query(envelope);
+  TIntList nearby=new TIntArrayList();
+  TIntIterator vertexIterator=candidateVertices.iterator();
+  while (vertexIterator.hasNext()) {
+    int v=vertexIterator.next();
+    StreetIntersection intersection=vertices.get(v);
+    double dx=intersection.getLon() - lon;
+    double dy=intersection.getLat() - lat;
+    dx*=cosLat;
+    double squaredDistanceDegreesLat=dx * dx + dy * dy;
+    if (squaredDistanceDegreesLat <= squaredRadiusDegreesLat) {
+      LOG.info("Intersection {} at {} meters.",v,(int)(FastMath.sqrt(squaredDistanceDegreesLat) * metersPerDegreeLat));
+      nearby.add(v);
+    }
+  }
+  return nearby;
+}

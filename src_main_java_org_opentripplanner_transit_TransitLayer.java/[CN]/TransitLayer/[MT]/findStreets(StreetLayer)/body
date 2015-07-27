@@ -1,0 +1,6 @@
+{
+  for (  Stop stop : stops.values()) {
+    LOG.info("Streets near {}.",stop.stop_name);
+    streetLayer.findNearbyIntersections(stop.stop_lat,stop.stop_lon,300);
+  }
+}
