@@ -5,4 +5,6 @@
   this.transitModes=graph.getTransitModes();
   this.envelope=graph.getEnvelope();
   addCenter(graph.getCenter());
+  service=graph.getService(BikeRentalStationService.class,false);
+  hasParkRide=graph.hasParkRide;
 }
