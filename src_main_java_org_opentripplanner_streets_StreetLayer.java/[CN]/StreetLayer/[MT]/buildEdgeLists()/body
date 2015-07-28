@@ -1,18 +1,15 @@
 {
   LOG.info("Building edge lists from edges...");
-  outgoingEdges=new ArrayList<>(nVertices);
-  incomingEdges=new ArrayList<>(nVertices);
-  for (int v=0; v < nVertices; v++) {
+  outgoingEdges=new ArrayList<>(vertexStore.nVertices);
+  incomingEdges=new ArrayList<>(vertexStore.nVertices);
+  for (int v=0; v < vertexStore.nVertices; v++) {
     outgoingEdges.add(new TIntArrayList(4));
     incomingEdges.add(new TIntArrayList(4));
   }
-  Iterator<StreetSegment> edgeIterator=edges.iterator();
-  int e=0;
-  while (edgeIterator.hasNext()) {
-    StreetSegment segment=edgeIterator.next();
-    outgoingEdges.get(segment.getFromVertex()).add(e);
-    incomingEdges.get(segment.getToVertex()).add(e);
-    e+=1;
+  EdgeStore.Edge edge=edgeStore.getCursor();
+  while (edge.advance()) {
+    outgoingEdges.get(edge.getFromVertex()).add(edge.index);
+    incomingEdges.get(edge.getToVertex()).add(edge.index);
   }
   LOG.info("Done building edge lists.");
   Histogram edgesPerListHistogram=new Histogram("Number of edges per edge list");

@@ -1,0 +1,9 @@
+{
+  int vertexIndex=vertexIndexForOsmNode.get(osmNodeId);
+  if (vertexIndex == -1) {
+    Node node=osm.nodes.get(osmNodeId);
+    vertexIndex=vertexStore.addVertex(node.getLat(),node.getLon());
+    vertexIndexForOsmNode.put(osmNodeId,vertexIndex);
+  }
+  return vertexIndex;
+}

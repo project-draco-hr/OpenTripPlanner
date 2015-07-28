@@ -1,12 +1,11 @@
 {
   LOG.info("Indexing streets...");
   spatialIndex=new IntHashGrid();
-  for (int v=0; v < nVertices; v++) {
-    StreetIntersection intersection=vertices.get(v);
-    double x=intersection.getLon();
-    double y=intersection.getLat();
+  for (VertexStore.Vertex vertex=vertexStore.getCursor(); vertex.advance(); ) {
+    double x=vertex.getLon();
+    double y=vertex.getLat();
     Envelope envelope=new Envelope(x,x,y,y);
-    spatialIndex.insert(envelope,v);
+    spatialIndex.insert(envelope,vertex.index);
   }
   LOG.info("Done indexing streets.");
 }

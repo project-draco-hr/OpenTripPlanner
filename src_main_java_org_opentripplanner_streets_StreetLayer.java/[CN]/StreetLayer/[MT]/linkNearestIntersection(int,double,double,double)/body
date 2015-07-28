@@ -9,12 +9,13 @@
   TIntSet candidateVertices=spatialIndex.query(envelope);
   int closestVertex=-1;
   double closestDistance=Double.POSITIVE_INFINITY;
+  VertexStore.Vertex vertex=vertexStore.getCursor();
   TIntIterator vertexIterator=candidateVertices.iterator();
   while (vertexIterator.hasNext()) {
     int v=vertexIterator.next();
-    StreetIntersection intersection=vertices.get(v);
-    double dx=intersection.getLon() - lon;
-    double dy=intersection.getLat() - lat;
+    vertex.seek(v);
+    double dx=vertex.getLon() - lon;
+    double dy=vertex.getLat() - lat;
     dx*=cosLat;
     double squaredDistanceDegreesLat=dx * dx + dy * dy;
     if (squaredDistanceDegreesLat <= squaredRadiusDegreesLat) {
@@ -26,12 +27,8 @@
   }
   if (closestVertex >= 0) {
     closestDistance=FastMath.sqrt(closestDistance) * metersPerDegreeLat;
-    int edgeId=nEdges++;
-    StreetSegment segment=edges.get(edgeId);
-    segment.setFlag(StreetSegment.Flag.TRANSIT_LINK);
-    segment.setFromVertex(closestVertex);
-    segment.setToVertex(stopIndex);
-    segment.setLength(closestDistance);
+    int edgeId=edgeStore.addStreetPair(closestVertex,stopIndex,closestDistance);
+    edgeStore.getCursor(edgeId).setFlag(EdgeStore.Flag.TRANSIT_LINK);
     outgoingEdges.get(closestVertex).add(edgeId);
     incomingEdges.get(closestVertex).add(edgeId);
   }

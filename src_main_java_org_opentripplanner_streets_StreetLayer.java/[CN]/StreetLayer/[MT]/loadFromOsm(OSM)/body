@@ -1,7 +1,6 @@
 {
-  countAndAllocate(osm);
-  copyIntersectionCoordiantes(osm);
   LOG.info("Making street edges from OSM ways...");
+  this.osm=osm;
   for (  Map.Entry<Long,Way> entry : osm.ways.entrySet()) {
     Way way=entry.getValue();
     if (!way.hasTag("highway")) {
@@ -11,7 +10,7 @@
     int beginIdx=0;
     for (int n=1; n < way.nodes.length; n++) {
       if (osm.intersectionNodes.contains(way.nodes[n]) || n == (way.nodes.length - 1)) {
-        makeEdge(osm,way,beginIdx,n);
+        makeEdge(way,beginIdx,n);
         nEdgesCreated+=1;
         beginIdx=n;
       }
@@ -19,8 +18,9 @@
     edgesPerWayHistogram.add(nEdgesCreated);
   }
   LOG.info("Done making street edges.");
-  LOG.info("Made {} edges and {} vertices.",nEdges,nVertices);
+  LOG.info("Made {} vertices and {} edges.",vertexStore.nVertices,edgeStore.nEdges);
   edgesPerWayHistogram.display();
   pointsPerEdgeHistogram.display();
   vertexIndexForOsmNode=null;
+  osm=null;
 }
