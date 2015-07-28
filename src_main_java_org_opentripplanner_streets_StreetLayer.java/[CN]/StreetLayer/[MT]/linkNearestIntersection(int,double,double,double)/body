@@ -31,6 +31,7 @@
     segment.setFlag(StreetSegment.Flag.TRANSIT_LINK);
     segment.setFromVertex(closestVertex);
     segment.setToVertex(stopIndex);
+    segment.setLength(closestDistance);
     outgoingEdges.get(closestVertex).add(edgeId);
     incomingEdges.get(closestVertex).add(edgeId);
   }

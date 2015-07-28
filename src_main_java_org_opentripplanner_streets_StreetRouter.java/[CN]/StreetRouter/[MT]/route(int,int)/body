@@ -2,7 +2,7 @@
   long startTime=System.currentTimeMillis();
   bestStates.clear();
   queue.reset();
-  State startState=new State(fromVertex);
+  State startState=new State(fromVertex,-1,null);
   bestStates.put(fromVertex,startState);
   queue.insert(startState,0);
   PrintStream printStream;
@@ -43,8 +43,14 @@
     while (edgeIterator.hasNext()) {
       int edgeIndex=edgeIterator.next();
       StreetSegment segment=streetLayer.edges.get(edgeIndex);
-      State s1=segment.traverse(s0);
+      State s1=segment.traverse(s0,edgeIndex);
       if (!goalDirection && s1.weight > distanceLimitMeters) {
+        continue;
+      }
+      if (segment.getFlag(StreetSegment.Flag.TRANSIT_LINK)) {
+        int stopIndex=s1.vertex;
+        Stop stop=streetLayer.transitLayer.stops.get(stopIndex);
+        LOG.info("Hit stop {} ({}).",stop.stop_name,stop.stop_code);
         continue;
       }
       State existingBest=bestStates.get(s1.vertex);

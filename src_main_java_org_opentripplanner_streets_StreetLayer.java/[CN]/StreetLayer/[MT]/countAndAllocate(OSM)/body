@@ -17,7 +17,9 @@
   }
   int nVertices=vertexIndexForOsmNode.size();
   LOG.info("Allocating storage for {} vertices and {} edges.",nVertices,nEdges);
+  int nTransitLinkVertices=transitLayer.stops.size();
+  int nTransitLinkEdges=transitLayer.stops.size() * 3;
   FSTStructAllocator structAllocator=new FSTStructAllocator(1024 * 1024,new MallocBytezAllocator());
-  edges=structAllocator.newArray(nEdges,new StreetSegment());
-  vertices=structAllocator.newArray(nVertices,new StreetIntersection());
+  edges=structAllocator.newArray(nEdges + nTransitLinkEdges,new StreetSegment());
+  vertices=structAllocator.newArray(nVertices + nTransitLinkVertices,new StreetIntersection());
 }
