@@ -14,7 +14,10 @@
   TimeWindow window=new TimeWindow(7 * 3600,9 * 3600,new BitSet(),DayOfWeek.WEDNESDAY);
   Scenario scenario=new Scenario(0);
   scenario.modifications=Lists.newArrayList(atp);
-  RaptorWorkerData data=new RaptorWorkerData(g,window,scenario);
+  ProfileRequest req=new ProfileRequest();
+  req.scenario=scenario;
+  req.boardingAssumption=RaptorWorkerTimetable.BoardingAssumption.WORST_CASE;
+  RaptorWorkerData data=new RaptorWorkerData(g,window,req);
   assertEquals(5,data.nStops);
   AStar aStar=new AStar();
   RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
@@ -25,5 +28,5 @@
   ShortestPathTree spt=aStar.getShortestPathTree(rr);
   TIntIntMap stops=data.findStopsNear(spt,g);
   assertFalse(stops.isEmpty());
-  assertEquals(4 * 3600 + 600 + 30,data.timetablesForPattern.get(0).getFrequencyDeparture(0,0,39 * 360,RaptorWorkerTimetable.BoardingAssumption.WORST_CASE));
+  assertEquals(4 * 3600 + 600 + 30,data.timetablesForPattern.get(0).getFrequencyDeparture(0,0,39 * 360,-1));
 }

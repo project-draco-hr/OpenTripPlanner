@@ -19,7 +19,7 @@
       }
       if (bestTimes[stopIndex] != UNREACHED) {
         for (int trip=0; trip < timetable.getFrequencyTripCount(); trip++) {
-          int boardTime=timetable.getFrequencyDeparture(trip,stopPositionInPattern,bestTimes[stopIndex],req.boardingAssumption);
+          int boardTime=timetable.getFrequencyDeparture(trip,stopPositionInPattern,bestTimes[stopIndex],previousPatterns[stopIndex]);
           if (boardTime != -1 && boardTime < remainOnBoardTime) {
             if (bestFreqBoardStop == stopPositionInPattern && bestFreqBoardTime < boardTime)             continue;
             bestFreqBoardTime=boardTime;
@@ -33,7 +33,10 @@
           bestNonTransferTimes[stopIndex]=remainOnBoardTime;
           stopsTouched.set(stopIndex);
           allStopsTouched.set(stopIndex);
-          if (bestTimes[stopIndex] > remainOnBoardTime)           bestTimes[stopIndex]=remainOnBoardTime;
+          if (bestTimes[stopIndex] > remainOnBoardTime) {
+            bestTimes[stopIndex]=remainOnBoardTime;
+            previousPatterns[stopIndex]=p;
+          }
         }
       }
     }
@@ -54,7 +57,10 @@
           bestNonTransferTimes[stopIndex]=arrivalTime;
           stopsTouched.set(stopIndex);
           allStopsTouched.set(stopIndex);
-          if (arrivalTime < bestTimes[stopIndex])           bestTimes[stopIndex]=arrivalTime;
+          if (arrivalTime < bestTimes[stopIndex]) {
+            bestTimes[stopIndex]=arrivalTime;
+            previousPatterns[stopIndex]=p;
+          }
         }
         while (onTrip > 0) {
           int departureOnPreviousTrip=timetable.getDeparture(onTrip - 1,stopPositionInPattern);

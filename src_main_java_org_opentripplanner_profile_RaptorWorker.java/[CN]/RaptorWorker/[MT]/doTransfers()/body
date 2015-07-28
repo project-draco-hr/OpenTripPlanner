@@ -10,6 +10,7 @@
       int toTime=fromTime + (int)(distance / req.walkSpeed);
       if (toTime < max_time && toTime < bestTimes[toStop]) {
         bestTimes[toStop]=toTime;
+        previousPatterns[toStop]=previousPatterns[stop];
         markPatternsForStop(toStop);
       }
     }

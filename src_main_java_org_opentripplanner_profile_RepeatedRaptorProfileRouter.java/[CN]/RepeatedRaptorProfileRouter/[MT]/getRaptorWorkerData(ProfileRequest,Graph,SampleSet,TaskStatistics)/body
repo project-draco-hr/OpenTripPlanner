@@ -9,8 +9,8 @@
   DayOfWeek dayOfWeek=DayOfWeek.of(request.date.getDayOfWeek());
   TimeWindow window=new TimeWindow(request.fromTime,request.toTime + RaptorWorker.MAX_DURATION,graph.index.servicesRunning(request.date),dayOfWeek);
   RaptorWorkerData raptorWorkerData;
-  if (sampleSet == null)   raptorWorkerData=new RaptorWorkerData(graph,window,request.scenario,ts);
- else   raptorWorkerData=new RaptorWorkerData(graph,window,request.scenario,sampleSet,ts);
+  if (sampleSet == null)   raptorWorkerData=new RaptorWorkerData(graph,window,request,ts);
+ else   raptorWorkerData=new RaptorWorkerData(graph,window,request,sampleSet,ts);
   ts.raptorData=(int)(System.currentTimeMillis() - startData);
   LOG.info("done");
   return raptorWorkerData;
