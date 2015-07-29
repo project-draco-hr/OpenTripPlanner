@@ -1,4 +1,17 @@
 {
+  String gtfsSourceFile=args[1];
+  TransitLayer transitLayer=TransitLayer.fromGtfs(gtfsSourceFile);
+  try {
+    OutputStream outputStream=new BufferedOutputStream(new FileOutputStream("transit.otp"));
+    transitLayer.write(outputStream);
+    outputStream.close();
+    InputStream inputStream=new BufferedInputStream(new FileInputStream("transit.otp"));
+    transitLayer=TransitLayer.read(inputStream);
+    inputStream.close();
+  }
+ catch (  Exception e) {
+    throw new RuntimeException(e);
+  }
   String osmSourceFile=args[0];
   OSM osm=new OSM(null);
   osm.intersectionDetection=true;
@@ -8,8 +21,6 @@
   osm.close();
   streetLayer.buildEdgeLists();
   streetLayer.indexStreets();
-  String gtfsSourceFile=args[1];
-  TransitLayer transitLayer=TransitLayer.fromGtfs(gtfsSourceFile);
   streetLayer.linkTransitStops(transitLayer);
   try {
     OutputStream outputStream=new BufferedOutputStream(new FileOutputStream("test.out"));

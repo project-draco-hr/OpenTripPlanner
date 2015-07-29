@@ -1,0 +1,13 @@
+{
+  int nStops=pattern.size();
+  stops=new int[nStops];
+  pickups=new PickDropType[nStops];
+  dropoffs=new PickDropType[nStops];
+  wheelchairAccessible=new BitSet(nStops);
+  int s=0;
+  for (  PickDropStop pds : pattern) {
+    stops[s]=pds.stop;
+    pickups[s]=pds.pickupType;
+    dropoffs[s]=pds.dropoffType;
+  }
+}

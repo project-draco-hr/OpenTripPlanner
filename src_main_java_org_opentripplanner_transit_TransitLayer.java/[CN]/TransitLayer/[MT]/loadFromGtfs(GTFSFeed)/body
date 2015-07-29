@@ -1,0 +1,31 @@
+{
+  TObjectIntMap<String> indexForStopId=new TObjectIntHashMap<>();
+  for (  Stop stop : gtfs.stops.values()) {
+    indexForStopId.put(stop.stop_id,stops.size());
+    stops.add(stop.stop_id);
+  }
+  LOG.info("Grouping trips by stop pattern and creating trip schedules.");
+  Map<List<PickDropStop>,TripPattern> tripPatternForStopSequence=new HashMap<>();
+  int nTripsAdded=0;
+  for (  String tripId : gtfs.trips.keySet()) {
+    Trip trip=gtfs.trips.get(tripId);
+    List<PickDropStop> pickDropStops=new ArrayList<>(30);
+    TIntList arrivals=new TIntArrayList(30);
+    TIntList departures=new TIntArrayList(30);
+    for (    StopTime st : gtfs.getOrderedStopTimesForTrip(tripId)) {
+      int stopIndex=indexForStopId.get(st.stop_id);
+      pickDropStops.add(new PickDropStop(stopIndex,st.pickup_type,st.drop_off_type));
+      arrivals.add(st.arrival_time);
+      departures.add(st.departure_time);
+    }
+    TripPattern tripPattern=tripPatternForStopSequence.get(pickDropStops);
+    if (tripPattern == null) {
+      tripPattern=new TripPattern(pickDropStops);
+      tripPatternForStopSequence.put(pickDropStops,tripPattern);
+      tripPatterns.add(tripPattern);
+    }
+    tripPattern.addTrip(new TripSchedule(trip,arrivals.toArray(),departures.toArray()));
+    nTripsAdded+=1;
+  }
+  LOG.info("Done creating {} trips on {} patterns.",nTripsAdded,tripPatternForStopSequence.size());
+}

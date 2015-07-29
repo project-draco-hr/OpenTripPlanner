@@ -1,0 +1,7 @@
+{
+  LOG.info("Writing transit layer...");
+  FSTObjectOutput out=new FSTObjectOutput(stream);
+  out.writeObject(this,TransitLayer.class);
+  out.close();
+  LOG.info("Done writing.");
+}
