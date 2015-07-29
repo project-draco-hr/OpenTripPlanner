@@ -2,10 +2,10 @@
   String gtfsSourceFile=args[1];
   TransitLayer transitLayer=TransitLayer.fromGtfs(gtfsSourceFile);
   try {
-    OutputStream outputStream=new BufferedOutputStream(new FileOutputStream("transit.otp"));
+    OutputStream outputStream=new BufferedOutputStream(new FileOutputStream("transit.layer"));
     transitLayer.write(outputStream);
     outputStream.close();
-    InputStream inputStream=new BufferedInputStream(new FileInputStream("transit.otp"));
+    InputStream inputStream=new BufferedInputStream(new FileInputStream("transit.layer"));
     transitLayer=TransitLayer.read(inputStream);
     inputStream.close();
   }
@@ -23,10 +23,10 @@
   streetLayer.indexStreets();
   streetLayer.linkTransitStops(transitLayer);
   try {
-    OutputStream outputStream=new BufferedOutputStream(new FileOutputStream("test.out"));
+    OutputStream outputStream=new BufferedOutputStream(new FileOutputStream("streets.layer"));
     streetLayer.write(outputStream);
     outputStream.close();
-    InputStream inputStream=new BufferedInputStream(new FileInputStream("test.out"));
+    InputStream inputStream=new BufferedInputStream(new FileInputStream("streets.layer"));
     streetLayer=StreetLayer.read(inputStream);
     inputStream.close();
   }
