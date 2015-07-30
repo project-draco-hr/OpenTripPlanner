@@ -18,6 +18,7 @@
     if (n % 15 == 0) {
       LOG.info("minute {}",n);
     }
+    this.data.randomizeOffsets();
     this.runRaptor(initialStops,departureTime);
     long beginPropagationTime=System.currentTimeMillis();
     int[] timesAtTargets=timesAtTargetsEachMinute[n];
