@@ -7,11 +7,12 @@
     addAnnotation(annotation);
   }
   LOG.info("Creating Annotations log");
+  Set<String> classes=annotations.keySet();
   for (  Map.Entry<String,Collection<String>> entry : annotations.asMap().entrySet()) {
     LOG.info("Key: {} ({})",entry.getKey(),entry.getValue().size());
     try {
       HTMLWriter file_writer=new HTMLWriter(entry.getKey(),entry.getValue());
-      file_writer.writeFile();
+      file_writer.writeFile(classes);
     }
  catch (    FileNotFoundException ex) {
       LOG.error("Output folder not found:{} {}",outPath,ex);
