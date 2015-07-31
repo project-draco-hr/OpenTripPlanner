@@ -1,11 +1,12 @@
 {
-  Envelope2D bbox=new Envelope2D(index.getBoundingBox(crs.crs));
+  TimeSurface surface=otpServer.surfaceCache.get(surfaceId);
+  Router router=otpServer.getRouter(surface.routerId);
+  Envelope2D bbox=new Envelope2D(router.graph.getGeomIndex().getBoundingBox(crs.crs));
   if (resolution != null) {
     width=(int)Math.ceil(bbox.width / resolution);
     height=(int)Math.ceil(bbox.height / resolution);
   }
   TileRequest tileRequest=new TileRequest(bbox,width,height);
-  SPTRequest sptRequest=new SPTRequest(x,y,time.cal);
   RenderRequest renderRequest=new RenderRequest(format,Layer.TRAVELTIME,Style.GRAY,false,false);
-  return null;
+  return router.renderer.getResponse(tileRequest,surface,null,renderRequest);
 }
