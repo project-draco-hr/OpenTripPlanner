@@ -4,6 +4,7 @@
   advance();
   patternsTouched.clear();
   allStopsTouched.clear();
+  stopsTouched.clear();
   TIntIntIterator iterator=initialStops.iterator();
   while (iterator.hasNext()) {
     iterator.advance();
@@ -12,7 +13,7 @@
     bestTimes[stopIndex]=Math.min(time,bestTimes[stopIndex]);
     markPatternsForStop(stopIndex);
   }
-  while (doOneRound()) {
+  while (doOneRound(bestTimes,bestNonTransferTimes,previousPatterns,false)) {
     advance();
   }
 }

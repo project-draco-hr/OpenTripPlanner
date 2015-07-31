@@ -8,39 +8,41 @@
     int bestFreqBoardTime=Integer.MAX_VALUE;
     int bestFreqBoardStop=-1;
     int bestFreq=-1;
-    for (    int stopIndex : stops) {
-      stopPositionInPattern+=1;
-      int remainOnBoardTime;
-      if (bestFreq != -1) {
-        remainOnBoardTime=bestFreqBoardTime + timetable.getFrequencyTravelTime(bestFreq,bestFreqBoardStop,stopPositionInPattern);
-      }
+    if (useFrequencies) {
+      for (      int stopIndex : stops) {
+        stopPositionInPattern+=1;
+        int remainOnBoardTime;
+        if (bestFreq != -1) {
+          remainOnBoardTime=bestFreqBoardTime + timetable.getFrequencyTravelTime(bestFreq,bestFreqBoardStop,stopPositionInPattern);
+        }
  else {
-        remainOnBoardTime=Integer.MAX_VALUE;
-      }
-      if (bestTimes[stopIndex] != UNREACHED) {
-        for (int trip=0; trip < timetable.getFrequencyTripCount(); trip++) {
-          int boardTime=timetable.getFrequencyDeparture(trip,stopPositionInPattern,bestTimes[stopIndex],previousPatterns[stopIndex]);
-          if (boardTime != -1 && boardTime < remainOnBoardTime) {
-            if (bestFreqBoardStop == stopPositionInPattern && bestFreqBoardTime < boardTime)             continue;
-            bestFreqBoardTime=boardTime;
-            bestFreqBoardStop=stopPositionInPattern;
-            bestFreq=trip;
+          remainOnBoardTime=Integer.MAX_VALUE;
+        }
+        if (bestTimes[stopIndex] != UNREACHED) {
+          for (int trip=0; trip < timetable.getFrequencyTripCount(); trip++) {
+            int boardTime=timetable.getFrequencyDeparture(trip,stopPositionInPattern,bestTimes[stopIndex],previousPatterns[stopIndex]);
+            if (boardTime != -1 && boardTime < remainOnBoardTime) {
+              if (bestFreqBoardStop == stopPositionInPattern && bestFreqBoardTime < boardTime)               continue;
+              bestFreqBoardTime=boardTime;
+              bestFreqBoardStop=stopPositionInPattern;
+              bestFreq=trip;
+            }
+          }
+        }
+        if (remainOnBoardTime != Integer.MAX_VALUE && remainOnBoardTime < max_time) {
+          if (bestNonTransferTimes[stopIndex] > remainOnBoardTime) {
+            bestNonTransferTimes[stopIndex]=remainOnBoardTime;
+            stopsTouched.set(stopIndex);
+            allStopsTouched.set(stopIndex);
+            if (bestTimes[stopIndex] > remainOnBoardTime) {
+              bestTimes[stopIndex]=remainOnBoardTime;
+              previousPatterns[stopIndex]=p;
+            }
           }
         }
       }
-      if (remainOnBoardTime != Integer.MAX_VALUE && remainOnBoardTime < max_time) {
-        if (bestNonTransferTimes[stopIndex] > remainOnBoardTime) {
-          bestNonTransferTimes[stopIndex]=remainOnBoardTime;
-          stopsTouched.set(stopIndex);
-          allStopsTouched.set(stopIndex);
-          if (bestTimes[stopIndex] > remainOnBoardTime) {
-            bestTimes[stopIndex]=remainOnBoardTime;
-            previousPatterns[stopIndex]=p;
-          }
-        }
-      }
+      if (bestFreq != -1)       continue PATTERNS;
     }
-    if (bestFreq != -1)     continue PATTERNS;
     stopPositionInPattern=-1;
     for (    int stopIndex : stops) {
       stopPositionInPattern+=1;
@@ -74,6 +76,6 @@
       }
     }
   }
-  doTransfers();
+  doTransfers(bestTimes,bestNonTransferTimes,previousPatterns);
   return !patternsTouched.isEmpty();
 }

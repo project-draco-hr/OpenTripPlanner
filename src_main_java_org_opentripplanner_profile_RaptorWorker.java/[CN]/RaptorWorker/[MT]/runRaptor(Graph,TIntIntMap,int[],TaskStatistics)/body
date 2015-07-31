@@ -11,44 +11,29 @@
   }
   PropagatedTimesStore propagatedTimesStore=new PropagatedTimesStore(graph,data.nTargets);
   int iterations=(req.toTime - req.fromTime - 60) / 60 + 1;
+  iterations*=MONTE_CARLO_COUNT_PER_MINUTE;
   ts.searchCount=iterations;
-  int[][] timesAtTargetsEachMinute=new int[iterations][data.nTargets];
+  int[][] timesAtTargetsEachIteration=new int[iterations][data.nTargets];
   ts.timeStep=60;
+  int[] scheduledTimesAtTargets=new int[data.nTargets];
+  System.arraycopy(walkTimes,0,scheduledTimesAtTargets,0,scheduledTimesAtTargets.length);
+  int iteration=0;
   for (int departureTime=req.toTime - 60, n=0; departureTime >= req.fromTime; departureTime-=60, n++) {
     if (n % 15 == 0) {
       LOG.info("minute {}",n);
     }
-    this.data.randomizeOffsets();
-    this.runRaptor(initialStops,departureTime);
-    long beginPropagationTime=System.currentTimeMillis();
-    int[] timesAtTargets=timesAtTargetsEachMinute[n];
-    System.arraycopy(walkTimes,0,timesAtTargets,0,timesAtTargets.length);
-    if (n > 0) {
-      int[] timesAtTargetsNextMinute=timesAtTargetsEachMinute[n - 1];
-      for (int i=0; i < timesAtTargets.length; i++) {
-        if (timesAtTargetsNextMinute[i] != UNREACHED && timesAtTargetsNextMinute[i] + 60 < timesAtTargets[i]) {
-          timesAtTargets[i]=timesAtTargetsNextMinute[i] + 60;
-        }
-      }
+    this.runRaptorScheduled(initialStops,departureTime);
+    this.doPropagation(bestNonTransferTimes,scheduledTimesAtTargets,departureTime);
+    for (int i=0; i < MONTE_CARLO_COUNT_PER_MINUTE; i++) {
+      data.randomizeOffsets();
+      int[] bestTimesCopy=Arrays.copyOf(bestTimes,bestTimes.length);
+      int[] bestNonTransferTimesCopy=Arrays.copyOf(bestNonTransferTimes,bestNonTransferTimes.length);
+      int[] previousPatternsCopy=Arrays.copyOf(previousPatterns,previousPatterns.length);
+      this.runRaptorFrequency(departureTime,bestTimesCopy,bestNonTransferTimesCopy,previousPatternsCopy);
+      int[] frequencyTimesAtTargets=timesAtTargetsEachIteration[iteration++];
+      System.arraycopy(scheduledTimesAtTargets,0,frequencyTimesAtTargets,0,scheduledTimesAtTargets.length);
+      this.doPropagation(bestNonTransferTimesCopy,frequencyTimesAtTargets,departureTime);
     }
-    for (int s=allStopsTouched.nextSetBit(0); s >= 0; s=allStopsTouched.nextSetBit(s + 1)) {
-      int baseTimeSeconds=bestNonTransferTimes[s];
-      if (baseTimeSeconds != UNREACHED) {
-        baseTimeSeconds-=departureTime;
-        int[] targets=data.targetsForStop.get(s);
-        if (targets == null)         continue;
-        for (int i=0; i < targets.length; i++) {
-          int targetIndex=targets[i++];
-          int distance=targets[i];
-          int egressWalkTimeSeconds=(int)(distance / req.walkSpeed);
-          int propagated_time=baseTimeSeconds + egressWalkTimeSeconds;
-          if (timesAtTargets[targetIndex] > propagated_time) {
-            timesAtTargets[targetIndex]=propagated_time;
-          }
-        }
-      }
-    }
-    totalPropagationTime+=(System.currentTimeMillis() - beginPropagationTime);
   }
   long calcTime=System.currentTimeMillis() - beginCalcTime;
   LOG.info("calc time {}sec",calcTime / 1000.0);
@@ -56,6 +41,6 @@
   LOG.info("  raptor {}sec",(calcTime - totalPropagationTime) / 1000.0);
   ts.propagation=(int)totalPropagationTime;
   ts.transitSearch=(int)(calcTime - totalPropagationTime);
-  propagatedTimesStore.setFromArray(timesAtTargetsEachMinute);
+  propagatedTimesStore.setFromArray(timesAtTargetsEachIteration);
   return propagatedTimesStore;
 }
