@@ -1,28 +1,2 @@
 {
-  if (times.length == 0)   return;
-  int stops=times[0].length;
-  STOPS:   for (int stop=0; stop < stops; stop++) {
-    int sum=0;
-    int count=0;
-    TIntList timeList=new TIntArrayList();
-    ITERATIONS:     for (int i=0; i < times.length; i++) {
-      if (times[i][stop] == RaptorWorker.UNREACHED)       continue ITERATIONS;
-      sum+=times[i][stop];
-      count++;
-      timeList.add(times[i][stop]);
-    }
-    if (count == 0)     continue STOPS;
-    avgs[stop]=sum / count;
-    int[] bootMeans=new int[400];
-    for (int boot=0; boot < 400; boot++) {
-      int bsum=0;
-      for (int iter=0; iter < count; iter++) {
-        bsum+=timeList.get(random.nextInt(count));
-      }
-      bootMeans[boot]=bsum / count;
-    }
-    Arrays.sort(bootMeans);
-    mins[stop]=bootMeans[10];
-    maxs[stop]=bootMeans[390];
-  }
 }
