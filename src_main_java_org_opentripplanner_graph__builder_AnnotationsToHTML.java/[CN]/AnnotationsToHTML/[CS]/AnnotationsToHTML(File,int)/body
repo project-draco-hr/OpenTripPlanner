@@ -2,4 +2,7 @@
   this.outPath=outpath;
   annotations=ArrayListMultimap.create();
   this.maxNumberOfAnnotationsPerFile=maxNumberOfAnnotationsPerFile;
+  this.classes=new TreeSet<>();
+  this.writers=new ArrayList<>();
+  this.classOccurences=HashMultiset.create();
 }
