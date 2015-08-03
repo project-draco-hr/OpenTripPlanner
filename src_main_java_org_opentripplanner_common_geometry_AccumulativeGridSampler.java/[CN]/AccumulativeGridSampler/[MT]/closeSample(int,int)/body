@@ -1,5 +1,10 @@
 {
   ZSamplePoint<TZ> A=sampleGrid.getOrCreate(x,y);
-  A.setZ(metric.closeSample(A.up() != null ? A.up().getZ() : null,A.down() != null ? A.down().getZ() : null,A.right() != null ? A.right().getZ() : null,A.left() != null ? A.left().getZ() : null));
-  return A;
+  boolean ok=metric.closeSample(A);
+  if (ok) {
+    return null;
+  }
+ else {
+    return A;
+  }
 }

@@ -1,10 +1,12 @@
 {
   Router router=otpServer.getRouter(routerId);
   if (precisionMeters < 10)   throw new IllegalArgumentException("Too small precisionMeters: " + precisionMeters);
+  if (offRoadDistanceMeters < 10)   throw new IllegalArgumentException("Too small offRoadDistanceMeters: " + offRoadDistanceMeters);
   RoutingRequest sptRequest=buildRequest();
   SampleGridRequest tgRequest=new SampleGridRequest();
   tgRequest.maxTimeSec=maxTimeSec;
   tgRequest.precisionMeters=precisionMeters;
+  tgRequest.offRoadDistanceMeters=offRoadDistanceMeters;
   if (coordinateOrigin != null)   tgRequest.coordinateOrigin=new GenericLocation(null,coordinateOrigin).getCoordinate();
   ZSampleGrid<WTWD> sampleGrid=router.sampleGridRenderer.getSampleGrid(tgRequest,sptRequest);
   int cols=sampleGrid.getXMax() - sampleGrid.getXMin() + 1;
@@ -19,7 +21,7 @@
   pw.getMetadata().setText(PngChunkTextVar.KEY_Description,"Sample grid bitmap");
   String gridCornerStr=String.format(Locale.US,"%.8f,%.8f",sampleGrid.getCenter().y + sampleGrid.getYMin() * sampleGrid.getCellSize().y,sampleGrid.getCenter().x + sampleGrid.getXMin() * sampleGrid.getCellSize().x);
   String gridCellSzStr=String.format(Locale.US,"%.12f,%.12f",sampleGrid.getCellSize().y,sampleGrid.getCellSize().x);
-  String offRoadDistStr=String.format(Locale.US,"%f",router.sampleGridRenderer.getOffRoadDistanceMeters(precisionMeters));
+  String offRoadDistStr=String.format(Locale.US,"%d",offRoadDistanceMeters);
   PngChunkTEXT gridCornerChunk=new PngChunkTEXT(imgInfo);
   gridCornerChunk.setKeyVal(OTPA_GRID_CORNER,gridCornerStr);
   pw.getChunksList().queue(gridCornerChunk);
