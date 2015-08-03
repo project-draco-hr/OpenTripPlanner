@@ -11,12 +11,18 @@
   println("<h2>Graph report for " + outPath.getParentFile() + "Graph.obj</h2>");
   println("<p>");
   for (  Multiset.Entry<String> htmlAnnotationClass : classes.entrySet()) {
-    String label=htmlAnnotationClass.getElement() + htmlAnnotationClass.getCount();
-    if (label.equals(current_class)) {
-      println("<span>" + label + "</span><br />");
-    }
+    String label_name=htmlAnnotationClass.getElement();
+    String label;
+    int currentCount=1;
+    while (currentCount <= htmlAnnotationClass.getCount()) {
+      label=label_name + currentCount;
+      if (label.equals(current_class)) {
+        println("<span>" + label + "</span><br />");
+      }
  else {
-      println("<a href=\"" + label + ".html\">"+ label+ "</a><br />");
+        println("<a href=\"" + label + ".html\">"+ label+ "</a><br />");
+      }
+      currentCount++;
     }
   }
   println("</p>");
