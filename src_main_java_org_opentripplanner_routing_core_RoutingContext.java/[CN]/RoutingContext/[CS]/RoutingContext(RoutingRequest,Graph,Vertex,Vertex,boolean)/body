@@ -5,22 +5,28 @@
   this.opt=routingRequest;
   this.graph=graph;
   this.debugOutput.startedCalculating();
-  if (routingRequest.ignoreRealtimeUpdates) {
-    timetableSnapshot=null;
-  }
- else {
-    TimetableSnapshotSource timetableSnapshotSource=graph.timetableSnapshotSource;
-    if (timetableSnapshotSource == null) {
+  if (opt.modes.isTransit()) {
+    if (routingRequest.ignoreRealtimeUpdates) {
       timetableSnapshot=null;
     }
  else {
-      timetableSnapshot=timetableSnapshotSource.getTimetableSnapshot();
+      TimetableSnapshotSource timetableSnapshotSource=graph.timetableSnapshotSource;
+      if (timetableSnapshotSource == null) {
+        timetableSnapshot=null;
+      }
+ else {
+        timetableSnapshot=timetableSnapshotSource.getTimetableSnapshot();
+      }
     }
+    calendarService=graph.getCalendarService();
+    setServiceDays();
+  }
+ else {
+    timetableSnapshot=null;
+    calendarService=null;
   }
   if (graph.streetSpeedSource != null)   this.streetSpeedSnapshot=graph.streetSpeedSource.getSnapshot();
  else   this.streetSpeedSnapshot=null;
-  calendarService=graph.getCalendarService();
-  setServiceDays();
   Edge fromBackEdge=null;
   Edge toBackEdge=null;
   if (findPlaces) {
