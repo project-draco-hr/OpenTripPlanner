@@ -1,0 +1,21 @@
+{
+  if (!matches(trip))   return tt;
+  if (tt.getNumStops() == 0)   return tt;
+  int[] dwellTimes=new int[tt.getNumStops()];
+  int[] hopTimes=new int[tt.getNumStops() - 1];
+  int startTime=tt.getArrivalTime(0);
+  for (int i=0; i < tt.getNumStops(); i++) {
+    if (stopId == null || stopId.contains(tp.stopPattern.stops[i].getId().getId()))     dwellTimes[i]=dwellTime;
+ else     dwellTimes[i]=tt.getDepartureTime(i) - tt.getArrivalTime(i);
+    if (i < hopTimes.length)     hopTimes[i]=tt.getArrivalTime(i + 1) - tt.getDepartureTime(i);
+  }
+  TripTimes ret=new TripTimes(tt);
+  int cumulativeTime=startTime;
+  for (int i=0; i < dwellTimes.length; i++) {
+    ret.updateArrivalTime(i,cumulativeTime);
+    cumulativeTime+=dwellTimes[i];
+    ret.updateDepartureTime(i,cumulativeTime);
+    if (i < hopTimes.length)     cumulativeTime+=hopTimes[i];
+  }
+  return ret;
+}

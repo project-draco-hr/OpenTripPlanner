@@ -1,0 +1,6 @@
+{
+  ZSampleGrid zs=IsochroneGenerator.makeGrid(targets,times,1.3);
+  List<IsochroneData> id=IsochroneGenerator.getIsochronesAccumulative(zs,5,120,24);
+  this.isochrones=new IsochroneData[id.size()];
+  id.toArray(this.isochrones);
+}

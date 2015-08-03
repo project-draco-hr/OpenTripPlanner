@@ -1,0 +1,10 @@
+{
+  if (center.isPresent()) {
+    centerLongitude=center.get().x;
+    centerLatitude=center.get().y;
+  }
+ else {
+    centerLatitude=(getUpperRightLatitude() + getLowerLeftLatitude()) / 2;
+    centerLongitude=(getUpperRightLongitude() + getLowerLeftLongitude()) / 2;
+  }
+}

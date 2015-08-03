@@ -1,3 +1,3 @@
 {
-  return DateTimeFormat.forPattern("YYYY-MM-DD").parseLocalDate(jsonParser.getValueAsString());
+  return ISODateTimeFormat.date().parseLocalDate(jsonParser.getValueAsString());
 }

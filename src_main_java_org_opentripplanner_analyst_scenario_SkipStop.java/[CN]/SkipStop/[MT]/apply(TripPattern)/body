@@ -1,0 +1,59 @@
+{
+  if (!couldMatch(original))   return Arrays.asList(original);
+  TIntList skippedStops=new TIntArrayList();
+  List<StopTime> stopTimes=Lists.newArrayList();
+{
+    int i=0;
+    for (    Stop stop : original.getStops()) {
+      if (stopId.contains(stop.getId().getId()))       skippedStops.add(i);
+ else {
+        StopTime stopTime=new StopTime();
+        stopTime.setStop(stop);
+        stopTime.setPickupType(original.stopPattern.pickups[i]);
+        stopTime.setDropOffType(original.stopPattern.dropoffs[i]);
+        stopTimes.add(stopTime);
+      }
+      i++;
+    }
+  }
+  if (skippedStops.isEmpty()) {
+    LOG.warn("No stops found to skip on matched trip pattern {}",original);
+    return Arrays.asList(original);
+  }
+  if (original.getStops().size() - skippedStops.size() < 2) {
+    LOG.warn("Trip with skipped stops would have less that two stops for TripPattern {}, not skipping stops",original);
+    return Arrays.asList(original);
+  }
+  StopPattern sp=new StopPattern(stopTimes);
+  TripPattern modified=new TripPattern(original.route,sp);
+  TripPattern originalClone=new TripPattern(original.route,original.stopPattern);
+  boolean anyTripsMatched=false;
+  boolean allTripsMatched=true;
+  for (  TripTimes tt : original.scheduledTimetable.tripTimes) {
+    if (!matches(tt.trip)) {
+      allTripsMatched=false;
+      originalClone.scheduledTimetable.addTripTimes(tt);
+    }
+ else {
+      anyTripsMatched=true;
+      modified.scheduledTimetable.addTripTimes(omitStops(tt,skippedStops.toArray()));
+    }
+  }
+  for (  FrequencyEntry fe : original.scheduledTimetable.frequencyEntries) {
+    if (!matches(fe.tripTimes.trip)) {
+      allTripsMatched=false;
+      originalClone.scheduledTimetable.addFrequencyEntry(fe);
+    }
+ else {
+      anyTripsMatched=true;
+      TripTimes newtt=omitStops(fe.tripTimes,skippedStops.toArray());
+      FrequencyEntry newfe=new FrequencyEntry(fe.startTime,fe.endTime,fe.headway,fe.exactTimes,newtt);
+      modified.scheduledTimetable.addFrequencyEntry(newfe);
+    }
+  }
+  if (!anyTripsMatched)   return Arrays.asList(original);
+  List<TripPattern> ret=Lists.newArrayList();
+  ret.add(modified);
+  if (!allTripsMatched)   ret.add(originalClone);
+  return ret;
+}
