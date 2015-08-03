@@ -1,2 +1,52 @@
 {
+  int timeToReachStop=frequencyTrips[trip][stop * 2 + 1];
+  TransferRule transferRule=null;
+  if (previousPattern != -1) {
+    int stopIndex=stopIndices[stop];
+    if (!raptorData.transferRules.isEmpty() && raptorData.transferRules.containsKey(stopIndex)) {
+      for (      TransferRule tr : raptorData.transferRules.get(stopIndex)) {
+        if (tr.matches(raptorData.timetablesForPattern.get(previousPattern),this)) {
+          transferRule=tr;
+          break;
+        }
+      }
+    }
+    if (transferRule == null && !raptorData.baseTransferRules.isEmpty()) {
+      for (      TransferRule tr : raptorData.baseTransferRules) {
+        if (tr.matches(raptorData.timetablesForPattern.get(previousPattern),this)) {
+          transferRule=tr;
+          break;
+        }
+      }
+    }
+  }
+  BoardingAssumption assumption=transferRule != null ? transferRule.assumption : raptorData.boardingAssumption;
+  if (assumption == BoardingAssumption.RANDOM) {
+    int minTime=startTimes[trip] + timeToReachStop + randomOffsets[trip];
+    if (time < minTime)     time=minTime;
+ else     time+=headwaySecs[trip] - (time - minTime) % headwaySecs[trip];
+  }
+ else {
+switch (assumption) {
+case BEST_CASE:
+      break;
+case WORST_CASE:
+    time+=headwaySecs[trip];
+  break;
+case HALF_HEADWAY:
+time+=headwaySecs[trip] / 2;
+break;
+case FIXED:
+if (transferRule == null) throw new IllegalArgumentException("Cannot use boarding assumption FIXED without a transfer rule");
+time+=transferRule.transferTimeSeconds;
+break;
+case PROPORTION:
+if (transferRule == null) throw new IllegalArgumentException("Cannot use boarding assumption PROPORTION without a transfer rule");
+time+=(int)(transferRule.waitProportion * headwaySecs[trip]);
+break;
+}
+if (timeToReachStop + startTimes[trip] > time) time=timeToReachStop + startTimes[trip];
+}
+if (time > timeToReachStop + endTimes[trip]) return -1;
+ else return time;
 }

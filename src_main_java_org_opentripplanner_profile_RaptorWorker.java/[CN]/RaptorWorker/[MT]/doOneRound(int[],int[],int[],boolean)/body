@@ -3,13 +3,12 @@
   PATTERNS:   for (int p=patternsTouched.nextSetBit(0); p >= 0; p=patternsTouched.nextSetBit(p + 1)) {
     int onTrip=-1;
     RaptorWorkerTimetable timetable=data.timetablesForPattern.get(p);
-    int[] stops=data.stopsForPattern.get(p);
     int stopPositionInPattern=-1;
     int bestFreqBoardTime=Integer.MAX_VALUE;
     int bestFreqBoardStop=-1;
     int bestFreq=-1;
     if (useFrequencies) {
-      for (      int stopIndex : stops) {
+      for (      int stopIndex : timetable.stopIndices) {
         stopPositionInPattern+=1;
         int remainOnBoardTime;
         if (bestFreq != -1) {
@@ -44,7 +43,7 @@
       if (bestFreq != -1)       continue PATTERNS;
     }
     stopPositionInPattern=-1;
-    for (    int stopIndex : stops) {
+    for (    int stopIndex : timetable.stopIndices) {
       stopPositionInPattern+=1;
       if (onTrip == -1) {
         if (bestTimes[stopIndex] == UNREACHED) {
