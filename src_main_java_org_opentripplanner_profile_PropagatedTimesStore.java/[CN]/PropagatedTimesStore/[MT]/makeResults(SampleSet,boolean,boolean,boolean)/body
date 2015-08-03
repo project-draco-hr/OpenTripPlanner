@@ -1,18 +1,5 @@
 {
   ResultSet.RangeSet ret=new ResultSet.RangeSet();
-  int[] avgs=new int[sums.length];
-  for (int i=0; i < ss.pset.capacity; i++) {
-    int sum=sums[i];
-    int count=counts[i];
-    if (count <= 0) {
-      mins[i]=Integer.MAX_VALUE;
-      maxs[i]=Integer.MAX_VALUE;
-      avgs[i]=Integer.MAX_VALUE;
-    }
- else {
-      avgs[i]=sum / count;
-    }
-  }
   ret.min=new ResultSet(mins,ss.pset,includeTimes,includeHistograms,includeIsochrones);
   ret.avg=new ResultSet(avgs,ss.pset,includeTimes,includeHistograms,includeIsochrones);
   ret.max=new ResultSet(maxs,ss.pset,includeTimes,includeHistograms,includeIsochrones);
