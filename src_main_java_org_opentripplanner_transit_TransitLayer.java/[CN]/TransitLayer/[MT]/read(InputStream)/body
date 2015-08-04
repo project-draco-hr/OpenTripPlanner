@@ -1,8 +1,0 @@
-{
-  LOG.info("Reading transit layer...");
-  FSTObjectInput in=new FSTObjectInput(stream);
-  TransitLayer result=(TransitLayer)in.readObject(TransitLayer.class);
-  in.close();
-  LOG.info("Done reading.");
-  return result;
-}

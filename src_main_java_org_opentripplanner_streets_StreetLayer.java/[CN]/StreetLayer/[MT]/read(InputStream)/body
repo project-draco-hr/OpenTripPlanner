@@ -1,9 +1,0 @@
-{
-  LOG.info("Reading street layer...");
-  FSTObjectInput in=new FSTObjectInput(stream);
-  StreetLayer result=(StreetLayer)in.readObject(StreetLayer.class);
-  result.buildEdgeLists();
-  in.close();
-  LOG.info("Done reading.");
-  return result;
-}

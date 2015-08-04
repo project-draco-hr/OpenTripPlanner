@@ -1,0 +1,11 @@
+{
+  LOG.info("Reading transport network...");
+  FSTObjectInput in=new FSTObjectInput(stream);
+  TransportNetwork result=(TransportNetwork)in.readObject(TransportNetwork.class);
+  in.close();
+  result.streetLayer.buildEdgeLists();
+  result.streetLayer.indexStreets();
+  result.transitLayer.rebuildTransientIndexes();
+  LOG.info("Done reading.");
+  return result;
+}

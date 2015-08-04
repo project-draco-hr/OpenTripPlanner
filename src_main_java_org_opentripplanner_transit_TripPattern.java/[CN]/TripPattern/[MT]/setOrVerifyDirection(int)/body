@@ -1,0 +1,11 @@
+{
+  if (this.directionId != directionId) {
+    if (this.directionId == Integer.MIN_VALUE) {
+      this.directionId=directionId;
+      LOG.debug("Pattern has route_id {} and direction_id {}",routeId,directionId);
+    }
+ else {
+      LOG.warn("Trips with different direction IDs are in the same pattern.");
+    }
+  }
+}
