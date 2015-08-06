@@ -1,6 +1,17 @@
 {
   this.config=brokerConfig;
   workerConfig=new Properties();
+  if (config.getProperty("worker-config") != null) {
+    try {
+      File f=new File(config.getProperty("worker-config"));
+      FileInputStream fis=new FileInputStream(f);
+      workerConfig.load(fis);
+      fis.close();
+    }
+ catch (    IOException e) {
+      LOG.error("Error loading base worker configuration",e);
+    }
+  }
   workerConfig.setProperty("broker-address",addr);
   workerConfig.setProperty("broker-port","" + port);
   if (brokerConfig.getProperty("statistics-queue") != null)   workerConfig.setProperty("statistics-queue",brokerConfig.getProperty("statistics-queue"));
