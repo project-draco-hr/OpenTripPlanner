@@ -29,8 +29,9 @@
       continue TRIP;
     }
     List<StopTime> stopTimes=new ArrayList<StopTime>(_dao.getStopTimesForTrip(trip));
-    if (removeRepeatedStops(stopTimes)) {
-      LOG.warn(graph.addBuilderAnnotation(new RepeatedStops(trip)));
+    TIntList removedStopSequences=removeRepeatedStops(stopTimes);
+    if (!removedStopSequences.isEmpty()) {
+      LOG.warn(graph.addBuilderAnnotation(new RepeatedStops(trip,removedStopSequences)));
     }
     filterStopTimes(stopTimes,graph);
     interpolateStopTimes(stopTimes);
