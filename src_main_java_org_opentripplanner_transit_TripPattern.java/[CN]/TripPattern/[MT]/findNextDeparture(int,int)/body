@@ -2,10 +2,13 @@
   TripSchedule bestSchedule=null;
   int bestTime=Integer.MAX_VALUE;
   for (  TripSchedule schedule : tripSchedules) {
-    int departureTime=schedule.departures[stopOffset];
-    if (departureTime > time && departureTime < bestTime) {
-      bestTime=departureTime;
-      bestSchedule=schedule;
+    boolean active=servicesActive.get(schedule.serviceCode);
+    if (servicesActive.get(schedule.serviceCode)) {
+      int departureTime=schedule.departures[stopOffset];
+      if (departureTime > time && departureTime < bestTime) {
+        bestTime=departureTime;
+        bestSchedule=schedule;
+      }
     }
   }
   return bestSchedule;

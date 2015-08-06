@@ -1,0 +1,10 @@
+{
+  servicesActive.clear();
+  int s=0;
+  for (  Service service : transitLayer.services) {
+    if (service.activeOn(date)) {
+      servicesActive.set(s);
+    }
+    s++;
+  }
+}
