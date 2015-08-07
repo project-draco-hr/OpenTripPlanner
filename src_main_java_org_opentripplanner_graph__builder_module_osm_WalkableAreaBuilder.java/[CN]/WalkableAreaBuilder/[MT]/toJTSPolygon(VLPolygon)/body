@@ -1,4 +1,7 @@
 {
+  if (visibilityPolygon.vertices.isEmpty()) {
+    return null;
+  }
   Coordinate[] coordinates=new Coordinate[visibilityPolygon.n() + 1];
   for (int p=0; p < coordinates.length; ++p) {
     VLPoint vlPoint=visibilityPolygon.get(p);
