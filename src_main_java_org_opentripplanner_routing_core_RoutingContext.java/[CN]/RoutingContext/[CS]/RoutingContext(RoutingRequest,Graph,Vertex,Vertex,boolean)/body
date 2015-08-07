@@ -1,2 +1,93 @@
 {
+  if (graph == null) {
+    throw new GraphNotFoundException();
+  }
+  this.opt=routingRequest;
+  this.graph=graph;
+  this.debugOutput.startedCalculating();
+  if (opt.modes.isTransit()) {
+    if (routingRequest.ignoreRealtimeUpdates) {
+      timetableSnapshot=null;
+    }
+ else {
+      TimetableSnapshotSource timetableSnapshotSource=graph.timetableSnapshotSource;
+      if (timetableSnapshotSource == null) {
+        timetableSnapshot=null;
+      }
+ else {
+        timetableSnapshot=timetableSnapshotSource.getTimetableSnapshot();
+      }
+    }
+    calendarService=graph.getCalendarService();
+    setServiceDays();
+  }
+ else {
+    timetableSnapshot=null;
+    calendarService=null;
+  }
+  if (graph.streetSpeedSource != null)   this.streetSpeedSnapshot=graph.streetSpeedSource.getSnapshot();
+ else   this.streetSpeedSnapshot=null;
+  Edge fromBackEdge=null;
+  Edge toBackEdge=null;
+  if (findPlaces) {
+    if (opt.batch) {
+      if (opt.arriveBy) {
+        toVertex=graph.streetIndex.getSampleVertexAt(opt.to.getCoordinate());
+        fromVertex=null;
+      }
+ else {
+        fromVertex=graph.streetIndex.getSampleVertexAt(opt.from.getCoordinate());
+        toVertex=null;
+      }
+    }
+ else {
+      toVertex=graph.streetIndex.getVertexForLocation(opt.to,opt,true);
+      if (opt.to.hasEdgeId()) {
+        toBackEdge=graph.getEdgeById(opt.to.edgeId);
+      }
+      if (opt.startingTransitTripId != null && !opt.arriveBy) {
+        OnBoardDepartService onBoardDepartService=graph.getService(OnBoardDepartService.class);
+        if (onBoardDepartService == null)         throw new UnsupportedOperationException("Missing OnBoardDepartService");
+        fromVertex=onBoardDepartService.setupDepartOnBoard(this);
+      }
+ else {
+        fromVertex=graph.streetIndex.getVertexForLocation(opt.from,opt,false);
+        if (opt.from.hasEdgeId()) {
+          fromBackEdge=graph.getEdgeById(opt.from.edgeId);
+        }
+      }
+    }
+  }
+ else {
+    fromVertex=from;
+    toVertex=to;
+  }
+  if (fromVertex instanceof TemporaryStreetLocation && toVertex instanceof TemporaryStreetLocation) {
+    TemporaryStreetLocation fromStreetVertex=(TemporaryStreetLocation)fromVertex;
+    TemporaryStreetLocation toStreetVertex=(TemporaryStreetLocation)toVertex;
+    Set<StreetEdge> overlap=overlappingStreetEdges(fromStreetVertex,toStreetVertex);
+    for (    StreetEdge pse : overlap) {
+      makePartialEdgeAlong(pse,fromStreetVertex,toStreetVertex);
+    }
+  }
+  if (opt.startingTransitStopId != null) {
+    Stop stop=graph.index.stopForId.get(opt.startingTransitStopId);
+    TransitStop tstop=graph.index.stopVertexForStop.get(stop);
+    startingStop=tstop.departVertex;
+  }
+  origin=opt.arriveBy ? toVertex : fromVertex;
+  originBackEdge=opt.arriveBy ? toBackEdge : fromBackEdge;
+  target=opt.arriveBy ? fromVertex : toVertex;
+  transferTable=graph.getTransferTable();
+  if (opt.batch)   remainingWeightHeuristic=new TrivialRemainingWeightHeuristic();
+ else   remainingWeightHeuristic=new EuclideanRemainingWeightHeuristic();
+  if (this.origin != null) {
+    LOG.debug("Origin vertex inbound edges {}",this.origin.getIncoming());
+    LOG.debug("Origin vertex outbound edges {}",this.origin.getOutgoing());
+  }
+  LOG.debug("Target vertex {}",this.target);
+  if (this.target != null) {
+    LOG.debug("Destination vertex inbound edges {}",this.target.getIncoming());
+    LOG.debug("Destination vertex outbound edges {}",this.target.getOutgoing());
+  }
 }

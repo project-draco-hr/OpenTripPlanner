@@ -1,5 +1,5 @@
 {
-  double avg=stats.getAverageSpeedMS();
+  double avg=stats.getMean();
   if (Double.isNaN(avg)) {
     LOG.error("Invalid speed sample: average speed is NaN");
     throw new IllegalArgumentException("Overall average speed for a sample is NaN.");
@@ -7,7 +7,7 @@
   this.average=encodeSpeed(avg);
   hourBins=new short[7 * 24];
   for (int i=0; i < 7 * 24; i++) {
-    double speed=stats.getSpeedByHourOfWeekMS(i);
+    double speed=stats.getMean();
     if (!Double.isNaN(speed))     hourBins[i]=encodeSpeed(speed);
  else     hourBins[i]=average;
   }
