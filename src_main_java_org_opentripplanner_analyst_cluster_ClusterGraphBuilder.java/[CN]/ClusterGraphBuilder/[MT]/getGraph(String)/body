@@ -5,7 +5,7 @@
     return currGraph;
   }
   File graphDataDirectory=new File(GRAPH_CACHE_DIR,graphId);
-  if (!graphDataDirectory.exists()) {
+  if (!graphDataDirectory.exists() || graphDataDirectory.list().length == 0) {
     LOG.info("Downloading graph input files.");
     graphDataDirectory.mkdirs();
     S3Object graphDataZipObject=s3.getObject(graphBucket,graphId + ".zip");

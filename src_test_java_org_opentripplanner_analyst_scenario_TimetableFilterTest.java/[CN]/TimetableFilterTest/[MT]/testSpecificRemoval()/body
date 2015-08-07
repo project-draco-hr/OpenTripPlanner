@@ -1,0 +1,17 @@
+{
+  RemoveTrip rt=new RemoveTrip();
+  rt.agencyId=agency.getId();
+  rt.routeId=Arrays.asList(route.getId().getId());
+  rt.tripId=Arrays.asList(trip.getId().getId());
+  assertNull(rt.apply(trip,pattern,times));
+  assertNull(rt.apply(trip,pattern,frequencyEntry));
+  rt.routeId=Arrays.asList("SOMETHING ELSE");
+  assertEquals(times,rt.apply(trip,pattern,times));
+  assertEquals(frequencyEntry,rt.apply(trip,pattern,frequencyEntry));
+  rt.tripId=Arrays.asList("SOMETHING ELSE");
+  assertEquals(times,rt.apply(trip,pattern,times));
+  assertEquals(frequencyEntry,rt.apply(trip,pattern,frequencyEntry));
+  rt.routeId=Arrays.asList(route.getId().getId());
+  assertEquals(times,rt.apply(trip,pattern,times));
+  assertEquals(frequencyEntry,rt.apply(trip,pattern,frequencyEntry));
+}

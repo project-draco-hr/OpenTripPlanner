@@ -5,6 +5,10 @@
   otpServer.getGraphService().getRouter("A").graph.addVertex(new ExitVertex(null,"A",0,0,0));
   otpServer.getGraphService().getRouter("A").graph.addVertex(new ExitVertex(null,"B",0,1,0));
   otpServer.getGraphService().getRouter("A").graph.addVertex(new ExitVertex(null,"C",1,1,0));
+  otpServer.getGraphService().getRouter("A").graph.calculateConvexHull();
+  otpServer.getGraphService().getRouter("").graph.calculateConvexHull();
+  otpServer.getGraphService().getRouter("A").graph.calculateEnvelope();
+  otpServer.getGraphService().getRouter("").graph.calculateEnvelope();
   Routers routerApi=new Routers();
   routerApi.otpServer=otpServer;
   RouterList routers=routerApi.getRouterIds();

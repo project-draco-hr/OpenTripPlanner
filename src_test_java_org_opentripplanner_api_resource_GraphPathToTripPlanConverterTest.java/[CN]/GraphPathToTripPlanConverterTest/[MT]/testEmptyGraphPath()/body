@@ -1,0 +1,8 @@
+{
+  RoutingRequest options=new RoutingRequest();
+  Graph graph=new Graph();
+  ExitVertex vertex=new ExitVertex(graph,"Vertex",0,0,0);
+  options.rctx=new RoutingContext(options,graph,vertex,vertex);
+  GraphPath graphPath=new GraphPath(new State(options),false);
+  GraphPathToTripPlanConverter.generateItinerary(graphPath,false,locale);
+}

@@ -1,8 +1,9 @@
 {
-  final double D0=sampleGridRenderer.getOffRoadDistanceMeters(isoChroneRequest.precisionMeters);
+  final double offRoadDistanceMeters=isoChroneRequest.offRoadDistanceMeters;
   SampleGridRequest tgRequest=new SampleGridRequest();
   tgRequest.maxTimeSec=isoChroneRequest.maxTimeSec;
   tgRequest.precisionMeters=isoChroneRequest.precisionMeters;
+  tgRequest.offRoadDistanceMeters=isoChroneRequest.offRoadDistanceMeters;
   tgRequest.coordinateOrigin=isoChroneRequest.coordinateOrigin;
   ZSampleGrid<WTWD> sampleGrid=sampleGridRenderer.getSampleGrid(tgRequest,sptRequest);
   long t0=System.currentTimeMillis();
@@ -38,7 +39,7 @@
     WTWD z0=new WTWD();
     z0.w=1.0;
     z0.wTime=cutoffSec;
-    z0.d=D0;
+    z0.d=offRoadDistanceMeters;
     IsochroneData isochrone=new IsochroneData(cutoffSec,isolineBuilder.computeIsoline(z0));
     if (isoChroneRequest.includeDebugGeometry)     isochrone.debugGeometry=isolineBuilder.getDebugGeometry();
     isochrones.add(isochrone);

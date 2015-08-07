@@ -22,7 +22,11 @@
   Application app=new OTPApplication(server,!params.insecure);
   HttpHandler dynamicHandler=ContainerFactory.createContainer(HttpHandler.class,app);
   httpServer.getServerConfiguration().addHttpHandler(dynamicHandler,"/otp/");
-  HttpHandler staticHandler=new CLStaticHttpHandler(GrizzlyServer.class.getClassLoader(),"/client/");
+  CLStaticHttpHandler staticHandler=new CLStaticHttpHandler(GrizzlyServer.class.getClassLoader(),"/client/");
+  if (params.disableFileCache) {
+    LOG.info("Disabling HTTP server static file cache.");
+    staticHandler.setFileCacheEnabled(false);
+  }
   httpServer.getServerConfiguration().addHttpHandler(staticHandler,"/");
   if (params.clientDirectory != null) {
     StaticHttpHandler localHandler=new StaticHttpHandler(params.clientDirectory.getAbsolutePath());

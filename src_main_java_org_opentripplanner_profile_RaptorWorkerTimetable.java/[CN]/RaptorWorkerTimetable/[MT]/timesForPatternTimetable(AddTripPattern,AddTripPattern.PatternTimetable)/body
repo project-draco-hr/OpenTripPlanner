@@ -1,0 +1,9 @@
+{
+  int[] times=new int[atp.temporaryStops.length * 2];
+  for (int s=0; s < atp.temporaryStops.length; s++) {
+    if (s == 0)     times[s * 2]=pt.frequency ? 0 : pt.startTime;
+ else     times[s * 2]=times[s * 2 - 1] + pt.hopTimes[s - 1];
+    times[s * 2 + 1]=times[s * 2] + pt.dwellTimes[s];
+  }
+  return times;
+}
