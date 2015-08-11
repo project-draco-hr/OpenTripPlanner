@@ -1,4 +1,6 @@
 {
+  Region current=Regions.getCurrentRegion();
+  if (current != null)   sqs.setRegion(current);
   try {
     queueUrl=sqs.getQueueUrl(queueName).getQueueUrl();
   }
