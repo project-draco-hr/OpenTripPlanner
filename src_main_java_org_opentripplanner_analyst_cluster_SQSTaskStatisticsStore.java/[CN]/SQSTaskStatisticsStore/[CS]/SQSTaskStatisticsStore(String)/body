@@ -2,7 +2,7 @@
   Region current=Regions.getCurrentRegion();
   if (current != null) {
     LOG.info("Assuming statistics queue is in region {}",current);
-    sqs.setRegion(current);
+    sqs.setEndpoint("sqs." + current.toString() + ".amazonaws.com");
   }
   try {
     queueUrl=sqs.getQueueUrl(queueName).getQueueUrl();
