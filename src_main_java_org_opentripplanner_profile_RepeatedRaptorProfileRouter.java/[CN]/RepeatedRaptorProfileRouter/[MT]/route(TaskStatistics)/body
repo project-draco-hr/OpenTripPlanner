@@ -1,7 +1,11 @@
 {
   long computationStartTime=System.currentTimeMillis();
   LOG.info("Begin profile request");
-  if (raptorWorkerData == null)   raptorWorkerData=getRaptorWorkerData(request,graph,sampleSet,ts);
+  if (raptorWorkerData == null) {
+    long dataStart=System.currentTimeMillis();
+    raptorWorkerData=getRaptorWorkerData(request,graph,sampleSet,ts);
+    ts.raptorData=(int)(System.currentTimeMillis() - dataStart);
+  }
  else   ts.raptorData=0;
   LOG.info("Done.");
   long initialStopStart=System.currentTimeMillis();
