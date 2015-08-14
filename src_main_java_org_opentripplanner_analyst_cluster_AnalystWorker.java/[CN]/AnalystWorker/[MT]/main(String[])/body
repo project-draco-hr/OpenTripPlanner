@@ -14,5 +14,11 @@
     LOG.info("Error loading worker configuration",e);
     return;
   }
-  new AnalystWorker(config).run();
+  try {
+    new AnalystWorker(config).run();
+  }
+ catch (  Exception e) {
+    LOG.error("Error in analyst worker",e);
+    return;
+  }
 }
