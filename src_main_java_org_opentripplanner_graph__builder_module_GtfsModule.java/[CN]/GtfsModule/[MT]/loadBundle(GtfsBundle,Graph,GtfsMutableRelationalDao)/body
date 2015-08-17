@@ -39,6 +39,7 @@
   }
   for (  Route route : store.getAllEntitiesForType(Route.class)) {
     route.getId().setAgencyId(reader.getDefaultAgencyId());
+    generateRouteColor(route);
   }
   for (  Stop stop : store.getAllEntitiesForType(Stop.class)) {
     stop.getId().setAgencyId(reader.getDefaultAgencyId());
