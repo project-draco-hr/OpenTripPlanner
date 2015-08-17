@@ -38,11 +38,11 @@
     addAnnotations(entry.getKey(),annotationsList);
   }
   for (  HTMLWriter writer : writers) {
-    writer.writeFile(classOccurences,false);
+    writer.writeFile(annotationClassOccurences,false);
   }
   try {
     HTMLWriter indexFileWriter=new HTMLWriter("index",(Multimap<String,String>)null);
-    indexFileWriter.writeFile(classOccurences,true);
+    indexFileWriter.writeFile(annotationClassOccurences,true);
   }
  catch (  FileNotFoundException e) {
     LOG.error("Index file coudn't be created:{}",e);

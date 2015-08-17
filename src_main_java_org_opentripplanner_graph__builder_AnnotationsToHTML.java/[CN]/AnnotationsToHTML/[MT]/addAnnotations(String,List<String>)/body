@@ -5,21 +5,20 @@
       LOG.debug("Number of annotations is very large. Splitting: {}",annotationClassName);
       List<List<String>> partitions=Lists.partition(annotations,maxNumberOfAnnotationsPerFile);
       for (      List<String> partition : partitions) {
-        classOccurences.add(annotationClassName);
-        int labelCount=classOccurences.count(annotationClassName);
+        annotationClassOccurences.add(annotationClassName);
+        int labelCount=annotationClassOccurences.count(annotationClassName);
         file_writer=new HTMLWriter(annotationClassName + Integer.toString(labelCount),partition);
         writers.add(file_writer);
       }
     }
  else {
-      classOccurences.add(annotationClassName);
-      int labelCount=classOccurences.count(annotationClassName);
+      annotationClassOccurences.add(annotationClassName);
+      int labelCount=annotationClassOccurences.count(annotationClassName);
       file_writer=new HTMLWriter(annotationClassName + Integer.toString(labelCount),annotations);
       writers.add(file_writer);
     }
   }
  catch (  FileNotFoundException ex) {
     LOG.error("Output folder not found:{} {}",outPath,ex);
-    return;
   }
 }
