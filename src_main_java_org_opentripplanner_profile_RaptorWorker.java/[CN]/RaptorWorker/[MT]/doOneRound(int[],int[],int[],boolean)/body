@@ -19,7 +19,7 @@
         }
         if (bestTimes[stopIndex] != UNREACHED) {
           for (int trip=0; trip < timetable.getFrequencyTripCount(); trip++) {
-            int boardTime=timetable.getFrequencyDeparture(trip,stopPositionInPattern,bestTimes[stopIndex],previousPatterns[stopIndex]);
+            int boardTime=timetable.getFrequencyDeparture(trip,stopPositionInPattern,bestTimes[stopIndex],previousPatterns[stopIndex],offsets);
             if (boardTime != -1 && boardTime < remainOnBoardTime) {
               if (bestFreqBoardStop == stopPositionInPattern && bestFreqBoardTime < boardTime)               continue;
               bestFreqBoardTime=boardTime;

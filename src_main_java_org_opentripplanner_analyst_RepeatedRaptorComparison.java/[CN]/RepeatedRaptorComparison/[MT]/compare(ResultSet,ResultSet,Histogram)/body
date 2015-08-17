@@ -1,0 +1,7 @@
+{
+synchronized (histogram) {
+    for (int i=0; i < current.times.length; i++) {
+      histogram.add((int)Math.round((current.times[i] - compare.times[i]) / 60d));
+    }
+  }
+}

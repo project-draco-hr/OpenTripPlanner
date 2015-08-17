@@ -22,7 +22,7 @@
   }
   BoardingAssumption assumption=transferRule != null ? transferRule.assumption : raptorData.boardingAssumption;
   if (assumption == BoardingAssumption.RANDOM) {
-    int minTime=startTimes[trip] + timeToReachStop + randomOffsets[trip];
+    int minTime=startTimes[trip] + timeToReachStop + offsets.offsets.get(this.dataIndex)[trip];
     if (time < minTime)     time=minTime;
  else     time+=headwaySecs[trip] - (time - minTime) % headwaySecs[trip];
   }
