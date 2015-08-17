@@ -1,0 +1,28 @@
+{
+  System.out.println("--- Histogram: " + title + " ---");
+  double vscale=30d / maxVal;
+  for (int i=0; i < 30; i++) {
+    StringBuilder row=new StringBuilder(maxBin - minBin + 1);
+    int minValToDisplayThisRow=(int)(i / vscale);
+    for (int j=minBin; j <= maxBin; j++) {
+      if (bins.get(j) > minValToDisplayThisRow)       row.append('#');
+ else       row.append(' ');
+    }
+    System.out.println(row);
+  }
+  if (minBin < 0 && maxBin > 0) {
+    StringBuilder ticks=new StringBuilder();
+    for (int i=minBin; i < 0; i++)     ticks.append(' ');
+    ticks.append('|');
+    System.out.println(ticks);
+  }
+  StringBuilder row=new StringBuilder();
+  for (int i=minBin; i < maxBin; i++) {
+    row.append(' ');
+  }
+  String start=new Integer(minBin).toString();
+  row.replace(0,start.length(),start);
+  String end=new Integer(maxBin).toString();
+  row.replace(row.length() - end.length(),end.length(),end);
+  System.out.println(row);
+}

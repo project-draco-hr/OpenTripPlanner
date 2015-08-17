@@ -1,0 +1,8 @@
+{
+  long sum=0;
+  for (TIntIntIterator it=bins.iterator(); it.hasNext(); ) {
+    it.advance();
+    sum+=it.key() * it.value();
+  }
+  return (int)(sum / count);
+}
