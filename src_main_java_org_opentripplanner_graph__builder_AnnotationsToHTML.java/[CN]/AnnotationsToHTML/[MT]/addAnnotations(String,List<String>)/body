@@ -2,7 +2,7 @@
   try {
     HTMLWriter file_writer;
     if (annotations.size() > 1.2 * maxNumberOfAnnotationsPerFile) {
-      LOG.info("Number of annotations is very large. Splitting: {}",annotationClassName);
+      LOG.debug("Number of annotations is very large. Splitting: {}",annotationClassName);
       List<List<String>> partitions=Lists.partition(annotations,maxNumberOfAnnotationsPerFile);
       for (      List<String> partition : partitions) {
         classOccurences.add(annotationClassName);
