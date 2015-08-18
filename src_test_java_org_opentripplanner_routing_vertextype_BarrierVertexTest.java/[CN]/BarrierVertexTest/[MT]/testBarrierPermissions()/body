@@ -1,0 +1,31 @@
+{
+  OSMNode simpleBarier=new OSMNode();
+  assertFalse(simpleBarier.isBollard());
+  simpleBarier.addTag("barrier","bollard");
+  assertTrue(simpleBarier.isBollard());
+  Graph graph=new Graph();
+  String label="simpleBarrier";
+  BarrierVertex bv=new BarrierVertex(graph,label,simpleBarier.lon,simpleBarier.lat);
+  bv.setBarrierPermissions(OSMFilter.getPermissionsForEntity(simpleBarier,BarrierVertex.defaultBarrierPermissions));
+  assertEquals(StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,bv.getBarrierPermissions());
+  simpleBarier.addTag("foot","yes");
+  bv.setBarrierPermissions(OSMFilter.getPermissionsForEntity(simpleBarier,BarrierVertex.defaultBarrierPermissions));
+  assertEquals(StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,bv.getBarrierPermissions());
+  simpleBarier.addTag("bicycle","yes");
+  bv.setBarrierPermissions(OSMFilter.getPermissionsForEntity(simpleBarier,BarrierVertex.defaultBarrierPermissions));
+  assertEquals(StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,bv.getBarrierPermissions());
+  simpleBarier.addTag("access","no");
+  bv.setBarrierPermissions(OSMFilter.getPermissionsForEntity(simpleBarier,BarrierVertex.defaultBarrierPermissions));
+  assertEquals(StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,bv.getBarrierPermissions());
+  simpleBarier.addTag("motor_vehicle","no");
+  bv.setBarrierPermissions(OSMFilter.getPermissionsForEntity(simpleBarier,BarrierVertex.defaultBarrierPermissions));
+  assertEquals(StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,bv.getBarrierPermissions());
+  simpleBarier.addTag("bicycle","no");
+  bv.setBarrierPermissions(OSMFilter.getPermissionsForEntity(simpleBarier,BarrierVertex.defaultBarrierPermissions));
+  assertEquals(StreetTraversalPermission.PEDESTRIAN,bv.getBarrierPermissions());
+  OSMNode complexBarrier=new OSMNode();
+  complexBarrier.addTag("barrier","bollard");
+  complexBarrier.addTag("access","no");
+  bv.setBarrierPermissions(OSMFilter.getPermissionsForEntity(complexBarrier,BarrierVertex.defaultBarrierPermissions));
+  assertEquals(StreetTraversalPermission.NONE,bv.getBarrierPermissions());
+}
