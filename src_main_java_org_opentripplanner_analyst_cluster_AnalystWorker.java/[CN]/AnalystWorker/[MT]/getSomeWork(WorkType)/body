@@ -1,7 +1,11 @@
 {
   String url;
-  if (type == WorkType.HIGH_PRIORITY)   url=BROKER_BASE_URL + "/single/" + graphId;
- else   url=BROKER_BASE_URL + "/dequeue/" + graphId;
+  if (type == WorkType.HIGH_PRIORITY) {
+    url=BROKER_BASE_URL + "/single/" + graphId;
+  }
+ else {
+    url=BROKER_BASE_URL + "/dequeue/" + graphId;
+  }
   HttpPost httpPost=new HttpPost(url);
   httpPost.setHeader(new BasicHeader(WORKER_ID_HEADER,machineId));
   HttpResponse response=null;
