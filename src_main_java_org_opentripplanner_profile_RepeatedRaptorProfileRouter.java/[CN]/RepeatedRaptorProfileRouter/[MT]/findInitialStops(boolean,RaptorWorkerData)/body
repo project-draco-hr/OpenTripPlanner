@@ -12,7 +12,6 @@
   rr.dateTime=request.date.toDateMidnight(DateTimeZone.forTimeZone(graph.getTimeZone())).getMillis() / 1000 + request.fromTime;
   rr.walkSpeed=request.walkSpeed;
   rr.bikeSpeed=request.bikeSpeed;
-  rr.modes.setWalk(true);
   if (data == null) {
     rr.worstTime=rr.dateTime + 120 * 60;
     rr.dominanceFunction=new DominanceFunction.EarliestArrival();

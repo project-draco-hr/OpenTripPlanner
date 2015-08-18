@@ -13,7 +13,7 @@
   int[] nonTransitTimes=new int[Vertex.getMaxIndex()];
   Arrays.fill(nonTransitTimes,Integer.MAX_VALUE);
   for (  State state : preTransitSpt.getAllStates()) {
-    int time=(int)(state.getWalkDistance() / request.walkSpeed);
+    int time=(int)state.getElapsedTimeSeconds();
     int vidx=state.getVertex().getIndex();
     int otime=nonTransitTimes[vidx];
     if (otime > time) {
