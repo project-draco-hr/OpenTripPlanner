@@ -1,4 +1,5 @@
 {
+  LOG.info("Finding initial stops");
   double lat=dest ? request.toLat : request.fromLat;
   double lon=dest ? request.toLon : request.fromLon;
   QualifiedModeSet modes=dest ? request.egressModes : request.accessModes;
@@ -9,30 +10,33 @@
   rr.setRoutingContext(graph);
   rr.rctx.pathParsers=new PathParser[]{new InitialStopSearchPathParser()};
   rr.dateTime=request.date.toDateMidnight(DateTimeZone.forTimeZone(graph.getTimeZone())).getMillis() / 1000 + request.fromTime;
-  if (rr.modes.contains(TraverseMode.BICYCLE)) {
+  rr.walkSpeed=request.walkSpeed;
+  rr.bikeSpeed=request.bikeSpeed;
+  if (data == null) {
+    rr.worstTime=rr.dateTime + 120 * 60;
     rr.dominanceFunction=new DominanceFunction.EarliestArrival();
-    rr.worstTime=rr.dateTime + request.maxBikeTime * 60;
   }
  else {
-    rr.maxWalkDistance=2000;
-    rr.softWalkLimiting=false;
-    rr.dominanceFunction=new DominanceFunction.LeastWalk();
+    if (rr.modes.contains(TraverseMode.BICYCLE)) {
+      rr.dominanceFunction=new DominanceFunction.EarliestArrival();
+      rr.worstTime=rr.dateTime + request.maxBikeTime * 60;
+    }
+ else {
+      rr.maxWalkDistance=2000;
+      rr.softWalkLimiting=false;
+      rr.dominanceFunction=new DominanceFunction.LeastWalk();
+    }
   }
   rr.numItineraries=1;
   rr.longDistance=true;
-  Collection<AddTripPattern.TemporaryStop> stops;
-  if (request.scenario != null && request.scenario.modifications != null) {
-    stops=Lists.newArrayList();
-    for (    AddTripPattern atp : Iterables.filter(request.scenario.modifications,AddTripPattern.class)) {
-      for (      AddTripPattern.TemporaryStop tstop : atp.temporaryStops) {
-        stops.add(tstop);
-      }
-    }
+  AStar aStar=new AStar();
+  preTransitSpt=aStar.getShortestPathTree(rr,5);
+  if (data != null) {
+    TIntIntMap accessTimes=data.findStopsNear(preTransitSpt,graph);
+    LOG.info("Found {} transit stops",accessTimes.size());
+    return accessTimes;
   }
  else {
-    stops=Collections.emptyList();
+    return null;
   }
-  AStar aStar=new AStar();
-  walkOnlySpt=aStar.getShortestPathTree(rr,5);
-  return data.findStopsNear(walkOnlySpt,graph);
 }

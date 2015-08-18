@@ -1,42 +1,46 @@
 {
+  boolean isochrone=(sampleSet == null);
+  boolean transit=(request.transitModes.isTransit());
   long computationStartTime=System.currentTimeMillis();
   LOG.info("Begin profile request");
-  if (raptorWorkerData == null) {
+  if (raptorWorkerData == null && transit) {
     long dataStart=System.currentTimeMillis();
     raptorWorkerData=getRaptorWorkerData(request,graph,sampleSet,ts);
     ts.raptorData=(int)(System.currentTimeMillis() - dataStart);
   }
- else   ts.raptorData=0;
-  LOG.info("Done.");
-  long initialStopStart=System.currentTimeMillis();
-  LOG.info("Finding initial stops");
-  TIntIntMap accessTimes=findInitialStops(false,raptorWorkerData);
-  LOG.info("Found {} initial transit stops",accessTimes.size());
-  int[] timesAtVertices=new int[Vertex.getMaxIndex()];
-  Arrays.fill(timesAtVertices,Integer.MAX_VALUE);
-  for (  State state : walkOnlySpt.getAllStates()) {
-    int time=(int)(state.getWalkDistance() / request.walkSpeed);
+  long initialStopStartTime=System.currentTimeMillis();
+  TIntIntMap transitStopAccessTimes=findInitialStops(false,raptorWorkerData);
+  int[] nonTransitTimes=new int[Vertex.getMaxIndex()];
+  Arrays.fill(nonTransitTimes,Integer.MAX_VALUE);
+  for (  State state : preTransitSpt.getAllStates()) {
+    int time=(int)state.getElapsedTimeSeconds();
     int vidx=state.getVertex().getIndex();
-    int otime=timesAtVertices[vidx];
-    if (otime > time)     timesAtVertices[vidx]=time;
+    int otime=nonTransitTimes[vidx];
+    if (otime > time) {
+      nonTransitTimes[vidx]=time;
+    }
   }
-  ts.initialStopSearch=(int)(System.currentTimeMillis() - initialStopStart);
-  ts.initialStopCount=accessTimes.size();
+  ts.initialStopSearch=(int)(System.currentTimeMillis() - initialStopStartTime);
   long walkSearchStart=System.currentTimeMillis();
-  int[] walkTimes;
-  if (sampleSet == null) {
-    walkTimes=timesAtVertices;
-  }
- else {
-    walkTimes=sampleSet.eval(timesAtVertices);
+  if (sampleSet != null) {
+    nonTransitTimes=sampleSet.eval(nonTransitTimes);
   }
   ts.walkSearch=(int)(System.currentTimeMillis() - walkSearchStart);
-  RaptorWorker worker=new RaptorWorker(raptorWorkerData,request);
-  propagatedTimesStore=worker.runRaptor(graph,accessTimes,walkTimes,ts);
+  if (transit) {
+    RaptorWorker worker=new RaptorWorker(raptorWorkerData,request);
+    propagatedTimesStore=worker.runRaptor(graph,transitStopAccessTimes,nonTransitTimes,ts);
+    ts.initialStopCount=transitStopAccessTimes.size();
+  }
+ else {
+    propagatedTimesStore=new PropagatedTimesStore(graph,nonTransitTimes.length);
+    int[][] singleRoundResults=new int[1][];
+    singleRoundResults[0]=nonTransitTimes;
+    propagatedTimesStore.setFromArray(singleRoundResults);
+  }
   for (  int min : propagatedTimesStore.mins) {
     if (min != RaptorWorker.UNREACHED)     ts.targetsReached++;
   }
-  if (sampleSet == null) {
+  if (isochrone) {
     timeSurfaceRangeSet=new TimeSurface.RangeSet();
     timeSurfaceRangeSet.min=new TimeSurface(this);
     timeSurfaceRangeSet.avg=new TimeSurface(this);
