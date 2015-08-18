@@ -1,0 +1,47 @@
+{
+  AddTripPattern atp=getAddTripPattern(RouteSelector.BROAD_HIGH);
+  atp.timetables.add(getTimetable(false));
+  AddTripPattern atp2=getAddTripPattern(RouteSelector.BEXLEY_CMH);
+  atp2.timetables.add(getTimetable(true));
+  Graph g=buildGraphNoTransit();
+  addTransit(g);
+  link(g);
+  g.index(new DefaultStreetVertexIndexFactory());
+  atp.materialize(g);
+  atp2.materialize(g);
+  TimeWindow window=new TimeWindow(7 * 3600,9 * 3600,g.index.servicesRunning(new LocalDate(2015,6,10)),DayOfWeek.WEDNESDAY);
+  Scenario scenario=new Scenario(0);
+  scenario.modifications=Lists.newArrayList(atp,atp2);
+  RaptorWorkerData data=new RaptorWorkerData(g,window,scenario);
+  int[] txFromExisting=data.transfersForStop.get(0);
+  if (txFromExisting.length == 0)   txFromExisting=data.transfersForStop.get(1);
+  assertTrue(txFromExisting.length > 0);
+  boolean foundTx=false;
+  for (int i=0; i < txFromExisting.length; i+=2) {
+    if (txFromExisting[i] == 4) {
+      foundTx=true;
+      break;
+    }
+  }
+  assertTrue("transfer from existing to new",foundTx);
+  int[] txToExisting=data.transfersForStop.get(4);
+  assertTrue(txToExisting.length > 0);
+  foundTx=false;
+  for (int i=0; i < txToExisting.length; i+=2) {
+    if (txToExisting[i] == 0 || txToExisting[i] == 1) {
+      foundTx=true;
+      break;
+    }
+  }
+  assertTrue("transfer from new to existing",foundTx);
+  int[] txBetweenNew=data.transfersForStop.get(7);
+  assertTrue(txBetweenNew.length > 0);
+  foundTx=false;
+  for (int i=0; i < txBetweenNew.length; i+=2) {
+    if (txBetweenNew[i] == 2) {
+      foundTx=true;
+      break;
+    }
+  }
+  assertTrue(foundTx);
+}

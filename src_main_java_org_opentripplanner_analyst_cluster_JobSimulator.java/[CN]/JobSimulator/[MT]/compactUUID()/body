@@ -1,0 +1,11 @@
+{
+  UUID uuid=UUID.randomUUID();
+  byte[] bytes=new byte[16];
+  ByteBuffer byteBuffer=ByteBuffer.wrap(bytes);
+  byteBuffer.putLong(uuid.getMostSignificantBits());
+  byteBuffer.putLong(uuid.getLeastSignificantBits());
+  String base64=Base64.getUrlEncoder().encodeToString(bytes);
+  base64=base64.substring(0,base64.length() - 2);
+  String hex=uuid.toString().replaceAll("-","");
+  return hex;
+}

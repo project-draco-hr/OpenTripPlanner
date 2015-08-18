@@ -1,0 +1,8 @@
+{
+  SampleFactory sfac=graph.getSampleFactory();
+  temporaryStops=new TemporaryStop[stops.cardinality()];
+  int stop=0;
+  for (int i=stops.nextSetBit(0); i >= 0; i=stops.nextSetBit(i + 1)) {
+    temporaryStops[stop++]=new TemporaryStop(geometry.getCoordinateN(i),sfac);
+  }
+}

@@ -1,8 +1,0 @@
-{
-  Scenario scenario=scenarioStore.getNewEmptyScenario();
-  scenario.description=description;
-  AddFrequencyRoute addFreq=new AddFrequencyRoute();
-  addFreq.setTransitRoute(coordinates);
-  scenario.modifications.add(addFreq);
-  return javax.ws.rs.core.Response.status(javax.ws.rs.core.Response.Status.OK).entity(scenario).build();
-}

@@ -1,20 +1,19 @@
 {
-  if (coverage == null) {
+  if (unifiedCoverage == null) {
     loadVerticalDatum();
     tileSource.setGraph(graph);
     tileSource.setCacheDirectory(cacheDirectory);
     List<File> paths=tileSource.getNEDTiles();
     for (    File path : paths) {
-      GeotiffGridCoverageFactoryImpl factory=new GeotiffGridCoverageFactoryImpl();
-      factory.setPath(path);
+      GeotiffGridCoverageFactoryImpl factory=new GeotiffGridCoverageFactoryImpl(path);
       GridCoverage2D regionCoverage=Interpolator2D.create(factory.getGridCoverage(),new InterpolationBilinear());
-      if (coverage == null) {
-        coverage=new UnifiedGridCoverage("unified",regionCoverage,datums);
+      if (unifiedCoverage == null) {
+        unifiedCoverage=new UnifiedGridCoverage("unified",regionCoverage,datums);
       }
  else {
-        coverage.add(regionCoverage);
+        unifiedCoverage.add(regionCoverage);
       }
     }
   }
-  return coverage;
+  return unifiedCoverage;
 }

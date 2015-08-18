@@ -1,0 +1,7 @@
+{
+  Version moduleVersion=new Version(1,0,0,null,null,null);
+  SimpleModule module=new SimpleModule("TraverseModeSet",moduleVersion);
+  module.addSerializer(TraverseModeSet.class,new TraverseModeSetSerializer());
+  module.addDeserializer(TraverseModeSet.class,new TraverseModeSetDeserializer());
+  return module;
+}

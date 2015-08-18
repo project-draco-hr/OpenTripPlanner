@@ -5,11 +5,11 @@
   HashSet<Edge> turns=new HashSet<Edge>();
   turns.add(left);
   turns.add(leftBack);
-  TemporaryStreetLocation start=StreetVertexIndexServiceImpl.createTemporaryStreetLocation(graph,"start","start",filter(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()),false);
+  TemporaryStreetLocation start=StreetVertexIndexServiceImpl.createTemporaryStreetLocation(graph,"start",new NonLocalizedString("start"),filter(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()),false);
   HashSet<Edge> endTurns=new HashSet<Edge>();
   endTurns.add(right);
   endTurns.add(rightBack);
-  TemporaryStreetLocation end=StreetVertexIndexServiceImpl.createTemporaryStreetLocation(graph,"end","end",filter(endTurns,StreetEdge.class),new LinearLocation(0,0.8).getCoordinate(right.getGeometry()),true);
+  TemporaryStreetLocation end=StreetVertexIndexServiceImpl.createTemporaryStreetLocation(graph,"end",new NonLocalizedString("end"),filter(endTurns,StreetEdge.class),new LinearLocation(0,0.8).getCoordinate(right.getGeometry()),true);
   assertTrue(start.getX() < end.getX());
   assertTrue(start.getY() < end.getY());
   Collection<Edge> edges=end.getIncoming();
@@ -47,8 +47,8 @@
   assertEquals(nVertices,graph.getVertices().size());
   assertEquals(nEdges,graph.getEdges().size());
   options=new RoutingRequest(new TraverseModeSet(TraverseMode.BICYCLE));
-  start=StreetVertexIndexServiceImpl.createTemporaryStreetLocation(graph,"start1","start1",filter(turns,StreetEdge.class),new LinearLocation(0,0.95).getCoordinate(top.getGeometry()),false);
-  end=StreetVertexIndexServiceImpl.createTemporaryStreetLocation(graph,"end1","end1",filter(turns,StreetEdge.class),new LinearLocation(0,0.95).getCoordinate(bottom.getGeometry()),true);
+  start=StreetVertexIndexServiceImpl.createTemporaryStreetLocation(graph,"start1",new NonLocalizedString("start1"),filter(turns,StreetEdge.class),new LinearLocation(0,0.95).getCoordinate(top.getGeometry()),false);
+  end=StreetVertexIndexServiceImpl.createTemporaryStreetLocation(graph,"end1",new NonLocalizedString("end1"),filter(turns,StreetEdge.class),new LinearLocation(0,0.95).getCoordinate(bottom.getGeometry()),true);
   options.setRoutingContext(graph,start,end);
   spt=aStar.getShortestPathTree(options);
   path=spt.getPath(start,false);
@@ -60,8 +60,8 @@
   options.cleanup();
   assertEquals(nVertices,graph.getVertices().size());
   assertEquals(nEdges,graph.getEdges().size());
-  start=StreetVertexIndexServiceImpl.createTemporaryStreetLocation(graph,"start2","start2",filter(turns,StreetEdge.class),new LinearLocation(0,0.55).getCoordinate(top.getGeometry()),false);
-  end=StreetVertexIndexServiceImpl.createTemporaryStreetLocation(graph,"end2","end2",filter(turns,StreetEdge.class),new LinearLocation(0,0.55).getCoordinate(bottom.getGeometry()),true);
+  start=StreetVertexIndexServiceImpl.createTemporaryStreetLocation(graph,"start2",new NonLocalizedString("start2"),filter(turns,StreetEdge.class),new LinearLocation(0,0.55).getCoordinate(top.getGeometry()),false);
+  end=StreetVertexIndexServiceImpl.createTemporaryStreetLocation(graph,"end2",new NonLocalizedString("end2"),filter(turns,StreetEdge.class),new LinearLocation(0,0.55).getCoordinate(bottom.getGeometry()),true);
   options.setRoutingContext(graph,start,end);
   spt=aStar.getShortestPathTree(options);
   path=spt.getPath(start,false);

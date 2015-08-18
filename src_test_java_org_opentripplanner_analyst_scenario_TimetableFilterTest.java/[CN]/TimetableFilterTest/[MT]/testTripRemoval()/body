@@ -1,0 +1,7 @@
+{
+  RemoveTrip rt=new RemoveTrip();
+  rt.agencyId=agency.getId();
+  rt.tripId=Arrays.asList(trip.getId().getId());
+  assertNull(rt.apply(trip,pattern,times));
+  assertNull(rt.apply(trip,pattern,frequencyEntry));
+}

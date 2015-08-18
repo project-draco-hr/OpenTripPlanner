@@ -1,0 +1,8 @@
+{
+  SampleSet sampleSet=this.samples.get(graph.routerId);
+  if (sampleSet == null) {
+    sampleSet=new SampleSet(this,graph.getSampleFactory());
+    this.samples.put(graph.routerId,sampleSet);
+  }
+  return sampleSet;
+}

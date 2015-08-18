@@ -1,0 +1,22 @@
+{
+  TIntSet skipped=new TIntHashSet(stopsToSkip);
+  List<StopTime> newSts=Lists.newArrayList();
+  int cumulativeTime=-1;
+  for (int i=0; i < tt.getNumStops(); i++) {
+    int hopTime=i != 0 ? tt.getArrivalTime(i) - tt.getDepartureTime(i - 1) : 0;
+    int dwellTime=tt.getDepartureTime(i) - tt.getArrivalTime(i);
+    if (cumulativeTime != -1)     cumulativeTime+=hopTime;
+    if (skipped.contains(i))     continue;
+    if (cumulativeTime == -1)     cumulativeTime=tt.getArrivalTime(i);
+    StopTime stopTime=new StopTime();
+    stopTime.setArrivalTime(cumulativeTime);
+    cumulativeTime+=dwellTime;
+    stopTime.setDepartureTime(cumulativeTime);
+    stopTime.setStopSequence(tt.getStopSequence(i));
+    stopTime.setTimepoint(tt.isTimepoint(i) ? 1 : 0);
+    newSts.add(stopTime);
+  }
+  TripTimes newtt=new TripTimes(tt.trip,newSts,new Deduplicator());
+  newtt.serviceCode=tt.serviceCode;
+  return newtt;
+}

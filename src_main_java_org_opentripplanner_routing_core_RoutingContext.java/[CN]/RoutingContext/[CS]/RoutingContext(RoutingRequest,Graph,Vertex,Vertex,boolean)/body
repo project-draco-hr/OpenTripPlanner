@@ -5,30 +5,36 @@
   this.opt=routingRequest;
   this.graph=graph;
   this.debugOutput.startedCalculating();
-  if (routingRequest.ignoreRealtimeUpdates) {
-    timetableSnapshot=null;
-  }
- else {
-    TimetableSnapshotSource timetableSnapshotSource=graph.timetableSnapshotSource;
-    if (timetableSnapshotSource == null) {
+  if (opt.modes.isTransit()) {
+    if (routingRequest.ignoreRealtimeUpdates) {
       timetableSnapshot=null;
     }
  else {
-      timetableSnapshot=timetableSnapshotSource.getTimetableSnapshot();
+      TimetableSnapshotSource timetableSnapshotSource=graph.timetableSnapshotSource;
+      if (timetableSnapshotSource == null) {
+        timetableSnapshot=null;
+      }
+ else {
+        timetableSnapshot=timetableSnapshotSource.getTimetableSnapshot();
+      }
     }
+    calendarService=graph.getCalendarService();
+    setServiceDays();
   }
-  calendarService=graph.getCalendarService();
-  setServiceDays();
+ else {
+    timetableSnapshot=null;
+    calendarService=null;
+  }
   Edge fromBackEdge=null;
   Edge toBackEdge=null;
   if (findPlaces) {
     if (opt.batch) {
       if (opt.arriveBy) {
-        toVertex=graph.streetIndex.getSampleVertexAt(opt.to.getCoordinate());
+        toVertex=graph.streetIndex.getSampleVertexAt(opt.to.getCoordinate(),true);
         fromVertex=null;
       }
  else {
-        fromVertex=graph.streetIndex.getSampleVertexAt(opt.from.getCoordinate());
+        fromVertex=graph.streetIndex.getSampleVertexAt(opt.from.getCoordinate(),false);
         toVertex=null;
       }
     }

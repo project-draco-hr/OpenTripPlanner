@@ -2,4 +2,5 @@
   super(graph,stop);
   this.wheelchairEntrance=stop.getWheelchairBoarding() != 2;
   isEntrance=stop.getLocationType() == 2;
+  graph.expandToInclude(stop.getLon(),stop.getLat());
 }

@@ -1,0 +1,20 @@
+{
+  for (  State state : states) {
+    TraverseMode mode=state.getBackMode();
+    Set<Alert> alerts=graph.streetNotesService.getNotes(state);
+    Edge edge=state.getBackEdge();
+    if (mode != null) {
+      leg.mode=mode.toString();
+    }
+    if (alerts != null) {
+      for (      Alert alert : alerts) {
+        leg.addAlert(alert,requestedLocale);
+      }
+    }
+    for (    AlertPatch alertPatch : graph.getAlertPatches(edge)) {
+      if (alertPatch.displayDuring(state)) {
+        leg.addAlert(alertPatch.getAlert(),requestedLocale);
+      }
+    }
+  }
+}

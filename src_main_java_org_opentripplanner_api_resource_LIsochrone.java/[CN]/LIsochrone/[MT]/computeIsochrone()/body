@@ -1,9 +1,11 @@
 {
   if (debug == null)   debug=false;
   if (precisionMeters < 10)   throw new IllegalArgumentException("Too small precisionMeters: " + precisionMeters);
+  if (offRoadDistanceMeters < 10)   throw new IllegalArgumentException("Too small offRoadDistanceMeters: " + offRoadDistanceMeters);
   IsoChroneRequest isoChroneRequest=new IsoChroneRequest(cutoffSecList);
   isoChroneRequest.includeDebugGeometry=debug;
   isoChroneRequest.precisionMeters=precisionMeters;
+  isoChroneRequest.offRoadDistanceMeters=offRoadDistanceMeters;
   if (coordinateOrigin != null)   isoChroneRequest.coordinateOrigin=new GenericLocation(null,coordinateOrigin).getCoordinate();
   RoutingRequest sptRequest=buildRequest();
   if (maxTimeSec != null) {

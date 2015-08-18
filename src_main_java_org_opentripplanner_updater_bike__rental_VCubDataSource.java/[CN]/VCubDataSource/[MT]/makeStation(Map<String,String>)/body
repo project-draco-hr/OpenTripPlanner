@@ -7,7 +7,7 @@
     brstation.y=Double.parseDouble(coordinates[0]);
   }
   if (brstation.x == 0 || brstation.y == 0)   return null;
-  brstation.name=attributes.get("ms:NOM");
+  brstation.name=new NonLocalizedString(attributes.get("ms:NOM"));
   boolean connected="CONNECTEE".equalsIgnoreCase(attributes.get("ms:ETAT"));
   brstation.realTimeData=connected;
   String nbPlaces=attributes.get("ms:NBPLACES");

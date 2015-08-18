@@ -1,0 +1,31 @@
+{
+  boolean endOfLeg=(edge == null);
+  String name=vertex.getName(requestedLocale);
+  if (vertex instanceof StreetVertex && !(vertex instanceof TemporaryStreetLocation)) {
+    name=((StreetVertex)vertex).getIntersectionName(requestedLocale).toString(requestedLocale);
+  }
+  Place place=new Place(vertex.getX(),vertex.getY(),name,makeCalendar(state),makeCalendar(state));
+  if (endOfLeg)   edge=state.getBackEdge();
+  if (vertex instanceof TransitVertex && edge instanceof OnboardEdge) {
+    place.stopId=stop.getId();
+    place.stopCode=stop.getCode();
+    place.platformCode=stop.getPlatformCode();
+    place.zoneId=stop.getZoneId();
+    place.stopIndex=((OnboardEdge)edge).getStopIndex();
+    if (endOfLeg)     place.stopIndex++;
+    if (tripTimes != null) {
+      place.stopSequence=tripTimes.getStopSequence(place.stopIndex);
+    }
+    place.vertexType=VertexType.TRANSIT;
+  }
+ else   if (vertex instanceof BikeRentalStationVertex) {
+    place.vertexType=VertexType.BIKESHARE;
+  }
+ else   if (vertex instanceof BikeParkVertex) {
+    place.vertexType=VertexType.BIKEPARK;
+  }
+ else {
+    place.vertexType=VertexType.NORMAL;
+  }
+  return place;
+}

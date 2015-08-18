@@ -1,0 +1,14 @@
+{
+  if (key_tag_names.containsKey(key)) {
+    return key_tag_names.get(key);
+  }
+  List<String> tag_names=new ArrayList<String>(4);
+  String english_trans=ResourceBundleSingleton.INSTANCE.localize(this.key,Locale.ENGLISH);
+  Matcher matcher=patternMatcher.matcher(english_trans);
+  while (matcher.find()) {
+    String tag_name=matcher.group(1);
+    key_tag_names.put(key,tag_name);
+    tag_names.add(tag_name);
+  }
+  return tag_names;
+}

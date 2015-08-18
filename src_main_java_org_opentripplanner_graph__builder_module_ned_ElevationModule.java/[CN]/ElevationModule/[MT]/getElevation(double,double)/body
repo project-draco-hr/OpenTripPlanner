@@ -1,9 +1,11 @@
 {
   double values[]=new double[1];
   try {
-    coverage.evaluate(new DirectPosition2D(x,y),values);
+    coverage.evaluate(new DirectPosition2D(GeometryUtils.WGS84_XY,x,y),values);
   }
  catch (  org.opengis.coverage.PointOutsideCoverageException e) {
+    nPointsOutsideDEM+=1;
   }
+  nPointsEvaluated+=1;
   return values[0];
 }
