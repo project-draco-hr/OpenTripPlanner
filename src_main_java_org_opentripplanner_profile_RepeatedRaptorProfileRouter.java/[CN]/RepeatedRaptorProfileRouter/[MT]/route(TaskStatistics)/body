@@ -1,6 +1,6 @@
 {
   boolean isochrone=(sampleSet == null);
-  boolean transit=(request.transitModes.isTransit());
+  boolean transit=(request.transitModes != null && request.transitModes.isTransit());
   long computationStartTime=System.currentTimeMillis();
   LOG.info("Begin profile request");
   if (raptorWorkerData == null && transit) {
