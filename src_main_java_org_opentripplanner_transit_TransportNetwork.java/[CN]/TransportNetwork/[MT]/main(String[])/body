@@ -1,5 +1,16 @@
 {
   TransportNetwork transportNetwork=TransportNetwork.fromFiles(args[0],args[1]);
-  transportNetwork=roundTripTest(transportNetwork);
+  try {
+    OutputStream outputStream=new BufferedOutputStream(new FileOutputStream("network.dat"));
+    transportNetwork.write(outputStream);
+    outputStream.close();
+    transportNetwork=null;
+    InputStream inputStream=new BufferedInputStream(new FileInputStream("network.dat"));
+    transportNetwork=TransportNetwork.read(inputStream);
+    inputStream.close();
+  }
+ catch (  Exception e) {
+    throw new RuntimeException(e);
+  }
   transportNetwork.testRouting();
 }
