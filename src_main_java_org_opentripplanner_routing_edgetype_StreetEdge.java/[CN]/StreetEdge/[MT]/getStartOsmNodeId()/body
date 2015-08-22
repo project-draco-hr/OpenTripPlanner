@@ -1,0 +1,5 @@
+{
+  if (fromv instanceof OsmVertex)   return ((OsmVertex)fromv).nodeId;
+ else   if (fromv instanceof SplitterVertex)   return ((SplitterVertex)fromv).previousNodeId;
+ else   return -1;
+}

@@ -1,0 +1,13 @@
+{
+  int[] output=new WeightingFunction.SharpCutoff().apply(weights);
+  assertEquals(120,output.length);
+  int cumulative=0;
+  for (int i=0; i < 60; i++) {
+    cumulative+=output[i];
+    assertEquals(String.format("minute %s should be 0",i),0,cumulative);
+  }
+  for (int i=60; i < 120; i++) {
+    cumulative+=output[i];
+    assertEquals(String.format("minute %s should be 100",i),1000,cumulative);
+  }
+}

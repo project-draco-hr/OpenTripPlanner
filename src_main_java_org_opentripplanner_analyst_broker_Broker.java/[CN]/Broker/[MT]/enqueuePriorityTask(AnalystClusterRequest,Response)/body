@@ -1,7 +1,24 @@
 {
-  task.taskId=nextTaskId++;
-  highPriorityTasks.add(task);
-  highPriorityResponses.put(task.taskId,response);
-  nUndeliveredTasks+=1;
-  notify();
+  boolean workersAvailable=workersAvailableForGraph(task.graphId);
+  if (!workersAvailable) {
+    createWorkersForGraph(task.graphId);
+    try {
+      response.setHeader("Retry-After","30");
+      response.sendError(503,"No workers available with this graph affinity, please retry shortly.");
+    }
+ catch (    IOException e) {
+      LOG.error("Could not finish high-priority 503 response",e);
+    }
+  }
+  if (workersAvailable || workOffline) {
+    task.taskId=nextTaskId++;
+    newHighPriorityTasks.put(task.graphId,task);
+    highPriorityResponses.put(task.taskId,response);
+    timer.schedule(new TimerTask(){
+      @Override public void run(){
+        deliverHighPriorityTasks(task.graphId);
+      }
+    }
+,100);
+  }
 }

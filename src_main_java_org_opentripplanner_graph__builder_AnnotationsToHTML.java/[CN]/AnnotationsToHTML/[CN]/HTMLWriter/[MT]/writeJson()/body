@@ -3,7 +3,7 @@
     out.print("\tvar data=");
     ObjectMapper mapper=new ObjectMapper();
     JsonGenerator jsonGenerator=mapper.getJsonFactory().createJsonGenerator(out);
-    mapper.writeValue(jsonGenerator,annotations.asMap());
+    mapper.writeValue(jsonGenerator,writerAnnotations.asMap());
     out.println(";");
   }
  catch (  IOException ex) {

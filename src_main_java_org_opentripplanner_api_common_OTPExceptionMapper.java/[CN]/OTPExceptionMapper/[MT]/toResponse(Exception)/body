@@ -1,4 +1,4 @@
 {
-  ex.printStackTrace();
+  LOG.error("Unhandled exception",ex);
   return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ex.toString() + " " + ex.getMessage()).type("text/plain").build();
 }

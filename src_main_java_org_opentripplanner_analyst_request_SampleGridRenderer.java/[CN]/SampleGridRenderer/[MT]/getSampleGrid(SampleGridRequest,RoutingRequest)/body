@@ -1,8 +1,8 @@
 {
-  final double D0=getOffRoadDistanceMeters(spgRequest.precisionMeters);
-  final double V0=1.00;
+  final double offRoadDistanceMeters=spgRequest.offRoadDistanceMeters;
+  final double offRoadWalkSpeedMps=1.00;
   long t0=System.currentTimeMillis();
-  long tOvershot=(long)(2 * D0 / V0);
+  long tOvershot=(long)(2 * offRoadDistanceMeters / offRoadWalkSpeedMps);
   sptRequest.worstTime=(sptRequest.dateTime + (sptRequest.arriveBy ? -spgRequest.maxTimeSec - tOvershot : spgRequest.maxTimeSec + tOvershot));
   sptRequest.batch=(true);
   sptRequest.setRoutingContext(graph);
@@ -16,7 +16,7 @@
   double dY=Math.toDegrees(gridSizeMeters / SphericalDistanceLibrary.RADIUS_OF_EARTH_IN_M);
   double dX=dY / cosLat;
   SparseMatrixZSampleGrid<WTWD> sampleGrid=new SparseMatrixZSampleGrid<WTWD>(16,spt.getVertexCount(),dX,dY,coordinateOrigin);
-  sampleSPT(spt,sampleGrid,gridSizeMeters * 0.7,gridSizeMeters,V0,sptRequest.getMaxWalkDistance(),spgRequest.maxTimeSec,cosLat);
+  sampleSPT(spt,sampleGrid,gridSizeMeters,offRoadDistanceMeters,offRoadWalkSpeedMps,sptRequest.getMaxWalkDistance(),spgRequest.maxTimeSec,cosLat);
   sptRequest.cleanup();
   long t2=System.currentTimeMillis();
   LOG.info("Computed SPT in {}msec, {}msec for sampling ({} msec total)",(int)(t1 - t0),(int)(t2 - t1),(int)(t2 - t0));

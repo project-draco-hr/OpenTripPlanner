@@ -1,3 +1,4 @@
 {
-  return String.format(FMT,speed,distance,trip.getRoute().getId(),trip.getId(),seq);
+  double kph=metersPerSecond * 3.6;
+  return String.format(FMT,kph,distance,trip.getRoute().getId(),trip.getId(),seq);
 }

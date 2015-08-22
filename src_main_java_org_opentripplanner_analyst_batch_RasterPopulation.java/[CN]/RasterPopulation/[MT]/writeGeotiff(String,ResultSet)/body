@@ -20,8 +20,7 @@
     writer.write(coverage,(GeneralParameterValue[])params.values().toArray(new GeneralParameterValue[1]));
   }
  catch (  Exception e) {
-    LOG.error("exception while writing geotiff.");
-    e.printStackTrace();
+    LOG.error("exception while writing geotiff.",e);
   }
   LOG.info("done writing geotiff.");
 }

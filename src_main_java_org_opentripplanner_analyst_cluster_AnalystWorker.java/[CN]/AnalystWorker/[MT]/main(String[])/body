@@ -1,3 +1,24 @@
 {
-  new AnalystWorker().run();
+  LOG.info("Starting analyst worker");
+  LOG.info("OTP commit is {}",MavenVersion.VERSION.commit);
+  Properties config=new Properties();
+  try {
+    File cfg;
+    if (args.length > 0)     cfg=new File(args[0]);
+ else     cfg=new File("worker.conf");
+    InputStream cfgis=new FileInputStream(cfg);
+    config.load(cfgis);
+    cfgis.close();
+  }
+ catch (  Exception e) {
+    LOG.info("Error loading worker configuration",e);
+    return;
+  }
+  try {
+    new AnalystWorker(config).run();
+  }
+ catch (  Exception e) {
+    LOG.error("Error in analyst worker",e);
+    return;
+  }
 }

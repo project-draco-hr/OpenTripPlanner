@@ -1,0 +1,9 @@
+{
+  LOG.debug("Making file: {}",key);
+  File newFile=new File(outPath,key + ".html");
+  FileOutputStream fileOutputStream=new FileOutputStream(newFile);
+  this.out=new PrintStream(fileOutputStream);
+  writerAnnotations=ArrayListMultimap.create();
+  writerAnnotations.putAll(key,annotations);
+  annotationClassName=key;
+}

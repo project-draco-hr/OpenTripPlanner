@@ -1,2 +1,8 @@
 {
+  JobSimulator js=new JobSimulator();
+  js.s3prefix=args[0];
+  js.pointSetId=args[1];
+  js.graphId=args[2];
+  js.nOrigins=Integer.parseInt(args[3]);
+  js.sendFakeJob();
 }

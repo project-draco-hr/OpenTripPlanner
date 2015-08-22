@@ -5,5 +5,8 @@
   for (  AreaGroup group : areaGroups) {
     if (buildParkAndRideAreasForGroup(group))     n++;
   }
+  if (n > 0) {
+    graph.hasParkRide=true;
+  }
   LOG.info("Created {} P+R.",n);
 }

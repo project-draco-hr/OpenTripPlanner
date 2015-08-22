@@ -1,4 +1,15 @@
 {
+  boolean trivial=true;
+  for (  State state : states) {
+    TraverseMode traverseMode=state.getBackMode();
+    if (traverseMode != null && traverseMode != TraverseMode.LEG_SWITCH) {
+      trivial=false;
+      break;
+    }
+  }
+  if (trivial) {
+    throw new TrivialPathException();
+  }
   int[] legIndexPairs={0,states.length - 1};
   List<int[]> legsIndexes=new ArrayList<int[]>();
   for (int i=1; i < states.length - 1; i++) {

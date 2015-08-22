@@ -1,0 +1,17 @@
+{
+  long now=System.currentTimeMillis();
+  TIntLongIterator invisibleIterator=invisibleUntil.iterator();
+  int nRedelivered=0;
+  while (invisibleIterator.hasNext()) {
+    invisibleIterator.advance();
+    int taskId=invisibleIterator.key();
+    long timeout=invisibleIterator.value();
+    if (now > timeout) {
+      invisibleIterator.remove();
+      tasksAwaitingDelivery.add(tasksById.get(taskId));
+      LOG.warn("Task {} was of job {} was not completed in time, queueing it for re-delivery.",taskId,jobId);
+      nRedelivered+=1;
+    }
+  }
+  return nRedelivered;
+}

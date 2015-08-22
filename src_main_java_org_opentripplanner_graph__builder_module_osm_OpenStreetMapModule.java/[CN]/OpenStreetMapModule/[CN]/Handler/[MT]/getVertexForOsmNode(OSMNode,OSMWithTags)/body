@@ -12,7 +12,7 @@
     if ("motorway_junction".equals(highway)) {
       String ref=node.getTag("ref");
       if (ref != null) {
-        ExitVertex ev=new ExitVertex(graph,label,coordinate.x,coordinate.y);
+        ExitVertex ev=new ExitVertex(graph,label,coordinate.x,coordinate.y,nid);
         ev.setExitName(ref);
         iv=ev;
       }
@@ -21,12 +21,12 @@
       String ref=node.getTag("ref");
       String name=node.getTag("name");
       if (ref != null) {
-        TransitStopStreetVertex tsv=new TransitStopStreetVertex(graph,label,coordinate.x,coordinate.y,name,ref);
+        TransitStopStreetVertex tsv=new TransitStopStreetVertex(graph,label,coordinate.x,coordinate.y,nid,name,ref);
         iv=tsv;
       }
     }
     if (iv == null) {
-      iv=new OsmVertex(graph,label,coordinate.x,coordinate.y,new NonLocalizedString(label));
+      iv=new OsmVertex(graph,label,coordinate.x,coordinate.y,node.getId(),new NonLocalizedString(label));
       if (node.hasTrafficLight()) {
         iv.trafficLight=(true);
       }

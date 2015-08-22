@@ -1,0 +1,12 @@
+{
+  CommandLineParameters params=new CommandLineParameters();
+  params.build=directory;
+  params.inMemory=true;
+  GraphBuilder graphBuilder=GraphBuilder.forDirectory(params,params.build);
+  graphBuilder.run();
+  Graph graph=graphBuilder.getGraph();
+  graph.routerId="GRAPH";
+  graph.index(new DefaultStreetVertexIndexFactory());
+  graph.index.clusterStopsAsNeeded();
+  return graph;
+}

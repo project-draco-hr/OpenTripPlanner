@@ -4,7 +4,7 @@
   double wd=z.wWalkDist / z.w;
   double d=SphericalDistanceLibrary.fastDistance(C0,Cs,cosLat);
   double dt=d / offRoadSpeed;
-  double w=1 / ((d + d0) * (d + d0));
+  double w=1 / ((d + gridSizeMeters) * (d + gridSizeMeters));
   if (zS == null) {
     zS=new WTWD();
     zS.d=Double.MAX_VALUE;

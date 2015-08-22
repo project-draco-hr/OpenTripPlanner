@@ -1,6 +1,11 @@
 {
-  bins.adjustOrPutValue(i,1,1);
+  count++;
+  int binVal=bins.adjustOrPutValue(i,1,1);
+  if (binVal > maxVal)   maxVal=binVal;
   if (i > maxBin) {
     maxBin=i;
+  }
+  if (i < minBin) {
+    minBin=i;
   }
 }
