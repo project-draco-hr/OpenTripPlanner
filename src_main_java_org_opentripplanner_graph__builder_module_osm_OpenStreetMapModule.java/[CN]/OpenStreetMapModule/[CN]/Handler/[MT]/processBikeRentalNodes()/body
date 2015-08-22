@@ -37,5 +37,8 @@
     new RentABikeOnEdge(stationVertex,stationVertex,networkSet);
     new RentABikeOffEdge(stationVertex,stationVertex,networkSet);
   }
+  if (n > 1) {
+    graph.hasBikeSharing=true;
+  }
   LOG.info("Created " + n + " bike rental stations.");
 }
