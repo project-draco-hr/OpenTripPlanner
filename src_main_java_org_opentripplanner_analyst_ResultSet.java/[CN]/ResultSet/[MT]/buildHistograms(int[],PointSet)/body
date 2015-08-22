@@ -1,7 +1,3 @@
 {
-  for (  Entry<String,int[]> entry : targets.properties.entrySet()) {
-    String property=entry.getKey();
-    int[] magnitudes=entry.getValue();
-    this.histograms.put(property,new Histogram(times,magnitudes));
-  }
+  this.histograms=Histogram.buildAll(times,targets);
 }

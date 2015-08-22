@@ -1,0 +1,9 @@
+{
+  Job job=getJobForTask(taskId);
+  if (job == null) {
+    LOG.error("Could not find a job containing task {}, and therefore could not mark the task as completed.");
+    return false;
+  }
+  job.markTaskCompleted(taskId);
+  return true;
+}

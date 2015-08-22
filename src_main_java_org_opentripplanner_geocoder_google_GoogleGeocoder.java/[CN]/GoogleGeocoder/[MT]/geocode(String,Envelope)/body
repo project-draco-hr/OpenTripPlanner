@@ -14,7 +14,7 @@
     content=sb.toString();
   }
  catch (  IOException e) {
-    e.printStackTrace();
+    LOG.error("Error parsing Google geocoder response",e);
     return noGeocoderResult("Error parsing geocoder response");
   }
   GoogleGeocoderResults googleGeocoderResults=googleJsonDeserializer.parseResults(content);

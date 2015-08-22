@@ -14,7 +14,7 @@
     content=sb.toString();
   }
  catch (  IOException e) {
-    e.printStackTrace();
+    LOG.error("Error parsing nominatim geocoder response",e);
     return noGeocoderResult("Error parsing geocoder response");
   }
   List<NominatimGeocoderResult> nominatimResults=nominatimJsonDeserializer.parseResults(content);

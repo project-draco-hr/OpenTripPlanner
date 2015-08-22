@@ -1,0 +1,14 @@
+{
+  Region current=Regions.getCurrentRegion();
+  if (current != null) {
+    LOG.info("Assuming statistics queue is in region {}",current);
+    sqs.setEndpoint("sqs." + current.toString() + ".amazonaws.com");
+  }
+  try {
+    queueUrl=sqs.getQueueUrl(queueName).getQueueUrl();
+  }
+ catch (  Exception e) {
+    LOG.error("Unable to initialize statistics store",e);
+  }
+  LOG.info("Sending statistics to SQS queue {}",queueName);
+}

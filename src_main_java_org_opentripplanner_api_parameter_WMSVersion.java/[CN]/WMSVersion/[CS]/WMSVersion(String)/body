@@ -6,7 +6,7 @@
     }
   }
  catch (  Exception e) {
-    e.printStackTrace();
+    LOG.warn("Error parsing WMS version {}",s,e);
     throw new WebApplicationException(Response.status(Status.BAD_REQUEST).entity("error parsing WMS version: " + e.getMessage()).build());
   }
   if (!supported.contains(this)) {

@@ -8,11 +8,10 @@
       LOG.info("Successfully deleted task {}.",clusterRequest.taskId);
     }
  else {
-      LOG.info("Failed to delete task {}.",clusterRequest.taskId);
+      LOG.info("Failed to delete task {} ({}).",clusterRequest.taskId,response.getStatusLine());
     }
   }
  catch (  Exception e) {
-    e.printStackTrace();
-    LOG.info("Failed to delete task {}",clusterRequest.taskId);
+    LOG.warn("Failed to delete task {}",clusterRequest.taskId,e);
   }
 }

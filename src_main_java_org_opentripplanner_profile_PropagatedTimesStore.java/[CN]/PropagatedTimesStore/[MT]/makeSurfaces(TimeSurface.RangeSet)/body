@@ -2,11 +2,10 @@
   for (  Vertex vertex : graph.index.vertexForId.values()) {
     int min=mins[vertex.getIndex()];
     int max=maxs[vertex.getIndex()];
-    int sum=sums[vertex.getIndex()];
-    int count=counts[vertex.getIndex()];
-    if (count <= 0)     continue;
+    int avg=avgs[vertex.getIndex()];
+    if (avg == Integer.MAX_VALUE)     continue;
     rangeSet.min.times.put(vertex,min);
     rangeSet.max.times.put(vertex,max);
-    rangeSet.avg.times.put(vertex,sum / count);
+    rangeSet.avg.times.put(vertex,avg);
   }
 }

@@ -2,10 +2,17 @@
   agency=new Agency();
   agency.setId("AGENCY");
   route=new Route();
+  route.setType(com.conveyal.gtfs.model.Route.BUS);
   route.setShortName("T");
   route.setLongName("TEST");
   route.setAgency(agency);
   route.setId(new AgencyAndId(agency.getId(),"TEST"));
+  metro=new Route();
+  metro.setType(com.conveyal.gtfs.model.Route.SUBWAY);
+  metro.setShortName("M");
+  metro.setLongName("METRO");
+  metro.setAgency(agency);
+  metro.setId(new AgencyAndId(agency.getId(),"METRO"));
   trip=new Trip();
   trip.setRoute(route);
   trip.setId(new AgencyAndId(agency.getId(),"TRIP"));
@@ -20,12 +27,21 @@
     s.setId(new AgencyAndId(agency.getId(),"" + i));
     stops[i]=s;
   }
-  StopPattern sp=new StopPattern(makeStopTimes(trip));
+  List<StopTime> stopTimes=makeStopTimes(trip);
+  StopPattern sp=new StopPattern(stopTimes);
   pattern=new TripPattern(route,sp);
-  times=makeTripTimes(trip);
+  times=makeTripTimes(trip,stopTimes);
   pattern.scheduledTimetable.addTripTimes(times);
-  pattern.scheduledTimetable.addTripTimes(makeTripTimes(trip2));
-  frequencyEntry=new FrequencyEntry(7 * 3600,12 * 3600,600,false,makeTripTimes(trip));
+  pattern.scheduledTimetable.addTripTimes(makeTripTimes(trip2,makeStopTimes(trip2)));
+  frequencyEntry=new FrequencyEntry(7 * 3600,12 * 3600,600,false,makeTripTimes(trip,makeStopTimes(trip)));
   pattern.scheduledTimetable.addFrequencyEntry(frequencyEntry);
-  pattern.scheduledTimetable.addFrequencyEntry(new FrequencyEntry(7 * 3600,12 * 3600,600,false,makeTripTimes(trip2)));
+  pattern.scheduledTimetable.addFrequencyEntry(new FrequencyEntry(7 * 3600,12 * 3600,600,false,makeTripTimes(trip2,makeStopTimes(trip2))));
+  metroTrip=new Trip();
+  metroTrip.setRoute(metro);
+  metroTrip.setId(new AgencyAndId(agency.getId(),"TRIP"));
+  stopTimes=makeStopTimes(metroTrip);
+  sp=new StopPattern(stopTimes);
+  metroPattern=new TripPattern(metro,sp);
+  metroTimes=makeTripTimes(metroTrip,stopTimes);
+  metroPattern.scheduledTimetable.addTripTimes(metroTimes);
 }
