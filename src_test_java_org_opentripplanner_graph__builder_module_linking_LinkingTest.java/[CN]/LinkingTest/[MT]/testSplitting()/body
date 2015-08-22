@@ -10,8 +10,8 @@
     StreetEdge s0=new StreetEdge(v0,v1,geom,"test",dist,StreetTraversalPermission.ALL,false);
     StreetEdge s1=new StreetEdge(v1,v0,(LineString)geom.reverse(),"back",dist,StreetTraversalPermission.ALL,true);
     double splitVal=Math.random() * 0.95 + 0.025;
-    SplitterVertex sv0=new SplitterVertex(null,"split",x + delta * splitVal,y + delta * splitVal);
-    SplitterVertex sv1=new SplitterVertex(null,"split",x + delta * splitVal,y + delta * splitVal);
+    SplitterVertex sv0=new SplitterVertex(null,"split",x + delta * splitVal,y + delta * splitVal,s0);
+    SplitterVertex sv1=new SplitterVertex(null,"split",x + delta * splitVal,y + delta * splitVal,s1);
     P2<StreetEdge> sp0=s0.split(sv0);
     P2<StreetEdge> sp1=s1.split(sv1);
     assertEquals(sp0.first.getDistance(),sp1.second.getDistance(),0.0000001);

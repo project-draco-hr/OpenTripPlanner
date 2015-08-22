@@ -1,0 +1,6 @@
+{
+  int result=(int)(wayId ^ (wayId >>> 32));
+  result=31 * result + (int)(startNodeId ^ (startNodeId >>> 32));
+  result=31 * result + (int)(endNodeId ^ (endNodeId >>> 32));
+  return result;
+}

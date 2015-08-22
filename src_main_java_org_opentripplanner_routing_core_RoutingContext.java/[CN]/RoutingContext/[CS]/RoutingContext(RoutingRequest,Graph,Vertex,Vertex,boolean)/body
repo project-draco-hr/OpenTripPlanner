@@ -25,16 +25,18 @@
     timetableSnapshot=null;
     calendarService=null;
   }
+  if (graph.streetSpeedSource != null)   this.streetSpeedSnapshot=graph.streetSpeedSource.getSnapshot();
+ else   this.streetSpeedSnapshot=null;
   Edge fromBackEdge=null;
   Edge toBackEdge=null;
   if (findPlaces) {
     if (opt.batch) {
       if (opt.arriveBy) {
-        toVertex=graph.streetIndex.getSampleVertexAt(opt.to.getCoordinate(),true);
+        toVertex=graph.streetIndex.getSampleVertexAt(opt.to.getCoordinate());
         fromVertex=null;
       }
  else {
-        fromVertex=graph.streetIndex.getSampleVertexAt(opt.from.getCoordinate(),false);
+        fromVertex=graph.streetIndex.getSampleVertexAt(opt.from.getCoordinate());
         toVertex=null;
       }
     }

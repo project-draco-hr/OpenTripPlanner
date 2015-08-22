@@ -1,0 +1,9 @@
+{
+  if (this == o)   return true;
+  if (o == null || getClass() != o.getClass())   return false;
+  Segment segment=(Segment)o;
+  if (endNodeId != segment.endNodeId)   return false;
+  if (startNodeId != segment.startNodeId)   return false;
+  if (wayId != segment.wayId)   return false;
+  return true;
+}

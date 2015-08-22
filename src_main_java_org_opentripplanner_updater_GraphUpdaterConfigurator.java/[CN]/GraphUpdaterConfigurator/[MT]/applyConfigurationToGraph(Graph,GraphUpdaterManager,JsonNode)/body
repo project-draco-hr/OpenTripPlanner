@@ -27,6 +27,9 @@
  else       if (type.equals("winkki-polling-updater")) {
         updater=new WinkkiPollingGraphUpdater();
       }
+ else       if (type.equals("opentraffic-updater")) {
+        updater=new OpenTrafficUpdater();
+      }
     }
     try {
       if (updater == null) {
