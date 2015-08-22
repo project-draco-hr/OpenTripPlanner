@@ -28,10 +28,10 @@
   int stopVertexIndex=vertexStore.addVertex(lat,lon);
   if (closestVertex >= 0) {
     closestDistance=FastMath.sqrt(closestDistance) * metersPerDegreeLat;
-    int foreEdgeId=edgeStore.addStreetPair(closestVertex,stopVertexIndex,closestDistance);
-    int backEdgeId=foreEdgeId + 1;
-    edgeStore.getCursor(foreEdgeId).setFlag(EdgeStore.Flag.TRANSIT_LINK);
-    edgeStore.getCursor(backEdgeId).setFlag(EdgeStore.Flag.TRANSIT_LINK);
+    EdgeStore.Edge edge=edgeStore.addStreetPair(closestVertex,stopVertexIndex,(int)(closestDistance * 1000));
+    edge.setFlag(EdgeStore.Flag.TRANSIT_LINK);
+    edge.advance();
+    edge.setFlag(EdgeStore.Flag.TRANSIT_LINK);
   }
   return stopVertexIndex;
 }

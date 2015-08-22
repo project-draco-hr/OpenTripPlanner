@@ -1,20 +1,5 @@
 {
-  String osmSourceFile=args[0];
-  OSM osm=new OSM(null);
-  osm.intersectionDetection=true;
-  osm.readFromFile(osmSourceFile);
-  StreetLayer streetLayer=new StreetLayer();
-  streetLayer.loadFromOsm(osm);
-  osm.close();
-  streetLayer.indexStreets();
-  String gtfsSourceFile=args[1];
-  TransitLayer transitLayer=TransitLayer.fromGtfs(gtfsSourceFile,streetLayer);
-  streetLayer.buildEdgeLists();
-  transitLayer.rebuildTransientIndexes();
-  new TransferFinder(transitLayer,streetLayer,1500).findTransfers();
-  TransportNetwork transportNetwork=new TransportNetwork();
-  transportNetwork.streetLayer=streetLayer;
-  transportNetwork.transitLayer=transitLayer;
+  TransportNetwork transportNetwork=TransportNetwork.fromFiles(args[0],args[1]);
   transportNetwork=roundTripTest(transportNetwork);
   transportNetwork.testRouting();
 }

@@ -3,18 +3,19 @@
   long endOsmNodeId=way.nodes[endIdx];
   int beginVertexIndex=getVertexIndexForOsmNode(beginOsmNodeId);
   int endVertexIndex=getVertexIndexForOsmNode(endOsmNodeId);
-  Node prevNode=osm.nodes.get(beginOsmNodeId);
-  double lengthMeters=0;
+  int nNodes=endIdx - beginIdx + 1;
+  List<Node> nodes=new ArrayList<>(nNodes);
   for (int n=beginIdx; n <= endIdx; n++) {
     long nodeId=way.nodes[n];
     Node node=osm.nodes.get(nodeId);
-    lengthMeters+=SphericalDistanceLibrary.fastDistance(prevNode.getLat(),prevNode.getLon(),node.getLat(),node.getLon());
-    prevNode=node;
+    nodes.add(node);
   }
-  pointsPerEdgeHistogram.add(endIdx - beginIdx + 1);
-  if (lengthMeters * 1000 > Integer.MAX_VALUE) {
-    LOG.warn("Street segment was too long, skipping.");
+  int edgeLengthMillimeters=getEdgeLengthMillimeters(nodes);
+  if (edgeLengthMillimeters < 0) {
+    LOG.warn("Street segment was too long to be represented, skipping.");
     return;
   }
-  edgeStore.addStreetPair(beginVertexIndex,endVertexIndex,lengthMeters);
+  EdgeStore.Edge newForwardEdge=edgeStore.addStreetPair(beginVertexIndex,endVertexIndex,edgeLengthMillimeters);
+  newForwardEdge.setGeometry(nodes);
+  pointsPerEdgeHistogram.add(nNodes);
 }

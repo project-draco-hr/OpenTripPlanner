@@ -8,8 +8,8 @@
   }
   EdgeStore.Edge edge=edgeStore.getCursor();
   while (edge.advance()) {
-    outgoingEdges.get(edge.getFromVertex()).add(edge.index);
-    incomingEdges.get(edge.getToVertex()).add(edge.index);
+    outgoingEdges.get(edge.getFromVertex()).add(edge.edgeIndex);
+    incomingEdges.get(edge.getToVertex()).add(edge.edgeIndex);
   }
   LOG.info("Done building edge lists.");
   Histogram edgesPerListHistogram=new Histogram("Number of edges per edge list");

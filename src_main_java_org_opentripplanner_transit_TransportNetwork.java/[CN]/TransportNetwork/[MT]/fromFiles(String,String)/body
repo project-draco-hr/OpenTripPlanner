@@ -1,0 +1,18 @@
+{
+  OSM osm=new OSM(null);
+  osm.intersectionDetection=true;
+  osm.readFromFile(osmSourceFile);
+  StreetLayer streetLayer=new StreetLayer();
+  streetLayer.loadFromOsm(osm);
+  osm.close();
+  TransitLayer transitLayer=TransitLayer.fromGtfs(gtfsSourceFile);
+  streetLayer.indexStreets();
+  streetLayer.linkStops(transitLayer);
+  streetLayer.buildEdgeLists();
+  transitLayer.rebuildTransientIndexes();
+  new TransferFinder(transitLayer,streetLayer,1500).findTransfers();
+  TransportNetwork transportNetwork=new TransportNetwork();
+  transportNetwork.streetLayer=streetLayer;
+  transportNetwork.transitLayer=transitLayer;
+  return transportNetwork;
+}
