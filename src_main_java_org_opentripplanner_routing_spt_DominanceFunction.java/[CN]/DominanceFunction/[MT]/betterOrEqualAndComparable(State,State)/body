@@ -2,6 +2,9 @@
   if (a.isBikeRenting() != b.isBikeRenting()) {
     return false;
   }
+  if (a.isBikeRenting()) {
+    if (!Objects.equals(a.getBikeRentalNetworks(),b.getBikeRentalNetworks()))     return false;
+  }
   if (a.isCarParked() != b.isCarParked()) {
     return false;
   }
