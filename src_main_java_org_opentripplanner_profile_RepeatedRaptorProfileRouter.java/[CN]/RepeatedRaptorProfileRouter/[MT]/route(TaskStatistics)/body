@@ -41,11 +41,7 @@
     if (min != RaptorWorker.UNREACHED)     ts.targetsReached++;
   }
   if (isochrone) {
-    timeSurfaceRangeSet=new TimeSurface.RangeSet();
-    timeSurfaceRangeSet.min=new TimeSurface(this);
-    timeSurfaceRangeSet.avg=new TimeSurface(this);
-    timeSurfaceRangeSet.max=new TimeSurface(this);
-    propagatedTimesStore.makeSurfaces(timeSurfaceRangeSet);
+    timeSurfaceRangeSet=propagatedTimesStore.makeSurfaces(this);
   }
   ts.compute=(int)(System.currentTimeMillis() - computationStartTime);
   LOG.info("Profile request finished in {} seconds",(ts.compute) / 1000.0);

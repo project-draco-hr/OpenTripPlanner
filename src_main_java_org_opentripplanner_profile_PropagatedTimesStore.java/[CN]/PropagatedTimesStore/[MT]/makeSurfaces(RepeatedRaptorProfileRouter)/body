@@ -1,4 +1,8 @@
 {
+  TimeSurface.RangeSet rangeSet=new TimeSurface.RangeSet();
+  rangeSet.min=new TimeSurface(repeatedRaptorProfileRouter);
+  rangeSet.avg=new TimeSurface(repeatedRaptorProfileRouter);
+  rangeSet.max=new TimeSurface(repeatedRaptorProfileRouter);
   for (  Vertex vertex : graph.index.vertexForId.values()) {
     int min=mins[vertex.getIndex()];
     int max=maxs[vertex.getIndex()];
@@ -8,4 +12,5 @@
     rangeSet.max.times.put(vertex,max);
     rangeSet.avg.times.put(vertex,avg);
   }
+  return rangeSet;
 }
