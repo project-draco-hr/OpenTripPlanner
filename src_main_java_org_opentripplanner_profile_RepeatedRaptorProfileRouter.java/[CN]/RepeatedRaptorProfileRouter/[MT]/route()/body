@@ -40,9 +40,16 @@
   for (  int min : propagatedTimesStore.mins) {
     if (min != RaptorWorker.UNREACHED)     ts.targetsReached++;
   }
-  if (isochrone) {
-    timeSurfaceRangeSet=propagatedTimesStore.makeSurfaces(this);
-  }
   ts.compute=(int)(System.currentTimeMillis() - computationStartTime);
   LOG.info("Profile request finished in {} seconds",(ts.compute) / 1000.0);
+  long resultSetStart=System.currentTimeMillis();
+  ResultEnvelope envelope=new ResultEnvelope();
+  if (isochrone) {
+    envelope=propagatedTimesStore.makeIsochronesForVertices();
+  }
+ else {
+    envelope=propagatedTimesStore.makeResults(sampleSet,includeTimes,true,false);
+  }
+  ts.resultSets=(int)(System.currentTimeMillis() - resultSetStart);
+  return envelope;
 }

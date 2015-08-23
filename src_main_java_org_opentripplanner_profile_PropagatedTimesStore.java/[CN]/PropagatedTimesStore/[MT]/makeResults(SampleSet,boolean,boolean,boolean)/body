@@ -1,7 +1,7 @@
 {
-  ResultSet.RangeSet ret=new ResultSet.RangeSet();
-  ret.min=new ResultSet(mins,ss.pset,includeTimes,includeHistograms,includeIsochrones);
-  ret.avg=new ResultSet(avgs,ss.pset,includeTimes,includeHistograms,includeIsochrones);
-  ret.max=new ResultSet(maxs,ss.pset,includeTimes,includeHistograms,includeIsochrones);
-  return ret;
+  ResultEnvelope envelope=new ResultEnvelope();
+  envelope.worstCase=new ResultSet(mins,ss.pset,includeTimes,includeHistograms,includeIsochrones);
+  envelope.avgCase=new ResultSet(avgs,ss.pset,includeTimes,includeHistograms,includeIsochrones);
+  envelope.bestCase=new ResultSet(maxs,ss.pset,includeTimes,includeHistograms,includeIsochrones);
+  return envelope;
 }
