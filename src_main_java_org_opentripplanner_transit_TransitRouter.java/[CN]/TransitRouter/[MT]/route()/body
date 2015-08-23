@@ -1,7 +1,7 @@
 {
   LOG.debug("Begin raptor routing. Initial state: {}",currentRound);
   LocalDate searchDate=new LocalDate(2015,8,6);
-  markServicesForDate(searchDate);
+  servicesActive=transitLayer.getActiveServicesForDate(searchDate);
   while (true) {
     newRound();
     for (int p=touchedPatterns.nextSetBit(0); p >= 0; p=touchedPatterns.nextSetBit(p + 1)) {
