@@ -1,0 +1,23 @@
+{
+  Split split=findSplit(lat,lon,radiusMeters);
+  if (split == null) {
+    return -1;
+  }
+  EdgeStore.Edge edge=edgeStore.getCursor(split.edge);
+  if (split.lengthBefore_mm < SNAP_RADIUS_MM || split.lengthAfter_mm < SNAP_RADIUS_MM) {
+    if (split.lengthBefore_mm < split.lengthAfter_mm) {
+      return edge.getFromVertex();
+    }
+ else {
+      return edge.getToVertex();
+    }
+  }
+  int newVertexIndex=vertexStore.addVertexFixed((int)split.fLat,(int)split.fLon);
+  int oldToVertex=edge.getToVertex();
+  edge.setLengthMm(split.lengthBefore_mm);
+  edge.setToVertex(newVertexIndex);
+  edge.setGeometry(Collections.EMPTY_LIST);
+  EdgeStore.Edge newEdge=edgeStore.addStreetPair(newVertexIndex,oldToVertex,split.lengthAfter_mm);
+  spatialIndex.insert(newEdge.getEnvelope(),newEdge.edgeIndex);
+  return newVertexIndex;
+}
