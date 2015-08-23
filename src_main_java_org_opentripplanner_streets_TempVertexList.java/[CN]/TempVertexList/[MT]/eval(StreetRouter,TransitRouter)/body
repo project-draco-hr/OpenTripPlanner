@@ -1,0 +1,15 @@
+{
+  TIntList travelTimes=new TIntArrayList(edges.size());
+  EdgeStore.Edge edge=streetLayer.edgeStore.getCursor();
+  for (int i=0; i < edges.size(); i++) {
+    edge.seek(edges.get(i));
+    int elapsedFromTime=Integer.MAX_VALUE;
+    int elapsedToTime=Integer.MAX_VALUE;
+    int fromVertex=edge.getFromVertex();
+    int toVertex=edge.getToVertex();
+    elapsedFromTime+=fromDistancesMillimeters.get(i) / 1000;
+    elapsedToTime+=toDistancesMillimeters.get(i) / 1000;
+    travelTimes.add(elapsedFromTime < elapsedToTime ? elapsedFromTime : elapsedToTime);
+  }
+  return travelTimes;
+}
