@@ -7,7 +7,7 @@
   osm.close();
   TransitLayer transitLayer=TransitLayer.fromGtfs(gtfsSourceFile);
   streetLayer.indexStreets();
-  streetLayer.linkStops(transitLayer);
+  streetLayer.associateStops(transitLayer);
   streetLayer.buildEdgeLists();
   transitLayer.rebuildTransientIndexes();
   new TransferFinder(transitLayer,streetLayer,1500).findTransfers();

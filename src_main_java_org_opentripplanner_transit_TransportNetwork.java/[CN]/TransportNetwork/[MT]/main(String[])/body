@@ -1,5 +1,5 @@
 {
-  TransportNetwork transportNetwork=TransportNetwork.fromFiles(args[0],args[1]);
+  TransportNetwork transportNetwork=TransportNetwork.fromDirectory(new File("."));
   try {
     OutputStream outputStream=new BufferedOutputStream(new FileOutputStream("network.dat"));
     transportNetwork.write(outputStream);
