@@ -1,3 +1,48 @@
 {
-  route(new TaskStatistics());
+  boolean isochrone=(sampleSet == null);
+  boolean transit=(request.transitModes != null && request.transitModes.isTransit());
+  long computationStartTime=System.currentTimeMillis();
+  LOG.info("Begin profile request");
+  if (raptorWorkerData == null && transit) {
+    long dataStart=System.currentTimeMillis();
+    raptorWorkerData=getRaptorWorkerData(request,graph,sampleSet,ts);
+    ts.raptorData=(int)(System.currentTimeMillis() - dataStart);
+  }
+  long initialStopStartTime=System.currentTimeMillis();
+  TIntIntMap transitStopAccessTimes=findInitialStops(false,raptorWorkerData);
+  int[] nonTransitTimes=new int[Vertex.getMaxIndex()];
+  Arrays.fill(nonTransitTimes,Integer.MAX_VALUE);
+  for (  State state : preTransitSpt.getAllStates()) {
+    int time=(int)state.getElapsedTimeSeconds();
+    int vidx=state.getVertex().getIndex();
+    int otime=nonTransitTimes[vidx];
+    if (otime > time) {
+      nonTransitTimes[vidx]=time;
+    }
+  }
+  ts.initialStopSearch=(int)(System.currentTimeMillis() - initialStopStartTime);
+  long walkSearchStart=System.currentTimeMillis();
+  if (sampleSet != null) {
+    nonTransitTimes=sampleSet.eval(nonTransitTimes);
+  }
+  ts.walkSearch=(int)(System.currentTimeMillis() - walkSearchStart);
+  if (transit) {
+    RaptorWorker worker=new RaptorWorker(raptorWorkerData,request);
+    propagatedTimesStore=worker.runRaptor(graph,transitStopAccessTimes,nonTransitTimes,ts);
+    ts.initialStopCount=transitStopAccessTimes.size();
+  }
+ else {
+    propagatedTimesStore=new PropagatedTimesStore(graph,nonTransitTimes.length);
+    int[][] singleRoundResults=new int[1][];
+    singleRoundResults[0]=nonTransitTimes;
+    propagatedTimesStore.setFromArray(singleRoundResults,PropagatedTimesStore.ConfidenceCalculationMethod.MIN_MAX);
+  }
+  for (  int min : propagatedTimesStore.mins) {
+    if (min != RaptorWorker.UNREACHED)     ts.targetsReached++;
+  }
+  if (isochrone) {
+    timeSurfaceRangeSet=propagatedTimesStore.makeSurfaces(this);
+  }
+  ts.compute=(int)(System.currentTimeMillis() - computationStartTime);
+  LOG.info("Profile request finished in {} seconds",(ts.compute) / 1000.0);
 }
