@@ -2,16 +2,17 @@
   final int spacing=5;
   final int nMax=24;
   final int cutoffMinutes=120;
-  SparseMatrixZSampleGrid<SampleGridRenderer.WTWD> grid=makeSampleGridForVertices(times);
+  final int offroadDistanceMeters=250;
+  SparseMatrixZSampleGrid<WTWD> grid=makeSampleGridForVertices(times,offroadDistanceMeters);
   long t0=System.currentTimeMillis();
-  DelaunayIsolineBuilder<SampleGridRenderer.WTWD> isolineBuilder=new DelaunayIsolineBuilder<SampleGridRenderer.WTWD>(grid.delaunayTriangulate(),new SampleGridRenderer.WTWD.IsolineMetric());
+  DelaunayIsolineBuilder<WTWD> isolineBuilder=new DelaunayIsolineBuilder<>(grid.delaunayTriangulate(),new WTWD.IsolineMetric());
   List<IsochroneData> isoData=new ArrayList<IsochroneData>();
   for (int minutes=spacing, n=0; minutes <= cutoffMinutes && n < nMax; minutes+=spacing, n++) {
     int seconds=minutes * 60;
-    SampleGridRenderer.WTWD z0=new SampleGridRenderer.WTWD();
+    WTWD z0=new WTWD();
     z0.w=1.0;
     z0.wTime=seconds;
-    z0.d=300;
+    z0.d=offroadDistanceMeters;
     IsochroneData isochrone=new IsochroneData(seconds,isolineBuilder.computeIsoline(z0));
     isoData.add(isochrone);
   }
