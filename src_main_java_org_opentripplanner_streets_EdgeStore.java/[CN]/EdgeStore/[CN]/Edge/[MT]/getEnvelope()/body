@@ -1,0 +1,16 @@
+{
+  Envelope envelope=new Envelope();
+  VertexStore.Vertex vertex=vertexStore.getCursor();
+  vertex.seek(fromVertices.get(pairIndex));
+  envelope.expandToInclude(vertex.getFixedLon(),vertex.getFixedLat());
+  int[] intermediates=geometries.get(pairIndex);
+  int i=0;
+  while (i < intermediates.length) {
+    int fixedLat=intermediates[i++];
+    int fixedLon=intermediates[i++];
+    envelope.expandToInclude(fixedLon,fixedLat);
+  }
+  vertex.seek(toVertices.get(pairIndex));
+  envelope.expandToInclude(vertex.getFixedLon(),vertex.getFixedLat());
+  return envelope;
+}
