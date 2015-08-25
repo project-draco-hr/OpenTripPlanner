@@ -1,8 +1,0 @@
-{
-  int fixedLat=VertexStore.floatingDegreesToFixed(lat);
-  int fixedLon=VertexStore.floatingDegreesToFixed(lon);
-  Split split=streetLayer.findSplit(fixedLat,fixedLon,300);
-  edges.add(split.edge);
-  fromDistancesMillimeters.add(split.lengthBefore_mm);
-  toDistancesMillimeters.add(split.lengthAfter_mm);
-}

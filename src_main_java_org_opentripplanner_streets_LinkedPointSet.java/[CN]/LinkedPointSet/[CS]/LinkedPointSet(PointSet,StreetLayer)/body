@@ -1,0 +1,15 @@
+{
+  this.pointSet=pointSet;
+  this.streetLayer=streetLayer;
+  edges=new int[pointSet.capacity];
+  distances0_mm=new int[pointSet.capacity];
+  distances1_mm=new int[pointSet.capacity];
+  for (int i=0; i < pointSet.capacity; i++) {
+    int fixedLat=VertexStore.floatingDegreesToFixed(pointSet.getLat(i));
+    int fixedLon=VertexStore.floatingDegreesToFixed(pointSet.getLon(i));
+    Split split=streetLayer.findSplit(fixedLat,fixedLon,300);
+    edges[i]=split.edge;
+    distances0_mm[i]=split.distance0_mm;
+    distances1_mm[i]=split.distance1_mm;
+  }
+}

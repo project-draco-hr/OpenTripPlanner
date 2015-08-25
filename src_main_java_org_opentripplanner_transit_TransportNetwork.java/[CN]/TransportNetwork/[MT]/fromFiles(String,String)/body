@@ -10,7 +10,6 @@
   streetLayer.associateStops(transitLayer,500);
   streetLayer.buildEdgeLists();
   transitLayer.rebuildTransientIndexes();
-  transitLayer.buildStopTrees(streetLayer);
   new TransferFinder(transitLayer,streetLayer,1000).findTransfers();
   TransportNetwork transportNetwork=new TransportNetwork();
   transportNetwork.streetLayer=streetLayer;

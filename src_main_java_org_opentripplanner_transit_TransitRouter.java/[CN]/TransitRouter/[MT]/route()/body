@@ -2,6 +2,7 @@
   LOG.debug("Begin raptor routing. Initial state: {}",currentRound);
   LocalDate searchDate=new LocalDate(2015,8,6);
   servicesActive=transitLayer.getActiveServicesForDate(searchDate);
+  final int latestAcceptableTime=departureTime + maxTravelTimeSeconds;
   while (true) {
     newRound();
     for (int p=touchedPatterns.nextSetBit(0); p >= 0; p=touchedPatterns.nextSetBit(p + 1)) {
@@ -23,9 +24,11 @@
           }
         }
         int arrivalAtStop=currentTrip.arrivals[s];
-        if (arrivalAtStop < bestTimeForStop.get(stop)) {
-          currentRound.put(stop,arrivalAtStop);
-          bestTimeForStop.put(stop,arrivalAtStop);
+        if (arrivalAtStop < latestAcceptableTime) {
+          if (arrivalAtStop < bestTimeForStop.get(stop)) {
+            currentRound.put(stop,arrivalAtStop);
+            bestTimeForStop.put(stop,arrivalAtStop);
+          }
         }
       }
     }

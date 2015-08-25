@@ -4,8 +4,8 @@
     return -1;
   }
   EdgeStore.Edge edge=edgeStore.getCursor(split.edge);
-  if (split.lengthBefore_mm < SNAP_RADIUS_MM || split.lengthAfter_mm < SNAP_RADIUS_MM) {
-    if (split.lengthBefore_mm < split.lengthAfter_mm) {
+  if (split.distance0_mm < SNAP_RADIUS_MM || split.distance1_mm < SNAP_RADIUS_MM) {
+    if (split.distance0_mm < split.distance1_mm) {
       return edge.getFromVertex();
     }
  else {
@@ -14,10 +14,10 @@
   }
   int newVertexIndex=vertexStore.addVertexFixed((int)split.fLat,(int)split.fLon);
   int oldToVertex=edge.getToVertex();
-  edge.setLengthMm(split.lengthBefore_mm);
+  edge.setLengthMm(split.distance0_mm);
   edge.setToVertex(newVertexIndex);
   edge.setGeometry(Collections.EMPTY_LIST);
-  EdgeStore.Edge newEdge=edgeStore.addStreetPair(newVertexIndex,oldToVertex,split.lengthAfter_mm);
+  EdgeStore.Edge newEdge=edgeStore.addStreetPair(newVertexIndex,oldToVertex,split.distance1_mm);
   spatialIndex.insert(newEdge.getEnvelope(),newEdge.edgeIndex);
   return newVertexIndex;
 }

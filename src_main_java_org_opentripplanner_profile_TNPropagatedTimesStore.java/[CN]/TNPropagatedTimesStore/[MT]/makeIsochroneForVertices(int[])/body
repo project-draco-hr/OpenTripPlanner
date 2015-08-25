@@ -1,0 +1,25 @@
+{
+  final int spacing=5;
+  final int nMax=24;
+  final int cutoffMinutes=120;
+  final int offroadDistanceMeters=250;
+  SparseMatrixZSampleGrid<WTWD> grid=makeSampleGridForVertices(times,offroadDistanceMeters);
+  long t0=System.currentTimeMillis();
+  DelaunayIsolineBuilder<WTWD> isolineBuilder=new DelaunayIsolineBuilder<>(grid.delaunayTriangulate(),new WTWD.IsolineMetric());
+  List<IsochroneData> isoData=new ArrayList<IsochroneData>();
+  for (int minutes=spacing, n=0; minutes <= cutoffMinutes && n < nMax; minutes+=spacing, n++) {
+    int seconds=minutes * 60;
+    WTWD z0=new WTWD();
+    z0.w=1.0;
+    z0.wTime=seconds;
+    z0.d=offroadDistanceMeters;
+    IsochroneData isochrone=new IsochroneData(seconds,isolineBuilder.computeIsoline(z0));
+    isoData.add(isochrone);
+  }
+  long t1=System.currentTimeMillis();
+  ResultSet resultSet=new ResultSet();
+  resultSet.isochrones=new IsochroneData[isoData.size()];
+  isoData.toArray(resultSet.isochrones);
+  LOG.debug("Computed {} isochrones in {} msec",isoData.size(),(int)(t1 - t0));
+  return resultSet;
+}

@@ -11,7 +11,8 @@
       stopTrees.add(EMPTY_INT_ARRAY);
       continue;
     }
-    streetRouter.route(originStreetVertex,StreetRouter.ALL_VERTICES);
+    streetRouter.setOrigin(originStreetVertex);
+    streetRouter.route();
     stopTrees.add(streetRouter.getStopTree());
   }
   LOG.info("Done creating travel distance trees.");
