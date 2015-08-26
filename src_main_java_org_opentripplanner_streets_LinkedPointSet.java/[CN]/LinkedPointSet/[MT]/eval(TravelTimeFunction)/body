@@ -9,8 +9,12 @@
     edge.seek(edges[i]);
     int time0=travelTimeForVertex.getTravelTime(edge.getFromVertex());
     int time1=travelTimeForVertex.getTravelTime(edge.getToVertex());
-    time0+=distances0_mm[i] / 1000;
-    time1+=distances1_mm[i] / 1000;
+    if (time0 != Integer.MAX_VALUE) {
+      time0+=distances0_mm[i] / 1000;
+    }
+    if (time1 != Integer.MAX_VALUE) {
+      time1+=distances1_mm[i] / 1000;
+    }
     travelTimes[i]=time0 < time1 ? time0 : time1;
   }
   return new PointSetTimes(pointSet,travelTimes);
