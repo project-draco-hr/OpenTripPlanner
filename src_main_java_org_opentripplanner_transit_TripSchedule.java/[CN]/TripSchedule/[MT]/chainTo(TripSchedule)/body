@@ -1,8 +1,7 @@
 {
   if (arrivals[arrivals.length - 1] <= that.departures[0]) {
-    nextInBlock=that;
   }
  else {
-    LOG.error("Trip {} arrives at terminus after the next trip in its block departs.",tripId);
+    LOG.debug("Trip {} arrives at terminus after the next trip in its block departs.",tripId);
   }
 }
