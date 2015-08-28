@@ -1,0 +1,22 @@
+{
+  StreetRouter router=new StreetRouter(streetLayer);
+  LOG.info("Creating travel distance trees from each transit stop...");
+  TransitLayer transitLayer=streetLayer.linkedTransitLayer;
+  int nStops=transitLayer.getStopCount();
+  stopTrees=new ArrayList<>(nStops);
+  StreetRouter streetRouter=new StreetRouter(streetLayer);
+  streetRouter.distanceLimitMeters=2000;
+  for (int s=0; s < nStops; s++) {
+    int originStreetVertex=transitLayer.streetVertexForStop.get(s);
+    if (originStreetVertex == -1) {
+      LOG.info("Stop {} is not connected to the street network.",s);
+      stopTrees.add(null);
+    }
+ else {
+      streetRouter.setOrigin(originStreetVertex);
+      streetRouter.route();
+      stopTrees.add(this.getStopTree(streetRouter));
+    }
+  }
+  LOG.info("Done creating travel distance trees.");
+}

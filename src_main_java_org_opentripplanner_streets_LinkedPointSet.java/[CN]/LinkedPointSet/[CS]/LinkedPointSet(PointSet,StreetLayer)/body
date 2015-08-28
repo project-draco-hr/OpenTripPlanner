@@ -1,4 +1,5 @@
 {
+  LOG.info("Linking pointset to street network...");
   this.pointSet=pointSet;
   this.streetLayer=streetLayer;
   edges=new int[pointSet.capacity];
@@ -15,4 +16,6 @@
       distances1_mm[i]=split.distance1_mm;
     }
   }
+  this.makeStopTrees();
+  LOG.info("Done linking pointset to street network.");
 }

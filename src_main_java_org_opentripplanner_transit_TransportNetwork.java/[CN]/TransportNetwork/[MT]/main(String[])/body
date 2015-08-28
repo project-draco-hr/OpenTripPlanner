@@ -1,7 +1,5 @@
 {
   TransportNetwork transportNetwork=TransportNetwork.fromDirectory(new File("."));
-  transportNetwork.buildStopTrees();
-  RaptorWorkerData raptorWorkerData=new RaptorWorkerData(transportNetwork.transitLayer,new LocalDate());
   try {
     OutputStream outputStream=new BufferedOutputStream(new FileOutputStream("network.dat"));
     transportNetwork.write(outputStream);

@@ -5,10 +5,17 @@
       activeSchedules.add(schedule);
     }
   }
+  Collections.sort(activeSchedules);
   RaptorWorkerTimetable timetable=new RaptorWorkerTimetable(activeSchedules.size(),stops.length);
-  int i=0;
+  int trip=0;
   for (  TripSchedule schedule : activeSchedules) {
-    timetable.timesPerTrip[i]=schedule.departures;
+    int nStops=schedule.arrivals.length;
+    int[] packed=new int[nStops * 2];
+    for (int s=0, ps=0; s < nStops; s++) {
+      packed[ps++]=schedule.arrivals[s];
+      packed[ps++]=schedule.departures[s];
+    }
+    timetable.timesPerTrip[trip++]=packed;
   }
   timetable.stopIndices=this.stops;
   return timetable;
