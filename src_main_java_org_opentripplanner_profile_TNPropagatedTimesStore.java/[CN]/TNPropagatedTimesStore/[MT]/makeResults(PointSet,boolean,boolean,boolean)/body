@@ -1,7 +1,7 @@
 {
   ResultEnvelope envelope=new ResultEnvelope();
-  envelope.worstCase=new ResultSet(mins,pointSet,includeTimes,includeHistograms,includeIsochrones);
+  envelope.worstCase=new ResultSet(maxs,pointSet,includeTimes,includeHistograms,includeIsochrones);
   envelope.avgCase=new ResultSet(avgs,pointSet,includeTimes,includeHistograms,includeIsochrones);
-  envelope.bestCase=new ResultSet(maxs,pointSet,includeTimes,includeHistograms,includeIsochrones);
+  envelope.bestCase=new ResultSet(mins,pointSet,includeTimes,includeHistograms,includeIsochrones);
   return envelope;
 }

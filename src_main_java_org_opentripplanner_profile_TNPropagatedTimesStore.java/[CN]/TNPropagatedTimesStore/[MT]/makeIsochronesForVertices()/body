@@ -1,7 +1,7 @@
 {
   ResultEnvelope envelope=new ResultEnvelope();
-  envelope.worstCase=makeIsochroneForVertices(mins);
+  envelope.worstCase=makeIsochroneForVertices(maxs);
   envelope.avgCase=makeIsochroneForVertices(avgs);
-  envelope.bestCase=makeIsochroneForVertices(maxs);
+  envelope.bestCase=makeIsochroneForVertices(mins);
   return envelope;
 }
