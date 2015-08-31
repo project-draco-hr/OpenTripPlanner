@@ -3,7 +3,7 @@
   this.osm=osm;
   for (  Map.Entry<Long,Way> entry : osm.ways.entrySet()) {
     Way way=entry.getValue();
-    if (!(way.hasTag("highway") || way.hasTag("area","yes") || way.hasTag("public_transport","platform"))) {
+    if (!(way.hasTag("highway") || way.hasTag("public_transport","platform"))) {
       continue;
     }
     int nEdgesCreated=0;
@@ -19,6 +19,7 @@
   }
   LOG.info("Done making street edges.");
   LOG.info("Made {} vertices and {} edges.",vertexStore.nVertices,edgeStore.nEdges);
+  removeDisconnectedSubgraphs(20);
   edgesPerWayHistogram.display();
   pointsPerEdgeHistogram.display();
   vertexIndexForOsmNode=null;
