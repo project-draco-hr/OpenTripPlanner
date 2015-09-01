@@ -5,8 +5,8 @@
     int edge=edgesToOmit[cursor] / 2;
     if (edge == prevEdge)     continue;
     prevEdge=edge;
-    flags.remove(edge,1);
-    speeds.remove(edge,1);
+    flags.remove(edge * 2,2);
+    speeds.remove(edge * 2,2);
     fromVertices.remove(edge,1);
     toVertices.remove(edge,1);
     lengths_mm.remove(edge,1);
