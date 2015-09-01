@@ -1,27 +1,3 @@
 {
-  LOG.info("Making street edges from OSM ways...");
-  this.osm=osm;
-  for (  Map.Entry<Long,Way> entry : osm.ways.entrySet()) {
-    Way way=entry.getValue();
-    if (!(way.hasTag("highway") || way.hasTag("public_transport","platform"))) {
-      continue;
-    }
-    int nEdgesCreated=0;
-    int beginIdx=0;
-    for (int n=1; n < way.nodes.length; n++) {
-      if (osm.intersectionNodes.contains(way.nodes[n]) || n == (way.nodes.length - 1)) {
-        makeEdge(way,beginIdx,n);
-        nEdgesCreated+=1;
-        beginIdx=n;
-      }
-    }
-    edgesPerWayHistogram.add(nEdgesCreated);
-  }
-  LOG.info("Done making street edges.");
-  LOG.info("Made {} vertices and {} edges.",vertexStore.nVertices,edgeStore.nEdges);
-  removeDisconnectedSubgraphs(20);
-  edgesPerWayHistogram.display();
-  pointsPerEdgeHistogram.display();
-  vertexIndexForOsmNode=null;
-  osm=null;
+  loadFromOsm(osm,true,false);
 }
