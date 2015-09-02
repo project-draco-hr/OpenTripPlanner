@@ -1,0 +1,38 @@
+{
+  try {
+    String filename=networkId + "_" + MavenVersion.VERSION.commit+ ".dat";
+    File cacheLocation=new File(CACHE_DIR,networkId + "_" + MavenVersion.VERSION.commit+ ".dat");
+    if (cacheLocation.exists())     LOG.info("Found locally-cached transport network for id {} and commit {}",networkId,MavenVersion.VERSION.commit);
+ else {
+      LOG.info("Checking for cached transport network on S3");
+      S3Object tn;
+      try {
+        tn=s3.getObject(sourceBucket,filename);
+      }
+ catch (      AmazonServiceException ex) {
+        LOG.info("No cached transport network was found in S3");
+        return null;
+      }
+      FileOutputStream fos=new FileOutputStream(cacheLocation);
+      InputStream is=tn.getObjectContent();
+      try {
+        ByteStreams.copy(is,fos);
+      }
+  finally {
+        is.close();
+        fos.close();
+      }
+    }
+    FileInputStream fis=new FileInputStream(cacheLocation);
+    try {
+      return TransportNetwork.read(fis);
+    }
+  finally {
+      fis.close();
+    }
+  }
+ catch (  Exception e) {
+    LOG.error("Exception occurred retrieving cached transport network",e);
+    return null;
+  }
+}
