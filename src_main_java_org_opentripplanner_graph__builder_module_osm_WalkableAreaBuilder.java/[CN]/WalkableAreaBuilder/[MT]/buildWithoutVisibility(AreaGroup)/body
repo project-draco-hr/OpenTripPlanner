@@ -1,0 +1,22 @@
+{
+  Set<Edge> edges=new HashSet<Edge>();
+  for (  Ring ring : group.outermostRings) {
+    AreaEdgeList edgeList=new AreaEdgeList();
+    HashSet<P2<OSMNode>> alreadyAddedEdges=new HashSet<P2<OSMNode>>();
+    for (    Area area : group.areas) {
+      if (!ring.toJtsPolygon().contains(area.toJTSMultiPolygon())) {
+        continue;
+      }
+      for (      Ring outerRing : area.outermostRings) {
+        for (int i=0; i < outerRing.nodes.size(); ++i) {
+          createEdgesForRingSegment(edges,edgeList,area,outerRing,i,alreadyAddedEdges);
+        }
+        for (        Ring innerRing : outerRing.holes) {
+          for (int j=0; j < innerRing.nodes.size(); ++j) {
+            createEdgesForRingSegment(edges,edgeList,area,innerRing,j,alreadyAddedEdges);
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  if (skipVisibility) {
+    LOG.info("Skipping visibility graph construction for walkable areas and using just area rings for edges.");
+  }
+ else {
+    LOG.info("Building visibility graphs for walkable areas.");
+  }
+  List<AreaGroup> areaGroups=groupAreas(osmdb.getWalkableAreas());
+  WalkableAreaBuilder walkableAreaBuilder=new WalkableAreaBuilder(graph,osmdb,wayPropertySet,edgeFactory,this);
+  if (skipVisibility) {
+    for (    AreaGroup group : areaGroups) {
+      walkableAreaBuilder.buildWithoutVisibility(group);
+    }
+  }
+ else {
+    for (    AreaGroup group : areaGroups) {
+      walkableAreaBuilder.buildWithVisibility(group);
+    }
+  }
+  graph.clearTimeZone();
+  if (skipVisibility) {
+    LOG.info("Done building rings for walkable areas.");
+  }
+ else {
+    LOG.info("Done building visibility graphs for walkable areas.");
+  }
+}
