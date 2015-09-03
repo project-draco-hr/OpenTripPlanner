@@ -1,0 +1,21 @@
+{
+  if (linkedStreetLayer == null)   throw new IllegalStateException("Attempt to build stop trees on unlinked transit layer");
+  stopTree=new TIntIntMap[getStopCount()];
+  StreetRouter r=new StreetRouter(linkedStreetLayer);
+  r.distanceLimitMeters=3000;
+  for (int stop=0; stop < getStopCount(); stop++) {
+    int originVertex=streetVertexForStop.get(stop);
+    if (originVertex == -1) {
+      LOG.info("Stop {} is unlinked",stop);
+      if (stopForIndex != null) {
+        Stop obj=stopForIndex.get(stop);
+        LOG.info("unlinked,{},{},{}",obj.stop_name,obj.stop_lat,obj.stop_lon);
+      }
+      stopTree[stop]=null;
+      continue;
+    }
+    r.setOrigin(originVertex);
+    r.route();
+    stopTree[stop]=r.getReachedVertices();
+  }
+}
