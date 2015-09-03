@@ -13,6 +13,7 @@
         LOG.info("No cached transport network was found in S3");
         return null;
       }
+      CACHE_DIR.mkdirs();
       FileOutputStream fos=new FileOutputStream(cacheLocation);
       InputStream is=tn.getObjectContent();
       try {
