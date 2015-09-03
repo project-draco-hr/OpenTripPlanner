@@ -7,10 +7,6 @@
     int originVertex=streetVertexForStop.get(stop);
     if (originVertex == -1) {
       LOG.info("Stop {} is unlinked",stop);
-      if (stopForIndex != null) {
-        Stop obj=stopForIndex.get(stop);
-        LOG.info("unlinked,{},{},{}",obj.stop_name,obj.stop_lat,obj.stop_lon);
-      }
       stopTree[stop]=null;
       continue;
     }
