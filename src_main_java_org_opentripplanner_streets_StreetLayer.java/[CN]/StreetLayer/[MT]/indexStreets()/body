@@ -4,9 +4,7 @@
   EdgeStore.Edge edge=edgeStore.getCursor();
   for (int e=0; e < edgeStore.nEdges; e+=2) {
     edge.seek(e);
-    if (edge.getLengthMm() < 1 * 1000 * 1000) {
-      spatialIndex.insert(edge.getEnvelope(),e);
-    }
+    spatialIndex.insert(edge.getEnvelope(),e);
   }
   LOG.info("Done indexing streets.");
 }
