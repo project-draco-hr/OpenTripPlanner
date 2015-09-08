@@ -1,0 +1,26 @@
+{
+  Graph gg=new Graph();
+  OpenStreetMapModule loader=new OpenStreetMapModule();
+  loader.skipVisibility=true;
+  loader.setDefaultWayPropertySetSource(new DefaultWayPropertySetSource());
+  FileBasedOpenStreetMapProviderImpl provider=new FileBasedOpenStreetMapProviderImpl();
+  File file=new File(URLDecoder.decode(getClass().getResource("usf_area.osm.gz").getFile(),"UTF-8"));
+  provider.setPath(file);
+  loader.setProvider(provider);
+  loader.buildGraph(gg,extra);
+  new StreetVertexIndexServiceImpl(gg);
+  OTPServer otpServer=new OTPServer(new CommandLineParameters(),new GraphService());
+  otpServer.getGraphService().registerGraph("A",new MemoryGraphSource("A",gg));
+  Router a=otpServer.getGraphService().getRouter("A");
+  RoutingRequest request=new RoutingRequest("WALK");
+  Vertex bottomV=gg.getVertex("osm:node:580290955");
+  Vertex topV=gg.getVertex("osm:node:559271124");
+  request.setRoutingContext(a.graph,bottomV,topV);
+  GraphPathFinder graphPathFinder=new GraphPathFinder(a);
+  List<GraphPath> pathList=graphPathFinder.graphPathFinderEntryPoint(request);
+  assertNotNull(pathList);
+  assertFalse(pathList.isEmpty());
+  for (  GraphPath path : pathList) {
+    assertFalse(path.states.isEmpty());
+  }
+}
