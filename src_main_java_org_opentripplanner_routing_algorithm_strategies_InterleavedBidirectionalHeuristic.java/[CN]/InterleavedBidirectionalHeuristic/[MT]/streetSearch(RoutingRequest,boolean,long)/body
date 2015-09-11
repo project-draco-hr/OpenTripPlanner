@@ -20,7 +20,7 @@
       }
       continue;
     }
-    if (!fromTarget) {
+    if (!fromTarget && !(v instanceof ParkAndRideVertex || v instanceof BikeParkVertex)) {
       weights.put(v,-1);
     }
  else {
