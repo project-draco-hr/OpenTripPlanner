@@ -22,7 +22,7 @@
       rr.worstTime=rr.dateTime + request.maxBikeTime * 60;
     }
  else {
-      rr.maxWalkDistance=2000;
+      rr.maxWalkDistance=Math.min(request.maxWalkTime * 60 * request.walkSpeed,GraphIndex.MAX_WALK_METERS);
       rr.softWalkLimiting=false;
       rr.dominanceFunction=new DominanceFunction.LeastWalk();
     }
