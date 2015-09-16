@@ -1,0 +1,9 @@
+{
+  this.k=steepness;
+  this.rolloffMin=(int)(Math.log(1 / 0.999 - 1) / -k);
+  this.rolloffMax=(int)(Math.log(1 / 0.001 - 1) / -k);
+  weights=new double[rolloffMax - rolloffMin + 1];
+  for (int i=rolloffMin; i <= rolloffMax; i++) {
+    weights[i - rolloffMin]=1 / (1 + Math.exp(-k * (i - x0)));
+  }
+}

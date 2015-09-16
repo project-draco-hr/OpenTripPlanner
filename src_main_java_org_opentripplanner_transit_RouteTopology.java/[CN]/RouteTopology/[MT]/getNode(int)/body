@@ -1,0 +1,8 @@
+{
+  StopNode node=nodeForStopIndex.get(stopIndex);
+  if (node == null) {
+    node=new StopNode(stopIndex);
+    nodeForStopIndex.put(stopIndex,node);
+  }
+  return node;
+}

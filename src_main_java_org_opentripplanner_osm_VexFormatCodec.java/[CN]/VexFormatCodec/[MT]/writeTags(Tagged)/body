@@ -1,9 +1,0 @@
-{
-  List<Tagged.Tag> tags=tagged.getTags();
-  vout.writeUInt32NoTag(tags.size());
-  for (  Tagged.Tag tag : tagged.getTags()) {
-    if (tag.value == null)     tag.value="";
-    vout.writeStringNoTag(tag.key);
-    vout.writeStringNoTag(tag.value);
-  }
-}

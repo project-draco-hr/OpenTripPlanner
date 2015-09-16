@@ -2,16 +2,17 @@
   boolean filtered=false;
   StopTime prev=null;
   Iterator<StopTime> it=stopTimes.iterator();
+  TIntList stopSequencesRemoved=new TIntArrayList();
   while (it.hasNext()) {
     StopTime st=it.next();
     if (prev != null) {
       if (prev.getStop().equals(st.getStop())) {
-        prev.setDepartureTime(st.getDepartureTime());
+        st.setDepartureTime(st.getDepartureTime());
         it.remove();
-        filtered=true;
+        stopSequencesRemoved.add(st.getStopSequence());
       }
     }
     prev=st;
   }
-  return filtered;
+  return stopSequencesRemoved;
 }

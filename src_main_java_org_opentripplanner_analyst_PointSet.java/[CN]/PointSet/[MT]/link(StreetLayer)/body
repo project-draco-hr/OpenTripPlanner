@@ -1,0 +1,8 @@
+{
+  LinkedPointSet linkedPointSet=linkageCache.get(streetLayer);
+  if (linkedPointSet == null) {
+    linkedPointSet=new LinkedPointSet(this,streetLayer);
+    linkageCache.put(streetLayer,linkedPointSet);
+  }
+  return linkedPointSet;
+}

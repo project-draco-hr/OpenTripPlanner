@@ -1,0 +1,8 @@
+{
+  if (currentRound != null) {
+    markPatternsForStops();
+    previousRound=currentRound;
+  }
+  currentRound=new TIntIntHashMap(transitLayer.getStopCount(),0.5f,-1,Integer.MAX_VALUE);
+  roundData.add(currentRound);
+}

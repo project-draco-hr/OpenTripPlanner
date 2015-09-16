@@ -1,10 +1,7 @@
 {
-  for (  Job job : jobs) {
-    if (job.jobId.equals(task.jobId)) {
-      return job;
-    }
-  }
-  Job job=new Job(task.jobId);
+  Job job=findJob(task.jobId);
+  if (job != null)   return job;
+  job=new Job(task.jobId);
   job.graphId=task.graphId;
   jobs.insertAtTail(job);
   return job;

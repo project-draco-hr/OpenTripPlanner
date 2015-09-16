@@ -1,0 +1,46 @@
+{
+  LOG.debug("Begin raptor routing. Initial state: {}",currentRound);
+  LocalDate searchDate=new LocalDate(2015,8,6);
+  servicesActive=transitLayer.getActiveServicesForDate(searchDate);
+  final int latestAcceptableTime=departureTime + maxTravelTimeSeconds;
+  while (true) {
+    newRound();
+    for (int p=touchedPatterns.nextSetBit(0); p >= 0; p=touchedPatterns.nextSetBit(p + 1)) {
+      TripPattern tripPattern=transitLayer.tripPatterns.get(p);
+      TripSchedule currentTrip=null;
+      for (int s=0; s < tripPattern.stops.length; s++) {
+        int stop=tripPattern.stops[s];
+        if (currentTrip == null) {
+          if (previousRound.keySet().contains(stop)) {
+            int time=previousRound.get(stop);
+            currentTrip=tripPattern.findNextDeparture(time + boardSlackSeconds,s);
+          }
+          continue;
+        }
+        if (previousRound.containsKey(stop)) {
+          int prevRoundTime=previousRound.get(stop);
+          if (prevRoundTime + boardSlackSeconds < currentTrip.arrivals[s]) {
+            currentTrip=tripPattern.findNextDeparture(prevRoundTime + boardSlackSeconds,s);
+          }
+        }
+        int arrivalAtStop=currentTrip.arrivals[s];
+        if (arrivalAtStop < latestAcceptableTime) {
+          if (arrivalAtStop < bestTimeForStop.get(stop)) {
+            currentRound.put(stop,arrivalAtStop);
+            bestTimeForStop.put(stop,arrivalAtStop);
+          }
+        }
+      }
+    }
+    LOG.debug("Round {} updated {} stops.",roundData.size() - 1,currentRound.size());
+    if (currentRound.isEmpty()) {
+      LOG.debug("Nothing was updated. Routing is finished.");
+      break;
+    }
+ else     if (roundData.size() > maxTransfers) {
+      LOG.debug("Hit maximum number of transfers {}. Routing is finished.",maxTransfers);
+      break;
+    }
+    doTransfers();
+  }
+}

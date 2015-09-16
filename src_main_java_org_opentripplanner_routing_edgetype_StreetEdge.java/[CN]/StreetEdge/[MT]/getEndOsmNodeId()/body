@@ -1,0 +1,5 @@
+{
+  if (tov instanceof OsmVertex)   return ((OsmVertex)tov).nodeId;
+ else   if (tov instanceof SplitterVertex)   return ((SplitterVertex)tov).nextNodeId;
+ else   return -1;
+}

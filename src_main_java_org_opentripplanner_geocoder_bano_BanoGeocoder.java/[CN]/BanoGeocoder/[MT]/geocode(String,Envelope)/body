@@ -22,7 +22,7 @@
     return new GeocoderResults(geocoderResults);
   }
  catch (  IOException e) {
-    e.printStackTrace();
+    LOG.error("Error processing BANO geocoder results",e);
     return new GeocoderResults(e.getLocalizedMessage());
   }
 }

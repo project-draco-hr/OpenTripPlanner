@@ -1,0 +1,18 @@
+{
+  long beginPropagationTime=System.currentTimeMillis();
+  for (int s=allStopsTouched.nextSetBit(0); s >= 0; s=allStopsTouched.nextSetBit(s + 1)) {
+    int baseTimeSeconds=timesAtTransitStops[s];
+    if (baseTimeSeconds != UNREACHED) {
+      int[] targets=data.targetsForStop.get(s);
+      if (targets == null)       continue;
+      for (int i=0; i < targets.length; i++) {
+        int targetIndex=targets[i++];
+        int propagated_time=baseTimeSeconds + targets[i];
+        if (timesAtTargets[targetIndex] > propagated_time) {
+          timesAtTargets[targetIndex]=propagated_time;
+        }
+      }
+    }
+  }
+  totalPropagationTime+=(System.currentTimeMillis() - beginPropagationTime);
+}

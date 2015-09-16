@@ -1,0 +1,9 @@
+{
+  if (hourBins == null)   return decodeSpeed(average);
+  Instant instant=Instant.ofEpochMilli(time);
+  OffsetDateTime dt=instant.atOffset(ZoneOffset.UTC);
+  int day=DayOfWeek.from(dt).getValue() - 1;
+  int hour=dt.getHour();
+  int hourBin=day * 24 + hour;
+  return decodeSpeed(hourBins[hourBin]);
+}

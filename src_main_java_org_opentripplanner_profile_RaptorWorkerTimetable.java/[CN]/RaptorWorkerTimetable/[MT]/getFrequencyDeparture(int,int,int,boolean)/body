@@ -1,7 +1,0 @@
-{
-  int timeToReachStop=frequencyTrips[trip][stop * 2 + 1];
-  if (timeToReachStop + startTimes[trip] > time)   time=timeToReachStop + startTimes[trip];
-  if (time > timeToReachStop + endTimes[trip])   return -1;
-  if (worstCase)   time+=headwaySecs[trip];
-  return time;
-}

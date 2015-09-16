@@ -3,5 +3,6 @@
   if (!route.getAgency().getId().equals(agencyId))   return false;
   if (routeId != null && !routeId.contains(route.getId().getId()))   return false;
   if (tripId != null && !tripId.contains(trip.getId().getId()))   return false;
+  if (routeType != null && !Ints.contains(routeType,trip.getRoute().getType()))   return false;
   return true;
 }

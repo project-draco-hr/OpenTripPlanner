@@ -1,0 +1,17 @@
+{
+  LOG.info("Make data...");
+  long startData=System.currentTimeMillis();
+  if (request.scenario != null && request.scenario.modifications != null) {
+    for (    AddTripPattern atp : Iterables.filter(request.scenario.modifications,AddTripPattern.class)) {
+      atp.materialize(graph);
+    }
+  }
+  DayOfWeek dayOfWeek=DayOfWeek.of(request.date.getDayOfWeek());
+  TimeWindow window=new TimeWindow(request.fromTime,request.toTime + RaptorWorker.MAX_DURATION,graph.index.servicesRunning(request.date),dayOfWeek);
+  RaptorWorkerData raptorWorkerData;
+  if (sampleSet == null)   raptorWorkerData=new RaptorWorkerData(graph,window,request,ts);
+ else   raptorWorkerData=new RaptorWorkerData(graph,window,request,sampleSet,ts);
+  ts.raptorData=(int)(System.currentTimeMillis() - startData);
+  LOG.info("done");
+  return raptorWorkerData;
+}

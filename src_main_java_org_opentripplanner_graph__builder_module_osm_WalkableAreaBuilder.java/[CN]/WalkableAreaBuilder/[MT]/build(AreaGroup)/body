@@ -73,7 +73,7 @@
         Coordinate[] coordinates=new Coordinate[]{startEndpoint.getCoordinate(),endEndpoint.getCoordinate()};
         GeometryFactory geometryFactory=GeometryUtils.getGeometryFactory();
         LineString line=geometryFactory.createLineString(coordinates);
-        if (poly.contains(line)) {
+        if (poly != null && poly.contains(line)) {
           createSegments(nodeI,nodeJ,startEndpoint,endEndpoint,group.areas,edgeList,edges);
           if (startingNodes.contains(nodeI)) {
             startingVertices.add(startEndpoint);

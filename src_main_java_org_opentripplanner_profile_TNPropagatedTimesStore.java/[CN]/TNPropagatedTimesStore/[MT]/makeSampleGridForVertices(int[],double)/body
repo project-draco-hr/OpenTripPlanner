@@ -1,0 +1,30 @@
+{
+  SparseMatrixZSampleGrid<WTWD> grid;
+  long t0=System.currentTimeMillis();
+  final double offroadWalkDistance=0.8 * gridSizeMeters;
+  final double offroadWalkSpeed=1.00;
+  Coordinate coordinateOrigin=null;
+  final double cosLat=FastMath.cos(toRadians(coordinateOrigin.y));
+  double dY=Math.toDegrees(gridSizeMeters / SphericalDistanceLibrary.RADIUS_OF_EARTH_IN_M);
+  double dX=dY / cosLat;
+  grid=new SparseMatrixZSampleGrid<WTWD>(16,times.length,dX,dY,coordinateOrigin);
+  AccumulativeGridSampler.AccumulativeMetric<WTWD> metric=new WTWDAccumulativeMetric(cosLat,offroadWalkDistance,offroadWalkSpeed,gridSizeMeters);
+  AccumulativeGridSampler<WTWD> sampler=new AccumulativeGridSampler<>(grid,metric);
+  Vertex vertex=null;
+  for (int v=0; v < times.length; v++) {
+    int time=times[v];
+    if (time == Integer.MAX_VALUE) {
+      continue;
+    }
+    WTWD z=new WTWD();
+    z.w=1.0;
+    z.d=0.0;
+    z.wTime=time;
+    z.wBoardings=0;
+    z.wWalkDist=0;
+  }
+  sampler.close();
+  long t1=System.currentTimeMillis();
+  LOG.info("Made scalar SampleGrid from TimeSurface in {} msec.",(int)(t1 - t0));
+  return grid;
+}

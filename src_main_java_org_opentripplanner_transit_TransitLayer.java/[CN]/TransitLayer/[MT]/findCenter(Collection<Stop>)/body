@@ -1,0 +1,10 @@
+{
+  double lonSum=0;
+  double latSum=0;
+  for (  Stop stop : stops) {
+    latSum+=stop.stop_lat;
+    lonSum+=stop.stop_lon;
+  }
+  centerLat=latSum / stops.size();
+  centerLon=lonSum / stops.size();
+}

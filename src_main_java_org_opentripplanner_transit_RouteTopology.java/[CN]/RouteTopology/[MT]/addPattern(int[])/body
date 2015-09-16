@@ -1,0 +1,8 @@
+{
+  for (int i=0; i < stopSequence.length - 1; i++) {
+    StopNode fromNode=getNode(stopSequence[i]);
+    StopNode toNode=getNode(stopSequence[i + 1]);
+    fromNode.outgoing.add(toNode);
+    toNode.incoming.add(fromNode);
+  }
+}

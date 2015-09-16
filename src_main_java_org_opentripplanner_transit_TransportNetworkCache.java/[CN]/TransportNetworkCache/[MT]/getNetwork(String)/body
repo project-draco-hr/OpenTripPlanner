@@ -1,0 +1,15 @@
+{
+  LOG.info("Finding or building a TransportNetwork for ID {}",networkId);
+  if (networkId.equals(currentNetworkId)) {
+    LOG.info("Network ID has not changed. Reusing the last one that was built.");
+    return currentNetwork;
+  }
+  TransportNetwork network=checkCached(networkId);
+  if (network == null) {
+    LOG.info("Cached transport network for id {} and commit {} was not found. Building it.",networkId,MavenVersion.VERSION.commit);
+    network=buildNetwork(networkId);
+  }
+  currentNetwork=network;
+  currentNetworkId=networkId;
+  return network;
+}

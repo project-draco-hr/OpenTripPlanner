@@ -12,7 +12,10 @@
   TimeWindow window=new TimeWindow(7 * 3600,9 * 3600,g.index.servicesRunning(new LocalDate(2015,6,10)),DayOfWeek.WEDNESDAY);
   Scenario scenario=new Scenario(0);
   scenario.modifications=Lists.newArrayList(atp,atp2);
-  RaptorWorkerData data=new RaptorWorkerData(g,window,scenario);
+  ProfileRequest req=new ProfileRequest();
+  req.scenario=scenario;
+  req.boardingAssumption=RaptorWorkerTimetable.BoardingAssumption.WORST_CASE;
+  RaptorWorkerData data=new RaptorWorkerData(g,window,req);
   int[] txFromExisting=data.transfersForStop.get(0);
   if (txFromExisting.length == 0)   txFromExisting=data.transfersForStop.get(1);
   assertTrue(txFromExisting.length > 0);

@@ -16,7 +16,7 @@
     }
     return null;
   }
-  double speed=calculateSpeed(options,traverseMode);
+  double speed=calculateSpeed(options,traverseMode,s0.getTimeInMillis());
   double time=getDistance() / speed;
   double weight;
   if (options.wheelchairAccessible) {
@@ -76,7 +76,7 @@ StreetEdge backPSE;
 if (backEdge != null && backEdge instanceof StreetEdge) {
 backPSE=(StreetEdge)backEdge;
 RoutingRequest backOptions=backWalkingBike ? s0.getOptions().bikeWalkingOptions : s0.getOptions();
-double backSpeed=backPSE.calculateSpeed(backOptions,backMode);
+double backSpeed=backPSE.calculateSpeed(backOptions,backMode,s0.getTimeInMillis());
 final double realTurnCost;
 if (options.arriveBy && !canTurnOnto(backPSE,s0,backMode)) {
 return null;
