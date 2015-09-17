@@ -26,7 +26,7 @@
   rr.setRoutingContext(g);
   rr.batch=true;
   ShortestPathTree spt=aStar.getShortestPathTree(rr);
-  TIntIntMap stops=data.findStopsNear(spt,g);
+  TIntIntMap stops=data.findStopsNear(spt,g,false);
   assertFalse(stops.isEmpty());
   assertEquals(7 * 3600 + 30,data.timetablesForPattern.get(0).getDeparture(0,0));
 }
