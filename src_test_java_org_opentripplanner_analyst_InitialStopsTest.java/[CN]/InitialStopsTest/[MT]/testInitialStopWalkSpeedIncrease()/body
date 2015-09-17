@@ -13,14 +13,15 @@
   req.fromTime=7 * 3600;
   req.toTime=9 * 3600;
   req.maxBikeTime=20;
+  req.maxWalkTime=20;
   req.transitModes=new TraverseModeSet("TRANSIT");
-  req.accessModes=req.egressModes=req.directModes=new QualifiedModeSet("BICYCLE");
+  req.accessModes=req.egressModes=req.directModes=new QualifiedModeSet("WALK");
   RaptorWorkerData data=RepeatedRaptorProfileRouter.getRaptorWorkerData(req,g,null,new TaskStatistics());
   assertNotNull(data);
   RepeatedRaptorProfileRouter rrpr=new RepeatedRaptorProfileRouter(g,req);
   TIntIntMap initialStops1=rrpr.findInitialStops(false,data);
   assertFalse(initialStops1.isEmpty());
-  req.bikeSpeed=25f;
+  req.walkSpeed=25f;
   data=RepeatedRaptorProfileRouter.getRaptorWorkerData(req,g,null,new TaskStatistics());
   assertNotNull(data);
   rrpr=new RepeatedRaptorProfileRouter(g,req);
@@ -32,5 +33,5 @@
     assertTrue("Found increase in travel time to stop",initialStops2.get(it.key()) <= it.value());
     foundDecreases=foundDecreases || initialStops2.get(it.key()) < it.value() - EPSILON;
   }
-  assertTrue(foundDecreases);
+  assertTrue("No decreases were found due to increased walk speed",foundDecreases);
 }
