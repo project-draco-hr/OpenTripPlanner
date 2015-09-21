@@ -4,7 +4,10 @@
     State s=spt.getState(tstop);
     if (s != null) {
       int stopIndex=indexForStop.get(tstop.getIndex());
-      if (stopIndex != -1)       accessTimes.put(stopIndex,(int)(s.getWalkDistance() / 1.3f));
+      if (stopIndex != -1) {
+        if (useTimes)         accessTimes.put(stopIndex,(int)s.getElapsedTimeSeconds());
+ else         accessTimes.put(stopIndex,(int)(s.getWalkDistance() / walkSpeed));
+      }
     }
   }
   for (TObjectIntIterator<AddTripPattern.TemporaryStop> it=addedStops.iterator(); it.hasNext(); ) {
@@ -29,7 +32,7 @@
       }
     }
     if (Double.isInfinite(dist))     continue;
-    accessTimes.put(it.value(),(int)(dist / 1.3f));
+    accessTimes.put(it.value(),(int)(dist / walkSpeed));
   }
   return accessTimes;
 }
