@@ -15,6 +15,20 @@
     s1.setLastAlightedTimeSeconds(s0.getTimeSeconds());
     s1.setPreviousStop(getStop());
     s1.setLastPattern(this.getPattern());
+    if (boarding) {
+      int boardingTime=options.getBoardTime(this.getPattern().mode);
+      if (boardingTime != 0) {
+        s1.incrementTimeInSeconds(boardingTime);
+        s1.incrementWeight(boardingTime * options.waitReluctance);
+      }
+    }
+ else {
+      int alightTime=options.getAlightTime(this.getPattern().mode);
+      if (alightTime != 0) {
+        s1.incrementTimeInSeconds(alightTime);
+        s1.incrementWeight(alightTime * options.waitReluctance);
+      }
+    }
     if (arrivalTimeAtStop > 0) {
       int wait=(int)Math.abs(s0.getTimeSeconds() - arrivalTimeAtStop);
       s1.incrementTimeInSeconds(wait);
