@@ -1,8 +1,4 @@
 {
-  if (transitMode == TraverseMode.AIRPLANE) {
-    return 45 * 60;
-  }
- else {
-    return 0;
-  }
+  Integer i=this.rctx.graph.boardTimes.get(transitMode);
+  return i == null ? 0 : i;
 }
