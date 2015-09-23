@@ -37,10 +37,10 @@
     }
   }
 );
-  RaptorWorkerTimetable rwtt=new RaptorWorkerTimetable(tripTimes.size(),pattern.getStops().size() * 2);
+  RaptorWorkerTimetable rwtt=new RaptorWorkerTimetable(tripTimes.size(),pattern.getStops().size());
   int t=0;
   for (  TripTimes tt : tripTimes) {
-    int[] times=new int[rwtt.nStops];
+    int[] times=new int[rwtt.nStops * 2];
     for (int s=0; s < pattern.getStops().size(); s++) {
       int arrival=tt.getArrivalTime(s);
       int departure=tt.getDepartureTime(s);

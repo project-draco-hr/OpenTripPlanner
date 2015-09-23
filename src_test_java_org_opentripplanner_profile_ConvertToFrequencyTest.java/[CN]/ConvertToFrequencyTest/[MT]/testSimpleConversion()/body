@@ -1,0 +1,38 @@
+{
+  Graph gg=buildGraphNoTransit();
+  addTransit(gg);
+  link(gg);
+  gg.index(new DefaultStreetVertexIndexFactory());
+  ProfileRequest pr1=new ProfileRequest();
+  pr1.date=new LocalDate(2015,6,10);
+  pr1.fromTime=7 * 3600;
+  pr1.toTime=9 * 3600;
+  pr1.fromLat=pr1.toLat=39.9621;
+  pr1.fromLon=pr1.toLon=-83.0007;
+  pr1.accessModes=pr1.egressModes=pr1.directModes=new QualifiedModeSet("WALK");
+  pr1.transitModes=new TraverseModeSet("TRANSIT");
+  RepeatedRaptorProfileRouter rrpr1=new RepeatedRaptorProfileRouter(gg,pr1);
+  rrpr1.route();
+  ProfileRequest pr2=new ProfileRequest();
+  pr2.date=new LocalDate(2015,6,10);
+  pr2.fromTime=7 * 3600;
+  pr2.toTime=9 * 3600;
+  pr2.fromLat=pr2.toLat=39.9621;
+  pr2.fromLon=pr2.toLon=-83.0007;
+  pr2.accessModes=pr2.egressModes=pr2.directModes=new QualifiedModeSet("WALK");
+  pr2.transitModes=new TraverseModeSet("TRANSIT");
+  ConvertToFrequency ctf=new ConvertToFrequency();
+  ctf.groupBy=ConvertToFrequency.ConversionGroup.ROUTE_DIRECTION;
+  ctf.routeId=new String[]{"route"};
+  ctf.windowStart=5 * 3600;
+  ctf.windowEnd=10 * 3600;
+  pr2.scenario=new Scenario(0);
+  pr2.scenario.modifications=Arrays.asList(ctf);
+  RepeatedRaptorProfileRouter rrpr2=new RepeatedRaptorProfileRouter(gg,pr2);
+  rrpr2.route();
+  assertFalse(rrpr1.raptorWorkerData.hasFrequencies);
+  assertTrue(rrpr2.raptorWorkerData.hasFrequencies);
+  RaptorWorkerTimetable tt=rrpr2.raptorWorkerData.timetablesForPattern.get(0);
+  assertEquals(FakeGraph.FREQUENCY,tt.headwaySecs[0]);
+  assertEquals(FakeGraph.TRAVEL_TIME,tt.frequencyTrips[0][2]);
+}

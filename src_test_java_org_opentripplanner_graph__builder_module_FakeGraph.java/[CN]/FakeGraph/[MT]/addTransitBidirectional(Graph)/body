@@ -35,6 +35,7 @@
     t.trip_id="trip" + departure;
     t.service=s;
     t.route=r;
+    t.direction_id=0;
     feed.trips.put(t.trip_id,t);
     StopTime st1=new StopTime();
     st1.trip_id=t.trip_id;
@@ -49,6 +50,26 @@
     st2.departure_time=departure + TRAVEL_TIME;
     st2.stop_sequence=2;
     st2.stop_id=s2.stop_id;
+    feed.stop_times.put(new Fun.Tuple2(st2.trip_id,st2.stop_sequence),st2);
+    t=new Trip();
+    t.trip_id="trip_back" + departure;
+    t.service=s;
+    t.route=r;
+    t.direction_id=1;
+    feed.trips.put(t.trip_id,t);
+    st1=new StopTime();
+    st1.trip_id=t.trip_id;
+    st1.arrival_time=departure;
+    st1.departure_time=departure;
+    st1.stop_id=s2.stop_id;
+    st1.stop_sequence=1;
+    feed.stop_times.put(new Fun.Tuple2(st1.trip_id,st1.stop_sequence),st1);
+    st2=new StopTime();
+    st2.trip_id=t.trip_id;
+    st2.arrival_time=departure + TRAVEL_TIME;
+    st2.departure_time=departure + TRAVEL_TIME;
+    st2.stop_sequence=2;
+    st2.stop_id=s1.stop_id;
     feed.stop_times.put(new Fun.Tuple2(st2.trip_id,st2.stop_sequence),st2);
   }
   File tempFile=File.createTempFile("gtfs",".zip");
