@@ -2,7 +2,7 @@
   Vertex vertex=newState.getVertex();
   List<State> states=stateSets.get(vertex);
   if (states == null) {
-    states=new ArrayList<State>();
+    states=new ArrayList<>();
     stateSets.put(vertex,states);
     states.add(newState);
     return true;

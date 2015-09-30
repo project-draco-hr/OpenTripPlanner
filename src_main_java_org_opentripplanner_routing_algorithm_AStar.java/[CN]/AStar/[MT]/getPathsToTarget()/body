@@ -1,0 +1,9 @@
+{
+  List<GraphPath> ret=new LinkedList<>();
+  for (  State s : runState.targetAcceptedStates) {
+    if (s.isFinal() && s.allPathParsersAccept()) {
+      ret.add(new GraphPath(s,true));
+    }
+  }
+  return ret;
+}
