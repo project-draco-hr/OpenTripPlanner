@@ -6,7 +6,6 @@
   AStar aStar=new AStar();
   if (options.rctx == null) {
     options.setRoutingContext(router.graph);
-    options.rctx.pathParsers=new PathParser[0];
   }
   if (router.graphVisualizer != null) {
     aStar.setTraverseVisitor(router.graphVisualizer.traverseVisitor);
@@ -56,7 +55,6 @@
       break;
     }
     for (    GraphPath path : newPaths) {
-      path.dump();
       List<AgencyAndId> tripIds=path.getTrips();
       for (      AgencyAndId tripId : tripIds) {
         options.banTrip(tripId);

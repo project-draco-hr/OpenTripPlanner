@@ -8,7 +8,6 @@
   rr.from=new GenericLocation(lat,lon);
   rr.to=rr.from;
   rr.setRoutingContext(graph);
-  rr.rctx.pathParsers=new PathParser[]{new InitialStopSearchPathParser()};
   rr.dateTime=request.date.toDateMidnight(DateTimeZone.forTimeZone(graph.getTimeZone())).getMillis() / 1000 + request.fromTime;
   rr.walkSpeed=request.walkSpeed;
   rr.bikeSpeed=request.bikeSpeed;
