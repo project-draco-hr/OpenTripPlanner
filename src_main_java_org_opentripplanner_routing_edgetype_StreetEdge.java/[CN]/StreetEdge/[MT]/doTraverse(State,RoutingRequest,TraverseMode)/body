@@ -72,6 +72,18 @@ weight*=options.walkReluctance;
 StateEditor s1=s0.edit(this);
 s1.setBackMode(traverseMode);
 s1.setBackWalkingBike(walkingBike);
+if (this.isNoThruTraffic()) {
+if (backEdge instanceof StreetEdge && !((StreetEdge)backEdge).isNoThruTraffic()) {
+s1.setEnteredNoThroughTrafficArea();
+}
+if (s1.hasEnteredNoThroughTrafficArea()) {
+for (StreetEdge se : Iterables.filter(s1.getVertex().getOutgoing(),StreetEdge.class)) {
+if (!se.isNoThruTraffic()) {
+return null;
+}
+}
+}
+}
 StreetEdge backPSE;
 if (backEdge != null && backEdge instanceof StreetEdge) {
 backPSE=(StreetEdge)backEdge;

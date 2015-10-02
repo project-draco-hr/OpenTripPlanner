@@ -11,7 +11,7 @@
     int[] rLon=decodeSignedNumberWithIndex(pointString,strIndex);
     lon=lon + rLon[0] * 1e-5;
     strIndex=rLon[1];
-    points.add(new Coordinate(lat,lon));
+    points.add(new Coordinate(lon,lat));
   }
   return points;
 }

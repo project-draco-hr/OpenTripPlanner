@@ -6,7 +6,6 @@
   AStar aStar=new AStar();
   if (options.rctx == null) {
     options.setRoutingContext(router.graph);
-    options.rctx.pathParsers=new PathParser[]{new Parser()};
   }
   if (router.graphVisualizer != null) {
     aStar.setTraverseVisitor(router.graphVisualizer.traverseVisitor);
@@ -47,22 +46,21 @@
       options.rctx.aborted=true;
       break;
     }
-    ShortestPathTree spt=aStar.getShortestPathTree(options,timeout);
-    if (spt == null) {
-      LOG.warn("SPT was null.");
-      return null;
-    }
+    aStar.getShortestPathTree(options,timeout);
     if (options.rctx.aborted) {
       break;
     }
-    List<GraphPath> newPaths=spt.getPaths();
+    List<GraphPath> newPaths=aStar.getPathsToTarget();
     if (newPaths.isEmpty()) {
       break;
     }
     for (    GraphPath path : newPaths) {
-      for (      State state : path.states) {
-        AgencyAndId tripId=state.getTripId();
-        if (tripId != null)         options.banTrip(tripId);
+      List<AgencyAndId> tripIds=path.getTrips();
+      for (      AgencyAndId tripId : tripIds) {
+        options.banTrip(tripId);
+      }
+      if (tripIds.isEmpty()) {
+        options.onlyTransitTrips=true;
       }
     }
     paths.addAll(newPaths);

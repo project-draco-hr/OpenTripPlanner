@@ -3,7 +3,7 @@
   if (states == null)   return null;
   State ret=null;
   for (  State s : states) {
-    if ((ret == null || s.weight < ret.weight) && s.isFinal() && s.allPathParsersAccept()) {
+    if ((ret == null || s.weight < ret.weight) && s.isFinal()) {
       ret=s;
     }
   }

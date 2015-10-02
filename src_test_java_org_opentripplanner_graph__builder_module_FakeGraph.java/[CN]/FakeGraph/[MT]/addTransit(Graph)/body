@@ -30,7 +30,7 @@
   s2.stop_lat=39.9621;
   s2.stop_lon=-83.0007;
   feed.stops.put(s2.stop_id,s2);
-  for (int departure=7 * 3600; departure < 20 * 3600; departure+=600) {
+  for (int departure=7 * 3600; departure < 20 * 3600; departure+=FREQUENCY) {
     Trip t=new Trip();
     t.trip_id="trip" + departure;
     t.service=s;
@@ -45,8 +45,8 @@
     feed.stop_times.put(new Fun.Tuple2(st1.trip_id,st1.stop_sequence),st1);
     StopTime st2=new StopTime();
     st2.trip_id=t.trip_id;
-    st2.arrival_time=departure + 500;
-    st2.departure_time=departure + 500;
+    st2.arrival_time=departure + TRAVEL_TIME;
+    st2.departure_time=departure + TRAVEL_TIME;
     st2.stop_sequence=2;
     st2.stop_id=s2.stop_id;
     feed.stop_times.put(new Fun.Tuple2(st2.trip_id,st2.stop_sequence),st2);

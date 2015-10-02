@@ -8,7 +8,6 @@
   rr.from=new GenericLocation(lat,lon);
   rr.to=rr.from;
   rr.setRoutingContext(graph);
-  rr.rctx.pathParsers=new PathParser[]{new InitialStopSearchPathParser()};
   rr.dateTime=request.date.toDateMidnight(DateTimeZone.forTimeZone(graph.getTimeZone())).getMillis() / 1000 + request.fromTime;
   rr.walkSpeed=request.walkSpeed;
   rr.bikeSpeed=request.bikeSpeed;
@@ -22,7 +21,7 @@
       rr.worstTime=rr.dateTime + request.maxBikeTime * 60;
     }
  else {
-      rr.maxWalkDistance=2000;
+      rr.maxWalkDistance=Math.min(request.maxWalkTime * 60 * request.walkSpeed,GraphIndex.MAX_WALK_METERS);
       rr.softWalkLimiting=false;
       rr.dominanceFunction=new DominanceFunction.LeastWalk();
     }
@@ -32,7 +31,7 @@
   AStar aStar=new AStar();
   preTransitSpt=aStar.getShortestPathTree(rr,5);
   if (data != null) {
-    TIntIntMap accessTimes=data.findStopsNear(preTransitSpt,graph);
+    TIntIntMap accessTimes=data.findStopsNear(preTransitSpt,graph,rr.modes.contains(TraverseMode.BICYCLE),request.walkSpeed);
     LOG.info("Found {} transit stops",accessTimes.size());
     return accessTimes;
   }

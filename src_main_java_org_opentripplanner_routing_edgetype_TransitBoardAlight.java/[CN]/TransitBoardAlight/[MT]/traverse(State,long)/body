@@ -1,6 +1,9 @@
 {
   RoutingContext rctx=s0.getContext();
   RoutingRequest options=s0.getOptions();
+  if (s0.backEdge instanceof TransitBoardAlight) {
+    return null;
+  }
   if (options.wheelchairAccessible && !getPattern().wheelchairAccessible(stopIndex)) {
     return null;
   }

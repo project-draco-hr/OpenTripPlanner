@@ -1,6 +1,0 @@
-{
-  Edge edge=state.getBackEdge();
-  if (edge instanceof StreetEdge)   return STREET;
-  if (edge instanceof StreetTransitLink || edge instanceof IntersectionTransitLink)   return LINK;
-  return OTHER;
-}

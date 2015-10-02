@@ -6,6 +6,7 @@
   result.streetLayer.buildEdgeLists();
   result.streetLayer.indexStreets();
   result.transitLayer.rebuildTransientIndexes();
+  result.transitLayer.buildStopTree();
   LOG.info("Done reading.");
   return result;
 }

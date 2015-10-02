@@ -1,0 +1,16 @@
+{
+switch (this) {
+case BEST_CASE:
+    return "best case";
+case WORST_CASE:
+  return "worst case";
+case POINT_ESTIMATE:
+return "point estimate";
+case SPREAD:
+return "spread";
+case AVERAGE:
+return "average";
+default :
+throw new IllegalStateException("Unknown envelope parameter");
+}
+}
