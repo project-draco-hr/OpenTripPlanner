@@ -5,7 +5,7 @@
   assertTrue(simpleBarier.isBollard());
   Graph graph=new Graph();
   String label="simpleBarrier";
-  BarrierVertex bv=new BarrierVertex(graph,label,simpleBarier.lon,simpleBarier.lat);
+  BarrierVertex bv=new BarrierVertex(graph,label,simpleBarier.lon,simpleBarier.lat,0);
   bv.setBarrierPermissions(OSMFilter.getPermissionsForEntity(simpleBarier,BarrierVertex.defaultBarrierPermissions));
   assertEquals(StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE,bv.getBarrierPermissions());
   simpleBarier.addTag("foot","yes");

@@ -25,6 +25,8 @@
     timetableSnapshot=null;
     calendarService=null;
   }
+  if (graph.streetSpeedSource != null)   this.streetSpeedSnapshot=graph.streetSpeedSource.getSnapshot();
+ else   this.streetSpeedSnapshot=null;
   Edge fromBackEdge=null;
   Edge toBackEdge=null;
   if (findPlaces) {

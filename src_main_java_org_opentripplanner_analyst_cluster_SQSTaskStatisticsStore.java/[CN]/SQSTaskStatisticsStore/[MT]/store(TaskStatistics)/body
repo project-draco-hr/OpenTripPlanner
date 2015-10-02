@@ -1,0 +1,19 @@
+{
+  try {
+    String json=objectMapper.writeValueAsString(ts);
+    SendMessageRequest req=new SendMessageRequest();
+    req.setMessageBody(json);
+    req.setQueueUrl(queueUrl);
+    sqs.sendMessageAsync(req,new AsyncHandler<SendMessageRequest,SendMessageResult>(){
+      @Override public void onError(      Exception e){
+        LOG.error("Error saving stats to SQS",e);
+      }
+      @Override public void onSuccess(      SendMessageRequest request,      SendMessageResult sendMessageResult){
+      }
+    }
+);
+  }
+ catch (  Exception e) {
+    LOG.error("Error saving stats to SQS",e);
+  }
+}

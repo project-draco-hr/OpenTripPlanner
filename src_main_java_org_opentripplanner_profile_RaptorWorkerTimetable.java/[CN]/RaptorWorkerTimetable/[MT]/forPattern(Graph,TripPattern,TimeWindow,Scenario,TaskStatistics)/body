@@ -1,0 +1,76 @@
+{
+  BitSet servicesRunning=window.servicesRunning;
+  List<TripTimes> tripTimes=Lists.newArrayList();
+  TT:   for (  TripTimes tt : pattern.scheduledTimetable.tripTimes) {
+    if (servicesRunning.get(tt.serviceCode) && tt.getArrivalTime(0) < window.to && tt.getDepartureTime(tt.getNumStops() - 1) >= window.from) {
+      if (scenario != null && scenario.modifications != null) {
+        for (        TripFilter filter : Iterables.filter(scenario.modifications,TripFilter.class)) {
+          tt=filter.apply(tt.trip,pattern,tt);
+          if (tt == null)           continue TT;
+        }
+      }
+      tripTimes.add(tt);
+    }
+  }
+  List<FrequencyEntry> freqs=Lists.newArrayList();
+  FREQUENCIES:   for (  FrequencyEntry fe : pattern.scheduledTimetable.frequencyEntries) {
+    if (servicesRunning.get(fe.tripTimes.serviceCode) && fe.getMinDeparture() < window.to && fe.getMaxArrival() > window.from) {
+      if (fe.exactTimes) {
+        LOG.warn("Exact-times frequency trips not yet supported");
+        continue;
+      }
+      if (scenario != null && scenario.modifications != null) {
+        for (        TripFilter filter : Iterables.filter(scenario.modifications,TripFilter.class)) {
+          fe=filter.apply(fe.tripTimes.trip,pattern,fe);
+          if (fe == null)           continue FREQUENCIES;
+        }
+      }
+      freqs.add(fe);
+    }
+  }
+  if (tripTimes.isEmpty() && freqs.isEmpty()) {
+    return null;
+  }
+  Collections.sort(tripTimes,new Comparator<TripTimes>(){
+    @Override public int compare(    TripTimes tt1,    TripTimes tt2){
+      return (tt1.getArrivalTime(0) - tt2.getArrivalTime(0));
+    }
+  }
+);
+  RaptorWorkerTimetable rwtt=new RaptorWorkerTimetable(tripTimes.size(),pattern.getStops().size());
+  int t=0;
+  for (  TripTimes tt : tripTimes) {
+    int[] times=new int[rwtt.nStops * 2];
+    for (int s=0; s < pattern.getStops().size(); s++) {
+      int arrival=tt.getArrivalTime(s);
+      int departure=tt.getDepartureTime(s);
+      times[s * 2]=arrival;
+      times[s * 2 + 1]=departure;
+    }
+    rwtt.timesPerTrip[t++]=times;
+  }
+  ts.scheduledTripCount+=rwtt.timesPerTrip.length;
+  rwtt.frequencyTrips=new int[freqs.size()][pattern.getStops().size() * 2];
+  rwtt.endTimes=new int[freqs.size()];
+  rwtt.startTimes=new int[freqs.size()];
+  rwtt.headwaySecs=new int[freqs.size()];
+{
+    int i=0;
+    for (    FrequencyEntry fe : freqs) {
+      rwtt.headwaySecs[i]=fe.headway;
+      rwtt.startTimes[i]=fe.startTime;
+      rwtt.endTimes[i]=fe.endTime;
+      ts.frequencyTripCount+=fe.numTrips();
+      int[] times=rwtt.frequencyTrips[i];
+      int startTime=fe.tripTimes.getArrivalTime(0);
+      for (int s=0; s < fe.tripTimes.getNumStops(); s++) {
+        times[s * 2]=fe.tripTimes.getArrivalTime(s) - startTime;
+        times[s * 2 + 1]=fe.tripTimes.getDepartureTime(s) - startTime;
+      }
+      i++;
+    }
+  }
+  ts.frequencyEntryCount+=rwtt.getFrequencyTripCount();
+  rwtt.mode=pattern.route.getType();
+  return rwtt;
+}

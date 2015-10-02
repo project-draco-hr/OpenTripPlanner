@@ -1,0 +1,23 @@
+{
+  LOG.info("Building edge lists from edges...");
+  outgoingEdges=new ArrayList<>(vertexStore.nVertices);
+  incomingEdges=new ArrayList<>(vertexStore.nVertices);
+  for (int v=0; v < vertexStore.nVertices; v++) {
+    outgoingEdges.add(new TIntArrayList(4));
+    incomingEdges.add(new TIntArrayList(4));
+  }
+  EdgeStore.Edge edge=edgeStore.getCursor();
+  while (edge.advance()) {
+    outgoingEdges.get(edge.getFromVertex()).add(edge.edgeIndex);
+    incomingEdges.get(edge.getToVertex()).add(edge.edgeIndex);
+  }
+  LOG.info("Done building edge lists.");
+  Histogram edgesPerListHistogram=new Histogram("Number of edges per edge list");
+  for (  TIntList edgeList : outgoingEdges) {
+    edgesPerListHistogram.add(edgeList.size());
+  }
+  for (  TIntList edgeList : incomingEdges) {
+    edgesPerListHistogram.add(edgeList.size());
+  }
+  edgesPerListHistogram.display();
+}

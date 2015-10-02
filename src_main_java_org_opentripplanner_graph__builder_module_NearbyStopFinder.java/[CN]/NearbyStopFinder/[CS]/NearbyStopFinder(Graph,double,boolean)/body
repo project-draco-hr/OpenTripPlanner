@@ -3,7 +3,6 @@
   this.useStreets=useStreets;
   this.radius=radius;
   if (useStreets) {
-    parsers=new PathParser[]{new TransferFinderParser()};
     earliestArrivalSearch=new EarliestArrivalSearch();
     earliestArrivalSearch.maxDuration=(int)radius;
   }

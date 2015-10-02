@@ -1,0 +1,12 @@
+{
+  if (tasksById.get(taskId) == null) {
+    LOG.error("Tried to mark task {} completed, but it was not in job {}.",taskId,jobId);
+    return;
+  }
+  if (invisibleUntil.remove(taskId) != 0) {
+    completedTasks.add(taskId);
+  }
+ else {
+    LOG.warn("Ignoring late task completion message, task {} was queued for re-delivery.");
+  }
+}

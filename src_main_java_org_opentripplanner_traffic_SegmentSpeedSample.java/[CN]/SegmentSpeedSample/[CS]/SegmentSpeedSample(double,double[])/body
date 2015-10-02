@@ -1,0 +1,7 @@
+{
+  this.average=encodeSpeed(averageSpeed);
+  this.hourBins=new short[hourBins.length];
+  for (int i=0; i < hourBins.length; i++) {
+    this.hourBins[i]=Double.isNaN(hourBins[i]) ? this.average : encodeSpeed(hourBins[i]);
+  }
+}

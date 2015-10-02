@@ -1,44 +1,55 @@
 {
+  boolean isochrone=(sampleSet == null);
+  boolean transit=(request.transitModes != null && request.transitModes.isTransit());
   long computationStartTime=System.currentTimeMillis();
   LOG.info("Begin profile request");
-  if (request.scenario != null && request.scenario.modifications != null) {
-    for (    AddTripPattern atp : Iterables.filter(request.scenario.modifications,AddTripPattern.class)) {
-      atp.materialize(graph);
+  if (raptorWorkerData == null && transit) {
+    long dataStart=System.currentTimeMillis();
+    raptorWorkerData=getRaptorWorkerData(request,graph,sampleSet,ts);
+    ts.raptorData=(int)(System.currentTimeMillis() - dataStart);
+  }
+  long initialStopStartTime=System.currentTimeMillis();
+  TIntIntMap transitStopAccessTimes=findInitialStops(false,raptorWorkerData);
+  int[] nonTransitTimes=new int[Vertex.getMaxIndex()];
+  Arrays.fill(nonTransitTimes,Integer.MAX_VALUE);
+  for (  State state : preTransitSpt.getAllStates()) {
+    int time=(int)state.getElapsedTimeSeconds();
+    int vidx=state.getVertex().getIndex();
+    int otime=nonTransitTimes[vidx];
+    if (otime > time) {
+      nonTransitTimes[vidx]=time;
     }
   }
-  LOG.info("Make data...");
-  DayOfWeek dayOfWeek=DayOfWeek.of(request.date.getDayOfWeek());
-  TimeWindow window=new TimeWindow(request.fromTime,request.toTime + RaptorWorker.MAX_DURATION,graph.index.servicesRunning(request.date),dayOfWeek);
-  RaptorWorkerData raptorWorkerData;
-  if (sampleSet == null)   raptorWorkerData=new RaptorWorkerData(graph,window,request.scenario);
- else   raptorWorkerData=new RaptorWorkerData(graph,window,request.scenario,sampleSet);
-  LOG.info("Done.");
-  LOG.info("Finding initial stops");
-  TIntIntMap accessTimes=findInitialStops(false,raptorWorkerData);
-  LOG.info("Found {} initial transit stops",accessTimes.size());
-  int[] timesAtVertices=new int[Vertex.getMaxIndex()];
-  Arrays.fill(timesAtVertices,Integer.MAX_VALUE);
-  for (  State state : walkOnlySpt.getAllStates()) {
-    int time=(int)(state.getWalkDistance() / request.walkSpeed);
-    int vidx=state.getVertex().getIndex();
-    int otime=timesAtVertices[vidx];
-    if (otime > time)     timesAtVertices[vidx]=time;
+  ts.initialStopSearch=(int)(System.currentTimeMillis() - initialStopStartTime);
+  long walkSearchStart=System.currentTimeMillis();
+  if (sampleSet != null) {
+    nonTransitTimes=sampleSet.eval(nonTransitTimes);
   }
-  int[] walkTimes;
-  if (sampleSet == null) {
-    walkTimes=timesAtVertices;
+  ts.walkSearch=(int)(System.currentTimeMillis() - walkSearchStart);
+  if (transit) {
+    RaptorWorker worker=new RaptorWorker(raptorWorkerData,request);
+    propagatedTimesStore=worker.runRaptor(graph,transitStopAccessTimes,nonTransitTimes,ts);
+    ts.initialStopCount=transitStopAccessTimes.size();
   }
  else {
-    walkTimes=sampleSet.eval(timesAtVertices);
+    propagatedTimesStore=new PropagatedTimesStore(graph,nonTransitTimes.length);
+    int[][] singleRoundResults=new int[1][];
+    singleRoundResults[0]=nonTransitTimes;
+    propagatedTimesStore.setFromArray(singleRoundResults,PropagatedTimesStore.ConfidenceCalculationMethod.MIN_MAX);
   }
-  RaptorWorker worker=new RaptorWorker(raptorWorkerData,request);
-  propagatedTimesStore=worker.runRaptor(graph,accessTimes,walkTimes);
-  if (sampleSet == null) {
-    timeSurfaceRangeSet=new TimeSurface.RangeSet();
-    timeSurfaceRangeSet.min=new TimeSurface(this);
-    timeSurfaceRangeSet.avg=new TimeSurface(this);
-    timeSurfaceRangeSet.max=new TimeSurface(this);
-    propagatedTimesStore.makeSurfaces(timeSurfaceRangeSet);
+  for (  int min : propagatedTimesStore.mins) {
+    if (min != RaptorWorker.UNREACHED)     ts.targetsReached++;
   }
-  LOG.info("Profile request finished in {} seconds",(System.currentTimeMillis() - computationStartTime) / 1000.0);
+  ts.compute=(int)(System.currentTimeMillis() - computationStartTime);
+  LOG.info("Profile request finished in {} seconds",(ts.compute) / 1000.0);
+  long resultSetStart=System.currentTimeMillis();
+  ResultEnvelope envelope=new ResultEnvelope();
+  if (isochrone) {
+    envelope=propagatedTimesStore.makeIsochronesForVertices();
+  }
+ else {
+    envelope=propagatedTimesStore.makeResults(sampleSet,includeTimes,true,false);
+  }
+  ts.resultSets=(int)(System.currentTimeMillis() - resultSetStart);
+  return envelope;
 }

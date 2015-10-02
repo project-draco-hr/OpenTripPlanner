@@ -1,5 +1,6 @@
 {
   if (!pattern.route.getAgency().getId().equals(agencyId))   return false;
   if (routeId != null && !routeId.contains(pattern.route.getId().getId()))   return false;
+  if (routeType != null && !Ints.contains(routeType,pattern.route.getType()))   return false;
   return true;
 }

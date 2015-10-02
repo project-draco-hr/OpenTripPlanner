@@ -5,7 +5,7 @@
       Thread.sleep(SLEEP_LEN);
     }
  catch (    InterruptedException e) {
-      e.printStackTrace();
+      LOG.warn("interrupted",e);
     }
   }
   gui.addNewSPTEdge(state);

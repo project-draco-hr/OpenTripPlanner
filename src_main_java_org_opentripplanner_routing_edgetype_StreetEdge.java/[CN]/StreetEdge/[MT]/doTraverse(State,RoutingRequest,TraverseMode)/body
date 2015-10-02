@@ -16,7 +16,7 @@
     }
     return null;
   }
-  double speed=calculateSpeed(options,traverseMode);
+  double speed=calculateSpeed(options,traverseMode,s0.getTimeInMillis());
   double time=getDistance() / speed;
   double weight;
   if (options.wheelchairAccessible) {
@@ -72,11 +72,23 @@ weight*=options.walkReluctance;
 StateEditor s1=s0.edit(this);
 s1.setBackMode(traverseMode);
 s1.setBackWalkingBike(walkingBike);
+if (this.isNoThruTraffic()) {
+if (backEdge instanceof StreetEdge && !((StreetEdge)backEdge).isNoThruTraffic()) {
+s1.setEnteredNoThroughTrafficArea();
+}
+if (s1.hasEnteredNoThroughTrafficArea()) {
+for (StreetEdge se : Iterables.filter(s1.getVertex().getOutgoing(),StreetEdge.class)) {
+if (!se.isNoThruTraffic()) {
+return null;
+}
+}
+}
+}
 StreetEdge backPSE;
 if (backEdge != null && backEdge instanceof StreetEdge) {
 backPSE=(StreetEdge)backEdge;
 RoutingRequest backOptions=backWalkingBike ? s0.getOptions().bikeWalkingOptions : s0.getOptions();
-double backSpeed=backPSE.calculateSpeed(backOptions,backMode);
+double backSpeed=backPSE.calculateSpeed(backOptions,backMode,s0.getTimeInMillis());
 final double realTurnCost;
 if (options.arriveBy && !canTurnOnto(backPSE,s0,backMode)) {
 return null;

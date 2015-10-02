@@ -1,6 +1,6 @@
 {
   Graph _graph=new Graph();
-  BarrierVertex bv=new BarrierVertex(_graph,"start_bollard",2.0,2.0);
+  BarrierVertex bv=new BarrierVertex(_graph,"start_bollard",2.0,2.0,0);
   StreetVertex endVertex=new IntersectionVertex(_graph,"end_vertex",1.0,2.0);
   StreetEdge bv_to_endVertex_forward=edge(bv,endVertex,100,false);
   assertTrue(bv_to_endVertex_forward.canTraverse(new TraverseModeSet("CAR")));
@@ -30,7 +30,7 @@
   assertFalse(endVertex_to_bv_forward.canTraverseIncludingBarrier(TraverseMode.CAR));
   assertTrue(endVertex_to_bv_forward.canTraverseIncludingBarrier(TraverseMode.BICYCLE));
   assertTrue(endVertex_to_bv_forward.canTraverseIncludingBarrier(TraverseMode.WALK));
-  BarrierVertex noBicycleBollard=new BarrierVertex(_graph,"no_bike_bollard",1.5,1);
+  BarrierVertex noBicycleBollard=new BarrierVertex(_graph,"no_bike_bollard",1.5,1,0);
   noBicycleBollard.setBarrierPermissions(StreetTraversalPermission.PEDESTRIAN);
   StreetEdge no_bike_to_endVertex=edge(noBicycleBollard,endVertex,100,false);
   assertTrue(no_bike_to_endVertex.canTraverse(new TraverseModeSet("CAR")));

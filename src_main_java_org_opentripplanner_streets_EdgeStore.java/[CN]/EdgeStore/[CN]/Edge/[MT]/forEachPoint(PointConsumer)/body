@@ -1,0 +1,12 @@
+{
+  VertexStore.Vertex vertex=vertexStore.getCursor(fromVertices.get(pairIndex));
+  int p=0;
+  pointConsumer.consumePoint(p++,vertex.getFixedLat(),vertex.getFixedLon());
+  int[] intermediates=geometries.get(pairIndex);
+  int i=0;
+  while (i < intermediates.length) {
+    pointConsumer.consumePoint(p++,intermediates[i++],intermediates[i++]);
+  }
+  vertex.seek(toVertices.get(pairIndex));
+  pointConsumer.consumePoint(p,vertex.getFixedLat(),vertex.getFixedLon());
+}

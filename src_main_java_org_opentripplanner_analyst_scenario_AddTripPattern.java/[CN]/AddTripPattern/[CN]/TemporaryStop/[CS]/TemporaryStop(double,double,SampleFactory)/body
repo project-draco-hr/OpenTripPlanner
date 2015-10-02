@@ -3,4 +3,5 @@
   this.lon=lon;
   this.index=nextId.decrementAndGet();
   this.sample=sampleFactory.getSample(this.lon,this.lat);
+  if (this.sample == null)   LOG.warn("Temporary stop unlinked: {}",this);
 }

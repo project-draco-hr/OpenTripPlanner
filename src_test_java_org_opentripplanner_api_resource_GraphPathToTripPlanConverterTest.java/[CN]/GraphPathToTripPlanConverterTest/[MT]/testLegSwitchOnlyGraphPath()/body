@@ -1,9 +1,9 @@
 {
   RoutingRequest options=new RoutingRequest();
   Graph graph=new Graph();
-  ExitVertex start=new ExitVertex(graph,"Start",0,-90);
-  ExitVertex middle=new ExitVertex(graph,"Middle",0,0);
-  ExitVertex end=new ExitVertex(graph,"End",0,90);
+  ExitVertex start=new ExitVertex(graph,"Start",0,-90,0);
+  ExitVertex middle=new ExitVertex(graph,"Middle",0,0,0);
+  ExitVertex end=new ExitVertex(graph,"End",0,90,0);
   FreeEdge depart=new FreeEdge(start,middle);
   LegSwitchingEdge arrive=new LegSwitchingEdge(middle,end);
   options.rctx=new RoutingContext(options,graph,start,end);

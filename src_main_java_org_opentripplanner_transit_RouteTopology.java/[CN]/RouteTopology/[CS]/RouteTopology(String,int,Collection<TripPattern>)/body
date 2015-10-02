@@ -1,0 +1,13 @@
+{
+  this.routeId=routeId;
+  this.directionId=directionId;
+  for (  TripPattern pattern : patterns) {
+    addPattern(pattern.stops);
+  }
+  try {
+    topologicalSort();
+  }
+ catch (  CyclicGraphException ex) {
+    LOG.error("Route was cyclic.");
+  }
+}

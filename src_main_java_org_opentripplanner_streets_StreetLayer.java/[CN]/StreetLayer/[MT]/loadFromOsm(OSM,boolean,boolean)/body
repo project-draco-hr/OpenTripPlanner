@@ -1,0 +1,29 @@
+{
+  if (!osm.intersectionDetection)   throw new IllegalArgumentException("Intersection detection not enabled on OSM source");
+  LOG.info("Making street edges from OSM ways...");
+  this.osm=osm;
+  for (  Map.Entry<Long,Way> entry : osm.ways.entrySet()) {
+    Way way=entry.getValue();
+    if (!(way.hasTag("highway") || way.hasTag("public_transport","platform"))) {
+      continue;
+    }
+    if (way.hasTag("highway","proposed"))     continue;
+    int nEdgesCreated=0;
+    int beginIdx=0;
+    for (int n=1; n < way.nodes.length; n++) {
+      if (osm.intersectionNodes.contains(way.nodes[n]) || n == (way.nodes.length - 1)) {
+        makeEdge(way,beginIdx,n);
+        nEdgesCreated+=1;
+        beginIdx=n;
+      }
+    }
+    edgesPerWayHistogram.add(nEdgesCreated);
+  }
+  LOG.info("Done making street edges.");
+  LOG.info("Made {} vertices and {} edges.",vertexStore.nVertices,edgeStore.nEdges);
+  if (removeIslands)   removeDisconnectedSubgraphs(MIN_SUBGRAPH_SIZE);
+  edgesPerWayHistogram.display();
+  pointsPerEdgeHistogram.display();
+  if (!saveVertexIndex)   vertexIndexForOsmNode=null;
+  osm=null;
+}

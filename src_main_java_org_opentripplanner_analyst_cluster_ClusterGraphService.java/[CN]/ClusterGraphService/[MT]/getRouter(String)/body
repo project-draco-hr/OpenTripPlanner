@@ -9,7 +9,7 @@
       }
     }
  catch (    IOException e) {
-      e.printStackTrace();
+      LOG.error("exception finding graph {}",graphId,e);
     }
     CommandLineParameters params=new CommandLineParameters();
     params.build=new File(GRAPH_DIR,graphId);

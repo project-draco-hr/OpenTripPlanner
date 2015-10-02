@@ -1,0 +1,16 @@
+{
+  Arrays.sort(edgesToOmit);
+  int prevEdge=-1;
+  for (int cursor=edgesToOmit.length - 1; cursor >= 0; cursor--) {
+    int edge=edgesToOmit[cursor] / 2;
+    if (edge == prevEdge)     continue;
+    prevEdge=edge;
+    flags.remove(edge * 2,2);
+    speeds.remove(edge * 2,2);
+    fromVertices.remove(edge,1);
+    toVertices.remove(edge,1);
+    lengths_mm.remove(edge,1);
+    geometries.remove(edge);
+    nEdges-=2;
+  }
+}

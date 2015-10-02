@@ -22,8 +22,7 @@
     }
   }
  catch (  Exception ex) {
-    LOG.error("Exception while storing graph to {}.",sourceFile.getPath());
-    ex.printStackTrace();
+    LOG.error("Exception while storing graph to {}.",sourceFile.getPath(),ex);
     return false;
   }
   return true;

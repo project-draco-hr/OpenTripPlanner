@@ -1,0 +1,7 @@
+{
+  if (pos < 0)   throw new ArrayIndexOutOfBoundsException("Attempt to seek to negative edge number");
+  if (pos >= nEdges)   throw new ArrayIndexOutOfBoundsException("Attempt to seek beyond end of edge store");
+  edgeIndex=pos;
+  pairIndex=edgeIndex / 2;
+  isBackward=(pairIndex * 2) != edgeIndex;
+}

@@ -1,0 +1,17 @@
+{
+  if (nodes.size() <= 2) {
+    geometries.set(pairIndex,EMPTY_INT_ARRAY);
+    return;
+  }
+  if (isBackward) {
+    LOG.warn("Setting a forward geometry on a back edge.");
+  }
+  int nIntermediatePoints=nodes.size() - 2;
+  int[] intermediateCoords=new int[nIntermediatePoints * 2];
+  int i=0;
+  for (  Node node : nodes.subList(1,nodes.size() - 1)) {
+    intermediateCoords[i++]=node.fixedLat;
+    intermediateCoords[i++]=node.fixedLon;
+  }
+  geometries.set(pairIndex,intermediateCoords);
+}

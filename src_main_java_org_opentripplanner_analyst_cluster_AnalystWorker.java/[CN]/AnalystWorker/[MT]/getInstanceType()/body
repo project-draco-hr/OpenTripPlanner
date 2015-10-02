@@ -1,0 +1,17 @@
+{
+  try {
+    HttpGet get=new HttpGet();
+    get.setURI(new URI("http://169.254.169.254/latest/meta-data/instance-type"));
+    get.setConfig(RequestConfig.custom().setConnectTimeout(2000).setSocketTimeout(2000).build());
+    HttpResponse res=httpClient.execute(get);
+    InputStream is=res.getEntity().getContent();
+    BufferedReader reader=new BufferedReader(new InputStreamReader(is));
+    String type=reader.readLine().trim();
+    reader.close();
+    return type;
+  }
+ catch (  Exception e) {
+    LOG.info("could not retrieve EC2 instance type, you may be running outside of EC2.");
+    return null;
+  }
+}

@@ -15,7 +15,7 @@
     content=sb.toString();
   }
  catch (  IOException e) {
-    e.printStackTrace();
+    LOG.error("Error parsing geocoder response",e);
     return noGeocoderResult("Error parsing geocoder response");
   }
   YahooGeocoderResults yahooGeocoderResults=yahooJsonDeserializer.parseResults(content);

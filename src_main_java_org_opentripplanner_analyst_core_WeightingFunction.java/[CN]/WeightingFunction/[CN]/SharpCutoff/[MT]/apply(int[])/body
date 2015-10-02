@@ -1,0 +1,15 @@
+{
+  int len=countsPerSecond.length / 60;
+  int[] ret=new int[len];
+  int cumulative=0;
+  for (int i=0; i < countsPerSecond.length; i++) {
+    cumulative+=countsPerSecond[i];
+    if (i % 60 == 59) {
+      ret[(int)FastMath.floor(i / 60)]=cumulative;
+    }
+  }
+  for (int i=ret.length - 1; i > 0; i--) {
+    ret[i]-=ret[i - 1];
+  }
+  return ret;
+}

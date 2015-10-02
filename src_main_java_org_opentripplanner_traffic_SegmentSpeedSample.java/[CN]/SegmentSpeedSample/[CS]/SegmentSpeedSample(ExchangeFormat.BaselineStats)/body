@@ -1,0 +1,21 @@
+{
+  float avg=stats.getAverageSpeed();
+  if (Float.isNaN(avg)) {
+    LOG.error("Invalid speed sample: average speed is NaN");
+    throw new IllegalArgumentException("Overall average speed for a sample is NaN.");
+  }
+  this.average=encodeSpeed(avg * KMH_TO_MS);
+  int count=stats.getHourOfWeekAveragesCount();
+  if (count == 7 * 24) {
+    hourBins=new short[count];
+    for (int i=0; i < count; i++) {
+      float speed=stats.getHourOfWeekAverages(i);
+      if (!Float.isNaN(speed))       hourBins[i]=encodeSpeed(speed * KMH_TO_MS);
+ else       hourBins[i]=average;
+    }
+  }
+ else {
+    if (count > 0)     LOG.error("Expected {} hours in speed sample, found {}",7 * 24,count);
+    hourBins=null;
+  }
+}

@@ -1,2 +1,51 @@
 {
+  if (outPath == null) {
+    LOG.error("Saving folder is empty!");
+    return;
+  }
+  outPath=new File(outPath,"report");
+  if (outPath.exists()) {
+    try {
+      FileUtils.cleanDirectory(outPath);
+    }
+ catch (    IOException e) {
+      LOG.error("Failed to clean HTML report directory: " + outPath.toString() + ". HTML report won't be generated!",e);
+      return;
+    }
+  }
+ else {
+    try {
+      FileUtils.forceMkdir(outPath);
+    }
+ catch (    IOException e) {
+      e.printStackTrace();
+      LOG.error("Failed to create HTML report directory: " + outPath.toString() + ". HTML report won't be generated!",e);
+      return;
+    }
+  }
+  for (  GraphBuilderAnnotation annotation : graph.getBuilderAnnotations()) {
+    addAnnotation(annotation);
+  }
+  LOG.info("Creating Annotations log");
+  for (  Map.Entry<String,Collection<String>> entry : annotations.asMap().entrySet()) {
+    List<String> annotationsList;
+    if (entry.getValue() instanceof List) {
+      annotationsList=(List<String>)entry.getValue();
+    }
+ else {
+      annotationsList=new ArrayList<>(entry.getValue());
+    }
+    addAnnotations(entry.getKey(),annotationsList);
+  }
+  for (  HTMLWriter writer : writers) {
+    writer.writeFile(annotationClassOccurences,false);
+  }
+  try {
+    HTMLWriter indexFileWriter=new HTMLWriter("index",(Multimap<String,String>)null);
+    indexFileWriter.writeFile(annotationClassOccurences,true);
+  }
+ catch (  FileNotFoundException e) {
+    LOG.error("Index file coudn't be created:{}",e);
+  }
+  LOG.info("Annotated logs are in {}",outPath);
 }
