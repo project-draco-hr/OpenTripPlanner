@@ -1,6 +1,8 @@
 {
   Coordinate min=new Coordinate(envelope.getMinX(),envelope.getMinY());
   Coordinate max=new Coordinate(envelope.getMaxX(),envelope.getMaxY());
+  min=clamp(min);
+  max=clamp(max);
   long minXKey=Math.round(min.x / xBinSize);
   long maxXKey=Math.round(max.x / xBinSize);
   long minYKey=Math.round(min.y / yBinSize);
