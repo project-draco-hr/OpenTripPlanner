@@ -78,7 +78,10 @@
   }
   if (batch != null)   request.batch=batch;
   if (optimize != null)   request.setOptimize(optimize);
-  if (modes != null)   modes.applyToRoutingRequest(request);
+  if (modes != null) {
+    modes.applyToRoutingRequest(request);
+    request.setModes(request.modes);
+  }
   if (request.allowBikeRental && bikeSpeed == null) {
     request.bikeSpeed=4.3;
   }
