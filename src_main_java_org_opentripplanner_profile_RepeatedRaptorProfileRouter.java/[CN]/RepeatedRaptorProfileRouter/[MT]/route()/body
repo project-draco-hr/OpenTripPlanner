@@ -32,7 +32,7 @@
     ts.initialStopCount=transitStopAccessTimes.size();
   }
  else {
-    propagatedTimesStore=new PropagatedTimesStore(graph,nonTransitTimes.length);
+    propagatedTimesStore=new PropagatedTimesStore(graph,request,nonTransitTimes.length);
     int[][] singleRoundResults=new int[1][];
     singleRoundResults[0]=nonTransitTimes;
     propagatedTimesStore.setFromArray(singleRoundResults,PropagatedTimesStore.ConfidenceCalculationMethod.MIN_MAX);
