@@ -1,0 +1,13 @@
+{
+  ProfileRequest pr=new ProfileRequest();
+  pr.reachabilityThreshold=0;
+  Graph g=new Graph();
+  PropagatedTimesStore pts=new PropagatedTimesStore(g,pr,1);
+  int[][] times=new int[][]{new int[]{1},new int[]{RaptorWorker.UNREACHED},new int[]{RaptorWorker.UNREACHED}};
+  pts.setFromArray(times,PropagatedTimesStore.ConfidenceCalculationMethod.MIN_MAX);
+  assertEquals(1,pts.avgs[0]);
+  pr.reachabilityThreshold=0.5f;
+  pts=new PropagatedTimesStore(g,pr,1);
+  pts.setFromArray(times,PropagatedTimesStore.ConfidenceCalculationMethod.MIN_MAX);
+  assertEquals(RaptorWorker.UNREACHED,pts.avgs[0]);
+}
