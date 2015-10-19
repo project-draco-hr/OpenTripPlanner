@@ -12,7 +12,7 @@
   rr.walkSpeed=request.walkSpeed;
   rr.bikeSpeed=request.bikeSpeed;
   if (data == null) {
-    rr.worstTime=rr.dateTime + 120 * 60;
+    rr.worstTime=rr.dateTime + RaptorWorker.MAX_DURATION;
     rr.dominanceFunction=new DominanceFunction.EarliestArrival();
   }
  else {
