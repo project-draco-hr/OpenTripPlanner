@@ -2,20 +2,21 @@
   for (  Long fromWay : osmdb.getTurnRestrictionWayIds()) {
     for (    TurnRestrictionTag restrictionTag : osmdb.getFromWayTurnRestrictions(fromWay)) {
       if (restrictionTag.possibleFrom.isEmpty()) {
-        LOG.debug("No from edge found for " + restrictionTag);
+        graph.addBuilderAnnotation(new TurnRestrictionBad(restrictionTag.relationOSMID,"No from edge found"));
         continue;
       }
       if (restrictionTag.possibleTo.isEmpty()) {
-        LOG.debug("No to edge found for " + restrictionTag);
+        graph.addBuilderAnnotation(new TurnRestrictionBad(restrictionTag.relationOSMID,"No to edge found"));
         continue;
       }
       for (      StreetEdge from : restrictionTag.possibleFrom) {
         if (from == null) {
-          LOG.warn("from-edge is null in turn " + restrictionTag);
+          graph.addBuilderAnnotation(new TurnRestrictionBad(restrictionTag.relationOSMID,"from-edge is null"));
           continue;
         }
         for (        StreetEdge to : restrictionTag.possibleTo) {
           if (from == null || to == null) {
+            graph.addBuilderAnnotation(new TurnRestrictionBad(restrictionTag.relationOSMID,"to-edge is null"));
             continue;
           }
           int angleDiff=from.getOutAngle() - to.getInAngle();
@@ -25,17 +26,27 @@
 switch (restrictionTag.direction) {
 case LEFT:
             if (angleDiff >= 160) {
+              graph.addBuilderAnnotation(new TurnRestrictionBad(restrictionTag.relationOSMID,"Left turn restriction is not on edges which turn left"));
               continue;
             }
           break;
 case RIGHT:
-        if (angleDiff <= 200)         continue;
+        if (angleDiff <= 200) {
+          graph.addBuilderAnnotation(new TurnRestrictionBad(restrictionTag.relationOSMID,"Right turn restriction is not on edges which turn right"));
+          continue;
+        }
       break;
 case U:
-    if ((angleDiff <= 150 || angleDiff > 210))     continue;
+    if ((angleDiff <= 150 || angleDiff > 210)) {
+      graph.addBuilderAnnotation(new TurnRestrictionBad(restrictionTag.relationOSMID,"U-turn restriction is not on U-turn"));
+      continue;
+    }
   break;
 case STRAIGHT:
-if (angleDiff >= 30 && angleDiff < 330) continue;
+if (angleDiff >= 30 && angleDiff < 330) {
+  graph.addBuilderAnnotation(new TurnRestrictionBad(restrictionTag.relationOSMID,"Straight turn restriction is not on edges which go straight"));
+  continue;
+}
 break;
 }
 TurnRestriction restriction=new TurnRestriction();
