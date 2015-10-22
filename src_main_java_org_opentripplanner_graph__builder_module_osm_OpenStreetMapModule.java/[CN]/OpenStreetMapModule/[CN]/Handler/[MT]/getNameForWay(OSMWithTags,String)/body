@@ -1,6 +1,6 @@
 {
   I18NString name=way.getAssumedName();
-  if (customNamer != null) {
+  if (customNamer != null && name != null) {
     name=new NonLocalizedString(customNamer.name(way,name.toString()));
   }
   if (name == null) {
