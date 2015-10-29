@@ -8,12 +8,7 @@
   for (  Area area : Iterables.concat(osmdb.getWalkableAreas(),osmdb.getParkAndRideAreas(),osmdb.getBikeParkingAreas()))   setWayName(area.parent);
   initIntersectionNodes();
   buildBasicGraph();
-  if (skipVisibility) {
-    LOG.info("Skipping visibility graph construction for walkable areas.");
-  }
- else {
-    buildWalkableAreas();
-  }
+  buildWalkableAreas(skipVisibility);
   if (staticParkAndRide) {
     buildParkAndRideAreas();
   }
