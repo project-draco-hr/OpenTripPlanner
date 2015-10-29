@@ -1,0 +1,10 @@
+{
+  StreetTraversalPermission permission=getPermission();
+  if (fromv instanceof BarrierVertex) {
+    permission=permission.intersection(((BarrierVertex)fromv).getBarrierPermissions());
+  }
+  if (tov instanceof BarrierVertex) {
+    permission=permission.intersection(((BarrierVertex)tov).getBarrierPermissions());
+  }
+  return permission.allows(mode);
+}

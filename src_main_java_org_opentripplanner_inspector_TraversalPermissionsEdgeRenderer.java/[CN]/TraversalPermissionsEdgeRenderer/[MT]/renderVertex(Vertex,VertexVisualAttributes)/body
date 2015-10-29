@@ -1,6 +1,9 @@
 {
   if (v instanceof IntersectionVertex) {
     attrs.color=STREET_COLOR_VERTEX;
+    if (v instanceof BarrierVertex) {
+      attrs.color=BARRIER_COLOR_VERTEX;
+    }
   }
  else   if (v instanceof TransitStop) {
     attrs.color=TRANSIT_STOP_COLOR_VERTEX;

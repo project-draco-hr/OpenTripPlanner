@@ -25,6 +25,11 @@
         iv=tsv;
       }
     }
+    if (node.isBollard()) {
+      BarrierVertex bv=new BarrierVertex(graph,label,coordinate.x,coordinate.y,nid);
+      bv.setBarrierPermissions(OSMFilter.getPermissionsForEntity(node,BarrierVertex.defaultBarrierPermissions));
+      iv=bv;
+    }
     if (iv == null) {
       iv=new OsmVertex(graph,label,coordinate.x,coordinate.y,node.getId(),new NonLocalizedString(label));
       if (node.hasTrafficLight()) {
