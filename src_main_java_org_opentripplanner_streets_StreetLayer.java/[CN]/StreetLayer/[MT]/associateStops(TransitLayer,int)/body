@@ -1,8 +1,0 @@
-{
-  for (  Stop stop : transitLayer.stopForIndex) {
-    int streetVertexIndex=getOrCreateVertexNear(stop.stop_lat,stop.stop_lon,radiusMeters);
-    transitLayer.streetVertexForStop.add(streetVertexIndex);
-  }
-  transitLayer.linkedStreetLayer=this;
-  this.linkedTransitLayer=transitLayer;
-}
