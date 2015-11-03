@@ -14,11 +14,17 @@
     LOG.info("Error loading worker configuration",e);
     return;
   }
-  try {
-    new AnalystWorker(config).run();
+  if (Boolean.parseBoolean(config.getProperty("use-transport-networks","false"))) {
+    LOG.info("Transport network support enabled, deferring computation to R5");
+    com.conveyal.r5.analyst.cluster.AnalystWorker.main(args);
   }
- catch (  Exception e) {
-    LOG.error("Error in analyst worker",e);
-    return;
+ else {
+    try {
+      new AnalystWorker(config).run();
+    }
+ catch (    Exception e) {
+      LOG.error("Error in analyst worker",e);
+      return;
+    }
   }
 }
