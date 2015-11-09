@@ -1,0 +1,11 @@
+{
+  ProfileRequest pr=new ProfileRequest();
+  Graph g=new Graph();
+  int[][] times=new int[][]{new int[]{1},new int[]{1000}};
+  PropagatedTimesStore pts=new PropagatedTimesStore(g,pr,1);
+  pts.setFromArray(times,new boolean[]{true,true},PropagatedTimesStore.ConfidenceCalculationMethod.MIN_MAX);
+  assertEquals(500,pts.avgs[0]);
+  pts=new PropagatedTimesStore(g,pr,1);
+  pts.setFromArray(times,new boolean[]{true,false},PropagatedTimesStore.ConfidenceCalculationMethod.MIN_MAX);
+  assertEquals(1,pts.avgs[0]);
+}
