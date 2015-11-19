@@ -1,8 +1,0 @@
-{
-  Queue<AutomatonState> queue=new LinkedList<AutomatonState>();
-  queue.addAll(this);
-  while (!queue.isEmpty()) {
-    AutomatonState as=queue.poll();
-    for (    AutomatonState target : as.epsilonTransitions)     if (this.add(target))     queue.add(target);
-  }
-}
