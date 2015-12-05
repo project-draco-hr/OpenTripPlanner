@@ -8,7 +8,9 @@
   try {
     graph=Graph.load(is,level);
     GraphService graphService=otpServer.getGraphService();
-    graphService.registerGraph(routerId,new MemoryGraphSource(routerId,graph));
+    ObjectMapper mapper=new ObjectMapper();
+    JsonNode routerJsonConf=mapper.readTree(graph.routerConfig);
+    graphService.registerGraph(routerId,new MemoryGraphSource(routerId,graph,routerJsonConf));
     return Response.status(Status.CREATED).entity(graph.toString() + "\n").build();
   }
  catch (  Exception e) {
