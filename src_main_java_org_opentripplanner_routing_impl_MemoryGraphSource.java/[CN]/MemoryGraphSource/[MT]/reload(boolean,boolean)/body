@@ -1,4 +1,13 @@
 {
-  router.startup(config);
-  return true;
+  ObjectMapper mapper=new ObjectMapper();
+  JsonNode routerJsonConf;
+  try {
+    routerJsonConf=mapper.readTree(router.graph.routerConfig);
+    router.startup(routerJsonConf);
+    return true;
+  }
+ catch (  IOException e) {
+    LOG.error("Can't startup graph: error with embed config (" + router.graph.routerConfig + ")",e);
+    return false;
+  }
 }

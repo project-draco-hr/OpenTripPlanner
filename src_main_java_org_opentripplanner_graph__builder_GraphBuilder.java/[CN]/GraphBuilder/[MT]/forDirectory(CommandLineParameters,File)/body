@@ -14,7 +14,7 @@
   graphBuilder.setPath(dir);
   builderConfig=OTPMain.loadJson(new File(dir,BUILDER_CONFIG_FILENAME));
   GraphBuilderParameters builderParams=new GraphBuilderParameters(builderConfig);
-  graphBuilder.routerConfig=OTPMain.loadJson(new File(dir,Router.ROUTER_CONFIG_FILENAME));
+  routerConfig=OTPMain.loadJson(new File(dir,Router.ROUTER_CONFIG_FILENAME));
   LOG.info(ReflectionLibrary.dumpFields(builderParams));
   for (  File file : dir.listFiles()) {
 switch (InputFileType.forFile(file)) {
