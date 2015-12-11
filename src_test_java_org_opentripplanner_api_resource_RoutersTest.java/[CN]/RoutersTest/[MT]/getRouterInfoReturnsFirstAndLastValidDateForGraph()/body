@@ -1,0 +1,22 @@
+{
+  final CalendarServiceData calendarService=new CalendarServiceData();
+  final List<ServiceDate> serviceDates=new ArrayList<ServiceDate>(){
+{
+      add(new ServiceDate(2015,10,1));
+      add(new ServiceDate(2015,11,1));
+    }
+  }
+;
+  calendarService.putServiceDatesForServiceId(new AgencyAndId("NA","1"),serviceDates);
+  final Graph graph=new Graph();
+  graph.updateTransitFeedValidity(calendarService);
+  graph.expandToInclude(0,100);
+  OTPServer otpServer=new OTPServer(new CommandLineParameters(),new GraphService());
+  otpServer.getGraphService().registerGraph("A",new MemoryGraphSource("A",graph));
+  Routers routerApi=new Routers();
+  routerApi.otpServer=otpServer;
+  RouterInfo info=routerApi.getGraphId("A");
+  assertNotNull(info.transitServiceStarts);
+  assertNotNull(info.transitServiceEnds);
+  assertTrue(info.transitServiceStarts < info.transitServiceEnds);
+}
