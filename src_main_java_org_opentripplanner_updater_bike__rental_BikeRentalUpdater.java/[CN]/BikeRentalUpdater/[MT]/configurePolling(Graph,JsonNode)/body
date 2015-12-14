@@ -37,6 +37,9 @@
  else     if (sourceType.equals("sf-bay-area")) {
       source=new SanFranciscoBayAreaBikeRentalDataSource(networkName);
     }
+ else     if (sourceType.equals("share-bike")) {
+      source=new ShareBikeRentalDataSource();
+    }
   }
   if (source == null) {
     throw new IllegalArgumentException("Unknown bike rental source type: " + sourceType);
