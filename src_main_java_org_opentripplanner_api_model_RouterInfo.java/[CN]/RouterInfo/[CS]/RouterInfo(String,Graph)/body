@@ -2,6 +2,8 @@
   this.routerId=routerId;
   this.polygon=graph.getConvexHull();
   this.buildTime=graph.buildTime;
+  this.transitServiceStarts=graph.getTransitServiceStarts();
+  this.transitServiceEnds=graph.getTransitServiceEnds();
   this.transitModes=graph.getTransitModes();
   this.envelope=graph.getEnvelope();
   addCenter(graph.getCenter());
