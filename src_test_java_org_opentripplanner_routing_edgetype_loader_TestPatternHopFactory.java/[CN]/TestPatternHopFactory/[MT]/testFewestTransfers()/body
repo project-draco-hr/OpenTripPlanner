@@ -1,6 +1,6 @@
 {
-  Vertex stop_c=graph.getVertex("agency:C");
-  Vertex stop_d=graph.getVertex("agency:D");
+  Vertex stop_c=graph.getVertex(feedId + ":C");
+  Vertex stop_d=graph.getVertex(feedId + ":D");
   RoutingRequest options=new RoutingRequest();
   options.optimize=OptimizeType.QUICK;
   options.dateTime=TestUtils.dateInSeconds("America/New_York",2009,8,1,16,0,0);

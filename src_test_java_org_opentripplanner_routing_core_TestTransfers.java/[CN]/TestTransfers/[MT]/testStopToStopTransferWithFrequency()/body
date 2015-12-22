@@ -1,8 +1,8 @@
 {
   TransferTable table=new TransferTable();
   when(graph.getTransferTable()).thenReturn(table);
-  Vertex origin=graph.getVertex("agency:O");
-  Vertex destination=graph.getVertex("agency:V");
+  Vertex origin=graph.getVertex(feedId + ":O");
+  Vertex destination=graph.getVertex(feedId + ":V");
   RoutingRequest options=new RoutingRequest();
   options.dateTime=TestUtils.dateInSeconds("America/New_York",2009,7,11,13,11,0);
   options.setRoutingContext(graph,origin,destination);
@@ -20,9 +20,9 @@
   }
   assertTrue(time >= 0);
   Stop stopP=new Stop();
-  stopP.setId(new AgencyAndId("agency","P"));
+  stopP.setId(new AgencyAndId(feedId,"P"));
   Stop stopU=new Stop();
-  stopU.setId(new AgencyAndId("agency","U"));
+  stopU.setId(new AgencyAndId(feedId,"U"));
   table.addTransferTime(stopP,stopU,null,null,null,null,3675);
   path=planJourney(options);
   trips=extractTrips(path);

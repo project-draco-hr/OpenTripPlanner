@@ -1,11 +1,11 @@
 {
-  AgencyAndId tripId=new AgencyAndId("agency","1.1");
+  AgencyAndId tripId=new AgencyAndId(feedId,"1.1");
   ServiceDate previously=serviceDate.previous().previous();
   Trip trip=graph.index.tripForId.get(tripId);
   TripPattern pattern=graph.index.patternForTrip.get(trip);
   updater.maxSnapshotFrequency=(0);
   updater.purgeExpiredData=(false);
-  updater.applyTripUpdates(graph,fullDataset,Arrays.asList(TripUpdate.parseFrom(cancellation)),"agency");
+  updater.applyTripUpdates(graph,fullDataset,Arrays.asList(TripUpdate.parseFrom(cancellation)),feedId);
   TimetableSnapshot snapshotA=updater.getTimetableSnapshot();
   updater.purgeExpiredData=(true);
   TripDescriptor.Builder tripDescriptorBuilder=TripDescriptor.newBuilder();
@@ -15,7 +15,7 @@
   TripUpdate.Builder tripUpdateBuilder=TripUpdate.newBuilder();
   tripUpdateBuilder.setTrip(tripDescriptorBuilder);
   TripUpdate tripUpdate=tripUpdateBuilder.build();
-  updater.applyTripUpdates(graph,fullDataset,Arrays.asList(tripUpdate),"agency");
+  updater.applyTripUpdates(graph,fullDataset,Arrays.asList(tripUpdate),feedId);
   TimetableSnapshot snapshotB=updater.getTimetableSnapshot();
   assertNotSame(snapshotA,snapshotB);
   assertSame(snapshotA.resolve(pattern,null),snapshotB.resolve(pattern,null));

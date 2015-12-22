@@ -10,36 +10,36 @@
   assertEquals(2,stopIds[8].length);
   assertNull(stopIds[0][0]);
   if (type == Type.FORWARD || type == Type.BACKWARD) {
-    assertEquals("Train",stopIds[0][1].getAgencyId());
+    assertEquals("FEED",stopIds[0][1].getAgencyId());
     assertEquals("Depart",stopIds[0][1].getId());
   }
  else   if (type == Type.ONBOARD) {
     assertNull(stopIds[0][1]);
   }
   if (type == Type.FORWARD || type == Type.BACKWARD) {
-    assertEquals("Train",stopIds[1][0].getAgencyId());
+    assertEquals("FEED",stopIds[1][0].getAgencyId());
     assertEquals("Depart",stopIds[1][0].getId());
   }
  else   if (type == Type.ONBOARD) {
     assertNull(stopIds[1][0]);
   }
-  assertEquals("Train",stopIds[1][1].getAgencyId());
+  assertEquals("FEED",stopIds[1][1].getAgencyId());
   assertEquals("Dwell",stopIds[1][1].getId());
-  assertEquals("Train",stopIds[1][2].getAgencyId());
+  assertEquals("FEED",stopIds[1][2].getAgencyId());
   assertEquals("Interline",stopIds[1][2].getId());
-  assertEquals("Train",stopIds[2][0].getAgencyId());
+  assertEquals("FEED",stopIds[2][0].getAgencyId());
   assertEquals("Interline",stopIds[2][0].getId());
-  assertEquals("Train",stopIds[2][1].getAgencyId());
+  assertEquals("FEED",stopIds[2][1].getAgencyId());
   assertEquals("Arrive",stopIds[2][1].getId());
-  assertEquals("Train",stopIds[3][0].getAgencyId());
+  assertEquals("FEED",stopIds[3][0].getAgencyId());
   assertEquals("Arrive",stopIds[3][0].getId());
-  assertEquals("Ferry",stopIds[3][1].getAgencyId());
+  assertEquals("FEED",stopIds[3][1].getAgencyId());
   assertEquals("Depart",stopIds[3][1].getId());
-  assertEquals("Ferry",stopIds[4][0].getAgencyId());
+  assertEquals("FEED",stopIds[4][0].getAgencyId());
   assertEquals("Depart",stopIds[4][0].getId());
-  assertEquals("Ferry",stopIds[4][1].getAgencyId());
+  assertEquals("FEED",stopIds[4][1].getAgencyId());
   assertEquals("Arrive",stopIds[4][1].getId());
-  assertEquals("Ferry",stopIds[5][0].getAgencyId());
+  assertEquals("FEED",stopIds[5][0].getAgencyId());
   assertEquals("Arrive",stopIds[5][0].getId());
   assertNull(stopIds[5][1]);
   assertNull(stopIds[6][0]);

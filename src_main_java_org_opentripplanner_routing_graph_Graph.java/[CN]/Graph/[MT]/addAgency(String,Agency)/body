@@ -1,0 +1,6 @@
+{
+  Collection<Agency> agencies=agenciesForFeedId.getOrDefault(feedId,new HashSet<>());
+  agencies.add(agency);
+  this.agenciesForFeedId.put(feedId,agencies);
+  this.feedIds.add(feedId);
+}

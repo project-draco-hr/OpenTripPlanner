@@ -1,12 +1,16 @@
 {
+  String feedId="FEED";
   String agencyId="AGENCY";
+  Agency agency=new Agency();
+  agency.setId(agencyId);
   Graph graph=mock(Graph.class);
   RoutingRequest routingRequest=mock(RoutingRequest.class);
   CalendarService calendarService=mock(CalendarService.class);
   routingRequest.modes=new TraverseModeSet("WALK,TRANSIT");
   when(graph.getTimeZone()).thenReturn(TimeZone.getTimeZone("Europe/Budapest"));
   when(graph.getCalendarService()).thenReturn(calendarService);
-  when(graph.getAgencyIds()).thenReturn(Collections.<String>singletonList(agencyId));
+  when(graph.getFeedIds()).thenReturn(Collections.singletonList("FEED"));
+  when(graph.getAgencies(feedId)).thenReturn(Collections.singletonList(agency));
   when(calendarService.getTimeZoneForAgencyId(agencyId)).thenReturn(TimeZone.getTimeZone("Europe/Budapest"));
   when(routingRequest.getSecondsSinceEpoch()).thenReturn(1393750800L,1396126800L,1396132200L,1396135800L,1401696000L,1414272600L,1414276200L,1414279800L);
   verifyServiceDays(routingRequest,graph,new ServiceDate(2014,3,1),new ServiceDate(2014,3,2),new ServiceDate(2014,3,3));

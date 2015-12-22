@@ -8,7 +8,7 @@
     return false;
   }
   String tripId=tripDescriptor.getTripId();
-  Trip trip=getTripForTripId(tripId);
+  Trip trip=getTripForTripId(feedId,tripId);
   if (trip == null) {
     LOG.warn("Graph does not contain trip id of MODIFIED trip, skipping.");
     return false;
@@ -28,7 +28,7 @@
     LOG.warn("MODIFIED trip has less then two stops, skipping.");
     return false;
   }
-  List<Stop> stops=checkNewStopTimeUpdatesAndFindStops(tripUpdate);
+  List<Stop> stops=checkNewStopTimeUpdatesAndFindStops(feedId,tripUpdate);
   if (stops == null) {
     return false;
   }
