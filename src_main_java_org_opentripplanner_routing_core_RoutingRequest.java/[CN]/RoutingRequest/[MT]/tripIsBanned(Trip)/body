@@ -1,6 +1,6 @@
 {
   if (bannedAgencies != null) {
-    if (bannedAgencies.contains(trip.getId().getAgencyId())) {
+    if (bannedAgencies.contains(trip.getRoute().getAgency().getId())) {
       return true;
     }
   }
