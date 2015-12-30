@@ -1,4 +1,5 @@
 {
+  LOG.info("Analyst worker starting at {}",LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
   this.config=brokerConfig;
   workerConfig=new Properties();
   if (config.getProperty("worker-config") != null) {
