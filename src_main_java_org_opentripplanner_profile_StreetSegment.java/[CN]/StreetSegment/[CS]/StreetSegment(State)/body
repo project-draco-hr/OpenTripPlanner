@@ -12,29 +12,34 @@
       }
     }
   }
-  Itinerary itin=GraphPathToTripPlanConverter.generateItinerary(path,false,new Locale("en"));
-  for (  Leg leg : itin.legs) {
-    for (    WalkStep walkStep : leg.walkSteps) {
-      int i=0;
-      for (      Edge edge : walkStep.edges) {
-        StreetEdgeInfo edgeInfo=new StreetEdgeInfo(edge);
-        if (i == 0) {
-          edgeInfo.mode=walkStep.newMode;
-          edgeInfo.streetName=walkStep.streetName;
-          edgeInfo.absoluteDirection=walkStep.absoluteDirection;
-          edgeInfo.relativeDirection=walkStep.relativeDirection;
-          edgeInfo.stayOn=walkStep.stayOn;
-          edgeInfo.area=walkStep.area;
-          edgeInfo.bogusName=walkStep.bogusName;
-          edgeInfo.bikeRentalOffStation=walkStep.bikeRentalOffStation;
+  try {
+    Itinerary itin=GraphPathToTripPlanConverter.generateItinerary(path,false,new Locale("en"));
+    for (    Leg leg : itin.legs) {
+      for (      WalkStep walkStep : leg.walkSteps) {
+        int i=0;
+        for (        Edge edge : walkStep.edges) {
+          StreetEdgeInfo edgeInfo=new StreetEdgeInfo(edge);
+          if (i == 0) {
+            edgeInfo.mode=walkStep.newMode;
+            edgeInfo.streetName=walkStep.streetName;
+            edgeInfo.absoluteDirection=walkStep.absoluteDirection;
+            edgeInfo.relativeDirection=walkStep.relativeDirection;
+            edgeInfo.stayOn=walkStep.stayOn;
+            edgeInfo.area=walkStep.area;
+            edgeInfo.bogusName=walkStep.bogusName;
+            edgeInfo.bikeRentalOffStation=walkStep.bikeRentalOffStation;
+          }
+          if (i == walkStep.edges.size() - 1) {
+            edgeInfo.bikeRentalOnStation=walkStep.bikeRentalOnStation;
+          }
+          streetEdges.add(edgeInfo);
+          i++;
         }
-        if (i == walkStep.edges.size() - 1) {
-          edgeInfo.bikeRentalOnStation=walkStep.bikeRentalOnStation;
-        }
-        streetEdges.add(edgeInfo);
-        i++;
       }
     }
+  }
+ catch (  TrivialPathException e) {
+    LOG.warn("Path from {} to {} was trivial, if these points are coincident this is not unexpected; otherwise, you might want to look into it.",path.states.get(0).getVertex(),path.states.get(path.states.size() - 1).getVertex());
   }
   time=(int)(state.getElapsedTimeSeconds());
 }
