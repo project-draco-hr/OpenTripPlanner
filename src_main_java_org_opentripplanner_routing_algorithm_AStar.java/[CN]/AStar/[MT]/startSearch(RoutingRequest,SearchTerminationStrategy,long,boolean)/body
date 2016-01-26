@@ -12,7 +12,7 @@
   }
   int initialSize=runState.rctx.graph.getVertices().size();
   initialSize=(int)Math.ceil(2 * (Math.sqrt((double)initialSize + 1)));
-  runState.pq=new BinHeap<State>(initialSize);
+  runState.pq=new BinHeap<>(initialSize);
   runState.nVisited=0;
   runState.targetAcceptedStates=Lists.newArrayList();
   if (addToQueue) {

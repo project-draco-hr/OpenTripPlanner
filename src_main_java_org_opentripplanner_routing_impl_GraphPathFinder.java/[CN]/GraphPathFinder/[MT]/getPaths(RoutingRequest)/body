@@ -20,7 +20,7 @@
     heuristic=new TrivialRemainingWeightHeuristic();
   }
  else   if (options.modes.isTransit()) {
-    heuristic=new InterleavedBidirectionalHeuristic(options.rctx.graph);
+    heuristic=new WalkConstrainingHeuristic();
   }
  else {
     heuristic=new EuclideanRemainingWeightHeuristic();
@@ -33,7 +33,6 @@
   long searchBeginTime=System.currentTimeMillis();
   LOG.debug("BEGIN SEARCH");
   List<GraphPath> paths=Lists.newArrayList();
-  Set<AgencyAndId> bannedTrips=Sets.newHashSet();
   while (paths.size() < options.numItineraries) {
     int timeoutIndex=paths.size();
     if (timeoutIndex >= router.timeouts.length) {
