@@ -39,5 +39,23 @@
     }
   }
   LOG.info("Timeouts for router '{}': {}",this.id,this.timeouts);
+  JsonNode boardTimes=config.get("boardTimes");
+  if (boardTimes != null && boardTimes.isObject()) {
+    graph.boardTimes=new EnumMap<>(TraverseMode.class);
+    for (    TraverseMode mode : TraverseMode.values()) {
+      if (boardTimes.has(mode.name())) {
+        graph.boardTimes.put(mode,boardTimes.get(mode.name()).asInt(0));
+      }
+    }
+  }
+  JsonNode alightTimes=config.get("alightTimes");
+  if (alightTimes != null && alightTimes.isObject()) {
+    graph.alightTimes=new EnumMap<>(TraverseMode.class);
+    for (    TraverseMode mode : TraverseMode.values()) {
+      if (alightTimes.has(mode.name())) {
+        graph.alightTimes.put(mode,alightTimes.get(mode.name()).asInt(0));
+      }
+    }
+  }
   GraphUpdaterConfigurator.setupGraph(this.graph,config);
 }
