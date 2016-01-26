@@ -1,4 +1,7 @@
 {
+  if (s0.backEdge instanceof StationStopEdge) {
+    return null;
+  }
   StateEditor s1=s0.edit(this);
   s1.setBackMode(TraverseMode.LEG_SWITCH);
   s1.incrementWeight(1);
