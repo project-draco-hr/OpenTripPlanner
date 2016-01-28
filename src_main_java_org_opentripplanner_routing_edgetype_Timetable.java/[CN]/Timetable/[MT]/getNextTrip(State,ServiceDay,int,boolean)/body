@@ -1,5 +1,11 @@
 {
   int time=serviceDay.secondsSinceMidnight(s0.getTimeSeconds());
+  if (boarding) {
+    time+=s0.getOptions().getBoardTime(this.pattern.mode);
+  }
+ else {
+    time-=s0.getOptions().getAlightTime(this.pattern.mode);
+  }
   TripTimes bestTrip=null;
   Stop currentStop=pattern.getStop(stopIndex);
   int bestTime=boarding ? Integer.MAX_VALUE : Integer.MIN_VALUE;

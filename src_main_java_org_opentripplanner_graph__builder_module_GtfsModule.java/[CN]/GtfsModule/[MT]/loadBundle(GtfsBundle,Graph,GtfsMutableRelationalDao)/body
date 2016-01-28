@@ -2,10 +2,12 @@
   StoreImpl store=new StoreImpl(dao);
   store.open();
   LOG.info("reading {}",gtfsBundle.toString());
+  GtfsFeedId gtfsFeedId=gtfsBundle.getFeedId();
   GtfsReader reader=new GtfsReader();
   reader.setInputSource(gtfsBundle.getCsvInputSource());
   reader.setEntityStore(store);
   reader.setInternStrings(true);
+  reader.setDefaultAgencyId(gtfsFeedId.getId());
   if (LOG.isDebugEnabled())   reader.addEntityHandler(counter);
   if (gtfsBundle.getDefaultBikesAllowed())   reader.addEntityHandler(new EntityBikeability(true));
   for (  Class<?> entityClass : reader.getEntityClasses()) {
@@ -13,11 +15,10 @@
     reader.readEntities(entityClass);
     store.flush();
     if (entityClass == Agency.class) {
-      String defaultAgencyId=null;
       for (      Agency agency : reader.getAgencies()) {
         String agencyId=agency.getId();
         LOG.info("This Agency has the ID {}",agencyId);
-        if (agencyId == null || agencyIdsSeen.contains(agencyId)) {
+        if (agencyId == null || agencyIdsSeen.contains(gtfsFeedId.getId() + agencyId)) {
           String generatedAgencyId=null;
           while (generatedAgencyId == null || agencyIdsSeen.contains(generatedAgencyId)) {
             generatedAgencyId="F" + nextAgencyId;
@@ -28,10 +29,8 @@
           agency.setId(generatedAgencyId);
           agencyId=generatedAgencyId;
         }
-        if (agencyId != null)         agencyIdsSeen.add(agencyId);
-        if (defaultAgencyId == null)         defaultAgencyId=agencyId;
+        if (agencyId != null)         agencyIdsSeen.add(gtfsFeedId.getId() + agencyId);
       }
-      reader.setDefaultAgencyId(defaultAgencyId);
     }
   }
   for (  ShapePoint shapePoint : store.getAllEntitiesForType(ShapePoint.class)) {

@@ -1,7 +1,8 @@
 {
-  Stop stopJ=graph.index.stopForId.get(new AgencyAndId("agency","J"));
-  Stop stopL=graph.index.stopForId.get(new AgencyAndId("agency","L"));
-  Stop stopM=graph.index.stopForId.get(new AgencyAndId("agency","M"));
+  String feedId=graph.getFeedIds().iterator().next();
+  Stop stopJ=graph.index.stopForId.get(new AgencyAndId(feedId,"J"));
+  Stop stopL=graph.index.stopForId.get(new AgencyAndId(feedId,"L"));
+  Stop stopM=graph.index.stopForId.get(new AgencyAndId(feedId,"M"));
   TransitStop stopvJ=graph.index.stopVertexForStop.get(stopJ);
   TransitStop stopvL=graph.index.stopVertexForStop.get(stopL);
   TransitStop stopvM=graph.index.stopVertexForStop.get(stopM);

@@ -8,9 +8,11 @@
   Graph graph=new Graph();
   _builder.buildGraph(graph,_extra);
   graph.index(new DefaultStreetVertexIndexFactory());
-  Trip trip=graph.index.tripForId.get(new AgencyAndId("a0","t0"));
+  GtfsBundle gtfsBundle=bundleList.get(0);
+  GtfsFeedId feedId=gtfsBundle.getFeedId();
+  Trip trip=graph.index.tripForId.get(new AgencyAndId(feedId.getId(),"t0"));
   TripPattern pattern=graph.index.patternForTrip.get(trip);
   List<Trip> trips=pattern.getTrips();
-  assertEquals(BikeAccess.UNKNOWN,BikeAccess.fromTrip(withId(trips,new AgencyAndId("a0","t0"))));
-  assertEquals(BikeAccess.ALLOWED,BikeAccess.fromTrip(withId(trips,new AgencyAndId("a0","t1"))));
+  assertEquals(BikeAccess.UNKNOWN,BikeAccess.fromTrip(withId(trips,new AgencyAndId(feedId.getId(),"t0"))));
+  assertEquals(BikeAccess.ALLOWED,BikeAccess.fromTrip(withId(trips,new AgencyAndId(feedId.getId(),"t1"))));
 }

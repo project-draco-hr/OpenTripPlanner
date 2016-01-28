@@ -1,11 +1,11 @@
 {
-  AgencyAndId tripId=new AgencyAndId("agency","1.1");
-  AgencyAndId tripId2=new AgencyAndId("agency","1.2");
+  AgencyAndId tripId=new AgencyAndId(feedId,"1.1");
+  AgencyAndId tripId2=new AgencyAndId(feedId,"1.2");
   Trip trip=graph.index.tripForId.get(tripId);
   TripPattern pattern=graph.index.patternForTrip.get(trip);
   int tripIndex=pattern.scheduledTimetable.getTripIndex(tripId);
   int tripIndex2=pattern.scheduledTimetable.getTripIndex(tripId2);
-  updater.applyTripUpdates(graph,fullDataset,Arrays.asList(TripUpdate.parseFrom(cancellation)),"agency");
+  updater.applyTripUpdates(graph,fullDataset,Arrays.asList(TripUpdate.parseFrom(cancellation)),feedId);
   TimetableSnapshot snapshot=updater.getTimetableSnapshot();
   Timetable forToday=snapshot.resolve(pattern,serviceDate);
   Timetable schedule=snapshot.resolve(pattern,null);

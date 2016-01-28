@@ -1,3 +1,4 @@
 {
-  return wayLevels.get(way);
+  OSMLevel level=wayLevels.get(way);
+  return level != null ? level : OSMLevel.DEFAULT;
 }

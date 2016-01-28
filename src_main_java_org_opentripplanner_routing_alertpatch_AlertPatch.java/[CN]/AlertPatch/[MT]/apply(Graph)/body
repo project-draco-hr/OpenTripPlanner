@@ -1,12 +1,16 @@
 {
-  Agency agency=this.agency != null ? graph.index.agencyForId.get(this.agency) : null;
+  Agency agency=null;
+  if (feedId != null) {
+    Map<String,Agency> agencies=graph.index.agenciesForFeedId.get(feedId);
+    agency=this.agency != null ? agencies.get(this.agency) : null;
+  }
   Route route=this.route != null ? graph.index.routeForId.get(this.route) : null;
   Stop stop=this.stop != null ? graph.index.stopForId.get(this.stop) : null;
   Trip trip=this.trip != null ? graph.index.tripForId.get(this.trip) : null;
   if (route != null || trip != null || agency != null) {
-    Collection<TripPattern> tripPatterns;
+    Collection<TripPattern> tripPatterns=null;
     if (trip != null) {
-      tripPatterns=new LinkedList<TripPattern>();
+      tripPatterns=new LinkedList<>();
       TripPattern tripPattern=graph.index.patternForTrip.get(trip);
       if (tripPattern != null) {
         tripPatterns.add(tripPattern);
@@ -16,19 +20,21 @@
       tripPatterns=graph.index.patternsForRoute.get(route);
     }
  else {
-      tripPatterns=graph.index.patternsForAgency.get(agency);
+      tripPatterns=graph.index.patternsForFeedId.get(feedId);
     }
-    for (    TripPattern tripPattern : tripPatterns) {
-      if (direction != null && !direction.equals(tripPattern.getDirection())) {
-        continue;
-      }
-      if (directionId != -1 && directionId == tripPattern.directionId) {
-        continue;
-      }
-      for (int i=0; i < tripPattern.stopPattern.stops.length; i++) {
-        if (stop == null || stop.equals(tripPattern.stopPattern.stops[i])) {
-          graph.addAlertPatch(tripPattern.boardEdges[i],this);
-          graph.addAlertPatch(tripPattern.alightEdges[i],this);
+    if (tripPatterns != null) {
+      for (      TripPattern tripPattern : tripPatterns) {
+        if (direction != null && !direction.equals(tripPattern.getDirection())) {
+          continue;
+        }
+        if (directionId != -1 && directionId == tripPattern.directionId) {
+          continue;
+        }
+        for (int i=0; i < tripPattern.stopPattern.stops.length; i++) {
+          if (stop == null || stop.equals(tripPattern.stopPattern.stops[i])) {
+            graph.addAlertPatch(tripPattern.boardEdges[i],this);
+            graph.addAlertPatch(tripPattern.alightEdges[i],this);
+          }
         }
       }
     }

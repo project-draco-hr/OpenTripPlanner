@@ -1,6 +1,6 @@
 {
-  Vertex stop_a=graph.getVertex("agency:A_depart");
-  Vertex stop_c=graph.getVertex("agency:C_arrive");
+  Vertex stop_a=graph.getVertex(feedId + ":A_depart");
+  Vertex stop_c=graph.getVertex(feedId + ":C_arrive");
   RoutingRequest options=new RoutingRequest();
   options.dateTime=TestUtils.dateInSeconds("America/New_York",2009,8,7,8,0,0);
   options.setRoutingContext(graph,stop_a,stop_c);

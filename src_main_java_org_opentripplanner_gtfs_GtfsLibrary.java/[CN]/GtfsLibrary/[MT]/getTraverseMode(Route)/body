@@ -22,7 +22,7 @@
     return TraverseMode.FERRY;
   }
  else   if (routeType >= 1100 && routeType < 1200) {
-    throw new IllegalArgumentException("Air transport not supported" + routeType);
+    return TraverseMode.AIRPLANE;
   }
  else   if (routeType >= 1200 && routeType < 1300) {
     return TraverseMode.FERRY;

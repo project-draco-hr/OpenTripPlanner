@@ -1,12 +1,13 @@
 {
+  String feedId=graph.getFeedIds().iterator().next();
   Random rand=new Random(42);
   final int NTESTS=100;
   int n=0;
   while (true) {
     Vertex origin, destination;
     do {
-      origin=graph.getVertex("agency:" + (char)(65 + rand.nextInt(20)));
-      destination=graph.getVertex("agency:" + (char)(65 + rand.nextInt(20)));
+      origin=graph.getVertex(feedId + ":" + (char)(65 + rand.nextInt(20)));
+      destination=graph.getVertex(feedId + ":" + (char)(65 + rand.nextInt(20)));
     }
  while (origin.equals(destination));
     RoutingRequest options=new RoutingRequest();

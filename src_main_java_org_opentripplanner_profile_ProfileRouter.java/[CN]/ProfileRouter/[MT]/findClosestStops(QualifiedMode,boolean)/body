@@ -7,7 +7,7 @@
   rr.setRoutingContext(graph);
   rr.batch=(true);
   rr.walkSpeed=request.walkSpeed;
-  rr.dominanceFunction=new DominanceFunction.MinimumWeight();
+  rr.dominanceFunction=new DominanceFunction.EarliestArrival();
   int minAccessTime=0;
   int maxAccessTime=request.maxWalkTime;
   if (qmode.mode == TraverseMode.BICYCLE) {

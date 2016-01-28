@@ -1,0 +1,8 @@
+{
+  id=cleanId(id);
+  if (id == null || id.trim().length() == 0) {
+    id=String.valueOf(FEED_ID_COUNTER);
+  }
+  FEED_ID_COUNTER++;
+  return new GtfsFeedId(id);
+}

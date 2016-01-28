@@ -5,7 +5,7 @@
   if (!trip.hasRouteId() || !trip.hasDirectionId() || !trip.hasStartTime()|| !trip.hasStartDate()) {
     return trip;
   }
-  AgencyAndId routeId=new AgencyAndId(agency,trip.getRouteId());
+  AgencyAndId routeId=new AgencyAndId(feedId,trip.getRouteId());
   int time=StopTimeFieldMappingFactory.getStringAsSeconds(trip.getStartTime());
   ServiceDate date;
   try {
