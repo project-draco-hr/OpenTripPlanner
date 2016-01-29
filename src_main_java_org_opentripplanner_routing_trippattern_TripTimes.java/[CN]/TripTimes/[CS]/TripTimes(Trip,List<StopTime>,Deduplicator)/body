@@ -1,13 +1,13 @@
 {
   this.trip=trip;
-  int nStops=stopTimes.size();
-  int[] departures=new int[nStops];
-  int[] arrivals=new int[nStops];
-  int[] sequences=new int[nStops];
-  BitSet timepoints=new BitSet(nStops);
+  final int nStops=stopTimes.size();
+  final int[] departures=new int[nStops];
+  final int[] arrivals=new int[nStops];
+  final int[] sequences=new int[nStops];
+  final BitSet timepoints=new BitSet(nStops);
   timeShift=stopTimes.get(0).getArrivalTime();
   int s=0;
-  for (  StopTime st : stopTimes) {
+  for (  final StopTime st : stopTimes) {
     departures[s]=st.getDepartureTime() - timeShift;
     arrivals[s]=st.getArrivalTime() - timeShift;
     sequences[s]=st.getStopSequence();

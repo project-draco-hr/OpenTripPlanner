@@ -1,9 +1,9 @@
 {
   Preconditions.checkNotNull(stops);
   Preconditions.checkArgument(tripUpdate.getStopTimeUpdateCount() == stops.size(),"number of stop should match the number of stop time updates");
-  String tripId=tripUpdate.getTrip().getTripId();
+  final String tripId=tripUpdate.getTrip().getTripId();
   cancelScheduledTrip(feedId,tripId,serviceDate);
   cancelPreviouslyAddedTrip(feedId,tripId,serviceDate);
-  boolean success=addTripToGraphAndBuffer(feedId,graph,trip,tripUpdate,stops,serviceDate);
+  final boolean success=addTripToGraphAndBuffer(feedId,graph,trip,tripUpdate,stops,serviceDate,RealTimeState.MODIFIED);
   return success;
 }

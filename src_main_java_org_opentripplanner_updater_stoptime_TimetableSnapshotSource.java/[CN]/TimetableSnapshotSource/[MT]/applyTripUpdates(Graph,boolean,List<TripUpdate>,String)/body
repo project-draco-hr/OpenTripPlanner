@@ -12,7 +12,7 @@
     int uIndex=0;
     for (    TripUpdate tripUpdate : updates) {
       if (fuzzyTripMatcher != null && tripUpdate.hasTrip()) {
-        TripDescriptor trip=fuzzyTripMatcher.match(feedId,tripUpdate.getTrip());
+        final TripDescriptor trip=fuzzyTripMatcher.match(feedId,tripUpdate.getTrip());
         tripUpdate=tripUpdate.toBuilder().setTrip(trip).build();
       }
       if (!tripUpdate.hasTrip()) {
@@ -20,12 +20,12 @@
         continue;
       }
       ServiceDate serviceDate=new ServiceDate();
-      TripDescriptor tripDescriptor=tripUpdate.getTrip();
+      final TripDescriptor tripDescriptor=tripUpdate.getTrip();
       if (tripDescriptor.hasStartDate()) {
         try {
           serviceDate=ServiceDate.parseString(tripDescriptor.getStartDate());
         }
- catch (        ParseException e) {
+ catch (        final ParseException e) {
           LOG.warn("Failed to parse start date in gtfs-rt trip update: \n{}",tripUpdate);
           continue;
         }
@@ -67,7 +67,7 @@ LOG.info("Applied {} trip updates.",appliedBlockCount);
 }
 LOG.debug("end of update message");
 if (purgeExpiredData) {
-boolean modified=purgeExpiredData();
+final boolean modified=purgeExpiredData();
 getTimetableSnapshot(modified);
 }
  else {
