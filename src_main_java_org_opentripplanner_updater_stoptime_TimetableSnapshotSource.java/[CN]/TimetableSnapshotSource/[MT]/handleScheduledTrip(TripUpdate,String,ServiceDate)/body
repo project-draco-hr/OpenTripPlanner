@@ -1,7 +1,7 @@
 {
-  TripDescriptor tripDescriptor=tripUpdate.getTrip();
-  String tripId=tripDescriptor.getTripId();
-  TripPattern pattern=getPatternForTripId(feedId,tripId);
+  final TripDescriptor tripDescriptor=tripUpdate.getTrip();
+  final String tripId=tripDescriptor.getTripId();
+  final TripPattern pattern=getPatternForTripId(feedId,tripId);
   if (pattern == null) {
     LOG.warn("No pattern found for tripId {}, skipping TripUpdate.",tripId);
     return false;
@@ -10,10 +10,11 @@
     LOG.warn("TripUpdate contains no updates, skipping.");
     return false;
   }
-  TripTimes updatedTripTimes=pattern.scheduledTimetable.createUpdatedTripTimes(tripUpdate,timeZone,serviceDate);
+  final TripTimes updatedTripTimes=pattern.scheduledTimetable.createUpdatedTripTimes(tripUpdate,timeZone,serviceDate);
   if (updatedTripTimes == null) {
     return false;
   }
-  boolean success=buffer.update(feedId,pattern,updatedTripTimes,serviceDate);
+  updatedTripTimes.setRealTimeState(RealTimeState.UDPATED);
+  final boolean success=buffer.update(feedId,pattern,updatedTripTimes,serviceDate);
   return success;
 }

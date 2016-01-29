@@ -1,5 +1,5 @@
 {
-  Hasher hasher=hashFunction.newHasher();
+  final Hasher hasher=hashFunction.newHasher();
   for (int hop=0; hop < getNumStops() - 1; hop++) {
     hasher.putInt(getScheduledDepartureTime(hop));
     hasher.putInt(getScheduledArrivalTime(hop + 1));

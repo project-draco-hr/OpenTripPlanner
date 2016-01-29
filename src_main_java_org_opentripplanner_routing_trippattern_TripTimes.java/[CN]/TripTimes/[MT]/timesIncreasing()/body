@@ -1,9 +1,9 @@
 {
-  int nStops=scheduledArrivalTimes.length;
+  final int nStops=scheduledArrivalTimes.length;
   int prevDep=-1;
   for (int s=0; s < nStops; s++) {
-    int arr=getArrivalTime(s);
-    int dep=getDepartureTime(s);
+    final int arr=getArrivalTime(s);
+    final int dep=getDepartureTime(s);
     if (dep < arr) {
       LOG.error("Negative dwell time in TripTimes at stop index {}.",s);
       return false;
