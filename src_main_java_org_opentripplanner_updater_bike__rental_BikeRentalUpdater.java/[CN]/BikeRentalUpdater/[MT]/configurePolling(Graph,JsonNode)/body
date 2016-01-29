@@ -34,6 +34,9 @@
  else     if (sourceType.equals("kml")) {
       source=new GenericKmlBikeRentalDataSource();
     }
+ else     if (sourceType.equals("sf-bay-area")) {
+      source=new SanFranciscoBayAreaBikeRentalDataSource(networkName);
+    }
   }
   if (source == null) {
     throw new IllegalArgumentException("Unknown bike rental source type: " + sourceType);
