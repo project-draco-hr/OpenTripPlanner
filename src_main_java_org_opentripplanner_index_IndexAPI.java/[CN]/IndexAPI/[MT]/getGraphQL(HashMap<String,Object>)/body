@@ -1,0 +1,10 @@
+{
+  Map<String,Object> variables;
+  if (query.get("variables") instanceof Map) {
+    variables=(Map)query.get("variables");
+  }
+ else {
+    variables=new HashMap<>();
+  }
+  return index.getGraphQLResponse((String)query.get("query"),variables);
+}

@@ -1,0 +1,9 @@
+{
+  for (  Map<String,Agency> agencyForId : agenciesForFeedId.values()) {
+    Agency agency=agencyForId.get(agencyId);
+    if (agency != null) {
+      return agency;
+    }
+  }
+  return null;
+}
