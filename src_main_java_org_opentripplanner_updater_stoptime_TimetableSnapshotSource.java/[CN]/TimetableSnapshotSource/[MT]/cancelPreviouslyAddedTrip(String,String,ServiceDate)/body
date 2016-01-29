@@ -1,14 +1,14 @@
 {
   boolean success=false;
-  TripPattern pattern=buffer.getLastAddedTripPattern(feedId,tripId,serviceDate);
+  final TripPattern pattern=buffer.getLastAddedTripPattern(feedId,tripId,serviceDate);
   if (pattern != null) {
-    Timetable timetable=buffer.resolve(pattern,serviceDate);
-    int tripIndex=timetable.getTripIndex(tripId);
+    final Timetable timetable=buffer.resolve(pattern,serviceDate);
+    final int tripIndex=timetable.getTripIndex(tripId);
     if (tripIndex == -1) {
       LOG.warn("Could not cancel previously added trip {}",tripId);
     }
  else {
-      TripTimes newTripTimes=new TripTimes(timetable.getTripTimes(tripIndex));
+      final TripTimes newTripTimes=new TripTimes(timetable.getTripTimes(tripIndex));
       newTripTimes.cancel();
       buffer.update(feedId,pattern,newTripTimes,serviceDate);
       success=true;

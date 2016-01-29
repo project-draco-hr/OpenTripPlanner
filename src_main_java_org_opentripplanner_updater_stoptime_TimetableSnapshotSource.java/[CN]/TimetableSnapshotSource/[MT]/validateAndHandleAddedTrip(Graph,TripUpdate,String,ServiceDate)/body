@@ -2,13 +2,13 @@
   Preconditions.checkNotNull(graph);
   Preconditions.checkNotNull(tripUpdate);
   Preconditions.checkNotNull(serviceDate);
-  TripDescriptor tripDescriptor=tripUpdate.getTrip();
+  final TripDescriptor tripDescriptor=tripUpdate.getTrip();
   if (!tripDescriptor.hasTripId()) {
     LOG.warn("No trip id found for ADDED trip, skipping.");
     return false;
   }
-  String tripId=tripDescriptor.getTripId();
-  Trip trip=getTripForTripId(feedId,tripId);
+  final String tripId=tripDescriptor.getTripId();
+  final Trip trip=getTripForTripId(feedId,tripId);
   if (trip != null) {
     LOG.warn("Graph already contains trip id of ADDED trip, skipping.");
     return false;
@@ -21,10 +21,10 @@
     LOG.warn("ADDED trip has less then two stops, skipping.");
     return false;
   }
-  List<Stop> stops=checkNewStopTimeUpdatesAndFindStops(feedId,tripUpdate);
+  final List<Stop> stops=checkNewStopTimeUpdatesAndFindStops(feedId,tripUpdate);
   if (stops == null) {
     return false;
   }
-  boolean success=handleAddedTrip(graph,tripUpdate,stops,feedId,serviceDate);
+  final boolean success=handleAddedTrip(graph,tripUpdate,stops,feedId,serviceDate);
   return success;
 }
