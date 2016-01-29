@@ -1,0 +1,17 @@
+{
+  RoutingRequest rr=new RoutingRequest(TraverseMode.WALK);
+  rr.from=new GenericLocation(lat,lon);
+  rr.to=new GenericLocation(lat,lon);
+  rr.setRoutingContext(graph);
+  rr.batch=true;
+  rr.walkSpeed=1;
+  rr.dominanceFunction=new DominanceFunction.LeastWalk();
+  rr.worstTime=(rr.dateTime + radius);
+  AStar astar=new AStar();
+  rr.setNumItineraries(1);
+  StopFinderTraverseVisitor visitor=new StopFinderTraverseVisitor();
+  astar.setTraverseVisitor(visitor);
+  astar.getShortestPathTree(rr,1);
+  rr.rctx.destroy();
+  return visitor.stopsFound;
+}

@@ -1,0 +1,7 @@
+{
+  Set<Agency> allAgencies=new HashSet<>();
+  for (  Map<String,Agency> agencyForId : agenciesForFeedId.values()) {
+    allAgencies.addAll(agencyForId.values());
+  }
+  return allAgencies;
+}

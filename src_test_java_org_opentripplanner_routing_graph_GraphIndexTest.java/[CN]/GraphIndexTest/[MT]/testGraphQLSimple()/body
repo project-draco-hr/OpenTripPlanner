@@ -1,0 +1,6 @@
+{
+  String query="query Agency{" + "    agency(id: \"agency\"){" + "        name"+ "    }"+ "}";
+  ExecutionResult result=graph.index.graphQL.execute(query);
+  assertTrue(result.getErrors().isEmpty());
+  assertEquals("Fake Agency",((Map)result.getData().get("agency")).get("name"));
+}
