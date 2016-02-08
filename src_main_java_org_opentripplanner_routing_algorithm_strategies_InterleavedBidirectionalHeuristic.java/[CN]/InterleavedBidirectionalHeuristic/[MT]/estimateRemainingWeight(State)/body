@@ -1,16 +1,22 @@
 {
   final Vertex v=s.getVertex();
-  if (v instanceof StreetLocation)   return 0;
-  double weight=weights.get(v);
+  if (v instanceof StreetLocation) {
+    return 0;
+  }
   if (v instanceof StreetVertex) {
-    if (weight == -1 && s.isEverBoarded())     return Double.POSITIVE_INFINITY;
-    if (weight < 0)     return 0;
-    return weight;
+    if (s.isEverBoarded()) {
+      return verticesNearTarget.get(v);
+    }
+ else {
+      if (verticesNearOrigin.containsKey(v)) {
+        return 0;
+      }
+ else {
+        return Double.POSITIVE_INFINITY;
+      }
+    }
   }
-  if (weight == Double.POSITIVE_INFINITY) {
-    double dist=SphericalDistanceLibrary.fastDistance(v.getY(),v.getX(),target.getY(),target.getX());
-    double time=dist / MAX_TRANSIT_SPEED;
-    return Math.max(maxFound,time);
+ else {
+    return 0;
   }
-  return weight;
 }
