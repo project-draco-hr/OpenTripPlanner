@@ -17,6 +17,12 @@
     }
   }
  else {
-    return 0;
+    double h=verticesNearTarget.get(v);
+    if (h == Double.POSITIVE_INFINITY) {
+      return maxWeightSeen;
+    }
+ else {
+      return h;
+    }
   }
 }

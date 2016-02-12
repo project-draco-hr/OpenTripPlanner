@@ -20,12 +20,12 @@
       if (!reqs.canBeTraversed(se)) {
         continue;
       }
-      double preferrence=1;
+      double preference=1;
       if (preferredEdges != null && preferredEdges.contains(e)) {
-        preferrence=3.0;
+        preference=3.0;
       }
       TraverseModeSet modes=reqs.modes;
-      CandidateEdge ce=new CandidateEdge(se,location,preferrence,modes);
+      CandidateEdge ce=new CandidateEdge(se,location,preference,modes);
       if (ce.distance < radius) {
         candidateEdges.add(ce);
       }
