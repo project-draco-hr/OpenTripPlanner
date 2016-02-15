@@ -5,10 +5,10 @@
   }
   if (v instanceof StreetVertex) {
     if (s.isEverBoarded()) {
-      return verticesNearTarget.get(v);
+      return postBoardingWeights.get(v);
     }
  else {
-      if (verticesNearOrigin.containsKey(v)) {
+      if (preTransitVertices.contains(v)) {
         return 0;
       }
  else {
@@ -17,7 +17,7 @@
     }
   }
  else {
-    double h=verticesNearTarget.get(v);
+    double h=postBoardingWeights.get(v);
     if (h == Double.POSITIVE_INFINITY) {
       return maxWeightSeen;
     }

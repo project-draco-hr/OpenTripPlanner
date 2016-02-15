@@ -12,13 +12,14 @@
   request.softWalkLimiting=false;
   request.softPreTransitLimiting=false;
   transitQueue=new BinHeap<>();
-  verticesNearOrigin=streetSearch(request,false,abortTime);
-  if (verticesNearOrigin == null) {
+  TObjectDoubleMap<Vertex> forwardStreetSearchResults=streetSearch(request,false,abortTime);
+  if (forwardStreetSearchResults == null) {
     return;
   }
+  preTransitVertices=forwardStreetSearchResults.keySet();
   LOG.debug("end forward street search {} ms",System.currentTimeMillis() - start);
-  verticesNearTarget=streetSearch(request,true,abortTime);
-  if (verticesNearTarget == null) {
+  postBoardingWeights=streetSearch(request,true,abortTime);
+  if (postBoardingWeights == null) {
     return;
   }
   LOG.debug("end backward street search {} ms",System.currentTimeMillis() - start);

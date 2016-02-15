@@ -8,9 +8,9 @@
     int uWeight=(int)transitQueue.peek_min_key();
     Vertex u=transitQueue.extract_min();
     maxWeightSeen=uWeight;
-    double uWeightOld=verticesNearTarget.get(u);
+    double uWeightOld=postBoardingWeights.get(u);
     if (uWeight < uWeightOld) {
-      verticesNearTarget.put(u,uWeight);
+      postBoardingWeights.put(u,uWeight);
     }
  else {
       continue;
@@ -25,7 +25,7 @@
         continue;
       }
       double vWeight=uWeight + edgeWeight;
-      double vWeightOld=verticesNearTarget.get(v);
+      double vWeightOld=postBoardingWeights.get(v);
       if (vWeight < vWeightOld) {
         transitQueue.insert(v,vWeight);
       }
