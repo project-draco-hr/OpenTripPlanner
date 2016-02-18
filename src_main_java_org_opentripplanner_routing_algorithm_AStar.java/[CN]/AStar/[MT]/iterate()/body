@@ -3,6 +3,7 @@
     double w=runState.pq.peek_min_key();
     System.out.println("pq min key = " + w);
   }
+  runState.heuristic.doSomeWork();
   runState.u=runState.pq.extract_min();
   if (!runState.spt.visit(runState.u)) {
     return false;
