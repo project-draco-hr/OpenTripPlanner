@@ -1,26 +1,33 @@
 {
   if (finished)   return;
   for (int i=0; i < HEURISTIC_STEPS_PER_MAIN_STEP; ++i) {
-    if (q.empty()) {
-      LOG.debug("Emptied SSSP queue.");
+    if (transitQueue.empty()) {
       finished=true;
       break;
     }
-    double uw=q.peek_min_key();
-    Vertex u=q.extract_min();
-    maxFound=uw;
-    for (    Edge e : options.arriveBy ? u.getOutgoing() : u.getIncoming()) {
-      if (e instanceof StreetTransitLink)       continue;
-      Vertex v=options.arriveBy ? e.getToVertex() : e.getFromVertex();
-      double ew=e.weightLowerBound(options);
-      if (Double.isInfinite(ew)) {
+    int uWeight=(int)transitQueue.peek_min_key();
+    Vertex u=transitQueue.extract_min();
+    maxWeightSeen=uWeight;
+    double uWeightOld=postBoardingWeights.get(u);
+    if (uWeight < uWeightOld) {
+      postBoardingWeights.put(u,uWeight);
+    }
+ else {
+      continue;
+    }
+    for (    Edge e : routingRequest.arriveBy ? u.getOutgoing() : u.getIncoming()) {
+      if (e instanceof StreetTransitLink) {
         continue;
       }
-      double vw=uw + ew;
-      double old_vw=weights.get(v);
-      if (vw < old_vw) {
-        weights.put(v,vw);
-        q.insert(v,vw);
+      Vertex v=routingRequest.arriveBy ? e.getToVertex() : e.getFromVertex();
+      double edgeWeight=e.weightLowerBound(routingRequest);
+      if (Double.isInfinite(edgeWeight)) {
+        continue;
+      }
+      double vWeight=uWeight + edgeWeight;
+      double vWeightOld=postBoardingWeights.get(v);
+      if (vWeight < vWeightOld) {
+        transitQueue.insert(v,vWeight);
       }
     }
   }
