@@ -20,6 +20,7 @@
   }
  else   if (vertex instanceof BikeRentalStationVertex) {
     place.vertexType=VertexType.BIKESHARE;
+    place.stopId=AgencyAndId.convertFromString(((BikeRentalStationVertex)vertex).getId());
   }
  else   if (vertex instanceof BikeParkVertex) {
     place.vertexType=VertexType.BIKEPARK;
