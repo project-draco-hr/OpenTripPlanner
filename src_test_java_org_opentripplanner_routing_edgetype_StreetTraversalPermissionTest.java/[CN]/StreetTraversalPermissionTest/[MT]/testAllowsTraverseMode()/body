@@ -2,6 +2,5 @@
   StreetTraversalPermission perm1=StreetTraversalPermission.ALL;
   assertTrue(perm1.allows(TraverseMode.CAR));
   assertTrue(perm1.allows(TraverseMode.WALK));
-  assertFalse(perm1.allows(TraverseMode.BUS));
-  assertFalse(perm1.allows(TraverseMode.TRAINISH));
+  assertFalse(perm1.allows(TraverseMode.TRANSIT));
 }
