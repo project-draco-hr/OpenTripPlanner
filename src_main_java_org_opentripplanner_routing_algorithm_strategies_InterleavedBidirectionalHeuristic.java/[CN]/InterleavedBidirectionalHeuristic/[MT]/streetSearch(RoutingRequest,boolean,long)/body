@@ -1,4 +1,5 @@
 {
+  LOG.debug("Heuristic street search around the {}.",fromTarget ? "target" : "origin");
   rr=rr.clone();
   if (fromTarget) {
     rr.setArriveBy(!rr.arriveBy);
@@ -38,5 +39,7 @@
       }
     }
   }
+  LOG.debug("Heuristric street search hit {} vertices.",vertices.size());
+  LOG.debug("Heuristric street search hit {} transit stops.",transitQueue.size());
   return vertices;
 }
