@@ -18,6 +18,7 @@
       CalendarServiceData data=csfactory.createData();
       service.addData(data,dao);
       hf.subwayAccessTime=gtfsBundle.subwayAccessTime;
+      hf.maxInterlineDistance=gtfsBundle.maxInterlineDistance;
       hf.run(graph);
       if (gtfsBundle.doesTransfersTxtDefineStationPaths()) {
         hf.createTransfersTxtTransfers();
