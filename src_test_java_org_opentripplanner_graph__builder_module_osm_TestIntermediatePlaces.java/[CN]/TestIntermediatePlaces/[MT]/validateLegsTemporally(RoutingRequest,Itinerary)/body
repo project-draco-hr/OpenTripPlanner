@@ -1,0 +1,23 @@
+{
+  Calendar departTime=Calendar.getInstance(timeZone);
+  Calendar arriveTime=Calendar.getInstance(timeZone);
+  if (request.arriveBy) {
+    departTime.setTimeInMillis(0);
+    arriveTime.setTimeInMillis(request.dateTime);
+  }
+ else {
+    departTime.setTimeInMillis(request.dateTime);
+    arriveTime.setTimeInMillis(Long.MAX_VALUE);
+  }
+  long sumOfDuration=0;
+  for (  Leg leg : itinerary.legs) {
+    assertFalse(departTime.after(leg.startTime));
+    assertEquals(leg.startTime,leg.from.departure);
+    assertEquals(leg.endTime,leg.to.arrival);
+    assertFalse(leg.startTime.after(leg.endTime));
+    departTime=leg.to.arrival;
+    sumOfDuration+=leg.getDuration();
+  }
+  assertFalse(departTime.after(arriveTime));
+  assertEquals(sumOfDuration,itinerary.duration.longValue());
+}

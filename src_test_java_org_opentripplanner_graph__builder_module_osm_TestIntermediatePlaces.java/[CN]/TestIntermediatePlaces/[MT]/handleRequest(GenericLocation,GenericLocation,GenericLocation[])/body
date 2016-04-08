@@ -1,0 +1,19 @@
+{
+  RoutingRequest request=new RoutingRequest("WALK");
+  request.from=from;
+  request.to=to;
+  for (  GenericLocation intermediateLocation : via) {
+    request.addIntermediatePlace(intermediateLocation);
+  }
+  List<GraphPath> pathList=graphPathFinder.graphPathFinderEntryPoint(request);
+  assertNotNull(pathList);
+  assertFalse(pathList.isEmpty());
+  TripPlan plan=GraphPathToTripPlanConverter.generatePlan(pathList,request);
+  assertLocationIsVeryCloseToPlace(from,plan.from);
+  assertLocationIsVeryCloseToPlace(to,plan.to);
+  assertEquals(1,plan.itinerary.size());
+  Itinerary itinerary=plan.itinerary.get(0);
+  assertEquals(1 + via.length,itinerary.legs.size());
+  validateLegsTemporally(request,itinerary);
+  validateLegsSpatially(plan,itinerary);
+}
