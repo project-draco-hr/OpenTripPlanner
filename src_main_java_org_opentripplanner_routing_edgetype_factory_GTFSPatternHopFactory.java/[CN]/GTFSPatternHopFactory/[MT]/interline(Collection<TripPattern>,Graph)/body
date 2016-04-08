@@ -28,7 +28,7 @@
         Stop fromStop=prevPattern.getStop(prevPattern.getStops().size() - 1);
         Stop toStop=currPattern.getStop(0);
         double teleportationDistance=SphericalDistanceLibrary.fastDistance(fromStop.getLat(),fromStop.getLon(),toStop.getLat(),toStop.getLon());
-        if (teleportationDistance > 200) {
+        if (teleportationDistance > maxInterlineDistance) {
         }
  else {
           interlines.put(new P2<TripPattern>(prevPattern,currPattern),new P2<Trip>(prev.trip,curr.trip));
