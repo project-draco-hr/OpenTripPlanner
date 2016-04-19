@@ -39,6 +39,14 @@
     }
   }
   LOG.info("Timeouts for router '{}': {}",this.id,this.timeouts);
+  JsonNode requestLogFile=config.get("requestLogFile");
+  if (requestLogFile != null) {
+    this.requestLogger=createLogger(requestLogFile.asText());
+    LOG.info("Logging incoming requests at '{}'",requestLogFile.asText());
+  }
+ else {
+    LOG.info("Incoming requests will not be logged.");
+  }
   JsonNode boardTimes=config.get("boardTimes");
   if (boardTimes != null && boardTimes.isObject()) {
     graph.boardTimes=new EnumMap<>(TraverseMode.class);
