@@ -7,7 +7,8 @@
     StopTime st=it.next();
     if (prev != null) {
       if (prev.getStop().equals(st.getStop())) {
-        st.setDepartureTime(st.getDepartureTime());
+        if (prev.getArrivalTime() == StopTime.MISSING_VALUE)         prev.setArrivalTime(st.getArrivalTime());
+        if (st.getDepartureTime() != StopTime.MISSING_VALUE)         prev.setDepartureTime(st.getDepartureTime());
         it.remove();
         stopSequencesRemoved.add(st.getStopSequence());
       }

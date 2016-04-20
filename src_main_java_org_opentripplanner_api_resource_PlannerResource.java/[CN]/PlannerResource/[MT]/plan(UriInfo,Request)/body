@@ -1,0 +1,57 @@
+{
+  Response response=new Response(uriInfo);
+  RoutingRequest request=null;
+  Router router=null;
+  List<GraphPath> paths=null;
+  try {
+    request=super.buildRequest();
+    router=otpServer.getRouter(request.routerId);
+    GraphPathFinder gpFinder=new GraphPathFinder(router);
+    paths=gpFinder.graphPathFinderEntryPoint(request);
+    TripPlan plan=GraphPathToTripPlanConverter.generatePlan(paths,request);
+    response.setPlan(plan);
+  }
+ catch (  Exception e) {
+    PlannerError error=new PlannerError(e);
+    if (!PlannerError.isPlanningError(e.getClass()))     LOG.warn("Error while planning path: ",e);
+    response.setError(error);
+  }
+ finally {
+    if (request != null) {
+      if (request.rctx != null) {
+        response.debugOutput=request.rctx.debugOutput;
+      }
+      request.cleanup();
+    }
+  }
+  if (request != null && router != null && router.requestLogger != null) {
+    StringBuilder sb=new StringBuilder();
+    String clientIpAddress=grizzlyRequest.getRemoteAddr();
+    sb.append(clientIpAddress);
+    sb.append(' ');
+    sb.append(request.arriveBy ? "ARRIVE" : "DEPART");
+    sb.append(' ');
+    sb.append(LocalDateTime.ofInstant(Instant.ofEpochSecond(request.dateTime),ZoneId.systemDefault()));
+    sb.append(' ');
+    sb.append(request.modes.getAsStr());
+    sb.append(' ');
+    sb.append(request.from.lat);
+    sb.append(' ');
+    sb.append(request.from.lng);
+    sb.append(' ');
+    sb.append(request.to.lat);
+    sb.append(' ');
+    sb.append(request.to.lng);
+    sb.append(' ');
+    if (paths != null) {
+      for (      GraphPath path : paths) {
+        sb.append(path.getDuration());
+        sb.append(' ');
+        sb.append(path.getTrips().size());
+        sb.append(' ');
+      }
+    }
+    router.requestLogger.info(sb.toString());
+  }
+  return response;
+}

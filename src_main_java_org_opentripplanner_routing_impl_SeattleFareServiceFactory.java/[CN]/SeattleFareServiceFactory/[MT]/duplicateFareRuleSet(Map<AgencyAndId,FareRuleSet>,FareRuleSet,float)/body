@@ -1,8 +1,0 @@
-{
-  FareAttribute fare=createInternalFareAttribute(price);
-  FareRuleSet newFareRule=new FareRuleSet(fare);
-  for (  P2<String> originDestZone : fareRule.getOriginDestinations()) {
-    newFareRule.addOriginDestination(originDestZone.first,originDestZone.second);
-  }
-  fareRules.put(fare.getId(),newFareRule);
-}

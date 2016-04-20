@@ -20,7 +20,7 @@
     heuristic=new TrivialRemainingWeightHeuristic();
   }
  else   if (options.modes.isTransit()) {
-    heuristic=new WalkConstrainingHeuristic();
+    heuristic=new InterleavedBidirectionalHeuristic();
   }
  else {
     heuristic=new EuclideanRemainingWeightHeuristic();

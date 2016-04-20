@@ -1,30 +1,30 @@
 {
-  Vertex target=options.rctx.target;
+  Vertex target=request.rctx.target;
   if (target == this.target) {
     LOG.debug("Reusing existing heuristic, the target vertex has not changed.");
     return;
   }
+  LOG.debug("Initializing heuristic computation.");
+  this.graph=request.rctx.graph;
   long start=System.currentTimeMillis();
   this.target=target;
-  int nVertices=graph.countVertices();
-  weights=new TObjectDoubleHashMap((int)(Math.log(nVertices)) + 1,0.5f,Double.POSITIVE_INFINITY);
-  this.options=options;
-  this.origin=origin;
-  options.softWalkLimiting=false;
-  options.softPreTransitLimiting=false;
-  LOG.debug("initializing heuristic computation thread");
-  List<State> search=streetSearch(options,false,abortTime);
-  if (search == null)   return;
-  LOG.debug("end foreward street search {} ms",System.currentTimeMillis() - start);
-  q=new BinHeap<Vertex>();
-  search=streetSearch(options,true,abortTime);
-  if (search == null)   return;
-  for (  State stopState : search) {
-    q.insert(stopState.getVertex(),stopState.getWeight());
+  this.routingRequest=request;
+  request.softWalkLimiting=false;
+  request.softPreTransitLimiting=false;
+  transitQueue=new BinHeap<>();
+  TObjectDoubleMap<Vertex> forwardStreetSearchResults=streetSearch(request,false,abortTime);
+  if (forwardStreetSearchResults == null) {
+    return;
+  }
+  preTransitVertices=forwardStreetSearchResults.keySet();
+  LOG.debug("end forward street search {} ms",System.currentTimeMillis() - start);
+  postBoardingWeights=streetSearch(request,true,abortTime);
+  if (postBoardingWeights == null) {
+    return;
   }
   LOG.debug("end backward street search {} ms",System.currentTimeMillis() - start);
-  options.setMaxWalkDistance(Double.POSITIVE_INFINITY);
-  options.setMaxPreTransitTime(Integer.MAX_VALUE);
+  request.setMaxWalkDistance(Double.POSITIVE_INFINITY);
+  request.setMaxPreTransitTime(Integer.MAX_VALUE);
   LOG.debug("initialized SSSP");
-  options.rctx.debugOutput.finishedPrecalculating();
+  request.rctx.debugOutput.finishedPrecalculating();
 }
