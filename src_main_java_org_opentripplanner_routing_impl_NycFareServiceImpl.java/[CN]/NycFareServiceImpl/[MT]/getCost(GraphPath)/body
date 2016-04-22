@@ -4,6 +4,9 @@
   final List<AgencyAndId> SIR_BONUS_STOPS=makeMtaStopList("140","420","419","418","M22","M23","R27","R26");
   final List<AgencyAndId> SIR_BONUS_ROUTES=makeMtaStopList("M5","M20","M15-SBS");
   final List<AgencyAndId> CANARSIE=makeMtaStopList("L29","303345");
+  final List<String> AGENCIES=new ArrayList<>();
+  AGENCIES.add("MTABC");
+  AGENCIES.add("MTA NYCT");
   LinkedList<State> states=path.states;
   List<Ride> rides=new ArrayList<Ride>();
   Ride newRide=null;
@@ -31,6 +34,10 @@
       continue;
     }
     AgencyAndId routeId=state.getRoute();
+    String agencyId=state.getBackTrip().getRoute().getAgency().getId();
+    if (!AGENCIES.contains(agencyId)) {
+      continue;
+    }
     if (routeId == null) {
       newRide=null;
     }
