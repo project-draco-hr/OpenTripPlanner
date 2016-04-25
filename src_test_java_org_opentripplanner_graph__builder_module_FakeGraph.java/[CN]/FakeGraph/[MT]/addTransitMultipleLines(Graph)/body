@@ -13,12 +13,7 @@
   r.agency=a;
   r.route_id="route";
   feed.routes.put(r.route_id,r);
-  Service s=new Service("service");
-  s.calendar=new Calendar();
-  s.calendar.service=s;
-  s.calendar.monday=s.calendar.tuesday=s.calendar.wednesday=s.calendar.thursday=s.calendar.friday=s.calendar.saturday=s.calendar.sunday=1;
-  s.calendar.start_date=19991231;
-  s.calendar.end_date=21001231;
+  Service s=createDummyService();
   feed.services.put(s.service_id,s);
   int stopIdx=0;
   while (stopIdx < 10000) {
