@@ -1,10 +1,6 @@
 {
   GTFSFeed feed=new GTFSFeed();
-  Agency a=new Agency();
-  a.agency_id="agency";
-  a.agency_name="Agency";
-  a.agency_timezone="America/New_York";
-  a.agency_url=new URL("http://www.example.com");
+  Agency a=createDummyAgency("agency","Agency","America/New_York");
   feed.agency.put("agency",a);
   Route r=new Route();
   r.route_short_name="1";
