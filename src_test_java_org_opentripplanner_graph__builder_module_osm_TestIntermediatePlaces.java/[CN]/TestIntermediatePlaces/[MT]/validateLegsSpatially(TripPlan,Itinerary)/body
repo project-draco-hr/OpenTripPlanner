@@ -1,8 +1,8 @@
 {
   Place place=plan.from;
   for (  Leg leg : itinerary.legs) {
-    assertPlacesAreEqual(place,leg.from);
+    assertPlacesAreVeryClose(place,leg.from);
     place=leg.to;
   }
-  assertPlacesAreEqual(place,plan.to);
+  assertPlacesAreVeryClose(place,plan.to);
 }

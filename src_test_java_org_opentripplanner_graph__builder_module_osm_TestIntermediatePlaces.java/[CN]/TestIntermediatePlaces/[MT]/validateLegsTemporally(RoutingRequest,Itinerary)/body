@@ -2,12 +2,12 @@
   Calendar departTime=Calendar.getInstance(timeZone);
   Calendar arriveTime=Calendar.getInstance(timeZone);
   if (request.arriveBy) {
-    departTime.setTimeInMillis(0);
-    arriveTime.setTimeInMillis(request.dateTime);
+    departTime=itinerary.legs.get(0).from.departure;
+    arriveTime.setTimeInMillis(request.dateTime * 1000);
   }
  else {
-    departTime.setTimeInMillis(request.dateTime);
-    arriveTime.setTimeInMillis(Long.MAX_VALUE);
+    departTime.setTimeInMillis(request.dateTime * 1000);
+    arriveTime=itinerary.legs.get(itinerary.legs.size() - 1).to.arrival;
   }
   long sumOfDuration=0;
   for (  Leg leg : itinerary.legs) {
@@ -18,6 +18,8 @@
     departTime=leg.to.arrival;
     sumOfDuration+=leg.getDuration();
   }
+  sumOfDuration+=itinerary.waitingTime;
   assertFalse(departTime.after(arriveTime));
-  assertEquals(sumOfDuration,itinerary.duration.longValue());
+  int accuracy=itinerary.legs.size();
+  assertEquals(sumOfDuration,itinerary.duration.doubleValue(),accuracy);
 }

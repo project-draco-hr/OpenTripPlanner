@@ -1,0 +1,12 @@
+{
+  int legIndex=0;
+  for (  GenericLocation location : via) {
+    Leg leg;
+    do {
+      assertTrue("Intermediate location was not an endpoint of any leg",legIndex < itinerary.legs.size());
+      leg=itinerary.legs.get(legIndex);
+      legIndex++;
+    }
+ while (Math.abs(leg.to.lat - location.lat) > DELTA || Math.abs(leg.to.lon - location.lng) > DELTA);
+  }
+}
