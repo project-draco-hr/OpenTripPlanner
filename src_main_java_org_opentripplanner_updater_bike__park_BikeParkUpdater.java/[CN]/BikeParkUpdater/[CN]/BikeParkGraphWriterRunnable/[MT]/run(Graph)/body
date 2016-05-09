@@ -6,7 +6,9 @@
     BikeParkVertex bikeParkVertex=verticesByPark.get(bikePark);
     if (bikeParkVertex == null) {
       bikeParkVertex=new BikeParkVertex(graph,bikePark);
-      networkLinkerLibrary.connectVertexToStreets(bikeParkVertex);
+      if (!linker.link(bikeParkVertex)) {
+        LOG.warn("{} not near any streets; it will not be usable.",bikePark);
+      }
       verticesByPark.put(bikePark,bikeParkVertex);
       new BikeParkEdge(bikeParkVertex);
     }
