@@ -1,0 +1,19 @@
+{
+  if (endVertex) {
+    LOG.debug("Finding end vertex for {}",location);
+  }
+ else {
+    LOG.debug("Finding start vertex for {}",location);
+  }
+  Coordinate coord=location.getCoordinate();
+  TemporaryStreetLocation closest=new TemporaryStreetLocation("corner " + Math.random(),coord,new NonLocalizedString("generated point"),endVertex);
+  TraverseModeSet modes=options.modes;
+  TraverseMode nonTransitMode=TraverseMode.WALK;
+  if (modes.getCar())   nonTransitMode=TraverseMode.CAR;
+ else   if (modes.getWalk())   nonTransitMode=TraverseMode.WALK;
+ else   if (modes.getBicycle())   nonTransitMode=TraverseMode.BICYCLE;
+  if (!link(closest,nonTransitMode)) {
+    LOG.warn("Couldn't link {}",location);
+  }
+  return closest;
+}

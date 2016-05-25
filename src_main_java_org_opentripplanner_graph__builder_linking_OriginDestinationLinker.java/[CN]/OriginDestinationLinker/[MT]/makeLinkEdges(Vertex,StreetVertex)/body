@@ -1,0 +1,11 @@
+{
+  TemporaryStreetLocation tse=(TemporaryStreetLocation)from;
+  if (tse.isEndVertex()) {
+    LOG.debug("Linking end vertex to {} -> {}",to,tse);
+    new TemporaryFreeEdge(to,tse);
+  }
+ else {
+    LOG.debug("Linking start vertex to {} -> {}",tse,to);
+    new TemporaryFreeEdge(tse,to);
+  }
+}

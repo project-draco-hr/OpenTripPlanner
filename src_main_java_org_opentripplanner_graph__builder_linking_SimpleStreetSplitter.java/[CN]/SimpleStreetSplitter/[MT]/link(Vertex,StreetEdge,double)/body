@@ -13,7 +13,13 @@
     makeLinkEdges(tstop,(StreetVertex)edge.getToVertex());
   }
  else {
-    SplitterVertex v0=split(edge,ll);
+    TemporaryVertex temporaryVertex=null;
+    boolean endVertex=false;
+    if (tstop instanceof TemporaryVertex) {
+      temporaryVertex=(TemporaryVertex)tstop;
+      endVertex=temporaryVertex.isEndVertex();
+    }
+    SplitterVertex v0=split(edge,ll,temporaryVertex != null,endVertex);
     makeLinkEdges(tstop,v0);
   }
 }
