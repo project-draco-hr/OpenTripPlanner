@@ -4,9 +4,16 @@
   final double xscale=Math.cos(vertex.getLat() * Math.PI / 180);
   env.expandBy(radiusDeg / xscale,radiusDeg);
   double duplicateDeg=SphericalDistanceLibrary.metersToDegrees(DUPLICATE_WAY_EPSILON_METERS);
+  final TraverseModeSet traverseModeSet;
+  if (traverseMode == TraverseMode.BICYCLE) {
+    traverseModeSet=new TraverseModeSet(traverseMode,TraverseMode.WALK);
+  }
+ else {
+    traverseModeSet=new TraverseModeSet(traverseMode);
+  }
   List<StreetEdge> candidateEdges=new ArrayList<StreetEdge>(Collections2.filter(idx.query(env),new Predicate<StreetEdge>(){
     @Override public boolean apply(    StreetEdge edge){
-      return edge.canTraverse(new TraverseModeSet(traverseMode)) && edge.getToVertex().getIncoming().contains(edge);
+      return edge.canTraverse(traverseModeSet) && edge.getToVertex().getIncoming().contains(edge);
     }
   }
 ));
