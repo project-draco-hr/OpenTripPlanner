@@ -24,5 +24,10 @@
       return false;
     }
   }
+  if (trips.size() != 0) {
+    if (!trips.containsAll(tripsVisited)) {
+      return false;
+    }
+  }
   return true;
 }

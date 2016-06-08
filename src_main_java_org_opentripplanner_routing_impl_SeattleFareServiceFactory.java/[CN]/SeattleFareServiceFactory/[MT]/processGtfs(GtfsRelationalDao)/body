@@ -1,0 +1,15 @@
+{
+  Map<AgencyAndId,FareRuleSet> feedFareRules=new HashMap<>();
+  fillFareRules(null,dao.getAllFareAttributes(),dao.getAllFareRules(),feedFareRules);
+  regularFareRules.putAll(feedFareRules);
+  Map<String,FareRuleSet> feedFareRulesById=new HashMap<>();
+  for (  FareRuleSet rule : regularFareRules.values()) {
+    String id=rule.getFareAttribute().getId().getId();
+    feedFareRulesById.put(id,rule);
+  }
+  for (  Trip trip : dao.getAllTrips()) {
+    String fareId=trip.getFareId();
+    FareRuleSet rule=feedFareRulesById.get(fareId);
+    if (rule != null)     rule.addTrip(trip.getId());
+  }
+}

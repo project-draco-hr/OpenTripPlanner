@@ -8,5 +8,6 @@
     newFareRule.addOriginDestination(originDestZone.first,originDestZone.second);
   }
   for (  AgencyAndId route : fareRule.getRoutes())   newFareRule.addRoute(route);
+  for (  AgencyAndId trip : fareRule.getTrips())   newFareRule.addTrip(trip);
   fareRules.put(fare.getId(),newFareRule);
 }
