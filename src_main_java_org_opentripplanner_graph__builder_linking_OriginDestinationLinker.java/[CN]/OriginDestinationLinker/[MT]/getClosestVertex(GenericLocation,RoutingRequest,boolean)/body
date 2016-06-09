@@ -6,7 +6,7 @@
     LOG.debug("Finding start vertex for {}",location);
   }
   Coordinate coord=location.getCoordinate();
-  TemporaryStreetLocation closest=new TemporaryStreetLocation("corner " + Math.random(),coord,new NonLocalizedString("generated point"),endVertex);
+  TemporaryStreetLocation closest=new TemporaryStreetLocation("Start point " + Math.random(),coord,new NonLocalizedString("Start point " + Math.random()),endVertex);
   TraverseMode nonTransitMode=TraverseMode.WALK;
   if (options != null) {
     TraverseModeSet modes=options.modes;
