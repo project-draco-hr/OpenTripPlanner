@@ -17,25 +17,4 @@
   edges=end.getIncoming();
   end.dispose();
   assertEquals(2,edges.size());
-  TemporaryStreetLocation location=(TemporaryStreetLocation)finder.getVertexForLocation(new GenericLocation(40.00999,-74.004999),new RoutingRequest(),false);
-  assertTrue(location.isWheelchairAccessible());
-  boolean found=false;
-  for (  Edge edge : location.getOutgoing()) {
-    if (edge instanceof TemporaryFreeEdge && edge.getToVertex().equals(station1)) {
-      found=true;
-    }
-  }
-  assertTrue(found);
-  location.dispose();
-  RoutingRequest walking=new RoutingRequest(TraverseMode.WALK);
-  start=(TemporaryStreetLocation)finder.getVertexForLocation(new GenericLocation(40.004,-74.0),walking,false);
-  end=(TemporaryStreetLocation)finder.getVertexForLocation(new GenericLocation(40.008,-74.0),walking,true);
-  assertNotNull(end);
-  walking.setRoutingContext(graph,start,end);
-  ShortestPathTree spt=aStar.getShortestPathTree(walking);
-  GraphPath path=spt.getPath(end,false);
-  for (  State s : path.states) {
-    assertFalse(s.getBackEdge() == top);
-  }
-  walking.cleanup();
 }
