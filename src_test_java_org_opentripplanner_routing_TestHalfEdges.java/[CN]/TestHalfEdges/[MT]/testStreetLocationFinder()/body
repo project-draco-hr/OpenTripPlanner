@@ -17,4 +17,8 @@
   edges=end.getIncoming();
   end.dispose();
   assertEquals(2,edges.size());
+  RoutingRequest walking=new RoutingRequest(TraverseMode.WALK);
+  start=(TemporaryStreetLocation)finder.getVertexForLocation(new GenericLocation(40.004,-74.0),walking,false);
+  exception.expect(TrivialPathException.class);
+  end=(TemporaryStreetLocation)finder.getVertexForLocation(new GenericLocation(40.008,-74.0),walking,true);
 }

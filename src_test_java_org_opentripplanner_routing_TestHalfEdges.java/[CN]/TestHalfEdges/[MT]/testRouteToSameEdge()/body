@@ -5,7 +5,7 @@
   turns.add(leftBack);
   TemporaryStreetLocation start=StreetVertexIndexServiceImpl.createTemporaryStreetLocation(graph,"start",new NonLocalizedString("start"),filter(turns,StreetEdge.class),new LinearLocation(0,0.4).getCoordinate(left.getGeometry()),false);
   TemporaryStreetLocation end=StreetVertexIndexServiceImpl.createTemporaryStreetLocation(graph,"end",new NonLocalizedString("end"),filter(turns,StreetEdge.class),new LinearLocation(0,0.8).getCoordinate(left.getGeometry()),true);
-  assertEquals(start.getX(),end.getX());
+  assertEquals(start.getX(),end.getX(),0.0001);
   assertTrue(start.getY() < end.getY());
   Collection<Edge> edges=end.getIncoming();
   assertEquals(2,edges.size());

@@ -38,7 +38,7 @@
   }
  while (i < candidateEdges.size() && distances.get(candidateEdges.get(i).getId()) - distances.get(candidateEdges.get(i - 1).getId()) < duplicateDeg);
   for (  StreetEdge edge : bestEdges) {
-    link(vertex,edge,xscale);
+    link(vertex,edge,xscale,options);
   }
   return true;
 }
