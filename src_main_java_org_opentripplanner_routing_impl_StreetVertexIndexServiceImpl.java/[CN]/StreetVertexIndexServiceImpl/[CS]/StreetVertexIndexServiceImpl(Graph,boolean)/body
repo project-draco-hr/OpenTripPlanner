@@ -14,6 +14,9 @@
   if (!hashGrid) {
     ((STRtree)edgeTree).build();
     ((STRtree)transitStopTree).build();
+    originDestinationLinker=new OriginDestinationLinker(this.graph);
   }
-  originDestinationLinker=new OriginDestinationLinker(this.graph);
+ else {
+    originDestinationLinker=new OriginDestinationLinker(this.graph,(HashGridSpatialIndex<Edge>)edgeTree);
+  }
 }

@@ -1,7 +1,3 @@
 {
-  this.graph=graph;
-  idx=new HashGridSpatialIndex<StreetEdge>();
-  for (  StreetEdge se : Iterables.filter(graph.getEdges(),StreetEdge.class)) {
-    idx.insert(se.getGeometry().getEnvelopeInternal(),se);
-  }
+  this(graph,null);
 }

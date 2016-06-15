@@ -1,0 +1,12 @@
+{
+  this.graph=graph;
+  if (hashGridSpatialIndex == null) {
+    idx=new HashGridSpatialIndex<Edge>();
+    for (    StreetEdge se : Iterables.filter(graph.getEdges(),StreetEdge.class)) {
+      idx.insert(se.getGeometry().getEnvelopeInternal(),se);
+    }
+  }
+ else {
+    idx=hashGridSpatialIndex;
+  }
+}
