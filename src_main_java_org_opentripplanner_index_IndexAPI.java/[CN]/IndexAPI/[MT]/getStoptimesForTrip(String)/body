@@ -3,7 +3,7 @@
   Trip trip=index.tripForId.get(tripId);
   if (trip != null) {
     TripPattern pattern=index.patternForTrip.get(trip);
-    Timetable table=pattern.scheduledTimetable;
+    Timetable table=index.currentUpdatedTimetableForTripPattern(pattern);
     return Response.status(Status.OK).entity(TripTimeShort.fromTripTimes(table,trip)).build();
   }
  else {
