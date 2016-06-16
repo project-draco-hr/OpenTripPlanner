@@ -19,6 +19,9 @@
       temporaryVertex=(TemporaryVertex)tstop;
       endVertex=temporaryVertex.isEndVertex();
     }
+    if (options != null) {
+      options.canSplitEdge(edge);
+    }
     SplitterVertex v0=split(edge,ll,temporaryVertex != null,endVertex);
     makeLinkEdges(tstop,v0);
   }

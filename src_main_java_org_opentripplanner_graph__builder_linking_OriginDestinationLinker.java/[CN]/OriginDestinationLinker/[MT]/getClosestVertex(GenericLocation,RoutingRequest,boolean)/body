@@ -21,7 +21,7 @@
  else     if (modes.getWalk())     nonTransitMode=TraverseMode.WALK;
  else     if (modes.getBicycle())     nonTransitMode=TraverseMode.BICYCLE;
   }
-  if (!link(closest,nonTransitMode)) {
+  if (!link(closest,nonTransitMode,options)) {
     LOG.warn("Couldn't link {}",location);
   }
   return closest;
