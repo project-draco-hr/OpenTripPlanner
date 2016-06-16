@@ -7,13 +7,18 @@
   }
   Coordinate coord=location.getCoordinate();
   String name;
-  if (endVertex) {
-    name="Destination ";
+  if (location.name == null || location.name.isEmpty()) {
+    if (endVertex) {
+      name="Destination";
+    }
+ else {
+      name="Origin";
+    }
   }
  else {
-    name="Origin ";
+    name=location.name;
   }
-  TemporaryStreetLocation closest=new TemporaryStreetLocation(name + Math.random(),coord,new NonLocalizedString(name + Math.random()),endVertex);
+  TemporaryStreetLocation closest=new TemporaryStreetLocation(UUID.randomUUID().toString(),coord,new NonLocalizedString(name),endVertex);
   TraverseMode nonTransitMode=TraverseMode.WALK;
   if (options != null) {
     TraverseModeSet modes=options.modes;
