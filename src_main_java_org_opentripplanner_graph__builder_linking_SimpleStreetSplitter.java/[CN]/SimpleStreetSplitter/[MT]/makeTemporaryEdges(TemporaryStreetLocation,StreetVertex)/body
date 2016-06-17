@@ -1,0 +1,16 @@
+{
+  if (destructiveSplitting) {
+    throw new RuntimeException("Destructive splitting is used on temporary edges. Something is wrong!");
+  }
+  if (to instanceof TemporarySplitterVertex) {
+    from.setWheelchairAccessible(((TemporarySplitterVertex)to).isWheelchairAccessible());
+  }
+  if (from.isEndVertex()) {
+    LOG.debug("Linking end vertex to {} -> {}",to,from);
+    new TemporaryFreeEdge(to,from);
+  }
+ else {
+    LOG.debug("Linking start vertex to {} -> {}",from,to);
+    new TemporaryFreeEdge(from,to);
+  }
+}

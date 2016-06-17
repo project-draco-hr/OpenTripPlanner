@@ -1,5 +1,14 @@
 {
-  if (from instanceof TransitStop)   makeTransitLinkEdges((TransitStop)from,to);
- else   if (from instanceof BikeRentalStationVertex)   makeBikeRentalLinkEdges((BikeRentalStationVertex)from,to);
- else   if (from instanceof BikeParkVertex)   makeBikeParkEdges((BikeParkVertex)from,to);
+  if (from instanceof TemporaryStreetLocation) {
+    makeTemporaryEdges((TemporaryStreetLocation)from,to);
+  }
+ else   if (from instanceof TransitStop) {
+    makeTransitLinkEdges((TransitStop)from,to);
+  }
+ else   if (from instanceof BikeRentalStationVertex) {
+    makeBikeRentalLinkEdges((BikeRentalStationVertex)from,to);
+  }
+ else   if (from instanceof BikeParkVertex) {
+    makeBikeParkEdges((BikeParkVertex)from,to);
+  }
 }

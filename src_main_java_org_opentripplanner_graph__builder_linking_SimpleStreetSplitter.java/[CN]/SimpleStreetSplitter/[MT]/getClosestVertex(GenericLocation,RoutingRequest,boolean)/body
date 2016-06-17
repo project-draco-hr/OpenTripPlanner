@@ -1,4 +1,7 @@
 {
+  if (destructiveSplitting) {
+    throw new RuntimeException("Origin and destination search is used with destructive splitting. Something is wrong!");
+  }
   if (endVertex) {
     LOG.debug("Finding end vertex for {}",location);
   }

@@ -1,4 +1,7 @@
 {
+  if (!destructiveSplitting) {
+    throw new RuntimeException("Bike park edges are created with non destructive splitting!");
+  }
   for (  StreetBikeParkLink sbpl : Iterables.filter(from.getOutgoing(),StreetBikeParkLink.class)) {
     if (sbpl.getToVertex() == to)     return;
   }

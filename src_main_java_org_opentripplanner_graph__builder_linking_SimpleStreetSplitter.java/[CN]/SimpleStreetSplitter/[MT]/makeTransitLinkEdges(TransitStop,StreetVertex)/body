@@ -1,4 +1,7 @@
 {
+  if (!destructiveSplitting) {
+    throw new RuntimeException("Transitedges are created with non destructive splitting!");
+  }
   for (  StreetTransitLink e : Iterables.filter(tstop.getOutgoing(),StreetTransitLink.class)) {
     if (e.getToVertex() == v)     return;
   }

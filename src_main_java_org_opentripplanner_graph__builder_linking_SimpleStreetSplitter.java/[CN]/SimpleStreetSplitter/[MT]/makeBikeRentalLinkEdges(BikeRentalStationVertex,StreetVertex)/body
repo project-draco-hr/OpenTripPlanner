@@ -1,4 +1,7 @@
 {
+  if (!destructiveSplitting) {
+    throw new RuntimeException("Bike rental edges are created with non destructive splitting!");
+  }
   for (  StreetBikeRentalLink sbrl : Iterables.filter(from.getOutgoing(),StreetBikeRentalLink.class)) {
     if (sbrl.getToVertex() == to)     return;
   }

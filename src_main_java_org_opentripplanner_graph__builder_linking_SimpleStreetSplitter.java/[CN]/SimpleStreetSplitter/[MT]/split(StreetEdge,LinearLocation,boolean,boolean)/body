@@ -15,7 +15,11 @@
     v=new SplitterVertex(graph,"split from " + edge.getId(),splitPoint.x,splitPoint.y,edge);
   }
   P2<StreetEdge> edges=edge.split(v,!temporarySplit);
-  updateIndex(edges);
-  removeOriginalEdge(edge);
+  if (destructiveSplitting) {
+    idx.insert(edges.first.getGeometry(),edges.first);
+    idx.insert(edges.second.getGeometry(),edges.second);
+    edge.getToVertex().removeIncoming(edge);
+    edge.getFromVertex().removeOutgoing(edge);
+  }
   return v;
 }

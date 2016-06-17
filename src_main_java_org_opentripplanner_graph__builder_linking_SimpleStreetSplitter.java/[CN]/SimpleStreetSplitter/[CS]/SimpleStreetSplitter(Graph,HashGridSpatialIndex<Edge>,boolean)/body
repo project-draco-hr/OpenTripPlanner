@@ -1,5 +1,6 @@
 {
   this.graph=graph;
+  this.destructiveSplitting=destructiveSplitting;
   if (hashGridSpatialIndex == null) {
     idx=new HashGridSpatialIndex<Edge>();
     for (    StreetEdge se : Iterables.filter(graph.getEdges(),StreetEdge.class)) {
