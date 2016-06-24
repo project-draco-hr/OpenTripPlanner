@@ -2,7 +2,7 @@
   for (  Vertex gv : graph.getVertices()) {
     Vertex v=gv;
     for (    Edge e : gv.getOutgoing()) {
-      if (e instanceof PatternEdge)       continue;
+      if (e instanceof PatternEdge || e instanceof SimpleTransfer)       continue;
       LineString geometry=e.getGeometry();
       if (geometry == null) {
         continue;
