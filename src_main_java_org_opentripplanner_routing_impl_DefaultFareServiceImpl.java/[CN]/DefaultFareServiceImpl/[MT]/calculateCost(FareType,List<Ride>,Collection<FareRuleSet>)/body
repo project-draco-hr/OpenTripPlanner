@@ -42,7 +42,7 @@
       if (attribute.isJourneyDurationSet() && journeyTime > attribute.getJourneyDuration()) {
         continue;
       }
-      float newFare=attribute.getPrice();
+      float newFare=getFarePrice(attribute,fareType);
       if (newFare < bestFare) {
         bestAttribute=attribute;
         bestFare=newFare;
