@@ -38,7 +38,7 @@
   }
   TraverseModeSet modes=sptRequestA.modes;
   LOG.debug("mode(s): " + modes);
-  if ((modes.contains(TraverseMode.TRANSIT)) || (modes.contains(TraverseMode.BUSISH)) || (modes.contains(TraverseMode.TRAINISH))) {
+  if (modes.contains(TraverseMode.TRANSIT)) {
     shedCalcMethodSwitchTimeInSec=60 * 20;
   }
  else   if (modes.contains(TraverseMode.CAR)) {
