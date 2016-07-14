@@ -3,7 +3,13 @@
     return jtsPolygon;
   }
   GeometryFactory factory=GeometryUtils.getGeometryFactory();
-  LinearRing shell=factory.createLinearRing(toCoordinates(geometry));
+  LinearRing shell;
+  try {
+    shell=factory.createLinearRing(toCoordinates(geometry));
+  }
+ catch (  IllegalArgumentException e) {
+    throw new RingConstructionException();
+  }
   List<Polygon> polygonHoles=new ArrayList<Polygon>();
   for (  Ring ring : holes) {
     LinearRing linearRing=factory.createLinearRing(toCoordinates(ring.geometry));
