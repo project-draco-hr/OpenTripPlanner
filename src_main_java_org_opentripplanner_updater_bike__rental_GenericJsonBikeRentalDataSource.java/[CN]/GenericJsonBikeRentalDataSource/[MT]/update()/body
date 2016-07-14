@@ -1,6 +1,14 @@
 {
   try {
-    InputStream data=HttpUtils.getData(url,"ApiKey",apiKey);
+    InputStream data=null;
+    URL url2=new URL(url);
+    String proto=url2.getProtocol();
+    if (proto.equals("http") || proto.equals("https")) {
+      data=HttpUtils.getData(url,"ApiKey",apiKey);
+    }
+ else {
+      data=url2.openStream();
+    }
     if (data == null) {
       log.warn("Failed to get data from url " + url);
       return false;
