@@ -19,6 +19,8 @@
     place.vertexType=VertexType.TRANSIT;
   }
  else   if (vertex instanceof BikeRentalStationVertex) {
+    place.bikeShareId=((BikeRentalStationVertex)vertex).getId();
+    LOG.trace("Added bike share Id {} to place",place.bikeShareId);
     place.vertexType=VertexType.BIKESHARE;
   }
  else   if (vertex instanceof BikeParkVertex) {
