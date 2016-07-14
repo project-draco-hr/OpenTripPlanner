@@ -1,0 +1,9 @@
+{
+  GenericLocation fromLocation=new GenericLocation(39.9908,-83.0118);
+  GenericLocation toLocation=new GenericLocation(39.9998,-83.0198);
+  GenericLocation[] intermediateLocations=new GenericLocation[2];
+  intermediateLocations[0]=new GenericLocation(40.0000,-82.900);
+  intermediateLocations[1]=new GenericLocation(39.9100,-83.100);
+  handleRequest(fromLocation,toLocation,intermediateLocations,"TRANSIT,WALK",false);
+  handleRequest(fromLocation,toLocation,intermediateLocations,"TRANSIT,WALK",true);
+}

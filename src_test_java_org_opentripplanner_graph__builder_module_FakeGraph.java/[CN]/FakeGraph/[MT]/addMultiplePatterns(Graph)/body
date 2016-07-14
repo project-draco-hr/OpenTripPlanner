@@ -1,10 +1,6 @@
 {
   GTFSFeed feed=new GTFSFeed();
-  Agency a=new Agency();
-  a.agency_id="agency";
-  a.agency_name="Agency";
-  a.agency_timezone="America/New_York";
-  a.agency_url=new URL("http://www.example.com");
+  Agency a=createDummyAgency("agency","Agency","America/New_York");
   feed.agency.put("agency",a);
   Route r=new Route();
   r.route_short_name="1";
@@ -13,12 +9,7 @@
   r.agency=a;
   r.route_id="route";
   feed.routes.put(r.route_id,r);
-  Service s=new Service("service");
-  s.calendar=new Calendar();
-  s.calendar.service=s;
-  s.calendar.monday=s.calendar.tuesday=s.calendar.wednesday=s.calendar.thursday=s.calendar.friday=s.calendar.saturday=s.calendar.sunday=1;
-  s.calendar.start_date=19991231;
-  s.calendar.end_date=21001231;
+  Service s=createDummyService();
   feed.services.put(s.service_id,s);
   com.conveyal.gtfs.model.Stop s1=new com.conveyal.gtfs.model.Stop();
   s1.stop_id=s1.stop_name="s1";

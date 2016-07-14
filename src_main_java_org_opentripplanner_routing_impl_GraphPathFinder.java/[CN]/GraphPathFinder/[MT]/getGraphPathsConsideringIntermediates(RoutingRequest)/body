@@ -1,27 +1,41 @@
 {
   if (request.hasIntermediatePlaces()) {
-    long time=request.dateTime;
-    GenericLocation from=request.from;
-    List<GenericLocation> places=Lists.newLinkedList(request.intermediatePlaces);
+    List<GenericLocation> places=Lists.newArrayList(request.from);
+    places.addAll(request.intermediatePlaces);
     places.add(request.to);
-    request.clearIntermediatePlaces();
+    long time=request.dateTime;
     List<GraphPath> paths=new ArrayList<>();
-    for (    GenericLocation to : places) {
-      request.dateTime=time;
-      request.from=from;
-      request.to=to;
-      request.rctx=null;
-      request.setRoutingContext(router.graph);
-      List<GraphPath> partialPaths=getPaths(request);
-      if (partialPaths == null || partialPaths.size() == 0) {
-        return null;
+    DebugOutput debugOutput=null;
+    int placeIndex=(request.arriveBy ? places.size() - 1 : 1);
+    while (0 < placeIndex && placeIndex < places.size()) {
+      RoutingRequest intermediateRequest=request.clone();
+      intermediateRequest.setNumItineraries(1);
+      intermediateRequest.dateTime=time;
+      intermediateRequest.from=places.get(placeIndex - 1);
+      intermediateRequest.to=places.get(placeIndex);
+      intermediateRequest.rctx=null;
+      intermediateRequest.setRoutingContext(router.graph);
+      if (debugOutput != null) {
+        intermediateRequest.rctx.debugOutput=debugOutput;
+      }
+ else {
+        debugOutput=intermediateRequest.rctx.debugOutput;
+      }
+      List<GraphPath> partialPaths=getPaths(intermediateRequest);
+      if (partialPaths.size() == 0) {
+        return partialPaths;
       }
       GraphPath path=partialPaths.get(0);
       paths.add(path);
-      from=to;
-      time=path.getEndTime();
+      time=(request.arriveBy ? path.getStartTime() : path.getEndTime());
+      placeIndex+=(request.arriveBy ? -1 : +1);
     }
-    return Arrays.asList(joinPaths(paths));
+    request.setRoutingContext(router.graph);
+    request.rctx.debugOutput=debugOutput;
+    if (request.arriveBy) {
+      Collections.reverse(paths);
+    }
+    return Collections.singletonList(joinPaths(paths));
   }
  else {
     return getPaths(request);
