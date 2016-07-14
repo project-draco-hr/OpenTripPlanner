@@ -1,0 +1,17 @@
+{
+  ObjectMapper mapper=new ObjectMapper();
+  ObjectNode config=mapper.createObjectNode();
+  config.put("timeout",8);
+  EmbedConfig embedConfig=new EmbedConfig(null,config);
+  embedConfig.buildGraph(emptyGraph,null);
+  GraphService graphService=new GraphService();
+  graphService.registerGraph("A",new MemoryGraphSource("A",emptyGraph));
+  assertEquals(1,graphService.getRouterIds().size());
+  Graph graph=graphService.getRouter("A").graph;
+  assertNotNull(graph);
+  assertEquals(emptyGraph,graph);
+  assertEquals("A",emptyGraph.routerId);
+  JsonNode routerConfig=mapper.readTree(graph.routerConfig);
+  assertEquals(routerConfig,config);
+  assertEquals(routerConfig.get("timeout"),config.get("timeout"));
+}
