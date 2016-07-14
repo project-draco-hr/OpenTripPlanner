@@ -7,6 +7,9 @@
     return TraverseMode.BUS;
   }
  else   if (routeType >= 300 && routeType < 500) {
+    if (routeType >= 401 && routeType <= 402) {
+      return TraverseMode.SUBWAY;
+    }
     return TraverseMode.RAIL;
   }
  else   if (routeType >= 500 && routeType < 700) {
