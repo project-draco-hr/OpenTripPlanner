@@ -2,6 +2,7 @@
   Set<String> zones=new HashSet<String>();
   Set<AgencyAndId> routes=new HashSet<AgencyAndId>();
   Set<String> agencies=new HashSet<String>();
+  Set<AgencyAndId> trips=new HashSet<AgencyAndId>();
   int transfersUsed=-1;
   Ride firstRide=rides.get(0);
   long startTime=firstRide.startTime;
@@ -21,6 +22,7 @@
     agencies.add(ride.agency);
     routes.add(ride.route);
     zones.addAll(ride.zones);
+    trips.add(ride.trip);
     transfersUsed+=1;
   }
   FareAttribute bestAttribute=null;
@@ -30,7 +32,7 @@
   for (  FareRuleSet ruleSet : fareRules) {
     FareAttribute attribute=ruleSet.getFareAttribute();
     if (!ruleSet.hasAgencyDefined() && !attribute.getId().getAgencyId().equals(feedId))     continue;
-    if (ruleSet.matches(agencies,startZone,endZone,zones,routes)) {
+    if (ruleSet.matches(agencies,startZone,endZone,zones,routes,trips)) {
       if (attribute.isTransfersSet() && attribute.getTransfers() < transfersUsed) {
         continue;
       }
@@ -40,7 +42,7 @@
       if (attribute.isJourneyDurationSet() && journeyTime > attribute.getJourneyDuration()) {
         continue;
       }
-      float newFare=attribute.getPrice();
+      float newFare=getFarePrice(attribute,fareType);
       if (newFare < bestFare) {
         bestAttribute=attribute;
         bestFare=newFare;

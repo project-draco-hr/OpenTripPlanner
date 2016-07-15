@@ -1,9 +1,7 @@
 {
-  for (  FareRuleSet rule : regularFareRules.values()) {
-    FareAttribute fa=rule.getFareAttribute();
-    addMissingFare(youthFareRules,rule,fa.getYouthPrice());
-    addMissingFare(seniorFareRules,rule,fa.getSeniorPrice());
-  }
-  SeattleFareServiceImpl fareService=new SeattleFareServiceImpl(regularFareRules.values(),youthFareRules.values(),seniorFareRules.values());
+  DefaultFareServiceImpl fareService=new DefaultFareServiceImpl();
+  fareService.addFareRules(FareType.regular,regularFareRules.values());
+  fareService.addFareRules(FareType.youth,regularFareRules.values());
+  fareService.addFareRules(FareType.senior,regularFareRules.values());
   return fareService;
 }

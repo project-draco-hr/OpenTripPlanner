@@ -1,0 +1,18 @@
+{
+switch (type) {
+case senior:
+    if (fare.getSeniorPrice() >= 0) {
+      return fare.getSeniorPrice();
+    }
+  break;
+case youth:
+if (fare.getYouthPrice() >= 0) {
+  return fare.getYouthPrice();
+}
+break;
+case regular:
+default :
+break;
+}
+return fare.getPrice();
+}
