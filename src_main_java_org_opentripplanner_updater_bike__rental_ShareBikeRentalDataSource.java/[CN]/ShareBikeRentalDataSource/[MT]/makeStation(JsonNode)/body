@@ -6,11 +6,11 @@
       List<String> systemIDs=urlParameters.get("SystemID");
       if (systemIDs != null && systemIDs.size() == 1) {
         networkID=systemIDs.get(0);
-        log.info("Extracted SystemID from sharebike url: " + networkID);
+        log.info("Extracted url parameter 'SystemID 'from sharebike url: " + networkID);
       }
  else {
-        log.error("Unable to extract SystemID query parameter from sharebike url, using random");
         networkID=UUID.randomUUID().toString();
+        log.warn("Unable to extract url parameter 'SystemID' query parameter from sharebike url, using random value " + networkID);
       }
     }
  catch (    UnsupportedEncodingException|MalformedURLException e) {

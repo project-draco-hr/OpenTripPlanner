@@ -1,0 +1,8 @@
+{
+  ShareBikeRentalDataSource shareBikeSource=new ShareBikeRentalDataSource();
+  shareBikeSource.setUrl("file:src/test/resources/bike/share-bike.json");
+  assertTrue(shareBikeSource.update());
+  List<BikeRentalStation> rentalStations=shareBikeSource.getStations();
+  BikeRentalStation prinsen=rentalStations.get(0);
+  assertFalse(prinsen.networks.contains("dummyid"));
+}
