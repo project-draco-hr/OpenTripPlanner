@@ -29,7 +29,10 @@
   }
   if (wheelchair != null)   request.setWheelchairAccessible(wheelchair);
   if (numItineraries != null)   request.setNumItineraries(numItineraries);
-  if (maxWalkDistance != null)   request.setMaxWalkDistance(maxWalkDistance);
+  if (maxWalkDistance != null) {
+    request.setMaxWalkDistance(maxWalkDistance);
+    request.maxTransferWalkDistance=maxWalkDistance;
+  }
   if (maxPreTransitTime != null)   request.setMaxPreTransitTime(maxPreTransitTime);
   if (walkReluctance != null)   request.setWalkReluctance(walkReluctance);
   if (waitReluctance != null)   request.setWaitReluctance(waitReluctance);

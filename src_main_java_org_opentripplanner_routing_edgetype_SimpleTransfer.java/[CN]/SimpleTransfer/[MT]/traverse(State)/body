@@ -5,6 +5,9 @@
   if (s0.backEdge instanceof StreetTransitLink) {
     return null;
   }
+  if (distance > s0.getOptions().maxTransferWalkDistance) {
+    return null;
+  }
   RoutingRequest rr=s0.getOptions();
   double walkspeed=rr.walkSpeed;
   StateEditor se=s0.edit(this);
