@@ -1,8 +1,7 @@
 {
-  ObjectMapper mapper=new ObjectMapper();
   try {
-    graph.builderConfig=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(builderConfig);
-    graph.routerConfig=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(routerConfig);
+    graph.builderConfig=serializedConfiguration(builderConfig);
+    graph.routerConfig=serializedConfiguration(routerConfig);
   }
  catch (  Exception ex) {
     throw new RuntimeException(ex);
