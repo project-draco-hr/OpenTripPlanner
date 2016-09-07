@@ -11,7 +11,7 @@
     try {
       newArea(new Area(way,Arrays.asList(way),Collections.<OSMWay>emptyList(),nodesById));
     }
- catch (    Area.AreaConstructionException e) {
+ catch (    Area.AreaConstructionException|Ring.RingConstructionException e) {
     }
 catch (    IllegalArgumentException iae) {
     }
