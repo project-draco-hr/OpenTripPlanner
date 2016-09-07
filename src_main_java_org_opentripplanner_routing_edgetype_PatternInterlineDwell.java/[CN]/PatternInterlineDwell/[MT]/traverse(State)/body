@@ -21,6 +21,8 @@
     arrivalTime=oldTripTimes.getArrivalTime(oldTripTimes.getNumStops() - 1);
     departureTime=newTripTimes.getDepartureTime(0);
   }
+  int boardStopIndex=options.arriveBy ? newPattern.stopPattern.size - 1 : 0;
+  if (!newTripTimes.tripAcceptable(state0,boardStopIndex))   return null;
   int dwellTime=departureTime - arrivalTime;
   if (dwellTime < 0)   return null;
   StateEditor s1=state0.edit(this);
